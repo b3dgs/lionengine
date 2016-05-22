@@ -63,7 +63,7 @@ class Scene extends Sequence
     }
 
     /** World reference. */
-    private final World world = new World(getConfig());
+    private final World world;
 
     /**
      * Constructor.
@@ -73,6 +73,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+        world = new World(context);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 

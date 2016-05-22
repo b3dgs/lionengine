@@ -48,13 +48,14 @@ class Scene extends Sequence
 
         if (server)
         {
-            final WorldServer worldServer = new WorldServer(getConfig());
+            final WorldServer worldServer = new WorldServer(context);
             worldServer.startServer("Test", 7777, "Welcome !");
             world = worldServer;
         }
         else
         {
-            final WorldClient worldClient = new WorldClient(this);
+            final WorldClient worldClient = new WorldClient(context);
+            addKeyListener(worldClient.getChat());
             worldClient.setName("Unnamed");
             worldClient.connect("127.0.0.1", 7777);
             world = worldClient;

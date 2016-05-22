@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.world;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -37,11 +37,13 @@ class World extends WorldGame
     private String str;
 
     /**
-     * @see WorldGame#WorldGame(Config)
+     * Create a new world.
+     * 
+     * @param context The context reference.
      */
-    public World(Config config)
+    public World(Context context)
     {
-        super(config);
+        super(context);
     }
 
     @Override

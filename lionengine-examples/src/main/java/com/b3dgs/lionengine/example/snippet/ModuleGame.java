@@ -49,7 +49,7 @@ public class ModuleGame
 {
     class World extends WorldGame
     {
-        World(Config config)
+        World(Context context)
         {
             super(config);
         }

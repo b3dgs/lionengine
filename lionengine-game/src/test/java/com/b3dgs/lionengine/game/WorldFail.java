@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -32,11 +32,11 @@ public class WorldFail extends WorldGame
     /**
      * Constructor.
      * 
-     * @param config The config reference.
+     * @param context The context reference.
      */
-    public WorldFail(Config config)
+    public WorldFail(Context context)
     {
-        super(config);
+        super(context);
     }
 
     @Override

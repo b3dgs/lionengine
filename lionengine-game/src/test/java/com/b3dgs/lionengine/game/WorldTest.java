@@ -25,7 +25,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -64,7 +66,20 @@ public class WorldTest
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         config.setSource(output);
-        final World world = new World(config);
+        final World world = new World(new Context()
+        {
+            @Override
+            public <T extends InputDevice> T getInputDevice(Class<T> type)
+            {
+                return null;
+            }
+
+            @Override
+            public Config getConfig()
+            {
+                return config;
+            }
+        });
 
         final Media media = Medias.create("test");
         try
@@ -89,7 +104,20 @@ public class WorldTest
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         config.setSource(output);
-        final WorldFail world = new WorldFail(config);
+        final WorldFail world = new WorldFail(new Context()
+        {
+            @Override
+            public <T extends InputDevice> T getInputDevice(Class<T> type)
+            {
+                return null;
+            }
+
+            @Override
+            public Config getConfig()
+            {
+                return config;
+            }
+        });
 
         try
         {

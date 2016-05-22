@@ -57,9 +57,8 @@ class Scene extends Sequence
     {
         super(context, NATIVE);
 
-        final Keyboard keyboard = getInputDevice(Keyboard.class);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
-        world = new World(getConfig(), keyboard);
+        world = new World(context);
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     /**

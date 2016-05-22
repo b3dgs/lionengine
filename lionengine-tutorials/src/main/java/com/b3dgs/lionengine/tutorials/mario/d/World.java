@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -58,14 +58,13 @@ class World extends WorldGame
     /**
      * Constructor.
      * 
-     * @param config The config reference.
-     * @param keyboard The keyboard reference.
+     * @param context The context reference.
      */
-    public World(Config config, Keyboard keyboard)
+    public World(Context context)
     {
-        super(config);
+        super(context);
 
-        services.add(keyboard);
+        services.add(getInputDevice(Keyboard.class));
         services.add(Integer.valueOf(source.getRate()));
 
         handler.addComponent(new ComponentCollision());

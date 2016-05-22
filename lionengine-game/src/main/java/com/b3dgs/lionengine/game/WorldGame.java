@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -50,11 +52,11 @@ import com.b3dgs.lionengine.util.UtilStream;
  * {
  *     private final World world;
  * 
- *     public MySequence(Loader loader)
+ *     public MySequence(Context context)
  *     {
  *         super(loader);
  *         // Initialize variables here
- *         world = new World(this);
+ *         world = new World(context);
  *     }
  * 
  *     &#064;Override
@@ -92,16 +94,19 @@ public abstract class WorldGame implements Updatable, Renderable
     protected final int width;
     /** Screen size height. */
     protected final int height;
+    /** Context reference. */
+    private final Context context;
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
      * screen size and wide state.
      * 
-     * @param config The config reference.
+     * @param context The context reference.
      */
-    public WorldGame(Config config)
+    public WorldGame(Context context)
     {
-        this.config = config;
+        this.context = context;
+        config = context.getConfig();
         source = config.getSource();
         output = config.getOutput();
         width = source.getWidth();
@@ -173,5 +178,18 @@ public abstract class WorldGame implements Updatable, Renderable
         {
             UtilStream.safeClose(reading);
         }
+    }
+
+    /**
+     * Get the input device instance from its type.
+     * 
+     * @param <T> The input device.
+     * @param type The input device type.
+     * @return The input instance reference.
+     * @throws LionEngineException If device not found.
+     */
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
+    {
+        return context.getInputDevice(type);
     }
 }

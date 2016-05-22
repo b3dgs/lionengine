@@ -43,7 +43,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        world = new World(getConfig());
+        world = new World(context);
     }
 
     @Override

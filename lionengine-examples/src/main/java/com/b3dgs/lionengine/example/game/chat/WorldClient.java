@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.network.NetworkedWorldClient;
 import com.b3dgs.lionengine.network.NetworkedWorldModelClient;
@@ -41,16 +41,25 @@ class WorldClient extends World<NetworkedWorldModelClient> implements NetworkedW
     /**
      * Constructor.
      * 
-     * @param sequence The sequence reference.
+     * @param context The context reference.
      */
-    public WorldClient(Sequence sequence)
+    public WorldClient(Context context)
     {
-        super(sequence.getConfig());
+        super(context);
         networkableModel = new NetworkableModel();
         networkedWorld = new NetworkedWorldModelClient(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);
-        sequence.addKeyListener(chat);
+    }
+
+    /**
+     * Get the chat.
+     * 
+     * @return The chat.
+     */
+    public Chat getChat()
+    {
+        return chat;
     }
 
     /*
