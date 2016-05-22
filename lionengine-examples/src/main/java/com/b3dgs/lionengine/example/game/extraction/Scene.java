@@ -30,10 +30,8 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
@@ -75,9 +73,6 @@ class Scene extends Sequence
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
-
-        handler.addComponent(new ComponentRefreshable());
-        handler.addComponent(services.add(new ComponentDisplayerLayer()));
     }
 
     @Override

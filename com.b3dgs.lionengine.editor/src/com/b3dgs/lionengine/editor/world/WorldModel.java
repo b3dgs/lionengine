@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
-import com.b3dgs.lionengine.game.handler.ComponentRenderable;
-import com.b3dgs.lionengine.game.handler.ComponentUpdatable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -58,8 +56,6 @@ public class WorldModel
     protected WorldModel()
     {
         final Handler handler = new Handler(services);
-        handler.addComponent(new ComponentUpdatable());
-        handler.addComponent(new ComponentRenderable());
         services.add(handler);
         services.add(new PaletteModel());
 

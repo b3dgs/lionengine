@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.handler.ComponentUpdatable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -90,7 +89,6 @@ public class ComponentCollisionTest
 
         final ComponentCollision component = new ComponentCollision();
         final Handler handler = new Handler(services);
-        handler.addComponent(new ComponentUpdatable());
         handler.addComponent(component);
         handler.add(object1);
         handler.add(object2);

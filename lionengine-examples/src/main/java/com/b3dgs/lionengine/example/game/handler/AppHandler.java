@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
-import com.b3dgs.lionengine.game.handler.ComponentRenderable;
-import com.b3dgs.lionengine.game.handler.ComponentUpdatable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -48,8 +46,6 @@ public class AppHandler
         final Services services = new Services();
 
         final Handler handler = new Handler(services);
-        handler.addComponent(new ComponentUpdatable());
-        handler.addComponent(new ComponentRenderable());
         handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
         handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
 

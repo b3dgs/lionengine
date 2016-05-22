@@ -55,9 +55,7 @@ public class ComponentRefreshableTest
     @Test
     public void testRefresher()
     {
-        final ComponentRefreshable refresher = new ComponentRefreshable();
         final Handler handler = new Handler(new Services());
-        handler.addComponent(refresher);
 
         final Refresher object = new Refresher(new Setup(Medias.create("object.xml")));
         handler.add(object);

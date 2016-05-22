@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -63,6 +64,8 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         super();
         this.services = services;
+        addComponent(new ComponentRefreshable());
+        addComponent(new ComponentDisplayerLayer());
     }
 
     /**

@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.editor;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.DisplayableModel;
+import com.b3dgs.lionengine.game.handler.Refreshable;
+import com.b3dgs.lionengine.game.handler.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.FramesConfig;
@@ -34,15 +36,13 @@ import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with features.
  */
-public class ObjectRepresentation extends ObjectGame implements Updatable, Renderable
+public class ObjectRepresentation extends ObjectGame
 {
     /** Error animation. */
     private static final String ERROR_ANIMATION = "Unable to get animation data from: ";
@@ -72,8 +72,6 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     private final Rectangle rectangle = Geom.createRectangle();
     /** Transformable feature. */
     private final Transformable transformable;
-    /** Surface reference. */
-    private final SpriteAnimated surface;
 
     @Service private Camera camera;
     @Service private MapTile map;
@@ -89,12 +87,23 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
         super(setup);
 
         final Configurer configurer = setup.getConfigurer();
-        surface = getSprite(configurer, setup.getSurface());
+        final SpriteAnimated surface = getSprite(configurer, setup.getSurface());
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.prepare();
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
+
+        addFeature(new RefreshableModel(extrp ->
+        {
+            rectangle.set(camera.getViewpointX(transformable.getX()),
+                          camera.getViewpointY(transformable.getY()) - transformable.getHeight(),
+                          transformable.getWidth(),
+                          transformable.getHeight());
+            surface.setLocation(camera, transformable);
+        }));
+
+        addFeature(new DisplayableModel(g -> surface.render(g)));
     }
 
     /**
@@ -106,7 +115,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     public void place(int x, int y)
     {
         transformable.teleport(x, y);
-        update(1.0);
+        getFeature(Refreshable.class).update(1.0);
     }
 
     /**
@@ -118,7 +127,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     public void move(double vx, double vy)
     {
         transformable.moveLocation(1.0, vx, -vy);
-        update(1.0);
+        getFeature(Refreshable.class).update(1.0);
     }
 
     /**
@@ -138,29 +147,5 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     public Rectangle getRectangle()
     {
         return rectangle;
-    }
-
-    /*
-     * Updatable
-     */
-
-    @Override
-    public void update(double extrp)
-    {
-        rectangle.set(camera.getViewpointX(transformable.getX()),
-                      camera.getViewpointY(transformable.getY()) - transformable.getHeight(),
-                      transformable.getWidth(),
-                      transformable.getHeight());
-        surface.setLocation(camera, transformable);
-    }
-
-    /*
-     * Renderable
-     */
-
-    @Override
-    public void render(Graphic g)
-    {
-        surface.render(g);
     }
 }

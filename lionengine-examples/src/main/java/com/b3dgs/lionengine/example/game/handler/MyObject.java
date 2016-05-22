@@ -17,17 +17,16 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.game.handler.DisplayableModel;
+import com.b3dgs.lionengine.game.handler.RefreshableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * My object implementation.
  */
-class MyObject extends ObjectGame implements Updatable, Renderable
+class MyObject extends ObjectGame
 {
     /**
      * Constructor.
@@ -37,17 +36,8 @@ class MyObject extends ObjectGame implements Updatable, Renderable
     public MyObject(Setup setup)
     {
         super(setup);
-    }
 
-    @Override
-    public void update(double extrp)
-    {
-        Verbose.info("I am updating: " + this);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        Verbose.info("I am rendering: " + this);
+        addFeature(new RefreshableModel(extrp -> Verbose.info("I am updating: " + this)));
+        addFeature(new DisplayableModel(g -> Verbose.info("I am rendering: " + this)));
     }
 }

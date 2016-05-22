@@ -23,10 +23,8 @@ import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -51,8 +49,6 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        handler.addComponent(new ComponentRefreshable());
-        handler.addComponent(new ComponentDisplayerLayer());
     }
 
     /*

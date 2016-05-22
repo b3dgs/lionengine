@@ -28,10 +28,8 @@ import com.b3dgs.lionengine.game.camera.CameraTracker;
 import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
-import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
@@ -70,9 +68,7 @@ class World extends WorldGame
         services.add(keyboard);
         services.add(Integer.valueOf(source.getRate()));
 
-        handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentCollision());
-        handler.addComponent(services.add(new ComponentDisplayerLayer()));
     }
 
     @Override
