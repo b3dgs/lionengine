@@ -109,7 +109,7 @@ public class ComponentDisplayerLayer implements ComponentRenderer, HandlerListen
     }
 
     /*
-     * ComponentRenderable
+     * ComponentRenderer
      */
 
     @Override

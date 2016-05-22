@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.DisplayableModel;
-import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -69,11 +68,10 @@ public class ComponentRendererLayerTest
      * Create a test object.
      * 
      * @param services The services reference.
-     * @param handler The handler reference.
      * @param last The last rendered element.
      * @return The created object.
      */
-    private static Layerable createObject(Services services, Handler handler, final AtomicInteger last)
+    private static Layerable createObject(Services services, final AtomicInteger last)
     {
         final Setup setup = new Setup(config);
         final ObjectGame object = new ObjectGame(setup);
@@ -91,7 +89,6 @@ public class ComponentRendererLayerTest
                 }
             }
         }));
-        handler.add(object);
 
         return layerable;
     }
@@ -106,16 +103,13 @@ public class ComponentRendererLayerTest
         final Services services = new Services();
         services.add(component);
 
-        final Handler handler = new Handler(services);
-        handler.addComponent(component);
         final AtomicInteger last = new AtomicInteger();
 
-        final Layerable object1 = createObject(services, handler, last);
-        final Layerable object2 = createObject(services, handler, last);
-        final Layerable object3 = createObject(services, handler, last);
-        final Layerable object4 = createObject(services, handler, last);
+        final Layerable object1 = createObject(services, last);
+        final Layerable object2 = createObject(services, last);
+        final Layerable object3 = createObject(services, last);
+        final Layerable object4 = createObject(services, last);
 
-        handler.update(1.0);
         object1.setLayer(Integer.valueOf(4));
         object2.setLayer(Integer.valueOf(6));
         object3.setLayer(Integer.valueOf(5));
@@ -131,9 +125,9 @@ public class ComponentRendererLayerTest
 
         Assert.assertEquals(object2.getOwner().getId().intValue(), last.get());
 
-        handler.remove(object2.getOwner());
-        handler.remove(object4.getOwner());
-        handler.update(1.0);
+        object2.getOwner().notifyDestroyed();
+        object4.getOwner().notifyDestroyed();
+
         last.set(-1);
         component.render(null, null);
 
@@ -150,8 +144,6 @@ public class ComponentRendererLayerTest
         final Services services = new Services();
         services.add(component);
 
-        final Handler handler = new Handler(services);
-        handler.addComponent(component);
         final AtomicBoolean auto = new AtomicBoolean();
 
         final ObjectGame object = new ObjectGame(new Setup(config));
@@ -163,9 +155,8 @@ public class ComponentRendererLayerTest
                 auto.set(true);
             }
         }));
-        handler.add(object);
+        component.notifyHandlableAdded(object);
 
-        handler.update(1.0);
         component.render(null, null);
 
         Assert.assertTrue(auto.get());
