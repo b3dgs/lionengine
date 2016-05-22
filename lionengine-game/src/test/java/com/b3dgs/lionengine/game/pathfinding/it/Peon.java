@@ -62,7 +62,7 @@ class Peon extends ObjectGame implements Updatable, Renderable
         transformable = addFeatureAndGet(new TransformableModel(setup));
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
-        transformable.teleport(208, 224);
+        transformable.teleport(320, 256);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
@@ -74,7 +74,7 @@ class Peon extends ObjectGame implements Updatable, Renderable
     @Override
     protected void onPrepared()
     {
-        pathfindable.setSpeed(3.0, 3.0);
+        pathfindable.setSpeed(5.0, 5.0);
         pathfindable.setDestination(28, 8);
     }
 
@@ -84,7 +84,7 @@ class Peon extends ObjectGame implements Updatable, Renderable
         pathfindable.update(extrp);
         surface.setLocation(viewer, transformable);
 
-        if (timing.elapsed(1000L))
+        if (timing.elapsed(500L))
         {
             pathfindable.setDestination(12, 12);
             timing.stop();

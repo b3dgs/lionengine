@@ -71,6 +71,6 @@ class Peon extends ObjectGame
             surface.setLocation(viewer, transformable);
         }));
 
-        addFeature(new DisplayableModel(g -> surface.render(g)));
+        addFeature(new DisplayableModel(surface::render));
     }
 }

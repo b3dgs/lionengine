@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map.it;
 
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
@@ -51,9 +52,9 @@ class Scene extends Sequence
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Scrolling speed. */
-    private double speed;
-    /** Map size. */
-    private int size;
+    private final double speed = 50;
+    /** Test timing. */
+    private final Timing timing = new Timing();
 
     /**
      * Constructor.
@@ -77,14 +78,13 @@ class Scene extends Sequence
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
 
-        size = map.getWidth() - camera.getWidth();
-        speed = 20;
+        timing.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        if (camera.getX() >= size)
+        if (timing.elapsed(1000L))
         {
             end();
         }

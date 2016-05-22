@@ -71,7 +71,7 @@ class GoldMine extends ObjectGame
         layerable.setLayer(Integer.valueOf(1));
 
         addFeature(new RefreshableModel(extrp -> surface.setLocation(viewer, transformable)));
-        addFeature(new DisplayableModel(g -> surface.render(g)));
+        addFeature(new DisplayableModel(surface::render));
     }
 
     @Override

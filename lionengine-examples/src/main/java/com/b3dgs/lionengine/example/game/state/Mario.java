@@ -100,7 +100,7 @@ class Mario extends ObjectGame
             surface.setLocation(camera, transformable);
         }));
 
-        addFeature(new DisplayableModel(g -> surface.render(g)));
+        addFeature(new DisplayableModel(surface::render));
     }
 
     /**

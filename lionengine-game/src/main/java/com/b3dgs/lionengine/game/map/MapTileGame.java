@@ -539,8 +539,14 @@ public class MapTileGame extends HandlableModel implements MapTile
      * Featurable
      */
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Also registers feature as a service.
+     * </p>
+     */
     @Override
-    public void addFeature(Feature feature)
+    public final void addFeature(Feature feature)
     {
         super.addFeature(feature);
         if (services != null)

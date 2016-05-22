@@ -85,7 +85,7 @@ class Grunt extends ObjectGame implements AttackerChecker, AttackerListener
             surface.setLocation(viewer, transformable);
         }));
         addFeature(new AnimatableModel(surface));
-        addFeature(new DisplayableModel(g -> surface.render(g)));
+        addFeature(new DisplayableModel(surface::render));
     }
 
     /***

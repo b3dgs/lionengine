@@ -71,8 +71,6 @@ public class GroupsEditDialog extends AbstractDialog
         return sheets;
     }
 
-    /** Level rips area. */
-    private Composite levelsArea;
     /** Level rips widget. */
     private LevelRipWidget levelRips;
     /** Next button. */
@@ -112,7 +110,7 @@ public class GroupsEditDialog extends AbstractDialog
      */
     private Composite createLevelsArea(Composite parent)
     {
-        levelsArea = new Composite(parent, SWT.NONE);
+        final Composite levelsArea = new Composite(parent, SWT.NONE);
         levelsArea.setLayout(new GridLayout(1, false));
         levelsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 

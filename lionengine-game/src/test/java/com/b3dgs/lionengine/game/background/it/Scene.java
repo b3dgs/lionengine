@@ -69,11 +69,11 @@ class Scene extends Sequence
     @Override
     public void update(double extrp)
     {
-        y = UtilMath.wrapDouble(y + 4, 0.0, 360.0);
+        y = UtilMath.wrapDouble(y + 10, 0.0, 360.0);
         final double dy = UtilMath.sin(y) * 100 + 100;
-        background.update(extrp, 2.0, dy);
-        foreground.update(extrp, 2.0, dy);
-        if (timing.elapsed(3000))
+        background.update(extrp, 5.0, dy);
+        foreground.update(extrp, 5.0, dy);
+        if (timing.elapsed(1000L))
         {
             end();
         }

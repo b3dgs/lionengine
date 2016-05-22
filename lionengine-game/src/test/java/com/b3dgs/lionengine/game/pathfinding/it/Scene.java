@@ -126,7 +126,7 @@ class Scene extends Sequence
         mouse.update(extrp);
         peon.update(extrp);
         text.update(camera);
-        if (timing.elapsed(5000L))
+        if (timing.elapsed(1000L))
         {
             end();
         }

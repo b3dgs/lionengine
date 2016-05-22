@@ -108,10 +108,10 @@ public class SceneRasterable extends Sequence
     @Override
     public void update(double extrp)
     {
-        transformable.setLocationY(UtilMath.sin(count * 1.5) * 240 - 24);
+        transformable.setLocationY(UtilMath.sin(count * 3) * 240 - 24);
         handler.update(extrp);
         count++;
-        if (timing.elapsed(2000L))
+        if (timing.elapsed(1000L))
         {
             end();
         }

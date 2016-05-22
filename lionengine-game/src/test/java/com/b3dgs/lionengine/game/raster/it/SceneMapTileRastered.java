@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 public class SceneMapTileRastered extends Sequence
 {
     /** Timing value. */
-    private final Timing timing = new Timing();
+    private final Timing timingRaster = new Timing();
     /** Services reference. */
     private final Services services = new Services();
     /** Camera reference. */
@@ -50,10 +50,10 @@ public class SceneMapTileRastered extends Sequence
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Map raster reference. */
     private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
+    /** Timing. */
+    private final Timing timing = new Timing();
     /** Renderable selection (false = default, true = raster). */
     private boolean useRaster;
-    /** Count. */
-    private int count;
 
     /**
      * Constructor.
@@ -75,13 +75,14 @@ public class SceneMapTileRastered extends Sequence
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
 
+        timingRaster.start();
         timing.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timing.isStarted() && timing.elapsed(300))
+        if (timing.isStarted() && timingRaster.elapsed(150))
         {
             useRaster = !useRaster;
             if (useRaster)
@@ -92,10 +93,9 @@ public class SceneMapTileRastered extends Sequence
             {
                 mapViewer.removeRenderer(raster);
             }
-            timing.restart();
-            count++;
+            timingRaster.restart();
         }
-        if (count > 5)
+        if (timing.elapsed(1000L))
         {
             end();
         }

@@ -62,6 +62,8 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
      */
     public SelectorRefresher(SelectorModel model)
     {
+        super();
+
         this.model = model;
     }
 

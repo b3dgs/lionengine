@@ -150,6 +150,6 @@ public class TimingTest
         timing.set(PAUSE);
 
         Assert.assertTrue(timing.isStarted());
-        Assert.assertEquals(timing.get(), PAUSE);
+        Assert.assertTrue(timing.elapsed(PAUSE));
     }
 }

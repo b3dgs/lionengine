@@ -51,6 +51,8 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
      */
     public SelectorDisplayer(SelectorModel model)
     {
+        super();
+
         this.model = model;
     }
 

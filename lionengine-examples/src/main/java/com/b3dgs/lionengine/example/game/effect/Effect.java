@@ -78,7 +78,7 @@ class Effect extends ObjectGame
             }
         }));
 
-        addFeature(new DisplayableModel(g -> surface.render(g)));
+        addFeature(new DisplayableModel(surface::render));
     }
 
     /**

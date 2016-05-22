@@ -153,9 +153,9 @@ public final class Timing
     }
 
     /**
-     * Set the timing value.
+     * Set the timing value in milli seconds.
      * 
-     * @param value The value to set.
+     * @param value The value to set milli seconds.
      */
     public void set(long value)
     {
@@ -164,9 +164,9 @@ public final class Timing
     }
 
     /**
-     * Get timer value.
+     * Get timer value milli seconds.
      * 
-     * @return The timer value.
+     * @return The timer value milli seconds.
      */
     public long get()
     {

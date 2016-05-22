@@ -57,9 +57,8 @@ class Scene extends Sequence
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
+    private final Timing timingGen = new Timing();
     private final Timing timing = new Timing();
-
-    private int count;
 
     /**
      * Create the scene.
@@ -98,24 +97,23 @@ class Scene extends Sequence
                   .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(24, 24, 40, 40), 2, 80))
                   .add(new PrefMapRegion(new TileRef(0, 0), new TileArea(4, 4, 60, 40), 1, 100));
 
+        timingGen.start();
         timing.start();
-        timing.set(250L);
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timing.elapsed(250L))
+        if (timingGen.elapsed(100L))
         {
             final MapTile generated = generator.generateMap(parameters,
                                                             Arrays.asList(Medias.create("forest.png")),
                                                             Medias.create("sheets.xml"),
                                                             Medias.create("groups.xml"));
             map.append(generated, 0, 0);
-            count++;
-            timing.restart();
+            timingGen.restart();
         }
-        if (count > 5)
+        if (timing.elapsed(1000L))
         {
             end();
         }

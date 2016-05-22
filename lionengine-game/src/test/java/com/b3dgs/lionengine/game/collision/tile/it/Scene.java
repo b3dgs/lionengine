@@ -24,15 +24,12 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.camera.CameraTracker;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRenderer;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
-import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
-import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -42,7 +39,6 @@ import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -98,17 +94,6 @@ class Scene extends Sequence
 
         final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);
-        mario.getFeature(TileCollidable.class).addListener(new TileCollidableListener()
-        {
-            @Override
-            public void notifyTileCollided(Tile tile, Axis axis)
-            {
-                if (Axis.X == axis)
-                {
-                    end();
-                }
-            }
-        });
         handler.add(mario);
 
         final CameraTracker tracker = new CameraTracker();
@@ -123,7 +108,7 @@ class Scene extends Sequence
     {
         handler.update(extrp);
 
-        if (timing.elapsed(5000L))
+        if (timing.elapsed(1000L))
         {
             end();
         }

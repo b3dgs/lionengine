@@ -120,4 +120,10 @@ public class ObjectGame extends HandlableModel
             onPrepared();
         }
     }
+
+    @Override
+    public final void addFeature(Feature feature)
+    {
+        super.addFeature(feature);
+    }
 }

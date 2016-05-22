@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.selector;
 
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -87,6 +88,16 @@ public class Selector extends HandlableModel implements SelectorConfigurer
     public void setSelectionColor(ColorRgba color)
     {
         displayer.setSelectionColor(color);
+    }
+
+    /*
+     * HandlableModel
+     */
+
+    @Override
+    public final void addFeature(Feature feature)
+    {
+        super.addFeature(feature);
     }
 
     /*
