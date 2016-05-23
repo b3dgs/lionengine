@@ -63,7 +63,7 @@ class Grunt extends ObjectGame implements AttackerChecker, AttackerListener
         super(setup);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));

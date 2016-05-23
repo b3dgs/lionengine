@@ -36,6 +36,13 @@ public interface Layerable extends Feature
      * 
      * @param layer The layer value.
      */
+    void setLayer(int layer);
+
+    /**
+     * Set the layer value.
+     * 
+     * @param layer The layer value.
+     */
     void setLayer(Integer layer);
 
     /**

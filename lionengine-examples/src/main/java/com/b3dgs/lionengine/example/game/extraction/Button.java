@@ -71,7 +71,7 @@ class Button extends ObjectGame
         super(setup);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(3));
+        layerable.setLayer(3);
 
         final Assignable assignable = addFeatureAndGet(new AssignableModel());
         assignable.setClickAssign(Mouse.LEFT);

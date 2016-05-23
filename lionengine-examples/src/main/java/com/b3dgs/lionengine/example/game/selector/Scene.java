@@ -105,7 +105,7 @@ class Scene extends Sequence
 
         final Selector selector = new Selector();
         final Layerable layerable = new LayerableModel();
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
         selector.addFeature(layerable);
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);

@@ -66,7 +66,7 @@ class Building extends ObjectGame implements ProducibleListener
         surface.setOrigin(Origin.TOP_LEFT);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         addFeature(new ProducibleModel(setup));
         addFeature(new DisplayableModel(g ->

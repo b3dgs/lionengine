@@ -60,7 +60,7 @@ class MarioRenderer extends FeatureModel implements Displayable
         super.prepare(owner, services);
 
         collidable.setCollisionVisibility(true);
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
     }
 
     @Override

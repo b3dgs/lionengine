@@ -377,6 +377,12 @@ public class HandlerTest
         }
 
         @Override
+        public void setLayer(int layer)
+        {
+            // Mock
+        }
+
+        @Override
         public void setLayer(Integer layer)
         {
             // Mock

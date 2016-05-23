@@ -79,7 +79,7 @@ class BuildButton extends ObjectGame
         super(setup);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(3));
+        layerable.setLayer(3);
 
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);

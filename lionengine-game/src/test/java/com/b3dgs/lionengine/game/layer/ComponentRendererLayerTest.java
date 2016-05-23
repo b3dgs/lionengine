@@ -110,10 +110,10 @@ public class ComponentRendererLayerTest
         final Layerable object3 = createObject(services, last);
         final Layerable object4 = createObject(services, last);
 
-        object1.setLayer(Integer.valueOf(4));
-        object2.setLayer(Integer.valueOf(6));
-        object3.setLayer(Integer.valueOf(5));
-        object4.setLayer(Integer.valueOf(4));
+        object1.setLayer(4);
+        object2.setLayer(6);
+        object3.setLayer(5);
+        object4.setLayer(4);
         last.set(-1);
 
         component.render(null, null);

@@ -75,7 +75,7 @@ class Ship extends ObjectGame implements CollidableListener
         super(setup);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);

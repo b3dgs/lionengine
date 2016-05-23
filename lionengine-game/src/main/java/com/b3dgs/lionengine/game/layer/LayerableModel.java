@@ -67,6 +67,12 @@ public class LayerableModel extends FeatureModel implements Layerable
     }
 
     @Override
+    public void setLayer(int layer)
+    {
+        setLayer(Integer.valueOf(layer));
+    }
+
+    @Override
     public void setLayer(Integer layer)
     {
         for (final LayerableListener listener : listeners)

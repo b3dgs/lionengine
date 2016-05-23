@@ -68,7 +68,7 @@ class GoldMine extends ObjectGame
         extractable.setResourcesQuantity(100);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         addFeature(new RefreshableModel(extrp -> surface.setLocation(viewer, transformable)));
         addFeature(new DisplayableModel(surface::render));

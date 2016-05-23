@@ -68,7 +68,7 @@ class EntityModel extends FeatureModel
     {
         super.prepare(owner, services);
 
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         body.setVectors(movement, jump);
         body.setDesiredFps(60);

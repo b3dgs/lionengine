@@ -68,7 +68,7 @@ class Peon extends ObjectGame implements ExtractorChecker, ExtractorListener
         transformable.teleport(208, 160);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(2));
+        layerable.setLayer(2);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);

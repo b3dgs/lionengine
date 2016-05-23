@@ -92,7 +92,7 @@ public class LayerableModelTest
 
         Assert.assertEquals(0, layerable.getLayer().intValue());
 
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         Assert.assertEquals(1, layerable.getLayer().intValue());
     }

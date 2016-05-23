@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.handler.DisplayableModel;
 import com.b3dgs.lionengine.game.handler.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Service;
-import com.b3dgs.lionengine.game.layer.Layerable;
-import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.launchable.Launchable;
@@ -55,9 +53,6 @@ class Projectile extends ObjectGame
     public Projectile(SetupSurface setup)
     {
         super(setup);
-
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(0));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         final Launchable launchable = addFeatureAndGet(new LaunchableModel());

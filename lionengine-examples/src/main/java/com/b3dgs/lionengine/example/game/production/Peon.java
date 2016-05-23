@@ -72,7 +72,7 @@ class Peon extends ObjectGame implements ProducerChecker, ProducerListener
         super(setup);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(2));
+        layerable.setLayer(2);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);

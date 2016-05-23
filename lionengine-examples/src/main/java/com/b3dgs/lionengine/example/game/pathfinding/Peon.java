@@ -61,7 +61,7 @@ class Peon extends ObjectGame
         transformable.teleport(208, 224);
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(Integer.valueOf(1));
+        layerable.setLayer(1);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
