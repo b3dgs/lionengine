@@ -49,7 +49,6 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        world.saveToFile(Medias.create("world.lvl"));
         world.loadFromFile(Medias.create("world.lvl"));
     }
 
