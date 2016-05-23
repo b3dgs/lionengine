@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;

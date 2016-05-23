@@ -22,7 +22,6 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.Axis;
 
 /**
  * Collision category, representing a collision point at a specified offset relative to the owner position. Computation

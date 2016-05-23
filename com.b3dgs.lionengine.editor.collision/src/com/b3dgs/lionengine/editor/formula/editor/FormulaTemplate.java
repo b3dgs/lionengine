@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.formula.editor;
 
 import java.util.Locale;
 
-import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;

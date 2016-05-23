@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.collision.tile;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

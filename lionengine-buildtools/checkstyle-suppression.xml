@@ -30,7 +30,7 @@
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.game.map.feature.circuit.CircuitsExtractorImpl"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel" lines="249"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="93, 148"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="92, 147"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="213"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="226, 231"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="318"/>

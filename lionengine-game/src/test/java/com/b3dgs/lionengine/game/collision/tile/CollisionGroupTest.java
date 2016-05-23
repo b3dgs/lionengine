@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.game.Axis;
 
 /**
  * Test the collision group class.

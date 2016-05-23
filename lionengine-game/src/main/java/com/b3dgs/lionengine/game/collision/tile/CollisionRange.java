@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.collision.tile;
 
-import com.b3dgs.lionengine.game.Axis;
-
 /**
  * Represents the range of the collision for a specified axis. It allows to restrict the computation area of the
  * collision, depending of the input value.

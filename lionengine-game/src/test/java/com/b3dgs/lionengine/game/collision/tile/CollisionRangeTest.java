@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.game.collision.tile;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Axis;
-
 /**
  * Test the collision range class.
  */

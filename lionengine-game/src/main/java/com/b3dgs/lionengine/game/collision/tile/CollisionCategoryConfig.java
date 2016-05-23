@@ -22,7 +22,6 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.XmlNode;

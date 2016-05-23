@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.collision.tile;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Services;

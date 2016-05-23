@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.collision.map.editor.CollisionGroupList;
 import com.b3dgs.lionengine.editor.utility.control.UtilCombo;
 import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 

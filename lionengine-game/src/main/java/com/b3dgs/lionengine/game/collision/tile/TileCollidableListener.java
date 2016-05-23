@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.collision.tile;
 
-import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
