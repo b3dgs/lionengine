@@ -15,21 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.layer;
-
-import com.b3dgs.lionengine.game.handler.Featurable;
+package com.b3dgs.lionengine.game.handler;
 
 /**
- * Notify when layer value changed.
+ * Represents something that can support layer, in order to define an order.
  */
-public interface LayerableListener
+public interface Layerable extends Feature
 {
     /**
-     * Notify when layer value changed.
+     * Add a layer listener.
      * 
-     * @param featurable The featurable reference.
-     * @param layerOld The old layer value.
-     * @param layerNew The new layer value.
+     * @param listener The layer listener reference.
      */
-    void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew);
+    void addListener(LayerableListener listener);
+
+    /**
+     * Set the layer value.
+     * 
+     * @param layer The layer value.
+     */
+    void setLayer(int layer);
+
+    /**
+     * Set the layer value.
+     * 
+     * @param layer The layer value.
+     */
+    void setLayer(Integer layer);
+
+    /**
+     * Get the current layer value.
+     * 
+     * @return The current layer value.
+     */
+    Integer getLayer();
 }

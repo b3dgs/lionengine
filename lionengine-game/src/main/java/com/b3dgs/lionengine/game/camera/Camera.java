@@ -76,7 +76,8 @@ public class Camera extends HandlableModel implements Viewer
     }
 
     /**
-     * Reset the camera interval to 0 by adapting its position.
+     * Reset the camera interval to 0 by adapting its position. This will ensure camera centers its view to the
+     * localizable.
      * 
      * @param localizable The localizable to center to.
      */

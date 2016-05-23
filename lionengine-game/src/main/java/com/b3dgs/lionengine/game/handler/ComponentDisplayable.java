@@ -17,19 +17,89 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Displayable component implementation which displays {@link Displayable} elements.
+ * Renderer component implementation which render {@link Displayable} elements with {@link Layerable} support to order
+ * rendering. If there is not {@link Layerable} feature, {@link #LAYER_DEFAULT} will be used as default layer value.
  */
-public class ComponentDisplayable implements ComponentRenderer
+public class ComponentDisplayable implements ComponentRenderer, HandlerListener, LayerableListener
 {
+    /** Default layer value. */
+    private static final Integer LAYER_DEFAULT = Integer.valueOf(0);
+
     /**
-     * Create component.
+     * Get the handlable layer.
+     * 
+     * @param handlable The handlable reference.
+     * @return The handlable layer if is {@link Layerable}, {@link #LAYER_DEFAULT} else.
+     */
+    private static Integer getLayer(Handlable handlable)
+    {
+        if (handlable.hasFeature(Layerable.class))
+        {
+            final Layerable layerable = handlable.getFeature(Layerable.class);
+            return layerable.getLayer();
+        }
+        return LAYER_DEFAULT;
+    }
+
+    /** Sorted layers index. */
+    private final Set<Integer> indexs;
+    /** Layers to render. */
+    private final Map<Integer, Collection<Displayable>> layers;
+
+    /**
+     * Create a renderer component.
      */
     public ComponentDisplayable()
     {
-        super();
+        indexs = new TreeSet<Integer>();
+        layers = new HashMap<Integer, Collection<Displayable>>();
+    }
+
+    /**
+     * Get the layer set at the specified index. Creates an empty set if no set already defined.
+     * 
+     * @param layer The layer index.
+     * @return The layer set reference.
+     */
+    private Collection<Displayable> getLayer(Integer layer)
+    {
+        final Collection<Displayable> displayables;
+        if (!layers.containsKey(layer))
+        {
+            displayables = new HashSet<Displayable>();
+            layers.put(layer, displayables);
+        }
+        else
+        {
+            displayables = layers.get(layer);
+        }
+        return displayables;
+    }
+
+    /**
+     * Remove displayable and its layer.
+     * 
+     * @param layer The layer index.
+     * @param displayable The displayable to remove.
+     */
+    private void remove(Integer layer, Displayable displayable)
+    {
+        final Collection<Displayable> displayables = getLayer(layer);
+        displayables.remove(displayable);
+        if (displayables.isEmpty())
+        {
+            indexs.remove(layer);
+        }
     }
 
     /*
@@ -39,9 +109,56 @@ public class ComponentDisplayable implements ComponentRenderer
     @Override
     public void render(Graphic g, Handlables handlables)
     {
-        for (final Displayable displayable : handlables.get(Displayable.class))
+        for (final Integer layer : indexs)
         {
-            displayable.render(g);
+            for (final Displayable displayable : layers.get(layer))
+            {
+                displayable.render(g);
+            }
+        }
+    }
+
+    /*
+     * HandlerListener
+     */
+
+    @Override
+    public void notifyHandlableAdded(Handlable handlable)
+    {
+        if (handlable.hasFeature(Displayable.class))
+        {
+            final Displayable displayable = handlable.getFeature(Displayable.class);
+            final Integer layer = getLayer(handlable);
+            final Collection<Displayable> displayables = getLayer(layer);
+            displayables.add(displayable);
+            indexs.add(layer);
+        }
+    }
+
+    @Override
+    public void notifyHandlableRemoved(Handlable handlable)
+    {
+        if (handlable.hasFeature(Displayable.class))
+        {
+            final Displayable displayable = handlable.getFeature(Displayable.class);
+            final Integer layer = getLayer(handlable);
+            remove(layer, displayable);
+        }
+    }
+
+    /*
+     * LayerableListener
+     */
+
+    @Override
+    public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
+    {
+        if (featurable.hasFeature(Displayable.class))
+        {
+            final Displayable displayable = featurable.getFeature(Displayable.class);
+            getLayer(layerOld).remove(displayable);
+            getLayer(layerNew).add(displayable);
+            indexs.add(layerNew);
         }
     }
 }

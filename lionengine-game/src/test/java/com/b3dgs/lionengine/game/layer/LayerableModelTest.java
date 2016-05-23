@@ -28,7 +28,10 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.Featurable;
+import com.b3dgs.lionengine.game.handler.LayerableListener;
+import com.b3dgs.lionengine.game.handler.LayerableModel;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -85,7 +88,7 @@ public class LayerableModelTest
         });
 
         final Services services = new Services();
-        services.add(new ComponentDisplayerLayer());
+        services.add(new ComponentDisplayable());
         final Setup setup = new Setup(config);
         final ObjectGame object = new ObjectGame(setup);
         layerable.prepare(object, services);

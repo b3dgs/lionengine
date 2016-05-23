@@ -28,7 +28,10 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.DisplayableModel;
+import com.b3dgs.lionengine.game.handler.Layerable;
+import com.b3dgs.lionengine.game.handler.LayerableModel;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -99,7 +102,7 @@ public class ComponentRendererLayerTest
     @Test
     public void testComponentLayer()
     {
-        final ComponentDisplayerLayer component = new ComponentDisplayerLayer();
+        final ComponentDisplayable component = new ComponentDisplayable();
         final Services services = new Services();
         services.add(component);
 
@@ -140,7 +143,7 @@ public class ComponentRendererLayerTest
     @Test
     public void testComponentLayerDefault()
     {
-        final ComponentDisplayerLayer component = new ComponentDisplayerLayer();
+        final ComponentDisplayable component = new ComponentDisplayable();
         final Services services = new Services();
         services.add(component);
 

@@ -15,9 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.game.handler;
 
 /**
- * System that allow to represent a layer, mainly used to order rendering for
- * {@link com.b3dgs.lionengine.game.handler.Displayable} objects.
+ * Notify when layer value changed.
  */
-package com.b3dgs.lionengine.game.layer;
+public interface LayerableListener
+{
+    /**
+     * Notify when layer value changed.
+     * 
+     * @param featurable The featurable reference.
+     * @param layerOld The old layer value.
+     * @param layerNew The new layer value.
+     */
+    void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew);
+}
