@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
@@ -88,16 +89,10 @@ abstract class World<N extends NetworkedWorld> extends WorldGame implements Netw
      */
 
     @Override
-    public void update(double extrp)
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void render(Graphic g)
     {
-        g.clear(0, 0, width, height);
-        text.draw(g, width, 0, Align.RIGHT, "Bandwidth=" + getBandwidth() + "byte/sec");
+        fill(g, ColorRgba.BLACK);
+        text.draw(g, config.getSource().getWidth(), 0, Align.RIGHT, "Bandwidth=" + getBandwidth() + "byte/sec");
         text.draw(g, 0, 0, "Number of connected clients: " + clients.size());
         text.draw(g, 0, 12, "Clients:");
         int i = 0;

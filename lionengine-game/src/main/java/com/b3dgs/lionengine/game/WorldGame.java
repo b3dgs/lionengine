@@ -26,6 +26,12 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -84,16 +90,20 @@ import com.b3dgs.lionengine.util.UtilStream;
  */
 public abstract class WorldGame implements Updatable, Renderable
 {
+    /** Services instance. */
+    protected final Services services = new Services();
+    /** Camera instance. */
+    protected final Camera camera = services.create(Camera.class);
+    /** Factory instance. */
+    protected final Factory factory = services.create(Factory.class);
+    /** Handler instance. */
+    protected final Handler handler = services.create(Handler.class);
     /** Config reference. */
     protected final Config config;
     /** Internal display reference. */
     protected final Resolution source;
     /** External display reference. */
     protected final Resolution output;
-    /** Screen size width. */
-    protected final int width;
-    /** Screen size height. */
-    protected final int height;
     /** Context reference. */
     private final Context context;
 
@@ -109,12 +119,11 @@ public abstract class WorldGame implements Updatable, Renderable
         config = context.getConfig();
         source = config.getSource();
         output = config.getOutput();
-        width = source.getWidth();
-        height = source.getHeight();
+        camera.setView(0, 0, source.getWidth(), source.getHeight());
     }
 
     /**
-     * Internal world saves; called from {@link WorldGame#saveToFile(Media)} function. The world will be saved in a file
+     * Internal world saves; called from {@link #saveToFile(Media)} function. The world will be saved in a file
      * as binary. Here should be called all saving functions, such as
      * {@link com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister#save(FileWriting)}...
      * 
@@ -124,7 +133,7 @@ public abstract class WorldGame implements Updatable, Renderable
     protected abstract void saving(FileWriting file) throws IOException;
 
     /**
-     * Internal world loads; called from {@link WorldGame#loadFromFile(Media)} function. The world will be loaded from
+     * Internal world loads; called from {@link #loadFromFile(Media)} function. The world will be loaded from
      * an existing binary file. Here should be called all loading functions, such as
      * {@link com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister#load(FileReading)}
      * ...
@@ -181,6 +190,18 @@ public abstract class WorldGame implements Updatable, Renderable
     }
 
     /**
+     * Fill with color.
+     * 
+     * @param g The graphic output.
+     * @param color The color to fill with.
+     */
+    public void fill(Graphic g, ColorRgba color)
+    {
+        g.setColor(color);
+        g.drawRect(0, 0, source.getWidth(), source.getHeight(), true);
+    }
+
+    /**
      * Get the input device instance from its type.
      * 
      * @param <T> The input device.
@@ -191,5 +212,25 @@ public abstract class WorldGame implements Updatable, Renderable
     public final <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return context.getInputDevice(type);
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        handler.update(extrp);
+    }
+
+    /*
+     * Renderable
+     */
+
+    @Override
+    public void render(Graphic g)
+    {
+        handler.render(g);
     }
 }

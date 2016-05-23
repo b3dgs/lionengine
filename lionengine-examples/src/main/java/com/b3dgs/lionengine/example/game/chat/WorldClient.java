@@ -77,16 +77,10 @@ class WorldClient extends World<NetworkedWorldModelClient> implements NetworkedW
     }
 
     @Override
-    public void update(double extrp)
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void render(Graphic g)
     {
         super.render(g);
-        text.draw(g, width, 12, Align.RIGHT, "Ping=" + getPing() + "ms");
+        text.draw(g, config.getSource().getWidth(), 12, Align.RIGHT, "Ping=" + getPing() + "ms");
     }
 
     @Override

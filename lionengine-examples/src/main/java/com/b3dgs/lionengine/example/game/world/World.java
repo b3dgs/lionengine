@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
@@ -55,7 +56,7 @@ class World extends WorldGame
     @Override
     public void render(Graphic g)
     {
-        g.clear(0, 0, width, height);
+        fill(g, ColorRgba.BLACK);
         text.draw(g, 10, 10, str);
     }
 

@@ -23,20 +23,14 @@ import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.camera.CameraTracker;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -49,10 +43,7 @@ class World extends WorldGame
 {
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
-    private final Services services = new Services();
-    private final Handler handler = services.create(Handler.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTilePersister mapPersister = map.createFeature(MapTilePersisterModel.class);
 
     /**
      * Constructor.
@@ -65,53 +56,42 @@ class World extends WorldGame
 
         services.add(getInputDevice(Keyboard.class));
         services.add(Integer.valueOf(source.getRate()));
-    }
 
-    @Override
-    public void update(double extrp)
-    {
-        handler.update(extrp);
+        camera.setIntervals(16, 0);
+        handler.add(camera);
+
+        map.addFeature(new MapTilePersisterModel(map));
+        map.addFeature(new MapTileViewerModel(services));
+        handler.add(map);
     }
 
     @Override
     public void render(Graphic g)
     {
-        g.setColor(BACKGROUND_COLOR);
-        g.drawRect(0, 0, width, height, true);
-        handler.render(g);
+        fill(g, BACKGROUND_COLOR);
+        super.render(g);
     }
 
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        mapPersister.save(file);
+        map.getFeature(MapTilePersister.class).save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        handler.add(map);
-        mapPersister.load(file);
+        map.getFeature(MapTilePersister.class).load(file);
+        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("map", "groups.xml"));
+        map.createFeature(MapTileCollisionModel.class).loadCollisions(Medias.create("map", "formulas.xml"),
+                                                                      Medias.create("map", "collisions.xml"));
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
-
-        final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
-        mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
-
-        final Camera camera = services.create(Camera.class);
-        camera.setIntervals(16, 0);
-        camera.setView(0, 0, width, height);
-        camera.setLimits(map);
-        final CameraTracker tracker = new CameraTracker();
-        camera.addFeature(tracker);
-        handler.add(camera);
-
-        map.addFeature(new MapTileViewerModel(services));
-
-        final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
+
+        final CameraTracker tracker = new CameraTracker();
+        camera.addFeature(tracker);
+        camera.setLimits(map);
         tracker.track(mario);
     }
 }

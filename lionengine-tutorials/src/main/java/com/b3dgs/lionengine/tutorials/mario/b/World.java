@@ -21,15 +21,11 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -38,16 +34,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  */
 class World extends WorldGame
 {
-    /** Services reference. */
-    private final Services services = new Services();
-    /** Camera reference. */
-    private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map persister. */
-    private final MapTilePersister mapPersister = map.createFeature(MapTilePersisterModel.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
 
     /**
      * Constructor.
@@ -57,31 +44,22 @@ class World extends WorldGame
     public World(Context context)
     {
         super(context);
-    }
 
-    @Override
-    public void update(double extrp)
-    {
-        // Update
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        mapViewer.render(g);
+        map.addFeature(new MapTilePersisterModel(map));
+        map.addFeature(new MapTileViewerModel(services));
+        handler.add(map);
     }
 
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        mapPersister.save(file);
+        map.getFeature(MapTilePersister.class).save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        mapPersister.load(file);
-        camera.setView(0, 0, width, height);
+        map.getFeature(MapTilePersister.class).load(file);
         camera.setLimits(map);
     }
 }
