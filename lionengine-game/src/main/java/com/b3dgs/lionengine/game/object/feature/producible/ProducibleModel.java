@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 
@@ -52,7 +52,7 @@ public class ProducibleModel extends FeatureModel implements Producible
      * Create a producible and load its configuration.
      * 
      * <p>
-     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
      * with {@link ProducibleConfig}.
      * </p>
      * <p>

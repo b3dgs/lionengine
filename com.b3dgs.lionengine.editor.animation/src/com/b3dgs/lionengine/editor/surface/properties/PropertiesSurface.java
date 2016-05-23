@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 

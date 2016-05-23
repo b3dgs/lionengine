@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class SurfaceConfig
 {
     /** Surface node name. */
-    public static final String NODE_SURFACE = Configurer.PREFIX + "surface";
+    public static final String NODE_SURFACE = Constant.XML_PREFIX + "surface";
     /** Surface image node. */
     public static final String ATT_IMAGE = "image";
     /** Surface icon node. */

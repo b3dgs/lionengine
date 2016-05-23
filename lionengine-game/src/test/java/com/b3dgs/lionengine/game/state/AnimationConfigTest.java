@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;

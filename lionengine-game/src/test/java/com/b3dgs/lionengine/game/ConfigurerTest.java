@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;

@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game.object.feature.transformable;
 
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
 
@@ -51,7 +51,7 @@ public class TransformableModel extends FeatureModel implements Transformable
      * Create a transformable model.
      * 
      * <p>
-     * The owner can provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * The owner can provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
      * with {@link com.b3dgs.lionengine.game.object.SizeConfig}.
      * </p>
      * 

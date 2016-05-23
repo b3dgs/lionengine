@@ -21,10 +21,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -57,7 +57,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
-     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
      * with {@link CollisionCategoryConfig}.
      * </p>
      * <p>

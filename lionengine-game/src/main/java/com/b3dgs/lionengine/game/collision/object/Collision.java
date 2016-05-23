@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Nameable;
  * {@link com.b3dgs.lionengine.game.collision.object.CollisionConfig#getCollision(String)} and
  * {@link com.b3dgs.lionengine.game.collision.object.Collidable#addCollision(Collision)}.
  * 
- * @see com.b3dgs.lionengine.game.Configurer
+ * @see com.b3dgs.lionengine.game.object.Configurer
  * @see com.b3dgs.lionengine.game.collision.object.ComponentCollision
  */
 public class Collision implements Nameable

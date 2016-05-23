@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class FramesConfig
 {
     /** Frames node name. */
-    public static final String NODE_FRAMES = Configurer.PREFIX + "frames";
+    public static final String NODE_FRAMES = Constant.XML_PREFIX + "frames";
     /** Frames horizontal node name. */
     public static final String ATT_HORIZONTAL = "horizontal";
     /** Frames vertical node name. */

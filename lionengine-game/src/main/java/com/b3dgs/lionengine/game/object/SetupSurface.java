@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Define a structure used to create multiple objects, sharing the same data and {@link ImageBuffer}.
  * 
- * @see com.b3dgs.lionengine.game.Configurer
+ * @see com.b3dgs.lionengine.game.object.Configurer
  */
 public class SetupSurface extends Setup
 {

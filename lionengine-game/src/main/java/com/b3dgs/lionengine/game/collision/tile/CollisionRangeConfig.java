@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game.collision.tile;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class CollisionRangeConfig
 {
     /** The range node. */
-    public static final String RANGE = Configurer.PREFIX + "range";
+    public static final String RANGE = Constant.XML_PREFIX + "range";
     /** Output axis attribute. */
     public static final String AXIS = "output";
     /** Input min X attribute. */

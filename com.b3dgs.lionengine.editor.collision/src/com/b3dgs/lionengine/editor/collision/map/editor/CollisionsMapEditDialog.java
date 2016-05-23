@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
@@ -93,7 +93,7 @@ public class CollisionsMapEditDialog extends AbstractDialog
         collisionGroupList.save();
 
         final XmlNode root = Xml.create(CollisionGroupConfig.COLLISIONS);
-        root.writeString(Configurer.HEADER, Engine.WEBSITE);
+        root.writeString(Constant.XML_HEADER, Engine.WEBSITE);
 
         for (final TreeItem item : collisionGroupList.getTree().getItems())
         {

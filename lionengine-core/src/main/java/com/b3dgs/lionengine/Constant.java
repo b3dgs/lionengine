@@ -24,6 +24,10 @@ import java.nio.charset.Charset;
  */
 public final class Constant
 {
+    /** Header XML. */
+    public static final String XML_HEADER = "xmlns:lionengine";
+    /** Prefix XML node. */
+    public static final String XML_PREFIX = "lionengine:";
     /** Charset UTF-8. */
     public static final Charset UTF_8 = Charset.forName("UTF-8");
     /** Empty string. */

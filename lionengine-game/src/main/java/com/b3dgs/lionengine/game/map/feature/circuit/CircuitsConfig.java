@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
@@ -41,9 +41,9 @@ public final class CircuitsConfig
     /** Configuration file name. */
     public static final String FILENAME = "circuits.xml";
     /** Circuits node. */
-    public static final String NODE_CIRCUITS = Configurer.PREFIX + "circuits";
+    public static final String NODE_CIRCUITS = Constant.XML_PREFIX + "circuits";
     /** Circuit node. */
-    public static final String NODE_CIRCUIT = Configurer.PREFIX + "circuit";
+    public static final String NODE_CIRCUIT = Constant.XML_PREFIX + "circuit";
     /** Attribute circuit type. */
     public static final String ATTRIBUTE_CIRCUIT_TYPE = "type";
     /** Attribute group in. */

@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.test.Constant;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Filter sequence mock.
@@ -39,7 +39,7 @@ public class SequenceFilterMock extends Sequence
      */
     public SequenceFilterMock(Context context, Filter filter)
     {
-        super(context, Constant.RESOLUTION_320_240);
+        super(context, UtilTests.RESOLUTION_320_240);
         setFilter(filter);
     }
 

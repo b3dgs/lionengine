@@ -21,10 +21,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class AnimationConfig
 {
     /** Animation node name. */
-    public static final String ANIMATION = Configurer.PREFIX + "animation";
+    public static final String ANIMATION = Constant.XML_PREFIX + "animation";
     /** Animation attribute name. */
     public static final String ANIMATION_NAME = "name";
     /** Animation attribute start. */

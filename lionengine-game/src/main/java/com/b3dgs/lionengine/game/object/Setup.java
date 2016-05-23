@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Define a structure used to create configurer objects.

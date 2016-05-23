@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class LauncherConfig
 {
     /** Launcher node name. */
-    public static final String NODE_LAUNCHER = Configurer.PREFIX + "launcher";
+    public static final String NODE_LAUNCHER = Constant.XML_PREFIX + "launcher";
     /** Rate attribute name. */
     public static final String ATT_RATE = "rate";
 

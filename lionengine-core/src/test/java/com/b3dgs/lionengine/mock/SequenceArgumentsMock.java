@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.test.Constant;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Mock sequence.
@@ -46,7 +46,7 @@ public class SequenceArgumentsMock extends Sequence
      */
     public SequenceArgumentsMock(Context context, Object argument)
     {
-        super(context, Constant.RESOLUTION_320_240);
+        super(context, UtilTests.RESOLUTION_320_240);
         this.argument = argument;
         setExtrapolated(true);
         setSystemCursorVisible(true);
@@ -62,7 +62,7 @@ public class SequenceArgumentsMock extends Sequence
         width = getWidth();
         height = getHeight();
         config = getConfig();
-        setResolution(Constant.RESOLUTION_640_480);
+        setResolution(UtilTests.RESOLUTION_640_480);
     }
 
     @Override

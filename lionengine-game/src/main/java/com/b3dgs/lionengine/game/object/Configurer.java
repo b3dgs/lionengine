@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.object;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -38,10 +38,6 @@ import com.b3dgs.lionengine.util.UtilReflection;
  */
 public class Configurer
 {
-    /** Header XML. */
-    public static final String HEADER = "xmlns:lionengine";
-    /** Prefix XML node. */
-    public static final String PREFIX = "lionengine:";
     /** Class instance error. */
     private static final String ERROR_CLASS_INSTANCE = "Class instantiation error: ";
     /** Class constructor error. */

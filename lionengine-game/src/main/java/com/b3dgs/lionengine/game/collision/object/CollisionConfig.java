@@ -21,8 +21,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -33,7 +34,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class CollisionConfig
 {
     /** Collision node name. */
-    public static final String COLLISION = Configurer.PREFIX + "collision";
+    public static final String COLLISION = Constant.XML_PREFIX + "collision";
     /** Collision attribute name. */
     public static final String COLLISION_NAME = "name";
     /** Collision attribute offset x. */

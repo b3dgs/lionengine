@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.object.feature.actionable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class ActionConfig
 {
     /** Action node name. */
-    public static final String NODE_ACTION = Configurer.PREFIX + "action";
+    public static final String NODE_ACTION = Constant.XML_PREFIX + "action";
     /** Action attribute name. */
     public static final String ATT_NAME = "name";
     /** Action attribute description. */

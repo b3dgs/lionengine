@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.collision.tile;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class CollisionFunctionConfig
 {
     /** Function node. */
-    public static final String FUNCTION = Configurer.PREFIX + "function";
+    public static final String FUNCTION = Constant.XML_PREFIX + "function";
     /** Type attribute. */
     public static final String TYPE = "type";
     /** A attribute. */

@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -38,9 +37,9 @@ public final class TileGroupsConfig
     /** Configuration file name. */
     public static final String FILENAME = "groups.xml";
     /** Group root node. */
-    public static final String NODE_GROUPS = Configurer.PREFIX + "groups";
+    public static final String NODE_GROUPS = Constant.XML_PREFIX + "groups";
     /** Group node. */
-    public static final String NODE_GROUP = Configurer.PREFIX + "group";
+    public static final String NODE_GROUP = Constant.XML_PREFIX + "group";
     /** Group name attribute. */
     public static final String ATTRIBUTE_GROUP_NAME = "name";
     /** Group type attribute. */
@@ -79,7 +78,7 @@ public final class TileGroupsConfig
     public static void exports(Media groupsConfig, Collection<TileGroup> groups)
     {
         final XmlNode nodeGroups = Xml.create(NODE_GROUPS);
-        nodeGroups.writeString(Configurer.HEADER, Engine.WEBSITE);
+        nodeGroups.writeString(Constant.XML_HEADER, Engine.WEBSITE);
 
         for (final TileGroup group : groups)
         {

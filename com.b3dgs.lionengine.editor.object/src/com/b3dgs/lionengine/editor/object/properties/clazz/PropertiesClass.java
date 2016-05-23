@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.stream.XmlNode;

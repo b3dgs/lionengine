@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -39,9 +39,9 @@ public final class CollisionGroupConfig
     /** Configuration file name. */
     public static final String FILENAME = "collisions.xml";
     /** Collision group root node. */
-    public static final String COLLISIONS = Configurer.PREFIX + "collisions";
+    public static final String COLLISIONS = Constant.XML_PREFIX + "collisions";
     /** Collision group node. */
-    public static final String COLLISION = Configurer.PREFIX + "collision";
+    public static final String COLLISION = Constant.XML_PREFIX + "collision";
     /** Group name attribute. */
     public static final String GROUP = "group";
 

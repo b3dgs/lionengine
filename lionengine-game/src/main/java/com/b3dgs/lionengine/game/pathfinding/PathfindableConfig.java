@@ -24,8 +24,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class PathfindableConfig
 {
     /** Pathfindable node name. */
-    public static final String PATHFINDABLE = Configurer.PREFIX + "pathfindable";
+    public static final String PATHFINDABLE = Constant.XML_PREFIX + "pathfindable";
     /** Category attribute. */
     public static final String CATEGORY = "category";
     /** Cost attribute. */
@@ -42,7 +43,7 @@ public final class PathfindableConfig
     /** Block attribute. */
     public static final String BLOCK = "block";
     /** Allowed movement node. */
-    public static final String MOVEMENT = Configurer.PREFIX + "movement";
+    public static final String MOVEMENT = Constant.XML_PREFIX + "movement";
 
     /**
      * Create the pathfindable data from node.

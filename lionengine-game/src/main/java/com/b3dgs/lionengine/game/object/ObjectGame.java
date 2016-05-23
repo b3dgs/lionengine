@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.HandlableModel;

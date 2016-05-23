@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.game.object.SurfaceConfig;

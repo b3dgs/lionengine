@@ -23,9 +23,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -42,9 +42,9 @@ public final class MinimapConfig
     /** Default filename. */
     public static final String FILENAME = "minimap.xml";
     /** Minimap root node. */
-    public static final String NODE_MINIMAP = Configurer.PREFIX + "minimap";
+    public static final String NODE_MINIMAP = Constant.XML_PREFIX + "minimap";
     /** Color node. */
-    public static final String NODE_COLOR = Configurer.PREFIX + "color";
+    public static final String NODE_COLOR = Constant.XML_PREFIX + "color";
     /** Red name attribute. */
     public static final String ATTRIBUTE_COLOR_RED = "r";
     /** Green name attribute. */

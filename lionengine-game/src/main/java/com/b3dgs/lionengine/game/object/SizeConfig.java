@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class SizeConfig
 {
     /** Size node name. */
-    public static final String NODE_SIZE = Configurer.PREFIX + "size";
+    public static final String NODE_SIZE = Constant.XML_PREFIX + "size";
     /** Size width node. */
     public static final String ATT_WIDTH = "width";
     /** Size height node. */

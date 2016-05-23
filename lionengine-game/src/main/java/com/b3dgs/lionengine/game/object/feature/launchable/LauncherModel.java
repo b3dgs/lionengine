@@ -71,7 +71,7 @@ public class LauncherModel extends FeatureModel implements Launcher
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
-     * The {@link com.b3dgs.lionengine.game.Configurer} must provide a valid configuration compatible with
+     * The {@link com.b3dgs.lionengine.game.object.Configurer} must provide a valid configuration compatible with
      * {@link LauncherConfig}.
      * </p>
      * <p>

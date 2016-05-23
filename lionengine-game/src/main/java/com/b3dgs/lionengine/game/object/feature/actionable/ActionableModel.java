@@ -46,7 +46,7 @@ public class ActionableModel extends FeatureModel implements Actionable
      * Create an actionable model.
      * 
      * <p>
-     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
      * with {@link ActionConfig}.
      * </p>
      * <p>

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -33,11 +33,11 @@ public final class ObjectConfig
     /** Default file name. */
     public static final String DEFAULT_FILENAME = "object.xml";
     /** Object node name. */
-    public static final String NODE_OBJECT = Configurer.PREFIX + "object";
+    public static final String NODE_OBJECT = Constant.XML_PREFIX + "object";
     /** Class attribute name. */
-    public static final String CLASS = Configurer.PREFIX + "class";
+    public static final String CLASS = Constant.XML_PREFIX + "class";
     /** Setup attribute name. */
-    public static final String SETUP = Configurer.PREFIX + "setup";
+    public static final String SETUP = Constant.XML_PREFIX + "setup";
 
     /**
      * Import the object data from configurer.

@@ -22,7 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 
 /**
  * Pathfindable editor dialog.

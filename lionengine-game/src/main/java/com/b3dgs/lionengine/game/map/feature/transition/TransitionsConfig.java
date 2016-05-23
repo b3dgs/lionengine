@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
@@ -41,9 +41,9 @@ public final class TransitionsConfig
     /** Configuration file name. */
     public static final String FILENAME = "transitions.xml";
     /** Transitions node. */
-    public static final String NODE_TRANSITIONS = Configurer.PREFIX + "transitions";
+    public static final String NODE_TRANSITIONS = Constant.XML_PREFIX + "transitions";
     /** Transition node. */
-    public static final String NODE_TRANSITION = Configurer.PREFIX + "transition";
+    public static final String NODE_TRANSITION = Constant.XML_PREFIX + "transition";
     /** Attribute transition type. */
     public static final String ATTRIBUTE_TRANSITION_TYPE = "type";
     /** Attribute group in. */

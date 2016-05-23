@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.test.Constant;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Single sequence mock.
@@ -36,7 +36,7 @@ public class SequenceSlowMock extends Sequence
      */
     public SequenceSlowMock(Context context)
     {
-        super(context, Constant.RESOLUTION_320_240);
+        super(context, UtilTests.RESOLUTION_320_240);
     }
 
     /*

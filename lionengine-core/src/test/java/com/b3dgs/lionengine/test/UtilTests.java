@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import org.junit.Assert;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -33,6 +34,10 @@ public final class UtilTests
 {
     /** Double precision. */
     public static final double PRECISION = 0.000000001;
+    /** Standard resolution. */
+    public static final Resolution RESOLUTION_320_240 = new Resolution(320, 240, 60);
+    /** Standard resolution. */
+    public static final Resolution RESOLUTION_640_480 = new Resolution(640, 480, 60);
     /** Enum.valueOf method. */
     private static final String ENUM_VALUEOF = "valueOf";
 

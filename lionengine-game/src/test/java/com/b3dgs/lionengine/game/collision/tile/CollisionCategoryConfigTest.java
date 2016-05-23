@@ -31,11 +31,11 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -148,7 +148,7 @@ public class CollisionCategoryConfigTest
 
         final XmlNode root = Xml.create("categories");
         CollisionCategoryConfig.exports(root, category);
-        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(Configurer.PREFIX
+        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX
                                                                                          + "category"),
                                                                            mapCollision);
 
@@ -169,8 +169,8 @@ public class CollisionCategoryConfigTest
 
         final XmlNode root = Xml.create("categories");
         CollisionCategoryConfig.exports(root, category);
-        root.getChild(Configurer.PREFIX + "category").writeString(CollisionCategoryConfig.AXIS, "void");
-        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(Configurer.PREFIX
+        root.getChild(Constant.XML_PREFIX + "category").writeString(CollisionCategoryConfig.AXIS, "void");
+        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX
                                                                                          + "category"),
                                                                            mapCollision);
 

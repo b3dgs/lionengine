@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.util.UtilConversion;
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
- * @see com.b3dgs.lionengine.game.Configurer
+ * @see com.b3dgs.lionengine.game.object.Configurer
  */
 public class SetupSurfaceRastered extends SetupSurface
 {

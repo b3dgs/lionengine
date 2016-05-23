@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.pathfinding.PathData;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
 

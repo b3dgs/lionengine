@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -36,15 +36,15 @@ public final class TileSheetsConfig
     /** Configuration file name. */
     public static final String FILENAME = "sheets.xml";
     /** Tile sheets node. */
-    public static final String NODE_TILE_SHEETS = Configurer.PREFIX + "sheets";
+    public static final String NODE_TILE_SHEETS = Constant.XML_PREFIX + "sheets";
     /** Tile size node. */
-    public static final String NODE_TILE_SIZE = Configurer.PREFIX + "tileSize";
+    public static final String NODE_TILE_SIZE = Constant.XML_PREFIX + "tileSize";
     /** Tile width attribute. */
     public static final String ATTRIBUTE_TILE_WIDTH = "width";
     /** Tile height attribute. */
     public static final String ATTRIBUTE_TILE_HEIGHT = "height";
     /** Tile sheet node. */
-    public static final String NODE_TILE_SHEET = Configurer.PREFIX + "sheet";
+    public static final String NODE_TILE_SHEET = Constant.XML_PREFIX + "sheet";
 
     /**
      * Import the sheets data from configuration.
@@ -78,7 +78,7 @@ public final class TileSheetsConfig
     public static void exports(Media configSheets, int tileWidth, int tileHeight, Collection<String> sheets)
     {
         final XmlNode nodeSheets = Xml.create(NODE_TILE_SHEETS);
-        nodeSheets.writeString(Configurer.HEADER, Engine.WEBSITE);
+        nodeSheets.writeString(Constant.XML_HEADER, Engine.WEBSITE);
 
         final XmlNode tileSize = nodeSheets.createChild(NODE_TILE_SIZE);
         tileSize.writeString(ATTRIBUTE_TILE_WIDTH, String.valueOf(tileWidth));

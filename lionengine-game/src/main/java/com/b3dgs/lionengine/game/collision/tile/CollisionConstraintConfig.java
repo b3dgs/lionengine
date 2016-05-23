@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.collision.tile;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class CollisionConstraintConfig
 {
     /** Constraint node. */
-    public static final String CONSTRAINT = Configurer.PREFIX + "constraint";
+    public static final String CONSTRAINT = Constant.XML_PREFIX + "constraint";
     /** Orientation attribute. */
     public static final String ORIENTATION = "orientation";
     /** Group name attribute. */

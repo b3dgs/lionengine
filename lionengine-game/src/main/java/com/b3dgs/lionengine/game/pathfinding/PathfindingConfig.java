@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.game.pathfinding;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -37,9 +37,9 @@ public final class PathfindingConfig
     /** Default filename. */
     public static final String FILENAME = "pathfinding.xml";
     /** Pathfinding root node. */
-    public static final String PATHFINDING = Configurer.PREFIX + "pathfinding";
+    public static final String PATHFINDING = Constant.XML_PREFIX + "pathfinding";
     /** Tile path node. */
-    public static final String TILE_PATH = Configurer.PREFIX + "tilepath";
+    public static final String TILE_PATH = Constant.XML_PREFIX + "tilepath";
     /** Tile path category name attribute. */
     public static final String CATEGORY = "category";
 

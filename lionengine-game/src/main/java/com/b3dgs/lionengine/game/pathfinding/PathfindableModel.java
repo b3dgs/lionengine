@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
  * <li>{@link Transformable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
  * with {@link PathfindableConfig}.
  * </p>
  * <p>

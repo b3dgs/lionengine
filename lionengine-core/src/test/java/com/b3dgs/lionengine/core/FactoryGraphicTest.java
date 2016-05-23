@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.Constant;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the factory graphic provider class.
@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.test.Constant;
 public class FactoryGraphicTest
 {
     /** Config. */
-    private static final Config CONFIG = new Config(Constant.RESOLUTION_320_240, 32, true);
+    private static final Config CONFIG = new Config(UtilTests.RESOLUTION_320_240, 32, true);
 
     /** Image. */
     private static Media mediaImage;

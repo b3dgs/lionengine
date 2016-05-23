@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -37,9 +37,9 @@ public final class CollisionFormulaConfig
     /** Configuration file name. */
     public static final String FILENAME = "formulas.xml";
     /** Collision formula root node. */
-    public static final String FORMULAS = Configurer.PREFIX + "formulas";
+    public static final String FORMULAS = Constant.XML_PREFIX + "formulas";
     /** Collision formula node. */
-    public static final String FORMULA = Configurer.PREFIX + "formula";
+    public static final String FORMULA = Constant.XML_PREFIX + "formula";
     /** The formula name attribute. */
     public static final String NAME = "name";
 

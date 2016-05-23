@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.object.feature.launchable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ForceConfig;
 import com.b3dgs.lionengine.stream.Xml;
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class LaunchableConfig
 {
     /** Launchable node name. */
-    public static final String NODE_LAUNCHABLE = Configurer.PREFIX + "launchable";
+    public static final String NODE_LAUNCHABLE = Constant.XML_PREFIX + "launchable";
     /** Media attribute name. */
     public static final String ATT_MEDIA = "media";
     /** Rate attribute name. */

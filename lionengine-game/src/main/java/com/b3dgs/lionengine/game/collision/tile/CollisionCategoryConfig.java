@@ -20,9 +20,10 @@ package com.b3dgs.lionengine.game.collision.tile;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class CollisionCategoryConfig
 {
     /** Category node name. */
-    public static final String CATEGORY = Configurer.PREFIX + "category";
+    public static final String CATEGORY = Constant.XML_PREFIX + "category";
     /** Category attribute name. */
     public static final String NAME = "name";
     /** Category attribute axis. */

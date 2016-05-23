@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.animation.editor.AnimationEditor;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 
 /**
  * Start animations editor handler.

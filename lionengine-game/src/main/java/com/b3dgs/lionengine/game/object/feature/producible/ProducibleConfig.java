@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.game.object.feature.producible;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.stream.Xml;
@@ -32,7 +33,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class ProducibleConfig
 {
     /** Producible root node. */
-    public static final String NODE_PRODUCIBLE = Configurer.PREFIX + "producible";
+    public static final String NODE_PRODUCIBLE = Constant.XML_PREFIX + "producible";
     /** Production steps attribute name. */
     public static final String ATT_STEPS = "steps";
 

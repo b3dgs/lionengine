@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.state;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.util.UtilReflection;
 

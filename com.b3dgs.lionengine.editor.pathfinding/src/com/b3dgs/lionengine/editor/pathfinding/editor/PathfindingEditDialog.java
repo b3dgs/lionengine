@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -32,7 +33,6 @@ import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.PathCategory;
@@ -122,7 +122,7 @@ public class PathfindingEditDialog extends AbstractDialog
         list.save();
 
         final XmlNode root = Xml.create(PathfindingConfig.PATHFINDING);
-        root.writeString(Configurer.HEADER, Engine.WEBSITE);
+        root.writeString(Constant.XML_HEADER, Engine.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {

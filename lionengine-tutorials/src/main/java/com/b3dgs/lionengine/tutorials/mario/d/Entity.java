@@ -17,12 +17,13 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
+import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
@@ -39,7 +40,7 @@ class Entity extends ObjectGame
     /** Goomba media. */
     public static final Media GOOMBA = Medias.create("entity", "Goomba.xml");
     /** Updater node. */
-    private static final String NODE_UPDATER = Configurer.PREFIX + "updater";
+    private static final String NODE_UPDATER = Constant.XML_PREFIX + "updater";
 
     /**
      * Constructor.
