@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.map.world.renderer;
 import com.b3dgs.lionengine.editor.map.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.map.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderListener;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;

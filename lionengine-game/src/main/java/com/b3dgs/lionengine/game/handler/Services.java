@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * <ul>
  * <li>{@link com.b3dgs.lionengine.game.object.Factory}</li>
  * <li>{@link com.b3dgs.lionengine.game.handler.Handler}</li>
- * <li>{@link com.b3dgs.lionengine.game.camera.Camera}</li>
+ * <li>{@link com.b3dgs.lionengine.game.Camera}</li>
  * <li>{@link com.b3dgs.lionengine.game.Cursor}</li>
  * <li>...</li>
  * </ul>

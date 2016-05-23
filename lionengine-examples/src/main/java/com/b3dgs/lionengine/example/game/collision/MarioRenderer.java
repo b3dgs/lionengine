@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.handler.Displayable;
 import com.b3dgs.lionengine.game.handler.FeatureModel;

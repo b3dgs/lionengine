@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.handler.DisplayableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.RefreshableModel;

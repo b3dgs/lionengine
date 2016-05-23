@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Factory;

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;

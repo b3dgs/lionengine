@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.object.world.renderer;
 
 import com.b3dgs.lionengine.editor.object.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderListener;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;

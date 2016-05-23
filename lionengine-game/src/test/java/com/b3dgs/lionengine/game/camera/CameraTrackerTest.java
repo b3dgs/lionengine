@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game.camera;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.CameraTracker;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.game.handler.Services;

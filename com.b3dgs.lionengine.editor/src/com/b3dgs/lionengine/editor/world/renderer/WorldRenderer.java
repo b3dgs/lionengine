@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;

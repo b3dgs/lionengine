@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseScrollListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.Factory;

@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.object.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;

@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuit;
