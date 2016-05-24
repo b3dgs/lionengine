@@ -24,7 +24,8 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 
 /**
  * Test the factory class.
@@ -73,8 +74,8 @@ public class FactoryTest
         {
             object1.destroy();
             object2.destroy();
-            object1.notifyDestroyed();
-            object2.notifyDestroyed();
+            object1.getFeature(Identifiable.class).notifyDestroyed();
+            object2.getFeature(Identifiable.class).notifyDestroyed();
         }
     }
 

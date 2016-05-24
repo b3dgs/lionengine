@@ -26,12 +26,10 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.feature.animatable.Animatable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -71,9 +69,8 @@ public class AttackerModel extends FeatureModel implements Attacker
 
     /**
      * Create an attacker model.
-     * 
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link Feature}:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Animatable}</li>
@@ -201,7 +198,7 @@ public class AttackerModel extends FeatureModel implements Attacker
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

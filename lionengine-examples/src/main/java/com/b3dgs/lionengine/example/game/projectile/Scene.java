@@ -22,10 +22,12 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -48,9 +50,11 @@ class Scene extends Sequence
     {
         super(context, new Resolution(320, 240, 60));
 
-        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
-
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
         handler.addComponent(new ComponentCollision());
+
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override

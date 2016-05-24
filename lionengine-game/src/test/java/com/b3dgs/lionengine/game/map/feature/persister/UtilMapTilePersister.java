@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.tile.Tile;

@@ -22,11 +22,11 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.handler.DisplayableModel;
-import com.b3dgs.lionengine.game.handler.Refreshable;
-import com.b3dgs.lionengine.game.handler.RefreshableModel;
-import com.b3dgs.lionengine.game.handler.Service;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
@@ -94,7 +94,7 @@ public class ObjectRepresentation extends ObjectGame
         transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
 
-        addFeature(new RefreshableModel(extrp ->
+        super.addFeature(new RefreshableModel(extrp ->
         {
             rectangle.set(camera.getViewpointX(transformable.getX()),
                           camera.getViewpointY(transformable.getY()) - transformable.getHeight(),
@@ -103,7 +103,7 @@ public class ObjectRepresentation extends ObjectGame
             surface.setLocation(camera, transformable);
         }));
 
-        addFeature(new DisplayableModel(surface::render));
+        super.addFeature(new DisplayableModel(surface::render));
     }
 
     /**

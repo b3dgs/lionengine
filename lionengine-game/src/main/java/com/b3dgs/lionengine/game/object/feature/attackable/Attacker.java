@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.object.feature.attackable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 
 /**

@@ -19,20 +19,20 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Refreshable;
-import com.b3dgs.lionengine.game.handler.Service;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
@@ -77,7 +77,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     }
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

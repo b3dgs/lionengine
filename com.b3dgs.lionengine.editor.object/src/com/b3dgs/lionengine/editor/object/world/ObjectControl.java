@@ -29,10 +29,10 @@ import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.object.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -48,9 +48,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class ObjectControl
 {
     /** Mouse over object flag. */
-    private final Map<Handlable, Boolean> objectsOver = new HashMap<>();
+    private final Map<Featurable, Boolean> objectsOver = new HashMap<>();
     /** Mouse selection object flag. */
-    private final Map<Handlable, Boolean> objectsSelection = new HashMap<>();
+    private final Map<Featurable, Boolean> objectsSelection = new HashMap<>();
     /** Camera reference. */
     private final Camera camera;
     /** Factory reference. */
@@ -269,7 +269,7 @@ public class ObjectControl
      * @param object The object to check.
      * @return <code>true</code> if over, <code>false</code> else.
      */
-    public boolean isOver(Handlable object)
+    public boolean isOver(Featurable object)
     {
         if (objectsOver.containsKey(object))
         {
@@ -284,7 +284,7 @@ public class ObjectControl
      * @param object The object to check.
      * @return <code>true</code> if selected, <code>false</code> else.
      */
-    public boolean isSelected(Handlable object)
+    public boolean isSelected(Featurable object)
     {
         if (objectsSelection.containsKey(object))
         {

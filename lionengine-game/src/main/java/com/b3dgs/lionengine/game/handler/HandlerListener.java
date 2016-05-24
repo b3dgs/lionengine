@@ -17,22 +17,24 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
+
 /**
  * Describe the {@link Handler} events.
  */
 public interface HandlerListener
 {
     /**
-     * Notify when a handlable has been added.
+     * Notify when a featurable has been added.
      * 
-     * @param handlable The added handlable.
+     * @param featurable The added featurable.
      */
-    void notifyHandlableAdded(Handlable handlable);
+    void notifyHandlableAdded(Featurable featurable);
 
     /**
-     * Notify when a handlable has been removed.
+     * Notify when a featurable has been removed.
      * 
-     * @param handlable The removed handlable.
+     * @param featurable The removed featurable.
      */
-    void notifyHandlableRemoved(Handlable handlable);
+    void notifyHandlableRemoved(Featurable featurable);
 }

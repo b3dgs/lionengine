@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 
 /**
  * Represents the world, where the global map is displayed.

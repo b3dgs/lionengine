@@ -27,8 +27,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Map tile collision model implementation.
  * <p>
- * The {@link Services} must provide the following services:
+ * The {@link Services} must provide:
  * </p>
  * <ul>
  * <li>{@link MapTile}</li>

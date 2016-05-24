@@ -19,10 +19,9 @@ package com.b3dgs.lionengine.game.object.feature.body;
 
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 
 /**
@@ -47,9 +46,8 @@ public class BodyModel extends FeatureModel implements Body
 
     /**
      * Create a body model.
-     * 
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
@@ -65,7 +63,7 @@ public class BodyModel extends FeatureModel implements Body
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
         transformable = owner.getFeature(Transformable.class);

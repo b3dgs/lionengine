@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map.feature.viewer;
 
-import com.b3dgs.lionengine.game.handler.Displayable;
+import com.b3dgs.lionengine.game.feature.displayable.Displayable;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
 
 /**

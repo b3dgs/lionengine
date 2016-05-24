@@ -23,12 +23,11 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.feature.animatable.Animatable;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.animatable.Animatable;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -36,14 +35,6 @@ import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Default rasterable implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * <li>{@link Mirrorable}</li>
- * <li>{@link Animatable}</li>
- * </ul>
  */
 public class RasterableModel extends FeatureModel implements Rasterable
 {
@@ -68,6 +59,20 @@ public class RasterableModel extends FeatureModel implements Rasterable
 
     /**
      * Create a rasterable model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * <li>{@link Mirrorable}</li>
+     * <li>{@link Animatable}</li>
+     * </ul>
      * 
      * @param setup The setup reference.
      * @param tileHeight The tile height value (must be strictly positive).
@@ -89,7 +94,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         localizable = owner.getFeature(Transformable.class);
         mirrorable = owner.getFeature(Mirrorable.class);

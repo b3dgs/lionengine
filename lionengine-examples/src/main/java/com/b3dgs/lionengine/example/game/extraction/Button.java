@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.DisplayableModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Layerable;
-import com.b3dgs.lionengine.game.handler.LayerableModel;
-import com.b3dgs.lionengine.game.handler.RefreshableModel;
-import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -94,10 +94,10 @@ class Button extends ObjectGame
             {
                 for (final Integer id : mapPath.getObjectsId(tx, ty))
                 {
-                    final Handlable handlable = handler.get(id);
-                    if (handlable.hasFeature(Extractable.class))
+                    final Featurable featurable = handler.get(id);
+                    if (featurable.hasFeature(Extractable.class))
                     {
-                        extractor.setResource(handlable.getFeature(Extractable.class));
+                        extractor.setResource(featurable.getFeature(Extractable.class));
                         extractor.startExtraction();
                     }
                 }
@@ -118,6 +118,6 @@ class Button extends ObjectGame
         final Image image = Drawable.loadImage(setup.getSurface());
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
 
-        addFeature(new DisplayableModel(g -> image.render(g)));
+        addFeature(new DisplayableModel(image::render));
     }
 }

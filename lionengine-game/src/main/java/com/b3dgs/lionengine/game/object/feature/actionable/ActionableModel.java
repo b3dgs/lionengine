@@ -18,10 +18,9 @@
 package com.b3dgs.lionengine.game.object.feature.actionable;
 
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -44,19 +43,17 @@ public class ActionableModel extends FeatureModel implements Actionable
 
     /**
      * Create an actionable model.
-     * 
      * <p>
-     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
-     * with {@link ActionConfig}.
-     * </p>
-     * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link Cursor}</li>
      * </ul>
      * <p>
-     * If the {@link ObjectGame} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
+     * The {@link Setup} must provide a valid {@link ActionConfig}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>
      * 
      * @param setup The setup reference.
@@ -74,7 +71,7 @@ public class ActionableModel extends FeatureModel implements Actionable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
-import com.b3dgs.lionengine.game.handler.Service;
+import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;

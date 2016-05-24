@@ -25,11 +25,10 @@ import java.util.Queue;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 
 /**
@@ -52,7 +51,7 @@ public class ProducerModel extends FeatureModel implements Producer
     /** Current element being under production. */
     private Producible current;
     /** Current object being under production. */
-    private Handlable currentObject;
+    private Featurable currentObject;
     /** Current production steps. */
     private int steps;
     /** Production progress. */
@@ -64,7 +63,6 @@ public class ProducerModel extends FeatureModel implements Producer
 
     /**
      * Create a producer model.
-     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -73,10 +71,10 @@ public class ProducerModel extends FeatureModel implements Producer
      * <li>{@link Integer} (for the desired fps).</li>
      * </ul>
      * <p>
-     * The {@link ObjectGame} must be a {@link ProducerChecker}.
+     * The {@link Featurable} must be a {@link ProducerChecker}.
      * </p>
      * <p>
-     * If the {@link ObjectGame} is a {@link ProducerListener}, it will automatically
+     * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
      * {@link #addListener(ProducerListener)} on it.
      * </p>
      */
@@ -187,7 +185,7 @@ public class ProducerModel extends FeatureModel implements Producer
      */
     private void startProduction(Producible producible)
     {
-        final Handlable object = producible.getOwner();
+        final Featurable object = producible.getOwner();
         final Transformable transformable = object.getFeature(Transformable.class);
         transformable.setLocation(producible.getX(), producible.getY());
         handler.add(object);
@@ -210,7 +208,7 @@ public class ProducerModel extends FeatureModel implements Producer
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

@@ -21,11 +21,9 @@ import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
- * {@link com.b3dgs.lionengine.game.collision.object.CollisionConfig#getCollision(String)} and
- * {@link com.b3dgs.lionengine.game.collision.object.Collidable#addCollision(Collision)}.
+ * {@link CollisionConfig#getCollision(String)} and {@link Collidable#addCollision(Collision)}.
  * 
- * @see com.b3dgs.lionengine.game.object.Configurer
- * @see com.b3dgs.lionengine.game.collision.object.ComponentCollision
+ * @see ComponentCollision
  */
 public class Collision implements Nameable
 {

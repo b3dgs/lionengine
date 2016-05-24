@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.object.feature.producible;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 
@@ -51,19 +51,19 @@ class ProducerObjectSelf extends ObjectGame implements ProducerChecker, Producer
     }
 
     @Override
-    public void notifyStartProduction(Producible producible, Handlable handlable)
+    public void notifyStartProduction(Producible producible, Featurable featurable)
     {
         flag.set(1);
     }
 
     @Override
-    public void notifyProducing(Producible producible, Handlable handlable)
+    public void notifyProducing(Producible producible, Featurable featurable)
     {
         flag.set(2);
     }
 
     @Override
-    public void notifyProduced(Producible producible, Handlable handlable)
+    public void notifyProduced(Producible producible, Featurable featurable)
     {
         flag.set(3);
     }

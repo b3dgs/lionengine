@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -45,17 +45,17 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
     /**
      * Create the state.
      * 
-     * @param handlable The handlable reference.
+     * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateTurn(Handlable handlable, Animation animation)
+    public StateTurn(Featurable featurable, Animation animation)
     {
         super(EntityState.TURN);
 
         this.animation = animation;
-        mirrorable = handlable.getFeature(Mirrorable.class);
+        mirrorable = featurable.getFeature(Mirrorable.class);
 
-        final EntityModel model = handlable.getFeature(EntityModel.class);
+        final EntityModel model = featurable.getFeature(EntityModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
 

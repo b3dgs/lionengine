@@ -22,12 +22,12 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.handler.DisplayableModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Layerable;
-import com.b3dgs.lionengine.game.handler.LayerableModel;
-import com.b3dgs.lionengine.game.handler.RefreshableModel;
-import com.b3dgs.lionengine.game.handler.Service;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -116,19 +116,19 @@ class Peon extends ObjectGame implements ProducerChecker, ProducerListener
     }
 
     @Override
-    public void notifyStartProduction(Producible producible, Handlable handlable)
+    public void notifyStartProduction(Producible producible, Featurable featurable)
     {
         visible = false;
     }
 
     @Override
-    public void notifyProducing(Producible producible, Handlable handlable)
+    public void notifyProducing(Producible producible, Featurable featurable)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyProduced(Producible producible, Handlable handlable)
+    public void notifyProduced(Producible producible, Featurable featurable)
     {
         final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
                                                           (int) producible.getX() / map.getTileWidth(),

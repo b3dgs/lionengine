@@ -26,12 +26,14 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Layerable;
-import com.b3dgs.lionengine.game.handler.LayerableModel;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Minimap;
@@ -69,9 +71,15 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         hud = Drawable.loadImage(Medias.create("hud.png"));
-        setSystemCursorVisible(false);
+
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
+
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+
+        setSystemCursorVisible(false);
     }
 
     @Override

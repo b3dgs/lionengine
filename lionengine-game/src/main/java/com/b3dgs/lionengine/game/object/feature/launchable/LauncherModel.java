@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -65,16 +65,6 @@ public class LauncherModel extends FeatureModel implements Launcher
     /**
      * Create a launcher model.
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * <p>
-     * The {@link com.b3dgs.lionengine.game.object.Configurer} must provide a valid configuration compatible with
-     * {@link LauncherConfig}.
-     * </p>
-     * <p>
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
@@ -82,7 +72,16 @@ public class LauncherModel extends FeatureModel implements Launcher
      * <li>{@link Handler}</li>
      * </ul>
      * <p>
-     * If the {@link ObjectGame} is a {@link LauncherListener}, it will automatically
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Setup} must provide a valid {@link LauncherConfig}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} is a {@link LauncherListener}, it will automatically
      * {@link #addListener(LauncherListener)}
      * on it.
      * </p>
@@ -186,7 +185,7 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

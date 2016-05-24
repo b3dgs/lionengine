@@ -27,9 +27,10 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -47,7 +48,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Pathfindable implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
@@ -521,14 +522,14 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
         mapPath = map.getFeature(MapTilePath.class);
-        id = owner.getId();
+        id = owner.getFeature(Identifiable.class).getId();
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());

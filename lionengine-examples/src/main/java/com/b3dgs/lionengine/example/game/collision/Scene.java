@@ -23,14 +23,16 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.CameraTracker;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.camera.CameraTracker;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRenderer;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
@@ -62,6 +64,9 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
 
         services.add(getInputDevice(Keyboard.class)).addActionPressed(Keyboard.ESCAPE, () -> end());
         services.add(Integer.valueOf(getConfig().getSource().getRate()));

@@ -30,7 +30,8 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -73,7 +74,7 @@ public class ActionableModelTest
     @After
     public void clean()
     {
-        actionable.getOwner().notifyDestroyed();
+        actionable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 

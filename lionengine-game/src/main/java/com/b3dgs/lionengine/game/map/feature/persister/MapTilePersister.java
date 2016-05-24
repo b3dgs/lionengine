@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.map.feature.persister;
 
 import com.b3dgs.lionengine.game.Persistable;
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Handle the map persistence by providing saving and loading functions.

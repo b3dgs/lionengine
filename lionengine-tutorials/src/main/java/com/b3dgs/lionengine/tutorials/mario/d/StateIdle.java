@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -49,18 +49,18 @@ class StateIdle extends StateGame implements TileCollidableListener
     /**
      * Create the state.
      * 
-     * @param handlable The handlable reference.
+     * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateIdle(Handlable handlable, Animation animation)
+    public StateIdle(Featurable featurable, Animation animation)
     {
         super(EntityState.IDLE);
 
         this.animation = animation;
-        transformable = handlable.getFeature(Transformable.class);
-        tileCollidable = handlable.getFeature(TileCollidable.class);
+        transformable = featurable.getFeature(Transformable.class);
+        tileCollidable = featurable.getFeature(TileCollidable.class);
 
-        final EntityModel model = handlable.getFeature(EntityModel.class);
+        final EntityModel model = featurable.getFeature(EntityModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
         jump = model.getJump();

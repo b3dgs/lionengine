@@ -34,9 +34,10 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
@@ -62,7 +63,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * 
  * @see Tile
  */
-public class MapTileGame extends HandlableModel implements MapTile
+public class MapTileGame extends FeaturableModel implements MapTile
 {
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
@@ -98,6 +99,7 @@ public class MapTileGame extends HandlableModel implements MapTile
         super();
         services = new Services();
         services.add(this);
+        super.addFeature(new IdentifiableModel());
     }
 
     /**
@@ -110,6 +112,7 @@ public class MapTileGame extends HandlableModel implements MapTile
     {
         super();
         this.services = services;
+        super.addFeature(new IdentifiableModel());
     }
 
     /**

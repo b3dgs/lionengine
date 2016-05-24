@@ -18,7 +18,8 @@
 package com.b3dgs.lionengine.game.object.feature.transformable;
 
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.Mover;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Represents something that can be transformed with a translation or a size modification.

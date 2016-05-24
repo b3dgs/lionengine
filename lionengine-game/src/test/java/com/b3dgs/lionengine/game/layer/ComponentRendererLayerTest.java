@@ -28,11 +28,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
-import com.b3dgs.lionengine.game.handler.DisplayableModel;
-import com.b3dgs.lionengine.game.handler.Layerable;
-import com.b3dgs.lionengine.game.handler.LayerableModel;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
@@ -126,15 +127,15 @@ public class ComponentRendererLayerTest
         Assert.assertEquals(5, object3.getLayer().intValue());
         Assert.assertEquals(4, object4.getLayer().intValue());
 
-        Assert.assertEquals(object2.getOwner().getId().intValue(), last.get());
+        Assert.assertEquals(object2.getOwner().getFeature(Identifiable.class).getId().intValue(), last.get());
 
-        object2.getOwner().notifyDestroyed();
-        object4.getOwner().notifyDestroyed();
+        object2.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        object4.getOwner().getFeature(Identifiable.class).notifyDestroyed();
 
         last.set(-1);
         component.render(null, null);
 
-        Assert.assertEquals(object3.getOwner().getId().intValue(), last.get());
+        Assert.assertEquals(object3.getOwner().getFeature(Identifiable.class).getId().intValue(), last.get());
     }
 
     /**

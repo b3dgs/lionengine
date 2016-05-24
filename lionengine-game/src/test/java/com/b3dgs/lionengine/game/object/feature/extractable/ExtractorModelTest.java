@@ -31,7 +31,8 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -112,7 +113,7 @@ public class ExtractorModelTest
         Assert.assertEquals(1.0, extractor.getExtractionPerSecond(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, extractor.getDropOffPerSecond(), UtilTests.PRECISION);
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -189,7 +190,7 @@ public class ExtractorModelTest
         Assert.assertFalse(extractor.isExtracting());
         Assert.assertEquals(ResourceType.WOOD, endDrop.get());
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -222,7 +223,7 @@ public class ExtractorModelTest
         Assert.assertFalse(extractor.isExtracting());
         Assert.assertNotNull(goTo.get());
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -255,7 +256,7 @@ public class ExtractorModelTest
         Assert.assertTrue(extractor.isExtracting());
         Assert.assertNull(drop.get());
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -329,8 +330,8 @@ public class ExtractorModelTest
         Assert.assertFalse(extractor.isExtracting());
         Assert.assertEquals(6, object.flag.get());
 
-        object.notifyDestroyed();
-        extractable.getOwner().notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
+        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
 
         Assert.assertTrue(extractableMedia.getFile().delete());
     }
@@ -376,8 +377,8 @@ public class ExtractorModelTest
         Assert.assertTrue(extractor.isExtracting());
         Assert.assertEquals(2, object.flag.get());
 
-        object.notifyDestroyed();
-        extractable.getOwner().notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
+        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
 
         Assert.assertTrue(extractableMedia.getFile().delete());
     }
@@ -424,7 +425,7 @@ public class ExtractorModelTest
         Assert.assertFalse(extractor.isExtracting());
         Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -445,7 +446,7 @@ public class ExtractorModelTest
 
         Assert.assertEquals(2, object.flag.get());
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**

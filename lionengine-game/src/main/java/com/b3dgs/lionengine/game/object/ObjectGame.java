@@ -19,11 +19,13 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To
@@ -37,7 +39,7 @@ import com.b3dgs.lionengine.game.handler.Services;
  * </p>
  * <p>
  * It is possible to retrieve external {@link Services} when object is being constructed.
- * They cannot be used before a call to {@link #prepareFeatures(Handlable, Services)} (called when created with a
+ * They cannot be used before a call to {@link #prepareFeatures(Featurable, Services)} (called when created with a
  * {@link Factory}).
  * </p>
  * <p>
@@ -52,8 +54,10 @@ import com.b3dgs.lionengine.game.handler.Services;
  * @see Feature
  * @see Setup
  */
-public class ObjectGame extends HandlableModel
+public class ObjectGame extends FeaturableModel
 {
+    /** Identifiable feature. */
+    private final Identifiable identifiable = addFeatureAndGet(new IdentifiableModel());
     /** Configurer reference. */
     private final Configurer configurer;
     /** Prepared flag. */
@@ -97,6 +101,24 @@ public class ObjectGame extends HandlableModel
     }
 
     /**
+     * Declare as removable. Can be destroyed only one time.
+     */
+    public final void destroy()
+    {
+        identifiable.destroy();
+    }
+
+    /**
+     * Get the ID (<code>null</code> will be returned once removed after a call to {@link #destroy()}).
+     * 
+     * @return The object unique ID.
+     */
+    public final Integer getId()
+    {
+        return identifiable.getId();
+    }
+
+    /**
      * Called when features are prepared and can be used. Does nothing by default.
      */
     protected void onPrepared()
@@ -109,7 +131,7 @@ public class ObjectGame extends HandlableModel
      */
 
     @Override
-    public void prepareFeatures(Handlable owner, Services services)
+    public void prepareFeatures(Featurable owner, Services services)
     {
         super.prepareFeatures(owner, services);
         // TODO use listener ?
@@ -118,11 +140,5 @@ public class ObjectGame extends HandlableModel
             prepared = true;
             onPrepared();
         }
-    }
-
-    @Override
-    public final void addFeature(Feature feature)
-    {
-        super.addFeature(feature);
     }
 }

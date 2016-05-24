@@ -18,10 +18,9 @@
 package com.b3dgs.lionengine.game.object.feature.assignable;
 
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -41,7 +40,6 @@ public class AssignableModel extends FeatureModel implements Assignable
 
     /**
      * Create an assignable model.
-     * 
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -50,7 +48,7 @@ public class AssignableModel extends FeatureModel implements Assignable
      * <li>{@link Viewer}</li>
      * </ul>
      * <p>
-     * If the {@link ObjectGame} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
+     * If the {@link Featurable} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
      * </p>
      */
     public AssignableModel()
@@ -63,7 +61,7 @@ public class AssignableModel extends FeatureModel implements Assignable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

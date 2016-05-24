@@ -24,7 +24,7 @@ import java.util.HashMap;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.handler.WorldGame;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;

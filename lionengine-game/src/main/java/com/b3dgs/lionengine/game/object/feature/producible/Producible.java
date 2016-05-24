@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Represents a producible object.

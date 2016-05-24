@@ -38,9 +38,9 @@ public class ComponentRenderable implements ComponentRenderer
      */
 
     @Override
-    public void render(Graphic g, Handlables handlables)
+    public void render(Graphic g, Handlables featurables)
     {
-        for (final Renderable renderable : handlables.get(Renderable.class))
+        for (final Renderable renderable : featurables.get(Renderable.class))
         {
             renderable.render(g);
         }

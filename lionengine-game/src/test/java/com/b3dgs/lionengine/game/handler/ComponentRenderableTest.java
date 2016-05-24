@@ -23,8 +23,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -61,11 +62,14 @@ public class ComponentRenderableTest
         final Handler handler = new Handler(new Services());
         handler.addComponent(renderable);
 
-        final Renderer object = new Renderer(new Setup(Medias.create("object.xml")));
+        final Renderer object = new Renderer();
         handler.add(object);
+
         Assert.assertFalse(object.isRendered());
         handler.update(1.0);
+
         Assert.assertFalse(object.isRendered());
+
         handler.render(null);
 
         Assert.assertTrue(object.isRendered());
@@ -77,19 +81,18 @@ public class ComponentRenderableTest
     /**
      * Renderable object mock.
      */
-    private static class Renderer extends ObjectGame implements Renderable
+    private static class Renderer extends FeaturableModel implements Renderable
     {
         /** Rendered flag. */
         private boolean rendered;
 
         /**
          * Constructor.
-         * 
-         * @param setup The setup reference.
          */
-        public Renderer(Setup setup)
+        public Renderer()
         {
-            super(setup);
+            super();
+            addFeature(new IdentifiableModel());
         }
 
         /**

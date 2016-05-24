@@ -22,8 +22,8 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -56,7 +56,7 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
     /**
      * Create the persister.
      * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>

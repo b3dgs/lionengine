@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
@@ -61,19 +61,19 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Create the state.
      * 
-     * @param handlable The handlable reference.
+     * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateWalk(Handlable handlable, Animation animation)
+    public StateWalk(Featurable featurable, Animation animation)
     {
         super(EntityState.WALK);
 
         this.animation = animation;
-        mirrorable = handlable.getFeature(Mirrorable.class);
-        tileCollidable = handlable.getFeature(TileCollidable.class);
-        transformable = handlable.getFeature(Transformable.class);
+        mirrorable = featurable.getFeature(Mirrorable.class);
+        tileCollidable = featurable.getFeature(TileCollidable.class);
+        transformable = featurable.getFeature(Transformable.class);
 
-        final EntityModel model = handlable.getFeature(EntityModel.class);
+        final EntityModel model = featurable.getFeature(EntityModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
         jump = model.getJump();

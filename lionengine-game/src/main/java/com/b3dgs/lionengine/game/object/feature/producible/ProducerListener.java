@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.feature.producible;
 
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * List of event linked to the production.
@@ -35,23 +35,23 @@ public interface ProducerListener
      * Notify listener that production is starting for this element.
      * 
      * @param producible The element going to be produced
-     * @param handlable The handlable instance from element.
+     * @param featurable The featurable instance from element.
      */
-    void notifyStartProduction(Producible producible, Handlable handlable);
+    void notifyStartProduction(Producible producible, Featurable featurable);
 
     /**
      * Notify listener that this element is currently under production.
      * 
      * @param producible The element under production.
-     * @param handlable The handlable instance from element.
+     * @param featurable The featurable instance from element.
      */
-    void notifyProducing(Producible producible, Handlable handlable);
+    void notifyProducing(Producible producible, Featurable featurable);
 
     /**
      * Notify listener that this element has been produced.
      * 
      * @param producible The element produced.
-     * @param handlable The handlable instance from element.
+     * @param featurable The featurable instance from element.
      */
-    void notifyProduced(Producible producible, Handlable handlable);
+    void notifyProduced(Producible producible, Featurable featurable);
 }

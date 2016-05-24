@@ -25,12 +25,11 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -39,26 +38,6 @@ import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Box ray cast collidable model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
- * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
- * with {@link CollisionConfig}.
- * </p>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link Viewer}</li>
- * </ul>
- * <p>
- * If the {@link ObjectGame} is a {@link CollidableListener}, it will automatically
- * {@link #addListener(CollidableListener)} on it.
- * </p>
  */
 public class CollidableModel extends FeatureModel implements Collidable
 {
@@ -102,8 +81,24 @@ public class CollidableModel extends FeatureModel implements Collidable
 
     /**
      * Create a collidable model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
+     * {@link #addListener(CollidableListener)} on it.
+     * </p>
      * 
-     * @param setup The setup reference.
+     * @param setup The setup reference, must provide a valid {@link CollisionConfig}.
      */
     public CollidableModel(Setup setup)
     {
@@ -148,7 +143,7 @@ public class CollidableModel extends FeatureModel implements Collidable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

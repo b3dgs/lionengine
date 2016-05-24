@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
+
 /**
  * Refresher component implementation which refreshes {@link Refreshable} elements.
  */
@@ -35,9 +37,9 @@ public class ComponentRefreshable implements ComponentUpdater
      */
 
     @Override
-    public void update(double extrp, Handlables handlables)
+    public void update(double extrp, Handlables featurables)
     {
-        for (final Refreshable refreshable : handlables.get(Refreshable.class))
+        for (final Refreshable refreshable : featurables.get(Refreshable.class))
         {
             refreshable.update(extrp);
         }

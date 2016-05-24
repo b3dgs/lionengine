@@ -18,11 +18,10 @@
 package com.b3dgs.lionengine.game.object.feature.orientable;
 
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
@@ -40,18 +39,17 @@ public class OrientableModel extends FeatureModel implements Orientable
 
     /**
      * Create an orientable model.
-     * 
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
      * </ul>
      */
     public OrientableModel()
@@ -65,7 +63,7 @@ public class OrientableModel extends FeatureModel implements Orientable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         transformable = owner.getFeature(Transformable.class);
         map = services.get(MapTile.class);

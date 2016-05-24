@@ -21,7 +21,8 @@ import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.state.StateGame;
 
 /**
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.game.state.StateGame;
  */
 class StateDieGoomba extends StateGame
 {
-    private final Handlable handlable;
+    private final Featurable featurable;
     private final Force movement;
     private final Animator animator;
     private final Animation animation;
@@ -37,17 +38,17 @@ class StateDieGoomba extends StateGame
     /**
      * Create the state.
      * 
-     * @param handlable The handlable reference.
+     * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateDieGoomba(Handlable handlable, Animation animation)
+    public StateDieGoomba(Featurable featurable, Animation animation)
     {
         super(GoombaState.DEATH);
 
-        this.handlable = handlable;
+        this.featurable = featurable;
         this.animation = animation;
 
-        final EntityModel model = handlable.getFeature(EntityModel.class);
+        final EntityModel model = featurable.getFeature(EntityModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
     }
@@ -64,7 +65,7 @@ class StateDieGoomba extends StateGame
     {
         if (AnimState.FINISHED == animator.getAnimState())
         {
-            handlable.destroy();
+            featurable.getFeature(Identifiable.class).destroy();
         }
     }
 }

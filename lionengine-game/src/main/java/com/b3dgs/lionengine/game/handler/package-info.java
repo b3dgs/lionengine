@@ -17,7 +17,7 @@
  */
 
 /**
- * Handler system that allows to control a set {@link com.b3dgs.lionengine.game.handler.Handlable} by updating and
+ * Handler system that allows to control a set {@link com.b3dgs.lionengine.game.feature.Featurable} by updating and
  * rendering them.
  */
 package com.b3dgs.lionengine.game.handler;

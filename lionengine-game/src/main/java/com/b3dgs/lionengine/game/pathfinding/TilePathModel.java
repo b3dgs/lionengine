@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
  * Representation of a pathfindable tile.

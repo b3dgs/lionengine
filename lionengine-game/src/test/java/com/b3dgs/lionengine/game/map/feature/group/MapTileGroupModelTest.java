@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,9 +30,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TileGroup;
@@ -65,7 +64,7 @@ public class MapTileGroupModelTest
     }
 
     private final MapTileGroup mapGroup = new MapTileGroupModel();
-    private final Handlable owner = new HandlableModel();
+    private final Featurable owner = new FeaturableModel();
     private final Tile tile = new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1);
 
     /**
@@ -75,15 +74,6 @@ public class MapTileGroupModelTest
     public void prepare()
     {
         mapGroup.prepare(owner, new Services());
-    }
-
-    /**
-     * Clean test.
-     */
-    @After
-    public void clean()
-    {
-        owner.notifyDestroyed();
     }
 
     /**

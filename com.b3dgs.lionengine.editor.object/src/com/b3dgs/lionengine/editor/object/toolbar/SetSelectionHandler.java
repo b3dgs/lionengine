@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 
 /**
  * Set selection handler.

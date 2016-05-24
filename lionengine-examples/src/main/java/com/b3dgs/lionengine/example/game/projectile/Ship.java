@@ -27,12 +27,13 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
-import com.b3dgs.lionengine.game.handler.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Layerable;
-import com.b3dgs.lionengine.game.handler.LayerableModel;
-import com.b3dgs.lionengine.game.handler.RefreshableModel;
-import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -157,6 +158,6 @@ class Ship extends ObjectGame implements CollidableListener
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        collidable.getOwner().destroy();
+        collidable.getOwner().getFeature(Identifiable.class).destroy();
     }
 }

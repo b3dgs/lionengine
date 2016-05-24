@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.map.feature.renderer;
 
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -36,7 +36,7 @@ public class MapTileRendererModel extends FeatureModel implements MapTileRendere
      * Create the renderer.
      * 
      * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Services} must provide:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>

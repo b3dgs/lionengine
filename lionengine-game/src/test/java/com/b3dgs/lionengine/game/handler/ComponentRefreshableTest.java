@@ -17,14 +17,10 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Services;
 
 /**
  * Test the component refreshable.
@@ -32,91 +28,24 @@ import com.b3dgs.lionengine.game.object.Setup;
 public class ComponentRefreshableTest
 {
     /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Medias.setLoadFromJar(HandlerTest.class);
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setLoadFromJar(null);
-    }
-
-    /**
      * Test the refresher.
      */
     @Test
     public void testRefresher()
     {
         final Handler handler = new Handler(new Services());
+        handler.addComponent(new ComponentRefreshable());
 
-        final Refresher object = new Refresher(new Setup(Medias.create("object.xml")));
+        final Refresher object = new Refresher();
         handler.add(object);
+
         Assert.assertFalse(object.isRefreshed());
+
         handler.update(1.0);
+
         Assert.assertTrue(object.isRefreshed());
 
         handler.removeAll();
         handler.update(1.0);
-    }
-
-    /**
-     * Refreshable object mock.
-     */
-    private static class Refresher extends ObjectGame implements Refreshable
-    {
-        /** Refreshed flag. */
-        private boolean refreshed;
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup reference.
-         */
-        public Refresher(Setup setup)
-        {
-            super(setup);
-        }
-
-        /**
-         * Check if has been refreshed.
-         * 
-         * @return <code>true</code> if refreshed, <code>false</code> else.
-         */
-        public boolean isRefreshed()
-        {
-            return refreshed;
-        }
-
-        @Override
-        public void prepare(Handlable owner, Services services)
-        {
-            // Mock
-        }
-
-        @Override
-        public void checkListener(Object listener)
-        {
-            // Mock
-        }
-
-        @Override
-        public void update(double extrp)
-        {
-            refreshed = true;
-        }
-
-        @Override
-        public <O extends Handlable> O getOwner()
-        {
-            return null;
-        }
     }
 }

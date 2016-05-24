@@ -24,6 +24,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.displayable.Displayable;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableListener;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -36,16 +40,16 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     private static final Integer LAYER_DEFAULT = Integer.valueOf(0);
 
     /**
-     * Get the handlable layer.
+     * Get the featurable layer.
      * 
-     * @param handlable The handlable reference.
-     * @return The handlable layer if is {@link Layerable}, {@link #LAYER_DEFAULT} else.
+     * @param featurable The featurable reference.
+     * @return The featurable layer if is {@link Layerable}, {@link #LAYER_DEFAULT} else.
      */
-    private static Integer getLayer(Handlable handlable)
+    private static Integer getLayer(Featurable featurable)
     {
-        if (handlable.hasFeature(Layerable.class))
+        if (featurable.hasFeature(Layerable.class))
         {
-            final Layerable layerable = handlable.getFeature(Layerable.class);
+            final Layerable layerable = featurable.getFeature(Layerable.class);
             return layerable.getLayer();
         }
         return LAYER_DEFAULT;
@@ -107,7 +111,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
      */
 
     @Override
-    public void render(Graphic g, Handlables handlables)
+    public void render(Graphic g, Handlables featurables)
     {
         for (final Integer layer : indexs)
         {
@@ -123,12 +127,12 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
      */
 
     @Override
-    public void notifyHandlableAdded(Handlable handlable)
+    public void notifyHandlableAdded(Featurable featurable)
     {
-        if (handlable.hasFeature(Displayable.class))
+        if (featurable.hasFeature(Displayable.class))
         {
-            final Displayable displayable = handlable.getFeature(Displayable.class);
-            final Integer layer = getLayer(handlable);
+            final Displayable displayable = featurable.getFeature(Displayable.class);
+            final Integer layer = getLayer(featurable);
             final Collection<Displayable> displayables = getLayer(layer);
             displayables.add(displayable);
             indexs.add(layer);
@@ -136,12 +140,12 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     }
 
     @Override
-    public void notifyHandlableRemoved(Handlable handlable)
+    public void notifyHandlableRemoved(Featurable featurable)
     {
-        if (handlable.hasFeature(Displayable.class))
+        if (featurable.hasFeature(Displayable.class))
         {
-            final Displayable displayable = handlable.getFeature(Displayable.class);
-            final Integer layer = getLayer(handlable);
+            final Displayable displayable = featurable.getFeature(Displayable.class);
+            final Integer layer = getLayer(featurable);
             remove(layer, displayable);
         }
     }

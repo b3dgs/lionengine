@@ -18,36 +18,37 @@
 package com.b3dgs.lionengine.game.handler;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
- * Represents the handlables handled by the handler, providing quick access to them from their type.
+ * Represents the featurables handled by the handler, providing quick access to them from their type.
  * 
- * @see Handlable
+ * @see Featurable
  */
 public interface Handlables
 {
     /**
-     * Get the handlable from its ID.
+     * Get the featurable from its ID.
      * 
-     * @param id The handlable ID.
-     * @return The handlable instance.
-     * @throws LionEngineException If no handlable found with this ID.
+     * @param id The featurable ID.
+     * @return The featurable instance.
+     * @throws LionEngineException If no featurable found with this ID.
      */
-    Handlable get(Integer id);
+    Featurable get(Integer id);
 
     /**
-     * Get all handlables of this type.
+     * Get all featurables of this type.
      * 
-     * @param <I> The handlable interface type.
+     * @param <I> The featurable interface type.
      * @param type The expected type.
-     * @return The handlables of this type.
+     * @return The featurables of this type.
      */
     <I> Iterable<I> get(Class<I> type);
 
     /**
-     * Get all handlables.
+     * Get all featurables.
      * 
-     * @return The handlables.
+     * @return The featurables.
      */
-    Iterable<Handlable> values();
+    Iterable<Featurable> values();
 }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.raster;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**

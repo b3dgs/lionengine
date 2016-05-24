@@ -17,21 +17,22 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Describe the component requirement, which is aimed to provide {@link Renderable} feature for a {@link Handlable}.
+ * Describe the component requirement, which is aimed to provide {@link Renderable} feature for a {@link Featurable}.
  * 
  * @see Renderable
  */
 public interface ComponentRenderer
 {
     /**
-     * Render the current handlables.
+     * Render the current featurables.
      * 
      * @param g The graphic output.
-     * @param handlables The handlables reference.
+     * @param featurables The featurables reference.
      */
-    void render(Graphic g, Handlables handlables);
+    void render(Graphic g, Handlables featurables);
 }

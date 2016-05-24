@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
 import com.b3dgs.lionengine.game.tile.Tile;

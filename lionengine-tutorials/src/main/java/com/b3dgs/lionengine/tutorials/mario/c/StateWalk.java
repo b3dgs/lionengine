@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -58,16 +58,16 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Create the state.
      * 
-     * @param handlable The handlable reference.
+     * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateWalk(Handlable handlable, Animation animation)
+    public StateWalk(Featurable featurable, Animation animation)
     {
         super(MarioState.WALK);
         this.animation = animation;
-        mirrorable = handlable.getFeature(Mirrorable.class);
-        tileCollidable = handlable.getFeature(TileCollidable.class);
-        final MarioModel model = handlable.getFeature(MarioModel.class);
+        mirrorable = featurable.getFeature(Mirrorable.class);
+        tileCollidable = featurable.getFeature(TileCollidable.class);
+        final MarioModel model = featurable.getFeature(MarioModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
         addTransition(new TransitionWalkToIdle());

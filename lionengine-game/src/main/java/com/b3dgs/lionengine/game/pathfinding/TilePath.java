@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.pathfinding;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Tile representation with the following data:

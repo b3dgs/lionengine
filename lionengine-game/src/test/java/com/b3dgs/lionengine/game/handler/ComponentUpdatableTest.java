@@ -22,10 +22,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Services;
 
 /**
  * Test the component updatable.
@@ -60,49 +58,16 @@ public class ComponentUpdatableTest
         final Handler handler = new Handler(new Services());
         handler.addComponent(updatable);
 
-        final Updater object = new Updater(new Setup(Medias.create("object.xml")));
+        final Updater object = new Updater();
         handler.add(object);
+
         Assert.assertFalse(object.isUpdated());
+
         handler.update(1.0);
 
         Assert.assertTrue(object.isUpdated());
 
         handler.removeAll();
         handler.update(1.0);
-    }
-
-    /**
-     * Updatable object mock.
-     */
-    private static class Updater extends ObjectGame implements Updatable
-    {
-        /** Updated flag. */
-        private boolean updated;
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup reference.
-         */
-        public Updater(Setup setup)
-        {
-            super(setup);
-        }
-
-        /**
-         * Check if has been updated.
-         * 
-         * @return <code>true</code> if updated, <code>false</code> else.
-         */
-        public boolean isUpdated()
-        {
-            return updated;
-        }
-
-        @Override
-        public void update(double extrp)
-        {
-            updated = true;
-        }
     }
 }

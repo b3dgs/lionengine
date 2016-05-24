@@ -27,9 +27,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.IdentifiableListener;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -71,7 +71,7 @@ public class ObjectGameTest
         Assert.assertEquals(config, object.getConfigurer().getMedia());
 
         object.destroy();
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -101,14 +101,10 @@ public class ObjectGameTest
         Assert.assertFalse(object.hasFeature(Body.class));
         Assert.assertTrue(object.hasFeature(Transformable.class));
         Assert.assertEquals(transformable, object.getFeature(Transformable.class));
-
-        for (final Feature feature : object.getFeatures())
-        {
-            Assert.assertEquals(transformable, feature);
-        }
+        Assert.assertTrue(object.getFeatures().iterator().hasNext());
 
         object.destroy();
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -120,12 +116,12 @@ public class ObjectGameTest
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         try
         {
-            Assert.assertNotNull(object.getFeature(Feature.class));
+            Assert.assertNotNull(object.getFeature(Body.class));
         }
         finally
         {
             object.destroy();
-            object.notifyDestroyed();
+            object.getFeature(Identifiable.class).notifyDestroyed();
         }
     }
 
@@ -137,7 +133,7 @@ public class ObjectGameTest
     {
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         final AtomicBoolean destroyed = new AtomicBoolean();
-        object.addListener(new IdentifiableListener()
+        object.getFeature(Identifiable.class).addListener(new IdentifiableListener()
         {
             @Override
             public void notifyDestroyed(Integer objectId)
@@ -154,6 +150,6 @@ public class ObjectGameTest
         object.destroy();
         Assert.assertFalse(destroyed.get());
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 }

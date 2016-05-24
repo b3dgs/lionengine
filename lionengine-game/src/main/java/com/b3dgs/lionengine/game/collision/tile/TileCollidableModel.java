@@ -20,11 +20,10 @@ package com.b3dgs.lionengine.game.collision.tile;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -50,23 +49,22 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
     /**
      * Create a tile collidable model.
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileCollision}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
-     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
-     * with {@link CollisionCategoryConfig}.
+     * The {@link Setup} must provide a valid {@link CollisionCategoryConfig}.
      * </p>
      * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link com.b3dgs.lionengine.game.map.MapTile}</li>
-     * </ul>
-     * <p>
-     * If the {@link ObjectGame} is a {@link TileCollidableListener}, it will automatically
+     * If the {@link Featurable} is a {@link TileCollidableListener}, it will automatically
      * {@link #addListener(TileCollidableListener)} on it.
      * </p>
      * 
@@ -120,7 +118,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         transformable = owner.getFeature(Transformable.class);
         map = services.get(MapTileCollision.class);

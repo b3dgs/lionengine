@@ -56,7 +56,7 @@ public class ComponentCollision implements ComponentUpdater
     }
 
     /*
-     * ComponentUpdatable
+     * ComponentUpdater
      */
 
     @Override

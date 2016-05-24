@@ -20,11 +20,9 @@ package com.b3dgs.lionengine.game.camera;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.CameraTracker;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -45,7 +43,7 @@ public class CameraTrackerTest
         final Camera camera = new Camera();
         services.add(camera);
         camera.setView(0, 0, 16, 32);
-        tracker.prepare(new HandlableModel(), services);
+        tracker.prepare(new FeaturableModel(), services);
         tracker.update(1.0);
 
         Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
@@ -60,12 +58,12 @@ public class CameraTrackerTest
         Assert.assertEquals(-7.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(-14.0, camera.getY(), UtilTests.PRECISION);
 
-        final Handlable handlable = new HandlableModel();
-        handlable.addFeature(transformable);
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(transformable);
 
         transformable.teleport(2.0, 3.0);
 
-        tracker.track(handlable);
+        tracker.track(featurable);
         tracker.update(1.0);
 
         Assert.assertEquals(-6.0, camera.getX(), UtilTests.PRECISION);

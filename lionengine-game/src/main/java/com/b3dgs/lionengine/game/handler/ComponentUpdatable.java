@@ -38,9 +38,9 @@ public class ComponentUpdatable implements ComponentUpdater
      */
 
     @Override
-    public void update(double extrp, Handlables handlables)
+    public void update(double extrp, Handlables featurables)
     {
-        for (final Updatable updatable : handlables.get(Updatable.class))
+        for (final Updatable updatable : featurables.get(Updatable.class))
         {
             updatable.update(extrp);
         }

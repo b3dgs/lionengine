@@ -28,16 +28,20 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
- * Test the handlables.
+ * Test the featurables.
  */
 public class HandlablesImplTest
 {
@@ -65,7 +69,7 @@ public class HandlablesImplTest
     }
 
     /** Handlables test. */
-    private final HandlablesImpl handlables = new HandlablesImpl();
+    private final HandlablesImpl featurables = new HandlablesImpl();
     /** Object test. */
     private final ObjectGame object = new ObjectGame(new Setup(config));
 
@@ -75,7 +79,7 @@ public class HandlablesImplTest
     @After
     public void after()
     {
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -84,19 +88,19 @@ public class HandlablesImplTest
     @Test
     public void testId()
     {
-        handlables.add(object);
+        featurables.add(object);
 
-        Assert.assertEquals(object, handlables.get(object.getId()));
-        Assert.assertEquals(object, handlables.values().iterator().next());
-        Assert.assertEquals(1, handlables.getIds().size());
+        Assert.assertEquals(object, featurables.get(object.getId()));
+        Assert.assertEquals(object, featurables.values().iterator().next());
+        Assert.assertEquals(1, featurables.getIds().size());
 
-        handlables.remove(object);
+        featurables.remove(object);
 
-        Assert.assertTrue(handlables.getIds().isEmpty());
-        Assert.assertFalse(handlables.values().iterator().hasNext());
+        Assert.assertTrue(featurables.getIds().isEmpty());
+        Assert.assertFalse(featurables.values().iterator().hasNext());
         try
         {
-            Assert.assertNull(handlables.get(object.getId()));
+            Assert.assertNull(featurables.get(object.getId()));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -114,14 +118,14 @@ public class HandlablesImplTest
         final Mirrorable mirrorable = new MirrorableModel();
         object.addFeatureAndGet(mirrorable);
         object.prepareFeatures(object, new Services());
-        handlables.add(object);
+        featurables.add(object);
 
-        Assert.assertEquals(mirrorable, handlables.get(Mirrorable.class).iterator().next());
-        Assert.assertFalse(handlables.get(Transformable.class).iterator().hasNext());
+        Assert.assertEquals(mirrorable, featurables.get(Mirrorable.class).iterator().next());
+        Assert.assertFalse(featurables.get(Transformable.class).iterator().hasNext());
 
-        handlables.remove(object);
+        featurables.remove(object);
 
-        Assert.assertFalse(handlables.get(Mirrorable.class).iterator().hasNext());
+        Assert.assertFalse(featurables.get(Mirrorable.class).iterator().hasNext());
     }
 
     /**
@@ -135,10 +139,10 @@ public class HandlablesImplTest
         complex.addFeature(new MirrorableModel());
         complex.addFeature(new TransformableModel(setup));
         complex.prepareFeatures(complex, new Services());
-        handlables.add(complex);
+        featurables.add(complex);
 
         int i = 0;
-        for (final Updatable updatable : handlables.get(Updatable.class))
+        for (final Updatable updatable : featurables.get(Updatable.class))
         {
             Assert.assertEquals(complex, updatable);
             i++;
@@ -156,10 +160,10 @@ public class HandlablesImplTest
         final ObjectGame inheritance = new ObjectComplex(setup);
         inheritance.addFeature(new FeatureLevel2());
         inheritance.prepareFeatures(inheritance, new Services());
-        handlables.add(inheritance);
+        featurables.add(inheritance);
 
         int i = 0;
-        for (final Refreshable refreshable : handlables.get(Refreshable.class))
+        for (final Refreshable refreshable : featurables.get(Refreshable.class))
         {
             Assert.assertEquals(inheritance, refreshable.getOwner());
             i++;

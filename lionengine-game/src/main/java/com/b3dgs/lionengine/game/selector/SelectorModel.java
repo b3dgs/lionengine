@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.selector;
 
-import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Viewer;

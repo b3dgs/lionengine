@@ -29,8 +29,10 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
@@ -62,6 +64,10 @@ class Scene extends Sequence
         super(context, NATIVE);
 
         hud = Drawable.loadImage(Medias.create("hud.png"));
+
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
+
         setSystemCursorVisible(false);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }

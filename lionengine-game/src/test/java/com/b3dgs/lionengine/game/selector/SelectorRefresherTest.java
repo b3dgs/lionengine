@@ -23,11 +23,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.MouseMock;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -68,7 +68,7 @@ public class SelectorRefresherTest
         cursor.setSyncMode(true);
 
         services.add(new Camera());
-        refresher.prepare(new HandlableModel(), services);
+        refresher.prepare(new FeaturableModel(), services);
     }
 
     /**

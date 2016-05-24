@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Setup;
 
@@ -46,6 +46,6 @@ class ActionCancel extends ActionFeature
         final Button buildings = factory.create(Button.BUILDINGS);
         handler.add(buildings);
 
-        getOwner().destroy();
+        ((Button) getOwner()).terminate();
     }
 }

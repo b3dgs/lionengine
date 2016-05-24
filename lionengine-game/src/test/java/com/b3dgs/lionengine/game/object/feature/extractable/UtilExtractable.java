@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.object.feature.extractable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;

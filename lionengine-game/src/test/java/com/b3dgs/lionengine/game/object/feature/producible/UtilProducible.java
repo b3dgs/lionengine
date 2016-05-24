@@ -21,8 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
@@ -53,19 +53,19 @@ public class UtilProducible
         return new ProducerListener()
         {
             @Override
-            public void notifyStartProduction(Producible producible, Handlable handlable)
+            public void notifyStartProduction(Producible producible, Featurable featurable)
             {
                 start.set(producible);
             }
 
             @Override
-            public void notifyProducing(Producible producible, Handlable handlable)
+            public void notifyProducing(Producible producible, Featurable featurable)
             {
                 current.set(producible);
             }
 
             @Override
-            public void notifyProduced(Producible producible, Handlable handlable)
+            public void notifyProduced(Producible producible, Featurable featurable)
             {
                 done.set(producible);
             }

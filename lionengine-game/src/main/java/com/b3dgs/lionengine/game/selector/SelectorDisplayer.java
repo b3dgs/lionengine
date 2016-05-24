@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.selector;
 
-import com.b3dgs.lionengine.game.handler.Displayable;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.displayable.Displayable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -28,12 +28,6 @@ import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * This class allows to render selection.
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link Viewer}</li>
- * </ul>
  */
 public class SelectorDisplayer extends FeatureModel implements Displayable
 {
@@ -46,6 +40,12 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
 
     /**
      * Create a selector.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
      * 
      * @param model The model reference.
      */
@@ -71,7 +71,7 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

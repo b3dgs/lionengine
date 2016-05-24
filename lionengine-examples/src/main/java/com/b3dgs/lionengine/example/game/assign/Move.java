@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.RefreshableModel;
-import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
@@ -95,6 +95,6 @@ class Move extends ObjectGame
             state.get().update(extrp);
         }));
 
-        addFeature(new DisplayableModel(g -> image.render(g)));
+        addFeature(new DisplayableModel(image::render));
     }
 }

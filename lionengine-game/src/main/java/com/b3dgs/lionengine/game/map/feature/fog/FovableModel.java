@@ -17,27 +17,14 @@
  */
 package com.b3dgs.lionengine.game.map.feature.fog;
 
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 
 /**
  * Fovable model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * </ul>
  */
 public class FovableModel extends FeatureModel implements Fovable
 {
@@ -50,6 +37,18 @@ public class FovableModel extends FeatureModel implements Fovable
 
     /**
      * Create a fovable model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
      */
     public FovableModel()
     {
@@ -61,7 +60,7 @@ public class FovableModel extends FeatureModel implements Fovable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
 

@@ -22,11 +22,15 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Designed to handle {@link Handlable}, updating and rendering a set of components.
+ * Designed to handle {@link Featurable}, updating and rendering a set of components.
  * Modifications on the list can be done at any time because they are applied at the beginning of the next update.
  * 
  * @see HandlerListener
@@ -42,9 +46,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     /** List of components. */
     private final Collection<ComponentRenderer> renderers = new ArrayList<ComponentRenderer>();
     /** List of items. */
-    private final HandlablesImpl handlables = new HandlablesImpl();
+    private final HandlablesImpl featurables = new HandlablesImpl();
     /** To add list. */
-    private final Collection<Handlable> toAdd = new HashSet<Handlable>();
+    private final Collection<Featurable> toAdd = new HashSet<Featurable>();
     /** To delete list. */
     private final Collection<Integer> toDelete = new HashSet<Integer>();
     /** Services reference. */
@@ -63,8 +67,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         super();
         this.services = services;
-        addComponent(new ComponentRefreshable());
-        addComponent(new ComponentDisplayable());
     }
 
     /**
@@ -120,51 +122,51 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Add a handlable to the list. Will be added at the beginning of {@link #update(double)} call.
+     * Add a featurable to the list. Will be added at the beginning of {@link #update(double)} call.
      * If this function is called during {@link #update(double)}, it will be delayed to next {@link #update(double)}
      * call.
      * 
-     * @param handlable The handlable to add.
+     * @param featurable The featurable to add.
      */
-    public final void add(Handlable handlable)
+    public final void add(Featurable featurable)
     {
-        handlable.addListener(this);
-        toAdd.add(handlable);
+        featurable.getFeature(Identifiable.class).addListener(this);
+        toAdd.add(featurable);
         willAdd = true;
     }
 
     /**
-     * Remove a handlable from the remove list. Will be removed at the beginning of {@link #update(double)} call.
+     * Remove a featurable from the remove list. Will be removed at the beginning of {@link #update(double)} call.
      * If this function is called during {@link #update(double)}, it will be delayed to next {@link #update(double)}
      * call.
      * 
-     * @param handlable The handlable to remove.
+     * @param featurable The featurable to remove.
      */
-    public final void remove(Handlable handlable)
+    public final void remove(Featurable featurable)
     {
-        toDelete.add(handlable.getId());
+        toDelete.add(featurable.getFeature(Identifiable.class).getId());
         willDelete = true;
     }
 
     /**
-     * Remove all handlables from the list. Will be removed at the beginning of {@link #update(double)} call.
+     * Remove all featurables from the list. Will be removed at the beginning of {@link #update(double)} call.
      * If this function is called during {@link #update(double)}, it will be delayed to next {@link #update(double)}
      * call.
      */
     public final void removeAll()
     {
-        toDelete.addAll(handlables.getIds());
+        toDelete.addAll(featurables.getIds());
         willDelete = true;
     }
 
     /**
-     * Get the number of handled handlables.
+     * Get the number of handled featurables.
      * 
-     * @return The number of handled handlables.
+     * @return The number of handled featurables.
      */
     public final int size()
     {
-        return handlables.getIds().size();
+        return featurables.getIds().size();
     }
 
     /**
@@ -174,13 +176,13 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         if (willAdd)
         {
-            for (final Handlable handlable : toAdd)
+            for (final Featurable featurable : toAdd)
             {
-                handlable.prepareFeatures(handlable, services);
-                handlables.add(handlable);
+                featurable.prepareFeatures(featurable, services);
+                featurables.add(featurable);
                 for (final HandlerListener listener : listeners)
                 {
-                    listener.notifyHandlableAdded(handlable);
+                    listener.notifyHandlableAdded(featurable);
                 }
             }
             toAdd.clear();
@@ -189,7 +191,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Update the remove list. Remove from main list and notify listeners. Notify handlable destroyed.
+     * Update the remove list. Remove from main list and notify listeners. Notify featurable destroyed.
      */
     private void updateRemove()
     {
@@ -197,13 +199,13 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         {
             for (final Integer id : toDelete)
             {
-                final Handlable handlable = handlables.get(id);
-                handlables.remove(handlable);
+                final Featurable featurable = featurables.get(id);
+                featurables.remove(featurable);
                 for (final HandlerListener listener : listeners)
                 {
-                    listener.notifyHandlableRemoved(handlable);
+                    listener.notifyHandlableRemoved(featurable);
                 }
-                handlable.notifyDestroyed();
+                featurable.getFeature(Identifiable.class).notifyDestroyed();
             }
             toDelete.clear();
             willDelete = false;
@@ -215,21 +217,21 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      */
 
     @Override
-    public final Handlable get(Integer id)
+    public final Featurable get(Integer id)
     {
-        return handlables.get(id);
+        return featurables.get(id);
     }
 
     @Override
     public <I> Iterable<I> get(Class<I> type)
     {
-        return handlables.get(type);
+        return featurables.get(type);
     }
 
     @Override
-    public Iterable<Handlable> values()
+    public Iterable<Featurable> values()
     {
-        return handlables.values();
+        return featurables.values();
     }
 
     /*
@@ -243,7 +245,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         updateAdd();
         for (final ComponentUpdater component : updaters)
         {
-            component.update(extrp, handlables);
+            component.update(extrp, featurables);
         }
     }
 
@@ -256,7 +258,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         for (final ComponentRenderer component : renderers)
         {
-            component.render(g, handlables);
+            component.render(g, featurables);
         }
     }
 

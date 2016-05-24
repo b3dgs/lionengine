@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.handler.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Tile base implementation.

@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.map.feature.viewer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Map tile renderer default implementation.
  * <p>
- * The {@link Services} must provide the following services:
+ * The {@link Services} must provide:
  * </p>
  * <ul>
  * <li>{@link MapTile}</li>

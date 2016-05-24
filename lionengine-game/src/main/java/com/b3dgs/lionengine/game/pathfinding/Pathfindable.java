@@ -22,7 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.object.feature.orientable.Orientable;
 import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.graphic.Renderable;

@@ -27,8 +27,8 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.transition.GroupTransition;
@@ -41,10 +41,19 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Map tile circuit model implementation.
- * 
  * <p>
- * The map must have the {@link MapTileGroup} feature.
+ * The {@link Services} must provide the following services:
  * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * </ul>
+ * <p>
+ * The {@link MapTile} must provide:
+ * </p>
+ * <ul>
+ * <li>{@link MapTileGroup}</li>
+ * <li>{@link MapTileTransition}</li>
+ * </ul>
  */
 public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
 {
@@ -61,14 +70,6 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
 
     /**
      * Create a map tile circuit.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * <li>{@link MapTileGroup}</li>
-     * <li>{@link MapTileTransition}</li>
-     * </ul>
      * 
      * @param services The services reference.
      * @throws LionEngineException If services not found.

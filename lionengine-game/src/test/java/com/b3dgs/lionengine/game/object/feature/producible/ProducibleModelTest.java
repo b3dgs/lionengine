@@ -25,7 +25,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -77,7 +78,7 @@ public class ProducibleModelTest
         Assert.assertEquals(2.0, producible.getY(), UtilTests.PRECISION);
         Assert.assertTrue(producible.getListeners().contains(listener));
 
-        producible.getOwner().notifyDestroyed();
+        producible.getOwner().getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -96,7 +97,7 @@ public class ProducibleModelTest
 
         Assert.assertTrue(producible.getListeners().contains(object));
 
-        producible.getOwner().notifyDestroyed();
+        producible.getOwner().getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -114,7 +115,7 @@ public class ProducibleModelTest
 
         Assert.assertTrue(producible.getListeners().contains(object));
 
-        object.notifyDestroyed();
+        object.getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 }

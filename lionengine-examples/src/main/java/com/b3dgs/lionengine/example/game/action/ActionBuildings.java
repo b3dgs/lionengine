@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Setup;
 
@@ -54,6 +54,6 @@ class ActionBuildings extends ActionFeature
         cancel.addToDelete(buildBarracks);
         handler.add(buildBarracks);
 
-        getOwner().destroy();
+        ((Button) getOwner()).terminate();
     }
 }

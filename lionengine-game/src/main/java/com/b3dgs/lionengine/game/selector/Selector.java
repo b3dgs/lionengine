@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.selector;
 
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
  * @see Cursor
  * @see Viewer
  */
-public class Selector extends HandlableModel implements SelectorConfigurer
+public class Selector extends FeaturableModel implements SelectorConfigurer
 {
     /** Selector model. */
     private final SelectorModel model = new SelectorModel();
@@ -55,9 +55,10 @@ public class Selector extends HandlableModel implements SelectorConfigurer
     {
         super();
 
-        addFeature(model);
-        addFeature(refresher);
-        addFeature(displayer);
+        super.addFeature(new IdentifiableModel());
+        super.addFeature(model);
+        super.addFeature(refresher);
+        super.addFeature(displayer);
     }
 
     /**
@@ -88,16 +89,6 @@ public class Selector extends HandlableModel implements SelectorConfigurer
     public void setSelectionColor(ColorRgba color)
     {
         displayer.setSelectionColor(color);
-    }
-
-    /*
-     * HandlableModel
-     */
-
-    @Override
-    public final void addFeature(Feature feature)
-    {
-        super.addFeature(feature);
     }
 
     /*

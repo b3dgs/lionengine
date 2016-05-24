@@ -26,7 +26,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -84,7 +85,7 @@ public class ExtractableModelTest
         Assert.assertEquals(0, extractable.getInTileWidth(), UtilTests.PRECISION);
         Assert.assertEquals(0, extractable.getInTileHeight(), UtilTests.PRECISION);
 
-        extractable.getOwner().notifyDestroyed();
+        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -108,6 +109,6 @@ public class ExtractableModelTest
 
         Assert.assertEquals(5, extractable.getResourceQuantity());
 
-        extractable.getOwner().notifyDestroyed();
+        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
     }
 }
