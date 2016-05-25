@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableListener;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -106,7 +105,7 @@ public class HandlerTest
     public void testObjectTypeNotFound()
     {
         final Handler handler = new Handler(new Services());
-        Assert.assertFalse(handler.get(ObjectGame.class).iterator().hasNext());
+        Assert.assertFalse(handler.get(Featurable.class).iterator().hasNext());
     }
 
     /**

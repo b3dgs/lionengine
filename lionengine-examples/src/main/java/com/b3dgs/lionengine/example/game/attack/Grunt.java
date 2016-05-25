@@ -22,13 +22,14 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.object.feature.attackable.AttackerChecker;
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Grunt entity implementation.
  */
-class Grunt extends ObjectGame implements AttackerChecker, AttackerListener
+class Grunt extends FeaturableModel implements AttackerChecker, AttackerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Grunt.xml");
@@ -60,8 +61,9 @@ class Grunt extends ObjectGame implements AttackerChecker, AttackerListener
      */
     public Grunt(SetupSurface setup)
     {
-        super(setup);
+        super();
 
+        addFeature(new IdentifiableModel());
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
         layerable.setLayer(1);
 

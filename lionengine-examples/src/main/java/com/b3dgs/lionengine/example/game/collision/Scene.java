@@ -83,6 +83,8 @@ class Scene extends Sequence
         camera.setIntervals(16, 0);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
+        final CameraTracker tracker = new CameraTracker();
+        camera.addFeature(tracker);
         handler.add(camera);
 
         final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
@@ -100,9 +102,6 @@ class Scene extends Sequence
         final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
-
-        final CameraTracker tracker = new CameraTracker();
-        camera.addFeature(tracker);
         tracker.track(mario);
     }
 

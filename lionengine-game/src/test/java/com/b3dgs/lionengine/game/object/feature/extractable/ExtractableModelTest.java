@@ -17,21 +17,15 @@
  */
 package com.b3dgs.lionengine.game.object.feature.extractable;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -41,41 +35,12 @@ import com.b3dgs.lionengine.test.UtilTests;
 public class ExtractableModelTest
 {
     /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
-    }
-
-    private final Media media = UtilSetup.createMedia(ObjectGame.class);
-
-    /**
-     * Clean test.
-     */
-    @After
-    public void clean()
-    {
-        Assert.assertTrue(media.getFile().delete());
-    }
-
-    /**
      * Test the extraction config.
      */
     @Test
     public void testConfig()
     {
-        final Extractable extractable = UtilExtractable.createExtractable(media);
+        final Extractable extractable = UtilExtractable.createExtractable();
 
         Assert.assertEquals(10, extractable.getResourceQuantity());
         Assert.assertEquals(ResourceType.WOOD, extractable.getResourceType());
@@ -98,7 +63,8 @@ public class ExtractableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media));
+        final Featurable object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
         object.addFeature(new TransformableModel());
         extractable.prepare(object, services);
         extractable.setResourcesQuantity(10);

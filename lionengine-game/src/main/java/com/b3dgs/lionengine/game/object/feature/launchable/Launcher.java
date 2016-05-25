@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.object.feature.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
@@ -38,7 +39,7 @@ public interface Launcher extends Feature
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired(com.b3dgs.lionengine.game.object.ObjectGame)}.
+     * {@link LauncherListener#notifyFired(Featurable)}.
      * 
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
@@ -46,7 +47,7 @@ public interface Launcher extends Feature
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired(com.b3dgs.lionengine.game.object.ObjectGame)}.
+     * {@link LauncherListener#notifyFired(Featurable)}.
      * 
      * @param target The launch target.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.

@@ -19,26 +19,25 @@ package com.b3dgs.lionengine.game.object.feature.extractable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**
  * Extractor test with self listener.
  */
-class ObjectExtractorSelf extends ObjectGame implements ExtractorChecker, ExtractorListener
+class ObjectExtractorSelf extends FeaturableModel implements ExtractorChecker, ExtractorListener
 {
     /** Flag. */
     final AtomicInteger flag = new AtomicInteger();
 
     /**
      * Constructor.
-     * 
-     * @param setup The setup.
      */
-    public ObjectExtractorSelf(Setup setup)
+    public ObjectExtractorSelf()
     {
-        super(setup);
+        super();
+        addFeature(new IdentifiableModel());
     }
 
     @Override

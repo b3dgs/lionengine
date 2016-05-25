@@ -26,11 +26,11 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.graphic.Text;
 /**
  * Move action.
  */
-class Move extends ObjectGame
+class Move extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Move.xml");
@@ -58,7 +58,7 @@ class Move extends ObjectGame
      */
     public Move(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);

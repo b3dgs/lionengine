@@ -29,9 +29,10 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -64,7 +65,7 @@ public class LauncherModelTest
     private final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
     private final Services services = new Services();
     private final Setup setup = new Setup(launcherMedia);
-    private final ObjectGame object = new ObjectGame(setup);
+    private final Featurable object = new FeaturableModel();
     private final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
 
     /**
@@ -95,7 +96,7 @@ public class LauncherModelTest
     @Test
     public void testLauncher() throws InterruptedException
     {
-        final AtomicReference<ObjectGame> fired = new AtomicReference<ObjectGame>();
+        final AtomicReference<Featurable> fired = new AtomicReference<Featurable>();
         launcher.addListener(UtilLaunchable.createListener(fired));
 
         Thread.sleep(11);
@@ -142,7 +143,7 @@ public class LauncherModelTest
     @Test
     public void testLauncherSelfListener() throws InterruptedException
     {
-        final LaunchableObjectSelf object = new LaunchableObjectSelf(setup);
+        final LaunchableObjectSelf object = new LaunchableObjectSelf();
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
         launcher.addListener(object);
 
@@ -169,7 +170,7 @@ public class LauncherModelTest
     @Test
     public void testListenerAutoAdd() throws InterruptedException
     {
-        final LaunchableObjectSelf object = new LaunchableObjectSelf(setup);
+        final LaunchableObjectSelf object = new LaunchableObjectSelf();
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
         launcher.checkListener(object);
 
@@ -196,7 +197,7 @@ public class LauncherModelTest
     @Test(expected = LionEngineException.class)
     public void testLauncherFailure() throws InterruptedException
     {
-        final Media launchableMedia = UtilSetup.createMedia(ObjectGame.class);
+        final Media launchableMedia = UtilSetup.createMedia(Featurable.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);

@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
@@ -32,6 +33,8 @@ import com.b3dgs.lionengine.game.state.StateAnimationBased;
  */
 public class MarioUpdater extends EntityUpdater implements CollidableListener
 {
+    private final Setup setup;
+
     @Service private Transformable transformable;
     @Service private TileCollidable tileCollidable;
     @Service private Collidable collidable;
@@ -46,12 +49,14 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
     public MarioUpdater(EntityModel model)
     {
         super(model);
+
+        setup = model.getSetup();
     }
 
     @Override
     public void prepare(Featurable owner, Services services)
     {
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, owner, configurer);
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, owner, setup);
 
         super.prepare(owner, services);
 

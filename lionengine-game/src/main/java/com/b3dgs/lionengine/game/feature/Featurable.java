@@ -73,4 +73,11 @@ public interface Featurable
      * @return <code>true</code> if feature exists, <code>false</code> else.
      */
     boolean hasFeature(Class<? extends Feature> feature);
+
+    /**
+     * Check if features are prepared.
+     * 
+     * @return <code>true</code> if features prepared, <code>false</code> else.
+     */
+    boolean isPrepared();
 }

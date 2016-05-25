@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.util.UtilRandom;
 /**
  * Racket implementation.
  */
-class Racket extends ObjectGame implements Updatable, Renderable, CollidableListener
+class Racket extends FeaturableModel implements Updatable, Renderable, CollidableListener
 {
     /** Racket media. */
     public static final Media MEDIA = Medias.create("Racket.xml");
@@ -63,7 +63,7 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
      */
     public Racket(Setup setup)
     {
-        super(setup);
+        super();
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(setup));

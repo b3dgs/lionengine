@@ -24,11 +24,12 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -39,7 +40,7 @@ import com.b3dgs.lionengine.util.UtilRandom;
 /**
  * Effect base implementation.
  */
-class Effect extends ObjectGame
+class Effect extends FeaturableModel
 {
     /** Explode media. */
     public static final Media EXPLODE = Medias.create("Explode.xml");
@@ -57,12 +58,12 @@ class Effect extends ObjectGame
      */
     public Effect(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final FramesConfig config = FramesConfig.imports(setup);
         final int scale = UtilRandom.getRandomInteger(75) + 50;
 
-        final AnimationConfig configAnimations = AnimationConfig.imports(setup.getConfigurer());
+        final AnimationConfig configAnimations = AnimationConfig.imports(setup);
         animExplode = configAnimations.getAnimation("explode");
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
@@ -74,7 +75,7 @@ class Effect extends ObjectGame
             surface.update(extrp);
             if (AnimState.FINISHED == surface.getAnimState())
             {
-                destroy();
+                getFeature(Identifiable.class).destroy();
             }
         }));
 

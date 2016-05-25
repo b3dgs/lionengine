@@ -19,13 +19,12 @@ package com.b3dgs.lionengine.game.object.feature.actionable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Object containing action.
  */
-class ObjectAction extends ObjectGame implements Action
+class ObjectAction extends FeaturableModel implements Action
 {
     /** Action executed flag. */
     private final AtomicBoolean executed;
@@ -33,12 +32,11 @@ class ObjectAction extends ObjectGame implements Action
     /**
      * Constructor.
      * 
-     * @param setup The setup reference.
      * @param executed The executed flag.
      */
-    public ObjectAction(Setup setup, AtomicBoolean executed)
+    public ObjectAction(AtomicBoolean executed)
     {
-        super(setup);
+        super();
         this.executed = executed;
     }
 

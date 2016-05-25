@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.object.feature.launchable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 
 /**
  * Launchable object test self listener.
@@ -28,20 +28,19 @@ import com.b3dgs.lionengine.game.object.Setup;
 class LaunchableObjectSelf extends LaunchableObject implements LauncherListener
 {
     /** Fired flag. */
-    final AtomicReference<ObjectGame> fired = new AtomicReference<ObjectGame>();
+    final AtomicReference<Featurable> fired = new AtomicReference<Featurable>();
 
     /**
      * Constructor.
-     * 
-     * @param setup The setup.
      */
-    public LaunchableObjectSelf(Setup setup)
+    public LaunchableObjectSelf()
     {
-        super(setup);
+        super();
+        addFeature(new IdentifiableModel());
     }
 
     @Override
-    public void notifyFired(ObjectGame object)
+    public void notifyFired(Featurable object)
     {
         fired.set(object);
     }

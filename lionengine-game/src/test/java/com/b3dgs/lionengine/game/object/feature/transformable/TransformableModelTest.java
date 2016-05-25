@@ -28,10 +28,12 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -58,10 +60,10 @@ public class TransformableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    private final Media media = UtilTransformable.createMedia(ObjectGame.class);
+    private final Media media = UtilTransformable.createMedia(Featurable.class);
     private final Services services = new Services();
     private final Setup setup = new Setup(media);
-    private final ObjectGame object = new ObjectGame(setup);
+    private final Featurable object = new FeaturableModel();
     private final Transformable transformable = new TransformableModel(setup);
 
     /**
@@ -71,6 +73,7 @@ public class TransformableModelTest
     public void prepare()
     {
         services.add(new MapTileGame());
+        object.addFeature(new IdentifiableModel());
         transformable.prepare(object, services);
     }
 

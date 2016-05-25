@@ -24,10 +24,11 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.launchable.Launchable;
 import com.b3dgs.lionengine.game.object.feature.launchable.LaunchableModel;
@@ -38,7 +39,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Projectile implementation.
  */
-class Projectile extends ObjectGame
+class Projectile extends FeaturableModel
 {
     /** Media. */
     public static final Media PULSE = Medias.create("Pulse.xml");
@@ -52,7 +53,7 @@ class Projectile extends ObjectGame
      */
     public Projectile(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         final Launchable launchable = addFeatureAndGet(new LaunchableModel());
@@ -69,7 +70,7 @@ class Projectile extends ObjectGame
             sprite.setLocation(viewer, transformable);
             if (!viewer.isViewable(transformable, 0, 0))
             {
-                destroy();
+                getFeature(Identifiable.class).destroy();
             }
         }));
 

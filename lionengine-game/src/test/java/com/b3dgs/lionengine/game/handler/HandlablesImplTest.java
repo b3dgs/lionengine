@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.handler;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,13 +29,15 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -71,13 +74,22 @@ public class HandlablesImplTest
     /** Handlables test. */
     private final HandlablesImpl featurables = new HandlablesImpl();
     /** Object test. */
-    private final ObjectGame object = new ObjectGame(new Setup(config));
+    private final FeaturableModel object = new FeaturableModel();
+
+    /**
+     * Prepare test.
+     */
+    @Before
+    public void prepare()
+    {
+        object.addFeature(new IdentifiableModel());
+    }
 
     /**
      * Clean test.
      */
     @After
-    public void after()
+    public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -90,7 +102,7 @@ public class HandlablesImplTest
     {
         featurables.add(object);
 
-        Assert.assertEquals(object, featurables.get(object.getId()));
+        Assert.assertEquals(object, featurables.get(object.getFeature(Identifiable.class).getId()));
         Assert.assertEquals(object, featurables.values().iterator().next());
         Assert.assertEquals(1, featurables.getIds().size());
 
@@ -100,7 +112,7 @@ public class HandlablesImplTest
         Assert.assertFalse(featurables.values().iterator().hasNext());
         try
         {
-            Assert.assertNull(featurables.get(object.getId()));
+            Assert.assertNull(featurables.get(object.getFeature(Identifiable.class).getId()));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -135,7 +147,7 @@ public class HandlablesImplTest
     public void testFeatureComplex()
     {
         final Setup setup = new Setup(config);
-        final ObjectGame complex = new ObjectComplex(setup);
+        final Featurable complex = new ObjectComplex();
         complex.addFeature(new MirrorableModel());
         complex.addFeature(new TransformableModel(setup));
         complex.prepareFeatures(complex, new Services());
@@ -156,8 +168,7 @@ public class HandlablesImplTest
     @Test
     public void testFeatureInheritance()
     {
-        final Setup setup = new Setup(config);
-        final ObjectGame inheritance = new ObjectComplex(setup);
+        final Featurable inheritance = new ObjectComplex();
         inheritance.addFeature(new FeatureLevel2());
         inheritance.prepareFeatures(inheritance, new Services());
         featurables.add(inheritance);
@@ -174,16 +185,15 @@ public class HandlablesImplTest
     /**
      * Complex object with interface.
      */
-    private static class ObjectComplex extends ObjectGame implements Updatable
+    private static class ObjectComplex extends FeaturableModel implements Updatable
     {
         /**
          * Create object.
-         * 
-         * @param setup The setup reference.
          */
-        public ObjectComplex(Setup setup)
+        public ObjectComplex()
         {
-            super(setup);
+            super();
+            addFeature(new IdentifiableModel());
         }
 
         @Override

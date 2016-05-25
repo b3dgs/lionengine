@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.game.object.feature.extractable;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 
 /**
  * Extractor test.
  */
-class ObjectExtractor extends ObjectGame implements ExtractorChecker
+class ObjectExtractor extends FeaturableModel implements ExtractorChecker
 {
     /** Extract flag. */
     private final boolean extract;
@@ -33,15 +33,15 @@ class ObjectExtractor extends ObjectGame implements ExtractorChecker
     /**
      * Constructor.
      * 
-     * @param setup The setup.
      * @param extract Extract.
      * @param carry Carry.
      */
-    public ObjectExtractor(Setup setup, boolean extract, boolean carry)
+    public ObjectExtractor(boolean extract, boolean carry)
     {
-        super(setup);
+        super();
         this.extract = extract;
         this.carry = carry;
+        addFeature(new IdentifiableModel());
     }
 
     @Override

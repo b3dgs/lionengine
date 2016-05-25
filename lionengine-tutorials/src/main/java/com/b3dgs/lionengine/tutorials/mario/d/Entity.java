@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel
 /**
  * Entity description implementation.
  */
-class Entity extends ObjectGame
+class Entity extends FeaturableModel
 {
     /** Mario media. */
     public static final Media MARIO = Medias.create("entity", "Mario.xml");
@@ -49,7 +49,7 @@ class Entity extends ObjectGame
      */
     public Entity(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         addFeature(new TransformableModel(setup));
         addFeature(new LayerableModel());

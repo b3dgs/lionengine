@@ -24,10 +24,11 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.stream.Xml;
@@ -45,8 +46,9 @@ public class UtilLaunchable
      * @param object The object.
      * @return The launchable.
      */
-    public static Launchable createLaunchable(Services services, ObjectGame object)
+    public static Launchable createLaunchable(Services services, Featurable object)
     {
+        object.addFeature(new IdentifiableModel());
         object.addFeature(new TransformableModel());
 
         final Launchable launchable = new LaunchableModel();
@@ -84,17 +86,18 @@ public class UtilLaunchable
      * 
      * @param services The services.
      * @param setup The setup.
-     * @param object The object.
+     * @param featurable The featurable.
      * @return The extractable.
      */
-    public static Launcher createLauncher(Services services, Setup setup, ObjectGame object)
+    public static Launcher createLauncher(Services services, Setup setup, Featurable featurable)
     {
         services.add(new Factory(services));
         services.add(new Handler(services));
-        object.addFeature(new TransformableModel());
+        featurable.addFeature(new TransformableModel());
+        featurable.prepareFeatures(featurable, services);
 
         final Launcher launcher = new LauncherModel(setup);
-        launcher.prepare(object, services);
+        launcher.prepare(featurable, services);
         launcher.setOffset(1, 2);
         launcher.setRate(10);
 
@@ -130,12 +133,12 @@ public class UtilLaunchable
      * @param fired The fired flag.
      * @return The listener.
      */
-    public static LauncherListener createListener(final AtomicReference<ObjectGame> fired)
+    public static LauncherListener createListener(final AtomicReference<Featurable> fired)
     {
         return new LauncherListener()
         {
             @Override
-            public void notifyFired(ObjectGame object)
+            public void notifyFired(Featurable object)
             {
                 fired.set(object);
             }

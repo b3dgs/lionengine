@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.state;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * State idle test implementation.
@@ -40,7 +40,7 @@ public class StateIdle extends StateTest implements StateInputDirectionalUpdater
      * @param object The object reference.
      * @param animation The associated animation.
      */
-    public StateIdle(@SuppressWarnings("unused") ObjectGame object, @SuppressWarnings("unused") Animation animation)
+    public StateIdle(@SuppressWarnings("unused") Featurable object, @SuppressWarnings("unused") Animation animation)
     {
         super(StateType.IDLE);
         addTransition(new TransitionIdleToWalk());

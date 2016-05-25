@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -125,11 +126,22 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      * Add a featurable to the list. Will be added at the beginning of {@link #update(double)} call.
      * If this function is called during {@link #update(double)}, it will be delayed to next {@link #update(double)}
      * call.
+     * <p>
+     * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
+     * </p>
      * 
      * @param featurable The featurable to add.
      */
     public final void add(Featurable featurable)
     {
+        if (!featurable.hasFeature(Identifiable.class))
+        {
+            featurable.addFeature(new IdentifiableModel());
+        }
+        if (!featurable.isPrepared())
+        {
+            featurable.prepareFeatures(featurable, services);
+        }
         featurable.getFeature(Identifiable.class).addListener(this);
         toAdd.add(featurable);
         willAdd = true;
@@ -178,7 +190,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         {
             for (final Featurable featurable : toAdd)
             {
-                featurable.prepareFeatures(featurable, services);
                 featurables.add(featurable);
                 for (final HandlerListener listener : listeners)
                 {

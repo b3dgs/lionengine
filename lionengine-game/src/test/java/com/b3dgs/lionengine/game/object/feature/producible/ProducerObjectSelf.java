@@ -21,13 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Object producer self listener test.
  */
-class ProducerObjectSelf extends ObjectGame implements ProducerChecker, ProducerListener
+class ProducerObjectSelf extends FeaturableModel implements ProducerChecker, ProducerListener
 {
     /** Flag. */
     final AtomicInteger flag = new AtomicInteger();
@@ -36,12 +35,10 @@ class ProducerObjectSelf extends ObjectGame implements ProducerChecker, Producer
 
     /**
      * Constructor.
-     * 
-     * @param setup The setup.
      */
-    public ProducerObjectSelf(Setup setup)
+    public ProducerObjectSelf()
     {
-        super(setup);
+        super();
     }
 
     @Override

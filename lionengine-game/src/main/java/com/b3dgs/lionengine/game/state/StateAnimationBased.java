@@ -20,18 +20,17 @@ package com.b3dgs.lionengine.game.state;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Represents an animation based state, where the state enum is corresponding to an animation.
  * <p>
- * Class which implements this interface must have its first constructor with the following types: ({@link ObjectGame},
+ * Class which implements this interface must have its first constructor with the following types: ({@link Featurable},
  * {@link Animation}).
  * </p>
  * 
- * @see Util#loadStates(StateAnimationBased[], StateFactory, Featurable, Configurer)
+ * @see Util#loadStates(StateAnimationBased[], StateFactory, Featurable, Setup)
  */
 public interface StateAnimationBased
 {
@@ -60,14 +59,14 @@ public interface StateAnimationBased
          * @param states The states values.
          * @param factory The factory reference.
          * @param featurable The featurable reference.
-         * @param configurer The configurer reference.
+         * @param setup The setup reference.
          */
         public static void loadStates(StateAnimationBased[] states,
                                       StateFactory factory,
                                       Featurable featurable,
-                                      Configurer configurer)
+                                      Setup setup)
         {
-            final AnimationConfig configAnimations = AnimationConfig.imports(configurer);
+            final AnimationConfig configAnimations = AnimationConfig.imports(setup);
             for (final StateAnimationBased type : states)
             {
                 try

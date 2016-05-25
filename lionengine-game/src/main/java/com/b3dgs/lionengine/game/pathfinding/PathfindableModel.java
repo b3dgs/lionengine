@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.orientable.Orientable;
 import com.b3dgs.lionengine.game.object.feature.orientable.OrientableModel;
@@ -47,27 +46,6 @@ import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Pathfindable implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
- * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.object.Configurer} compatible
- * with {@link PathfindableConfig}.
- * </p>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * <li>{@link Viewer}</li>
- * </ul>
- * <p>
- * If the {@link ObjectGame} is a {@link PathfindableListener}, it will automatically
- * {@link #addListener(PathfindableListener)} on it.
- * </p>
  */
 public class PathfindableModel extends FeatureModel implements Pathfindable
 {
@@ -137,6 +115,27 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
 
     /**
      * Create a pathfindable model.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Identifiable}</li>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Setup} owner must provide a valid {@link PathfindableConfig}.
+     * </p>
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * If the {@link Featurable} is a {@link PathfindableListener}, it will automatically
+     * {@link #addListener(PathfindableListener)} on it.
+     * </p>
      * 
      * @param setup The setup reference.
      */

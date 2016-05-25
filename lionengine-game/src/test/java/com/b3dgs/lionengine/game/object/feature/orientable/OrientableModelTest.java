@@ -18,22 +18,17 @@
 package com.b3dgs.lionengine.game.object.feature.orientable;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -42,27 +37,8 @@ import com.b3dgs.lionengine.test.UtilTests;
  */
 public class OrientableModelTest
 {
-    /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
-    }
-
-    private final Media media = UtilSetup.createMedia(ObjectGame.class);
     private final Services services = new Services();
-    private final ObjectGame object = new ObjectGame(new Setup(media));
+    private final Featurable object = new FeaturableModel();
     private final OrientableModel orientable = new OrientableModel();
 
     /**
@@ -72,6 +48,7 @@ public class OrientableModelTest
     public void prepare()
     {
         services.add(new MapTileGame());
+        object.addFeature(new IdentifiableModel());
         object.addFeature(new TransformableModel());
         orientable.prepare(object, services);
     }
@@ -83,7 +60,6 @@ public class OrientableModelTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**

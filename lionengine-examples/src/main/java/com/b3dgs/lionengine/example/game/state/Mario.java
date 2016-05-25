@@ -26,12 +26,15 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
@@ -44,7 +47,7 @@ import com.b3dgs.lionengine.game.state.StateHandler;
 /**
  * Implementation of our controllable entity.
  */
-class Mario extends ObjectGame
+class Mario extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");
@@ -55,6 +58,7 @@ class Mario extends ObjectGame
     private final StateHandler handler = new StateHandler(factory);
     private final Force movement = new Force();
     private final Force jump = new Force();
+    private final Setup setup;
     private final SpriteAnimated surface;
 
     @Service private Camera camera;
@@ -66,7 +70,9 @@ class Mario extends ObjectGame
      */
     public Mario(SetupSurface setup)
     {
-        super(setup);
+        super();
+
+        this.setup = setup;
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(160, GROUND);
@@ -101,6 +107,15 @@ class Mario extends ObjectGame
         }));
 
         addFeature(new DisplayableModel(surface::render));
+    }
+
+    @Override
+    public void prepareFeatures(Featurable owner, Services services)
+    {
+        super.prepareFeatures(owner, services);
+
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, owner, setup);
+        handler.changeState(MarioState.IDLE);
     }
 
     /**
@@ -141,12 +156,5 @@ class Mario extends ObjectGame
     public SpriteAnimated getSurface()
     {
         return surface;
-    }
-
-    @Override
-    protected void onPrepared()
-    {
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this, getConfigurer());
-        handler.changeState(MarioState.IDLE);
     }
 }

@@ -19,25 +19,24 @@ package com.b3dgs.lionengine.game.object.feature.producible;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 
 /**
  * Object producer test.
  */
-class ProducerObject extends ObjectGame implements ProducerChecker
+class ProducerObject extends FeaturableModel implements ProducerChecker
 {
     /** Checker. */
     final AtomicBoolean check = new AtomicBoolean(true);
 
     /**
      * Constructor.
-     * 
-     * @param setup The setup.
      */
-    public ProducerObject(Setup setup)
+    public ProducerObject()
     {
-        super(setup);
+        super();
+        addFeature(new IdentifiableModel());
     }
 
     @Override

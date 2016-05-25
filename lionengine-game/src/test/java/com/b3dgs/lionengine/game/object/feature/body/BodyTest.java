@@ -18,20 +18,15 @@
 package com.b3dgs.lionengine.game.object.feature.body;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -41,29 +36,19 @@ import com.b3dgs.lionengine.test.UtilTests;
  */
 public class BodyTest
 {
+    private final Body body = new BodyModel();
+    private final Services services = new Services();
+    private final FeaturableModel object = new FeaturableModel();
+    private final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
+
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @Before
+    public void prepare()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        object.addFeature(new IdentifiableModel());
     }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
-    }
-
-    private final Body body = new BodyModel();
-    private final Services services = new Services();
-    private final Media media = UtilSetup.createMedia(ObjectGame.class);
-    private final ObjectGame object = new ObjectGame(new Setup(media));
-    private final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
 
     /**
      * Clean test.
@@ -72,7 +57,6 @@ public class BodyTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**

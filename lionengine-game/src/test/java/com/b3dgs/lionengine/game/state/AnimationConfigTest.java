@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -87,7 +87,7 @@ public class AnimationConfigTest
         AnimationConfig.exports(root, animation2);
         Xml.save(root, media);
 
-        final AnimationConfig imported = AnimationConfig.imports(new Configurer(media));
+        final AnimationConfig imported = AnimationConfig.imports(new Setup(media));
 
         Assert.assertEquals(animation1, imported.getAnimation("anim1"));
         Assert.assertEquals(animation2, imported.getAnimation("anim2"));

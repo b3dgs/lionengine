@@ -22,9 +22,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
@@ -38,7 +38,7 @@ public class UtilAttackable
      * 
      * @param object The object.
      */
-    public static void prepareObject(ObjectGame object)
+    public static void prepareObject(Featurable object)
     {
         final Animator animator = Anim.createAnimator();
         animator.play(Anim.createAnimation("test", 1, 1, 1.0, false, false));
@@ -53,7 +53,7 @@ public class UtilAttackable
      * @param services The services.
      * @return The attacker.
      */
-    public static Attacker createAttacker(ObjectGame object, Services services)
+    public static Attacker createAttacker(Featurable object, Services services)
     {
         final Attacker attacker = new AttackerModel();
         attacker.setAttackDamages(1, 2);

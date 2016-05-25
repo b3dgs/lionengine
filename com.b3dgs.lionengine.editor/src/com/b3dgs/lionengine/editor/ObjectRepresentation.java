@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
@@ -30,7 +31,6 @@ import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with features.
  */
-public class ObjectRepresentation extends ObjectGame
+public class ObjectRepresentation extends FeaturableModel
 {
     /** Error animation. */
     private static final String ERROR_ANIMATION = "Unable to get animation data from: ";
@@ -84,7 +84,7 @@ public class ObjectRepresentation extends ObjectGame
      */
     public ObjectRepresentation(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Configurer configurer = setup.getConfigurer();
         final SpriteAnimated surface = getSprite(configurer, setup.getSurface());

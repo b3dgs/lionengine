@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.util.UtilMath;
@@ -107,10 +107,10 @@ public class LauncherModel extends FeatureModel implements Launcher
         for (final LaunchableConfig launchable : launchables)
         {
             final Media media = Medias.create(launchable.getMedia());
-            final ObjectGame object = factory.create(media);
+            final Featurable featurable = factory.create(media);
             try
             {
-                final Launchable projectile = object.getFeature(Launchable.class);
+                final Launchable projectile = featurable.getFeature(Launchable.class);
                 projectile.setDelay(launchable.getDelay());
                 projectile.setLocation(localizable.getX() + offsetX, localizable.getY() + offsetY);
                 projectile.setVector(computeVector(launchable.getVector()));
@@ -118,14 +118,14 @@ public class LauncherModel extends FeatureModel implements Launcher
             }
             catch (final LionEngineException exception)
             {
-                object.destroy();
+                featurable.getFeature(Identifiable.class).destroy();
                 throw exception;
             }
             for (final LauncherListener listener : listeners)
             {
-                listener.notifyFired(object);
+                listener.notifyFired(featurable);
             }
-            handler.add(object);
+            handler.add(featurable);
         }
     }
 

@@ -17,7 +17,7 @@
  */
 
 /**
- * This example will show how to handle a {@link com.b3dgs.lionengine.game.object.ObjectGame} with a
+ * This example will show how to handle a {@link com.b3dgs.lionengine.game.feature.Featurable} with a
  * {@link com.b3dgs.lionengine.game.handler.Handler}.
  */
 package com.b3dgs.lionengine.example.game.handler;

@@ -21,50 +21,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
 
 /**
  * Test the assignable model.
  */
 public class AssignableModelTest
 {
-    /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
-    }
-
     private final AtomicBoolean clicked = new AtomicBoolean();
     private final AtomicInteger clickNumber = new AtomicInteger();
     private final AtomicBoolean assigned = new AtomicBoolean();
     private final Services services = UtilAssignable.createServices(clicked, clickNumber);
-    private final Media media = UtilSetup.createMedia(ObjectGame.class);
-    private final AssignableModel assignable = UtilAssignable.createAssignable(media, services);
+    private final AssignableModel assignable = UtilAssignable.createAssignable(services);
 
     /**
      * Clean test.
@@ -73,7 +46,6 @@ public class AssignableModelTest
     public void clean()
     {
         assignable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -140,8 +112,7 @@ public class AssignableModelTest
     {
         clicked.set(true);
 
-        final Media media = UtilSetup.createMedia(ObjectAssign.class);
-        final ObjectAssign object = new ObjectAssign(new Setup(media), assigned);
+        final ObjectAssign object = new ObjectAssign(assigned);
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(object, services);
         assignable.update(1.0);

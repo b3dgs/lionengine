@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -75,8 +75,8 @@ public class ComponentCollisionTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object1 = CollidableModelTest.createObject(config, services);
-        final ObjectGame object2 = CollidableModelTest.createObject(config, services);
+        final Featurable object1 = CollidableModelTest.createObject(config, services);
+        final Featurable object2 = CollidableModelTest.createObject(config, services);
 
         final Collidable collidable1 = object1.getFeature(Collidable.class);
         final Collidable collidable2 = object2.getFeature(Collidable.class);

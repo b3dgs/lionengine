@@ -19,13 +19,12 @@ package com.b3dgs.lionengine.game.object.feature.attackable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Attacker test.
  */
-class ObjectAttacker extends ObjectGame implements AttackerChecker
+class ObjectAttacker extends FeaturableModel implements AttackerChecker
 {
     /** Can attack flag. */
     private final AtomicBoolean canAttack;
@@ -33,12 +32,11 @@ class ObjectAttacker extends ObjectGame implements AttackerChecker
     /**
      * Constructor.
      * 
-     * @param setup The setup.
      * @param canAttack Attack flag.
      */
-    public ObjectAttacker(Setup setup, AtomicBoolean canAttack)
+    public ObjectAttacker(AtomicBoolean canAttack)
     {
-        super(setup);
+        super();
         this.canAttack = canAttack;
     }
 

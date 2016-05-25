@@ -29,12 +29,11 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableListener;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 
 /**
@@ -89,8 +88,7 @@ public class LayerableModelTest
 
         final Services services = new Services();
         services.add(new ComponentDisplayable());
-        final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup);
+        final Featurable object = new FeaturableModel();
         layerable.prepare(object, services);
 
         Assert.assertEquals(0, layerable.getLayer().intValue());

@@ -58,11 +58,9 @@ class World extends WorldGame
         services.add(Integer.valueOf(source.getRate()));
 
         camera.setIntervals(16, 0);
-        handler.add(camera);
 
         map.addFeature(new MapTilePersisterModel(map));
         map.addFeature(new MapTileViewerModel(services));
-        handler.add(map);
     }
 
     @Override
@@ -85,6 +83,7 @@ class World extends WorldGame
         map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("map", "groups.xml"));
         map.createFeature(MapTileCollisionModel.class).loadCollisions(Medias.create("map", "formulas.xml"),
                                                                       Medias.create("map", "collisions.xml"));
+        handler.add(map);
 
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
@@ -93,5 +92,6 @@ class World extends WorldGame
         camera.addFeature(tracker);
         camera.setLimits(map);
         tracker.track(mario);
+        handler.add(camera);
     }
 }

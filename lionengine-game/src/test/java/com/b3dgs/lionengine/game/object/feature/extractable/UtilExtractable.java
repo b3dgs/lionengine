@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.object.feature.extractable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
@@ -35,14 +35,15 @@ public class UtilExtractable
     /**
      * Create extractable.
      * 
-     * @param media The media.
      * @return The extractable.
      */
-    public static Extractable createExtractable(Media media)
+    public static Extractable createExtractable()
     {
         final Services services = new Services();
         services.add(new MapTileGame());
-        final ObjectGame object = new ObjectGame(new Setup(media));
+
+        final Featurable object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
         object.addFeature(new TransformableModel());
 
         final Extractable extractable = new ExtractableModel();

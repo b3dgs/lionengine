@@ -17,23 +17,20 @@
  */
 package com.b3dgs.lionengine.game.object.feature.launchable;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
  * Launchable object test.
  */
-class LaunchableObject extends ObjectGame
+class LaunchableObject extends FeaturableModel
 {
     /**
      * Constructor.
-     * 
-     * @param setup The setup.
      */
-    public LaunchableObject(Setup setup)
+    public LaunchableObject()
     {
-        super(setup);
+        super();
         addFeatureAndGet(new TransformableModel());
         addFeatureAndGet(new LaunchableModel());
     }

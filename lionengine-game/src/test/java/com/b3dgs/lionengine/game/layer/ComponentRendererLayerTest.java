@@ -20,23 +20,18 @@ package com.b3dgs.lionengine.game.layer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -45,29 +40,6 @@ import com.b3dgs.lionengine.graphic.Renderable;
  */
 public class ComponentRendererLayerTest
 {
-    /** Object config test. */
-    private static Media config;
-
-    /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Assert.assertTrue(config.getFile().delete());
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
-    }
-
     /**
      * Create a test object.
      * 
@@ -77,8 +49,9 @@ public class ComponentRendererLayerTest
      */
     private static Layerable createObject(Services services, final AtomicInteger last)
     {
-        final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup);
+        final FeaturableModel object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
+
         final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
         layerable.prepare(object, services);
 
@@ -87,9 +60,9 @@ public class ComponentRendererLayerTest
             @Override
             public void render(Graphic g)
             {
-                if (object.getId() != null)
+                if (object.getFeature(Identifiable.class).getId() != null)
                 {
-                    last.set(object.getId().intValue());
+                    last.set(object.getFeature(Identifiable.class).getId().intValue());
                 }
             }
         }));
@@ -150,7 +123,7 @@ public class ComponentRendererLayerTest
 
         final AtomicBoolean auto = new AtomicBoolean();
 
-        final ObjectGame object = new ObjectGame(new Setup(config));
+        final Featurable object = new FeaturableModel();
         object.addFeature(new DisplayableModel(new Renderable()
         {
             @Override

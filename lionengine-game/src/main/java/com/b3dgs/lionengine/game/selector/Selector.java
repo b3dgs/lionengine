@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.selector;
 
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -55,7 +54,6 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     {
         super();
 
-        super.addFeature(new IdentifiableModel());
         super.addFeature(model);
         super.addFeature(refresher);
         super.addFeature(displayer);

@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Handle the interaction with objects.
@@ -127,10 +127,10 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
      */
     private void startSelection(int mx, int my)
     {
-        final ObjectGame object = objectControl.getObject(mx, my);
+        final Featurable featurable = objectControl.getObject(mx, my);
         selection.reset();
 
-        if (objectControl.hasSelection() && object == null)
+        if (objectControl.hasSelection() && featurable == null)
         {
             objectControl.unselectObjects();
             selection.start(mx, my);

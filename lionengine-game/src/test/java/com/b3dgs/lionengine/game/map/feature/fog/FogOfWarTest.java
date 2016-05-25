@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.UtilMap;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -93,7 +93,7 @@ public class FogOfWarTest
     public void testFogOfWar()
     {
         final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup);
+        final FeaturableModel object = new FeaturableModel();
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(3, 3);
         fovable.prepare(object, services);

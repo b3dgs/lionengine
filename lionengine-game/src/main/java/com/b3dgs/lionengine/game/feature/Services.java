@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * </ul>
  * <p>
  * in order to access to them from the object instance (created by a {@link com.b3dgs.lionengine.game.object.Factory} in
- * constructor {@link com.b3dgs.lionengine.game.object.ObjectGame#ObjectGame(com.b3dgs.lionengine.game.object.Setup)}).
+ * constructor with {@link Setup} type as single argument).
  * </p>
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a

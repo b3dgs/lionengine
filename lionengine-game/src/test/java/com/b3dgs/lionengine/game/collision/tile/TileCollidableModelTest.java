@@ -31,12 +31,12 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -267,7 +267,7 @@ public class TileCollidableModelTest
         final Setup setup = new Setup(config);
         CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryY);
         CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryX);
-        final ObjectGame object = new ObjectGame(setup);
+        final FeaturableModel object = new FeaturableModel();
 
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(2, 2);

@@ -19,13 +19,12 @@ package com.b3dgs.lionengine.game.object.feature.assignable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Object containing action.
  */
-public class ObjectAssign extends ObjectGame implements Assign
+public class ObjectAssign extends FeaturableModel implements Assign
 {
     /** Action assigned flag. */
     private final AtomicBoolean assigned;
@@ -33,12 +32,11 @@ public class ObjectAssign extends ObjectGame implements Assign
     /**
      * Constructor.
      * 
-     * @param setup The setup reference.
      * @param assigned The assigned flag.
      */
-    public ObjectAssign(Setup setup, AtomicBoolean assigned)
+    public ObjectAssign(AtomicBoolean assigned)
     {
-        super(setup);
+        super();
         this.assigned = assigned;
     }
 

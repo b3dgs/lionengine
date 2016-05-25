@@ -24,8 +24,11 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -38,7 +41,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, Renderable
+class Peon extends FeaturableModel implements Updatable, Renderable
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -57,8 +60,9 @@ class Peon extends ObjectGame implements Updatable, Renderable
      */
     public Peon(SetupSurface setup)
     {
-        super(setup);
+        super();
 
+        addFeature(new IdentifiableModel());
         transformable = addFeatureAndGet(new TransformableModel(setup));
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
@@ -72,8 +76,10 @@ class Peon extends ObjectGame implements Updatable, Renderable
     }
 
     @Override
-    protected void onPrepared()
+    public void prepareFeatures(Featurable owner, Services services)
     {
+        super.prepareFeatures(owner, services);
+
         pathfindable.setSpeed(5.0, 5.0);
         pathfindable.setDestination(28, 8);
     }

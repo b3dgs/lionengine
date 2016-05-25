@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -31,11 +32,9 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * Performs a list of {@link Setup} considering their corresponding {@link Media} pointing to an XML file. This way it
  * is possible to create new object instances related to their {@link Setup} by sharing the same resources.
  * <p>
- * Any object created by the factory from a {@link Media} must have the following public constructor:
+ * Any object created by the factory from a {@link Media} must have a public constructor with a single argument typed
+ * (or sub type) of {@link Setup}.
  * </p>
- * <ul>
- * <li>{@link ObjectGame#ObjectGame(Setup)}</li>
- * </ul>
  * <p>
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
  * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
@@ -62,7 +61,7 @@ public class Factory
     /**
      * Create a factory.
      * 
-     * @param services The services reference.
+     * @param services The services refrence.
      */
     public Factory(Services services)
     {
@@ -79,9 +78,8 @@ public class Factory
      * @return The object instance.
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
-     * @see ObjectGame#ObjectGame(Setup)
      */
-    public <O extends ObjectGame> O create(Media media)
+    public <O extends Featurable> O create(Media media)
     {
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
@@ -105,9 +103,8 @@ public class Factory
      * @return The object instance.
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
-     * @see ObjectGame#ObjectGame(Setup)
      */
-    public <O extends ObjectGame> O create(Media media, Class<O> type)
+    public <O extends Featurable> O create(Media media, Class<O> type)
     {
         final Setup setup = getSetup(media);
         try
@@ -196,14 +193,28 @@ public class Factory
      * @return The object instance.
      * @throws NoSuchMethodException If missing method.
      */
-    private <O extends ObjectGame> O createObject(Class<?> type, Setup setup) throws NoSuchMethodException
+    private <O extends Featurable> O createObject(Class<?> type, Setup setup) throws NoSuchMethodException
     {
-        final O object = UtilReflection.create(type, new Class<?>[]
+        try
         {
-            setup.getClass()
-        }, setup);
-        object.prepareFeatures(object, services);
-
-        return object;
+            final O featurable = UtilReflection.create(type, new Class<?>[]
+            {
+                setup.getClass()
+            }, setup);
+            if (!featurable.isPrepared())
+            {
+                featurable.prepareFeatures(featurable, services);
+            }
+            return featurable;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            final O featurable = UtilReflection.create(type, new Class<?>[0]);
+            if (!featurable.isPrepared())
+            {
+                featurable.prepareFeatures(featurable, services);
+            }
+            return featurable;
+        }
     }
 }

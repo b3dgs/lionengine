@@ -25,8 +25,8 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Ball implementation.
  */
-class Ball extends ObjectGame implements Updatable, Renderable, CollidableListener
+class Ball extends FeaturableModel implements Updatable, Renderable, CollidableListener
 {
     /** Racket media. */
     public static final Media MEDIA = Medias.create("Ball.xml");
@@ -64,7 +64,7 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
      */
     public Ball(Setup setup)
     {
-        super(setup);
+        super();
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(setup));

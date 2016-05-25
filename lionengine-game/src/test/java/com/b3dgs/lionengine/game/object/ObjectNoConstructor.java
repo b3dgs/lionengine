@@ -17,16 +17,18 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+
 /**
  * Object without constructor.
  */
-public class ObjectNoConstructor extends ObjectGame
+public class ObjectNoConstructor extends FeaturableModel
 {
     /**
      * Constructor.
      */
     private ObjectNoConstructor()
     {
-        super(null);
+        super();
     }
 }

@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
@@ -35,7 +37,6 @@ import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.raster.Rasterable;
@@ -78,7 +79,7 @@ public class SceneRasterable extends Sequence
                                                                     Medias.create("raster.xml"),
                                                                     false);
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
-        final ObjectGame object = new ObjectGame(setup);
+        final Featurable object = new FeaturableModel();
         object.addFeature(new MirrorableModel());
         object.addFeature(new AnimatableModel(surface));
         final Rasterable rasterable = new RasterableModel(setup, 16);

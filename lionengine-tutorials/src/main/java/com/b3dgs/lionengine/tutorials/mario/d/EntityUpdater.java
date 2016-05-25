@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
@@ -53,7 +53,7 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     /** State handler. */
     protected final StateHandler handler = new StateHandler(factory);
     /** Entity configurer. */
-    protected final Configurer configurer;
+    protected final Setup setup;
 
     private final Force movement;
     private final Force jump;
@@ -79,7 +79,7 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
         movement = model.getMovement();
         jump = model.getJump();
         surface = model.getSurface();
-        configurer = model.getConfigurer();
+        setup = model.getSetup();
     }
 
     @Override
@@ -87,7 +87,7 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     {
         super.prepare(owner, services);
 
-        StateAnimationBased.Util.loadStates(EntityState.values(), factory, owner, configurer);
+        StateAnimationBased.Util.loadStates(EntityState.values(), factory, owner, setup);
         handler.changeState(EntityState.IDLE);
     }
 

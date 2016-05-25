@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements SelectorListener
+class Peon extends FeaturableModel implements SelectorListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -58,7 +58,7 @@ class Peon extends ObjectGame implements SelectorListener
      */
     public Peon(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
         layerable.setLayer(1);

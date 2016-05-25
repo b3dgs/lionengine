@@ -22,11 +22,11 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.object.feature.producible.ProducibleModel;
@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Building implementation.
  */
-class Building extends ObjectGame implements ProducibleListener
+class Building extends FeaturableModel implements ProducibleListener
 {
     /** Farm media reference. */
     public static final Media FARM = Medias.create("Farm.xml");
@@ -58,7 +58,7 @@ class Building extends ObjectGame implements ProducibleListener
      */
     public Building(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
 

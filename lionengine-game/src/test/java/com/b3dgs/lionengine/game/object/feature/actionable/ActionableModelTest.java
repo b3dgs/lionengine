@@ -159,7 +159,7 @@ public class ActionableModelTest
         clicked.set(true);
 
         final Setup setup = new Setup(media);
-        final ObjectAction object = new ObjectAction(setup, executed);
+        final ObjectAction object = new ObjectAction(executed);
         final ActionableModel actionable = new ActionableModel(setup);
         actionable.prepare(object, services);
         actionable.update(1.0);

@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -74,7 +73,6 @@ public class Camera extends FeaturableModel implements Viewer
     public Camera()
     {
         super();
-        super.addFeature(new IdentifiableModel());
     }
 
     /**

@@ -20,23 +20,16 @@ package com.b3dgs.lionengine.game.object.feature.extractable;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.test.UtilEnum;
@@ -58,7 +51,6 @@ public class ExtractorModelTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         HACK.addByValue(HACK.make("FAIL"));
     }
 
@@ -68,11 +60,9 @@ public class ExtractorModelTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
         HACK.restore();
     }
 
-    private final Media media = UtilSetup.createMedia(ObjectExtractor.class);
     private final Services services = new Services();
 
     /**
@@ -86,21 +76,12 @@ public class ExtractorModelTest
     }
 
     /**
-     * Clean test.
-     */
-    @After
-    public void clean()
-    {
-        Assert.assertTrue(media.getFile().delete());
-    }
-
-    /**
      * Test the extractor config.
      */
     @Test
     public void testConfig()
     {
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
+        final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -122,7 +103,7 @@ public class ExtractorModelTest
     @Test
     public void testExtractor()
     {
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
+        final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -199,7 +180,7 @@ public class ExtractorModelTest
     @Test
     public void testCannotExtract()
     {
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), false, true);
+        final ObjectExtractor object = new ObjectExtractor(false, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -232,7 +213,7 @@ public class ExtractorModelTest
     @Test
     public void testCannotCarry()
     {
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, false);
+        final ObjectExtractor object = new ObjectExtractor(true, false);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -265,7 +246,7 @@ public class ExtractorModelTest
     @Test
     public void testExtractorExtractable()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
+        final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -278,8 +259,7 @@ public class ExtractorModelTest
         Assert.assertNull(extractor.getResourceLocation());
         Assert.assertNull(extractor.getResourceType());
 
-        final Media extractableMedia = UtilSetup.createMedia(ObjectGame.class);
-        final Extractable extractable = UtilExtractable.createExtractable(extractableMedia);
+        final Extractable extractable = UtilExtractable.createExtractable();
         extractor.setResource(extractable);
 
         Assert.assertFalse(extractor.isExtracting());
@@ -332,8 +312,6 @@ public class ExtractorModelTest
 
         object.getFeature(Identifiable.class).notifyDestroyed();
         extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
-
-        Assert.assertTrue(extractableMedia.getFile().delete());
     }
 
     /**
@@ -342,7 +320,7 @@ public class ExtractorModelTest
     @Test
     public void testExtractorExtractableNoResource()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
+        final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -355,8 +333,7 @@ public class ExtractorModelTest
         Assert.assertNull(extractor.getResourceLocation());
         Assert.assertNull(extractor.getResourceType());
 
-        final Media extractableMedia = UtilSetup.createMedia(ObjectGame.class);
-        final Extractable extractable = UtilExtractable.createExtractable(extractableMedia);
+        final Extractable extractable = UtilExtractable.createExtractable();
         extractable.setResourcesQuantity(0);
         extractor.setResource(extractable);
 
@@ -379,8 +356,6 @@ public class ExtractorModelTest
 
         object.getFeature(Identifiable.class).notifyDestroyed();
         extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
-
-        Assert.assertTrue(extractableMedia.getFile().delete());
     }
 
     /**
@@ -389,7 +364,7 @@ public class ExtractorModelTest
     @Test
     public void testStopExtraction()
     {
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
+        final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -434,7 +409,7 @@ public class ExtractorModelTest
     @Test
     public void testListenerAutoAdd()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
+        final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();

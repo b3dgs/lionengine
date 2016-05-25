@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -53,14 +53,26 @@ public final class AnimationConfig
     /**
      * Create the animation data from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig imports(Configurer configurer)
+    public static AnimationConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
+
+    /**
+     * Create the animation data from configurer.
+     * 
+     * @param root The root reference.
+     * @return The animations configuration instance.
+     * @throws LionEngineException If unable to read data.
+     */
+    public static AnimationConfig imports(XmlNode root)
     {
         final Map<String, Animation> animations = new HashMap<String, Animation>(0);
-        for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
+        for (final XmlNode node : root.getChildren(ANIMATION))
         {
             final String anim = node.readString(ANIMATION_NAME);
             final Animation animation = createAnimation(node);

@@ -24,8 +24,9 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 
 /**
  * Test the factory class.
@@ -53,30 +54,22 @@ public class FactoryTest
         Medias.setLoadFromJar(null);
     }
 
+    private final Services services = new Services();
+
     /**
      * Test the object creation.
      */
     @Test
     public void testCreate()
     {
-        final Factory factory = new Factory(new Services());
+        final Factory factory = new Factory(services);
         factory.setClassLoader(ClassLoader.getSystemClassLoader());
 
-        final ObjectGame object1 = factory.create(Medias.create(OBJECT_XML));
-        final ObjectGame object2 = factory.create(Medias.create(OBJECT_XML), ObjectGame.class);
+        final Featurable object1 = factory.create(Medias.create(OBJECT_XML));
+        final Featurable object2 = factory.create(Medias.create(OBJECT_XML), FeaturableModel.class);
 
-        try
-        {
-            Assert.assertNotNull(object1);
-            Assert.assertNotNull(object2);
-        }
-        finally
-        {
-            object1.destroy();
-            object2.destroy();
-            object1.getFeature(Identifiable.class).notifyDestroyed();
-            object2.getFeature(Identifiable.class).notifyDestroyed();
-        }
+        Assert.assertNotNull(object1);
+        Assert.assertNotNull(object2);
     }
 
     /**
@@ -85,27 +78,10 @@ public class FactoryTest
     @Test
     public void testCreateNoConstructor()
     {
-        try
-        {
-            final Factory factory = new Factory(new Services());
-            Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml")));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), NoSuchMethodException.class, exception.getCause().getClass());
-        }
+        final Factory factory = new Factory(services);
 
-        try
-        {
-            final Factory factory = new Factory(new Services());
-            Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml"), ObjectNoConstructor.class));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), NoSuchMethodException.class, exception.getCause().getClass());
-        }
+        Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml")));
+        Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml"), ObjectNoConstructor.class));
     }
 
     /**
@@ -116,7 +92,7 @@ public class FactoryTest
     {
         try
         {
-            final Factory factory = new Factory(new Services());
+            final Factory factory = new Factory(services);
             Assert.assertNotNull(factory.create(Medias.create("no_class.xml")));
             Assert.fail();
         }
@@ -134,7 +110,7 @@ public class FactoryTest
     {
         try
         {
-            final Factory factory = new Factory(new Services());
+            final Factory factory = new Factory(services);
             Assert.assertNotNull(factory.create(Medias.create("no_setup.xml")));
             Assert.fail();
         }
@@ -152,7 +128,7 @@ public class FactoryTest
     {
         try
         {
-            final Factory factory = new Factory(new Services());
+            final Factory factory = new Factory(services);
             Assert.assertNotNull(factory.create(Medias.create("no_setup_constructor.xml")));
             Assert.fail();
         }
@@ -168,7 +144,7 @@ public class FactoryTest
     @Test
     public void testGetSetup()
     {
-        final Factory factory = new Factory(new Services());
+        final Factory factory = new Factory(services);
         final Setup setup = factory.getSetup(Medias.create(OBJECT_XML));
         Assert.assertEquals(Medias.create(OBJECT_XML), setup.getConfigurer().getMedia());
 

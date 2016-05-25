@@ -19,7 +19,7 @@
 /**
  * Describe the production capacity of an object by using a
  * {@link com.b3dgs.lionengine.game.object.feature.producible.Producer}
- * to create new {@link com.b3dgs.lionengine.game.object.ObjectGame} as
+ * to create new {@link com.b3dgs.lionengine.game.feature.Featurable} as
  * {@link com.b3dgs.lionengine.game.object.feature.producible.Producible}.
  */
 package com.b3dgs.lionengine.game.object.feature.producible;

@@ -25,10 +25,11 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionConfig;
@@ -39,7 +40,7 @@ import com.b3dgs.lionengine.graphic.Text;
 /**
  * Button action implementation.
  */
-class Button extends ObjectGame
+class Button extends FeaturableModel
 {
     /** Media buildings reference. */
     public static final Media BUILDINGS = Medias.create("action", "Buildings.xml");
@@ -61,7 +62,7 @@ class Button extends ObjectGame
      */
     public Button(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);
@@ -105,8 +106,8 @@ class Button extends ObjectGame
     {
         for (final Button button : toDelete)
         {
-            button.destroy();
+            button.getFeature(Identifiable.class).destroy();
         }
-        destroy();
+        getFeature(Identifiable.class).destroy();
     }
 }

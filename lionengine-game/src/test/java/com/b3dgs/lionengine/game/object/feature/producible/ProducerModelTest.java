@@ -28,16 +28,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.test.UtilEnum;
 import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -57,7 +51,6 @@ public class ProducerModelTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         HACK.addByValue(HACK.make("FAIL"));
     }
 
@@ -67,13 +60,11 @@ public class ProducerModelTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
         HACK.restore();
     }
 
     private final Services services = new Services();
-    private final Media media = UtilSetup.createMedia(ProducerObject.class);
-    private final ProducerObject object = new ProducerObject(new Setup(media));
+    private final ProducerObject object = new ProducerObject();
     private final ProducerModel producer = new ProducerModel();
 
     /**
@@ -94,7 +85,6 @@ public class ProducerModelTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -134,8 +124,7 @@ public class ProducerModelTest
         Assert.assertEquals(producible, start.get());
         Assert.assertNull(current.get());
         Assert.assertTrue(producer.isProducing());
-        Assert.assertEquals(((ObjectGame) producible.getOwner()).getConfigurer().getMedia(),
-                            producer.getProducingElement());
+        Assert.assertEquals(producible.getMedia(), producer.getProducingElement());
 
         producer.update(1.0);
 
@@ -166,7 +155,7 @@ public class ProducerModelTest
     @Test
     public void testProductionListenerSelf()
     {
-        final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media));
+        final ProducerObjectSelf object = new ProducerObjectSelf();
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -377,7 +366,7 @@ public class ProducerModelTest
     @Test
     public void testListenerAutoAdd()
     {
-        final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media));
+        final ProducerObjectSelf object = new ProducerObjectSelf();
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);

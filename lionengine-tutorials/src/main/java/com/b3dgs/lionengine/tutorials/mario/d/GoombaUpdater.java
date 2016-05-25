@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -34,6 +35,8 @@ import com.b3dgs.lionengine.game.tile.Tile;
  */
 public class GoombaUpdater extends EntityUpdater implements InputDeviceDirectional, CollidableListener
 {
+    private final Setup setup;
+
     @Service private Transformable transformable;
     @Service private TileCollidable tileCollidable;
     @Service private Collidable collidable;
@@ -49,12 +52,14 @@ public class GoombaUpdater extends EntityUpdater implements InputDeviceDirection
     public GoombaUpdater(EntityModel model)
     {
         super(model);
+
+        setup = model.getSetup();
     }
 
     @Override
     public void prepare(Featurable owner, Services services)
     {
-        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, owner, configurer);
+        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, owner, setup);
 
         super.prepare(owner, services);
 

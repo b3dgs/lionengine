@@ -27,7 +27,10 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
@@ -36,7 +39,6 @@ import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -47,7 +49,7 @@ import com.b3dgs.lionengine.util.UtilRandom;
 /**
  * Ship implementation.
  */
-class Ship extends ObjectGame implements CollidableListener
+class Ship extends FeaturableModel implements CollidableListener
 {
     /** Media. */
     public static final Media MEDIA = Medias.create("Ship.xml");
@@ -73,7 +75,7 @@ class Ship extends ObjectGame implements CollidableListener
      */
     public Ship(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
         layerable.setLayer(1);
@@ -145,8 +147,10 @@ class Ship extends ObjectGame implements CollidableListener
     }
 
     @Override
-    protected void onPrepared()
+    public void prepareFeatures(Featurable owner, Services services)
     {
+        super.prepareFeatures(owner, services);
+
         transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
 
         weapon = factory.create(Weapon.PULSE_CANNON);

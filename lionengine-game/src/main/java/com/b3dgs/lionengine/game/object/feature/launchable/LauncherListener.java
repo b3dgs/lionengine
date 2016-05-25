@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.feature.launchable;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * Notify events from the {@link Launcher}.
@@ -33,7 +33,7 @@ public interface LauncherListener
      * <li>{@link Launchable}</li>
      * </ul>
      * 
-     * @param object The fired object.
+     * @param featurable The fired featurable.
      */
-    void notifyFired(ObjectGame object);
+    void notifyFired(Featurable featurable);
 }

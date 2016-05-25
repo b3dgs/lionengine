@@ -23,8 +23,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.stream.Xml;
@@ -95,7 +97,8 @@ public class UtilActionnable
     public static ActionableModel createActionable(Media media, Services services)
     {
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup);
+        final Featurable object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
         final ActionableModel actionable = new ActionableModel(setup);
         actionable.prepare(object, services);
 

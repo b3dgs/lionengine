@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.object.feature.assignable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 
 /**
  * Utilities dedicated to assignable test.
@@ -63,13 +63,13 @@ public class UtilAssignable
     /**
      * Create the assignable.
      * 
-     * @param media The media.
      * @param services The services.
      * @return The prepared assignable.
      */
-    public static AssignableModel createAssignable(Media media, Services services)
+    public static AssignableModel createAssignable(Services services)
     {
-        final ObjectGame object = new ObjectGame(new Setup(media));
+        final Featurable object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(object, services);
 

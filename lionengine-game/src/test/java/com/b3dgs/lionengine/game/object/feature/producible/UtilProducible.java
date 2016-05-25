@@ -22,8 +22,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.game.object.UtilSetup;
@@ -123,7 +123,7 @@ public class UtilProducible
     {
         final Media media = createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup);
+        final Featurable object = new FeaturableModel();
         object.addFeature(new TransformableModel());
 
         final Producible producible = new ProducibleModel(setup);
@@ -141,7 +141,7 @@ public class UtilProducible
     {
         final ProducibleConfig producibleConfig = new ProducibleConfig(1, 2, 3);
 
-        final Media media = UtilSetup.createMedia(ObjectGame.class);
+        final Media media = UtilSetup.createMedia(Featurable.class);
         final XmlNode root = Xml.create("test");
         root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
         root.add(ProducibleConfig.exports(producibleConfig));

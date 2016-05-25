@@ -25,9 +25,11 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -63,7 +65,9 @@ public class ProducibleModelTest
         final Services services = new Services();
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup);
+        final Featurable object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
+
         final Producible producible = new ProducibleModel(setup);
         final ProducibleListener listener = UtilProducible.createListener();
         producible.setLocation(1.0, 2.0);
@@ -91,7 +95,7 @@ public class ProducibleModelTest
         final Services services = new Services();
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ProducibleListenerSelf object = new ProducibleListenerSelf(setup);
+        final ProducibleListenerSelf object = new ProducibleListenerSelf();
         final Producible producible = new ProducibleModel(setup);
         producible.prepare(object, services);
 
@@ -109,7 +113,7 @@ public class ProducibleModelTest
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ProducibleListenerSelf object = new ProducibleListenerSelf(setup);
+        final ProducibleListenerSelf object = new ProducibleListenerSelf();
         final Producible producible = new ProducibleModel(setup);
         producible.checkListener(object);
 

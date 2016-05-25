@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
@@ -34,7 +35,6 @@ import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.graphic.Text;
 /**
  * Resources button action.
  */
-class Button extends ObjectGame
+class Button extends FeaturableModel
 {
     /** Extract media. */
     public static final Media EXTRACT = Medias.create("Extract.xml");
@@ -68,7 +68,7 @@ class Button extends ObjectGame
      */
     public Button(SetupSurface setup)
     {
-        super(setup);
+        super();
 
         final Layerable layerable = addFeatureAndGet(new LayerableModel());
         layerable.setLayer(3);

@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -67,13 +67,13 @@ public class PropertiesClass implements PropertiesProviderObject
     private static boolean updateClass(TreeItem item, Configurer configurer)
     {
         final ComboChooserDialog chooser = new ComboChooserDialog(item.getParent().getShell());
-        final Collection<Class<? extends ObjectGame>> objects = ProjectModel.INSTANCE.getProject()
+        final Collection<Class<? extends Featurable>> objects = ProjectModel.INSTANCE.getProject()
                                                                                      .getLoader()
-                                                                                     .getImplementing(ObjectGame.class);
-        objects.add(ObjectGame.class);
+                                                                                     .getImplementing(Featurable.class);
+        objects.add(Featurable.class);
         final String[] items = new String[objects.size()];
         int i = 0;
-        for (final Class<? extends ObjectGame> object : objects)
+        for (final Class<? extends Featurable> object : objects)
         {
             items[i] = object.getName();
             i++;

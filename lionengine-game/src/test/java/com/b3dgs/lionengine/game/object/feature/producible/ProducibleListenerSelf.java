@@ -17,22 +17,21 @@
  */
 package com.b3dgs.lionengine.game.object.feature.producible;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 
 /**
  * Producible self listener test.
  */
-class ProducibleListenerSelf extends ObjectGame implements ProducibleListener
+class ProducibleListenerSelf extends FeaturableModel implements ProducibleListener
 {
     /**
      * Constructor.
-     * 
-     * @param setup The setup.
      */
-    public ProducibleListenerSelf(Setup setup)
+    public ProducibleListenerSelf()
     {
-        super(setup);
+        super();
+        addFeature(new IdentifiableModel());
     }
 
     @Override

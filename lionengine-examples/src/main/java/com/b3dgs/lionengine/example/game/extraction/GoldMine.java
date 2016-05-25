@@ -22,12 +22,15 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.extractable.Extractable;
 import com.b3dgs.lionengine.game.object.feature.extractable.ExtractableModel;
@@ -40,7 +43,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Building implementation.
  */
-class GoldMine extends ObjectGame
+class GoldMine extends FeaturableModel
 {
     /** Gold mine media reference. */
     public static final Media GOLD_MINE = Medias.create("GoldMine.xml");
@@ -56,8 +59,9 @@ class GoldMine extends ObjectGame
      */
     public GoldMine(SetupSurface setup)
     {
-        super(setup);
+        super();
 
+        addFeature(new IdentifiableModel());
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
@@ -75,8 +79,10 @@ class GoldMine extends ObjectGame
     }
 
     @Override
-    protected void onPrepared()
+    public void prepareFeatures(Featurable owner, Services services)
     {
+        super.prepareFeatures(owner, services);
+
         pathfindable.setLocation(21, 14);
     }
 }

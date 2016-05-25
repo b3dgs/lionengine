@@ -25,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Test the setup class.
@@ -71,12 +72,12 @@ public class SetupTest
         final Media config = Medias.create("object.xml");
         final Setup setup = new Setup(config);
 
-        Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
-        Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+        Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+        Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
 
         setup.clear();
 
-        Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+        Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
     }
 
     /**
@@ -88,7 +89,7 @@ public class SetupTest
         final Setup setup = new Setup(Medias.create("no_class.xml"));
         try
         {
-            Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+            Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
         }
         catch (final LionEngineException exception)
         {

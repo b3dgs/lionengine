@@ -32,10 +32,10 @@ import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.geom.Point;
@@ -169,10 +169,10 @@ public class ObjectControl
      */
     public void removeFrom(int mx, int my)
     {
-        final ObjectGame object = getObject(mx, my);
+        final Featurable object = getObject(mx, my);
         if (object != null)
         {
-            object.destroy();
+            object.getFeature(Identifiable.class).destroy();
         }
     }
 
@@ -266,14 +266,14 @@ public class ObjectControl
     /**
      * Check the mouse over object flag.
      * 
-     * @param object The object to check.
+     * @param featurable The featurable to check.
      * @return <code>true</code> if over, <code>false</code> else.
      */
-    public boolean isOver(Featurable object)
+    public boolean isOver(Featurable featurable)
     {
-        if (objectsOver.containsKey(object))
+        if (objectsOver.containsKey(featurable))
         {
-            return objectsOver.get(object).booleanValue();
+            return objectsOver.get(featurable).booleanValue();
         }
         return false;
     }
@@ -281,14 +281,14 @@ public class ObjectControl
     /**
      * Check the mouse object selection flag.
      * 
-     * @param object The object to check.
+     * @param featurable The featurable to check.
      * @return <code>true</code> if selected, <code>false</code> else.
      */
-    public boolean isSelected(Featurable object)
+    public boolean isSelected(Featurable featurable)
     {
-        if (objectsSelection.containsKey(object))
+        if (objectsSelection.containsKey(featurable))
         {
-            return objectsSelection.get(object).booleanValue();
+            return objectsSelection.get(featurable).booleanValue();
         }
         return false;
     }
@@ -320,9 +320,9 @@ public class ObjectControl
      */
     public boolean hasSelection()
     {
-        for (final ObjectGame object : handler.get(ObjectGame.class))
+        for (final Featurable featurable : handler.values())
         {
-            if (isSelected(object))
+            if (isSelected(featurable))
             {
                 return true;
             }

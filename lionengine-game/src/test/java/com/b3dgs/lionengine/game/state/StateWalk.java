@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.state;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * State walk test implementation.
@@ -40,7 +40,7 @@ public class StateWalk extends StateTest implements StateInputPointerUpdater
      * @param object The object reference.
      * @param animation The associated animation.
      */
-    public StateWalk(@SuppressWarnings("unused") ObjectGame object, @SuppressWarnings("unused") Animation animation)
+    public StateWalk(@SuppressWarnings("unused") Featurable object, @SuppressWarnings("unused") Animation animation)
     {
         super(StateType.WALK);
         addTransition(new TransitionWalkToIdle());

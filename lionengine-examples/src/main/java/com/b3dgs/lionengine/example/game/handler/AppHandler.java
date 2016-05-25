@@ -19,14 +19,12 @@ package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -50,8 +48,8 @@ public class AppHandler
         final Handler handler = new Handler(services);
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
-        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
-        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
+        handler.add(new MyObject());
+        handler.add(new MyObject());
 
         final Graphic g = Graphics.createGraphic();
         for (int i = 0; i < 2; i++)

@@ -28,16 +28,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilEnum;
@@ -57,7 +52,6 @@ public class AttackerModelTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         HACK.addByValue(HACK.make("FAIL"));
     }
 
@@ -67,14 +61,12 @@ public class AttackerModelTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
         HACK.restore();
     }
 
-    private final Media media = UtilSetup.createMedia(ObjectGame.class);
     private final Services services = new Services();
     private final AtomicBoolean canAttack = new AtomicBoolean();
-    private final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
+    private final ObjectAttacker object = new ObjectAttacker(canAttack);
     private final Transformable target = new TransformableModel();
     private Attacker attacker;
 
@@ -85,6 +77,7 @@ public class AttackerModelTest
     public void prepare()
     {
         UtilAttackable.prepareObject(object);
+        object.addFeature(new IdentifiableModel());
         attacker = UtilAttackable.createAttacker(object, services);
     }
 
@@ -95,7 +88,6 @@ public class AttackerModelTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -242,7 +234,7 @@ public class AttackerModelTest
     @Test
     public void testSelfListener()
     {
-        final ObjectAttackerSelf object = new ObjectAttackerSelf(new Setup(media));
+        final ObjectAttackerSelf object = new ObjectAttackerSelf();
         UtilAttackable.prepareObject(object);
         final Attacker attacker = UtilAttackable.createAttacker(object, services);
         canAttack.set(true);
@@ -312,7 +304,7 @@ public class AttackerModelTest
     @Test
     public void testListenerAutoAdd()
     {
-        final ObjectAttackerSelf object = new ObjectAttackerSelf(new Setup(media));
+        final ObjectAttackerSelf object = new ObjectAttackerSelf();
         UtilAttackable.prepareObject(object);
         final Attacker attacker = UtilAttackable.createAttacker(object, new Services());
         attacker.checkListener(object);

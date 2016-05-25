@@ -31,10 +31,11 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -79,19 +80,19 @@ public class CollidableModelTest
      * @param services The services reference.
      * @return The object test.
      */
-    public static ObjectGame createObject(Media config, Services services)
+    public static FeaturableModel createObject(Media config, Services services)
     {
         final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup);
+        final FeaturableModel featurable = new FeaturableModel();
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
         transformable.setLocation(1.0, 2.0);
         transformable.setSize(2, 2);
 
-        object.addFeature(new CollidableModel(setup));
-        object.prepareFeatures(object, services);
+        featurable.addFeature(new CollidableModel(setup));
+        featurable.prepareFeatures(featurable, services);
 
-        return object;
+        return featurable;
     }
 
     /**
@@ -103,8 +104,8 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object1 = createObject(config, services);
-        final ObjectGame object2 = createObject(config, services);
+        final Featurable object1 = createObject(config, services);
+        final Featurable object2 = createObject(config, services);
 
         final Collidable collidable1 = object1.getFeature(Collidable.class);
         final Collidable collidable2 = object2.getFeature(Collidable.class);
@@ -147,8 +148,8 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object1 = createObject(config, services);
-        final ObjectGame object2 = createObject(config, services);
+        final Featurable object1 = createObject(config, services);
+        final Featurable object2 = createObject(config, services);
 
         final Collidable collidable1 = object1.getFeature(Collidable.class);
         final Collidable collidable2 = object2.getFeature(Collidable.class);
@@ -193,12 +194,12 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object1 = createObject(config, services);
+        final FeaturableModel object1 = createObject(config, services);
         final Mirrorable mirror1 = object1.addFeatureAndGet(new MirrorableModel());
         mirror1.mirror(Mirror.HORIZONTAL);
         mirror1.update(1.0);
 
-        final ObjectGame object2 = createObject(config, services);
+        final FeaturableModel object2 = createObject(config, services);
         final Mirrorable mirror2 = object2.addFeatureAndGet(new MirrorableModel());
         mirror2.mirror(Mirror.VERTICAL);
         mirror2.update(1.0);
@@ -233,7 +234,7 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object = createObject(config, services);
+        final Featurable object = createObject(config, services);
         final Collidable collidable = object.getFeature(Collidable.class);
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
@@ -257,7 +258,7 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object = createObject(config, services);
+        final Featurable object = createObject(config, services);
         final Collidable collidable = object.getFeature(Collidable.class);
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
@@ -280,7 +281,7 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final ObjectGame object = createObject(config, services);
+        final Featurable object = createObject(config, services);
         object.getFeature(Transformable.class).moveLocation(1.0, 1.0, 1.0);
 
         final Graphic g = Graphics.createGraphic();

@@ -38,6 +38,8 @@ public class FeaturableModel implements Featurable
     private final Collection<Feature> featuresToPrepare = new ArrayList<Feature>();
     /** Features provider. */
     private final Features features = new Features();
+    /** Services filled. */
+    private boolean filled;
 
     /**
      * Create model.
@@ -45,6 +47,19 @@ public class FeaturableModel implements Featurable
     public FeaturableModel()
     {
         super();
+    }
+
+    /**
+     * Add a feature.
+     * 
+     * @param <T> The feature type.
+     * @param feature The feature to add.
+     * @return The added feature (same as source).
+     */
+    public final <T extends Feature> T addFeatureAndGet(T feature)
+    {
+        addFeature(feature);
+        return feature;
     }
 
     /**
@@ -140,7 +155,11 @@ public class FeaturableModel implements Featurable
     @Override
     public void prepareFeatures(Featurable owner, Services services)
     {
-        fillServices(owner, services);
+        if (!filled)
+        {
+            fillServices(owner, services);
+            filled = true;
+        }
         for (final Feature feature : featuresToPrepare)
         {
             fillServices(feature, services);
@@ -186,5 +205,11 @@ public class FeaturableModel implements Featurable
     public boolean hasFeature(Class<? extends Feature> feature)
     {
         return features.contains(feature);
+    }
+
+    @Override
+    public boolean isPrepared()
+    {
+        return filled;
     }
 }

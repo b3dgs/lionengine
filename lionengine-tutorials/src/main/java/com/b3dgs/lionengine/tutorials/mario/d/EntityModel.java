@@ -27,8 +27,8 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
-import com.b3dgs.lionengine.game.object.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 
@@ -40,7 +40,7 @@ class EntityModel extends FeatureModel
     private final Force movement = new Force();
     private final Force jump = new Force();
     private final SpriteAnimated surface;
-    private final Configurer configurer;
+    private final Setup setup;
 
     @Service private Layerable layerable;
     @Service private Body body;
@@ -55,7 +55,7 @@ class EntityModel extends FeatureModel
     {
         super();
 
-        configurer = setup.getConfigurer();
+        this.setup = setup;
 
         final FramesConfig frames = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());
@@ -112,8 +112,8 @@ class EntityModel extends FeatureModel
      * 
      * @return The configurer reference.
      */
-    public Configurer getConfigurer()
+    public Setup getSetup()
     {
-        return configurer;
+        return setup;
     }
 }
