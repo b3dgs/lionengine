@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.editor.object.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderListener;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 

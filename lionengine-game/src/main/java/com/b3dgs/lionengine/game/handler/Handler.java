@@ -140,7 +140,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         }
         if (!featurable.isPrepared())
         {
-            featurable.prepareFeatures(featurable, services);
+            featurable.prepareFeatures(services);
         }
         featurable.getFeature(Identifiable.class).addListener(this);
         toAdd.add(featurable);

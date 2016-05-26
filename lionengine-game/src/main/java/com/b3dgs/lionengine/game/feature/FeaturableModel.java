@@ -153,17 +153,17 @@ public class FeaturableModel implements Featurable
      */
 
     @Override
-    public void prepareFeatures(Featurable owner, Services services)
+    public void prepareFeatures(Services services)
     {
         if (!filled)
         {
-            fillServices(owner, services);
+            fillServices(this, services);
             filled = true;
         }
         for (final Feature feature : featuresToPrepare)
         {
             fillServices(feature, services);
-            feature.prepare(owner, services);
+            feature.prepare(this, services);
 
             for (final Feature current : featuresToPrepare)
             {

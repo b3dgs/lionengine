@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
+    <lionengine:setup>com.b3dgs.lionengine.game.feature.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.example.game.production.Building</lionengine:class>
     <lionengine:surface image="Barracks.png"/>
     <lionengine:size width="48" height="48"/>

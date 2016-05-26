@@ -23,8 +23,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**

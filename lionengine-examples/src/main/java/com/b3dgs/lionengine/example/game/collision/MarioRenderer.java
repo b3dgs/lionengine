@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.displayable.Displayable;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 

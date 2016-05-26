@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;

@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.object.ObjectConfig;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.util.UtilFile;
@@ -50,11 +50,11 @@ public final class ObjectAddHandler
     @Execute
     public void execute(Shell parent)
     {
-        InputValidator.getFile(parent, Messages.Title, Messages.Text, ObjectConfig.DEFAULT_FILENAME, file ->
+        InputValidator.getFile(parent, Messages.Title, Messages.Text, FeaturableConfig.DEFAULT_FILENAME, file ->
         {
-            final XmlNode root = Xml.create(UtilFile.removeExtension(ObjectConfig.NODE_OBJECT));
-            root.add(ObjectConfig.exportClass(FeaturableModel.class.getName()));
-            root.add(ObjectConfig.exportSetup(Setup.class.getName()));
+            final XmlNode root = Xml.create(UtilFile.removeExtension(FeaturableConfig.NODE_FEATURABLE));
+            root.add(FeaturableConfig.exportClass(FeaturableModel.class.getName()));
+            root.add(FeaturableConfig.exportSetup(Setup.class.getName()));
             Xml.save(root, ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         });
     }

@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 
 /**
  * Enable pathfindable handler.

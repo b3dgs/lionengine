@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.ObjectConfig;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -49,11 +49,11 @@ public class PropertiesSetup implements PropertiesProviderObject
      * @param properties The properties tree reference.
      * @param configObject The configObject reference.
      */
-    private static void createAttributeSetup(Tree properties, ObjectConfig configObject)
+    private static void createAttributeSetup(Tree properties, FeaturableConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(classItem, Messages.Setup, configObject.getSetupName());
-        classItem.setData(ObjectConfig.SETUP);
+        classItem.setData(FeaturableConfig.SETUP);
         classItem.setImage(ICON_SETUP);
     }
 
@@ -83,7 +83,7 @@ public class PropertiesSetup implements PropertiesProviderObject
         if (setup != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode setupNode = root.getChild(ObjectConfig.SETUP);
+            final XmlNode setupNode = root.getChild(FeaturableConfig.SETUP);
             setupNode.setText(setup);
             item.setText(PropertiesPart.COLUMN_VALUE, setup);
             return true;
@@ -107,9 +107,9 @@ public class PropertiesSetup implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(ObjectConfig.SETUP))
+        if (root.hasChild(FeaturableConfig.SETUP))
         {
-            createAttributeSetup(properties, ObjectConfig.imports(configurer));
+            createAttributeSetup(properties, FeaturableConfig.imports(configurer));
         }
     }
 
@@ -117,7 +117,7 @@ public class PropertiesSetup implements PropertiesProviderObject
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         final Object data = item.getData();
-        if (ObjectConfig.SETUP.equals(data))
+        if (FeaturableConfig.SETUP.equals(data))
         {
             return updateSetup(item, configurer);
         }

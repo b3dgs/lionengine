@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.object.feature.launchable} feature.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.launchable} feature.
  */
 package com.b3dgs.lionengine.example.game.projectile;

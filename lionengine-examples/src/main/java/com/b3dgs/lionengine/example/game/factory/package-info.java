@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.object.Factory} with custom object parameter.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.Factory} with custom object parameter.
  */
 package com.b3dgs.lionengine.example.game.factory;

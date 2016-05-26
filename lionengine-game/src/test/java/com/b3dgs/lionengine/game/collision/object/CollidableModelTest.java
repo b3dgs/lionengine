@@ -34,12 +34,12 @@ import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
@@ -74,13 +74,13 @@ public class CollidableModelTest
     }
 
     /**
-     * Create an object test.
+     * Create a featurable test.
      * 
      * @param config The configuration reference.
      * @param services The services reference.
-     * @return The object test.
+     * @return The featurable test.
      */
-    public static FeaturableModel createObject(Media config, Services services)
+    public static FeaturableModel createFeaturable(Media config, Services services)
     {
         final Setup setup = new Setup(config);
         final FeaturableModel featurable = new FeaturableModel();
@@ -90,7 +90,7 @@ public class CollidableModelTest
         transformable.setSize(2, 2);
 
         featurable.addFeature(new CollidableModel(setup));
-        featurable.prepareFeatures(featurable, services);
+        featurable.prepareFeatures(services);
 
         return featurable;
     }
@@ -104,11 +104,11 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final Featurable object1 = createObject(config, services);
-        final Featurable object2 = createObject(config, services);
+        final Featurable featurable1 = createFeaturable(config, services);
+        final Featurable featurable2 = createFeaturable(config, services);
 
-        final Collidable collidable1 = object1.getFeature(Collidable.class);
-        final Collidable collidable2 = object2.getFeature(Collidable.class);
+        final Collidable collidable1 = featurable1.getFeature(Collidable.class);
+        final Collidable collidable2 = featurable2.getFeature(Collidable.class);
 
         Assert.assertNull(collidable1.collide(collidable1));
         Assert.assertNull(collidable2.collide(collidable1));
@@ -128,12 +128,12 @@ public class CollidableModelTest
         Assert.assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
         Assert.assertEquals(collision1, collidable1.getCollisions().iterator().next());
 
-        object2.getFeature(Transformable.class).moveLocation(1.0, 5.0, 5.0);
+        featurable2.getFeature(Transformable.class).moveLocation(1.0, 5.0, 5.0);
         collidable2.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
 
-        object2.getFeature(Transformable.class).moveLocation(1.0, 5.0, 5.0);
+        featurable2.getFeature(Transformable.class).moveLocation(1.0, 5.0, 5.0);
         collidable2.update(1.0);
 
         Assert.assertNull(collidable1.collide(collidable2));
@@ -148,11 +148,11 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final Featurable object1 = createObject(config, services);
-        final Featurable object2 = createObject(config, services);
+        final Featurable featurable1 = createFeaturable(config, services);
+        final Featurable featurable2 = createFeaturable(config, services);
 
-        final Collidable collidable1 = object1.getFeature(Collidable.class);
-        final Collidable collidable2 = object2.getFeature(Collidable.class);
+        final Collidable collidable1 = featurable1.getFeature(Collidable.class);
+        final Collidable collidable2 = featurable2.getFeature(Collidable.class);
 
         final AtomicBoolean auto = new AtomicBoolean();
         collidable1.checkListener(new CollidableListener()
@@ -173,13 +173,13 @@ public class CollidableModelTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
         collidable2.addCollision(collision2);
 
-        object1.getFeature(Transformable.class).teleport(1.0, 1.0);
+        featurable1.getFeature(Transformable.class).teleport(1.0, 1.0);
         collidable1.update(1.0);
         collidable2.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
 
-        object1.getFeature(Transformable.class).teleport(2.0, 2.0);
+        featurable1.getFeature(Transformable.class).teleport(2.0, 2.0);
         collidable1.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
@@ -194,12 +194,12 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final FeaturableModel object1 = createObject(config, services);
+        final FeaturableModel object1 = createFeaturable(config, services);
         final Mirrorable mirror1 = object1.addFeatureAndGet(new MirrorableModel());
         mirror1.mirror(Mirror.HORIZONTAL);
         mirror1.update(1.0);
 
-        final FeaturableModel object2 = createObject(config, services);
+        final FeaturableModel object2 = createFeaturable(config, services);
         final Mirrorable mirror2 = object2.addFeatureAndGet(new MirrorableModel());
         mirror2.mirror(Mirror.VERTICAL);
         mirror2.update(1.0);
@@ -234,8 +234,8 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final Featurable object = createObject(config, services);
-        final Collidable collidable = object.getFeature(Collidable.class);
+        final Featurable featurable = createFeaturable(config, services);
+        final Collidable collidable = featurable.getFeature(Collidable.class);
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable.addCollision(collision);
@@ -258,8 +258,8 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final Featurable object = createObject(config, services);
-        final Collidable collidable = object.getFeature(Collidable.class);
+        final Featurable featurable = createFeaturable(config, services);
+        final Collidable collidable = featurable.getFeature(Collidable.class);
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable.addCollision(collision);
@@ -281,11 +281,11 @@ public class CollidableModelTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final Featurable object = createObject(config, services);
-        object.getFeature(Transformable.class).moveLocation(1.0, 1.0, 1.0);
+        final Featurable featurable = createFeaturable(config, services);
+        featurable.getFeature(Transformable.class).moveLocation(1.0, 1.0, 1.0);
 
         final Graphic g = Graphics.createGraphic();
-        final Collidable collidable = object.getFeature(Collidable.class);
+        final Collidable collidable = featurable.getFeature(Collidable.class);
         collidable.setOrigin(Origin.MIDDLE);
 
         collidable.render(g);

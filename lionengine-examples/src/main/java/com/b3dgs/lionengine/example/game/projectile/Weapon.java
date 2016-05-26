@@ -23,13 +23,13 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.launchable.Launcher;
+import com.b3dgs.lionengine.game.feature.launchable.LauncherListener;
+import com.b3dgs.lionengine.game.feature.launchable.LauncherModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.feature.launchable.Launcher;
-import com.b3dgs.lionengine.game.object.feature.launchable.LauncherListener;
-import com.b3dgs.lionengine.game.object.feature.launchable.LauncherModel;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 
 /**
  * Weapon implementation.

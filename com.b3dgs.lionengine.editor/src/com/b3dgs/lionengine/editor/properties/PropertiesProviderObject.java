@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 
 /**
  * Properties provider interface. Classes which implement this interface must provide the default public constructor.

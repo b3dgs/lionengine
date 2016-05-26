@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.feature.Factory;
 
 /**
  * Allows to check an input text and validate it.

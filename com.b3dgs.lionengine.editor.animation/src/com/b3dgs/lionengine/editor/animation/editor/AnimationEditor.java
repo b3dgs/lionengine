@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.state.AnimationConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 

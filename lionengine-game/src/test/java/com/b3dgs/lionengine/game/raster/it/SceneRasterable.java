@@ -34,11 +34,11 @@ import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.raster.Rasterable;
 import com.b3dgs.lionengine.game.raster.RasterableModel;
 import com.b3dgs.lionengine.game.raster.SetupSurfaceRastered;
@@ -79,13 +79,14 @@ public class SceneRasterable extends Sequence
                                                                     Medias.create("raster.xml"),
                                                                     false);
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
-        final Featurable object = new FeaturableModel();
-        object.addFeature(new MirrorableModel());
-        object.addFeature(new AnimatableModel(surface));
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new MirrorableModel());
+        featurable.addFeature(new AnimatableModel(surface));
+
         final Rasterable rasterable = new RasterableModel(setup, 16);
-        object.addFeature(rasterable);
-        object.addFeature(transformable);
-        object.addFeature(new RefreshableModel(new Updatable()
+        featurable.addFeature(rasterable);
+        featurable.addFeature(transformable);
+        featurable.addFeature(new RefreshableModel(new Updatable()
         {
             @Override
             public void update(double extrp)
@@ -94,7 +95,7 @@ public class SceneRasterable extends Sequence
                 surface.update(extrp);
             }
         }));
-        object.addFeature(new DisplayableModel(new Renderable()
+        featurable.addFeature(new DisplayableModel(new Renderable()
         {
             @Override
             public void render(Graphic g)
@@ -105,7 +106,7 @@ public class SceneRasterable extends Sequence
         }));
 
         transformable.setLocationX(120);
-        handler.add(object);
+        handler.add(featurable);
         camera.setView(0, 0, getWidth(), getHeight());
 
         timing.start();

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 
 /**
  * Disable collisions handler.

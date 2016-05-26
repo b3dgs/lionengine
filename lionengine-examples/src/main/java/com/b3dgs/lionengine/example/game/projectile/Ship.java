@@ -27,21 +27,20 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilRandom;
@@ -147,9 +146,9 @@ class Ship extends FeaturableModel implements CollidableListener
     }
 
     @Override
-    public void prepareFeatures(Featurable owner, Services services)
+    public void prepareFeatures(Services services)
     {
-        super.prepareFeatures(owner, services);
+        super.prepareFeatures(services);
 
         transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
 

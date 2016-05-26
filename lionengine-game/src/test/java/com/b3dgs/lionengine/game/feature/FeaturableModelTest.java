@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Test the featurable model class.
@@ -44,7 +43,7 @@ public class FeaturableModelTest
         Assert.assertTrue(featurable.hasFeature(MyFeatureInterface.class));
         Assert.assertTrue(featurable.hasFeature(MyFeature.class));
 
-        featurable.prepareFeatures(new FeaturableModel(), new Services());
+        featurable.prepareFeatures(new Services());
 
         Assert.assertEquals(feature, featurable.getFeature(MyFeature.class));
         for (final Feature current : featurable.getFeatures())
@@ -69,7 +68,7 @@ public class FeaturableModelTest
 
         Assert.assertTrue(featurable.hasFeature(MyFeatureNotCompatible.class));
 
-        featurable.prepareFeatures(new FeaturableModel(), new Services());
+        featurable.prepareFeatures(new Services());
 
         Assert.assertEquals(feature, featurable.getFeature(MyFeatureNotCompatible.class));
         for (final Feature current : featurable.getFeatures())
@@ -113,7 +112,7 @@ public class FeaturableModelTest
         final Factory factory = services.create(Factory.class);
         final MyFeatureInterface featureModel = new MyFeature();
         featurable.addFeature(featureModel);
-        featurable.prepareFeatures(new FeaturableModel(), services);
+        featurable.prepareFeatures(services);
 
         Assert.assertEquals(factory, filledService.get());
         Assert.assertEquals(factory, filledObject.get());
@@ -146,14 +145,14 @@ public class FeaturableModelTest
         final MyFeatureInterface featureModel = new MyFeature();
         featurable.addFeature(featureModel);
 
-        featurable.prepareFeatures(featurable, services);
+        featurable.prepareFeatures(services);
 
         Assert.assertEquals(factory, filledService.get());
 
         filledService.set(null);
 
         featurable.addFeature(feature);
-        featurable.prepareFeatures(featurable, services);
+        featurable.prepareFeatures(services);
 
         Assert.assertEquals(factory, filledService.get());
     }
@@ -178,7 +177,7 @@ public class FeaturableModelTest
             }
         };
         featurable.addFeature(feature);
-        featurable.prepareFeatures(new FeaturableModel(), new Services());
+        featurable.prepareFeatures(new Services());
     }
 
     /**

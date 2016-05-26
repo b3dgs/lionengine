@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
+    <lionengine:setup>com.b3dgs.lionengine.game.feature.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.tutorials.mario.d.Entity</lionengine:class>
     <lionengine:updater>com.b3dgs.lionengine.tutorials.mario.d.MarioUpdater</lionengine:updater>
     <lionengine:surface image="Mario.png"/>

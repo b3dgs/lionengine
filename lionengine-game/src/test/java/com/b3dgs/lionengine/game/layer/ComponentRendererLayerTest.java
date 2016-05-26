@@ -123,8 +123,8 @@ public class ComponentRendererLayerTest
 
         final AtomicBoolean auto = new AtomicBoolean();
 
-        final Featurable object = new FeaturableModel();
-        object.addFeature(new DisplayableModel(new Renderable()
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new DisplayableModel(new Renderable()
         {
             @Override
             public void render(Graphic g)
@@ -132,8 +132,7 @@ public class ComponentRendererLayerTest
                 auto.set(true);
             }
         }));
-        component.notifyHandlableAdded(object);
-
+        component.notifyHandlableAdded(featurable);
         component.render(null, null);
 
         Assert.assertTrue(auto.get());

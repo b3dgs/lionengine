@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -28,7 +29,6 @@ import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
 
 /**

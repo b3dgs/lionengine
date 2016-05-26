@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**

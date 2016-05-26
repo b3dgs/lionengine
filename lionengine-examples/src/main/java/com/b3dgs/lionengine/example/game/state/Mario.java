@@ -26,20 +26,19 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
+import com.b3dgs.lionengine.game.feature.body.Body;
+import com.b3dgs.lionengine.game.feature.body.BodyModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.body.Body;
-import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
@@ -110,11 +109,11 @@ class Mario extends FeaturableModel
     }
 
     @Override
-    public void prepareFeatures(Featurable owner, Services services)
+    public void prepareFeatures(Services services)
     {
-        super.prepareFeatures(owner, services);
+        super.prepareFeatures(services);
 
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, owner, setup);
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this, setup);
         handler.changeState(MarioState.IDLE);
     }
 

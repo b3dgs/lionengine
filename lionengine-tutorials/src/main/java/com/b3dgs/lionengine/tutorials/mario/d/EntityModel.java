@@ -24,13 +24,13 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
+import com.b3dgs.lionengine.game.feature.body.Body;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
-import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.body.Body;
 
 /**
  * Entity model implementation.

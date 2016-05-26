@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;

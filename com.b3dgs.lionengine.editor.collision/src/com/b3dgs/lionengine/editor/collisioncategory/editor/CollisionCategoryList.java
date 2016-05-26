@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 
 /**
  * Represents the collision category list, allowing to add and remove {@link CollisionCategory}.

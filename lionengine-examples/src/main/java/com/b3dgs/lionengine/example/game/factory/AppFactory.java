@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Main class.

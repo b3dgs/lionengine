@@ -24,11 +24,11 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**

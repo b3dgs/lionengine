@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 
 /**
  * Mario model implementation.

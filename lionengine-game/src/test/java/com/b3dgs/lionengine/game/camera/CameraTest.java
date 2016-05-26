@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**

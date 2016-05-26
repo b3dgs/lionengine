@@ -33,14 +33,14 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
  * Test the map tile collision model class.
@@ -107,7 +107,7 @@ public class MapTileCollisionModelTest
     {
         services.add(new Camera());
         map.addFeature(new MapTileGroupModel());
-        map.prepareFeatures(map, services);
+        map.prepareFeatures(services);
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
@@ -278,7 +278,7 @@ public class MapTileCollisionModelTest
         final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(setup));
         collidable.setEnabled(true);
 
-        object.prepareFeatures(object, services);
+        object.prepareFeatures(services);
 
         return transformable;
     }

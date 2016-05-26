@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRenderer;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
@@ -40,7 +41,6 @@ import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 

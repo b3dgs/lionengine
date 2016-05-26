@@ -28,15 +28,13 @@ public interface Featurable
 {
     /**
      * Prepare all added feature. Must be called before feature usage. Does nothing for already prepared features.
-     * 
-     * @param owner The owner reference.
      * @param services The services reference.
      */
-    void prepareFeatures(Featurable owner, Services services);
+    void prepareFeatures(Services services);
 
     /**
      * Add a feature for external processing. Caution : at this point the feature may not be completely usable. A call
-     * to {@link #prepareFeatures(Featurable, Services)} is required for a full usage.
+     * to {@link #prepareFeatures(Services)} is required for a full usage.
      * 
      * @param feature The feature to add.
      */

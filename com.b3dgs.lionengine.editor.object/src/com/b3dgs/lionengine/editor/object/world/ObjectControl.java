@@ -30,14 +30,14 @@ import com.b3dgs.lionengine.editor.object.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.util.UtilMath;
@@ -84,7 +84,7 @@ public class ObjectControl
     public void updateMouseOver(int mx, int my)
     {
         resetMouseOver();
-        final ObjectRepresentation object = getObject(mx, my);
+        final ObjectRepresentation object = getFeaturable(mx, my);
         if (object != null)
         {
             setMouseOver(object, true);
@@ -162,17 +162,17 @@ public class ObjectControl
     }
 
     /**
-     * Remove the object at the specified location if exists.
+     * Remove the featurable at the specified location if exists.
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
     public void removeFrom(int mx, int my)
     {
-        final Featurable object = getObject(mx, my);
-        if (object != null)
+        final Featurable featurable = getFeaturable(mx, my);
+        if (featurable != null)
         {
-            object.getFeature(Identifiable.class).destroy();
+            featurable.getFeature(Identifiable.class).destroy();
         }
     }
 
@@ -233,7 +233,7 @@ public class ObjectControl
      * @param my The mouse vertical location.
      * @return The object reference, <code>null</code> if none.
      */
-    public ObjectRepresentation getObject(int mx, int my)
+    public ObjectRepresentation getFeaturable(int mx, int my)
     {
         for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
         {

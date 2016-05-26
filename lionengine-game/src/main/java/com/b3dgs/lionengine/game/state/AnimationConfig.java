@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

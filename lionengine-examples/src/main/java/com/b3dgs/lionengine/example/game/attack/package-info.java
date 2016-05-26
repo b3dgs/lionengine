@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.object.feature.attackable.Attacker} feature.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.attackable.Attacker} feature.
  */
 package com.b3dgs.lionengine.example.game.attack;

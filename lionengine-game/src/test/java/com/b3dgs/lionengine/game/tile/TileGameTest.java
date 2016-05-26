@@ -23,7 +23,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.tile.TileCollision;
 import com.b3dgs.lionengine.game.collision.tile.TileCollisionModel;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -87,7 +86,7 @@ public class TileGameTest
         final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
         final TileCollision feature = new TileCollisionModel(tile);
         tile.addFeature(feature);
-        tile.prepareFeatures(new FeaturableModel(), new Services());
+        tile.prepareFeatures(new Services());
 
         Assert.assertEquals(Integer.valueOf(0), tile.getSheet());
         Assert.assertEquals(1, tile.getNumber());

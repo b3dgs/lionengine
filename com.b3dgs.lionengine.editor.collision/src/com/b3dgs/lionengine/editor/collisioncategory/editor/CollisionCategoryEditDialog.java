@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

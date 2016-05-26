@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.object.ObjectConfig;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -59,7 +59,7 @@ public final class ObjectsTester extends PropertyTester
     }
 
     /**
-     * Get the class from media file, by reading the attribute {@link ObjectConfig#CLASS} attribute.
+     * Get the class from media file, by reading the attribute {@link FeaturableConfig#CLASS} attribute.
      * 
      * @param media The media descriptor.
      * @return The class reference.
@@ -68,7 +68,7 @@ public final class ObjectsTester extends PropertyTester
     private static Class<?> get(Media media)
     {
         final XmlNode root = Xml.load(media);
-        final String className = root.getChild(ObjectConfig.CLASS).getText();
+        final String className = root.getChild(FeaturableConfig.CLASS).getText();
         return ProjectModel.INSTANCE.getProject().getLoader().getClass(className);
     }
 

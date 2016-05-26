@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -98,8 +98,8 @@ public class StateAnimationBasedTest
         handler.addInput(new InputDirectionalMock());
         handler.addInput(new InputPointerMock());
 
-        final Featurable object = new FeaturableModel();
-        StateAnimationBased.Util.loadStates(StateType.values(), factory, object, new Setup(media));
+        final Featurable featurable = new FeaturableModel();
+        StateAnimationBased.Util.loadStates(StateType.values(), factory, featurable, new Setup(media));
 
         handler.changeState(StateType.IDLE);
 
@@ -116,7 +116,7 @@ public class StateAnimationBasedTest
     @Test(expected = LionEngineException.class)
     public void testUtilError()
     {
-        final Featurable object = new FeaturableModel();
-        StateAnimationBased.Util.loadStates(StateTypeError.values(), new StateFactory(), object, new Setup(media));
+        final Featurable featurable = new FeaturableModel();
+        StateAnimationBased.Util.loadStates(StateTypeError.values(), new StateFactory(), featurable, new Setup(media));
     }
 }

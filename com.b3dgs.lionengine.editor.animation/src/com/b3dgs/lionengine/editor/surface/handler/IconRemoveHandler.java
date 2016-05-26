@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.SurfaceConfig;
+import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.game.feature.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

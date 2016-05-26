@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
@@ -40,7 +41,6 @@ import com.b3dgs.lionengine.game.map.feature.fog.FogOfWar;
 import com.b3dgs.lionengine.game.map.feature.fog.Fovable;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**

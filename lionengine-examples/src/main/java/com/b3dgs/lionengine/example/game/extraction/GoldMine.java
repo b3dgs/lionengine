@@ -22,20 +22,19 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.extractable.Extractable;
+import com.b3dgs.lionengine.game.feature.extractable.ExtractableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.extractable.Extractable;
-import com.b3dgs.lionengine.game.object.feature.extractable.ExtractableModel;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -79,9 +78,9 @@ class GoldMine extends FeaturableModel
     }
 
     @Override
-    public void prepareFeatures(Featurable owner, Services services)
+    public void prepareFeatures(Services services)
     {
-        super.prepareFeatures(owner, services);
+        super.prepareFeatures(services);
 
         pathfindable.setLocation(21, 14);
     }

@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.object.feature.actionable.Actionable} feature.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.actionable.Actionable} feature.
  */
 package com.b3dgs.lionengine.example.game.action;

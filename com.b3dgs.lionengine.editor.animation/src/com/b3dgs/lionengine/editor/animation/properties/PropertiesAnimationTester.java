@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.animation.properties;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.feature.FramesConfig;
 import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**

@@ -22,26 +22,25 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Represents something designed to keep references on main types, such as:
  * <ul>
- * <li>{@link com.b3dgs.lionengine.game.object.Factory}</li>
+ * <li>{@link Factory}</li>
  * <li>{@link com.b3dgs.lionengine.game.handler.Handler}</li>
  * <li>{@link com.b3dgs.lionengine.game.camera.Camera}</li>
  * <li>{@link com.b3dgs.lionengine.game.Cursor}</li>
  * <li>...</li>
  * </ul>
  * <p>
- * in order to access to them from the object instance (created by a {@link com.b3dgs.lionengine.game.object.Factory} in
- * constructor with {@link Setup} type as single argument).
+ * in order to access to them from the object instance (created by a {@link Factory} in constructor with {@link Setup}
+ * type as single argument).
  * </p>
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
  * {@link LionEngineException} when calling
- * {@link com.b3dgs.lionengine.game.object.Factory#create(com.b3dgs.lionengine.Media)}.
+ * {@link Factory#create(com.b3dgs.lionengine.Media)}.
  * </p>
  * <p>
  * Usage example:

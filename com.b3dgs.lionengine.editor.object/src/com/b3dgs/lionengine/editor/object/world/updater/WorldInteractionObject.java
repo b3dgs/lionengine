@@ -108,7 +108,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private void selectObject(int mx, int my)
     {
         objectControl.unselectObjects();
-        final ObjectRepresentation object = objectControl.getObject(mx, my);
+        final ObjectRepresentation object = objectControl.getFeaturable(mx, my);
         if (object != null)
         {
             objectControl.setObjectSelection(object, true);
@@ -127,7 +127,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
      */
     private void startSelection(int mx, int my)
     {
-        final Featurable featurable = objectControl.getObject(mx, my);
+        final Featurable featurable = objectControl.getFeaturable(mx, my);
         selection.reset();
 
         if (objectControl.hasSelection() && featurable == null)

@@ -26,14 +26,14 @@ import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.launchable.Launchable;
+import com.b3dgs.lionengine.game.feature.launchable.LaunchableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.launchable.Launchable;
-import com.b3dgs.lionengine.game.object.feature.launchable.LaunchableModel;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**

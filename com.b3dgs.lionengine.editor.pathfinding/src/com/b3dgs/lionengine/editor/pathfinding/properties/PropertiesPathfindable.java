@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.pathfinding.properties.editor.PathfindableEditor;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 

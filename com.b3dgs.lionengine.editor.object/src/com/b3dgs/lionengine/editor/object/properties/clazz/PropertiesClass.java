@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.ObjectConfig;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -49,11 +49,11 @@ public class PropertiesClass implements PropertiesProviderObject
      * @param properties The properties tree reference.
      * @param configObject The configObject reference.
      */
-    private static void createAttributeClass(Tree properties, ObjectConfig configObject)
+    private static void createAttributeClass(Tree properties, FeaturableConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(classItem, Messages.Class, configObject.getClassName());
-        classItem.setData(ObjectConfig.CLASS);
+        classItem.setData(FeaturableConfig.CLASS);
         classItem.setImage(ICON_CLASS);
     }
 
@@ -83,7 +83,7 @@ public class PropertiesClass implements PropertiesProviderObject
         if (clazz != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode classeNode = root.getChild(ObjectConfig.CLASS);
+            final XmlNode classeNode = root.getChild(FeaturableConfig.CLASS);
             classeNode.setText(clazz);
             item.setText(PropertiesPart.COLUMN_VALUE, clazz);
             return true;
@@ -107,9 +107,9 @@ public class PropertiesClass implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(ObjectConfig.CLASS))
+        if (root.hasChild(FeaturableConfig.CLASS))
         {
-            createAttributeClass(properties, ObjectConfig.imports(configurer));
+            createAttributeClass(properties, FeaturableConfig.imports(configurer));
         }
     }
 
@@ -117,7 +117,7 @@ public class PropertiesClass implements PropertiesProviderObject
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         final Object data = item.getData();
-        if (ObjectConfig.CLASS.equals(data))
+        if (FeaturableConfig.CLASS.equals(data))
         {
             return updateClass(item, configurer);
         }

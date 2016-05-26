@@ -24,14 +24,13 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -76,9 +75,9 @@ class Peon extends FeaturableModel implements Updatable, Renderable
     }
 
     @Override
-    public void prepareFeatures(Featurable owner, Services services)
+    public void prepareFeatures(Services services)
     {
-        super.prepareFeatures(owner, services);
+        super.prepareFeatures(services);
 
         pathfindable.setSpeed(5.0, 5.0);
         pathfindable.setDestination(28, 8);

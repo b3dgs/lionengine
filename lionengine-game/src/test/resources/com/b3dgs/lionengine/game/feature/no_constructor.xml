@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.game.feature.ObjectNoConstructor</lionengine:class>
+    <lionengine:setup>com.b3dgs.lionengine.game.feature.Setup</lionengine:setup>
+</lionengine:object>

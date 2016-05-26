@@ -37,10 +37,10 @@ public class StateIdle extends StateTest implements StateInputDirectionalUpdater
     /**
      * Create the state.
      * 
-     * @param object The object reference.
+     * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateIdle(@SuppressWarnings("unused") Featurable object, @SuppressWarnings("unused") Animation animation)
+    public StateIdle(@SuppressWarnings("unused") Featurable featurable, @SuppressWarnings("unused") Animation animation)
     {
         super(StateType.IDLE);
         addTransition(new TransitionIdleToWalk());

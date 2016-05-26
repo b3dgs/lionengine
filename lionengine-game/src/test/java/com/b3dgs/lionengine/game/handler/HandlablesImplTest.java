@@ -33,15 +33,15 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 
 /**
  * Test the featurables.
@@ -129,7 +129,7 @@ public class HandlablesImplTest
     {
         final Mirrorable mirrorable = new MirrorableModel();
         object.addFeatureAndGet(mirrorable);
-        object.prepareFeatures(object, new Services());
+        object.prepareFeatures(new Services());
         featurables.add(object);
 
         Assert.assertEquals(mirrorable, featurables.get(Mirrorable.class).iterator().next());
@@ -150,7 +150,7 @@ public class HandlablesImplTest
         final Featurable complex = new ObjectComplex();
         complex.addFeature(new MirrorableModel());
         complex.addFeature(new TransformableModel(setup));
-        complex.prepareFeatures(complex, new Services());
+        complex.prepareFeatures(new Services());
         featurables.add(complex);
 
         int i = 0;
@@ -170,7 +170,7 @@ public class HandlablesImplTest
     {
         final Featurable inheritance = new ObjectComplex();
         inheritance.addFeature(new FeatureLevel2());
-        inheritance.prepareFeatures(inheritance, new Services());
+        inheritance.prepareFeatures(new Services());
         featurables.add(inheritance);
 
         int i = 0;

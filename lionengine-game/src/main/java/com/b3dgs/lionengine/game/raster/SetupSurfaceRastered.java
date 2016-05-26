@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.feature.FramesConfig;
+import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Raster;
 import com.b3dgs.lionengine.util.UtilConversion;
@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.util.UtilConversion;
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
- * @see com.b3dgs.lionengine.game.object.Configurer
+ * @see com.b3dgs.lionengine.game.feature.Configurer
  */
 public class SetupSurfaceRastered extends SetupSurface
 {

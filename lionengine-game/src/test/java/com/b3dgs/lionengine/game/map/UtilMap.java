@@ -82,7 +82,7 @@ public class UtilMap
         map.addFeature(mapGroup);
         map.addFeature(new MapTileTransitionModel(services));
         map.addFeature(new MapTileCircuitModel(services));
-        map.prepareFeatures(map, services);
+        map.prepareFeatures(services);
         map.create(1, 1, size, size);
 
         setGroups(map);

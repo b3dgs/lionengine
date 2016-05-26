@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 
 /**
  * Start collisions editor handler.

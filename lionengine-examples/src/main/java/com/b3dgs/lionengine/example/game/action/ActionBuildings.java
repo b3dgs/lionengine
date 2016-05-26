@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Service;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Buildings action implementation.

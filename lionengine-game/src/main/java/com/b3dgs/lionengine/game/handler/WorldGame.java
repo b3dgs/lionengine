@@ -27,8 +27,8 @@ import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Default world model, designed to contain game elements ({@link com.b3dgs.lionengine.game.map.MapTile},
- * {@link com.b3dgs.lionengine.game.handler.Handler}, {@link com.b3dgs.lionengine.game.object.Factory}...).
+ * {@link com.b3dgs.lionengine.game.handler.Handler}, {@link com.b3dgs.lionengine.game.feature.Factory}...).
  * <p>
  * It contains different elements, such as:
  * </p>

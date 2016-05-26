@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.object.feature.assignable.Assignable} feature.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.assignable.Assignable} feature.
  */
 package com.b3dgs.lionengine.example.game.assign;

@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
@@ -236,7 +236,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         {
             tileCollision = new TileCollisionModel(tile);
             tile.addFeature(tileCollision);
-            tile.prepareFeatures(map, services);
+            tile.prepareFeatures(services);
         }
         else
         {

@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.object.Configurer;
-import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.SizeConfig;
-import com.b3dgs.lionengine.game.object.SurfaceConfig;
+import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.game.feature.FramesConfig;
+import com.b3dgs.lionengine.game.feature.SizeConfig;
+import com.b3dgs.lionengine.game.feature.SurfaceConfig;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.stream.XmlNode;
 

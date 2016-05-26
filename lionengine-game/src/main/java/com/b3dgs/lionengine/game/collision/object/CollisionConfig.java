@@ -23,7 +23,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.Configurer;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
