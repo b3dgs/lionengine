@@ -61,7 +61,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     public ActionableModel(Setup setup)
     {
         super();
-        final ActionConfig config = ActionConfig.imports(setup.getConfigurer().getRoot());
+        final ActionConfig config = ActionConfig.imports(setup);
         button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
     }

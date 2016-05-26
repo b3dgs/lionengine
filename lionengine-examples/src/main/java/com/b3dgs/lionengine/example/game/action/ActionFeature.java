@@ -39,12 +39,19 @@ class ActionFeature extends FeatureModel implements Action
     {
         super();
 
-        name = ActionConfig.imports(setup.getConfigurer().getRoot()).getName();
+        name = ActionConfig.imports(setup).getName();
     }
 
     @Override
     public void execute()
     {
         Verbose.info(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Button getOwner()
+    {
+        return super.getOwner();
     }
 }

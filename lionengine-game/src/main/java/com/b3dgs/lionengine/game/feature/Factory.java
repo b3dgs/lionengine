@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -71,6 +73,12 @@ public class Factory
     /**
      * Create a featurable from its {@link Media} using a generic way. The concerned class to instantiate and its
      * constructor must be public, and can have the following parameter: ({@link Setup}).
+     * <p>
+     * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
+     * </p>
+     * <p>
+     * {@link Featurable#prepareFeatures(Services)} is automatically called.
+     * </p>
      * 
      * @param <O> The featurable type.
      * @param media The featurable media.
@@ -94,6 +102,12 @@ public class Factory
     /**
      * Create a featurable from its {@link Media} using a generic way. The concerned class to instantiate and its
      * constructor must be public, and can have the following parameter: ({@link Setup}).
+     * <p>
+     * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
+     * </p>
+     * <p>
+     * {@link Featurable#prepareFeatures(Services)} is automatically called.
+     * </p>
      * 
      * @param <O> The featurable type.
      * @param media The featurable media.
@@ -198,20 +212,31 @@ public class Factory
             {
                 setup.getClass()
             }, setup);
-            if (!featurable.isPrepared())
-            {
-                featurable.prepareFeatures(services);
-            }
+            prepare(featurable);
             return featurable;
         }
         catch (final NoSuchMethodException exception)
         {
             final O featurable = UtilReflection.create(type, new Class<?>[0]);
-            if (!featurable.isPrepared())
-            {
-                featurable.prepareFeatures(services);
-            }
+            prepare(featurable);
             return featurable;
+        }
+    }
+
+    /**
+     * Prepare the featurable.
+     * 
+     * @param featurable The featurable to prepare.
+     */
+    private void prepare(Featurable featurable)
+    {
+        if (!featurable.hasFeature(Identifiable.class))
+        {
+            featurable.addFeature(new IdentifiableModel());
+        }
+        if (!featurable.isPrepared())
+        {
+            featurable.prepareFeatures(services);
         }
     }
 }

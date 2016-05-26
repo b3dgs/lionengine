@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.actionable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -44,6 +45,18 @@ public final class ActionConfig
     public static final String ATT_WIDTH = "width";
     /** Action attribute height. */
     public static final String ATT_HEIGHT = "height";
+
+    /**
+     * Import the action data from setup.
+     *
+     * @param setup The setup reference.
+     * @return The action data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static ActionConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
 
     /**
      * Import the action data from node.

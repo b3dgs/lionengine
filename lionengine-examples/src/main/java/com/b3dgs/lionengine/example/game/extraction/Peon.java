@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.extractable.ExtractorChecker;
 import com.b3dgs.lionengine.game.feature.extractable.ExtractorListener;
 import com.b3dgs.lionengine.game.feature.extractable.ExtractorModel;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
@@ -65,7 +64,6 @@ class Peon extends FeaturableModel implements ExtractorChecker, ExtractorListene
     {
         super();
 
-        addFeature(new IdentifiableModel());
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(208, 160);
 

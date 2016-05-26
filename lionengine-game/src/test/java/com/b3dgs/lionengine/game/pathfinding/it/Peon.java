@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
@@ -61,7 +60,6 @@ class Peon extends FeaturableModel implements Updatable, Renderable
     {
         super();
 
-        addFeature(new IdentifiableModel());
         transformable = addFeatureAndGet(new TransformableModel(setup));
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 

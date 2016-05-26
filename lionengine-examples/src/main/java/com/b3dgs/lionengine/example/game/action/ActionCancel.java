@@ -46,6 +46,6 @@ class ActionCancel extends ActionFeature
         final Button buildings = factory.create(Button.BUILDINGS);
         handler.add(buildings);
 
-        ((Button) getOwner()).terminate();
+        getOwner().terminate();
     }
 }

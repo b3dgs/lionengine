@@ -54,6 +54,6 @@ class ActionBuildings extends ActionFeature
         cancel.addToDelete(buildBarracks);
         handler.add(buildBarracks);
 
-        ((Button) getOwner()).terminate();
+        getOwner().terminate();
     }
 }

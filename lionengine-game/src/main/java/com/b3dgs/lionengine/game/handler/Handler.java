@@ -129,6 +129,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>
+     * <p>
+     * {@link Featurable#prepareFeatures(Services)} is automatically called.
+     * </p>
      * 
      * @param featurable The featurable to add.
      */

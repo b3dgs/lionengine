@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
@@ -58,7 +57,6 @@ class Peon extends FeaturableModel
     {
         super();
 
-        addFeature(new IdentifiableModel());
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(208, 224);
 
