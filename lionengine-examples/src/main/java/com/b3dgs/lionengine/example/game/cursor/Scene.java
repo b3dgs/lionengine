@@ -51,30 +51,18 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Text reference. */
     private final TextGame text = new TextGame(Text.DIALOG, 9, TextStyle.NORMAL);
-    /** Services reference. */
     private final Services services = new Services();
-    /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
-    /** Cursor reference. */
     private final Cursor cursor = services.create(Cursor.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map reference. */
     private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-    /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** Map transition extractor. */
     private final MapTransitionExtractor transitionExtractor = new MapTransitionExtractor(map);
-    /** Map transition extractor. */
     private final MapCircuitExtractor circuitExtractor = new MapCircuitExtractor(map);
 
     /**

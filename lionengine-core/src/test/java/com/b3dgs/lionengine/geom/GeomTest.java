@@ -120,8 +120,8 @@ public class GeomTest
         Assert.assertEquals(rectangle.getMaxX(), rectangleCopy.getMaxX(), UtilTests.PRECISION);
         Assert.assertEquals(rectangle.getMinY(), rectangleCopy.getMinY(), UtilTests.PRECISION);
         Assert.assertEquals(rectangle.getMaxY(), rectangleCopy.getMaxY(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getWidth(), rectangleCopy.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getHeight(), rectangleCopy.getHeight(), UtilTests.PRECISION);
+        Assert.assertEquals(rectangle.getWidthReal(), rectangleCopy.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(rectangle.getHeightReal(), rectangleCopy.getHeightReal(), UtilTests.PRECISION);
 
         rectangleCopy.translate(2.0, 3.0);
         Assert.assertEquals(rectangle.getX() + 2.0, rectangleCopy.getX(), UtilTests.PRECISION);

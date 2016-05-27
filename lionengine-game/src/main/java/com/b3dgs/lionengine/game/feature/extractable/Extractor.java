@@ -34,6 +34,13 @@ public interface Extractor extends Feature, Updatable
     void addListener(ExtractorListener listener);
 
     /**
+     * Set the extractor checker.
+     * 
+     * @param checker The extractor checker reference.
+     */
+    void setChecker(ExtractorChecker checker);
+
+    /**
      * Set the resources location.
      * 
      * @param extractable The extractable resource.

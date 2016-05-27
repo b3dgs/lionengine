@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Shape;
 
 /**
  * Rectangle interface.
  */
-public interface Rectangle extends Localizable
+public interface Rectangle extends Shape
 {
     /**
      * Check if the rectangle intersects the other.
@@ -96,16 +96,16 @@ public interface Rectangle extends Localizable
     double getMaxY();
 
     /**
-     * Get the width.
+     * Get the real width.
      * 
-     * @return The width.
+     * @return The real width.
      */
-    double getWidth();
+    double getWidthReal();
 
     /**
-     * Get the width.
+     * Get the real width.
      * 
-     * @return The width.
+     * @return The real width.
      */
-    double getHeight();
+    double getHeightReal();
 }

@@ -96,8 +96,8 @@ public class ActionableModelTest
         final Rectangle boutton = actionable.getButton();
         Assert.assertEquals(rectangle.getX(), boutton.getX(), UtilTests.PRECISION);
         Assert.assertEquals(rectangle.getY(), boutton.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getWidth(), boutton.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getHeight(), boutton.getHeight(), UtilTests.PRECISION);
+        Assert.assertEquals(rectangle.getWidthReal(), boutton.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(rectangle.getHeightReal(), boutton.getHeightReal(), UtilTests.PRECISION);
     }
 
     /**

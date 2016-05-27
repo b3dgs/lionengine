@@ -44,13 +44,12 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Peon entity implementation.
  */
-class Peon extends FeaturableModel implements ExtractorChecker, ExtractorListener
+class Peon extends FeaturableModel implements ExtractorListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     private final Pathfindable pathfindable;
-    private final Extractor extractor = addFeatureAndGet(new ExtractorModel());
     private boolean visible = true;
 
     @Service private Viewer viewer;
@@ -74,9 +73,27 @@ class Peon extends FeaturableModel implements ExtractorChecker, ExtractorListene
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
+        final Extractor extractor = addFeatureAndGet(new ExtractorModel());
         extractor.setExtractionPerSecond(1.0);
         extractor.setDropOffPerSecond(1.0);
         extractor.setCapacity(5);
+        extractor.setChecker(new ExtractorChecker()
+        {
+            @Override
+            public boolean canExtract()
+            {
+                return UtilMath.getDistance(pathfindable.getInTileX(),
+                                            pathfindable.getInTileY(),
+                                            extractor.getResourceLocation().getInTileX(),
+                                            extractor.getResourceLocation().getInTileY()) < 2;
+            }
+
+            @Override
+            public boolean canCarry()
+            {
+                return true;
+            }
+        });
 
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
@@ -94,21 +111,6 @@ class Peon extends FeaturableModel implements ExtractorChecker, ExtractorListene
                 surface.render(g);
             }
         }));
-    }
-
-    @Override
-    public boolean canExtract()
-    {
-        return UtilMath.getDistance(pathfindable.getInTileX(),
-                                    pathfindable.getInTileY(),
-                                    extractor.getResourceLocation().getInTileX(),
-                                    extractor.getResourceLocation().getInTileY()) < 2;
-    }
-
-    @Override
-    public boolean canCarry()
-    {
-        return true;
     }
 
     @Override

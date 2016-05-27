@@ -52,8 +52,8 @@ public class UtilActionnable
                                                      description,
                                                      (int) rectangle.getX(),
                                                      (int) rectangle.getY(),
-                                                     (int) rectangle.getWidth(),
-                                                     (int) rectangle.getHeight());
+                                                     rectangle.getWidth(),
+                                                     rectangle.getHeight());
         final XmlNode root = Xml.create("test");
         root.add(ActionConfig.exports(action));
         Xml.save(root, media);

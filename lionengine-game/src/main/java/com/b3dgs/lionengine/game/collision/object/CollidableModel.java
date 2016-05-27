@@ -121,8 +121,8 @@ public class CollidableModel extends FeatureModel implements Collidable
     {
         final double sh = rectangle.getX();
         final double sv = rectangle.getY();
-        final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidth()) - sh;
-        final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeight()) - sv;
+        final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidthReal()) - sh;
+        final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeightReal()) - sv;
         final double norm = Math.sqrt(dh * dh + dv * dv);
         final double sx = dh / norm;
         final double sy = dv / norm;

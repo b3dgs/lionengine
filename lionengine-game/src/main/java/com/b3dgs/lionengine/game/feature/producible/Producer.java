@@ -36,6 +36,13 @@ public interface Producer extends Feature, Updatable
     void addListener(ProducerListener listener);
 
     /**
+     * Set the production checker.
+     * 
+     * @param checker The production checker reference.
+     */
+    void setChecker(ProducerChecker checker);
+
+    /**
      * Add an element to the production queue. It works as a FIFO (First In, First Out). Production will be stopped when
      * the list is empty. In this case, getProductionProgress() will return -1. Production list stores only entity name.
      * 

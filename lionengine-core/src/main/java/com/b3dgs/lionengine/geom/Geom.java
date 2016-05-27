@@ -183,7 +183,10 @@ public final class Geom
     public static Rectangle createRectangle(Rectangle rectangle)
     {
         Check.notNull(rectangle);
-        return new RectangleImpl(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+        return new RectangleImpl(rectangle.getX(),
+                                 rectangle.getY(),
+                                 rectangle.getWidthReal(),
+                                 rectangle.getHeightReal());
     }
 
     /**

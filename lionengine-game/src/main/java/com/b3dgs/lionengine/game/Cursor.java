@@ -115,6 +115,8 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     private int offX;
     /** Location offset y. */
     private int offY;
+    /** Visibility flag. */
+    private boolean visible = true;
 
     /**
      * Create a cursor.
@@ -260,6 +262,16 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         Check.superiorStrict(height, 0);
         gridWidth = width;
         gridHeight = height;
+    }
+
+    /**
+     * Set the visibility.
+     * 
+     * @param visible <code>true</code> to show, <code>false</code> to hide.
+     */
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
     }
 
     /**
@@ -435,7 +447,10 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     @Override
     public void render(Graphic g)
     {
-        surface.render(g);
+        if (visible)
+        {
+            surface.render(g);
+        }
     }
 
     /*

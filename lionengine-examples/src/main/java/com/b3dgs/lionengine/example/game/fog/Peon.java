@@ -38,11 +38,11 @@ import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
- * Peon entity implementation.
+ * Peon implementation.
  */
 class Peon extends FeaturableModel
 {
-    /** Setup reference. */
+    /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     @Service private Viewer viewer;
@@ -62,15 +62,15 @@ class Peon extends FeaturableModel
         final Fovable fovable = addFeatureAndGet(new FovableModel());
         fovable.setFov(3);
 
-        final Timing timing = new Timing();
-        timing.start();
-
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(64, 64);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
+
+        final Timing timing = new Timing();
+        timing.start();
 
         addFeature(new RefreshableModel(extrp ->
         {

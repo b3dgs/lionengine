@@ -53,7 +53,6 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
     private final Services services = new Services();

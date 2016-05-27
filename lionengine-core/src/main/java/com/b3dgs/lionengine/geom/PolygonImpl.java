@@ -88,20 +88,20 @@ final class PolygonImpl implements Polygon
         final double nh;
         if (x < bounds.getX())
         {
-            nw = bounds.getWidth() + (bounds.getX() - x);
+            nw = bounds.getWidthReal() + (bounds.getX() - x);
         }
         else
         {
-            nw = Math.max(bounds.getWidth(), x - bounds.getX());
+            nw = Math.max(bounds.getWidthReal(), x - bounds.getX());
         }
 
         if (y < bounds.getY())
         {
-            nh = bounds.getHeight() + (bounds.getY() - y);
+            nh = bounds.getHeightReal() + (bounds.getY() - y);
         }
         else
         {
-            nh = Math.max(bounds.getHeight(), y - bounds.getY());
+            nh = Math.max(bounds.getHeightReal(), y - bounds.getY());
         }
         bounds.set(x, y, nw, nh);
     }

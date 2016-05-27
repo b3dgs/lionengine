@@ -98,6 +98,7 @@ class BuildButton extends FeaturableModel
                                         UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
                                         size.getWidth(),
                                         size.getHeight());
+            cursor.setVisible(false);
         });
 
         assignable.setAssign(() ->
@@ -117,6 +118,7 @@ class BuildButton extends FeaturableModel
             }
             area = null;
             state = actionable;
+            cursor.setVisible(true);
         });
 
         final Image image = Drawable.loadImage(setup.getSurface());
@@ -129,12 +131,12 @@ class BuildButton extends FeaturableModel
                 text.setText(actionable.getDescription());
             }
             state.update(extrp);
-            if (area != null)
+            if (area != null && viewer.isViewable(cursor, 0, 0))
             {
                 area.set(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
                          UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
-                         area.getWidth(),
-                         area.getHeight());
+                         area.getWidthReal(),
+                         area.getHeightReal());
             }
         }));
 
@@ -144,13 +146,7 @@ class BuildButton extends FeaturableModel
             if (area != null)
             {
                 g.setColor(ColorRgba.GREEN);
-                g.drawRect(viewer,
-                           Origin.TOP_LEFT,
-                           area.getX(),
-                           area.getY(),
-                           (int) area.getWidth(),
-                           (int) area.getHeight(),
-                           false);
+                g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), area.getWidth(), area.getHeight(), false);
             }
         }));
     }

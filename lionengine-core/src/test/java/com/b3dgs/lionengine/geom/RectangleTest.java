@@ -109,8 +109,8 @@ public class RectangleTest
         Assert.assertEquals(1.0, rectangle.getMinY(), UtilTests.PRECISION);
         Assert.assertEquals(6.0, rectangle.getMaxX(), UtilTests.PRECISION);
         Assert.assertEquals(6.0, rectangle.getMaxY(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, rectangle.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, rectangle.getHeight(), UtilTests.PRECISION);
+        Assert.assertEquals(5.0, rectangle.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(5.0, rectangle.getHeightReal(), UtilTests.PRECISION);
     }
 
     /**
@@ -128,8 +128,8 @@ public class RectangleTest
         Assert.assertEquals(3.0, rectangle.getMinY(), UtilTests.PRECISION);
         Assert.assertEquals(7.0, rectangle.getMaxX(), UtilTests.PRECISION);
         Assert.assertEquals(8.0, rectangle.getMaxY(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, rectangle.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, rectangle.getHeight(), UtilTests.PRECISION);
+        Assert.assertEquals(5.0, rectangle.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(5.0, rectangle.getHeightReal(), UtilTests.PRECISION);
     }
 
     /**

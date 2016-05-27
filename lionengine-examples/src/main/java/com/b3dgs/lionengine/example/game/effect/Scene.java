@@ -72,7 +72,7 @@ class Scene extends Sequence
         if (mouse.hasClicked(Mouse.LEFT))
         {
             final Effect effect = factory.create(Effect.EXPLODE);
-            effect.start(camera.getViewpointX(mouse.getX()), camera.getViewpointY(mouse.getY()));
+            effect.start(mouse);
             handler.add(effect);
         }
         handler.update(extrp);

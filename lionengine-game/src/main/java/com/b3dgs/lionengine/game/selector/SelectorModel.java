@@ -151,7 +151,7 @@ public class SelectorModel extends FeatureModel implements SelectorConfigurer
     @Override
     public void setClickableArea(Rectangle area)
     {
-        clickableArea.set(area.getX(), area.getY(), area.getWidth(), area.getHeight());
+        clickableArea.set(area.getX(), area.getY(), area.getWidthReal(), area.getHeightReal());
     }
 
     @Override

@@ -85,7 +85,7 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
         {
             final Rectangle selectionArea = model.getSelectionArea();
             final int x = (int) (selectionArea.getX() - viewer.getX());
-            final int w = (int) selectionArea.getWidth();
+            final int w = selectionArea.getWidth();
             int y = (int) (viewer.getY() + viewer.getHeight() - model.getSelectRawY());
             int h = (int) model.getSelectRawH();
             if (h < 0)

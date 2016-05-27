@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -38,7 +39,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
- * Effect base implementation.
+ * Effect implementation.
  */
 class Effect extends FeaturableModel
 {
@@ -85,13 +86,12 @@ class Effect extends FeaturableModel
     /**
      * Start the effect at the specified location.
      * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param pointer The pointer reference.
      */
-    public void start(double x, double y)
+    public void start(InputDevicePointer pointer)
     {
-        transformable.teleport(x, y);
-        surface.setLocation(viewer.getViewpointX(transformable.getX()), viewer.getViewpointY(transformable.getY()));
+        transformable.teleport(viewer.getViewpointX(pointer.getX()), viewer.getViewpointY(pointer.getY()));
+        surface.setLocation(viewer, transformable);
         surface.play(animExplode);
     }
 }

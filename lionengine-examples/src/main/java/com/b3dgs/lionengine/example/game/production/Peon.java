@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
-import com.b3dgs.lionengine.game.feature.producible.ProducerChecker;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
@@ -48,7 +47,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Peon entity implementation.
  */
-class Peon extends FeaturableModel implements ProducerChecker, ProducerListener
+class Peon extends FeaturableModel implements ProducerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -83,6 +82,15 @@ class Peon extends FeaturableModel implements ProducerChecker, ProducerListener
 
         final Producer producer = addFeatureAndGet(new ProducerModel());
         producer.setStepsPerSecond(1.0);
+        producer.setChecker(producible ->
+        {
+            return UtilMath.isBetween(transformable.getX(),
+                                      producible.getX(),
+                                      producible.getX() + producible.getWidth())
+                   && UtilMath.isBetween(transformable.getY(),
+                                         producible.getY() - producible.getHeight(),
+                                         producible.getY());
+        });
 
         addFeature(new RefreshableModel(extrp ->
         {
@@ -98,15 +106,6 @@ class Peon extends FeaturableModel implements ProducerChecker, ProducerListener
                 surface.render(g);
             }
         }));
-    }
-
-    @Override
-    public boolean checkProduction(Producible producible)
-    {
-        return UtilMath.isBetween(transformable.getX(), producible.getX(), producible.getX() + producible.getWidth())
-               && UtilMath.isBetween(transformable.getY(),
-                                     producible.getY() - producible.getHeight(),
-                                     producible.getY());
     }
 
     @Override

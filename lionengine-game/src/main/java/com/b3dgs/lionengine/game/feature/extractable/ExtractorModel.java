@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.extractable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -60,7 +61,13 @@ public class ExtractorModel extends FeatureModel implements Extractor
     private int lastProgress;
 
     /**
-     * Create a layerable model.
+     * Create an extractor model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Integer}</li>
+     * </ul>
      */
     public ExtractorModel()
     {
@@ -191,7 +198,10 @@ public class ExtractorModel extends FeatureModel implements Extractor
         {
             addListener((ExtractorListener) owner);
         }
-        checker = (ExtractorChecker) owner;
+        if (owner instanceof ExtractorChecker)
+        {
+            checker = (ExtractorChecker) owner;
+        }
     }
 
     @Override
@@ -209,6 +219,13 @@ public class ExtractorModel extends FeatureModel implements Extractor
     public void addListener(ExtractorListener listener)
     {
         listeners.add(listener);
+    }
+
+    @Override
+    public void setChecker(ExtractorChecker checker)
+    {
+        Check.notNull(checker);
+        this.checker = checker;
     }
 
     @Override

@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -219,7 +220,10 @@ public class ProducerModel extends FeatureModel implements Producer
         {
             addListener((ProducerListener) owner);
         }
-        checker = (ProducerChecker) owner;
+        if (owner instanceof ProducerChecker)
+        {
+            checker = (ProducerChecker) owner;
+        }
     }
 
     @Override
@@ -237,6 +241,13 @@ public class ProducerModel extends FeatureModel implements Producer
     public void addListener(ProducerListener listener)
     {
         listeners.add(listener);
+    }
+
+    @Override
+    public void setChecker(ProducerChecker checker)
+    {
+        Check.notNull(checker);
+        this.checker = checker;
     }
 
     @Override
