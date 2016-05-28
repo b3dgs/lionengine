@@ -81,7 +81,7 @@ class Scene extends Sequence
         map.create(Medias.create("level.png"), 16, 16, 16);
 
         final Camera camera = services.create(Camera.class);
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
         camera.setLocation(0, 0);
 

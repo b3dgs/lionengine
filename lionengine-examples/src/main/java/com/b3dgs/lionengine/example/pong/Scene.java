@@ -71,7 +71,7 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         setSystemCursorVisible(false);
 
         final Racket racket1 = factory.create(Racket.MEDIA);

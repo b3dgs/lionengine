@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.Displayable;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -40,7 +39,6 @@ class MarioRenderer extends FeatureModel implements Displayable
 {
     private final SpriteAnimated surface;
 
-    @Service private Layerable layerable;
     @Service private Collidable collidable;
     @Service private Transformable transformable;
     @Service private Camera camera;
@@ -65,7 +63,6 @@ class MarioRenderer extends FeatureModel implements Displayable
         super.prepare(owner, services);
 
         collidable.setCollisionVisibility(true);
-        layerable.setLayer(1);
     }
 
     @Override

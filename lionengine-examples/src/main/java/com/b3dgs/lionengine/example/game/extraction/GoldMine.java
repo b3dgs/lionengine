@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.extractable.Extractable;
 import com.b3dgs.lionengine.game.feature.extractable.ExtractableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -68,9 +67,7 @@ class GoldMine extends FeaturableModel
         final Extractable extractable = addFeatureAndGet(new ExtractableModel());
         extractable.setResourcesQuantity(100);
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(1);
-
+        addFeature(new LayerableModel(1));
         addFeature(new RefreshableModel(extrp -> surface.setLocation(viewer, transformable)));
         addFeature(new DisplayableModel(surface::render));
     }

@@ -91,6 +91,15 @@ public class UtilMathTest
     }
 
     /**
+     * Test the rounded ceil function.
+     */
+    @Test
+    public void testRoundedC()
+    {
+        Assert.assertEquals(200, UtilMath.getRoundedC(105, 100));
+    }
+
+    /**
      * Test the curve value function.
      */
     @Test

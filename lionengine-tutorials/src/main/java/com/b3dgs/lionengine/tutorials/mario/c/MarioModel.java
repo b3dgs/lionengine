@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.body.Body;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 
 /**
  * Mario model implementation.
@@ -41,7 +40,6 @@ class MarioModel extends FeatureModel
     private final SpriteAnimated surface;
     private final Setup setup;
 
-    @Service private Layerable layerable;
     @Service private Body body;
 
     /**
@@ -65,8 +63,6 @@ class MarioModel extends FeatureModel
     public void prepare(Featurable owner, Services services)
     {
         super.prepare(owner, services);
-
-        layerable.setLayer(1);
 
         body.setVectors(movement, jump);
         body.setDesiredFps(60);

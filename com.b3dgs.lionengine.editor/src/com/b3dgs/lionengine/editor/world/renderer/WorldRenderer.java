@@ -115,7 +115,7 @@ public class WorldRenderer implements PaintListener
      */
     protected void render(Graphic g, int width, int height)
     {
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, width, height, height);
         camera.setLimits(map);
 
         renderBackground(g, width, height);

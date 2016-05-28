@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.production;
 
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
@@ -35,7 +36,6 @@ import com.b3dgs.lionengine.game.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.game.feature.assignable.Assignable;
 import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
@@ -78,8 +78,7 @@ class BuildButton extends FeaturableModel
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(3);
+        addFeature(new LayerableModel(3));
 
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);
@@ -94,10 +93,7 @@ class BuildButton extends FeaturableModel
         {
             state = assignable;
             final SizeConfig size = SizeConfig.imports(Xml.load(target));
-            area = Geom.createRectangle(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
-                                        UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
-                                        size.getWidth(),
-                                        size.getHeight());
+            area = Geom.createRectangle(0, 0, size.getWidth(), size.getHeight());
             cursor.setVisible(false);
         });
 
@@ -105,16 +101,11 @@ class BuildButton extends FeaturableModel
         {
             for (final Producer producer : handler.get(Producer.class))
             {
-                final Building farm = factory.create(target);
-                final Producible producible = farm.getFeature(Producible.class);
-                producible.setLocation(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
-                                       UtilMath.getRounded(cursor.getY(), cursor.getHeight()));
-
+                final Building building = factory.create(target);
+                final Producible producible = building.getFeature(Producible.class);
+                producible.setLocation(area.getX(), area.getY());
                 producer.addToProductionQueue(producible);
-
-                final int x = (int) (producible.getX() + producible.getWidth() / 2) / cursor.getWidth();
-                final int y = (int) (producible.getY() - producible.getHeight() / 2) / cursor.getHeight();
-                producer.getOwner().getFeature(Pathfindable.class).setDestination(x, y);
+                producer.getOwner().getFeature(Pathfindable.class).setDestination(area);
             }
             area = null;
             state = actionable;
@@ -131,10 +122,10 @@ class BuildButton extends FeaturableModel
                 text.setText(actionable.getDescription());
             }
             state.update(extrp);
-            if (area != null && viewer.isViewable(cursor, 0, 0))
+            if (area != null)
             {
                 area.set(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
-                         UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
+                         UtilMath.getRoundedC(cursor.getY(), cursor.getHeight()),
                          area.getWidthReal(),
                          area.getHeightReal());
             }
@@ -143,7 +134,7 @@ class BuildButton extends FeaturableModel
         addFeature(new DisplayableModel(g ->
         {
             image.render(g);
-            if (area != null)
+            if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
             {
                 g.setColor(ColorRgba.GREEN);
                 g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), area.getWidth(), area.getHeight(), false);

@@ -81,7 +81,7 @@ class Scene extends Sequence
 
         final Camera camera = services.create(Camera.class);
         camera.setIntervals(16, 0);
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
         final CameraTracker tracker = new CameraTracker();
         camera.addFeature(tracker);

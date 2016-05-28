@@ -28,11 +28,13 @@ import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
@@ -45,31 +47,15 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Text reference. */
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
-    private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
+    private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map group reference. */
-    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-    /** Map path. */
-    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
-    /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** Timeout. */
     private final Timing timing = new Timing();
-    /** Peon reference. */
-    private Peon peon;
 
     /**
      * Constructor.
@@ -79,6 +65,10 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
+
         setSystemCursorVisible(false);
     }
 
@@ -86,14 +76,22 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
+
+        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
         mapGroup.loadGroups(Medias.create("groups.xml"));
+
+        final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
-        camera.setLocation(320, 208);
+        camera.setLocation(160, 96);
 
-        peon = factory.create(Peon.MEDIA);
+        map.addFeature(new MapTileViewerModel(services));
+        handler.add(map);
+
+        final Factory factory = services.create(Factory.class);
+        handler.add(factory.create(Peon.MEDIA));
 
         timing.start();
     }
@@ -102,7 +100,7 @@ class Scene extends Sequence
     public void update(double extrp)
     {
         mouse.update(extrp);
-        peon.update(extrp);
+        handler.update(extrp);
         text.update(camera);
         if (timing.elapsed(1000L))
         {
@@ -113,8 +111,7 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        mapViewer.render(g);
-        peon.render(g);
+        handler.render(g);
     }
 
     @Override

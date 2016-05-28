@@ -92,7 +92,7 @@ public class CameraTracker extends FeatureModel implements Refreshable
     {
         if (tracked != null)
         {
-            camera.setLocation(tracked.getX(), tracked.getY());
+            camera.setLocation(tracked.getX() - camera.getWidth() / 2.0, tracked.getY() - camera.getHeight() / 2.0);
         }
     }
 }

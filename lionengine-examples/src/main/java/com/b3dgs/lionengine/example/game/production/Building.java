@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
@@ -65,9 +64,7 @@ class Building extends FeaturableModel implements ProducibleListener
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 2, 1);
         surface.setOrigin(Origin.TOP_LEFT);
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(1);
-
+        addFeature(new LayerableModel(1));
         addFeature(new ProducibleModel(setup));
         addFeature(new DisplayableModel(g ->
         {

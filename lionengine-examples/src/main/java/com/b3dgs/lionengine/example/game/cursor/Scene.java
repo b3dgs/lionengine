@@ -120,7 +120,7 @@ class Scene extends Sequence
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
 
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
     }
 

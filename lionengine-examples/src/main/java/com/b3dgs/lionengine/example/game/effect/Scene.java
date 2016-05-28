@@ -62,7 +62,7 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
     }
 
     @Override

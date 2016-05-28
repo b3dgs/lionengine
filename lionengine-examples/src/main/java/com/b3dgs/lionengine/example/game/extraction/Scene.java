@@ -93,9 +93,9 @@ class Scene extends Sequence
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
         final Camera camera = services.create(Camera.class);
-        camera.setView(72, 28, 224, 160);
+        camera.setView(72, 12, 240, 176, getHeight());
         camera.setLimits(map);
-        camera.setLocation(320, 208);
+        camera.setLocation(192, 96);
 
         map.addFeature(new MapTileViewerModel(services));
 

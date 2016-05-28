@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.extractable.Extractable;
 import com.b3dgs.lionengine.game.feature.extractable.Extractor;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -70,8 +69,7 @@ class Button extends FeaturableModel
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(3);
+        addFeature(new LayerableModel(3));
 
         final Assignable assignable = addFeatureAndGet(new AssignableModel());
         assignable.setClickAssign(Mouse.LEFT);

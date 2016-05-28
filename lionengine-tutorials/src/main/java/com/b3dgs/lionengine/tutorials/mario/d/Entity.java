@@ -52,7 +52,7 @@ class Entity extends FeaturableModel
         super();
 
         addFeature(new TransformableModel(setup));
-        addFeature(new LayerableModel());
+        addFeature(new LayerableModel(1));
         addFeature(new MirrorableModel());
         addFeature(new BodyModel());
         addFeature(new CollidableModel(setup));

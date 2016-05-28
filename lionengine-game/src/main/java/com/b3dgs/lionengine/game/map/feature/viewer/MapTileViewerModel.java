@@ -61,84 +61,6 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
         renderers.add(new MapTileRendererModel(services));
     }
 
-    /**
-     * Render map from starting position, showing a specified area, including a specific offset.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param inTileWidth The number of rendered tiles in width.
-     * @param inTileHeight The number of rendered tiles in height.
-     * @param offsetX The horizontal map offset.
-     * @param offsetY The vertical map offset.
-     */
-    protected void render(Graphic g,
-                          int screenHeight,
-                          int sx,
-                          int sy,
-                          int inTileWidth,
-                          int inTileHeight,
-                          int offsetX,
-                          int offsetY)
-    {
-        for (int v = 0; v <= inTileHeight; v++)
-        {
-            final int ty = v + (sy - offsetY) / map.getTileHeight();
-            if (!(ty < 0 || ty >= map.getInTileHeight()))
-            {
-                renderHorizontal(g, screenHeight, sx, sy, inTileWidth, offsetX, ty);
-            }
-        }
-    }
-
-    /**
-     * Render horizontal tiles.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param inTileWidth The number of rendered tiles in width.
-     * @param ty The current vertical tile.
-     * @param offsetX The horizontal map offset.
-     */
-    private void renderHorizontal(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int offsetX, int ty)
-    {
-        for (int h = 0; h <= inTileWidth; h++)
-        {
-            final int tx = h + (sx - offsetX) / map.getTileWidth();
-            if (!(tx < 0 || tx >= map.getInTileWidth()))
-            {
-                renderTile(g, tx, ty, sx, sy, screenHeight);
-            }
-        }
-    }
-
-    /**
-     * Get the tile at location and render it.
-     * 
-     * @param g The graphic output.
-     * @param tx The horizontal tile location.
-     * @param ty The vertical tile location.
-     * @param sx The starting horizontal location.
-     * @param sy The starting vertical location.
-     * @param screenHeight The view height (rendering start from bottom).
-     */
-    private void renderTile(Graphic g, int tx, int ty, int sx, int sy, int screenHeight)
-    {
-        final Tile tile = map.getTile(tx, ty);
-        if (tile != null)
-        {
-            final int x = (int) tile.getX() - sx;
-            final int y = -(int) tile.getY() - tile.getHeight() + sy + screenHeight;
-            for (final MapTileRenderer renderer : renderers)
-            {
-                renderer.renderTile(g, tile, x, y);
-            }
-        }
-    }
-
     /*
      * MapTileViewer
      */
@@ -164,13 +86,39 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     @Override
     public void render(Graphic g)
     {
-        render(g,
-               viewer.getHeight(),
-               (int) Math.ceil(viewer.getX()),
-               (int) Math.ceil(viewer.getY()),
-               (int) Math.ceil(viewer.getWidth() / (double) map.getTileWidth()),
-               (int) Math.ceil(viewer.getHeight() / (double) map.getTileHeight()),
-               -viewer.getViewX(),
-               viewer.getViewY());
+        final int inTileWidth = (int) Math.ceil(viewer.getWidth() / (double) map.getTileWidth());
+        final int inTileHeight = (int) Math.ceil(viewer.getHeight() / (double) map.getTileHeight());
+
+        final int sx = (int) Math.floor((viewer.getX() + viewer.getViewX()) / map.getTileWidth());
+        final int sy = (int) Math.floor((viewer.getY() - viewer.getViewY()) / map.getTileHeight());
+
+        final double viewX = viewer.getX();
+        final double viewY = viewer.getY() - viewer.getViewY() + viewer.getScreenHeight() - viewer.getViewY();
+
+        for (int v = 0; v <= inTileHeight; v++)
+        {
+            final int ty = v + sy;
+            if (!(ty < 0 || ty >= map.getInTileHeight()))
+            {
+                for (int h = 0; h <= inTileWidth; h++)
+                {
+                    final int tx = h + sx;
+                    if (!(tx < 0 || tx >= map.getInTileWidth()))
+                    {
+                        final Tile tile = map.getTile(tx, ty);
+                        if (tile != null)
+                        {
+                            final int x = (int) (tile.getX() - viewX);
+                            final int y = (int) (-tile.getY() + viewY - tile.getHeight());
+
+                            for (final MapTileRenderer renderer : renderers)
+                            {
+                                renderer.renderTile(g, tile, x, y);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

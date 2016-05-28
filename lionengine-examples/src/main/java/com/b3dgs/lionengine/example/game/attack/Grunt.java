@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.game.feature.attackable.AttackerChecker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -62,8 +61,7 @@ class Grunt extends FeaturableModel implements AttackerChecker, AttackerListener
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(1);
+        addFeature(new LayerableModel(1));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));

@@ -107,7 +107,7 @@ public class SceneRasterable extends Sequence
 
         transformable.setLocationX(120);
         handler.add(featurable);
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
 
         timing.start();
     }

@@ -50,6 +50,6 @@ class Mario extends FeaturableModel
         addFeature(new TileCollidableModel(setup));
         addFeature(new MarioUpdater());
         addFeature(new MarioRenderer(setup));
-        addFeature(new LayerableModel());
+        addFeature(new LayerableModel(1));
     }
 }

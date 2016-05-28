@@ -258,6 +258,18 @@ public final class UtilMath
     }
 
     /**
+     * Get the rounded value with ceil.
+     * 
+     * @param value The value.
+     * @param round The round factor.
+     * @return The rounded value.
+     */
+    public static int getRoundedC(double value, int round)
+    {
+        return (int) Math.ceil(value / round) * round;
+    }
+
+    /**
      * Get cosinus in degree.
      * 
      * @param degree The angle in degree.

@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -56,8 +55,7 @@ class Peon extends FeaturableModel
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(1);
+        addFeature(new LayerableModel(1));
 
         final Fovable fovable = addFeatureAndGet(new FovableModel());
         fovable.setFov(3);

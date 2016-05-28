@@ -42,7 +42,7 @@ public class CameraTrackerTest
         final Services services = new Services();
         final Camera camera = new Camera();
         services.add(camera);
-        camera.setView(0, 0, 16, 32);
+        camera.setView(0, 0, 16, 32, 32);
         tracker.prepare(new FeaturableModel(), services);
         tracker.update(1.0);
 

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 
 /**
@@ -55,7 +56,24 @@ public interface Viewer extends Shape
     int getViewY();
 
     /**
+     * Return the screen height.
+     * 
+     * @return The screen height.
+     */
+    int getScreenHeight();
+
+    /**
      * Check if the localizable is inside the view area, and so, can be seen.
+     * 
+     * @param shape The shape to check.
+     * @param marginX The horizontal margin.
+     * @param marginY The vertical margin.
+     * @return <code>true</code> if viewable, <code>false</code> else.
+     */
+    boolean isViewable(Localizable shape, int marginX, int marginY);
+
+    /**
+     * Check if the shape is inside the view area, and so, can be seen.
      * 
      * @param shape The shape to check.
      * @param marginX The horizontal margin.

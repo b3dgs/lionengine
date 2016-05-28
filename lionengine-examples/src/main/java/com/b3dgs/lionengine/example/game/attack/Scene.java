@@ -83,7 +83,7 @@ class Scene extends Sequence
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         final Camera camera = services.create(Camera.class);
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
         camera.setLocation(0, 0);
 

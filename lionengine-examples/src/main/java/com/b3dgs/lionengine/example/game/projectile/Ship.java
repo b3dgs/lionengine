@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -76,8 +75,7 @@ class Ship extends FeaturableModel implements CollidableListener
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(1);
+        addFeature(new LayerableModel(1));
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);

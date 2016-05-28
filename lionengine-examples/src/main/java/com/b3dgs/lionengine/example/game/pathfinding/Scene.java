@@ -89,9 +89,9 @@ class Scene extends Sequence
         final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
-        camera.setLocation(320, 208);
+        camera.setLocation(160, 96);
 
         map.addFeature(new MapTileViewerModel(services));
         handler.add(map);

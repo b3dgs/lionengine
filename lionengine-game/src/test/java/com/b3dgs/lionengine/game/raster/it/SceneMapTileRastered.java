@@ -72,7 +72,7 @@ public class SceneMapTileRastered extends Sequence
 
         raster.loadSheets(Medias.create("raster.xml"), false);
 
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
         timingRaster.start();

@@ -61,7 +61,7 @@ class Scene extends Sequence
     public void load()
     {
         final Camera camera = services.create(Camera.class);
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
 
         final Factory factory = services.create(Factory.class);
         final Ship ship1 = factory.create(Ship.MEDIA);

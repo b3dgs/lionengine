@@ -36,16 +36,21 @@ public class LayerableModel extends FeatureModel implements Layerable
 
     /**
      * Create a layerable model.
-     * <p>
-     * The {@link Services} must provide:
-     * </p>
-     * <ul>
-     * <li>{@link LayerableListener}</li>
-     * </ul>
      */
     public LayerableModel()
     {
         super();
+    }
+
+    /**
+     * Create a layerable model.
+     * 
+     * @param layer The default layer value.
+     */
+    public LayerableModel(int layer)
+    {
+        super();
+        this.layer = Integer.valueOf(layer);
     }
 
     /*

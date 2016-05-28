@@ -63,7 +63,7 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
 
         final Factory factory = services.create(Factory.class);

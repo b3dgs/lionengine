@@ -72,7 +72,7 @@ class Scene extends Sequence
         minimap.automaticColor();
         minimap.prepare();
 
-        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
         size = map.getWidth() - camera.getWidth();

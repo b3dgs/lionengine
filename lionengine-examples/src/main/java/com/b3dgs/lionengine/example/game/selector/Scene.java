@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
@@ -87,9 +86,9 @@ class Scene extends Sequence
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
 
-        camera.setView(72, 28, 224, 160);
+        camera.setView(72, 12, 240, 176, getHeight());
         camera.setLimits(map);
-        camera.setLocation(320, 208);
+        camera.setLocation(192, 96);
 
         map.addFeature(new MapTileViewerModel(services));
         handler.add(map);
@@ -112,9 +111,7 @@ class Scene extends Sequence
         handler.add(peon);
 
         final Selector selector = new Selector();
-        final Layerable layerable = new LayerableModel();
-        layerable.setLayer(1);
-        selector.addFeature(layerable);
+        selector.addFeature(new LayerableModel(1));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(Mouse.LEFT);

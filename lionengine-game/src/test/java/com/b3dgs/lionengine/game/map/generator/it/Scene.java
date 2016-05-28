@@ -84,7 +84,7 @@ class Scene extends Sequence
         final MapTileCircuit mapCircuit = map.createFeature(MapTileCircuitModel.class);
         mapCircuit.loadCircuits(Medias.create("circuits.xml"));
 
-        camera.setView(0, 0, 1024, 768);
+        camera.setView(0, 0, 1024, 768, getHeight());
         camera.setLimits(map);
 
         parameters.add(new PrefMapSize(16, 16, 64, 48))

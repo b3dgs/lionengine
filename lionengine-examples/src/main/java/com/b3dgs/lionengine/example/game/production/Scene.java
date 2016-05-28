@@ -31,7 +31,11 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Factory;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -60,7 +64,6 @@ class Scene extends Sequence
     private final Handler handler = services.create(Handler.class);
     private final Cursor cursor = services.create(Cursor.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
-    private final Image hud;
 
     /**
      * Constructor.
@@ -70,8 +73,6 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-
-        hud = Drawable.loadImage(Medias.create("hud.png"));
 
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
@@ -94,23 +95,30 @@ class Scene extends Sequence
         final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
-        hud.load();
-        hud.prepare();
-        text.setLocation(74, 192);
-
         final Camera camera = services.create(Camera.class);
-        camera.setView(72, 28, 224, 160);
+        camera.setView(72, 12, 240, 176, getHeight());
         camera.setLimits(map);
-        camera.setLocation(320, 208);
+        camera.teleport(576, 768);
 
         map.addFeature(new MapTileViewerModel(services));
         handler.add(map);
+
+        final Image hudImage = Drawable.loadImage(Medias.create("hud.png"));
+        hudImage.load();
+        hudImage.prepare();
+
+        final Featurable hud = new FeaturableModel();
+        hud.addFeature(new LayerableModel(1));
+        hud.addFeature(new DisplayableModel(hudImage::render));
+        handler.add(hud);
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
+
+        text.setLocation(74, 192);
 
         final Factory factory = services.create(Factory.class);
         handler.add(factory.create(BuildButton.FARM));
@@ -130,7 +138,6 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        hud.render(g);
         handler.render(g);
         text.render(g);
         cursor.render(g);

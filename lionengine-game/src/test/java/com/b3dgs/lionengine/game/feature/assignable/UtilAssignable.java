@@ -43,7 +43,7 @@ public class UtilAssignable
     {
         final Services services = new Services();
         final Camera camera = services.create(Camera.class);
-        camera.setView(0, 0, 32, 32);
+        camera.setView(0, 0, 32, 32, 32);
 
         final Cursor cursor = services.add(new Cursor()
         {

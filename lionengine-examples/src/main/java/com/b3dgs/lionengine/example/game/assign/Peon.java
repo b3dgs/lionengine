@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -54,12 +53,11 @@ class Peon extends FeaturableModel
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(1);
+        addFeature(new LayerableModel(1));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(setup));
-        transformable.teleport(272, 176);
+        transformable.teleport(432, 272);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);

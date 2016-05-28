@@ -118,7 +118,7 @@ public abstract class WorldGame implements Updatable, Renderable
         config = context.getConfig();
         source = config.getSource();
         output = config.getOutput();
-        camera.setView(0, 0, source.getWidth(), source.getHeight());
+        camera.setView(0, 0, source.getWidth(), source.getHeight(), source.getHeight());
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
     }

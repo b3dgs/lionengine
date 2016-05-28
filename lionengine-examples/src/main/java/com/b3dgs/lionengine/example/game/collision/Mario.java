@@ -53,6 +53,6 @@ class Mario extends FeaturableModel
         addFeature(new MarioController(model));
         addFeature(new MarioUpdater(model));
         addFeature(new MarioRenderer(model));
-        addFeature(new LayerableModel());
+        addFeature(new LayerableModel(1));
     }
 }

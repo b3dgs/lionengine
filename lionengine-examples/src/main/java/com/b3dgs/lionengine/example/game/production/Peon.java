@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
@@ -52,7 +51,6 @@ class Peon extends FeaturableModel implements ProducerListener
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     private final Pathfindable pathfindable;
 
     private boolean visible = true;
@@ -70,15 +68,14 @@ class Peon extends FeaturableModel implements ProducerListener
     {
         super();
 
-        final Layerable layerable = addFeatureAndGet(new LayerableModel());
-        layerable.setLayer(2);
+        addFeature(new LayerableModel(2));
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        transformable.teleport(208, 160);
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        transformable.teleport(640, 860);
 
         final Producer producer = addFeatureAndGet(new ProducerModel());
         producer.setStepsPerSecond(1.0);
@@ -91,6 +88,8 @@ class Peon extends FeaturableModel implements ProducerListener
                                          producible.getY() - producible.getHeight(),
                                          producible.getY());
         });
+
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         addFeature(new RefreshableModel(extrp ->
         {

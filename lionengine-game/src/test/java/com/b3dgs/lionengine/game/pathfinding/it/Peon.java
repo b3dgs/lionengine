@@ -28,6 +28,9 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
@@ -39,15 +42,13 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Peon entity implementation.
  */
-class Peon extends FeaturableModel implements Updatable, Renderable
+class Peon extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     private final Timing timing = new Timing();
-    private final Transformable transformable;
     private final Pathfindable pathfindable;
-    private final SpriteAnimated surface;
 
     @Service private Viewer viewer;
 
@@ -60,16 +61,42 @@ class Peon extends FeaturableModel implements Updatable, Renderable
     {
         super();
 
-        transformable = addFeatureAndGet(new TransformableModel(setup));
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
-
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(320, 256);
 
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        addFeature(new LayerableModel(1));
+
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        timing.start();
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+
+        addFeature(new RefreshableModel(new Updatable()
+        {
+            @Override
+            public void update(double extrp)
+            {
+                pathfindable.update(extrp);
+                surface.setLocation(viewer, transformable);
+
+                if (timing.elapsed(500L))
+                {
+                    pathfindable.setDestination(12, 12);
+                    timing.stop();
+                }
+            }
+        }));
+
+        addFeature(new DisplayableModel(new Renderable()
+        {
+            @Override
+            public void render(Graphic g)
+            {
+                pathfindable.render(g);
+                surface.render(g);
+            }
+        }));
     }
 
     @Override
@@ -79,25 +106,7 @@ class Peon extends FeaturableModel implements Updatable, Renderable
 
         pathfindable.setSpeed(5.0, 5.0);
         pathfindable.setDestination(28, 8);
-    }
 
-    @Override
-    public void update(double extrp)
-    {
-        pathfindable.update(extrp);
-        surface.setLocation(viewer, transformable);
-
-        if (timing.elapsed(500L))
-        {
-            pathfindable.setDestination(12, 12);
-            timing.stop();
-        }
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        pathfindable.render(g);
-        surface.render(g);
+        timing.start();
     }
 }

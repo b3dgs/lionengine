@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.util.UtilMath;
  * <ul>
  * <li>{@link #Camera()}</li>
  * <li>{@link #setIntervals(int, int)}</li>
- * <li>{@link #setView(int, int, int, int)}</li>
+ * <li>{@link #setView(int, int, int, int, int)}</li>
  * <li>{@link #setLimits(Surface)}</li>
  * </ul>
  */
@@ -66,6 +66,8 @@ public class Camera extends FeaturableModel implements Viewer
     private int limitTop = Integer.MAX_VALUE;
     /** Limit bottom. */
     private int limitBottom = Integer.MIN_VALUE;
+    /** Screen height. */
+    private int screenHeight;
 
     /**
      * Create a camera.
@@ -123,8 +125,8 @@ public class Camera extends FeaturableModel implements Viewer
      */
     public void setLocation(double x, double y)
     {
-        final double dx = x - width / 2.0 - (mover.getX() + offset.getX());
-        final double dy = y - height / 2.0 - (mover.getY() + offset.getY());
+        final double dx = x - (mover.getX() + offset.getX());
+        final double dy = y - (mover.getY() + offset.getY());
         moveLocation(1, dx, dy);
     }
 
@@ -187,20 +189,22 @@ public class Camera extends FeaturableModel implements Viewer
      * @param y The vertical offset.
      * @param width The rendering width (positive value).
      * @param height The rendering height (positive value).
+     * @param screenHeight The screen height.
      */
-    public void setView(int x, int y, int width, int height)
+    public void setView(int x, int y, int width, int height, int screenHeight)
     {
         this.x = x;
         this.y = y;
         this.width = UtilMath.clamp(width, 0, Integer.MAX_VALUE);
         this.height = UtilMath.clamp(height, 0, Integer.MAX_VALUE);
+        this.screenHeight = screenHeight;
     }
 
     /**
      * Define the maximum view limit. This function will allow to let the camera know the max rendering size, and so,
      * know which part can be viewed without being outside the extremity.
      * <p>
-     * Note: Must be called after set view ({@link #setView(int, int, int, int)}).
+     * Note: Must be called after set view ({@link #setView(int, int, int, int, int)}).
      * </p>
      * 
      * @param surface The surface reference.
@@ -385,11 +389,26 @@ public class Camera extends FeaturableModel implements Viewer
     }
 
     @Override
+    public int getScreenHeight()
+    {
+        return screenHeight;
+    }
+
+    @Override
+    public boolean isViewable(Localizable localizable, int radiusX, int radiusY)
+    {
+        return getViewpointX(localizable.getX() + radiusX) >= getViewX()
+               && getViewpointX(localizable.getX() - radiusX) <= getViewX() + width
+               && getViewpointY(localizable.getY() + radiusY) >= getViewY()
+               && getViewpointY(localizable.getY() - radiusY) <= getViewY() + height;
+    }
+
+    @Override
     public boolean isViewable(Shape shape, int radiusX, int radiusY)
     {
-        return shape.getX() + shape.getWidth() + radiusX >= getX()
-               && shape.getX() - shape.getWidth() - radiusX <= getX() + width
-               && shape.getY() + shape.getHeight() + radiusY >= getY()
-               && shape.getY() - shape.getHeight() * 2 - radiusY <= getY() + height;
+        return getViewpointX(shape.getX() + shape.getWidth() + radiusX) >= getViewX()
+               && getViewpointX(shape.getX() - shape.getWidth() - radiusX) <= getViewX() + width
+               && getViewpointY(shape.getY() + shape.getHeight() + radiusY) >= getViewY()
+               && getViewpointY(shape.getY() - shape.getHeight() * 2 - radiusY) <= getViewY() + height;
     }
 }
