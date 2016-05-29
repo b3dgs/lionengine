@@ -111,7 +111,7 @@ public class SelectorRefresherTest
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(Geom.createRectangle(1.0, -1.0, 0, 0.0), started.get());
+        Assert.assertEquals(Geom.createRectangle(1.0, 1.0, 0, 0.0), started.get());
 
         mouse.move(10, -20);
         cursor.update(1.0);
@@ -123,6 +123,6 @@ public class SelectorRefresherTest
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(Geom.createRectangle(1.0, -1.0, 10, 20.0), done.get());
+        Assert.assertEquals(Geom.createRectangle(1.0, 0.0, 10, 1.0), done.get());
     }
 }

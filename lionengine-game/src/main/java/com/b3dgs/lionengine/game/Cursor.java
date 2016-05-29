@@ -432,7 +432,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         }
         else
         {
-            viewY = -y + offY;
+            viewY = y + offY;
         }
         for (final Image current : surfaces.values())
         {

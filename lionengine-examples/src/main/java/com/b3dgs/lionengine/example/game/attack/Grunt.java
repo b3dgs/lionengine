@@ -63,7 +63,7 @@ class Grunt extends FeaturableModel implements AttackerChecker, AttackerListener
 
         addFeature(new LayerableModel(1));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         attacker = addFeatureAndGet(new AttackerModel());

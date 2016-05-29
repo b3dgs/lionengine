@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
@@ -108,13 +109,17 @@ class Scene extends Sequence
         cursor.load();
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);
+        cursor.setViewer(camera);
 
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
 
         final Factory factory = services.create(Factory.class);
         handler.add(factory.create(Button.EXTRACT));
-        handler.add(factory.create(Peon.MEDIA));
         handler.add(factory.create(GoldMine.GOLD_MINE));
+
+        final Peon peon = factory.create(Peon.MEDIA);
+        handler.add(peon);
+        peon.getFeature(Pathfindable.class).setLocation(13, 10);
     }
 
     @Override

@@ -87,6 +87,7 @@ class Button extends FeaturableModel
         {
             final int tx = map.getInTileX(cursor);
             final int ty = map.getInTileY(cursor);
+
             final MapTilePath mapPath = map.getFeature(MapTilePath.class);
             for (final Extractor extractor : handler.get(Extractor.class))
             {

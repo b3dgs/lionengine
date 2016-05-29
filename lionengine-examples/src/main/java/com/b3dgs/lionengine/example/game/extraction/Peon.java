@@ -63,7 +63,6 @@ class Peon extends FeaturableModel implements ExtractorListener
         super();
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
-        transformable.teleport(208, 160);
 
         addFeature(new LayerableModel(2));
 
