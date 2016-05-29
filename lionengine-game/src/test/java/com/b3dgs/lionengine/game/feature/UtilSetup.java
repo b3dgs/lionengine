@@ -52,10 +52,10 @@ public class UtilSetup
      */
     public static Media createMedia(Class<?> clazz)
     {
-        final Media media = Medias.create(clazz.getName() + ".xml");
+        final Media media = Medias.create(clazz.getSimpleName() + ".xml");
         final XmlNode root = Xml.create("test");
         root.add(FeaturableConfig.exportClass(clazz.getName()));
-        root.add(FeaturableConfig.exportSetup("com.b3dgs.lionengine.game.feature.Setup"));
+        root.add(FeaturableConfig.exportSetup(Setup.class.getName()));
         root.add(SizeConfig.exports(new SizeConfig(16, 32)));
         Xml.save(root, media);
         return media;

@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
@@ -69,8 +68,6 @@ public class MapTileGame extends FeaturableModel implements MapTile
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
-    /** Services reference. */
-    private final Services services;
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Tile width. */
@@ -92,20 +89,6 @@ public class MapTileGame extends FeaturableModel implements MapTile
     public MapTileGame()
     {
         super();
-        services = new Services();
-        services.add(this);
-    }
-
-    /**
-     * Create a map tile.
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If service not found.
-     */
-    public MapTileGame(Services services)
-    {
-        super();
-        this.services = services;
     }
 
     /**

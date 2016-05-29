@@ -28,7 +28,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -51,6 +53,7 @@ public class ProducerModelTest
     @BeforeClass
     public static void setUp()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         HACK.addByValue(HACK.make("FAIL"));
     }
 
@@ -60,6 +63,7 @@ public class ProducerModelTest
     @AfterClass
     public static void cleanUp()
     {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
         HACK.restore();
     }
 

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.feature;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,9 +44,8 @@ public class ServicesTest
         final Services services = new Services();
         final Camera camera = services.create(Camera.class);
         final Factory factory = services.create(Factory.class);
-        final MapTile map = new MapTileGame(services);
+        final MapTile map = services.create(MapTileGame.class);
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        services.add(map);
 
         Assert.assertEquals(services, services.get(Services.class));
         Assert.assertEquals(camera, services.get(Viewer.class));
