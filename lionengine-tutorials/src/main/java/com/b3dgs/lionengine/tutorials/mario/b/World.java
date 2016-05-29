@@ -45,7 +45,7 @@ class World extends WorldGame
     {
         super(context);
 
-        map.addFeature(new MapTilePersisterModel(map));
+        map.addFeature(new MapTilePersisterModel());
         map.addFeature(new MapTileViewerModel());
         handler.add(map);
     }

@@ -61,7 +61,7 @@ class World extends WorldGame
 
         camera.setIntervals(16, 0);
 
-        map.addFeature(new MapTilePersisterModel(map));
+        map.addFeature(new MapTilePersisterModel());
         map.addFeature(new MapTileViewerModel());
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTileCollisionModel());
@@ -83,9 +83,9 @@ class World extends WorldGame
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.getFeature(MapTilePersister.class).load(file);
-
         handler.add(map);
+
+        map.getFeature(MapTilePersister.class).load(file);
 
         map.getFeature(MapTileGroup.class).loadGroups(Medias.create("map", "groups.xml"));
         map.getFeature(MapTileCollision.class).loadCollisions(Medias.create("map", "formulas.xml"),

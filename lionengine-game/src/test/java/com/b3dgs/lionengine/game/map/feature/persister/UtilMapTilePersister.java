@@ -45,7 +45,7 @@ public class UtilMapTilePersister
     {
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTilePersisterModel(map));
+        map.addFeature(new MapTilePersisterModel());
         map.prepareFeatures(services);
         map.create(16, 32, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
@@ -97,7 +97,7 @@ public class UtilMapTilePersister
     {
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTilePersisterModel(map));
+        map.addFeature(new MapTilePersisterModel());
         map.prepareFeatures(services);
         FileReading input = null;
         try

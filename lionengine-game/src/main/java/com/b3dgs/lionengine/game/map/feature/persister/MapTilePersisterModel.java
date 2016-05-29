@@ -45,17 +45,6 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
 
     /**
      * Create the persister.
-     * 
-     * @param map The map reference.
-     */
-    public MapTilePersisterModel(MapTile map)
-    {
-        super();
-        this.map = map;
-    }
-
-    /**
-     * Create the persister.
      * <p>
      * The {@link Services} must provide:
      * </p>
