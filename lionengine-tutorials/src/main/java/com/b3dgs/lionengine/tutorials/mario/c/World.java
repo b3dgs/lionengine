@@ -86,7 +86,6 @@ class World extends WorldGame
         handler.add(map);
 
         map.getFeature(MapTilePersister.class).load(file);
-
         map.getFeature(MapTileGroup.class).loadGroups(Medias.create("map", "groups.xml"));
         map.getFeature(MapTileCollision.class).loadCollisions(Medias.create("map", "formulas.xml"),
                                                               Medias.create("map", "collisions.xml"));

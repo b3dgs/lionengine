@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -40,12 +42,12 @@ import com.b3dgs.lionengine.util.UtilConversion;
 /**
  * Rastered map tile implementation.
  */
-public class MapTileRasteredModel implements MapTileRastered
+public class MapTileRasteredModel extends FeatureModel implements MapTileRastered
 {
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<Integer, List<SpriteTiled>>();
     /** Map tile reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Rasters smooth flag. */
     private boolean smooth;
 
@@ -57,14 +59,10 @@ public class MapTileRasteredModel implements MapTileRastered
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
      */
-    public MapTileRasteredModel(Services services)
+    public MapTileRasteredModel()
     {
         super();
-        map = services.get(MapTile.class);
     }
 
     /**
@@ -125,6 +123,14 @@ public class MapTileRasteredModel implements MapTileRastered
     /*
      * MapTileRastered
      */
+
+    @Override
+    public void prepare(Featurable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        map = services.get(MapTile.class);
+    }
 
     @Override
     public void loadSheets(Media rasterConfig, boolean smooth)

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
+import com.b3dgs.lionengine.game.map.MapTileRenderer;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.graphic.Graphic;

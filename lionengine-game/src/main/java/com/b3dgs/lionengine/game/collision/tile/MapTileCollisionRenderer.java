@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.collision.tile;
 
 import com.b3dgs.lionengine.game.feature.Feature;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
+import com.b3dgs.lionengine.game.map.MapTileRenderer;
 
 /**
  * Represents the collision rendering feature of a map tile.

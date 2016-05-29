@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.raster;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -42,18 +42,20 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private final List<SpriteAnimated> rastersAnim;
     /** Smooth raster flag. */
     private final boolean smooth;
-    /** Tile height. */
-    private final int tileHeight;
+    /** Raster height. */
+    private final int height;
     /** The viewer reference. */
     private Viewer viewer;
-    /** Localizable reference. */
-    private Localizable localizable;
+    /** Transformable reference. */
+    private Transformable transformable;
     /** Mirrorable reference. */
     private Mirrorable mirrorable;
     /** Animator reference. */
     private Animator animator;
     /** Last raster. */
     private SpriteAnimated raster;
+    /** Origin value. */
+    private Origin origin = Origin.TOP_LEFT;
 
     /**
      * Create a rasterable model.
@@ -73,16 +75,14 @@ public class RasterableModel extends FeatureModel implements Rasterable
      * </ul>
      * 
      * @param setup The setup reference.
-     * @param tileHeight The tile height value (must be strictly positive).
      */
-    public RasterableModel(SetupSurfaceRastered setup, int tileHeight)
+    public RasterableModel(SetupSurfaceRastered setup)
     {
         super();
 
         Check.notNull(setup);
-        Check.superiorStrict(tileHeight, 0);
 
-        this.tileHeight = tileHeight;
+        height = setup.getRasterHeight();
         rastersAnim = setup.getRasters();
         smooth = setup.hasSmooth();
     }
@@ -94,7 +94,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
     @Override
     public void prepare(Featurable owner, Services services)
     {
-        localizable = owner.getFeature(Transformable.class);
+        transformable = owner.getFeature(Transformable.class);
         mirrorable = owner.getFeature(Mirrorable.class);
         animator = owner.getFeature(Animatable.class);
         viewer = services.get(Viewer.class);
@@ -103,12 +103,13 @@ public class RasterableModel extends FeatureModel implements Rasterable
     @Override
     public void update(double extrp)
     {
-        final int index = getRasterIndex(localizable.getY());
+        final int index = getRasterIndex(transformable.getY());
         raster = getRasterAnim(index);
         if (raster != null)
         {
             raster.setFrame(animator.getFrame());
             raster.setMirror(mirrorable.getMirror());
+            raster.setOrigin(origin);
         }
     }
 
@@ -117,8 +118,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         if (raster != null)
         {
-            final double x = viewer.getViewpointX(localizable.getX() - Math.round(raster.getFrameWidth() / 2.0));
-            final double y = viewer.getViewpointY(localizable.getY() + raster.getFrameHeight());
+            final double x = viewer.getViewpointX(origin.getX(transformable.getX(), transformable.getWidth()));
+            final double y = viewer.getViewpointY(origin.getY(transformable.getY(), transformable.getHeight()));
             raster.setLocation(x, y);
             raster.render(g);
         }
@@ -127,7 +128,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
     @Override
     public int getRasterIndex(double y)
     {
-        final double value = y / tileHeight;
+        final double value = y / height;
         final int i = (int) value % Rasterable.MAX_RASTERS_R;
         int index = i;
 
@@ -142,6 +143,15 @@ public class RasterableModel extends FeatureModel implements Rasterable
     public SpriteAnimated getRasterAnim(int rasterIndex)
     {
         Check.superiorOrEqual(rasterIndex, 0);
+
         return rastersAnim.get(rasterIndex);
+    }
+
+    @Override
+    public void setOrigin(Origin origin)
+    {
+        Check.notNull(origin);
+
+        this.origin = origin;
     }
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature;
+package com.b3dgs.lionengine.game.raster;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.raster.SetupSurfaceRastered;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
@@ -37,6 +36,8 @@ public class SetupSurfaceRasteredTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "object.xml";
+    /** Object configuration file name. */
+    private static final String OBJECT_SMOOTH_XML = "object_smooth.xml";
     /** Raster configuration file name. */
     private static final String RASTER_XML = "raster.xml";
 
@@ -67,7 +68,7 @@ public class SetupSurfaceRasteredTest
     public void testConfig()
     {
         final Media raster = Medias.create(RASTER_XML);
-        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster, false);
+        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
 
         Assert.assertEquals(raster, setup.getFile());
         Assert.assertFalse(setup.hasSmooth());
@@ -85,7 +86,7 @@ public class SetupSurfaceRasteredTest
     public void testConfigSmooth()
     {
         final Media raster = Medias.create(RASTER_XML);
-        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster, true);
+        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_SMOOTH_XML), raster);
 
         Assert.assertEquals(raster, setup.getFile());
         Assert.assertTrue(setup.hasSmooth());
@@ -102,6 +103,6 @@ public class SetupSurfaceRasteredTest
     @Test(expected = LionEngineException.class)
     public void testConfigNoRaster()
     {
-        Assert.assertNotNull(new SetupSurfaceRastered(Medias.create(OBJECT_XML), null, false));
+        Assert.assertNotNull(new SetupSurfaceRastered(Medias.create(OBJECT_XML), null));
     }
 }

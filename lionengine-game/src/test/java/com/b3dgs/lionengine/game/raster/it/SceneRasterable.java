@@ -76,14 +76,13 @@ public class SceneRasterable extends Sequence
     public void load()
     {
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create("object.xml"),
-                                                                    Medias.create("raster.xml"),
-                                                                    false);
+                                                                    Medias.create("raster.xml"));
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new MirrorableModel());
         featurable.addFeature(new AnimatableModel(surface));
 
-        final Rasterable rasterable = new RasterableModel(setup, 16);
+        final Rasterable rasterable = new RasterableModel(setup);
         featurable.addFeature(rasterable);
         featurable.addFeature(transformable);
         featurable.addFeature(new RefreshableModel(new Updatable()
@@ -115,7 +114,7 @@ public class SceneRasterable extends Sequence
     @Override
     public void update(double extrp)
     {
-        transformable.setLocationY(UtilMath.sin(count * 3) * 240 - 24);
+        transformable.setLocationY(UtilMath.sin(count * 3) * 240 + 60);
         handler.update(extrp);
         count++;
         if (timing.elapsed(1000L))

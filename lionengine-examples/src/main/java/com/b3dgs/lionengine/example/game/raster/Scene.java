@@ -17,22 +17,42 @@
  */
 package com.b3dgs.lionengine.example.game.raster;
 
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.Mouse;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
+import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.feature.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.raster.MapTileRastered;
 import com.b3dgs.lionengine.game.raster.MapTileRasteredModel;
+import com.b3dgs.lionengine.game.raster.Rasterable;
+import com.b3dgs.lionengine.game.raster.RasterableModel;
+import com.b3dgs.lionengine.game.raster.SetupSurfaceRastered;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Game loop designed to handle our world.
@@ -43,14 +63,15 @@ class Scene extends Sequence
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    private final Timing timing = new Timing();
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
+    private final Handler handler = services.create(Handler.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
-    private final MapTileRastered raster = new MapTileRasteredModel(services);
+    private final Transformable transformable = new TransformableModel();
+    private final Mouse mouse;
 
-    private boolean useRaster;
+    private boolean useRaster = true;
+    private int count;
 
     /**
      * Constructor.
@@ -62,43 +83,91 @@ class Scene extends Sequence
         super(context, NATIVE);
 
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
+        mouse = getInputDevice(Mouse.class);
+
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
     }
 
     @Override
     public void load()
     {
+        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
+        final MapTileRastered mapRaster = map.addFeatureAndGet(new MapTileRasteredModel());
+        handler.add(map);
         map.create(Medias.create("level.png"), 16, 16, 16);
-        mapViewer.prepare(map, services);
-        raster.loadSheets(Medias.create("raster.xml"), false);
+        mapRaster.loadSheets(Medias.create("raster.xml"), false);
+        mapViewer.addRenderer(mapRaster);
 
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
-        timing.start();
+        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create("object.xml"),
+                                                                    Medias.create("raster.xml"));
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new LayerableModel(1));
+        featurable.addFeature(new MirrorableModel());
+        featurable.addFeature(new AnimatableModel(surface));
+
+        final Rasterable rasterable = new RasterableModel(setup);
+        featurable.addFeature(rasterable);
+        featurable.addFeature(transformable);
+        featurable.addFeature(new RefreshableModel(new Updatable()
+        {
+            @Override
+            public void update(double extrp)
+            {
+                rasterable.update(extrp);
+                surface.update(extrp);
+                surface.setLocation(camera, transformable);
+            }
+        }));
+        featurable.addFeature(new DisplayableModel(new Renderable()
+        {
+            @Override
+            public void render(Graphic g)
+            {
+                if (useRaster)
+                {
+                    rasterable.render(g);
+                }
+                else
+                {
+                    surface.render(g);
+                }
+            }
+        }));
+
+        transformable.setLocationX(120);
+        handler.add(featurable);
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timing.isStarted() && timing.elapsed(1000L))
+        handler.update(extrp);
+        transformable.setLocationY(UtilMath.sin(count) * 120 + 160);
+        count++;
+        if (mouse.hasClickedOnce(Mouse.LEFT))
         {
             useRaster = !useRaster;
             if (useRaster)
             {
-                mapViewer.addRenderer(raster);
+                map.getFeature(MapTileViewer.class).addRenderer(map.getFeature(MapTileRastered.class));
             }
             else
             {
-                mapViewer.removeRenderer(raster);
+                map.getFeature(MapTileViewer.class).removeRenderer(map.getFeature(MapTileRastered.class));
             }
-            timing.restart();
         }
     }
 
     @Override
     public void render(Graphic g)
     {
-        mapViewer.render(g);
+        g.clear(0, 0, getWidth(), getHeight());
+        handler.render(g);
     }
 
     @Override

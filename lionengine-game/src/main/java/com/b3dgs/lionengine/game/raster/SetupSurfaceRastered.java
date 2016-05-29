@@ -21,11 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.FramesConfig;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -39,40 +41,53 @@ import com.b3dgs.lionengine.util.UtilConversion;
  */
 public class SetupSurfaceRastered extends SetupSurface
 {
+    /** Raster node. */
+    private static final String NODE_RASTER = Constant.XML_PREFIX + "raster";
+    /** Raster height attribute. */
+    private static final String ATTRIBUTE_RASTER_HEIGHT = "height";
+    /** Raster smooth attribute. */
+    private static final String ATTRIBUTE_RASTER_SMOOTH = "smooth";
+
     /** List of rasters animation. */
     private final List<SpriteAnimated> rastersAnim;
     /** Raster filename. */
     private final Media rasterFile;
     /** Raster smooth flag. */
-    private final boolean smoothRaster;
+    private final boolean rasterSmooth;
     /** Vertical frames. */
     private final int vf;
     /** Horizontal frames. */
     private final int hf;
-    /** frame height. */
+    /** Frame height. */
     private final int frameHeight;
+    /** Raster height. */
+    private final int rasterHeight;
 
     /**
      * Create a setup.
      * 
      * @param config The config media.
      * @param rasterFile The raster media.
-     * @param smoothRaster The raster smooth flag.
      * @throws LionEngineException If error when opening the media or invalid raster file.
      */
-    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster)
+    public SetupSurfaceRastered(Media config, Media rasterFile)
     {
         super(config);
+        Check.notNull(config);
         Check.notNull(rasterFile);
 
         this.rasterFile = rasterFile;
-        this.smoothRaster = smoothRaster;
 
+        final Configurer configurer = getConfigurer();
+        rasterHeight = configurer.getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
+        rasterSmooth = configurer.getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
         rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
-        final FramesConfig framesData = FramesConfig.imports(getConfigurer());
+
+        final FramesConfig framesData = FramesConfig.imports(configurer);
         hf = framesData.getHorizontal();
         vf = framesData.getVertical();
         frameHeight = surface.getHeight() / vf;
+
         loadRasters();
     }
 
@@ -97,13 +112,23 @@ public class SetupSurfaceRastered extends SetupSurface
     }
 
     /**
+     * Get the raster height.
+     * 
+     * @return The raster height.
+     */
+    public int getRasterHeight()
+    {
+        return rasterHeight;
+    }
+
+    /**
      * Check if smooth raster.
      * 
      * @return <code>true</code> if smooth enabled, <code>false</code> else.
      */
     public boolean hasSmooth()
     {
-        return smoothRaster;
+        return rasterSmooth;
     }
 
     /**
@@ -114,15 +139,15 @@ public class SetupSurfaceRastered extends SetupSurface
     private void loadRasters()
     {
         final Raster raster = Raster.load(rasterFile);
-        final int max = UtilConversion.boolToInt(smoothRaster) + 1;
+        final int max = UtilConversion.boolToInt(rasterSmooth) + 1;
 
         for (int m = 0; m < max; m++)
         {
             for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
-                final RasterColor red = RasterColor.load(raster.getRed(), m, i, smoothRaster);
-                final RasterColor green = RasterColor.load(raster.getGreen(), m, i, smoothRaster);
-                final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, smoothRaster);
+                final RasterColor red = RasterColor.load(raster.getRed(), m, i, rasterSmooth);
+                final RasterColor green = RasterColor.load(raster.getGreen(), m, i, rasterSmooth);
+                final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, rasterSmooth);
 
                 addRaster(red, green, blue);
             }

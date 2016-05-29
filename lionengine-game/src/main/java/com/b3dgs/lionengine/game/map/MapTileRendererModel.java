@@ -15,25 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map.feature.renderer;
+package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Describe how the map tile rendering is performed. This will allow to customize map rendering.
+ * Map tile renderer default implementation.
  */
-public interface MapTileRenderer
+public class MapTileRendererModel implements MapTileRenderer
 {
     /**
-     * Render tile on its designed location.
-     * 
-     * @param g The graphic output.
-     * @param map The map used.
-     * @param tile The tile to render.
-     * @param x The location x.
-     * @param y The location y.
+     * Create the renderer.
      */
-    void renderTile(Graphic g, MapTile map, Tile tile, int x, int y);
+    public MapTileRendererModel()
+    {
+        super();
+    }
+
+    /*
+     * MapTileRenderer
+     */
+
+    @Override
+    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
+    {
+        final SpriteTiled sprite = map.getSheet(tile.getSheet());
+        sprite.setLocation(x, y);
+        sprite.setTile(tile.getNumber());
+        sprite.render(g);
+    }
 }

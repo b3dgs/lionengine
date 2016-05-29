@@ -20,7 +20,8 @@ package com.b3dgs.lionengine.game.raster;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.map.MapTileRenderer;
 
 /**
  * Map tile rastered representation. This will allow to apply a raster effect to map rendering, improving the number of
@@ -33,7 +34,7 @@ import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
  * {@link #loadSheets(Media, boolean)}
  * </pre>
  */
-public interface MapTileRastered extends MapTileRenderer
+public interface MapTileRastered extends Feature, MapTileRenderer
 {
     /**
      * Load tile sheets as rastered.

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.raster;
 
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.feature.Feature;
@@ -49,4 +50,12 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @return The raster animated sprite.
      */
     SpriteAnimated getRasterAnim(int rasterIndex);
+
+    /**
+     * Set the origin location type, related to surface area. The type will affect the defined location and the
+     * rendering point.
+     * 
+     * @param origin The origin type
+     */
+    void setOrigin(Origin origin);
 }

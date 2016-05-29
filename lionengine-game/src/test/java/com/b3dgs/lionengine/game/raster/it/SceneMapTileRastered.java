@@ -38,21 +38,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 public class SceneMapTileRastered extends Sequence
 {
-    /** Timing value. */
-    private final Timing timingRaster = new Timing();
-    /** Services reference. */
     private final Services services = new Services();
-    /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
-    /** Map raster reference. */
-    private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
-    /** Timing. */
+    private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel());
+    private final Timing timingRaster = new Timing();
     private final Timing timing = new Timing();
-    /** Renderable selection (false = default, true = raster). */
+
     private boolean useRaster;
 
     /**
@@ -68,9 +61,8 @@ public class SceneMapTileRastered extends Sequence
     @Override
     public void load()
     {
+        map.prepareFeatures(services);
         map.create(Medias.create("level.png"), 16, 16, 16);
-        mapViewer.prepare(map, services);
-
         raster.loadSheets(Medias.create("raster.xml"), false);
 
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
