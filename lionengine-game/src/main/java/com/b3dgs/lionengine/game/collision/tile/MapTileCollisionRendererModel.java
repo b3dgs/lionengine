@@ -232,7 +232,7 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
     @Override
     public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
     {
-        if (tile.hasFeature(TileCollision.class))
+        if (collisionCache != null && tile.hasFeature(TileCollision.class))
         {
             renderCollision(g, tile.getFeature(TileCollision.class), x, y);
         }

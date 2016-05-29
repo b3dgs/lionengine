@@ -40,8 +40,6 @@ public class RasterableModel extends FeatureModel implements Rasterable
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim;
-    /** Rastered flag. */
-    private final boolean rastered;
     /** Smooth raster flag. */
     private final boolean smooth;
     /** Tile height. */
@@ -81,11 +79,11 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         super();
 
+        Check.notNull(setup);
         Check.superiorStrict(tileHeight, 0);
-        this.tileHeight = tileHeight;
 
+        this.tileHeight = tileHeight;
         rastersAnim = setup.getRasters();
-        rastered = setup.getFile() != null;
         smooth = setup.hasSmooth();
     }
 
@@ -145,11 +143,5 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         Check.superiorOrEqual(rasterIndex, 0);
         return rastersAnim.get(rasterIndex);
-    }
-
-    @Override
-    public boolean isRastered()
-    {
-        return rastered;
     }
 }

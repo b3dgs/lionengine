@@ -104,6 +104,7 @@ public class ProducerModelTest
         final AtomicReference<Producible> done = new AtomicReference<Producible>();
         final AtomicReference<Producible> cant = new AtomicReference<Producible>();
         producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
+        producer.setChecker(object);
 
         producer.update(1.0);
 

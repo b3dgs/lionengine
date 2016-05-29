@@ -49,11 +49,4 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @return The raster animated sprite.
      */
     SpriteAnimated getRasterAnim(int rasterIndex);
-
-    /**
-     * Check if raster is activated.
-     * 
-     * @return <code>true</code> if rastered, <code>false</code> else.
-     */
-    boolean isRastered();
 }

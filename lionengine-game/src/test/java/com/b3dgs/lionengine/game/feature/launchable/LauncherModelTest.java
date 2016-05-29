@@ -219,4 +219,34 @@ public class LauncherModelTest
             Assert.assertTrue(launchableMedia.getFile().delete());
         }
     }
+
+    /**
+     * Test the launcher failure.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLauncherException() throws InterruptedException
+    {
+        final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
+        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
+        final Setup setup = new Setup(launcherMedia);
+        final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
+
+        try
+        {
+            Thread.sleep(11);
+            launcher.fire();
+            Assert.fail();
+        }
+        finally
+        {
+            final Handler handler = services.get(Handler.class);
+            handler.removeAll();
+            handler.update(1.0);
+
+            Assert.assertEquals(0, handler.size());
+            Assert.assertTrue(launchableMedia.getFile().delete());
+        }
+    }
 }

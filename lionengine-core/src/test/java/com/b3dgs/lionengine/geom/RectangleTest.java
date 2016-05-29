@@ -101,16 +101,18 @@ public class RectangleTest
     @Test
     public void testGetter()
     {
-        final Rectangle rectangle = Geom.createRectangle(1.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle = Geom.createRectangle(1.0, 1.0, 4.25, 5.25);
 
         Assert.assertEquals(1.0, rectangle.getX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, rectangle.getY(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, rectangle.getMinX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, rectangle.getMinY(), UtilTests.PRECISION);
-        Assert.assertEquals(6.0, rectangle.getMaxX(), UtilTests.PRECISION);
-        Assert.assertEquals(6.0, rectangle.getMaxY(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, rectangle.getWidthReal(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, rectangle.getHeightReal(), UtilTests.PRECISION);
+        Assert.assertEquals(5.25, rectangle.getMaxX(), UtilTests.PRECISION);
+        Assert.assertEquals(6.25, rectangle.getMaxY(), UtilTests.PRECISION);
+        Assert.assertEquals(4.25, rectangle.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(5.25, rectangle.getHeightReal(), UtilTests.PRECISION);
+        Assert.assertEquals(4, rectangle.getWidth());
+        Assert.assertEquals(5, rectangle.getHeight());
     }
 
     /**

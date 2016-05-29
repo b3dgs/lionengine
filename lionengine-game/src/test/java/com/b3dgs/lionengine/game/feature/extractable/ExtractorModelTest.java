@@ -109,6 +109,7 @@ public class ExtractorModelTest
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(6);
         extractor.setExtractionPerSecond(50.0);
+        extractor.setChecker(object);
         extractor.setDropOffPerSecond(100.0);
         extractor.prepare(object, services);
 

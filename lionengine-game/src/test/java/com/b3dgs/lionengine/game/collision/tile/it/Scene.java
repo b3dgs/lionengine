@@ -55,7 +55,10 @@ class Scene extends Sequence
 
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
+    private final Timing clear = new Timing();
     private final Timing timing = new Timing();
+
+    private MapTileCollisionRenderer mapCollisionRenderer;
 
     /**
      * Create the scene.
@@ -86,7 +89,7 @@ class Scene extends Sequence
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        final MapTileCollisionRenderer mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
+        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
 
         handler.add(map);
 
@@ -108,6 +111,7 @@ class Scene extends Sequence
         tracker.track(mario);
         handler.add(camera);
 
+        clear.start();
         timing.start();
     }
 
@@ -116,6 +120,11 @@ class Scene extends Sequence
     {
         handler.update(extrp);
 
+        if (clear.elapsed(500L))
+        {
+            mapCollisionRenderer.clearCollisionDraw();
+            clear.stop();
+        }
         if (timing.elapsed(1000L))
         {
             end();
