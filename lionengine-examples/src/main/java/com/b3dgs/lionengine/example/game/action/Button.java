@@ -43,13 +43,13 @@ import com.b3dgs.lionengine.graphic.Text;
 class Button extends FeaturableModel
 {
     /** Media buildings reference. */
-    public static final Media BUILDINGS = Medias.create("action", "Buildings.xml");
+    public static final Media BUILDINGS = Medias.create("Buildings.xml");
     /** Media build farm reference. */
-    public static final Media BUILD_FARM = Medias.create("action", "BuildFarm.xml");
+    public static final Media BUILD_FARM = Medias.create("BuildFarm.xml");
     /** Media build barracks reference. */
-    public static final Media BUILD_BARRACKS = Medias.create("action", "BuildBarracks.xml");
+    public static final Media BUILD_BARRACKS = Medias.create("BuildBarracks.xml");
     /** Media cancel reference. */
-    public static final Media CANCEL = Medias.create("action", "Cancel.xml");
+    public static final Media CANCEL = Medias.create("Cancel.xml");
 
     private final Collection<Button> toDelete = new ArrayList<>();
 
