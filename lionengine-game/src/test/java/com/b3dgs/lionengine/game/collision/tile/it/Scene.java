@@ -106,8 +106,7 @@ class Scene extends Sequence
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
 
-        final CameraTracker tracker = new CameraTracker();
-        camera.addFeature(tracker);
+        final CameraTracker tracker = camera.addFeatureAndGet(new CameraTracker());
         tracker.track(mario);
         handler.add(camera);
 

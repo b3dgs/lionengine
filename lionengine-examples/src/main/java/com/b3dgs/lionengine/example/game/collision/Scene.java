@@ -83,8 +83,7 @@ class Scene extends Sequence
         camera.setIntervals(16, 0);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
-        final CameraTracker tracker = new CameraTracker();
-        camera.addFeature(tracker);
+        final CameraTracker tracker = camera.addFeatureAndGet(new CameraTracker());
         handler.add(camera);
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
