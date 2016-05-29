@@ -193,7 +193,7 @@ final class MouseClickAwt implements MouseListener
             clicked[button] = false;
         }
 
-        if (actionsPressed.containsKey(key))
+        if (actionsReleased.containsKey(key))
         {
             final List<EventAction> actions = actionsReleased.get(key);
             for (final EventAction current : actions)
