@@ -50,19 +50,6 @@ public class FeaturableModel implements Featurable
     }
 
     /**
-     * Add a feature.
-     * 
-     * @param <T> The feature type.
-     * @param feature The feature to add.
-     * @return The added feature (same as source).
-     */
-    public final <T extends Feature> T addFeatureAndGet(T feature)
-    {
-        addFeature(feature);
-        return feature;
-    }
-
-    /**
      * Fill services fields with their right instance.
      * 
      * @param object The object to update.
@@ -177,38 +164,45 @@ public class FeaturableModel implements Featurable
     }
 
     @Override
-    public void addFeature(Feature feature)
+    public final void addFeature(Feature feature)
     {
         featuresToPrepare.add(feature);
         features.add(feature);
     }
 
     @Override
-    public <C extends Feature> C getFeature(Class<C> feature)
+    public final <T extends Feature> T addFeatureAndGet(T feature)
+    {
+        addFeature(feature);
+        return feature;
+    }
+
+    @Override
+    public final <C extends Feature> C getFeature(Class<C> feature)
     {
         return features.get(feature);
     }
 
     @Override
-    public Iterable<Feature> getFeatures()
+    public final Iterable<Feature> getFeatures()
     {
         return features.getFeatures();
     }
 
     @Override
-    public Iterable<Class<? extends Feature>> getFeaturesType()
+    public final Iterable<Class<? extends Feature>> getFeaturesType()
     {
         return features.getFeaturesType();
     }
 
     @Override
-    public boolean hasFeature(Class<? extends Feature> feature)
+    public final boolean hasFeature(Class<? extends Feature> feature)
     {
         return features.contains(feature);
     }
 
     @Override
-    public boolean isPrepared()
+    public final boolean isPrepared()
     {
         return filled;
     }

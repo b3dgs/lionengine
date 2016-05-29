@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.collision.tile;
 
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
 
 /**
@@ -24,7 +25,7 @@ import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
  * 
  * @see MapTileCollision
  */
-public interface MapTileCollisionRenderer extends MapTileRenderer
+public interface MapTileCollisionRenderer extends Feature, MapTileRenderer
 {
     /**
      * Create the collision draw surface. Must be called after map creation to enable collision rendering.

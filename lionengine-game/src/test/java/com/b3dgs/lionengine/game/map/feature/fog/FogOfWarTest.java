@@ -153,33 +153,33 @@ public class FogOfWarTest
 
         final Graphic g = Graphics.createGraphic();
 
-        fog.renderTile(g, map.getTile(0, 0), 0, 0);
+        fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
         fog.setTilesheet(new SpriteTiledMock(), null);
-        fog.renderTile(g, map.getTile(0, 0), 0, 0);
+        fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
         Assert.assertFalse(fog.hasFogOfWar());
 
         fog.setTilesheet(null, new SpriteTiledMock());
-        fog.renderTile(g, map.getTile(0, 0), 0, 0);
+        fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
         Assert.assertFalse(fog.hasFogOfWar());
 
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         fog.setEnabled(true, false);
-        fog.renderTile(g, map.getTile(0, 0), 0, 0);
+        fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
         Assert.assertTrue(fog.hasFogOfWar());
 
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         fog.setEnabled(false, true);
-        fog.renderTile(g, map.getTile(0, 0), 0, 0);
+        fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
         Assert.assertTrue(fog.hasFogOfWar());
 
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         fog.setEnabled(true, true);
-        fog.renderTile(g, map.getTile(0, 0), 0, 0);
+        fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
         Assert.assertTrue(fog.hasFogOfWar());
     }

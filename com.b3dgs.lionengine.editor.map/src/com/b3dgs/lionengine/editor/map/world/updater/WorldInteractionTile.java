@@ -76,9 +76,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     public WorldInteractionTile(Services services)
     {
         camera = services.get(Camera.class);
-        map = services.get(MapTile.class);
-        mapGroup = services.get(MapTileGroup.class);
         palette = services.get(PaletteModel.class);
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
         mapTransition = map.getFeature(MapTileTransition.class);
         mapCircuit = map.getFeature(MapTileCircuit.class);
         tileSelectionListeners.add(listener);

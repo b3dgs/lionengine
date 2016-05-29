@@ -56,7 +56,6 @@ class Peon extends FeaturableModel implements ProducerListener
     private boolean visible = true;
 
     @Service private MapTile map;
-    @Service private MapTilePath mapPath;
     @Service private Viewer viewer;
 
     /**
@@ -128,6 +127,7 @@ class Peon extends FeaturableModel implements ProducerListener
     @Override
     public void notifyProduced(Producible producible, Featurable featurable)
     {
+        final MapTilePath mapPath = map.getFeature(MapTilePath.class);
         final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
                                                           (int) producible.getX() / map.getTileWidth(),
                                                           (int) producible.getY() / map.getTileHeight(),

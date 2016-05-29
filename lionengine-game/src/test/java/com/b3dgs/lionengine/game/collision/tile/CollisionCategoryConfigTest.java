@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.stream.Xml;
@@ -82,9 +83,11 @@ public class CollisionCategoryConfigTest
     {
         final Services services = new Services();
         services.add(new Camera());
-        services.add(new MapTileGame());
-        services.add(new MapTileGroupModel());
-        mapCollision = new MapTileCollisionModel(services);
+
+        final MapTile map = services.add(new MapTileGame());
+        map.addFeature(new MapTileGroupModel());
+        mapCollision = new MapTileCollisionModel();
+        mapCollision.prepare(map, services);
     }
 
     /**

@@ -48,7 +48,7 @@ class Scene extends Sequence
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
     /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
+    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Scrolling speed. */
@@ -70,6 +70,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
+        mapViewer.prepare(map, services);
 
         minimap.load();
         minimap.automaticColor();

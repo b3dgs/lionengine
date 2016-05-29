@@ -118,11 +118,12 @@ public class GroupsAssignDialog extends AbstractDialog implements WorldView, Foc
         services.add(new Handler(services));
         services.add(new Factory(services));
         map = services.create(MapTileGame.class);
-        mapGroup = map.createFeature(MapTileGroupModel.class);
-        map.addFeature(new MapTileCollisionModel(services));
-        map.addFeature(new MapTileTransitionModel(services));
-        map.addFeature(new MapTileCircuitModel(services));
-        map.addFeature(new MapTileViewerModel(services));
+        mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        map.addFeature(new MapTileCollisionModel());
+        map.addFeature(new MapTileTransitionModel());
+        map.addFeature(new MapTileCircuitModel());
+        map.addFeature(new MapTileViewerModel());
+        map.prepareFeatures(services);
         services.add(new Selection());
 
         final PaletteModel palette = new PaletteModel();

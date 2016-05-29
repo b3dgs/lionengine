@@ -138,7 +138,9 @@ public class CollisionImportDialog extends AbstractDialog
         final MapTile map = WorldModel.INSTANCE.getMap();
         if (!map.hasFeature(MapTileCollision.class))
         {
-            map.createFeature(MapTileCollisionModel.class);
+            final MapTileCollision mapCollision = new MapTileCollisionModel();
+            map.addFeature(mapCollision);
+            mapCollision.prepare(map, WorldModel.INSTANCE.getServices());
         }
         final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
         mapCollision.loadCollisions(formulas.getMedia(), collisions.getMedia());

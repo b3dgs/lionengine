@@ -56,7 +56,7 @@ public class WorldSelectedTiles implements WorldRenderListener
     public WorldSelectedTiles(Services services)
     {
         map = services.get(MapTile.class);
-        mapGroup = services.get(MapTileGroup.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
         camera = services.get(Camera.class);
         services.get(WorldInteractionTile.class).addListener(selection);
     }

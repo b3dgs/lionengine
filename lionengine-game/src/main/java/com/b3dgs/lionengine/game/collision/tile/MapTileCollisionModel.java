@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -132,11 +133,11 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     /** Collisions groups list. */
     private final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Map tile group. */
-    private final MapTileGroup mapGroup;
+    private MapTileGroup mapGroup;
     /** The services reference. */
-    private final Services services;
+    private Services services;
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -144,16 +145,10 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
 
     /**
      * Create the map tile collision.
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
      */
-    public MapTileCollisionModel(Services services)
+    public MapTileCollisionModel()
     {
         super();
-        this.services = services;
-        map = services.get(MapTile.class);
-        mapGroup = services.get(MapTileGroup.class);
     }
 
     /**
@@ -395,6 +390,16 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     /*
      * MapTileCollision
      */
+
+    @Override
+    public void prepare(Featurable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        this.services = services;
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
+    }
 
     @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups)

@@ -80,8 +80,8 @@ public class UtilMap
         final MapTileGame map = services.add(new MapTileGame());
         final MapTileGroup mapGroup = new MapTileGroupModel();
         map.addFeature(mapGroup);
-        map.addFeature(new MapTileTransitionModel(services));
-        map.addFeature(new MapTileCircuitModel(services));
+        map.addFeature(new MapTileTransitionModel());
+        map.addFeature(new MapTileCircuitModel());
         map.prepareFeatures(services);
         map.create(1, 1, size, size);
 

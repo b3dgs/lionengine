@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.stream.Xml;
@@ -76,9 +77,11 @@ public class CollisionGroupConfigTest
     {
         final Services services = new Services();
         services.add(new Camera());
-        services.add(new MapTileGame());
-        services.add(new MapTileGroupModel());
-        mapCollision = new MapTileCollisionModel(services);
+
+        final MapTile map = services.add(new MapTileGame());
+        map.addFeature(new MapTileGroupModel());
+        mapCollision = new MapTileCollisionModel();
+        mapCollision.prepare(map, services);
     }
 
     /**
@@ -105,6 +108,7 @@ public class CollisionGroupConfigTest
     {
         final XmlNode root = Xml.create("groups");
         CollisionGroupConfig.exports(root, group);
+
         final Media groupsConfig = Medias.create("groups.xml");
         Xml.save(root, groupsConfig);
 

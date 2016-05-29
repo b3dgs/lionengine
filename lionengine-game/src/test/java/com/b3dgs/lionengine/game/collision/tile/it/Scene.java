@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -77,24 +78,26 @@ class Scene extends Sequence
     {
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("level.png"));
-        handler.add(map);
 
         final Camera camera = services.create(Camera.class);
         camera.setIntervals(16, 0);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
+        final MapTileCollisionRenderer mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
+
+        handler.add(map);
+
         mapGroup.loadGroups(Medias.create("groups.xml"));
-
-        final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
-
-        final MapTileCollisionRenderer mapCollisionRenderer = new MapTileCollisionRendererModel(services);
         mapCollisionRenderer.createCollisionDraw();
 
-        final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
+        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
+        mapViewer.addRenderer(new MapTileRendererModel());
         mapViewer.addRenderer(mapCollisionRenderer);
+        mapViewer.prepare(map, services);
 
         final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);

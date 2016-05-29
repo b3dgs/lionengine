@@ -45,7 +45,7 @@ class Scene extends Sequence
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
+    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
     private final Minimap minimap = new Minimap(map);
 
     private double speed;
@@ -67,6 +67,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
+        mapViewer.prepare(map, services);
 
         minimap.load();
         minimap.automaticColor();

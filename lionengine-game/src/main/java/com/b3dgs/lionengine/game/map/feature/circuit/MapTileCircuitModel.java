@@ -24,9 +24,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -41,48 +40,39 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Map tile circuit model implementation.
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * </ul>
- * <p>
- * The {@link MapTile} must provide:
- * </p>
- * <ul>
- * <li>{@link MapTileGroup}</li>
- * <li>{@link MapTileTransition}</li>
- * </ul>
  */
 public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
 {
     /** Circuits as key. */
     private final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Map tile group. */
-    private final MapTileGroup mapGroup;
+    private MapTileGroup mapGroup;
     /** Map tile transition. */
-    private final MapTileTransition mapTransition;
+    private MapTileTransition mapTransition;
     /** Map circuit extractor. */
-    private final MapCircuitExtractor extractor;
+    private MapCircuitExtractor extractor;
 
     /**
      * Create a map tile circuit.
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * </ul>
+     * <p>
+     * The {@link MapTile} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileGroup}</li>
+     * <li>{@link MapTileTransition}</li>
+     * </ul>
      */
-    public MapTileCircuitModel(Services services)
+    public MapTileCircuitModel()
     {
         super();
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-        mapTransition = map.getFeature(MapTileTransition.class);
-        extractor = new MapCircuitExtractor(map);
     }
 
     /**
@@ -266,6 +256,17 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     /*
      * MapTileCircuit
      */
+
+    @Override
+    public void prepare(Featurable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
+        extractor = new MapCircuitExtractor(map);
+    }
 
     @Override
     public void loadCircuits(Media circuitsConfig)

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map.feature.renderer;
 
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -29,9 +30,10 @@ public interface MapTileRenderer
      * Render tile on its designed location.
      * 
      * @param g The graphic output.
+     * @param map The map used.
+     * @param tile The tile to render.
      * @param x The location x.
      * @param y The location y.
-     * @param tile The tile to render.
      */
-    void renderTile(Graphic g, Tile tile, int x, int y);
+    void renderTile(Graphic g, MapTile map, Tile tile, int x, int y);
 }

@@ -58,8 +58,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     private final Cursor cursor = services.create(Cursor.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
+    private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final MapTransitionExtractor transitionExtractor = new MapTransitionExtractor(map);
@@ -113,6 +113,7 @@ class Scene extends Sequence
     {
         map.create(Medias.create("level.png"));
         mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapViewer.prepare(map, services);
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();

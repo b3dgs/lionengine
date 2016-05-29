@@ -90,7 +90,7 @@ class Scene extends Sequence
         camera.setLimits(map);
         camera.setLocation(192, 96);
 
-        map.addFeature(new MapTileViewerModel(services));
+        map.addFeature(new MapTileViewerModel());
         handler.add(map);
 
         minimap.load();

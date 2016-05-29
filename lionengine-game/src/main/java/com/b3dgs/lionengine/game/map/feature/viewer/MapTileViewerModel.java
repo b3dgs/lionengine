@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.map.feature.viewer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -31,39 +32,47 @@ import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Map tile renderer default implementation.
- * <p>
- * The {@link Services} must provide:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * <li>{@link Viewer}</li>
- * </ul>
  */
 public class MapTileViewerModel extends FeatureModel implements MapTileViewer
 {
     /** Map tiles renderers. */
     private final Collection<MapTileRenderer> renderers = new ArrayList<MapTileRenderer>();
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Viewer reference. */
-    private final Viewer viewer;
+    private Viewer viewer;
 
     /**
-     * Create the renderer. It is shipped with a default renderer: {@link MapTileRendererModel}.
-     * 
-     * @param services The services reference.
+     * Create the viewer. It is shipped with a default renderer if no one defined: {@link MapTileRendererModel}.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * <li>{@link Viewer}</li>
+     * </ul>
      */
-    public MapTileViewerModel(Services services)
+    public MapTileViewerModel()
     {
         super();
-        map = services.get(MapTile.class);
-        viewer = services.get(Viewer.class);
-        renderers.add(new MapTileRendererModel(services));
     }
 
     /*
      * MapTileViewer
      */
+
+    @Override
+    public void prepare(Featurable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        map = services.get(MapTile.class);
+        viewer = services.get(Viewer.class);
+        if (renderers.isEmpty())
+        {
+            renderers.add(new MapTileRendererModel());
+        }
+    }
 
     @Override
     public void addRenderer(MapTileRenderer renderer)
@@ -113,7 +122,7 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
 
                             for (final MapTileRenderer renderer : renderers)
                             {
-                                renderer.renderTile(g, tile, x, y);
+                                renderer.renderTile(g, map, tile, x, y);
                             }
                         }
                     }

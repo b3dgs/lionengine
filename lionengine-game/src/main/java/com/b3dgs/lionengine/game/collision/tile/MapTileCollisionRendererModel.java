@@ -23,6 +23,8 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -35,7 +37,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Map tile collision model implementation.
  */
-public class MapTileCollisionRendererModel implements MapTileCollisionRenderer
+public class MapTileCollisionRendererModel extends FeatureModel implements MapTileCollisionRenderer
 {
     /**
      * Create the function draw to buffer.
@@ -143,9 +145,9 @@ public class MapTileCollisionRendererModel implements MapTileCollisionRenderer
     }
 
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Map collision reference. */
-    private final MapTileCollision mapCollision;
+    private MapTileCollision mapCollision;
     /** Collision draw cache. */
     private Map<CollisionFormula, ImageBuffer> collisionCache;
 
@@ -158,15 +160,10 @@ public class MapTileCollisionRendererModel implements MapTileCollisionRenderer
      * <li>{@link MapTile}</li>
      * <li>{@link MapTileCollision}</li>
      * </ul>
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
      */
-    public MapTileCollisionRendererModel(Services services)
+    public MapTileCollisionRendererModel()
     {
         super();
-        map = services.get(MapTile.class);
-        mapCollision = map.getFeature(MapTileCollision.class);
     }
 
     /**
@@ -193,6 +190,15 @@ public class MapTileCollisionRendererModel implements MapTileCollisionRenderer
     /*
      * MapTileCollisionRenderer
      */
+
+    @Override
+    public void prepare(Featurable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        map = services.get(MapTile.class);
+        mapCollision = map.getFeature(MapTileCollision.class);
+    }
 
     @Override
     public void createCollisionDraw()
@@ -224,7 +230,7 @@ public class MapTileCollisionRendererModel implements MapTileCollisionRenderer
     }
 
     @Override
-    public void renderTile(Graphic g, Tile tile, int x, int y)
+    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
     {
         if (tile.hasFeature(TileCollision.class))
         {

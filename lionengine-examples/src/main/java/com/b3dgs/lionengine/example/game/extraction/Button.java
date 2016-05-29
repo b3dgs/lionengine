@@ -58,7 +58,6 @@ class Button extends FeaturableModel
     @Service private Cursor cursor;
     @Service private Handler handler;
     @Service private MapTile map;
-    @Service private MapTilePath mapPath;
 
     /**
      * Create build button action.
@@ -88,6 +87,7 @@ class Button extends FeaturableModel
         {
             final int tx = map.getInTileX(cursor);
             final int ty = map.getInTileY(cursor);
+            final MapTilePath mapPath = map.getFeature(MapTilePath.class);
             for (final Extractor extractor : handler.get(Extractor.class))
             {
                 for (final Integer id : mapPath.getObjectsId(tx, ty))

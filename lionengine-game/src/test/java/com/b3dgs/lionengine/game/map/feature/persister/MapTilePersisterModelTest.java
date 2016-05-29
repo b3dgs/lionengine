@@ -28,7 +28,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -79,7 +78,7 @@ public class MapTilePersisterModelTest
 
         final Media level = Medias.get(file);
         UtilMapTilePersister.saveMap(map, level);
-        final MapTileGame mapLoaded = UtilMapTilePersister.loadMap(level);
+        final MapTile mapLoaded = UtilMapTilePersister.loadMap(level);
 
         Assert.assertEquals(map.getTileWidth(), mapLoaded.getTileWidth());
         Assert.assertEquals(map.getTileHeight(), mapLoaded.getTileHeight());
@@ -125,7 +124,7 @@ public class MapTilePersisterModelTest
         TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
 
         final Services services = new Services();
-        final MapTile map = new MapTileGame(services);
+        final MapTile map = services.create(MapTileGame.class);
         map.addFeature(new MapTilePersisterModel(map));
         map.prepareFeatures(services);
         map.create(16, 32, 3, 3);
@@ -170,23 +169,16 @@ public class MapTilePersisterModelTest
     }
 
     /**
-     * Test the constructor with services without map.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testConstructorServicesMissing()
-    {
-        Assert.assertNull(new MapTilePersisterModel(new Services()));
-    }
-
-    /**
      * Test the constructor with services with map.
      */
     @Test
-    public void testConstructorServices()
+    public void testConstructor()
     {
         final Services services = new Services();
-        services.add(new MapTileGame(services));
+        final MapTile map = services.create(MapTileGame.class);
+        final MapTilePersister mapPersister = new MapTilePersisterModel();
 
-        Assert.assertNotNull(new MapTilePersisterModel(services));
+        Assert.assertNotNull(mapPersister);
+        mapPersister.prepare(map, services);
     }
 }

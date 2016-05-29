@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -62,12 +63,14 @@ public class WorldModel
         final Selection selection = new Selection();
         services.add(selection);
 
-        map.addFeature(new MapTileViewerModel(services));
+        map.addFeature(new MapTileViewerModel());
         map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTileTransitionModel(services));
-        map.addFeature(new MapTileCircuitModel(services));
-        map.addFeature(new MapTilePathModel(services));
-        map.addFeature(new MapTileCollisionModel(services));
+        map.addFeature(new MapTileTransitionModel());
+        map.addFeature(new MapTileCircuitModel());
+        map.addFeature(new MapTilePathModel());
+        map.addFeature(new MapTileCollisionModel());
+        map.addFeature(new MapTileCollisionRendererModel());
+        map.prepareFeatures(services);
     }
 
     /**

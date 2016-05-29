@@ -168,7 +168,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         view = services.get(WorldView.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
-        mapGroup = services.get(MapTileGroup.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
         palette = services.get(PaletteModel.class);
     }
 

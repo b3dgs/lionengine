@@ -84,20 +84,20 @@ class Scene extends Sequence
     public void load()
     {
         final MapTile map = services.create(MapTileGame.class);
+        map.addFeature(new MapTileViewerModel());
         map.create(Medias.create("map", "level.png"));
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
-
-        final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
-        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
 
         final Camera camera = services.create(Camera.class);
         camera.setView(72, 12, 240, 176, getHeight());
         camera.setLimits(map);
         camera.setLocation(192, 96);
 
-        map.addFeature(new MapTileViewerModel(services));
+        handler.add(map);
+        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
+        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
         hud.load();
         hud.prepare();
@@ -110,8 +110,6 @@ class Scene extends Sequence
         cursor.setInputDevice(mouse);
 
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
-
-        handler.add(map);
 
         final Factory factory = services.create(Factory.class);
         handler.add(factory.create(Button.EXTRACT));

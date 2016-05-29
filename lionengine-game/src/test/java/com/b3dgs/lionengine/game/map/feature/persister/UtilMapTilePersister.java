@@ -44,7 +44,7 @@ public class UtilMapTilePersister
     public static MapTile createMap()
     {
         final Services services = new Services();
-        final MapTileGame map = new MapTileGame(services);
+        final MapTile map = services.create(MapTileGame.class);
         map.addFeature(new MapTilePersisterModel(map));
         map.prepareFeatures(services);
         map.create(16, 32, 3, 3);
@@ -93,10 +93,10 @@ public class UtilMapTilePersister
      * @return The loaded map.
      * @throws IOException If error.
      */
-    public static MapTileGame loadMap(Media level) throws IOException
+    public static MapTile loadMap(Media level) throws IOException
     {
         final Services services = new Services();
-        final MapTileGame map = new MapTileGame(services);
+        final MapTile map = services.create(MapTileGame.class);
         map.addFeature(new MapTilePersisterModel(map));
         map.prepareFeatures(services);
         FileReading input = null;

@@ -143,7 +143,7 @@ public class MapTileRasteredModel implements MapTileRastered
     }
 
     @Override
-    public void renderTile(Graphic g, Tile tile, int x, int y)
+    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
     {
         final Integer sheet = tile.getSheet();
         final int number = tile.getNumber();

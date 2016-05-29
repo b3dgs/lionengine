@@ -54,7 +54,7 @@ class Scene extends Sequence
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
+    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
     private final Timing timingGen = new Timing();
@@ -74,14 +74,16 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("forest.png"));
+        mapViewer.prepare(map, services);
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
+        final MapTileCircuit mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel());
+
+        map.prepareFeatures(services);
+
         mapGroup.loadGroups(Medias.create("groups.xml"));
-
-        final MapTileTransition mapTransition = map.createFeature(MapTileTransitionModel.class);
         mapTransition.loadTransitions(Medias.create("transitions.xml"));
-
-        final MapTileCircuit mapCircuit = map.createFeature(MapTileCircuitModel.class);
         mapCircuit.loadCircuits(Medias.create("circuits.xml"));
 
         camera.setView(0, 0, 1024, 768, getHeight());

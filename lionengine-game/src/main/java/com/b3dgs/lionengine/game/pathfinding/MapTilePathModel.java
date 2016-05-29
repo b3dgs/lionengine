@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -41,9 +42,9 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     /** Categories list. */
     private final Map<String, PathCategory> categories = new HashMap<String, PathCategory>();
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Map group reference. */
-    private final MapTileGroup mapGroup;
+    private MapTileGroup mapGroup;
 
     /**
      * Create a map tile path.
@@ -54,14 +55,11 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
      * <li>{@link MapTile}</li>
      * </ul>
      * 
-     * @param services The services reference.
      * @throws LionEngineException If services not found.
      */
-    public MapTilePathModel(Services services)
+    public MapTilePathModel()
     {
         super();
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroupModel.class);
     }
 
     /**
@@ -144,6 +142,15 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     /*
      * MapTilePath
      */
+
+    @Override
+    public void prepare(Featurable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroupModel.class);
+    }
 
     @Override
     public void loadPathfinding(Media pathfindingConfig)

@@ -45,14 +45,14 @@ public class ServicesTest
         final Camera camera = services.create(Camera.class);
         final Factory factory = services.create(Factory.class);
         final MapTile map = new MapTileGame(services);
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         services.add(map);
 
         Assert.assertEquals(services, services.get(Services.class));
         Assert.assertEquals(camera, services.get(Viewer.class));
         Assert.assertEquals(factory, services.get(Factory.class));
         Assert.assertEquals(map, services.get(MapTile.class));
-        Assert.assertEquals(mapGroup, services.get(MapTileGroup.class));
+        Assert.assertEquals(mapGroup, map.getFeature(MapTileGroup.class));
     }
 
     /**

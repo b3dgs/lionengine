@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
@@ -121,7 +122,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
     public void prepare(Featurable owner, Services services)
     {
         transformable = owner.getFeature(Transformable.class);
-        map = services.get(MapTileCollision.class);
+        map = services.get(MapTile.class).getFeature(MapTileCollision.class);
         categories = CollisionCategoryConfig.imports(configurer, map);
 
         if (owner instanceof TileCollidableListener)

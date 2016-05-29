@@ -74,21 +74,20 @@ class Scene extends Sequence
     public void load()
     {
         final MapTile map = services.create(MapTileGame.class);
+        map.addFeature(new MapTileViewerModel());
         map.create(Medias.create("level.png"));
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-        mapGroup.loadGroups(Medias.create("groups.xml"));
-
-        final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
-        mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
 
         final Camera camera = services.create(Camera.class);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
         camera.setLocation(0, 0);
 
-        map.addFeature(new MapTileViewerModel(services));
         handler.add(map);
+        mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         final Grunt grunt1 = factory.create(Grunt.MEDIA);
         grunt1.teleport(2, 6);

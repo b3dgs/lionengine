@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.map.generator;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuit;
@@ -52,16 +53,18 @@ public class MapGeneratorImpl implements MapGenerator
                                Media sheetsConfig,
                                Media groupsConfig)
     {
-        final MapTile map = new MapTileGame();
+        final Services services = new Services();
+        final MapTile map = services.create(MapTileGame.class);
         map.loadSheets(sheetsConfig);
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
+        final MapTileCircuit mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel());
+
+        map.prepareFeatures(services);
+
         mapGroup.loadGroups(groupsConfig);
-
-        final MapTileTransition mapTransition = map.createFeature(MapTileTransitionModel.class);
         mapTransition.loadTransitions(levels, sheetsConfig, groupsConfig);
-
-        final MapTileCircuit mapCircuit = map.createFeature(MapTileCircuitModel.class);
         mapCircuit.loadCircuits(levels, sheetsConfig, groupsConfig);
 
         parameters.apply(map);

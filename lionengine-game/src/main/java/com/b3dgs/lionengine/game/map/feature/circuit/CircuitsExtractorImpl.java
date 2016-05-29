@@ -150,16 +150,14 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
         for (final Media level : levels)
         {
             final Services services = new Services();
-            final MapTile map = new MapTileGame();
-            services.add(map);
+            final MapTile map = services.create(MapTileGame.class);
             map.create(level, sheetsConfig);
 
-            final MapTileGroup mapGroup = new MapTileGroupModel();
-            mapGroup.loadGroups(groupsConfig);
-            map.addFeature(mapGroup);
+            final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+            final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
 
-            final MapTileTransition mapTransition = new MapTileTransitionModel(services);
-            map.addFeature(mapTransition);
+            map.prepareFeatures(services);
+            mapGroup.loadGroups(groupsConfig);
             mapTransition.loadTransitions(levels, sheetsConfig, groupsConfig);
 
             mapsSet.add(map);

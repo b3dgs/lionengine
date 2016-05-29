@@ -63,11 +63,10 @@ public class MapTileFog
     public MapTileFog()
     {
         final Services services = new Services();
-        map = services.add(new MapTileGame());
-        mapGroup = new MapTileGroupModel();
-        map.addFeature(mapGroup);
-        transition = new MapTileTransitionModel(services);
-        map.addFeature(transition);
+        map = services.create(MapTileGame.class);
+        mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        transition = map.addFeatureAndGet(new MapTileTransitionModel());
+        map.prepareFeatures(services);
     }
 
     /**

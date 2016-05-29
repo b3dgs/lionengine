@@ -30,7 +30,6 @@ import org.eclipse.swt.events.MouseWheelListener;
 
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRenderer;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
@@ -76,8 +75,8 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     public WorldUpdater(EPartService partService, Services services)
     {
         this.partService = partService;
-        mapCollisionRenderer = new MapTileCollisionRendererModel(services);
         map = services.get(MapTile.class);
+        mapCollisionRenderer = map.getFeature(MapTileCollisionRenderer.class);
         gridEnabled = true;
 
         UtilExtension.clearCache();

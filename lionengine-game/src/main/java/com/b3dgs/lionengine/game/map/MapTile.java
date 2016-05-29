@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 
@@ -104,19 +103,6 @@ public interface MapTile extends Surface, Featurable
      * @see LevelRipConverter
      */
     void create(Media levelrip, Media sheetsConfig);
-
-    /**
-     * Create a feature from its type, and automatically {@link #addFeature} it.
-     * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.feature.Services} as
-     * single argument, or the public default constructor. Else, create manually the instance and use
-     * {@link #addFeature} on it.
-     * 
-     * @param <F> The feature type.
-     * @param feature The feature class.
-     * @return The feature instance already added.
-     * @throws LionEngineException If unable to create feature or <code>null</code>.
-     */
-    <F extends Feature> F createFeature(Class<F> feature);
 
     /**
      * Create a tile.

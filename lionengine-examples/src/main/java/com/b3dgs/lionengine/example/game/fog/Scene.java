@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.fog.FogOfWar;
 import com.b3dgs.lionengine.game.map.feature.fog.Fovable;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -80,14 +81,15 @@ class Scene extends Sequence
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("level.png"), 16, 16, 16);
 
+        final MapTileViewer mapViewer = new MapTileViewerModel();
+        map.addFeature(mapViewer);
+        mapViewer.addRenderer(new MapTileRendererModel());
+        mapViewer.addRenderer(fogOfWar);
+
         final Camera camera = services.create(Camera.class);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
         camera.setLocation(0, 0);
-
-        final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-        mapViewer.addRenderer(fogOfWar);
-        handler.add(map);
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
         hide.load();
@@ -100,6 +102,8 @@ class Scene extends Sequence
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, true);
         fogOfWar.create(map, Medias.create("fog.xml"));
+
+        handler.add(map);
 
         final Factory factory = services.create(Factory.class);
         final Peon peon = factory.create(Peon.MEDIA);

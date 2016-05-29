@@ -175,7 +175,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
 
     @Override
-    public void renderTile(Graphic g, Tile tile, int x, int y)
+    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
     {
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();

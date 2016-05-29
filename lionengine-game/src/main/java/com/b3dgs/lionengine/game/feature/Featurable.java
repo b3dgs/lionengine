@@ -28,6 +28,7 @@ public interface Featurable
 {
     /**
      * Prepare all added feature. Must be called before feature usage. Does nothing for already prepared features.
+     * 
      * @param services The services reference.
      */
     void prepareFeatures(Services services);
@@ -39,6 +40,16 @@ public interface Featurable
      * @param feature The feature to add.
      */
     void addFeature(Feature feature);
+
+    /**
+     * Add a feature for external processing. Caution : at this point the feature may not be completely usable. A call
+     * to {@link #prepareFeatures(Services)} is required for a full usage.
+     * 
+     * @param <T> The feature type.
+     * @param feature The feature to add.
+     * @return The added feature (same as source).
+     */
+    <T extends Feature> T addFeatureAndGet(T feature);
 
     /**
      * Get a feature instance from its type.

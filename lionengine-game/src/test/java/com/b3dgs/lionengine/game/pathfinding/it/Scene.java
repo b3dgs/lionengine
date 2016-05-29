@@ -77,18 +77,17 @@ class Scene extends Sequence
     {
         map.create(Medias.create("level.png"));
 
-        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-        mapGroup.loadGroups(Medias.create("groups.xml"));
-
-        final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
-        mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
+        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
 
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
         camera.setLocation(160, 96);
 
-        map.addFeature(new MapTileViewerModel(services));
+        map.addFeature(new MapTileViewerModel());
         handler.add(map);
+        mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         final Factory factory = services.create(Factory.class);
         handler.add(factory.create(Peon.MEDIA));

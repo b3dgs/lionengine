@@ -91,7 +91,7 @@ public class WorldRenderer implements PaintListener
         this.partService = partService;
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
-        mapViewer = services.get(MapTileViewer.class);
+        mapViewer = map.getFeature(MapTileViewer.class);
         handler = services.get(Handler.class);
         selection = services.get(Selection.class);
         zoom = services.get(WorldZoomUpdater.class);

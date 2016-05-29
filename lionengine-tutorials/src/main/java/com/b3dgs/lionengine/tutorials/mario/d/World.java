@@ -24,10 +24,12 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.camera.CameraTracker;
 import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.handler.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
@@ -61,7 +63,9 @@ class World extends WorldGame
         camera.setIntervals(16, 0);
 
         map.addFeature(new MapTilePersisterModel(map));
-        map.addFeature(new MapTileViewerModel(services));
+        map.addFeature(new MapTileViewerModel());
+        map.addFeature(new MapTileGroupModel());
+        map.addFeature(new MapTileCollisionModel());
 
         handler.addComponent(new ComponentCollision());
     }
@@ -83,10 +87,12 @@ class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         map.getFeature(MapTilePersister.class).load(file);
-        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("map", "groups.xml"));
-        map.createFeature(MapTileCollisionModel.class).loadCollisions(Medias.create("map", "formulas.xml"),
-                                                                      Medias.create("map", "collisions.xml"));
+
         handler.add(map);
+
+        map.getFeature(MapTileGroup.class).loadGroups(Medias.create("map", "groups.xml"));
+        map.getFeature(MapTileCollision.class).loadCollisions(Medias.create("map", "formulas.xml"),
+                                                              Medias.create("map", "collisions.xml"));
 
         final Entity mario = factory.create(Entity.MARIO);
         handler.add(mario);

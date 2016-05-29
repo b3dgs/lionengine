@@ -35,14 +35,12 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.util.UtilMath;
-import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
@@ -66,8 +64,6 @@ public class MapTileGame extends FeaturableModel implements MapTile
 {
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
-    /** Construction error. */
-    private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
     /** Inconsistent tile size. */
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
 
@@ -224,35 +220,6 @@ public class MapTileGame extends FeaturableModel implements MapTile
             Verbose.warning(getClass(), "create", "Number of missing tiles: ", String.valueOf(errors));
         }
         this.sheetsConfig = sheetsConfig;
-    }
-
-    @Override
-    public <F extends Feature> F createFeature(Class<F> feature)
-    {
-        try
-        {
-            final F instance = UtilReflection.create(feature, new Class<?>[]
-            {
-                Services.class
-            }, services);
-            services.add(instance);
-            addFeature(instance);
-            return instance;
-        }
-        catch (final NoSuchMethodException exception)
-        {
-            try
-            {
-                final F instance = UtilReflection.create(feature, new Class<?>[0]);
-                services.add(instance);
-                addFeature(instance);
-                return instance;
-            }
-            catch (final NoSuchMethodException exception2)
-            {
-                throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
-            }
-        }
     }
 
     @Override
@@ -533,25 +500,5 @@ public class MapTileGame extends FeaturableModel implements MapTile
     public int getHeight()
     {
         return getInTileHeight() * getTileHeight();
-    }
-
-    /*
-     * Featurable
-     */
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Also registers feature as a service.
-     * </p>
-     */
-    @Override
-    public final void addFeature(Feature feature)
-    {
-        super.addFeature(feature);
-        if (services != null)
-        {
-            services.add(feature);
-        }
     }
 }
