@@ -55,7 +55,6 @@ public class SceneRasterable extends Sequence
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
     private final Handler handler = services.create(Handler.class);
-    private final Transformable transformable = new TransformableModel();
 
     private int count;
 
@@ -82,14 +81,16 @@ public class SceneRasterable extends Sequence
         featurable.addFeature(new MirrorableModel());
         featurable.addFeature(new AnimatableModel(surface));
 
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
         final Rasterable rasterable = new RasterableModel(setup);
         featurable.addFeature(rasterable);
-        featurable.addFeature(transformable);
         featurable.addFeature(new RefreshableModel(new Updatable()
         {
             @Override
             public void update(double extrp)
             {
+                transformable.setLocationY(UtilMath.sin(count * 3) * 240 + 60);
+                surface.setLocation(camera, transformable);
                 rasterable.update(extrp);
                 surface.update(extrp);
             }
@@ -99,7 +100,6 @@ public class SceneRasterable extends Sequence
             @Override
             public void render(Graphic g)
             {
-                surface.setLocation(camera, transformable);
                 rasterable.render(g);
             }
         }));
@@ -114,7 +114,6 @@ public class SceneRasterable extends Sequence
     @Override
     public void update(double extrp)
     {
-        transformable.setLocationY(UtilMath.sin(count * 3) * 240 + 60);
         handler.update(extrp);
         count++;
         if (timing.elapsed(1000L))

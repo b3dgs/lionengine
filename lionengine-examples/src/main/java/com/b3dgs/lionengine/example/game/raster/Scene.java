@@ -67,7 +67,6 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     private final Handler handler = services.create(Handler.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final Transformable transformable = new TransformableModel();
     private final Mouse mouse;
 
     private boolean useRaster = true;
@@ -110,17 +109,18 @@ class Scene extends Sequence
         featurable.addFeature(new MirrorableModel());
         featurable.addFeature(new AnimatableModel(surface));
 
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
         final Rasterable rasterable = new RasterableModel(setup);
         featurable.addFeature(rasterable);
-        featurable.addFeature(transformable);
         featurable.addFeature(new RefreshableModel(new Updatable()
         {
             @Override
             public void update(double extrp)
             {
+                transformable.setLocationY(UtilMath.sin(count) * 120 + 160);
+                surface.setLocation(camera, transformable);
                 rasterable.update(extrp);
                 surface.update(extrp);
-                surface.setLocation(camera, transformable);
             }
         }));
         featurable.addFeature(new DisplayableModel(new Renderable()
@@ -147,7 +147,6 @@ class Scene extends Sequence
     public void update(double extrp)
     {
         handler.update(extrp);
-        transformable.setLocationY(UtilMath.sin(count) * 120 + 160);
         count++;
         if (mouse.hasClickedOnce(Mouse.LEFT))
         {
