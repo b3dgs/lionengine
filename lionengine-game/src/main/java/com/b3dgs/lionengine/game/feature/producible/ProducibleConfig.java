@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature.producible;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.SizeConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -36,18 +35,6 @@ public final class ProducibleConfig
     public static final String NODE_PRODUCIBLE = Constant.XML_PREFIX + "producible";
     /** Production steps attribute name. */
     public static final String ATT_STEPS = "steps";
-
-    /**
-     * Create the producible data from setup.
-     *
-     * @param setup The setup reference.
-     * @return The producible data.
-     * @throws LionEngineException If unable to read node.
-     */
-    public static ProducibleConfig imports(Setup setup)
-    {
-        return imports(setup.getConfigurer().getRoot());
-    }
 
     /**
      * Create the producible data from configurer.

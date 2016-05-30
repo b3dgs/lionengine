@@ -103,7 +103,8 @@ public class CollidableModel extends FeatureModel implements Collidable
     public CollidableModel(Setup setup)
     {
         super();
-        for (final Collision collision : CollisionConfig.imports(setup.getConfigurer()).getCollisions())
+
+        for (final Collision collision : CollisionConfig.imports(setup).getCollisions())
         {
             collisions.add(collision);
         }

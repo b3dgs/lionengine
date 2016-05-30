@@ -71,7 +71,7 @@ public class Configurer
      * 
      * @throws LionEngineException If error on saving.
      */
-    public void save()
+    public final void save()
     {
         Xml.save(root, media);
     }
@@ -81,7 +81,7 @@ public class Configurer
      * 
      * @return The root node.
      */
-    public XmlNode getRoot()
+    public final XmlNode getRoot()
     {
         return root;
     }
@@ -91,7 +91,7 @@ public class Configurer
      * 
      * @return The configuration directory path.
      */
-    public String getPath()
+    public final String getPath()
     {
         return path;
     }
@@ -101,7 +101,7 @@ public class Configurer
      * 
      * @return The associated media.
      */
-    public Media getMedia()
+    public final Media getMedia()
     {
         return media;
     }
@@ -113,7 +113,7 @@ public class Configurer
      * @return The node text value.
      * @throws LionEngineException If unable to read node.
      */
-    public String getText(String... path)
+    public final String getText(String... path)
     {
         final XmlNode node = getNode(path);
         return node.getText();
@@ -127,7 +127,7 @@ public class Configurer
      * @return The string value.
      * @throws LionEngineException If unable to read node.
      */
-    public String getString(String attribute, String... path)
+    public final String getString(String attribute, String... path)
     {
         return getNodeString(attribute, path);
     }
@@ -140,7 +140,7 @@ public class Configurer
      * @return The boolean value.
      * @throws LionEngineException If unable to read node.
      */
-    public boolean getBoolean(String attribute, String... path)
+    public final boolean getBoolean(String attribute, String... path)
     {
         return Boolean.parseBoolean(getNodeString(attribute, path));
     }
@@ -153,7 +153,7 @@ public class Configurer
      * @return The integer value.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public int getInteger(String attribute, String... path)
+    public final int getInteger(String attribute, String... path)
     {
         try
         {
@@ -173,7 +173,7 @@ public class Configurer
      * @return The double value.
      * @throws LionEngineException If unable to read node.
      */
-    public double getDouble(String attribute, String... path)
+    public final double getDouble(String attribute, String... path)
     {
         try
         {
@@ -194,7 +194,7 @@ public class Configurer
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    public <T> T getImplementation(Class<T> type, String... path)
+    public final <T> T getImplementation(Class<T> type, String... path)
     {
         return getImplementation(ClassLoader.getSystemClassLoader(), type, path);
     }
@@ -209,7 +209,7 @@ public class Configurer
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    public <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
+    public final <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
     {
         return getImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
     }
@@ -225,7 +225,7 @@ public class Configurer
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    public <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    public final <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
     {
         return getImplementation(type, new Class<?>[]
         {
@@ -244,7 +244,10 @@ public class Configurer
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    public <T> T getImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
+    public final <T> T getImplementation(Class<T> type,
+                                         Class<?>[] paramsType,
+                                         Collection<?> paramsValue,
+                                         String... path)
     {
         return getImplementation(ClassLoader.getSystemClassLoader(), type, paramsType, paramsValue, path);
     }
@@ -261,11 +264,11 @@ public class Configurer
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    public <T> T getImplementation(ClassLoader loader,
-                                   Class<T> type,
-                                   Class<?>[] paramsType,
-                                   Collection<?> paramsValue,
-                                   String... path)
+    public final <T> T getImplementation(ClassLoader loader,
+                                         Class<T> type,
+                                         Class<?>[] paramsType,
+                                         Collection<?> paramsValue,
+                                         String... path)
     {
         final String className = getText(path).trim();
         try

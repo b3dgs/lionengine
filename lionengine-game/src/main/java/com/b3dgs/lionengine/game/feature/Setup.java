@@ -23,13 +23,11 @@ import com.b3dgs.lionengine.Media;
 /**
  * Define a structure used to create configurer objects.
  */
-public class Setup
+public class Setup extends Configurer
 {
     /** Class error. */
     private static final String ERROR_CLASS = "Class not found for: ";
 
-    /** Configurer reference. */
-    private final Configurer configurer;
     /** Class reference. */
     private Class<?> clazz;
 
@@ -41,25 +39,7 @@ public class Setup
      */
     public Setup(Media config)
     {
-        configurer = new Configurer(config);
-    }
-
-    /**
-     * Clear the setup.
-     */
-    public void clear()
-    {
-        clazz = null;
-    }
-
-    /**
-     * Get the configurer reference.
-     * 
-     * @return The configurer reference.
-     */
-    public final Configurer getConfigurer()
-    {
-        return configurer;
+        super(config);
     }
 
     /**
@@ -73,14 +53,14 @@ public class Setup
     {
         if (clazz == null)
         {
-            final FeaturableConfig configObject = FeaturableConfig.imports(configurer);
+            final FeaturableConfig configObject = FeaturableConfig.imports(this);
             try
             {
                 clazz = classLoader.loadClass(configObject.getClassName());
             }
             catch (final ClassNotFoundException exception)
             {
-                throw new LionEngineException(exception, Setup.ERROR_CLASS, configurer.getMedia().getPath());
+                throw new LionEngineException(exception, Setup.ERROR_CLASS, getMedia().getPath());
             }
         }
         return clazz;

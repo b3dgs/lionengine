@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
-import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.body.BodyModel;
@@ -60,10 +59,7 @@ class Entity extends FeaturableModel
 
         final EntityModel model = new EntityModel(setup);
         addFeature(model);
-
-        final Configurer configurer = setup.getConfigurer();
-        addFeature(configurer.getImplementation(EntityUpdater.class, EntityModel.class, model, NODE_UPDATER));
-
+        addFeature(setup.getImplementation(EntityUpdater.class, EntityModel.class, model, NODE_UPDATER));
         addFeature(new EntityRenderer(model));
     }
 }

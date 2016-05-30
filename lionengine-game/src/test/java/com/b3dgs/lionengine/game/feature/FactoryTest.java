@@ -143,14 +143,10 @@ public class FactoryTest
     {
         final Factory factory = new Factory(services);
         final Setup setup = factory.getSetup(Medias.create(OBJECT_XML));
-        Assert.assertEquals(Medias.create(OBJECT_XML), setup.getConfigurer().getMedia());
 
-        final Setup setupCache = factory.getSetup(Medias.create(OBJECT_XML));
-        Assert.assertEquals(setup, setupCache);
+        Assert.assertEquals(Medias.create(OBJECT_XML), setup.getMedia());
 
-        factory.clear();
-
-        final Setup setupNew = factory.getSetup(Medias.create(OBJECT_XML));
-        Assert.assertNotEquals(setup, setupNew);
+        Assert.assertEquals(setup, factory.getSetup(Medias.create(OBJECT_XML)));
+        Assert.assertEquals(setup, factory.getSetup(Medias.create(OBJECT_XML)));
     }
 }

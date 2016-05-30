@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -62,9 +61,9 @@ public class ProducibleModel extends FeatureModel implements Producible
     public ProducibleModel(Setup setup)
     {
         super();
-        final Configurer configurer = setup.getConfigurer();
-        final ProducibleConfig configProducible = ProducibleConfig.imports(configurer);
-        media = configurer.getMedia();
+
+        final ProducibleConfig configProducible = ProducibleConfig.imports(setup);
+        media = setup.getMedia();
         steps = configProducible.getSteps();
         width = configProducible.getWidth();
         height = configProducible.getHeight();

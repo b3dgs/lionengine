@@ -74,7 +74,8 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
     public TileCollidableModel(Setup setup)
     {
         super();
-        configurer = setup.getConfigurer();
+
+        configurer = setup;
     }
 
     /**

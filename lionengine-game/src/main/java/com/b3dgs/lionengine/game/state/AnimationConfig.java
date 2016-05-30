@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -53,13 +53,13 @@ public final class AnimationConfig
     /**
      * Create the animation data from configurer.
      * 
-     * @param setup The setup reference.
+     * @param configurer The configurer reference.
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig imports(Setup setup)
+    public static AnimationConfig imports(Configurer configurer)
     {
-        return imports(setup.getConfigurer().getRoot());
+        return imports(configurer.getRoot());
     }
 
     /**

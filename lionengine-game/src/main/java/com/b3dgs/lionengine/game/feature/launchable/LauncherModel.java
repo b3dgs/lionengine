@@ -91,7 +91,7 @@ public class LauncherModel extends FeatureModel implements Launcher
     public LauncherModel(Setup setup)
     {
         super();
-        final LauncherConfig config = LauncherConfig.imports(setup.getConfigurer());
+        final LauncherConfig config = LauncherConfig.imports(setup);
         launchables = config.getLaunchables();
         rate = config.getRate();
         fire.start();

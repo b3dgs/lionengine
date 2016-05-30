@@ -86,8 +86,7 @@ public class ObjectRepresentation extends FeaturableModel
     {
         super();
 
-        final Configurer configurer = setup.getConfigurer();
-        final SpriteAnimated surface = getSprite(configurer, setup.getSurface());
+        final SpriteAnimated surface = getSprite(setup, setup.getSurface());
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.prepare();
 

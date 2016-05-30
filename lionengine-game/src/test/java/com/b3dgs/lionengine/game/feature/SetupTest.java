@@ -58,8 +58,8 @@ public class SetupTest
         final Media config = Medias.create("object.xml");
         final Setup setup = new Setup(config);
 
-        Assert.assertEquals(config, setup.getConfigurer().getMedia());
-        Assert.assertNotNull(setup.getConfigurer());
+        Assert.assertEquals(config, setup.getMedia());
+        Assert.assertNotNull(setup);
     }
 
     /**
@@ -72,10 +72,6 @@ public class SetupTest
         final Setup setup = new Setup(config);
 
         Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
-        Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
-
-        setup.clear();
-
         Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
     }
 

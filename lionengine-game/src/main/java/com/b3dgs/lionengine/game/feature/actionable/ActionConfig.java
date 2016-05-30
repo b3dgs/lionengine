@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature.actionable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -49,13 +49,13 @@ public final class ActionConfig
     /**
      * Import the action data from setup.
      *
-     * @param setup The setup reference.
+     * @param configurer The configurer reference.
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ActionConfig imports(Setup setup)
+    public static ActionConfig imports(Configurer configurer)
     {
-        return imports(setup.getConfigurer().getRoot());
+        return imports(configurer.getRoot());
     }
 
     /**

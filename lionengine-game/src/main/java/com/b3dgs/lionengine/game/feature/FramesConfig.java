@@ -35,18 +35,6 @@ public final class FramesConfig
     public static final String ATT_VERTICAL = "vertical";
 
     /**
-     * Imports the frames config from setup.
-     * 
-     * @param setup The setup reference.
-     * @return The frames data.
-     * @throws LionEngineException If unable to read node or invalid integer.
-     */
-    public static FramesConfig imports(Setup setup)
-    {
-        return imports(setup.getConfigurer().getRoot());
-    }
-
-    /**
      * Imports the frames config from configurer.
      * 
      * @param configurer The configurer reference.

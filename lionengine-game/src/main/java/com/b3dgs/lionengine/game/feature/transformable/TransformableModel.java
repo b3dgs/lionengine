@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature.transformable;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
-import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.SizeConfig;
@@ -60,10 +59,10 @@ public class TransformableModel extends FeatureModel implements Transformable
     public TransformableModel(Setup setup)
     {
         super();
-        final Configurer configurer = setup.getConfigurer();
-        if (configurer.getRoot().hasChild(SizeConfig.NODE_SIZE))
+
+        if (setup.getRoot().hasChild(SizeConfig.NODE_SIZE))
         {
-            final SizeConfig sizeData = SizeConfig.imports(configurer);
+            final SizeConfig sizeData = SizeConfig.imports(setup);
             width = sizeData.getWidth();
             height = sizeData.getHeight();
         }

@@ -87,7 +87,7 @@ class BuildButton extends FeaturableModel
         final Assignable assignable = addFeatureAndGet(new AssignableModel());
         assignable.setClickAssign(Mouse.LEFT);
 
-        final Media target = Medias.create(setup.getConfigurer().getText("media"));
+        final Media target = Medias.create(setup.getText("media"));
 
         actionable.setAction(() ->
         {

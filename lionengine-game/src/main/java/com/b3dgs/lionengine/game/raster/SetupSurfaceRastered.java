@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.FramesConfig;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -78,12 +77,11 @@ public class SetupSurfaceRastered extends SetupSurface
 
         this.rasterFile = rasterFile;
 
-        final Configurer configurer = getConfigurer();
-        rasterHeight = configurer.getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
-        rasterSmooth = configurer.getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
+        rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
+        rasterSmooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
         rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
 
-        final FramesConfig framesData = FramesConfig.imports(configurer);
+        final FramesConfig framesData = FramesConfig.imports(getRoot());
         hf = framesData.getHorizontal();
         vf = framesData.getVertical();
         frameHeight = surface.getHeight() / vf;

@@ -38,18 +38,6 @@ public final class SurfaceConfig
     public static final String ATT_ICON = "icon";
 
     /**
-     * Create the surface data from setup.
-     * 
-     * @param setup The setup reference.
-     * @return The surface data.
-     * @throws LionEngineException If unable to read node.
-     */
-    public static SurfaceConfig imports(Setup setup)
-    {
-        return imports(setup.getConfigurer().getRoot());
-    }
-
-    /**
      * Create the surface data from configurer.
      * 
      * @param configurer The configurer reference.

@@ -270,8 +270,8 @@ public class MapTileCollisionModelTest
     private Transformable createObject()
     {
         final Setup setup = new Setup(config);
-        CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryY);
-        CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryX);
+        CollisionCategoryConfig.exports(setup.getRoot(), categoryY);
+        CollisionCategoryConfig.exports(setup.getRoot(), categoryX);
         final FeaturableModel object = new FeaturableModel();
 
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));

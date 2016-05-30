@@ -37,18 +37,6 @@ public final class SizeConfig
     public static final String ATT_HEIGHT = "height";
 
     /**
-     * Import the size data from setup.
-     * 
-     * @param setup The setup reference.
-     * @return The size data.
-     * @throws LionEngineException If unable to read node.
-     */
-    public static SizeConfig imports(Setup setup)
-    {
-        return imports(setup.getConfigurer().getRoot());
-    }
-
-    /**
      * Import the size data from configurer.
      * 
      * @param configurer The configurer reference.

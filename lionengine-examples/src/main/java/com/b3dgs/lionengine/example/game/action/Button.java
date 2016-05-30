@@ -67,10 +67,10 @@ class Button extends FeaturableModel
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);
 
-        final ActionFeature action = setup.getConfigurer().getImplementation(ActionFeature.class,
-                                                                             Setup.class,
-                                                                             setup,
-                                                                             ActionConfig.NODE_ACTION);
+        final ActionFeature action = setup.getImplementation(ActionFeature.class,
+                                                             Setup.class,
+                                                             setup,
+                                                             ActionConfig.NODE_ACTION);
         actionable.setAction(action);
         addFeature(action);
 

@@ -129,18 +129,6 @@ public class Factory
     }
 
     /**
-     * Clear all loaded setup and their configuration.
-     */
-    public void clear()
-    {
-        for (final Setup setup : setups.values())
-        {
-            setup.clear();
-        }
-        setups.clear();
-    }
-
-    /**
      * Set an external class loader.
      * 
      * @param classLoader The external class loader.
