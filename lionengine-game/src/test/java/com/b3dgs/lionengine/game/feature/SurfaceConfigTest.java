@@ -70,8 +70,8 @@ public class SurfaceConfigTest
             Xml.save(root, media);
 
             final SurfaceConfig loaded = SurfaceConfig.imports(Xml.load(media));
+
             Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, SurfaceConfig.imports(new Setup(media)));
             Assert.assertEquals(config, SurfaceConfig.imports(new Configurer(media)));
         }
         finally
@@ -97,6 +97,7 @@ public class SurfaceConfigTest
             Xml.save(root, media);
 
             final SurfaceConfig loaded = SurfaceConfig.imports(Xml.load(media));
+
             Assert.assertEquals(config, loaded);
         }
         finally
@@ -156,5 +157,16 @@ public class SurfaceConfigTest
         Assert.assertEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", null));
         Assert.assertNotEquals(new SurfaceConfig("image", "icon"), new SurfaceConfig("image", null));
         Assert.assertNotEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", "icon"));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final SurfaceConfig config = new SurfaceConfig("image", "icon");
+
+        Assert.assertEquals("SurfaceConfig [image=image, icon=icon]", config.toString());
     }
 }

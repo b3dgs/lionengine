@@ -57,9 +57,7 @@ public class SizeConfigTest
     @Test
     public void testConfig()
     {
-        final int width = 16;
-        final int height = 32;
-        final SizeConfig config = new SizeConfig(width, height);
+        final SizeConfig config = new SizeConfig(16, 32);
 
         final Media media = Medias.create("object.xml");
         try
@@ -69,8 +67,8 @@ public class SizeConfigTest
             Xml.save(root, media);
 
             final SizeConfig loaded = SizeConfig.imports(Xml.load(media));
+
             Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, SizeConfig.imports(new Setup(media)));
             Assert.assertEquals(config, SizeConfig.imports(new Configurer(media)));
         }
         finally
@@ -106,5 +104,16 @@ public class SizeConfigTest
         Assert.assertEquals(config, new SizeConfig(16, 32));
         Assert.assertNotEquals(config, new SizeConfig(0, 32));
         Assert.assertNotEquals(config, new SizeConfig(16, 0));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final SizeConfig config = new SizeConfig(16, 32);
+
+        Assert.assertEquals("SizeConfig [width=16, height=32]", config.toString());
     }
 }

@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the surface data from a configurer.
- * 
- * @see com.b3dgs.lionengine.game.feature.SetupSurface
  */
 public final class SurfaceConfig
 {
@@ -173,5 +171,17 @@ public final class SurfaceConfig
         final boolean sameIcon = other.getIcon() == null && getIcon() == null
                                  || other.getIcon() != null && getIcon() != null && other.getIcon().equals(getIcon());
         return other.getImage().equals(getImage()) && sameIcon;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [image=")
+                                  .append(image)
+                                  .append(", icon=")
+                                  .append(icon)
+                                  .append("]")
+                                  .toString();
     }
 }

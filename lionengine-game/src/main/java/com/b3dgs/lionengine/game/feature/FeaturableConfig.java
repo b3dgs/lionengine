@@ -168,4 +168,16 @@ public final class FeaturableConfig
         final FeaturableConfig other = (FeaturableConfig) obj;
         return other.getClassName().equals(getClassName()) && other.getSetupName().equals(getSetupName());
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [clazz=")
+                                  .append(clazz)
+                                  .append(", setup=")
+                                  .append(setup)
+                                  .append("]")
+                                  .toString();
+    }
 }

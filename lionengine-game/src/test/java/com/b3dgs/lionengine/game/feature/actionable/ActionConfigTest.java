@@ -69,6 +69,7 @@ public class ActionConfigTest
             Xml.save(root, media);
 
             final ActionConfig loaded = ActionConfig.imports(Xml.load(media));
+
             Assert.assertEquals(action, loaded);
         }
         finally
@@ -110,5 +111,16 @@ public class ActionConfigTest
         Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3));
         Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3));
         Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
+
+        Assert.assertEquals("ActionConfig [name=a, description=b, x=0, y=1, width=2, height=3]", action.toString());
     }
 }

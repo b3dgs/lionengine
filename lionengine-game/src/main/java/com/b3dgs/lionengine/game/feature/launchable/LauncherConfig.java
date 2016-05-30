@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the launcher data from a configurer node.
- * 
- * @see com.b3dgs.lionengine.game.feature.launchable.Launcher
  */
 public final class LauncherConfig
 {
@@ -154,5 +152,31 @@ public final class LauncherConfig
         }
         final LauncherConfig other = (LauncherConfig) obj;
         return other.getRate() == getRate() && Arrays.equals(other.launchables.toArray(), launchables.toArray());
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder launchablesToString = new StringBuilder();
+        final int n = launchables.size();
+        int i = 0;
+        for (final LaunchableConfig config : launchables)
+        {
+            launchablesToString.append(config);
+            i++;
+            if (i < n)
+            {
+                launchablesToString.append(Constant.NEW_LINE).append(Constant.TAB);
+            }
+        }
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [rate=")
+                                  .append(rate)
+                                  .append(", launchables=")
+                                  .append(Constant.NEW_LINE)
+                                  .append(Constant.TAB)
+                                  .append(launchablesToString.toString())
+                                  .append("]")
+                                  .toString();
     }
 }

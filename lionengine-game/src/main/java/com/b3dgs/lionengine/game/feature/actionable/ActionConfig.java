@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the action data from a configurer.
- * 
- * @see com.b3dgs.lionengine.game.feature.actionable.Actionable
  */
 public final class ActionConfig
 {
@@ -231,5 +229,25 @@ public final class ActionConfig
                && other.getName().equals(getName())
                && sameCoord
                && sameSize;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [name=")
+                                  .append(name)
+                                  .append(", description=")
+                                  .append(description)
+                                  .append(", x=")
+                                  .append(x)
+                                  .append(", y=")
+                                  .append(y)
+                                  .append(", width=")
+                                  .append(width)
+                                  .append(", height=")
+                                  .append(height)
+                                  .append("]")
+                                  .toString();
     }
 }

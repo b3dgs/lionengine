@@ -107,4 +107,15 @@ public class FramesConfigTest
         Assert.assertNotEquals(config, new FramesConfig(0, 2));
         Assert.assertNotEquals(config, new FramesConfig(1, 0));
     }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final FramesConfig config = new FramesConfig(1, 2);
+
+        Assert.assertEquals("FramesConfig [horizontalFrames=1, verticalFrames=2]", config.toString());
+    }
 }

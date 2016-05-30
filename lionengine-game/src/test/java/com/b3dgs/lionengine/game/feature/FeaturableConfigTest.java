@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Test the object configuration.
+ * Test the featurable configuration.
  */
-public class ObjectConfigTest
+public class FeaturableConfigTest
 {
     /**
      * Prepare test.
@@ -71,8 +71,32 @@ public class ObjectConfigTest
             Xml.save(root, media);
 
             final FeaturableConfig loaded = FeaturableConfig.imports(Xml.load(media));
+
             Assert.assertEquals(config, loaded);
             Assert.assertEquals(config, FeaturableConfig.imports(new Configurer(media)));
+        }
+        finally
+        {
+            Assert.assertTrue(media.getFile().delete());
+        }
+    }
+
+    /**
+     * Test the configuration reader with default setup.
+     */
+    @Test
+    public void testConfigDefaultSetup()
+    {
+        final FeaturableConfig config = new FeaturableConfig("clazz", Setup.class.getName());
+        final Media media = Medias.create("object.xml");
+        try
+        {
+            final XmlNode root = Xml.create("test");
+            root.add(FeaturableConfig.exportClass("clazz"));
+            Xml.save(root, media);
+
+            final FeaturableConfig loaded = FeaturableConfig.imports(Xml.load(media));
+            Assert.assertEquals(config, loaded);
         }
         finally
         {
@@ -125,5 +149,16 @@ public class ObjectConfigTest
         Assert.assertEquals(config, new FeaturableConfig("class", "setup"));
         Assert.assertNotEquals(config, new FeaturableConfig("", "setup"));
         Assert.assertNotEquals(config, new FeaturableConfig("class", ""));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final FeaturableConfig config = new FeaturableConfig("clazz", "setup");
+
+        Assert.assertEquals("FeaturableConfig [clazz=clazz, setup=setup]", config.toString());
     }
 }

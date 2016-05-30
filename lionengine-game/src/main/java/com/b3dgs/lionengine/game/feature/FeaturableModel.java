@@ -108,7 +108,7 @@ public class FeaturableModel implements Featurable
      * @param type The service type.
      * @throws LionEngineException If error on setting service.
      */
-    private void setField(Field field, Object object, Services services, Class<?> type) throws LionEngineException
+    private void setField(Field field, Object object, Services services, Class<?> type)
     {
         try
         {

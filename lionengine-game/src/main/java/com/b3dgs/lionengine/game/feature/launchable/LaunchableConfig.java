@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the launchable data from a configurer.
- * 
- * @see com.b3dgs.lionengine.game.feature.launchable.Launchable
  */
 public final class LaunchableConfig
 {
@@ -156,5 +154,19 @@ public final class LaunchableConfig
         return other.getMedia().equals(getMedia())
                && other.getVector().equals(getVector())
                && other.getDelay() == getDelay();
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [media=")
+                                  .append(media)
+                                  .append(", delay=")
+                                  .append(delay)
+                                  .append(", vector=")
+                                  .append(vector)
+                                  .append("]")
+                                  .toString();
     }
 }

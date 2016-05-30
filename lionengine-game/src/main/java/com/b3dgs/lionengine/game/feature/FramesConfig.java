@@ -118,6 +118,7 @@ public final class FramesConfig
     /*
      * Object
      */
+
     @Override
     public int hashCode()
     {
@@ -141,5 +142,17 @@ public final class FramesConfig
         }
         final FramesConfig other = (FramesConfig) obj;
         return other.getHorizontal() == getHorizontal() && other.getVertical() == getVertical();
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [horizontalFrames=")
+                                  .append(horizontalFrames)
+                                  .append(", verticalFrames=")
+                                  .append(verticalFrames)
+                                  .append("]")
+                                  .toString();
     }
 }

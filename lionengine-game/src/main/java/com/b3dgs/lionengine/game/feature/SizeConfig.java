@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the size data from a configurer.
- * 
- * @see Configurer
  */
 public final class SizeConfig
 {
@@ -120,6 +118,7 @@ public final class SizeConfig
     /*
      * Object
      */
+
     @Override
     public int hashCode()
     {
@@ -143,5 +142,17 @@ public final class SizeConfig
         }
         final SizeConfig other = (SizeConfig) obj;
         return other.getWidth() == getWidth() && other.getHeight() == getHeight();
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [width=")
+                                  .append(width)
+                                  .append(", height=")
+                                  .append(height)
+                                  .append("]")
+                                  .toString();
     }
 }

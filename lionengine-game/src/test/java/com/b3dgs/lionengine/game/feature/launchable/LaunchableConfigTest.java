@@ -69,6 +69,7 @@ public class LaunchableConfigTest
 
             final LaunchableConfig loaded = LaunchableConfig.imports(Xml.load(media)
                                                                         .getChild(LaunchableConfig.NODE_LAUNCHABLE));
+
             Assert.assertEquals(launchable, loaded);
         }
         finally
@@ -124,5 +125,18 @@ public class LaunchableConfigTest
         Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, new Force(1.0, 2.0)));
         Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, new Force(1.0, 2.0)));
         Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, new Force(2.0, 1.0)));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
+
+        Assert.assertEquals("LaunchableConfig [media=media, delay=10, vector="
+                            + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]",
+                            launchable.toString());
     }
 }

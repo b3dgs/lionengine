@@ -468,4 +468,20 @@ public class Force implements Direction, Updatable
         }
         return false;
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [fh=")
+                                  .append(fh)
+                                  .append(", fv=")
+                                  .append(fv)
+                                  .append(", velocity=")
+                                  .append(velocity)
+                                  .append(", sensibility=")
+                                  .append(sensibility)
+                                  .append("]")
+                                  .toString();
+    }
 }
