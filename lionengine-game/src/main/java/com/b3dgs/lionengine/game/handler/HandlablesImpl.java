@@ -35,8 +35,8 @@ import com.b3dgs.lionengine.util.UtilReflection;
  */
 final class HandlablesImpl implements Handlables
 {
-    /** Handlable not found error. */
-    private static final String ERROR_HANDLABLE_NOT_FOUND = "Handlable not found: ";
+    /** Featurable not found error. */
+    private static final String ERROR_FEATURABLE_NOT_FOUND = "Featurable not found: ";
 
     /** List of featurables (key is the featurable ID). */
     private final Map<Integer, Featurable> featurables;
@@ -44,7 +44,7 @@ final class HandlablesImpl implements Handlables
     private final Map<Class<?>, Set<Object>> items;
 
     /**
-     * Create the featurables.
+     * Create the handlables.
      */
     HandlablesImpl()
     {
@@ -56,7 +56,6 @@ final class HandlablesImpl implements Handlables
      * Add a featurable.
      * 
      * @param featurable The featurable to add.
-     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} featurables at the same time.
      */
     public void add(Featurable featurable)
     {
@@ -187,7 +186,7 @@ final class HandlablesImpl implements Handlables
     }
 
     /*
-     * HandledHandlables
+     * Handlables
      */
 
     @Override
@@ -198,7 +197,7 @@ final class HandlablesImpl implements Handlables
         {
             return featurable;
         }
-        throw new LionEngineException(ERROR_HANDLABLE_NOT_FOUND, String.valueOf(id));
+        throw new LionEngineException(ERROR_FEATURABLE_NOT_FOUND, String.valueOf(id));
     }
 
     @Override

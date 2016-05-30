@@ -27,12 +27,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Featurable model default implementation.
+ * Featurable model implementation.
  */
 public class FeaturableModel implements Featurable
 {
     /** Inject service error. */
-    private static final String ERROR_INJECT_SERVICE = "Error during service injection !";
+    private static final String ERROR_INJECT = "Error during service injection !";
 
     /** Features to prepare. */
     private final Collection<Feature> featuresToPrepare = new ArrayList<Feature>();
@@ -66,18 +66,7 @@ public class FeaturableModel implements Featurable
             }
 
             final Class<?> type = field.getType();
-            try
-            {
-                setField(field, object, services, type);
-            }
-            catch (final IllegalAccessException exception)
-            {
-                throw new LionEngineException(exception,
-                                              ERROR_INJECT_SERVICE,
-                                              type.getSimpleName(),
-                                              Constant.SLASH,
-                                              field.getName());
-            }
+            setField(field, object, services, type);
 
             if (!accessible)
             {
@@ -111,27 +100,38 @@ public class FeaturableModel implements Featurable
     }
 
     /**
-     * Set the field service if not already defined.
+     * Set the field service only if currently <code>null</code>.
      * 
      * @param field The field to set.
      * @param object The object to update.
      * @param services The services reference.
      * @param type The service type.
-     * @throws IllegalAccessException If error on setting service.
+     * @throws LionEngineException If error on setting service.
      */
-    private void setField(Field field, Object object, Services services, Class<?> type) throws IllegalAccessException
+    private void setField(Field field, Object object, Services services, Class<?> type) throws LionEngineException
     {
-        if (field.get(object) == null)
+        try
         {
-            final Class<? extends Feature> clazz;
-            if (Feature.class.isAssignableFrom(type) && hasFeature(clazz = type.asSubclass(Feature.class)))
+            if (field.get(object) == null)
             {
-                field.set(object, getFeature(clazz));
+                final Class<? extends Feature> clazz;
+                if (Feature.class.isAssignableFrom(type) && hasFeature(clazz = type.asSubclass(Feature.class)))
+                {
+                    field.set(object, getFeature(clazz));
+                }
+                else
+                {
+                    field.set(object, services.get(type));
+                }
             }
-            else
-            {
-                field.set(object, services.get(type));
-            }
+        }
+        catch (final IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception,
+                                          ERROR_INJECT,
+                                          type.getSimpleName(),
+                                          Constant.SLASH,
+                                          field.getName());
         }
     }
 

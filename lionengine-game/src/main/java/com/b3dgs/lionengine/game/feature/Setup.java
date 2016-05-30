@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Define a structure used to create configurer objects.
- * 
- * @see Configurer
  */
 public class Setup
 {

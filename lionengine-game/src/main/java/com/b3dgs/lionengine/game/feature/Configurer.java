@@ -32,9 +32,6 @@ import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Allows to retrieve informations from an external XML configuration file.
- * 
- * @see com.b3dgs.lionengine.game.feature.Setup
- * @see XmlNode
  */
 public class Configurer
 {

@@ -30,11 +30,11 @@ public class Features
     /** Feature not found error. */
     private static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
 
-    /** Features provided. */
+    /** Features handled. */
     private final Map<Class<? extends Feature>, Feature> features;
 
     /**
-     * Create a feature handler.
+     * Create features handler.
      */
     public Features()
     {
@@ -68,16 +68,27 @@ public class Features
      */
     public <C extends Feature> C get(Class<C> feature)
     {
-        final C found = getFeature(feature);
-        if (found == null)
+        final C value;
+        if (features.containsKey(feature))
         {
+            value = feature.cast(features.get(feature));
+        }
+        else
+        {
+            for (final Feature current : features.values())
+            {
+                if (feature.isAssignableFrom(current.getClass()))
+                {
+                    return feature.cast(current);
+                }
+            }
             throw new LionEngineException(ERROR_FEATURE_NOT_FOUND, feature.getName());
         }
-        return found;
+        return value;
     }
 
     /**
-     * Check if contains the following feature.
+     * Check if contains the following feature type.
      * 
      * @param <C> The custom feature type.
      * @param feature The feature to check.
@@ -85,7 +96,23 @@ public class Features
      */
     public <C extends Feature> boolean contains(Class<C> feature)
     {
-        return getFeature(feature) != null;
+        final boolean contains;
+        if (features.containsKey(feature))
+        {
+            contains = true;
+        }
+        else
+        {
+            for (final Feature current : features.values())
+            {
+                if (feature.isAssignableFrom(current.getClass()))
+                {
+                    return true;
+                }
+            }
+            contains = false;
+        }
+        return contains;
     }
 
     /**
@@ -106,33 +133,5 @@ public class Features
     public Iterable<Class<? extends Feature>> getFeaturesType()
     {
         return features.keySet();
-    }
-
-    /**
-     * Get a feature from its class or interface.
-     * 
-     * @param <C> The custom feature type.
-     * @param feature The feature class or interface.
-     * @return The feature instance, <code>null</code> if not found.
-     */
-    private <C extends Feature> C getFeature(Class<C> feature)
-    {
-        final C value;
-        if (features.containsKey(feature))
-        {
-            value = feature.cast(features.get(feature));
-        }
-        else
-        {
-            for (final Feature current : features.values())
-            {
-                if (feature.isAssignableFrom(current.getClass()))
-                {
-                    return feature.cast(current);
-                }
-            }
-            value = null;
-        }
-        return value;
     }
 }

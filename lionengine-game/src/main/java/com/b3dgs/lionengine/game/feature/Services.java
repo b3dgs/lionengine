@@ -34,23 +34,21 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * <li>...</li>
  * </ul>
  * <p>
- * in order to access to them from the object instance (created by a {@link Factory} in constructor with {@link Setup}
- * type as single argument).
+ * in order to access to them from the object instance, such as a {@link Featurable} or a {@link Feature}.
  * </p>
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
- * {@link LionEngineException} when calling
- * {@link Factory#create(com.b3dgs.lionengine.Media)}.
+ * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.Media)}.
  * </p>
  * <p>
  * Usage example:
  * </p>
  * 
  * <pre>
- * private final Services services = new Services();
- * private final Factory factory = services.create(Factory.class);
- * private final Camera camera = services.create(Camera.class);
- * private final MapTile map = services.create(MapTileGame.class);
+ * final Services services = new Services();
+ * final Factory factory = services.create(Factory.class);
+ * final Camera camera = services.create(Camera.class);
+ * final MapTile map = services.create(MapTileGame.class);
  * </pre>
  */
 public class Services
@@ -84,10 +82,10 @@ public class Services
      * </p>
      * 
      * <pre>
-     * private final Services services = new Services();
-     * private final Factory factory = services.create(Factory.class); // Already added !
-     * private final Camera camera = services.create(Camera.class); // Already added !
-     * private final Handler handler = services.create(Handler.class); // Already added !
+     * final Services services = new Services();
+     * final Factory factory = services.create(Factory.class); // Already added !
+     * final Handler handler = services.create(Handler.class); // Already added !
+     * final Camera camera = services.create(Camera.class); // Already added !
      * </pre>
      * 
      * <p>
@@ -95,14 +93,14 @@ public class Services
      * </p>
      * 
      * <pre>
-     * private final Services services = new Services();
-     * private final Factory factory = new Factory(services);
-     * private final Camera camera = new Camera();
-     * private final Handler handler = new Handler(services);
+     * final Services services = new Services();
+     * final Factory factory = new Factory(services);
+     * final Handler handler = new Handler(services);
+     * final Camera camera = new Camera();
      * ...
      * services.add(factory);
-     * services.add(camera);
      * services.add(handler);
+     * services.add(camera);
      * </pre>
      * 
      * @param <S> The service type.
@@ -140,15 +138,14 @@ public class Services
     }
 
     /**
-     * Add a service. If the service is {@link Featurable}, all its features will be added
-     * {@link Featurable#getFeatures()}) with {@link #add(Object)} (and so on).
+     * Add a service.
      * <p>
      * The returned service will allow to add a service and keep its reference for an easy final initialization:
      * </p>
      * 
      * <pre>
-     * private final Services services = new Services();
-     * private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
+     * final Services services = new Services();
+     * final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
      * </pre>
      * 
      * <p>
@@ -156,7 +153,7 @@ public class Services
      * </p>
      * 
      * <pre>
-     * private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
+     * final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
      * ...
      * services.add(text);
      * </pre>
@@ -170,13 +167,6 @@ public class Services
     {
         Check.notNull(service);
         services.add(service);
-        if (service instanceof Featurable)
-        {
-            for (final Feature feature : ((Featurable) service).getFeatures())
-            {
-                add(feature);
-            }
-        }
         return service;
     }
 
@@ -188,10 +178,10 @@ public class Services
      * </p>
      * 
      * <pre>
-     * Services services = new Services();
+     * final Services services = new Services();
      * services.add(new Camera());
      * ...
-     * Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
+     * final Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
      * </pre>
      * 
      * @param <S> The service type.

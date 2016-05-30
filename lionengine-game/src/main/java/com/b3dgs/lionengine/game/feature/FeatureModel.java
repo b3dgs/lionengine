@@ -18,11 +18,13 @@
 package com.b3dgs.lionengine.game.feature;
 
 /**
- * Feature model base implementation.
+ * Feature model implementation.
+ * <p>
  * Any feature can override {@link #checkListener(Object)} to automatically add listener of object if implements
  * it/them.
+ * </p>
  */
-public abstract class FeatureModel implements Feature
+public class FeatureModel implements Feature
 {
     /** The owner reference. */
     private Featurable owner;
@@ -47,7 +49,9 @@ public abstract class FeatureModel implements Feature
 
     /**
      * {@inheritDoc}
+     * <p>
      * Does nothing by default.
+     * </p>
      */
     @Override
     public void checkListener(Object listener)
