@@ -41,11 +41,11 @@ import com.b3dgs.lionengine.graphic.Viewer;
 public class Selector extends FeaturableModel implements SelectorConfigurer
 {
     /** Selector model. */
-    private final SelectorModel model = new SelectorModel();
+    private final SelectorModel model = addFeatureAndGet(new SelectorModel());
     /** Selector refresher. */
-    private final SelectorRefresher refresher = new SelectorRefresher(model);
+    private final SelectorRefresher refresher = addFeatureAndGet(new SelectorRefresher(model));
     /** Selector displayer. */
-    private final SelectorDisplayer displayer = new SelectorDisplayer(model);
+    private final SelectorDisplayer displayer = addFeatureAndGet(new SelectorDisplayer(model));
 
     /**
      * Create the selector.
@@ -53,10 +53,6 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     public Selector()
     {
         super();
-
-        super.addFeature(model);
-        super.addFeature(refresher);
-        super.addFeature(displayer);
     }
 
     /**
