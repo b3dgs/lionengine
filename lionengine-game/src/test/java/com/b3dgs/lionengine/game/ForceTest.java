@@ -335,7 +335,5 @@ public class ForceTest
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
         Assert.assertEquals("Force [fh=1.0, fv=2.0, velocity=3.0, sensibility=4.0]", force.toString());
-
-        System.out.println(force.toString());
     }
 }

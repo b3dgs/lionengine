@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.game;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -32,6 +35,24 @@ import com.b3dgs.lionengine.test.UtilTests;
  */
 public class ForceConfigTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
     /**
      * Test the constructor.
      * 
@@ -51,7 +72,7 @@ public class ForceConfigTest
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("force.xml");
         try
         {
             final XmlNode root = Xml.create("test");
