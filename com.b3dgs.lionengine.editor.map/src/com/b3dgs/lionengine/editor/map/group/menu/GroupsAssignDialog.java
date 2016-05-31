@@ -60,6 +60,7 @@ import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.editor.world.view.WorldView;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -120,6 +121,7 @@ public class GroupsAssignDialog extends AbstractDialog implements WorldView, Foc
         map = services.create(MapTileGame.class);
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         map.addFeature(new MapTileCollisionModel());
+        map.addFeature(new MapTileCollisionRendererModel());
         map.addFeature(new MapTileTransitionModel());
         map.addFeature(new MapTileCircuitModel());
         map.addFeature(new MapTileViewerModel());

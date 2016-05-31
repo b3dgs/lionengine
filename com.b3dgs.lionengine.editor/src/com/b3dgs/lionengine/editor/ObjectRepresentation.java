@@ -93,7 +93,7 @@ public class ObjectRepresentation extends FeaturableModel
         transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
 
-        super.addFeature(new RefreshableModel(extrp ->
+        addFeature(new RefreshableModel(extrp ->
         {
             rectangle.set(camera.getViewpointX(transformable.getX()),
                           camera.getViewpointY(transformable.getY()) - transformable.getHeight(),
@@ -102,7 +102,7 @@ public class ObjectRepresentation extends FeaturableModel
             surface.setLocation(camera, transformable);
         }));
 
-        super.addFeature(new DisplayableModel(surface::render));
+        addFeature(new DisplayableModel(surface::render));
     }
 
     /**

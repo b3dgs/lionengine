@@ -172,8 +172,10 @@ public class GroupsEditDialog extends AbstractDialog
         final Media sheetsMedia = sheets.getMedia();
         final TileSheetsConfig config = TileSheetsConfig.imports(sheetsMedia);
         final GroupsAssignDialog assign = new GroupsAssignDialog(dialog);
-        assign.load(loadSheets(config, sheetsMedia.getParentPath()), levelRips.getLevelRips());
+        final String folderPath = sheetsMedia.getParentPath();
+        assign.load(loadSheets(config, folderPath), levelRips.getLevelRips());
         assign.open();
+        assign.setLocation(folderPath);
         assign.save();
         close();
     }
