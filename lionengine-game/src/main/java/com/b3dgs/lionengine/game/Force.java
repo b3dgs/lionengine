@@ -119,17 +119,30 @@ public class Force implements Direction, Updatable
     }
 
     /**
+     * Create a force with specified values.
+     * 
+     * @param fh The horizontal force.
+     * @param fv The vertical force.
+     * @param velocity The velocity.
+     * @param sensibility The sensibility.
+     */
+    public Force(double fh, double fv, double velocity, double sensibility)
+    {
+        this.fh = fh;
+        this.fv = fv;
+        this.velocity = velocity;
+        this.sensibility = sensibility;
+        fixForce();
+    }
+
+    /**
      * Create a copy force.
      * 
      * @param force The force reference.
      */
     public Force(Force force)
     {
-        velocity = force.velocity;
-        sensibility = force.sensibility;
-        directionMin = force.directionMin;
-        directionMax = force.directionMax;
-        fixForce();
+        this(force.getDirectionHorizontal(), force.getDirectionVertical(), force.getVelocity(), force.getSensibility());
     }
 
     /**
