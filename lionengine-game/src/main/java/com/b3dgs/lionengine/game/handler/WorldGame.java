@@ -38,15 +38,20 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.util.UtilStream;
 
 /**
- * Default world model, designed to contain game elements ({@link com.b3dgs.lionengine.game.map.MapTile},
- * {@link com.b3dgs.lionengine.game.handler.Handler}, {@link com.b3dgs.lionengine.game.feature.Factory}...).
+ * Default world model, designed to contain game elements ({@link Factory}, {@link Handler} ...).
  * <p>
- * It contains different elements, such as:
+ * It contains the following configured fields:
  * </p>
  * <ul>
  * <li>{@link Config} : The configuration used by the {@link com.b3dgs.lionengine.core.Loader}</li>
- * <li><code>width</code> : The source screen width, retrieve from the source screen {@link Resolution}</li>
- * <li><code>height</code> : The source screen height, retrieve from the source screen {@link Resolution}</li>
+ * <li><code>width</code>: The source screen width, retrieve from the source screen {@link Resolution}</li>
+ * <li><code>height</code>: The source screen height, retrieve from the source screen {@link Resolution}</li>
+ * <li>{@link Services}: Pre-configured instance with the following added services:</li>
+ * <ul>
+ * <li>{@link Camera}: Configured with screen size as view</li>
+ * <li>{@link Factory}</li>
+ * <li>{@link Handler}: Shipped with {@link ComponentRefreshable} and {@link ComponentDisplayable}</li>
+ * </ul>
  * </ul>
  * <p>
  * It has to be handled by a {@link com.b3dgs.lionengine.core.Sequence}. Here a standard world usage:
@@ -91,11 +96,11 @@ public abstract class WorldGame implements Updatable, Renderable
 {
     /** Services instance. */
     protected final Services services = new Services();
-    /** Camera instance. */
+    /** Camera instance (Configured with screen size as view). */
     protected final Camera camera = services.create(Camera.class);
     /** Factory instance. */
     protected final Factory factory = services.create(Factory.class);
-    /** Handler instance. */
+    /** Handler instance (configured with {@link ComponentRefreshable} and {@link ComponentDisplayable}). */
     protected final Handler handler = services.create(Handler.class);
     /** Config reference. */
     protected final Config config;
@@ -136,8 +141,7 @@ public abstract class WorldGame implements Updatable, Renderable
     /**
      * Internal world loads; called from {@link #loadFromFile(Media)} function. The world will be loaded from
      * an existing binary file. Here should be called all loading functions, such as
-     * {@link com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister#load(FileReading)}
-     * ...
+     * {@link com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister#load(FileReading)}...
      * 
      * @param file The file reader reference.
      * @throws IOException If error on reading.
