@@ -37,6 +37,8 @@ enum Sfx
 
     /** Audio file extension. */
     private static final String AUDIO_FILE_EXTENSION = ".wav";
+    /** Sound volume. */
+    private static final int VOLUME = 15;
 
     /** Sounds list composing the effect. */
     private final Wav sound;
@@ -55,6 +57,6 @@ enum Sfx
      */
     public void play()
     {
-        sound.play(Align.CENTER, 15);
+        sound.play(Align.CENTER, VOLUME);
     }
 }
