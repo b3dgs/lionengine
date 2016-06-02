@@ -248,9 +248,10 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             final Point size = composite.getSize();
             gc.fillRectangle(0, 0, size.x, size.y);
 
-            if (simple)
+            final Collection<TileRef> centered = getCenterTiles();
+            if (simple && !centered.isEmpty())
             {
-                horizontalTiles = renderPaletteSimple();
+                horizontalTiles = renderPaletteSimple(centered);
             }
             else
             {
@@ -295,11 +296,11 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     /**
      * Render the simple palette with essential tiles only.
      * 
+     * @param centered The center tiles.
      * @return The number of horizontal tiles.
      */
-    private int renderPaletteSimple()
+    private int renderPaletteSimple(Collection<TileRef> centered)
     {
-        final Collection<TileRef> centered = getCenterTiles();
         final int horizontalTiles = Math.max(Constant.DECADE, (int) Math.floor(Math.sqrt(centered.size())));
         final ImageBuffer sheet = getCenterTilesSheet(centered, horizontalTiles);
 
