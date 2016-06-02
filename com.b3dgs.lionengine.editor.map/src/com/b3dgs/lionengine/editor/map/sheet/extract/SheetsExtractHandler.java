@@ -46,6 +46,9 @@ public final class SheetsExtractHandler
     {
         final SheetsExtractDialog sheetsExtractDialog = new SheetsExtractDialog(shell);
         sheetsExtractDialog.open();
-        sheetsExtractDialog.save();
+        if (!sheetsExtractDialog.isCanceled())
+        {
+            sheetsExtractDialog.save();
+        }
     }
 }
