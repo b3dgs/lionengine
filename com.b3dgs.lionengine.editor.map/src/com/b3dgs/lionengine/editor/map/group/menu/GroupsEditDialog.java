@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
@@ -173,10 +174,18 @@ public class GroupsEditDialog extends AbstractDialog
         final TileSheetsConfig config = TileSheetsConfig.imports(sheetsMedia);
         final GroupsAssignDialog assign = new GroupsAssignDialog(dialog);
         final String folderPath = sheetsMedia.getParentPath();
-        assign.load(loadSheets(config, folderPath), levelRips.getLevelRips());
-        assign.open();
-        assign.setLocation(folderPath);
-        assign.save();
+        final Collection<SpriteTiled> sheets = loadSheets(config, folderPath);
+        if (sheets.isEmpty())
+        {
+            UtilDialog.error(getParent(), Messages.ErrorSheet_Title, Messages.ErrorSheet_Message);
+        }
+        else
+        {
+            assign.load(sheets, levelRips.getLevelRips());
+            assign.open();
+            assign.setLocation(folderPath);
+            assign.save();
+        }
         close();
     }
 

@@ -34,6 +34,10 @@ public final class Messages extends NLS
     public static String HeaderDesc;
     /** Sheets configuration file. */
     public static String SheetsConfig;
+    /** Sheets configuration error title. */
+    public static String ErrorSheet_Title;
+    /** Sheets configuration error message. */
+    public static String ErrorSheet_Message;
 
     /**
      * Initialize.
