@@ -107,7 +107,7 @@ public class ComponentCollisionTest
         collidable2.update(1.0);
         handler.update(1.0);
 
-        Assert.assertEquals(featurable1, collide.get().getOwner());
+        Assert.assertEquals(featurable1.getFeature(Collidable.class), collide.get());
 
         collide.set(null);
         featurable1.getFeature(Transformable.class).teleport(10.0, 10.0);

@@ -20,27 +20,35 @@ package com.b3dgs.lionengine.game.feature;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
+
 /**
  * Test the feature model class.
  */
 public class FeatureModelTest
 {
+    private final Feature feature = new FeatureModel();
+
     /**
      * Test the feature model.
      */
     @Test
     public void testModel()
     {
-        final Feature feature = new FeatureModel()
-        {
-            // Mock
-        };
-
-        Assert.assertNull(feature.getOwner());
-
         final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new TransformableModel());
         feature.prepare(featurable, new Services());
 
-        Assert.assertEquals(featurable, feature.getOwner());
+        Assert.assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
+    }
+
+    /**
+     * Test the feature not prepared.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNotPrepared()
+    {
+        Assert.assertNotNull(feature.getFeatures());
     }
 }

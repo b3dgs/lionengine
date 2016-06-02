@@ -45,35 +45,35 @@ public class UtilProducible
      * @param cant The cannot.
      * @return The listener.
      */
-    public static ProducerListener createProducerListener(final AtomicReference<Producible> start,
-                                                          final AtomicReference<Producible> current,
-                                                          final AtomicReference<Producible> done,
-                                                          final AtomicReference<Producible> cant)
+    public static ProducerListener createProducerListener(final AtomicReference<Featurable> start,
+                                                          final AtomicReference<Featurable> current,
+                                                          final AtomicReference<Featurable> done,
+                                                          final AtomicReference<Featurable> cant)
     {
         return new ProducerListener()
         {
             @Override
-            public void notifyStartProduction(Producible producible, Featurable featurable)
+            public void notifyStartProduction(Featurable featurable)
             {
-                start.set(producible);
+                start.set(featurable);
             }
 
             @Override
-            public void notifyProducing(Producible producible, Featurable featurable)
+            public void notifyProducing(Featurable featurable)
             {
-                current.set(producible);
+                current.set(featurable);
             }
 
             @Override
-            public void notifyProduced(Producible producible, Featurable featurable)
+            public void notifyProduced(Featurable featurable)
             {
-                done.set(producible);
+                done.set(featurable);
             }
 
             @Override
-            public void notifyCanNotProduce(Producible producible)
+            public void notifyCanNotProduce(Featurable featurable)
             {
-                cant.set(producible);
+                cant.set(featurable);
             }
         };
     }
@@ -119,17 +119,16 @@ public class UtilProducible
      * @param services The services.
      * @return The producible.
      */
-    public static Producible createProducible(Services services)
+    public static Featurable createProducible(Services services)
     {
         final Media media = createProducibleMedia();
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new TransformableModel());
+        featurable.addFeature(new ProducibleModel(setup));
+        featurable.prepareFeatures(services);
 
-        final Producible producible = new ProducibleModel(setup);
-        producible.prepare(featurable, services);
-
-        return producible;
+        return featurable;
     }
 
     /**

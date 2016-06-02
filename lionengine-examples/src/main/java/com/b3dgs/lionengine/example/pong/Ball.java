@@ -113,7 +113,7 @@ class Ball extends FeaturableModel implements Updatable, Renderable, CollidableL
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        final Transformable transformable = collidable.getOwner().getFeature(Transformable.class);
+        final Transformable transformable = collidable.getFeature(Transformable.class);
         int side = 0;
         if (transformable.getX() < transformable.getOldX())
         {

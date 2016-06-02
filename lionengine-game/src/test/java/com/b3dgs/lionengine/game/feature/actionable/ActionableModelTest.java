@@ -74,7 +74,7 @@ public class ActionableModelTest
     @After
     public void clean()
     {
-        actionable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        actionable.getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 

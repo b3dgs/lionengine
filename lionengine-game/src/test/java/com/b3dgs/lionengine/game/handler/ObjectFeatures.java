@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.handler;
 
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableListener;
@@ -55,7 +55,7 @@ class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, 
     }
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
         // Mock
     }
@@ -64,12 +64,6 @@ class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, 
     public void checkListener(Object listener)
     {
         // Mock
-    }
-
-    @Override
-    public <O extends Featurable> O getOwner()
-    {
-        return null;
     }
 
     @Override
@@ -97,7 +91,7 @@ class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, 
     }
 
     @Override
-    public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
+    public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
     {
         // Mock
     }

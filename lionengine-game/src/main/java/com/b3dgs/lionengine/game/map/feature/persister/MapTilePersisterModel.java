@@ -22,8 +22,8 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -158,9 +158,9 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         map = services.get(MapTile.class);
     }

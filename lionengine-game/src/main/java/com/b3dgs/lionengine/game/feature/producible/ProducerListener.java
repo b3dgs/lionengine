@@ -27,31 +27,25 @@ public interface ProducerListener
     /**
      * Notify listener that current element can not be produced.
      * 
-     * @param producible The element that would have been under production.
+     * @param featurable The element that would have been under production.
      */
-    void notifyCanNotProduce(Producible producible);
+    void notifyCanNotProduce(Featurable featurable);
 
     /**
      * Notify listener that production is starting for this element.
-     * 
-     * @param producible The element going to be produced
      * @param featurable The featurable instance from element.
      */
-    void notifyStartProduction(Producible producible, Featurable featurable);
+    void notifyStartProduction(Featurable featurable);
 
     /**
      * Notify listener that this element is currently under production.
-     * 
-     * @param producible The element under production.
      * @param featurable The featurable instance from element.
      */
-    void notifyProducing(Producible producible, Featurable featurable);
+    void notifyProducing(Featurable featurable);
 
     /**
      * Notify listener that this element has been produced.
-     * 
-     * @param producible The element produced.
      * @param featurable The featurable instance from element.
      */
-    void notifyProduced(Producible producible, Featurable featurable);
+    void notifyProduced(Featurable featurable);
 }

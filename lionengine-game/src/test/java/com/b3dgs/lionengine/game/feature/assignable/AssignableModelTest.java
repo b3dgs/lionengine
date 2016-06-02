@@ -45,7 +45,7 @@ public class AssignableModelTest
     @After
     public void clean()
     {
-        assignable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        assignable.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**

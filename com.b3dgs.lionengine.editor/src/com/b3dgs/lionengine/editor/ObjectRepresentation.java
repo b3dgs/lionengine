@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.feature.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
@@ -37,7 +36,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with features.
@@ -70,8 +68,6 @@ public class ObjectRepresentation extends FeaturableModel
 
     /** Rectangle. */
     private final Rectangle rectangle = Geom.createRectangle();
-    /** Transformable feature. */
-    private final Transformable transformable;
 
     @Service private Camera camera;
     @Service private MapTile map;
@@ -90,7 +86,7 @@ public class ObjectRepresentation extends FeaturableModel
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.prepare();
 
-        transformable = addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
 
         addFeature(new RefreshableModel(extrp ->
@@ -103,39 +99,6 @@ public class ObjectRepresentation extends FeaturableModel
         }));
 
         addFeature(new DisplayableModel(surface::render));
-    }
-
-    /**
-     * Set object location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    public void place(int x, int y)
-    {
-        transformable.teleport(x, y);
-        getFeature(Refreshable.class).update(1.0);
-    }
-
-    /**
-     * Move the object.
-     * 
-     * @param vx The horizontal vector.
-     * @param vy The vertical vector.
-     */
-    public void move(double vx, double vy)
-    {
-        transformable.moveLocation(1.0, vx, -vy);
-        getFeature(Refreshable.class).update(1.0);
-    }
-
-    /**
-     * Align position to grid.
-     */
-    public void alignToGrid()
-    {
-        place(UtilMath.getRounded(transformable.getX() + transformable.getWidth() / 2.0, map.getTileWidth()),
-              UtilMath.getRounded(transformable.getY() + transformable.getHeight() / 2.0, map.getTileHeight()));
     }
 
     /**

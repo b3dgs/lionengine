@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.tile.Axis;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -57,11 +57,11 @@ public class GoombaUpdater extends EntityUpdater implements InputDeviceDirection
     }
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, owner, setup);
+        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, provider, setup);
 
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         setControl(this);
     }
@@ -116,12 +116,11 @@ public class GoombaUpdater extends EntityUpdater implements InputDeviceDirection
     @Override
     public void notifyCollided(Collidable other)
     {
-        final Entity target = other.getOwner();
-        final Transformable collider = target.getFeature(Transformable.class);
+        final Transformable collider = other.getFeature(Transformable.class);
         if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())
         {
             collider.teleportY(transformable.getY() + transformable.getHeight());
-            target.getFeature(EntityUpdater.class).jump();
+            other.getFeature(EntityUpdater.class).jump();
             collidable.setEnabled(false);
             changeState(GoombaState.DEATH);
             Sfx.CRUSH.play();

@@ -64,7 +64,7 @@ public class MapTileGroupModelTest
     }
 
     private final MapTileGroup mapGroup = new MapTileGroupModel();
-    private final Featurable owner = new FeaturableModel();
+    private final Featurable featurable = new FeaturableModel();
     private final Tile tile = new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1);
 
     /**
@@ -73,7 +73,7 @@ public class MapTileGroupModelTest
     @Before
     public void prepare()
     {
-        mapGroup.prepare(owner, new Services());
+        mapGroup.prepare(featurable, new Services());
     }
 
     /**
@@ -88,7 +88,7 @@ public class MapTileGroupModelTest
         Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0), 0));
         Assert.assertTrue(mapGroup.getGroups().containsAll(Arrays.asList(MapTileGroupModel.NO_GROUP_NAME)));
         Assert.assertNull(mapGroup.getGroupsConfig());
-        Assert.assertEquals(owner, mapGroup.getOwner());
+
         Assert.assertEquals(TileGroupType.NONE, mapGroup.getType(Constant.EMPTY_STRING));
         Assert.assertEquals(TileGroupType.NONE, mapGroup.getType(tile));
     }

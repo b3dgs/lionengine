@@ -23,6 +23,7 @@ import java.util.HashSet;
 import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -120,15 +121,15 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        transformable = owner.getFeature(Transformable.class);
+        transformable = provider.getFeature(Transformable.class);
         map = services.get(MapTile.class).getFeature(MapTileCollision.class);
         categories = CollisionCategoryConfig.imports(configurer, map);
 
-        if (owner instanceof TileCollidableListener)
+        if (provider instanceof TileCollidableListener)
         {
-            addListener((TileCollidableListener) owner);
+            addListener((TileCollidableListener) provider);
         }
     }
 

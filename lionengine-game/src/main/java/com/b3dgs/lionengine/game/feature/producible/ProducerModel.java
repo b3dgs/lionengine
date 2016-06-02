@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -40,7 +41,7 @@ public class ProducerModel extends FeatureModel implements Producer
     /** Producer listeners. */
     private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
     /** Production queue. */
-    private final Queue<Producible> productions = new ArrayDeque<Producible>();
+    private final Queue<Featurable> productions = new ArrayDeque<Featurable>();
     /** Handler reference. */
     private Handler handler;
     /** Tick timer rate. */
@@ -50,7 +51,7 @@ public class ProducerModel extends FeatureModel implements Producer
     /** Steps per second. */
     private double stepsPerSecond;
     /** Current element being under production. */
-    private Producible current;
+    private Featurable current;
     /** Current object being under production. */
     private Featurable currentObject;
     /** Current production steps. */
@@ -115,9 +116,9 @@ public class ProducerModel extends FeatureModel implements Producer
     {
         for (final ProducerListener listener : listeners)
         {
-            listener.notifyProducing(current, currentObject);
+            listener.notifyProducing(currentObject);
         }
-        for (final ProducibleListener listener : current.getListeners())
+        for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
         {
             listener.notifyProductionProgress();
         }
@@ -138,9 +139,9 @@ public class ProducerModel extends FeatureModel implements Producer
     {
         for (final ProducerListener listener : listeners)
         {
-            listener.notifyProduced(current, currentObject);
+            listener.notifyProduced(currentObject);
         }
-        for (final ProducibleListener listener : current.getListeners())
+        for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
         {
             listener.notifyProductionEnded();
         }
@@ -182,23 +183,23 @@ public class ProducerModel extends FeatureModel implements Producer
      * Start production of this element. Get its corresponding instance and add it to the handler.
      * Featurable will be removed from handler if production is cancelled.
      * 
-     * @param producible The element to produce.
+     * @param featurable The element to produce.
      */
-    private void startProduction(Producible producible)
+    private void startProduction(Featurable featurable)
     {
-        final Featurable featurable = producible.getOwner();
         final Transformable transformable = featurable.getFeature(Transformable.class);
+        final Producible producible = featurable.getFeature(Producible.class);
         transformable.setLocation(producible.getX(), producible.getY());
         handler.add(featurable);
         currentObject = featurable;
         speed = stepsPerSecond / desiredFps;
-        steps = current.getSteps();
+        steps = current.getFeature(Producible.class).getSteps();
         progress = 0.0;
         for (final ProducerListener listener : listeners)
         {
-            listener.notifyStartProduction(producible, featurable);
+            listener.notifyStartProduction(featurable);
         }
-        for (final ProducibleListener listener : producible.getListeners())
+        for (final ProducibleListener listener : featurable.getFeature(Producible.class).getListeners())
         {
             listener.notifyProductionStarted();
         }
@@ -209,20 +210,20 @@ public class ProducerModel extends FeatureModel implements Producer
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         handler = services.get(Handler.class);
         desiredFps = services.get(Integer.class).intValue();
 
-        if (owner instanceof ProducerListener)
+        if (provider instanceof ProducerListener)
         {
-            addListener((ProducerListener) owner);
+            addListener((ProducerListener) provider);
         }
-        if (owner instanceof ProducerChecker)
+        if (provider instanceof ProducerChecker)
         {
-            checker = (ProducerChecker) owner;
+            checker = (ProducerChecker) provider;
         }
     }
 
@@ -251,9 +252,9 @@ public class ProducerModel extends FeatureModel implements Producer
     }
 
     @Override
-    public void addToProductionQueue(Producible producible)
+    public void addToProductionQueue(Featurable featurable)
     {
-        productions.add(producible);
+        productions.add(featurable);
         if (state == ProducerState.NONE)
         {
             produce();
@@ -340,11 +341,11 @@ public class ProducerModel extends FeatureModel implements Producer
         {
             return null;
         }
-        return current.getMedia();
+        return current.getFeature(Producible.class).getMedia();
     }
 
     @Override
-    public Iterator<Producible> iterator()
+    public Iterator<Featurable> iterator()
     {
         return productions.iterator();
     }

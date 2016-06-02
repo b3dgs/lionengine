@@ -78,8 +78,9 @@ class Peon extends FeaturableModel implements ProducerListener
 
         final Producer producer = addFeatureAndGet(new ProducerModel());
         producer.setStepsPerSecond(1.0);
-        producer.setChecker(producible ->
+        producer.setChecker(featurable ->
         {
+            final Producible producible = featurable.getFeature(Producible.class);
             return UtilMath.isBetween(transformable.getX(),
                                       producible.getX(),
                                       producible.getX() + producible.getWidth())
@@ -107,27 +108,28 @@ class Peon extends FeaturableModel implements ProducerListener
     }
 
     @Override
-    public void notifyCanNotProduce(Producible producible)
+    public void notifyCanNotProduce(Featurable featurable)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyStartProduction(Producible producible, Featurable featurable)
+    public void notifyStartProduction(Featurable featurable)
     {
         visible = false;
     }
 
     @Override
-    public void notifyProducing(Producible producible, Featurable featurable)
+    public void notifyProducing(Featurable featurable)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyProduced(Producible producible, Featurable featurable)
+    public void notifyProduced(Featurable featurable)
     {
         final MapTilePath mapPath = map.getFeature(MapTilePath.class);
+        final Producible producible = featurable.getFeature(Producible.class);
         final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
                                                           (int) producible.getX() / map.getTileWidth(),
                                                           (int) producible.getY() / map.getTileHeight(),

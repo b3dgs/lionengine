@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
@@ -46,9 +47,9 @@ public interface Producer extends Feature, Updatable
      * Add an element to the production queue. It works as a FIFO (First In, First Out). Production will be stopped when
      * the list is empty. In this case, getProductionProgress() will return -1. Production list stores only entity name.
      * 
-     * @param producible The element to produce.
+     * @param featurable The element to produce.
      */
-    void addToProductionQueue(Producible producible);
+    void addToProductionQueue(Featurable featurable);
 
     /**
      * Skip current production.
@@ -93,7 +94,7 @@ public interface Producer extends Feature, Updatable
      * 
      * @return The list of production.
      */
-    Iterator<Producible> iterator();
+    Iterator<Featurable> iterator();
 
     /**
      * Get size of production queue.

@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Represents something that can have a collection of {@link Feature}.
  * <p>
@@ -58,13 +56,13 @@ import com.b3dgs.lionengine.LionEngineException;
  * An alternative could be direct {@link Feature} implementation, combined with simple delegate.
  * </p>
  */
-public interface Featurable
+public interface Featurable extends FeatureProvider
 {
     /**
      * Prepare all added feature. Must be called before feature usage. Does nothing for already prepared features.
      * <p>
-     * This will call {@link Feature#prepare(Featurable, Services)} and {@link Feature#checkListener(Object)} for each,
-     * fill annotated fields with {@link Service} with the right instance provided by the {@link Services}.
+     * This will call {@link Feature#prepare(FeatureProvider, Services)} and {@link Feature#checkListener(Object)} for
+     * each, fill annotated fields with {@link Service} with the right instance provided by the {@link Services}.
      * </p>
      * 
      * @param services The services reference.
@@ -96,38 +94,6 @@ public interface Featurable
      * @return The added feature (same as source).
      */
     <T extends Feature> T addFeatureAndGet(T feature);
-
-    /**
-     * Get a feature instance from its type. Return the right instance event if {@link Feature} is not prepared.
-     * 
-     * @param <C> The custom feature type.
-     * @param feature The feature type.
-     * @return The feature instance.
-     * @throws LionEngineException If feature not found.
-     */
-    <C extends Feature> C getFeature(Class<C> feature);
-
-    /**
-     * Get the supported features.
-     * 
-     * @return The supported features.
-     */
-    Iterable<Feature> getFeatures();
-
-    /**
-     * Get the supported features type.
-     * 
-     * @return The supported features type.
-     */
-    Iterable<Class<? extends Feature>> getFeaturesType();
-
-    /**
-     * Check a feature existence from its type.
-     * 
-     * @param feature The feature type.
-     * @return <code>true</code> if feature exists, <code>false</code> else.
-     */
-    boolean hasFeature(Class<? extends Feature> feature);
 
     /**
      * Check if features are prepared.

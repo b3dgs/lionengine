@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.state;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -30,7 +31,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * {@link Animation}).
  * </p>
  * 
- * @see Util#loadStates(StateAnimationBased[], StateFactory, Featurable, Setup)
+ * @see Util#loadStates(StateAnimationBased[], StateFactory, FeatureProvider, Setup)
  */
 public interface StateAnimationBased
 {
@@ -58,12 +59,12 @@ public interface StateAnimationBased
          * 
          * @param states The states values.
          * @param factory The factory reference.
-         * @param featurable The featurable reference.
+         * @param provider The featurable reference.
          * @param setup The setup reference.
          */
         public static void loadStates(StateAnimationBased[] states,
                                       StateFactory factory,
-                                      Featurable featurable,
+                                      FeatureProvider provider,
                                       Setup setup)
         {
             final AnimationConfig configAnimations = AnimationConfig.imports(setup);
@@ -73,8 +74,8 @@ public interface StateAnimationBased
                 {
                     final Animation animation = configAnimations.getAnimation(type.getAnimationName());
                     final State state = UtilReflection.create(type.getStateClass(),
-                                                              UtilReflection.getParamTypes(featurable, animation),
-                                                              featurable,
+                                                              UtilReflection.getParamTypes(provider, animation),
+                                                              provider,
                                                               animation);
                     factory.addState(state);
                 }

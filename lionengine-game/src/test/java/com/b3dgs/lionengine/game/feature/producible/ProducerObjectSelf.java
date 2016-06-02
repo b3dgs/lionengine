@@ -42,31 +42,31 @@ class ProducerObjectSelf extends FeaturableModel implements ProducerChecker, Pro
     }
 
     @Override
-    public boolean checkProduction(Producible producible)
+    public boolean checkProduction(Featurable featurable)
     {
         return check.get();
     }
 
     @Override
-    public void notifyStartProduction(Producible producible, Featurable featurable)
+    public void notifyStartProduction(Featurable featurable)
     {
         flag.set(1);
     }
 
     @Override
-    public void notifyProducing(Producible producible, Featurable featurable)
+    public void notifyProducing(Featurable featurable)
     {
         flag.set(2);
     }
 
     @Override
-    public void notifyProduced(Producible producible, Featurable featurable)
+    public void notifyProduced(Featurable featurable)
     {
         flag.set(3);
     }
 
     @Override
-    public void notifyCanNotProduce(Producible producible)
+    public void notifyCanNotProduce(Featurable featurable)
     {
         flag.set(4);
     }

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
@@ -51,7 +51,7 @@ class Refresher extends FeaturableModel implements Refreshable
     }
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
         // Mock
     }
@@ -66,11 +66,5 @@ class Refresher extends FeaturableModel implements Refreshable
     public void update(double extrp)
     {
         refreshed = true;
-    }
-
-    @Override
-    public <O extends Featurable> O getOwner()
-    {
-        return null;
     }
 }

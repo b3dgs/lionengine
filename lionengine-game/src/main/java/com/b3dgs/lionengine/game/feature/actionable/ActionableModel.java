@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.actionable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.geom.Geom;
@@ -71,15 +72,15 @@ public class ActionableModel extends FeatureModel implements Actionable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         cursor = services.get(Cursor.class);
 
-        if (owner instanceof Action)
+        if (provider instanceof Action)
         {
-            setAction((Action) owner);
+            setAction((Action) provider);
         }
     }
 

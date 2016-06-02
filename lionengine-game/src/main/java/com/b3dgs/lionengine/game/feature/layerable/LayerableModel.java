@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.feature.layerable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 
 /**
@@ -58,9 +58,9 @@ public class LayerableModel extends FeatureModel implements Layerable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         addListener(services.get(LayerableListener.class));
     }
@@ -82,7 +82,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     {
         for (final LayerableListener listener : listeners)
         {
-            listener.notifyLayerChanged(getOwner(), this.layer, layer);
+            listener.notifyLayerChanged(this, this.layer, layer);
         }
         this.layer = layer;
     }

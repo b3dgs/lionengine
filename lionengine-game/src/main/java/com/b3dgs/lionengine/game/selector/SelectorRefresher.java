@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 import com.b3dgs.lionengine.geom.Geom;
@@ -144,9 +144,9 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         viewer = services.get(Viewer.class);
         cursor = services.get(Cursor.class);

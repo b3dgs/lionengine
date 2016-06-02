@@ -176,7 +176,7 @@ public class HandlablesImplTest
         int i = 0;
         for (final Refreshable refreshable : featurables.get(Refreshable.class))
         {
-            Assert.assertEquals(inheritance, refreshable.getOwner());
+            Assert.assertNotNull(refreshable);
             i++;
         }
         Assert.assertEquals(1, i);

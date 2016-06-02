@@ -15,21 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.layerable;
+package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 
 /**
- * Notify when layer value changed.
+ * Button linking implementation.
  */
-public interface LayerableListener
+public class ButtonLink extends FeatureModel
 {
+    private final Collection<Button> toDelete = new ArrayList<>();
+
     /**
-     * Notify when layer value changed.
+     * Add an action to delete on click.
      * 
-     * @param provider The provider reference.
-     * @param layerOld The old layer value.
-     * @param layerNew The new layer value.
+     * @param action The action to delete.
      */
-    void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew);
+    public void addToDelete(Button action)
+    {
+        toDelete.add(action);
+    }
+
+    /**
+     * Terminate button.
+     */
+    public void terminate()
+    {
+        for (final Button button : toDelete)
+        {
+            button.getFeature(Identifiable.class).destroy();
+        }
+        getFeature(Identifiable.class).destroy();
+    }
 }

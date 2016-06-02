@@ -50,7 +50,7 @@ public class ExtractableModelTest
         Assert.assertEquals(0, extractable.getInTileWidth(), UtilTests.PRECISION);
         Assert.assertEquals(0, extractable.getInTileHeight(), UtilTests.PRECISION);
 
-        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        extractable.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -76,6 +76,6 @@ public class ExtractableModelTest
 
         Assert.assertEquals(5, extractable.getResourceQuantity());
 
-        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        extractable.getFeature(Identifiable.class).notifyDestroyed();
     }
 }

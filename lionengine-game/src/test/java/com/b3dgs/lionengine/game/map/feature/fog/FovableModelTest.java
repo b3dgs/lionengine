@@ -25,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -68,20 +69,19 @@ public class FovableModelTest
     @Test
     public void testFovable()
     {
-        final FovableModel fovable = new FovableModel();
+        final Fovable fovable = new FovableModel();
         final Services services = new Services();
         final MapTile map = UtilMap.createMap(7);
         services.add(map);
 
         final Setup setup = new Setup(config);
-        final FeaturableModel object = new FeaturableModel();
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final Featurable featurable = new FeaturableModel();
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);
-        fovable.prepare(object, services);
+        fovable.prepare(featurable, services);
         fovable.setFov(5);
 
-        Assert.assertEquals(object, fovable.getOwner());
         Assert.assertEquals(1, fovable.getInTileX());
         Assert.assertEquals(2, fovable.getInTileY());
         Assert.assertEquals(3, fovable.getInTileWidth());

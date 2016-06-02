@@ -98,9 +98,9 @@ public class FeaturableModelTest
             private @Service MyFeatureInterface feature;
 
             @Override
-            public void prepare(Featurable owner, Services services)
+            public void prepare(FeatureProvider provider, Services services)
             {
-                super.prepare(owner, services);
+                super.prepare(provider, services);
                 filledService.set(factory);
                 filledObject.set(object);
                 filledFeature.set(feature);
@@ -132,9 +132,9 @@ public class FeaturableModelTest
             private @Service Factory factory;
 
             @Override
-            public void prepare(Featurable owner, Services services)
+            public void prepare(FeatureProvider provider, Services services)
             {
-                super.prepare(owner, services);
+                super.prepare(provider, services);
                 filledService.set(factory);
             }
         };
@@ -170,9 +170,9 @@ public class FeaturableModelTest
             private @Service String type;
 
             @Override
-            public void prepare(Featurable owner, Services services)
+            public void prepare(FeatureProvider provider, Services services)
             {
-                super.prepare(owner, services);
+                super.prepare(provider, services);
                 unfilledType.set(type);
             }
         };
@@ -222,7 +222,7 @@ public class FeaturableModelTest
     private static class FeatureItself extends FeaturableModel implements Feature
     {
         @Override
-        public void prepare(Featurable owner, Services services)
+        public void prepare(FeatureProvider provider, Services services)
         {
             // Mock
         }
@@ -231,12 +231,6 @@ public class FeaturableModelTest
         public void checkListener(Object listener)
         {
             // Mock
-        }
-
-        @Override
-        public <O extends Featurable> O getOwner()
-        {
-            return null;
         }
     }
 }

@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
@@ -185,17 +186,17 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
-        localizable = owner.getFeature(Transformable.class);
+        localizable = provider.getFeature(Transformable.class);
 
-        if (owner instanceof LauncherListener)
+        if (provider instanceof LauncherListener)
         {
-            addListener((LauncherListener) owner);
+            addListener((LauncherListener) provider);
         }
     }
 

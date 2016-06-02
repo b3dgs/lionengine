@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.layer;
+package com.b3dgs.lionengine.game.handler;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 /**
  * Test the component renderer layer class.
  */
-public class ComponentRendererLayerTest
+public class ComponentDisplayableTest
 {
     /**
      * Create a test object.
@@ -100,15 +100,15 @@ public class ComponentRendererLayerTest
         Assert.assertEquals(5, object3.getLayer().intValue());
         Assert.assertEquals(4, object4.getLayer().intValue());
 
-        Assert.assertEquals(object2.getOwner().getFeature(Identifiable.class).getId().intValue(), last.get());
+        Assert.assertEquals(object2.getFeature(Identifiable.class).getId().intValue(), last.get());
 
-        object2.getOwner().getFeature(Identifiable.class).notifyDestroyed();
-        object4.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        object2.getFeature(Identifiable.class).notifyDestroyed();
+        object4.getFeature(Identifiable.class).notifyDestroyed();
 
         last.set(-1);
         component.render(null, null);
 
-        Assert.assertEquals(object3.getOwner().getFeature(Identifiable.class).getId().intValue(), last.get());
+        Assert.assertEquals(object3.getFeature(Identifiable.class).getId().intValue(), last.get());
     }
 
     /**

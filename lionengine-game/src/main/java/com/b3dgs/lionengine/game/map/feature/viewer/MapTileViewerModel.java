@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.map.feature.viewer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileRenderer;
@@ -109,9 +109,9 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);

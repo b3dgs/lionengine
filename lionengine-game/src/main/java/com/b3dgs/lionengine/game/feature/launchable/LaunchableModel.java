@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 
@@ -57,11 +58,11 @@ public class LaunchableModel extends FeatureModel implements Launchable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
-        transformable = owner.getFeature(Transformable.class);
+        transformable = provider.getFeature(Transformable.class);
     }
 
     @Override

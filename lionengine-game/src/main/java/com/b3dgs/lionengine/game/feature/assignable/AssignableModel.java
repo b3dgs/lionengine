@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.assignable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
@@ -61,16 +62,16 @@ public class AssignableModel extends FeatureModel implements Assignable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         cursor = services.get(Cursor.class);
         viewer = services.get(Viewer.class);
 
-        if (owner instanceof Assign)
+        if (provider instanceof Assign)
         {
-            setAssign((Assign) owner);
+            setAssign((Assign) provider);
         }
     }
 

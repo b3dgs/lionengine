@@ -82,7 +82,7 @@ public class ProducibleModelTest
         Assert.assertEquals(2.0, producible.getY(), UtilTests.PRECISION);
         Assert.assertTrue(producible.getListeners().contains(listener));
 
-        producible.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        producible.getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -101,7 +101,7 @@ public class ProducibleModelTest
 
         Assert.assertTrue(producible.getListeners().contains(object));
 
-        producible.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        producible.getFeature(Identifiable.class).notifyDestroyed();
         Assert.assertTrue(media.getFile().delete());
     }
 

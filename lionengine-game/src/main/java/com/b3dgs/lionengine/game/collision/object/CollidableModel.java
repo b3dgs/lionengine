@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
@@ -144,16 +145,16 @@ public class CollidableModel extends FeatureModel implements Collidable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         viewer = services.get(Viewer.class);
-        transformable = owner.getFeature(Transformable.class);
+        transformable = provider.getFeature(Transformable.class);
 
-        if (owner instanceof CollidableListener)
+        if (provider instanceof CollidableListener)
         {
-            addListener((CollidableListener) owner);
+            addListener((CollidableListener) provider);
         }
     }
 
@@ -194,9 +195,9 @@ public class CollidableModel extends FeatureModel implements Collidable
             for (final Collision collision : collisions)
             {
                 Mirror mirror = Mirror.NONE;
-                if (collision.hasMirror() && getOwner().hasFeature(Mirrorable.class))
+                if (collision.hasMirror() && hasFeature(Mirrorable.class))
                 {
-                    mirror = getOwner().getFeature(Mirrorable.class).getMirror();
+                    mirror = getFeature(Mirrorable.class).getMirror();
                 }
 
                 final int offsetX;

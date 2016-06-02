@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Service;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -54,11 +54,11 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
     }
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, owner, setup);
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, provider, setup);
 
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         setControl(keyboard);
         respawn(160);
@@ -77,9 +77,8 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
     @Override
     public void notifyCollided(Collidable other)
     {
-        final Entity entity = other.getOwner();
         if (transformable.getY() >= transformable.getOldY()
-            && !entity.getFeature(EntityUpdater.class).isState(GoombaState.DEATH))
+            && !other.getFeature(EntityUpdater.class).isState(GoombaState.DEATH))
         {
             collidable.setEnabled(false);
             tileCollidable.setEnabled(false);

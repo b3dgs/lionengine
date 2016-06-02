@@ -31,6 +31,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -99,10 +100,10 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(25.0);
 
-        final AtomicReference<Producible> start = new AtomicReference<Producible>();
-        final AtomicReference<Producible> current = new AtomicReference<Producible>();
-        final AtomicReference<Producible> done = new AtomicReference<Producible>();
-        final AtomicReference<Producible> cant = new AtomicReference<Producible>();
+        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> current = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> cant = new AtomicReference<Featurable>();
         producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
         producer.setChecker(object);
 
@@ -114,8 +115,8 @@ public class ProducerModelTest
         Assert.assertEquals(0, producer.getQueueLength());
         Assert.assertFalse(producer.isProducing());
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
 
         Assert.assertEquals(0, producer.getQueueLength());
         Assert.assertNull(start.get());
@@ -126,16 +127,16 @@ public class ProducerModelTest
         Assert.assertEquals(0.0, producer.getProgress(), UtilTests.PRECISION);
         Assert.assertEquals(0, producer.getProgressPercent());
         Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertEquals(producible, start.get());
+        Assert.assertEquals(featurable, start.get());
         Assert.assertNull(current.get());
         Assert.assertTrue(producer.isProducing());
-        Assert.assertEquals(producible.getMedia(), producer.getProducingElement());
+        Assert.assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
 
         producer.update(1.0);
 
         Assert.assertEquals(0.5, producer.getProgress(), UtilTests.PRECISION);
         Assert.assertEquals(50, producer.getProgressPercent());
-        Assert.assertEquals(producible, current.get());
+        Assert.assertEquals(featurable, current.get());
         Assert.assertNull(done.get());
         Assert.assertTrue(producer.isProducing());
 
@@ -143,13 +144,13 @@ public class ProducerModelTest
 
         Assert.assertEquals(1.0, producer.getProgress(), UtilTests.PRECISION);
         Assert.assertEquals(100, producer.getProgressPercent());
-        Assert.assertEquals(producible, current.get());
+        Assert.assertEquals(featurable, current.get());
         Assert.assertNull(done.get());
         Assert.assertFalse(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(producible, done.get());
+        Assert.assertEquals(featurable, done.get());
         Assert.assertNull(cant.get());
         Assert.assertFalse(producer.isProducing());
     }
@@ -166,8 +167,8 @@ public class ProducerModelTest
         producer.setStepsPerSecond(50.0);
         producer.addListener(object);
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
 
         Assert.assertEquals(0, object.flag.get());
 
@@ -194,13 +195,13 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Producible> start = new AtomicReference<Producible>();
-        final AtomicReference<Producible> skip = new AtomicReference<Producible>();
+        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
         producer.addListener(UtilProducible.createProducerListener(start, skip, skip, skip));
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
+        producer.addToProductionQueue(featurable);
 
         Assert.assertEquals(1, producer.getQueueLength());
         Assert.assertNull(start.get());
@@ -230,13 +231,13 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Producible> start = new AtomicReference<Producible>();
-        final AtomicReference<Producible> skip = new AtomicReference<Producible>();
+        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
         producer.addListener(UtilProducible.createProducerListener(start, skip, skip, skip));
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
+        producer.addToProductionQueue(featurable);
 
         producer.update(1.0);
         producer.update(1.0);
@@ -256,15 +257,15 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Producible> done = new AtomicReference<Producible>();
-        final AtomicReference<Producible> skip = new AtomicReference<Producible>();
+        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
 
         producer.skipProduction();
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
+        producer.addToProductionQueue(featurable);
 
         producer.update(1.0);
         producer.skipProduction();
@@ -283,13 +284,13 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Producible> done = new AtomicReference<Producible>();
-        final AtomicReference<Producible> skip = new AtomicReference<Producible>();
+        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
+        producer.addToProductionQueue(featurable);
 
         producer.update(1.0);
 
@@ -317,16 +318,16 @@ public class ProducerModelTest
         object.check.set(false);
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Producible> skip = new AtomicReference<Producible>();
-        final AtomicReference<Producible> cant = new AtomicReference<Producible>();
+        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> cant = new AtomicReference<Featurable>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, skip, cant));
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
         producer.update(1.0);
 
         Assert.assertFalse(producer.isProducing());
-        Assert.assertEquals(producible, cant.get());
+        Assert.assertEquals(featurable, cant.get());
     }
 
     /**
@@ -337,13 +338,14 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final Producible producible = UtilProducible.createProducible(services);
+        final Featurable featurable = UtilProducible.createProducible(services);
         final AtomicBoolean start = new AtomicBoolean();
         final AtomicBoolean progress = new AtomicBoolean();
         final AtomicBoolean end = new AtomicBoolean();
-        producible.addListener(UtilProducible.createProducibleListener(start, progress, end));
+        featurable.getFeature(Producible.class)
+                  .addListener(UtilProducible.createProducibleListener(start, progress, end));
 
-        producer.addToProductionQueue(producible);
+        producer.addToProductionQueue(featurable);
 
         Assert.assertFalse(start.get());
         Assert.assertFalse(progress.get());
@@ -377,8 +379,8 @@ public class ProducerModelTest
         producer.setStepsPerSecond(50.0);
         producer.checkListener(object);
 
-        final Producible producible = UtilProducible.createProducible(services);
-        producer.addToProductionQueue(producible);
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
 
         Assert.assertEquals(0, object.flag.get());
 

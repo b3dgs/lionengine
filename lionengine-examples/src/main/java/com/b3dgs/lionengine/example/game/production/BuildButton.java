@@ -104,8 +104,8 @@ class BuildButton extends FeaturableModel
                 final Building building = factory.create(target);
                 final Producible producible = building.getFeature(Producible.class);
                 producible.setLocation(area.getX(), area.getY());
-                producer.addToProductionQueue(producible);
-                producer.getOwner().getFeature(Pathfindable.class).setDestination(area);
+                producer.addToProductionQueue(building);
+                producer.getFeature(Pathfindable.class).setDestination(area);
             }
             area = null;
             state = actionable;

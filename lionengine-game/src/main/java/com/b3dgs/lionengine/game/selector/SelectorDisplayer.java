@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.selector;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.displayable.Displayable;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -71,9 +71,9 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         viewer = services.get(Viewer.class);
     }

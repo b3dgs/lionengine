@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.object.world.updater;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.editor.ObjectRepresentation;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 
 /**
  * Listen to objects selection on map.
@@ -31,12 +31,12 @@ public interface ObjectSelectionListener
      * 
      * @param object The selected object from map.
      */
-    void notifyObjectSelected(ObjectRepresentation object);
+    void notifyObjectSelected(Transformable object);
 
     /**
      * Called when objects are selected.
      * 
      * @param objects The selected objects from map.
      */
-    void notifyObjectsSelected(Collection<ObjectRepresentation> objects);
+    void notifyObjectsSelected(Collection<Transformable> objects);
 }

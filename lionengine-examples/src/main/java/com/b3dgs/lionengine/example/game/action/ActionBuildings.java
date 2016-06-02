@@ -47,13 +47,13 @@ class ActionBuildings extends ActionFeature
         handler.add(cancel);
 
         final Button buildFarm = factory.create(Button.BUILD_FARM);
-        cancel.addToDelete(buildFarm);
+        cancel.getFeature(ButtonLink.class).addToDelete(buildFarm);
         handler.add(buildFarm);
 
         final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
-        cancel.addToDelete(buildBarracks);
+        cancel.getFeature(ButtonLink.class).addToDelete(buildBarracks);
         handler.add(buildBarracks);
 
-        getOwner().terminate();
+        getFeature(ButtonLink.class).terminate();
     }
 }

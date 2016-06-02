@@ -21,15 +21,15 @@ package com.b3dgs.lionengine.game.feature;
  * Represents something that can be delegated to perform specialized computing and reduce {@link Featurable} visible
  * complexity.
  */
-public interface Feature
+public interface Feature extends FeatureProvider
 {
     /**
      * Prepare the feature. Must be called before usage if {@link Services} are required.
      * 
-     * @param owner The owner reference.
+     * @param provider The owner reference.
      * @param services The services reference.
      */
-    void prepare(Featurable owner, Services services);
+    void prepare(FeatureProvider provider, Services services);
 
     /**
      * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will
@@ -38,15 +38,4 @@ public interface Feature
      * @param listener The listener to check.
      */
     void checkListener(Object listener);
-
-    /**
-     * Get the {@link Featurable} reference owning this {@link Feature}.
-     * <p>
-     * Function {@link #prepare(Featurable, Services)} must have been called before.
-     * </p>
-     * 
-     * @param <O> The real {@link Featurable} type.
-     * @return The {@link Featurable} reference.
-     */
-    <O extends Featurable> O getOwner();
 }

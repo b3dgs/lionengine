@@ -36,6 +36,8 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.SetupSurface;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Point;
@@ -48,9 +50,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class ObjectControl
 {
     /** Mouse over object flag. */
-    private final Map<Featurable, Boolean> objectsOver = new HashMap<>();
+    private final Map<Transformable, Boolean> objectsOver = new HashMap<>();
     /** Mouse selection object flag. */
-    private final Map<Featurable, Boolean> objectsSelection = new HashMap<>();
+    private final Map<Transformable, Boolean> objectsSelection = new HashMap<>();
     /** Camera reference. */
     private final Camera camera;
     /** Factory reference. */
@@ -105,11 +107,12 @@ public class ObjectControl
         {
             dragging = true;
         }
-        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
+        for (final Transformable transformable : handler.get(Transformable.class))
         {
-            if (isSelected(object))
+            if (isSelected(transformable))
             {
-                object.move(mx - (double) oldMx, my - (double) oldMy);
+                transformable.moveLocation(1.0, mx - (double) oldMx, (double) oldMy - my);
+                transformable.getFeature(Refreshable.class).update(1.0);
             }
         }
     }
@@ -148,9 +151,10 @@ public class ObjectControl
                 {
                     final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
                     final Point point = UtilWorld.getPoint(camera, mx, my);
-                    object.place(UtilMath.getRounded(point.getX(), map.getTileWidth()),
-                                 UtilMath.getRounded(point.getY(), map.getTileHeight()));
-                    object.alignToGrid();
+                    final Transformable transformable = object.getFeature(Transformable.class);
+                    transformable.teleport(UtilMath.getRounded(point.getX(), map.getTileWidth()),
+                                           UtilMath.getRounded(point.getY(), map.getTileHeight()));
+                    transformable.getFeature(Refreshable.class).update(1.0);
                     handler.add(object);
                 }
             }
@@ -212,7 +216,7 @@ public class ObjectControl
      */
     public void setMouseOver(ObjectRepresentation object, boolean over)
     {
-        objectsOver.put(object, Boolean.valueOf(over));
+        objectsOver.put(object.getFeature(Transformable.class), Boolean.valueOf(over));
     }
 
     /**
@@ -223,7 +227,7 @@ public class ObjectControl
      */
     public void setObjectSelection(ObjectRepresentation object, boolean selected)
     {
-        objectsSelection.put(object, Boolean.valueOf(selected));
+        objectsSelection.put(object.getFeature(Transformable.class), Boolean.valueOf(selected));
     }
 
     /**
@@ -250,14 +254,14 @@ public class ObjectControl
      * 
      * @return The selected objects.
      */
-    public Collection<ObjectRepresentation> getSelectedObjects()
+    public Collection<Transformable> getSelectedObjects()
     {
-        final Collection<ObjectRepresentation> list = new ArrayList<>(0);
-        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
+        final Collection<Transformable> list = new ArrayList<>(0);
+        for (final Transformable transformable : handler.get(Transformable.class))
         {
-            if (isSelected(object))
+            if (isSelected(transformable))
             {
-                list.add(object);
+                list.add(transformable);
             }
         }
         return list;
@@ -266,14 +270,14 @@ public class ObjectControl
     /**
      * Check the mouse over object flag.
      * 
-     * @param featurable The featurable to check.
+     * @param transformable The featurable to check.
      * @return <code>true</code> if over, <code>false</code> else.
      */
-    public boolean isOver(Featurable featurable)
+    public boolean isOver(Transformable transformable)
     {
-        if (objectsOver.containsKey(featurable))
+        if (objectsOver.containsKey(transformable))
         {
-            return objectsOver.get(featurable).booleanValue();
+            return objectsOver.get(transformable).booleanValue();
         }
         return false;
     }
@@ -281,14 +285,14 @@ public class ObjectControl
     /**
      * Check the mouse object selection flag.
      * 
-     * @param featurable The featurable to check.
+     * @param transformable The featurable to check.
      * @return <code>true</code> if selected, <code>false</code> else.
      */
-    public boolean isSelected(Featurable featurable)
+    public boolean isSelected(Transformable transformable)
     {
-        if (objectsSelection.containsKey(featurable))
+        if (objectsSelection.containsKey(transformable))
         {
-            return objectsSelection.get(featurable).booleanValue();
+            return objectsSelection.get(transformable).booleanValue();
         }
         return false;
     }
@@ -322,7 +326,7 @@ public class ObjectControl
     {
         for (final Featurable featurable : handler.values())
         {
-            if (isSelected(featurable))
+            if (isSelected(featurable.getFeature(Transformable.class)))
             {
                 return true;
             }

@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
@@ -304,7 +305,7 @@ public class HandlerTest
         services.add(new LayerableListener()
         {
             @Override
-            public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
+            public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
             {
                 // Mock
             }

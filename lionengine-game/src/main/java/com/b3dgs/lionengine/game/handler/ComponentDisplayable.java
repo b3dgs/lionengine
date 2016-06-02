@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.displayable.Displayable;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableListener;
@@ -155,11 +156,11 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
      */
 
     @Override
-    public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
+    public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
     {
-        if (featurable.hasFeature(Displayable.class))
+        if (provider.hasFeature(Displayable.class))
         {
-            final Displayable displayable = featurable.getFeature(Displayable.class);
+            final Displayable displayable = provider.getFeature(Displayable.class);
             getLayer(layerOld).remove(displayable);
             getLayer(layerNew).add(displayable);
             indexs.add(layerNew);

@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
@@ -33,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.graphic.Text;
 
@@ -51,8 +47,6 @@ class Button extends FeaturableModel
     /** Media cancel reference. */
     public static final Media CANCEL = Medias.create("Cancel.xml");
 
-    private final Collection<Button> toDelete = new ArrayList<>();
-
     @Service private Text text;
 
     /**
@@ -63,6 +57,8 @@ class Button extends FeaturableModel
     public Button(SetupSurface setup)
     {
         super();
+
+        addFeature(new ButtonLink());
 
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);
@@ -87,27 +83,5 @@ class Button extends FeaturableModel
         }));
 
         addFeature(new DisplayableModel(image::render));
-    }
-
-    /**
-     * Add an action to delete on click.
-     * 
-     * @param action The action to delete.
-     */
-    public void addToDelete(Button action)
-    {
-        toDelete.add(action);
-    }
-
-    /**
-     * Terminate button.
-     */
-    public void terminate()
-    {
-        for (final Button button : toDelete)
-        {
-            button.getFeature(Identifiable.class).destroy();
-        }
-        getFeature(Identifiable.class).destroy();
     }
 }

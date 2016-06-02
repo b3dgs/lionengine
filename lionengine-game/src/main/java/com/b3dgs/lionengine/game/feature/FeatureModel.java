@@ -26,8 +26,8 @@ package com.b3dgs.lionengine.game.feature;
  */
 public class FeatureModel implements Feature
 {
-    /** The owner reference. */
-    private Featurable owner;
+    /** The provider reference. */
+    private FeatureProvider provider;
 
     /**
      * Create model.
@@ -42,9 +42,9 @@ public class FeatureModel implements Feature
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        this.owner = owner;
+        this.provider = provider;
     }
 
     /**
@@ -59,10 +59,27 @@ public class FeatureModel implements Feature
         // Nothing by default
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <O extends Featurable> O getOwner()
+    public <C extends Feature> C getFeature(Class<C> feature)
     {
-        return (O) owner;
+        return provider.getFeature(feature);
+    }
+
+    @Override
+    public Iterable<Feature> getFeatures()
+    {
+        return provider.getFeatures();
+    }
+
+    @Override
+    public Iterable<Class<? extends Feature>> getFeaturesType()
+    {
+        return provider.getFeaturesType();
+    }
+
+    @Override
+    public boolean hasFeature(Class<? extends Feature> feature)
+    {
+        return provider.hasFeature(feature);
     }
 }

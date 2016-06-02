@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
@@ -521,26 +522,26 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
         mapPath = map.getFeature(MapTilePath.class);
-        id = owner.getFeature(Identifiable.class).getId();
+        id = provider.getFeature(Identifiable.class).getId();
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());
 
-        transformable = owner.getFeature(Transformable.class);
+        transformable = provider.getFeature(Transformable.class);
         final OrientableModel orientableModel = new OrientableModel();
-        orientableModel.prepare(owner, services);
+        orientableModel.prepare(provider, services);
         orientable = orientableModel;
 
-        if (owner instanceof PathfindableListener)
+        if (provider instanceof PathfindableListener)
         {
-            addListener((PathfindableListener) owner);
+            addListener((PathfindableListener) provider);
         }
     }
 

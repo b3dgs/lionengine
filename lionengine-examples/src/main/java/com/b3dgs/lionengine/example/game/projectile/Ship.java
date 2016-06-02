@@ -159,6 +159,6 @@ class Ship extends FeaturableModel implements CollidableListener
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        collidable.getOwner().getFeature(Identifiable.class).destroy();
+        collidable.getFeature(Identifiable.class).destroy();
     }
 }

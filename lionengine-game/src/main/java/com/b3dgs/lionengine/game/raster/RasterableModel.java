@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
@@ -92,11 +93,11 @@ public class RasterableModel extends FeatureModel implements Rasterable
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        transformable = owner.getFeature(Transformable.class);
-        mirrorable = owner.getFeature(Mirrorable.class);
-        animator = owner.getFeature(Animatable.class);
+        transformable = provider.getFeature(Transformable.class);
+        mirrorable = provider.getFeature(Mirrorable.class);
+        animator = provider.getFeature(Animatable.class);
         viewer = services.get(Viewer.class);
     }
 

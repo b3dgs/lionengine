@@ -312,7 +312,7 @@ public class ExtractorModelTest
         Assert.assertEquals(6, object.flag.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
-        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        extractable.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -356,7 +356,7 @@ public class ExtractorModelTest
         Assert.assertEquals(2, object.flag.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
-        extractable.getOwner().getFeature(Identifiable.class).notifyDestroyed();
+        extractable.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**

@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -198,18 +199,18 @@ public class AttackerModel extends FeatureModel implements Attacker
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
-        animator = owner.getFeature(Animatable.class);
-        transformable = owner.getFeature(Transformable.class);
+        animator = provider.getFeature(Animatable.class);
+        transformable = provider.getFeature(Transformable.class);
 
-        if (owner instanceof AttackerListener)
+        if (provider instanceof AttackerListener)
         {
-            addListener((AttackerListener) owner);
+            addListener((AttackerListener) provider);
         }
-        checker = (AttackerChecker) owner;
+        checker = (AttackerChecker) provider;
     }
 
     @Override

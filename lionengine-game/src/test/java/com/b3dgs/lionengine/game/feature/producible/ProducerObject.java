@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 
@@ -40,7 +41,7 @@ class ProducerObject extends FeaturableModel implements ProducerChecker
     }
 
     @Override
-    public boolean checkProduction(Producible producible)
+    public boolean checkProduction(Featurable featurable)
     {
         return check.get();
     }

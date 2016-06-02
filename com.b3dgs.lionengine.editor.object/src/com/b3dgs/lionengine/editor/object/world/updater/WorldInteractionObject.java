@@ -30,6 +30,10 @@ import com.b3dgs.lionengine.editor.world.updater.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Handle the interaction with objects.
@@ -44,6 +48,8 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private final ObjectControl objectControl;
     /** Palette model. */
     private final PaletteModel palette;
+    /** Map reference. */
+    private final MapTile map;
 
     /**
      * Create the interactions handler.
@@ -55,6 +61,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         objectControl = services.create(ObjectControl.class);
         selection = services.get(Selection.class);
         palette = services.get(PaletteModel.class);
+        map = services.get(MapTile.class);
     }
 
     /**
@@ -112,10 +119,10 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         if (object != null)
         {
             objectControl.setObjectSelection(object, true);
-        }
-        for (final ObjectSelectionListener listener : objectSelectionListeners)
-        {
-            listener.notifyObjectSelected(object);
+            for (final ObjectSelectionListener listener : objectSelectionListeners)
+            {
+                listener.notifyObjectSelected(object.getFeature(Transformable.class));
+            }
         }
     }
 
@@ -165,10 +172,26 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private void endDragging()
     {
         objectControl.stopDragging();
-        for (final ObjectRepresentation object : objectControl.getSelectedObjects())
+        for (final Transformable transformable : objectControl.getSelectedObjects())
         {
-            object.alignToGrid();
+            alignToGrid(transformable);
         }
+    }
+
+    /**
+     * Align to grid transformable.
+     * 
+     * @param transformable The transformable to align.
+     */
+    private void alignToGrid(Transformable transformable)
+    {
+        transformable.teleport(UtilMath.getRounded(transformable.getX()
+                                                   + transformable.getWidth() / 2.0,
+                                                   map.getTileWidth()),
+                               UtilMath.getRounded(transformable.getY()
+                                                   + transformable.getHeight() / 2.0,
+                                                   map.getTileHeight()));
+        transformable.getFeature(Refreshable.class).update(1.0);
     }
 
     /**
@@ -204,14 +227,14 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         {
             objectControl.selectObjects(selection.getArea());
         }
-        final Collection<ObjectRepresentation> selections = objectControl.getSelectedObjects();
-        for (final ObjectRepresentation object : selections)
+        final Collection<Transformable> selections = objectControl.getSelectedObjects();
+        for (final Transformable transformable : selections)
         {
-            object.alignToGrid();
+            alignToGrid(transformable);
         }
         if (selections.size() == 1)
         {
-            final ObjectRepresentation object = selections.toArray(new ObjectRepresentation[1])[0];
+            final Transformable object = selections.toArray(new Transformable[1])[0];
             for (final ObjectSelectionListener listener : objectSelectionListeners)
             {
                 listener.notifyObjectSelected(object);

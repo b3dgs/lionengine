@@ -47,11 +47,4 @@ class ActionFeature extends FeatureModel implements Action
     {
         Verbose.info(name);
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Button getOwner()
-    {
-        return super.getOwner();
-    }
 }

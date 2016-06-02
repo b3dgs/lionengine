@@ -22,8 +22,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
@@ -188,19 +188,19 @@ public class ExtractorModel extends FeatureModel implements Extractor
      */
 
     @Override
-    public void prepare(Featurable owner, Services services)
+    public void prepare(FeatureProvider provider, Services services)
     {
-        super.prepare(owner, services);
+        super.prepare(provider, services);
 
         desiredFps = services.get(Integer.class).intValue();
 
-        if (owner instanceof ExtractorListener)
+        if (provider instanceof ExtractorListener)
         {
-            addListener((ExtractorListener) owner);
+            addListener((ExtractorListener) provider);
         }
-        if (owner instanceof ExtractorChecker)
+        if (provider instanceof ExtractorChecker)
         {
-            checker = (ExtractorChecker) owner;
+            checker = (ExtractorChecker) provider;
         }
     }
 

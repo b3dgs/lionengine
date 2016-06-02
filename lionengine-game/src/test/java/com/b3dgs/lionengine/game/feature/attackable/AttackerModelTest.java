@@ -264,7 +264,7 @@ public class AttackerModelTest
         attacker.addListener(UtilAttackable.createListener(preparing, reaching, started, ended, anim));
 
         attacker.update(1.0);
-        attacker.getOwner().getFeature(Transformable.class).teleport(0, 0);
+        attacker.getFeature(Transformable.class).teleport(0, 0);
         target.teleport(5, 5);
         attacker.attack(target);
         attacker.update(1.0);

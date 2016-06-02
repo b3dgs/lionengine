@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.layer;
+package com.b3dgs.lionengine.game.feature.layerable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,10 +30,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
-import com.b3dgs.lionengine.game.feature.layerable.LayerableListener;
-import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 
 /**
@@ -72,15 +71,15 @@ public class LayerableModelTest
     {
         final LayerableModel layerable = new LayerableModel();
 
-        final AtomicReference<Featurable> objectRef = new AtomicReference<Featurable>();
+        final AtomicReference<FeatureProvider> objectRef = new AtomicReference<FeatureProvider>();
         final AtomicInteger oldLayerRef = new AtomicInteger();
         final AtomicInteger newLayerRef = new AtomicInteger();
         layerable.addListener(new LayerableListener()
         {
             @Override
-            public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
+            public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
             {
-                objectRef.set(featurable);
+                objectRef.set(provider);
                 oldLayerRef.set(layerOld.intValue());
                 newLayerRef.set(layerNew.intValue());
             }

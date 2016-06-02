@@ -64,7 +64,7 @@ public class WorldSelectedObjects implements WorldRenderListener
 
         for (final Transformable object : handlerObject.get(Transformable.class))
         {
-            if (objectControl.isOver(object.getOwner()) || objectControl.isSelected(object.getOwner()))
+            if (objectControl.isOver(object) || objectControl.isSelected(object))
             {
                 final int x = (int) (camera.getViewpointX(object.getX()) * scale);
                 final int y = (int) ((camera.getViewpointY(object.getY()) - object.getHeight()) * scale);

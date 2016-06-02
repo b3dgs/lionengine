@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
+
 /**
  * Allows to check if production can be performed.
  */
@@ -32,8 +34,8 @@ public interface ProducerChecker
      * <li>Is the owner still alive ?</li>
      * </ul>
      * 
-     * @param producible The producible to check.
+     * @param featurable The producible to check.
      * @return <code>true</code> if able to produce, <code>false</code> else.
      */
-    boolean checkProduction(Producible producible);
+    boolean checkProduction(Featurable featurable);
 }
