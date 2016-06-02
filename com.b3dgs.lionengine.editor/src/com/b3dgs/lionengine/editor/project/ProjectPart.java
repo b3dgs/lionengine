@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.FeaturableConfig;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the resources explorer, depending of the opened project.
@@ -85,7 +86,8 @@ public final class ProjectPart implements Focusable
         if (media != null && Property.DATA.is(media))
         {
             final Configurer configurer = new Configurer(media);
-            if (FeaturableConfig.NODE_FEATURABLE.equals(configurer.getRoot().getNodeName()))
+            final XmlNode root = configurer.getRoot();
+            if (root.hasChild(FeaturableConfig.CLASS))
             {
                 part.setInput(part.getTree(), configurer);
                 return true;
