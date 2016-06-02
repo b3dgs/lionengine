@@ -48,7 +48,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
 {
     /** Dialog folder. */
     public static final String DIALOG_FOLDER = "dialog";
-    /** Ok icon. */
+    /** OK icon. */
     public static final Image ICON_OK = UtilIcon.get(DIALOG_FOLDER, "ok.png");
     /** Cancel icon. */
     public static final Image ICON_CANCEL = UtilIcon.get(DIALOG_FOLDER, "cancel.png");
