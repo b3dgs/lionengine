@@ -89,7 +89,7 @@ public class SheetsExtractDialog extends AbstractDialog
      */
     public void save()
     {
-        if (destination.getMedia() != null)
+        if (destination.getMedia() != null && !tileWidth.isEmpty() && !tileHeight.isEmpty())
         {
             final String folder = getFolder();
             int i = 0;
