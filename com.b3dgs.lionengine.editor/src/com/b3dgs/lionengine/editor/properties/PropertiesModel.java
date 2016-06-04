@@ -113,7 +113,7 @@ public final class PropertiesModel
         final TreeItem[] items = properties.getSelection();
         if (items.length > 0)
         {
-            return items[0];
+            return items[0].getData();
         }
         return null;
     }

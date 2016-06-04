@@ -27,6 +27,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -36,31 +37,56 @@ public final class PathfindableConfig
 {
     /** Pathfindable node name. */
     public static final String PATHFINDABLE = Constant.XML_PREFIX + "pathfindable";
+    /** Path data node name. */
+    public static final String PATH = Constant.XML_PREFIX + "path";
     /** Category attribute. */
     public static final String CATEGORY = "category";
     /** Cost attribute. */
     public static final String COST = "cost";
     /** Block attribute. */
     public static final String BLOCK = "block";
-    /** Allowed movement node. */
+    /** Allowed movements node. */
     public static final String MOVEMENT = Constant.XML_PREFIX + "movement";
 
     /**
-     * Create the pathfindable data from node.
+     * Import the pathfindable data from node.
      * 
      * @param configurer The configurer reference.
      * @return The pathfindable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Map<String, PathData> create(Configurer configurer)
+    public static Map<String, PathData> imports(Configurer configurer)
     {
         final Map<String, PathData> categories = new HashMap<String, PathData>(0);
-        for (final XmlNode node : configurer.getRoot().getChildren(PATHFINDABLE))
+        final XmlNode root = configurer.getRoot();
+        if (!root.hasChild(PATHFINDABLE))
         {
-            final PathData data = createPathData(node);
+            return Collections.emptyMap();
+        }
+        final XmlNode nodePathfindable = root.getChild(PATHFINDABLE);
+        for (final XmlNode nodePath : nodePathfindable.getChildren(PATH))
+        {
+            final PathData data = importPathData(nodePath);
             categories.put(data.getName(), data);
         }
         return categories;
+    }
+
+    /**
+     * Export the pathfindable data to node.
+     * 
+     * @param pathData The pathfindable data.
+     * @return The path data node.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static XmlNode exports(Map<String, PathData> pathData)
+    {
+        final XmlNode node = Xml.create(PATHFINDABLE);
+        for (final PathData data : pathData.values())
+        {
+            node.add(exportPathData(data));
+        }
+        return node;
     }
 
     /**
@@ -70,7 +96,7 @@ public final class PathfindableConfig
      * @return The path data instance.
      * @throws LionEngineException If error when reading path data.
      */
-    public static PathData createPathData(XmlNode node)
+    public static PathData importPathData(XmlNode node)
     {
         final String category = node.readString(CATEGORY);
         final double cost;
@@ -83,19 +109,36 @@ public final class PathfindableConfig
             cost = 0.0;
         }
         final boolean blocking = node.readBoolean(BLOCK);
-        final Collection<MovementTile> movements = getAllowedMovements(node);
+        final Collection<MovementTile> movements = importAllowedMovements(node);
 
         return new PathData(category, cost, blocking, movements);
     }
 
     /**
-     * Read the allowed movements.
+     * Create a path data from its node.
+     * 
+     * @param data The path data.
+     * @return The path data node.
+     */
+    public static XmlNode exportPathData(PathData data)
+    {
+        final XmlNode node = Xml.create(PATH);
+        node.writeString(CATEGORY, data.getName());
+        node.writeDouble(COST, data.getCost());
+        node.writeBoolean(BLOCK, data.isBlocking());
+        exportAllowedMovements(node, data.getAllowedMovements());
+
+        return node;
+    }
+
+    /**
+     * Import the allowed movements.
      * 
      * @param node The root node.
      * @return The allowed movements.
      * @throws LionEngineException If malformed movement name.
      */
-    private static Collection<MovementTile> getAllowedMovements(XmlNode node)
+    private static Collection<MovementTile> importAllowedMovements(XmlNode node)
     {
         if (!node.hasChild(MOVEMENT))
         {
@@ -114,6 +157,21 @@ public final class PathfindableConfig
             }
         }
         return EnumSet.copyOf(movements);
+    }
+
+    /**
+     * Export the allowed movements.
+     * 
+     * @param root The root node.
+     * @param movements The movements node.
+     */
+    private static void exportAllowedMovements(XmlNode root, Collection<MovementTile> movements)
+    {
+        for (final MovementTile movement : movements)
+        {
+            final XmlNode node = root.createChild(MOVEMENT);
+            node.setText(movement.name());
+        }
     }
 
     /**

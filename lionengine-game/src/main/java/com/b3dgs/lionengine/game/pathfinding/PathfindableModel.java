@@ -143,7 +143,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
     public PathfindableModel(Setup setup)
     {
         super();
-        categories = PathfindableConfig.create(setup);
+        categories = PathfindableConfig.imports(setup);
     }
 
     /**

@@ -17,15 +17,22 @@
  */
 package com.b3dgs.lionengine.editor.pathfinding.properties.editor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.game.pathfinding.PathData;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Pathfindable editor dialog.
@@ -75,6 +82,19 @@ public class PathfindableEditor extends AbstractEditor
     @Override
     protected void onExit()
     {
+        list.save();
+
+        final XmlNode root = configurer.getRoot();
+        root.removeChildren(PathfindableConfig.PATHFINDABLE);
+
+        final Map<String, PathData> data = new HashMap<>();
+        for (final TreeItem item : list.getTree().getItems())
+        {
+            final PathData path = (PathData) item.getData();
+            data.put(path.getName(), path);
+        }
+        root.add(PathfindableConfig.exports(data));
+
         configurer.save();
     }
 }

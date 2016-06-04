@@ -47,7 +47,7 @@ public class PathList extends ObjectList<PathData>
      */
     public void loadPaths(Configurer configurer)
     {
-        final Map<String, PathData> config = PathfindableConfig.create(configurer);
+        final Map<String, PathData> config = PathfindableConfig.imports(configurer);
         loadObjects(config.values());
     }
 

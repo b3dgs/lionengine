@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.editor.pathfinding.properties;
 
+import java.util.Collections;
+
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
 
 /**
  * Enable pathfindable handler.
@@ -48,6 +51,9 @@ public final class PathfindableEnableHandler
 
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
+        configurer.getRoot().add(PathfindableConfig.exports(Collections.emptyMap()));
+        configurer.save();
+
         part.setInput(properties, configurer);
     }
 }
