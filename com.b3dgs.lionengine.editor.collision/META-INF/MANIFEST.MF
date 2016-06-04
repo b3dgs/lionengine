@@ -39,7 +39,8 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  com.b3dgs.lionengine.core.swt;bundle-version="8.3.0",
  com.b3dgs.lionengine.game;bundle-version="8.3.0",
  com.b3dgs.lionengine.editor;bundle-version="8.3.0",
- com.b3dgs.lionengine.editor.map;bundle-version="8.3.0"
+ com.b3dgs.lionengine.editor.map;bundle-version="8.3.0",
+ com.b3dgs.lionengine.editor.object;bundle-version="8.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
 Import-Package: javax.annotation;version="1.0.0",

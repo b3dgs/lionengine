@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.editor.collision.properties;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.editor.object.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 
@@ -77,7 +79,7 @@ public final class PropertiesCollisionTester extends PropertyTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty())
+        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
             return check(model, data, property);
