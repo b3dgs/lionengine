@@ -74,12 +74,16 @@ public final class ProjectFactory
      * Get the project information from properties.
      * 
      * @param projectPath The properties path.
-     * @return The project information.
+     * @return The project information, <code>null</code> if properties does not exists.
      * @throws IOException If not able to read the project properties file.
      */
     public static Info getInfo(File projectPath) throws IOException
     {
         final File propertiesFile = new File(projectPath, PROPERTIES_FILE);
+        if (!propertiesFile.isFile())
+        {
+            return null;
+        }
         try (final InputStream input = new FileInputStream(propertiesFile))
         {
             final Properties properties = new Properties();

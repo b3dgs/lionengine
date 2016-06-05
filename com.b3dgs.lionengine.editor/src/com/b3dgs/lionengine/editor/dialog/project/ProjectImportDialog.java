@@ -237,10 +237,12 @@ public class ProjectImportDialog extends AbstractProjectDialog
     {
         final File projectPath = new File(projectLocationText.getText());
         final ProjectFactory.Info info = ProjectFactory.getInfo(projectPath);
-
-        projectClassesText.setText(info.getClasses());
-        projectLibrariesText.setText(info.getLibraries());
-        projectResourcesText.setText(info.getResources());
+        if (info != null)
+        {
+            projectClassesText.setText(info.getClasses());
+            projectLibrariesText.setText(info.getLibraries());
+            projectResourcesText.setText(info.getResources());
+        }
 
         tipsLabel.setVisible(false);
         finish.setEnabled(true);
@@ -327,7 +329,8 @@ public class ProjectImportDialog extends AbstractProjectDialog
         try
         {
             final ProjectFactory.Info info = ProjectFactory.getInfo(projectPath);
-            if (!info.getResources().equals(projectResourcesText.getText())
+            if (info == null
+                || !info.getResources().equals(projectResourcesText.getText())
                 || !info.getClasses().equals(projectClassesText.getText())
                 || !info.getLibraries().equals(projectLibrariesText.getText()))
             {
