@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.dialog.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Image;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.ProjectFactory;
+import com.b3dgs.lionengine.editor.project.ProjectFactory.Info;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.util.UtilFolder;
 
@@ -236,12 +238,13 @@ public class ProjectImportDialog extends AbstractProjectDialog
     private void fillProjectProperties() throws IOException
     {
         final File projectPath = new File(projectLocationText.getText());
-        final ProjectFactory.Info info = ProjectFactory.getInfo(projectPath);
-        if (info != null)
+        final Optional<Info> info = ProjectFactory.getInfo(projectPath);
+        if (info.isPresent())
         {
-            projectClassesText.setText(info.getClasses());
-            projectLibrariesText.setText(info.getLibraries());
-            projectResourcesText.setText(info.getResources());
+            final Info projectInfo = info.get();
+            projectClassesText.setText(projectInfo.getClasses());
+            projectLibrariesText.setText(projectInfo.getLibraries());
+            projectResourcesText.setText(projectInfo.getResources());
         }
 
         tipsLabel.setVisible(false);
@@ -328,11 +331,11 @@ public class ProjectImportDialog extends AbstractProjectDialog
         final File projectPath = new File(projectLocationText.getText());
         try
         {
-            final ProjectFactory.Info info = ProjectFactory.getInfo(projectPath);
-            if (info == null
-                || !info.getResources().equals(projectResourcesText.getText())
-                || !info.getClasses().equals(projectClassesText.getText())
-                || !info.getLibraries().equals(projectLibrariesText.getText()))
+            final Optional<Info> info = ProjectFactory.getInfo(projectPath);
+            if (!info.isPresent()
+                || !info.get().getResources().equals(projectResourcesText.getText())
+                || !info.get().getClasses().equals(projectClassesText.getText())
+                || !info.get().getLibraries().equals(projectLibrariesText.getText()))
             {
                 generateProperties(projectPath);
             }

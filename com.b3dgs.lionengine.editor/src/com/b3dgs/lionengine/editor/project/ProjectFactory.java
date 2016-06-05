@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Properties;
 
 import com.b3dgs.lionengine.Constant;
@@ -74,15 +75,15 @@ public final class ProjectFactory
      * Get the project information from properties.
      * 
      * @param projectPath The properties path.
-     * @return The project information, <code>null</code> if properties does not exists.
+     * @return The project information
      * @throws IOException If not able to read the project properties file.
      */
-    public static Info getInfo(File projectPath) throws IOException
+    public static Optional<Info> getInfo(File projectPath) throws IOException
     {
         final File propertiesFile = new File(projectPath, PROPERTIES_FILE);
         if (!propertiesFile.isFile())
         {
-            return null;
+            return Optional.empty();
         }
         try (final InputStream input = new FileInputStream(propertiesFile))
         {
@@ -93,7 +94,7 @@ public final class ProjectFactory
             final String classes = properties.getProperty(PROPERTY_PROJECT_CLASSES, Constant.EMPTY_STRING);
             final String libraries = properties.getProperty(PROPERTY_PROJECT_LIBRARIES, Constant.EMPTY_STRING);
 
-            return new Info(resources, classes, libraries);
+            return Optional.of(new Info(resources, classes, libraries));
         }
     }
 
