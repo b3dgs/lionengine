@@ -57,12 +57,12 @@ public final class PathfindableConfig
      */
     public static Map<String, PathData> imports(Configurer configurer)
     {
-        final Map<String, PathData> categories = new HashMap<String, PathData>(0);
         final XmlNode root = configurer.getRoot();
         if (!root.hasChild(PATHFINDABLE))
         {
             return Collections.emptyMap();
         }
+        final Map<String, PathData> categories = new HashMap<String, PathData>(0);
         final XmlNode nodePathfindable = root.getChild(PATHFINDABLE);
         for (final XmlNode nodePath : nodePathfindable.getChildren(PATH))
         {

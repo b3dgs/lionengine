@@ -4,17 +4,19 @@
     <lionengine:setup>com.b3dgs.lionengine.game.feature.SetupSurface</lionengine:setup>
     <lionengine:surface image="Peon.png"/>
     <lionengine:size width="16" height="16"/>
-    <lionengine:pathfindable category="ground" cost="1" block="false">
-        <lionengine:movement>UP</lionengine:movement>
-        <lionengine:movement>LEFT</lionengine:movement>
-        <lionengine:movement>RIGHT</lionengine:movement>
-        <lionengine:movement>DOWN</lionengine:movement>
-        <lionengine:movement>DIAGONAL_UP_LEFT</lionengine:movement>
-        <lionengine:movement>DIAGONAL_UP_RIGHT</lionengine:movement>
-        <lionengine:movement>DIAGONAL_DOWN_LEFT</lionengine:movement>
-        <lionengine:movement>DIAGONAL_DOWN_RIGHT</lionengine:movement>
-    </lionengine:pathfindable>
-    <lionengine:pathfindable category="border" block="true"/>
-    <lionengine:pathfindable category="tree" block="true"/>
-    <lionengine:pathfindable category="water" block="true"/>
+	<lionengine:pathfindable>
+		<lionengine:path category="ground" cost="1" block="false">
+			<lionengine:movement>UP</lionengine:movement>
+			<lionengine:movement>LEFT</lionengine:movement>
+			<lionengine:movement>RIGHT</lionengine:movement>
+			<lionengine:movement>DOWN</lionengine:movement>
+			<lionengine:movement>DIAGONAL_UP_LEFT</lionengine:movement>
+			<lionengine:movement>DIAGONAL_UP_RIGHT</lionengine:movement>
+			<lionengine:movement>DIAGONAL_DOWN_LEFT</lionengine:movement>
+			<lionengine:movement>DIAGONAL_DOWN_RIGHT</lionengine:movement>
+		</lionengine:path>
+		<lionengine:path category="border" block="true"/>
+		<lionengine:path category="tree" block="true"/>
+		<lionengine:path category="water" block="true"/>
+	</lionengine:pathfindable>
 </lionengine:object>
