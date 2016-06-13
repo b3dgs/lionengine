@@ -335,6 +335,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     {
         if (!gc.isDisposed())
         {
+            gc.fillRectangle(0, 0, minimap.getWidth(), minimap.getHeight());
             gc.drawImage((Image) minimap.getSurface().getSurface(), 0, 0);
             gc.setForeground(green);
 
@@ -381,12 +382,14 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         if (text.isEmpty())
         {
             minimap.automaticColor();
+            minimap.prepare();
             render();
         }
         else
         {
             final Media media = Medias.create(UtilFile.normalizeExtension(text, Factory.FILE_DATA_EXTENSION));
             minimap.automaticColor(media);
+            minimap.prepare();
             render();
         }
     }
