@@ -24,15 +24,21 @@ package com.b3dgs.lionengine.game.feature;
  * provide a specific sub system, called a {@link Feature}. They will compose a complex system, called a
  * {@link Featurable}.
  * </p>
- * <h4>Problematic</h4>
+ * <p>
+ * <b>Problematic</b>
+ * </p>
  * <p>
  * Implementation of an object, which may move and can collide other objects which may not all move.
  * </p>
- * <h4>Naive solution</h4>
+ * <p>
+ * <b>Naive solution</b>
+ * </p>
  * <p>
  * One big object, implementing moving and colliding.
  * </p>
- * <h4>Feature solution</h4>
+ * <p>
+ * <b>Feature solution</b>
+ * </p>
  * <p>
  * Sub system implementation, sub system composition:
  * </p>
@@ -46,7 +52,9 @@ package com.b3dgs.lionengine.game.feature;
  * This way, our object is now very simple, as it only declares its required features. Implementations are localized in
  * specific classes, which helps to avoid <i>god class</i> if our object want to also jump and throw something.
  * </p>
- * <h4>Caution</h4>
+ * <p>
+ * <b>Caution</b>
+ * </p>
  * <p>
  * The counterpart of such a system is the low typing of our final object, as it is only known at runtime, even if they
  * are statically declared. An object is just a set of <i>something</i>, which can lead to undesired exceptions if not
@@ -71,7 +79,9 @@ public interface Featurable extends FeatureProvider
 
     /**
      * Add a feature.
-     * <h4>Caution</h4>
+     * <p>
+     * <b>Caution:</b>
+     * </p>
      * <p>
      * At this point the feature may not be completely usable. A call to {@link #prepareFeatures(Services)} is required
      * for a full usage, as annotated fields with {@link Service} will not be filled.
@@ -83,7 +93,9 @@ public interface Featurable extends FeatureProvider
 
     /**
      * Add a feature and retrieve it.
-     * <h4>Caution</h4>
+     * <p>
+     * <b>Caution:</b>
+     * </p>
      * <p>
      * At this point the feature may not be completely usable. A call to {@link #prepareFeatures(Services)} is required
      * for a full usage, as annotated fields with {@link Service} will not be filled.

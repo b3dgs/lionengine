@@ -46,12 +46,13 @@ import com.b3dgs.lionengine.util.UtilStream;
  * <li>{@link Config} : The configuration used by the {@link com.b3dgs.lionengine.core.Loader}</li>
  * <li><code>width</code>: The source screen width, retrieve from the source screen {@link Resolution}</li>
  * <li><code>height</code>: The source screen height, retrieve from the source screen {@link Resolution}</li>
- * <li>{@link Services}: Pre-configured instance with the following added services:</li>
+ * <li>{@link Services}: Pre-configured instance with the following added services:
  * <ul>
  * <li>{@link Camera}: Configured with screen size as view</li>
  * <li>{@link Factory}</li>
  * <li>{@link Handler}: Shipped with {@link ComponentRefreshable} and {@link ComponentDisplayable}</li>
  * </ul>
+ * </li>
  * </ul>
  * <p>
  * It has to be handled by a {@link com.b3dgs.lionengine.core.Sequence}. Here a standard world usage:
