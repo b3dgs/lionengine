@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="LionEngine Editor" uid="com.b3dgs.lionengine.editor.product" id="com.b3dgs.lionengine.editor.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="8.3.0" useFeatures="false" includeLaunchers="true">
+<product name="LionEngine Editor" uid="com.b3dgs.lionengine.editor.product" id="com.b3dgs.lionengine.editor.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="8.3.1.qualifier" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
