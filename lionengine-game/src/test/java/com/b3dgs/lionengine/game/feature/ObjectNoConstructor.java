@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import org.junit.Assert;
+
 /**
  * Object without constructor.
  */
@@ -24,9 +26,12 @@ public class ObjectNoConstructor extends FeaturableModel
 {
     /**
      * Constructor.
+     * 
+     * @param object Void.
      */
-    private ObjectNoConstructor()
+    private ObjectNoConstructor(String object)
     {
         super();
+        Assert.assertNotNull(object);
     }
 }

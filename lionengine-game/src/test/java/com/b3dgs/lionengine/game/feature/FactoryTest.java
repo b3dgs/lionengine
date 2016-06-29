@@ -52,6 +52,7 @@ public class FactoryTest
     }
 
     private final Services services = new Services();
+    private final Factory factory = new Factory(services);
 
     /**
      * Test the object creation.
@@ -59,7 +60,6 @@ public class FactoryTest
     @Test
     public void testCreate()
     {
-        final Factory factory = new Factory(services);
         factory.setClassLoader(ClassLoader.getSystemClassLoader());
 
         final Featurable featurable1 = factory.create(Medias.create(OBJECT_XML));
@@ -70,14 +70,34 @@ public class FactoryTest
     }
 
     /**
-     * Test the object creation without constructor.
+     * Test the object creation with existing identifiable.
      */
     @Test
+    public void testPrepareWithIdentifiable()
+    {
+        final Featurable featurable1 = factory.create(Medias.create("object_identifiable.xml"));
+        final Featurable featurable2 = factory.create(Medias.create("object_identifiable.xml"),
+                                                      ObjectWithIdentifiable.class);
+
+        Assert.assertNotNull(featurable1);
+        Assert.assertNotNull(featurable2);
+    }
+
+    /**
+     * Test the object creation without constructor.
+     */
+    @Test(expected = LionEngineException.class)
     public void testCreateNoConstructor()
     {
-        final Factory factory = new Factory(services);
-
         Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml")));
+    }
+
+    /**
+     * Test the object creation without constructor.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCreateNoConstructorClass()
+    {
         Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml"), ObjectNoConstructor.class));
     }
 
@@ -89,7 +109,6 @@ public class FactoryTest
     {
         try
         {
-            final Factory factory = new Factory(services);
             Assert.assertNotNull(factory.create(Medias.create("no_class.xml")));
             Assert.fail();
         }
@@ -107,7 +126,6 @@ public class FactoryTest
     {
         try
         {
-            final Factory factory = new Factory(services);
             Assert.assertNotNull(factory.create(Medias.create("no_setup.xml")));
             Assert.fail();
         }
@@ -125,7 +143,6 @@ public class FactoryTest
     {
         try
         {
-            final Factory factory = new Factory(services);
             Assert.assertNotNull(factory.create(Medias.create("no_setup_constructor.xml")));
             Assert.fail();
         }
@@ -141,7 +158,6 @@ public class FactoryTest
     @Test
     public void testGetSetup()
     {
-        final Factory factory = new Factory(services);
         final Setup setup = factory.getSetup(Medias.create(OBJECT_XML));
 
         Assert.assertEquals(Medias.create(OBJECT_XML), setup.getMedia());

@@ -190,7 +190,7 @@ public class Factory
      * @param type The featurable type.
      * @param setup The associated setup.
      * @return The featurable instance.
-     * @throws NoSuchMethodException If missing method.
+     * @throws NoSuchMethodException If missing constructor.
      */
     private <O extends Featurable> O createFeaturable(Class<?> type, Setup setup) throws NoSuchMethodException
     {
