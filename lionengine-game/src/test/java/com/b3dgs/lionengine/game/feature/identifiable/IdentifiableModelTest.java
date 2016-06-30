@@ -75,6 +75,10 @@ public class IdentifiableModelTest
         identifiable.notifyDestroyed();
 
         Assert.assertNull(identifiable.getId());
+
+        identifiable.destroy();
+
+        Assert.assertNull(identifiable.getId());
     }
 
     /**
