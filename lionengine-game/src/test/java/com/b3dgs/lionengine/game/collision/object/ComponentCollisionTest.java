@@ -31,8 +31,10 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
@@ -75,7 +77,15 @@ public class ComponentCollisionTest
         final Services services = new Services();
         services.add(new Camera());
 
-        final Featurable featurable1 = CollidableModelTest.createFeaturable(config, services);
+        final Setup setup = new Setup(config);
+        final ObjectSelf featurable1 = new ObjectSelf();
+
+        final Transformable transformable = featurable1.addFeatureAndGet(new TransformableModel(setup));
+        transformable.setLocation(1.0, 2.0);
+        transformable.setSize(2, 2);
+
+        featurable1.addFeature(new CollidableModel(setup));
+        featurable1.prepareFeatures(services);
         final Featurable featurable2 = CollidableModelTest.createFeaturable(config, services);
 
         final Collidable collidable1 = featurable1.getFeature(Collidable.class);
@@ -108,6 +118,7 @@ public class ComponentCollisionTest
         handler.update(1.0);
 
         Assert.assertEquals(featurable1.getFeature(Collidable.class), collide.get());
+        Assert.assertTrue(featurable1.called.get());
 
         collide.set(null);
         featurable1.getFeature(Transformable.class).teleport(10.0, 10.0);
