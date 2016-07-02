@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -154,7 +155,7 @@ public class TileCollidableModelTest
     @Test
     public void testFromTop()
     {
-        final Transformable transformable = createObject();
+        final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<Tile>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
@@ -172,7 +173,7 @@ public class TileCollidableModelTest
     @Test
     public void testFromBottom()
     {
-        final Transformable transformable = createObject();
+        final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<Tile>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
@@ -190,7 +191,7 @@ public class TileCollidableModelTest
     @Test
     public void testFromLeft()
     {
-        final Transformable transformable = createObject();
+        final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<Tile>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
@@ -208,7 +209,7 @@ public class TileCollidableModelTest
     @Test
     public void testFromRight()
     {
-        final Transformable transformable = createObject();
+        final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<Tile>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
@@ -226,7 +227,7 @@ public class TileCollidableModelTest
     @Test
     public void testDisabled()
     {
-        final Transformable transformable = createObject();
+        final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<Tile>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
@@ -245,7 +246,7 @@ public class TileCollidableModelTest
     @Test
     public void testRemoveListener()
     {
-        final Transformable transformable = createObject();
+        final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<Tile>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
@@ -259,24 +260,45 @@ public class TileCollidableModelTest
     }
 
     /**
+     * Test the collidable self listener.
+     */
+    @Test
+    public void testSelfListener()
+    {
+        final ObjectSelf self = new ObjectSelf();
+        final Transformable transformable = createObject(self);
+        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final TileCollidableListener listener = createListener(collided);
+        collidable.addListener(listener);
+
+        transformable.setLocation(0, 2);
+        transformable.moveLocation(1.0, 0.0, -5.0);
+        collidable.removeListener(listener);
+        collidable.update(1.0);
+
+        Assert.assertNull(collided.get());
+        Assert.assertTrue(self.called.get());
+    }
+
+    /**
      * Create object test.
      * 
+     * @param featurable Featurable instance.
      * @return The object test.
      */
-    private Transformable createObject()
+    private Transformable createObject(Featurable featurable)
     {
         final Setup setup = new Setup(config);
         CollisionCategoryConfig.exports(setup.getRoot(), categoryY);
         CollisionCategoryConfig.exports(setup.getRoot(), categoryX);
-        final FeaturableModel object = new FeaturableModel();
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(2, 2);
 
-        collidable = object.addFeatureAndGet(new TileCollidableModel(setup));
+        collidable = featurable.addFeatureAndGet(new TileCollidableModel(setup));
         collidable.setEnabled(true);
 
-        object.prepareFeatures(services);
+        featurable.prepareFeatures(services);
 
         Assert.assertEquals(Arrays.asList(categoryY, categoryX), collidable.getCategories());
 

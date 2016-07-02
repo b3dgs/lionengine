@@ -97,6 +97,7 @@ public class CollisionGroupConfigTest
         final CollisionGroupConfig groups = CollisionGroupConfig.imports(config);
 
         Assert.assertEquals(group, groups.getGroups().values().iterator().next());
+        Assert.assertEquals(group, groups.getGroup("group"));
         Assert.assertTrue(config.getFile().delete());
     }
 

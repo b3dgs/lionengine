@@ -167,14 +167,6 @@ public final class CollisionGroupConfig
     }
 
     /**
-     * Clear the groups data.
-     */
-    public void clear()
-    {
-        groups.clear();
-    }
-
-    /**
      * Get a collision formula data from its name.
      * 
      * @param name The formula name.
