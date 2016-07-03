@@ -18,12 +18,16 @@
 package com.b3dgs.lionengine.game.feature;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the featurable model class.
@@ -193,6 +197,36 @@ public class FeaturableModelTest
     }
 
     /**
+     * Test the set field not accessible
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetFieldNotAccessible() throws Throwable
+    {
+        final FeatureItself featurable = new FeatureItself();
+        try
+        {
+            final Method method = FeaturableModel.class.getDeclaredMethod("setField",
+                                                                          Field.class,
+                                                                          Object.class,
+                                                                          Services.class,
+                                                                          Class.class);
+            UtilReflection.setAccessible(method, true);
+            method.invoke(featurable,
+                          featurable.getClass().getDeclaredField("object"),
+                          featurable,
+                          new Services(),
+                          Object.class);
+        }
+        catch (final InvocationTargetException exception)
+        {
+            Assert.assertTrue(exception.getCause().getCause() instanceof IllegalAccessException);
+            throw exception.getCause();
+        }
+    }
+
+    /**
      * Mock feature.
      */
     private static interface MyFeatureInterface extends Feature
@@ -221,6 +255,8 @@ public class FeaturableModelTest
      */
     private static class FeatureItself extends FeaturableModel implements Feature
     {
+        @SuppressWarnings("unused") private Object object;
+
         @Override
         public void prepare(FeatureProvider provider, Services services)
         {

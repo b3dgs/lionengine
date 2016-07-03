@@ -37,10 +37,18 @@ public class FeatureModelTest
     public void testModel()
     {
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new TransformableModel());
+        final Transformable transformable = new TransformableModel();
+        featurable.addFeature(transformable);
         feature.prepare(featurable, new Services());
 
         Assert.assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
+        Assert.assertEquals(transformable, feature.getFeature(Transformable.class));
+        Assert.assertEquals(transformable, feature.getFeatures().iterator().next());
+        for (final Class<? extends Feature> type : feature.getFeaturesType())
+        {
+            Assert.assertTrue(type == Transformable.class || type == TransformableModel.class);
+        }
+        Assert.assertTrue(feature.hasFeature(Transformable.class));
     }
 
     /**
