@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.raster.it;
 
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Context;
@@ -83,13 +84,14 @@ public class SceneRasterable extends Sequence
 
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
         final Rasterable rasterable = new RasterableModel(setup);
+        rasterable.setOrigin(Origin.MIDDLE);
         featurable.addFeature(rasterable);
         featurable.addFeature(new RefreshableModel(new Updatable()
         {
             @Override
             public void update(double extrp)
             {
-                transformable.setLocationY(UtilMath.sin(count * 3) * 240 + 60);
+                transformable.setLocationY(UtilMath.sin(count * 3) * 240);
                 surface.setLocation(camera, transformable);
                 rasterable.update(extrp);
                 surface.update(extrp);

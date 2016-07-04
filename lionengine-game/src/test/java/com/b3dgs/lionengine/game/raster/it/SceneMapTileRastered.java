@@ -55,7 +55,7 @@ public class SceneMapTileRastered extends Sequence
      */
     public SceneMapTileRastered(Context context)
     {
-        super(context, new Resolution(320, 240, 60));
+        super(context, new Resolution(640, 480, 60));
     }
 
     @Override
