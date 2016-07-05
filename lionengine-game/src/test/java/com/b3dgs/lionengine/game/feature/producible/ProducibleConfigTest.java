@@ -110,4 +110,15 @@ public class ProducibleConfigTest
         Assert.assertNotEquals(producible, new ProducibleConfig(1, 0, 3));
         Assert.assertNotEquals(producible, new ProducibleConfig(1, 2, 0));
     }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
+
+        Assert.assertEquals("ProducibleConfig [steps=1, width=2, height=3]", producible.toString());
+    }
 }
