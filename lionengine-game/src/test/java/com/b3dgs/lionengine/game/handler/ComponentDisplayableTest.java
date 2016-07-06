@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -31,9 +32,9 @@ import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.layerable.Layerable;
 import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
-import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the component renderer layer class.
@@ -136,5 +137,33 @@ public class ComponentDisplayableTest
         component.render(null, null);
 
         Assert.assertTrue(auto.get());
+    }
+
+    /**
+     * Test the component notification.
+     */
+    @Test
+    public void testNotify()
+    {
+        final ComponentDisplayable component = new ComponentDisplayable();
+
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new DisplayableModel(new Renderable()
+        {
+            @Override
+            public void render(Graphic g)
+            {
+                // Mock
+            }
+        }));
+        component.notifyHandlableAdded(featurable);
+
+        Assert.assertFalse(((HashSet<?>) UtilReflection.getMethod(component,
+                                                                  "getLayer",
+                                                                  Integer.valueOf(0))).isEmpty());
+
+        component.notifyHandlableRemoved(featurable);
+
+        Assert.assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
 }
