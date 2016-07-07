@@ -42,4 +42,43 @@ public class VersionTest
         Assert.assertFalse(version.equals(version2));
         Assert.assertNotEquals("3.2.1", version2.toString());
     }
+
+    /**
+     * Test the version hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int version = Version.create(3, 2, 1).hashCode();
+
+        Assert.assertEquals(version, Version.create(3, 2, 1).hashCode());
+
+        Assert.assertNotEquals(version, new Object().hashCode());
+        Assert.assertNotEquals(version, Version.create(3, 2, 0).hashCode());
+        Assert.assertNotEquals(version, Version.create(3, 0, 1).hashCode());
+        Assert.assertNotEquals(version, Version.create(0, 2, 1).hashCode());
+        Assert.assertNotEquals(version, Version.create(3, 0, 0).hashCode());
+        Assert.assertNotEquals(version, Version.create(0, 0, 1).hashCode());
+        Assert.assertNotEquals(version, Version.create(0, 0, 0).hashCode());
+    }
+
+    /**
+     * Test the version equality.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Version version = Version.create(3, 2, 1);
+
+        Assert.assertEquals(version, version);
+        Assert.assertEquals(version, Version.create(3, 2, 1));
+
+        Assert.assertNotEquals(version, new Object());
+        Assert.assertNotEquals(version, Version.create(3, 2, 0));
+        Assert.assertNotEquals(version, Version.create(3, 0, 1));
+        Assert.assertNotEquals(version, Version.create(0, 2, 1));
+        Assert.assertNotEquals(version, Version.create(3, 0, 0));
+        Assert.assertNotEquals(version, Version.create(0, 0, 1));
+        Assert.assertNotEquals(version, Version.create(0, 0, 0));
+    }
 }

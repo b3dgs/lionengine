@@ -101,6 +101,32 @@ public final class Version
      */
 
     @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + major;
+        result = prime * result + minor;
+        result = prime * result + micro;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof Version))
+        {
+            return false;
+        }
+        final Version other = (Version) obj;
+        return getMajor() == other.getMajor() && getMinor() == other.getMinor() && getMicro() == other.getMicro();
+    }
+
+    @Override
     public String toString()
     {
         return new StringBuilder(LENGTH).append(String.valueOf(major))
