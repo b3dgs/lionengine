@@ -25,8 +25,10 @@ import com.b3dgs.lionengine.util.UtilRandom;
  */
 public class Damages
 {
-    /** Damages range. */
-    private Range range;
+    /** Minimum value. */
+    private int min;
+    /** Maximum value. */
+    private int max;
     /** Last damages. */
     private int last;
 
@@ -35,8 +37,7 @@ public class Damages
      */
     public Damages()
     {
-        range = new Range(0, 0);
-        last = 0;
+        super();
     }
 
     /**
@@ -47,7 +48,8 @@ public class Damages
      */
     public Damages(int min, int max)
     {
-        range = new Range(min, max);
+        this.min = min;
+        this.max = max;
         last = 0;
     }
 
@@ -58,7 +60,7 @@ public class Damages
      */
     public void setMin(int min)
     {
-        range = new Range(min, range.getMax());
+        this.min = min;
     }
 
     /**
@@ -68,7 +70,7 @@ public class Damages
      */
     public void setMax(int max)
     {
-        range = new Range(range.getMin(), max);
+        this.max = max;
     }
 
     /**
@@ -79,7 +81,8 @@ public class Damages
      */
     public void setDamages(int min, int max)
     {
-        range = new Range(min, max);
+        this.min = min;
+        this.max = max;
     }
 
     /**
@@ -89,7 +92,7 @@ public class Damages
      */
     public int getRandom()
     {
-        last = UtilRandom.getRandomInteger(range);
+        last = UtilRandom.getRandomInteger(min, max);
         return last;
     }
 
@@ -110,7 +113,7 @@ public class Damages
      */
     public int getMin()
     {
-        return range.getMin();
+        return min;
     }
 
     /**
@@ -120,7 +123,7 @@ public class Damages
      */
     public int getMax()
     {
-        return range.getMax();
+        return max;
     }
 
     /**
@@ -130,6 +133,6 @@ public class Damages
      */
     public Range getDamages()
     {
-        return new Range(range.getMin(), range.getMax());
+        return new Range(min, max);
     }
 }
