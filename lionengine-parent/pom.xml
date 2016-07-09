@@ -34,7 +34,7 @@
         <maven-resources.version>2.7</maven-resources.version>
         <maven-dependency.version>2.10</maven-dependency.version>
         <maven-release.version>2.5.3</maven-release.version>
-        <checkstyle.version>6.16</checkstyle.version>
+        <checkstyle.version>6.19</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
         <maven-gpg.version>1.6</maven-gpg.version>
