@@ -35,6 +35,15 @@ public final class Messages extends NLS
     /** Exit button. */
     public static String Exit;
 
+    /** Resource dialog title. */
+    public static String ResourceDialog_Title;
+    /** Resource dialog header title. */
+    public static String ResourceDialog_HeaderTitle;
+    /** Resource dialog header description. */
+    public static String ResourceDialog_HeaderDesc;
+    /** Resource dialog header file name. */
+    public static String ResourceDialog_Filename;
+
     /**
      * Initialize.
      */

@@ -17,12 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.surface.handler;
 
-import java.io.File;
-
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.surface.properties.PropertiesSurface;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
@@ -55,14 +52,12 @@ public final class SurfaceSetHandler
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
-        final String file = UtilDialog.selectFile(properties.getShell(), configurer.getPath(), true);
-        if (file != null)
+        UtilDialog.selectResourceFile(properties.getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
             final XmlNode root = configurer.getRoot();
             if (!root.hasChild(SizeConfig.NODE_SIZE))
             {
-                final File surface = new File(configurer.getPath(), file);
-                final ImageInfo info = ImageInfo.get(ProjectModel.INSTANCE.getProject().getResourceMedia(surface));
+                final ImageInfo info = ImageInfo.get(media);
 
                 final XmlNode size = root.createChild(SizeConfig.NODE_SIZE);
                 size.writeInteger(SizeConfig.ATT_WIDTH, info.getWidth());
@@ -70,11 +65,11 @@ public final class SurfaceSetHandler
             }
 
             final XmlNode surfaceNode = root.createChild(SurfaceConfig.NODE_SURFACE);
-            surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, file);
+            surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, media.getPath());
 
             configurer.save();
             PropertiesSurface.createAttributeSurface(properties, configurer);
             part.setInput(properties, configurer);
-        }
+        });
     }
 }

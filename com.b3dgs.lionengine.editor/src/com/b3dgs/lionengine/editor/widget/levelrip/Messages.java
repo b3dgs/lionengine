@@ -32,8 +32,6 @@ public final class Messages extends NLS
     public static String AddRemoveRip;
     /** Add level rip. */
     public static String AddLevelRip;
-    /** Level rip file filter. */
-    public static String LevelRipFileFilter;
     /** Remove level rip. */
     public static String RemoveLevelRip;
 

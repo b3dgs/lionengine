@@ -28,6 +28,8 @@ public final class Messages extends NLS
 {
     /** Dialog title. */
     public static String Title;
+    /** Dialog progress title. */
+    public static String Title_Progress;
     /** Title header. */
     public static String HeaderTitle;
     /** Description header. */

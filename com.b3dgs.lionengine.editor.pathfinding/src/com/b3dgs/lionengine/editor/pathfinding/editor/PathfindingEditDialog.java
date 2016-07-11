@@ -92,7 +92,7 @@ public class PathfindingEditDialog extends AbstractDialog
 
         final String[] filter = UtilDialog.getXmlFilter();
         final String label = Messages.PathfindingConfig;
-        pathfinding = new BrowseWidget(content, label, label + " (" + filter[0] + ")", filter, true);
+        pathfinding = new BrowseWidget(content, label, filter, true);
 
         final Composite area = new Composite(content, SWT.NONE);
         area.setLayout(new GridLayout(2, false));

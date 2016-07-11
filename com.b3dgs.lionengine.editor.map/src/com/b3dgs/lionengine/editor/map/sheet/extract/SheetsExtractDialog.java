@@ -52,8 +52,6 @@ public class SheetsExtractDialog extends AbstractDialog
 {
     /** Sheets default extension. */
     public static final String SHEET_EXTENSION = ".png";
-    /** File filter. */
-    public static final String FILES_FILTER = "*.bmp;*" + SHEET_EXTENSION;
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
 

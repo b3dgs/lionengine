@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.widget.levelrip;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -33,8 +32,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 
@@ -43,22 +40,6 @@ import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
  */
 public class LevelRipWidget
 {
-    /** Level rip filter. */
-    private static final String LEVEL_RIP_FILTER = "*.bmp;*.png";
-
-    /**
-     * List of supported level rip formats.
-     * 
-     * @return Supported level rip formats.
-     */
-    public static String[] getLevelRipFilter()
-    {
-        return new String[]
-        {
-            LEVEL_RIP_FILTER
-        };
-    }
-
     /** Listeners. */
     private final Collection<LevelRipsWidgetListener> listeners = new HashSet<>();
     /** Level rip medias. */
@@ -154,15 +135,8 @@ public class LevelRipWidget
      */
     private void onAddLevelRip()
     {
-        final Project project = ProjectModel.INSTANCE.getProject();
-        final String initialPath = project.getResourcesPath().getAbsolutePath();
-        final File[] files = UtilDialog.selectResourceFiles(levelRips.getShell(), initialPath, new String[]
+        for (final Media media : UtilDialog.selectResourceFiles(levelRips.getShell(), UtilDialog.getImageFilter()))
         {
-            Messages.LevelRipFileFilter
-        }, getLevelRipFilter());
-        for (final File file : files)
-        {
-            final Media media = project.getResourceMedia(file);
             final String path = media.getPath();
             if (!containsItem(path))
             {

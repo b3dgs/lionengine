@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.toolbar.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.toolbar.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
@@ -125,10 +126,10 @@ public class CollisionImportDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
-        formulas = new BrowseWidget(content, Messages.FormulasLocation, Messages.FormulasConfigFileFilter, true);
+        formulas = new BrowseWidget(content, Messages.FormulasLocation, UtilDialog.getXmlFilter(), true);
         formulas.addListener(media -> checkFinish());
 
-        collisions = new BrowseWidget(content, Messages.CollisionsLocation, Messages.CollisionsFileFilter, true);
+        collisions = new BrowseWidget(content, Messages.CollisionsLocation, UtilDialog.getXmlFilter(), true);
         collisions.addListener(media -> checkFinish());
     }
 

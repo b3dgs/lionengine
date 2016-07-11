@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
@@ -130,9 +131,10 @@ public class ConstraintsExtractDialog extends AbstractDialog
      */
     private void crateSheetsLocationArea(Composite parent)
     {
-        final String sheetsTitle = com.b3dgs.lionengine.editor.map.imports.Messages.SheetsLocation;
-        final String sheetsFilter = com.b3dgs.lionengine.editor.map.imports.Messages.SheetsConfigFileFilter;
-        sheets = new BrowseWidget(parent, sheetsTitle, sheetsFilter, false);
+        sheets = new BrowseWidget(parent,
+                                  com.b3dgs.lionengine.editor.map.imports.Messages.SheetsLocation,
+                                  UtilDialog.getXmlFilter(),
+                                  false);
         sheets.addListener(media ->
         {
             final String folder = media.getParentPath();
@@ -162,18 +164,16 @@ public class ConstraintsExtractDialog extends AbstractDialog
         createLevelRipsArea(content);
         crateSheetsLocationArea(content);
 
-        final String groupsTitle = com.b3dgs.lionengine.editor.map.imports.Messages.GroupsLocation;
-        final String groupsFilter = com.b3dgs.lionengine.editor.map.imports.Messages.GroupsConfigFileFilter;
-        groups = new BrowseWidget(content, groupsTitle, groupsFilter, false);
+        groups = new BrowseWidget(content,
+                                  com.b3dgs.lionengine.editor.map.imports.Messages.GroupsLocation,
+                                  UtilDialog.getXmlFilter(),
+                                  false);
         groups.addListener(media -> checkFinish());
 
-        transitions = new BrowseWidget(content,
-                                       Messages.TransitionsLocation,
-                                       Messages.TransitionsConfigFileFilter,
-                                       false);
+        transitions = new BrowseWidget(content, Messages.TransitionsLocation, UtilDialog.getXmlFilter(), false);
         transitions.addListener(media -> checkFinish());
 
-        circuits = new BrowseWidget(content, Messages.CircuitsLocation, Messages.CircuitsConfigFileFilter, false);
+        circuits = new BrowseWidget(content, Messages.CircuitsLocation, UtilDialog.getXmlFilter(), false);
         circuits.addListener(media -> checkFinish());
     }
 

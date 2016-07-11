@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
-import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -77,11 +77,7 @@ public class MapImportDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
-        levelRip = new BrowseWidget(content,
-                                    Messages.LevelRipLocation,
-                                    Messages.LevelRipFileFilter,
-                                    LevelRipWidget.getLevelRipFilter(),
-                                    true);
+        levelRip = new BrowseWidget(content, Messages.LevelRipLocation, UtilDialog.getImageFilter(), true);
         levelRip.addListener(media ->
         {
             if (sheets.getMedia() == null)
@@ -95,10 +91,10 @@ public class MapImportDialog extends AbstractDialog
             checkFinish();
         });
 
-        sheets = new BrowseWidget(content, Messages.SheetsLocation, Messages.SheetsConfigFileFilter, false);
+        sheets = new BrowseWidget(content, Messages.SheetsLocation, UtilDialog.getXmlFilter(), true);
         sheets.addListener(media -> checkFinish());
 
-        groups = new BrowseWidget(content, Messages.GroupsLocation, Messages.GroupsConfigFileFilter, false);
+        groups = new BrowseWidget(content, Messages.GroupsLocation, UtilDialog.getXmlFilter(), true);
         groups.addListener(media -> checkFinish());
     }
 

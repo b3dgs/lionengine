@@ -66,7 +66,7 @@ public class MapImportProgressDialog extends AbstractProgressDialog
      */
     public MapImportProgressDialog(Shell parent, Media levelRip)
     {
-        super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, ICON);
+        super(parent, Messages.Title_Progress, Messages.HeaderTitle, Messages.Progress, ICON);
         this.levelRip = levelRip;
         createDialog();
         finish.dispose();

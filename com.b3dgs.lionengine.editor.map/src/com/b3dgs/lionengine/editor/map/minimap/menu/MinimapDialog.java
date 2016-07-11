@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.map.minimap.menu;
 
-import java.io.File;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -41,7 +39,6 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
@@ -354,14 +351,10 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
      */
     private void selectConfig()
     {
-        final String initialPath = ProjectModel.INSTANCE.getProject().getResourcesPath().getAbsolutePath();
-        final File file = UtilDialog.selectResourceXml(shell, initialPath, true, Messages.FileDesc);
-        if (file != null)
+        UtilDialog.selectResourceFile(shell, true, UtilDialog.getXmlFilter()).ifPresent(media ->
         {
-            final String normalized = UtilFile.normalizeExtension(file.getName(), Factory.FILE_DATA_EXTENSION);
-            final Media media = Medias.get(new File(file.getParentFile(), normalized));
             config.setText(media.getPath());
-            if (!file.exists())
+            if (!media.exists())
             {
                 minimap.automaticColor(media);
             }
@@ -369,7 +362,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
             {
                 loadConfig(media);
             }
-        }
+        });
     }
 
     /**

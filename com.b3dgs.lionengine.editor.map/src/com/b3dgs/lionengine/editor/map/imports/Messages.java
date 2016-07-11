@@ -28,6 +28,8 @@ public final class Messages extends NLS
 {
     /** Dialog title. */
     public static String Title;
+    /** Dialog progress title. */
+    public static String Title_Progress;
     /** Title header. */
     public static String HeaderTitle;
     /** Description header. */
@@ -38,12 +40,6 @@ public final class Messages extends NLS
     public static String SheetsLocation;
     /** Groups location. */
     public static String GroupsLocation;
-    /** Level rip file filter. */
-    public static String LevelRipFileFilter;
-    /** Sheets config file filter. */
-    public static String SheetsConfigFileFilter;
-    /** Groups config file filter. */
-    public static String GroupsConfigFileFilter;
     /** Error level rip. */
     public static String ErrorLevelRip;
     /** Error sheets. */

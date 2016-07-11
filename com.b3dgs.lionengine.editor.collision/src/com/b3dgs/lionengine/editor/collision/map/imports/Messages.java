@@ -36,10 +36,6 @@ public final class Messages extends NLS
     public static String FormulasLocation;
     /** Map collisions location. */
     public static String CollisionsLocation;
-    /** Formulas config file filter. */
-    public static String FormulasConfigFileFilter;
-    /** Map collisions file filter. */
-    public static String CollisionsFileFilter;
     /** Error formulas file. */
     public static String ErrorFormulas;
     /** Error collisions file. */

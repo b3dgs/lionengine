@@ -50,14 +50,14 @@ public final class IconSetHandler
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
-        final String file = UtilDialog.selectFile(properties.getShell(), configurer.getPath(), true);
-        if (file != null)
+        UtilDialog.selectResourceFile(properties.getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
             final XmlNode root = configurer.getRoot();
             final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
-            surfaceNode.writeString(SurfaceConfig.ATT_ICON, file);
+            final String path = media.getPath();
+            surfaceNode.writeString(SurfaceConfig.ATT_ICON, path);
             configurer.save();
-            PropertiesSurface.createAttributeIcon(properties, file);
-        }
+            PropertiesSurface.createAttributeIcon(properties, path);
+        });
     }
 }

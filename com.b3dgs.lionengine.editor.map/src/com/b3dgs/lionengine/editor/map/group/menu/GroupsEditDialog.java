@@ -134,7 +134,7 @@ public class GroupsEditDialog extends AbstractDialog
 
         sheets = new BrowseWidget(levelsArea,
                                   com.b3dgs.lionengine.editor.map.imports.Messages.SheetsLocation,
-                                  com.b3dgs.lionengine.editor.map.imports.Messages.SheetsConfigFileFilter,
+                                  UtilDialog.getXmlFilter(),
                                   true);
         sheets.addListener(media -> checkNextEnabled());
         return levelsArea;

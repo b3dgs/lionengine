@@ -62,7 +62,7 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
      */
     public SheetsExtractProgressDialog(Shell parent, int horizontalTiles)
     {
-        super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, ICON);
+        super(parent, Messages.Title_Progress, Messages.HeaderTitle, Messages.Progress, ICON);
         if (horizontalTiles > 0)
         {
             this.horizontalTiles = horizontalTiles;

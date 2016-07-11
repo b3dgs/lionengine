@@ -28,8 +28,6 @@ public final class Messages extends NLS
 {
     /** Dialog title. */
     public static String Title;
-    /** File description. */
-    public static String FileDesc;
     /** Generate colors. */
     public static String Generate;
 

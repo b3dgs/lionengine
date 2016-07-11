@@ -17,17 +17,17 @@
  */
 package com.b3dgs.lionengine.editor.utility.dialog;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.editor.dialog.ResourceDialog;
+import com.b3dgs.lionengine.editor.dialog.ResourceDialog.Type;
+import com.b3dgs.lionengine.game.feature.Factory;
 
 /**
  * Series of tool functions around the editor related to dialogs.
@@ -35,224 +35,65 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class UtilDialog
 {
     /** Xml filter. */
-    private static final String XML = "*.xml";
-
-    /**
-     * List of supported XML formats.
-     * 
-     * @return Supported XML formats.
-     */
-    public static String[] getXmlFilter()
+    private static final String[] XML_FILTER = new String[]
     {
-        return new String[]
-        {
-            XML
-        };
-    }
+        Factory.FILE_DATA_EXTENSION
+    };
 
-    /**
-     * Select a file from a dialog and returns its path relative to the starting path.
-     * 
-     * @param shell The shell parent.
-     * @param path The starting path.
-     * @param openSave <code>true</code> to open, <code>false</code> to save.
-     * @param extensions The filtered extensions.
-     * @return The selected file path, <code>null</code> if none.
-     */
-    public static String selectFile(Shell shell, String path, boolean openSave, String... extensions)
+    /** Image filter. */
+    private static final String[] IMAGE_FILTER = new String[]
     {
-        final FileDialog fileDialog;
-        if (openSave)
-        {
-            fileDialog = new FileDialog(shell, SWT.OPEN);
-        }
-        else
-        {
-            fileDialog = new FileDialog(shell, SWT.SAVE);
-        }
-        fileDialog.setFilterPath(path);
-        fileDialog.setFilterExtensions(extensions);
-        final String file = fileDialog.open();
-        if (file != null)
-        {
-            final Path reference = Paths.get(new File(path).toURI());
-            final Path target = Paths.get(new File(file).toURI());
-            return reference.relativize(target).toString();
-        }
-        return null;
-    }
+        "bmp", "png"
+    };
 
     /**
      * Select a media folder from dialog.
      * 
      * @param parent The shell parent.
-     * @param initalPath The initial path.
      * @return The media folder, <code>null</code> if none.
      */
-    public static File selectResourceFolder(Shell parent, String initalPath)
+    public static Optional<Media> selectResourceFolder(Shell parent)
     {
-        String selection = null;
-        do
-        {
-            final DirectoryDialog fileDialog = new DirectoryDialog(parent, SWT.OPEN);
-            fileDialog.setFilterPath(initalPath);
-            final String folder = fileDialog.open();
-            if (folder == null)
-            {
-                return null;
-            }
-            if (folder.startsWith(initalPath))
-            {
-                selection = folder;
-            }
-            else
-            {
-                error(parent, Messages.Error, Messages.WrongDir);
-            }
-        }
-        while (selection == null);
-        return new File(selection);
+        final ResourceDialog dialog = new ResourceDialog(parent, false, true, Type.FOLDER);
+        dialog.open();
+        return getResult(dialog);
     }
 
     /**
      * Select a media file from dialog.
      * 
      * @param parent The shell parent.
-     * @param initalPath The initial path.
      * @param openSave <code>true</code> to open, <code>false</code> to save.
-     * @param extensionsName The filtered extensions name.
      * @param extensions The filtered extensions.
      * @return The media file, <code>null</code> if none.
      */
-    public static File selectResourceFile(Shell parent,
-                                          String initalPath,
-                                          boolean openSave,
-                                          String[] extensionsName,
-                                          String[] extensions)
+    public static Optional<Media> selectResourceFile(Shell parent, boolean openSave, String[] extensions)
     {
-        String selection = null;
-        do
+        final ResourceDialog dialog;
+        if (openSave)
         {
-            final FileDialog fileDialog;
-            if (openSave)
-            {
-                fileDialog = new FileDialog(parent, SWT.OPEN);
-            }
-            else
-            {
-                fileDialog = new FileDialog(parent, SWT.SAVE);
-            }
-            fileDialog.setFilterPath(initalPath);
-            fileDialog.setFilterNames(extensionsName);
-            fileDialog.setFilterExtensions(extensions);
-            final String file = fileDialog.open();
-            if (file == null)
-            {
-                return null;
-            }
-            if (file.startsWith(initalPath))
-            {
-                selection = file;
-            }
-            else
-            {
-                error(parent, Messages.Error, Messages.WrongDir);
-            }
+            dialog = new ResourceDialog(parent, false, openSave, Type.FILE, extensions);
         }
-        while (selection == null);
-        return new File(selection);
+        else
+        {
+            dialog = new ResourceDialog(parent, false, openSave, Type.FOLDER, extensions);
+        }
+        dialog.open();
+        return getResult(dialog);
     }
 
     /**
-     * Select a media file from dialog.
+     * Select multiple media files from dialog.
      * 
      * @param parent The shell parent.
-     * @param initalPath The initial path.
-     * @param openSave <code>true</code> to open, <code>false</code> to save.
-     * @param description The type description.
-     * @return The media file, <code>null</code> if none.
-     */
-    public static File selectResourceXml(Shell parent, String initalPath, boolean openSave, String description)
-    {
-        String selection = null;
-        do
-        {
-            final FileDialog fileDialog;
-            if (openSave)
-            {
-                fileDialog = new FileDialog(parent, SWT.OPEN);
-            }
-            else
-            {
-                fileDialog = new FileDialog(parent, SWT.SAVE);
-            }
-            fileDialog.setFilterPath(initalPath);
-            fileDialog.setFilterNames(new String[]
-            {
-                description
-            });
-            fileDialog.setFilterExtensions(getXmlFilter());
-            final String file = fileDialog.open();
-            if (file == null)
-            {
-                return null;
-            }
-            if (file.startsWith(initalPath))
-            {
-                selection = file;
-            }
-            else
-            {
-                error(parent, Messages.Error, Messages.WrongDir);
-            }
-        }
-        while (selection == null);
-        return new File(selection);
-    }
-
-    /**
-     * Select media files from dialog.
-     * 
-     * @param parent The shell parent.
-     * @param initalPath The initial path.
-     * @param extensionsName The filtered extensions name.
      * @param extensions The filtered extensions.
      * @return The media files.
      */
-    public static File[] selectResourceFiles(Shell parent,
-                                             String initalPath,
-                                             String[] extensionsName,
-                                             String[] extensions)
+    public static Collection<Media> selectResourceFiles(Shell parent, String... extensions)
     {
-        File[] selection = null;
-        do
-        {
-            final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN | SWT.MULTI);
-            fileDialog.setFilterPath(initalPath);
-            fileDialog.setFilterNames(extensionsName);
-            fileDialog.setFilterExtensions(extensions);
-            final String firstFile = fileDialog.open();
-            if (firstFile == null)
-            {
-                return new File[0];
-            }
-            final String[] names = fileDialog.getFileNames();
-            final File[] files = new File[names.length];
-            for (int i = 0; i < names.length; i++)
-            {
-                files[i] = new File(new File(firstFile).getParentFile(), names[i]);
-            }
-            if (firstFile.startsWith(initalPath))
-            {
-                selection = files;
-            }
-            else
-            {
-                error(parent, Messages.Error, Messages.WrongDir);
-            }
-        }
-        while (selection == null);
-        return selection;
+        final ResourceDialog dialog = new ResourceDialog(parent, true, true, Type.FILE, extensions);
+        dialog.open();
+        return dialog.getSelection();
     }
 
     /**
@@ -277,6 +118,42 @@ public final class UtilDialog
     public static void error(Shell parent, String title, String message)
     {
         MessageDialog.openError(parent, title, message);
+    }
+
+    /**
+     * List of supported XML formats.
+     * 
+     * @return Supported XML formats.
+     */
+    public static String[] getXmlFilter()
+    {
+        return XML_FILTER;
+    }
+
+    /**
+     * List of supported images formats.
+     * 
+     * @return Supported images formats.
+     */
+    public static String[] getImageFilter()
+    {
+        return IMAGE_FILTER;
+    }
+
+    /**
+     * Get the dialog result for single case.
+     * 
+     * @param dialog The dialog reference.
+     * @return The optional single result.
+     */
+    private static Optional<Media> getResult(ResourceDialog dialog)
+    {
+        final Collection<Media> selection = dialog.getSelection();
+        if (selection.isEmpty())
+        {
+            return Optional.empty();
+        }
+        return Optional.of(selection.iterator().next());
     }
 
     /**

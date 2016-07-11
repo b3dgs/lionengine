@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.surface.properties;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
@@ -84,16 +86,17 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     private static boolean updateSurface(TreeItem item, Configurer configurer)
     {
-        final String file = UtilDialog.selectFile(item.getParent().getShell(), configurer.getPath(), true);
-        if (file != null)
+        final AtomicBoolean updated = new AtomicBoolean(false);
+        UtilDialog.selectResourceFile(item.getParent().getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
             final XmlNode root = configurer.getRoot();
             final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
-            surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, file);
-            item.setText(PropertiesPart.COLUMN_VALUE, file);
-            return true;
-        }
-        return false;
+            final String path = media.getPath();
+            surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, path);
+            item.setText(PropertiesPart.COLUMN_VALUE, path);
+            updated.set(true);
+        });
+        return updated.get();
     }
 
     /**
@@ -105,16 +108,17 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     private static boolean updateIcon(TreeItem item, Configurer configurer)
     {
-        final String file = UtilDialog.selectFile(item.getParent().getShell(), configurer.getPath(), true);
-        if (file != null)
+        final AtomicBoolean updated = new AtomicBoolean(false);
+        UtilDialog.selectResourceFile(item.getParent().getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
             final XmlNode root = configurer.getRoot();
             final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
-            surfaceNode.writeString(SurfaceConfig.ATT_ICON, file);
-            item.setText(PropertiesPart.COLUMN_VALUE, file);
-            return true;
-        }
-        return false;
+            final String path = media.getPath();
+            surfaceNode.writeString(SurfaceConfig.ATT_ICON, path);
+            item.setText(PropertiesPart.COLUMN_VALUE, path);
+            updated.set(true);
+        });
+        return updated.get();
     }
 
     /**

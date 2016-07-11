@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.widget;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,8 +31,6 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 
@@ -49,39 +47,25 @@ public class BrowseWidget
     private Media media;
 
     /**
-     * Create the widget.
+     * Create the widget. Allows to select a folder.
      * 
      * @param parent The parent composite.
      * @param label The browse label text.
      */
     public BrowseWidget(Composite parent, String label)
     {
-        this(parent, label, null, null, true);
+        this(parent, label, null, true);
     }
 
     /**
-     * Create the widget.
+     * Create the widget. Allows to select a file or folder.
      * 
      * @param parent The parent composite.
      * @param label The browse label text.
-     * @param filter The file filter description.
+     * @param types The file types (<code>null</code> for folder).
      * @param open <code>true</code> to open, <code>false</code> to save.
      */
-    public BrowseWidget(Composite parent, String label, String filter, boolean open)
-    {
-        this(parent, label, filter, null, open);
-    }
-
-    /**
-     * Create the widget.
-     * 
-     * @param parent The parent composite.
-     * @param label The browse label text.
-     * @param filter The file filter description.
-     * @param types The file types.
-     * @param open <code>true</code> to open, <code>false</code> to save.
-     */
-    public BrowseWidget(Composite parent, String label, String filter, String[] types, boolean open)
+    public BrowseWidget(Composite parent, String label, String[] types, boolean open)
     {
         final Composite area = new Composite(parent, SWT.NONE);
         area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -95,7 +79,7 @@ public class BrowseWidget
         location.addDisposeListener(event -> listeners.clear());
 
         final Button browse = UtilButton.createBrowse(area);
-        UtilButton.setAction(browse, () -> onBrowse(location, filter, types, open));
+        UtilButton.setAction(browse, () -> onBrowse(location, types, open));
     }
 
     /**
@@ -150,40 +134,30 @@ public class BrowseWidget
      * Browse the location.
      * 
      * @param location The location text reference.
-     * @param filter The file filter description.
-     * @param types The file types.
+     * @param types The file types, <code>null</code> for folder.
      * @param open <code>true</code> to open, <code>false</code> to save.
      */
-    private void onBrowse(Text location, String filter, String[] types, boolean open)
+    private void onBrowse(Text location, String[] types, boolean open)
     {
-        final Project project = ProjectModel.INSTANCE.getProject();
-        final String initialPath = project.getResourcesPath().getAbsolutePath();
-        final File file;
-        if (filter == null)
+        final Optional<Media> result;
+        if (types == null)
         {
-            file = UtilDialog.selectResourceFolder(location.getShell(), initialPath);
-        }
-        else if (types == null)
-        {
-            file = UtilDialog.selectResourceXml(location.getShell(), initialPath, open, filter);
+            result = UtilDialog.selectResourceFolder(location.getShell());
         }
         else
         {
-            file = UtilDialog.selectResourceFile(location.getShell(), initialPath, open, new String[]
-            {
-                filter
-            }, types);
+            result = UtilDialog.selectResourceFile(location.getShell(), open, types);
         }
-        if (file != null)
+        result.ifPresent(value ->
         {
-            media = project.getResourceMedia(file);
+            media = value;
             location.setText(media.getPath());
 
             for (final BrowseWidgetListener listener : listeners)
             {
                 listener.notifyMediaSelected(media);
             }
-        }
+        });
     }
 
     /**
