@@ -162,7 +162,7 @@ public final class FolderModificationWatcher
         {
             try
             {
-                tasks.add(new Task(project, directory, tree, creator));
+                tasks.add(new Task(project, directory, creator));
             }
             catch (final IOException exception)
             {
@@ -208,7 +208,7 @@ public final class FolderModificationWatcher
                 }
                 for (final Task task : tasks)
                 {
-                    task.proceed();
+                    task.proceed(tree);
                 }
                 try
                 {
@@ -234,8 +234,6 @@ public final class FolderModificationWatcher
         private final Project project;
         /** Current folder. */
         private final Path folder;
-        /** Tree. */
-        private final Tree tree;
         /** Creator reference. */
         private final ProjectTreeCreator creator;
         /** Watcher reference. */
@@ -248,15 +246,13 @@ public final class FolderModificationWatcher
          * 
          * @param project The project folder.
          * @param folder The current folder.
-         * @param tree The tree reference.
          * @param creator The creator reference.
          * @throws IOException If error.
          */
-        Task(Project project, Path folder, Tree tree, ProjectTreeCreator creator) throws IOException
+        Task(Project project, Path folder, ProjectTreeCreator creator) throws IOException
         {
             this.project = project;
             this.folder = folder;
-            this.tree = tree;
             this.creator = creator;
             service = folder.getFileSystem().newWatchService();
             watcher = folder.register(service,
@@ -266,8 +262,10 @@ public final class FolderModificationWatcher
 
         /**
          * Process the watch.
+         * 
+         * @param tree The tree reference.
          */
-        public synchronized void proceed()
+        public synchronized void proceed(Tree tree)
         {
             final List<WatchEvent<?>> events = watcher.pollEvents();
             for (final WatchEvent<?> event : events)
@@ -278,11 +276,11 @@ public final class FolderModificationWatcher
                     final Kind<?> kind = event.kind();
                     if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind))
                     {
-                        onCreated(new File(folder.toFile(), object.toString()));
+                        onCreated(new File(folder.toFile(), object.toString()), tree);
                     }
                     else if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind))
                     {
-                        onDeleted(object.toString());
+                        onDeleted(tree, object.toString());
                     }
                 }
             }
@@ -302,20 +300,21 @@ public final class FolderModificationWatcher
          * Called on created element.
          * 
          * @param path The created element path.
+         * @param tree The tree reference.
          * @param keyParent The parent key.
          */
-        private void onCreated(File path, String keyParent)
+        private void onCreated(File path, Tree tree, String keyParent)
         {
             final Object data = tree.getData(keyParent);
             if (data instanceof TreeItem)
             {
                 final TreeItem parent = (TreeItem) data;
-                creator.checkPath(path, parent);
+                creator.checkPath(path, tree, parent);
                 if (path.isDirectory())
                 {
                     try
                     {
-                        newTasks.add(new Task(project, path.toPath(), tree, creator));
+                        newTasks.add(new Task(project, path.toPath(), creator));
                     }
                     catch (final IOException exception)
                     {
@@ -328,9 +327,10 @@ public final class FolderModificationWatcher
         /**
          * Dispose item from its name.
          * 
+         * @param tree The tree reference.
          * @param name The item name.
          */
-        private void disposeItem(String name)
+        private void disposeItem(Tree tree, String name)
         {
             if (!tree.isDisposed())
             {
@@ -347,23 +347,25 @@ public final class FolderModificationWatcher
          * Case of created item.
          * 
          * @param path The created item.
+         * @param tree The tree reference.
          */
-        private void onCreated(final File path)
+        private void onCreated(final File path, final Tree tree)
         {
             final File parent = path.getParentFile();
             if (parent != null)
             {
                 final String keyParent = project.getResourceMedia(path).getParentPath();
-                tree.getDisplay().asyncExec(() -> onCreated(path, keyParent));
+                tree.getDisplay().asyncExec(() -> onCreated(path, tree, keyParent));
             }
         }
 
         /**
          * Case of deleted item.
          * 
+         * @param tree The tree reference.
          * @param filename The deleted item.
          */
-        private void onDeleted(final String filename)
+        private void onDeleted(final Tree tree, final String filename)
         {
             final Path file = folder.resolve(filename);
             final String full = file.toFile().getAbsolutePath();
@@ -371,7 +373,7 @@ public final class FolderModificationWatcher
             if (full.length() > prefix)
             {
                 final String simple = full.substring(prefix);
-                tree.getDisplay().asyncExec(() -> disposeItem(simple));
+                tree.getDisplay().asyncExec(() -> disposeItem(tree, simple));
             }
         }
     }

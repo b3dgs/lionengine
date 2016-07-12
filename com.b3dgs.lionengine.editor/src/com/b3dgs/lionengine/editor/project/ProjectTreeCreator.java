@@ -113,43 +113,42 @@ public class ProjectTreeCreator
     private final File projectPath;
     /** Resources path. */
     private final File resourcesPath;
-    /** Tree reference. */
-    private final Tree tree;
 
     /**
      * Create a project tree creator from a project and its tree.
      * 
      * @param project The project reference.
-     * @param tree The tree reference.
      */
-    public ProjectTreeCreator(Project project, Tree tree)
+    public ProjectTreeCreator(Project project)
     {
         this.project = project;
-        this.tree = tree;
         projectPath = project.getPath();
         resourcesPath = new File(projectPath, project.getResources());
     }
 
     /**
      * Start the tree creation.
+     * 
+     * @param tree The tree reference.
      */
-    public void start()
+    public void create(Tree tree)
     {
         final TreeItem folder = new TreeItem(tree, SWT.NONE);
         folder.setText(project.getName());
         folder.setImage(ICON_MAIN);
-        checkPath(projectPath, folder);
+        checkPath(projectPath, tree, folder);
     }
 
     /**
      * Create a tree item.
      * 
+     * @param tree The tree reference.
      * @param parent The item parent.
      * @param path The item path.
      * @param icon The item icon.
      * @return The created item.
      */
-    public TreeItem createItem(TreeItem parent, File path, Image icon)
+    TreeItem createItem(Tree tree, TreeItem parent, File path, Image icon)
     {
         final Media media = getMedia(path.getPath());
         final TreeItem item = new TreeItem(parent, SWT.NONE);
@@ -164,20 +163,21 @@ public class ProjectTreeCreator
      * Check the current path for its children.
      * 
      * @param path The parent path.
+     * @param tree The tree reference.
      * @param parent The parent tree item.
      */
-    public void checkPath(File path, TreeItem parent)
+    void checkPath(File path, Tree tree, TreeItem parent)
     {
         if (path.isDirectory() && !FOLDER_METAINF.equals(path.getName()))
         {
-            checkPathDirectory(path, parent);
+            checkPathDirectory(path, tree, parent);
         }
         else if (path.isFile())
         {
             final String pathName = path.getParent();
             if (pathName.startsWith(resourcesPath.getPath()))
             {
-                createChild(path, parent);
+                createChild(path, tree, parent);
             }
         }
     }
@@ -186,9 +186,10 @@ public class ProjectTreeCreator
      * Check the current directory for its children.
      * 
      * @param folder The current folder.
+     * @param tree The tree reference.
      * @param parent The parent tree item.
      */
-    private void checkPathDirectory(File folder, TreeItem parent)
+    private void checkPathDirectory(File folder, Tree tree, TreeItem parent)
     {
         final File[] children = folder.listFiles();
         final TreeItem folderItem;
@@ -204,7 +205,7 @@ public class ProjectTreeCreator
             }
             else
             {
-                folderItem = createFolder(folder, parent);
+                folderItem = createFolder(folder, tree, parent);
             }
             Arrays.sort(children, new DirectoryFolderComparator());
             for (final File child : children)
@@ -212,7 +213,7 @@ public class ProjectTreeCreator
                 final String pathName = child.getPath();
                 if (pathName.startsWith(resourcesPath.getPath()) || resourcesPath.getPath().startsWith(pathName))
                 {
-                    checkPath(child, folderItem);
+                    checkPath(child, tree, folderItem);
                 }
             }
         }
@@ -222,12 +223,13 @@ public class ProjectTreeCreator
      * Check the path reference and create the node if necessary.
      * 
      * @param title The node title.
+     * @param tree The tree reference.
      * @param parent The node parent.
      * @param referencePath The reference path.
      * @param path The current path.
      * @return The item reference.
      */
-    private TreeItem checkPathReference(String title, TreeItem parent, File referencePath, File path)
+    private TreeItem checkPathReference(String title, Tree tree, TreeItem parent, File referencePath, File path)
     {
         if (referencePath.getPath().equals(path.getPath()))
         {
@@ -244,30 +246,32 @@ public class ProjectTreeCreator
      * Create the folder item.
      * 
      * @param path The folder path.
+     * @param tree The tree reference.
      * @param parent The node parent.
      * @return The created folder item.
      */
-    private TreeItem createFolder(File path, TreeItem parent)
+    private TreeItem createFolder(File path, Tree tree, TreeItem parent)
     {
         if (resourcesPath.getPath().startsWith(path.getPath()))
         {
-            return checkPathReference(RESOURCES_FOLDER, parent, resourcesPath, path);
+            return checkPathReference(RESOURCES_FOLDER, tree, parent, resourcesPath, path);
         }
-        return createItem(parent, path, ICON_FOLDER);
+        return createItem(tree, parent, path, ICON_FOLDER);
     }
 
     /**
      * Create the child from its path.
      * 
      * @param file The child path.
+     * @param tree The tree reference.
      * @param parent The parent tree item.
      */
-    private void createChild(File file, TreeItem parent)
+    private void createChild(File file, Tree tree, TreeItem parent)
     {
         final String childName = file.getName();
         final Media media = getMedia(file.getPath());
         final Image icon = getFileIcon(media);
-        final TreeItem item = createItem(parent, file, icon);
+        final TreeItem item = createItem(tree, parent, file, icon);
 
         if (Property.CLASS.is(media))
         {

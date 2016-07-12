@@ -32,6 +32,22 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class UtilTree
 {
     /**
+     * Auto expand selected item on double click.
+     * 
+     * @param tree The tree reference.
+     */
+    public static void expandOnDoubleClick(Tree tree)
+    {
+        if (!tree.isDisposed())
+        {
+            for (final TreeItem item : tree.getSelection())
+            {
+                item.setExpanded(!item.getExpanded());
+            }
+        }
+    }
+
+    /**
      * Get the selected item number from the tree.
      * 
      * @param tree The tree reference.

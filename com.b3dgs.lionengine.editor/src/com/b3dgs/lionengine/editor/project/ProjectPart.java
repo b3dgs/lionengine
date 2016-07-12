@@ -150,7 +150,7 @@ public final class ProjectPart implements Focusable
             @Override
             public void mouseDoubleClick(MouseEvent mouseEvent)
             {
-                expandOnDoubleClick();
+                UtilTree.expandOnDoubleClick(tree);
                 checkOpenFile();
             }
         });
@@ -169,7 +169,7 @@ public final class ProjectPart implements Focusable
     public void addTreeItem(Media media, File item, Image icon)
     {
         final TreeItem parent = (TreeItem) tree.getData(media.getPath());
-        projectTreeCreator.createItem(parent, item, icon);
+        projectTreeCreator.createItem(tree, parent, item, icon);
     }
 
     /**
@@ -193,8 +193,8 @@ public final class ProjectPart implements Focusable
     {
         tree.removeAll();
 
-        projectTreeCreator = new ProjectTreeCreator(project, tree);
-        projectTreeCreator.start();
+        projectTreeCreator = new ProjectTreeCreator(project);
+        projectTreeCreator.create(tree);
 
         watcher.stop();
         watcher.start(project, tree, projectTreeCreator);
@@ -230,20 +230,6 @@ public final class ProjectPart implements Focusable
     public void focus()
     {
         tree.setFocus();
-    }
-
-    /**
-     * Auto expand selected item on double click.
-     */
-    void expandOnDoubleClick()
-    {
-        if (!tree.isDisposed())
-        {
-            for (final TreeItem item : tree.getSelection())
-            {
-                item.setExpanded(!item.getExpanded());
-            }
-        }
     }
 
     /**
