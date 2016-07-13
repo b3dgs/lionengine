@@ -74,11 +74,10 @@ public class AboutDialog
      */
     private static void createBottom(Shell dialog, Composite bottom)
     {
-        final Button okButton = UtilButton.create(bottom, "OK", null);
+        final Button okButton = UtilButton.create(bottom, Messages.Ok, AbstractDialog.ICON_EXIT);
         final GridData data = new GridData();
         data.widthHint = 72;
         okButton.setLayoutData(data);
-        okButton.setImage(AbstractDialog.ICON_EXIT);
         UtilButton.setAction(okButton, () -> dialog.dispose());
     }
 

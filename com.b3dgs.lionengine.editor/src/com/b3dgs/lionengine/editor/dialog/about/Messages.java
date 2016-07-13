@@ -28,6 +28,8 @@ public final class Messages extends NLS
 {
     /** Dialog title. */
     public static String Title;
+    /** OK button. */
+    public static String Ok;
 
     /**
      * Initialize.
