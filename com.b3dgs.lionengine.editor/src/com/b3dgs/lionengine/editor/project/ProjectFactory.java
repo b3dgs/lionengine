@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Verbose;
 public final class ProjectFactory
 {
     /** Properties file. */
-    private static final String PROPERTIES_FILE = ".lionengine";
+    public static final String PROPERTIES_FILE = ".lionengine";
     /** Properties file description. */
     private static final String PROPERTIES_FILE_DESCRIPTION = "LionEngine project properties";
     /** Property project resources folder. */

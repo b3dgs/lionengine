@@ -260,7 +260,6 @@ public class ProjectImportDialog extends AbstractProjectDialog
     {
         if (path != null)
         {
-            projectLocationText.setText(path);
             final File location = new File(path);
             projectNameText.setText(location.getName());
             checkProjectExistence();

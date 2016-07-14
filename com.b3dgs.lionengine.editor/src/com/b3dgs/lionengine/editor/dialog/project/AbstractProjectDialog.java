@@ -128,6 +128,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
 
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        projectLocationText.addModifyListener(event -> onLocationSelected(projectLocationText.getText()));
 
         final Button browse = UtilButton.createBrowse(nameArea);
         browse.forceFocus();
@@ -206,7 +207,10 @@ public abstract class AbstractProjectDialog extends AbstractDialog
     {
         final DirectoryDialog directoryDialog = new DirectoryDialog(dialog, SWT.APPLICATION_MODAL);
         final String path = directoryDialog.open();
-        onLocationSelected(path);
+        if (path != null)
+        {
+            projectLocationText.setText(path);
+        }
     }
 
     /**
