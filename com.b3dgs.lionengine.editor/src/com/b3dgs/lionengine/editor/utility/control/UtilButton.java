@@ -52,6 +52,7 @@ public final class UtilButton
         button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
         if (name != null)
         {
+            button.setToolTipText(name);
             button.setText(name);
         }
         button.setImage(icon);
@@ -66,7 +67,7 @@ public final class UtilButton
      */
     public static Button createBrowse(Composite parent)
     {
-        return UtilButton.create(parent, Messages.Browse, ICON_BROWSE);
+        return create(parent, Messages.Browse, ICON_BROWSE);
     }
 
     /**
