@@ -51,6 +51,7 @@ public final class UtilText
         textLegend.setText(legend);
 
         final Text text = new Text(composite, SWT.SINGLE);
+        text.setToolTipText(legend);
         final GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
         data.minimumWidth = 64;
         text.setLayoutData(data);
