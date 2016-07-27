@@ -237,6 +237,10 @@ public class ProjectTreeCreator
             folder.setText(title);
             folder.setImage(ICON_FOLDER);
             tree.setData(title, folder);
+            if (RESOURCES_FOLDER.equals(path.getName()))
+            {
+                tree.setData("", folder);
+            }
             return folder;
         }
         return parent;
