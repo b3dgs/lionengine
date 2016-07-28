@@ -35,31 +35,30 @@ public class AnimationPlayer
 {
     /** Animation editor folder. */
     private static final String FOLDER = "animation-editor";
+    /** Previous animation icon. */
+    private static final Image ICON_ANIM_PREVIOUS = UtilIcon.get(FOLDER, "anim-prev.png");
+    /** Next animation icon. */
+    private static final Image ICON_ANIM_NEXT = UtilIcon.get(FOLDER, "anim-next.png");
     /** Play icon. */
     private static final Image ICON_ANIM_PLAY = UtilIcon.get(FOLDER, "anim-play.png");
     /** Pause icon. */
     private static final Image ICON_ANIM_PAUSE = UtilIcon.get(FOLDER, "anim-pause.png");
     /** Stop icon. */
     private static final Image ICON_ANIM_STOP = UtilIcon.get(FOLDER, "anim-stop.png");
-    /** Previous animation icon. */
-    private static final Image ICON_ANIM_PREVIOUS = UtilIcon.get(FOLDER, "anim-prev.png");
-    /** Next animation icon. */
-    private static final Image ICON_ANIM_NEXT = UtilIcon.get(FOLDER, "anim-next.png");
-
     /** Animation list. */
     private final AnimationList animationList;
     /** Animation renderer. */
     private final AnimationRenderer animationRenderer;
     /** Previous anim. */
     private Button previousAnim;
+    /** Next anim. */
+    private Button nextAnim;
     /** Play anim. */
     private Button playAnim;
     /** Pause anim. */
     private Button pauseAnim;
     /** Stop anim. */
     private Button stopAnim;
-    /** Next anim. */
-    private Button nextAnim;
 
     /**
      * Create an animation player and associate its animation list and renderer.
@@ -85,10 +84,10 @@ public class AnimationPlayer
         animatorPlayer.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 
         createButtonPreviousAnim(animatorPlayer);
+        createButtonNextAnim(animatorPlayer);
         createButtonPlayAnim(animatorPlayer);
         createButtonPauseAnim(animatorPlayer);
         createButtonStopAnim(animatorPlayer);
-        createButtonNextAnim(animatorPlayer);
     }
 
     /**
@@ -112,6 +111,17 @@ public class AnimationPlayer
     {
         previousAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
         UtilButton.setAction(previousAnim, () -> animationList.setNextSelection(-1));
+    }
+
+    /**
+     * Create the next animation button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonNextAnim(Composite parent)
+    {
+        nextAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
+        UtilButton.setAction(nextAnim, () -> animationList.setNextSelection(1));
     }
 
     /**
@@ -175,16 +185,5 @@ public class AnimationPlayer
             stopAnim.setEnabled(false);
             nextAnim.setEnabled(true);
         });
-    }
-
-    /**
-     * Create the next animation button.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createButtonNextAnim(Composite parent)
-    {
-        nextAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
-        UtilButton.setAction(nextAnim, () -> animationList.setNextSelection(1));
     }
 }
