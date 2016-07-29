@@ -54,8 +54,6 @@ public abstract class ObjectList<T extends Nameable>
     public static final Image ICON_ADD = UtilIcon.get("add.png");
     /** Icon remove. */
     public static final Image ICON_REMOVE = UtilIcon.get("remove.png");
-    /** Icon save. */
-    public static final Image ICON_SAVE = UtilIcon.get("save.png");
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "new";
 

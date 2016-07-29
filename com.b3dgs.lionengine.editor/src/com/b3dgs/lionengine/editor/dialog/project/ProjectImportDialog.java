@@ -43,7 +43,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /** From verbose. */
     private static final String VERBOSE_FROM = " from ";
     /** Icon. */
-    private static final Image ICON = UtilIcon.get("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "project-import.png");
 
     /** Already exists. */
     private boolean hasProject;
@@ -145,22 +145,22 @@ public class ProjectImportDialog extends AbstractProjectDialog
         boolean enabled = true;
         if (!hasClasses && !hasResources && !hasLibraries)
         {
-            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoBoth);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InfoBoth);
             enabled = false;
         }
         else if (!hasClasses)
         {
-            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoClasses);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InfoClasses);
             enabled = false;
         }
         else if (!hasLibraries)
         {
-            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoLibraries);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InfoLibraries);
             enabled = false;
         }
         else if (!hasResources)
         {
-            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoResources);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InfoResources);
             enabled = false;
         }
         finish.setEnabled(enabled);
