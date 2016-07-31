@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class AnimationEditor extends AbstractEditor
 {
     /** Dialog icon. */
-    public static final Image ICON = UtilIcon.get("animation-editor", "dialog.png");
+    public static final Image ICON = UtilIcon.get("dialog", "animation-edit.png");
 
     /** Configurer reference. */
     private final Configurer configurer;
