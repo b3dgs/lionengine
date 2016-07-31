@@ -72,6 +72,10 @@ public final class AudioAdPlug
     private static AdPlugBinding loadLibrary(String name, String library)
     {
         final InputStream input = AudioAdPlug.class.getResourceAsStream(library);
+        if (input == null)
+        {
+            throw new LionEngineException(ERROR_LOAD_LIBRARY, library, " not found !");
+        }
         try
         {
             final File tempLib = UtilStream.getCopy(name, input);
