@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardListener
 {
     /** Grid movement sensibility. */
-    private static final int GRID_MOVEMENT_SENSIBILITY = 8;
+    public static final int GRID_MOVEMENT_SENSIBILITY = 8;
 
     /**
      * Get the speed.

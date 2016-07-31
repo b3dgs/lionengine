@@ -34,6 +34,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -65,14 +66,14 @@ public class WorldPart implements WorldView, Focusable
      * @param renderer The renderer reference.
      * @return The created part.
      */
-    public static Composite createPart(Composite parent, WorldUpdater updater, PaintListener renderer)
+    public static Canvas createPart(Composite parent, WorldUpdater updater, PaintListener renderer)
     {
         final GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 1;
         layout.verticalSpacing = 1;
         parent.setLayout(layout);
 
-        final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+        final Canvas composite = new Canvas(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         composite.addMouseListener(updater);
@@ -123,10 +124,9 @@ public class WorldPart implements WorldView, Focusable
     }
 
     /** Part service. */
-    @Inject
-    private EPartService partService;
+    @Inject private EPartService partService;
     /** Composite. */
-    private Composite composite;
+    private Canvas composite;
     /** Updater. */
     private WorldUpdater updater;
     /** Renderer. */

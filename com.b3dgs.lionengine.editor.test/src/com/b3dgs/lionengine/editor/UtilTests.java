@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -76,5 +78,30 @@ public class UtilTests
         final Project project = ProjectModel.INSTANCE.getProject();
         final File file = new File(project.getResourcesPath(), path);
         return project.getResourceMedia(file);
+    }
+
+    /**
+     * Wait for resources to be copied.
+     * 
+     * @param bot The bot reference.
+     * @param projectFolder The project folder.
+     * @param resources The expected resources count.
+     */
+    public static void waitResourcesCopied(SWTBot bot, File projectFolder, int resources)
+    {
+        bot.waitUntil(new DefaultCondition()
+        {
+            @Override
+            public boolean test() throws Exception
+            {
+                return bot.tree(0).getTreeItem(projectFolder.getName()).getNode("resources").rowCount() == resources;
+            }
+
+            @Override
+            public String getFailureMessage()
+            {
+                return "Missing tree items !";
+            }
+        });
     }
 }

@@ -22,7 +22,6 @@ import java.io.File;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,31 +41,7 @@ public class AnimationEditorTest
     private static final SWTBot BOT = new SWTBot();
 
     /**
-     * Wait for resources to be copied.
-     * 
-     * @param projectFolder The project folder.
-     * @param resources The expected resources count.
-     */
-    private static void waitResourcesCopied(File projectFolder, int resources)
-    {
-        BOT.waitUntil(new DefaultCondition()
-        {
-            @Override
-            public boolean test() throws Exception
-            {
-                return BOT.tree(0).getTreeItem(projectFolder.getName()).getNode("resources").rowCount() == resources;
-            }
-
-            @Override
-            public String getFailureMessage()
-            {
-                return "Missing tree items !";
-            }
-        });
-    }
-
-    /**
-     * Test the world navigation.
+     * Test the animation editor.
      */
     @Test
     public void testAnimationEditor()
@@ -75,7 +50,7 @@ public class AnimationEditorTest
         UtilTests.copy(".animation", Medias.create("Mario.png"));
         UtilTests.copy(".animation", Medias.create("Mario.xml"));
 
-        waitResourcesCopied(projectFolder, 3);
+        UtilTests.waitResourcesCopied(BOT, projectFolder, 3);
 
         BOT.tree(0).getTreeItem(projectFolder.getName()).getNode("resources").getNode("Mario.xml").click();
         BOT.tree(1).contextMenu(UtilNl.get("menu.animations-enable")).click();

@@ -236,6 +236,7 @@ public class ProjectTreeCreator
             final TreeItem folder = new TreeItem(parent, SWT.NONE);
             folder.setText(title);
             folder.setImage(ICON_FOLDER);
+            folder.setData(getMedia(path.getPath()));
             tree.setData(title, folder);
             if (RESOURCES_FOLDER.equals(path.getName()))
             {
