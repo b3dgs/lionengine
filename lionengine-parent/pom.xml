@@ -43,7 +43,7 @@
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
     <packaging>pom</packaging>
-    <version>8.3.1-SNAPSHOT</version>
+    <version>8.3.1</version>
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
@@ -218,7 +218,6 @@
                 <module>../com.b3dgs.lionengine.editor</module>
 				<module>../com.b3dgs.lionengine.editor.object</module>
 				<module>../com.b3dgs.lionengine.editor.map</module>
-                <module>../com.b3dgs.lionengine.editor.map.test</module>
 				<module>../com.b3dgs.lionengine.editor.animation</module>
                 <module>../com.b3dgs.lionengine.editor.collision</module>
                 <module>../com.b3dgs.lionengine.editor.pathfinding</module>
