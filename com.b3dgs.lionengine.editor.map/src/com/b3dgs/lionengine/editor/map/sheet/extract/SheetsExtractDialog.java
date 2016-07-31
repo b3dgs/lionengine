@@ -53,7 +53,7 @@ public class SheetsExtractDialog extends AbstractDialog
     /** Sheets default extension. */
     public static final String SHEET_EXTENSION = ".png";
     /** Icon. */
-    private static final Image ICON = UtilIcon.get("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "sheets-extract.png");
 
     /** Level rips widget. */
     private LevelRipWidget levelRips;

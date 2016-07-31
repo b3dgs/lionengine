@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.util.UtilFolder;
 public class ConstraintsExtractDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilIcon.get("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "constraints-extract.png");
 
     /** Level rip list. */
     private LevelRipWidget levelRips;

@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 public class GroupsEditDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilIcon.get("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "groups-edit.png");
 
     /**
      * Load sheets from configuration file.
