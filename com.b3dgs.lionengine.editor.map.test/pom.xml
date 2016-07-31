@@ -82,6 +82,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
+                <configuration>
+                    <useUIHarness>true</useUIHarness>
+                    <useUIThread>true</useUIThread>
+                    <product>com.b3dgs.lionengine.editor.product</product>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
