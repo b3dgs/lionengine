@@ -111,6 +111,7 @@
                 <module>../lionengine-audio-wav</module>
                 <module>../lionengine-audio-midi</module>
                 <module>../lionengine-audio-sc68</module>
+                <module>../lionengine-audio-adplug</module>
             </modules>
         </profile>
         <profile>
