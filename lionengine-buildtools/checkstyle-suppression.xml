@@ -61,5 +61,6 @@
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.tutorials[\\/]"/>
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.test[\\/]"/>
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.map.test[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.object.test[\\/]"/>
 	<suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.animation.test[\\/]"/>
 </suppressions>

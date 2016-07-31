@@ -30,11 +30,11 @@ import com.b3dgs.lionengine.util.UtilFile;
 public enum Property
 {
     /** Music property. */
-    MUSIC("midi", "mp3", "ogg", "sc68"),
+    MUSIC("midi", "mid", "mp3", "ogg", "sc68", "lds"),
     /** Sound property. */
     SOUND("wav"),
     /** Image property. */
-    IMAGE("bmp", "png", "gif"),
+    IMAGE("bmp", "png", "gif", "jpg", "jpeg"),
     /** Data property. */
     DATA("xml"),
     /** Level property. */
