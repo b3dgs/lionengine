@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>8.3.1</version>
+        <version>8.3.2-SNAPSHOT</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-audio-midi</artifactId>

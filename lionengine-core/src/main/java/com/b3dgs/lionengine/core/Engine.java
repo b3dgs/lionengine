@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Verbose;
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android engine implementation).
  * 
- * @version 8.3.1
+ * @version 8.3.2
  * @since 13 June 2010
  */
 public abstract class Engine
@@ -38,7 +38,7 @@ public abstract class Engine
     /** Engine website. */
     public static final String WEBSITE = "http://lionengine.b3dgs.com";
     /** Engine version. */
-    public static final Version VERSION = Version.create(8, 3, 1);
+    public static final Version VERSION = Version.create(8, 3, 2);
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"" + Engine.NAME + " \"";
     /** Engine terminated. */
