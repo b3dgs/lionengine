@@ -1,6 +1,6 @@
 # LionEngine
 [![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.3.2)](https://travis-ci.org/b3dgs/lionengine) ![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen.svg) ![Lines of code](https://img.shields.io/badge/lines%20of%20code-46k-lightgrey.svg) 
-[![Maven Central](https://img.shields.io/badge/maven--central-8.3.2-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
+[![Maven Central](https://img.shields.io/badge/maven--central-8.3.1-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
 <table>
     <tr>
         <td>
@@ -29,7 +29,7 @@ The engine is as a library, in Jar format (_including its javadoc_), which can b
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
 Using Java 6 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
-Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_).
+Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Lds_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
@@ -109,6 +109,9 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 >  * Support for Sc68 Atari music
 
 
+* #### __lionengine-audio-adplug__
+>  * Support for Loudness Sound music (AdPlug wrapper)
+
 * #### __lionengine-editor__
 >  * Complete standalone editor which can be used in any project for general level edition
 >  * Can be extended to perform more specific things
@@ -136,6 +139,7 @@ Steps to include the __LionEngine__ in your project:
     * __lionengine-audio-wav__ _(support for Wav sound)_
     * __lionengine-audio-midi__ _(support for Midi music)_
     * __lionengine-audio-sc68__ _(support for Sc68 Atari music)_
+	* __lionengine-audio-adplug__ _(support for LDS music)_
 6. Join (if you want) the javadoc for each library
 7. You are now ready to use the __LionEngine__ in your project
 
