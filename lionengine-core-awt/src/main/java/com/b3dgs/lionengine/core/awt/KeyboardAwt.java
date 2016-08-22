@@ -251,7 +251,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         keys.remove(key);
         pressed.remove(key);
 
-        if (actionsPressed.containsKey(key))
+        if (actionsReleased.containsKey(key))
         {
             final List<EventAction> actions = actionsReleased.get(key);
             for (final EventAction current : actions)
