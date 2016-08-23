@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Document factory implementation for DOM.
@@ -101,6 +102,13 @@ public final class DocumentFactory
             try
             {
                 documentBuilderFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            }
+            catch (final ParserConfigurationException exception)
+            {
+                Verbose.exception(exception);
+            }
+            try
+            {
                 documentFactory = documentBuilderFactory.newDocumentBuilder();
                 documentFactory.setErrorHandler(null);
             }
