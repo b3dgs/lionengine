@@ -303,7 +303,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
     {
         if (extrapolated)
         {
-            return source.getRate() / ONE_SECOND_IN_NANO * (double) (currentTime - lastTime);
+            return source.getRate() / (double) ONE_SECOND_IN_NANO * (currentTime - lastTime);
         }
         return EXTRP;
     }
