@@ -168,25 +168,27 @@ public class Force implements Direction, Updatable
     /**
      * Increase direction with input value.
      * 
+     * @param extrp The extrapolation value.
      * @param direction The direction to add.
      */
-    public void addDirection(Direction direction)
+    public void addDirection(double extrp, Direction direction)
     {
-        addDirection(direction.getDirectionHorizontal(), direction.getDirectionVertical());
+        addDirection(extrp, direction.getDirectionHorizontal(), direction.getDirectionVertical());
     }
 
     /**
      * Increase forces with input value.
      * 
+     * @param extrp The extrapolation value.
      * @param fh The added horizontal force.
      * @param fv The added vertical force.
      */
-    public void addDirection(double fh, double fv)
+    public void addDirection(double extrp, double fh, double fv)
     {
         fhLast = fh;
         fvLast = fv;
-        this.fh += fh;
-        this.fv += fv;
+        this.fh += fh * extrp;
+        this.fv += fv * extrp;
         fixForce();
     }
 

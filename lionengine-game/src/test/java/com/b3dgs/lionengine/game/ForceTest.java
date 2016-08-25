@@ -89,10 +89,25 @@ public class ForceTest
     public void testAddDirection()
     {
         final Force force = new Force(1.0, 2.0);
-        force.addDirection(-1, -2.0);
-        force.addDirection(new Force(2.0, 1.0));
+        force.addDirection(1.0, -1, -2.0);
+        force.addDirection(1.0, new Force(2.0, 1.0));
 
         Assert.assertEquals(2.0, force.getDirectionHorizontal(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, force.getDirectionVertical(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, force.getVelocity(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, force.getSensibility(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the add direction with extrapolation.
+     */
+    @Test
+    public void testAddDirectionExtrapolation()
+    {
+        final Force force = new Force(0.0, 0.0);
+        force.addDirection(0.5, 1, 2.0);
+
+        Assert.assertEquals(0.5, force.getDirectionHorizontal(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, force.getDirectionVertical(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, force.getVelocity(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, force.getSensibility(), UtilTests.PRECISION);
