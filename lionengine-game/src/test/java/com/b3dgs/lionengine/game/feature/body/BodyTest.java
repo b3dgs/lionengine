@@ -140,7 +140,7 @@ public class BodyTest
 
         body.update(0.5);
 
-        Assert.assertEquals(4.98, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(4.45, transformable.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(4.98, transformable.getOldY(), 0.01);
+        Assert.assertEquals(4.46, transformable.getY(), 0.01);
     }
 }

@@ -82,7 +82,7 @@ public class BodyModel extends FeatureModel implements Body
         {
             factor = 1.0;
         }
-        force.addDirection(0.0, -getWeight() / factor);
+        force.addDirection(extrp, 0.0, -getWeight() / factor);
         transformable.moveLocation(extrp, force, vectors);
     }
 
