@@ -99,15 +99,7 @@ public final class PathfindableConfig
     public static PathData importPathData(XmlNode node)
     {
         final String category = node.readString(CATEGORY);
-        final double cost;
-        if (node.hasAttribute(COST))
-        {
-            cost = node.readDouble(COST);
-        }
-        else
-        {
-            cost = 0.0;
-        }
+        final double cost = node.readDouble(0.0, COST);
         final boolean blocking = node.readBoolean(BLOCK);
         final Collection<MovementTile> movements = importAllowedMovements(node);
 

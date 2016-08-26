@@ -90,11 +90,7 @@ public final class SurfaceConfig
     private static String getSurfaceIcon(XmlNode root)
     {
         final XmlNode node = root.getChild(SurfaceConfig.NODE_SURFACE);
-        if (node.hasAttribute(SurfaceConfig.ATT_ICON))
-        {
-            return node.readString(SurfaceConfig.ATT_ICON);
-        }
-        return null;
+        return node.readString(null, SurfaceConfig.ATT_ICON);
     }
 
     /** The image descriptor. */

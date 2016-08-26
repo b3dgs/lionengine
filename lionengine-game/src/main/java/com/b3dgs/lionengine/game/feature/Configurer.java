@@ -120,6 +120,26 @@ public class Configurer
     }
 
     /**
+     * Get the node text value.
+     * 
+     * @param defaultValue Value used if node does not exist.
+     * @param path The node path.
+     * @return The node text value.
+     */
+    public final String getTextDefault(String defaultValue, String... path)
+    {
+        try
+        {
+            final XmlNode node = getNode(path);
+            return node.getText();
+        }
+        catch (final LionEngineException exception)
+        {
+            return defaultValue;
+        }
+    }
+
+    /**
      * Get a string in the xml tree.
      * 
      * @param attribute The attribute to get as string.
@@ -130,6 +150,27 @@ public class Configurer
     public final String getString(String attribute, String... path)
     {
         return getNodeString(attribute, path);
+    }
+
+    /**
+     * Get a string in the xml tree.
+     * 
+     * @param defaultValue Value used if node does not exist.
+     * @param attribute The attribute to get as string.
+     * @param path The node path (child list)
+     * @return The string value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public final String getStringDefault(String defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return getNodeString(attribute, path);
+        }
+        catch (final LionEngineException exception)
+        {
+            return defaultValue;
+        }
     }
 
     /**
@@ -146,18 +187,64 @@ public class Configurer
     }
 
     /**
+     * Get a boolean in the xml tree.
+     * 
+     * @param defaultValue Value used if node does not exist.
+     * @param attribute The attribute to get as boolean.
+     * @param path The node path (child list)
+     * @return The boolean value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public final boolean getBooleanDefault(boolean defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return Boolean.parseBoolean(getNodeString(attribute, path));
+        }
+        catch (final LionEngineException exception)
+        {
+            return defaultValue;
+        }
+    }
+
+    /**
      * Get an integer in the xml tree.
      * 
      * @param attribute The attribute to get as integer.
      * @param path The node path (child list)
      * @return The integer value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @throws LionEngineException If unable to read node or not a valid integer read.
      */
     public final int getInteger(String attribute, String... path)
     {
         try
         {
             return Integer.parseInt(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, media);
+        }
+    }
+
+    /**
+     * Get an integer in the xml tree.
+     * 
+     * @param defaultValue Value used if node does not exist.
+     * @param attribute The attribute to get as integer.
+     * @param path The node path (child list)
+     * @return The integer value.
+     * @throws LionEngineException If not a valid integer read.
+     */
+    public final int getIntegerDefault(int defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return Integer.parseInt(getNodeString(attribute, path));
+        }
+        catch (final LionEngineException exception)
+        {
+            return defaultValue;
         }
         catch (final NumberFormatException exception)
         {
@@ -178,6 +265,31 @@ public class Configurer
         try
         {
             return Double.parseDouble(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, media);
+        }
+    }
+
+    /**
+     * Get a double in the xml tree.
+     * 
+     * @param defaultValue Value used if node does not exist.
+     * @param attribute The attribute to get as double.
+     * @param path The node path (child list)
+     * @return The double value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public final double getDoubleDefault(double defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return Double.parseDouble(getNodeString(attribute, path));
+        }
+        catch (final LionEngineException exception)
+        {
+            return defaultValue;
         }
         catch (final NumberFormatException exception)
         {
@@ -343,7 +455,7 @@ public class Configurer
      * @param attribute The attribute to get.
      * @param path The attribute node path.
      * @return The string found.
-     * @throws LionEngineException If nod not found.
+     * @throws LionEngineException If node not found.
      */
     private String getNodeString(String attribute, String... path)
     {

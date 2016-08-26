@@ -141,12 +141,34 @@ public class ConfigurerTest
     }
 
     /**
+     * Test the string getter with default value.
+     */
+    @Test
+    public void testGetStringDefault()
+    {
+        Assert.assertEquals("string", configurer.getStringDefault("default", "attStr"));
+
+        Assert.assertEquals("default", configurer.getStringDefault("default", "void"));
+    }
+
+    /**
      * Test the boolean getter.
      */
     @Test
     public void testGetBoolean()
     {
         Assert.assertFalse(configurer.getBoolean("attStr"));
+    }
+
+    /**
+     * Test the boolean getter with default value.
+     */
+    @Test
+    public void testGetBooleanDefault()
+    {
+        Assert.assertFalse(configurer.getBooleanDefault(true, "attStr"));
+
+        Assert.assertTrue(configurer.getBooleanDefault(true, "void"));
     }
 
     /**
@@ -159,12 +181,32 @@ public class ConfigurerTest
     }
 
     /**
+     * Test the integer getter with default value.
+     */
+    @Test
+    public void testGetIntegerDefault()
+    {
+        Assert.assertEquals(1, configurer.getIntegerDefault(2, "attInt"));
+
+        Assert.assertEquals(2, configurer.getIntegerDefault(2, "void"));
+    }
+
+    /**
      * Test the integer getter invalid value.
      */
     @Test(expected = LionEngineException.class)
     public void testGetIntegerInvalid()
     {
         Assert.assertEquals(0, configurer.getInteger("attStr"));
+    }
+
+    /**
+     * Test the integer getter invalid value.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetIntegerDefaultInvalid()
+    {
+        Assert.assertEquals(0, configurer.getIntegerDefault(1, "attStr"));
     }
 
     /**
@@ -177,6 +219,17 @@ public class ConfigurerTest
     }
 
     /**
+     * Test the integer getter with default value.
+     */
+    @Test
+    public void testGetDoubleDefault()
+    {
+        Assert.assertEquals(1.0, configurer.getDoubleDefault(2.0, "attInt"), UtilTests.PRECISION);
+
+        Assert.assertEquals(2.0, configurer.getDoubleDefault(2.0, "void"), UtilTests.PRECISION);
+    }
+
+    /**
      * Test the double getter invalid value.
      */
     @Test(expected = LionEngineException.class)
@@ -186,12 +239,33 @@ public class ConfigurerTest
     }
 
     /**
+     * Test the double getter invalid value.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetDoubleDefaultInvalid()
+    {
+        Assert.assertEquals(0.0, configurer.getDoubleDefault(1.0, "attStr"), UtilTests.PRECISION);
+    }
+
+    /**
      * Test the text getter.
      */
     @Test
     public void testGetText()
     {
         Assert.assertEquals(Accessible.class.getName(), configurer.getText(Accessible.class.getSimpleName()));
+    }
+
+    /**
+     * Test the text getter with default value.
+     */
+    @Test
+    public void testGetTextDefault()
+    {
+        Assert.assertEquals(Accessible.class.getName(),
+                            configurer.getTextDefault("default", Accessible.class.getSimpleName()));
+
+        Assert.assertEquals("default", configurer.getTextDefault("default", "void"));
     }
 
     /**
