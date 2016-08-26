@@ -139,6 +139,23 @@ final class XmlNodeImpl implements XmlNode
     }
 
     /**
+     * Get the attribute value.
+     * 
+     * @param defaultValue The value returned if attribute does not exist.
+     * @param attribute The attribute name.
+     * @return The attribute value.
+     * @throws LionEngineException If attribute is not valid or does not exist.
+     */
+    private String getValue(String defaultValue, String attribute)
+    {
+        if (root.hasAttribute(attribute))
+        {
+            return root.getAttribute(attribute);
+        }
+        return defaultValue;
+    }
+
+    /**
      * Write a data to the root.
      * 
      * @param attribute The attribute name.
@@ -248,9 +265,21 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
+    public boolean readBoolean(boolean defaultValue, String attribute)
+    {
+        return Boolean.parseBoolean(getValue(String.valueOf(defaultValue), attribute));
+    }
+
+    @Override
     public byte readByte(String attribute)
     {
         return Byte.parseByte(getValue(attribute));
+    }
+
+    @Override
+    public byte readByte(byte defaultValue, String attribute)
+    {
+        return Byte.parseByte(getValue(String.valueOf(defaultValue), attribute));
     }
 
     @Override
@@ -260,9 +289,21 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
+    public short readShort(short defaultValue, String attribute)
+    {
+        return Short.parseShort(getValue(String.valueOf(defaultValue), attribute));
+    }
+
+    @Override
     public int readInteger(String attribute)
     {
         return Integer.parseInt(getValue(attribute));
+    }
+
+    @Override
+    public int readInteger(int defaultValue, String attribute)
+    {
+        return Integer.parseInt(getValue(String.valueOf(defaultValue), attribute));
     }
 
     @Override
@@ -272,9 +313,21 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
+    public long readLong(long defaultValue, String attribute)
+    {
+        return Long.parseLong(getValue(String.valueOf(defaultValue), attribute));
+    }
+
+    @Override
     public float readFloat(String attribute)
     {
         return Float.parseFloat(getValue(attribute));
+    }
+
+    @Override
+    public float readFloat(float defaultValue, String attribute)
+    {
+        return Float.parseFloat(getValue(String.valueOf(defaultValue), attribute));
     }
 
     @Override
@@ -284,9 +337,26 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
+    public double readDouble(double defaultValue, String attribute)
+    {
+        return Double.parseDouble(getValue(String.valueOf(defaultValue), attribute));
+    }
+
+    @Override
     public String readString(String attribute)
     {
         final String value = getValue(attribute);
+        if (XmlNode.NULL.equals(value))
+        {
+            return null;
+        }
+        return value;
+    }
+
+    @Override
+    public String readString(String defaultValue, String attribute)
+    {
+        final String value = getValue(defaultValue, attribute);
         if (XmlNode.NULL.equals(value))
         {
             return null;

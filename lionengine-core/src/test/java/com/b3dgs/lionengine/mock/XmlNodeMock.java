@@ -81,7 +81,19 @@ public final class XmlNodeMock implements XmlNode
     }
 
     @Override
+    public boolean readBoolean(boolean defaultValue, String attribute)
+    {
+        return false;
+    }
+
+    @Override
     public byte readByte(String attribute)
+    {
+        return 0;
+    }
+
+    @Override
+    public byte readByte(byte defaultValue, String attribute)
     {
         return 0;
     }
@@ -93,7 +105,19 @@ public final class XmlNodeMock implements XmlNode
     }
 
     @Override
+    public short readShort(short defaultValue, String attribute)
+    {
+        return 0;
+    }
+
+    @Override
     public int readInteger(String attribute)
+    {
+        return 0;
+    }
+
+    @Override
+    public int readInteger(int defaultValue, String attribute)
     {
         return 0;
     }
@@ -105,7 +129,19 @@ public final class XmlNodeMock implements XmlNode
     }
 
     @Override
+    public long readLong(long defaultValue, String attribute)
+    {
+        return 0;
+    }
+
+    @Override
     public float readFloat(String attribute)
+    {
+        return 0;
+    }
+
+    @Override
+    public float readFloat(float defaultValue, String attribute)
     {
         return 0;
     }
@@ -117,7 +153,19 @@ public final class XmlNodeMock implements XmlNode
     }
 
     @Override
+    public double readDouble(double defaultValue, String attribute)
+    {
+        return 0;
+    }
+
+    @Override
     public String readString(String attribute)
+    {
+        return null;
+    }
+
+    @Override
+    public String readString(String defaultValue, String attribute)
     {
         return null;
     }

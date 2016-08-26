@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the XML node.
@@ -182,6 +183,45 @@ public class XmlNodeTest
     {
         final XmlNode node = Xml.create("test");
         node.readString("%éàç-èyrd");
+    }
+
+    /**
+     * Test the node read with default value.
+     */
+    @Test
+    public void testXmlNodeReadDefault()
+    {
+        final XmlNode node = Xml.create("test");
+
+        Assert.assertTrue(node.readBoolean(true, "void"));
+        Assert.assertEquals((byte) 1, node.readByte((byte) 1, "void"));
+        Assert.assertEquals((short) 1, node.readShort((short) 1, "void"));
+        Assert.assertEquals(1, node.readInteger(1, "void"));
+        Assert.assertEquals(1L, node.readLong(1L, "void"));
+        Assert.assertEquals(1.0f, node.readFloat(1.0f, "void"), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, node.readDouble(1.0, "void"), UtilTests.PRECISION);
+        Assert.assertEquals("default", node.readString("default", "void"));
+        Assert.assertNull(node.readString("null", "void"));
+
+        node.writeBoolean("boolean", boolValue);
+        node.writeByte("byte", byteValue);
+        node.writeShort("short", shortValue);
+        node.writeInteger("integer", intValue);
+        node.writeFloat("float", floatValue);
+        node.writeLong("long", longValue);
+        node.writeDouble("double", doubleValue);
+        node.writeString("string", stringValue);
+        node.writeString("null", null);
+
+        Assert.assertEquals(Boolean.valueOf(boolValue), Boolean.valueOf(node.readBoolean("boolean")));
+        Assert.assertEquals(byteValue, node.readByte((byte) 1, "byte"));
+        Assert.assertEquals(shortValue, node.readShort((short) 1, "short"));
+        Assert.assertEquals(intValue, node.readInteger(1, "integer"));
+        Assert.assertEquals(floatValue, node.readFloat(1.0f, "float"), FLOAT_PRECISION);
+        Assert.assertEquals(longValue, node.readLong(1L, "long"));
+        Assert.assertEquals(doubleValue, node.readDouble(1.0, "double"), DOUBLE_PRECISION);
+        Assert.assertEquals(stringValue, node.readString("default", "string"));
+        Assert.assertEquals(null, node.readString("default", "null"));
     }
 
     /**

@@ -34,6 +34,15 @@ public interface XmlNodeReader
     boolean readBoolean(String attribute);
 
     /**
+     * Read a boolean.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The boolean name.
+     * @return The boolean value.
+     */
+    boolean readBoolean(boolean defaultValue, String attribute);
+
+    /**
      * Read a byte.
      * 
      * @param attribute The integer name.
@@ -41,6 +50,15 @@ public interface XmlNodeReader
      * @throws LionEngineException If error when reading.
      */
     byte readByte(String attribute);
+
+    /**
+     * Read a byte.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The integer name.
+     * @return The byte value.
+     */
+    byte readByte(byte defaultValue, String attribute);
 
     /**
      * Read a short.
@@ -52,6 +70,15 @@ public interface XmlNodeReader
     short readShort(String attribute);
 
     /**
+     * Read a short.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The integer name.
+     * @return The short value.
+     */
+    short readShort(short defaultValue, String attribute);
+
+    /**
      * Read an integer.
      * 
      * @param attribute The integer name.
@@ -59,6 +86,15 @@ public interface XmlNodeReader
      * @throws LionEngineException If error when reading.
      */
     int readInteger(String attribute);
+
+    /**
+     * Read an integer.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The integer name.
+     * @return The integer value.
+     */
+    int readInteger(int defaultValue, String attribute);
 
     /**
      * Read a long.
@@ -70,6 +106,15 @@ public interface XmlNodeReader
     long readLong(String attribute);
 
     /**
+     * Read a long.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The float name.
+     * @return The long value.
+     */
+    long readLong(long defaultValue, String attribute);
+
+    /**
      * Read a float.
      * 
      * @param attribute The float name.
@@ -77,6 +122,15 @@ public interface XmlNodeReader
      * @throws LionEngineException If error when reading.
      */
     float readFloat(String attribute);
+
+    /**
+     * Read a float.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The float name.
+     * @return The float value.
+     */
+    float readFloat(float defaultValue, String attribute);
 
     /**
      * Read a double.
@@ -88,6 +142,15 @@ public interface XmlNodeReader
     double readDouble(String attribute);
 
     /**
+     * Read a double.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The double name.
+     * @return The double value.
+     */
+    double readDouble(double defaultValue, String attribute);
+
+    /**
      * Read a string. If the read string is equal to {@link XmlNode#NULL}, <code>null</code> will be returned instead.
      * 
      * @param attribute The string name.
@@ -95,4 +158,13 @@ public interface XmlNodeReader
      * @throws LionEngineException If error when reading.
      */
     String readString(String attribute);
+
+    /**
+     * Read a string. If the read string is equal to {@link XmlNode#NULL}, <code>null</code> will be returned instead.
+     * 
+     * @param defaultValue The value returned if attribute not found.
+     * @param attribute The string name.
+     * @return The string value.
+     */
+    String readString(String defaultValue, String attribute);
 }
