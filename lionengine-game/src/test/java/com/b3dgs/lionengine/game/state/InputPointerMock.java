@@ -25,6 +25,12 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
 public class InputPointerMock implements InputDevicePointer
 {
     @Override
+    public void update(double extrp)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public int getX()
     {
         return 0;
