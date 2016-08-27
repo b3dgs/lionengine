@@ -32,10 +32,14 @@ public final class LaunchableConfig
 {
     /** Launchable node name. */
     public static final String NODE_LAUNCHABLE = Constant.XML_PREFIX + "launchable";
-    /** Media attribute name. */
+    /** Media attribute. */
     public static final String ATT_MEDIA = "media";
-    /** Rate attribute name. */
+    /** Rate attribute. */
     public static final String ATT_DELAY = "delay";
+    /** Horizontal offset attribute. */
+    public static final String ATT_OFFSET_X = "ox";
+    /** Vertical offset attribute. */
+    public static final String ATT_OFFSET_Y = "oy";
 
     /**
      * Import the launchable data from node.
@@ -48,8 +52,9 @@ public final class LaunchableConfig
     {
         final String media = node.readString(ATT_MEDIA);
         final int delay = node.readInteger(ATT_DELAY);
-
-        return new LaunchableConfig(media, delay, ForceConfig.imports(node));
+        final int ox = node.readInteger(0, ATT_OFFSET_X);
+        final int oy = node.readInteger(0, ATT_OFFSET_Y);
+        return new LaunchableConfig(media, delay, ox, oy, ForceConfig.imports(node));
     }
 
     /**
@@ -64,6 +69,8 @@ public final class LaunchableConfig
         final XmlNode node = Xml.create(NODE_LAUNCHABLE);
         node.writeString(ATT_MEDIA, config.getMedia());
         node.writeInteger(ATT_DELAY, config.getDelay());
+        node.writeInteger(ATT_OFFSET_X, config.getOffsetX());
+        node.writeInteger(ATT_OFFSET_Y, config.getOffsetY());
         node.add(ForceConfig.exports(config.getVector()));
 
         return node;
@@ -73,6 +80,10 @@ public final class LaunchableConfig
     private final String media;
     /** The delay value. */
     private final int delay;
+    /** The horizontal offset. */
+    private final int ox;
+    /** The vertical offset. */
+    private final int oy;
     /** The launchable vector. */
     private final Force vector;
 
@@ -81,16 +92,20 @@ public final class LaunchableConfig
      * 
      * @param media The media value.
      * @param delay The delay value.
+     * @param ox The horizontal offset.
+     * @param oy The vertical offset.
      * @param vector The vector force.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public LaunchableConfig(String media, int delay, Force vector)
+    public LaunchableConfig(String media, int delay, int ox, int oy, Force vector)
     {
         Check.notNull(media);
         Check.notNull(vector);
 
         this.media = media;
         this.delay = delay;
+        this.ox = ox;
+        this.oy = oy;
         this.vector = vector;
     }
 
@@ -115,6 +130,26 @@ public final class LaunchableConfig
     }
 
     /**
+     * Get the horizontal offset.
+     * 
+     * @return The horizontal offset.
+     */
+    public int getOffsetX()
+    {
+        return ox;
+    }
+
+    /**
+     * Get the vertical offset.
+     * 
+     * @return The vertical offset.
+     */
+    public int getOffsetY()
+    {
+        return oy;
+    }
+
+    /**
      * Get the vector value.
      * 
      * @return The vector value.
@@ -134,6 +169,8 @@ public final class LaunchableConfig
         final int prime = 31;
         int result = 1;
         result = prime * result + delay;
+        result = prime * result + ox;
+        result = prime * result + oy;
         result = prime * result + media.hashCode();
         result = prime * result + vector.hashCode();
         return result;
@@ -153,7 +190,9 @@ public final class LaunchableConfig
         final LaunchableConfig other = (LaunchableConfig) obj;
         return other.getMedia().equals(getMedia())
                && other.getVector().equals(getVector())
-               && other.getDelay() == getDelay();
+               && other.getDelay() == getDelay()
+               && other.getOffsetX() == getOffsetX()
+               && other.getOffsetY() == getOffsetY();
     }
 
     @Override
@@ -164,6 +203,10 @@ public final class LaunchableConfig
                                   .append(media)
                                   .append(", delay=")
                                   .append(delay)
+                                  .append(", ox=")
+                                  .append(ox)
+                                  .append(", oy=")
+                                  .append(oy)
                                   .append(", vector=")
                                   .append(vector)
                                   .append("]")

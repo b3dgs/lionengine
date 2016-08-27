@@ -62,8 +62,8 @@ public class LauncherConfigTest
     public void testConfig()
     {
         final Media media = Medias.create("launcher.xml");
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(10, Arrays.asList(launchable));
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LauncherConfig launcher = new LauncherConfig(0, 10, Arrays.asList(launchable));
         try
         {
             final XmlNode root = Xml.create("test");
@@ -87,13 +87,14 @@ public class LauncherConfigTest
     @Test
     public void testHashCode()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
-        final int launcher = new LauncherConfig(1, Arrays.asList(launchable)).hashCode();
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final int launcher = new LauncherConfig(0, 1, Arrays.asList(launchable)).hashCode();
 
         Assert.assertEquals(launcher, launcher);
-        Assert.assertEquals(launcher, new LauncherConfig(1, Arrays.asList(launchable)).hashCode());
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, Arrays.asList(launchable)).hashCode());
-        Assert.assertNotEquals(launcher, new LauncherConfig(1, new ArrayList<LaunchableConfig>()).hashCode());
+        Assert.assertEquals(launcher, new LauncherConfig(0, 1, Arrays.asList(launchable)).hashCode());
+        Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)).hashCode());
+        Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()).hashCode());
+        Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)).hashCode());
     }
 
     /**
@@ -102,14 +103,15 @@ public class LauncherConfigTest
     @Test
     public void testEquals()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(1, Arrays.asList(launchable));
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
 
         Assert.assertEquals(launcher, launcher);
         Assert.assertNotEquals(launcher, null);
         Assert.assertNotEquals(launcher, new Object());
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, Arrays.asList(launchable)));
-        Assert.assertNotEquals(launcher, new LauncherConfig(1, new ArrayList<LaunchableConfig>()));
+        Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
+        Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
+        Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
     }
 
     /**
@@ -118,17 +120,17 @@ public class LauncherConfigTest
     @Test
     public void testToString()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(1, Arrays.asList(launchable, launchable));
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable, launchable));
 
-        Assert.assertEquals("LauncherConfig [rate=1, launchables="
+        Assert.assertEquals("LauncherConfig [level=0, rate=1, launchables="
                             + Constant.NEW_LINE
                             + Constant.TAB
-                            + "LaunchableConfig [media=media, delay=10, vector="
+                            + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
                             + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]"
                             + Constant.NEW_LINE
                             + Constant.TAB
-                            + "LaunchableConfig [media=media, delay=10, vector="
+                            + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
                             + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]]",
                             launcher.toString());
     }

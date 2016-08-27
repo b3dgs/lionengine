@@ -53,7 +53,6 @@ public class UtilLaunchable
 
         final Launchable launchable = new LaunchableModel();
         launchable.prepare(featurable, services);
-        launchable.setDelay(10);
         launchable.setLocation(0.0, 0.0);
         launchable.setVector(new Force(0.0, 1.0));
 
@@ -68,11 +67,25 @@ public class UtilLaunchable
      */
     public static Media createLauncherMedia(Media launchableMedia)
     {
+        return createLauncherMedia(launchableMedia, 0);
+    }
+
+    /**
+     * Create the media.
+     * 
+     * @param launchableMedia The launchable.
+     * @param delay The desired delay.
+     * @return The media.
+     */
+    public static Media createLauncherMedia(Media launchableMedia, int delay)
+    {
         final Media media = Medias.create("launcher.xml");
         final LaunchableConfig launchableConfig = new LaunchableConfig(launchableMedia.getPath(),
-                                                                       10,
+                                                                       delay,
+                                                                       1,
+                                                                       2,
                                                                        new Force(1.0, 2.0));
-        final LauncherConfig launcherConfig = new LauncherConfig(10, Arrays.asList(launchableConfig));
+        final LauncherConfig launcherConfig = new LauncherConfig(0, 10, Arrays.asList(launchableConfig));
 
         final XmlNode root = Xml.create("test");
         root.add(LauncherConfig.exports(launcherConfig));

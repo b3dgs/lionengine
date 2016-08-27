@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 
 /**
  * Represents something that can throw a {@link Launchable} at a defined rate from a defined location using a specified
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.feature.Feature;
  * 
  * @see Launchable
  */
-public interface Launcher extends Feature
+public interface Launcher extends Refreshable
 {
     /**
      * Add a launcher listener.
@@ -61,6 +61,14 @@ public interface Launcher extends Feature
      * @param y The vertical offset.
      */
     void setOffset(int x, int y);
+
+    /**
+     * Set the level used.
+     * 
+     * @param level The level used (must be superior or equal to 0).
+     * @throws LionEngineException If wrong argument.
+     */
+    void setLevel(int level);
 
     /**
      * Set the fire rate.

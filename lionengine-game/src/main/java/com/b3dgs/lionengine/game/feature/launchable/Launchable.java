@@ -29,6 +29,13 @@ import com.b3dgs.lionengine.game.feature.Feature;
 public interface Launchable extends Feature, Updatable
 {
     /**
+     * Add a launchable listener.
+     * 
+     * @param listener The launchable listener to add.
+     */
+    void addListener(LaunchableListener listener);
+
+    /**
      * Initiate launch by using the defined vector with {@link #setVector(Force)} starting at the location defined by
      * {@link #setLocation(double, double)}.
      */
@@ -48,12 +55,4 @@ public interface Launchable extends Feature, Updatable
      * @param force The force to use.
      */
     void setVector(Force force);
-
-    /**
-     * Set the delay time before being effectively launched after a call to {@link #launch()}. Must be called before
-     * {@link #launch()}.
-     * 
-     * @param time The delay time in millisecond.
-     */
-    void setDelay(long time);
 }

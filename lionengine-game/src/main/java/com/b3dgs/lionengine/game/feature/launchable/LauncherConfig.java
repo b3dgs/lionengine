@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -34,6 +35,8 @@ public final class LauncherConfig
 {
     /** Launcher node name. */
     public static final String NODE_LAUNCHER = Constant.XML_PREFIX + "launcher";
+    /** Level attribute name. */
+    public static final String ATT_LEVEL = "level";
     /** Rate attribute name. */
     public static final String ATT_RATE = "rate";
 
@@ -44,9 +47,14 @@ public final class LauncherConfig
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LauncherConfig imports(Configurer configurer)
+    public static List<LauncherConfig> imports(Configurer configurer)
     {
-        return imports(configurer.getRoot().getChild(NODE_LAUNCHER));
+        final List<LauncherConfig> levels = new ArrayList<LauncherConfig>();
+        for (final XmlNode launcher : configurer.getRoot().getChildren(NODE_LAUNCHER))
+        {
+            levels.add(imports(launcher));
+        }
+        return levels;
     }
 
     /**
@@ -63,9 +71,9 @@ public final class LauncherConfig
         {
             launchables.add(LaunchableConfig.imports(launchable));
         }
+        final int level = node.readInteger(0, ATT_RATE);
         final int rate = node.readInteger(ATT_RATE);
-
-        return new LauncherConfig(rate, launchables);
+        return new LauncherConfig(level, rate, launchables);
     }
 
     /**
@@ -88,6 +96,8 @@ public final class LauncherConfig
         return node;
     }
 
+    /** The level index. */
+    private final int level;
     /** The rate value. */
     private final int rate;
     /** The launchable configurations. */
@@ -96,13 +106,25 @@ public final class LauncherConfig
     /**
      * Create a launcher configuration.
      * 
+     * @param level The associated level.
      * @param rate The rate value.
      * @param launchables The launchables reference.
      */
-    public LauncherConfig(int rate, Collection<LaunchableConfig> launchables)
+    public LauncherConfig(int level, int rate, Collection<LaunchableConfig> launchables)
     {
+        this.level = level;
         this.rate = rate;
         this.launchables = launchables;
+    }
+
+    /**
+     * Get the associated level.
+     * 
+     * @return The associated level.
+     */
+    public int getLevel()
+    {
+        return level;
     }
 
     /**
@@ -134,8 +156,9 @@ public final class LauncherConfig
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + launchables.hashCode();
+        result = prime * result + level;
         result = prime * result + rate;
+        result = prime * result + launchables.hashCode();
         return result;
     }
 
@@ -151,7 +174,9 @@ public final class LauncherConfig
             return false;
         }
         final LauncherConfig other = (LauncherConfig) obj;
-        return other.getRate() == getRate() && Arrays.equals(other.launchables.toArray(), launchables.toArray());
+        return other.getLevel() == getLevel()
+               && other.getRate() == getRate()
+               && Arrays.equals(other.launchables.toArray(), launchables.toArray());
     }
 
     @Override
@@ -170,7 +195,9 @@ public final class LauncherConfig
             }
         }
         return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [rate=")
+                                  .append(" [level=")
+                                  .append(level)
+                                  .append(", rate=")
                                   .append(rate)
                                   .append(", launchables=")
                                   .append(Constant.NEW_LINE)

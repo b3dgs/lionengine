@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import com.b3dgs.lionengine.Timing;
+import java.util.Collection;
+import java.util.HashSet;
+
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -30,14 +32,12 @@ import com.b3dgs.lionengine.game.feature.transformable.Transformable;
  */
 public class LaunchableModel extends FeatureModel implements Launchable
 {
-    /** Launch timer. */
-    private final Timing timer = new Timing();
+    /** Launcher listeners. */
+    private final Collection<LaunchableListener> listeners = new HashSet<LaunchableListener>();
     /** Transformable reference. */
     private Transformable transformable;
     /** Vector reference. */
     private Force vector;
-    /** Launch delay. */
-    private long delay;
 
     /**
      * Create the launchable model.
@@ -66,15 +66,35 @@ public class LaunchableModel extends FeatureModel implements Launchable
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof LaunchableListener)
+        {
+            addListener((LaunchableListener) listener);
+        }
+    }
+
+    @Override
+    public void addListener(LaunchableListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
     public void launch()
     {
-        timer.start();
+        for (final LaunchableListener listener : listeners)
+        {
+            listener.notifyFired(this);
+        }
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timer.elapsed(delay) && vector != null)
+        if (vector != null)
         {
             vector.update(extrp);
             transformable.moveLocation(extrp, vector);
@@ -91,11 +111,5 @@ public class LaunchableModel extends FeatureModel implements Launchable
     public void setVector(Force force)
     {
         vector = force;
-    }
-
-    @Override
-    public void setDelay(long time)
-    {
-        delay = time;
     }
 }

@@ -136,6 +136,45 @@ public class LauncherModelTest
     }
 
     /**
+     * Test the launcher with delay.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testLauncherDelay() throws InterruptedException
+    {
+        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 10);
+        final Setup setup = new Setup(launcherMedia);
+        final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
+
+        final AtomicReference<Featurable> fired = new AtomicReference<Featurable>();
+        launcher.addListener(UtilLaunchable.createListener(fired));
+
+        Thread.sleep(11);
+        launcher.fire();
+
+        final Handler handler = services.get(Handler.class);
+        launcher.update(1.0);
+        handler.update(1.0);
+
+        Assert.assertEquals(0, handler.size());
+        Assert.assertNull(fired.get());
+
+        Thread.sleep(11);
+        launcher.update(1.0);
+        handler.update(1.0);
+
+        Assert.assertNotNull(fired.get());
+        Assert.assertEquals(1, handler.size());
+
+        fired.set(null);
+        handler.removeAll();
+        handler.update(1.0);
+
+        Assert.assertEquals(0, handler.size());
+    }
+
+    /**
      * Test the launcher with listener itself.
      * 
      * @throws InterruptedException If error.

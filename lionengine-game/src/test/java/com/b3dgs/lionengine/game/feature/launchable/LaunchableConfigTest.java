@@ -60,7 +60,7 @@ public class LaunchableConfigTest
     public void testConfig()
     {
         final Media media = Medias.create("launchable.xml");
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         try
         {
             final XmlNode root = Xml.create("test");
@@ -84,7 +84,7 @@ public class LaunchableConfigTest
     @Test(expected = LionEngineException.class)
     public void testNullMedia()
     {
-        Assert.assertNotNull(new LaunchableConfig(null, 0, new Force()));
+        Assert.assertNotNull(new LaunchableConfig(null, 0, 1, 2, new Force()));
     }
 
     /**
@@ -93,7 +93,7 @@ public class LaunchableConfigTest
     @Test(expected = LionEngineException.class)
     public void testNullForce()
     {
-        Assert.assertNotNull(new LaunchableConfig("media", 0, null));
+        Assert.assertNotNull(new LaunchableConfig("media", 0, 1, 2, null));
     }
 
     /**
@@ -102,13 +102,15 @@ public class LaunchableConfigTest
     @Test
     public void testHashCode()
     {
-        final int launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0)).hashCode();
+        final int launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0)).hashCode();
 
         Assert.assertEquals(launchable, launchable);
-        Assert.assertEquals(launchable, new LaunchableConfig("media", 10, new Force(1.0, 2.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, new Force(1.0, 2.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, new Force(1.0, 2.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, new Force(2.0, 1.0)).hashCode());
+        Assert.assertEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0)).hashCode());
+        Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)).hashCode());
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)).hashCode());
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)).hashCode());
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)).hashCode());
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)).hashCode());
     }
 
     /**
@@ -117,14 +119,16 @@ public class LaunchableConfigTest
     @Test
     public void testEquals()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
         Assert.assertEquals(launchable, launchable);
         Assert.assertNotEquals(launchable, null);
         Assert.assertNotEquals(launchable, new Object());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, new Force(1.0, 2.0)));
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, new Force(1.0, 2.0)));
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, new Force(2.0, 1.0)));
+        Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)));
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)));
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)));
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)));
+        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)));
     }
 
     /**
@@ -133,9 +137,9 @@ public class LaunchableConfigTest
     @Test
     public void testToString()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
-        Assert.assertEquals("LaunchableConfig [media=media, delay=10, vector="
+        Assert.assertEquals("LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
                             + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]",
                             launchable.toString());
     }

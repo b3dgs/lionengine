@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -44,10 +47,16 @@ public class LauncherModel extends FeatureModel implements Launcher
 {
     /** Launcher listeners. */
     private final Collection<LauncherListener> listeners = new HashSet<LauncherListener>();
+    /** Delayed launches. */
+    private final Collection<DelayedLaunch> delayed = new ArrayList<DelayedLaunch>();
+    /** Delayed launches launched. */
+    private final Collection<DelayedLaunch> launched = new ArrayList<DelayedLaunch>();
     /** Fire timer. */
     private final Timing fire = new Timing();
+    /** Levels configuration. */
+    private final List<LauncherConfig> config;
     /** Launchable configuration. */
-    private final Iterable<LaunchableConfig> launchables;
+    private Iterable<LaunchableConfig> launchables;
     /** Factory reference. */
     private Factory factory;
     /** Handler reference. */
@@ -92,9 +101,9 @@ public class LauncherModel extends FeatureModel implements Launcher
     public LauncherModel(Setup setup)
     {
         super();
-        final LauncherConfig config = LauncherConfig.imports(setup);
-        launchables = config.getLaunchables();
-        rate = config.getRate();
+        config = LauncherConfig.imports(setup);
+        launchables = config.get(0).getLaunchables();
+        rate = config.get(0).getRate();
         fire.start();
     }
 
@@ -105,29 +114,49 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
     private void fired()
     {
-        for (final LaunchableConfig launchable : launchables)
+        for (final LaunchableConfig config : launchables)
         {
-            final Media media = Medias.create(launchable.getMedia());
+            final Media media = Medias.create(config.getMedia());
             final Featurable featurable = factory.create(media);
             try
             {
-                final Launchable projectile = featurable.getFeature(Launchable.class);
-                projectile.setDelay(launchable.getDelay());
-                projectile.setLocation(localizable.getX() + offsetX, localizable.getY() + offsetY);
-                projectile.setVector(computeVector(launchable.getVector()));
-                projectile.launch();
+                final Launchable launchable = featurable.getFeature(Launchable.class);
+                if (config.getDelay() > 0)
+                {
+                    delayed.add(new DelayedLaunch(config, featurable, launchable));
+                }
+                else
+                {
+                    launch(config, featurable, launchable);
+                }
             }
             catch (final LionEngineException exception)
             {
                 featurable.getFeature(Identifiable.class).destroy();
                 throw exception;
             }
-            for (final LauncherListener listener : listeners)
-            {
-                listener.notifyFired(featurable);
-            }
-            handler.add(featurable);
         }
+    }
+
+    /**
+     * Launch the launchable.
+     * 
+     * @param config The launch configuration.
+     * @param featurable The featurable representing the launchable.
+     * @param launchable The launchable to launch.
+     */
+    private void launch(LaunchableConfig config, Featurable featurable, Launchable launchable)
+    {
+        final double x = localizable.getX() + config.getOffsetX() + offsetX;
+        final double y = localizable.getY() + config.getOffsetY() + offsetY;
+        launchable.setLocation(x, y);
+        launchable.setVector(computeVector(config.getVector()));
+        launchable.launch();
+        for (final LauncherListener listener : listeners)
+        {
+            listener.notifyFired(featurable);
+        }
+        handler.add(featurable);
     }
 
     /**
@@ -142,6 +171,7 @@ public class LauncherModel extends FeatureModel implements Launcher
         {
             return computeVector(vector, target);
         }
+        vector.setDestination(vector.getDirectionHorizontal(), vector.getDirectionVertical());
         return vector;
     }
 
@@ -178,6 +208,7 @@ public class LauncherModel extends FeatureModel implements Launcher
 
         final Force force = new Force(vector);
         force.setDestination(vecX, vecY);
+
         return force;
     }
 
@@ -235,10 +266,33 @@ public class LauncherModel extends FeatureModel implements Launcher
     }
 
     @Override
+    public void update(double extrp)
+    {
+        for (final DelayedLaunch launch : delayed)
+        {
+            if (launch.isReady())
+            {
+                launch(launch.config, launch.featurable, launch.launchable);
+                launched.add(launch);
+            }
+        }
+        delayed.removeAll(launched);
+        launched.clear();
+    }
+
+    @Override
     public void setOffset(int x, int y)
     {
         offsetX = x;
         offsetY = y;
+    }
+
+    @Override
+    public void setLevel(int level)
+    {
+        Check.superiorOrEqual(level, 0);
+        launchables = config.get(level).getLaunchables();
+        rate = config.get(level).getRate();
     }
 
     @Override
@@ -257,5 +311,42 @@ public class LauncherModel extends FeatureModel implements Launcher
     public int getOffsetY()
     {
         return offsetY;
+    }
+
+    /**
+     * Represents a delayed launch.
+     */
+    private class DelayedLaunch
+    {
+        private final Timing timing = new Timing();
+        private final LaunchableConfig config;
+        private final Featurable featurable;
+        private final Launchable launchable;
+
+        /**
+         * Create a delayed launch.
+         * 
+         * @param config The launch configuration.
+         * @param featurable The featurable to launch.
+         * @param launchable The launchable to launch.
+         */
+        DelayedLaunch(LaunchableConfig config, Featurable featurable, Launchable launchable)
+        {
+            super();
+            this.config = config;
+            this.featurable = featurable;
+            this.launchable = launchable;
+            timing.start();
+        }
+
+        /**
+         * Check if launch can be performed.
+         * 
+         * @return <code>true</code> if delayed elapsed, <code>false</code> else.
+         */
+        public boolean isReady()
+        {
+            return timing.elapsed(config.getDelay());
+        }
     }
 }

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -78,22 +80,22 @@ public class LaunchableModelTest
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
-
-        Thread.sleep(11);
-        launchable.update(1.0);
-
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
 
+        Thread.sleep(11);
         launchable.update(1.0);
 
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, transformable.getY(), UtilTests.PRECISION);
+
+        launchable.update(1.0);
+
+        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, transformable.getOldY(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(3.0, transformable.getY(), UtilTests.PRECISION);
     }
 
     /**
@@ -120,5 +122,28 @@ public class LaunchableModelTest
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the launch listener.
+     */
+    @Test
+    public void testListener()
+    {
+        final AtomicBoolean fired = new AtomicBoolean();
+        launchable.addListener(new LaunchableListener()
+        {
+            @Override
+            public void notifyFired(Launchable launchable)
+            {
+                fired.set(true);
+            }
+        });
+
+        Assert.assertFalse(fired.get());
+
+        launchable.launch();
+
+        Assert.assertTrue(fired.get());
     }
 }
