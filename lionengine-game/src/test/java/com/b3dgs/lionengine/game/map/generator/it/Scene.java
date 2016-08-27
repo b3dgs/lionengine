@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
@@ -125,5 +126,11 @@ class Scene extends Sequence
     public void render(Graphic g)
     {
         mapViewer.render(g);
+    }
+
+    @Override
+    public void onTerminated(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

@@ -63,7 +63,7 @@ public class LauncherConfigTest
     {
         final Media media = Medias.create("launcher.xml");
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(0, 10, Arrays.asList(launchable));
+        final LauncherConfig launcher = new LauncherConfig(10, 10, Arrays.asList(launchable));
         try
         {
             final XmlNode root = Xml.create("test");
