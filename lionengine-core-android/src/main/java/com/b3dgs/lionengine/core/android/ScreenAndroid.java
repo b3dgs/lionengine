@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.ScreenBase;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Screen implementation.
@@ -37,15 +38,19 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
     private static volatile ViewAndroid view;
     /** Holder. */
     private static volatile SurfaceHolder holder;
+    /** Display size. */
+    private static volatile Rectangle size;
 
     /**
      * Set the view holder.
      * 
      * @param view The view holder.
+     * @param size The display size.
      */
-    public static synchronized void setView(ViewAndroid view)
+    public static synchronized void setView(ViewAndroid view, Rectangle size)
     {
         ScreenAndroid.view = view;
+        ScreenAndroid.size = size;
         holder = view.getHolder();
     }
 
@@ -186,7 +191,7 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
     @Override
     public void onSourceChanged(Resolution source)
     {
-        ((MouseAndroid) getInputDevice(Mouse.class)).setConfig(config);
+        ((MouseAndroid) getInputDevice(Mouse.class)).setConfig(size.getWidth(), size.getHeight(), config);
     }
 
     /*

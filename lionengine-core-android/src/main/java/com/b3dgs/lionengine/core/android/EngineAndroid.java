@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.android;
 
 import android.app.Activity;
+import android.util.DisplayMetrics;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -26,6 +27,7 @@ import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Engine Android implementation.
@@ -72,7 +74,10 @@ public final class EngineAndroid extends Engine
     {
         final ViewAndroid view = new ViewAndroid(activity);
         view.setWillNotDraw(false);
-        ScreenAndroid.setView(view);
+
+        final DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ScreenAndroid.setView(view, Geom.createRectangle(0, 0, metrics.widthPixels, metrics.heightPixels));
         activity.setContentView(view);
 
         FactoryMediaAndroid.setAssertManager(activity.getAssets());

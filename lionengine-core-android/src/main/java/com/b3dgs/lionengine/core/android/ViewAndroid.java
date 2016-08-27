@@ -56,7 +56,10 @@ final class ViewAndroid extends SurfaceView
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        mouse.updateCoord(event);
+        if (mouse != null)
+        {
+            mouse.updateCoord(event);
+        }
         return true;
     }
 }

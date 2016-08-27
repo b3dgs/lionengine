@@ -95,12 +95,14 @@ public final class MouseAndroid implements Mouse
     /**
      * Set the config.
      * 
-     * @param config The config.
+     * @param width The screen width.
+     * @param height The screen height.
+     * @param config The config reference.
      */
-    public void setConfig(Config config)
+    public void setConfig(int width, int height, Config config)
     {
-        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+        xRatio = width / (double) config.getSource().getWidth();
+        yRatio = height / (double) config.getSource().getHeight();
     }
 
     /*
