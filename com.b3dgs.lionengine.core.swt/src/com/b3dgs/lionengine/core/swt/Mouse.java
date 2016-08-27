@@ -17,13 +17,12 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Mouse input.
  */
-public interface Mouse extends InputDevicePointer, Updatable
+public interface Mouse extends InputDevicePointer
 {
     /** Left click. */
     int LEFT = 1;

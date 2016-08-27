@@ -110,12 +110,6 @@ public final class MouseAndroid implements Mouse
      */
 
     @Override
-    public int getMouseClick()
-    {
-        return lastClick;
-    }
-
-    @Override
     public int getOnScreenX()
     {
         return x;

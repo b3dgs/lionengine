@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.Updatable;
+
 /**
  * Represents a pointer device, supporting location and click number.
  */
-public interface InputDevicePointer extends InputDevice
+public interface InputDevicePointer extends InputDevice, Updatable
 {
     /**
      * Get the horizontal location.

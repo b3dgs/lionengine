@@ -17,21 +17,13 @@
  */
 package com.b3dgs.lionengine.core.android;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Mouse input.
  */
-public interface Mouse extends InputDevicePointer, Updatable
+public interface Mouse extends InputDevicePointer
 {
-    /**
-     * Get current pressed click.
-     * 
-     * @return The pressed click.
-     */
-    int getMouseClick();
-
     /**
      * Get location on screen x.
      * 

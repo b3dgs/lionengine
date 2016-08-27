@@ -19,13 +19,12 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.event.MouseEvent;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.
  */
-public interface Mouse extends InputDevicePointer, Updatable
+public interface Mouse extends InputDevicePointer
 {
     /** Left click. */
     int LEFT = MouseEvent.BUTTON1;

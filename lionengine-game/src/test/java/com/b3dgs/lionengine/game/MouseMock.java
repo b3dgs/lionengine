@@ -57,6 +57,12 @@ public class MouseMock implements InputDevicePointer
     }
 
     @Override
+    public void update(double extrp)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public int getX()
     {
         return x;
