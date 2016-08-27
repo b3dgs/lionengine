@@ -308,7 +308,7 @@ public class Configurer
      */
     public final <T> T getImplementation(Class<T> type, String... path)
     {
-        return getImplementation(ClassLoader.getSystemClassLoader(), type, path);
+        return getImplementation(getClass().getClassLoader(), type, path);
     }
 
     /**
@@ -361,7 +361,7 @@ public class Configurer
                                          Collection<?> paramsValue,
                                          String... path)
     {
-        return getImplementation(ClassLoader.getSystemClassLoader(), type, paramsType, paramsValue, path);
+        return getImplementation(getClass().getClassLoader(), type, paramsType, paramsValue, path);
     }
 
     /**

@@ -67,7 +67,7 @@ public class Factory
     public Factory(Services services)
     {
         this.services = services;
-        classLoader = ClassLoader.getSystemClassLoader();
+        classLoader = getClass().getClassLoader();
     }
 
     /**
