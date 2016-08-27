@@ -22,7 +22,9 @@ import android.app.Activity;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
 
 /**
@@ -76,6 +78,7 @@ public final class EngineAndroid extends Engine
         FactoryMediaAndroid.setAssertManager(activity.getAssets());
         FactoryMediaAndroid.setContentResolver(activity.getContentResolver());
 
+        Medias.setFactoryMedia(new FactoryMediaAndroid());
         Graphics.setFactoryGraphic(new FactoryGraphicAndroid());
     }
 
@@ -84,6 +87,8 @@ public final class EngineAndroid extends Engine
     {
         FactoryMediaAndroid.setAssertManager(null);
         FactoryMediaAndroid.setContentResolver(null);
+
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Graphics.setFactoryGraphic(null);
     }
 }
