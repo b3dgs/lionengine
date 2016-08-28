@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.geom;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 
 /**
  * Geometry factory.
@@ -211,6 +212,31 @@ public final class Geom
     public static Polygon createPolygon()
     {
         return new PolygonImpl();
+    }
+
+    /**
+     * Create a localizable.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return The localizable.
+     */
+    public static Localizable createLocalizable(final double x, final double y)
+    {
+        return new Localizable()
+        {
+            @Override
+            public double getX()
+            {
+                return x;
+            }
+
+            @Override
+            public double getY()
+            {
+                return y;
+            }
+        };
     }
 
     /**

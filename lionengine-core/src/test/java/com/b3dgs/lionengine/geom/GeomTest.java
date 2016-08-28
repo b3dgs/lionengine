@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -135,6 +136,18 @@ public class GeomTest
     public void testGeomCreatePolygon()
     {
         Assert.assertNotNull(Geom.createPolygon());
+    }
+
+    /**
+     * Test geom create localizable.
+     */
+    @Test
+    public void testGeomCreateLocalizable()
+    {
+        final Localizable localizable = Geom.createLocalizable(1.0, 2.0);
+
+        Assert.assertEquals(1.0, localizable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, localizable.getY(), UtilTests.PRECISION);
     }
 
     /**
