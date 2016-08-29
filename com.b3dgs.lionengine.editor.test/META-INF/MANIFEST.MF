@@ -19,11 +19,12 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.core.expressions;bundle-version="3.4.501",
  org.eclipse.e4.core.services;bundle-version="1.1.0",
  com.b3dgs.lionengine.editor,
- org.junit,
+ org.junit;bundle-version="4.12.0",
  org.eclipse.swtbot.go;bundle-version="2.4.0",
  org.eclipse.swtbot.e4.finder;bundle-version="2.4.0",
  org.eclipse.swtbot.eclipse.ui;bundle-version="2.4.0",
- com.b3dgs.lionengine.core
+ com.b3dgs.lionengine.core,
+ org.eclipse.jdt.junit4.runtime;bundle-version="1.1.600"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: com.b3dgs.lionengine.editor.collision.project,
  javax.annotation;version="1.0.0",
@@ -31,4 +32,5 @@ Import-Package: com.b3dgs.lionengine.editor.collision.project,
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: com.b3dgs.lionengine.editor,
+ com.b3dgs.lionengine.editor.dialog.about,
  com.b3dgs.lionengine.editor.project

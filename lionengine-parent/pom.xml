@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${encoding.type}</project.reporting.outputEncoding>
         <maven.version>3.3.9</maven.version>
-        <tycho.version>0.25.0</tycho.version>
+        <tycho.version>0.26.0</tycho.version>
         <junit.version>4.12</junit.version>
         <jacoco.version>0.7.6.201602180812</jacoco.version>
         <maven-bundle.version>3.0.1</maven-bundle.version>
@@ -234,12 +234,36 @@
                 <module>../com.b3dgs.lionengine.editor.object</module>
                 <module>../com.b3dgs.lionengine.editor.map</module>
                 <module>../com.b3dgs.lionengine.editor.animation</module>
+				<module>../com.b3dgs.lionengine.editor.collision</module>
+				<module>../com.b3dgs.lionengine.editor.pathfinding</module>
                 <module>../com.b3dgs.lionengine.editor.product</module>
                 <module>../com.b3dgs.lionengine.editor.test</module>
                 <module>../com.b3dgs.lionengine.editor.object.test</module>
                 <module>../com.b3dgs.lionengine.editor.map.test</module>
                 <module>../com.b3dgs.lionengine.editor.animation.test</module>
             </modules>
+			<build>
+                <pluginManagement>
+                    <plugins>
+						<plugin>
+						   <groupId>org.eclipse.tycho</groupId>
+						   <artifactId>tycho-surefire-plugin</artifactId>
+						   <version>${tycho.version}</version>
+						   <configuration>
+							  <useUIHarness>true</useUIHarness>
+						      <useUIThread>false</useUIThread>
+							  <configuration>
+									<includes>
+										<include>**/*Test.java</include>
+									</includes>
+								</configuration>
+							  <product>com.b3dgs.lionengine.editor.product</product>
+							  <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+						   </configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
         </profile>
         <profile>
             <id>examples</id>
