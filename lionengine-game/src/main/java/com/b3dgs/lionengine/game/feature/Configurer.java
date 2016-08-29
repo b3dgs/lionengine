@@ -128,15 +128,12 @@ public class Configurer
      */
     public final String getTextDefault(String defaultValue, String... path)
     {
-        try
+        final XmlNode node = getNodeDefault(path);
+        if (node != null)
         {
-            final XmlNode node = getNode(path);
             return node.getText();
         }
-        catch (final LionEngineException exception)
-        {
-            return defaultValue;
-        }
+        return defaultValue;
     }
 
     /**
@@ -163,14 +160,7 @@ public class Configurer
      */
     public final String getStringDefault(String defaultValue, String attribute, String... path)
     {
-        try
-        {
-            return getNodeString(attribute, path);
-        }
-        catch (final LionEngineException exception)
-        {
-            return defaultValue;
-        }
+        return getNodeStringDefault(defaultValue, attribute, path);
     }
 
     /**
@@ -197,14 +187,7 @@ public class Configurer
      */
     public final boolean getBooleanDefault(boolean defaultValue, String attribute, String... path)
     {
-        try
-        {
-            return Boolean.parseBoolean(getNodeString(attribute, path));
-        }
-        catch (final LionEngineException exception)
-        {
-            return defaultValue;
-        }
+        return Boolean.parseBoolean(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
     /**
@@ -240,11 +223,7 @@ public class Configurer
     {
         try
         {
-            return Integer.parseInt(getNodeString(attribute, path));
-        }
-        catch (final LionEngineException exception)
-        {
-            return defaultValue;
+            return Integer.parseInt(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
         }
         catch (final NumberFormatException exception)
         {
@@ -285,11 +264,7 @@ public class Configurer
     {
         try
         {
-            return Double.parseDouble(getNodeString(attribute, path));
-        }
-        catch (final LionEngineException exception)
-        {
-            return defaultValue;
+            return Double.parseDouble(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
         }
         catch (final NumberFormatException exception)
         {
@@ -450,6 +425,26 @@ public class Configurer
     }
 
     /**
+     * Get the node at the following path.
+     * 
+     * @param path The node path.
+     * @return The node found, <code>null</code> if none.
+     */
+    private XmlNode getNodeDefault(String... path)
+    {
+        XmlNode node = root;
+        for (final String element : path)
+        {
+            if (!node.hasChild(element))
+            {
+                return null;
+            }
+            node = node.getChild(element);
+        }
+        return node;
+    }
+
+    /**
      * Get the string from a node.
      * 
      * @param attribute The attribute to get.
@@ -461,5 +456,24 @@ public class Configurer
     {
         final XmlNode node = getNode(path);
         return node.readString(attribute);
+    }
+
+    /**
+     * Get the string from a node.
+     * 
+     * @param defaultValue The default value returned if path not found.
+     * @param attribute The attribute to get.
+     * @param path The attribute node path.
+     * @return The string found.
+     * @throws LionEngineException If node not found.
+     */
+    private String getNodeStringDefault(String defaultValue, String attribute, String... path)
+    {
+        final XmlNode node = getNodeDefault(path);
+        if (node != null && node.hasAttribute(attribute))
+        {
+            return node.readString(attribute);
+        }
+        return defaultValue;
     }
 }

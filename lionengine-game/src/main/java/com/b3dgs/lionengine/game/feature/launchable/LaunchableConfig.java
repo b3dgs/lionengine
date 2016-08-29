@@ -188,11 +188,11 @@ public final class LaunchableConfig
             return false;
         }
         final LaunchableConfig other = (LaunchableConfig) obj;
+        final boolean sameOffset = other.getOffsetX() == getOffsetX() && other.getOffsetY() == getOffsetY();
         return other.getMedia().equals(getMedia())
                && other.getVector().equals(getVector())
                && other.getDelay() == getDelay()
-               && other.getOffsetX() == getOffsetX()
-               && other.getOffsetY() == getOffsetY();
+               && sameOffset;
     }
 
     @Override
