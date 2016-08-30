@@ -17,8 +17,13 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
@@ -37,6 +42,29 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 public final class Drawable
 {
+    private static volatile DpiType dpi;
+
+    /**
+     * Set the DPI to use.
+     * 
+     * @param baseline The baseline resolution.
+     * @param config The configuration used.
+     */
+    public static void setDpi(Resolution baseline, Config config)
+    {
+        setDpi(DpiType.from(baseline, config.getOutput()));
+    }
+
+    /**
+     * Set the DPI to use.
+     * 
+     * @param dpi The DPI to use.
+     */
+    public static void setDpi(DpiType dpi)
+    {
+        Drawable.dpi = dpi;
+    }
+
     /**
      * Load an image from a file.
      * <p>
@@ -49,7 +77,7 @@ public final class Drawable
      */
     public static Image loadImage(Media media)
     {
-        return new ImageImpl(media);
+        return new ImageImpl(getMediaDpi(media));
     }
 
     /**
@@ -79,7 +107,7 @@ public final class Drawable
      */
     public static Sprite loadSprite(Media media)
     {
-        return new SpriteImpl(media);
+        return new SpriteImpl(getMediaDpi(media));
     }
 
     /**
@@ -111,7 +139,7 @@ public final class Drawable
      */
     public static SpriteAnimated loadSpriteAnimated(Media media, int horizontalFrames, int verticalFrames)
     {
-        return new SpriteAnimatedImpl(media, horizontalFrames, verticalFrames);
+        return new SpriteAnimatedImpl(getMediaDpi(media), horizontalFrames, verticalFrames);
     }
 
     /**
@@ -146,7 +174,7 @@ public final class Drawable
      */
     public static SpriteTiled loadSpriteTiled(Media media, int tileWidth, int tileHeight)
     {
-        return new SpriteTiledImpl(media, tileWidth, tileHeight);
+        return new SpriteTiledImpl(getMediaDpi(media), tileWidth, tileHeight);
     }
 
     /**
@@ -182,7 +210,7 @@ public final class Drawable
      */
     public static SpriteParallaxed loadSpriteParallaxed(Media media, int linesNumber, int startWidth, int startHeight)
     {
-        return new SpriteParallaxedImpl(media, linesNumber, startWidth, startHeight);
+        return new SpriteParallaxedImpl(getMediaDpi(media), linesNumber, startWidth, startHeight);
     }
 
     /**
@@ -200,7 +228,26 @@ public final class Drawable
      */
     public static SpriteFont loadSpriteFont(Media media, Media data, int letterWidth, int letterHeight)
     {
-        return new SpriteFontImpl(media, data, letterWidth, letterHeight);
+        return new SpriteFontImpl(getMediaDpi(media), data, letterWidth, letterHeight);
+    }
+
+    /**
+     * Get the associated DPI media.
+     * 
+     * @param media The original media.
+     * @return The DPI media, or the original media if no associated DPI found.
+     */
+    private static Media getMediaDpi(Media media)
+    {
+        if (dpi != null)
+        {
+            final Media mediaDpi = Medias.getWithSuffix(media, dpi.name().toLowerCase(Locale.ENGLISH));
+            if (mediaDpi.exists())
+            {
+                return mediaDpi;
+            }
+        }
+        return media;
     }
 
     /**

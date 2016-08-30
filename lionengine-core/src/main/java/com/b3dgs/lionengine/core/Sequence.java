@@ -123,6 +123,16 @@ public abstract class Sequence implements Sequencable, ScreenListener
     private Boolean cursorVisibility;
 
     /**
+     * Constructor base. Resolution will be based on {@link Config#getOutput()}.
+     * 
+     * @param context The context reference.
+     */
+    public Sequence(Context context)
+    {
+        this(context, context.getConfig().getOutput());
+    }
+
+    /**
      * Constructor base.
      * 
      * @param context The context reference.

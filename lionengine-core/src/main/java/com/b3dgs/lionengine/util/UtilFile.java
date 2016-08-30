@@ -92,7 +92,7 @@ public final class UtilFile
      * Get extension from a string (search first dot).
      * 
      * @param file The filename.
-     * @return The extension.
+     * @return The extension without dot.
      * @throws LionEngineException If <code>null</code> argument.
      */
     public static String getExtension(String file)

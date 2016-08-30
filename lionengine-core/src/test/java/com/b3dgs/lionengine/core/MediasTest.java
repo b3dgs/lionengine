@@ -133,7 +133,21 @@ public class MediasTest
     }
 
     /**
-     * Test the separator.
+     * Test the get with suffix.
+     */
+    @Test
+    public void testGetWithSuffix()
+    {
+        Medias.setResourcesDirectory(oldDir);
+        final Media folder = Medias.create("folder", "foo");
+        final Media file = Medias.create("folder", "file.txt");
+
+        Assert.assertEquals(Medias.create("folder", "foo_suffix"), Medias.getWithSuffix(folder, "suffix"));
+        Assert.assertEquals(Medias.create("folder", "file_suffix.txt"), Medias.getWithSuffix(file, "suffix"));
+    }
+
+    /**
+     * Test the get file.
      */
     @Test
     public void testGetFile()
@@ -146,7 +160,7 @@ public class MediasTest
     }
 
     /**
-     * Test the separator.
+     * Test the get file no resources.
      */
     @Test(expected = LionEngineException.class)
     public void testGetFileNoResources()

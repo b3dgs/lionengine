@@ -24,8 +24,10 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -287,5 +289,51 @@ public class DrawableTest
         testSpriteTiled(false, 1, 1);
         testSpriteFont(false, 1, 1);
         testSpriteParallaxed(false, 1, 1, 1);
+    }
+
+    /**
+     * Test success cases with custom DPI.
+     */
+    @Test
+    public void testDrawableSuccessDpi()
+    {
+        Drawable.setDpi(DpiType.LDPI);
+
+        try
+        {
+            testImage(false);
+            testSprite(false);
+            testSpriteAnimated(false, 1, 1);
+            testSpriteTiled(false, 1, 1);
+            testSpriteFont(false, 1, 1);
+            testSpriteParallaxed(false, 1, 1, 1);
+        }
+        finally
+        {
+            Drawable.setDpi(null);
+        }
+    }
+
+    /**
+     * Test success cases with missing DPI.
+     */
+    @Test
+    public void testDrawableMissingDpi()
+    {
+        Drawable.setDpi(new Resolution(320, 240, 60), new Config(new Resolution(1920, 1200, 16), 60, false));
+
+        try
+        {
+            testImage(false);
+            testSprite(false);
+            testSpriteAnimated(false, 1, 1);
+            testSpriteTiled(false, 1, 1);
+            testSpriteFont(false, 1, 1);
+            testSpriteParallaxed(false, 1, 1, 1);
+        }
+        finally
+        {
+            Drawable.setDpi(null);
+        }
     }
 }

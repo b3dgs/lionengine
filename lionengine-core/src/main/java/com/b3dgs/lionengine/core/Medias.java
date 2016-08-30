@@ -127,6 +127,24 @@ public final class Medias
     }
 
     /**
+     * Get the media with an additional suffix, just before the dot of the extension if has.
+     * 
+     * @param media The current media reference.
+     * @param suffix The suffix to add.
+     * @return The new media with suffix added.
+     */
+    public static synchronized Media getWithSuffix(Media media, String suffix)
+    {
+        final String path = media.getPath();
+        final int dotIndex = path.lastIndexOf(Constant.DOT);
+        if (dotIndex > -1)
+        {
+            return Medias.create(path.substring(0, dotIndex) + Constant.UNDERSCORE + suffix + path.substring(dotIndex));
+        }
+        return Medias.create(path + Constant.UNDERSCORE + suffix);
+    }
+
+    /**
      * Get the resources directory.
      * 
      * @return The resources directory.
