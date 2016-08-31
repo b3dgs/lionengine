@@ -30,7 +30,6 @@ final class Playback implements Closeable
 {
     /** Audio input. */
     private final AudioInputStream audioInputStream;
-
     /** Audio data. */
     private final SourceDataLine sourceDataLine;
 

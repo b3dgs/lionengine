@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
@@ -138,5 +139,6 @@ public class EngineSwt extends Engine
         Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+        AudioFactory.clearFormats();
     }
 }

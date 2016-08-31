@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.audio.adplug;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Audio;
 
 /**
  * Allows to play many old music format:
@@ -62,36 +61,15 @@ import com.b3dgs.lionengine.Media;
  * <li>XSM: eXtra Simple Music by Davey W Taylor</li>
  * </ul>
  */
-public interface AdPlug
+public interface AdPlug extends Audio
 {
     /**
-     * Play a music from its media.
-     * 
-     * @param media The music media.
-     * @throws LionEngineException If media is <code>null</code>
-     */
-    void play(Media media);
-
-    /**
-     * Set player volume (between 0 and 100, as a percent).
-     * 
-     * @param volume The music volume [0-100].
-     * @throws LionEngineException If argument is invalid.
-     */
-    void setVolume(int volume);
-
-    /**
-     * Pause a playing music.
+     * Pause the audio (can be resumed).
      */
     void pause();
 
     /**
-     * Continue to play music after being paused.
+     * Resume the audio (if paused).
      */
     void resume();
-
-    /**
-     * Stop a music.
-     */
-    void stop();
 }

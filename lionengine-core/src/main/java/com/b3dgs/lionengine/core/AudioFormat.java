@@ -15,26 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.core;
 
-import org.junit.Test;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.Media;
 
 /**
- * Test the audio wav class.
+ * Describe audio format.
+ * 
+ * @param <T> The audio format used.
  */
-public class AudioWavTest
+public interface AudioFormat<T extends Audio>
 {
     /**
-     * Test the constructor.
+     * Load an audio file and prepare it to be played.
      * 
-     * @throws Throwable If error.
+     * @param media The audio media.
+     * @return The loaded audio.
+     * @throws LionEngineException If media is <code>null</code> or invalid audio or no audio player is available.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
-    {
-        UtilTests.testPrivateConstructor(AudioWav.class);
-    }
+    T loadAudio(Media media);
+
+    /**
+     * Get the music audio formats.
+     * 
+     * @return The audio music formats.
+     */
+    Collection<String> getFormats();
+
+    /**
+     * Close the handler.
+     */
+    void close();
 }

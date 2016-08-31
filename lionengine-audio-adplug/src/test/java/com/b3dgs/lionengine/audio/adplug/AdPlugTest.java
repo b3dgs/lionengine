@@ -26,6 +26,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -44,18 +45,19 @@ public class AdPlugTest
     @BeforeClass
     public static void prepare()
     {
+        AudioFactory.addFormat(new AdPlugFormat());
         try
         {
-            adplug = AudioAdPlug.createAdPlugPlayer();
             Medias.setLoadFromJar(AdPlugTest.class);
             music = Medias.create("music.lds");
+            adplug = AudioFactory.loadAudio(music, AdPlug.class);
         }
         catch (final LionEngineException exception)
         {
             final String message = exception.getMessage();
-            Assert.assertTrue(message, message.contains(AudioAdPlug.ERROR_LOAD_LIBRARY));
+            Assert.assertTrue(message, message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY));
             Assume.assumeFalse("AdPlug not supported on test machine - Test skipped",
-                               message.contains(AudioAdPlug.ERROR_LOAD_LIBRARY));
+                               message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY));
         }
     }
 
@@ -74,8 +76,7 @@ public class AdPlugTest
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        adplug.play(null);
-        Assert.fail();
+        Assert.assertNotNull(AudioFactory.loadAudio(null, AdPlug.class));
     }
 
     /**
@@ -107,7 +108,7 @@ public class AdPlugTest
     public void testAdPlug() throws InterruptedException
     {
         adplug.setVolume(40);
-        adplug.play(music);
+        adplug.play();
         Thread.sleep(500);
         adplug.pause();
         Thread.sleep(500);
@@ -125,23 +126,22 @@ public class AdPlugTest
     @Test
     public void testStress() throws InterruptedException
     {
-        final AdPlug adplug = AudioAdPlug.createAdPlugPlayer();
-        adplug.play(music);
+        adplug.play();
         adplug.stop();
-        adplug.play(music);
+        adplug.play();
         Thread.sleep(Constant.HUNDRED);
         adplug.stop();
-        adplug.play(music);
+        adplug.play();
         adplug.pause();
         adplug.resume();
         for (int i = 0; i < 5; i++)
         {
-            adplug.play(music);
+            adplug.play();
             Thread.sleep(Constant.HUNDRED);
         }
         Thread.sleep(250);
         adplug.stop();
-        adplug.play(music);
+        adplug.play();
         adplug.stop();
     }
 }

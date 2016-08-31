@@ -15,26 +15,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.midi;
+package com.b3dgs.lionengine.core.android;
 
-import org.junit.Test;
-
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.core.Audio;
 
 /**
- * Test the audio midi class.
+ * Wav audio.
  */
-public class AudioMidiTest
+public interface Wav extends Audio
 {
     /**
-     * Test the constructor.
+     * Play the audio.
+     * <p>
+     * The audio will be played from the beginning until the end.
+     * </p>
      * 
-     * @throws Exception If error.
+     * @param alignment The sound alignment.
+     * @throws LionEngineException If unable to play sound.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
-    {
-        UtilTests.testPrivateConstructor(AudioMidi.class);
-    }
+    void play(Align alignment);
 }

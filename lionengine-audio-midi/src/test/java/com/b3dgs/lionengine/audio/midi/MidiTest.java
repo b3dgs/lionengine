@@ -31,6 +31,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Audio;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Medias;
 
@@ -50,19 +52,20 @@ public class MidiTest
     @BeforeClass
     public static void prepareTest()
     {
+        AudioFactory.addFormat(new MidiFormat());
         Medias.setLoadFromJar(MidiTest.class);
         music = Medias.create("music.mid");
         try
         {
-            midi = AudioMidi.loadMidi(music);
+            midi = AudioFactory.loadAudio(music, Midi.class);
             Assert.assertTrue(midi.getTicks() > 0);
         }
         catch (final LionEngineException exception)
         {
             final String message = exception.getMessage();
-            Assert.assertTrue(message, message.contains(Midi.ERROR_MIDI));
+            Assert.assertTrue(message, message.contains(MidiImpl.ERROR_MIDI));
             Assume.assumeFalse("Midi synthesizer not supported on test machine - Test skipped",
-                               message.contains(Midi.ERROR_MIDI));
+                               message.contains(MidiImpl.ERROR_MIDI));
         }
     }
 
@@ -73,6 +76,7 @@ public class MidiTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
+        AudioFactory.clearFormats();
     }
 
     /**
@@ -101,7 +105,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        AudioMidi.loadMidi(null);
+        AudioFactory.loadAudio(null);
         Assert.fail();
     }
 
@@ -111,7 +115,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testInvalidMedia()
     {
-        AudioMidi.loadMidi(Medias.create(Constant.EMPTY_STRING));
+        AudioFactory.loadAudio(Medias.create(Constant.EMPTY_STRING));
         Assert.fail();
     }
 
@@ -161,8 +165,8 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testFailMusic()
     {
-        final Midi midi2 = AudioMidi.loadMidi(Medias.create("fail.mid"));
-        midi2.play(false);
+        final Audio midi2 = AudioFactory.loadAudio(Medias.create("fail.mid"));
+        midi2.play();
         Assert.fail();
     }
 
@@ -176,7 +180,7 @@ public class MidiTest
     {
         try
         {
-            midi.play(false);
+            midi.play();
             Thread.sleep(250);
             midi.pause();
             Thread.sleep(250);
@@ -201,7 +205,7 @@ public class MidiTest
         testMidiLoop(midi, -1, -1);
         testMidiLoop(midi, 0, -1);
 
-        final Midi midi2 = AudioMidi.loadMidi(music);
+        final Midi midi2 = AudioFactory.loadAudio(music, Midi.class);
         midi2.setLoop(6100, 8000);
         midi2.setStart(6100);
         midi2.play(true);
@@ -271,7 +275,7 @@ public class MidiTest
                     };
                 }
             });
-            Assert.assertNotNull(AudioMidi.loadMidi(Medias.create("test")));
+            Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("test")));
         }
         finally
         {

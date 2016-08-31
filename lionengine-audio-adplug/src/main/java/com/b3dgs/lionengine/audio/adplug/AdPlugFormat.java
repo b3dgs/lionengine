@@ -19,18 +19,22 @@ package com.b3dgs.lionengine.audio.adplug;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.AudioFormat;
 import com.b3dgs.lionengine.util.UtilStream;
 import com.sun.jna.Native;
 
 /**
  * Handle audio AdPlug.
  */
-public final class AudioAdPlug
+public final class AdPlugFormat implements AudioFormat<AdPlug>
 {
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading AdPlug Library: ";
@@ -48,18 +52,11 @@ public final class AudioAdPlug
     private static final String ARCHITECTURE_X64 = "x86-64";
     /** 32bits architecture. */
     private static final String ARCHITECTURE_X86 = "x86";
-
-    /**
-     * Create a AdPlug player.
-     * 
-     * @return The AdPlug instance.
-     * @throws LionEngineException If unable to load library.
-     */
-    public static AdPlug createAdPlugPlayer()
+    /** Audio extensions. */
+    private static final String[] FORMATS =
     {
-        final AudioAdPlug adplug = new AudioAdPlug();
-        return new AdPlugPlayer(adplug.getBinding());
-    }
+        "lds"
+    };
 
     /**
      * Load the library.
@@ -71,7 +68,7 @@ public final class AudioAdPlug
      */
     private static AdPlugBinding loadLibrary(String name, String library)
     {
-        final InputStream input = AudioAdPlug.class.getResourceAsStream(library);
+        final InputStream input = AdPlugFormat.class.getResourceAsStream(library);
         if (input == null)
         {
             throw new LionEngineException(ERROR_LOAD_LIBRARY, library, " not found !");
@@ -86,7 +83,7 @@ public final class AudioAdPlug
         }
         catch (final LinkageError exception)
         {
-            throw new LionEngineException(exception, AudioAdPlug.ERROR_LOAD_LIBRARY, library);
+            throw new LionEngineException(exception, ERROR_LOAD_LIBRARY, library);
         }
         finally
         {
@@ -104,9 +101,9 @@ public final class AudioAdPlug
         final OperatingSystem system = OperatingSystem.getOperatingSystem();
         if (OperatingSystem.WINDOWS == system)
         {
-            return AudioAdPlug.SYSTEM_WINDOW;
+            return SYSTEM_WINDOW;
         }
-        return AudioAdPlug.SYSTEM_LINUX;
+        return SYSTEM_LINUX;
     }
 
     /**
@@ -119,9 +116,9 @@ public final class AudioAdPlug
         final OperatingSystem system = OperatingSystem.getOperatingSystem();
         if (OperatingSystem.WINDOWS == system)
         {
-            return AudioAdPlug.EXTENSION_DLL;
+            return EXTENSION_DLL;
         }
-        return AudioAdPlug.EXTENSION_SO;
+        return EXTENSION_SO;
     }
 
     /**
@@ -134,38 +131,50 @@ public final class AudioAdPlug
         final Architecture architecture = Architecture.getArchitecture();
         if (Architecture.X64 == architecture)
         {
-            return AudioAdPlug.ARCHITECTURE_X64;
+            return ARCHITECTURE_X64;
         }
-        return AudioAdPlug.ARCHITECTURE_X86;
+        return ARCHITECTURE_X86;
     }
 
     /** AdPlug binding. */
     private final AdPlugBinding bind;
 
     /**
-     * Private constructor.
+     * Create format.
      * 
      * @throws LionEngineException If unable to load library.
      */
-    private AudioAdPlug()
+    public AdPlugFormat()
     {
-        final String ext = AudioAdPlug.getLibraryExtension();
-        final String sys = AudioAdPlug.getLibrarySystem();
-        final String arch = AudioAdPlug.getLibraryArchitecture();
+        final String ext = getLibraryExtension();
+        final String sys = getLibrarySystem();
+        final String arch = getLibraryArchitecture();
 
-        final String name = AudioAdPlug.LIBRARY_NAME + ext;
+        final String name = LIBRARY_NAME + ext;
         final String library = sys + arch + '/' + name;
         Verbose.info("Load library: ", library);
-        bind = AudioAdPlug.loadLibrary(name, library);
+        bind = loadLibrary(name, library);
     }
 
-    /**
-     * Get the binding reference.
-     * 
-     * @return The binding reference.
+    /*
+     * AudioFormat
      */
-    private AdPlugBinding getBinding()
+
+    @Override
+    public AdPlug loadAudio(Media media)
     {
-        return bind;
+        return new AdPlugPlayer(media, bind);
+    }
+
+    @Override
+    public Collection<String> getFormats()
+    {
+        return Arrays.asList(FORMATS);
+    }
+
+    @Override
+    public void close()
+    {
+        // Nothing to do
     }
 }

@@ -21,9 +21,8 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.audio.midi.AudioMidi;
 import com.b3dgs.lionengine.audio.midi.Midi;
-import com.b3dgs.lionengine.audio.wav.AudioWav;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
@@ -46,7 +45,7 @@ class Scene extends Sequence
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
     private static final Media LEVEL = Medias.create("map", "level.lvl");
 
-    private final Midi music = AudioMidi.loadMidi(Medias.create("music", "music.mid"));
+    private final Midi music = AudioFactory.loadAudio(Medias.create("music", "music.mid"), Midi.class);
     private final World world;
 
     /**
@@ -110,6 +109,5 @@ class Scene extends Sequence
     public void onTerminated(boolean hasNextSequence)
     {
         music.stop();
-        AudioWav.terminate();
     }
 }

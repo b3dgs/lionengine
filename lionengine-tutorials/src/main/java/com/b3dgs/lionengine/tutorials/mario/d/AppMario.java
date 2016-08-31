@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.audio.midi.MidiFormat;
+import com.b3dgs.lionengine.audio.wav.WavFormat;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Resolution;
@@ -44,6 +47,8 @@ public class AppMario
     public static void main(String[] args)
     {
         EngineAwt.start(NAME, VERSION, RESOURCES);
+        AudioFactory.addFormat(new WavFormat(), new MidiFormat());
+
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();

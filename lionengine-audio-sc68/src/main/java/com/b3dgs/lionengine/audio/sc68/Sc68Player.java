@@ -19,9 +19,8 @@ package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -35,8 +34,6 @@ import com.b3dgs.lionengine.util.UtilStream;
  */
 final class Sc68Player implements Sc68
 {
-    /** Volume max. */
-    private static final int VOLUME_MAX = 100;
     /** Info playing. */
     private static final String INFO_PLAYING = "Playing SC68 track: ";
 
@@ -62,21 +59,26 @@ final class Sc68Player implements Sc68
         }
     }
 
-    /** Music cache. */
-    private final Map<Media, String> cache = new HashMap<Media, String>();
+    /** Media reference. */
+    private final Media media;
     /** Binding reference. */
     private final Sc68Binding binding;
+    /** Music cache. */
+    private String cache;
 
     /**
      * Internal constructor.
      * 
+     * @param media The media to play.
      * @param binding The binding reference.
-     * @throws LionEngineException If binding is <code>null</code>
+     * @throws LionEngineException If arguments are <code>null</code>
      */
-    Sc68Player(Sc68Binding binding)
+    Sc68Player(Media media, Sc68Binding binding)
     {
+        Check.notNull(media);
         Check.notNull(binding);
 
+        this.media = media;
         this.binding = binding;
     }
 
@@ -97,23 +99,39 @@ final class Sc68Player implements Sc68
      */
 
     @Override
-    public void play(Media media)
+    public void play()
     {
-        Check.notNull(media);
+        play(Align.CENTER, true);
+    }
 
+    @Override
+    public void play(Align alignment, boolean loop)
+    {
         final String name = media.getPath();
         if (Medias.getResourcesLoader() != null)
         {
-            if (!cache.containsKey(media))
+            if (cache == null)
             {
-                cache.put(media, extractFromJar(media));
+                cache = extractFromJar(media);
             }
-            play(cache.get(media), name);
+            play(cache, name);
         }
         else
         {
             play(media.getFile().getAbsolutePath(), name);
         }
+    }
+
+    @Override
+    public void setStart(long tick)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void setLoop(long first, long last)
+    {
+        // Nothing to do
     }
 
     @Override
@@ -150,7 +168,7 @@ final class Sc68Player implements Sc68
     }
 
     @Override
-    public int seek()
+    public long getTicks()
     {
         return binding.Sc68Seek();
     }

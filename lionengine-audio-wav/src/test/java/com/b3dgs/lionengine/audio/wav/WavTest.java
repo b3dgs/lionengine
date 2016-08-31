@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Audio;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -45,8 +47,9 @@ public class WavTest
     public static void prepareTest()
     {
         Medias.setLoadFromJar(WavTest.class);
+        AudioFactory.addFormat(new WavFormat());
         mediaSound = Medias.create("sound.wav");
-        sound = AudioWav.loadWav(mediaSound);
+        sound = AudioFactory.loadAudio(mediaSound, Wav.class);
     }
 
     /**
@@ -56,7 +59,7 @@ public class WavTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
-        AudioWav.terminate();
+        AudioFactory.clearFormats();
     }
 
     /**
@@ -65,7 +68,7 @@ public class WavTest
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        AudioWav.loadWav(null);
+        AudioFactory.loadAudio(null);
         Assert.fail();
     }
 
@@ -78,7 +81,7 @@ public class WavTest
     public void testInvalidAudio() throws InterruptedException
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        final Wav wav = AudioWav.loadWav(Medias.create("invalid.wav"));
+        final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));
         wav.play();
         Thread.sleep(100);
         Verbose.info("****************************************************************************************");
@@ -90,7 +93,7 @@ public class WavTest
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        sound.play(Align.CENTER, -1);
+        sound.setVolume(-1);
         Assert.fail();
     }
 
@@ -100,7 +103,7 @@ public class WavTest
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        sound.play(Align.CENTER, 101);
+        sound.setVolume(101);
         Assert.fail();
     }
 
@@ -112,16 +115,23 @@ public class WavTest
     @Test
     public void testWav() throws InterruptedException
     {
-        sound.play(Align.CENTER, 50, 0);
-        sound.play(Align.LEFT, 50, 150);
-        sound.play(Align.CENTER, 50, 300);
-        sound.play(Align.RIGHT, 50, 450);
-        sound.play(Align.CENTER, 50, 600);
+        sound.setVolume(50);
+
+        sound.play();
+        Thread.sleep(150);
+        sound.play(Align.LEFT);
+        Thread.sleep(150);
+        sound.play(Align.CENTER);
+        Thread.sleep(150);
+        sound.play(Align.RIGHT);
+        Thread.sleep(150);
+        sound.play();
         Thread.sleep(900);
 
         sound.play();
-        sound.play(10);
-        sound.play(Align.CENTER, 50);
+        Thread.sleep(10);
+        sound.play();
+        sound.play(Align.CENTER);
         Thread.sleep(50);
         sound.stop();
     }

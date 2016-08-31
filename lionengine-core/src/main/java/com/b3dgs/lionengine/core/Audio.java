@@ -15,25 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Audio;
 
 /**
- * Wav audio.
+ * Describe a audio interface, dedicated to long audio stream, playable in loop with a specified volume.
  */
-public interface Wav extends Audio
+public interface Audio
 {
+    /** Minimum volume value. */
+    int VOLUME_MIN = 0;
+    /** Maximum volume value. */
+    int VOLUME_MAX = 100;
+
     /**
      * Play the audio.
      * <p>
      * The audio will be played from the beginning until the end.
      * </p>
      * 
-     * @param alignment The sound alignment.
      * @throws LionEngineException If unable to play sound.
      */
-    void play(Align alignment);
+    void play();
+
+    /**
+     * Set the midi volume.
+     * 
+     * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     * @throws LionEngineException If argument is invalid or midi not available.
+     */
+    void setVolume(int volume);
+
+    /**
+     * Stop the audio.
+     */
+    void stop();
 }

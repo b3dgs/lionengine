@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.audio.adplug;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -34,8 +32,6 @@ import com.b3dgs.lionengine.util.UtilStream;
  */
 final class AdPlugPlayer implements AdPlug
 {
-    /** Volume max. */
-    private static final int VOLUME_MAX = 100;
     /** Info playing. */
     private static final String INFO_PLAYING = "Playing track: ";
 
@@ -61,21 +57,26 @@ final class AdPlugPlayer implements AdPlug
         }
     }
 
-    /** Music cache. */
-    private final Map<Media, String> cache = new HashMap<Media, String>();
+    /** Media reference. */
+    private final Media media;
     /** Binding reference. */
     private final AdPlugBinding binding;
+    /** Music cache. */
+    private String cache;
 
     /**
      * Internal constructor.
      * 
+     * @param media The media reference.
      * @param binding The binding reference.
-     * @throws LionEngineException If binding is <code>null</code>
+     * @throws LionEngineException If arguments are <code>null</code>
      */
-    AdPlugPlayer(AdPlugBinding binding)
+    AdPlugPlayer(Media media, AdPlugBinding binding)
     {
+        Check.notNull(media);
         Check.notNull(binding);
 
+        this.media = media;
         this.binding = binding;
     }
 
@@ -96,18 +97,16 @@ final class AdPlugPlayer implements AdPlug
      */
 
     @Override
-    public void play(Media media)
+    public void play()
     {
-        Check.notNull(media);
-
         final String name = media.getPath();
         if (Medias.getResourcesLoader() != null)
         {
-            if (!cache.containsKey(media))
+            if (cache == null)
             {
-                cache.put(media, extractFromJar(media));
+                cache = extractFromJar(media);
             }
-            play(cache.get(media), name);
+            play(cache, name);
         }
         else
         {

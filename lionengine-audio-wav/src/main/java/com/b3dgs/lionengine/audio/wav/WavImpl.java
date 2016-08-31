@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilStream;
@@ -199,6 +198,8 @@ final class WavImpl implements Wav
     private final ExecutorService executor;
     /** Sound file reference. */
     private final Media media;
+    /** Volume used. */
+    private int volume = VOLUME_MAX;
 
     /**
      * Internal constructor.
@@ -220,23 +221,14 @@ final class WavImpl implements Wav
      * 
      * @param media The sound media.
      * @param alignment The sound alignment.
-     * @param volume The volume in percent.
-     * @param delayMilli The delay before sound is played in milliseconds.
      */
-    private void play(Media media, Align alignment, int volume, int delayMilli)
+    private void play(Media media, Align alignment)
     {
         Playback playback = null;
         try
         {
-            final Timing timing = new Timing();
-            timing.start();
             playback = createPlayback(media, alignment, volume);
             opened.add(playback);
-            final long toWait = delayMilli - timing.elapsed();
-            if (toWait > 0)
-            {
-                Thread.sleep(toWait);
-            }
 
             final AudioInputStream audioInputStream = playback.getAudioInputStream();
             final SourceDataLine sourceDataLine = playback.getSourceDataLine();
@@ -249,12 +241,6 @@ final class WavImpl implements Wav
             Verbose.exception(exception);
             UtilStream.safeClose(playback);
         }
-        catch (final InterruptedException exception)
-        {
-            Thread.currentThread().interrupt();
-            Verbose.exception(exception);
-            UtilStream.safeClose(playback);
-        }
     }
 
     /*
@@ -264,33 +250,18 @@ final class WavImpl implements Wav
     @Override
     public void play()
     {
-        play(Align.CENTER, VOLUME_MAX, 0);
+        play(Align.CENTER);
     }
 
     @Override
-    public void play(int delayMilli)
+    public void play(final Align alignment)
     {
-        play(Align.CENTER, VOLUME_MAX, delayMilli);
-    }
-
-    @Override
-    public void play(Align alignment, int volume)
-    {
-        play(alignment, volume, 0);
-    }
-
-    @Override
-    public void play(final Align alignment, final int volume, final int delayMilli)
-    {
-        Check.superiorOrEqual(volume, 0);
-        Check.inferiorOrEqual(volume, 100);
-
         executor.execute(new Runnable()
         {
             @Override
             public void run()
             {
-                play(media, alignment, volume, delayMilli);
+                play(media, alignment);
             }
         });
     }
@@ -310,5 +281,14 @@ final class WavImpl implements Wav
             }
         }
         opened.clear();
+    }
+
+    @Override
+    public void setVolume(int volume)
+    {
+        Check.superiorOrEqual(volume, 0);
+        Check.inferiorOrEqual(volume, 100);
+
+        this.volume = volume;
     }
 }

@@ -15,48 +15,52 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.d;
+package com.b3dgs.lionengine.audio.midi;
 
-import java.util.Locale;
+import java.util.Arrays;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Audio;
-import com.b3dgs.lionengine.core.AudioFactory;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.AudioFormat;
 
 /**
- * Handle the SFX.
+ * Midi format implementation.
  */
-enum Sfx
+public final class MidiFormat implements AudioFormat<Midi>
 {
-    /** Jump. */
-    JUMP,
-    /** Die. */
-    CRUSH;
-
-    /** Audio file extension. */
-    private static final String AUDIO_FILE_EXTENSION = ".wav";
-    /** Sound volume. */
-    private static final int VOLUME = 15;
-
-    /** Sounds list composing the effect. */
-    private final Audio sound;
+    /** Audio extensions. */
+    private static final String[] FORMATS =
+    {
+        "mid", "midi"
+    };
 
     /**
-     * Constructor.
+     * Create a midi factory.
      */
-    private Sfx()
+    public MidiFormat()
     {
-        final Media media = Medias.create("sfx", name().toLowerCase(Locale.ENGLISH) + AUDIO_FILE_EXTENSION);
-        sound = AudioFactory.loadAudio(media);
-        sound.setVolume(VOLUME);
+        super();
     }
 
-    /**
-     * Play the sound effect.
+    /*
+     * AudioFormat
      */
-    public void play()
+
+    @Override
+    public Midi loadAudio(Media media)
     {
-        sound.play();
+        return new MidiImpl(media);
+    }
+
+    @Override
+    public Collection<String> getFormats()
+    {
+        return Arrays.asList(FORMATS);
+    }
+
+    @Override
+    public void close()
+    {
+        // Nothing to do
     }
 }

@@ -19,18 +19,22 @@ package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.AudioFormat;
 import com.b3dgs.lionengine.util.UtilStream;
 import com.sun.jna.Native;
 
 /**
  * Handle audio sc68.
  */
-public final class AudioSc68
+public final class Sc68Format implements AudioFormat<Sc68>
 {
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
@@ -48,18 +52,11 @@ public final class AudioSc68
     private static final String ARCHITECTURE_X64 = "x86-64";
     /** 32bits architecture. */
     private static final String ARCHITECTURE_X86 = "x86";
-
-    /**
-     * Create a sc68 player.
-     * 
-     * @return The sc68 player instance.
-     * @throws LionEngineException If unable to load library.
-     */
-    public static Sc68 createSc68Player()
+    /** Audio extensions. */
+    private static final String[] FORMATS =
     {
-        final AudioSc68 sc68 = new AudioSc68();
-        return new Sc68Player(sc68.getBinding());
-    }
+        "sc68"
+    };
 
     /**
      * Load the library.
@@ -71,7 +68,7 @@ public final class AudioSc68
      */
     private static Sc68Binding loadLibrary(String name, String library)
     {
-        final InputStream input = AudioSc68.class.getResourceAsStream(library);
+        final InputStream input = Sc68Format.class.getResourceAsStream(library);
         try
         {
             final File tempLib = UtilStream.getCopy(name, input);
@@ -82,7 +79,7 @@ public final class AudioSc68
         }
         catch (final LinkageError exception)
         {
-            throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, library);
+            throw new LionEngineException(exception, ERROR_LOAD_LIBRARY, library);
         }
         finally
         {
@@ -100,9 +97,9 @@ public final class AudioSc68
         final OperatingSystem system = OperatingSystem.getOperatingSystem();
         if (OperatingSystem.WINDOWS == system)
         {
-            return AudioSc68.SYSTEM_WINDOW;
+            return SYSTEM_WINDOW;
         }
-        return AudioSc68.SYSTEM_LINUX;
+        return SYSTEM_LINUX;
     }
 
     /**
@@ -115,9 +112,9 @@ public final class AudioSc68
         final OperatingSystem system = OperatingSystem.getOperatingSystem();
         if (OperatingSystem.WINDOWS == system)
         {
-            return AudioSc68.EXTENSION_DLL;
+            return EXTENSION_DLL;
         }
-        return AudioSc68.EXTENSION_SO;
+        return EXTENSION_SO;
     }
 
     /**
@@ -130,38 +127,50 @@ public final class AudioSc68
         final Architecture architecture = Architecture.getArchitecture();
         if (Architecture.X64 == architecture)
         {
-            return AudioSc68.ARCHITECTURE_X64;
+            return ARCHITECTURE_X64;
         }
-        return AudioSc68.ARCHITECTURE_X86;
+        return ARCHITECTURE_X86;
     }
 
     /** Sc68 binding. */
     private final Sc68Binding bind;
 
     /**
-     * Private constructor.
+     * Create format.
      * 
      * @throws LionEngineException If unable to load library.
      */
-    private AudioSc68()
+    public Sc68Format()
     {
-        final String ext = AudioSc68.getLibraryExtension();
-        final String sys = AudioSc68.getLibrarySystem();
-        final String arch = AudioSc68.getLibraryArchitecture();
+        final String ext = getLibraryExtension();
+        final String sys = getLibrarySystem();
+        final String arch = getLibraryArchitecture();
 
-        final String name = AudioSc68.LIBRARY_NAME + ext;
+        final String name = LIBRARY_NAME + ext;
         final String library = sys + arch + '/' + name;
         Verbose.info("Load library: ", library);
-        bind = AudioSc68.loadLibrary(name, library);
+        bind = loadLibrary(name, library);
     }
 
-    /**
-     * Get the binding reference.
-     * 
-     * @return The binding reference.
+    /*
+     * AudioFormat
      */
-    private Sc68Binding getBinding()
+
+    @Override
+    public Sc68 loadAudio(Media media)
     {
-        return bind;
+        return new Sc68Player(media, bind);
+    }
+
+    @Override
+    public Collection<String> getFormats()
+    {
+        return Arrays.asList(FORMATS);
+    }
+
+    @Override
+    public void close()
+    {
+        // Nothing to do
     }
 }

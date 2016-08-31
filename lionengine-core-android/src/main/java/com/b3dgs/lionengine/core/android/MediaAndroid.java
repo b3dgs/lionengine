@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.ContentResolver;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.net.Uri;
 
@@ -80,6 +81,23 @@ final class MediaAndroid implements Media
             parent = NO_PARENT;
         }
         file = new File(path);
+    }
+
+    /**
+     * Get file descriptor.
+     * 
+     * @return The file descriptor.
+     */
+    AssetFileDescriptor getDescriptor()
+    {
+        try
+        {
+            return assetManager.openFd(path);
+        }
+        catch (final IOException e)
+        {
+            throw new LionEngineException(e);
+        }
     }
 
     /*

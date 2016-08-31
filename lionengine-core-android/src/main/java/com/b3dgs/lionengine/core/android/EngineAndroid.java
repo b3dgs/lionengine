@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Graphics;
@@ -83,6 +84,8 @@ public final class EngineAndroid extends Engine
         FactoryMediaAndroid.setAssertManager(activity.getAssets());
         FactoryMediaAndroid.setContentResolver(activity.getContentResolver());
 
+        AudioFactory.addFormat(new WavFormat());
+
         Medias.setFactoryMedia(new FactoryMediaAndroid());
         Graphics.setFactoryGraphic(new FactoryGraphicAndroid());
     }
@@ -95,5 +98,6 @@ public final class EngineAndroid extends Engine
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Graphics.setFactoryGraphic(null);
+        AudioFactory.clearFormats();
     }
 }

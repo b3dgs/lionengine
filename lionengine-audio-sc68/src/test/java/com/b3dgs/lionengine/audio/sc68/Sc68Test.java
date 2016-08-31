@@ -26,6 +26,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -44,18 +45,19 @@ public class Sc68Test
     @BeforeClass
     public static void prepare()
     {
+        AudioFactory.addFormat(new Sc68Format());
         try
         {
-            sc68 = AudioSc68.createSc68Player();
             Medias.setLoadFromJar(Sc68Test.class);
             music = Medias.create("music.sc68");
+            sc68 = AudioFactory.loadAudio(music, Sc68.class);
         }
         catch (final LionEngineException exception)
         {
             final String message = exception.getMessage();
-            Assert.assertTrue(message, message.contains(AudioSc68.ERROR_LOAD_LIBRARY));
+            Assert.assertTrue(message, message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
             Assume.assumeFalse("Sc68 not supported on test machine - Test skipped",
-                               message.contains(AudioSc68.ERROR_LOAD_LIBRARY));
+                               message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
         }
     }
 
@@ -66,6 +68,7 @@ public class Sc68Test
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
+        AudioFactory.clearFormats();
     }
 
     /**
@@ -74,8 +77,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        sc68.play(null);
-        Assert.fail();
+        Assert.assertNotNull(AudioFactory.loadAudio(null, Sc68.class));
     }
 
     /**
@@ -108,7 +110,7 @@ public class Sc68Test
     {
         sc68.setVolume(15);
         sc68.setConfig(true, false);
-        sc68.play(music);
+        sc68.play();
         Thread.sleep(500);
         sc68.setConfig(false, false);
         sc68.pause();
@@ -118,7 +120,7 @@ public class Sc68Test
         sc68.resume();
         Thread.sleep(500);
         sc68.setConfig(true, true);
-        Assert.assertTrue(sc68.seek() >= 0);
+        Assert.assertTrue(sc68.getTicks() >= 0);
         sc68.stop();
     }
 
@@ -130,23 +132,22 @@ public class Sc68Test
     @Test
     public void testStress() throws InterruptedException
     {
-        final Sc68 sc68 = AudioSc68.createSc68Player();
-        sc68.play(music);
+        sc68.play();
         sc68.stop();
-        sc68.play(music);
+        sc68.play();
         Thread.sleep(Constant.HUNDRED);
         sc68.stop();
-        sc68.play(music);
+        sc68.play();
         sc68.pause();
         sc68.resume();
         for (int i = 0; i < 5; i++)
         {
-            sc68.play(music);
+            sc68.play();
             Thread.sleep(Constant.HUNDRED);
         }
         Thread.sleep(250);
         sc68.stop();
-        sc68.play(music);
+        sc68.play();
         sc68.stop();
     }
 }

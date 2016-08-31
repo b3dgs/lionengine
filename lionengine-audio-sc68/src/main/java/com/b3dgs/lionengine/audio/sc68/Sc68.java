@@ -17,49 +17,15 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Audio;
 
 /**
  * Allows to play SonicArranger musics (original Amiga player).
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Sc68 sc68 = AudioSc68.createSc68Player();
- * sc68.setVolume(25);
- * sc68.play(Medias.create(&quot;music.sc68&quot;));
- * 
- * Thread.sleep(1000);
- * sc68.pause();
- * Thread.sleep(500);
- * sc68.setVolume(75);
- * sc68.resume();
- * Thread.sleep(1000);
- * Assert.assertTrue(sc68.seek() &gt;= 0);
- * 
- * sc68.stop();
- * </pre>
  */
-public interface Sc68
+public interface Sc68 extends Audio
 {
-    /**
-     * Play a music from its id, previously loaded.
-     * 
-     * @param media The music media.
-     * @throws LionEngineException If media is <code>null</code>
-     */
-    void play(Media media);
-
-    /**
-     * Set player volume (between 0 and 100, as a percent).
-     * 
-     * @param volume The music volume [0-100].
-     * @throws LionEngineException If argument is invalid.
-     */
-    void setVolume(int volume);
-
     /**
      * Configure the audio output.
      * 
@@ -69,24 +35,51 @@ public interface Sc68
     void setConfig(boolean interpolation, boolean joinStereo);
 
     /**
-     * Pause a playing music.
+     * Play the audio.
+     * <p>
+     * The audio will be played from the beginning (can be set by {@link #setStart(long)}) until the end.
+     * </p>
+     * <p>
+     * In case of a loop, audio will be played in loop between the set ticks using {@link #setLoop(long, long)}.
+     * </p>
+     * 
+     * @param alignment The sound alignment.
+     * @param loop <code>true</code> to play in loop, <code>false</code> else.
+     * @throws LionEngineException If unable to play sound.
+     */
+    void play(Align alignment, boolean loop);
+
+    /**
+     * Set starting tick (starting audio position).
+     * 
+     * @param tick The starting tick <code>[0 - {@link #getTicks()}]</code>.
+     * @throws LionEngineException If argument is invalid.
+     */
+    void setStart(long tick);
+
+    /**
+     * Set loop area in tick.
+     * 
+     * @param first The first tick <code>[0 - last}]</code>.
+     * @param last The last tick <code>[first - {@link #getTicks()}}]</code>.
+     * @throws LionEngineException If arguments are invalid.
+     */
+    void setLoop(long first, long last);
+
+    /**
+     * Get the total number of ticks.
+     * 
+     * @return The total number of ticks.
+     */
+    long getTicks();
+
+    /**
+     * Pause the audio (can be resumed).
      */
     void pause();
 
     /**
-     * Continue to play music after being paused.
+     * Resume the audio (if paused).
      */
     void resume();
-
-    /**
-     * Stop a music.
-     */
-    void stop();
-
-    /**
-     * Get music progress counter.
-     * 
-     * @return The music progress counter.
-     */
-    int seek();
 }

@@ -15,48 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.d;
+package com.b3dgs.lionengine.core;
 
-import java.util.Locale;
+import java.util.Collection;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Audio;
-import com.b3dgs.lionengine.core.AudioFactory;
-import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Handle the SFX.
+ * Describe music creation from format.
  */
-enum Sfx
+public interface SoundFactory
 {
-    /** Jump. */
-    JUMP,
-    /** Die. */
-    CRUSH;
-
-    /** Audio file extension. */
-    private static final String AUDIO_FILE_EXTENSION = ".wav";
-    /** Sound volume. */
-    private static final int VOLUME = 15;
-
-    /** Sounds list composing the effect. */
-    private final Audio sound;
+    /**
+     * Load a music file and prepare it to be played.
+     * 
+     * @param media The audio music media.
+     * @return The loaded music.
+     * @throws LionEngineException If media is <code>null</code> or invalid music or no music player is available.
+     */
+    Audio loadMusic(Media media);
 
     /**
-     * Constructor.
+     * Get the music audio formats.
+     * 
+     * @return The audio music formats.
      */
-    private Sfx()
-    {
-        final Media media = Medias.create("sfx", name().toLowerCase(Locale.ENGLISH) + AUDIO_FILE_EXTENSION);
-        sound = AudioFactory.loadAudio(media);
-        sound.setVolume(VOLUME);
-    }
-
-    /**
-     * Play the sound effect.
-     */
-    public void play()
-    {
-        sound.play();
-    }
+    Collection<String> getFormats();
 }
