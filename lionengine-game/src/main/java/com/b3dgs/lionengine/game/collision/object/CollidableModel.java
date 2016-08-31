@@ -129,7 +129,7 @@ public class CollidableModel extends FeatureModel implements Collidable
         final double sx = dh / norm;
         final double sy = dv / norm;
 
-        for (int count = 0; count < norm; count++)
+        for (int count = 0; count <= norm; count++)
         {
             if (checkCollide(rectangle, other))
             {
