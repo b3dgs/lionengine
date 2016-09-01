@@ -45,7 +45,23 @@ public final class Drawable
     private static volatile DpiType dpi;
 
     /**
-     * Set the DPI to use.
+     * Set the DPI to use. Computed automatically depending of the baseline resolution and the current configuration.
+     * <p>
+     * Resources has to be suffixed with "_DPI" before the extension.
+     * For example, baseline resources is "image.png", support for other DPI will need:
+     * </p>
+     * <ul>
+     * <li>image_ldpi.png - support for low resolution</li>
+     * <li>image_mdpi.png - support for baseline resolution, same as image.png, not required</li>
+     * <li>image_hdpi.png - support for high resolution</li>
+     * <li>image_xhdpi.png - support for very high resolution</li>
+     * </ul>
+     * <p>
+     * If there is not dedicated DPI resource, the baseline one will be use instead.
+     * </p>
+     * <p>
+     * <b>Must be set after engine started, before resource loading.</b>
+     * </p>
      * 
      * @param baseline The baseline resolution.
      * @param config The configuration used.
@@ -57,6 +73,22 @@ public final class Drawable
 
     /**
      * Set the DPI to use.
+     * <p>
+     * Resources has to be suffixed with "_DPI" before the extension.
+     * For example, baseline resources is "image.png", support for other DPI will need:
+     * </p>
+     * <ul>
+     * <li>image_ldpi.png - support for low resolution</li>
+     * <li>image_mdpi.png - support for baseline resolution, same as image.png, not required</li>
+     * <li>image_hdpi.png - support for high resolution</li>
+     * <li>image_xhdpi.png - support for very high resolution</li>
+     * </ul>
+     * <p>
+     * If there is not dedicated DPI resource, the baseline one will be use instead.
+     * </p>
+     * <p>
+     * <b>Must be set after engine started, before resource loading.</b>
+     * </p>
      * 
      * @param dpi The DPI to use.
      */
