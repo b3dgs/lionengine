@@ -45,9 +45,9 @@ public class Sc68Test
     @BeforeClass
     public static void prepare()
     {
-        AudioFactory.addFormat(new Sc68Format());
         try
         {
+            AudioFactory.addFormat(new Sc68Format());
             Medias.setLoadFromJar(Sc68Test.class);
             music = Medias.create("music.sc68");
             sc68 = AudioFactory.loadAudio(music, Sc68.class);
