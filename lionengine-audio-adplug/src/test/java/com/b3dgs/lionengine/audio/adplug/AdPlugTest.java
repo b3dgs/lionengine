@@ -45,9 +45,9 @@ public class AdPlugTest
     @BeforeClass
     public static void prepare()
     {
-        AudioFactory.addFormat(new AdPlugFormat());
         try
         {
+            AudioFactory.addFormat(new AdPlugFormat());
             Medias.setLoadFromJar(AdPlugTest.class);
             music = Medias.create("music.lds");
             adplug = AudioFactory.loadAudio(music, AdPlug.class);
