@@ -193,14 +193,12 @@ public abstract class Engine
 
     /**
      * Open engine. Has to be called before anything and only one time, in the main.
-     * When overridden, super must be called first.
      */
     protected abstract void open();
 
     /**
      * Close the engine. It is necessary to call this function only if the engine need to be started again during
      * the same JVM execution.
-     * When overridden, super must be called first.
      */
     protected abstract void close();
 }
