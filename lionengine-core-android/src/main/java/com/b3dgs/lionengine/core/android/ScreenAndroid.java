@@ -23,6 +23,7 @@ import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.ScreenBase;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -81,6 +82,7 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
         final MouseAndroid mouse = new MouseAndroid();
         view.setMouse(mouse);
         devices.put(Mouse.class, mouse);
+        devices.put(InputDevicePointer.class, mouse);
     }
 
     /**

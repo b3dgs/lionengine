@@ -28,6 +28,7 @@ import java.awt.image.BufferStrategy;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.ScreenBase;
 import com.b3dgs.lionengine.core.ScreenListener;
@@ -132,6 +133,7 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
         final MouseAwt mouse = new MouseAwt();
         addMouseListener(mouse);
         devices.put(Mouse.class, mouse);
+        devices.put(InputDevicePointer.class, mouse);
     }
 
     /**

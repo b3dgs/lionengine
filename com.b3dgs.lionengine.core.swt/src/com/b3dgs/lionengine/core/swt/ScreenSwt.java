@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.ScreenBase;
 import com.b3dgs.lionengine.core.ScreenListener;
@@ -145,6 +146,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
         final MouseSwt mouse = new MouseSwt(display);
         addMouseListener(mouse);
         devices.put(Mouse.class, mouse);
+        devices.put(InputDevicePointer.class, mouse);
     }
 
     /**
