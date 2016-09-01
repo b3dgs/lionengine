@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.b3dgs.lionengine.editor.map;singleton:=true
-Bundle-Version: 8.3.2.qualifier
+Bundle-Version: 8.3.2
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle

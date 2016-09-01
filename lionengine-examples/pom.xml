@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>8.3.2-SNAPSHOT</version>
+        <version>8.3.2</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-examples</artifactId>
@@ -30,14 +30,6 @@
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-game</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-audio-wav</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-audio-midi</artifactId>
         </dependency>
     </dependencies>
     <build>
