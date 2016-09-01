@@ -271,15 +271,37 @@ public final class Drawable
      */
     private static Media getMediaDpi(Media media)
     {
-        if (dpi != null)
+        if (dpi != null && dpi != DpiType.MDPI)
         {
-            final Media mediaDpi = Medias.getWithSuffix(media, dpi.name().toLowerCase(Locale.ENGLISH));
-            if (mediaDpi.exists())
-            {
-                return mediaDpi;
-            }
+            return getClosestDpi(dpi, media);
         }
         return media;
+    }
+
+    /**
+     * Get the associated DPI media closest to required DPI.
+     * 
+     * @param current The current DPI to use.
+     * @param media The original media.
+     * @return The DPI media, or the original media if no associated DPI found.
+     */
+    private static Media getClosestDpi(DpiType current, Media media)
+    {
+        final Media mediaDpi = Medias.getWithSuffix(media, current.name().toLowerCase(Locale.ENGLISH));
+        final Media closest;
+        if (mediaDpi.exists())
+        {
+            closest = mediaDpi;
+        }
+        else if (current.ordinal() > 0)
+        {
+            closest = getClosestDpi(DpiType.values()[current.ordinal() - 1], media);
+        }
+        else
+        {
+            closest = media;
+        }
+        return closest;
     }
 
     /**
