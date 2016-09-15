@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature.launchable;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Localizable;
@@ -146,14 +147,32 @@ public class UtilLaunchable
      * @param fired The fired flag.
      * @return The listener.
      */
-    public static LauncherListener createListener(final AtomicReference<Featurable> fired)
+    public static LauncherListener createListener(final AtomicBoolean fired)
     {
         return new LauncherListener()
         {
             @Override
-            public void notifyFired(Featurable featurable)
+            public void notifyFired()
             {
-                fired.set(featurable);
+                fired.set(true);
+            }
+        };
+    }
+
+    /**
+     * Create a listener.
+     * 
+     * @param firedLaunchable The fired launchable flag.
+     * @return The listener.
+     */
+    public static LaunchableListener createListener(final AtomicReference<Launchable> firedLaunchable)
+    {
+        return new LaunchableListener()
+        {
+            @Override
+            public void notifyFired(Launchable launchable)
+            {
+                firedLaunchable.set(launchable);
             }
         };
     }

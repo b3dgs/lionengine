@@ -46,7 +46,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class LauncherModel extends FeatureModel implements Launcher
 {
     /** Launcher listeners. */
-    private final Collection<LauncherListener> listeners = new HashSet<LauncherListener>();
+    private final Collection<LauncherListener> listenersLauncher = new HashSet<LauncherListener>();
+    /** Launchable listeners. */
+    private final Collection<LaunchableListener> listenersLaunchable = new HashSet<LaunchableListener>();
     /** Delayed launches. */
     private final Collection<DelayedLaunch> delayed = new ArrayList<DelayedLaunch>();
     /** Delayed launches launched. */
@@ -114,6 +116,10 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
     private void fired()
     {
+        for (final LauncherListener listener : listenersLauncher)
+        {
+            listener.notifyFired();
+        }
         for (final LaunchableConfig config : launchables)
         {
             final Media media = Medias.create(config.getMedia());
@@ -152,9 +158,9 @@ public class LauncherModel extends FeatureModel implements Launcher
         launchable.setLocation(x, y);
         launchable.setVector(computeVector(config.getVector()));
         launchable.launch();
-        for (final LauncherListener listener : listeners)
+        for (final LaunchableListener listener : listenersLaunchable)
         {
-            listener.notifyFired(featurable);
+            listener.notifyFired(launchable);
         }
         handler.add(featurable);
     }
@@ -229,6 +235,10 @@ public class LauncherModel extends FeatureModel implements Launcher
         {
             addListener((LauncherListener) provider);
         }
+        if (provider instanceof LaunchableListener)
+        {
+            addListener((LaunchableListener) provider);
+        }
     }
 
     @Override
@@ -240,12 +250,22 @@ public class LauncherModel extends FeatureModel implements Launcher
         {
             addListener((LauncherListener) listener);
         }
+        if (listener instanceof LaunchableListener)
+        {
+            addListener((LaunchableListener) listener);
+        }
     }
 
     @Override
     public void addListener(LauncherListener listener)
     {
-        listeners.add(listener);
+        listenersLauncher.add(listener);
+    }
+
+    @Override
+    public void addListener(LaunchableListener listener)
+    {
+        listenersLaunchable.add(listener);
     }
 
     @Override

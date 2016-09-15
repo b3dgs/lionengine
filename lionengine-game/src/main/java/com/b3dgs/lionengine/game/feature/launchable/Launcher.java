@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 
 /**
@@ -38,8 +37,16 @@ public interface Launcher extends Refreshable
     void addListener(LauncherListener listener);
 
     /**
+     * Add a launchable listener.
+     * 
+     * @param listener The launchable listener to add.
+     */
+    void addListener(LaunchableListener listener);
+
+    /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired(Featurable)}.
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
+     * launch.
      * 
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
@@ -47,7 +54,8 @@ public interface Launcher extends Refreshable
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired(Featurable)}.
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
+     * launch.
      * 
      * @param target The launch target.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.

@@ -21,11 +21,11 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.launchable.Launchable;
+import com.b3dgs.lionengine.game.feature.launchable.LaunchableListener;
 import com.b3dgs.lionengine.game.feature.launchable.Launcher;
-import com.b3dgs.lionengine.game.feature.launchable.LauncherListener;
 import com.b3dgs.lionengine.game.feature.launchable.LauncherModel;
 import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 /**
  * Weapon implementation.
  */
-class Weapon extends FeaturableModel implements LauncherListener
+class Weapon extends FeaturableModel implements LaunchableListener
 {
     /** Media. */
     public static final Media PULSE_CANNON = Medias.create("PulseCannon.xml");
@@ -92,8 +92,8 @@ class Weapon extends FeaturableModel implements LauncherListener
     }
 
     @Override
-    public void notifyFired(Featurable featurable)
+    public void notifyFired(Launchable launchable)
     {
-        featurable.getFeature(Collidable.class).addIgnore(ownerCollidable);
+        launchable.getFeature(Collidable.class).addIgnore(ownerCollidable);
     }
 }

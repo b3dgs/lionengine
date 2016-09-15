@@ -17,23 +17,13 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
-
 /**
  * Notify events from the {@link Launcher}.
  */
 public interface LauncherListener
 {
     /**
-     * Notify when a fire occurred.
-     * <p>
-     * The fired featurable has at least:
-     * </p>
-     * <ul>
-     * <li>{@link Launchable}</li>
-     * </ul>
-     * 
-     * @param featurable The fired featurable.
+     * Notify when a fire occurred. Called first before any {@link Launchable} thrown.
      */
-    void notifyFired(Featurable featurable);
+    void notifyFired();
 }

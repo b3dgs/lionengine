@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.After;
@@ -96,14 +97,17 @@ public class LauncherModelTest
     @Test
     public void testLauncher() throws InterruptedException
     {
-        final AtomicReference<Featurable> fired = new AtomicReference<Featurable>();
+        final AtomicBoolean fired = new AtomicBoolean();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
         launcher.addListener(UtilLaunchable.createListener(fired));
+        launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
         Thread.sleep(11);
         launcher.fire();
 
-        Assert.assertNotNull(fired.get());
-        fired.set(null);
+        Assert.assertTrue(fired.get());
+        Assert.assertNotNull(firedLaunchable.get());
+        firedLaunchable.set(null);
 
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
@@ -113,8 +117,8 @@ public class LauncherModelTest
         Thread.sleep(11);
         launcher.fire(new TransformableModel());
 
-        Assert.assertNotNull(fired.get());
-        fired.set(null);
+        Assert.assertNotNull(firedLaunchable.get());
+        firedLaunchable.set(null);
 
         handler.update(1.0);
 
@@ -123,7 +127,7 @@ public class LauncherModelTest
         Thread.sleep(11);
         launcher.fire(UtilLaunchable.createLocalizable());
 
-        Assert.assertNotNull(fired.get());
+        Assert.assertNotNull(firedLaunchable.get());
 
         handler.update(1.0);
 
@@ -147,8 +151,10 @@ public class LauncherModelTest
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
 
-        final AtomicReference<Featurable> fired = new AtomicReference<Featurable>();
+        final AtomicBoolean fired = new AtomicBoolean();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
         launcher.addListener(UtilLaunchable.createListener(fired));
+        launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
         Thread.sleep(11);
         launcher.fire();
@@ -158,16 +164,17 @@ public class LauncherModelTest
         handler.update(1.0);
 
         Assert.assertEquals(0, handler.size());
-        Assert.assertNull(fired.get());
+        Assert.assertTrue(fired.get());
+        Assert.assertNull(firedLaunchable.get());
 
         Thread.sleep(11);
         launcher.update(1.0);
         handler.update(1.0);
 
-        Assert.assertNotNull(fired.get());
+        Assert.assertNotNull(firedLaunchable.get());
         Assert.assertEquals(1, handler.size());
 
-        fired.set(null);
+        firedLaunchable.set(null);
         handler.removeAll();
         handler.update(1.0);
 
@@ -184,16 +191,19 @@ public class LauncherModelTest
     {
         final LaunchableObjectSelf object = new LaunchableObjectSelf();
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
-        launcher.addListener(object);
+        launcher.addListener((LauncherListener) object);
+        launcher.addListener((LaunchableListener) object);
 
-        Assert.assertNull(object.fired.get());
+        Assert.assertFalse(object.fired.get());
+        Assert.assertNull(object.firedLaunchable.get());
 
         Thread.sleep(11);
         launcher.fire();
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertNotNull(object.fired.get());
+        Assert.assertTrue(object.fired.get());
+        Assert.assertNotNull(object.firedLaunchable.get());
 
         handler.removeAll();
         handler.update(1.0);
@@ -213,14 +223,16 @@ public class LauncherModelTest
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
         launcher.checkListener(object);
 
-        Assert.assertNull(object.fired.get());
+        Assert.assertFalse(object.fired.get());
+        Assert.assertNull(object.firedLaunchable.get());
 
         Thread.sleep(11);
         launcher.fire();
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertNotNull(object.fired.get());
+        Assert.assertTrue(object.fired.get());
+        Assert.assertNotNull(object.firedLaunchable.get());
 
         handler.removeAll();
         handler.update(1.0);
