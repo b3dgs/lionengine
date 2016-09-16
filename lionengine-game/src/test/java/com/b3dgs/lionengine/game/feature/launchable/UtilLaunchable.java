@@ -90,6 +90,7 @@ public class UtilLaunchable
 
         final XmlNode root = Xml.create("test");
         root.add(LauncherConfig.exports(launcherConfig));
+        root.add(LauncherConfig.exports(new LauncherConfig(1, 50, Arrays.asList(launchableConfig))));
         Xml.save(root, media);
 
         return media;

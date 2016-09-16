@@ -182,6 +182,52 @@ public class LauncherModelTest
     }
 
     /**
+     * Test the launcher level.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testLauncherLevel() throws InterruptedException
+    {
+        final AtomicBoolean fired = new AtomicBoolean();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+        launcher.addListener(UtilLaunchable.createListener(fired));
+        launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
+
+        Thread.sleep(11);
+        launcher.fire();
+
+        Assert.assertTrue(fired.get());
+        Assert.assertNotNull(firedLaunchable.get());
+        firedLaunchable.set(null);
+
+        final Handler handler = services.get(Handler.class);
+        handler.update(1.0);
+
+        Assert.assertEquals(1, handler.size());
+
+        Thread.sleep(25);
+        launcher.setLevel(1);
+        launcher.fire();
+
+        Assert.assertNull(firedLaunchable.get());
+
+        Thread.sleep(30);
+        launcher.fire();
+
+        Assert.assertNotNull(firedLaunchable.get());
+
+        handler.update(1.0);
+
+        Assert.assertEquals(2, handler.size());
+
+        handler.removeAll();
+        handler.update(1.0);
+
+        Assert.assertEquals(0, handler.size());
+    }
+
+    /**
      * Test the launcher with listener itself.
      * 
      * @throws InterruptedException If error.

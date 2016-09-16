@@ -26,9 +26,11 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -145,5 +147,38 @@ public class LaunchableModelTest
         launchable.launch();
 
         Assert.assertTrue(fired.get());
+    }
+
+    /**
+     * Test the check listener.
+     */
+    @Test
+    public void testCheck()
+    {
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new TransformableModel());
+        featurable.addFeature(new LaunchableModel());
+        featurable.addFeature(new Self());
+        featurable.prepareFeatures(new Services());
+    }
+
+    /**
+     * Self listener.
+     */
+    private static class Self extends FeatureModel implements LaunchableListener
+    {
+        /**
+         * Create self.
+         */
+        Self()
+        {
+            super();
+        }
+
+        @Override
+        public void notifyFired(Launchable launchable)
+        {
+            // Nothing to do
+        }
     }
 }
