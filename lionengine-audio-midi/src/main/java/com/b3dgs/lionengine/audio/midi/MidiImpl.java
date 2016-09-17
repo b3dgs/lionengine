@@ -24,6 +24,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
@@ -101,6 +102,8 @@ public final class MidiImpl implements Midi
     private final Sequencer sequencer;
     /** Current sequence reference. */
     private final Sequence sequence;
+    /** Current receiver. */
+    private final Receiver receiver;
     /** Total ticks. */
     private final long ticks;
     /** Paused flag. */
@@ -120,6 +123,7 @@ public final class MidiImpl implements Midi
             sequencer = MidiSystem.getSequencer(false);
             sequencer.open();
             sequencer.setSequence(sequence);
+            receiver = MidiSystem.getReceiver();
 
             synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
@@ -205,12 +209,8 @@ public final class MidiImpl implements Midi
                 for (int i = 0; i < channelsNumber; i++)
                 {
                     volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, controlChangeByte, vol);
-                    MidiSystem.getReceiver().send(volumeMessage, -1);
+                    receiver.send(volumeMessage, -1);
                 }
-            }
-            catch (final MidiUnavailableException exception)
-            {
-                throw new LionEngineException(exception, ERROR_MIDI);
             }
             catch (final InvalidMidiDataException exception)
             {
@@ -238,6 +238,7 @@ public final class MidiImpl implements Midi
     {
         sequencer.close();
         synthesizer.close();
+        receiver.close();
     }
 
     @Override
