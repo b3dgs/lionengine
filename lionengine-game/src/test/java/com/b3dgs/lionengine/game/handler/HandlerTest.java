@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
@@ -325,5 +326,75 @@ public class HandlerTest
         handler.update(1.0);
 
         Assert.assertEquals(0, handler.size());
+    }
+
+    /**
+     * Test add component with listener.
+     */
+    @Test
+    public void testAddComponentWithListener()
+    {
+        final AtomicBoolean add = new AtomicBoolean();
+        final AtomicBoolean remove = new AtomicBoolean();
+        final Listener listener = new Listener(add, remove);
+        final Handler handler = new Handler(new Services());
+        handler.addComponent(listener);
+
+        final Featurable featurable = new FeaturableModel();
+        handler.add(featurable);
+
+        Assert.assertFalse(add.get());
+        Assert.assertFalse(remove.get());
+
+        handler.update(1.0);
+
+        Assert.assertTrue(add.get());
+        Assert.assertFalse(remove.get());
+
+        add.set(false);
+        handler.remove(featurable);
+
+        Assert.assertFalse(add.get());
+        Assert.assertFalse(remove.get());
+
+        handler.update(1.0);
+
+        Assert.assertFalse(add.get());
+        Assert.assertTrue(remove.get());
+
+        Assert.assertEquals(0, handler.size());
+    }
+
+    /**
+     * Listener mock.
+     */
+    private static class Listener extends ComponentUpdatable implements HandlerListener
+    {
+        private final AtomicBoolean add;
+        private final AtomicBoolean remove;
+
+        /**
+         * Create listener.
+         * 
+         * @param add Add boolean.
+         * @param remove Remove boolean.
+         */
+        public Listener(AtomicBoolean add, AtomicBoolean remove)
+        {
+            this.add = add;
+            this.remove = remove;
+        }
+
+        @Override
+        public void notifyHandlableAdded(Featurable featurable)
+        {
+            add.set(true);
+        }
+
+        @Override
+        public void notifyHandlableRemoved(Featurable featurable)
+        {
+            remove.set(true);
+        }
     }
 }
