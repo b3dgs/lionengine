@@ -17,9 +17,11 @@
  */
 package com.b3dgs.lionengine.game.collision.tile.it;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -31,12 +33,14 @@ import com.b3dgs.lionengine.game.feature.displayable.Displayable;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
  * Rendering of our controllable entity.
  */
 class MarioRenderer extends FeatureModel implements Displayable
 {
+    private final TextGame text = new TextGame("Arial", 12, TextStyle.NORMAL);
     private final SpriteAnimated surface;
 
     @Service private Collidable collidable;
@@ -55,6 +59,10 @@ class MarioRenderer extends FeatureModel implements Displayable
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
+
+        text.setAlign(Align.CENTER);
+        text.setColor(ColorRgba.BLACK);
+        text.setText("Mario");
     }
 
     @Override
@@ -70,6 +78,12 @@ class MarioRenderer extends FeatureModel implements Displayable
     {
         surface.setLocation(camera, transformable);
         surface.render(g);
+
+        text.update(camera);
+        text.setLocation((int) transformable.getX(), (int) transformable.getY());
+        g.setColor(ColorRgba.BLACK);
+        text.draw(g, transformable, 0, 28, Align.CENTER, "Mario");
+        text.render(g);
 
         g.setColor(ColorRgba.GREEN);
         collidable.render(g);
