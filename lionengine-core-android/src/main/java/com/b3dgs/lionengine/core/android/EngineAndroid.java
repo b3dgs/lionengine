@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.core.android;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.util.DisplayMetrics;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Engine;
@@ -87,6 +90,7 @@ public final class EngineAndroid extends Engine
         AudioFactory.addFormat(new WavFormat());
 
         Medias.setFactoryMedia(new FactoryMediaAndroid());
+        Medias.setResourcesDirectory(activity.getPackageName().replace(Constant.DOT, File.separator));
         Graphics.setFactoryGraphic(new FactoryGraphicAndroid());
     }
 

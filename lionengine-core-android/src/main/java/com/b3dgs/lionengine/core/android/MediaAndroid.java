@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Media implementation.
@@ -46,6 +47,10 @@ final class MediaAndroid implements Media
     private final AssetManager assetManager;
     /** Content resolver. */
     private final ContentResolver contentResolver;
+    /** Separator. */
+    private final String separator;
+    /** Resources directory. */
+    private final String resourcesDir;
     /** Media path. */
     private final String path;
     /** Media parent path. */
@@ -59,17 +64,26 @@ final class MediaAndroid implements Media
      * @param assetManager The asset manager.
      * @param contentResolver The content resolver.
      * @param separator The path separator.
+     * @param resourcesDir The resources directory.
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(AssetManager assetManager, ContentResolver contentResolver, String separator, String path)
+    MediaAndroid(AssetManager assetManager,
+                 ContentResolver contentResolver,
+                 String separator,
+                 String resourcesDir,
+                 String path)
     {
         Check.notNull(assetManager);
         Check.notNull(contentResolver);
+        Check.notNull(separator);
+        Check.notNull(resourcesDir);
         Check.notNull(path);
 
         this.assetManager = assetManager;
         this.contentResolver = contentResolver;
+        this.separator = separator;
+        this.resourcesDir = resourcesDir;
         this.path = path;
         final int index = path.lastIndexOf(separator);
         if (index > -1)
@@ -92,11 +106,11 @@ final class MediaAndroid implements Media
     {
         try
         {
-            return assetManager.openFd(path);
+            return assetManager.openFd(UtilFolder.getPathSeparator(separator, resourcesDir, path));
         }
-        catch (final IOException e)
+        catch (final IOException exception)
         {
-            throw new LionEngineException(e);
+            throw new LionEngineException(exception);
         }
     }
 
@@ -129,7 +143,7 @@ final class MediaAndroid implements Media
 
         try
         {
-            return assetManager.open(path);
+            return assetManager.open(UtilFolder.getPathSeparator(separator, resourcesDir, path));
         }
         catch (final IOException exception)
         {
@@ -144,7 +158,9 @@ final class MediaAndroid implements Media
 
         try
         {
-            return contentResolver.openOutputStream(Uri.parse(Uri.encode(path)));
+            return contentResolver.openOutputStream(Uri.parse(Uri.encode(UtilFolder.getPathSeparator(separator,
+                                                                                                     resourcesDir,
+                                                                                                     path))));
         }
         catch (final IOException exception)
         {
