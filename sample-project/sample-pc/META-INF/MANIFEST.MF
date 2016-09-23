@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+ANDROID_HOME: C:/Program Files/Android SDK/sdk
+Bundle-Description: Sample project
+Bundle-DocURL: www.b3dgs.com
+Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: Sample PC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: com.b3dgs.sample.game
+Bundle-Vendor: Byron 3D Games Studio
+Bundle-Version: 0.1.0.SNAPSHOT
+Export-Package: com.b3dgs.sample;uses:="com.b3dgs.lionengine.core,com.b3
+ dgs.lionengine.graphic";version="0.1.0"
+Import-Package: com.b3dgs.lionengine,com.b3dgs.lionengine.core,com.b3dgs
+ .lionengine.core.awt,com.b3dgs.lionengine.graphic,org.junit;resolution:
+ =optional

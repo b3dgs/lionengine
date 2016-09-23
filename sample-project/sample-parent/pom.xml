@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <project-name>sample</project-name>
-        <jdk.version>1.8</jdk.version>
-        <jdk.home>${JDK_8_HOME}</jdk.home>
+        <jdk.version>1.6</jdk.version>
+        <jdk.home>${JDK_6_HOME}</jdk.home>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <main-group-id>com.b3dgs.${project-name}</main-group-id>

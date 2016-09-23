@@ -17,10 +17,15 @@
  */
 package com.b3dgs.sample;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
  * Game scene implementation.
@@ -28,7 +33,9 @@ import com.b3dgs.lionengine.graphic.Graphic;
 public class Scene extends Sequence
 {
     /** Scene display. */
-    public static final Resolution RESOLUTION = new Resolution(320, 240, 60);
+    public static final Resolution RESOLUTION = new Resolution(240, 320, 60);
+    /** Text. */
+    private final Text text = Graphics.createText(Text.SANS_SERIF, 20, TextStyle.NORMAL);
 
     /**
      * Create the scene.
@@ -43,18 +50,22 @@ public class Scene extends Sequence
     @Override
     public void load()
     {
-        // Load resources
+        text.setAlign(Align.CENTER);
+        text.setColor(ColorRgba.WHITE);
+        text.setLocation(getWidth() / 2, getHeight() / 2);
     }
 
     @Override
     public void update(double extrp)
     {
-        // Update game
+        text.setText("FPS = " + String.valueOf(getFps()));
     }
 
     @Override
     public void render(Graphic g)
     {
-        // Render game
+        g.clear(0, 0, getWidth(), getHeight());
+        text.draw(g, getWidth() / 2, 20, Align.CENTER, "Hello World");
+        text.render(g);
     }
 }

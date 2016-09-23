@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.android.EngineAndroid;
+import com.b3dgs.sample.Scene;
 
 /**
  * Android entry point.
