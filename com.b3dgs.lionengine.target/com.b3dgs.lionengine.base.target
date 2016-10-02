@@ -8,10 +8,10 @@
 <repository location="http://download.eclipse.org/eclipse/updates/4.6"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.4.0.201604200752"/>
-<unit id="org.eclipse.swtbot.feature.group" version="2.4.0.201604200752"/>
-<unit id="org.eclipse.swtbot.ide.feature.group" version="2.4.0.201604200752"/>
-<unit id="org.eclipse.swtbot.eclipse.test.junit.feature.group" version="2.4.0.201604200752"/>
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.5.0.201609021837"/>
+<unit id="org.eclipse.swtbot.feature.group" version="2.5.0.201609021837"/>
+<unit id="org.eclipse.swtbot.ide.feature.group" version="2.5.0.201609021837"/>
+<unit id="org.eclipse.swtbot.eclipse.test.junit.feature.group" version="2.5.0.201609021837"/>
 <repository location="http://download.eclipse.org/technology/swtbot/releases/latest/"/>
 </location>
 </locations>
