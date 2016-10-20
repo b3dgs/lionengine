@@ -5,7 +5,6 @@
 <setting id="cleanup.always_use_this_for_non_static_method_access" value="false"/>
 <setting id="cleanup.organize_imports" value="true"/>
 <setting id="cleanup.remove_trailing_whitespaces_ignore_empty" value="false"/>
-<setting id="cleanup.use_type_arguments" value="false"/>
 <setting id="cleanup.format_source_code_changes_only" value="false"/>
 <setting id="cleanup.qualify_static_field_accesses_with_declaring_class" value="false"/>
 <setting id="cleanup.add_generated_serial_version_id" value="true"/>
