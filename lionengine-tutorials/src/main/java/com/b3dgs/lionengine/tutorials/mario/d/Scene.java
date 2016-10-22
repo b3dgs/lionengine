@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.AudioFactory;
 import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
@@ -109,5 +110,6 @@ class Scene extends Sequence
     public void onTerminated(boolean hasNextSequence)
     {
         music.stop();
+        Engine.terminate();
     }
 }
