@@ -358,8 +358,8 @@ public final class ToolsSwt
         final ImageData data = image.getImageData();
         final PaletteData palette = data.palette;
         final RGB[] colors = palette.getRGBs();
-        final Map<Integer, RGB> newColors = new TreeMap<Integer, RGB>();
-        final Map<RGB, Integer> newColorsPixel = new HashMap<RGB, Integer>();
+        final Map<Integer, RGB> newColors = new TreeMap<>();
+        final Map<RGB, Integer> newColorsPixel = new HashMap<>();
         if (colors != null)
         {
             for (final RGB color : colors)

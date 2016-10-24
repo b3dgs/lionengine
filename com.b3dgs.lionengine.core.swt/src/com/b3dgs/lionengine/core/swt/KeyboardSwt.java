@@ -33,20 +33,20 @@ import org.eclipse.swt.events.KeyListener;
 public final class KeyboardSwt implements Keyboard, KeyListener
 {
     /** No key code. */
-    private static final int NO_KEY_CODE = -1;
+    static final int NO_KEY_CODE = -1;
     /** No key code value. */
     private static final Integer NO_KEY_CODE_VALUE = Integer.valueOf(NO_KEY_CODE);
     /** Empty key name. */
     private static final char EMPTY_KEY_NAME = ' ';
 
     /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
     /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** List of keys. */
-    private final Collection<Integer> keys = new HashSet<Integer>();
+    private final Collection<Integer> keys = new HashSet<>();
     /** Pressed states. */
-    private final Collection<Integer> pressed = new HashSet<Integer>();
+    private final Collection<Integer> pressed = new HashSet<>();
     /** Last key code. */
     private volatile Integer lastCode = NO_KEY_CODE_VALUE;
     /** Last key name. */
@@ -79,7 +79,7 @@ public final class KeyboardSwt implements Keyboard, KeyListener
         final List<EventAction> list;
         if (actionsPressed.get(key) == null)
         {
-            list = new ArrayList<EventAction>();
+            list = new ArrayList<>();
             actionsPressed.put(key, list);
         }
         else
@@ -95,7 +95,7 @@ public final class KeyboardSwt implements Keyboard, KeyListener
         final List<EventAction> list;
         if (actionsReleased.get(key) == null)
         {
-            list = new ArrayList<EventAction>();
+            list = new ArrayList<>();
             actionsReleased.put(key, list);
         }
         else

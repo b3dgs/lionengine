@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 final class GraphicSwt implements Graphic
 {
     /** Flip image cache. */
-    private final Map<ImageSurface, Image> cacheFlip = new HashMap<ImageSurface, Image>();
+    private final Map<ImageSurface, Image> cacheFlip = new HashMap<>();
     /** The graphic output. */
     private GC gc;
     /** Device used. */
