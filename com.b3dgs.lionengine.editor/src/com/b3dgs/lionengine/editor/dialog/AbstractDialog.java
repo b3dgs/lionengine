@@ -280,7 +280,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
 
         finish = UtilButton.create(buttonArea, Messages.Finish, AbstractDialog.ICON_OK);
         finish.setEnabled(false);
-        UtilButton.setAction(finish, () -> close());
+        UtilButton.setAction(finish, this::close);
 
         cancel = UtilButton.create(buttonArea, Messages.Cancel, AbstractDialog.ICON_CANCEL);
         UtilButton.setAction(cancel, () ->

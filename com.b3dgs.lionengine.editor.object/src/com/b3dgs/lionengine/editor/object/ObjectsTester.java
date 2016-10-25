@@ -23,6 +23,7 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableConfig;
@@ -54,6 +55,7 @@ public final class ObjectsTester extends PropertyTester
         }
         catch (final LionEngineException exception)
         {
+            Verbose.exception(exception);
             return false;
         }
     }

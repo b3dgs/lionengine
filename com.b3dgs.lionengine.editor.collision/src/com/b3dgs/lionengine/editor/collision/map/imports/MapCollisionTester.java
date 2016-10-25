@@ -21,6 +21,7 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
@@ -52,6 +53,7 @@ public final class MapCollisionTester extends PropertyTester
         }
         catch (final LionEngineException exception)
         {
+            Verbose.exception(exception);
             return false;
         }
     }
@@ -71,6 +73,7 @@ public final class MapCollisionTester extends PropertyTester
         }
         catch (final LionEngineException exception)
         {
+            Verbose.exception(exception);
             return false;
         }
     }

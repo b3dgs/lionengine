@@ -164,7 +164,7 @@ public abstract class ObjectList<T extends Nameable>
         data.minimumWidth = 128;
         data.minimumHeight = 96;
         objectsTree.setLayoutData(data);
-        UtilTree.setAction(objectsTree, () -> onSelection());
+        UtilTree.setAction(objectsTree, this::onSelection);
     }
 
     /**

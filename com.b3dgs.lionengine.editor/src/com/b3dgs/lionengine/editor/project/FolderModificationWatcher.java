@@ -217,6 +217,7 @@ public final class FolderModificationWatcher
                 catch (final InterruptedException exception)
                 {
                     Thread.currentThread().interrupt();
+                    Verbose.exception(exception);
                     break;
                 }
             }

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.validator;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -55,7 +56,7 @@ public class InputValidator implements IInputValidator
      * @param filename The default filename value.
      * @param action The action called if file does not already exists.
      */
-    public static void getFile(Shell parent, String title, String text, String filename, InputAction action)
+    public static void getFile(Shell parent, String title, String text, String filename, Consumer<File> action)
     {
         final String value = filename.replace(Factory.FILE_DATA_DOT_EXTENSION, Constant.EMPTY_STRING);
         final Media selection = ProjectModel.INSTANCE.getSelection();
@@ -71,7 +72,7 @@ public class InputValidator implements IInputValidator
                 MessageDialog.openError(parent, Messages.ErrorTitle, Messages.ErrorText);
                 getFile(parent, title, text, filename, action);
             }
-            action.handle(file);
+            action.accept(file);
         }
     }
 

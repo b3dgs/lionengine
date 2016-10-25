@@ -132,7 +132,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
 
         final Button browse = UtilButton.createBrowse(nameArea);
         browse.forceFocus();
-        UtilButton.setAction(browse, () -> browseProjectLocation());
+        UtilButton.setAction(browse, this::browseProjectLocation);
     }
 
     /**

@@ -201,7 +201,7 @@ public class GroupsEditDialog extends AbstractDialog
         final Composite levelsArea = createLevelsArea(content);
         next = UtilButton.create(levelsArea, com.b3dgs.lionengine.editor.dialog.Messages.Next, AbstractDialog.ICON_OK);
         next.setEnabled(false);
-        UtilButton.setAction(next, () -> next());
+        UtilButton.setAction(next, this::next);
     }
 
     @Override

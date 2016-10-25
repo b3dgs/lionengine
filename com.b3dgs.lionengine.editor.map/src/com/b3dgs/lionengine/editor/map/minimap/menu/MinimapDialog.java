@@ -211,7 +211,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
 
         final Button browse = UtilButton.createBrowse(content);
         browse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        UtilButton.setAction(browse, () -> selectConfig());
+        UtilButton.setAction(browse, this::selectConfig);
 
         final Button automatic = UtilButton.create(content, Messages.Generate, AbstractDialog.ICON_OK);
         automatic.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -263,7 +263,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         label.addMouseListener(this);
         label.addMouseMoveListener(this);
         label.addMouseWheelListener(this);
-        label.addMouseTrackListener(UtilSwt.createFocusListener(() -> label.forceFocus()));
+        label.addMouseTrackListener(UtilSwt.createFocusListener(label::forceFocus));
         label.addDisposeListener(event -> part.getUpdater().removeListeners(this));
 
         final WorldPart worldPart = part;

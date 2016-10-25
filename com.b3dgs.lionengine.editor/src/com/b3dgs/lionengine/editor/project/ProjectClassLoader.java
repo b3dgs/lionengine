@@ -394,7 +394,7 @@ public class ProjectClassLoader
                     found.add(clazz);
                 }
             }
-            catch (final LionEngineException exception)
+            catch (@SuppressWarnings("unused") final LionEngineException exception)
             {
                 return;
             }

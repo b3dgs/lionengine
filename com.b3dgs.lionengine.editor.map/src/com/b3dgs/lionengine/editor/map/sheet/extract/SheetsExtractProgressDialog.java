@@ -150,10 +150,4 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
         });
         dialog.getDisplay().readAndDispatch();
     }
-
-    @Override
-    public boolean isCanceled()
-    {
-        return super.isCanceled();
-    }
 }

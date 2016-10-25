@@ -78,7 +78,7 @@ public class AboutDialog
         final GridData data = new GridData();
         data.widthHint = 72;
         okButton.setLayoutData(data);
-        UtilButton.setAction(okButton, () -> dialog.dispose());
+        UtilButton.setAction(okButton, dialog::dispose);
     }
 
     /** The dialog. */

@@ -114,7 +114,7 @@ public class LevelRipWidget
         final Button addLevelRip = new Button(parent, SWT.PUSH);
         addLevelRip.setImage(ObjectList.ICON_ADD);
         addLevelRip.setToolTipText(Messages.AddLevelRip);
-        UtilButton.setAction(addLevelRip, () -> onAddLevelRip());
+        UtilButton.setAction(addLevelRip, this::onAddLevelRip);
     }
 
     /**
@@ -127,7 +127,7 @@ public class LevelRipWidget
         final Button removeLevelRip = new Button(parent, SWT.PUSH);
         removeLevelRip.setImage(ObjectList.ICON_REMOVE);
         removeLevelRip.setToolTipText(Messages.RemoveLevelRip);
-        UtilButton.setAction(removeLevelRip, () -> onRemoveLevelRip());
+        UtilButton.setAction(removeLevelRip, this::onRemoveLevelRip);
     }
 
     /**

@@ -154,7 +154,7 @@ public final class ProjectPart implements Focusable
                 checkOpenFile();
             }
         });
-        UtilTree.setAction(tree, () -> updateSelection());
+        UtilTree.setAction(tree, this::updateSelection);
         tree.addMenuDetectListener(menuDetectEvent -> updateMenu());
         menuService.registerContextMenu(tree, ProjectPart.MENU_ID);
     }
