@@ -274,6 +274,7 @@ public class XmlTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         Xml.save(new XmlNodeMock(), fileXml);
@@ -289,6 +290,7 @@ public class XmlTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
             finally
             {
@@ -332,6 +334,7 @@ public class XmlTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -341,6 +344,7 @@ public class XmlTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         try
@@ -351,6 +355,7 @@ public class XmlTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

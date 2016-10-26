@@ -89,6 +89,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.superiorOrEqual(Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -131,6 +132,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.superiorOrEqual(Double.MIN_VALUE, Double.MAX_VALUE);
@@ -166,6 +168,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.superiorStrict(Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -204,6 +207,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.superiorStrict(Double.MIN_VALUE, Double.MAX_VALUE);
@@ -242,6 +246,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.inferiorOrEqual(Integer.MAX_VALUE, Integer.MIN_VALUE);
@@ -284,6 +289,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.inferiorOrEqual(Double.MAX_VALUE, Double.MIN_VALUE);
@@ -319,6 +325,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.inferiorStrict(Integer.MAX_VALUE, Integer.MIN_VALUE);
@@ -357,6 +364,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
         Check.inferiorStrict(Double.MAX_VALUE, Double.MIN_VALUE);
@@ -397,6 +405,7 @@ public class CheckTest
             catch (final LionEngineException exception)
             {
                 // Success
+                Assert.assertNotNull(exception);
             }
         }
     }

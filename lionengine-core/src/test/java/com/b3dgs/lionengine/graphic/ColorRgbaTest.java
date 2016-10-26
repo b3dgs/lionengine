@@ -72,6 +72,7 @@ public class ColorRgbaTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 

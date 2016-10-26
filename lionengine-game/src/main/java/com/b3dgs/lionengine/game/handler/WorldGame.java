@@ -224,6 +224,10 @@ public abstract class WorldGame implements Updatable, Renderable
      * Updatable
      */
 
+    /**
+     * {@inheritDoc}
+     * By default, updates handler.
+     */
     @Override
     public void update(double extrp)
     {
@@ -234,6 +238,10 @@ public abstract class WorldGame implements Updatable, Renderable
      * Renderable
      */
 
+    /**
+     * {@inheritDoc}
+     * By default, renders handler.
+     */
     @Override
     public void render(Graphic g)
     {

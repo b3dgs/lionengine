@@ -83,6 +83,7 @@ public class ImageTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -92,6 +93,7 @@ public class ImageTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         // Load unexisting image
         try
@@ -102,6 +104,7 @@ public class ImageTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -111,6 +114,7 @@ public class ImageTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 

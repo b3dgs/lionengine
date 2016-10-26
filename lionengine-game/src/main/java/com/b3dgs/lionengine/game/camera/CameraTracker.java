@@ -33,6 +33,7 @@ public class CameraTracker extends FeatureModel implements Refreshable
 {
     /** Followed element (can be <code>null</code>). */
     private Localizable tracked;
+    /** Camera reference. */
     private Camera camera;
 
     /**

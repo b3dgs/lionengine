@@ -54,6 +54,7 @@ public class StateFactoryTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

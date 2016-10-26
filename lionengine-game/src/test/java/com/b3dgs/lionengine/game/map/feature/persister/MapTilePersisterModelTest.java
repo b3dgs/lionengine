@@ -163,6 +163,7 @@ public class MapTilePersisterModelTest
         catch (final IOException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         Assert.assertTrue(levelFile.delete());

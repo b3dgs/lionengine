@@ -113,6 +113,7 @@ public class OriginTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -121,6 +122,7 @@ public class OriginTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

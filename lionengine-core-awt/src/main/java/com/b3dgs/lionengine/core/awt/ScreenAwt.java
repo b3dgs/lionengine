@@ -26,6 +26,7 @@ import java.awt.event.FocusListener;
 import java.awt.image.BufferStrategy;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.InputDevicePointer;
@@ -216,6 +217,7 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
         }
         catch (final IllegalComponentStateException exception)
         {
+            Verbose.exception(exception);
             return 0;
         }
     }
@@ -229,6 +231,7 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
         }
         catch (final IllegalComponentStateException exception)
         {
+            Verbose.exception(exception);
             return 0;
         }
     }

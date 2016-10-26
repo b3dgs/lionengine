@@ -130,7 +130,7 @@ public final class MidiImpl implements Midi
 
             if (synthesizer.getDefaultSoundbank() == null)
             {
-                sequencer.getTransmitter().setReceiver(MidiSystem.getReceiver());
+                sequencer.getTransmitter().setReceiver(receiver);
             }
             else
             {

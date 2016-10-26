@@ -110,11 +110,7 @@ final class CoordImpl implements Coord
             return false;
         }
         final CoordImpl other = (CoordImpl) obj;
-        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)
-            || Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-        {
-            return false;
-        }
-        return true;
+        return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
+               && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
     }
 }

@@ -126,11 +126,7 @@ public class TileRef
             return false;
         }
         final TileRef other = (TileRef) object;
-        if (!sheet.equals(other.sheet) || number != other.number)
-        {
-            return false;
-        }
-        return true;
+        return sheet.equals(other.sheet) && number == other.number;
     }
 
     @Override

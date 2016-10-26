@@ -79,6 +79,7 @@ public final class DrawableTestTool
         }
         catch (final NullPointerException exception)
         {
+            Assert.assertNotNull(exception);
             image.render(g);
         }
     }
@@ -104,6 +105,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         sprite.stretch(Constant.HUNDRED - 1, Constant.HUNDRED + 1);
         sprite.stretch(Constant.HUNDRED, Constant.HUNDRED + 1);
@@ -121,6 +123,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -129,6 +132,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         if (!(sprite instanceof SpriteFont))
@@ -174,6 +178,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         Assert.assertNotNull(sprite.getSurface());
@@ -210,6 +215,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         final Media media = Medias.create("none.png");
         try
@@ -221,6 +227,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 
@@ -242,6 +249,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         final Media media = Medias.create("dot.png");
         try
@@ -253,6 +261,7 @@ public final class DrawableTestTool
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 

@@ -118,6 +118,7 @@ public class HandlablesImplTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 

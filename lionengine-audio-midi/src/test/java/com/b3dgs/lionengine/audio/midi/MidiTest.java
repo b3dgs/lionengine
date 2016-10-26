@@ -96,6 +96,7 @@ public class MidiTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 
@@ -194,7 +195,7 @@ public class MidiTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.fail();
+            Assert.fail(exception.getMessage());
         }
 
         midi.setStart(0);

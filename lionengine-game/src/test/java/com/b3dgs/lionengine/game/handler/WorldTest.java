@@ -127,6 +127,7 @@ public class WorldTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         final Media media = Medias.create("test");
@@ -138,6 +139,7 @@ public class WorldTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         finally
         {
@@ -152,6 +154,7 @@ public class WorldTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         try
@@ -162,6 +165,7 @@ public class WorldTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

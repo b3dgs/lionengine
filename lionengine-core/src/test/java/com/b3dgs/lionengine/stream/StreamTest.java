@@ -69,6 +69,7 @@ public class StreamTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         try
@@ -79,6 +80,7 @@ public class StreamTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 

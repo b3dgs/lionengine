@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.IllegalComponentStateException;
 
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Resolution;
@@ -117,6 +118,7 @@ final class ScreenAppletAwt extends ScreenAwt
         }
         catch (final IllegalComponentStateException exception)
         {
+            Verbose.exception(exception);
             return 0;
         }
     }
@@ -130,6 +132,7 @@ final class ScreenAppletAwt extends ScreenAwt
         }
         catch (final IllegalComponentStateException exception)
         {
+            Verbose.exception(exception);
             return 0;
         }
     }

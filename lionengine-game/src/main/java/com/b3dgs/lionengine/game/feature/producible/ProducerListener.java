@@ -33,18 +33,21 @@ public interface ProducerListener
 
     /**
      * Notify listener that production is starting for this element.
+     * 
      * @param featurable The featurable instance from element.
      */
     void notifyStartProduction(Featurable featurable);
 
     /**
      * Notify listener that this element is currently under production.
+     * 
      * @param featurable The featurable instance from element.
      */
     void notifyProducing(Featurable featurable);
 
     /**
      * Notify listener that this element has been produced.
+     * 
      * @param featurable The featurable instance from element.
      */
     void notifyProduced(Featurable featurable);

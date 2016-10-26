@@ -40,7 +40,7 @@ public class StateWalk extends StateTest implements StateInputPointerUpdater
      * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateWalk(@SuppressWarnings("unused") Featurable featurable, @SuppressWarnings("unused") Animation animation)
+    public StateWalk(Featurable featurable, Animation animation)
     {
         super(StateType.WALK);
         addTransition(new TransitionWalkToIdle());

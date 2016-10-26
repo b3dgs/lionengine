@@ -45,6 +45,7 @@ public class AnimTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 
@@ -65,7 +66,7 @@ public class AnimTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.fail();
+            Assert.fail(exception.getMessage());
         }
     }
 

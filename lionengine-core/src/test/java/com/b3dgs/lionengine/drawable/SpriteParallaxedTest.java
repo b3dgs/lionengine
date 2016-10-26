@@ -111,6 +111,7 @@ public class SpriteParallaxedTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -121,6 +122,7 @@ public class SpriteParallaxedTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -131,6 +133,7 @@ public class SpriteParallaxedTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

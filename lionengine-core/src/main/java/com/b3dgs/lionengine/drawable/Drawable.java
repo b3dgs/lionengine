@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 public final class Drawable
 {
+    /** The current DPI type used (can be <code>null</code> if unused). */
     private static volatile DpiType dpi;
 
     /**
@@ -271,11 +272,11 @@ public final class Drawable
      */
     private static Media getMediaDpi(Media media)
     {
-        if (dpi != null && dpi != DpiType.MDPI)
+        if (dpi == null || dpi == DpiType.MDPI)
         {
-            return getClosestDpi(dpi, media);
+            return media;
         }
-        return media;
+        return getClosestDpi(dpi, media);
     }
 
     /**

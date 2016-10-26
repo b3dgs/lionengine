@@ -45,6 +45,7 @@ public class ResolutionTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 

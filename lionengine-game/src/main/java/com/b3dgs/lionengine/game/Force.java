@@ -474,14 +474,10 @@ public class Force implements Direction, Updatable
             return false;
         }
         final Force other = (Force) obj;
-        if (Double.doubleToLongBits(fh) == Double.doubleToLongBits(other.fh)
-            && Double.doubleToLongBits(fv) == Double.doubleToLongBits(other.fv)
-            && Double.doubleToLongBits(sensibility) == Double.doubleToLongBits(other.sensibility)
-            && Double.doubleToLongBits(velocity) == Double.doubleToLongBits(other.velocity))
-        {
-            return true;
-        }
-        return false;
+        return Double.doubleToLongBits(fh) == Double.doubleToLongBits(other.fh)
+               && Double.doubleToLongBits(fv) == Double.doubleToLongBits(other.fv)
+               && Double.doubleToLongBits(sensibility) == Double.doubleToLongBits(other.sensibility)
+               && Double.doubleToLongBits(velocity) == Double.doubleToLongBits(other.velocity);
     }
 
     @Override

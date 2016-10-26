@@ -232,7 +232,6 @@ public abstract class Sequence implements Sequencable, ScreenListener
      * @param extrp The extrapolation value.
      * @param g The graphic output.
      */
-    @SuppressWarnings("unused")
     protected void onLoaded(double extrp, Graphic g)
     {
         // Nothing by default
@@ -245,7 +244,6 @@ public abstract class Sequence implements Sequencable, ScreenListener
      * @param height The new screen height.
      * @param rate The new rate.
      */
-    @SuppressWarnings("unused")
     protected void onResolutionChanged(int width, int height, int rate)
     {
         // Nothing by default

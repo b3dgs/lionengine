@@ -84,7 +84,7 @@ public enum Origin
     public double getY(double y, double height)
     {
         final double result;
-        if (this == TOP_LEFT)
+        if (this == TOP_LEFT || this == CENTER_TOP)
         {
             result = y;
         }
@@ -98,10 +98,6 @@ public enum Origin
             {
                 result = y;
             }
-        }
-        else if (this == CENTER_TOP)
-        {
-            result = y;
         }
         else if (this == BOTTOM_LEFT || this == BOTTOM_RIGHT || this == CENTER_BOTTOM)
         {

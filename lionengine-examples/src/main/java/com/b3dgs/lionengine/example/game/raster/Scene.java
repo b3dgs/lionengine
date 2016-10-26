@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.raster;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
@@ -51,7 +50,6 @@ import com.b3dgs.lionengine.game.raster.Rasterable;
 import com.b3dgs.lionengine.game.raster.RasterableModel;
 import com.b3dgs.lionengine.game.raster.SetupSurfaceRastered;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -112,30 +110,22 @@ class Scene extends Sequence
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
         final Rasterable rasterable = new RasterableModel(setup);
         featurable.addFeature(rasterable);
-        featurable.addFeature(new RefreshableModel(new Updatable()
+        featurable.addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
-            {
-                transformable.setLocationY(UtilMath.sin(count) * 120 + 160);
-                surface.setLocation(camera, transformable);
-                rasterable.update(extrp);
-                surface.update(extrp);
-            }
+            transformable.setLocationY(UtilMath.sin(count) * 120 + 160);
+            surface.setLocation(camera, transformable);
+            rasterable.update(extrp);
+            surface.update(extrp);
         }));
-        featurable.addFeature(new DisplayableModel(new Renderable()
+        featurable.addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void render(Graphic g)
+            if (useRaster)
             {
-                if (useRaster)
-                {
-                    rasterable.render(g);
-                }
-                else
-                {
-                    surface.render(g);
-                }
+                rasterable.render(g);
+            }
+            else
+            {
+                surface.render(g);
             }
         }));
 

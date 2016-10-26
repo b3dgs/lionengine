@@ -24,7 +24,7 @@ import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Locale;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -93,7 +93,7 @@ public enum Verbose
     /** Error formatter. */
     private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
     /** Verbose flag. */
-    private static final Collection<Verbose> LEVELS = new HashSet<Verbose>(Arrays.asList(Verbose.values()));
+    private static final Collection<Verbose> LEVELS = EnumSet.copyOf(Arrays.asList(Verbose.values()));
 
     /**
      * Configure verbose.

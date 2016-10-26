@@ -131,6 +131,7 @@ public class SpriteAnimatedTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         try
         {
@@ -139,7 +140,7 @@ public class SpriteAnimatedTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.fail();
+            Assert.fail(exception.getMessage());
         }
 
         // Test render

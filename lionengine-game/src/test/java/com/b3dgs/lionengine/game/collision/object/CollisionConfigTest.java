@@ -105,6 +105,7 @@ public class CollisionConfigTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

@@ -32,7 +32,7 @@ import java.util.Map;
 public final class KeyboardAwt implements Keyboard, KeyListener
 {
     /** No key code. */
-    private static final int NO_KEY_CODE = -1;
+    static final int NO_KEY_CODE = -1;
     /** No key code value. */
     private static final Integer NO_KEY_CODE_VALUE = Integer.valueOf(NO_KEY_CODE);
     /** Empty key name. */

@@ -119,7 +119,7 @@ public class Services
             }, this);
             return add(instance);
         }
-        catch (final NoSuchMethodException exception)
+        catch (@SuppressWarnings("unused") final NoSuchMethodException exception)
         {
             try
             {

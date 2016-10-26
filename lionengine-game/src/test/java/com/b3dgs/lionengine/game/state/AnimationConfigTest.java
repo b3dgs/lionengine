@@ -104,6 +104,7 @@ public class AnimationConfigTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 }

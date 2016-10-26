@@ -101,8 +101,12 @@ public final class Constant
         }
         catch (final SecurityException exception)
         {
-            final StringBuilder builder = new StringBuilder(ERROR_PROPERTY);
-            builder.append(property).append(" (").append(exception.getClass().getName()).append(")");
+            final StringBuilder builder = new StringBuilder();
+            builder.append(ERROR_PROPERTY)
+                   .append(property)
+                   .append(" (")
+                   .append(exception.getClass().getName())
+                   .append(')');
             Verbose.exception(exception, builder.toString());
             return def;
         }

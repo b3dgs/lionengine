@@ -140,6 +140,7 @@ public class AppExamples
                         catch (final InterruptedException exception)
                         {
                             Thread.currentThread().interrupt();
+                            Verbose.exception(exception);
                             break;
                         }
                     }

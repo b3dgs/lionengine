@@ -338,9 +338,13 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
     private static class DelayedLaunch
     {
+        /** Delay timing. */
         private final Timing timing = new Timing();
+        /** Launchable configuration reference. */
         private final LaunchableConfig config;
+        /** Featurable reference to launch. */
         private final Featurable featurable;
+        /** Launchable referece to launch. */
         private final Launchable launchable;
 
         /**

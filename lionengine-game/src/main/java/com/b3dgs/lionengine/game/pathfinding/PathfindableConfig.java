@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Constant;
@@ -136,7 +135,7 @@ public final class PathfindableConfig
         {
             return Collections.emptySet();
         }
-        final Collection<MovementTile> movements = new HashSet<MovementTile>();
+        final Collection<MovementTile> movements = EnumSet.noneOf(MovementTile.class);
         for (final XmlNode movementNode : node.getChildren(MOVEMENT))
         {
             try
@@ -148,7 +147,7 @@ public final class PathfindableConfig
                 throw new LionEngineException(exception);
             }
         }
-        return EnumSet.copyOf(movements);
+        return movements;
     }
 
     /**

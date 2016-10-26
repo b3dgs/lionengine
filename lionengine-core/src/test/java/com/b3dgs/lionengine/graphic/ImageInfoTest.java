@@ -71,6 +71,7 @@ public class ImageInfoTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
     }
 
