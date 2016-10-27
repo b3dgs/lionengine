@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.AudioFormat;
+import com.b3dgs.lionengine.core.AudioVoidFormat;
 import com.b3dgs.lionengine.util.UtilStream;
 import com.sun.jna.Native;
 
@@ -57,6 +58,24 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
     {
         "lds"
     };
+
+    /**
+     * Get the AdPlug library, or disabled format if not found.
+     * 
+     * @return The AdPlug audio format.
+     */
+    public static AudioFormat<?> getFailsafe()
+    {
+        try
+        {
+            return new AdPlugFormat();
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception, "Unable to load music library !");
+            return new AudioVoidFormat(FORMATS);
+        }
+    }
 
     /**
      * Load the library.
