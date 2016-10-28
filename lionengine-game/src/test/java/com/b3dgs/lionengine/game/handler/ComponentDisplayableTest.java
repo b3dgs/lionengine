@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the component renderer layer class.
+ * Test the component displayable layer class.
  */
 public class ComponentDisplayableTest
 {
@@ -96,10 +96,10 @@ public class ComponentDisplayableTest
 
         component.render(null, null);
 
-        Assert.assertEquals(4, object1.getLayer().intValue());
-        Assert.assertEquals(6, object2.getLayer().intValue());
-        Assert.assertEquals(5, object3.getLayer().intValue());
-        Assert.assertEquals(4, object4.getLayer().intValue());
+        Assert.assertEquals(4, object1.getLayerDisplay().intValue());
+        Assert.assertEquals(6, object2.getLayerDisplay().intValue());
+        Assert.assertEquals(5, object3.getLayerDisplay().intValue());
+        Assert.assertEquals(4, object4.getLayerDisplay().intValue());
 
         Assert.assertEquals(object2.getFeature(Identifiable.class).getId().intValue(), last.get());
 

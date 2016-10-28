@@ -34,21 +34,37 @@ public interface Layerable extends Feature
     /**
      * Set the layer value.
      * 
-     * @param layer The layer value.
+     * @param layer The layer refresh and display value.
      */
     void setLayer(int layer);
 
     /**
      * Set the layer value.
      * 
-     * @param layer The layer value.
+     * @param layerRefresh The layer refresh value.
+     * @param layerDisplay The layer display value.
      */
-    void setLayer(Integer layer);
+    void setLayer(int layerRefresh, int layerDisplay);
 
     /**
-     * Get the current layer value.
+     * Set the layer value.
      * 
-     * @return The current layer value.
+     * @param layerRefresh The layer refresh value.
+     * @param layerDisplay The layer display value.
      */
-    Integer getLayer();
+    void setLayer(Integer layerRefresh, Integer layerDisplay);
+
+    /**
+     * Get the current layer refresh value.
+     * 
+     * @return The current layer refresh value.
+     */
+    Integer getLayerRefresh();
+
+    /**
+     * Get the current layer display value.
+     * 
+     * @return The current layer display value.
+     */
+    Integer getLayerDisplay();
 }

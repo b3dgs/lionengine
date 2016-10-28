@@ -51,23 +51,22 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         if (featurable.hasFeature(Layerable.class))
         {
             final Layerable layerable = featurable.getFeature(Layerable.class);
-            return layerable.getLayer();
+            return layerable.getLayerDisplay();
         }
         return LAYER_DEFAULT;
     }
 
     /** Sorted layers index. */
-    private final Set<Integer> indexs;
+    private final Set<Integer> indexs = new TreeSet<Integer>();
     /** Layers to render. */
-    private final Map<Integer, Collection<Displayable>> layers;
+    private final Map<Integer, Collection<Displayable>> layers = new HashMap<Integer, Collection<Displayable>>();
 
     /**
      * Create a renderer component.
      */
     public ComponentDisplayable()
     {
-        indexs = new TreeSet<Integer>();
-        layers = new HashMap<Integer, Collection<Displayable>>();
+        super();
     }
 
     /**
@@ -156,14 +155,18 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
      */
 
     @Override
-    public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
+    public void notifyLayerChanged(FeatureProvider provider,
+                                   Integer layerRefreshOld,
+                                   Integer layerRefreshNew,
+                                   Integer layerDisplayOld,
+                                   Integer layerDisplayNew)
     {
         if (provider.hasFeature(Displayable.class))
         {
             final Displayable displayable = provider.getFeature(Displayable.class);
-            getLayer(layerOld).remove(displayable);
-            getLayer(layerNew).add(displayable);
-            indexs.add(layerNew);
+            getLayer(layerDisplayOld).remove(displayable);
+            getLayer(layerDisplayNew).add(displayable);
+            indexs.add(layerDisplayNew);
         }
     }
 }

@@ -79,6 +79,7 @@ public class HandlerTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
         handler.update(1.0);
         Assert.assertEquals(1, handler.size());
@@ -306,7 +307,11 @@ public class HandlerTest
         services.add(new LayerableListener()
         {
             @Override
-            public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
+            public void notifyLayerChanged(FeatureProvider provider,
+                                           Integer layerRefreshOld,
+                                           Integer layerRefreshNew,
+                                           Integer layerDisplayOld,
+                                           Integer layerDisplayNew)
             {
                 // Mock
             }

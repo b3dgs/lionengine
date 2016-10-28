@@ -77,11 +77,15 @@ public class LayerableModelTest
         layerable.addListener(new LayerableListener()
         {
             @Override
-            public void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew)
+            public void notifyLayerChanged(FeatureProvider provider,
+                                           Integer layerRefreshOld,
+                                           Integer layerRefreshNew,
+                                           Integer layerDisplayOld,
+                                           Integer layerDisplayNew)
             {
                 objectRef.set(provider);
-                oldLayerRef.set(layerOld.intValue());
-                newLayerRef.set(layerNew.intValue());
+                oldLayerRef.set(layerRefreshOld.intValue());
+                newLayerRef.set(layerRefreshNew.intValue());
             }
         });
 
@@ -91,10 +95,12 @@ public class LayerableModelTest
         final Featurable featurable = new FeaturableModel();
         layerable.prepare(featurable, services);
 
-        Assert.assertEquals(0, layerable.getLayer().intValue());
+        Assert.assertEquals(0, layerable.getLayerRefresh().intValue());
+        Assert.assertEquals(0, layerable.getLayerDisplay().intValue());
 
         layerable.setLayer(1);
 
-        Assert.assertEquals(1, layerable.getLayer().intValue());
+        Assert.assertEquals(1, layerable.getLayerRefresh().intValue());
+        Assert.assertEquals(1, layerable.getLayerDisplay().intValue());
     }
 }

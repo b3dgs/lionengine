@@ -28,8 +28,14 @@ public interface LayerableListener
      * Notify when layer value changed.
      * 
      * @param provider The provider reference.
-     * @param layerOld The old layer value.
-     * @param layerNew The new layer value.
+     * @param layerRefreshOld The old layer refresh value.
+     * @param layerRefreshNew The new layer refresh value.
+     * @param layerDisplayOld The old layer display value.
+     * @param layerDisplayNew The new layer display value.
      */
-    void notifyLayerChanged(FeatureProvider provider, Integer layerOld, Integer layerNew);
+    void notifyLayerChanged(FeatureProvider provider,
+                            Integer layerRefreshOld,
+                            Integer layerRefreshNew,
+                            Integer layerDisplayOld,
+                            Integer layerDisplayNew);
 }

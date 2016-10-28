@@ -17,35 +17,152 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.feature.layerable.Layerable;
+import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the component refreshable.
+ * Test the component refreshable layer class.
  */
 public class ComponentRefreshableTest
 {
     /**
-     * Test the refresher.
+     * Create a test object.
+     * 
+     * @param services The services reference.
+     * @param last The last rendered element.
+     * @return The created object.
+     */
+    private static Layerable createObject(Services services, final AtomicInteger last)
+    {
+        final FeaturableModel object = new FeaturableModel();
+        object.addFeature(new IdentifiableModel());
+
+        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
+        layerable.prepare(object, services);
+
+        object.addFeature(new RefreshableModel(new Updatable()
+        {
+            @Override
+            public void update(double extrp)
+            {
+                if (object.getFeature(Identifiable.class).getId() != null)
+                {
+                    last.set(object.getFeature(Identifiable.class).getId().intValue());
+                }
+            }
+        }));
+
+        return layerable;
+    }
+
+    /**
+     * Test the component.
      */
     @Test
-    public void testRefresher()
+    public void testComponentLayer()
     {
-        final Handler handler = new Handler(new Services());
-        handler.addComponent(new ComponentRefreshable());
+        final ComponentRefreshable component = new ComponentRefreshable();
+        final Services services = new Services();
+        services.add(component);
 
-        final Refresher object = new Refresher();
-        handler.add(object);
+        final AtomicInteger last = new AtomicInteger();
 
-        Assert.assertFalse(object.isRefreshed());
+        final Layerable object1 = createObject(services, last);
+        final Layerable object2 = createObject(services, last);
+        final Layerable object3 = createObject(services, last);
+        final Layerable object4 = createObject(services, last);
 
-        handler.update(1.0);
+        object1.setLayer(4);
+        object2.setLayer(6);
+        object3.setLayer(5);
+        object4.setLayer(4);
+        last.set(-1);
 
-        Assert.assertTrue(object.isRefreshed());
+        component.update(1.0, null);
 
-        handler.removeAll();
-        handler.update(1.0);
+        Assert.assertEquals(4, object1.getLayerDisplay().intValue());
+        Assert.assertEquals(6, object2.getLayerDisplay().intValue());
+        Assert.assertEquals(5, object3.getLayerDisplay().intValue());
+        Assert.assertEquals(4, object4.getLayerDisplay().intValue());
+
+        Assert.assertEquals(object2.getFeature(Identifiable.class).getId().intValue(), last.get());
+
+        object2.getFeature(Identifiable.class).notifyDestroyed();
+        object4.getFeature(Identifiable.class).notifyDestroyed();
+
+        last.set(-1);
+        component.update(1.0, null);
+
+        Assert.assertEquals(object3.getFeature(Identifiable.class).getId().intValue(), last.get());
+    }
+
+    /**
+     * Test the component with default value.
+     */
+    @Test
+    public void testComponentLayerDefault()
+    {
+        final ComponentRefreshable component = new ComponentRefreshable();
+        final Services services = new Services();
+        services.add(component);
+
+        final AtomicBoolean auto = new AtomicBoolean();
+
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new RefreshableModel(new Updatable()
+        {
+            @Override
+            public void update(double extrp)
+            {
+                auto.set(true);
+            }
+        }));
+        component.notifyHandlableAdded(featurable);
+        component.update(1.0, null);
+
+        Assert.assertTrue(auto.get());
+    }
+
+    /**
+     * Test the component notification.
+     */
+    @Test
+    public void testNotify()
+    {
+        final ComponentRefreshable component = new ComponentRefreshable();
+
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new RefreshableModel(new Updatable()
+        {
+            @Override
+            public void update(double extrp)
+            {
+                // Mock
+            }
+        }));
+        component.notifyHandlableAdded(featurable);
+
+        Assert.assertFalse(((HashSet<?>) UtilReflection.getMethod(component,
+                                                                  "getLayer",
+                                                                  Integer.valueOf(0))).isEmpty());
+
+        component.notifyHandlableRemoved(featurable);
+
+        Assert.assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
 }
