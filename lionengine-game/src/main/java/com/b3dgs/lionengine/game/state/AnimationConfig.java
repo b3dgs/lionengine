@@ -171,6 +171,17 @@ public final class AnimationConfig
     }
 
     /**
+     * Check if animation exists.
+     * 
+     * @param name The animation name.
+     * @return <code>true</code> if exists, <code>false</code> else.
+     */
+    public boolean hasAnimation(String name)
+    {
+        return animations.containsKey(name);
+    }
+
+    /**
      * Get all animations.
      * 
      * @return The animations list.
