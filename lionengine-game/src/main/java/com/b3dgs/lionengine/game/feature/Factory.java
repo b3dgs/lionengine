@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -167,7 +168,21 @@ public class Factory
         try
         {
             final FeaturableConfig config = FeaturableConfig.imports(configurer);
-            final Class<?> setupClass = classLoader.loadClass(config.getSetupName());
+            final String setup = config.getSetupName();
+            final Class<?> setupClass;
+            if (setup.isEmpty())
+            {
+                final Class<?> clazz = classLoader.loadClass(config.getClassName());
+                final Constructor<?> constructor = UtilReflection.getCompatibleConstructorParent(clazz, new Class<?>[]
+                {
+                    Setup.class
+                });
+                setupClass = constructor.getParameterTypes()[0];
+            }
+            else
+            {
+                setupClass = classLoader.loadClass(config.getSetupName());
+            }
             return UtilReflection.create(setupClass, new Class<?>[]
             {
                 Media.class
@@ -203,7 +218,7 @@ public class Factory
             prepare(featurable);
             return featurable;
         }
-        catch (final NoSuchMethodException exception)
+        catch (@SuppressWarnings("unused") final NoSuchMethodException exception)
         {
             final O featurable = UtilReflection.create(type, new Class<?>[0]);
             prepare(featurable);

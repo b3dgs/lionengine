@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:setup>com.b3dgs.lionengine.game.feature.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Ship</lionengine:class>
     <lionengine:surface image="Ship.png"/>
     <lionengine:frames horizontal="5" vertical="1"/>

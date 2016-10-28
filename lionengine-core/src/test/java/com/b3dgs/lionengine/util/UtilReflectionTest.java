@@ -247,6 +247,30 @@ public class UtilReflectionTest
     }
 
     /**
+     * Test the get compatible constructor parent.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test
+    public void testGetCompatibleConstructorParent() throws NoSuchMethodException
+    {
+        Assert.assertNotNull(UtilReflection.getCompatibleConstructorParent(String.class,
+                                                                           UtilReflection.getParamTypes(new Object())));
+    }
+
+    /**
+     * Test the get compatible constructor parent none.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = NoSuchMethodException.class)
+    public void testGetCompatibleConstructorParentNone() throws NoSuchMethodException
+    {
+        Assert.assertNotNull(UtilReflection.getCompatibleConstructorParent(String.class,
+                                                                           UtilReflection.getParamTypes(new Integer(1))));
+    }
+
+    /**
      * Test the get interfaces.
      */
     @Test

@@ -66,7 +66,7 @@ public final class FeaturableConfig
         }
         else
         {
-            setup = Setup.class.getName();
+            setup = Constant.EMPTY_STRING;
         }
 
         return new FeaturableConfig(clazz, setup);
@@ -109,7 +109,7 @@ public final class FeaturableConfig
      * Create an featurable configuration.
      * 
      * @param clazz The featurable class name.
-     * @param setup The setup class name.
+     * @param setup The setup class name (empty if undefined).
      */
     public FeaturableConfig(String clazz, String setup)
     {
@@ -133,7 +133,7 @@ public final class FeaturableConfig
     /**
      * Get the setup class name node value.
      * 
-     * @return The setup class name node value.
+     * @return The setup class name node value (empty if undefined).
      */
     public String getSetupName()
     {

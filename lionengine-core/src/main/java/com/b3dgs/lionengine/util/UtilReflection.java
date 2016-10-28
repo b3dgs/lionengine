@@ -39,6 +39,10 @@ public final class UtilReflection
 {
     /** Constructor error. */
     private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
+    /** Constructor compatibility error. */
+    private static final String ERROR_NO_CONSTRUCTOR_COMPATIBLE = "No compatible constructor found for ";
+    /** Constructor compatibility error. */
+    private static final String ERROR_WITH = " with: ";
     /** Field error. */
     private static final String ERROR_FIELD = "Unable to access to the following field: ";
     /** Method error. */
@@ -127,9 +131,35 @@ public final class UtilReflection
                 return current;
             }
         }
-        throw new NoSuchMethodException("No compatible constructor found for "
+        throw new NoSuchMethodException(ERROR_NO_CONSTRUCTOR_COMPATIBLE
                                         + type.getName()
-                                        + " with: "
+                                        + ERROR_WITH
+                                        + Arrays.asList(paramTypes));
+    }
+
+    /**
+     * Get a compatible constructor with the following parameters considering parent side.
+     * 
+     * @param type The class type.
+     * @param paramTypes The parameters types.
+     * @return The constructor found.
+     * @throws NoSuchMethodException If no constructor found.
+     */
+    public static Constructor<?> getCompatibleConstructorParent(Class<?> type, Class<?>[] paramTypes)
+            throws NoSuchMethodException
+    {
+        for (final Constructor<?> current : type.getDeclaredConstructors())
+        {
+            final Class<?>[] constructorTypes = current.getParameterTypes();
+            if (constructorTypes.length == paramTypes.length
+                && hasCompatibleConstructorParent(paramTypes, constructorTypes))
+            {
+                return current;
+            }
+        }
+        throw new NoSuchMethodException(ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                        + type.getName()
+                                        + ERROR_WITH
                                         + Arrays.asList(paramTypes));
     }
 
@@ -333,6 +363,25 @@ public final class UtilReflection
         for (int i = 0; i < paramTypes.length; i++)
         {
             if (!constructorTypes[i].isAssignableFrom(paramTypes[i]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if there is a compatible constructor for the types.
+     * 
+     * @param paramTypes The types as input.
+     * @param constructorTypes The constructors to check.
+     * @return <code>true</code> if at least one constructor is compatible, <code>false</code> else.
+     */
+    private static boolean hasCompatibleConstructorParent(Class<?>[] paramTypes, Class<?>[] constructorTypes)
+    {
+        for (int i = 0; i < paramTypes.length; i++)
+        {
+            if (!paramTypes[i].isAssignableFrom(constructorTypes[i]))
             {
                 return false;
             }

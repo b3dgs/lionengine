@@ -87,7 +87,7 @@ public class FeaturableConfigTest
     @Test
     public void testConfigDefaultSetup()
     {
-        final FeaturableConfig config = new FeaturableConfig("clazz", Setup.class.getName());
+        final FeaturableConfig config = new FeaturableConfig("clazz", "");
         final Media media = Medias.create("object.xml");
         try
         {
