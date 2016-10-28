@@ -150,8 +150,11 @@ final class ScreenFullAwt extends ScreenAwt
         window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
         dev.setFullScreenWindow(window);
 
-        final DisplayMode disp = new DisplayMode(output.getWidth(), output.getHeight(), depth, output.getRate());
-        if (!isSupported(disp))
+        final DisplayMode disp = isSupported(new DisplayMode(output.getWidth(),
+                                                             output.getHeight(),
+                                                             depth,
+                                                             output.getRate()));
+        if (disp == null)
         {
             throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN,
                                           formatResolution(output, depth),
@@ -190,7 +193,7 @@ final class ScreenFullAwt extends ScreenAwt
      */
     private String getSupportedResolutions()
     {
-        final StringBuilder builder = new StringBuilder("Supported display mode:").append(Constant.NEW_LINE);
+        final StringBuilder builder = new StringBuilder();
         int i = 0;
         for (final DisplayMode display : dev.getDisplayModes())
         {
@@ -212,7 +215,9 @@ final class ScreenFullAwt extends ScreenAwt
             {
                 freqSpace.append(Constant.SPACE);
             }
-            builder.append("[")
+            builder.append("Supported display mode:")
+                   .append(Constant.NEW_LINE)
+                   .append('[')
                    .append(widthSpace)
                    .append(width)
                    .append(Constant.STAR)
@@ -225,7 +230,7 @@ final class ScreenFullAwt extends ScreenAwt
                    .append(freqSpace)
                    .append(freq)
                    .append(Constant.UNIT_RATE)
-                   .append("]")
+                   .append(']')
                    .append(Constant.SPACE);
             i++;
             final int linesPerDisplay = 5;
@@ -241,19 +246,23 @@ final class ScreenFullAwt extends ScreenAwt
      * Check if the display mode is supported.
      * 
      * @param display The display mode to check.
-     * @return <code>true</code> if supported, <code>false</code> else.
+     * @return Supported display, <code>null</code> else.
      */
-    private boolean isSupported(DisplayMode display)
+    private DisplayMode isSupported(DisplayMode display)
     {
         final DisplayMode[] supported = dev.getDisplayModes();
         for (final DisplayMode current : supported)
         {
-            if (display.equals(current))
+            final boolean multiDepth = current.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI && display.equals(current);
+            if (multiDepth
+                || current.getBitDepth() == DisplayMode.BIT_DEPTH_MULTI
+                   && display.getWidth() == current.getWidth()
+                   && display.getHeight() == current.getHeight())
             {
-                return true;
+                return current;
             }
         }
-        return false;
+        return null;
     }
 
     /*
