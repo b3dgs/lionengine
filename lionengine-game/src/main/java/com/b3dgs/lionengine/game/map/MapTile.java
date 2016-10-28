@@ -79,9 +79,6 @@ public interface MapTile extends Surface, Featurable
      * {@link TileSheetsConfig#FILENAME} and {@link com.b3dgs.lionengine.game.tile.TileGroupsConfig#FILENAME} will be
      * used as default, by calling {@link #create(Media, Media)}.
      * </p>
-     * <p>
-     * If configuration files are missing, data will be extracted on the fly but not saved to file.
-     * </p>
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @throws LionEngineException If error when importing map.
@@ -149,6 +146,20 @@ public interface MapTile extends Surface, Featurable
      * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
     void clear();
+
+    /**
+     * Add a tile set listener.
+     * 
+     * @param listener The listener reference.
+     */
+    void addListener(TileSetListener listener);
+
+    /**
+     * Remove a tile set listener.
+     * 
+     * @param listener The listener reference.
+     */
+    void removeListener(TileSetListener listener);
 
     /**
      * Set a tile at specified map location.

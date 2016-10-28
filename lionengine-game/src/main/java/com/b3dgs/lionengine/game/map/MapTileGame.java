@@ -66,6 +66,8 @@ public class MapTileGame extends FeaturableModel implements MapTile
     /** Inconsistent tile size. */
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
 
+    /** Tile set listeners. */
+    private final Collection<TileSetListener> tileSetListeners = new ArrayList<TileSetListener>();
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
     /** Sheet configuration file. */
@@ -281,13 +283,24 @@ public class MapTileGame extends FeaturableModel implements MapTile
         {
             for (final List<Tile> list : tiles)
             {
-                if (list != null)
-                {
-                    list.clear();
-                }
+                list.clear();
             }
             tiles.clear();
+            widthInTile = 0;
+            heightInTile = 0;
         }
+    }
+
+    @Override
+    public void addListener(TileSetListener listener)
+    {
+        tileSetListeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(TileSetListener listener)
+    {
+        tileSetListeners.remove(listener);
     }
 
     @Override
@@ -299,6 +312,11 @@ public class MapTileGame extends FeaturableModel implements MapTile
         Check.inferiorStrict(ty, getInTileHeight());
 
         tiles.get(ty).set(tx, tile);
+
+        for (final TileSetListener listener : tileSetListeners)
+        {
+            listener.onTileSet(tile);
+        }
     }
 
     @Override

@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -27,6 +29,7 @@ import org.junit.rules.TemporaryFolder;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -117,6 +120,32 @@ public class MapTileGameTest
     }
 
     /**
+     * Test the map clearing.
+     */
+    @Test
+    public void testClear()
+    {
+        map.create(16, 16, 2, 2);
+        final Tile tile = map.createTile(Integer.valueOf(0), 0, 0, 0);
+        map.setTile(tile);
+
+        Assert.assertEquals(tile, map.getTile(0, 0));
+
+        map.clear();
+
+        Assert.assertNull(map.getTile(0, 0));
+    }
+
+    /**
+     * Test unknown sheet get.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetUnknownSheet()
+    {
+        map.getSheet(Integer.valueOf(1));
+    }
+
+    /**
      * Test map set and get tile.
      */
     @Test
@@ -129,10 +158,45 @@ public class MapTileGameTest
         Assert.assertNull(map.getTile(0, 0));
         Assert.assertNull(map.getTileAt(51.0, 68.0));
 
-        map.setTile(map.createTile(Integer.valueOf(0), 0, 0.0, 0.0));
+        final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);
+        map.setTile(tile);
 
         Assert.assertEquals(1, map.getTilesNumber());
-        Assert.assertNotNull(map.getTile(0, 0));
-        Assert.assertNotNull(map.getTileAt(3.0, 6.0));
+        Assert.assertEquals(tile, map.getTile(0, 0));
+        Assert.assertEquals(tile, map.getTile(Geom.createLocalizable(0, 0), 0, 0));
+        Assert.assertEquals(tile, map.getTileAt(3.0, 6.0));
+        Assert.assertEquals(Arrays.asList(tile), map.getTilesHit(-1, -1, 1, 1));
+    }
+
+    /**
+     * Test map tile set listener.
+     */
+    @Test
+    public void testTileSetListener()
+    {
+        map.create(16, 16, 3, 3);
+
+        final AtomicReference<Tile> set = new AtomicReference<Tile>();
+        final TileSetListener listener = new TileSetListener()
+        {
+            @Override
+            public void onTileSet(Tile tile)
+            {
+                set.set(tile);
+            }
+        };
+        map.addListener(listener);
+
+        final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);
+        map.setTile(tile);
+
+        Assert.assertEquals(tile, set.get());
+
+        set.set(null);
+        map.removeListener(listener);
+
+        map.setTile(tile);
+
+        Assert.assertNull(set.get());
     }
 }
