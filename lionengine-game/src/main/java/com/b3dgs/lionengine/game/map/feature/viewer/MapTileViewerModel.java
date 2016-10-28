@@ -142,16 +142,20 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     @Override
     public void render(Graphic g)
     {
-        final int inTileHeight = (int) Math.ceil(viewer.getHeight() / (double) map.getTileHeight());
-        final int sy = (int) Math.floor((viewer.getY() - viewer.getViewY()) / map.getTileHeight());
-        final double viewY = viewer.getY() - viewer.getViewY() + viewer.getScreenHeight() - viewer.getViewY();
-
-        for (int v = 0; v <= inTileHeight; v++)
+        if (map.isCreated())
         {
-            final int ty = v + sy;
-            if (!(ty < 0 || ty >= map.getInTileHeight()))
+            final int inTileHeight = (int) Math.ceil(viewer.getHeight() / (double) map.getTileHeight());
+            final int sy = (int) Math.floor((viewer.getY() - viewer.getViewY()) / map.getTileHeight());
+            final double viewY = viewer.getY() - viewer.getViewY() + viewer.getScreenHeight() - viewer.getViewY();
+
+            for (int v = 0; v <= inTileHeight; v++)
             {
-                renderHorizontal(g, ty, viewY);
+
+                final int ty = v + sy;
+                if (!(ty < 0 || ty >= map.getInTileHeight()))
+                {
+                    renderHorizontal(g, ty, viewY);
+                }
             }
         }
     }
