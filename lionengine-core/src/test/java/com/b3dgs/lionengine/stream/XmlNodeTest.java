@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -77,7 +78,7 @@ public class XmlNodeTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.fail();
+            Assert.fail(exception.getMessage());
         }
 
         for (final XmlNode child : root.getChildren())
@@ -132,6 +133,7 @@ public class XmlNodeTest
         catch (final LionEngineException exception)
         {
             // Success
+            Assert.assertNotNull(exception);
         }
 
         node.writeBoolean("boolean", boolValue);
@@ -252,5 +254,17 @@ public class XmlNodeTest
         final XmlNode child = new XmlNodeMock();
         node.add(child);
         node.removeChild("mock");
+    }
+
+    /**
+     * Test wrong normalization.
+     */
+    @Test
+    public void testBadNormalize()
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        final XmlNodeImpl node = new XmlNodeImpl("test");
+        node.normalize("\\//text()[test]");
+        Verbose.info("****************************************************************************************");
     }
 }

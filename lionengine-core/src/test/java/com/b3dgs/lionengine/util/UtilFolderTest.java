@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -173,7 +174,49 @@ public class UtilFolderTest
     @Test
     public void testDeleteDirectoryWarning() throws IOException
     {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         UtilFolder.deleteDirectory(new File("void"));
+        UtilFolder.deleteDirectory(new File("warn")
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isDirectory()
+            {
+                return true;
+            }
+
+            @Override
+            public boolean delete()
+            {
+                return false;
+            }
+
+            @Override
+            public File[] listFiles()
+            {
+                return new File[]
+                {
+                    new File("warn")
+                    {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public boolean isFile()
+                        {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean delete()
+                        {
+                            return false;
+                        }
+                    }
+                };
+            }
+        });
+        Verbose.info("****************************************************************************************");
     }
 
     /**

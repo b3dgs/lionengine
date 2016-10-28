@@ -50,6 +50,8 @@ public final class Xml
     private static final String HEADER_VALUE = "http://lionengine.b3dgs.com";
     /** Property indent. */
     private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
+    /** Normalize. */
+    private static final String NORMALIZE = "//text()[normalize-space()='']";
 
     /**
      * Load an XML file.
@@ -98,7 +100,7 @@ public final class Xml
             if (root instanceof XmlNodeImpl)
             {
                 final XmlNodeImpl node = (XmlNodeImpl) root;
-                node.normalize();
+                node.normalize(NORMALIZE);
                 root.writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
                 final DOMSource source = new DOMSource(node.getElement());
                 final StreamResult result = new StreamResult(output);

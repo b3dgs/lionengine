@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.Verbose;
  */
 final class XmlNodeImpl implements XmlNode
 {
-    /** Normalize. */
-    private static final String NORMALIZE = "//text()[normalize-space()='']";
     /** Node error. */
     private static final String ERROR_NODE = "Node not found: ";
     /** Attribute error. */
@@ -93,13 +91,15 @@ final class XmlNodeImpl implements XmlNode
 
     /**
      * Normalize document.
+     * 
+     * @param expression The expression to evaluate.
      */
-    void normalize()
+    void normalize(String expression)
     {
         final XPath xPath = XPathFactory.newInstance().newXPath();
         try
         {
-            final NodeList nodeList = (NodeList) xPath.evaluate(NORMALIZE, document, XPathConstants.NODESET);
+            final NodeList nodeList = (NodeList) xPath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < nodeList.getLength(); ++i)
             {
                 final Node node = nodeList.item(i);

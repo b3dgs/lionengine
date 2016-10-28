@@ -17,9 +17,18 @@
  */
 package com.b3dgs.lionengine;
 
+import java.lang.reflect.Method;
+import java.security.Permission;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
 import org.junit.Test;
 
 import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the verbose class.
@@ -64,5 +73,93 @@ public class VerboseTest
         testVerbose(Verbose.CRITICAL);
         Verbose.set(Verbose.INFORMATION, Verbose.WARNING, Verbose.CRITICAL);
         Verbose.info("****************************************************************************************");
+    }
+
+    /**
+     * Test the add file handler limit.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testAddFileHandler() throws Exception
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        final Method method = Verbose.class.getDeclaredMethod("addFileHandler", Logger.class);
+        UtilReflection.setAccessible(method, true);
+        final Logger logger = Logger.getAnonymousLogger();
+        try
+        {
+            for (int i = 0; i < 101; i++)
+            {
+                method.invoke(Verbose.class, logger);
+            }
+        }
+        finally
+        {
+            final Handler[] handlers = logger.getHandlers();
+            for (final Handler handler : handlers)
+            {
+                logger.removeHandler(handler);
+            }
+            UtilReflection.setAccessible(method, false);
+            Verbose.info("****************************************************************************************");
+        }
+    }
+
+    /**
+     * Test the set formatter without right.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testSetFormatter() throws Exception
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        final SecurityManager old = System.getSecurityManager();
+        try
+        {
+            System.setSecurityManager(new SecurityManager()
+            {
+                @Override
+                public void checkPermission(Permission perm)
+                {
+                    if (perm instanceof java.util.logging.LoggingPermission)
+                    {
+                        throw new SecurityException();
+                    }
+                }
+            });
+            final Method method = Verbose.class.getDeclaredMethod("setFormatter", Logger.class, Formatter.class);
+            UtilReflection.setAccessible(method, true);
+            final Logger logger = Logger.getAnonymousLogger();
+            logger.addHandler(new ConsoleHandler());
+            method.invoke(Verbose.class, logger, new Mock());
+            UtilReflection.setAccessible(method, false);
+        }
+        finally
+        {
+            System.setSecurityManager(old);
+        }
+        Verbose.info("****************************************************************************************");
+    }
+
+    /**
+     * Mock
+     */
+    private static final class Mock extends Formatter
+    {
+        /**
+         * Constructor.
+         */
+        Mock()
+        {
+            super();
+        }
+
+        @Override
+        public String format(LogRecord record)
+        {
+            return null;
+        }
     }
 }

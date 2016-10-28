@@ -117,7 +117,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail();
+                Assert.fail(exception.getMessage());
             }
         }
     }
@@ -148,7 +148,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail();
+                Assert.fail(exception.getMessage());
             }
         }
     }
@@ -179,7 +179,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail();
+                Assert.fail(exception.getMessage());
             }
         }
     }
@@ -205,7 +205,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail();
+                Assert.fail(exception.getMessage());
             }
         }
     }
@@ -232,7 +232,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail();
+                Assert.fail(exception.getMessage());
             }
         }
     }
@@ -297,16 +297,19 @@ public class DrawableTest
     @Test
     public void testDrawableSuccessDpi()
     {
-        Drawable.setDpi(DpiType.LDPI);
-
         try
         {
-            testImage(false);
-            testSprite(false);
-            testSpriteAnimated(false, 1, 1);
-            testSpriteTiled(false, 1, 1);
-            testSpriteFont(false, 1, 1);
-            testSpriteParallaxed(false, 1, 1, 1);
+            for (final DpiType dpi : DpiType.values())
+            {
+                Drawable.setDpi(dpi);
+
+                testImage(false);
+                testSprite(false);
+                testSpriteAnimated(false, 1, 1);
+                testSpriteTiled(false, 1, 1);
+                testSpriteFont(false, 1, 1);
+                testSpriteParallaxed(false, 1, 1, 1);
+            }
         }
         finally
         {
@@ -330,6 +333,24 @@ public class DrawableTest
             testSpriteTiled(false, 1, 1);
             testSpriteFont(false, 1, 1);
             testSpriteParallaxed(false, 1, 1, 1);
+        }
+        finally
+        {
+            Drawable.setDpi(null);
+        }
+    }
+
+    /**
+     * Test the DPI with 0 ordinal.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testDpiOrdinal()
+    {
+        Drawable.setDpi(DpiType.values()[0]);
+
+        try
+        {
+            Assert.assertNotNull(Drawable.loadImage(Medias.create("void")));
         }
         finally
         {

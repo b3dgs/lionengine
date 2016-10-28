@@ -19,14 +19,20 @@ package com.b3dgs.lionengine.stream;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilStream;
 
 /**
@@ -109,5 +115,94 @@ public class DocumentFactoryTest
     public void testCreateTransformer() throws TransformerConfigurationException
     {
         Assert.assertNotNull(DocumentFactory.createTransformer());
+    }
+
+    /**
+     * Test missing feature.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testMissingFeature() throws Exception
+    {
+        final Object old = UtilReflection.getField(DocumentFactory.class, "documentFactory");
+        final Field field = DocumentFactory.class.getDeclaredField("documentFactory");
+        UtilReflection.setAccessible(field, true);
+        field.set(DocumentFactory.class, null);
+
+        final String oldFactory = System.getProperty(DocumentBuilderFactory.class.getName());
+        System.setProperty(DocumentBuilderFactory.class.getName(), Factory.class.getName());
+
+        try
+        {
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            try
+            {
+                Assert.assertNull(DocumentFactory.createDocument());
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                Assert.assertTrue(exception.getCause() instanceof ParserConfigurationException);
+            }
+            Verbose.info("****************************************************************************************");
+        }
+        finally
+        {
+            if (oldFactory != null)
+            {
+                System.setProperty(DocumentBuilderFactory.class.getName(), oldFactory);
+            }
+            else
+            {
+                System.setProperty(DocumentBuilderFactory.class.getName(), "");
+            }
+            field.set(DocumentFactory.class, old);
+            UtilReflection.setAccessible(field, false);
+        }
+    }
+
+    /**
+     * Mock factory.
+     */
+    public static final class Factory extends DocumentBuilderFactory
+    {
+        /**
+         * Constructor.
+         */
+        public Factory()
+        {
+            super();
+        }
+
+        @Override
+        public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException
+        {
+            throw new ParserConfigurationException();
+        }
+
+        @Override
+        public void setAttribute(String name, Object value) throws IllegalArgumentException
+        {
+            // Mock
+        }
+
+        @Override
+        public Object getAttribute(String name) throws IllegalArgumentException
+        {
+            return null;
+        }
+
+        @Override
+        public void setFeature(String name, boolean value) throws ParserConfigurationException
+        {
+            throw new ParserConfigurationException();
+        }
+
+        @Override
+        public boolean getFeature(String name) throws ParserConfigurationException
+        {
+            return false;
+        }
     }
 }
