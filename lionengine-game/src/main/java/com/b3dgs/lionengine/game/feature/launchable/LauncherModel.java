@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -112,9 +113,10 @@ public class LauncherModel extends FeatureModel implements Launcher
     /**
      * Called when fire is performed.
      * 
+     * @param initial The fire launch initial speed for force transfer.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    private void fired()
+    private void fired(Direction initial)
     {
         for (final LauncherListener listener : listenersLauncher)
         {
@@ -129,11 +131,11 @@ public class LauncherModel extends FeatureModel implements Launcher
                 final Launchable launchable = featurable.getFeature(Launchable.class);
                 if (config.getDelay() > 0)
                 {
-                    delayed.add(new DelayedLaunch(config, featurable, launchable));
+                    delayed.add(new DelayedLaunch(config, initial, featurable, launchable));
                 }
                 else
                 {
-                    launch(config, featurable, launchable);
+                    launch(config, initial, featurable, launchable);
                 }
             }
             catch (final LionEngineException exception)
@@ -148,16 +150,21 @@ public class LauncherModel extends FeatureModel implements Launcher
      * Launch the launchable.
      * 
      * @param config The launch configuration.
+     * @param initial The fire launch initial direction for force transfer.
      * @param featurable The featurable representing the launchable.
      * @param launchable The launchable to launch.
      */
-    private void launch(LaunchableConfig config, Featurable featurable, Launchable launchable)
+    private void launch(LaunchableConfig config, Direction initial, Featurable featurable, Launchable launchable)
     {
         final double x = localizable.getX() + config.getOffsetX() + offsetX;
         final double y = localizable.getY() + config.getOffsetY() + offsetY;
         launchable.setLocation(x, y);
-        launchable.setVector(computeVector(config.getVector()));
+
+        final Force vector = new Force(config.getVector());
+        vector.addDirection(1.0, initial);
+        launchable.setVector(computeVector(vector));
         launchable.launch();
+
         for (final LaunchableListener listener : listenersLaunchable)
         {
             listener.notifyFired(launchable);
@@ -271,16 +278,28 @@ public class LauncherModel extends FeatureModel implements Launcher
     @Override
     public void fire()
     {
-        fire(null);
+        fire(Direction.ZERO, null);
+    }
+
+    @Override
+    public void fire(Direction initial)
+    {
+        fire(initial, null);
     }
 
     @Override
     public void fire(Localizable target)
     {
+        fire(Direction.ZERO, target);
+    }
+
+    @Override
+    public void fire(Direction initial, Localizable target)
+    {
         this.target = target;
         if (fire.elapsed(rate))
         {
-            fired();
+            fired(initial);
             fire.restart();
         }
     }
@@ -292,7 +311,7 @@ public class LauncherModel extends FeatureModel implements Launcher
         {
             if (launch.isReady())
             {
-                launch(launch.config, launch.featurable, launch.launchable);
+                launch(launch.config, launch.initial, launch.featurable, launch.launchable);
                 launched.add(launch);
             }
         }
@@ -342,22 +361,26 @@ public class LauncherModel extends FeatureModel implements Launcher
         private final Timing timing = new Timing();
         /** Launchable configuration reference. */
         private final LaunchableConfig config;
+        /** Initial direction for launch. */
+        private final Direction initial;
         /** Featurable reference to launch. */
         private final Featurable featurable;
-        /** Launchable referece to launch. */
+        /** Launchable reference to launch. */
         private final Launchable launchable;
 
         /**
          * Create a delayed launch.
          * 
          * @param config The launch configuration.
+         * @param initial The launch initial direction.
          * @param featurable The featurable to launch.
          * @param launchable The launchable to launch.
          */
-        DelayedLaunch(LaunchableConfig config, Featurable featurable, Launchable launchable)
+        DelayedLaunch(LaunchableConfig config, Direction initial, Featurable featurable, Launchable launchable)
         {
             super();
             this.config = config;
+            this.initial = initial;
             this.featurable = featurable;
             this.launchable = launchable;
             timing.start();

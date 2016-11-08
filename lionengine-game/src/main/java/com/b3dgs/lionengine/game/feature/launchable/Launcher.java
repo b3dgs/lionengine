@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
 
 /**
@@ -57,10 +58,31 @@ public interface Launcher extends Refreshable
      * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
      * launch.
      * 
+     * @param initial The fire initial speed, used to transfer the initial force on launch.
+     * @throws LionEngineException If the fired object is not a {@link Launchable}.
+     */
+    void fire(Direction initial);
+
+    /**
+     * Fire with the specified configuration. {@link LauncherListener} will be notified with
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
+     * launch.
+     * 
      * @param target The launch target.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
     void fire(Localizable target);
+
+    /**
+     * Fire with the specified configuration. {@link LauncherListener} will be notified with
+     * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
+     * launch.
+     * 
+     * @param initial The fire initial speed, used to transfer the initial force on launch.
+     * @param target The launch target.
+     * @throws LionEngineException If the fired object is not a {@link Launchable}.
+     */
+    void fire(Direction initial, Localizable target);
 
     /**
      * Set the launcher position offset. Modify the {@link Launchable} starting position on fire.

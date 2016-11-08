@@ -30,11 +30,13 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -132,6 +134,41 @@ public class LauncherModelTest
         handler.update(1.0);
 
         Assert.assertEquals(3, handler.size());
+
+        handler.removeAll();
+        handler.update(1.0);
+
+        Assert.assertEquals(0, handler.size());
+    }
+
+    /**
+     * Test the launcher with initial speed.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testLauncherInitial() throws InterruptedException
+    {
+        final AtomicBoolean fired = new AtomicBoolean();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+        launcher.addListener(UtilLaunchable.createListener(fired));
+        launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
+
+        Thread.sleep(11);
+        launcher.fire(new Force(1.0, 2.0));
+
+        Assert.assertTrue(fired.get());
+        Assert.assertNotNull(firedLaunchable.get());
+
+        final Transformable transformable = firedLaunchable.get().getFeature(Transformable.class);
+
+        Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(4.0, transformable.getY(), UtilTests.PRECISION);
+
+        final Handler handler = services.get(Handler.class);
+        handler.update(1.0);
+
+        Assert.assertEquals(1, handler.size());
 
         handler.removeAll();
         handler.update(1.0);
