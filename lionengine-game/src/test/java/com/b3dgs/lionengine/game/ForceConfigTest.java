@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -82,6 +83,35 @@ public class ForceConfigTest
             final Force loaded = ForceConfig.imports(Xml.load(media));
 
             Assert.assertEquals(force, loaded);
+            Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
+        }
+        finally
+        {
+            Assert.assertTrue(media.getFile().delete());
+        }
+    }
+
+    /**
+     * Test the configuration with optional fields.
+     */
+    @Test
+    public void testConfigOptional()
+    {
+        final Force force = new Force(1.0, 2.0, 0.0, 0.0);
+
+        final Media media = Medias.create("force.xml");
+        try
+        {
+            final XmlNode root = Xml.create("test");
+            final XmlNode node = root.createChild(ForceConfig.NODE_FORCE);
+            node.writeDouble(ForceConfig.ATT_VX, 1.0);
+            node.writeDouble(ForceConfig.ATT_VY, 2.0);
+            Xml.save(root, media);
+
+            final Force loaded = ForceConfig.imports(Xml.load(media));
+
+            Assert.assertEquals(force, loaded);
+            Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
         }
         finally
         {

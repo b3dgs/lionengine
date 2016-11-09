@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -41,6 +42,18 @@ public final class ForceConfig
     public static final String ATT_SENSIBILITY = "sensibility";
 
     /**
+     * Create the force data from setup.
+     * 
+     * @param configurer The configurer reference.
+     * @return The force data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static Force imports(Configurer configurer)
+    {
+        return imports(configurer.getRoot());
+    }
+
+    /**
      * Create the force data from node.
      * 
      * @param root The root reference.
@@ -52,8 +65,8 @@ public final class ForceConfig
         final XmlNode node = root.getChild(NODE_FORCE);
 
         final Force force = new Force(node.readDouble(ATT_VX), node.readDouble(ATT_VY));
-        force.setVelocity(node.readDouble(ATT_VELOCITY));
-        force.setSensibility(node.readDouble(ATT_SENSIBILITY));
+        force.setVelocity(node.readDouble(0.0, ATT_VELOCITY));
+        force.setSensibility(node.readDouble(0.0, ATT_SENSIBILITY));
 
         return force;
     }
