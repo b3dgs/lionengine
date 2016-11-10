@@ -171,6 +171,15 @@ public class FeaturableModel implements Featurable
     }
 
     @Override
+    public void addFeatures(Collection<? extends Feature> features)
+    {
+        for (final Feature feature : features)
+        {
+            addFeature(feature);
+        }
+    }
+
+    @Override
     public final <T extends Feature> T addFeatureAndGet(T feature)
     {
         addFeature(feature);
