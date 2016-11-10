@@ -252,7 +252,7 @@
                             <Bundle-RequiredExecutionEnvironment>JavaSE-${jdk.version}</Bundle-RequiredExecutionEnvironment>
                             <_removeheaders>
                                 Build-Jdk,Built-By,Bnd-LastModified,Created-By,Private-Package,Tool,Require-Capability,
-                                JDK_6_HOME,JDK_7_HOME,JDK_8_HOME 
+                                JDK_6_HOME,JDK_7_HOME,JDK_8_HOME,ANDROID_HOME
                             </_removeheaders>
                         </instructions>
                     </configuration>
