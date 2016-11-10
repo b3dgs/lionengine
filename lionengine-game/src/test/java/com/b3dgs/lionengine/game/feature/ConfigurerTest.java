@@ -410,6 +410,16 @@ public class ConfigurerTest
     }
 
     /**
+     * Test has node.
+     */
+    @Test
+    public void testHasNode()
+    {
+        Assert.assertFalse(configurer.hasNode("void"));
+        Assert.assertTrue(configurer.hasNode("unknown"));
+    }
+
+    /**
      * Test the save.
      */
     @Test

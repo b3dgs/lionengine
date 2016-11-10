@@ -401,6 +401,26 @@ public class Configurer
     }
 
     /**
+     * Check if node exists.
+     * 
+     * @param path The node path.
+     * @return <code>true</code> if node exists, <code>false</code> else.
+     */
+    public boolean hasNode(String... path)
+    {
+        XmlNode node = root;
+        for (final String element : path)
+        {
+            if (!node.hasChild(element))
+            {
+                return false;
+            }
+            node = node.getChild(element);
+        }
+        return true;
+    }
+
+    /**
      * Get the node at the following path.
      * 
      * @param path The node path.
