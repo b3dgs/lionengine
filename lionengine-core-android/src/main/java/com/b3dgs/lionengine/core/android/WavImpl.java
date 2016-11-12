@@ -110,7 +110,7 @@ final class WavImpl implements Wav
     {
         Check.superiorOrEqual(volume, 0);
         Check.inferiorOrEqual(volume, 100);
-    
+
         this.volume = volume;
     }
 }
