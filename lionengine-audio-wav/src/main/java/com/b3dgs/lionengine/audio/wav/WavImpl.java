@@ -200,6 +200,8 @@ final class WavImpl implements Wav
     private final Media media;
     /** Volume used. */
     private int volume = VOLUME_MAX;
+    /** Exception flag. */
+    private IOException last;
 
     /**
      * Internal constructor.
@@ -238,7 +240,11 @@ final class WavImpl implements Wav
         }
         catch (final IOException exception)
         {
-            Verbose.exception(exception);
+            if (last == null || !exception.getMessage().equals(last.getMessage()))
+            {
+                Verbose.exception(exception);
+                last = exception;
+            }
             UtilStream.safeClose(playback);
         }
     }
