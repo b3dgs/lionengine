@@ -150,7 +150,6 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
 
             for (int v = 0; v <= inTileHeight; v++)
             {
-
                 final int ty = v + sy;
                 if (!(ty < 0 || ty >= map.getInTileHeight()))
                 {
