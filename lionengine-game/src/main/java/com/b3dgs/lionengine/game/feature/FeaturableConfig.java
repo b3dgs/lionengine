@@ -36,6 +36,8 @@ public final class FeaturableConfig
     public static final String CLASS = Constant.XML_PREFIX + "class";
     /** Setup attribute name. */
     public static final String SETUP = Constant.XML_PREFIX + "setup";
+    /** Feature node. */
+    public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
 
     /**
      * Import the featurable data from configurer.

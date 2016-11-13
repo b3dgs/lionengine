@@ -21,13 +21,19 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -36,6 +42,24 @@ import com.b3dgs.lionengine.util.UtilReflection;
 public class FeaturableModelTest
 {
     /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
+    /**
      * Test the featurable model with compatible feature.
      */
     @Test
@@ -43,7 +67,7 @@ public class FeaturableModelTest
     {
         final Featurable featurable = new FeaturableModel();
         final MyFeatureInterface feature = new MyFeature();
-        featurable.addFeatures(Collections.singletonList(feature));
+        featurable.addFeature(feature);
 
         Assert.assertTrue(featurable.hasFeature(MyFeatureInterface.class));
         Assert.assertTrue(featurable.hasFeature(MyFeature.class));
@@ -225,6 +249,26 @@ public class FeaturableModelTest
             Assert.assertTrue(exception.getCause().getCause() instanceof IllegalAccessException);
             throw exception.getCause();
         }
+    }
+
+    /**
+     * Test the add features
+     */
+    @Test
+    public void testAddFeatures()
+    {
+        final Media media = Medias.create("Features.xml");
+
+        final XmlNode root = Xml.create(FeaturableConfig.NODE_FEATURABLE);
+        final XmlNode unknown = root.createChild(FeaturableConfig.NODE_FEATURE);
+        unknown.setText(MyFeature.class.getName());
+
+        Xml.save(root, media);
+
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeatures(new Setup(media));
+
+        Assert.assertEquals(MyFeature.class.getName(), featurable.getFeatures().iterator().next().getClass().getName());
     }
 
     /**

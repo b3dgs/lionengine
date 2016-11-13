@@ -19,11 +19,14 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -33,6 +36,42 @@ public class FeaturableModel implements Featurable
 {
     /** Inject service error. */
     private static final String ERROR_INJECT = "Error during service injection !";
+
+    /**
+     * Get all available features.
+     * Default constructor of each feature must be available or with {@link Setup} as single parameter.
+     * 
+     * @param setup The setup reference.
+     * @return The available features.
+     * @throws LionEngineException If invalid class.
+     */
+    private static Collection<Feature> getFeatures(Setup setup)
+    {
+        final Collection<Feature> features = new ArrayList<Feature>();
+        for (final XmlNode featureNode : setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE))
+        {
+            final String className = featureNode.getText();
+            Feature feature;
+            try
+            {
+                feature = setup.getImplementation(Configurer.class.getClassLoader(),
+                                                  Feature.class,
+                                                  new Class<?>[0],
+                                                  Collections.emptyList(),
+                                                  className);
+            }
+            catch (@SuppressWarnings("unused") final LionEngineException exception)
+            {
+                feature = setup.getImplementation(Configurer.class.getClassLoader(),
+                                                  Feature.class,
+                                                  UtilReflection.getParamTypes(setup),
+                                                  Arrays.asList(setup),
+                                                  className);
+            }
+            features.add(feature);
+        }
+        return features;
+    }
 
     /** Features to prepare. */
     private final Collection<Feature> featuresToPrepare = new ArrayList<Feature>();
@@ -171,9 +210,9 @@ public class FeaturableModel implements Featurable
     }
 
     @Override
-    public void addFeatures(Collection<? extends Feature> features)
+    public void addFeatures(Setup setup)
     {
-        for (final Feature feature : features)
+        for (final Feature feature : getFeatures(setup))
         {
             addFeature(feature);
         }

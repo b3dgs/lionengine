@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.util.Collection;
-
 /**
  * Represents something that can have a collection of {@link Feature}.
  * <p>
@@ -103,12 +101,12 @@ public interface Featurable extends FeatureProvider
      * for a full usage, as annotated fields with {@link Service} will not be filled.
      * </p>
      * 
-     * @param features The features to add.
+     * @param setup The features to read from setup.
      */
-    void addFeatures(Collection<? extends Feature> features);
+    void addFeatures(Setup setup);
 
     /**
-     * Add a feature and retrieve it.
+     * Add a feature and retrieve it. Read all {@link FeaturableConfig#NODE_FEATURE} nodes.
      * <p>
      * <b>Caution:</b>
      * </p>

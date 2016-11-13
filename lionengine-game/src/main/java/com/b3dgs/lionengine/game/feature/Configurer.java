@@ -358,6 +358,27 @@ public class Configurer
                                          String... path)
     {
         final String className = getText(path).trim();
+        return getImplementation(loader, type, paramsType, paramsValue, className);
+    }
+
+    /**
+     * Get the class implementation from its name by using a custom constructor.
+     * 
+     * @param <T> The instance type.
+     * @param loader The class loader to use.
+     * @param type The class type.
+     * @param paramsType The parameters type.
+     * @param paramsValue The parameters value.
+     * @param className The class name.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    public final <T> T getImplementation(ClassLoader loader,
+                                         Class<T> type,
+                                         Class<?>[] paramsType,
+                                         Collection<?> paramsValue,
+                                         String className)
+    {
         try
         {
             final Class<?> clazz = loader.loadClass(className);
