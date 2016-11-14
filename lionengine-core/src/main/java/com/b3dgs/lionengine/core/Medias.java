@@ -18,12 +18,17 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.zip.ZipEntry;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.util.UtilFile;
 import com.b3dgs.lionengine.util.UtilFolder;
+import com.b3dgs.lionengine.util.UtilZip;
 
 /**
  * Implementation provider for the {@link FactoryMedia}.
@@ -35,6 +40,14 @@ public final class Medias
 {
     /** Unable to create media. */
     private static final String ERROR_CREATE = "Unable to create media from path: ";
+    /** Not in JAR resources. */
+    private static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
+    /** Unable to find JAR separator. */
+    private static final String JAR_SEPARATOR_ERROR = "JAR separator not found: ";
+    /** JAR separator character. */
+    private static final char JAR_SEPARATOR = '!';
+    /** Prefix JAR separator character. */
+    private static final String JAR_PREFIX_SEPARATOR = "file:";
     /** Factory media implementation. */
     private static volatile FactoryMedia factoryMedia = new FactoryMediaDefault();
     /** Path separator. */
@@ -78,6 +91,44 @@ public final class Medias
         final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
 
         return create(localFile);
+    }
+
+    /**
+     * Get all media by extension found in the direct path (does not search in sub folders).
+     * 
+     * @param extension The extension (without dot; eg: png).
+     * @param folder The folder to search in.
+     * @return The medias found.
+     */
+    public static synchronized Collection<Media> getByExtension(String extension, Media folder)
+    {
+        final Collection<Media> medias = new ArrayList<Media>();
+        try
+        {
+            final File jar = getJarResources();
+            final String prefix = getJarResourcesPrefix();
+            final String fullPath = Medias.create(prefix, folder.getPath()).getPath();
+
+            for (final ZipEntry entry : UtilZip.getEntriesByExtension(jar, fullPath, extension))
+            {
+                final Media media = create(entry.getName());
+                medias.add(media);
+            }
+        }
+        catch (@SuppressWarnings("unused") final LionEngineException exception)
+        {
+            final String rootPath = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING)
+                                          .getFile()
+                                          .getAbsolutePath();
+            final File fullPath = new File(rootPath, folder.getPath());
+            final int prefix = rootPath.length() + 1;
+            for (final File file : UtilFile.getFilesByExtension(fullPath, extension))
+            {
+                final Media media = create(file.getAbsolutePath().substring(prefix));
+                medias.add(media);
+            }
+        }
+        return medias;
     }
 
     /**
@@ -162,6 +213,63 @@ public final class Medias
     public static synchronized Class<?> getResourcesLoader()
     {
         return loader;
+    }
+
+    /**
+     * Get the running JAR resources. Load from JAR must be enabled.
+     * 
+     * @return The JAR file.
+     * @throws LionEngineException If JAR not available.
+     */
+    public static File getJarResources()
+    {
+        if (loader == null)
+        {
+            throw new LionEngineException(JAR_LOADER_ERROR);
+        }
+        final Media media = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING);
+        final String path = media.getFile().getAbsolutePath();
+
+        final int jarSeparatorIndex = path.indexOf(JAR_SEPARATOR);
+        if (jarSeparatorIndex < 1)
+        {
+            throw new LionEngineException(JAR_SEPARATOR_ERROR, path);
+        }
+
+        final int prefixSeparator = path.indexOf(JAR_PREFIX_SEPARATOR);
+        final String jar;
+        if (prefixSeparator > 0)
+        {
+            jar = path.substring(prefixSeparator + JAR_PREFIX_SEPARATOR.length(), jarSeparatorIndex);
+        }
+        else
+        {
+            jar = path.substring(0, jarSeparatorIndex);
+        }
+        return new File(jar);
+    }
+
+    /**
+     * Get the running JAR resources prefix folder. Load from JAR must be enabled.
+     * 
+     * @return The resources prefix folder.
+     * @throws LionEngineException If JAR not available.
+     */
+    public static String getJarResourcesPrefix()
+    {
+        if (loader == null)
+        {
+            throw new LionEngineException(JAR_LOADER_ERROR);
+        }
+        final Media media = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING);
+        final String path = media.getFile().getAbsolutePath();
+
+        final int jarSeparatorIndex = path.indexOf(JAR_SEPARATOR);
+        if (jarSeparatorIndex < 1)
+        {
+            throw new LionEngineException(JAR_SEPARATOR_ERROR, path);
+        }
+        return path.substring(jarSeparatorIndex + 2).replace(File.separator, Constant.SLASH);
     }
 
     /**

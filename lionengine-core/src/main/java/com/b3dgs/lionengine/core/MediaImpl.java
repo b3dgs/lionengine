@@ -214,4 +214,10 @@ final class MediaImpl implements Media
         }
         return false;
     }
+
+    @Override
+    public String toString()
+    {
+        return path;
+    }
 }

@@ -18,10 +18,11 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.File;
+import java.util.Collection;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -34,15 +35,15 @@ import com.b3dgs.lionengine.test.UtilTests;
 public class MediasTest
 {
     /** Old resources directory. */
-    private static String oldDir;
+    private String oldDir;
     /** Old loader. */
-    private static Class<?> oldLoader;
+    private Class<?> oldLoader;
 
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void prepare()
+    @Before
+    public void prepare()
     {
         oldDir = Medias.getResourcesDirectory();
         oldLoader = Medias.getResourcesLoader();
@@ -52,8 +53,8 @@ public class MediasTest
     /**
      * Clean test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @After
+    public void cleanUp()
     {
         Medias.setResourcesDirectory(oldDir);
         Medias.setLoadFromJar(oldLoader);
@@ -171,6 +172,61 @@ public class MediasTest
     }
 
     /**
+     * Test the get JAR resources file.
+     */
+    @Test
+    public void testGetJarResources()
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+
+        try
+        {
+            final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
+            final File jar = Medias.getJarResources();
+            Assert.assertEquals(folder, jar.getParentFile());
+        }
+        catch (final LionEngineException exception)
+        {
+            final File jar = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
+            Assert.assertTrue(exception.getMessage().contains(jar.getAbsolutePath()));
+        }
+    }
+
+    /**
+     * Test the get JAR resources file without loader enabled.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetJarResourcesNoLoader()
+    {
+        Medias.setLoadFromJar(null);
+
+        Assert.assertNull(Medias.getJarResources());
+    }
+
+    /**
+     * Test the get JAR resources prefix file without loader enabled.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetJarResourcesPrefixNoLoader()
+    {
+        Medias.setLoadFromJar(null);
+
+        Assert.assertNull(Medias.getJarResourcesPrefix());
+    }
+
+    /**
+     * Test the get medias by extension.
+     */
+    @Test
+    public void testGetByExtension()
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+        final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
+
+        Assert.assertEquals("image.png", medias.iterator().next().getPath());
+    }
+
+    /**
      * Test the separator.
      */
     @Test
@@ -180,5 +236,17 @@ public class MediasTest
         Medias.setSeparator("%");
         Assert.assertEquals("%", Medias.getSeparator());
         Medias.setSeparator(old);
+    }
+
+    /**
+     * Test the media to string.
+     */
+    @Test
+    public void testToString()
+    {
+        Medias.setResourcesDirectory("prefix");
+        final Media media = Medias.create("path", "file.ext");
+
+        Assert.assertEquals("path" + Medias.getSeparator() + "file.ext", media.toString());
     }
 }
