@@ -60,7 +60,16 @@ public final class FeaturableConfig
      */
     public static FeaturableConfig imports(XmlNode root)
     {
-        final String clazz = root.getChild(CLASS).getText();
+        final String clazz;
+        if (root.hasChild(CLASS))
+        {
+            clazz = root.getChild(CLASS).getText();
+        }
+        else
+        {
+            clazz = FeaturableModel.class.getName();
+        }
+
         final String setup;
         if (root.hasChild(SETUP))
         {

@@ -82,6 +82,28 @@ public class FeaturableConfigTest
     }
 
     /**
+     * Test the configuration reader with default class.
+     */
+    @Test
+    public void testConfigDefaultClass()
+    {
+        final FeaturableConfig config = new FeaturableConfig(FeaturableModel.class.getName(), "");
+        final Media media = Medias.create("object.xml");
+        try
+        {
+            final XmlNode root = Xml.create("test");
+            Xml.save(root, media);
+
+            final FeaturableConfig loaded = FeaturableConfig.imports(Xml.load(media));
+            Assert.assertEquals(config, loaded);
+        }
+        finally
+        {
+            Assert.assertTrue(media.getFile().delete());
+        }
+    }
+
+    /**
      * Test the configuration reader with default setup.
      */
     @Test
