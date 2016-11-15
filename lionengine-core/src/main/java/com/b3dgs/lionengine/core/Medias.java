@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.zip.ZipEntry;
 
 import com.b3dgs.lionengine.Check;
@@ -100,9 +100,9 @@ public final class Medias
      * @param folder The folder to search in.
      * @return The medias found.
      */
-    public static synchronized Collection<Media> getByExtension(String extension, Media folder)
+    public static synchronized List<Media> getByExtension(String extension, Media folder)
     {
-        final Collection<Media> medias = new ArrayList<Media>();
+        final List<Media> medias = new ArrayList<Media>();
         try
         {
             final File jar = getJarResources();
@@ -124,7 +124,10 @@ public final class Medias
             final int prefix = rootPath.length() + 1;
             for (final File file : UtilFile.getFilesByExtension(fullPath, extension))
             {
-                final Media media = create(file.getAbsolutePath().substring(prefix));
+                final Media media = create(file.getAbsolutePath()
+                                               .substring(prefix)
+                                               .replace(File.separator, Constant.SLASH)
+                                               .split(Constant.SLASH));
                 medias.add(media);
             }
         }
