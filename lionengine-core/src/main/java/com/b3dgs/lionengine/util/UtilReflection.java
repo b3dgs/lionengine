@@ -126,7 +126,8 @@ public final class UtilReflection
         for (final Constructor<?> current : type.getDeclaredConstructors())
         {
             final Class<?>[] constructorTypes = current.getParameterTypes();
-            if (constructorTypes.length == paramTypes.length && hasCompatibleConstructor(paramTypes, constructorTypes))
+            if (constructorTypes.length == paramTypes.length
+                && (paramTypes.length == 0 || hasCompatibleConstructor(paramTypes, constructorTypes)))
             {
                 return current;
             }
@@ -362,12 +363,12 @@ public final class UtilReflection
     {
         for (int i = 0; i < paramTypes.length; i++)
         {
-            if (!constructorTypes[i].isAssignableFrom(paramTypes[i]))
+            if (constructorTypes[i].isAssignableFrom(paramTypes[i]))
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
