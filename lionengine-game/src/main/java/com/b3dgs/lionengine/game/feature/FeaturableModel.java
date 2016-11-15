@@ -89,6 +89,18 @@ public class FeaturableModel implements Featurable
     }
 
     /**
+     * Create model. All features are loaded from setup.
+     * 
+     * @param setup The setup reference.
+     */
+    public FeaturableModel(Setup setup)
+    {
+        super();
+
+        addFeatures(setup);
+    }
+
+    /**
      * Fill services fields with their right instance.
      * 
      * @param object The object to update.
