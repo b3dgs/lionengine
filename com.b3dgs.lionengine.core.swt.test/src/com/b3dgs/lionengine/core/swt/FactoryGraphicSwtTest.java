@@ -100,6 +100,12 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
             }
 
             @Override
+            public Collection<Media> getMedias()
+            {
+                return null;
+            }
+
+            @Override
             public boolean exists()
             {
                 return false;
