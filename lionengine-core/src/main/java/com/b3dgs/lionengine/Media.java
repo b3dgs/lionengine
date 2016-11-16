@@ -20,6 +20,7 @@ package com.b3dgs.lionengine;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -59,6 +60,14 @@ public interface Media
      * @throws LionEngineException If descriptor is not accessible.
      */
     File getFile();
+
+    /**
+     * Get the medias in the media path.
+     * 
+     * @return The media content.
+     * @throws LionEngineException If not a valid directory.
+     */
+    Collection<Media> getMedias();
 
     /**
      * Get the media input stream.

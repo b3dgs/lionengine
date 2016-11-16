@@ -24,6 +24,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -42,6 +44,8 @@ final class MediaImpl implements Media
     private static final String ERROR_OPEN_MEDIA = "Cannot open the media";
     /** Error open media in JAR. */
     private static final String ERROR_OPEN_MEDIA_JAR = "Resource in JAR not found";
+    /** Invalid path directory. */
+    private static final String ERROR_PATH_DIR = "Invalid directory: ";
 
     /** Separator. */
     private final String separator;
@@ -145,6 +149,27 @@ final class MediaImpl implements Media
             file = new File(UtilFolder.getPathSeparator(separator, resourcesDir, path));
         }
         return file;
+    }
+
+    @Override
+    public Collection<Media> getMedias()
+    {
+        final File file = getFile();
+        if (file.isDirectory())
+        {
+            final File[] files = file.listFiles();
+            final Collection<Media> medias = new ArrayList<Media>(files.length);
+            final int prefix = Medias.create(Constant.EMPTY_STRING).getFile().getPath().length() + 1;
+            for (final File current : files)
+            {
+                medias.add(Medias.create(current.getPath()
+                                                .substring(prefix)
+                                                .replace(File.separator, Constant.SLASH)
+                                                .split(Constant.SLASH)));
+            }
+            return medias;
+        }
+        throw new LionEngineException(this, ERROR_PATH_DIR);
     }
 
     @Override

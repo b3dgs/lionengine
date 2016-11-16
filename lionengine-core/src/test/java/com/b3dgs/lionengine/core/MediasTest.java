@@ -227,6 +227,17 @@ public class MediasTest
     }
 
     /**
+     * Test the get medias.
+     */
+    @Test
+    public void testGetMedias()
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+
+        Assert.assertTrue(Medias.create("").getMedias().contains(Medias.create("image.png")));
+    }
+
+    /**
      * Test the separator.
      */
     @Test

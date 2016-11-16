@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
@@ -31,6 +33,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
@@ -106,12 +109,22 @@ final class MediaAndroid implements Media
     {
         try
         {
-            return assetManager.openFd(UtilFolder.getPathSeparator(separator, resourcesDir, path));
+            return assetManager.openFd(getAbsolutePath());
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception);
+            throw new LionEngineException(exception, this);
         }
+    }
+
+    /**
+     * Get the absolute media path.
+     * 
+     * @return The absolute media path.
+     */
+    private String getAbsolutePath()
+    {
+        return UtilFolder.getPathSeparator(separator, resourcesDir, path);
     }
 
     /*
@@ -137,17 +150,37 @@ final class MediaAndroid implements Media
     }
 
     @Override
+    public Collection<Media> getMedias()
+    {
+        try
+        {
+            final Collection<Media> medias = new ArrayList<Media>();
+            final String fullPath = getAbsolutePath();
+            final String prefix = fullPath.substring(resourcesDir.length());
+            for (final String file : assetManager.list(fullPath))
+            {
+                medias.add(Medias.create(prefix, file));
+            }
+            return medias;
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, this);
+        }
+    }
+
+    @Override
     public InputStream getInputStream()
     {
         Check.notNull(path);
 
         try
         {
-            return assetManager.open(UtilFolder.getPathSeparator(separator, resourcesDir, path));
+            return assetManager.open(getAbsolutePath());
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
+            throw new LionEngineException(exception, this, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
         }
     }
 
@@ -164,7 +197,7 @@ final class MediaAndroid implements Media
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
+            throw new LionEngineException(exception, this, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
         }
     }
 
@@ -195,5 +228,11 @@ final class MediaAndroid implements Media
             return media.getPath().equals(path);
         }
         return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return path;
     }
 }
