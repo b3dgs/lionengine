@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -264,6 +265,12 @@ public class MidiTest
 
                         @Override
                         public File getFile()
+                        {
+                            return null;
+                        }
+
+                        @Override
+                        public Collection<Media> getMedias()
                         {
                             return null;
                         }
