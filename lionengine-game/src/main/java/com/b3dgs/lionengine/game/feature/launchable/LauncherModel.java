@@ -68,6 +68,8 @@ public class LauncherModel extends FeatureModel implements Launcher
     private Localizable localizable;
     /** Target reference. */
     private Localizable target;
+    /** Current level. */
+    private int level;
     /** Fire rate in millisecond. */
     private long rate;
     /** Horizontal offset. */
@@ -330,6 +332,8 @@ public class LauncherModel extends FeatureModel implements Launcher
     public void setLevel(int level)
     {
         Check.superiorOrEqual(level, 0);
+
+        this.level = level;
         launchables = config.get(level).getLaunchables();
         rate = config.get(level).getRate();
     }
@@ -350,6 +354,18 @@ public class LauncherModel extends FeatureModel implements Launcher
     public int getOffsetY()
     {
         return offsetY;
+    }
+
+    @Override
+    public int getLevel()
+    {
+        return level;
+    }
+
+    @Override
+    public long getRate()
+    {
+        return rate;
     }
 
     /**

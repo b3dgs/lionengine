@@ -87,6 +87,8 @@ public class LauncherModelTest
     @Test
     public void testConfig()
     {
+        Assert.assertEquals(0, launcher.getLevel());
+        Assert.assertEquals(10, launcher.getRate());
         Assert.assertEquals(1.0, launcher.getOffsetX(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, launcher.getOffsetY(), UtilTests.PRECISION);
     }

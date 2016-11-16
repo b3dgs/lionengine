@@ -120,4 +120,18 @@ public interface Launcher extends Refreshable
      * @return The vertical offset.
      */
     int getOffsetY();
+
+    /**
+     * Get the current level.
+     * 
+     * @return The current level.
+     */
+    int getLevel();
+
+    /**
+     * Get the fire rate.
+     * 
+     * @return The fire rate in milliseconds.
+     */
+    long getRate();
 }
