@@ -109,9 +109,10 @@ public final class Medias
             final File jar = getJarResources();
             final String prefix = getJarResourcesPrefix();
             final String fullPath = Medias.create(prefix, folder.getPath()).getPath();
+            final int prefixLength = prefix.length() + 1;
             for (final ZipEntry entry : UtilZip.getEntriesByExtension(jar, fullPath, extension))
             {
-                final Media media = create(entry.getName());
+                final Media media = create(entry.getName().substring(prefixLength));
                 medias.add(media);
             }
         }
