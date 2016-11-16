@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.junit.Assume;
@@ -155,6 +156,12 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
 
             @Override
             public File getFile()
+            {
+                return null;
+            }
+
+            @Override
+            public Collection<Media> getMedias()
             {
                 return null;
             }
