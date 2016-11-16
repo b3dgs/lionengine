@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
@@ -108,7 +109,6 @@ public final class Medias
             final File jar = getJarResources();
             final String prefix = getJarResourcesPrefix();
             final String fullPath = Medias.create(prefix, folder.getPath()).getPath();
-
             for (final ZipEntry entry : UtilZip.getEntriesByExtension(jar, fullPath, extension))
             {
                 final Media media = create(entry.getName());
@@ -117,21 +117,41 @@ public final class Medias
         }
         catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
-            final String rootPath = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING)
-                                          .getFile()
-                                          .getAbsolutePath();
-            final File fullPath = new File(rootPath, folder.getPath());
-            final int prefix = rootPath.length() + 1;
-            for (final File file : UtilFile.getFilesByExtension(fullPath, extension))
-            {
-                final Media media = create(file.getAbsolutePath()
-                                               .substring(prefix)
-                                               .replace(File.separator, Constant.SLASH)
-                                               .split(Constant.SLASH));
-                medias.add(media);
-            }
+            medias.addAll(getFilesByExtension(folder, extension));
         }
         return medias;
+    }
+
+    /**
+     * Get all files existing in the path considering the extension.
+     * 
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: png).
+     * @return The files list.
+     */
+    private static List<Media> getFilesByExtension(Media path, String extension)
+    {
+        final List<Media> filesList = new ArrayList<Media>(1);
+        getFilesByExtensionRecursive(filesList, path, extension);
+        return filesList;
+    }
+
+    /**
+     * Get all files existing in the path considering the extension.
+     * 
+     * @param filesList The files list.
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: png).
+     */
+    private static void getFilesByExtensionRecursive(Collection<Media> filesList, Media path, String extension)
+    {
+        for (final Media content : path.getMedias())
+        {
+            if (extension.equals(UtilFile.getExtension(content.getPath())))
+            {
+                filesList.add(content);
+            }
+        }
     }
 
     /**
