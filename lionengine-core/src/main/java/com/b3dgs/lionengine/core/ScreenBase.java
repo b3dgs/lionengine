@@ -96,7 +96,7 @@ public abstract class ScreenBase implements Screen
             }
             try
             {
-                Thread.sleep(getReadyTimeOut() + Constant.DECADE);
+                Thread.sleep(Constant.DECADE);
             }
             catch (final InterruptedException exception)
             {
