@@ -225,3 +225,4 @@ lionengine
 featurables
 bot
 sonic
+lifecycle
