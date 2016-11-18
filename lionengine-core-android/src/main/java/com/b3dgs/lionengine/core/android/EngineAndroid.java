@@ -53,6 +53,8 @@ public final class EngineAndroid extends Engine
 
     /** Activity reference. */
     private final Activity activity;
+    /** Closed flag. */
+    private boolean closed;
 
     /**
      * Create engine.
@@ -103,5 +105,15 @@ public final class EngineAndroid extends Engine
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Graphics.setFactoryGraphic(null);
         AudioFactory.clearFormats();
+    }
+
+    @Override
+    protected void postClose()
+    {
+        if (!closed)
+        {
+            closed = true;
+            activity.finish();
+        }
     }
 }

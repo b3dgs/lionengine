@@ -70,7 +70,6 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
         super(config, READY_TIMEOUT);
 
         setResolution(config.getOutput());
-        holder.addCallback(this);
         addDeviceMouse();
     }
 
@@ -92,7 +91,6 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
      */
     private void init(Resolution output)
     {
-        // Create canvas
         if (canvas == null)
         {
             holder.setFixedSize(output.getWidth(), output.getHeight());
@@ -120,7 +118,7 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
     public void start()
     {
         super.start();
-        ready = false;
+        holder.addCallback(this);
     }
 
     @Override

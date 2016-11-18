@@ -76,18 +76,18 @@ public abstract class Engine
 
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
-     * the same JVM execution.
+     * the same JVM execution. Does nothing if engine is not started.
      */
     public static synchronized void terminate()
     {
-        if (!started)
+        if (started)
         {
-            throw new LionEngineException(ERROR_STARTED_NOT);
+            engine.close();
+            started = false;
+            Verbose.info(ENGINE_TERMINATED);
+            engine.postClose();
+            engine = null;
         }
-        engine.close();
-        engine = null;
-        started = false;
-        Verbose.info(ENGINE_TERMINATED);
     }
 
     /**
@@ -202,4 +202,12 @@ public abstract class Engine
      * the same JVM execution.
      */
     protected abstract void close();
+
+    /**
+     * Post close action. Engine is closed at this point. Must be used for last clean up.
+     */
+    protected void postClose()
+    {
+        // Nothing by default
+    }
 }
