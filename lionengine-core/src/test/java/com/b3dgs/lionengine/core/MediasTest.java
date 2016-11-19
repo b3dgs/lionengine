@@ -238,6 +238,15 @@ public class MediasTest
     }
 
     /**
+     * Test the get medias on file
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetMediasOnFile()
+    {
+        Assert.assertNull(Medias.create("image.png").getMedias());
+    }
+
+    /**
      * Test the separator.
      */
     @Test

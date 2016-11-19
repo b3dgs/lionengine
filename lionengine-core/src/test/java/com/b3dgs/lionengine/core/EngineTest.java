@@ -88,9 +88,10 @@ public class EngineTest
     /**
      * Test the engine terminate.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testTerminate()
     {
+        Engine.terminate();
         Engine.terminate();
     }
 
