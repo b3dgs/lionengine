@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Represents a gradient color.
  * <p>
@@ -47,9 +50,13 @@ public final class ColorGradient
      * @param x2 The last horizontal location.
      * @param y2 The last vertical location.
      * @param color2 The last color.
+     * @throws LionEngineException If <code>null</code> arguments.
      */
     public ColorGradient(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
     {
+        Check.notNull(color1);
+        Check.notNull(color2);
+
         this.x1 = x1;
         this.y1 = y1;
         this.color1 = color1;
@@ -116,5 +123,43 @@ public final class ColorGradient
     public ColorRgba getColor2()
     {
         return color2;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + color1.hashCode();
+        result = prime * result + color2.hashCode();
+        result = prime * result + x1;
+        result = prime * result + x2;
+        result = prime * result + y1;
+        result = prime * result + y2;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || !(obj instanceof ColorGradient))
+        {
+            return false;
+        }
+        final ColorGradient other = (ColorGradient) obj;
+        return x1 == other.x1
+               && x2 == other.x2
+               && y1 == other.y1
+               && y2 == other.y2
+               && color1.equals(other.color1)
+               && color2.equals(other.color2);
     }
 }

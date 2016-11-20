@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.core.android;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +43,8 @@ import com.b3dgs.lionengine.graphic.Viewer;
  */
 final class GraphicAndroid implements Graphic
 {
+    /** Gradient cache. */
+    private final Map<ColorGradient, LinearGradient> colorGradients = new HashMap<ColorGradient, LinearGradient>();
     /** Paint mode. */
     private final Paint paint;
     /** Last matrix. */
@@ -48,8 +53,6 @@ final class GraphicAndroid implements Graphic
     private final Matrix flip;
     /** The graphic output. */
     private Canvas g;
-    /** Last gradient. */
-    private ColorGradient gradientColor;
     /** Linear gradient. */
     private LinearGradient linearGradient;
 
@@ -68,11 +71,11 @@ final class GraphicAndroid implements Graphic
      */
     GraphicAndroid(Canvas g)
     {
+        this.g = g;
         paint = new Paint();
         scale = new Matrix();
         flip = new Matrix();
         flip.preScale(-1, 1);
-        this.g = g;
     }
 
     /**
@@ -105,7 +108,9 @@ final class GraphicAndroid implements Graphic
     @Override
     public void dispose()
     {
-        // Nothing to do
+        colorGradients.clear();
+        linearGradient = null;
+        g = null;
     }
 
     @Override
@@ -237,14 +242,22 @@ final class GraphicAndroid implements Graphic
     }
 
     @Override
-    public void setColorGradient(ColorGradient gc)
+    public void setColorGradient(ColorGradient cg)
     {
-        if (!gc.equals(gradientColor))
+        if (!colorGradients.containsKey(cg))
         {
-            final int c1 = gc.getColor1().getRgba();
-            final int c2 = gc.getColor2().getRgba();
-            linearGradient = new LinearGradient(gc.getX1(), gc.getY1(), gc.getX2(), gc.getY2(), c1, c2, TileMode.CLAMP);
+            final int c1 = cg.getColor1().getRgba();
+            final int c2 = cg.getColor2().getRgba();
+            final LinearGradient gradient = new LinearGradient(cg.getX1(),
+                                                               cg.getY1(),
+                                                               cg.getX2(),
+                                                               cg.getY2(),
+                                                               c1,
+                                                               c2,
+                                                               TileMode.CLAMP);
+            colorGradients.put(cg, gradient);
         }
+        linearGradient = colorGradients.get(cg);
     }
 
     @Override
