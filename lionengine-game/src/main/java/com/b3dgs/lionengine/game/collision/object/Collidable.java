@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.collision.object;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.feature.Feature;
@@ -83,12 +86,12 @@ public interface Collidable extends Feature, Updatable, Renderable, CollidableLi
      * 
      * @return The declared collisions.
      */
-    Iterable<Collision> getCollisions();
+    Collection<Collision> getCollisions();
 
     /**
      * Get the collisions bounds.
      * 
      * @return The collisions bounds.
      */
-    Iterable<Rectangle> getCollisionBounds();
+    List<Rectangle> getCollisionBounds();
 }

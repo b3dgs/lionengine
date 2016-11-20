@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Mirror;
@@ -51,8 +52,11 @@ public class CollidableModel extends FeatureModel implements Collidable
      */
     private static boolean checkCollide(Rectangle rectangle, Collidable other)
     {
-        for (final Rectangle current : other.getCollisionBounds())
+        final List<Rectangle> others = other.getCollisionBounds();
+        final int size = others.size();
+        for (int i = 0; i < size; i++)
         {
+            final Rectangle current = others.get(i);
             if (rectangle.intersects(current))
             {
                 return true;
@@ -69,6 +73,10 @@ public class CollidableModel extends FeatureModel implements Collidable
     private final Collection<Collidable> ignored = new HashSet<Collidable>();
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
+    /** Collisions cache. */
+    private final List<Collision> cacheColls = new ArrayList<Collision>();
+    /** Bounding box cache. */
+    private final List<Rectangle> cacheRect = new ArrayList<Rectangle>();
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The viewer reference. */
@@ -243,6 +251,8 @@ public class CollidableModel extends FeatureModel implements Collidable
                 else
                 {
                     final Rectangle rectangle = Geom.createRectangle(x, y, width, height);
+                    cacheColls.add(collision);
+                    cacheRect.add(rectangle);
                     boxs.put(collision, rectangle);
                 }
             }
@@ -254,9 +264,10 @@ public class CollidableModel extends FeatureModel implements Collidable
     {
         if (enabled && !ignored.contains(other))
         {
-            for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
+            final int size = cacheColls.size();
+            for (int i = 0; i < size; i++)
             {
-                final Collision collision = collide(other, current.getKey(), current.getValue());
+                final Collision collision = collide(other, cacheColls.get(i), cacheRect.get(i));
                 if (collision != null)
                 {
                     return collision;
@@ -271,10 +282,10 @@ public class CollidableModel extends FeatureModel implements Collidable
     {
         if (showCollision)
         {
-            for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
+            final int size = cacheColls.size();
+            for (int i = 0; i < size; i++)
             {
-                final Collision collision = current.getKey();
-
+                final Collision collision = cacheColls.get(i);
                 final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
                                                 collision.getWidth());
                 final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
@@ -303,15 +314,15 @@ public class CollidableModel extends FeatureModel implements Collidable
     }
 
     @Override
-    public Iterable<Collision> getCollisions()
+    public Collection<Collision> getCollisions()
     {
         return collisions;
     }
 
     @Override
-    public Iterable<Rectangle> getCollisionBounds()
+    public List<Rectangle> getCollisionBounds()
     {
-        return boxs.values();
+        return cacheRect;
     }
 
     @Override
