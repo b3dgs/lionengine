@@ -47,7 +47,7 @@ public class Alterable
     /** Over max. */
     private final boolean overMax;
     /** Alterable current value. */
-    private int cur;
+    private double cur;
     /** Alterable max value. */
     private int max;
 
@@ -81,19 +81,50 @@ public class Alterable
     /**
      * Increase current value. The current value will not exceed the maximum.
      * 
+     * @param extrp The extrapolation value.
      * @param increase The increase step.
      * @return The increased value (equal to increase in normal case, lower in other case).
      */
-    public int increase(int increase)
+    public int increase(double extrp, int increase)
     {
-        final int current = cur;
-        final int increased = cur + increase;
+        final int current = getCurrent();
+        final double increased = current + increase;
         set(increased);
         if (increased > max)
         {
             return max - current;
         }
         return increase;
+    }
+
+    /**
+     * Increase current value. The current value will not exceed the maximum.
+     * 
+     * @param increase The increase step.
+     * @return The increased value (equal to increase in normal case, lower in other case).
+     */
+    public int increase(int increase)
+    {
+        return increase(1.0, increase);
+    }
+
+    /**
+     * Decrease current value. The current value will not be lower than 0.
+     * 
+     * @param extrp The extrapolation value.
+     * @param decrease The decrease step.
+     * @return The decreased value (equal to decrease in normal case, lower in other case).
+     */
+    public int decrease(double extrp, int decrease)
+    {
+        final int remain = getCurrent();
+        final double decreased = remain - decrease;
+        set(decreased);
+        if (decreased < 0)
+        {
+            return remain;
+        }
+        return decrease;
     }
 
     /**
@@ -104,14 +135,7 @@ public class Alterable
      */
     public int decrease(int decrease)
     {
-        final int remain = cur;
-        final int decreased = cur - decrease;
-        set(decreased);
-        if (decreased < 0)
-        {
-            return remain;
-        }
-        return decrease;
+        return decrease(1.0, decrease);
     }
 
     /**
@@ -136,6 +160,16 @@ public class Alterable
      * @param value The current value.
      */
     public void set(int value)
+    {
+        set((double) value);
+    }
+
+    /**
+     * Set current value. The current value will be fixed between 0 and the maximum.
+     * 
+     * @param value The current value.
+     */
+    private void set(double value)
     {
         cur = value;
         if (!overMax && cur > max)
@@ -179,7 +213,7 @@ public class Alterable
      */
     public int getCurrent()
     {
-        return cur;
+        return (int) Math.floor(cur);
     }
 
     /**
@@ -211,7 +245,7 @@ public class Alterable
         {
             return 0;
         }
-        return value - cur;
+        return value - getCurrent();
     }
 
     /**
@@ -221,7 +255,7 @@ public class Alterable
      */
     public boolean isFull()
     {
-        return cur >= max;
+        return getCurrent() >= max;
     }
 
     /**
@@ -231,7 +265,7 @@ public class Alterable
      */
     public boolean isEmpty()
     {
-        return cur == Alterable.MIN;
+        return getCurrent() == Alterable.MIN;
     }
 
     /**
@@ -244,6 +278,6 @@ public class Alterable
      */
     public boolean isEnough(int value)
     {
-        return cur - value >= 0;
+        return getCurrent() - value >= 0;
     }
 }
