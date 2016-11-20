@@ -56,16 +56,16 @@ public class FeaturableModel implements Featurable
             {
                 feature = setup.getImplementation(Configurer.class.getClassLoader(),
                                                   Feature.class,
-                                                  new Class<?>[0],
-                                                  Collections.emptyList(),
+                                                  UtilReflection.getParamTypes(setup),
+                                                  Arrays.asList(setup),
                                                   className);
             }
             catch (@SuppressWarnings("unused") final LionEngineException exception)
             {
                 feature = setup.getImplementation(Configurer.class.getClassLoader(),
                                                   Feature.class,
-                                                  UtilReflection.getParamTypes(setup),
-                                                  Arrays.asList(setup),
+                                                  new Class<?>[0],
+                                                  Collections.emptyList(),
                                                   className);
             }
             features.add(feature);
