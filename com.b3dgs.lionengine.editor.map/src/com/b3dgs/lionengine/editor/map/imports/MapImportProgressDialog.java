@@ -98,7 +98,7 @@ public class MapImportProgressDialog extends AbstractProgressDialog
     @Override
     protected void createProgressContent(Composite content)
     {
-        try (final InputStream stream = levelRip.getInputStream())
+        try (InputStream stream = levelRip.getInputStream())
         {
             final ImageData data = new ImageData(stream);
             final MapTile map = WorldModel.INSTANCE.getMap();

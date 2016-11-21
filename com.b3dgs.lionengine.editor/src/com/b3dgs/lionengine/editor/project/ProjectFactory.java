@@ -65,7 +65,7 @@ public final class ProjectFactory
         properties.put(PROPERTY_PROJECT_LIBRARIES, libraries);
 
         final File propertiesFile = new File(projectPath, PROPERTIES_FILE);
-        try (final FileOutputStream stream = new FileOutputStream(propertiesFile))
+        try (FileOutputStream stream = new FileOutputStream(propertiesFile))
         {
             properties.store(stream, PROPERTIES_FILE_DESCRIPTION);
         }
@@ -85,7 +85,7 @@ public final class ProjectFactory
         {
             return Optional.empty();
         }
-        try (final InputStream input = new FileInputStream(propertiesFile))
+        try (InputStream input = new FileInputStream(propertiesFile))
         {
             final Properties properties = new Properties();
             properties.load(input);
@@ -109,7 +109,7 @@ public final class ProjectFactory
     {
         Verbose.info(VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
 
-        try (final InputStream input = new FileInputStream(new File(projectPath, PROPERTIES_FILE)))
+        try (InputStream input = new FileInputStream(new File(projectPath, PROPERTIES_FILE)))
         {
             final Properties properties = new Properties();
             properties.load(input);

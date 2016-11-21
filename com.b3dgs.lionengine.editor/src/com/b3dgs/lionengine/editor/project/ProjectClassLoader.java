@@ -323,7 +323,7 @@ public class ProjectClassLoader
     private <C> Collection<Class<? extends C>> getImplementingJar(Class<C> type, File file)
     {
         final Collection<Class<? extends C>> found = new HashSet<>();
-        try (final JarFile jar = new JarFile(file))
+        try (JarFile jar = new JarFile(file))
         {
             final Enumeration<JarEntry> entries = jar.entries();
             while (entries.hasMoreElements())
