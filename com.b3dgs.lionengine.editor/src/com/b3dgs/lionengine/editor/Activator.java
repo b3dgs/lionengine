@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.swt.EngineSwt;
@@ -54,7 +53,6 @@ public class Activator implements BundleActivator
     @Override
     public void start(BundleContext context) throws Exception
     {
-        LionEngineException.setIgnoreEngineTrace(false);
         EngineSwt.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION);
     }
 

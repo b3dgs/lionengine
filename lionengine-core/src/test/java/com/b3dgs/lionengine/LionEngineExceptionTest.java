@@ -246,7 +246,6 @@ public class LionEngineExceptionTest
     public void testLionEngineExceptionWithThrowableNoMessage()
     {
         stream.println("testLionEngineExceptionWithThrowableNoMessage");
-        LionEngineException.setIgnoreEngineTrace(true);
         try
         {
             throw new LionEngineException(new IOException());
@@ -255,7 +254,6 @@ public class LionEngineExceptionTest
         {
             exception.printStackTrace(stream);
         }
-        LionEngineException.setIgnoreEngineTrace(false);
         stream.println();
     }
 }
