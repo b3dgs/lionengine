@@ -25,7 +25,7 @@
         <maven-javadoc.version>2.10.3</maven-javadoc.version>
         <maven-surfire.version>2.18.1</maven-surfire.version>
         <maven-checkstyle.version>2.16</maven-checkstyle.version>
-        <checkstyle.version>6.19</checkstyle.version>
+        <checkstyle.version>7.2</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
         <lionengine.version>8.3.5-SNAPSHOT</lionengine.version>

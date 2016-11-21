@@ -41,6 +41,7 @@
                             *,
                             com.b3dgs.lionengine.test;resolution:=optional
                         </Import-Package>
+                        <Export-Package>com.b3dgs.lionengine.*</Export-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>
