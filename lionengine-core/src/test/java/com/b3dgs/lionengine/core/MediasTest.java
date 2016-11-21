@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -179,17 +180,13 @@ public class MediasTest
     {
         Medias.setLoadFromJar(MediasTest.class);
 
-        try
-        {
-            final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-            final File jar = Medias.getJarResources();
-            Assert.assertEquals(folder, jar.getParentFile());
-        }
-        catch (final LionEngineException exception)
-        {
-            final File jar = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-            Assert.assertTrue(exception.getMessage().contains(jar.getAbsolutePath()));
-        }
+        final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
+        final String prefix = Medias.getResourcesLoader().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
+        final int jarSeparatorIndex = jarPath.indexOf(prefix);
+        final File jar = Medias.getJarResources();
+
+        Assert.assertEquals(new File(jarPath.substring(0, jarSeparatorIndex)), jar);
     }
 
     /**
@@ -201,6 +198,23 @@ public class MediasTest
         Medias.setLoadFromJar(null);
 
         Assert.assertNull(Medias.getJarResources());
+    }
+
+    /**
+     * Test the get JAR resources prefix.
+     */
+    @Test
+    public void testGetJarResourcesPrefix()
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+
+        final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
+        final String prefix = Medias.getResourcesLoader().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
+        final int jarSeparatorIndex = jarPath.indexOf(prefix);
+        final String resourcesPrefix = Medias.getJarResourcesPrefix();
+
+        Assert.assertEquals(jarPath.substring(jarSeparatorIndex), resourcesPrefix);
     }
 
     /**
@@ -227,14 +241,24 @@ public class MediasTest
     }
 
     /**
+     * Test the get medias from JAR.
+     */
+    @Test
+    public void testGetMediasJar()
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+
+        Assert.assertTrue(Medias.create("").getMedias().contains(Medias.create("image.png")));
+    }
+
+    /**
      * Test the get medias.
      */
     @Test
     public void testGetMedias()
     {
-        Medias.setLoadFromJar(MediasTest.class);
-
-        Assert.assertTrue(Medias.create("").getMedias().contains(Medias.create("image.png")));
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Assert.assertFalse(Medias.create("").getMedias().isEmpty());
     }
 
     /**

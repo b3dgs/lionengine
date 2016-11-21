@@ -112,6 +112,25 @@ final class MediaImpl implements Media
         }
     }
 
+    /**
+     * Get the resources prefix.
+     * 
+     * @return The resources prefix.
+     */
+    private String getPrefix()
+    {
+        final String prefix;
+        if (loader != null)
+        {
+            prefix = loader.getPackage().getName().replace(Constant.DOT, File.separator);
+        }
+        else
+        {
+            prefix = resourcesDir;
+        }
+        return prefix;
+    }
+
     /*
      * Media
      */
@@ -159,13 +178,17 @@ final class MediaImpl implements Media
         {
             final File[] files = file.listFiles();
             final Collection<Media> medias = new ArrayList<Media>(files.length);
-            final int prefix = Medias.create(Constant.EMPTY_STRING).getFile().getPath().length() + 1;
+
+            final String prefix = getPrefix();
+            final int prefixLength = prefix.length();
+
             for (final File current : files)
             {
-                medias.add(Medias.create(current.getPath()
-                                                .substring(prefix)
-                                                .replace(File.separator, Constant.SLASH)
-                                                .split(Constant.SLASH)));
+                final String path = current.getPath();
+                final Media media = Medias.create(path.substring(path.indexOf(prefix) + prefixLength)
+                                                      .replace(File.separator, Constant.SLASH)
+                                                      .split(Constant.SLASH));
+                medias.add(media);
             }
             return medias;
         }

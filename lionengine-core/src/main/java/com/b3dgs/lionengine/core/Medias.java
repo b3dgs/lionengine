@@ -43,12 +43,6 @@ public final class Medias
     private static final String ERROR_CREATE = "Unable to create media from path: ";
     /** Not in JAR resources. */
     private static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
-    /** Unable to find JAR separator. */
-    private static final String JAR_SEPARATOR_ERROR = "JAR separator not found: ";
-    /** JAR separator character. */
-    private static final char JAR_SEPARATOR = '!';
-    /** Prefix JAR separator character. */
-    private static final String JAR_PREFIX_SEPARATOR = "file:";
     /** Factory media implementation. */
     private static volatile FactoryMedia factoryMedia = new FactoryMediaDefault();
     /** Path separator. */
@@ -232,7 +226,7 @@ public final class Medias
     /**
      * Get the resources loader.
      * 
-     * @return The resources loader.
+     * @return The resources loader, <code>null</code> if none.
      */
     public static synchronized Class<?> getResourcesLoader()
     {
@@ -251,25 +245,13 @@ public final class Medias
         {
             throw new LionEngineException(JAR_LOADER_ERROR);
         }
+
         final Media media = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING);
-        final String path = media.getFile().getAbsolutePath();
+        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
+        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final int jarSeparatorIndex = path.indexOf(prefix);
+        final String jar = path.substring(0, jarSeparatorIndex);
 
-        final int jarSeparatorIndex = path.indexOf(JAR_SEPARATOR);
-        if (jarSeparatorIndex < 1)
-        {
-            throw new LionEngineException(JAR_SEPARATOR_ERROR, path);
-        }
-
-        final int prefixSeparator = path.indexOf(JAR_PREFIX_SEPARATOR);
-        final String jar;
-        if (prefixSeparator > 0)
-        {
-            jar = path.substring(prefixSeparator + JAR_PREFIX_SEPARATOR.length(), jarSeparatorIndex);
-        }
-        else
-        {
-            jar = path.substring(0, jarSeparatorIndex);
-        }
         return new File(jar);
     }
 
@@ -286,14 +268,11 @@ public final class Medias
             throw new LionEngineException(JAR_LOADER_ERROR);
         }
         final Media media = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING);
-        final String path = media.getFile().getAbsolutePath();
+        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
+        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final int jarSeparatorIndex = path.indexOf(prefix);
 
-        final int jarSeparatorIndex = path.indexOf(JAR_SEPARATOR);
-        if (jarSeparatorIndex < 1)
-        {
-            throw new LionEngineException(JAR_SEPARATOR_ERROR, path);
-        }
-        return path.substring(jarSeparatorIndex + 2).replace(File.separator, Constant.SLASH);
+        return path.substring(jarSeparatorIndex).replace(File.separator, Constant.SLASH);
     }
 
     /**
