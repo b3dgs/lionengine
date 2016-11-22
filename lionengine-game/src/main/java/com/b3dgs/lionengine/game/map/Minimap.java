@@ -233,6 +233,13 @@ public class Minimap implements Image
     }
 
     @Override
+    public void dispose()
+    {
+        surface.dispose();
+        pixels.clear();
+    }
+
+    @Override
     public void render(Graphic g)
     {
         g.drawImage(surface, (int) x, (int) y);
