@@ -69,14 +69,16 @@ public class CollidableModel extends FeatureModel implements Collidable
     private final Collection<CollidableListener> listeners = new ArrayList<CollidableListener>();
     /** The collisions used. */
     private final Collection<Collision> collisions = new ArrayList<Collision>();
-    /** The ignored collidables. */
-    private final Collection<Collidable> ignored = new HashSet<Collidable>();
+    /** The ignored groups. */
+    private final Collection<Integer> ignored = new HashSet<Integer>();
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
     /** Collisions cache. */
     private final List<Collision> cacheColls = new ArrayList<Collision>();
     /** Bounding box cache. */
     private final List<Rectangle> cacheRect = new ArrayList<Rectangle>();
+    /** Associated group ID. */
+    private Integer group;
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The viewer reference. */
@@ -113,6 +115,7 @@ public class CollidableModel extends FeatureModel implements Collidable
     {
         super();
 
+        group = CollidableConfig.imports(setup);
         for (final Collision collision : CollisionConfig.imports(setup).getCollisions())
         {
             collisions.add(collision);
@@ -200,9 +203,9 @@ public class CollidableModel extends FeatureModel implements Collidable
     }
 
     @Override
-    public void addIgnore(Collidable collidable)
+    public void addIgnore(int group)
     {
-        ignored.add(collidable);
+        ignored.add(Integer.valueOf(group));
     }
 
     @Override
@@ -262,7 +265,7 @@ public class CollidableModel extends FeatureModel implements Collidable
     @Override
     public Collision collide(Collidable other)
     {
-        if (enabled && !ignored.contains(other))
+        if (enabled && !ignored.contains(other.getGroup()))
         {
             final int size = cacheColls.size();
             for (int i = 0; i < size; i++)
@@ -293,6 +296,12 @@ public class CollidableModel extends FeatureModel implements Collidable
                 g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
             }
         }
+    }
+
+    @Override
+    public void setGroup(int group)
+    {
+        this.group = Integer.valueOf(group);
     }
 
     @Override
@@ -332,5 +341,11 @@ public class CollidableModel extends FeatureModel implements Collidable
         {
             listener.notifyCollided(collidable);
         }
+    }
+
+    @Override
+    public Integer getGroup()
+    {
+        return group;
     }
 }

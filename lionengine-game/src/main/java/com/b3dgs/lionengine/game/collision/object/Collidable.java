@@ -46,11 +46,11 @@ public interface Collidable extends Feature, Updatable, Renderable, CollidableLi
     void addCollision(Collision collision);
 
     /**
-     * Add a collidable to ignore list.
+     * Add a group to ignore list.
      * 
-     * @param collidable The collidable to ignore on {@link #collide(Collidable)}.
+     * @param group The group to ignore on {@link #collide(Collidable)}.
      */
-    void addIgnore(Collidable collidable);
+    void addIgnore(int group);
 
     /**
      * Check if the collidable entered in collision with another one.
@@ -59,6 +59,13 @@ public interface Collidable extends Feature, Updatable, Renderable, CollidableLi
      * @return The collision found if collide, <code>null</code> if none.
      */
     Collision collide(Collidable collidable);
+
+    /**
+     * Set the associated group.
+     * 
+     * @param group The associated group.
+     */
+    void setGroup(int group);
 
     /**
      * Set the origin to use.
@@ -94,4 +101,11 @@ public interface Collidable extends Feature, Updatable, Renderable, CollidableLi
      * @return The collisions bounds.
      */
     List<Rectangle> getCollisionBounds();
+
+    /**
+     * Get the associated group.
+     * 
+     * @return The associated group.
+     */
+    Integer getGroup();
 }

@@ -267,7 +267,7 @@ public class CollidableModelTest
 
         Assert.assertNotNull(collidable.collide(collidable));
 
-        collidable.addIgnore(collidable);
+        collidable.addIgnore(collidable.getGroup().intValue());
 
         Assert.assertNull(collidable.collide(collidable));
     }
