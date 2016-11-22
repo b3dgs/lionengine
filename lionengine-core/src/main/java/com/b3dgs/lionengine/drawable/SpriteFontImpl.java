@@ -94,6 +94,12 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
+    public void dispose()
+    {
+        surface.dispose();
+    }
+
+    @Override
     public void stretch(double percentWidth, double percentHeight)
     {
         surface.stretch(percentWidth, percentHeight);

@@ -213,6 +213,12 @@ class SpriteImpl implements Sprite
     }
 
     @Override
+    public void dispose()
+    {
+        surface.dispose();
+    }
+
+    @Override
     public final void stretch(double widthPercent, double heightPercent)
     {
         Check.superiorStrict(widthPercent, 0);

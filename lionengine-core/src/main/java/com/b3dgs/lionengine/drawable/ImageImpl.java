@@ -110,6 +110,12 @@ class ImageImpl implements Image
     }
 
     @Override
+    public void dispose()
+    {
+        surface.dispose();
+    }
+
+    @Override
     public void render(Graphic g)
     {
         g.drawImage(surface, rx, ry);

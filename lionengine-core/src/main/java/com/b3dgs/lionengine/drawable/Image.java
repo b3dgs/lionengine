@@ -51,7 +51,7 @@ public interface Image extends Resource, Shape, Renderable
      * </p>
      * <p>
      * Images loaded with a reference of an existing {@link ImageBuffer} (such as
-     * {@link Drawable#loadImage(ImageBuffer)}) must not call this function, as surface as already been loaded and is
+     * {@link Drawable#loadImage(ImageBuffer)}) must not call this function, as surface has already been loaded and is
      * shared.
      * </p>
      * 

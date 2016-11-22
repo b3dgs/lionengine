@@ -397,6 +397,16 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         return true;
     }
 
+    @Override
+    public void dispose()
+    {
+        for (final Image current : surfaces.values())
+        {
+            current.dispose();
+        }
+        surfaces.clear();
+    }
+
     /*
      * Updatable
      */

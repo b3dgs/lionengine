@@ -41,4 +41,9 @@ public interface Resource
      * @return <code>true</code> if loaded, <code>false</code> else.
      */
     boolean isLoaded();
+
+    /**
+     * Dispose the associated resources if needed.
+     */
+    void dispose();
 }

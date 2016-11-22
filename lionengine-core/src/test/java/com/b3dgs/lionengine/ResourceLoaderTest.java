@@ -205,5 +205,11 @@ public class ResourceLoaderTest
         {
             return true;
         }
+
+        @Override
+        public void dispose()
+        {
+            // Mock
+        }
     }
 }

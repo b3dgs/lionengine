@@ -93,6 +93,12 @@ public class SpriteTiledMock implements SpriteTiled
     }
 
     @Override
+    public void dispose()
+    {
+        // Mock
+    }
+
+    @Override
     public void setOrigin(Origin origin)
     {
         // Mock
