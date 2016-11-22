@@ -20,8 +20,10 @@ package com.b3dgs.lionengine.core;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,6 +33,7 @@ import com.b3dgs.lionengine.mock.EngineMock;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.ScreenMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
+import com.b3dgs.lionengine.mock.SequenceEngineTerminateMock;
 import com.b3dgs.lionengine.mock.SequenceFailMock;
 import com.b3dgs.lionengine.mock.SequenceFilterMock;
 import com.b3dgs.lionengine.mock.SequenceInterruptMock;
@@ -71,6 +74,24 @@ public class LoaderTest
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+    }
+
+    /**
+     * Prepare test.
+     */
+    @Before
+    public void before()
+    {
+        Engine.start(new EngineMock("LoaderTest", Version.DEFAULT));
+    }
+
+    /**
+     * Terminate test.
+     */
+    @After
+    public void after()
+    {
+        Engine.terminate();
     }
 
     /**
@@ -227,7 +248,6 @@ public class LoaderTest
     @Test
     public void testEngineStarted()
     {
-        Engine.start(new EngineMock("testEngineStarted", Version.DEFAULT));
         final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSingleMock.class).await();
     }
@@ -367,6 +387,18 @@ public class LoaderTest
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
         loader.start(config, SequenceSingleMock.class).await();
+    }
+
+    /**
+     * Test the loader with sequence terminate engine.
+     */
+    @Test
+    public void testEngineTerminate()
+    {
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceEngineTerminateMock.class).await();
     }
 
     /**

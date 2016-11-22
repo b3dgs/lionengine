@@ -130,10 +130,7 @@ public final class UtilProjectStats
         {
             Verbose.exception(exception);
         }
-        finally
-        {
-            UtilStream.safeClose(in);
-        }
+        UtilStream.safeClose(in);
     }
 
     /**
@@ -179,7 +176,7 @@ public final class UtilProjectStats
             {
                 exploreDir(current.getAbsolutePath());
             }
-            else if (current.isFile())
+            else
             {
                 final String filename = current.getAbsolutePath();
                 if (JAVA_FILE_EXTENSION.equals(getExtension(filename)))

@@ -15,37 +15,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.graphic;
+package com.b3dgs.lionengine.mock;
 
-import org.junit.Assert;
-import org.junit.Test;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Test the gradient color class.
+ * Single sequence mock.
  */
-public class GradientColorTest
+public class SequenceEngineTerminateMock extends Sequence
 {
     /**
-     * Test the gradient color.
+     * Constructor.
+     * 
+     * @param context The context reference.
      */
-    @Test
-    public void testGradientColor()
+    public SequenceEngineTerminateMock(Context context)
     {
-        final ColorRgba color1 = ColorRgba.BLACK;
-        final ColorRgba color2 = ColorRgba.WHITE;
+        super(context);
+    }
 
-        final int x1 = 1;
-        final int y1 = 2;
-        final int x2 = 3;
-        final int y2 = 4;
-        final ColorGradient gradientColor = new ColorGradient(x1, y1, color1, x2, y2, color2);
+    /*
+     * Sequence
+     */
 
-        Assert.assertEquals(x1, gradientColor.getX1());
-        Assert.assertEquals(y1, gradientColor.getY1());
-        Assert.assertEquals(color1, gradientColor.getColor1());
+    @Override
+    public void load()
+    {
+        Engine.terminate();
+    }
 
-        Assert.assertEquals(x2, gradientColor.getX2());
-        Assert.assertEquals(y2, gradientColor.getY2());
-        Assert.assertEquals(color2, gradientColor.getColor2());
+    @Override
+    public void update(double extrp)
+    {
+        // Mock
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        // Mock
     }
 }
