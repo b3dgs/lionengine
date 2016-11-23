@@ -69,6 +69,18 @@ public class WorldTest
         final World world = new World(new Context()
         {
             @Override
+            public int getX()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getY()
+            {
+                return 0;
+            }
+
+            @Override
             public <T extends InputDevice> T getInputDevice(Class<T> type)
             {
                 return null;
@@ -106,6 +118,18 @@ public class WorldTest
         config.setSource(output);
         final WorldFail world = new WorldFail(new Context()
         {
+            @Override
+            public int getX()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getY()
+            {
+                return 0;
+            }
+
             @Override
             public <T extends InputDevice> T getInputDevice(Class<T> type)
             {
