@@ -71,6 +71,20 @@ public interface SpriteFont extends Sprite
     void draw(Graphic g, int x, int y, Align align, String... text);
 
     /**
+     * Set text to render.
+     * 
+     * @param text The text to render.
+     */
+    void setText(String text);
+
+    /**
+     * Set text alignment.
+     * 
+     * @param align The text alignment.
+     */
+    void setAlign(Align align);
+
+    /**
      * Set line height (default = letter height).
      * 
      * @param height The line height.

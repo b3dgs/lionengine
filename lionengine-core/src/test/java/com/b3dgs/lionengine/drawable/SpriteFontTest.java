@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.ViewerMock;
 import com.b3dgs.lionengine.test.DrawableTestTool;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the font sprite class.
@@ -84,10 +85,15 @@ public class SpriteFontTest
 
         sprite.setOrigin(Origin.TOP_LEFT);
         sprite.setLocation(1.0, 2.0);
+        sprite.setText(text);
+        sprite.setAlign(Align.CENTER);
         sprite.setLocation(new ViewerMock(), sprite);
         sprite.setMirror(Mirror.VERTICAL);
-        Assert.assertEquals(1.0, sprite.getX(), 0.001);
-        Assert.assertEquals(2.0, sprite.getY(), 0.001);
+
+        sprite.render(g);
+
+        Assert.assertEquals(1.0, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, sprite.getY(), UtilTests.PRECISION);
         Assert.assertEquals(Mirror.VERTICAL, sprite.getMirror());
 
         DrawableTestTool.testSpriteLoading(sprite);
@@ -100,16 +106,21 @@ public class SpriteFontTest
         sprite.draw(g, 0, 0, Align.CENTER, text);
         sprite.draw(g, 0, 0, Align.RIGHT, text);
         sprite.setLineHeight(0);
+
         Assert.assertTrue(sprite.getTextWidth(text) >= 1);
         Assert.assertTrue(sprite.getTextHeight(text) >= 0);
 
         Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, font, 6, 7)));
 
         sprite.stretch(90, 110);
+
         Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, font, 6, 7)));
 
         // Hash code
         final SpriteFont spriteB = Drawable.loadSpriteFont(media, font, 5, 4);
+
         Assert.assertTrue(sprite.hashCode() != spriteB.hashCode());
+
+        sprite.dispose();
     }
 }

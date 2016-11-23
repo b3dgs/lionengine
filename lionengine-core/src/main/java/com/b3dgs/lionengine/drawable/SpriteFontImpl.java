@@ -44,12 +44,45 @@ final class SpriteFontImpl implements SpriteFont
     /** New line separator character. */
     private static final String NL_STR = Constant.EMPTY_STRING + SpriteFont.NEW_LINE;
 
+    /**
+     * Get character width depending of alignment.
+     * 
+     * @param text The text reference.
+     * @param align The align.
+     * @return The char width.
+     */
+    private int getCharWidth(String text, Align align)
+    {
+        final int width;
+        if (align == Align.RIGHT)
+        {
+            width = getTextWidth(text);
+        }
+        else if (align == Align.CENTER)
+        {
+            width = getTextWidth(text) / 2;
+        }
+        else
+        {
+            width = 0;
+        }
+        return width;
+    }
+
     /** Font surface. */
     private final SpriteTiled surface;
     /** Font data. */
     private final Map<Character, Data> fontData;
+    /** Text. */
+    private String text = Constant.EMPTY_STRING;
+    /** Alignment. */
+    private Align align = Align.LEFT;
     /** Line height value. */
     private int lineHeight;
+    /** Horizontal location. */
+    private double x;
+    /** Vertical location. */
+    private double y;
 
     /**
      * Internal constructor.
@@ -120,7 +153,18 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public void render(Graphic g)
     {
-        surface.render(g);
+        final int length = text.length();
+        int lx = 0;
+        final int ly = 0;
+        final int width = getCharWidth(text, align);
+        for (int j = 0; j < length; j++)
+        {
+            final Data d = fontData.get(Character.valueOf(text.charAt(j)));
+            surface.setLocation(x + lx - width, y + ly + d.getHeight());
+            surface.setTile(d.getId());
+            surface.render(g);
+            lx += d.getWidth() + 1;
+        }
     }
 
     @Override
@@ -128,21 +172,12 @@ final class SpriteFontImpl implements SpriteFont
     {
         int lx = 0;
         int ly = 0;
-        int width = 0;
 
         // Render each character
         for (final String text : texts)
         {
             // Get char width
-            if (align == Align.RIGHT)
-            {
-                width = getTextWidth(text);
-            }
-            if (align == Align.CENTER)
-            {
-                width = getTextWidth(text) / 2;
-            }
-
+            final int width = getCharWidth(text, align);
             final int length = text.length();
             for (int j = 0; j < length; j++)
             {
@@ -165,6 +200,12 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
+    public void setText(String text)
+    {
+        this.text = text;
+    }
+
+    @Override
     public void setOrigin(Origin origin)
     {
         surface.setOrigin(origin);
@@ -173,7 +214,8 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public void setLocation(double x, double y)
     {
-        surface.setLocation(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -204,6 +246,12 @@ final class SpriteFontImpl implements SpriteFont
     public void setMirror(Mirror mirror)
     {
         surface.setMirror(mirror);
+    }
+
+    @Override
+    public void setAlign(Align align)
+    {
+        this.align = align;
     }
 
     @Override
@@ -248,13 +296,13 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public double getX()
     {
-        return surface.getX();
+        return x;
     }
 
     @Override
     public double getY()
     {
-        return surface.getY();
+        return y;
     }
 
     @Override
