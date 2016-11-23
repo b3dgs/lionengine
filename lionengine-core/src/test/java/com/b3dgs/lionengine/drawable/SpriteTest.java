@@ -105,6 +105,8 @@ public class SpriteTest
 
         // Hash code
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
+
+        spriteA.dispose();
     }
 
     /**

@@ -168,5 +168,7 @@ public class SpriteAnimatedTest
         Assert.assertEquals(AnimState.STOPPED, spriteA.getAnimState());
 
         Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(media, framesH, framesV)));
+
+        spriteA.dispose();
     }
 }

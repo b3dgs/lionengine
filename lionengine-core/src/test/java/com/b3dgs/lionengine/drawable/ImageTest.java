@@ -132,6 +132,7 @@ public class ImageTest
         final Image check = Drawable.loadImage(Medias.create("image.png"));
         check.load();
         check.prepare();
+        check.dispose();
         Assert.assertNotEquals(check.hashCode(), Drawable.loadImage(check.getSurface()).hashCode());
 
         Assert.assertNotNull(imageA);

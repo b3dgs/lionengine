@@ -125,5 +125,7 @@ public class SpriteTiledTest
         DrawableTestTool.testSpriteTiledLoadError(0, 1);
         DrawableTestTool.testSpriteTiledLoadError(1, 0);
         Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(media, tileWidth, tileHeight)));
+
+        spriteA.dispose();
     }
 }
