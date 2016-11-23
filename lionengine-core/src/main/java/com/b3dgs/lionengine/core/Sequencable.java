@@ -34,20 +34,6 @@ public interface Sequencable extends Updatable, Renderable
     void start(Screen screen);
 
     /**
-     * Terminate sequence.
-     */
-    void end();
-
-    /**
-     * Terminate sequence, and set the next sequence.
-     * 
-     * @param nextSequenceClass The next sequence class reference.
-     * @param arguments The sequence arguments list if needed by its constructor.
-     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
-     */
-    void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
-
-    /**
      * Add a key listener.
      * 
      * @param listener The listener to add.
@@ -101,7 +87,7 @@ public interface Sequencable extends Updatable, Renderable
     <T extends InputDevice> T getInputDevice(Class<T> type);
 
     /**
-     * Get the next sequence depending of the {@link #end()} or {@link #end(Class, Object...)} call.
+     * Get the next sequence.
      * 
      * @return The next sequence to be executed, <code>null</code> if none.
      */

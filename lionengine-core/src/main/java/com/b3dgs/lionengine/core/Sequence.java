@@ -72,7 +72,7 @@ import com.b3dgs.lionengine.graphic.Transparency;
  * @see Resolution
  * @see InputDevice
  */
-public abstract class Sequence implements Sequencable, ScreenListener
+public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
 {
     /** One second in milli. */
     private static final long ONE_SECOND_IN_MILLI = 1000L;
