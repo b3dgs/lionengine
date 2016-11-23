@@ -25,6 +25,20 @@ import com.b3dgs.lionengine.LionEngineException;
 public interface Context
 {
     /**
+     * Get main frame location x.
+     * 
+     * @return The main frame location x.
+     */
+    int getX();
+
+    /**
+     * Get main frame location y.
+     * 
+     * @return The main frame location y.
+     */
+    int getY();
+
+    /**
      * Get the config.
      * 
      * @return The config.

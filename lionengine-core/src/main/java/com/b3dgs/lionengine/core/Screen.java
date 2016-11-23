@@ -109,20 +109,6 @@ public interface Screen extends Context
     Graphic getGraphic();
 
     /**
-     * Get main frame location x.
-     * 
-     * @return The main frame location x.
-     */
-    int getX();
-
-    /**
-     * Get main frame location y.
-     * 
-     * @return The main frame location y.
-     */
-    int getY();
-
-    /**
      * Get the maximum time in milliseconds for screen to be ready.
      * 
      * @return The maximum time in milliseconds for screen to get ready.
