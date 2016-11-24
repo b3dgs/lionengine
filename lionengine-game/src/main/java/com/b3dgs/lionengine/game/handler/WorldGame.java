@@ -96,13 +96,13 @@ import com.b3dgs.lionengine.util.UtilStream;
 public abstract class WorldGame implements Updatable, Renderable
 {
     /** Services instance. */
-    protected final Services services = new Services();
+    protected final Services services;
     /** Camera instance (Configured with screen size as view). */
-    protected final Camera camera = services.create(Camera.class);
+    protected final Camera camera;
     /** Factory instance. */
-    protected final Factory factory = services.create(Factory.class);
+    protected final Factory factory;
     /** Handler instance (configured with {@link ComponentRefreshable} and {@link ComponentDisplayable}). */
-    protected final Handler handler = services.create(Handler.class);
+    protected final Handler handler;
     /** Config reference. */
     protected final Config config;
     /** Internal display reference. */
@@ -120,11 +120,29 @@ public abstract class WorldGame implements Updatable, Renderable
      */
     public WorldGame(Context context)
     {
+        this(context, new Services());
+    }
+
+    /**
+     * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
+     * screen size and wide state.
+     * 
+     * @param context The context reference.
+     * @param services The services reference.
+     */
+    public WorldGame(Context context, Services services)
+    {
         this.context = context;
+        this.services = services;
         config = context.getConfig();
         source = config.getSource();
         output = config.getOutput();
+
+        factory = services.create(Factory.class);
+        handler = services.create(Handler.class);
+        camera = services.create(Camera.class);
         camera.setView(0, 0, source.getWidth(), source.getHeight(), source.getHeight());
+
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
     }
