@@ -164,6 +164,18 @@ public class Bar implements Renderable
     /**
      * Set the background color.
      * 
+     * @param background The background color.
+     * @param foreground The foreground color.
+     */
+    public void setColor(ColorRgba background, ColorRgba foreground)
+    {
+        setColorBackground(background);
+        setColorForeground(foreground);
+    }
+
+    /**
+     * Set the background color.
+     * 
      * @param color The background color.
      */
     public void setColorBackground(ColorRgba color)
@@ -179,6 +191,17 @@ public class Bar implements Renderable
     public void setColorForeground(ColorRgba color)
     {
         foreground = color;
+    }
+
+    /**
+     * Set a gradient color from point 1 with color 1 to point2 with color 2.
+     * 
+     * @param color1 The first color.
+     * @param color2 The last color.
+     */
+    public void setColorGradient(ColorRgba color1, ColorRgba color2)
+    {
+        setColorGradient(x, y, color1, x + maxWidth, y + maxHeight, color2);
     }
 
     /**

@@ -70,8 +70,7 @@ public class BarTest
         bar.setVerticalReferential(false);
         bar.setHorizontalReferential(false);
         bar.render(g);
-        bar.setColorBackground(null);
-        bar.setColorForeground(null);
+        bar.setColor(null, null);
         bar.setVerticalReferential(true);
         bar.setHorizontalReferential(false);
         bar.render(g);
@@ -87,6 +86,9 @@ public class BarTest
         bar.setWidthPercent(100);
         bar.setHeightPercent(100);
         bar.setColorGradient(0, 0, ColorRgba.WHITE, 50, 10, ColorRgba.BLACK);
+        bar.render(g);
+
+        bar.setColorGradient(ColorRgba.WHITE, ColorRgba.BLACK);
         bar.render(g);
     }
 }
