@@ -51,6 +51,7 @@ class Ship extends FeaturableModel implements CollidableListener
 {
     /** Media. */
     public static final Media MEDIA = Medias.create("Ship.xml");
+    private static int group;
 
     private final double speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
@@ -79,6 +80,7 @@ class Ship extends FeaturableModel implements CollidableListener
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);
+        collidable.setGroup(group++);
 
         final FramesConfig config = FramesConfig.imports(setup);
         sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());

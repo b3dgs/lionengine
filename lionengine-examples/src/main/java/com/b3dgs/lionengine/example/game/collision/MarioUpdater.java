@@ -43,6 +43,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
 
     @Service private Body body;
     @Service private Transformable transformable;
+    @Service private MarioController controller;
     @Service private Collidable collidable;
     @Service private TileCollidable tileCollidable;
     @Service private Keyboard keyboard;
@@ -74,6 +75,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     @Override
     public void update(double extrp)
     {
+        controller.update(extrp);
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
