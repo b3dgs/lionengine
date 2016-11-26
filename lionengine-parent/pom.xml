@@ -3,43 +3,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <project-name>lionengine</project-name>
-        <jdk.version>1.6</jdk.version>
-        <jdk.home>${JDK_6_HOME}</jdk.home>
-        <maven.compiler.source>${jdk.version}</maven.compiler.source>
-        <maven.compiler.target>${jdk.version}</maven.compiler.target>
-        <main-group-id>com.b3dgs.${project-name}</main-group-id>
-        <buildtools-project>${project-name}-buildtools</buildtools-project>
-        <encoding.type>UTF-8</encoding.type>
-        <working.dir>${project.basedir}</working.dir>
-        <project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>${encoding.type}</project.reporting.outputEncoding>
-        <maven.version>3.3.9</maven.version>
-        <tycho.version>0.26.0</tycho.version>
-        <junit.version>4.12</junit.version>
-        <jacoco.version>0.7.7.201606060606</jacoco.version>
-        <maven-bundle.version>3.2.0</maven-bundle.version>
-        <maven-compiler.version>3.5.1</maven-compiler.version>
-        <maven-osgi-packaging.version>0.11.1</maven-osgi-packaging.version>
-        <maven-jar.version>3.0.2</maven-jar.version>
-        <maven-clean.version>3.0.0</maven-clean.version>
-        <maven-source.version>3.0.1</maven-source.version>
-        <maven-javadoc.version>2.10.4</maven-javadoc.version>
-        <maven-surfire.version>2.19.1</maven-surfire.version>
-        <maven-failsafe.version>2.19.1</maven-failsafe.version>
-        <maven-checkstyle.version>2.17</maven-checkstyle.version>
-        <maven-site.version>3.5.1</maven-site.version>
-        <maven-deploy.version>2.8.2</maven-deploy.version>
-        <maven-install.version>2.5.2</maven-install.version>
-        <maven-resources.version>3.0.1</maven-resources.version>
-        <maven-dependency.version>2.10</maven-dependency.version>
-        <maven-release.version>2.5.3</maven-release.version>
-        <checkstyle.version>7.2</checkstyle.version>
-        <maven-eclipse.version>2.10</maven-eclipse.version>
-        <pde-target-maven.version>1.0.1</pde-target-maven.version>
-        <maven-gpg.version>1.6</maven-gpg.version>
-        <nexus-staging-maven.version>1.6.7</nexus-staging-maven.version>
+        <b3dgs.version>1.0.0</b3dgs.version>
+        <buildtools-project>lionengine-buildtools</buildtools-project>
     </properties>
+    <parent>
+        <groupId>com.b3dgs</groupId>
+        <artifactId>b3dgs-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
     <packaging>pom</packaging>
@@ -47,10 +18,6 @@
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
-    <organization>
-        <name>Byron 3D Games Studio</name>
-        <url>http://www.b3dgs.com</url>
-    </organization>
     <scm>
         <url>https://github.com/b3dgs/lionengine</url>
         <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
@@ -61,40 +28,6 @@
         <system>TravisCI</system>
         <url>https://travis-ci.org/b3dgs/lionengine</url>
     </ciManagement>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-    </distributionManagement>
-    <developers>
-        <developer>
-            <id>DjThunder</id>
-            <name>Pierre-Alexandre</name>
-            <email>contact@b3dgs.com</email>
-            <url>http://www.b3dgs.com</url>
-            <organization>Byron 3D Games Studio</organization>
-            <organizationUrl>http://www.b3dgs.com</organizationUrl>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>1</timezone>
-        </developer>
-    </developers>
-    <licenses>
-        <license>
-            <name>GNU General Public License (GPL) version 2.0</name>
-            <url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    <prerequisites>
-        <maven>${maven.version}</maven>
-    </prerequisites>
     <profiles>
         <profile>
             <id>core</id>
@@ -179,17 +112,17 @@
                 <module>../com.b3dgs.lionengine.core.swt.test</module>
             </modules>
         </profile>
-		<profile>
+        <profile>
             <id>plugins-editor</id>
             <modules>
                 <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.core.swt.test</module>
-				<module>../com.b3dgs.lionengine.editor</module>
-				<module>../com.b3dgs.lionengine.editor.object</module>
-				<module>../com.b3dgs.lionengine.editor.map</module>
-				<module>../com.b3dgs.lionengine.editor.animation</module>
+                <module>../com.b3dgs.lionengine.editor</module>
+                <module>../com.b3dgs.lionengine.editor.object</module>
+                <module>../com.b3dgs.lionengine.editor.map</module>
+                <module>../com.b3dgs.lionengine.editor.animation</module>
                 <module>../com.b3dgs.lionengine.editor.collision</module>
                 <module>../com.b3dgs.lionengine.editor.pathfinding</module>
             </modules>
@@ -201,9 +134,9 @@
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
-				<module>../com.b3dgs.lionengine.editor.object</module>
-				<module>../com.b3dgs.lionengine.editor.map</module>
-				<module>../com.b3dgs.lionengine.editor.animation</module>
+                <module>../com.b3dgs.lionengine.editor.object</module>
+                <module>../com.b3dgs.lionengine.editor.map</module>
+                <module>../com.b3dgs.lionengine.editor.animation</module>
                 <module>../com.b3dgs.lionengine.editor.collision</module>
                 <module>../com.b3dgs.lionengine.editor.pathfinding</module>
                 <module>../com.b3dgs.lionengine.repository</module>
@@ -216,9 +149,9 @@
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
-				<module>../com.b3dgs.lionengine.editor.object</module>
-				<module>../com.b3dgs.lionengine.editor.map</module>
-				<module>../com.b3dgs.lionengine.editor.animation</module>
+                <module>../com.b3dgs.lionengine.editor.object</module>
+                <module>../com.b3dgs.lionengine.editor.map</module>
+                <module>../com.b3dgs.lionengine.editor.animation</module>
                 <module>../com.b3dgs.lionengine.editor.collision</module>
                 <module>../com.b3dgs.lionengine.editor.pathfinding</module>
                 <module>../com.b3dgs.lionengine.editor.product</module>
@@ -234,36 +167,36 @@
                 <module>../com.b3dgs.lionengine.editor.object</module>
                 <module>../com.b3dgs.lionengine.editor.map</module>
                 <module>../com.b3dgs.lionengine.editor.animation</module>
-				<module>../com.b3dgs.lionengine.editor.collision</module>
-				<module>../com.b3dgs.lionengine.editor.pathfinding</module>
+                <module>../com.b3dgs.lionengine.editor.collision</module>
+                <module>../com.b3dgs.lionengine.editor.pathfinding</module>
                 <module>../com.b3dgs.lionengine.editor.product</module>
                 <module>../com.b3dgs.lionengine.editor.test</module>
                 <module>../com.b3dgs.lionengine.editor.object.test</module>
                 <module>../com.b3dgs.lionengine.editor.map.test</module>
                 <module>../com.b3dgs.lionengine.editor.animation.test</module>
             </modules>
-			<build>
+            <build>
                 <pluginManagement>
                     <plugins>
-						<plugin>
-						   <groupId>org.eclipse.tycho</groupId>
-						   <artifactId>tycho-surefire-plugin</artifactId>
-						   <version>${tycho.version}</version>
-						   <configuration>
-							  <useUIHarness>true</useUIHarness>
-						      <useUIThread>false</useUIThread>
-							  <configuration>
-									<includes>
-										<include>**/*Test.java</include>
-									</includes>
-								</configuration>
-							  <product>com.b3dgs.lionengine.editor.product</product>
-							  <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
-						   </configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
+                        <plugin>
+                            <groupId>org.eclipse.tycho</groupId>
+                            <artifactId>tycho-surefire-plugin</artifactId>
+                            <version>${tycho.version}</version>
+                            <configuration>
+                                <useUIHarness>true</useUIHarness>
+                                <useUIThread>false</useUIThread>
+                                <configuration>
+                                    <includes>
+                                        <include>**/*Test.java</include>
+                                    </includes>
+                                </configuration>
+                                <product>com.b3dgs.lionengine.editor.product</product>
+                                <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
         </profile>
         <profile>
             <id>examples</id>
@@ -274,59 +207,42 @@
             </modules>
         </profile>
     </profiles>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${main-group-id}</groupId>
-                <artifactId>lionengine-buildtools</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-core-awt</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-network</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-audio-wav</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-audio-midi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-audio-sc68</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${main-group-id}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-game</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -334,31 +250,7 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -373,373 +265,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>lt.velykis.maven</groupId>
-                <artifactId>pde-target-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <configuration>
-                    <destFile>${project.build.directory}/jacoco-ut.exec</destFile>
-                    <dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <excludeTransitive>true</excludeTransitive>
-                            <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>${maven-gpg.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>${maven-release.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler.version}</version>
-                    <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
-                        <executable>${jdk.home}/bin/javac</executable>
-                        <encoding>${encoding.type}</encoding>
-                        <showDeprecation>true</showDeprecation>
-                        <showWarnings>true</showWarnings>
-                        <fork>true</fork>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven-deploy.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>${maven-install.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${maven-resources.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${maven-dependency.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven-jar.version}</version>
-                    <configuration>
-                        <archive>
-                            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven-clean.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven-javadoc.version}</version>
-                    <configuration>
-                        <show>protected</show>
-                        <nohelp>true</nohelp>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surfire.version}</version>
-                    <configuration>
-                        <excludes>
-                            <exclude>**/*IT.java</exclude>
-                        </excludes>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.maven.surefire</groupId>
-                            <artifactId>surefire-junit47</artifactId>
-                            <version>${maven-surfire.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${maven-checkstyle.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <propertiesLocation>../${buildtools-project}/checkstyle.properties</propertiesLocation>
-                        <propertyExpansion>dir=${project.basedir}/../${buildtools-project}</propertyExpansion>
-                        <configLocation>../${buildtools-project}/checkstyle.xml</configLocation>
-                        <headerLocation>../${buildtools-project}/header.txt</headerLocation>
-                        <suppressionsLocation>../${buildtools-project}/checkstyle-suppression.xml</suppressionsLocation>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>validate</id>
-                            <phase>validate</phase>
-                            <configuration>
-                                <encoding>${encoding.type}</encoding>
-                                <consoleOutput>true</consoleOutput>
-                                <failsOnError>true</failsOnError>
-                                <linkXRef>false</linkXRef>
-                            </configuration>
-                            <goals>
-                                <goal>check</goal>
-                                <goal>checkstyle</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-eclipse-plugin</artifactId>
-                    <version>${maven-eclipse.version}</version>
-                    <configuration>
-                        <additionalBuildcommands>
-                            <buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
-                        </additionalBuildcommands>
-                        <additionalProjectnatures>
-                            <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
-                        </additionalProjectnatures>
-                        <additionalConfig>
-                            <file>
-                                <name>.checkstyle</name>
-                                <location>../${buildtools-project}/eclipse-checkstyle.xml</location>
-                            </file>
-                        </additionalConfig>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>${buildtools-project}</artifactId>
-                            <version>${project.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-maven-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                    <extensions>true</extensions>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>target-platform-configuration</artifactId>
-                    <version>${tycho.version}</version>
-                    <configuration>
-                        <resolver>p2</resolver>
-                        <pomDependencies>consider</pomDependencies>
-                        <target>
-                            <artifact>
-                                <groupId>${main-group-id}</groupId>
-                                <artifactId>${main-group-id}.platform</artifactId>
-                                <version>${project.version}</version>
-                                <classifier>${main-group-id}.base</classifier>
-                            </artifact>
-                        </target>
-                        <environments>
-                            <environment>
-                                <os>win32</os>
-                                <ws>win32</ws>
-                                <arch>x86_64</arch>
-                            </environment>
-                            <environment>
-                                <os>win32</os>
-                                <ws>win32</ws>
-                                <arch>x86</arch>
-                            </environment>
-                            <environment>
-                                <os>linux</os>
-                                <ws>gtk</ws>
-                                <arch>x86_64</arch>
-                            </environment>
-                            <environment>
-                                <os>linux</os>
-                                <ws>gtk</ws>
-                                <arch>x86</arch>
-                            </environment>
-                            <environment>
-                                <os>macosx</os>
-                                <ws>cocoa</ws>
-                                <arch>x86_64</arch>
-                            </environment>
-                        </environments>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-compiler-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                    <configuration>
-                        <compilerArguments>
-                            <inlineJSR/>
-                            <enableJavadoc/>
-                            <encoding>${encoding.type}</encoding>
-                        </compilerArguments>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-versions-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-surefire-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonatype.tycho</groupId>
-                    <artifactId>maven-osgi-packaging-plugin</artifactId>
-                    <version>${maven-osgi-packaging.version}</version>
-                    <configuration>
-                        <archive>
-                            <addMavenDescriptor>false</addMavenDescriptor>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexus-staging-maven.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <serverId>ossrh</serverId>
-                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <version>${maven-bundle.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <manifestLocation>META-INF</manifestLocation>
-                        <supportedProjectTypes>
-                            <supportedProjectType>jar</supportedProjectType>
-                        </supportedProjectTypes>
-                        <instructions>
-                            <Import-Package>org.junit;resolution:=optional, *</Import-Package>
-                            <Bundle-RequiredExecutionEnvironment>JavaSE-${jdk.version}</Bundle-RequiredExecutionEnvironment>
-                            <_removeheaders>
-                                Build-Jdk,Built-By,Bnd-LastModified,Created-By,Private-Package,Tool,Require-Capability,
-                                JDK_6_HOME,JDK_7_HOME,JDK_8_HOME,ANDROID_HOME
-                            </_removeheaders>
-                        </instructions>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>bundle-manifest</id>
-                            <phase>process-classes</phase>
-                            <goals>
-                                <goal>manifest</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>lt.velykis.maven</groupId>
-                    <artifactId>pde-target-maven-plugin</artifactId>
-                    <version>${pde-target-maven.version}</version>
-                    <executions>
-                        <execution>
-                            <id>pde-target</id>
-                            <goals>
-                                <goal>add-pom-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <baseDefinition>../${main-group-id}.target/${main-group-id}.base.target</baseDefinition>
-                                <outputFile>../${main-group-id}.target/${main-group-id}.platform.target</outputFile>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 </project>
