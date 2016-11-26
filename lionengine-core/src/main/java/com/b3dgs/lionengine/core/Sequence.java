@@ -347,7 +347,6 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         }
 
         nextSequence = null;
-        load();
         setResolution(resolution);
 
         // Prepare sequence to be started
@@ -356,6 +355,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         final Timing updateFpsTimer = new Timing();
         updateFpsTimer.start();
 
+        load();
         double extrp = EXTRP;
         onLoaded(extrp, screen.getGraphic());
 
