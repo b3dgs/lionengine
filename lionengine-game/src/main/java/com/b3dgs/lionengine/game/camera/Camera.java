@@ -399,8 +399,8 @@ public class Camera extends FeaturableModel implements Viewer
     {
         return getViewpointX(localizable.getX() + radiusX) >= getViewX()
                && getViewpointX(localizable.getX() - radiusX) <= getViewX() + width
-               && getViewpointY(localizable.getY() + radiusY) >= getViewY()
-               && getViewpointY(localizable.getY() - radiusY) <= getViewY() + height;
+               && getViewpointY(localizable.getY() - radiusY) >= getViewY()
+               && getViewpointY(localizable.getY() + radiusY) <= getViewY() + height;
     }
 
     @Override
@@ -408,7 +408,7 @@ public class Camera extends FeaturableModel implements Viewer
     {
         return getViewpointX(shape.getX() + shape.getWidth() + radiusX) >= getViewX()
                && getViewpointX(shape.getX() - shape.getWidth() - radiusX) <= getViewX() + width
-               && getViewpointY(shape.getY() + shape.getHeight() + radiusY) >= getViewY()
-               && getViewpointY(shape.getY() - shape.getHeight() * 2 - radiusY) <= getViewY() + height;
+               && getViewpointY(shape.getY() - shape.getHeight() - radiusY) >= getViewY()
+               && getViewpointY(shape.getY() + shape.getHeight() + radiusY) <= getViewY() + height;
     }
 }

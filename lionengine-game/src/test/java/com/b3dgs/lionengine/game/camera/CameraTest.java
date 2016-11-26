@@ -58,6 +58,7 @@ public class CameraTest
         Assert.assertEquals(0, camera.getViewY());
         Assert.assertEquals(Integer.MAX_VALUE, camera.getWidth());
         Assert.assertEquals(Integer.MAX_VALUE, camera.getHeight());
+        Assert.assertEquals(0, camera.getScreenHeight());
         Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
@@ -127,7 +128,7 @@ public class CameraTest
     /**
      * Test the camera viewable.
      */
-    // TODO @Test
+    @Test
     public void testIsViewable()
     {
         camera.setView(0, 0, 2, 2, 2);
@@ -138,41 +139,57 @@ public class CameraTest
         cursor.update(1.0);
 
         Assert.assertTrue(camera.isViewable((Localizable) cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable((Localizable) cursor, 0, -1));
+        Assert.assertFalse(camera.isViewable((Localizable) cursor, -1, 0));
+        Assert.assertFalse(camera.isViewable((Localizable) cursor, -1, -1));
 
         cursor.setLocation(3, 3);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable((Localizable) cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable((Localizable) cursor, 0, 1));
+        Assert.assertFalse(camera.isViewable((Localizable) cursor, 1, 0));
+        Assert.assertTrue(camera.isViewable((Localizable) cursor, 1, 1));
+
+        Assert.assertTrue(camera.isViewable(cursor, 0, 0));
         Assert.assertTrue(camera.isViewable(cursor, 1, 3));
 
         cursor.setLocation(-2, -2);
         cursor.update(1.0);
 
         Assert.assertFalse(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
+        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
         Assert.assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(0, -2);
         cursor.update(1.0);
 
-        Assert.assertTrue(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
+        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
         Assert.assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(-2, 0);
         cursor.update(1.0);
 
         Assert.assertFalse(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
+        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
         Assert.assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(-2, 2);
         cursor.update(1.0);
 
         Assert.assertFalse(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
+        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
         Assert.assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(2, -2);
         cursor.update(1.0);
 
-        Assert.assertTrue(camera.isViewable(cursor, 0, 0));
+        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
         Assert.assertTrue(camera.isViewable(cursor, 1, 1));
     }
 
