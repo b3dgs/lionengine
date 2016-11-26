@@ -23,15 +23,6 @@
             <plugin>
                 <groupId>lt.velykis.maven</groupId>
                 <artifactId>pde-target-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>pde-target</id>
-                        <goals>
-                            <goal>add-pom-dependencies</goal>
-                        </goals>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
