@@ -23,6 +23,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import javax.sound.sampled.Mixer;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.AudioFormat;
 
@@ -46,6 +48,19 @@ public final class WavFormat implements AudioFormat<Wav>
     {
         "wav", "wave"
     };
+
+    /** Custom mixer, <code>null</code> for default. */
+    static volatile Mixer.Info mixer;
+
+    /**
+     * Set the mixer to use.
+     * 
+     * @param mixer The mixer to use.
+     */
+    public static void setMixer(Mixer.Info mixer)
+    {
+        WavFormat.mixer = mixer;
+    }
 
     /**
      * Create a wav format.

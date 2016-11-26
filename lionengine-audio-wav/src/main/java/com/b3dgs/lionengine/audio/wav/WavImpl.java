@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.audio.wav;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 import javax.sound.sampled.AudioFormat;
@@ -62,12 +61,13 @@ final class WavImpl implements Wav
      */
     private static Playback createPlayback(Media media, Align alignment, int volume) throws IOException
     {
-        final AudioInputStream audioInputStream = openStream(media);
-        final SourceDataLine sourceDataLine = getDataLine(audioInputStream);
-        updateAlignment(sourceDataLine, alignment);
-        updateVolume(sourceDataLine, volume);
+        final AudioInputStream input = openStream(media);
+        final SourceDataLine dataLine = getDataLine(input);
+        dataLine.start();
+        updateAlignment(dataLine, alignment);
+        updateVolume(dataLine, volume);
 
-        return new Playback(audioInputStream, sourceDataLine);
+        return new Playback(input, dataLine);
     }
 
     /**
@@ -82,7 +82,7 @@ final class WavImpl implements Wav
     {
         try
         {
-            return AudioSystem.getAudioInputStream(new BufferedInputStream(media.getInputStream()));
+            return AudioSystem.getAudioInputStream(media.getInputStream());
         }
         catch (final UnsupportedAudioFileException exception)
         {
@@ -93,20 +93,27 @@ final class WavImpl implements Wav
     /**
      * Get the audio data line.
      * 
-     * @param audioInputStream The audio input.
+     * @param input The audio input.
      * @return The audio source data.
-     * @throws IOException The no audio line available (may be already opened).
+     * @throws IOException If no audio line available (may be already opened).
      */
-    private static SourceDataLine getDataLine(AudioInputStream audioInputStream) throws IOException
+    private static SourceDataLine getDataLine(AudioInputStream input) throws IOException
     {
-        final AudioFormat audioFormat = audioInputStream.getFormat();
-        final DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
+        final AudioFormat format = input.getFormat();
         try
         {
-            final SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-            sourceDataLine.open(audioFormat);
+            final SourceDataLine dataLine;
+            if (WavFormat.mixer != null)
+            {
+                dataLine = AudioSystem.getSourceDataLine(format, WavFormat.mixer);
+            }
+            else
+            {
+                dataLine = AudioSystem.getSourceDataLine(format);
+            }
+            dataLine.open(format);
 
-            return sourceDataLine;
+            return dataLine;
         }
         catch (final LineUnavailableException exception)
         {
@@ -117,14 +124,14 @@ final class WavImpl implements Wav
     /**
      * Update the sound alignment.
      * 
-     * @param sourceDataLine Audio source data.
+     * @param dataLine Audio source data.
      * @param alignment Alignment value.
      */
-    private static void updateAlignment(SourceDataLine sourceDataLine, Align alignment)
+    private static void updateAlignment(DataLine dataLine, Align alignment)
     {
-        if (sourceDataLine.isControlSupported(Type.PAN))
+        if (dataLine.isControlSupported(Type.PAN))
         {
-            final FloatControl pan = (FloatControl) sourceDataLine.getControl(Type.PAN);
+            final FloatControl pan = (FloatControl) dataLine.getControl(Type.PAN);
             switch (alignment)
             {
                 case CENTER:
@@ -145,14 +152,14 @@ final class WavImpl implements Wav
     /**
      * Update the sound volume.
      * 
-     * @param sourceDataLine Audio source data.
+     * @param dataLine Audio source data.
      * @param volume The audio playback volume value.
      */
-    private static void updateVolume(SourceDataLine sourceDataLine, int volume)
+    private static void updateVolume(DataLine dataLine, int volume)
     {
-        if (sourceDataLine.isControlSupported(Type.MASTER_GAIN))
+        if (dataLine.isControlSupported(Type.MASTER_GAIN))
         {
-            final FloatControl gainControl = (FloatControl) sourceDataLine.getControl(Type.MASTER_GAIN);
+            final FloatControl gainControl = (FloatControl) dataLine.getControl(Type.MASTER_GAIN);
             final double gain = UtilMath.clamp(volume / 100.0, 0.0, 100.0);
             final double dB = Math.log(gain) / Math.log(10.0) * 20.0;
             gainControl.setValue((float) dB);
@@ -162,38 +169,38 @@ final class WavImpl implements Wav
     /**
      * Read the full sound and play it by buffer.
      * 
-     * @param audioInputStream The audio input.
-     * @param sourceDataLine Audio source data.
+     * @param input The audio input.
+     * @param dataLine Audio source data.
      * @throws IOException If error when reading the sound.
      */
-    private static void readSound(AudioInputStream audioInputStream, SourceDataLine sourceDataLine) throws IOException
+    private static void readSound(AudioInputStream input, SourceDataLine dataLine) throws IOException
     {
         int read;
         final byte[] buffer = new byte[BUFFER];
-        while ((read = audioInputStream.read(buffer, 0, buffer.length)) > 0)
+        while ((read = input.read(buffer, 0, buffer.length)) > 0)
         {
-            sourceDataLine.write(buffer, 0, read);
+            dataLine.write(buffer, 0, read);
         }
     }
 
     /**
      * Flush and close audio data and stream.
      * 
-     * @param audioInputStream The audio input.
-     * @param sourceDataLine Audio source data.
+     * @param input The audio input.
+     * @param dataLine Audio source data.
      * @throws IOException If error on closing.
      */
-    private static void close(AudioInputStream audioInputStream, SourceDataLine sourceDataLine) throws IOException
+    private static void close(AudioInputStream input, DataLine dataLine) throws IOException
     {
-        sourceDataLine.drain();
-        sourceDataLine.flush();
-        sourceDataLine.stop();
-        sourceDataLine.close();
-        audioInputStream.close();
+        dataLine.drain();
+        dataLine.flush();
+        dataLine.stop();
+        dataLine.close();
+        input.close();
     }
 
     /** Opened playback. */
-    private final Collection<Playback> opened = new ConcurrentLinkedQueue<Playback>();
+    private final Map<Media, Playback> opened = new ConcurrentHashMap<Media, Playback>();
     /** Tasks executor. */
     private final ExecutorService executor;
     /** Sound file reference. */
@@ -229,20 +236,24 @@ final class WavImpl implements Wav
         Playback playback = null;
         try
         {
+            if (opened.containsKey(media))
+            {
+                opened.get(media).close();
+            }
             playback = createPlayback(media, alignment, volume);
-            opened.add(playback);
+            opened.put(media, playback);
 
-            final AudioInputStream audioInputStream = playback.getAudioInputStream();
-            final SourceDataLine sourceDataLine = playback.getSourceDataLine();
-            sourceDataLine.start();
-            readSound(audioInputStream, sourceDataLine);
-            close(audioInputStream, sourceDataLine);
+            final AudioInputStream input = openStream(media);
+            final SourceDataLine dataLine = playback.getDataLine();
+            dataLine.start();
+            readSound(input, dataLine);
+            close(input, dataLine);
         }
         catch (final IOException exception)
         {
             if (last == null || !exception.getMessage().equals(last.getMessage()))
             {
-                Verbose.exception(exception);
+                Verbose.exception(exception, media.toString());
                 last = exception;
             }
             UtilStream.safeClose(playback);
@@ -275,7 +286,7 @@ final class WavImpl implements Wav
     @Override
     public void stop()
     {
-        for (final Playback playback : opened)
+        for (final Playback playback : opened.values())
         {
             try
             {

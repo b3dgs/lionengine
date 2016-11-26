@@ -29,20 +29,20 @@ import javax.sound.sampled.SourceDataLine;
 final class Playback implements Closeable
 {
     /** Audio input. */
-    private final AudioInputStream audioInputStream;
+    private final AudioInputStream input;
     /** Audio data. */
-    private final SourceDataLine sourceDataLine;
+    private final SourceDataLine dataLine;
 
     /**
      * Create playback.
      * 
-     * @param audioInputStream The audio input.
-     * @param sourceDataLine The audio data.
+     * @param input The audio input.
+     * @param dataLine The audio data.
      */
-    Playback(AudioInputStream audioInputStream, SourceDataLine sourceDataLine)
+    Playback(AudioInputStream input, SourceDataLine dataLine)
     {
-        this.audioInputStream = audioInputStream;
-        this.sourceDataLine = sourceDataLine;
+        this.input = input;
+        this.dataLine = dataLine;
     }
 
     /**
@@ -52,7 +52,7 @@ final class Playback implements Closeable
      */
     public AudioInputStream getAudioInputStream()
     {
-        return audioInputStream;
+        return input;
     }
 
     /**
@@ -60,9 +60,9 @@ final class Playback implements Closeable
      * 
      * @return The audio data.
      */
-    public SourceDataLine getSourceDataLine()
+    public SourceDataLine getDataLine()
     {
-        return sourceDataLine;
+        return dataLine;
     }
 
     /*
@@ -72,8 +72,8 @@ final class Playback implements Closeable
     @Override
     public void close() throws IOException
     {
-        sourceDataLine.flush();
-        sourceDataLine.stop();
-        audioInputStream.close();
+        dataLine.flush();
+        dataLine.close();
+        input.close();
     }
 }
