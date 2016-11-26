@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -40,6 +41,7 @@ import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
@@ -65,6 +67,8 @@ public class MapTileGame extends FeaturableModel implements MapTile
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
     /** Inconsistent tile size. */
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
+    /** Invalid map tile size. */
+    private static final String ERROR_APPEND_MAP_TILE_SIZE = "Appended map does not have the same tile size: ";
 
     /** Tile set listeners. */
     private final Collection<TileSetListener> tileSetListeners = new ArrayList<TileSetListener>();
@@ -130,6 +134,32 @@ public class MapTileGame extends FeaturableModel implements MapTile
         widthInTile = newWidth;
         heightInTile = newHeight;
         radius = (int) Math.ceil(StrictMath.sqrt(newWidth * (double) newWidth + newHeight * (double) newHeight));
+    }
+
+    /**
+     * Append the map at specified offset.
+     * 
+     * @param map The map to append.
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
+     */
+    private void appendMap(MapTile map, int offsetX, int offsetY)
+    {
+        for (int v = 0; v < map.getInTileHeight(); v++)
+        {
+            final int ty = offsetY + v;
+            for (int h = 0; h < map.getInTileWidth(); h++)
+            {
+                final int tx = offsetX + h;
+                final Tile tile = map.getTile(h, v);
+                if (tile != null)
+                {
+                    final double x = tx * (double) tileWidth;
+                    final double y = ty * (double) tileHeight;
+                    setTile(createTile(tile.getSheet(), tile.getNumber(), x, y));
+                }
+            }
+        }
     }
 
     /*
@@ -255,24 +285,70 @@ public class MapTileGame extends FeaturableModel implements MapTile
     {
         Check.notNull(map);
 
+        if (!isCreated())
+        {
+            create(map.getTileWidth(), map.getTileHeight(), 1, 1);
+        }
+
+        if (map.getTileWidth() != getTileWidth() || map.getTileHeight() != getTileHeight())
+        {
+            throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE,
+                                          map.getTileWidth() + Constant.SPACE + getTileHeight());
+        }
+
         final int newWidth = Math.max(widthInTile, widthInTile - (widthInTile - offsetX) + map.getInTileWidth());
         final int newHeight = Math.max(heightInTile, heightInTile - (heightInTile - offsetY) + map.getInTileHeight());
         resize(newWidth, newHeight);
 
-        for (int v = 0; v < map.getInTileHeight(); v++)
+        appendMap(map, offsetX, offsetY);
+    }
+
+    @Override
+    public void append(Collection<MapTile> maps, int offsetX, int offsetY, int randX, int randY)
+    {
+        int newWidth = widthInTile;
+        int newHeight = heightInTile;
+        final int[] randsX = new int[maps.size()];
+        final int[] randsY = new int[randsX.length];
+        int i = 0;
+        int tw = 0;
+        int th = 0;
+        for (final MapTile map : maps)
         {
-            final int ty = offsetY + v;
-            for (int h = 0; h < map.getInTileWidth(); h++)
+            randsX[i] = UtilRandom.getRandomInteger(randX);
+            randsY[i] = UtilRandom.getRandomInteger(randY);
+
+            newWidth += map.getInTileWidth() + randsX[i];
+            newHeight += map.getInTileHeight() + randsY[i];
+
+            if (tw == 0)
             {
-                final int tx = offsetX + h;
-                final Tile tile = map.getTile(h, v);
-                if (tile != null)
-                {
-                    final double x = tx * (double) tileWidth;
-                    final double y = ty * (double) tileHeight;
-                    setTile(createTile(tile.getSheet(), tile.getNumber(), x, y));
-                }
+                tw = map.getTileWidth();
+                th = map.getTileHeight();
             }
+            else if (tw != map.getTileWidth() || th != map.getTileHeight())
+            {
+                throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE,
+                                              map.getTileWidth() + Constant.SPACE + map.getTileHeight());
+            }
+
+            i++;
+        }
+        if (!isCreated())
+        {
+            create(tw, th, 1, 1);
+        }
+        resize(newWidth, newHeight);
+
+        int ox = 0;
+        int oy = 0;
+        i = 0;
+        for (final MapTile map : maps)
+        {
+            appendMap(map, ox, oy);
+            ox += map.getInTileWidth() * offsetX + randsX[i];
+            oy += map.getInTileHeight() * offsetY + randsY[i];
+            i++;
         }
     }
 

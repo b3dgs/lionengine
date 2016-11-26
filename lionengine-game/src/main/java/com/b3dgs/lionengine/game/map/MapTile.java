@@ -143,6 +143,17 @@ public interface MapTile extends Surface, Featurable
     void append(MapTile map, int offsetX, int offsetY);
 
     /**
+     * Append existing maps.
+     * 
+     * @param maps The maps to append.
+     * @param offsetX The horizontal offset factor in tile (positive).
+     * @param offsetY The vertical offset factor in tile (positive).
+     * @param randX The horizontal random offset in tile.
+     * @param randY The vertical random offset in tile.
+     */
+    void append(Collection<MapTile> maps, int offsetX, int offsetY, int randX, int randY);
+
+    /**
      * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
     void clear();

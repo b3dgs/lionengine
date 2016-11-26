@@ -29,6 +29,7 @@ import org.junit.rules.TemporaryFolder;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -198,5 +199,157 @@ public class MapTileGameTest
         map.setTile(tile);
 
         Assert.assertNull(set.get());
+    }
+
+    /**
+     * Test the map append when map is not created.
+     */
+    @Test
+    public void testAppendNotCreated()
+    {
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        Assert.assertEquals(0, map.getInTileWidth());
+        Assert.assertEquals(0, map.getInTileHeight());
+        Assert.assertEquals(0, map.getTilesNumber());
+
+        map.append(map1, 0, 0);
+
+        Assert.assertEquals(1, map.getInTileWidth());
+        Assert.assertEquals(1, map.getInTileHeight());
+        Assert.assertEquals(1, map.getTilesNumber());
+    }
+
+    /**
+     * Test the map append when map is created with same tile size.
+     */
+    @Test
+    public void testAppendCreatedSameTileSize()
+    {
+        map.create(1, 1, 1, 1);
+
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        Assert.assertEquals(1, map.getInTileWidth());
+        Assert.assertEquals(1, map.getInTileHeight());
+        Assert.assertEquals(0, map.getTilesNumber());
+
+        map.append(map1, 0, 0);
+
+        Assert.assertEquals(1, map.getInTileWidth());
+        Assert.assertEquals(1, map.getInTileHeight());
+        Assert.assertEquals(1, map.getTilesNumber());
+    }
+
+    /**
+     * Test the map append when map is created with different tile width.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAppendCreatedDifferentTileWidth()
+    {
+        map.create(2, 1, 1, 1);
+
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        map.append(map1, 0, 0);
+    }
+
+    /**
+     * Test the map append when map is created with different tile height.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAppendCreatedDifferentTileHeight()
+    {
+        map.create(1, 2, 1, 1);
+
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        map.append(map1, 0, 0);
+    }
+
+    /**
+     * Test the map collection append when map is not created.
+     */
+    @Test
+    public void testAppendCollectionNotCreated()
+    {
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        Assert.assertEquals(0, map.getInTileWidth());
+        Assert.assertEquals(0, map.getInTileHeight());
+        Assert.assertEquals(0, map.getTilesNumber());
+
+        map.append(Arrays.asList(map1, map1), 0, 0, 0, 0);
+
+        Assert.assertEquals(2, map.getInTileWidth());
+        Assert.assertEquals(2, map.getInTileHeight());
+        Assert.assertEquals(1, map.getTilesNumber());
+    }
+
+    /**
+     * Test the map collection append when map is created.
+     */
+    @Test
+    public void testAppendCollectionCreated()
+    {
+        map.create(1, 1, 1, 1);
+
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 2, 2);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        Assert.assertEquals(1, map.getInTileWidth());
+        Assert.assertEquals(1, map.getInTileHeight());
+        Assert.assertEquals(0, map.getTilesNumber());
+
+        map.append(Arrays.asList(map1, map1), 0, 0, 0, 0);
+
+        Assert.assertEquals(5, map.getInTileWidth());
+        Assert.assertEquals(5, map.getInTileHeight());
+        Assert.assertEquals(1, map.getTilesNumber());
+    }
+
+    /**
+     * Test the map collection append when map is created with different tile width.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAppendCollectionCreatedDifferentTileWidth()
+    {
+        map.create(1, 1, 1, 1);
+
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        final MapTile map2 = new MapTileGame();
+        map2.create(2, 1, 1, 1);
+        map.append(Arrays.asList(map1, map2), 0, 0, 0, 0);
+    }
+
+    /**
+     * Test the map collection append when map is created with different tile height.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAppendCollectionCreatedDifferentTileHeight()
+    {
+        map.create(1, 1, 1, 1);
+
+        final MapTile map1 = new MapTileGame();
+        map1.create(1, 1, 1, 1);
+        map1.setTile(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 1));
+
+        final MapTile map2 = new MapTileGame();
+        map2.create(1, 2, 1, 1);
+        map.append(Arrays.asList(map1, map2), 0, 0, 0, 0);
     }
 }
