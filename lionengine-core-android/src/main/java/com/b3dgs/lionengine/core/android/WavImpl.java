@@ -36,7 +36,7 @@ final class WavImpl implements Wav
     /** Sound ID. */
     private final int id;
     /** Current volume. */
-    private int volume;
+    private int volume = 100;
 
     /**
      * Internal constructor.
