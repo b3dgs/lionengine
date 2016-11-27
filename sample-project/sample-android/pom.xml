@@ -2,13 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <jdk.version>1.6</jdk.version>
-        <jdk.home>${JDK_6_HOME}</jdk.home>
-        <android.version>1.5_r3</android.version>
-        <android.sdk>3</android.sdk>
-        <android.maven.version>4.0.0-rc.2</android.maven.version>
-    </properties>
     <parent>
         <groupId>com.b3dgs.sample</groupId>
         <artifactId>sample-parent</artifactId>
@@ -22,8 +15,6 @@
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>${android.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -59,7 +50,6 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>${android.maven.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <assetsDirectory>assets</assetsDirectory>
