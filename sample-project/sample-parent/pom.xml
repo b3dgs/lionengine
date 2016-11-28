@@ -5,7 +5,7 @@
     <properties>
         <b3dgs.version>1.0.0</b3dgs.version>
         <buildtools-project>sample-buildtools</buildtools-project>
-        <lionengine.version>8.3.5</lionengine.version>
+        <lionengine.version>8.3.6-SNAPSHOT</lionengine.version>
     </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
