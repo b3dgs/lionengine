@@ -60,8 +60,18 @@ public class Force implements Direction, Updatable
         {
             norm = Math.abs(dv);
         }
-        final double sx = dh / norm;
-        final double sy = dv / norm;
+        final double sx;
+        final double sy;
+        if (norm < 0 || norm > 0)
+        {
+            sx = dh / norm;
+            sy = dv / norm;
+        }
+        else
+        {
+            sx = 0;
+            sy = 0;
+        }
 
         final Force force = new Force(sx, sy);
         force.setVelocity(norm);
