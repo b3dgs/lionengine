@@ -464,8 +464,18 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
 
         // Search vector and number of search steps
         final double norm = Math.sqrt(dh * dh + dv * dv);
-        final double sx = dh / norm;
-        final double sy = dv / norm;
+        final double sx;
+        final double sy;
+        if (norm < 0 || norm > 0)
+        {
+            sx = dh / norm;
+            sy = dv / norm;
+        }
+        else
+        {
+            sx = 0;
+            sy = 0;
+        }
 
         double h = sh;
         double v = sv;
