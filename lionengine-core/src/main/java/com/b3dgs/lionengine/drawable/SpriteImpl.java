@@ -377,17 +377,17 @@ class SpriteImpl implements Sprite
         {
             return true;
         }
-        if (object instanceof Sprite)
+        if (object == null || object.getClass() != getClass())
         {
-            final Sprite sprite = (Sprite) object;
-
-            final boolean sameSurface = sprite.getSurface() == getSurface();
-            final boolean sameWidth = sprite.getWidth() == getWidth();
-            final boolean sameHeight = sprite.getHeight() == getHeight();
-
-            return sameWidth && sameHeight && sameSurface;
+            return false;
         }
-        return false;
+        final Sprite sprite = (Sprite) object;
+
+        final boolean sameSurface = sprite.getSurface() == getSurface();
+        final boolean sameWidth = sprite.getWidth() == getWidth();
+        final boolean sameHeight = sprite.getHeight() == getHeight();
+
+        return sameWidth && sameHeight && sameSurface;
     }
 
     @Override

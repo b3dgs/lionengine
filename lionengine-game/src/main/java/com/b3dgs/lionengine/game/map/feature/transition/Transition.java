@@ -105,17 +105,17 @@ public class Transition
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof Transition))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final Transition other = (Transition) obj;
+        final Transition other = (Transition) object;
         return groups.equals(other.groups) && type == other.type || isSymmetric(other);
     }
 

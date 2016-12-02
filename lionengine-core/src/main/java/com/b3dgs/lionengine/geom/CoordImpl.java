@@ -99,17 +99,17 @@ final class CoordImpl implements Coord
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CoordImpl))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CoordImpl other = (CoordImpl) obj;
+        final CoordImpl other = (CoordImpl) object;
         return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
                && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
     }

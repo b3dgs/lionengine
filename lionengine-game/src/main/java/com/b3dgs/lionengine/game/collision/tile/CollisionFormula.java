@@ -141,17 +141,17 @@ public class CollisionFormula implements Nameable
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CollisionFormula))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CollisionFormula other = (CollisionFormula) obj;
+        final CollisionFormula other = (CollisionFormula) object;
         return getName().equals(other.getName());
     }
 

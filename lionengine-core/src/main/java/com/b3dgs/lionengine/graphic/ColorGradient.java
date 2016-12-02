@@ -144,17 +144,17 @@ public final class ColorGradient
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (obj == null || !(obj instanceof ColorGradient))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final ColorGradient other = (ColorGradient) obj;
+        final ColorGradient other = (ColorGradient) object;
         return x1 == other.x1
                && x2 == other.x2
                && y1 == other.y1

@@ -157,22 +157,22 @@ public class TileGame extends FeaturableModel implements Tile
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof TileGame))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final TileGame other = (TileGame) obj;
-        return sheet.equals(other.sheet)
-               && number == other.number
+        final TileGame other = (TileGame) object;
+        return number == other.number
                && width == other.width
                && height == other.height
                && inTileX == other.inTileX
-               && inTileY == other.inTileY;
+               && inTileY == other.inTileY
+               && sheet.equals(other.sheet);
     }
 }

@@ -137,17 +137,17 @@ public class TileGroup implements Nameable
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof TileGroup))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final TileGroup other = (TileGroup) obj;
+        final TileGroup other = (TileGroup) object;
         return name.equals(other.name);
     }
 }

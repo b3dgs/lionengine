@@ -166,17 +166,17 @@ public final class FeaturableConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof FeaturableConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final FeaturableConfig other = (FeaturableConfig) obj;
+        final FeaturableConfig other = (FeaturableConfig) object;
         return other.getClassName().equals(getClassName()) && other.getSetupName().equals(getSetupName());
     }
 

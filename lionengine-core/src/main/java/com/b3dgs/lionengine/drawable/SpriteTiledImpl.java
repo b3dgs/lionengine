@@ -138,22 +138,22 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         {
             return true;
         }
-        if (object instanceof SpriteTiled)
+        if (object == null || object.getClass() != getClass())
         {
-            final SpriteTiled sprite = (SpriteTiled) object;
-
-            final boolean sameSurface = sprite.getSurface() == getSurface();
-            final boolean sameTileWidth = sprite.getTileWidth() == getTileWidth();
-            final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
-            final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
-            final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
-
-            final boolean sameSize = sameTileWidth && sameTileHeight;
-            final boolean sameTiles = sameHorizontalTiles && sameVerticalTiles;
-
-            return sameSize && sameTiles && sameSurface;
+            return false;
         }
-        return false;
+        final SpriteTiled sprite = (SpriteTiled) object;
+
+        final boolean sameSurface = sprite.getSurface() == getSurface();
+        final boolean sameTileWidth = sprite.getTileWidth() == getTileWidth();
+        final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
+        final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
+        final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
+
+        final boolean sameSize = sameTileWidth && sameTileHeight;
+        final boolean sameTiles = sameHorizontalTiles && sameVerticalTiles;
+
+        return sameSize && sameTiles && sameSurface;
     }
 
     @Override

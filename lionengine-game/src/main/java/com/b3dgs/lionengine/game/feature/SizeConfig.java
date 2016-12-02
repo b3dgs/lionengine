@@ -130,17 +130,17 @@ public final class SizeConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof SizeConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final SizeConfig other = (SizeConfig) obj;
+        final SizeConfig other = (SizeConfig) object;
         return other.getWidth() == getWidth() && other.getHeight() == getHeight();
     }
 

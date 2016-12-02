@@ -112,17 +112,17 @@ public final class Version
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof Version))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final Version other = (Version) obj;
+        final Version other = (Version) object;
         return getMajor() == other.getMajor() && getMinor() == other.getMinor() && getMicro() == other.getMicro();
     }
 

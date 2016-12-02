@@ -205,22 +205,22 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         {
             return true;
         }
-        if (object instanceof SpriteAnimated)
+        if (object == null || object.getClass() != getClass())
         {
-            final SpriteAnimated sprite = (SpriteAnimated) object;
-
-            final boolean sameSprite = super.equals(object);
-            final boolean sameFrameWidth = sprite.getFrameWidth() == getFrameWidth();
-            final boolean sameFrameHeight = sprite.getFrameHeight() == getFrameHeight();
-            final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
-            final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
-
-            final boolean sameSize = sameFrameWidth && sameFrameHeight;
-            final boolean sameFrames = sameHorizontalFrames && sameVerticalFrames;
-
-            return sameSize && sameFrames && sameSprite;
+            return false;
         }
-        return false;
+        final SpriteAnimated sprite = (SpriteAnimated) object;
+
+        final boolean sameSprite = super.equals(object);
+        final boolean sameFrameWidth = sprite.getFrameWidth() == getFrameWidth();
+        final boolean sameFrameHeight = sprite.getFrameHeight() == getFrameHeight();
+        final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
+        final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
+
+        final boolean sameSize = sameFrameWidth && sameFrameHeight;
+        final boolean sameFrames = sameHorizontalFrames && sameVerticalFrames;
+
+        return sameSize && sameFrames && sameSprite;
     }
 
     @Override

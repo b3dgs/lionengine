@@ -85,17 +85,17 @@ public class Marker
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass())
+        if (object == null || getClass() != object.getClass())
         {
             return false;
         }
-        final Marker other = (Marker) obj;
+        final Marker other = (Marker) object;
         return x == other.x && y == other.y;
     }
 }

@@ -346,17 +346,17 @@ final class SpriteFontImpl implements SpriteFont
         {
             return true;
         }
-        if (object instanceof SpriteFont)
+        if (object == null || object.getClass() != getClass())
         {
-            final SpriteFont sprite = (SpriteFont) object;
-
-            final boolean sameSurface = sprite.getSurface() == getSurface();
-            final boolean sameWidth = sprite.getWidth() == getWidth();
-            final boolean sameHeight = sprite.getHeight() == getHeight();
-
-            return sameWidth && sameHeight && sameSurface;
+            return false;
         }
-        return false;
+        final SpriteFont sprite = (SpriteFont) object;
+
+        final boolean sameSurface = sprite.getSurface() == getSurface();
+        final boolean sameWidth = sprite.getWidth() == getWidth();
+        final boolean sameHeight = sprite.getHeight() == getHeight();
+
+        return sameWidth && sameHeight && sameSurface;
     }
 
     @Override

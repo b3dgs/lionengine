@@ -189,17 +189,17 @@ class ImageImpl implements Image
         {
             return true;
         }
-        if (object instanceof Image)
+        if (object == null || object.getClass() != getClass())
         {
-            final Image image = (Image) object;
-
-            final boolean sameSurface = image.getSurface() == getSurface();
-            final boolean sameWidth = image.getWidth() == getWidth();
-            final boolean sameHeight = image.getHeight() == getHeight();
-
-            return sameWidth && sameHeight && sameSurface;
+            return false;
         }
-        return false;
+        final Image image = (Image) object;
+
+        final boolean sameSurface = image.getSurface() == getSurface();
+        final boolean sameWidth = image.getWidth() == getWidth();
+        final boolean sameHeight = image.getHeight() == getHeight();
+
+        return sameWidth && sameHeight && sameSurface;
     }
 
     @Override

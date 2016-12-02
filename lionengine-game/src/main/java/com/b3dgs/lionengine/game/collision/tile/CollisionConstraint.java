@@ -105,17 +105,17 @@ public class CollisionConstraint
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CollisionConstraint))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CollisionConstraint other = (CollisionConstraint) obj;
+        final CollisionConstraint other = (CollisionConstraint) object;
         return constraints.equals(other.constraints);
     }
 

@@ -96,17 +96,17 @@ public class CollisionFunctionLinear implements CollisionFunction
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CollisionFunctionLinear))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CollisionFunctionLinear other = (CollisionFunctionLinear) obj;
+        final CollisionFunctionLinear other = (CollisionFunctionLinear) object;
         return Double.doubleToLongBits(a) == Double.doubleToLongBits(other.a)
                && Double.doubleToLongBits(b) == Double.doubleToLongBits(other.b);
 

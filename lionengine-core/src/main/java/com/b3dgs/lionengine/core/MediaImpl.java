@@ -253,14 +253,18 @@ final class MediaImpl implements Media
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (obj instanceof Media)
+        if (this == object)
         {
-            final Media media = (Media) obj;
-            return media.getPath().equals(path);
+            return true;
         }
-        return false;
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final Media media = (Media) object;
+        return media.getPath().equals(path);
     }
 
     @Override

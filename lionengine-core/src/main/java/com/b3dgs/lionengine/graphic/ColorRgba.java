@@ -198,11 +198,15 @@ public final class ColorRgba
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof ColorRgba)
+        if (this == object)
         {
-            final ColorRgba color = (ColorRgba) object;
-            return color.value == value;
+            return true;
         }
-        return false;
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final ColorRgba color = (ColorRgba) object;
+        return color.value == value;
     }
 }

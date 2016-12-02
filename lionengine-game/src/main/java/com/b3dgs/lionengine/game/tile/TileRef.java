@@ -121,12 +121,12 @@ public class TileRef
         {
             return true;
         }
-        if (!(object instanceof TileRef))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
         final TileRef other = (TileRef) object;
-        return sheet.equals(other.sheet) && number == other.number;
+        return number == other.number && sheet.equals(other.sheet);
     }
 
     @Override

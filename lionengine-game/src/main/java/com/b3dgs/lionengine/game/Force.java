@@ -473,17 +473,17 @@ public class Force implements Direction, Updatable
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof Force))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final Force other = (Force) obj;
+        final Force other = (Force) object;
         return Double.doubleToLongBits(fh) == Double.doubleToLongBits(other.fh)
                && Double.doubleToLongBits(fv) == Double.doubleToLongBits(other.fv)
                && Double.doubleToLongBits(sensibility) == Double.doubleToLongBits(other.sensibility)

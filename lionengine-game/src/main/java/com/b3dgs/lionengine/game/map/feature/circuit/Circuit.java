@@ -106,17 +106,17 @@ public class Circuit
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof Circuit))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final Circuit other = (Circuit) obj;
+        final Circuit other = (Circuit) object;
         return groups.equals(other.groups) && type == other.type || isSymmetric(other);
     }
 

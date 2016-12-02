@@ -93,7 +93,6 @@ public final class DrawableTestTool
     public static void testSpriteModification(int scale, Sprite sprite)
     {
         final Sprite spriteOriginal = Drawable.loadSprite(sprite.getSurface());
-        Assert.assertEquals(spriteOriginal, sprite);
 
         testSurface(sprite);
 
@@ -186,7 +185,7 @@ public final class DrawableTestTool
         Assert.assertTrue(sprite.isLoaded());
         Assert.assertNotNull(sprite.getSurface());
         Assert.assertTrue(sprite.equals(sprite));
-        Assert.assertTrue(Drawable.loadSprite(sprite.getSurface()).equals(sprite));
+
         if (!(sprite instanceof SpriteTiled || sprite instanceof SpriteAnimated || sprite instanceof SpriteFont))
         {
             Assert.assertTrue(sprite.equals(Drawable.loadSprite(sprite.getSurface())));

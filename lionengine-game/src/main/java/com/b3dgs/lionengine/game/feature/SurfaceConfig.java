@@ -153,20 +153,20 @@ public final class SurfaceConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof SurfaceConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final SurfaceConfig other = (SurfaceConfig) obj;
+        final SurfaceConfig other = (SurfaceConfig) object;
         final boolean sameIcon = other.getIcon() == null && getIcon() == null
                                  || other.getIcon() != null && getIcon() != null && other.getIcon().equals(getIcon());
-        return other.getImage().equals(getImage()) && sameIcon;
+        return sameIcon && other.getImage().equals(getImage());
     }
 
     @Override

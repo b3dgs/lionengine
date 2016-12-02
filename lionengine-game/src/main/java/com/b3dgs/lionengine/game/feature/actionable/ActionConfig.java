@@ -212,23 +212,23 @@ public final class ActionConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof ActionConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final ActionConfig other = (ActionConfig) obj;
+        final ActionConfig other = (ActionConfig) object;
         final boolean sameSize = other.getWidth() == getWidth() && other.getHeight() == getHeight();
         final boolean sameCoord = other.getX() == getX() && other.getY() == getY();
-        return other.getDescription().equals(getDescription())
-               && other.getName().equals(getName())
+        return sameSize
                && sameCoord
-               && sameSize;
+               && other.getDescription().equals(getDescription())
+               && other.getName().equals(getName());
     }
 
     @Override

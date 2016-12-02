@@ -125,17 +125,17 @@ public class CollisionRange
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CollisionRange))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CollisionRange other = (CollisionRange) obj;
+        final CollisionRange other = (CollisionRange) object;
         final boolean sameRange = maxX == other.maxX && maxY == other.maxY && minX == other.minX && minY == other.minY;
         return sameRange && output == other.output;
     }

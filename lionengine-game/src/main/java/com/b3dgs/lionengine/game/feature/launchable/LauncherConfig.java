@@ -163,17 +163,17 @@ public final class LauncherConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof LauncherConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final LauncherConfig other = (LauncherConfig) obj;
+        final LauncherConfig other = (LauncherConfig) object;
         return other.getLevel() == getLevel()
                && other.getRate() == getRate()
                && Arrays.equals(other.launchables.toArray(), launchables.toArray());

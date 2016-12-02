@@ -144,17 +144,17 @@ public final class ProducibleConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof ProducibleConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final ProducibleConfig other = (ProducibleConfig) obj;
+        final ProducibleConfig other = (ProducibleConfig) object;
         return other.getWidth() == getWidth() && other.getHeight() == getHeight() && other.getSteps() == getSteps();
     }
 

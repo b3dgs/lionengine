@@ -212,22 +212,23 @@ final class MediaAndroid implements Media
     {
         final int prime = 31;
         int result = 1;
-        if (path != null)
-        {
-            result = prime * result + path.hashCode();
-        }
+        result = prime * result + path.hashCode();
         return result;
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (obj instanceof Media)
+        if (this == object)
         {
-            final Media media = (Media) obj;
-            return media.getPath().equals(path);
+            return true;
         }
-        return false;
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final Media media = (Media) object;
+        return media.getPath().equals(path);
     }
 
     @Override

@@ -130,17 +130,17 @@ public final class FramesConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof FramesConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final FramesConfig other = (FramesConfig) obj;
+        final FramesConfig other = (FramesConfig) object;
         return other.getHorizontal() == getHorizontal() && other.getVertical() == getVertical();
     }
 

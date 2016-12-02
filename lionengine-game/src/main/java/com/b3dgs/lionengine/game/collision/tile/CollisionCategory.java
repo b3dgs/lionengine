@@ -172,17 +172,17 @@ public class CollisionCategory implements Nameable
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CollisionCategory))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CollisionCategory other = (CollisionCategory) obj;
+        final CollisionCategory other = (CollisionCategory) object;
         return getName().equals(other.getName());
     }
 

@@ -187,7 +187,7 @@ final class RectangleImpl implements Rectangle
         {
             return true;
         }
-        if (!(obj instanceof RectangleImpl))
+        if (obj == null || obj.getClass() != getClass())
         {
             return false;
         }

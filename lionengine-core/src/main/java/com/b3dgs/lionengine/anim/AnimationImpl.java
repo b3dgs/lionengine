@@ -121,17 +121,17 @@ final class AnimationImpl implements Animation
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof Animation))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final Animation other = (Animation) obj;
+        final Animation other = (Animation) object;
         return getName().equals(other.getName());
     }
 }

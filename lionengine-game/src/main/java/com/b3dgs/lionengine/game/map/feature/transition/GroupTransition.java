@@ -84,17 +84,17 @@ public class GroupTransition
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof GroupTransition))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final GroupTransition other = (GroupTransition) obj;
+        final GroupTransition other = (GroupTransition) object;
         return groupIn.equals(other.groupIn) && groupOut.equals(other.groupOut);
     }
 

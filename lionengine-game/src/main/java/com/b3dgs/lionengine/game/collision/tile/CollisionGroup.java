@@ -122,17 +122,17 @@ public class CollisionGroup implements Nameable
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof CollisionGroup))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final CollisionGroup other = (CollisionGroup) obj;
+        final CollisionGroup other = (CollisionGroup) object;
         return getName().equals(other.getName());
     }
 

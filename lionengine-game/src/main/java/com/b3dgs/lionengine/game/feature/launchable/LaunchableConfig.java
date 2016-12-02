@@ -177,22 +177,22 @@ public final class LaunchableConfig
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (!(obj instanceof LaunchableConfig))
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final LaunchableConfig other = (LaunchableConfig) obj;
+        final LaunchableConfig other = (LaunchableConfig) object;
         final boolean sameOffset = other.getOffsetX() == getOffsetX() && other.getOffsetY() == getOffsetY();
-        return other.getMedia().equals(getMedia())
+        return sameOffset
+               && other.getMedia().equals(getMedia())
                && other.getVector().equals(getVector())
-               && other.getDelay() == getDelay()
-               && sameOffset;
+               && other.getDelay() == getDelay();
     }
 
     @Override

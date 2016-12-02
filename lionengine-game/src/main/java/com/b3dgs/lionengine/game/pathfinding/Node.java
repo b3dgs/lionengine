@@ -189,12 +189,16 @@ public final class Node implements Comparable<Node>
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof Node)
+        if (this == object)
         {
-            final Node node = (Node) object;
-            return x == node.x && y == node.y && depth == node.depth;
+            return true;
         }
-        return false;
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final Node node = (Node) object;
+        return x == node.x && y == node.y && depth == node.depth;
     }
 
     @Override
