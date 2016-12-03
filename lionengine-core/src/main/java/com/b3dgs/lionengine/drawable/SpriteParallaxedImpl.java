@@ -29,6 +29,9 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 final class SpriteParallaxedImpl implements SpriteParallaxed
 {
+    /** Perspective effect amplitude. */
+    private static final double AMPLITUDE_FACTOR = 0.6;
+
     /** Parallax surface file name. */
     private final Media media;
     /** Number of parallax line. */
@@ -92,8 +95,8 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
         lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
         lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
         lines = Graphics.splitImage(surface, 1, linesNumber);
-        final double ratio = 0.6;
-        final double factH = sx / 100.0 / ratio;
+
+        final double factH = sx / 100.0 / AMPLITUDE_FACTOR;
 
         for (int i = 0; i < linesNumber; i++)
         {

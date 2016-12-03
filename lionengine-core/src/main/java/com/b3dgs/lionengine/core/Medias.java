@@ -246,7 +246,7 @@ public final class Medias
             throw new LionEngineException(JAR_LOADER_ERROR);
         }
 
-        final Media media = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING);
+        final Media media = Medias.create(Constant.EMPTY_STRING);
         final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
         final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
         final int jarSeparatorIndex = path.indexOf(prefix);
@@ -267,7 +267,7 @@ public final class Medias
         {
             throw new LionEngineException(JAR_LOADER_ERROR);
         }
-        final Media media = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING);
+        final Media media = Medias.create(Constant.EMPTY_STRING);
         final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
         final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
         final int jarSeparatorIndex = path.indexOf(prefix);

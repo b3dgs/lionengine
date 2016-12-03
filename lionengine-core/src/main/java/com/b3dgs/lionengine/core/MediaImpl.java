@@ -174,11 +174,10 @@ final class MediaImpl implements Media
     public Collection<Media> getMedias()
     {
         final File file = getFile();
-        if (file.isDirectory())
+        final File[] files = file.listFiles();
+        if (files != null)
         {
-            final File[] files = file.listFiles();
             final Collection<Media> medias = new ArrayList<Media>(files.length);
-
             final String prefix = getPrefix();
             final int prefixLength = prefix.length();
 

@@ -193,7 +193,7 @@ final class ScreenFullAwt extends ScreenAwt
      */
     private String getSupportedResolutions()
     {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(Constant.HUNDRED);
         int i = 0;
         for (final DisplayMode display : dev.getDisplayModes())
         {

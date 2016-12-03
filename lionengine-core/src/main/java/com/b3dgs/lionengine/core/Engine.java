@@ -40,9 +40,9 @@ public abstract class Engine
     /** Engine version. */
     public static final Version VERSION = Version.create(8, 3, 6);
     /** Engine starting. */
-    private static final String ENGINE_STARTING = "Starting \"" + Engine.NAME + " \"";
+    private static final String ENGINE_STARTING = "Starting \"" + NAME + " \"";
     /** Engine terminated. */
-    private static final String ENGINE_TERMINATED = Engine.NAME + " terminated";
+    private static final String ENGINE_TERMINATED = NAME + " terminated";
     /** For string. */
     private static final String FOR = " for ";
     /** Error message engine not started. */

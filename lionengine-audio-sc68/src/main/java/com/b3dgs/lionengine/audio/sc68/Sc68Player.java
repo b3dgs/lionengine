@@ -50,7 +50,6 @@ final class Sc68Player implements Sc68
         {
             input = media.getInputStream();
             final File file = UtilStream.getCopy(media.getFile().getName(), input);
-            file.deleteOnExit();
             return file.getAbsolutePath();
         }
         finally

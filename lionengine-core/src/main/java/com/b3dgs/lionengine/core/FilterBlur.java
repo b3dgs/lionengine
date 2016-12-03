@@ -246,9 +246,12 @@ public class FilterBlur implements Filter
             total += matrix[index];
             index++;
         }
-        for (int i = 0; i < rows; i++)
+        if (total < 0 || total > 0)
         {
-            matrix[i] /= total;
+            for (int i = 0; i < rows; i++)
+            {
+                matrix[i] /= total;
+            }
         }
 
         final float[] data = new float[width * height];

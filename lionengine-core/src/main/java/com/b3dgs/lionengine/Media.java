@@ -34,8 +34,6 @@ import java.util.Collection;
  * Medias.create(&quot;img&quot;, &quot;image.png&quot;);
  * print(com.b3dgs.lionengine.core.Medias.create()); // print: resources/img/image.png
  * </pre>
- * 
- * @see com.b3dgs.lionengine.core.Medias
  */
 public interface Media
 {
