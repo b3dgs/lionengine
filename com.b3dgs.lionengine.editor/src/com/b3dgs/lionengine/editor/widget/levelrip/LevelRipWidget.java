@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.widget.levelrip;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
@@ -101,7 +102,7 @@ public class LevelRipWidget
      */
     public Collection<Media> getLevelRips()
     {
-        return medias;
+        return Collections.unmodifiableCollection(medias);
     }
 
     /**

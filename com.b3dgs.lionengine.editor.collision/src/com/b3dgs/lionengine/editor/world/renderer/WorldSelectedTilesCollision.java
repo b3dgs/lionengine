@@ -69,10 +69,7 @@ public class WorldSelectedTilesCollision implements WorldRenderListener
         final Map<Integer, Marker> markers = interactionTile.getMarkers();
         for (final Marker marker : markers.values())
         {
-            for (final Tile tile : marker.getTiles())
-            {
-                renderSelectedTile(g, tile, scale, tw, th);
-            }
+            marker.getTiles().forEach(tile -> renderSelectedTile(g, tile, scale, tw, th));
         }
     }
 

@@ -136,7 +136,7 @@ public class SheetsExtractDialog extends AbstractDialog
         {
             return Collections.emptySet();
         }
-        return sheets;
+        return Collections.unmodifiableCollection(sheets);
     }
 
     /**

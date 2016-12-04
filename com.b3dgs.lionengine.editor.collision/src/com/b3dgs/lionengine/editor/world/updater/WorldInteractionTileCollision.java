@@ -391,10 +391,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         {
             final int offsetKey = (key.intValue() + offset) % max;
             final Marker marker = markers.get(key);
-            for (final Tile tile : marker.getTiles())
-            {
-                applyCollision(groupNode, offsetKey, tile);
-            }
+            marker.getTiles().forEach(tile -> applyCollision(groupNode, offsetKey, tile));
         }
         if (!markers.isEmpty())
         {

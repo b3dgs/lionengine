@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.game.tile.Tile;
 
@@ -67,7 +68,7 @@ public class Marker
      */
     public Collection<Tile> getTiles()
     {
-        return tiles;
+        return Collections.unmodifiableCollection(tiles);
     }
 
     /*
