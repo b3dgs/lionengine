@@ -49,34 +49,67 @@ public final class UtilZip
      */
     public static Collection<ZipEntry> getEntriesByExtension(File jar, String path, String extension)
     {
-        final Collection<ZipEntry> entries = new ArrayList<ZipEntry>();
         try
         {
-            final ZipFile zip = new ZipFile(jar);
-            final Enumeration<? extends ZipEntry> zipEntries = zip.entries();
-            while (zipEntries.hasMoreElements())
-            {
-                final ZipEntry entry = zipEntries.nextElement();
-                final String name = entry.getName();
-                if (name.startsWith(path) && UtilFile.getExtension(name).equals(extension))
-                {
-                    entries.add(entry);
-                }
-            }
+            ZipFile zip = null;
             try
             {
-                zip.close();
+                zip = new ZipFile(jar);
+                return checkEntries(zip, path, extension);
             }
-            catch (final IOException exception)
+            finally
             {
-                Verbose.exception(exception);
+                closeZip(zip);
             }
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_OPEN_ZIP, jar.getAbsolutePath());
         }
+    }
+
+    /**
+     * Check all entries existing in the ZIP considering the extension.
+     * 
+     * @param zip The ZIP to check.
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: xml).
+     * @return The entries list.
+     */
+    private static Collection<ZipEntry> checkEntries(ZipFile zip, String path, String extension)
+    {
+        final Collection<ZipEntry> entries = new ArrayList<ZipEntry>();
+        final Enumeration<? extends ZipEntry> zipEntries = zip.entries();
+        while (zipEntries.hasMoreElements())
+        {
+            final ZipEntry entry = zipEntries.nextElement();
+            final String name = entry.getName();
+            if (name.startsWith(path) && UtilFile.getExtension(name).equals(extension))
+            {
+                entries.add(entry);
+            }
+        }
         return entries;
+    }
+
+    /**
+     * Close ZIP file.
+     * 
+     * @param zip The ZIP to close.
+     */
+    private static void closeZip(ZipFile zip)
+    {
+        try
+        {
+            if (zip != null)
+            {
+                zip.close();
+            }
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(exception);
+        }
     }
 
     /**

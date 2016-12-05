@@ -18,8 +18,11 @@
 package com.b3dgs.lionengine.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -28,6 +31,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -87,5 +91,27 @@ public class UtilZipTest
         Assert.assertNull(UtilZip.getEntriesByExtension(new File("void"),
                                                         Constant.EMPTY_STRING,
                                                         Constant.EMPTY_STRING));
+    }
+
+    /**
+     * Test the close error.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test
+    public void testCloseError() throws Throwable
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        final Method method = UtilZip.class.getDeclaredMethod("closeZip", ZipFile.class);
+        UtilReflection.setAccessible(method, true);
+        method.invoke(UtilZip.class, new ZipFile(Medias.create("resources.jar").getFile())
+        {
+            @Override
+            public void close() throws IOException
+            {
+                throw new IOException();
+            }
+        });
+        Verbose.info("****************************************************************************************");
     }
 }
