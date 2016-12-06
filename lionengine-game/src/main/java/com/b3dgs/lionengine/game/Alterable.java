@@ -88,7 +88,7 @@ public class Alterable
     public int increase(double extrp, int increase)
     {
         final int current = getCurrent();
-        final double increased = current + increase;
+        final double increased = current + increase * extrp;
         set(increased);
         if (increased > max)
         {
@@ -118,7 +118,7 @@ public class Alterable
     public int decrease(double extrp, int decrease)
     {
         final int remain = getCurrent();
-        final double decreased = remain - decrease;
+        final double decreased = remain - decrease * extrp;
         set(decreased);
         if (decreased < 0)
         {
