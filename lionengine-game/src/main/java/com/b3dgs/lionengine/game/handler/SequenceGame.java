@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
  * {@link #load()}).</li>
  * <li>{@link WorldGame}: added to {@link Services}, {@link #update(double)} and {@link #render(Graphic)} are already
  * called.</li>
- * <li>{@link #setExtrapolated(boolean)}: set to <code>true</code>.</li>
  * <li>{@link #setSystemCursorVisible(boolean)}: set to <code>false</code>.</li>
  * </ul>
  */
@@ -90,7 +89,6 @@ public abstract class SequenceGame extends Sequence
         world = services.add(createWorld(context, services));
 
         setSystemCursorVisible(false);
-        setExtrapolated(true);
     }
 
     /**

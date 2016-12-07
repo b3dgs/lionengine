@@ -48,7 +48,6 @@ public class SequenceArgumentsMock extends Sequence
     {
         super(context, UtilTests.RESOLUTION_320_240);
         this.argument = argument;
-        setExtrapolated(true);
         setSystemCursorVisible(true);
     }
 

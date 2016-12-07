@@ -21,6 +21,7 @@ import org.junit.Assert;
 
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.LoopUnlocked;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -37,6 +38,7 @@ public class SequenceSingleMock extends Sequence
     public SequenceSingleMock(Context context)
     {
         super(context);
+        setLoop(new LoopUnlocked());
     }
 
     /*

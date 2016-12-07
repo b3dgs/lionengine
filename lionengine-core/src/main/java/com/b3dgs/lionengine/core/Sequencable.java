@@ -41,13 +41,6 @@ public interface Sequencable extends Updatable, Renderable
     void addKeyListener(InputDeviceKeyListener listener);
 
     /**
-     * Set the extrapolation flag.
-     * 
-     * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
-     */
-    void setExtrapolated(boolean extrapolated);
-
-    /**
      * Set the new resolution used by the sequence.
      * 
      * @param newSource The new resolution used.

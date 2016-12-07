@@ -80,8 +80,16 @@ public final class Constant
     public static final int BYTE_2 = 8;
     /** Byte 1. */
     public static final int BYTE_1 = 0;
+    /** Extrapolation standard. */
+    public static final double EXTRP = 1.0;
     /** Half value. */
     public static final double HALF = 0.5;
+    /** One second in milli. */
+    public static final long ONE_SECOND_IN_MILLI = 1000L;
+    /** One second in nano. */
+    public static final long ONE_SECOND_IN_NANO = 1000000000L;
+    /** Nano to milli. */
+    public static final double NANO_TO_MILLI = 1000000.0;
     /** Error system property. */
     private static final String ERROR_PROPERTY = "Unable to get system property: ";
 

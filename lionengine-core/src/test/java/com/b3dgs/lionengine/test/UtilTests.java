@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 
 import org.junit.Assert;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -114,6 +115,18 @@ public final class UtilTests
             Thread.currentThread().interrupt();
             throw new LionEngineException(exception);
         }
+    }
+
+    /**
+     * Get nano to milli.
+     * 
+     * @param oldNano The old nano time.
+     * @param nano The current nano time.
+     * @return The elapsed milli time.
+     */
+    public static double getElapsedMilli(long oldNano, long nano)
+    {
+        return (nano - oldNano) / Constant.NANO_TO_MILLI;
     }
 
     /**

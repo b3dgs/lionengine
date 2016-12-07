@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -74,13 +75,6 @@ import com.b3dgs.lionengine.graphic.Transparency;
  */
 public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
 {
-    /** One second in milli. */
-    private static final long ONE_SECOND_IN_MILLI = 1000L;
-    /** One second in nano. */
-    private static final long ONE_SECOND_IN_NANO = 1000000000L;
-    /** Extrapolation standard. */
-    private static final double EXTRP = 1.0;
-
     /** Context reference. */
     private final Context context;
     /** Native resolution. */
@@ -89,24 +83,12 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
     private final Config config;
     /** Filter graphic. */
     private final Graphic graphic;
-    /** Loop time for desired rate. */
-    private final long frameDelay;
-    /** Has sync. */
-    private final boolean sync;
-    /** Output resolution reference. */
-    private final Resolution output;
     /** Filter reference. */
     private volatile Filter filter = Filter.NO_FILTER;
-    /** Rendering width. */
-    private int width;
-    /** Rendering height. */
-    private int height;
     /** Next sequence pointer. */
     private Sequence nextSequence;
-    /** Thread running flag. */
-    private boolean isRunning;
-    /** Extrapolation flag. */
-    private boolean extrapolated;
+    /** Loop mode. */
+    private Loop loop = new LoopFrameSkipping();
     /** Current frame rate. */
     private int currentFrameRate;
     /** Image buffer. */
@@ -115,8 +97,6 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
     private Transform transform;
     /** Direct rendering. */
     private boolean directRendering;
-    /** Source resolution reference. */
-    private Resolution source;
     /** Current screen used. */
     private Screen screen;
     /** Pending cursor visibility. */
@@ -143,22 +123,6 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         this.context = context;
         this.resolution = resolution;
         config = context.getConfig();
-        source = resolution;
-        output = config.getOutput();
-        sync = config.isWindowed() && output.getRate() > 0;
-        width = resolution.getWidth();
-        height = resolution.getHeight();
-
-        // Time needed for a loop to reach desired rate
-        if (output.getRate() == 0)
-        {
-            frameDelay = 0;
-        }
-        else
-        {
-            frameDelay = ONE_SECOND_IN_NANO / output.getRate();
-        }
-
         graphic = Graphics.createGraphic();
         config.setSource(resolution);
     }
@@ -167,6 +131,18 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      * Loading sequence data.
      */
     public abstract void load();
+
+    /**
+     * Set the loop mode used.
+     * 
+     * @param loop The loop used.
+     */
+    public final void setLoop(Loop loop)
+    {
+        Check.notNull(loop);
+
+        this.loop = loop;
+    }
 
     /**
      * Set the filter to use.
@@ -193,7 +169,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      */
     protected final int getWidth()
     {
-        return width;
+        return config.getSource().getWidth();
     }
 
     /**
@@ -203,7 +179,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      */
     protected final int getHeight()
     {
-        return height;
+        return config.getSource().getHeight();
     }
 
     /**
@@ -213,7 +189,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      */
     protected final int getX()
     {
-        return screen.getX();
+        return context.getX();
     }
 
     /**
@@ -223,7 +199,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      */
     protected final int getY()
     {
-        return screen.getY();
+        return context.getY();
     }
 
     /**
@@ -257,8 +233,12 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      */
     private Transform getTransform(Filter filter)
     {
+        final Resolution source = config.getSource();
+        final Resolution output = config.getOutput();
+
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
+
         return filter.getTransform(scaleX, scaleY);
     }
 
@@ -280,54 +260,17 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
     }
 
     /**
-     * Sync frame rate to desired if possible.
-     * 
-     * @param time The update tile.
-     */
-    private void sync(final long time)
-    {
-        if (sync)
-        {
-            final double waitTime = frameDelay - time;
-            if (waitTime > 0.0)
-            {
-                final long prevTime = System.nanoTime();
-                while (System.nanoTime() - prevTime < waitTime)
-                {
-                    Thread.yield();
-                }
-            }
-        }
-    }
-
-    /**
-     * Compute extrapolation value depending of the elapsed time.
-     * 
-     * @param lastTime The last time value before game loop.
-     * @param currentTime The current time after game loop.
-     * @return The computed extrapolation value.
-     */
-    private double computeExtrapolation(long lastTime, long currentTime)
-    {
-        if (extrapolated)
-        {
-            return source.getRate() / (double) ONE_SECOND_IN_NANO * (currentTime - lastTime);
-        }
-        return EXTRP;
-    }
-
-    /**
      * Compute the frame rate depending of the game loop speed.
      * 
-     * @param lastTime The last time value before game loop.
-     * @param currentTime The current time after game loop.
-     * @param updateFpsTimer The last fps update time.
+     * @param updateFpsTimer The update timing.
+     * @param lastTime The last time value before game loop in nano.
+     * @param currentTime The current time after game loop in nano.
      */
-    private void computeFrameRate(long lastTime, long currentTime, Timing updateFpsTimer)
+    private void computeFrameRate(Timing updateFpsTimer, double lastTime, double currentTime)
     {
-        if (updateFpsTimer.elapsed(ONE_SECOND_IN_MILLI))
+        if (updateFpsTimer.elapsed(Constant.ONE_SECOND_IN_MILLI))
         {
-            currentFrameRate = (int) (ONE_SECOND_IN_NANO / (double) (currentTime - lastTime));
+            currentFrameRate = (int) Math.round(Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime));
             updateFpsTimer.restart();
         }
     }
@@ -350,45 +293,42 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         setResolution(resolution);
 
         // Prepare sequence to be started
-        currentFrameRate = output.getRate();
+        currentFrameRate = config.getOutput().getRate();
         screen.requestFocus();
-        final Timing updateFpsTimer = new Timing();
-        updateFpsTimer.start();
 
         load();
-        double extrp = EXTRP;
-        onLoaded(extrp, screen.getGraphic());
+        onLoaded(Constant.EXTRP, screen.getGraphic());
 
         // Main loop
-        isRunning = true;
-        while (isRunning)
+        final Timing updateFpsTimer = new Timing();
+        updateFpsTimer.start();
+        loop.start(screen, new Frame()
         {
-            final long lastTime = System.nanoTime();
-            if (screen.isReady())
+            @Override
+            public void update(double extrp)
             {
-                update(extrp);
-                screen.preUpdate();
-                render();
-                screen.update();
+                Sequence.this.update(extrp);
             }
-            sync(System.nanoTime() - lastTime);
 
-            final long currentTime = Math.max(lastTime + 1, System.nanoTime());
-            extrp = computeExtrapolation(lastTime, currentTime);
-            computeFrameRate(lastTime, currentTime, updateFpsTimer);
-
-            if (!Engine.isStarted())
+            @Override
+            public void render()
             {
-                isRunning = false;
+                Sequence.this.render();
             }
-        }
+
+            @Override
+            public void computeFrameRate(double lastTime, double currentTime)
+            {
+                Sequence.this.computeFrameRate(updateFpsTimer, lastTime, currentTime);
+            }
+        });
         screen.removeListener(this);
     }
 
     @Override
     public final void end()
     {
-        isRunning = false;
+        loop.stop();
     }
 
     @Override
@@ -397,7 +337,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         Check.notNull(nextSequenceClass);
 
         nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
-        isRunning = false;
+        loop.stop();
     }
 
     @Override
@@ -407,25 +347,19 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
     }
 
     @Override
-    public final void setExtrapolated(boolean extrapolated)
+    public final void setResolution(Resolution source)
     {
-        this.extrapolated = extrapolated;
-    }
+        Check.notNull(source);
 
-    @Override
-    public final void setResolution(Resolution newSource)
-    {
-        Check.notNull(newSource);
-
-        config.setSource(newSource);
-        source = config.getSource();
+        config.setSource(source);
         screen.onSourceChanged(source);
 
         // Store source size
-        width = source.getWidth();
-        height = source.getHeight();
+        final int width = source.getWidth();
+        final int height = source.getHeight();
 
         // Standard rendering
+        final Resolution output = config.getOutput();
         if (Filter.NO_FILTER.equals(filter)
             && source.getWidth() == output.getWidth()
             && source.getHeight() == output.getHeight())
