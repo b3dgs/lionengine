@@ -42,10 +42,8 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        setExtrapolated(true);
 
         final boolean server = true;
-
         if (server)
         {
             final WorldServer worldServer = new WorldServer(context);
