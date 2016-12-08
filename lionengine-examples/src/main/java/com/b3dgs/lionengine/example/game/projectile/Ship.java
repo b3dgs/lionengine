@@ -51,7 +51,7 @@ class Ship extends FeaturableModel implements CollidableListener
 {
     /** Media. */
     public static final Media MEDIA = Medias.create("Ship.xml");
-    private static int group;
+    private static int group = 1;
 
     private final double speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
@@ -62,6 +62,8 @@ class Ship extends FeaturableModel implements CollidableListener
     private double location;
     private int x = 64;
     private int y = 192;
+
+    @Service private Collidable collidable;
 
     @Service private Factory factory;
     @Service private Handler handler;
@@ -77,10 +79,7 @@ class Ship extends FeaturableModel implements CollidableListener
         super();
 
         addFeature(new LayerableModel(1));
-
-        final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
-        collidable.setOrigin(Origin.MIDDLE);
-        collidable.setGroup(group++);
+        addFeature(new CollidableModel(setup));
 
         final FramesConfig config = FramesConfig.imports(setup);
         sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
@@ -94,7 +93,6 @@ class Ship extends FeaturableModel implements CollidableListener
             transformable.setLocation(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
             sprite.setLocation(viewer, transformable);
             weapon.fire(target);
-            collidable.update(extrp);
         }));
 
         addFeature(new DisplayableModel(g ->
@@ -126,6 +124,7 @@ class Ship extends FeaturableModel implements CollidableListener
     public void setTarget(Ship target)
     {
         this.target = target.transformable;
+        collidable.addAccept(target.getFeature(Collidable.class).getGroup().intValue());
     }
 
     /**
@@ -151,6 +150,9 @@ class Ship extends FeaturableModel implements CollidableListener
         super.prepareFeatures(services);
 
         transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
+
+        collidable.setOrigin(Origin.MIDDLE);
+        collidable.setGroup(group++);
 
         weapon = factory.create(Weapon.PULSE_CANNON);
         weapon.setOffset(6, -6);

@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 /**
  * Represents something which can enter in collision with another.
  */
-public interface Collidable extends Feature, Updatable, Renderable, CollidableListener
+public interface Collidable extends Feature, Renderable, CollidableListener
 {
     /**
      * Add a collision listener.
@@ -46,11 +45,18 @@ public interface Collidable extends Feature, Updatable, Renderable, CollidableLi
     void addCollision(Collision collision);
 
     /**
-     * Add a group to ignore list.
+     * Add a group to accept list.
      * 
-     * @param group The group to ignore on {@link #collide(Collidable)}.
+     * @param group The group to accept on {@link #collide(Collidable)}.
      */
-    void addIgnore(int group);
+    void addAccept(int group);
+
+    /**
+     * Remove a group from accept list.
+     * 
+     * @param group The group to remove on {@link #collide(Collidable)}.
+     */
+    void removeAccept(int group);
 
     /**
      * Check if the collidable entered in collision with another one.
@@ -108,4 +114,25 @@ public interface Collidable extends Feature, Updatable, Renderable, CollidableLi
      * @return The associated group.
      */
     Integer getGroup();
+
+    /**
+     * Get the accepted groups.
+     * 
+     * @return The accepted groups.
+     */
+    List<Integer> getAccepted();
+
+    /**
+     * Get the current max width.
+     * 
+     * @return The max width.
+     */
+    int getMaxWidth();
+
+    /**
+     * Get the current max height.
+     * 
+     * @return The max height.
+     */
+    int getMaxHeight();
 }

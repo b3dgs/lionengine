@@ -27,6 +27,20 @@ import com.b3dgs.lionengine.game.feature.Feature;
 public interface Transformable extends Feature, Mover, Shape
 {
     /**
+     * Add a listener.
+     * 
+     * @param listener The listener to add.
+     */
+    void addListener(TransformableListener listener);
+
+    /**
+     * Remove a listener.
+     * 
+     * @param listener The listener to remove.
+     */
+    void removeListener(TransformableListener listener);
+
+    /**
      * Set surface size. Old size is stored.
      * 
      * @param width The width.

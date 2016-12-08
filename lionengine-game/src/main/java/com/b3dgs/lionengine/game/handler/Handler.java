@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -197,6 +198,11 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
                 for (final HandlerListener listener : listeners)
                 {
                     listener.notifyHandlableAdded(featurable);
+                }
+                if (featurable.hasFeature(Transformable.class))
+                {
+                    final Transformable transformable = featurable.getFeature(Transformable.class);
+                    transformable.teleport(transformable.getX(), transformable.getY());
                 }
             }
             toAdd.clear();

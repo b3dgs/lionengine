@@ -31,8 +31,10 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.transformable.TransformableListener;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -41,7 +43,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Box ray cast collidable model implementation.
  */
-public class CollidableModel extends FeatureModel implements Collidable
+public class CollidableModel extends FeatureModel implements Collidable, TransformableListener, IdentifiableListener
 {
     /**
      * Check if current rectangle collides other collidable rectangles.
@@ -65,18 +67,53 @@ public class CollidableModel extends FeatureModel implements Collidable
         return false;
     }
 
+    /**
+     * Get the horizontal offset.
+     * 
+     * @param collision The collision reference.
+     * @param mirror The mirror used.
+     * @return The offset value depending of mirror.
+     */
+    private static int getOffsetX(Collision collision, Mirror mirror)
+    {
+        if (mirror == Mirror.HORIZONTAL)
+        {
+            return -collision.getOffsetX();
+        }
+        return collision.getOffsetX();
+    }
+
+    /**
+     * Get the vertical offset.
+     * 
+     * @param collision The collision reference.
+     * @param mirror The mirror used.
+     * @return The offset value depending of mirror.
+     */
+    private static int getOffsetY(Collision collision, Mirror mirror)
+    {
+        if (mirror == Mirror.VERTICAL)
+        {
+            return -collision.getOffsetY();
+        }
+        return collision.getOffsetY();
+    }
+
     /** The collision listener reference. */
-    private final Collection<CollidableListener> listeners = new ArrayList<CollidableListener>();
+    private final List<CollidableListener> listeners = new ArrayList<CollidableListener>();
     /** The collisions used. */
-    private final Collection<Collision> collisions = new ArrayList<Collision>();
-    /** The ignored groups. */
-    private final Collection<Integer> ignored = new HashSet<Integer>();
+    private final List<Collision> collisions = new ArrayList<Collision>();
+    /** The accepted groups. */
+    private final Collection<Integer> accepted = new HashSet<Integer>();
+    /** The accepted groups as list. */
+    private final List<Integer> acceptedList = new ArrayList<Integer>();
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
     /** Collisions cache. */
     private final List<Collision> cacheColls = new ArrayList<Collision>();
     /** Bounding box cache. */
     private final List<Rectangle> cacheRect = new ArrayList<Rectangle>();
+
     /** Associated group ID. */
     private Integer group;
     /** Transformable owning this model. */
@@ -85,6 +122,10 @@ public class CollidableModel extends FeatureModel implements Collidable
     private Viewer viewer;
     /** Origin used. */
     private Origin origin = Origin.TOP_LEFT;
+    /** Max width. */
+    private int maxWidth;
+    /** Max height. */
+    private int maxHeight;
     /** Enabled flag. */
     private boolean enabled = true;
     /** Show collision flag. */
@@ -116,10 +157,7 @@ public class CollidableModel extends FeatureModel implements Collidable
         super();
 
         group = CollidableConfig.imports(setup);
-        for (final Collision collision : CollisionConfig.imports(setup).getCollisions())
-        {
-            collisions.add(collision);
-        }
+        collisions.addAll(CollisionConfig.imports(setup).getCollisions());
     }
 
     /**
@@ -139,15 +177,15 @@ public class CollidableModel extends FeatureModel implements Collidable
         final double norm = Math.sqrt(dh * dh + dv * dv);
         final double sx;
         final double sy;
-        if (norm == 0)
-        {
-            sx = 0;
-            sy = 0;
-        }
-        else
+        if (norm < 0 || norm > 0)
         {
             sx = dh / norm;
             sy = dv / norm;
+        }
+        else
+        {
+            sx = 0;
+            sy = 0;
         }
 
         for (int count = 0; count <= norm; count++)
@@ -161,6 +199,46 @@ public class CollidableModel extends FeatureModel implements Collidable
         return null;
     }
 
+    /**
+     * Get the collision mirror.
+     * 
+     * @param collision The collision reference.
+     * @return The collision mirror, {@link Mirror#NONE} if undefined.
+     */
+    private Mirror getMirror(Collision collision)
+    {
+        if (collision.hasMirror() && hasFeature(Mirrorable.class))
+        {
+            return getFeature(Mirrorable.class).getMirror();
+        }
+        return Mirror.NONE;
+    }
+
+    /**
+     * Update the collision box.
+     * 
+     * @param collision The collision reference.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param width The collision width.
+     * @param height The collision height.
+     */
+    private void update(Collision collision, double x, double y, int width, int height)
+    {
+        if (boxs.containsKey(collision))
+        {
+            final Rectangle rectangle = boxs.get(collision);
+            rectangle.set(x, y, width, height);
+        }
+        else
+        {
+            final Rectangle rectangle = Geom.createRectangle(x, y, width, height);
+            cacheColls.add(collision);
+            cacheRect.add(rectangle);
+            boxs.put(collision, rectangle);
+        }
+    }
+
     /*
      * Collidable
      */
@@ -172,6 +250,7 @@ public class CollidableModel extends FeatureModel implements Collidable
 
         viewer = services.get(Viewer.class);
         transformable = provider.getFeature(Transformable.class);
+        transformable.addListener(this);
 
         if (provider instanceof CollidableListener)
         {
@@ -203,69 +282,25 @@ public class CollidableModel extends FeatureModel implements Collidable
     }
 
     @Override
-    public void addIgnore(int group)
+    public void addAccept(int group)
     {
-        ignored.add(Integer.valueOf(group));
+        final Integer id = Integer.valueOf(group);
+        accepted.add(id);
+        acceptedList.add(id);
     }
 
     @Override
-    public void update(double extrp)
+    public void removeAccept(int group)
     {
-        if (enabled)
-        {
-            for (final Collision collision : collisions)
-            {
-                Mirror mirror = Mirror.NONE;
-                if (collision.hasMirror() && hasFeature(Mirrorable.class))
-                {
-                    mirror = getFeature(Mirrorable.class).getMirror();
-                }
-
-                final int offsetX;
-                if (mirror == Mirror.HORIZONTAL)
-                {
-                    offsetX = -collision.getOffsetX();
-                }
-                else
-                {
-                    offsetX = collision.getOffsetX();
-                }
-
-                final int offsetY;
-                if (mirror == Mirror.VERTICAL)
-                {
-                    offsetY = -collision.getOffsetY();
-                }
-                else
-                {
-                    offsetY = collision.getOffsetY();
-                }
-
-                final int width = collision.getWidth();
-                final int height = collision.getHeight();
-                final double x = origin.getX(transformable.getOldX() + offsetX, width);
-                final double y = origin.getY(transformable.getOldY() + offsetY, height);
-
-                if (boxs.containsKey(collision))
-                {
-                    final Rectangle rectangle = boxs.get(collision);
-                    rectangle.set(x, y, width, height);
-                }
-                else
-                {
-                    final Rectangle rectangle = Geom.createRectangle(x, y, width, height);
-                    cacheColls.add(collision);
-                    cacheRect.add(rectangle);
-                    boxs.put(collision, rectangle);
-                }
-            }
-        }
+        final Integer id = Integer.valueOf(group);
+        accepted.remove(id);
+        acceptedList.remove(id);
     }
 
     @Override
     public Collision collide(Collidable other)
     {
-        if (enabled && !ignored.contains(other.getGroup()))
+        if (enabled && accepted.contains(other.getGroup()))
         {
             final int size = cacheColls.size();
             for (int i = 0; i < size; i++)
@@ -337,8 +372,10 @@ public class CollidableModel extends FeatureModel implements Collidable
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        for (final CollidableListener listener : listeners)
+        final int length = listeners.size();
+        for (int i = 0; i < length; i++)
         {
+            final CollidableListener listener = listeners.get(i);
             listener.notifyCollided(collidable);
         }
     }
@@ -347,5 +384,68 @@ public class CollidableModel extends FeatureModel implements Collidable
     public Integer getGroup()
     {
         return group;
+    }
+
+    @Override
+    public List<Integer> getAccepted()
+    {
+        return acceptedList;
+    }
+
+    @Override
+    public int getMaxWidth()
+    {
+        return maxWidth;
+    }
+
+    @Override
+    public int getMaxHeight()
+    {
+        return maxHeight;
+    }
+
+    /*
+     * TransformableListener
+     */
+
+    @Override
+    public void notifyTransformed(Transformable transformable)
+    {
+        if (enabled)
+        {
+            final int length = collisions.size();
+            for (int i = 0; i < length; i++)
+            {
+                final Collision collision = collisions.get(i);
+
+                final Mirror mirror = getMirror(collision);
+                final int offsetX = getOffsetX(collision, mirror);
+                final int offsetY = getOffsetY(collision, mirror);
+                final int width = collision.getWidth();
+                final int height = collision.getHeight();
+                if (width > maxWidth)
+                {
+                    maxWidth = width;
+                }
+                if (height > maxHeight)
+                {
+                    maxHeight = height;
+                }
+                final double x = origin.getX(transformable.getOldX() + offsetX, width);
+                final double y = origin.getY(transformable.getOldY() + offsetY, height);
+
+                update(collision, x, y, width, height);
+            }
+        }
+    }
+
+    /*
+     * IdentifiableListener
+     */
+
+    @Override
+    public void notifyDestroyed(Integer id)
+    {
+        enabled = false;
     }
 }

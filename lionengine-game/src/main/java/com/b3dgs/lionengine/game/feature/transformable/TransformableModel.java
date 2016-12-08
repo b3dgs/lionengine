@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.transformable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
@@ -29,6 +32,8 @@ import com.b3dgs.lionengine.game.feature.SizeConfig;
  */
 public class TransformableModel extends FeatureModel implements Transformable
 {
+    /** Listeners. */
+    private final List<TransformableListener> listeners = new ArrayList<TransformableListener>();
     /** Mover model. */
     private final Mover mover = new MoverModel();
     /** Body width. */
@@ -70,68 +75,111 @@ public class TransformableModel extends FeatureModel implements Transformable
         oldHeight = height;
     }
 
+    /**
+     * Notify transformable modification.
+     * 
+     * @param teleport <code>true</code> if teleport, <code>false</code> else.
+     */
+    private void notifyTransformed(boolean teleport)
+    {
+        if (teleport
+            || Double.compare(getX(), getOldX()) != 0
+            || Double.compare(getY(), getOldY()) != 0
+            || Double.compare(getWidth(), getOldWidth()) != 0
+            || Double.compare(getHeight(), getOldHeight()) != 0)
+        {
+            final int length = listeners.size();
+            for (int i = 0; i < length; i++)
+            {
+                listeners.get(i).notifyTransformed(this);
+            }
+        }
+    }
+
     /*
      * Transformable
      */
 
     @Override
+    public void addListener(TransformableListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(TransformableListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    @Override
     public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
         mover.moveLocation(extrp, direction, directions);
+        notifyTransformed(false);
     }
 
     @Override
     public void moveLocationX(double extrp, double vx)
     {
         mover.moveLocationX(extrp, vx);
+        notifyTransformed(false);
     }
 
     @Override
     public void moveLocationY(double extrp, double vy)
     {
         mover.moveLocationY(extrp, vy);
+        notifyTransformed(false);
     }
 
     @Override
     public void moveLocation(double extrp, double vx, double vy)
     {
         mover.moveLocation(extrp, vx, vy);
+        notifyTransformed(false);
     }
 
     @Override
     public void teleport(double x, double y)
     {
         mover.teleport(x, y);
+        notifyTransformed(true);
     }
 
     @Override
     public void teleportX(double x)
     {
         mover.teleportX(x);
+        notifyTransformed(true);
     }
 
     @Override
     public void teleportY(double y)
     {
         mover.teleportY(y);
+        notifyTransformed(true);
     }
 
     @Override
     public void setLocation(double x, double y)
     {
         mover.setLocation(x, y);
+        notifyTransformed(false);
     }
 
     @Override
     public void setLocationX(double x)
     {
         mover.setLocationX(x);
+        notifyTransformed(false);
     }
 
     @Override
     public void setLocationY(double y)
     {
         mover.setLocationY(y);
+        notifyTransformed(false);
     }
 
     @Override
@@ -141,6 +189,7 @@ public class TransformableModel extends FeatureModel implements Transformable
         oldHeight = this.height;
         this.width = width;
         this.height = height;
+        notifyTransformed(false);
     }
 
     @Override

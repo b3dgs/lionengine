@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
@@ -68,42 +70,68 @@ public class ComponentCollisionTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final Services services = new Services();
+    private final Handler handler = new Handler(services);
+    private final Setup setup = new Setup(config);
+    private final AtomicReference<Collidable> collide = new AtomicReference<Collidable>();
+
+    private final Featurable nonCollidable = new FeaturableModel();
+
+    private ObjectSelf featurable1;
+    private Transformable transformable1;
+    private Collidable collidable1;
+
+    private Featurable featurable2;
+    private Transformable transformable2;
+    private Collidable collidable2;
+
+    private Featurable featurable3;
+    private Transformable transformable3;
+    private Collidable collidable3;
+
     /**
-     * Test collidable class.
+     * Prepare test.
      */
-    @Test
-    public void testCollidable()
+    @Before
+    public void prepare()
     {
-        final Services services = new Services();
         services.add(new Camera());
 
-        final Setup setup = new Setup(config);
-        final ObjectSelf featurable1 = new ObjectSelf();
-
-        final Transformable transformable = featurable1.addFeatureAndGet(new TransformableModel(setup));
-        transformable.setLocation(1.0, 2.0);
-        transformable.setSize(2, 2);
-
-        featurable1.addFeature(new CollidableModel(setup));
+        featurable1 = new ObjectSelf();
+        transformable1 = featurable1.addFeatureAndGet(new TransformableModel(setup));
+        collidable1 = featurable1.addFeatureAndGet(new CollidableModel(setup));
         featurable1.prepareFeatures(services);
-        final Featurable featurable2 = CollidableModelTest.createFeaturable(config, services);
-
-        final Collidable collidable1 = featurable1.getFeature(Collidable.class);
-        final Collidable collidable2 = featurable2.getFeature(Collidable.class);
+        collidable1.prepare(featurable1, services);
+        collidable1.setGroup(1);
+        collidable1.addAccept(0);
 
         final Collision collision1 = new Collision("test1", 0, 0, 3, 3, false);
         collidable1.addCollision(collision1);
 
-        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
+        featurable2 = CollidableModelTest.createFeaturable(config, services);
+        transformable2 = featurable2.getFeature(Transformable.class);
+        collidable2 = featurable2.getFeature(Collidable.class);
+        collidable2.prepare(featurable2, services);
+        collidable2.addAccept(1);
+        collidable2.setGroup(0);
+
+        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
+        featurable3 = new ObjectSelf();
+        transformable3 = featurable3.addFeatureAndGet(new TransformableModel(setup));
+        collidable3 = featurable3.addFeatureAndGet(new CollidableModel(setup));
+        featurable3.prepareFeatures(services);
+        collidable3.prepare(featurable3, services);
+        collidable3.setGroup(0);
+
         final ComponentCollision component = new ComponentCollision();
-        final Handler handler = new Handler(services);
         handler.addComponent(component);
         handler.add(featurable1);
         handler.add(featurable2);
+        handler.add(featurable3);
+        handler.add(nonCollidable);
 
-        final AtomicReference<Collidable> collide = new AtomicReference<Collidable>();
         final CollidableListener listener = new CollidableListener()
         {
             @Override
@@ -113,18 +141,130 @@ public class ComponentCollisionTest
             }
         };
         collidable2.addListener(listener);
-        collidable1.update(1.0);
-        collidable2.update(1.0);
+    }
+
+    /**
+     * Test collidable in normal case.
+     */
+    @Test
+    public void testCollidable()
+    {
+        transformable1.teleport(1.0, 2.0);
+        transformable2.teleport(1.0, 1.0);
+
         handler.update(1.0);
 
-        Assert.assertEquals(featurable1.getFeature(Collidable.class), collide.get());
-        Assert.assertTrue(featurable1.called.get());
+        Assert.assertEquals(collidable1, collide.get());
+        Assert.assertEquals(collidable2, featurable1.called.get());
 
         collide.set(null);
-        featurable1.getFeature(Transformable.class).teleport(10.0, 10.0);
-        collidable1.update(1.0);
+        featurable1.called.set(null);
+        transformable1.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+
         handler.update(1.0);
 
         Assert.assertNull(collide.get());
+        Assert.assertNull(featurable1.called.get());
+    }
+
+    /**
+     * Test collidable in extremity case, where their position correspond to an adjacent map case, but size collide
+     * neighbor map.
+     */
+    @Test
+    public void testCollidableExtremity()
+    {
+        testExtremity(-1, 1);
+        testExtremity(-1, 0);
+        testExtremity(-1, -1);
+
+        testExtremity(0, 1);
+        testExtremity(0, -1);
+
+        testExtremity(1, 1);
+        testExtremity(1, 0);
+        testExtremity(1, -1);
+    }
+
+    /**
+     * Test the extremity map collision.
+     * 
+     * @param ox The horizontal offset.
+     * @param oy The vertical offset.
+     */
+    private void testExtremity(int ox, int oy)
+    {
+        collide.set(null);
+        featurable1.called.set(null);
+
+        transformable1.teleport(ComponentCollision.REDUCE_FACTOR + ox, ComponentCollision.REDUCE_FACTOR + oy);
+        transformable2.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+
+        handler.update(1.0);
+
+        Assert.assertEquals(collidable1, collide.get());
+        Assert.assertEquals(collidable2, featurable1.called.get());
+    }
+
+    /**
+     * Test collidables changing map position.
+     */
+    @Test
+    public void testCollidablesRemovePoints()
+    {
+        transformable1.teleport(0.0, 0.0);
+        transformable2.teleport(0.0, 0.0);
+        transformable3.teleport(0.0, 0.0);
+
+        handler.update(1.0);
+
+        Assert.assertEquals(collidable1, collide.get());
+        Assert.assertEquals(collidable2, featurable1.called.get());
+
+        collide.set(null);
+        featurable1.called.set(null);
+
+        transformable1.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+
+        handler.update(1.0);
+
+        Assert.assertNull(collide.get());
+        Assert.assertNull(featurable1.called.get());
+
+        transformable2.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
+
+        handler.update(1.0);
+
+        Assert.assertEquals(collidable1, collide.get());
+        Assert.assertEquals(collidable2, featurable1.called.get());
+    }
+
+    /**
+     * Test collidable with removed object.
+     */
+    @Test
+    public void testRemoved()
+    {
+        transformable1.teleport(1.0, 2.0);
+        transformable2.teleport(2.0, 3.0);
+        handler.update(1.0);
+
+        Assert.assertEquals(collidable1, collide.get());
+        Assert.assertEquals(collidable2, featurable1.called.get());
+
+        collide.set(null);
+        featurable1.called.set(null);
+        handler.remove(featurable1);
+        handler.update(1.0);
+
+        Assert.assertNull(collide.get());
+        Assert.assertNull(featurable1.called.get());
+
+        handler.remove(featurable2);
+        handler.remove(nonCollidable);
+        handler.update(1.0);
+
+        Assert.assertNull(collide.get());
+        Assert.assertNull(featurable1.called.get());
     }
 }

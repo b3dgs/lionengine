@@ -93,7 +93,6 @@ class Ball extends FeaturableModel implements Updatable, Renderable, CollidableL
             transformable.teleportY(240.0 - transformable.getHeight() / 2);
             force.setDestination(force.getDirectionHorizontal(), -force.getDirectionVertical());
         }
-        collidable.update(extrp);
     }
 
     @Override

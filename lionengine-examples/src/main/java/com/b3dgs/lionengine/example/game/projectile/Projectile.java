@@ -59,6 +59,7 @@ class Projectile extends FeaturableModel
         final Launchable launchable = addFeatureAndGet(new LaunchableModel());
         final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);
+        collidable.setGroup(0);
 
         final Sprite sprite = Drawable.loadSprite(setup.getSurface());
         sprite.setOrigin(Origin.MIDDLE);
@@ -66,7 +67,6 @@ class Projectile extends FeaturableModel
         addFeature(new RefreshableModel(extrp ->
         {
             launchable.update(extrp);
-            collidable.update(extrp);
             sprite.setLocation(viewer, transformable);
             if (!viewer.isViewable(transformable, 0, 0))
             {

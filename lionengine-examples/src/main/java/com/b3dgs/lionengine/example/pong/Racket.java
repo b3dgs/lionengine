@@ -113,7 +113,6 @@ class Racket extends FeaturableModel implements Updatable, Renderable, Collidabl
         {
             transformable.moveLocation(extrp, 0.0, speed);
         }
-        collidable.update(extrp);
     }
 
     @Override

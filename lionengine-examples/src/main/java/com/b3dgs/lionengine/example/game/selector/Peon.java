@@ -73,7 +73,6 @@ class Peon extends FeaturableModel implements SelectorListener
 
         addFeature(new RefreshableModel(extrp ->
         {
-            collidable.update(extrp);
             surface.setLocation(viewer, transformable);
         }));
 

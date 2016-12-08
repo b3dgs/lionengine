@@ -158,7 +158,6 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
         jump.update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
-        collidable.update(extrp);
 
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);

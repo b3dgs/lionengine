@@ -15,23 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.collision.object;
-
-import java.util.concurrent.atomic.AtomicReference;
-
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
+package com.b3dgs.lionengine.game.feature.transformable;
 
 /**
- * Object self collision listener mock.
+ * Describes the transformable events.
  */
-public class ObjectSelf extends FeaturableModel implements CollidableListener
+public interface TransformableListener
 {
-    /** Called flag. */
-    final AtomicReference<Collidable> called = new AtomicReference<Collidable>();
-
-    @Override
-    public void notifyCollided(Collidable collidable)
-    {
-        called.set(collidable);
-    }
+    /**
+     * Notify transformable modification.
+     * 
+     * @param transformable The modified transformable.
+     */
+    void notifyTransformed(Transformable transformable);
 }

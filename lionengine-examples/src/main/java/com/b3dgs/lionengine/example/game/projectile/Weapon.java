@@ -94,6 +94,6 @@ class Weapon extends FeaturableModel implements LaunchableListener
     @Override
     public void notifyFired(Launchable launchable)
     {
-        launchable.getFeature(Collidable.class).addIgnore(ownerCollidable.getGroup().intValue());
+        launchable.getFeature(Collidable.class).setGroup(ownerCollidable.getGroup().intValue());
     }
 }

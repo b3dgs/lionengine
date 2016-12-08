@@ -85,7 +85,6 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
         jump.update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
-        collidable.update(extrp);
 
         if (transformable.getY() < 0)
         {
