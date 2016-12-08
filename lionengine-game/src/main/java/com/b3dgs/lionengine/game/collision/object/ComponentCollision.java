@@ -93,17 +93,30 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
             final Map<Point, List<Collidable>> elements = collidables.get(group);
             if (elements.containsKey(point))
             {
-                final List<Collidable> points = elements.get(point);
-                points.remove(collidable);
-                if (points.isEmpty())
-                {
-                    elements.remove(point);
-                }
-                if (elements.isEmpty())
-                {
-                    collidables.remove(group);
-                }
+                removePoint(point, collidable, elements, group);
             }
+        }
+    }
+
+    /**
+     * Remove point. Remove list of no more collidable.
+     * 
+     * @param point The point to remove.
+     * @param collidable The associated collidable.
+     * @param elements The current group elements.
+     * @param group The current group.
+     */
+    private void removePoint(Point point, Collidable collidable, Map<Point, List<Collidable>> elements, Integer group)
+    {
+        final List<Collidable> points = elements.get(point);
+        points.remove(collidable);
+        if (points.isEmpty())
+        {
+            elements.remove(point);
+        }
+        if (elements.isEmpty())
+        {
+            collidables.remove(group);
         }
     }
 
@@ -139,15 +152,24 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         {
             for (final Entry<Point, List<Collidable>> current : groups.entrySet())
             {
-                // Elements in the group
-                final List<Collidable> elements = current.getValue();
-                final int length = elements.size();
-                for (int i = 0; i < length; i++)
-                {
-                    final Collidable objectA = elements.get(i);
-                    checkOthers(objectA, current);
-                }
+                checkGroup(current);
             }
+        }
+    }
+
+    /**
+     * Check elements in group.
+     * 
+     * @param current The elements in group.
+     */
+    private void checkGroup(Entry<Point, List<Collidable>> current)
+    {
+        final List<Collidable> elements = current.getValue();
+        final int length = elements.size();
+        for (int i = 0; i < length; i++)
+        {
+            final Collidable objectA = elements.get(i);
+            checkOthers(objectA, current);
         }
     }
 
