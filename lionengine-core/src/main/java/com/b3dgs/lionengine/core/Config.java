@@ -112,7 +112,7 @@ public final class Config
     {
         Check.notNull(source);
 
-        this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
+        this.source = source;
     }
 
     /**

@@ -270,7 +270,7 @@ public class TransitiveGroup
         for (final Transition transition : mapTransition.getTransitions())
         {
             final boolean valid = groupIn.equals(transition.getIn()) && groupOut.equals(transition.getOut());
-            if (!groupOut.equals(groupStart) && !groupIn.equals(groupEnd) && valid)
+            if (valid && !groupOut.equals(groupStart) && !groupIn.equals(groupEnd))
             {
                 count++;
             }
