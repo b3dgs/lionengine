@@ -22,6 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -43,6 +45,8 @@ public class Configurer
     private static final String ERROR_CLASS_ACCESSIBILITY = "Class not accessible: ";
     /** Class not found error. */
     private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
+    /** Class cache. */
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<String, Class<?>>();
 
     /** Media reference. */
     private final Media media;
@@ -373,27 +377,27 @@ public class Configurer
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    public final <T> T getImplementation(ClassLoader loader,
-                                         Class<T> type,
-                                         Class<?>[] paramsType,
-                                         Collection<?> paramsValue,
-                                         String className)
+    public static final <T> T getImplementation(ClassLoader loader,
+                                                Class<T> type,
+                                                Class<?>[] paramsType,
+                                                Collection<?> paramsValue,
+                                                String className)
     {
         try
         {
-            final Class<?> clazz = loader.loadClass(className);
+            if (!CLASS_CACHE.containsKey(className))
+            {
+                final Class<?> clazz = loader.loadClass(className);
+                CLASS_CACHE.put(className, clazz);
+            }
+
+            final Class<?> clazz = CLASS_CACHE.get(className);
             final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
-            final boolean accessible = constructor.isAccessible();
             if (!constructor.isAccessible())
             {
                 UtilReflection.setAccessible(constructor, true);
             }
-            final T instance = type.cast(constructor.newInstance(paramsValue.toArray()));
-            if (constructor.isAccessible() != accessible)
-            {
-                UtilReflection.setAccessible(constructor, accessible);
-            }
-            return instance;
+            return type.cast(constructor.newInstance(paramsValue.toArray()));
         }
         catch (final InstantiationException exception)
         {
