@@ -38,6 +38,8 @@ public final class FeaturableConfig
     public static final String SETUP = Constant.XML_PREFIX + "setup";
     /** Feature node. */
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
+    /** Default class name. */
+    private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
 
     /**
      * Import the featurable data from configurer.
@@ -67,7 +69,7 @@ public final class FeaturableConfig
         }
         else
         {
-            clazz = FeaturableModel.class.getName();
+            clazz = DEFAULT_CLASS_NAME;
         }
 
         final String setup;
