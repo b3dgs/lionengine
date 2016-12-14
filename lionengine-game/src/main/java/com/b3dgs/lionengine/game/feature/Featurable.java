@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Media;
+
 /**
  * Represents something that can have a collection of {@link Feature}.
  * <p>
@@ -127,4 +129,11 @@ public interface Featurable extends FeatureProvider
      * @return <code>true</code> if features prepared, <code>false</code> else.
      */
     boolean isPrepared();
+
+    /**
+     * Get the associated media.
+     * 
+     * @return The associated media, <code>null</code> if none.
+     */
+    Media getMedia();
 }
