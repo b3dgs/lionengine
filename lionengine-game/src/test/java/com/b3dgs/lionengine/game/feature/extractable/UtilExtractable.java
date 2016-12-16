@@ -51,6 +51,8 @@ public class UtilExtractable
         extractable.setResourcesType(ResourceType.WOOD);
         extractable.prepare(featurable, services);
 
+        featurable.prepareFeatures(services);
+
         return extractable;
     }
 

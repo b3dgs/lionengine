@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.feature.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -33,7 +34,7 @@ import com.b3dgs.lionengine.game.tile.Tile;
 /**
  * Tile collidable model implementation.
  */
-public class TileCollidableModel extends FeatureModel implements TileCollidable
+public class TileCollidableModel extends FeatureModel implements TileCollidable, Recyclable
 {
     /** Launcher listeners. */
     private final Collection<TileCollidableListener> listeners = new HashSet<TileCollidableListener>();
@@ -46,7 +47,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
     /** Map tile reference. */
     private MapTileCollision map;
     /** Collision enabled. */
-    private boolean enabled = true;
+    private boolean enabled;
 
     /**
      * Create a tile collidable model.
@@ -77,6 +78,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
         super();
 
         configurer = setup;
+        recycle();
     }
 
     /**
@@ -178,5 +180,15 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
     public Collection<CollisionCategory> getCategories()
     {
         return categories;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        enabled = true;
     }
 }

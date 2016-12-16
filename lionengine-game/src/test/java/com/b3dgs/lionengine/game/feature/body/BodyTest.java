@@ -48,6 +48,7 @@ public class BodyTest
     public void prepare()
     {
         object.addFeature(new IdentifiableModel());
+        object.prepareFeatures(services);
     }
 
     /**

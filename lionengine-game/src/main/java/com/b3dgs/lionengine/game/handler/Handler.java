@@ -220,12 +220,12 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             for (final Integer id : toDelete)
             {
                 final Featurable featurable = featurables.get(id);
-                featurables.remove(featurable);
                 for (final HandlerListener listener : listeners)
                 {
                     listener.notifyHandlableRemoved(featurable);
                 }
                 featurable.getFeature(Identifiable.class).notifyDestroyed();
+                featurables.remove(featurable, id);
             }
             toDelete.clear();
             willDelete = false;

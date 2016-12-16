@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.game.tile.Tiled;
 /**
  * Orientable model implementation.
  */
-public class OrientableModel extends FeatureModel implements Orientable
+public class OrientableModel extends FeatureModel implements Orientable, Recyclable
 {
     /** Map reference. */
     private MapTile map;
@@ -56,6 +57,17 @@ public class OrientableModel extends FeatureModel implements Orientable
     public OrientableModel()
     {
         super();
+
+        recycle();
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
         orientation = Orientation.NORTH;
     }
 

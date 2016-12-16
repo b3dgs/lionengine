@@ -226,3 +226,4 @@ featurables
 bot
 sonic
 lifecycle
+recycler

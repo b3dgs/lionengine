@@ -103,6 +103,8 @@ public class UtilActionnable
         final ActionableModel actionable = new ActionableModel(setup);
         actionable.prepare(featurable, services);
 
+        featurable.prepareFeatures(services);
+
         return actionable;
     }
 

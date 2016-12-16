@@ -50,6 +50,7 @@ public class OrientableModelTest
         services.add(new MapTileGame());
         featurable.addFeature(new IdentifiableModel());
         featurable.addFeature(new TransformableModel());
+        featurable.prepareFeatures(services);
         orientable.prepare(featurable, services);
     }
 

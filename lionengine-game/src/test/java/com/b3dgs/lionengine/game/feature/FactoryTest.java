@@ -30,9 +30,6 @@ import com.b3dgs.lionengine.core.Medias;
  */
 public class FactoryTest
 {
-    /** Object configuration file name. */
-    private static final String OBJECT_XML = "object.xml";
-
     /**
      * Prepare test.
      */
@@ -62,8 +59,8 @@ public class FactoryTest
     {
         factory.setClassLoader(ClassLoader.getSystemClassLoader());
 
-        final Featurable featurable1 = factory.create(Medias.create(OBJECT_XML));
-        final Featurable featurable2 = factory.create(Medias.create(OBJECT_XML), FeaturableModel.class);
+        final Featurable featurable1 = factory.create(Medias.create("object.xml"));
+        final Featurable featurable2 = factory.create(Medias.create("object.xml"), FeaturableModel.class);
 
         Assert.assertNotNull(featurable1);
         Assert.assertNotNull(featurable2);
@@ -158,11 +155,44 @@ public class FactoryTest
     @Test
     public void testGetSetup()
     {
-        final Setup setup = factory.getSetup(Medias.create(OBJECT_XML));
+        final Setup setup = factory.getSetup(Medias.create("object.xml"));
 
-        Assert.assertEquals(Medias.create(OBJECT_XML), setup.getMedia());
+        Assert.assertEquals(Medias.create("object.xml"), setup.getMedia());
 
-        Assert.assertEquals(setup, factory.getSetup(Medias.create(OBJECT_XML)));
-        Assert.assertEquals(setup, factory.getSetup(Medias.create(OBJECT_XML)));
+        Assert.assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
+        Assert.assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
+    }
+
+    /**
+     * Test the object recycling.
+     */
+    @Test
+    public void testRecycle()
+    {
+        final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
+        featurable.addFeature(new Recycler());
+        featurable.prepareFeatures(services);
+
+        Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+
+        factory.notifyHandlableRemoved(featurable);
+
+        Assert.assertEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+    }
+
+    /**
+     * Test the object recycling without recyclable.
+     */
+    @Test
+    public void testRecycleWithoutRecyclable()
+    {
+        final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
+        featurable.prepareFeatures(services);
+
+        Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+
+        factory.notifyHandlableRemoved(featurable);
+
+        Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
     }
 }

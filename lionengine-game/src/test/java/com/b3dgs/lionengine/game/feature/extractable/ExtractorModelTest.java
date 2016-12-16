@@ -83,6 +83,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(5);
@@ -105,6 +106,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(6);
@@ -183,6 +185,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(false, true);
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(1);
@@ -216,6 +219,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, false);
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(1);
@@ -249,6 +253,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(2);
@@ -323,6 +328,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.setCapacity(6);
@@ -367,6 +373,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.prepare(object, services);
@@ -412,6 +419,7 @@ public class ExtractorModelTest
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
+        object.prepareFeatures(services);
 
         final Extractor extractor = new ExtractorModel();
         extractor.prepare(object, services);

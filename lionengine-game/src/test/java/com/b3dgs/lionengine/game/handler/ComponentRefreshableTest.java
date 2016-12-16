@@ -67,6 +67,8 @@ public class ComponentRefreshableTest
             }
         }));
 
+        object.prepareFeatures(services);
+
         return layerable;
     }
 

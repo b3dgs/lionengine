@@ -74,6 +74,8 @@ public class UtilAssignable
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(featurable, services);
 
+        featurable.prepareFeatures(services);
+
         return assignable;
     }
 

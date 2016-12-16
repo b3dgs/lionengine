@@ -25,6 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -55,6 +57,7 @@ public class IdentifiableModelTest
         for (int i = 0; i < 10; i++)
         {
             final Identifiable identifiable = new IdentifiableModel();
+            identifiable.prepare(new FeaturableModel(), new Services());
             identifiables.add(identifiable);
 
             Assert.assertEquals(Integer.valueOf(i), identifiable.getId());
@@ -69,6 +72,7 @@ public class IdentifiableModelTest
         }
 
         final Identifiable identifiable = new IdentifiableModel();
+        identifiable.prepare(new FeaturableModel(), new Services());
         Assert.assertEquals(Integer.valueOf(0), identifiable.getId());
 
         identifiable.destroy();

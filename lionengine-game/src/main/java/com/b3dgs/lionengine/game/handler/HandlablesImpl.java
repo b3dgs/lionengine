@@ -83,8 +83,9 @@ final class HandlablesImpl implements Handlables
      * Remove the featurable and all its references.
      * 
      * @param featurable The featurable reference.
+     * @param id The featurable ID.
      */
-    public void remove(Featurable featurable)
+    public void remove(Featurable featurable, Integer id)
     {
         for (final Class<?> type : featurable.getClass().getInterfaces())
         {
@@ -104,7 +105,7 @@ final class HandlablesImpl implements Handlables
         remove(featurable.getClass(), featurable);
         removeSuperClass(featurable, featurable.getClass());
 
-        featurables.remove(featurable.getFeature(Identifiable.class).getId());
+        featurables.remove(id);
     }
 
     /**

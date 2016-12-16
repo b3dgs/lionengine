@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.handler.Handler;
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.game.handler.Handler;
 /**
  * Producer model implementation.
  */
-public class ProducerModel extends FeatureModel implements Producer
+public class ProducerModel extends FeatureModel implements Producer, Recyclable
 {
     /** Producer listeners. */
     private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
@@ -84,8 +85,7 @@ public class ProducerModel extends FeatureModel implements Producer
     {
         super();
 
-        state = ProducerState.NONE;
-        stepsPerSecond = 1.0;
+        recycle();
     }
 
     /**
@@ -360,5 +360,18 @@ public class ProducerModel extends FeatureModel implements Producer
     public boolean isProducing()
     {
         return ProducerState.PRODUCING == state;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        state = ProducerState.NONE;
+        stepsPerSecond = 1.0;
+        progress = 0.0;
+        steps = 0;
     }
 }

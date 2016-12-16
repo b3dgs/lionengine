@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
@@ -43,7 +44,8 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Box ray cast collidable model implementation.
  */
-public class CollidableModel extends FeatureModel implements Collidable, TransformableListener, IdentifiableListener
+public class CollidableModel extends FeatureModel
+                             implements Collidable, Recyclable, TransformableListener, IdentifiableListener
 {
     /**
      * Check if current rectangle collides other collidable rectangles.
@@ -127,7 +129,7 @@ public class CollidableModel extends FeatureModel implements Collidable, Transfo
     /** Max height. */
     private int maxHeight;
     /** Enabled flag. */
-    private boolean enabled = true;
+    private boolean enabled;
     /** Show collision flag. */
     private boolean showCollision;
 
@@ -158,6 +160,8 @@ public class CollidableModel extends FeatureModel implements Collidable, Transfo
 
         group = CollidableConfig.imports(setup);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
+
+        recycle();
     }
 
     /**
@@ -405,6 +409,16 @@ public class CollidableModel extends FeatureModel implements Collidable, Transfo
     }
 
     /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        enabled = true;
+    }
+
+    /*
      * TransformableListener
      */
 
@@ -447,5 +461,8 @@ public class CollidableModel extends FeatureModel implements Collidable, Transfo
     public void notifyDestroyed(Integer id)
     {
         enabled = false;
+        boxs.clear();
+        cacheColls.clear();
+        cacheRect.clear();
     }
 }

@@ -17,24 +17,24 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
-
 /**
- * Object without constructor.
+ * Recyclable feature marker.
+ * <p>
+ * Allows to recycle a {@link Featurable} and all its {@link Feature} when using
+ * {@link Factory#create(com.b3dgs.lionengine.Media)} or {@link Factory#create(com.b3dgs.lionengine.Media, Class)}.
+ * </p>
+ * <p>
+ * This will avoid object creation, and call to {@link Featurable#prepareFeatures(Services)}.
+ * </p>
+ * <p>
+ * Should be used if object creation is too much time consuming, and only if reuse can be intensive (such as effects or
+ * bullets).
+ * </p>
  */
-public class ObjectWithIdentifiable extends FeaturableModel
+public interface Recyclable extends Feature
 {
     /**
-     * Constructor.
-     * 
-     * @param setup Parameter.
+     * Recycle feature, to make it ready for reuse.
      */
-    public ObjectWithIdentifiable(Setup setup)
-    {
-        super(setup);
-        addFeature(new IdentifiableModel());
-        Assert.assertNotNull(setup);
-    }
+    void recycle();
 }

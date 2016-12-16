@@ -68,6 +68,8 @@ public class ComponentDisplayableTest
             }
         }));
 
+        object.prepareFeatures(services);
+
         return layerable;
     }
 

@@ -24,13 +24,14 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Represents a producible object.
  */
-public class ProducibleModel extends FeatureModel implements Producible
+public class ProducibleModel extends FeatureModel implements Producible, Recyclable
 {
     /** Producer listeners. */
     private final Collection<ProducibleListener> listeners = new ArrayList<ProducibleListener>();
@@ -68,6 +69,8 @@ public class ProducibleModel extends FeatureModel implements Producible
         steps = configProducible.getSteps();
         width = configProducible.getWidth();
         height = configProducible.getHeight();
+
+        recycle();
     }
 
     /*
@@ -149,5 +152,16 @@ public class ProducibleModel extends FeatureModel implements Producible
     public int getSteps()
     {
         return steps;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        x = 0.0;
+        y = 0.0;
     }
 }

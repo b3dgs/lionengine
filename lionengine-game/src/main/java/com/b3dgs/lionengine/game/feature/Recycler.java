@@ -17,24 +17,30 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
-
 /**
- * Object without constructor.
+ * Recycler implementation, searching for {@link Recyclable} {@link Feature}s.
  */
-public class ObjectWithIdentifiable extends FeaturableModel
+public class Recycler extends FeatureModel
 {
     /**
-     * Constructor.
-     * 
-     * @param setup Parameter.
+     * Create recycler.
      */
-    public ObjectWithIdentifiable(Setup setup)
+    public Recycler()
     {
-        super(setup);
-        addFeature(new IdentifiableModel());
-        Assert.assertNotNull(setup);
+        super();
+    }
+
+    /**
+     * Recycle features, to make it ready for reuse.
+     */
+    public void recycle()
+    {
+        for (final Feature feature : getFeatures())
+        {
+            if (feature instanceof Recyclable)
+            {
+                ((Recyclable) feature).recycle();
+            }
+        }
     }
 }

@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.game.feature;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
 import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.handler.HandlerListener;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -41,8 +44,12 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
  * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
  * </p>
+ * <p>
+ * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
+ * {@link Recyclable} {@link Feature}s.
+ * </p>
  */
-public class Factory
+public class Factory implements HandlerListener
 {
     /** Data file extension. */
     public static final String FILE_DATA_EXTENSION = "xml";
@@ -55,6 +62,8 @@ public class Factory
 
     /** Setups list. */
     private final Map<Media, Setup> setups = new HashMap<Media, Setup>();
+    /** Cached instances. */
+    private final Map<Media, Deque<Featurable>> cache = new HashMap<Media, Deque<Featurable>>();
     /** Services reference. */
     private final Services services;
     /** Class loader. */
@@ -72,13 +81,18 @@ public class Factory
     }
 
     /**
-     * Create a featurable from its {@link Media} using a generic way. The concerned class to instantiate and its
-     * constructor must be public, and can have the following parameter: ({@link Setup}).
+     * Create a {@link Featurable} from its {@link Media} using a generic way. The concerned class to instantiate and
+     * its constructor must be public, and can have the following parameter: ({@link Setup}).
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>
      * <p>
      * {@link Featurable#prepareFeatures(Services)} is automatically called.
+     * </p>
+     * <p>
+     * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
+     * {@link Recyclable} {@link Feature}s. If cache associated to media is available, it is
+     * {@link Recyclable#recycle()} and then returned.
      * </p>
      * 
      * @param <O> The featurable type.
@@ -86,8 +100,15 @@ public class Factory
      * @return The featurable instance.
      * @throws LionEngineException If {@link Media} is <code>null</code> or {@link Setup} not found.
      */
+    @SuppressWarnings("unchecked")
     public <O extends Featurable> O create(Media media)
     {
+        if (cache.containsKey(media) && !cache.get(media).isEmpty())
+        {
+            final Featurable featurable = cache.get(media).poll();
+            featurable.getFeature(Recycler.class).recycle();
+            return (O) featurable;
+        }
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
         try
@@ -109,6 +130,11 @@ public class Factory
      * <p>
      * {@link Featurable#prepareFeatures(Services)} is automatically called.
      * </p>
+     * <p>
+     * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
+     * {@link Recyclable} {@link Feature}s. If cache associated to media is available, it is
+     * {@link Recyclable#recycle()} and then returned.
+     * </p>
      * 
      * @param <O> The featurable type.
      * @param media The featurable media.
@@ -116,8 +142,15 @@ public class Factory
      * @return The featurable instance.
      * @throws LionEngineException If {@link Media} is <code>null</code> or {@link Setup} not found.
      */
+    @SuppressWarnings("unchecked")
     public <O extends Featurable> O create(Media media, Class<O> type)
     {
+        if (cache.containsKey(media) && !cache.get(media).isEmpty())
+        {
+            final Featurable featurable = cache.get(media).poll();
+            featurable.getFeature(Recycler.class).recycle();
+            return (O) featurable;
+        }
         final Setup setup = getSetup(media);
         try
         {
@@ -240,6 +273,30 @@ public class Factory
         if (!featurable.isPrepared())
         {
             featurable.prepareFeatures(services);
+        }
+    }
+
+    /*
+     * HandlerListener
+     */
+
+    @Override
+    public void notifyHandlableAdded(Featurable featurable)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyHandlableRemoved(Featurable featurable)
+    {
+        final Media media = featurable.getMedia();
+        if (media != null && featurable.hasFeature(Recycler.class))
+        {
+            if (!cache.containsKey(media))
+            {
+                cache.put(media, new ArrayDeque<Featurable>());
+            }
+            cache.get(media).offer(featurable);
         }
     }
 }

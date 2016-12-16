@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
@@ -48,7 +49,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Pathfindable implementation.
  */
-public class PathfindableModel extends FeatureModel implements Pathfindable
+public class PathfindableModel extends FeatureModel implements Pathfindable, Recyclable
 {
     /** Category not found error. */
     private static final String ERROR_CATEGORY = "Category not found: ";
@@ -90,9 +91,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
     /** Destination location y. */
     private int destY;
     /** Horizontal movement speed. */
-    private double speedX = 1.0;
+    private double speedX;
     /** Vertical movement speed. */
-    private double speedY = 1.0;
+    private double speedY;
     /** Horizontal movement force. */
     private double moveX;
     /** Vertical movement force. */
@@ -100,7 +101,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
     /** Pathfound changes flag. */
     private boolean pathFoundChanged;
     /** Destination has been reached. */
-    private boolean destinationReached = true;
+    private boolean destinationReached;
     /** Path stopped request flag. */
     private boolean pathStoppedRequested;
     /** Path stopped flag. */
@@ -144,6 +145,8 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
     {
         super();
         categories = PathfindableConfig.imports(setup);
+
+        recycle();
     }
 
     /**
@@ -838,5 +841,28 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
     public boolean isMoving()
     {
         return moving;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        speedX = 1.0;
+        speedY = 1.0;
+        destinationReached = true;
+        renderDebug = false;
+        skip = false;
+        moving = false;
+        pathStopped = false;
+        pathStoppedRequested = true;
+        pathFoundChanged = false;
+        currentStep = 0;
+        path = null;
+        moveX = 0.0;
+        moveY = 0.0;
+        sharedPathIds.clear();
     }
 }

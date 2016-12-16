@@ -19,16 +19,17 @@ package com.b3dgs.lionengine.game.feature.mirrorable;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 
 /**
  * Default mirrorable implementation.
  */
-public class MirrorableModel extends FeatureModel implements Mirrorable
+public class MirrorableModel extends FeatureModel implements Mirrorable, Recyclable
 {
     /** Mirror state. */
-    private Mirror mirror = Mirror.NONE;
+    private Mirror mirror;
     /** Mirror next state flag. */
-    private Mirror nextState = Mirror.NONE;
+    private Mirror nextState;
     /** Mirror requested flag. */
     private boolean requested;
 
@@ -38,6 +39,8 @@ public class MirrorableModel extends FeatureModel implements Mirrorable
     public MirrorableModel()
     {
         super();
+
+        recycle();
     }
 
     /*
@@ -65,5 +68,17 @@ public class MirrorableModel extends FeatureModel implements Mirrorable
     public Mirror getMirror()
     {
         return mirror;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        mirror = Mirror.NONE;
+        nextState = Mirror.NONE;
+        requested = false;
     }
 }

@@ -67,6 +67,7 @@ public class ProducibleModelTest
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
+        featurable.prepareFeatures(services);
 
         final Producible producible = new ProducibleModel(setup);
         final ProducibleListener listener = UtilProducible.createListener();
@@ -98,6 +99,7 @@ public class ProducibleModelTest
         final ProducibleListenerSelf object = new ProducibleListenerSelf();
         final Producible producible = new ProducibleModel(setup);
         producible.prepare(object, services);
+        object.prepareFeatures(services);
 
         Assert.assertTrue(producible.getListeners().contains(object));
 
@@ -115,6 +117,7 @@ public class ProducibleModelTest
         final Setup setup = new Setup(media);
         final ProducibleListenerSelf object = new ProducibleListenerSelf();
         final Producible producible = new ProducibleModel(setup);
+        object.prepareFeatures(new Services());
         producible.checkListener(object);
 
         Assert.assertTrue(producible.getListeners().contains(object));

@@ -24,13 +24,14 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.SizeConfig;
 
 /**
  * Transformable model implementation.
  */
-public class TransformableModel extends FeatureModel implements Transformable
+public class TransformableModel extends FeatureModel implements Transformable, Recyclable
 {
     /** Listeners. */
     private final List<TransformableListener> listeners = new ArrayList<TransformableListener>();
@@ -51,6 +52,8 @@ public class TransformableModel extends FeatureModel implements Transformable
     public TransformableModel()
     {
         super();
+
+        recycle();
     }
 
     /**
@@ -238,5 +241,15 @@ public class TransformableModel extends FeatureModel implements Transformable
     public int getOldHeight()
     {
         return oldHeight;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        mover.teleport(0.0, 0.0);
     }
 }

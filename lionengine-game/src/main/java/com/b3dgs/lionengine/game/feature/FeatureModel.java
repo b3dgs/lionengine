@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
+import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableListener;
+
 /**
  * Feature model implementation.
  * <p>
- * Any feature can override {@link #checkListener(Object)} to automatically add listener of object if implements
+ * Any feature can override {@link #checkListener(Object)} to automatically add listener on object if implements
  * it/them.
  * </p>
  */
@@ -45,6 +48,11 @@ public class FeatureModel implements Feature
     public void prepare(FeatureProvider provider, Services services)
     {
         this.provider = provider;
+
+        if (this instanceof IdentifiableListener && provider.hasFeature(Identifiable.class))
+        {
+            provider.getFeature(Identifiable.class).addListener((IdentifiableListener) this);
+        }
     }
 
     /**

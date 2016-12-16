@@ -83,6 +83,7 @@ public class HandlablesImplTest
     public void prepare()
     {
         object.addFeature(new IdentifiableModel());
+        object.prepareFeatures(new Services());
     }
 
     /**
@@ -106,7 +107,7 @@ public class HandlablesImplTest
         Assert.assertEquals(object, featurables.values().iterator().next());
         Assert.assertEquals(1, featurables.getIds().size());
 
-        featurables.remove(object);
+        featurables.remove(object, object.getFeature(Identifiable.class).getId());
 
         Assert.assertTrue(featurables.getIds().isEmpty());
         Assert.assertFalse(featurables.values().iterator().hasNext());
@@ -136,7 +137,7 @@ public class HandlablesImplTest
         Assert.assertEquals(mirrorable, featurables.get(Mirrorable.class).iterator().next());
         Assert.assertFalse(featurables.get(Transformable.class).iterator().hasNext());
 
-        featurables.remove(object);
+        featurables.remove(object, object.getFeature(Identifiable.class).getId());
 
         Assert.assertFalse(featurables.get(Mirrorable.class).iterator().hasNext());
     }

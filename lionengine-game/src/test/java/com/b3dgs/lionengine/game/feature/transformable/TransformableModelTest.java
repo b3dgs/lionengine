@@ -74,6 +74,7 @@ public class TransformableModelTest
     {
         services.add(new MapTileGame());
         featurable.addFeature(new IdentifiableModel());
+        featurable.prepareFeatures(services);
         transformable.prepare(featurable, services);
     }
 

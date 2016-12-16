@@ -80,6 +80,7 @@ public class ProducerModelTest
     {
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
+        object.prepareFeatures(services);
         producer.prepare(object, services);
     }
 

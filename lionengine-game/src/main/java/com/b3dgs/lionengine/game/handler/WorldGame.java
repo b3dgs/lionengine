@@ -49,8 +49,8 @@ import com.b3dgs.lionengine.util.UtilStream;
  * <li>{@link Services}: Pre-configured instance with the following added services:
  * <ul>
  * <li>{@link Camera}: Configured with screen size as view</li>
- * <li>{@link Factory}</li>
  * <li>{@link Handler}: Shipped with {@link ComponentRefreshable} and {@link ComponentDisplayable}</li>
+ * <li>{@link Factory}: Listener added with {@link Handler#addListener(HandlerListener)}</li>
  * </ul>
  * </li>
  * </ul>
@@ -110,7 +110,7 @@ public abstract class WorldGame implements Updatable, Renderable
     /** External display reference. */
     protected final Resolution output;
     /** Context reference. */
-    private final Context context;
+    protected final Context context;
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
@@ -140,6 +140,7 @@ public abstract class WorldGame implements Updatable, Renderable
 
         factory = services.create(Factory.class);
         handler = services.create(Handler.class);
+        handler.addListener(factory);
         camera = services.create(Camera.class);
         camera.setView(0, 0, source.getWidth(), source.getHeight(), source.getHeight());
 

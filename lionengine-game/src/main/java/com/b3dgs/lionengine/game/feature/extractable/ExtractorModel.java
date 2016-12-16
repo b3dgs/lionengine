@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.game.tile.Tiled;
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
  * receive the ability of extraction.
  */
-public class ExtractorModel extends FeatureModel implements Extractor
+public class ExtractorModel extends FeatureModel implements Extractor, Recyclable
 {
     /** Extractor listeners. */
     private final Collection<ExtractorListener> listeners = new ArrayList<ExtractorListener>();
@@ -72,7 +73,8 @@ public class ExtractorModel extends FeatureModel implements Extractor
     public ExtractorModel()
     {
         super();
-        state = ExtractorState.NONE;
+
+        recycle();
     }
 
     /**
@@ -345,5 +347,17 @@ public class ExtractorModel extends FeatureModel implements Extractor
     public Enum<?> getResourceType()
     {
         return resourceType;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        state = ExtractorState.NONE;
+        progress = 0.0;
+        lastProgress = 0;
     }
 }

@@ -65,6 +65,7 @@ public class ExtractableModelTest
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
         featurable.addFeature(new TransformableModel());
+        featurable.prepareFeatures(services);
 
         final Extractable extractable = new ExtractableModel();
         extractable.prepare(featurable, services);

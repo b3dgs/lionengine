@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.feature.transformable.Transformable;
@@ -37,7 +38,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Attacker model implementation.
  */
-public class AttackerModel extends FeatureModel implements Attacker
+public class AttackerModel extends FeatureModel implements Attacker, Recyclable
 {
     /** Listener list. */
     private final Collection<AttackerListener> listeners = new HashSet<AttackerListener>(1);
@@ -81,9 +82,8 @@ public class AttackerModel extends FeatureModel implements Attacker
     public AttackerModel()
     {
         super();
-        frameAttack = 1;
-        attackPause = 1;
-        state = AttackState.NONE;
+
+        recycle();
     }
 
     /**
@@ -317,5 +317,21 @@ public class AttackerModel extends FeatureModel implements Attacker
     public Transformable getTarget()
     {
         return target;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public final void recycle()
+    {
+        attacking = false;
+        attacked = false;
+        stop = false;
+        frameAttack = 1;
+        attackPause = 1;
+        target = null;
+        state = AttackState.NONE;
     }
 }

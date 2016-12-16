@@ -24,11 +24,13 @@ import java.util.Queue;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.Recycler;
 
 /**
  * Default identifiable implementation. Handle a list of unique ID, provide the next free ID, and recycle destroyed ID.
  */
-public class IdentifiableModel extends FeatureModel implements Identifiable
+public class IdentifiableModel extends FeatureModel implements Identifiable, Recyclable
 {
     /** ID used (list of active id used). */
     private static final Collection<Integer> IDS = new HashSet<Integer>();
@@ -57,11 +59,11 @@ public class IdentifiableModel extends FeatureModel implements Identifiable
         {
             throw new LionEngineException(ERROR_FREE_ID);
         }
-        while (IDS.contains(Integer.valueOf(lastId)))
+        Integer id;
+        while (IDS.contains(id = Integer.valueOf(lastId)))
         {
             lastId++;
         }
-        final Integer id = Integer.valueOf(lastId);
         IDS.add(id);
         return id;
     }
@@ -117,6 +119,7 @@ public class IdentifiableModel extends FeatureModel implements Identifiable
         if (!destroy)
         {
             destroy = true;
+
             for (final IdentifiableListener listener : listeners)
             {
                 listener.notifyDestroyed(id);
@@ -128,8 +131,17 @@ public class IdentifiableModel extends FeatureModel implements Identifiable
     public void notifyDestroyed()
     {
         destroyed = true;
-        IDS.remove(id);
-        RECYCLE.add(id);
-        listeners.clear();
+        if (!hasFeature(Recycler.class))
+        {
+            IDS.remove(id);
+            RECYCLE.add(id);
+        }
+    }
+
+    @Override
+    public void recycle()
+    {
+        destroy = false;
+        destroyed = false;
     }
 }
