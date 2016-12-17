@@ -52,11 +52,12 @@ public abstract class SequenceGame extends Sequence
      * Create sequence. Resolution will be based on {@link Config#getOutput()}.
      * 
      * @param context The context reference.
+     * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    public SequenceGame(Context context)
+    public SequenceGame(Context context, WorldCreator creator)
     {
-        this(context, context.getConfig().getOutput());
+        this(context, context.getConfig().getOutput(), creator);
     }
 
     /**
@@ -64,9 +65,10 @@ public abstract class SequenceGame extends Sequence
      * 
      * @param context The context reference.
      * @param resolution The resolution source reference.
+     * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    public SequenceGame(Context context, Resolution resolution)
+    public SequenceGame(Context context, Resolution resolution, WorldCreator creator)
     {
         super(context, resolution);
 
@@ -86,19 +88,10 @@ public abstract class SequenceGame extends Sequence
             }
         });
 
-        world = services.add(createWorld(context, services));
+        world = services.add(creator.createWorld(context, services));
 
         setSystemCursorVisible(false);
     }
-
-    /**
-     * Create the world.
-     * 
-     * @param context The context reference.
-     * @param services The services reference.
-     * @return The created world.
-     */
-    protected abstract WorldGame createWorld(Context context, Services services);
 
     /*
      * Sequence
@@ -130,5 +123,20 @@ public abstract class SequenceGame extends Sequence
         {
             Engine.terminate();
         }
+    }
+
+    /**
+     * World factory interface.
+     */
+    protected interface WorldCreator
+    {
+        /**
+         * Create the world.
+         * 
+         * @param context The context reference.
+         * @param services The services reference.
+         * @return The created world.
+         */
+        WorldGame createWorld(Context context, Services services);
     }
 }
