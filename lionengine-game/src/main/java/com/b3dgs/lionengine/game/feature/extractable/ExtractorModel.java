@@ -354,7 +354,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      */
 
     @Override
-    public void recycle()
+    public final void recycle()
     {
         state = ExtractorState.NONE;
         progress = 0.0;

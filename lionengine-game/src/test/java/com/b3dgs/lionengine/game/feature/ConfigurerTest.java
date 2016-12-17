@@ -60,6 +60,7 @@ public class ConfigurerTest
     {
         Assert.assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Configurer.clearCache();
     }
 
     /**

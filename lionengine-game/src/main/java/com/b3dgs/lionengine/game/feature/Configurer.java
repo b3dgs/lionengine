@@ -48,6 +48,14 @@ public class Configurer
     /** Class cache. */
     private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<String, Class<?>>();
 
+    /**
+     * Clear classes cache.
+     */
+    public static void clearCache()
+    {
+        CLASS_CACHE.clear();
+    }
+
     /** Media reference. */
     private final Media media;
     /** Root path. */

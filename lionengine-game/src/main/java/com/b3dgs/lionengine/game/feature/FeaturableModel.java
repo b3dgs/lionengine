@@ -50,6 +50,15 @@ public class FeaturableModel implements Featurable
     private static final Map<String, Boolean> CONSTRUCTOR_TYPE = new HashMap<String, Boolean>();
 
     /**
+     * Clear classes cache.
+     */
+    public static void clearCache()
+    {
+        CLASS_CACHE.clear();
+        CONSTRUCTOR_TYPE.clear();
+    }
+
+    /**
      * Get all available features.
      * Default constructor of each feature must be available or with {@link Setup} as single parameter.
      * 
@@ -202,6 +211,7 @@ public class FeaturableModel implements Featurable
      * 
      * @param object The object to update.
      * @param services The services reference.
+     * @throws LionEngineException If error on setting service.
      */
     private void fillServices(Object object, Services services)
     {

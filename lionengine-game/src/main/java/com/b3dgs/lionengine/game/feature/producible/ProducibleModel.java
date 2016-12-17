@@ -159,7 +159,7 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
      */
 
     @Override
-    public void recycle()
+    public final void recycle()
     {
         x = 0.0;
         y = 0.0;

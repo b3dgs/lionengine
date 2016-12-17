@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.Media;
 public class AudioVoidFormat implements AudioFormat<AudioVoid>
 {
     /** Formats list. */
-    private final String[] formats;
+    private final Collection<String> formats;
 
     /**
      * Create void audio format.
@@ -37,7 +37,7 @@ public class AudioVoidFormat implements AudioFormat<AudioVoid>
      */
     public AudioVoidFormat(String... formats)
     {
-        this.formats = formats;
+        this.formats = Arrays.asList(formats);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AudioVoidFormat implements AudioFormat<AudioVoid>
     @Override
     public Collection<String> getFormats()
     {
-        return Arrays.asList(formats);
+        return formats;
     }
 
     @Override

@@ -57,6 +57,7 @@ public class FeaturableModelTest
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        FeaturableModel.clearCache();
     }
 
     /**

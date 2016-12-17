@@ -277,7 +277,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         {
             removePoint(Geom.createPoint(minX, maxY), collidable);
         }
-        else if (minX != maxX && minY != maxY)
+        else if (minX != maxX)
         {
             removePoint(Geom.createPoint(minX, maxY), collidable);
             removePoint(Geom.createPoint(maxX, minY), collidable);
@@ -309,7 +309,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         {
             addPoint(Geom.createPoint(minX, maxY), collidable);
         }
-        else if (minX != maxX && minY != maxY)
+        else if (minX != maxX)
         {
             addPoint(Geom.createPoint(minX, maxY), collidable);
             addPoint(Geom.createPoint(maxX, minY), collidable);
