@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.b3dgs.lionengine.editor.animation.test;singleton:=true
-Bundle-Version: 8.3.6.qualifier
+Bundle-Version: 8.3.6
 Bundle-Vendor: %Bundle-Vendor
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
 Require-Bundle: javax.inject;bundle-version="1.0.0",
