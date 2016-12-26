@@ -77,6 +77,44 @@ public class RasterTest
     }
 
     /**
+     * Test raster color.
+     */
+    @Test
+    public void testRasterColor()
+    {
+        final RasterData raster = new RasterData(0, 0, 0, 0, 0, 0);
+        final RasterColor color = RasterColor.load(raster, 0, 0, false);
+
+        Assert.assertEquals(0, color.getStart());
+        Assert.assertEquals(0, color.getEnd());
+
+        final RasterData raster2 = new RasterData(200, 10, 10, 100, 10, 0);
+        final RasterColor color2 = RasterColor.load(raster2, 0, 90, false);
+
+        Assert.assertEquals(130, color2.getStart());
+        Assert.assertEquals(130, color2.getEnd());
+    }
+
+    /**
+     * Test raster color smoothed.
+     */
+    @Test
+    public void testRasterColorSmooth()
+    {
+        final RasterData raster = new RasterData(200, 10, 10, 100, 10, 0);
+        final RasterColor color = RasterColor.load(raster, 0, 90, true);
+
+        Assert.assertEquals(130, color.getStart());
+        Assert.assertEquals(120, color.getEnd());
+
+        final RasterData raster2 = new RasterData(200, 10, 10, 100, 10, 0);
+        final RasterColor color2 = RasterColor.load(raster2, 1, 90, true);
+
+        Assert.assertEquals(160, color2.getStart());
+        Assert.assertEquals(170, color2.getEnd());
+    }
+
+    /**
      * Test load raster.
      */
     @Test
