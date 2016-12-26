@@ -21,10 +21,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Context;
-import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the tick class.

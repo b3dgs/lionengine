@@ -33,8 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.b3dgs.lionengine.core.Engine;
-
 /**
  * Level of verbosity.
  * <p>
@@ -81,7 +79,11 @@ public enum Verbose
     /** Log number. */
     private static final String LOG_NUM = "%g";
     /** Log file. */
-    private static final String LOG_FILE = REG_TEMP + Engine.NAME.toLowerCase(Locale.ENGLISH) + "-" + LOG_NUM + ".log";
+    private static final String LOG_FILE = REG_TEMP
+                                           + Constant.ENGINE_NAME.toLowerCase(Locale.ENGLISH)
+                                           + "-"
+                                           + LOG_NUM
+                                           + ".log";
     /** Separator date. */
     private static final String SEPARATOR_DATE = " - ";
     /** In. */

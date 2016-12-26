@@ -24,11 +24,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.Image;
 
 /**
  * Test the resource loader class.

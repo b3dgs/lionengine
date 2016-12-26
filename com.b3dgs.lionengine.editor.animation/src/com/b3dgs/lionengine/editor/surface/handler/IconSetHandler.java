@@ -24,9 +24,9 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.surface.properties.PropertiesSurface;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.SurfaceConfig;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.SurfaceConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Set icon handler.
@@ -52,8 +52,8 @@ public final class IconSetHandler
         final Configurer configurer = (Configurer) properties.getData();
         UtilDialog.selectResourceFile(properties.getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
-            final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+            final Xml root = configurer.getRoot();
+            final Xml surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
             final String path = media.getPath();
             surfaceNode.writeString(SurfaceConfig.ATT_ICON, path);
             configurer.save();

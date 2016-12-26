@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test the launchable config class.
@@ -63,11 +62,11 @@ public class LaunchableConfigTest
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         try
         {
-            final XmlNode root = Xml.create("test");
+            final Xml root = new Xml("test");
             root.add(LaunchableConfig.exports(launchable));
-            Xml.save(root, media);
+            root.save(media);
 
-            final LaunchableConfig loaded = LaunchableConfig.imports(Xml.load(media)
+            final LaunchableConfig loaded = LaunchableConfig.imports(new Xml(media)
                                                                         .getChild(LaunchableConfig.NODE_LAUNCHABLE));
 
             Assert.assertEquals(launchable, loaded);

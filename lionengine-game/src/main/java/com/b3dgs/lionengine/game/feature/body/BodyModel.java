@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.game.feature.body;
 
 import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
  * Default body supporting gravity implementation.

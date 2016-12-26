@@ -20,13 +20,14 @@ package com.b3dgs.lionengine.game.feature.attackable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.core.drawable.AnimatorMock;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.AnimatableModel;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
 
 /**
  * Utilities dedicated to attackable test.
@@ -40,8 +41,8 @@ public class UtilAttackable
      */
     public static void prepare(Featurable featurable)
     {
-        final Animator animator = Anim.createAnimator();
-        animator.play(Anim.createAnimation("test", 1, 1, 1.0, false, false));
+        final Animator animator = new AnimatorMock();
+        animator.play(new Animation("test", 1, 1, 1.0, false, false));
         featurable.addFeature(new AnimatableModel(animator));
         featurable.addFeature(new TransformableModel());
     }

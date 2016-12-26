@@ -30,8 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
@@ -39,7 +38,8 @@ import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
-import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
+import com.b3dgs.lionengine.graphic.SpriteTiled;
 
 /**
  * Edit map tile groups dialog.

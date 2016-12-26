@@ -34,10 +34,10 @@ import com.b3dgs.lionengine.editor.map.group.editor.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.tile.TileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroupType;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.TileGroup;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
 /**
  * Test the groups edition dialog.

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:group name="water" type="PLAIN">
+        <lionengine:tile number="0" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="ground" type="PLAIN">
+        <lionengine:tile number="1" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="tree" type="PLAIN">
+        <lionengine:tile number="2" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="road" type="CIRCUIT">
+        <lionengine:tile number="3" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="transition" type="TRANSITION">
+        <lionengine:tile number="4" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="transition2" type="TRANSITION">
+        <lionengine:tile number="5" sheet="0"/>
+    </lionengine:group>
+</lionengine:groups>

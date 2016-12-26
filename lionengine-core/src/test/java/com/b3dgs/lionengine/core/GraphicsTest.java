@@ -25,16 +25,19 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.GraphicTest;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.mock.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilFile;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the graphic factory class.

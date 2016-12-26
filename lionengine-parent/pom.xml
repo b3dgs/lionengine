@@ -5,6 +5,7 @@
     <properties>
         <b3dgs.version>1.0.2</b3dgs.version>
         <buildtools-project>lionengine-buildtools</buildtools-project>
+        <radial.base-package>com.b3dgs.lionengine</radial.base-package>
     </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
@@ -253,5 +254,52 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.mobilepetroleum.radialencapsulation</groupId>
+                    <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <basePackage>${radial.base-package}</basePackage>
+                        <includeTestSources>false</includeTestSources>
+                        <maxViolations>0</maxViolations>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>radial-encapsulation</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>radial-encapsulation</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.mobilepetroleum.radialencapsulation</groupId>
+                                        <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>radial-encapsulation</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

@@ -27,9 +27,12 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
-import com.b3dgs.lionengine.game.handler.HandlerListener;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -76,6 +79,8 @@ public class Factory implements HandlerListener
      */
     public Factory(Services services)
     {
+        super();
+
         this.services = services;
         classLoader = getClass().getClassLoader();
     }

@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.TileGroup;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 
 /**
  * Represents the groups edition dialog.

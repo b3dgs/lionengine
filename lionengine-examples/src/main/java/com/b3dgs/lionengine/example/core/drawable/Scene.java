@@ -17,22 +17,21 @@
  */
 package com.b3dgs.lionengine.example.core.drawable;
 
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Image;
+import com.b3dgs.lionengine.graphic.Sprite;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.SpriteTiled;
+import com.b3dgs.lionengine.io.Keyboard;
 
 /**
  * This is where the game loop is running.
@@ -87,7 +86,7 @@ class Scene extends Sequence
         tilesheet = Drawable.loadSpriteTiled(Medias.create("tilesheet.png"), 16, 16);
 
         // Set animation data (frames between 4-6, at a speed of 0.125, looped)
-        anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
+        anim = new Animation(null, 4, 6, 0.125, false, true);
 
         // Exit
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());

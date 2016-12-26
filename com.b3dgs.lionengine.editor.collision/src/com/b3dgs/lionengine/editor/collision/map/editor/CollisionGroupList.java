@@ -24,13 +24,12 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the collisions list, allowing to add and remove {@link CollisionGroup}.
@@ -45,21 +44,21 @@ public class CollisionGroupList extends ObjectList<CollisionGroup> implements Ob
      */
     private static void removeCollision(Media collisionsConfig, CollisionGroup collision)
     {
-        final XmlNode node = Xml.load(collisionsConfig);
-        final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeFormula : node.getChildren(CollisionGroupConfig.COLLISION))
+        final Xml node = new Xml(collisionsConfig);
+        final Collection<Xml> toRemove = new ArrayList<>();
+        for (final Xml nodeFormula : node.getChildren(CollisionGroupConfig.COLLISION))
         {
             if (CollisionGroup.same(nodeFormula.readString(CollisionGroupConfig.GROUP), collision.getName()))
             {
                 toRemove.add(nodeFormula);
             }
         }
-        for (final XmlNode remove : toRemove)
+        for (final Xml remove : toRemove)
         {
             node.removeChild(remove);
         }
         toRemove.clear();
-        Xml.save(node, collisionsConfig);
+        node.save(collisionsConfig);
     }
 
     /** Last config used. */

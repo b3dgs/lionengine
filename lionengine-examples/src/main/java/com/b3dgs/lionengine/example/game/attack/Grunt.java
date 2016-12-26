@@ -19,25 +19,25 @@ package com.b3dgs.lionengine.example.game.attack;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.feature.SetupSurface;
-import com.b3dgs.lionengine.game.feature.animatable.AnimatableModel;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.feature.AnimatableModel;
+import com.b3dgs.lionengine.game.feature.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.LayerableModel;
+import com.b3dgs.lionengine.game.feature.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerChecker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
-import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
-import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.Viewer;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
  * Grunt entity implementation.

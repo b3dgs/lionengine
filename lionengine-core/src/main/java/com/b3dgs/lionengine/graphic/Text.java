@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.graphic;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * The text allows to render any {@link String} on screen, at a specified location, using a specified font.
@@ -74,9 +73,6 @@ import com.b3dgs.lionengine.core.Graphics;
  * // Rendering type 2
  * text.draw(g, 0, 0, &quot;World&quot;);
  * </pre>
- * 
- * @see Align
- * @see Graphics
  */
 public interface Text extends Renderable
 {

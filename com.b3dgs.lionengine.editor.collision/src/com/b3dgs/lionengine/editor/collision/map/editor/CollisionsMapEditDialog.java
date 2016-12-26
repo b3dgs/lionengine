@@ -27,18 +27,16 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the collisions map edition dialog.
@@ -92,22 +90,22 @@ public class CollisionsMapEditDialog extends AbstractDialog
     {
         collisionGroupList.save();
 
-        final XmlNode root = Xml.create(CollisionGroupConfig.COLLISIONS);
-        root.writeString(Constant.XML_HEADER, Engine.WEBSITE);
+        final Xml root = new Xml(CollisionGroupConfig.COLLISIONS);
+        root.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
 
         for (final TreeItem item : collisionGroupList.getTree().getItems())
         {
             final CollisionGroup collisionGroup = (CollisionGroup) item.getData();
-            final XmlNode nodeCollision = root.createChild(CollisionGroupConfig.COLLISION);
+            final Xml nodeCollision = root.createChild(CollisionGroupConfig.COLLISION);
             nodeCollision.writeString(CollisionGroupConfig.GROUP, collisionGroup.getName());
 
             for (final CollisionFormula formula : collisionGroup.getFormulas())
             {
-                final XmlNode nodeFormula = nodeCollision.createChild(CollisionFormulaConfig.FORMULA);
+                final Xml nodeFormula = nodeCollision.createChild(CollisionFormulaConfig.FORMULA);
                 nodeFormula.setText(formula.getName());
             }
         }
-        Xml.save(root, media);
+        root.save(media);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))

@@ -19,23 +19,23 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.collision.tile.Axis;
-import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
-import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListener;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
-import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * Walk state implementation.

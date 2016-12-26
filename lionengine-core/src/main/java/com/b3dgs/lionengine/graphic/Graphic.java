@@ -18,11 +18,12 @@
 package com.b3dgs.lionengine.graphic;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 
 /**
  * Graphic interface representing the screen buffer.
  * 
- * @see com.b3dgs.lionengine.core.Graphics
+ * @see com.b3dgs.lionengine.graphic.Graphics
  */
 public interface Graphic
 {

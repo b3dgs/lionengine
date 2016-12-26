@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
  * Test the map import dialog.

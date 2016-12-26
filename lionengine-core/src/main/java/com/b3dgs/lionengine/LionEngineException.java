@@ -29,6 +29,8 @@ public final class LionEngineException extends RuntimeException
     public static final String ERROR_PRIVATE_CONSTRUCTOR = "Private constructor !";
     /** Error unknown enum type. */
     private static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
+    /** Null enum. */
+    private static final String NULL_ENUM = "null";
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
 
@@ -51,6 +53,21 @@ public final class LionEngineException extends RuntimeException
             builder.append(message);
         }
         return builder.toString();
+    }
+
+    /**
+     * Get the enum name.
+     * 
+     * @param type The enum type.
+     * @return The enum name, {@link #NULL_ENUM} if type is <code>null</code>.
+     */
+    private static String getEnumName(Enum<?> type)
+    {
+        if (type == null)
+        {
+            return NULL_ENUM;
+        }
+        return type.name();
     }
 
     /**
@@ -81,7 +98,7 @@ public final class LionEngineException extends RuntimeException
      */
     public LionEngineException(Enum<?> type)
     {
-        this(ERROR_UNKNOWN_ENUM, type != null ? type.name() : "null");
+        this(ERROR_UNKNOWN_ENUM, getEnumName(type));
     }
 
     /**

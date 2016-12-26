@@ -34,12 +34,12 @@ import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionModel;
 
 /**
  * Represents the import map dialog.

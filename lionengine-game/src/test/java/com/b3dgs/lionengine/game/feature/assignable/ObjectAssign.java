@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.assignable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.FeaturableModel;
 
 /**
  * Object containing action.

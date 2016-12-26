@@ -26,7 +26,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.UtilTests;
 import com.b3dgs.lionengine.editor.animation.editor.Messages;

@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
-import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
-import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.core.EngineAwt;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.ComponentDisplayable;
+import com.b3dgs.lionengine.game.feature.ComponentRefreshable;
+import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
  * Main class.

@@ -23,9 +23,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test if the folder contains groups file.
@@ -47,7 +46,7 @@ public final class GroupsTester extends PropertyTester
     {
         try
         {
-            final XmlNode root = Xml.load(media);
+            final Xml root = new Xml(media);
             return TileGroupsConfig.NODE_GROUPS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)

@@ -27,16 +27,14 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the formulas edition dialog.
@@ -89,15 +87,15 @@ public class FormulasEditDialog extends AbstractDialog
     protected void onFinish()
     {
         list.save();
-        final XmlNode root = Xml.create(CollisionFormulaConfig.FORMULAS);
-        root.writeString(Constant.XML_HEADER, Engine.WEBSITE);
+        final Xml root = new Xml(CollisionFormulaConfig.FORMULAS);
+        root.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionFormula formula = (CollisionFormula) item.getData();
             CollisionFormulaConfig.exports(root, formula);
         }
-        Xml.save(root, formulas);
+        root.save(formulas);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))

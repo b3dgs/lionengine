@@ -23,14 +23,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Utilities dedicated to actionnable test.
@@ -54,9 +53,9 @@ public class UtilActionnable
                                                      (int) rectangle.getY(),
                                                      rectangle.getWidth(),
                                                      rectangle.getHeight());
-        final XmlNode root = Xml.create("test");
+        final Xml root = new Xml("test");
         root.add(ActionConfig.exports(action));
-        Xml.save(root, media);
+        root.save(media);
 
         return media;
     }

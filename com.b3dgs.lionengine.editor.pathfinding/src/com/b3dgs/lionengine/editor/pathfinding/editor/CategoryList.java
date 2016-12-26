@@ -25,13 +25,12 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
-import com.b3dgs.lionengine.game.pathfinding.PathCategory;
-import com.b3dgs.lionengine.game.pathfinding.PathfindingConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathCategory;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the categories list, allowing to add and remove pathfinding categories.
@@ -92,21 +91,21 @@ public class CategoryList extends ObjectList<PathCategory> implements ObjectList
     @Override
     public void notifyObjectDeleted(PathCategory category)
     {
-        final XmlNode node = Xml.load(config);
-        final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodePath : node.getChildren(PathfindingConfig.PATHFINDING))
+        final Xml node = new Xml(config);
+        final Collection<Xml> toRemove = new ArrayList<>();
+        for (final Xml nodePath : node.getChildren(PathfindingConfig.PATHFINDING))
         {
             if (CollisionGroup.same(nodePath.readString(PathfindingConfig.CATEGORY), category.getName()))
             {
                 toRemove.add(nodePath);
             }
         }
-        for (final XmlNode remove : toRemove)
+        for (final Xml remove : toRemove)
         {
             node.removeChild(remove);
         }
         toRemove.clear();
-        Xml.save(node, config);
+        node.save(config);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
         final MapTilePath mapPath = map.getFeature(MapTilePath.class);

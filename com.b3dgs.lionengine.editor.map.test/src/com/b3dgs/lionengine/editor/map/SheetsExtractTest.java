@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.editor.map.sheet.extract.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 
 /**
  * Test the sheets extraction dialog.

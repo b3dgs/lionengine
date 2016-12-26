@@ -33,10 +33,9 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the utility zip class.
+ * Test the utility ZIP class.
  */
 public class UtilZipTest
 {

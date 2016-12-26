@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.game.state.AnimationConfig;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Remove frames handler.
@@ -50,7 +50,7 @@ public final class FramesRemoveHandler
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         root.removeChild(FramesConfig.NODE_FRAMES);
         configurer.save();
         for (final TreeItem item : properties.getItems())

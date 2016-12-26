@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Setup configuration utility.
@@ -36,10 +38,10 @@ public class UtilSetup
     {
         final Media media = Medias.create("object.xml");
 
-        final XmlNode root = Xml.create("test");
+        final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass("class"));
         root.add(FeaturableConfig.exportSetup("setup"));
-        Xml.save(root, media);
+        root.save(media);
 
         return media;
     }
@@ -53,11 +55,11 @@ public class UtilSetup
     public static Media createMedia(Class<?> clazz)
     {
         final Media media = Medias.create(clazz.getSimpleName() + ".xml");
-        final XmlNode root = Xml.create("test");
+        final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass(clazz.getName()));
         root.add(FeaturableConfig.exportSetup(Setup.class.getName()));
         root.add(SizeConfig.exports(new SizeConfig(16, 32)));
-        Xml.save(root, media);
+        root.save(media);
         return media;
     }
 }

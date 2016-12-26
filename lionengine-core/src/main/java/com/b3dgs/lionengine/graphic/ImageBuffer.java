@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Represents the image buffer in memory.
  * 
- * @see com.b3dgs.lionengine.core.Graphics
+ * @see com.b3dgs.lionengine.graphic.Graphics
  */
 public interface ImageBuffer extends ImageSurface
 {

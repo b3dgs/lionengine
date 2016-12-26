@@ -24,9 +24,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test if the folder contains collisions file.
@@ -73,7 +72,7 @@ public final class CollisionsTester extends PropertyTester
     {
         try
         {
-            final XmlNode root = Xml.load(media);
+            final Xml root = new Xml(media);
             return CollisionGroupConfig.COLLISIONS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)

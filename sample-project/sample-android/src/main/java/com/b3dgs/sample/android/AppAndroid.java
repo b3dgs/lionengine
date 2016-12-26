@@ -20,12 +20,12 @@ package com.b3dgs.sample.android;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.android.EngineAndroid;
+import com.b3dgs.lionengine.core.EngineAndroid;
+import com.b3dgs.lionengine.core.sequence.Loader;
 import com.b3dgs.sample.Scene;
 
 /**

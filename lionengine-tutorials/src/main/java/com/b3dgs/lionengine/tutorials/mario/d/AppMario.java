@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.audio.midi.MidiFormat;
-import com.b3dgs.lionengine.audio.wav.WavFormat;
-import com.b3dgs.lionengine.core.AudioFactory;
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.audio.AudioFactory;
+import com.b3dgs.lionengine.audio.MidiFormat;
+import com.b3dgs.lionengine.audio.WavFormat;
+import com.b3dgs.lionengine.core.EngineAwt;
+import com.b3dgs.lionengine.core.sequence.Loader;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**

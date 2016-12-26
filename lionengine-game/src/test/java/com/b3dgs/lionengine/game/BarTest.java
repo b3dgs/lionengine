@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.mock.GraphicMock;
+import com.b3dgs.lionengine.graphic.GraphicMock;
 
 /**
  * Test the bar class.

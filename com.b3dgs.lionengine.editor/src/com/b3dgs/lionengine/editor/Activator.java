@@ -20,9 +20,10 @@ package com.b3dgs.lionengine.editor;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.swt.EngineSwt;
+import com.b3dgs.lionengine.core.EngineSwt;
 
 /**
  * Plugin activator.
@@ -30,11 +31,11 @@ import com.b3dgs.lionengine.core.swt.EngineSwt;
 public class Activator implements BundleActivator
 {
     /** Plugin name. */
-    public static final String PLUGIN_NAME = Engine.NAME + " Editor";
+    public static final String PLUGIN_NAME = Constant.ENGINE_NAME + " Editor";
     /** Plugin version. */
-    public static final Version PLUGIN_VERSION = Engine.VERSION;
+    public static final Version PLUGIN_VERSION = Constant.ENGINE_VERSION;
     /** Plugin website. */
-    public static final String PLUGIN_WEBSITE = Engine.WEBSITE;
+    public static final String PLUGIN_WEBSITE = Constant.ENGINE_WEBSITE;
     /** Plugin ID. */
     public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
 

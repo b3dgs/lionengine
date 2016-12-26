@@ -30,12 +30,11 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.geom.Rectangle;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the actionable model.
@@ -60,7 +59,7 @@ public class ActionableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    private final Rectangle rectangle = Geom.createRectangle(0, 1, 16, 32);
+    private final Rectangle rectangle = new Rectangle(0, 1, 16, 32);
     private final Media media = UtilActionnable.createAction("description", rectangle);
     private final AtomicBoolean clicked = new AtomicBoolean();
     private final AtomicInteger clickNumber = new AtomicInteger();

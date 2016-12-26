@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
 
 /**
  * Launchable object test.

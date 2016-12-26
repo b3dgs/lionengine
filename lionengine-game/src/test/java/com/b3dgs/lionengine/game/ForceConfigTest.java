@@ -26,10 +26,8 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.io.Xml;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the force configuration class.
@@ -76,11 +74,11 @@ public class ForceConfigTest
         final Media media = Medias.create("force.xml");
         try
         {
-            final XmlNode root = Xml.create("test");
+            final Xml root = new Xml("test");
             root.add(ForceConfig.exports(force));
-            Xml.save(root, media);
+            root.save(media);
 
-            final Force loaded = ForceConfig.imports(Xml.load(media));
+            final Force loaded = ForceConfig.imports(new Xml(media));
 
             Assert.assertEquals(force, loaded);
             Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
@@ -102,13 +100,13 @@ public class ForceConfigTest
         final Media media = Medias.create("force.xml");
         try
         {
-            final XmlNode root = Xml.create("test");
-            final XmlNode node = root.createChild(ForceConfig.NODE_FORCE);
+            final Xml root = new Xml("test");
+            final Xml node = root.createChild(ForceConfig.NODE_FORCE);
             node.writeDouble(ForceConfig.ATT_VX, 1.0);
             node.writeDouble(ForceConfig.ATT_VY, 2.0);
-            Xml.save(root, media);
+            root.save(media);
 
-            final Force loaded = ForceConfig.imports(Xml.load(media));
+            final Force loaded = ForceConfig.imports(new Xml(media));
 
             Assert.assertEquals(force, loaded);
             Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));

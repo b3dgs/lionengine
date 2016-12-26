@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to import a {@link com.b3dgs.lionengine.game.map.MapTile} and display it.
+ * This example will show how to import a {@link com.b3dgs.lionengine.game.feature.tile.map.MapTile} and display it.
  */
 package com.b3dgs.lionengine.example.game.map;

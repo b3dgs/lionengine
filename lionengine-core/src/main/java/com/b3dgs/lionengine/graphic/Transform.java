@@ -17,12 +17,8 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import com.b3dgs.lionengine.core.Graphics;
-
 /**
  * Represents an identity transform.
- * 
- * @see Graphics
  */
 public interface Transform
 {

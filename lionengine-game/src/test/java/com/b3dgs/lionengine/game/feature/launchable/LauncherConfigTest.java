@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test the launcher config class.
@@ -66,11 +65,11 @@ public class LauncherConfigTest
         final LauncherConfig launcher = new LauncherConfig(10, 10, Arrays.asList(launchable));
         try
         {
-            final XmlNode root = Xml.create("test");
+            final Xml root = new Xml("test");
             root.add(LauncherConfig.exports(launcher));
-            Xml.save(root, media);
+            root.save(media);
 
-            final LauncherConfig loaded = LauncherConfig.imports(Xml.load(media)
+            final LauncherConfig loaded = LauncherConfig.imports(new Xml(media)
                                                                     .getChild(LauncherConfig.NODE_LAUNCHER));
 
             Assert.assertEquals(launcher, loaded);

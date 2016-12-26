@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Audio;
-import com.b3dgs.lionengine.core.AudioFactory;
+import com.b3dgs.lionengine.audio.Audio;
+import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
 
 /**

@@ -30,9 +30,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
@@ -40,10 +38,12 @@ import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.TextWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
-import com.b3dgs.lionengine.game.map.SheetsExtractor;
-import com.b3dgs.lionengine.game.map.TileSheetsConfig;
-import com.b3dgs.lionengine.game.tile.TilesExtractor;
+import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
+import com.b3dgs.lionengine.game.feature.tile.map.SheetsExtractor;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.SpriteTiled;
 
 /**
  * Extract sheets dialog.

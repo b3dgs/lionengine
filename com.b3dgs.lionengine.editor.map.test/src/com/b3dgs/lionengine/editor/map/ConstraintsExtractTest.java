@@ -35,11 +35,11 @@ import com.b3dgs.lionengine.editor.map.constaint.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.transition.Transition;
-import com.b3dgs.lionengine.game.map.feature.transition.TransitionType;
-import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.Transition;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionType;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionsConfig;
 
 /**
  * Test the constraints extraction dialog.

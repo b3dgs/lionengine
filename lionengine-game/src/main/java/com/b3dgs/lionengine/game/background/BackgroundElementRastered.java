@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Sprite;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.graphic.UtilColor;
 import com.b3dgs.lionengine.util.UtilMath;
 

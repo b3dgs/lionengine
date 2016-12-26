@@ -197,7 +197,7 @@ public class ModuleGame
     {
         LevelRipConverter.start(levelrip, map);
         final MapTilePersister mapPersister = new MapTilePersisterModel(map);
-        try (FileWriting file = Stream.createFileWriting(output))
+        try (FileWriting file = new FileWriting(output))
         {
             mapPersister.save(file);
         }

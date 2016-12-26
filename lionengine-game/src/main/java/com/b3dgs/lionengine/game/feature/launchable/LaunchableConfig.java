@@ -22,8 +22,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ForceConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the launchable data from a configurer.
@@ -48,7 +47,7 @@ public final class LaunchableConfig
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LaunchableConfig imports(XmlNode node)
+    public static LaunchableConfig imports(Xml node)
     {
         final String media = node.readString(ATT_MEDIA);
         final int delay = node.readInteger(ATT_DELAY);
@@ -64,9 +63,9 @@ public final class LaunchableConfig
      * @return The node data.
      * @throws LionEngineException If unable to write node.
      */
-    public static XmlNode exports(LaunchableConfig config)
+    public static Xml exports(LaunchableConfig config)
     {
-        final XmlNode node = Xml.create(NODE_LAUNCHABLE);
+        final Xml node = new Xml(NODE_LAUNCHABLE);
         node.writeString(ATT_MEDIA, config.getMedia());
         node.writeInteger(ATT_DELAY, config.getDelay());
         node.writeInteger(ATT_OFFSET_X, config.getOffsetX());

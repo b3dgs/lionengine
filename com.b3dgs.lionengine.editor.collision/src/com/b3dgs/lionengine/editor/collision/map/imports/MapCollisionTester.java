@@ -23,12 +23,11 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test if the map collision has been defined.
@@ -48,7 +47,7 @@ public final class MapCollisionTester extends PropertyTester
     {
         try
         {
-            final XmlNode node = Xml.load(media);
+            final Xml node = new Xml(media);
             return CollisionFormulaConfig.FORMULAS.equals(node.getNodeName());
         }
         catch (final LionEngineException exception)
@@ -68,7 +67,7 @@ public final class MapCollisionTester extends PropertyTester
     {
         try
         {
-            final XmlNode node = Xml.load(media);
+            final Xml node = new Xml(media);
             return CollisionGroupConfig.COLLISIONS.equals(node.getNodeName());
         }
         catch (final LionEngineException exception)

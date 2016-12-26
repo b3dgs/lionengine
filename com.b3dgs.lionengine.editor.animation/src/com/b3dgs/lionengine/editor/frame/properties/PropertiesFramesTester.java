@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.editor.frame.properties;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.game.feature.SurfaceConfig;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.SurfaceConfig;
 
 /**
  * Test the properties node existence.

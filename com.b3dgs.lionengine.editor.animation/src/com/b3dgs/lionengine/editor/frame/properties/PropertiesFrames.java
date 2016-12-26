@@ -31,12 +31,12 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.game.feature.SizeConfig;
-import com.b3dgs.lionengine.game.feature.SurfaceConfig;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.SurfaceConfig;
 import com.b3dgs.lionengine.graphic.ImageInfo;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Element properties part.
@@ -87,8 +87,8 @@ public class PropertiesFrames implements PropertiesProviderObject
                                                                       Messages.Error));
         if (frames.open() == Window.OK)
         {
-            final XmlNode root = configurer.getRoot();
-            final XmlNode framesNode = root.getChild(FramesConfig.NODE_FRAMES);
+            final Xml root = configurer.getRoot();
+            final Xml framesNode = root.getChild(FramesConfig.NODE_FRAMES);
             framesNode.writeString((String) item.getData(), frames.getValue());
             item.setText(PropertiesPart.COLUMN_VALUE, frames.getValue());
             updateSize(configurer, root, framesNode);
@@ -105,9 +105,9 @@ public class PropertiesFrames implements PropertiesProviderObject
      * @param root The root node.
      * @param framesNode The frames node.
      */
-    public static void updateSize(Configurer configurer, XmlNode root, XmlNode framesNode)
+    public static void updateSize(Configurer configurer, Xml root, Xml framesNode)
     {
-        final XmlNode size;
+        final Xml size;
         final File file = new File(configurer.getPath(),
                                    root.getChild(SurfaceConfig.NODE_SURFACE).readString(SurfaceConfig.ATT_IMAGE));
         final ImageInfo info = ImageInfo.get(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
@@ -140,7 +140,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         if (root.hasChild(FramesConfig.NODE_FRAMES))
         {
             createAttributeFrames(properties, configurer);

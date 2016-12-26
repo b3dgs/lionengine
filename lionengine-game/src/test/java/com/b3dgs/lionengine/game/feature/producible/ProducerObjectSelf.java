@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.feature.producible;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
 
 /**
  * Object producer self listener test.

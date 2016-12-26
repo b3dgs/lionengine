@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.feature.Refreshable;
 
 /**
  * Represents something that can throw a {@link Launchable} at a defined rate from a defined location using a specified

@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.feature.assignable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**
  * Utilities dedicated to assignable test.

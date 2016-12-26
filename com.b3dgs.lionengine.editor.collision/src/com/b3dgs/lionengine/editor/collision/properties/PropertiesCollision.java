@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.collision.object.CollisionsObjectEditDialog;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.collidable.CollisionConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Element properties part.
@@ -65,7 +65,7 @@ public class PropertiesCollision implements PropertiesProviderObject
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         if (root.hasChild(CollisionConfig.COLLISION))
         {
             createAttributeCollisions(properties);

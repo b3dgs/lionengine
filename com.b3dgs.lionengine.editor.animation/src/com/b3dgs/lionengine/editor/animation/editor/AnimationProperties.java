@@ -24,8 +24,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 
@@ -115,7 +114,7 @@ public class AnimationProperties extends ObjectProperties<Animation> implements 
         final double speed = Double.parseDouble(this.speed.getText());
         final boolean reverse = reverseAnim.getSelection();
         final boolean repeat = repeatAnim.getSelection();
-        return Anim.createAnimation(name, Math.min(first, last), Math.max(first, last), speed, reverse, repeat);
+        return new Animation(name, Math.min(first, last), Math.max(first, last), speed, reverse, repeat);
     }
 
     /*

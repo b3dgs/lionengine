@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**
  * Object producer test.

@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.editor.formula.editor;
 
 import java.util.Locale;
 
-import com.b3dgs.lionengine.game.collision.tile.Axis;
-import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionConstraint;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionRange;
 
 /**
  * List of formula template.

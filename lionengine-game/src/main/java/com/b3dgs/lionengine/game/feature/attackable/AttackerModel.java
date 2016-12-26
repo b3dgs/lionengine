@@ -20,19 +20,19 @@ package com.b3dgs.lionengine.game.feature.attackable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.AnimState;
+import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Recyclable;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.animatable.Animatable;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**

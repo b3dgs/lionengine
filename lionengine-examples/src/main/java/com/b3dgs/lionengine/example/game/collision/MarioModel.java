@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.SetupSurface;
+import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
  * Mario model implementation.

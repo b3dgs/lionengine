@@ -23,8 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
  * Test the text class.

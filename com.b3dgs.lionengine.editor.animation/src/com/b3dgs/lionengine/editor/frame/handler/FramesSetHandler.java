@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.editor.frame.properties.PropertiesFrames;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Set frames handler.
@@ -75,8 +75,8 @@ public class FramesSetHandler
                                                                validator);
             if (verticalFrames.open() == Window.OK)
             {
-                final XmlNode root = configurer.getRoot();
-                final XmlNode frames = root.createChild(FramesConfig.NODE_FRAMES);
+                final Xml root = configurer.getRoot();
+                final Xml frames = root.createChild(FramesConfig.NODE_FRAMES);
                 frames.writeString(FramesConfig.ATT_HORIZONTAL, horizontalFrames.getValue());
                 frames.writeString(FramesConfig.ATT_VERTICAL, verticalFrames.getValue());
 

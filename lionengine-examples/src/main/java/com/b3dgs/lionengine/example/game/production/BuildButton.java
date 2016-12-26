@@ -21,33 +21,32 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Factory;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.feature.SetupSurface;
-import com.b3dgs.lionengine.game.feature.SizeConfig;
+import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.LayerableModel;
+import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.game.feature.assignable.Assignable;
 import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
-import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Text;
-import com.b3dgs.lionengine.graphic.Viewer;
-import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -92,8 +91,8 @@ class BuildButton extends FeaturableModel
         actionable.setAction(() ->
         {
             state = assignable;
-            final SizeConfig size = SizeConfig.imports(Xml.load(target));
-            area = Geom.createRectangle(0, 0, size.getWidth(), size.getHeight());
+            final SizeConfig size = SizeConfig.imports(new Xml(target));
+            area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
             cursor.setVisible(false);
         });
 

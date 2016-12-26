@@ -17,22 +17,22 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.ComponentDisplayable;
+import com.b3dgs.lionengine.game.feature.ComponentRefreshable;
 import com.b3dgs.lionengine.game.feature.Factory;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.handler.ComponentDisplayable;
-import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.Minimap;
-import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRendererModel;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
+import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 
 /**
  * Contains the objects of the world.

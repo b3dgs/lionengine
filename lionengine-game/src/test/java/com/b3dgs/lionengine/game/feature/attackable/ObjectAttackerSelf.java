@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.feature.attackable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
  * Attacker test.

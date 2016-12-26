@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.chat;
 
-import com.b3dgs.lionengine.core.Context;
-import com.b3dgs.lionengine.game.handler.WorldGame;
+import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.NetworkedWorldServer;
 

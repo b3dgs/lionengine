@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.background;
 
-import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.graphic.Image;
 
 /**
  * Represents a background element (contained in a background component).

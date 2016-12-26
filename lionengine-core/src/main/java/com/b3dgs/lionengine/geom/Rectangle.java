@@ -22,15 +22,60 @@ import com.b3dgs.lionengine.Shape;
 /**
  * Rectangle interface.
  */
-public interface Rectangle extends Shape
+public class Rectangle implements Shape
 {
+    /** The coordinate X. */
+    private double x;
+    /** The coordinate Y. */
+    private double y;
+    /** The width . */
+    private double width;
+    /** The height. */
+    private double height;
+
+    /**
+     * Create a blank rectangle.
+     */
+    public Rectangle()
+    {
+        this(0.0, 0.0, 0.0, 0.0);
+    }
+
+    /**
+     * Create a rectangle.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param width The rectangle width.
+     * @param height The rectangle height.
+     */
+    public Rectangle(double x, double y, double width, double height)
+    {
+        super();
+
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
     /**
      * Check if the rectangle intersects the other.
      * 
      * @param rectangle The rectangle to test with.
      * @return <code>true</code> if intersect, <code>false</code> else.
      */
-    boolean intersects(Rectangle rectangle);
+    public boolean intersects(Rectangle rectangle)
+    {
+        if (rectangle == null)
+        {
+            return false;
+        }
+        return rectangle.getX() + rectangle.getWidthReal() > x
+               && rectangle.getY() + rectangle.getHeightReal() > y
+               && rectangle.getX() < x + width
+               && rectangle.getY() < y + height;
+    }
 
     /**
      * Check if the rectangle contains the other.
@@ -38,7 +83,17 @@ public interface Rectangle extends Shape
      * @param rectangle The rectangle to test with.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    boolean contains(Rectangle rectangle);
+    public boolean contains(Rectangle rectangle)
+    {
+        if (rectangle == null)
+        {
+            return false;
+        }
+        return rectangle.getX() >= x
+               && rectangle.getY() >= y
+               && rectangle.getX() + rectangle.getWidthReal() <= x + width
+               && rectangle.getY() + rectangle.getHeightReal() <= y + height;
+    }
 
     /**
      * Check if the rectangle contains the point.
@@ -47,7 +102,10 @@ public interface Rectangle extends Shape
      * @param y The vertical location.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    boolean contains(double x, double y);
+    public boolean contains(double x, double y)
+    {
+        return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
+    }
 
     /**
      * Translate rectangle using specified vector.
@@ -55,7 +113,11 @@ public interface Rectangle extends Shape
      * @param vx The horizontal translation vector.
      * @param vy The vertical translation vector.
      */
-    void translate(double vx, double vy);
+    public void translate(double vx, double vy)
+    {
+        x += vx;
+        y += vy;
+    }
 
     /**
      * Sets the location and size.
@@ -65,47 +127,154 @@ public interface Rectangle extends Shape
      * @param w The rectangle width.
      * @param h The rectangle height.
      */
-    void set(double x, double y, double w, double h);
+    public void set(double x, double y, double w, double h)
+    {
+        this.x = x;
+        this.y = y;
+        width = w;
+        height = h;
+    }
 
     /**
      * Get the min x location.
      * 
      * @return The min x location.
      */
-    double getMinX();
+    public double getMinX()
+    {
+        return x;
+    }
 
     /**
      * Get the min y location.
      * 
      * @return The min y location.
      */
-    double getMinY();
+    public double getMinY()
+    {
+        return y;
+    }
 
     /**
      * Get the max x location.
      * 
      * @return The max x location.
      */
-    double getMaxX();
+    public double getMaxX()
+    {
+        return x + width;
+    }
 
     /**
      * Get the max y location.
      * 
      * @return The max y location.
      */
-    double getMaxY();
+    public double getMaxY()
+    {
+        return y + height;
+    }
 
     /**
      * Get the real width.
      * 
      * @return The real width.
      */
-    double getWidthReal();
+    public double getWidthReal()
+    {
+        return width;
+    }
 
     /**
      * Get the real width.
      * 
      * @return The real width.
      */
-    double getHeightReal();
+    public double getHeightReal()
+    {
+        return height;
+    }
+
+    /*
+     * Shape
+     */
+
+    @Override
+    public double getX()
+    {
+        return x;
+    }
+
+    @Override
+    public double getY()
+    {
+        return y;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return (int) width;
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return (int) height;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(height);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(width);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(x);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || obj.getClass() != getClass())
+        {
+            return false;
+        }
+        final Rectangle other = (Rectangle) obj;
+        final boolean sameSize = Double.doubleToLongBits(height) == Double.doubleToLongBits(other.height)
+                                 && Double.doubleToLongBits(width) == Double.doubleToLongBits(other.width);
+        final boolean sameCoord = Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
+                                  && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+        return sameSize && sameCoord;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append("Rectangle [x=")
+                                  .append(x)
+                                  .append(", y=")
+                                  .append(y)
+                                  .append(", width=")
+                                  .append(width)
+                                  .append(", height=")
+                                  .append(height)
+                                  .append("]")
+                                  .toString();
+    }
 }

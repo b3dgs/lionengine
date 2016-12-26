@@ -20,22 +20,21 @@ package com.b3dgs.lionengine.editor;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.feature.SetupSurface;
-import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.feature.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with features.
@@ -67,7 +66,7 @@ public class ObjectRepresentation extends FeaturableModel
     }
 
     /** Rectangle. */
-    private final Rectangle rectangle = Geom.createRectangle();
+    private final Rectangle rectangle = new Rectangle();
 
     @Service private Camera camera;
     @Service private MapTile map;

@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
-import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Game text implementation. This class enhance the text in order to use it in a game referential. It is perfect to

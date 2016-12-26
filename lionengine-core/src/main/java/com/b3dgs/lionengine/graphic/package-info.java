@@ -17,6 +17,6 @@
  */
 
 /**
- * Graphic related package.
+ * Graphic basic dedicated package.
  */
 package com.b3dgs.lionengine.graphic;

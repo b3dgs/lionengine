@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.stream.FileReading;
-import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.io.FileReading;
+import com.b3dgs.lionengine.io.FileWriting;
 
 /**
  * Represents something which can be saved and loaded.

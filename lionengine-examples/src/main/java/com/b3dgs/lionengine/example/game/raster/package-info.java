@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.raster} API.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.tile.map.raster} API.
  */
 package com.b3dgs.lionengine.example.game.raster;

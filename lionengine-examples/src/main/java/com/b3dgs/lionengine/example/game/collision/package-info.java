@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.collision.tile.TileCollidable} feature.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable} feature.
  */
 package com.b3dgs.lionengine.example.game.collision;

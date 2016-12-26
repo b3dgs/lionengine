@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.pathfinding.properties.editor.PathfindableEditor;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Element properties part.
@@ -65,7 +65,7 @@ public class PropertiesPathfindable implements PropertiesProviderObject
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         if (root.hasChild(PathfindableConfig.PATHFINDABLE))
         {
             createAttributePathfindable(properties);

@@ -24,6 +24,14 @@ import java.nio.charset.Charset;
  */
 public final class Constant
 {
+    /** Engine name. */
+    public static final String ENGINE_NAME = "LionEngine";
+    /** Engine author. */
+    public static final String ENGINE_AUTHOR = "Pierre-Alexandre";
+    /** Engine website. */
+    public static final String ENGINE_WEBSITE = "http://lionengine.b3dgs.com";
+    /** Engine version. */
+    public static final Version ENGINE_VERSION = Version.create(8, 3, 6);
     /** Header XML. */
     public static final String XML_HEADER = "xmlns:lionengine";
     /** Prefix XML node. */

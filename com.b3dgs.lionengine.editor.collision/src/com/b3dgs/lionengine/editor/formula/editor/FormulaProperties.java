@@ -42,17 +42,17 @@ import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.collision.tile.Axis;
-import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionType;
-import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.tile.TileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroupType;
+import com.b3dgs.lionengine.game.feature.tile.TileGroup;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionConstraint;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunctionType;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionRange;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**

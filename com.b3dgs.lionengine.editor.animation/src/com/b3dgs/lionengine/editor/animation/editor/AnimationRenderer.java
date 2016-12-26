@@ -27,17 +27,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.b3dgs.lionengine.AnimState;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.game.feature.SurfaceConfig;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.SurfaceConfig;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
  * Animation paint listener, rendering the current animation.

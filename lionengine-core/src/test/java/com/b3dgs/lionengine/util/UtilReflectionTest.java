@@ -24,12 +24,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the utility reflection class.

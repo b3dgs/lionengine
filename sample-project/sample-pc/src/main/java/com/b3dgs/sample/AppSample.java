@@ -17,12 +17,12 @@
  */
 package com.b3dgs.sample;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.EngineAwt;
+import com.b3dgs.lionengine.core.sequence.Loader;
 
 /**
  * Program starts here.

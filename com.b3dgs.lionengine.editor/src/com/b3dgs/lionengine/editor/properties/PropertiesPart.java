@@ -39,8 +39,8 @@ import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
  * Element properties part.

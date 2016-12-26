@@ -31,11 +31,11 @@ public class LineTest
     @Test
     public void testLine()
     {
-        final Line line1 = Geom.createLine();
+        final Line line1 = new Line();
         line1.set(1.0, -1.0, 1.0, 1.0);
 
-        final Line line2 = Geom.createLine(0.0, 0.0, 2.0, 0.0);
-        final Coord point = Geom.createCoord(1.0, 0.0);
+        final Line line2 = new Line(0.0, 0.0, 2.0, 0.0);
+        final Coord point = new Coord(1.0, 0.0);
         final Coord intersect = Geom.intersection(line1, line2);
 
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);

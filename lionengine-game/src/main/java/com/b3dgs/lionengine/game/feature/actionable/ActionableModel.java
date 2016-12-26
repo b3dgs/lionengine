@@ -18,12 +18,11 @@
 package com.b3dgs.lionengine.game.feature.actionable;
 
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -63,7 +62,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     {
         super();
         final ActionConfig config = ActionConfig.imports(setup);
-        button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
+        button = new Rectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
     }
 

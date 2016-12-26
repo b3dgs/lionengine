@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.object.world.updater;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.object.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
@@ -28,11 +27,12 @@ import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.refreshable.Refreshable;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Refreshable;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.io.Mouse;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**

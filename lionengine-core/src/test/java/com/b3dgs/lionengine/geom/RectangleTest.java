@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.geom;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the rectangle class.
@@ -33,12 +33,12 @@ public class RectangleTest
     @Test
     public void testIntersects()
     {
-        final Rectangle rectangle1 = Geom.createRectangle();
+        final Rectangle rectangle1 = new Rectangle();
         rectangle1.set(0.0, 0.0, 10.0, 10.0);
-        final Rectangle rectangle2 = Geom.createRectangle(1.0, 1.0, 5.0, 5.0);
-        final Rectangle rectangle3 = Geom.createRectangle(4.0, 1.0, 5.0, 5.0);
-        final Rectangle rectangle4 = Geom.createRectangle(1.0, 4.0, 5.0, 5.0);
-        final Rectangle rectangle5 = Geom.createRectangle(6.0, 6.0, 5.0, 5.0);
+        final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle3 = new Rectangle(4.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle4 = new Rectangle(1.0, 4.0, 5.0, 5.0);
+        final Rectangle rectangle5 = new Rectangle(6.0, 6.0, 5.0, 5.0);
 
         Assert.assertFalse(rectangle1.intersects(null));
 
@@ -64,12 +64,12 @@ public class RectangleTest
     @Test
     public void testContains()
     {
-        final Rectangle rectangle1 = Geom.createRectangle();
+        final Rectangle rectangle1 = new Rectangle();
         rectangle1.set(0.0, 0.0, 10.0, 10.0);
-        final Rectangle rectangle2 = Geom.createRectangle(1.0, 1.0, 5.0, 5.0);
-        final Rectangle rectangle3 = Geom.createRectangle(4.0, 1.0, 5.0, 5.0);
-        final Rectangle rectangle4 = Geom.createRectangle(1.0, 4.0, 5.0, 5.0);
-        final Rectangle rectangle5 = Geom.createRectangle(6.0, 6.0, 5.0, 5.0);
+        final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle3 = new Rectangle(4.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle4 = new Rectangle(1.0, 4.0, 5.0, 5.0);
+        final Rectangle rectangle5 = new Rectangle(6.0, 6.0, 5.0, 5.0);
 
         Assert.assertFalse(rectangle1.contains(null));
 
@@ -101,7 +101,7 @@ public class RectangleTest
     @Test
     public void testGetter()
     {
-        final Rectangle rectangle = Geom.createRectangle(1.0, 1.0, 4.25, 5.25);
+        final Rectangle rectangle = new Rectangle(1.0, 1.0, 4.25, 5.25);
 
         Assert.assertEquals(1.0, rectangle.getX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, rectangle.getY(), UtilTests.PRECISION);
@@ -121,7 +121,7 @@ public class RectangleTest
     @Test
     public void testTranslate()
     {
-        final Rectangle rectangle = Geom.createRectangle(1.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle = new Rectangle(1.0, 1.0, 5.0, 5.0);
         rectangle.translate(1.0, 2.0);
 
         Assert.assertEquals(2.0, rectangle.getX(), UtilTests.PRECISION);
@@ -140,26 +140,26 @@ public class RectangleTest
     @Test
     public void testHashcode()
     {
-        final int rectangle = Geom.createRectangle(0, 1, 2, 3).hashCode();
+        final int rectangle = new Rectangle(0, 1, 2, 3).hashCode();
 
-        Assert.assertEquals(rectangle, Geom.createRectangle(0, 1, 2, 3).hashCode());
+        Assert.assertEquals(rectangle, new Rectangle(0, 1, 2, 3).hashCode());
 
         Assert.assertNotEquals(rectangle, new Object().hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 2, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 3).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 3).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 0, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 0, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(1, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 2, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 3).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 3).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 0).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 0, 3).hashCode());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(1, 0, 0, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 2, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 3).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 3).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 0, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 0, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(1, 1, 2, 3).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 2, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 3).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 3).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 0).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 0, 3).hashCode());
+        Assert.assertNotEquals(rectangle, new Rectangle(1, 0, 0, 0).hashCode());
     }
 
     /**
@@ -168,27 +168,27 @@ public class RectangleTest
     @Test
     public void testEquals()
     {
-        final Rectangle rectangle = Geom.createRectangle(0, 1, 2, 3);
+        final Rectangle rectangle = new Rectangle(0, 1, 2, 3);
 
         Assert.assertEquals(rectangle, rectangle);
-        Assert.assertEquals(rectangle, Geom.createRectangle(0, 1, 2, 3));
+        Assert.assertEquals(rectangle, new Rectangle(0, 1, 2, 3));
 
         Assert.assertNotEquals(rectangle, new Object());
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 2, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 3));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 3));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 0, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 0, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(1, 1, 2, 3));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 2, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 3));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 1, 0, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 3));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 2, 0));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(0, 0, 0, 3));
-        Assert.assertNotEquals(rectangle, Geom.createRectangle(1, 0, 0, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 2, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 3));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 3));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 0, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 0, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(1, 1, 2, 3));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 2, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 3));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 3));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 2, 0));
+        Assert.assertNotEquals(rectangle, new Rectangle(0, 0, 0, 3));
+        Assert.assertNotEquals(rectangle, new Rectangle(1, 0, 0, 0));
     }
 
     /**
@@ -198,6 +198,6 @@ public class RectangleTest
     public void testToString()
     {
         Assert.assertEquals("Rectangle [x=0.0, y=1.0, width=2.0, height=3.0]",
-                            Geom.createRectangle(0, 1, 2, 3).toString());
+                            new Rectangle(0, 1, 2, 3).toString());
     }
 }

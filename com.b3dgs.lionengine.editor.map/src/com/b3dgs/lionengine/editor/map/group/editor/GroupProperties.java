@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Composite;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 import com.b3dgs.lionengine.editor.utility.control.UtilCombo;
-import com.b3dgs.lionengine.game.tile.TileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroupType;
-import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.TileGroup;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
+import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Represents the tile group properties edition view.

@@ -19,21 +19,20 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
-import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
+import com.b3dgs.lionengine.core.sequence.Sequence;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
+import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
+import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.stream.FileWriting;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.io.FileWriting;
+import com.b3dgs.lionengine.io.Keyboard;
 
 /**
  * Game loop designed to handle our little world.
@@ -55,7 +54,7 @@ class Scene extends Sequence
         map.create(Medias.create("map", "level.png"));
         final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
         map.prepareFeatures(services);
-        try (FileWriting output = Stream.createFileWriting(LEVEL))
+        try (FileWriting output = new FileWriting(LEVEL))
         {
             mapPersister.save(output);
         }

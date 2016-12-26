@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.map.imports.MapImportDialogTest;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldNavigation;
-import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.Camera;
 
 /**
  * Test the world navigation with imported map.
@@ -58,8 +58,8 @@ public class WorldNavigationTest
 
         final Camera camera = WorldModel.INSTANCE.getCamera();
 
-        Assert.assertEquals(0.0, camera.getX(), com.b3dgs.lionengine.test.UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.test.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getX(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
 
         final SWTBotCanvas canvas = BOT.canvas(1);
         canvas.setFocus();
@@ -70,14 +70,14 @@ public class WorldNavigationTest
         Assert.assertEquals(WorldNavigation.GRID_MOVEMENT_SENSIBILITY
                             * 16.0,
                             camera.getX(),
-                            com.b3dgs.lionengine.test.UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.test.UtilTests.PRECISION);
+                            com.b3dgs.lionengine.util.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
 
         canvas.pressShortcut(Keystrokes.LEFT);
 
         BOT.sleep(500);
 
-        Assert.assertEquals(0.0, camera.getX(), com.b3dgs.lionengine.test.UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.test.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getX(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
     }
 }

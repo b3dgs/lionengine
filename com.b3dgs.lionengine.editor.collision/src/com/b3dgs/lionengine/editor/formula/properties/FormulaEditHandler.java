@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.formula.editor.FormulasEditDialog;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
 
 /**
  * Edit formula handler.

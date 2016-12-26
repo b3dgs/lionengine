@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.InputDevice;
 
 /**
  * Represents the {@link InputDevice} updater for the state.

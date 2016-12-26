@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * State idle test implementation.

@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.collision.tile.Axis;
-import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
-import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.feature.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionCategory;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionCategoryConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
 
 /**
  * Represents the collision category list, allowing to add and remove {@link CollisionCategory}.

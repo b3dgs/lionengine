@@ -35,9 +35,8 @@ import org.junit.rules.TemporaryFolder;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.mock.InputStreamMock;
-import com.b3dgs.lionengine.mock.OutputStreamMock;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.io.InputStreamMock;
+import com.b3dgs.lionengine.io.OutputStreamMock;
 
 /**
  * Test the utility stream class.

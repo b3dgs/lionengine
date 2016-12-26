@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.map;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
  * Test if the map has been defined.

@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.swt,
  com.b3dgs.lionengine.core
 Bundle-ClassPath: .
-Export-Package: com.b3dgs.lionengine.core.swt
+Export-Package: com.b3dgs.lionengine,
+ com.b3dgs.lionengine.core

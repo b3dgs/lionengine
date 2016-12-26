@@ -19,24 +19,24 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.camera.CameraTracker;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
-import com.b3dgs.lionengine.game.handler.WorldGame;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
-import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
+import com.b3dgs.lionengine.game.feature.CameraTracker;
+import com.b3dgs.lionengine.game.feature.WorldGame;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
+import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
+import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.stream.FileReading;
-import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.io.FileReading;
+import com.b3dgs.lionengine.io.FileWriting;
+import com.b3dgs.lionengine.io.Keyboard;
 
 /**
  * World implementation.

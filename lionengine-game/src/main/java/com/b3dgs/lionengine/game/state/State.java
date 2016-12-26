@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.state;
 
+import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.core.InputDevice;
 
 /**
  * States are designed to implement easily a gameplay by reducing implementation complexity.

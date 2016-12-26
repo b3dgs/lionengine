@@ -31,7 +31,7 @@ public class PointTest
     @Test
     public void testPoint()
     {
-        final Point point = Geom.createPoint();
+        final Point point = new Point();
         Assert.assertEquals(point.getX(), 0);
         Assert.assertEquals(point.getY(), 0);
 
@@ -40,7 +40,7 @@ public class PointTest
         Assert.assertEquals(point.getX(), 4);
         Assert.assertEquals(point.getY(), 5);
 
-        final Point point2 = Geom.createPoint(1, 2);
+        final Point point2 = new Point(1, 2);
         Assert.assertEquals(point2.getX(), 1);
         Assert.assertEquals(point2.getY(), 2);
 
@@ -62,8 +62,8 @@ public class PointTest
     @Test
     public void testHashEquals()
     {
-        final Point point1 = Geom.createPoint(1, 2);
-        final Point point2 = Geom.createPoint(1, 2);
+        final Point point1 = new Point(1, 2);
+        final Point point2 = new Point(1, 2);
 
         Assert.assertEquals(point1, point1);
         Assert.assertEquals(point1, point2);
@@ -76,10 +76,10 @@ public class PointTest
     @Test
     public void testNotEquals()
     {
-        final Point point1 = Geom.createPoint(1, 2);
-        final Point point2 = Geom.createPoint(2, 1);
-        final Point point3 = Geom.createPoint(3, 3);
-        final Point point4 = Geom.createPoint(1, 3);
+        final Point point1 = new Point(1, 2);
+        final Point point2 = new Point(2, 1);
+        final Point point3 = new Point(3, 3);
+        final Point point4 = new Point(1, 3);
 
         Assert.assertNotEquals(point1, null);
         Assert.assertNotEquals(point1, new Object());

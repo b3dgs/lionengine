@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
-import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test utility random class.

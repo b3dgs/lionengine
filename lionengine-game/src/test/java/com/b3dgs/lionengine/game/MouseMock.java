@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
  * Mouse pointer mock.

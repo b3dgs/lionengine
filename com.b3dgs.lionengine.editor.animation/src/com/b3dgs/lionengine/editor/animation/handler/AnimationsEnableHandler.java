@@ -20,13 +20,12 @@ package com.b3dgs.lionengine.editor.animation.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimation;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.state.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Enable animations handler.
@@ -53,7 +52,7 @@ public final class AnimationsEnableHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final int min = Animation.MINIMUM_FRAME;
-        final Animation animation = Anim.createAnimation(Animation.DEFAULT_NAME, min, min + 1, 0.1, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, min, min + 1, 0.1, false, false);
         AnimationConfig.exports(configurer.getRoot(), animation);
 
         configurer.save();

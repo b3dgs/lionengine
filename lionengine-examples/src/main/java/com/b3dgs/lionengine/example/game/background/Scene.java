@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.background;
 
-import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.game.background.BackgroundGame;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.io.Keyboard;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**

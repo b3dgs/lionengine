@@ -17,17 +17,16 @@
  */
 package com.b3dgs.lionengine.game.background.it;
 
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.background.BackgroundElement;
 import com.b3dgs.lionengine.game.background.BackgroundGame;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Sprite;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -268,7 +267,7 @@ class Foreground extends BackgroundGame
             back.prepare();
             data = new BackgroundElement(0, (int) Math.floor(water.getNominal() * scaleV), back);
 
-            animation = Anim.createAnimation(null, 1, 7, 0.25, false, true);
+            animation = new Animation(null, 1, 7, 0.25, false, true);
             anim = Drawable.loadSpriteAnimated(Medias.create("anim.png"), 7, 1);
             anim.load();
             anim.play(animation);

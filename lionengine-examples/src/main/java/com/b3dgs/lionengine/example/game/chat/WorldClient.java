@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.network.NetworkedWorldClient;
 import com.b3dgs.lionengine.network.NetworkedWorldModelClient;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
 import com.b3dgs.lionengine.network.purview.NetworkableModel;
-import com.b3dgs.lionengine.stream.FileReading;
 
 /**
  * World implementation using AbstractWorld.

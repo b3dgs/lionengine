@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use {@link com.b3dgs.lionengine.core.Sequence} linking.
+ * This example will show how to use {@link com.b3dgs.lionengine.core.sequence.Sequence} linking.
  */
 package com.b3dgs.lionengine.example.core.sequence;

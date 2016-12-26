@@ -22,18 +22,17 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.io.Xml;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the animation based state.
@@ -52,18 +51,18 @@ public class StateAnimationBasedTest
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         media = Medias.create("animations.xml");
 
-        final XmlNode root = Xml.create("test");
+        final Xml root = new Xml("test");
 
-        final Animation idle = Anim.createAnimation("idle", 1, 2, 3.0, false, true);
+        final Animation idle = new Animation("idle", 1, 2, 3.0, false, true);
         AnimationConfig.exports(root, idle);
 
-        final Animation walk = Anim.createAnimation("walk", 1, 2, 3.0, false, true);
+        final Animation walk = new Animation("walk", 1, 2, 3.0, false, true);
         AnimationConfig.exports(root, walk);
 
-        final Animation jump = Anim.createAnimation("jump", 1, 2, 3.0, false, true);
+        final Animation jump = new Animation("jump", 1, 2, 3.0, false, true);
         AnimationConfig.exports(root, jump);
 
-        Xml.save(root, media);
+        root.save(media);
     }
 
     /**

@@ -24,14 +24,13 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroupType;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.TileGroup;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the groups list, allowing to add and remove {@link TileGroup}.
@@ -98,21 +97,21 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
     {
         final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final Media config = mapGroup.getGroupsConfig();
-        final XmlNode node = Xml.load(config);
-        final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
+        final Xml node = new Xml(config);
+        final Collection<Xml> toRemove = new ArrayList<>();
+        for (final Xml nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
         {
             if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), group.getName()))
             {
                 toRemove.add(nodeGroup);
             }
         }
-        for (final XmlNode remove : toRemove)
+        for (final Xml remove : toRemove)
         {
             node.removeChild(remove);
         }
         toRemove.clear();
-        Xml.save(node, config);
+        node.save(config);
         mapGroup.loadGroups(config);
     }
 }

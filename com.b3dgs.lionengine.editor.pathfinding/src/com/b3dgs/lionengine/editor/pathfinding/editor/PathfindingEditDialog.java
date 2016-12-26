@@ -26,20 +26,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
-import com.b3dgs.lionengine.game.pathfinding.PathCategory;
-import com.b3dgs.lionengine.game.pathfinding.PathfindingConfig;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathCategory;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Edit map tile path dialog.
@@ -121,22 +119,22 @@ public class PathfindingEditDialog extends AbstractDialog
     {
         list.save();
 
-        final XmlNode root = Xml.create(PathfindingConfig.PATHFINDING);
-        root.writeString(Constant.XML_HEADER, Engine.WEBSITE);
+        final Xml root = new Xml(PathfindingConfig.PATHFINDING);
+        root.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {
             final PathCategory category = (PathCategory) item.getData();
-            final XmlNode nodeCategory = root.createChild(PathfindingConfig.TILE_PATH);
+            final Xml nodeCategory = root.createChild(PathfindingConfig.TILE_PATH);
             nodeCategory.writeString(PathfindingConfig.CATEGORY, category.getName());
 
             for (final String group : category.getGroups())
             {
-                final XmlNode nodeGroup = nodeCategory.createChild(TileGroupsConfig.NODE_GROUP);
+                final Xml nodeGroup = nodeCategory.createChild(TileGroupsConfig.NODE_GROUP);
                 nodeGroup.setText(group);
             }
         }
-        Xml.save(root, pathfinding.getMedia());
+        root.save(pathfinding.getMedia());
 
         final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTilePath.class))

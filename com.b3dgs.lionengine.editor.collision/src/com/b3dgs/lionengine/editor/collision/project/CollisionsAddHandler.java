@@ -22,9 +22,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilFile;
 
 /**
@@ -50,8 +49,8 @@ public final class CollisionsAddHandler
     {
         InputValidator.getFile(parent, Messages.Title, Messages.Text, CollisionGroupConfig.FILENAME, file ->
         {
-            final XmlNode root = Xml.create(UtilFile.removeExtension(CollisionGroupConfig.COLLISIONS));
-            Xml.save(root, ProjectModel.INSTANCE.getProject().getResourceMedia(file));
+            final Xml root = new Xml(UtilFile.removeExtension(CollisionGroupConfig.COLLISIONS));
+            root.save(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         });
     }
 }

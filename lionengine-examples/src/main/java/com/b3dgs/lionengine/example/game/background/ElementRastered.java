@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.background;
 
-import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.background.BackgroundElementRastered;
+import com.b3dgs.lionengine.graphic.Sprite;
 
 /**
  * Rastered background element implementation.

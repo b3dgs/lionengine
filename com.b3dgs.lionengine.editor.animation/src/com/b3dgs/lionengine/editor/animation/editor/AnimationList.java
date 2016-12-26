@@ -19,11 +19,10 @@ package com.b3dgs.lionengine.editor.animation.editor;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.state.AnimationConfig;
+import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the animation list, allowing to add and remove {@link Animation}.
@@ -62,7 +61,7 @@ public class AnimationList extends ObjectList<Animation>
     @Override
     protected Animation copyObject(Animation animation)
     {
-        return Anim.createAnimation(animation.getName(),
+        return new Animation(animation.getName(),
                                     animation.getFirst(),
                                     animation.getLast(),
                                     animation.getSpeed(),
@@ -73,6 +72,6 @@ public class AnimationList extends ObjectList<Animation>
     @Override
     protected Animation createObject(String name)
     {
-        return Anim.createAnimation(name, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1, false, false);
+        return new Animation(name, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1, false, false);
     }
 }

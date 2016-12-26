@@ -35,8 +35,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.LevelRipConverter;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.LevelRipConverter;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
  * Map import progress dialog.

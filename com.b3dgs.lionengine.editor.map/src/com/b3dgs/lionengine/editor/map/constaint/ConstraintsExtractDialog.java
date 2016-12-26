@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
-import com.b3dgs.lionengine.game.map.TileSheetsConfig;
-import com.b3dgs.lionengine.game.map.feature.circuit.CircuitsConfig;
-import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.CircuitsConfig;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**

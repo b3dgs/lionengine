@@ -23,17 +23,15 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileConfig;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.TileConfig;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Series of tool functions around the editor world.
@@ -52,7 +50,7 @@ public final class UtilWorld
     {
         final int x = (int) camera.getX() + mx;
         final int y = (int) camera.getY() - my + camera.getHeight();
-        return Geom.createPoint(x, y);
+        return new Point(x, y);
     }
 
     /**
@@ -82,9 +80,9 @@ public final class UtilWorld
     public static void changeTileGroup(MapTileGroup map, String oldGroup, String newGroup, Tile tile)
     {
         final Media config = map.getGroupsConfig();
-        final XmlNode root = Xml.load(config);
+        final Xml root = new Xml(config);
         changeTileGroup(root, oldGroup, newGroup, tile);
-        Xml.save(root, config);
+        root.save(config);
         map.loadGroups(config);
     }
 
@@ -96,15 +94,15 @@ public final class UtilWorld
      * @param newGroup The new group name (empty to remove it).
      * @param tile The tile reference.
      */
-    public static void changeTileGroup(XmlNode root, String oldGroup, String newGroup, Tile tile)
+    public static void changeTileGroup(Xml root, String oldGroup, String newGroup, Tile tile)
     {
         final Collection<Point> toAdd = new HashSet<>();
-        for (final XmlNode nodeGroup : root.getChildren(TileGroupsConfig.NODE_GROUP))
+        for (final Xml nodeGroup : root.getChildren(TileGroupsConfig.NODE_GROUP))
         {
             removeOldGroup(nodeGroup, oldGroup, tile);
             if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), newGroup))
             {
-                final Point point = Geom.createPoint(tile.getSheet().intValue(), tile.getNumber());
+                final Point point = new Point(tile.getSheet().intValue(), tile.getNumber());
                 if (!toAdd.contains(point))
                 {
                     toAdd.add(point);
@@ -114,10 +112,10 @@ public final class UtilWorld
         }
         if (!TileGroupsConfig.REMOVE_GROUP_NAME.equals(newGroup))
         {
-            final XmlNode newNode = getNewNode(root, newGroup);
+            final Xml newNode = getNewNode(root, newGroup);
             for (final Point current : toAdd)
             {
-                final XmlNode node = newNode.createChild(TileConfig.NODE_TILE);
+                final Xml node = newNode.createChild(TileConfig.NODE_TILE);
                 node.writeInteger(TileConfig.ATT_TILE_SHEET, current.getX());
                 node.writeInteger(TileConfig.ATT_TILE_NUMBER, current.getY());
             }
@@ -132,12 +130,12 @@ public final class UtilWorld
      * @param oldGroup The old group name.
      * @param tile The current tile.
      */
-    private static void removeOldGroup(XmlNode nodeGroup, String oldGroup, Tile tile)
+    private static void removeOldGroup(Xml nodeGroup, String oldGroup, Tile tile)
     {
-        final Collection<XmlNode> toRemove = new ArrayList<>();
+        final Collection<Xml> toRemove = new ArrayList<>();
         if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), oldGroup))
         {
-            for (final XmlNode nodeTile : nodeGroup.getChildren(TileConfig.NODE_TILE))
+            for (final Xml nodeTile : nodeGroup.getChildren(TileConfig.NODE_TILE))
             {
                 if (nodeTile.readInteger(TileConfig.ATT_TILE_SHEET) == tile.getSheet().intValue()
                     && nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER) == tile.getNumber())
@@ -145,7 +143,7 @@ public final class UtilWorld
                     toRemove.add(nodeTile);
                 }
             }
-            for (final XmlNode remove : toRemove)
+            for (final Xml remove : toRemove)
             {
                 nodeGroup.removeChild(remove);
             }
@@ -160,16 +158,16 @@ public final class UtilWorld
      * @param newGroup The new group name.
      * @return The node found or created.
      */
-    private static XmlNode getNewNode(XmlNode node, String newGroup)
+    private static Xml getNewNode(Xml node, String newGroup)
     {
-        for (final XmlNode nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
+        for (final Xml nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
         {
             if (newGroup.equals(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME)))
             {
                 return nodeGroup;
             }
         }
-        final XmlNode newGroupNode = node.createChild(TileGroupsConfig.NODE_GROUP);
+        final Xml newGroupNode = node.createChild(TileGroupsConfig.NODE_GROUP);
         newGroupNode.writeString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME, newGroup);
 
         return newGroupNode;

@@ -25,11 +25,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.mock.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the color class.

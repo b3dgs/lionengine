@@ -31,7 +31,7 @@ public class PolygonTest
     @Test
     public void testPolygon()
     {
-        final Polygon polygon = Geom.createPolygon();
+        final Polygon polygon = new Polygon();
         polygon.addPoint(0, 0);
         polygon.addPoint(0, 10);
         polygon.addPoint(10, 0);
@@ -44,9 +44,9 @@ public class PolygonTest
             Assert.assertNotNull(line);
         }
 
-        final Rectangle rectangle1 = Geom.createRectangle();
+        final Rectangle rectangle1 = new Rectangle();
         rectangle1.set(0.0, 0.0, 10.0, 10.0);
-        final Rectangle rectangle2 = Geom.createRectangle(1.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
         Assert.assertTrue(polygon.getRectangle().contains(rectangle2));
         Assert.assertTrue(polygon.intersects(rectangle2));
         polygon.reset();

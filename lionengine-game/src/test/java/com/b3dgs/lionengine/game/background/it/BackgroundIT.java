@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.background.it;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.EngineAwt;
+import com.b3dgs.lionengine.core.sequence.Loader;
 
 /**
  * Integration test for background package.

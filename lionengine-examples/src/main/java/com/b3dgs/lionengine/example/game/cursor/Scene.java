@@ -17,32 +17,32 @@
  */
 package com.b3dgs.lionengine.example.game.cursor;
 
-import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.core.awt.Mouse;
+import com.b3dgs.lionengine.core.sequence.Sequence;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.feature.circuit.Circuit;
-import com.b3dgs.lionengine.game.map.feature.circuit.MapCircuitExtractor;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.transition.MapTransitionExtractor;
-import com.b3dgs.lionengine.game.map.feature.transition.Transition;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTransitionExtractor;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.Transition;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.Circuit;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapCircuitExtractor;
+import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
+import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.Mouse;
 
 /**
  * Game loop designed to handle our little world.

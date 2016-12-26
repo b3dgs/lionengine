@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
  * List of events listened from an attacker.

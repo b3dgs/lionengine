@@ -21,7 +21,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the utility math class.

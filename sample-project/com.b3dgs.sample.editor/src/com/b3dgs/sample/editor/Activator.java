@@ -20,7 +20,7 @@ package com.b3dgs.sample.editor;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.Version;
 
 /**
  * Plugin activator.

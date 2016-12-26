@@ -24,9 +24,8 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the launcher data from a configurer node.
@@ -50,7 +49,7 @@ public final class LauncherConfig
     public static List<LauncherConfig> imports(Configurer configurer)
     {
         final List<LauncherConfig> levels = new ArrayList<LauncherConfig>();
-        for (final XmlNode launcher : configurer.getRoot().getChildren(NODE_LAUNCHER))
+        for (final Xml launcher : configurer.getRoot().getChildren(NODE_LAUNCHER))
         {
             levels.add(imports(launcher));
         }
@@ -64,10 +63,10 @@ public final class LauncherConfig
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LauncherConfig imports(XmlNode node)
+    public static LauncherConfig imports(Xml node)
     {
         final Collection<LaunchableConfig> launchables = new ArrayList<LaunchableConfig>();
-        for (final XmlNode launchable : node.getChildren(LaunchableConfig.NODE_LAUNCHABLE))
+        for (final Xml launchable : node.getChildren(LaunchableConfig.NODE_LAUNCHABLE))
         {
             launchables.add(LaunchableConfig.imports(launchable));
         }
@@ -83,9 +82,9 @@ public final class LauncherConfig
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static XmlNode exports(LauncherConfig config)
+    public static Xml exports(LauncherConfig config)
     {
-        final XmlNode node = Xml.create(NODE_LAUNCHER);
+        final Xml node = new Xml(NODE_LAUNCHER);
         node.writeInteger(ATT_RATE, config.getRate());
 
         for (final LaunchableConfig launchable : config.getLaunchables())

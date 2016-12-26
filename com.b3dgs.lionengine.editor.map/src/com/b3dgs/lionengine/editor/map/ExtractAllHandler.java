@@ -24,12 +24,12 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.map.group.menu.GroupsAssignDialog;
 import com.b3dgs.lionengine.editor.map.sheet.extract.SheetsExtractDialog;
-import com.b3dgs.lionengine.game.map.TileSheetsConfig;
-import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionsConfig;
+import com.b3dgs.lionengine.graphic.SpriteTiled;
 
 /**
  * Export map tile constraints handler.

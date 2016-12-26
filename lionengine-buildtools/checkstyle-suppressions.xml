@@ -2,57 +2,48 @@
 
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN" "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.LionEngineException"/>
-    
+    <!-- Core -->
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.graphic.ImageInfo"/>
-    <suppress checks="BooleanExpressionComplexity" files="com.b3dgs.lionengine.graphic.ColorRgba"/>
     <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.graphic.Filter" lines="29, 40"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.FilterBilinear" lines="78"/>
-    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.FilterBlur" lines="147"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.FilterHq3x"/>
-    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.FilterHq2x"/>
-    
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="364"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="43"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.swing.UtilitySwing"/>
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.Theme" lines="81"/>
-    
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="356"/>
-    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
-    
-    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.game.object.Factory" lines="71"/>
-    <suppress checks="RedundantModifier" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="57"/>
-    <suppress checks="EmptyBlock" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="108"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.filter.FilterBilinear" lines="79"/>
+    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.filter.FilterBlur" lines="148"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.filter.FilterHq3x"/>
+    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.filter.FilterHq2x"/>
+    <!-- AWT -->
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.ToolsAwt" lines="364"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.FactoryGraphicAwt"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.swing.UtilSwing"/>
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.swing.Theme" lines="81"/>
+    <!-- SWT -->
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.ScreenSwt"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.ToolsSwt"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.ToolsSwt" lines="356"/>
+    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.FactoryGraphicSwt"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.FactoryGraphicSwt"/>
+    <!-- Game -->
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.game.map.feature.circuit.CircuitsExtractorImpl"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel" lines="240"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="92, 147"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="220"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="233, 238"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="318"/>
-    <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.feature.FeaturableModel" lines="248"/>
-    <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel" lines="63"/>
-    <suppress checks="BooleanExpressionComplexity" files="com.b3dgs.lionengine.game.feature.transformable.TransformableModel" lines="88"/>    
-    
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel" lines="240"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel" lines="92, 147"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="220"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="233, 238"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathFinderImpl" lines="318"/>
+    <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.FeaturableModel" lines="248"/>
+    <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.feature.IdentifiableModel" lines="60"/>
+    <suppress checks="BooleanExpressionComplexity" files="com.b3dgs.lionengine.game.feature.TransformableModel" lines="86"/>
+    <!-- Network -->
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="102, 110, 118"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.network.ClientImpl" lines="529"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ServerImpl" lines="176, 241, 316"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="368"/>
-    
-    <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.adplug.AdPlugBinding"/>
-    <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.adplug.AdPlugBinding"/>
-    <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
-    <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
-    
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.audio.wav.WavImpl"/>
-    
-    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.map.group.menu.GroupsAssignDialog"/>    
-    
+    <!-- AdPlug -->
+    <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.AdPlugBinding"/>
+    <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.AdPlugBinding"/>
+    <!-- Sc68 -->
+    <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.Sc68Binding"/>
+    <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.Sc68Binding"/>
+    <!-- Editor -->
+    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.map.group.menu.GroupsAssignDialog"/>
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="LineLength" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
@@ -60,11 +51,11 @@
     <suppress checks="MissingCtor" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
     <suppress checks="ClassDataAbstractionCoupling" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
-    
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.example[\\/]"/>
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.tutorials[\\/]"/>
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.test[\\/]"/>
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.map.test[\\/]"/>
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.object.test[\\/]"/>
-	<suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.animation.test[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.animation.test[\\/]"/>
+    <!-- Extra -->
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.example[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.tutorials[\\/]"/>
 </suppressions>

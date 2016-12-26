@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.a;
 
-import com.b3dgs.lionengine.core.Context;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.io.Keyboard;
 
 /**
  * Game loop designed to handle our little world.

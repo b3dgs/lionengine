@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.object.Collision;
-import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.collidable.Collision;
+import com.b3dgs.lionengine.game.feature.collidable.CollisionConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Collision with object editor.
@@ -81,7 +81,7 @@ public class CollisionsObjectEditDialog extends AbstractEditor
     {
         list.save();
 
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         root.removeChildren(CollisionConfig.COLLISION);
 
         for (final TreeItem item : list.getTree().getItems())

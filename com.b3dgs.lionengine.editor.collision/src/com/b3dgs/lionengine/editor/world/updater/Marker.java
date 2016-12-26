@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
  * Represents a tile marker.

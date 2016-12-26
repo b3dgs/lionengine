@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.feature.assignable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents an assignable action, allows to assign an action by click.
@@ -36,7 +36,7 @@ public interface Assignable extends Feature, Updatable
      * Set the mouse click selection value to {@link Assign#assign()} the assign.
      * 
      * @param click The click number.
-     * @see com.b3dgs.lionengine.core.InputDevicePointer
+     * @see com.b3dgs.lionengine.io.InputDevicePointer
      */
     void setClickAssign(int click);
 }

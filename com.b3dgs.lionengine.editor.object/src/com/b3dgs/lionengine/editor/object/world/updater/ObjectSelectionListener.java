@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.object.world.updater;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
  * Listen to objects selection on map.

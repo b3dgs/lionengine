@@ -38,20 +38,20 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransition;
-import com.b3dgs.lionengine.game.map.feature.transition.Transition;
-import com.b3dgs.lionengine.game.map.feature.transition.TransitionType;
-import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.Transition;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionType;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.SpriteTiled;
 import com.b3dgs.lionengine.graphic.Transparency;
 
 /**

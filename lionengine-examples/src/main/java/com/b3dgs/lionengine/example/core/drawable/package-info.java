@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the standard {@link com.b3dgs.lionengine.drawable.Drawable} elements.
+ * This example will show how to use the standard {@link com.b3dgs.lionengine.core.drawable.Drawable} elements.
  */
 package com.b3dgs.lionengine.example.core.drawable;

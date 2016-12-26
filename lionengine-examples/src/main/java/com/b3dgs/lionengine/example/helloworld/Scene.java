@@ -18,15 +18,15 @@
 package com.b3dgs.lionengine.example.helloworld;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.io.Keyboard;
 
 /**
  * Scene implementation.

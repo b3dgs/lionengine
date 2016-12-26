@@ -25,11 +25,10 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.SizeConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test the producible config class.
@@ -64,12 +63,12 @@ public class ProducibleConfigTest
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
         try
         {
-            final XmlNode root = Xml.create("test");
+            final Xml root = new Xml("test");
             root.add(SizeConfig.exports(new SizeConfig(producible.getWidth(), producible.getHeight())));
             root.add(ProducibleConfig.exports(producible));
-            Xml.save(root, media);
+            root.save(media);
 
-            final ProducibleConfig loaded = ProducibleConfig.imports(Xml.load(media));
+            final ProducibleConfig loaded = ProducibleConfig.imports(new Xml(media));
             Assert.assertEquals(producible, loaded);
             Assert.assertEquals(producible, ProducibleConfig.imports(new Setup(media)));
             Assert.assertEquals(producible, ProducibleConfig.imports(new Configurer(media)));

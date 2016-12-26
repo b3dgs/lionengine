@@ -19,19 +19,19 @@ package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.SetupSurface;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.feature.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.feature.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
+import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.io.Mouse;
 
 /**
  * Button action implementation.

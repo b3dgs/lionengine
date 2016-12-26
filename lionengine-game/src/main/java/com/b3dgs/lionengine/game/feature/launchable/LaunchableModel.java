@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
  * Default launchable model implementation.

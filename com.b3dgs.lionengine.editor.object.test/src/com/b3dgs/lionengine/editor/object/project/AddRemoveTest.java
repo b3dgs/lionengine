@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import com.b3dgs.lionengine.editor.UtilTests;
 import com.b3dgs.lionengine.editor.object.UtilNl;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
-import com.b3dgs.lionengine.game.feature.FeaturableConfig;
+import com.b3dgs.lionengine.game.FeaturableConfig;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**

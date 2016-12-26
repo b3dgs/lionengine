@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the producer state.

@@ -22,9 +22,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.mock.FactoryGraphicMock;
-
 /**
  * Test the transform class.
  */

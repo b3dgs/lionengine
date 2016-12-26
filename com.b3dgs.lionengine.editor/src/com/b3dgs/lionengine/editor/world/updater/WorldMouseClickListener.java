@@ -33,7 +33,7 @@ public interface WorldMouseClickListener
      * @param click The click pressed number.
      * @param mx The current horizontal location.
      * @param my The current vertical location.
-     * @see com.b3dgs.lionengine.core.swt.Mouse
+     * @see com.b3dgs.lionengine.io.Mouse
      */
     void onMousePressed(int click, int mx, int my);
 
@@ -43,7 +43,7 @@ public interface WorldMouseClickListener
      * @param click The click released number.
      * @param mx The current horizontal location.
      * @param my The current vertical location.
-     * @see com.b3dgs.lionengine.core.swt.Mouse
+     * @see com.b3dgs.lionengine.io.Mouse
      */
     void onMouseReleased(int click, int mx, int my);
 }

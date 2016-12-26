@@ -19,9 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the force data from a configurer.
@@ -60,9 +58,9 @@ public final class ForceConfig
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Force imports(XmlNode root)
+    public static Force imports(Xml root)
     {
-        final XmlNode node = root.getChild(NODE_FORCE);
+        final Xml node = root.getChild(NODE_FORCE);
 
         final Force force = new Force(node.readDouble(ATT_VX), node.readDouble(ATT_VY));
         force.setVelocity(node.readDouble(0.0, ATT_VELOCITY));
@@ -78,9 +76,9 @@ public final class ForceConfig
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
-    public static XmlNode exports(Force force)
+    public static Xml exports(Force force)
     {
-        final XmlNode node = Xml.create(NODE_FORCE);
+        final Xml node = new Xml(NODE_FORCE);
         node.writeDouble(ATT_VX, force.getDirectionHorizontal());
         node.writeDouble(ATT_VY, force.getDirectionVertical());
         node.writeDouble(ATT_VELOCITY, force.getVelocity());

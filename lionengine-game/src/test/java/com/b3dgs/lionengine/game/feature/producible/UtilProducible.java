@@ -21,15 +21,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.SizeConfig;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Utilities dedicated to producible test.
@@ -141,10 +140,10 @@ public class UtilProducible
         final ProducibleConfig producibleConfig = new ProducibleConfig(1, 2, 3);
 
         final Media media = UtilSetup.createMedia(Featurable.class);
-        final XmlNode root = Xml.create("test");
+        final Xml root = new Xml("test");
         root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
         root.add(ProducibleConfig.exports(producibleConfig));
-        Xml.save(root, media);
+        root.save(media);
 
         return media;
     }

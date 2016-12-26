@@ -40,17 +40,16 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MinimapConfig;
-import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.game.feature.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MinimapConfig;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.SpriteTiled;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -90,7 +89,7 @@ public class MinimapEditDialog extends AbstractDialog
     /** Minimap data. */
     private final Map<Integer, Map<Point, Color>> data = new HashMap<>();
     /** Selected tile. */
-    private final Point selection = Geom.createPoint(0, 0);
+    private final Point selection = new Point(0, 0);
     /** Current sheet. */
     private int sheet;
 
@@ -132,7 +131,7 @@ public class MinimapEditDialog extends AbstractDialog
             final int y = tile.getNumber() / th;
             final ColorRgba c = current.getValue();
             final Color color = new Color(device, c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-            data.get(tile.getSheet()).put(Geom.createPoint(x, y), color);
+            data.get(tile.getSheet()).put(new Point(x, y), color);
         }
     }
 
@@ -265,7 +264,7 @@ public class MinimapEditDialog extends AbstractDialog
     private void setSheetData(Color color)
     {
         final Map<Point, Color> sheetData = getSheetData();
-        sheetData.put(Geom.createPoint(selection), color);
+        sheetData.put(new Point(selection.getX(), selection.getY()), color);
     }
 
     /**

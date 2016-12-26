@@ -19,7 +19,7 @@ package com.b3dgs.lionengine;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the align class.

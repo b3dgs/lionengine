@@ -24,18 +24,17 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.tile.Axis;
-import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionConstraint;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionRange;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the formulas list, allowing to add and remove {@link CollisionFormula}.
@@ -50,21 +49,21 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
      */
     private static void removeFormula(Media formulasConfig, CollisionFormula formula)
     {
-        final XmlNode node = Xml.load(formulasConfig);
-        final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeFormula : node.getChildren(CollisionFormulaConfig.FORMULA))
+        final Xml node = new Xml(formulasConfig);
+        final Collection<Xml> toRemove = new ArrayList<>();
+        for (final Xml nodeFormula : node.getChildren(CollisionFormulaConfig.FORMULA))
         {
             if (CollisionGroup.same(nodeFormula.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), formula.getName()))
             {
                 toRemove.add(nodeFormula);
             }
         }
-        for (final XmlNode remove : toRemove)
+        for (final Xml remove : toRemove)
         {
             node.removeChild(remove);
         }
         toRemove.clear();
-        Xml.save(node, formulasConfig);
+        node.save(formulasConfig);
     }
 
     /** Last config used. */

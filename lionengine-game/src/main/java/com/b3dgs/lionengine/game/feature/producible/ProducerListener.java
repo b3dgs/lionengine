@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * List of event linked to the production.

@@ -20,9 +20,8 @@ package com.b3dgs.lionengine.game.feature.actionable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the action data from a configurer.
@@ -63,9 +62,9 @@ public final class ActionConfig
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ActionConfig imports(XmlNode root)
+    public static ActionConfig imports(Xml root)
     {
-        final XmlNode nodeAction = root.getChild(NODE_ACTION);
+        final Xml nodeAction = root.getChild(NODE_ACTION);
         final String name = nodeAction.readString(ATT_NAME);
         final String description = nodeAction.readString(ATT_DESCRIPTION);
         final int x = nodeAction.readInteger(ATT_X);
@@ -83,9 +82,9 @@ public final class ActionConfig
      * @return The action node.
      * @throws LionEngineException If unable to save.
      */
-    public static XmlNode exports(ActionConfig config)
+    public static Xml exports(ActionConfig config)
     {
-        final XmlNode nodeAction = Xml.create(NODE_ACTION);
+        final Xml nodeAction = new Xml(NODE_ACTION);
         nodeAction.writeString(ATT_NAME, config.getName());
         nodeAction.writeString(ATT_DESCRIPTION, config.getDescription());
         nodeAction.writeInteger(ATT_X, config.getX());

@@ -31,7 +31,7 @@ public class CoordTest
     @Test
     public void testCoord()
     {
-        final Coord coord = Geom.createCoord();
+        final Coord coord = new Coord();
         Assert.assertEquals(coord.getX(), 0.0, 0.000001);
         Assert.assertEquals(coord.getY(), 0.0, 0.000001);
 
@@ -55,14 +55,14 @@ public class CoordTest
     @Test
     public void testCoordEquals()
     {
-        final Coord coord = Geom.createCoord();
+        final Coord coord = new Coord();
 
         Assert.assertEquals(coord, coord);
-        Assert.assertEquals(Geom.createCoord(), Geom.createCoord());
-        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0), null);
-        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0), new Object());
-        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0), Geom.createCoord());
-        Assert.assertNotEquals(Geom.createCoord(0.0, 1.0), Geom.createCoord());
+        Assert.assertEquals(new Coord(), new Coord());
+        Assert.assertNotEquals(new Coord(1.0, 0.0), null);
+        Assert.assertNotEquals(new Coord(1.0, 0.0), new Object());
+        Assert.assertNotEquals(new Coord(1.0, 0.0), new Coord());
+        Assert.assertNotEquals(new Coord(0.0, 1.0), new Coord());
     }
 
     /**
@@ -71,8 +71,8 @@ public class CoordTest
     @Test
     public void testCoordHash()
     {
-        Assert.assertEquals(Geom.createCoord().hashCode(), Geom.createCoord().hashCode());
-        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0).hashCode(), Geom.createCoord().hashCode());
-        Assert.assertNotEquals(Geom.createCoord(0.0, 1.0).hashCode(), Geom.createCoord().hashCode());
+        Assert.assertEquals(new Coord().hashCode(), new Coord().hashCode());
+        Assert.assertNotEquals(new Coord(1.0, 0.0).hashCode(), new Coord().hashCode());
+        Assert.assertNotEquals(new Coord(0.0, 1.0).hashCode(), new Coord().hashCode());
     }
 }

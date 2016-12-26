@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
+import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
  * Handle the {@link State} and their {@link StateTransition}.

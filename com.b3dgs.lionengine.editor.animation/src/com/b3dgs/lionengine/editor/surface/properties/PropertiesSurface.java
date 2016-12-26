@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.SurfaceConfig;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.SurfaceConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Element properties part.
@@ -89,8 +89,8 @@ public class PropertiesSurface implements PropertiesProviderObject
         final AtomicBoolean updated = new AtomicBoolean(false);
         UtilDialog.selectResourceFile(item.getParent().getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
-            final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+            final Xml root = configurer.getRoot();
+            final Xml surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
             final String path = media.getPath();
             surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, path);
             item.setText(PropertiesPart.COLUMN_VALUE, path);
@@ -111,8 +111,8 @@ public class PropertiesSurface implements PropertiesProviderObject
         final AtomicBoolean updated = new AtomicBoolean(false);
         UtilDialog.selectResourceFile(item.getParent().getShell(), true, UtilDialog.getImageFilter()).ifPresent(media ->
         {
-            final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+            final Xml root = configurer.getRoot();
+            final Xml surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
             final String path = media.getPath();
             surfaceNode.writeString(SurfaceConfig.ATT_ICON, path);
             item.setText(PropertiesPart.COLUMN_VALUE, path);
@@ -136,7 +136,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         if (root.hasChild(SurfaceConfig.NODE_SURFACE))
         {
             createAttributeSurface(properties, configurer);

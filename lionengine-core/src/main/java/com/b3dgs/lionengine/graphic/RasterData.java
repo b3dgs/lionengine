@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the raster data for color modification.
@@ -44,9 +44,9 @@ public final class RasterData
      * @param color The raster color name.
      * @return The raster data.
      */
-    public static RasterData load(XmlNode root, String color)
+    public static RasterData load(Xml root, String color)
     {
-        final XmlNode node = root.getChild(color);
+        final Xml node = root.getChild(color);
         final int start = Integer.decode(node.readString(ATT_START)).intValue();
         final int step = Integer.decode(node.readString(ATT_STEP)).intValue();
         final int force = node.readInteger(ATT_FORCE);

@@ -22,9 +22,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.pathfinding.PathfindingConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
+import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilFile;
 
 /**
@@ -50,8 +49,8 @@ public final class PathfindingAddHandler
     {
         InputValidator.getFile(parent, Messages.Title, Messages.Text, PathfindingConfig.FILENAME, file ->
         {
-            final XmlNode root = Xml.create(UtilFile.removeExtension(PathfindingConfig.PATHFINDING));
-            Xml.save(root, ProjectModel.INSTANCE.getProject().getResourceMedia(file));
+            final Xml root = new Xml(UtilFile.removeExtension(PathfindingConfig.PATHFINDING));
+            root.save(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         });
     }
 }

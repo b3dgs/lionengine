@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.FeaturableConfig;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Element properties part.
@@ -82,8 +82,8 @@ public class PropertiesSetup implements PropertiesProviderObject
         final String setup = chooser.open(items);
         if (setup != null)
         {
-            final XmlNode root = configurer.getRoot();
-            final XmlNode setupNode = root.getChild(FeaturableConfig.SETUP);
+            final Xml root = configurer.getRoot();
+            final Xml setupNode = root.getChild(FeaturableConfig.SETUP);
             setupNode.setText(setup);
             item.setText(PropertiesPart.COLUMN_VALUE, setup);
             return true;
@@ -106,7 +106,7 @@ public class PropertiesSetup implements PropertiesProviderObject
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         if (root.hasChild(FeaturableConfig.SETUP))
         {
             createAttributeSetup(properties, FeaturableConfig.imports(configurer));

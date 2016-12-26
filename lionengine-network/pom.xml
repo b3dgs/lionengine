@@ -31,6 +31,13 @@
                     </instructions>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.mobilepetroleum.radialencapsulation</groupId>
+                <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                <configuration>
+                    <maxViolations>100</maxViolations>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

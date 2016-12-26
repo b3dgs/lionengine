@@ -1,6 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <radial.base-package>com.b3dgs.lionengine.game</radial.base-package>
+    </properties>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
@@ -37,10 +40,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.game</Bundle-SymbolicName>
-                        <Import-Package>
-                            *,
-                            com.b3dgs.lionengine.test;resolution:=optional
-                        </Import-Package>
+                        <Import-Package>*, com.b3dgs.lionengine.test;resolution:=optional</Import-Package>
                         <Export-Package>com.b3dgs.lionengine.*</Export-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>

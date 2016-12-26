@@ -34,27 +34,25 @@ import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.view.WorldView;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.collision.tile.Axis;
-import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
-import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionConstraint;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionRange;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -116,7 +114,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
     private static CollisionGroup saveCollisionGroup(MapTileCollision collision, String name, CollisionFormula formula)
     {
         final Media config = collision.getCollisionsConfig();
-        final XmlNode root = Xml.load(config);
+        final Xml root = new Xml(config);
         if (CollisionGroupConfig.has(root, name))
         {
             CollisionGroupConfig.remove(root, name);
@@ -124,7 +122,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
 
         final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
         CollisionGroupConfig.exports(root, group);
-        Xml.save(root, config);
+        root.save(config);
 
         return group;
     }
@@ -290,7 +288,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
      * @param index The current collision index (in case of multiple sub collision).
      * @param tile The current tile.
      */
-    private void applyCollision(XmlNode groupNode, int index, Tile tile)
+    private void applyCollision(Xml groupNode, int index, Tile tile)
     {
         final MapTileCollision collision = map.getFeature(MapTileCollision.class);
         final String fullName;
@@ -332,7 +330,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
                                                   int index)
     {
         final Media config = collision.getFormulasConfig();
-        final XmlNode root = Xml.load(config);
+        final Xml root = new Xml(config);
         if (CollisionFormulaConfig.has(root, name))
         {
             CollisionFormulaConfig.remove(root, name);
@@ -342,7 +340,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         final CollisionFunction updatedFunction = updateFunction(function, index);
         final CollisionFormula formula = new CollisionFormula(name, range, updatedFunction, new CollisionConstraint());
         CollisionFormulaConfig.exports(root, formula);
-        Xml.save(root, config);
+        root.save(config);
 
         return formula;
     }
@@ -382,7 +380,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
     public void verifyCollision(int offset)
     {
         final Media config = mapGroup.getGroupsConfig();
-        final XmlNode groupNode = Xml.load(config);
+        final Xml groupNode = new Xml(config);
         final List<Integer> keys = new ArrayList<>(markers.keySet());
         Collections.sort(keys);
         final int max = keys.size();
@@ -395,7 +393,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         }
         if (!markers.isEmpty())
         {
-            Xml.save(groupNode, config);
+            groupNode.save(config);
             mapGroup.loadGroups(config);
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             mapCollision.loadCollisions(mapCollision.getFormulasConfig(), mapCollision.getCollisionsConfig());
@@ -438,7 +436,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
             updatePointerCollision(mx, my, false);
             if (collEnd != null)
             {
-                collLine = Geom.createLine(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
+                collLine = new Line(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
             }
         }
     }

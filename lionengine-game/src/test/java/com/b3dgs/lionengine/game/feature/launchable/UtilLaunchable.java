@@ -24,16 +24,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Factory;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.IdentifiableModel;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Utilities dedicated to launchable test.
@@ -88,10 +87,10 @@ public class UtilLaunchable
                                                                        new Force(1.0, 2.0));
         final LauncherConfig launcherConfig = new LauncherConfig(0, 10, Arrays.asList(launchableConfig));
 
-        final XmlNode root = Xml.create("test");
+        final Xml root = new Xml("test");
         root.add(LauncherConfig.exports(launcherConfig));
         root.add(LauncherConfig.exports(new LauncherConfig(1, 50, Arrays.asList(launchableConfig))));
-        Xml.save(root, media);
+        root.save(media);
 
         return media;
     }

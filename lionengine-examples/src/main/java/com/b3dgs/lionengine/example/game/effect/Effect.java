@@ -17,25 +17,25 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
+import com.b3dgs.lionengine.AnimState;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.FramesConfig;
-import com.b3dgs.lionengine.game.feature.Service;
-import com.b3dgs.lionengine.game.feature.SetupSurface;
-import com.b3dgs.lionengine.game.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.identifiable.Identifiable;
-import com.b3dgs.lionengine.game.feature.refreshable.RefreshableModel;
-import com.b3dgs.lionengine.game.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.game.state.AnimationConfig;
-import com.b3dgs.lionengine.graphic.Viewer;
+import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.AnimationConfig;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.feature.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.lionengine.util.UtilRandom;
 
 /**

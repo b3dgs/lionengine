@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.core.Context;
-
 /**
  * Handle tick measure, in updated frames number.
  */

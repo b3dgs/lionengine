@@ -20,15 +20,46 @@ package com.b3dgs.lionengine.geom;
 /**
  * Represents a point using int precision.
  */
-public interface Point
+public class Point
 {
+    /** Point horizontal. */
+    private int x;
+    /** Point vertical. */
+    private int y;
+
+    /**
+     * Create a point set at 0.
+     */
+    public Point()
+    {
+        this(0, 0);
+    }
+
+    /**
+     * Create a point.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    public Point(int x, int y)
+    {
+        super();
+
+        this.x = x;
+        this.y = y;
+    }
+
     /**
      * Translate int using specified values.
      * 
      * @param vx The horizontal force.
      * @param vy The vertical force.
      */
-    void translate(int vx, int vy);
+    public void translate(int vx, int vy)
+    {
+        x += vx;
+        y += vy;
+    }
 
     /**
      * Set the new int.
@@ -36,33 +67,78 @@ public interface Point
      * @param x The new horizontal location.
      * @param y The new vertical location.
      */
-    void set(int x, int y);
+    public void set(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
     /**
      * Set the new horizontal location.
      * 
      * @param x The new horizontal location.
      */
-    void setX(int x);
+    public void setX(int x)
+    {
+        this.x = x;
+    }
 
     /**
      * Set the new vertical location.
      * 
      * @param y The new vertical location.
      */
-    void setY(int y);
+    public void setY(int y)
+    {
+        this.y = y;
+    }
 
     /**
      * Get the horizontal location.
      * 
      * @return The horizontal location.
      */
-    int getX();
+    public int getX()
+    {
+        return x;
+    }
 
     /**
      * Get the vertical location.
      * 
      * @return The vertical location.
      */
-    int getY();
+    public int getY()
+    {
+        return y;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + x;
+        result = prime * result + y;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass())
+        {
+            return false;
+        }
+        final Point other = (Point) object;
+        return x == other.x && y == other.y;
+    }
 }

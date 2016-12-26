@@ -25,10 +25,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test if the folder contains objects.
@@ -69,7 +68,7 @@ public final class ObjectsTester extends PropertyTester
      */
     private static Class<?> get(Media media)
     {
-        final XmlNode root = Xml.load(media);
+        final Xml root = new Xml(media);
         final String className = root.getChild(FeaturableConfig.CLASS).getText();
         return ProjectModel.INSTANCE.getProject().getLoader().getClass(className);
     }

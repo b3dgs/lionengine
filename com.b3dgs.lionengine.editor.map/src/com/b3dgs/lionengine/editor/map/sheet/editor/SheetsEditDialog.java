@@ -38,10 +38,9 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 import com.b3dgs.lionengine.graphic.ImageInfo;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilFile;
 
 /**
@@ -131,7 +130,7 @@ public class SheetsEditDialog extends AbstractDialog
      */
     private void loadData()
     {
-        final XmlNode root = Xml.load(sheets);
+        final Xml root = new Xml(sheets);
         loadSize(root);
         loadSheets(root);
 
@@ -144,11 +143,11 @@ public class SheetsEditDialog extends AbstractDialog
      * 
      * @param root The root reference.
      */
-    private void loadSize(XmlNode root)
+    private void loadSize(Xml root)
     {
         if (root.hasChild(TileSheetsConfig.NODE_TILE_SIZE))
         {
-            final XmlNode tileSize = root.getChild(TileSheetsConfig.NODE_TILE_SIZE);
+            final Xml tileSize = root.getChild(TileSheetsConfig.NODE_TILE_SIZE);
             if (tileSize.hasAttribute(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH))
             {
                 tileWidthText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH));
@@ -165,12 +164,12 @@ public class SheetsEditDialog extends AbstractDialog
      * 
      * @param root The root reference.
      */
-    private void loadSheets(XmlNode root)
+    private void loadSheets(Xml root)
     {
-        final Collection<XmlNode> nodeSheets = root.getChildren();
+        final Collection<Xml> nodeSheets = root.getChildren();
         for (final Button button : buttons)
         {
-            for (final XmlNode sheet : nodeSheets)
+            for (final Xml sheet : nodeSheets)
             {
                 if (button.getText().equals(sheet.getText()))
                 {
@@ -200,8 +199,8 @@ public class SheetsEditDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Xml.load(sheets);
-        final XmlNode tileSize;
+        final Xml root = new Xml(sheets);
+        final Xml tileSize;
         if (root.hasChild(TileSheetsConfig.NODE_TILE_SIZE))
         {
             tileSize = root.getChild(TileSheetsConfig.NODE_TILE_SIZE);
@@ -218,10 +217,10 @@ public class SheetsEditDialog extends AbstractDialog
         {
             if (button.getSelection())
             {
-                final XmlNode node = root.createChild(TileSheetsConfig.NODE_TILE_SHEET);
+                final Xml node = root.createChild(TileSheetsConfig.NODE_TILE_SHEET);
                 node.setText(button.getText());
             }
         }
-        Xml.save(root, sheets);
+        root.save(sheets);
     }
 }

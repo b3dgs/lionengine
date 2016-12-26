@@ -224,7 +224,7 @@ public class ModuleCore
 
     void animation()
     {
-        final Animation animation = Anim.createAnimation(null, 4, 6, 0.125, false, true);
+        final Animation animation = new Animation(null, 4, 6, 0.125, false, true);
         System.out.println(animation.getFirst()); // 4
         System.out.println(animation.getLast()); // 6
         System.out.println(animation.getSpeed()); // 0.125
@@ -235,7 +235,7 @@ public class ModuleCore
     void animator()
     {
         final Animator animator = Anim.createAnimator();
-        final Animation animation = Anim.createAnimation(null, 4, 6, 0.125, false, true);
+        final Animation animation = new Animation(null, 4, 6, 0.125, false, true);
         animator.play(animation);
 
         // ... (loop)
@@ -246,7 +246,7 @@ public class ModuleCore
     void animState()
     {
         final Animator animator = Anim.createAnimator();
-        final Animation animation = Anim.createAnimation(null, 1, 2, 1.0, false, false);
+        final Animation animation = new Animation(null, 1, 2, 1.0, false, false);
         animator.getAnimState(); // returns STOPPED
         animator.play(animation);
         animator.update(extrp);
@@ -256,7 +256,7 @@ public class ModuleCore
     void fileReading()
     {
         final Media file = Medias.create("test.txt");
-        try (FileReading reading = Stream.createFileReading(file))
+        try (FileReading reading = new FileReading(file))
         {
             reading.readBoolean();
             reading.readByte();
@@ -276,7 +276,7 @@ public class ModuleCore
     void fileWriting()
     {
         final Media file = Medias.create("test.txt");
-        try (FileWriting writing = Stream.createFileWriting(file))
+        try (FileWriting writing = new FileWriting(file))
         {
             writing.writeBoolean(true);
             writing.writeByte((byte) 1);
@@ -295,7 +295,7 @@ public class ModuleCore
 
     void xmlNode()
     {
-        final XmlNode node = Xml.create("node");
+        final XmlNode node = new Xml("node");
         node.writeBoolean("value", true);
     }
 
@@ -341,7 +341,7 @@ public class ModuleCore
         animation.load();
         animation.prepare();
 
-        final Animation anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
+        final Animation anim = new Animation(null, 4, 6, 0.125, false, true);
         animation.play(anim);
         animation.setLocation(160, 300);
 

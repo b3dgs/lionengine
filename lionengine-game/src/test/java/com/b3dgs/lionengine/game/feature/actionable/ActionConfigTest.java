@@ -25,8 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Test the action config class.
@@ -64,11 +63,11 @@ public class ActionConfigTest
         final ActionConfig action = new ActionConfig("name", "description", 0, 1, 16, 32);
         try
         {
-            final XmlNode root = Xml.create("test");
+            final Xml root = new Xml("test");
             root.add(ActionConfig.exports(action));
-            Xml.save(root, media);
+            root.save(media);
 
-            final ActionConfig loaded = ActionConfig.imports(Xml.load(media));
+            final ActionConfig loaded = ActionConfig.imports(new Xml(media));
 
             Assert.assertEquals(action, loaded);
         }

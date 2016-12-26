@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.feature.actionable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -37,7 +37,7 @@ public interface Actionable extends Feature, Updatable
      * Set the mouse click selection value to {@link Action#execute()} the action.
      * 
      * @param click The click number.
-     * @see com.b3dgs.lionengine.core.InputDevicePointer
+     * @see com.b3dgs.lionengine.io.InputDevicePointer
      */
     void setClickAction(int click);
 

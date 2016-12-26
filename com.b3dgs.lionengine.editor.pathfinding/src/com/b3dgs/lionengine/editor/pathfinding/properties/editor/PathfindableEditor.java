@@ -29,10 +29,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.pathfinding.PathData;
-import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathData;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Pathfindable editor dialog.
@@ -84,7 +84,7 @@ public class PathfindableEditor extends AbstractEditor
     {
         list.save();
 
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         root.removeChildren(PathfindableConfig.PATHFINDABLE);
 
         final Map<String, PathData> data = new HashMap<>();

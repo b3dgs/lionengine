@@ -17,17 +17,17 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * Turn state implementation.

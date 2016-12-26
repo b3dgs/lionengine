@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -49,7 +48,7 @@ public class Selection
      */
     public Selection()
     {
-        selectionArea = Geom.createRectangle();
+        selectionArea = new Rectangle();
     }
 
     /**

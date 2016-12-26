@@ -29,10 +29,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.awt.Theme;
-import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.action.AppAction;
 import com.b3dgs.lionengine.example.game.assign.AppAssign;
@@ -52,6 +51,8 @@ import com.b3dgs.lionengine.example.game.selector.AppSelector;
 import com.b3dgs.lionengine.example.game.state.AppState;
 import com.b3dgs.lionengine.example.helloworld.AppHelloWorld;
 import com.b3dgs.lionengine.example.pong.AppPong;
+import com.b3dgs.lionengine.swing.Theme;
+import com.b3dgs.lionengine.swing.UtilSwing;
 
 /**
  * Program starts here.
@@ -59,7 +60,7 @@ import com.b3dgs.lionengine.example.pong.AppPong;
 public class AppExamples
 {
     /** Application name. */
-    public static final String NAME = Engine.NAME + " Examples";
+    public static final String NAME = Constant.ENGINE_NAME + " Examples";
     /** Executor. */
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
@@ -125,7 +126,7 @@ public class AppExamples
         final JButton drawable = new JButton(example.getSimpleName().substring(3));
         drawable.addActionListener(event ->
         {
-            UtilitySwing.setEnabled(panel.getComponents(), false);
+            UtilSwing.setEnabled(panel.getComponents(), false);
             try
             {
                 example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
@@ -144,14 +145,14 @@ public class AppExamples
                             break;
                         }
                     }
-                    SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
+                    SwingUtilities.invokeLater(() -> UtilSwing.setEnabled(panel.getComponents(), true));
                 };
                 EXECUTOR.execute(runnable);
             }
             catch (final Exception exception)
             {
                 Verbose.exception(exception);
-                SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
+                SwingUtilities.invokeLater(() -> UtilSwing.setEnabled(panel.getComponents(), true));
             }
         });
         panel.add(drawable);

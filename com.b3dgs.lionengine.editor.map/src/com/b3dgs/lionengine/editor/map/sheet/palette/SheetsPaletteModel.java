@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.map.sheet.palette;
 
-import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Contains the sheets palette data.

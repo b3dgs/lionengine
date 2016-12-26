@@ -19,10 +19,9 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.feature.SizeConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the producible data from a configurer compatible with {@link SizeConfig}.
@@ -53,9 +52,9 @@ public final class ProducibleConfig
      * @return The producible data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ProducibleConfig imports(XmlNode root)
+    public static ProducibleConfig imports(Xml root)
     {
-        final XmlNode node = root.getChild(NODE_PRODUCIBLE);
+        final Xml node = root.getChild(NODE_PRODUCIBLE);
         final SizeConfig size = SizeConfig.imports(root);
         final int time = node.readInteger(ATT_STEPS);
 
@@ -69,9 +68,9 @@ public final class ProducibleConfig
      * @return The producible node.
      * @throws LionEngineException If unable to write node.
      */
-    public static XmlNode exports(ProducibleConfig config)
+    public static Xml exports(ProducibleConfig config)
     {
-        final XmlNode node = Xml.create(NODE_PRODUCIBLE);
+        final Xml node = new Xml(NODE_PRODUCIBLE);
         node.writeInteger(ATT_STEPS, config.getSteps());
 
         return node;

@@ -19,7 +19,8 @@ package com.b3dgs.lionengine.game.feature;
 
 import org.junit.Assert;
 
-import com.b3dgs.lionengine.game.feature.identifiable.IdentifiableModel;
+import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Setup;
 
 /**
  * Object without constructor.

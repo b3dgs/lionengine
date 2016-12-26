@@ -33,8 +33,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.editor.utility.control.UtilCombo;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFunctionLinear;
 
 /**
  * Represents the quick formula assignment area.

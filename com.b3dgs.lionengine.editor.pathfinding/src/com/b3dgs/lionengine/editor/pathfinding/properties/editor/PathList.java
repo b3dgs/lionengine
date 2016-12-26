@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.game.pathfinding.PathData;
-import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathData;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
 
 /**
  * Represents the path list, allowing to add and remove {@link PathData}.

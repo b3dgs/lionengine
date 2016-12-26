@@ -20,8 +20,7 @@ package com.b3dgs.lionengine.graphic;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represent the raster for all colors.
@@ -46,7 +45,7 @@ public final class Raster
     {
         Check.notNull(media);
 
-        final XmlNode root = Xml.load(media);
+        final Xml root = new Xml(media);
         final RasterData dataRed = RasterData.load(root, RED);
         final RasterData dataGreen = RasterData.load(root, GREEN);
         final RasterData dataBlue = RasterData.load(root, BLUE);

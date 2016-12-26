@@ -22,12 +22,12 @@ import java.util.LinkedList;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.io.Keyboard;
 import com.b3dgs.lionengine.network.ConnectionListener;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 import com.b3dgs.lionengine.network.purview.NetworkChat;

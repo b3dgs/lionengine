@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.collisioncategory.editor.CollisionCategoryEditDialog;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
-import com.b3dgs.lionengine.game.feature.Configurer;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionCategoryConfig;
+import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Element properties part.
@@ -65,7 +65,7 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        final XmlNode root = configurer.getRoot();
+        final Xml root = configurer.getRoot();
         if (root.hasChild(CollisionCategoryConfig.CATEGORY))
         {
             createAttributeCollisionCategories(properties);

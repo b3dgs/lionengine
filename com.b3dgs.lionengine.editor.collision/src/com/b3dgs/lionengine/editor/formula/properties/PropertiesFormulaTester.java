@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.formula.properties;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionFormulaConfig;
 
 /**
  * Test the properties node existence.

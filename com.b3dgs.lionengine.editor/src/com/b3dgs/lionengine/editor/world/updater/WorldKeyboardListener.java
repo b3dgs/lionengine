@@ -31,7 +31,7 @@ public interface WorldKeyboardListener
      * Called when a key has been pressed.
      * 
      * @param key The key number.
-     * @see com.b3dgs.lionengine.core.swt.Keyboard
+     * @see com.b3dgs.lionengine.io.Keyboard
      */
     void onKeyPushed(Integer key);
 }

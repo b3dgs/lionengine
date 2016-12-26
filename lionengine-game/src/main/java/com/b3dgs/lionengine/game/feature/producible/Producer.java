@@ -21,8 +21,8 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents an ability of creating new object.
