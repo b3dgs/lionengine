@@ -174,13 +174,14 @@ public class MapTileGame extends FeaturableModel implements MapTile
         Check.superiorStrict(widthInTile, 0);
         Check.superiorStrict(heightInTile, 0);
 
+        clear();
+
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
 
         radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
-        clear();
         tiles = new ArrayList<List<Tile>>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
