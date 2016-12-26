@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Raster;
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.util.UtilConversion;
  * 
  * @see com.b3dgs.lionengine.game.Configurer
  */
-public class SetupSurfaceRastered extends SetupSurface
+public class SetupSurfaceRastered extends Setup
 {
     /** Raster node. */
     private static final String NODE_RASTER = Constant.XML_PREFIX + "raster";

@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.Setup;
-import com.b3dgs.lionengine.game.SetupSurface;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -146,17 +144,13 @@ public class ObjectControl
         {
             try
             {
-                final Setup setup = factory.getSetup(media);
-                if (setup instanceof SetupSurface)
-                {
-                    final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
-                    final Point point = UtilWorld.getPoint(camera, mx, my);
-                    final Transformable transformable = object.getFeature(Transformable.class);
-                    transformable.teleport(UtilMath.getRounded(point.getX(), map.getTileWidth()),
-                                           UtilMath.getRounded(point.getY(), map.getTileHeight()));
-                    transformable.getFeature(Refreshable.class).update(1.0);
-                    handler.add(object);
-                }
+                final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
+                final Point point = UtilWorld.getPoint(camera, mx, my);
+                final Transformable transformable = object.getFeature(Transformable.class);
+                transformable.teleport(UtilMath.getRounded(point.getX(), map.getTileWidth()),
+                                       UtilMath.getRounded(point.getY(), map.getTileHeight()));
+                transformable.getFeature(Refreshable.class).update(1.0);
+                handler.add(object);
             }
             catch (final LionEngineException exception)
             {

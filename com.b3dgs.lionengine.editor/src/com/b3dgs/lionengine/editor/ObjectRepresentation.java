@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -77,7 +77,7 @@ public class ObjectRepresentation extends FeaturableModel
      * @param setup The setup reference.
      * @throws LionEngineException If error.
      */
-    public ObjectRepresentation(SetupSurface setup)
+    public ObjectRepresentation(Setup setup)
     {
         super();
 

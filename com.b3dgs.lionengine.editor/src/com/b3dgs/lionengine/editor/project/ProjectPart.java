@@ -87,7 +87,7 @@ public final class ProjectPart implements Focusable
         {
             final Configurer configurer = new Configurer(media);
             final Xml root = configurer.getRoot();
-            if (root.hasChild(FeaturableConfig.CLASS))
+            if (root.getNodeName().equals(FeaturableConfig.NODE_FEATURABLE))
             {
                 part.setInput(part.getTree(), configurer);
                 return true;

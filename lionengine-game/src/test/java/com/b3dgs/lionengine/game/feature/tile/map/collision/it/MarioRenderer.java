@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -52,7 +52,7 @@ class MarioRenderer extends FeatureModel implements Displayable
      * 
      * @param setup The setup reference.
      */
-    public MarioRenderer(SetupSurface setup)
+    public MarioRenderer(Setup setup)
     {
         super();
 

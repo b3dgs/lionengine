@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -46,7 +46,7 @@ class Entity extends FeaturableModel
      * 
      * @param setup The setup reference.
      */
-    public Entity(SetupSurface setup)
+    public Entity(Setup setup)
     {
         super();
 

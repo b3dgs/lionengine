@@ -47,8 +47,7 @@ public final class FormulaTester extends PropertyTester
     {
         try
         {
-            final Xml root = new Xml(media);
-            return CollisionFormulaConfig.FORMULAS.equals(root.getNodeName());
+            return media.getFile().isFile() && CollisionFormulaConfig.FORMULAS.equals(new Xml(media).getNodeName());
         }
         catch (final LionEngineException exception)
         {

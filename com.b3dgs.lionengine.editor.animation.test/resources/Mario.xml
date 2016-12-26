@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:setup>com.b3dgs.lionengine.game.feature.SetupSurface</lionengine:setup>
-    <lionengine:class>com.b3dgs.lionengine.game.feature.ObjectGame</lionengine:class>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:surface image="Mario.png"/>
     <lionengine:frames horizontal="7" vertical="1"/>
     <lionengine:size height="16" width="16"/>
-</lionengine:object>
+</lionengine:featurable>

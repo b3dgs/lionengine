@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
  * Test the factory class.
@@ -41,6 +43,7 @@ public class FactoryTest
     public static void setUp()
     {
         Medias.setLoadFromJar(FactoryTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -50,6 +53,7 @@ public class FactoryTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     private final Services services = new Services();

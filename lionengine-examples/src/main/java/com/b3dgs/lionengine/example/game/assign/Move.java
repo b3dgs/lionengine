@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
@@ -56,7 +56,7 @@ class Move extends FeaturableModel
      * 
      * @param setup The setup reference.
      */
-    public Move(SetupSurface setup)
+    public Move(Setup setup)
     {
         super();
 

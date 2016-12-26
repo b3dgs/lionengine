@@ -19,15 +19,22 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
- * Define a structure used to create configurer objects.
+ * Define a structure used to create multiple objects, sharing the same data and {@link ImageBuffer}.
  */
 public class Setup extends Configurer
 {
     /** Class error. */
     private static final String ERROR_CLASS = "Class not found for: ";
 
+    /** Surface reference. */
+    protected final ImageBuffer surface;
+    /** Surface file name. */
+    private final Media surfaceFile;
     /** Class reference. */
     private Class<?> clazz;
 
@@ -40,6 +47,20 @@ public class Setup extends Configurer
     public Setup(Media config)
     {
         super(config);
+
+        if (hasNode(SurfaceConfig.NODE_SURFACE))
+        {
+            final String conf = config.getPath();
+            final SurfaceConfig surfaceData = SurfaceConfig.imports(getRoot());
+            final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
+            surfaceFile = Medias.create(prefix + surfaceData.getImage());
+            surface = Graphics.getImageBuffer(surfaceFile);
+        }
+        else
+        {
+            surfaceFile = null;
+            surface = null;
+        }
     }
 
     /**
@@ -64,5 +85,25 @@ public class Setup extends Configurer
             }
         }
         return clazz;
+    }
+
+    /**
+     * Get the surface file.
+     * 
+     * @return The surface file, <code>null</code> if not defined.
+     */
+    public final Media getSurfaceFile()
+    {
+        return surfaceFile;
+    }
+
+    /**
+     * Get the surface representation.
+     * 
+     * @return The surface buffer, <code>null</code> if not defined.
+     */
+    public final ImageBuffer getSurface()
+    {
+        return surface;
     }
 }

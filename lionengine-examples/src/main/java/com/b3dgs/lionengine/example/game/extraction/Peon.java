@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -58,7 +58,7 @@ class Peon extends FeaturableModel implements ExtractorListener
      * 
      * @param setup The setup reference.
      */
-    public Peon(SetupSurface setup)
+    public Peon(Setup setup)
     {
         super();
 

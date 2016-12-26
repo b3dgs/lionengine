@@ -72,8 +72,7 @@ public final class MinimapTester extends PropertyTester
     {
         try
         {
-            final Xml root = new Xml(media);
-            return MinimapConfig.NODE_MINIMAP.equals(root.getNodeName());
+            return media.getFile().isFile() && MinimapConfig.NODE_MINIMAP.equals(new Xml(media).getNodeName());
         }
         catch (final LionEngineException exception)
         {

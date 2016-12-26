@@ -46,8 +46,7 @@ public final class GroupsTester extends PropertyTester
     {
         try
         {
-            final Xml root = new Xml(media);
-            return TileGroupsConfig.NODE_GROUPS.equals(root.getNodeName());
+            return media.getFile().isFile() && TileGroupsConfig.NODE_GROUPS.equals(new Xml(media).getNodeName());
         }
         catch (final LionEngineException exception)
         {

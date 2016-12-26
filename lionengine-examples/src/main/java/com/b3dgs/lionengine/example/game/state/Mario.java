@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
-import com.b3dgs.lionengine.game.SetupSurface;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
@@ -67,7 +66,7 @@ class Mario extends FeaturableModel
      * 
      * @param setup The setup reference.
      */
-    public Mario(SetupSurface setup)
+    public Mario(Setup setup)
     {
         super();
 

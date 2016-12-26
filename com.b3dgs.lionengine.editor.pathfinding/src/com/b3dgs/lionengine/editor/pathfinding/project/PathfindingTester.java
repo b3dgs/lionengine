@@ -72,8 +72,7 @@ public final class PathfindingTester extends PropertyTester
     {
         try
         {
-            final Xml root = new Xml(media);
-            return PathfindingConfig.PATHFINDING.equals(root.getNodeName());
+            return media.getFile().isFile() && PathfindingConfig.PATHFINDING.equals(new Xml(media).getNodeName());
         }
         catch (final LionEngineException exception)
         {

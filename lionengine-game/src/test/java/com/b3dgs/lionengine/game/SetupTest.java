@@ -25,6 +25,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
  * Test the setup class.
@@ -38,6 +40,7 @@ public class SetupTest
     public static void setUp()
     {
         Medias.setLoadFromJar(SetupTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -47,6 +50,7 @@ public class SetupTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -90,5 +94,19 @@ public class SetupTest
         {
             Assert.assertEquals(ClassNotFoundException.class, exception.getCause().getClass());
         }
+    }
+
+    /**
+     * Test the setup surface config.
+     */
+    @Test
+    public void testSurface()
+    {
+        final Media config = Medias.create("object.xml");
+        final Setup setup = new Setup(config);
+
+        Assert.assertEquals(Medias.create("surface.png"), setup.getSurfaceFile());
+        Assert.assertEquals(7, setup.getSurface().getWidth());
+        Assert.assertEquals(11, setup.getSurface().getHeight());
     }
 }

@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableConfig;
 import com.b3dgs.lionengine.io.Xml;
 
@@ -49,28 +48,13 @@ public final class ObjectsTester extends PropertyTester
     {
         try
         {
-            final Class<?> clazz = get(media);
-            return Featurable.class.isAssignableFrom(clazz);
+            return media.getFile().isFile() && new Xml(media).getNodeName().equals(FeaturableConfig.NODE_FEATURABLE);
         }
         catch (final LionEngineException exception)
         {
             Verbose.exception(exception);
             return false;
         }
-    }
-
-    /**
-     * Get the class from media file, by reading the attribute {@link FeaturableConfig#CLASS} attribute.
-     * 
-     * @param media The media descriptor.
-     * @return The class reference.
-     * @throws LionEngineException If not able to create the class.
-     */
-    private static Class<?> get(Media media)
-    {
-        final Xml root = new Xml(media);
-        final String className = root.getChild(FeaturableConfig.CLASS).getText();
-        return ProjectModel.INSTANCE.getProject().getLoader().getClass(className);
     }
 
     /**

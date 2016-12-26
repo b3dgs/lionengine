@@ -46,8 +46,7 @@ public final class SheetsTester extends PropertyTester
     {
         try
         {
-            final Xml root = new Xml(media);
-            return TileSheetsConfig.NODE_TILE_SHEETS.equals(root.getNodeName());
+            return media.getFile().isFile() && TileSheetsConfig.NODE_TILE_SHEETS.equals(new Xml(media).getNodeName());
         }
         catch (final LionEngineException exception)
         {

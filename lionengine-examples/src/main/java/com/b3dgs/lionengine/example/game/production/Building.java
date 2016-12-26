@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.SetupSurface;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -55,7 +55,7 @@ class Building extends FeaturableModel implements ProducibleListener
      * 
      * @param setup The setup reference.
      */
-    public Building(SetupSurface setup)
+    public Building(Setup setup)
     {
         super();
 
