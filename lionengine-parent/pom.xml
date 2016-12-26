@@ -5,6 +5,7 @@
     <properties>
         <b3dgs.version>1.0.2</b3dgs.version>
         <buildtools-project>lionengine-buildtools</buildtools-project>
+        <radial-encapsulation-maven-plugin.version>1.0.0</radial-encapsulation-maven-plugin.version>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
     </properties>
     <parent>
@@ -259,7 +260,7 @@
                 <plugin>
                     <groupId>com.mobilepetroleum.radialencapsulation</groupId>
                     <artifactId>radial-encapsulation-maven-plugin</artifactId>
-                    <version>1.0.0</version>
+                    <version>${radial-encapsulation-maven-plugin.version}</version>
                     <configuration>
                         <basePackage>${radial.base-package}</basePackage>
                         <includeTestSources>false</includeTestSources>
