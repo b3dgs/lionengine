@@ -97,22 +97,36 @@ public final class Medias
      */
     public static synchronized List<Media> getByExtension(String extension, Media folder)
     {
-        final List<Media> medias = new ArrayList<Media>();
         try
         {
             final File jar = getJarResources();
             final String prefix = getJarResourcesPrefix();
             final String fullPath = Medias.create(prefix, folder.getPath()).getPath();
             final int prefixLength = prefix.length() + 1;
-            for (final ZipEntry entry : UtilZip.getEntriesByExtension(jar, fullPath, extension))
-            {
-                final Media media = create(entry.getName().substring(prefixLength));
-                medias.add(media);
-            }
+            return getByExtension(jar, fullPath, prefixLength, extension);
         }
         catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
-            medias.addAll(getFilesByExtension(folder, extension));
+            return getFilesByExtension(folder, extension);
+        }
+    }
+
+    /**
+     * Get all media by extension found in the direct JAR path (does not search in sub folders).
+     * 
+     * @param jar The JAR file.
+     * @param fullPath The full path in JAR.
+     * @param prefixLength The prefix length in JAR.
+     * @param extension The extension (without dot; eg: png).
+     * @return The medias found.
+     */
+    public static synchronized List<Media> getByExtension(File jar, String fullPath, int prefixLength, String extension)
+    {
+        final List<Media> medias = new ArrayList<Media>();
+        for (final ZipEntry entry : UtilZip.getEntriesByExtension(jar, fullPath, extension))
+        {
+            final Media media = create(entry.getName().substring(prefixLength));
+            medias.add(media);
         }
         return medias;
     }

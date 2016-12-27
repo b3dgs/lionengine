@@ -241,6 +241,21 @@ public class MediasTest
     }
 
     /**
+     * Test the get medias by extension in JAR.
+     */
+    @Test
+    public void testGetByExtensionJar()
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+        final Collection<Media> medias = Medias.getByExtension(Medias.create("resources.jar").getFile(),
+                                                               "com/b3dgs/lionengine/core/",
+                                                               26,
+                                                               "png");
+
+        Assert.assertEquals("image.png", medias.iterator().next().getPath());
+    }
+
+    /**
      * Test the get medias from JAR.
      */
     @Test

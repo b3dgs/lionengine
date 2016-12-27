@@ -46,6 +46,7 @@ public final class UtilZip
      * @param path The path to check.
      * @param extension The extension (without dot; eg: xml).
      * @return The entries list.
+     * @throws LionEngineException If unable to open ZIP.
      */
     public static Collection<ZipEntry> getEntriesByExtension(File jar, String path, String extension)
     {
