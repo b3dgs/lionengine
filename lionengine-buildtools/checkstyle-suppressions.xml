@@ -24,8 +24,8 @@
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel" lines="240"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel" lines="92, 147"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="220"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="233, 238"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="226"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="239, 244"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathFinderImpl" lines="318"/>
     <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.FeaturableModel" lines="248"/>
     <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.feature.IdentifiableModel" lines="60"/>

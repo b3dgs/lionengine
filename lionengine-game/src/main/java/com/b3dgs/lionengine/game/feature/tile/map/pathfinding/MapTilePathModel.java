@@ -54,6 +54,12 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
+     * <p>
+     * The {@link MapTile} must provide the following features:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileGroup}</li>
+     * </ul>
      * 
      * @throws LionEngineException If services not found.
      */
