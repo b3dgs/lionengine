@@ -23,10 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
@@ -39,24 +37,6 @@ import com.b3dgs.lionengine.util.UtilStream;
  */
 public class MediaTest
 {
-    /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void prepare()
-    {
-        Medias.setLoadFromJar(MediaTest.class);
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setLoadFromJar(null);
-    }
-
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
@@ -99,6 +79,7 @@ public class MediaTest
     @Test
     public void testFile()
     {
+        Medias.setLoadFromJar(MediaTest.class);
         final String path = "image.png";
 
         Assert.assertEquals(new File(MediaTest.class.getResource(path).getFile()), Medias.create(path).getFile());
@@ -123,6 +104,8 @@ public class MediaTest
     @Test
     public void testInputStream() throws IOException
     {
+        Medias.setResourcesDirectory(null);
+        Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create("image.png");
 
         Assert.assertTrue(media.exists());

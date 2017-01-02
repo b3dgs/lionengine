@@ -180,6 +180,7 @@ public final class FileWriting implements Closeable
     @Override
     public void close() throws IOException
     {
+        out.flush();
         out.close();
     }
 }

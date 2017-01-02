@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
@@ -38,14 +39,37 @@ import com.b3dgs.lionengine.util.UtilFolder;
  */
 final class MediaDefault implements Media
 {
+    /** Temp folder property. */
+    private static final String TEMP_DIR = "java.io.tmpdir";
     /** No parent. */
     private static final String NO_PARENT = Constant.EMPTY_STRING;
+    /** Unable to create temp directory. */
+    private static final String ERROR_CREATE_TEMP_DIR = "Unable to create temp dir ";
     /** Error open media. */
     private static final String ERROR_OPEN_MEDIA = "Cannot open the media";
     /** Error open media in JAR. */
     private static final String ERROR_OPEN_MEDIA_JAR = "Resource in JAR not found";
     /** Invalid path directory. */
     private static final String ERROR_PATH_DIR = "Invalid directory: ";
+    /** Temp folder. */
+    private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
+
+    /**
+     * Create the temp directory relative to loader class name.
+     * 
+     * @param loader The class loader.
+     * @return The temp directory absolute path.
+     */
+    private static String getTempDir(Class<?> loader)
+    {
+        final File temp = new File(TEMP, loader.getSimpleName());
+        final String path = temp.getAbsolutePath();
+        if (!temp.exists() && !temp.mkdir())
+        {
+            Verbose.warning(ERROR_CREATE_TEMP_DIR, path);
+        }
+        return path;
+    }
 
     /** Separator. */
     private final String separator;
@@ -57,6 +81,8 @@ final class MediaDefault implements Media
     private final String path;
     /** Media parent path. */
     private final String parent;
+    /** Temp path. */
+    private String tempPath;
 
     /**
      * Internal constructor.
@@ -81,7 +107,7 @@ final class MediaDefault implements Media
      */
     MediaDefault(String separator, Class<?> loader, String path)
     {
-        this(separator, null, loader, path);
+        this(separator, getTempDir(loader), loader, path);
     }
 
     /**
@@ -138,6 +164,10 @@ final class MediaDefault implements Media
     @Override
     public String getPath()
     {
+        if (tempPath != null)
+        {
+            return tempPath;
+        }
         return path;
     }
 
@@ -151,12 +181,12 @@ final class MediaDefault implements Media
     public File getFile()
     {
         final File file;
-        if (loader != null)
+        if (loader != null && tempPath == null)
         {
             final URL url = loader.getResource(path);
             if (url == null)
             {
-                file = new File(path);
+                file = new File(getPath());
             }
             else
             {
@@ -165,7 +195,7 @@ final class MediaDefault implements Media
         }
         else
         {
-            file = new File(UtilFolder.getPathSeparator(separator, resourcesDir, path));
+            file = new File(UtilFolder.getPathSeparator(separator, resourcesDir, getPath()));
         }
         return file;
     }
@@ -197,19 +227,27 @@ final class MediaDefault implements Media
     @Override
     public InputStream getInputStream()
     {
-        final String inputPath = UtilFolder.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
-            if (loader != null)
+            if (loader != null && tempPath == null)
             {
-                final InputStream input = loader.getResourceAsStream(inputPath);
+                final InputStream input = loader.getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
                 if (input == null)
                 {
                     throw new LionEngineException(this, ERROR_OPEN_MEDIA_JAR);
                 }
                 return input;
             }
-            return new FileInputStream(inputPath);
+            final String realPath;
+            if (tempPath != null)
+            {
+                realPath = UtilFolder.getPathSeparator(File.separator, resourcesDir, tempPath);
+            }
+            else
+            {
+                realPath = UtilFolder.getPathSeparator(separator, resourcesDir, path);
+            }
+            return new FileInputStream(realPath);
         }
         catch (final FileNotFoundException exception)
         {
@@ -220,10 +258,17 @@ final class MediaDefault implements Media
     @Override
     public OutputStream getOutputStream()
     {
-        final String outputPath = UtilFolder.getPathSeparator(separator, resourcesDir, getPath());
+        final String systemPath = path.replace(separator, File.separator);
+        final String outputPath = UtilFolder.getPathSeparator(File.separator, resourcesDir, systemPath);
+        if (new File(outputPath).getParentFile().mkdirs())
+        {
+            Verbose.info("Temp path created: ", outputPath);
+        }
         try
         {
-            return new FileOutputStream(outputPath);
+            final OutputStream output = new FileOutputStream(outputPath);
+            tempPath = systemPath;
+            return output;
         }
         catch (final FileNotFoundException exception)
         {
@@ -236,7 +281,7 @@ final class MediaDefault implements Media
     {
         if (loader != null)
         {
-            final String jarPath = UtilFolder.getPathSeparator(separator, resourcesDir, getPath());
+            final String jarPath = UtilFolder.getPathSeparator(separator, getPath());
             return loader.getResource(jarPath) != null;
         }
         return getFile().exists();
@@ -269,6 +314,6 @@ final class MediaDefault implements Media
     @Override
     public String toString()
     {
-        return path;
+        return getPath();
     }
 }
