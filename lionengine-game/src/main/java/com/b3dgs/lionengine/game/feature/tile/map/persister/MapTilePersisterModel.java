@@ -195,11 +195,11 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
         output.writeInteger(widthInTile);
         output.writeInteger(map.getInTileHeight());
 
-        final boolean hasConfig = map.getSheetsConfig() != null;
+        final boolean hasConfig = map.getMedia() != null;
         output.writeBoolean(hasConfig);
         if (hasConfig)
         {
-            output.writeString(map.getSheetsConfig().getPath());
+            output.writeString(map.getMedia().getPath());
         }
 
         final int step = BLOC_SIZE;

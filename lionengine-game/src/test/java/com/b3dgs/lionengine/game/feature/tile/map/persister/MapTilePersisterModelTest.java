@@ -135,7 +135,7 @@ public class MapTilePersisterModelTest
         UtilMapTilePersister.saveMap(map, level);
         final MapTile mapLoaded = UtilMapTilePersister.loadMap(level);
 
-        Assert.assertEquals(config, mapLoaded.getSheetsConfig());
+        Assert.assertEquals(config, mapLoaded.getMedia());
 
         Assert.assertTrue(fileConfig.delete());
         Assert.assertTrue(levelFile.delete());

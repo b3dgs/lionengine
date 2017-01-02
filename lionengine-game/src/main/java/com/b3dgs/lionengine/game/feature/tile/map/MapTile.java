@@ -251,13 +251,6 @@ public interface MapTile extends Surface, Featurable
     int getInTileY(Localizable localizable);
 
     /**
-     * Get the sheets configuration media file.
-     * 
-     * @return The sheet configuration media file.
-     */
-    Media getSheetsConfig();
-
-    /**
      * Get list of sheets id.
      * 
      * @return The set of sheets id.

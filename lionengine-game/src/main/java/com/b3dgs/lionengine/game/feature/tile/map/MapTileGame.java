@@ -483,7 +483,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     }
 
     @Override
-    public Media getSheetsConfig()
+    public Media getMedia()
     {
         return sheetsConfig;
     }
