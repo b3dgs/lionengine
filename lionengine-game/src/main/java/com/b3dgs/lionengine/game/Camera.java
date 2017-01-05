@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -137,6 +138,25 @@ public class Camera extends FeaturableModel implements Viewer
     {
         offset.teleport(0, 0);
         mover.teleport(x, y);
+    }
+
+    /**
+     * Draw the camera field of view according to a grid.
+     * 
+     * @param g The graphic output.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param gridH The horizontal grid.
+     * @param gridV The vertical grid.
+     * @param surface The surface referential (minimap).
+     */
+    public void drawFov(Graphic g, int x, int y, int gridH, int gridV, Surface surface)
+    {
+        final int h = x + (int) Math.floor((getX() + getViewX()) / gridH);
+        final int v = y + (int) -Math.floor((getY() + getHeight()) / gridV);
+        final int width = getWidth() / gridH;
+        final int height = getHeight() / gridV;
+        g.drawRect(h, v + surface.getHeight(), width, height, false);
     }
 
     /**
