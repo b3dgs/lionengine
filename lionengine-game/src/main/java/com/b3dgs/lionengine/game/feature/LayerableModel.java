@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
 
 /**
  * Layerable model implementation.
@@ -46,6 +47,20 @@ public class LayerableModel extends FeatureModel implements Layerable
     /**
      * Create a layerable model.
      * 
+     * @param setup The setup reference.
+     */
+    public LayerableModel(Setup setup)
+    {
+        super();
+
+        final LayerableConfig config = LayerableConfig.imports(setup);
+        layerRefresh = Integer.valueOf(config.getLayerRefresh());
+        layerDisplay = Integer.valueOf(config.getLayerDisplay());
+    }
+
+    /**
+     * Create a layerable model.
+     * 
      * @param layer The default layer refresh and display value.
      */
     public LayerableModel(int layer)
@@ -62,6 +77,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     public LayerableModel(int layerRefresh, int layerDisplay)
     {
         super();
+
         this.layerRefresh = Integer.valueOf(layerRefresh);
         this.layerDisplay = Integer.valueOf(layerDisplay);
     }
