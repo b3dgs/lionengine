@@ -229,4 +229,23 @@ public class TransformableModelTest
         Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
     }
+
+    /**
+     * Test the transformable transform function.
+     */
+    @Test
+    public void testTransform()
+    {
+        transformable.transform(1.0, 2.0, 3, 4);
+
+        Assert.assertEquals(1.0, transformable.getOldX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, transformable.getOldY(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, transformable.getY(), UtilTests.PRECISION);
+
+        Assert.assertEquals(16, transformable.getOldWidth(), UtilTests.PRECISION);
+        Assert.assertEquals(32, transformable.getOldHeight(), UtilTests.PRECISION);
+        Assert.assertEquals(3, transformable.getWidth(), UtilTests.PRECISION);
+        Assert.assertEquals(4, transformable.getHeight(), UtilTests.PRECISION);
+    }
 }

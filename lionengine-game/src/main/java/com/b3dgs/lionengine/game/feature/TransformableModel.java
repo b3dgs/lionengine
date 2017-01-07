@@ -184,6 +184,17 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     }
 
     @Override
+    public void transform(double x, double y, int width, int height)
+    {
+        mover.teleport(x, y);
+        oldWidth = this.width;
+        oldHeight = this.height;
+        this.width = width;
+        this.height = height;
+        notifyTransformed(true);
+    }
+
+    @Override
     public void setSize(int width, int height)
     {
         oldWidth = this.width;

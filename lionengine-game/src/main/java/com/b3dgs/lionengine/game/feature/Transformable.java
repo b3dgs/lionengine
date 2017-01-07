@@ -49,6 +49,16 @@ public interface Transformable extends Feature, Mover, Shape
     void setSize(int width, int height);
 
     /**
+     * Transform the transformable.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param width The width.
+     * @param height The height.
+     */
+    void transform(double x, double y, int width, int height);
+
+    /**
      * Get the old width.
      * 
      * @return The old width.
