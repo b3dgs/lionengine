@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -135,7 +134,7 @@ public class ToolsAwtTest
             final BufferedImage image = ToolsAwt.getImage(input);
             Assert.assertNotNull(image);
 
-            final Media save = Medias.create(File.createTempFile("temp", ".tmp").getPath());
+            final Media save = media;
 
             OutputStream output = null;
             try

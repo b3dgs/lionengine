@@ -55,8 +55,8 @@ public final class FramesConfig
     public static FramesConfig imports(Xml root)
     {
         final Xml node = root.getChild(NODE_FRAMES);
-        final int horizontals = node.readInteger(FramesConfig.ATT_HORIZONTAL);
-        final int verticals = node.readInteger(FramesConfig.ATT_VERTICAL);
+        final int horizontals = node.readInteger(ATT_HORIZONTAL);
+        final int verticals = node.readInteger(ATT_VERTICAL);
 
         return new FramesConfig(horizontals, verticals);
     }
@@ -65,7 +65,7 @@ public final class FramesConfig
      * Exports the frames node from config.
      * 
      * @param config The config reference.
-     * @return The frames data.
+     * @return The frames node.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static Xml exports(FramesConfig config)

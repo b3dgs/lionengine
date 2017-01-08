@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.AfterClass;
@@ -90,10 +89,8 @@ public class FactoryGraphicTest
      */
     protected static void loadResources() throws IOException
     {
-        final File temp = File.createTempFile("save", "png");
-        temp.deleteOnExit();
         mediaImage = Medias.create("image.png");
-        mediaSave = Medias.create(temp.getAbsolutePath());
+        mediaSave = mediaImage;
         image = Graphics.getImageBuffer(mediaImage);
         image.prepare();
     }

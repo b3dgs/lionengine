@@ -438,7 +438,7 @@ public class Configurer
      * @param path The node path.
      * @return <code>true</code> if node exists, <code>false</code> else.
      */
-    public boolean hasNode(String... path)
+    public final boolean hasNode(String... path)
     {
         Xml node = root;
         for (final String element : path)
