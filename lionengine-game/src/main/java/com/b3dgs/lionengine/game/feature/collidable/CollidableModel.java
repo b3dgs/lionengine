@@ -116,7 +116,7 @@ public class CollidableModel extends FeatureModel
     private final List<Rectangle> cacheRect = new ArrayList<Rectangle>();
 
     /** Associated group ID. */
-    private Integer group;
+    private Integer group = Integer.valueOf(0);
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The viewer reference. */
@@ -131,6 +131,32 @@ public class CollidableModel extends FeatureModel
     private boolean enabled;
     /** Show collision flag. */
     private boolean showCollision;
+
+    /**
+     * Create a collidable model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
+     * {@link #addListener(CollidableListener)} on it.
+     * </p>
+     */
+    public CollidableModel()
+    {
+        super();
+
+        recycle();
+    }
 
     /**
      * Create a collidable model.
@@ -434,8 +460,18 @@ public class CollidableModel extends FeatureModel
                 final Mirror mirror = getMirror(collision);
                 final int offsetX = getOffsetX(collision, mirror);
                 final int offsetY = getOffsetY(collision, mirror);
-                final int width = collision.getWidth();
-                final int height = collision.getHeight();
+                final int width;
+                final int height;
+                if (Collision.AUTOMATIC == collision)
+                {
+                    width = transformable.getWidth();
+                    height = transformable.getHeight();
+                }
+                else
+                {
+                    width = collision.getWidth();
+                    height = collision.getHeight();
+                }
                 if (width > maxWidth)
                 {
                     maxWidth = width;

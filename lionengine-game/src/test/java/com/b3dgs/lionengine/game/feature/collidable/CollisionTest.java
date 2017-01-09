@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game.feature.collidable;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Test collision data class.
  */
@@ -31,12 +33,21 @@ public class CollisionTest
     @Test
     public void testCollision()
     {
-        final Collision collisionData = new Collision(null, 1, 2, 3, 4, true);
+        final Collision collisionData = new Collision("void", 1, 2, 3, 4, true);
 
         Assert.assertTrue(collisionData.getOffsetX() == 1);
         Assert.assertTrue(collisionData.getOffsetY() == 2);
         Assert.assertTrue(collisionData.getWidth() == 3);
         Assert.assertTrue(collisionData.getHeight() == 4);
         Assert.assertTrue(collisionData.hasMirror());
+    }
+
+    /**
+     * Test collision with <code>null</code> name.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCollisionNullName()
+    {
+        Assert.assertNull(new Collision(null, 1, 2, 3, 4, true));
     }
 }

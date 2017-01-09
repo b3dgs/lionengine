@@ -17,7 +17,10 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
@@ -27,6 +30,9 @@ import com.b3dgs.lionengine.Nameable;
  */
 public class Collision implements Nameable
 {
+    /** Compute automatically collision by using the owner size. */
+    public static final Collision AUTOMATIC = new Collision("automatic", 0, 0, 0, 0, false);
+
     /** Name. */
     private final String name;
     /** Horizontal offset. */
@@ -49,9 +55,12 @@ public class Collision implements Nameable
      * @param width The collision width.
      * @param height The collision height.
      * @param mirror The mirror flag.
+     * @throws LionEngineException If <code>null</code> name.
      */
     public Collision(String name, int offsetX, int offsetY, int width, int height, boolean mirror)
     {
+        Check.notNull(name);
+
         this.name = name;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -118,5 +127,42 @@ public class Collision implements Nameable
     public String getName()
     {
         return name;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + UtilConversion.boolToInt(mirror);
+        result = prime * result + name.hashCode();
+        result = prime * result + offsetX;
+        result = prime * result + offsetY;
+        result = prime * result + width;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass())
+        {
+            return false;
+        }
+        final Collision other = (Collision) object;
+        return other.mirror == mirror
+               && other.width == width
+               && other.height == height
+               && other.offsetX == other.offsetY
+               && other.name.equals(name);
     }
 }
