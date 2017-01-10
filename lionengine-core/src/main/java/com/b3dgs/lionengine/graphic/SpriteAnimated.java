@@ -92,4 +92,18 @@ public interface SpriteAnimated extends Sprite, Animator
      * @return The tile height.
      */
     int getFrameHeight();
+
+    /**
+     * Get the horizontal frame offset.
+     * 
+     * @return The horizontal frame offset.
+     */
+    int getFrameOffsetX();
+
+    /**
+     * Get the vertical frame offset.
+     * 
+     * @return The vertical frame offset.
+     */
+    int getFrameOffsetY();
 }

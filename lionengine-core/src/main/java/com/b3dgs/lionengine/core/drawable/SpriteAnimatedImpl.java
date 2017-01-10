@@ -179,6 +179,18 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
+    public int getFrameOffsetX()
+    {
+        return frameOffsetX;
+    }
+
+    @Override
+    public int getFrameOffsetY()
+    {
+        return frameOffsetY;
+    }
+
+    @Override
     protected void stretch(int newWidth, int newHeight)
     {
         final int w = (int) Math.round(newWidth / (double) getFramesHorizontal()) * getFramesHorizontal();

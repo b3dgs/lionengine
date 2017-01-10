@@ -56,9 +56,7 @@ public class FramesConfigTest
     @Test
     public void testConfig()
     {
-        final int horizontal = 1;
-        final int vertical = 2;
-        final FramesConfig config = new FramesConfig(horizontal, vertical);
+        final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
         final Media media = Medias.create("object.xml");
         try
@@ -84,11 +82,13 @@ public class FramesConfigTest
     @Test
     public void testHashCode()
     {
-        final int hash = new FramesConfig(1, 2).hashCode();
+        final int hash = new FramesConfig(1, 2, 3, 4).hashCode();
 
-        Assert.assertEquals(hash, new FramesConfig(1, 2).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(0, 2).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 0).hashCode());
+        Assert.assertEquals(hash, new FramesConfig(1, 2, 3, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(0, 2, 3, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(1, 0, 3, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 0, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 3, 0).hashCode());
     }
 
     /**
@@ -97,14 +97,16 @@ public class FramesConfigTest
     @Test
     public void testEquals()
     {
-        final FramesConfig config = new FramesConfig(1, 2);
+        final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
         Assert.assertEquals(config, config);
         Assert.assertNotEquals(config, null);
         Assert.assertNotEquals(config, new Object());
-        Assert.assertEquals(config, new FramesConfig(1, 2));
-        Assert.assertNotEquals(config, new FramesConfig(0, 2));
-        Assert.assertNotEquals(config, new FramesConfig(1, 0));
+        Assert.assertEquals(config, new FramesConfig(1, 2, 3, 4));
+        Assert.assertNotEquals(config, new FramesConfig(0, 2, 3, 4));
+        Assert.assertNotEquals(config, new FramesConfig(1, 0, 3, 4));
+        Assert.assertNotEquals(config, new FramesConfig(1, 2, 0, 4));
+        Assert.assertNotEquals(config, new FramesConfig(1, 2, 3, 0));
     }
 
     /**
@@ -113,8 +115,9 @@ public class FramesConfigTest
     @Test
     public void testToString()
     {
-        final FramesConfig config = new FramesConfig(1, 2);
+        final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
-        Assert.assertEquals("FramesConfig [horizontalFrames=1, verticalFrames=2]", config.toString());
+        Assert.assertEquals("FramesConfig [horizontalFrames=1, verticalFrames=2, offsetX=3, offsetY=4]",
+                            config.toString());
     }
 }

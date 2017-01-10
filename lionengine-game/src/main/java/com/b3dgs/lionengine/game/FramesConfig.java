@@ -30,8 +30,12 @@ public final class FramesConfig
     public static final String NODE_FRAMES = Constant.XML_PREFIX + "frames";
     /** Frames horizontal node name. */
     public static final String ATT_HORIZONTAL = "horizontal";
-    /** Frames vertical node name. */
+    /** Frames vertical attribute name. */
     public static final String ATT_VERTICAL = "vertical";
+    /** Frames offset horizontal attribute name. */
+    public static final String ATT_OFFSET_X = "offsetX";
+    /** Frames offset vertical attribute name. */
+    public static final String ATT_OFFSET_Y = "offsetY";
 
     /**
      * Imports the frames config from configurer.
@@ -57,8 +61,10 @@ public final class FramesConfig
         final Xml node = root.getChild(NODE_FRAMES);
         final int horizontals = node.readInteger(ATT_HORIZONTAL);
         final int verticals = node.readInteger(ATT_VERTICAL);
+        final int offsetX = node.readInteger(0, ATT_OFFSET_X);
+        final int offsetY = node.readInteger(0, ATT_OFFSET_Y);
 
-        return new FramesConfig(horizontals, verticals);
+        return new FramesConfig(horizontals, verticals, offsetX, offsetY);
     }
 
     /**
@@ -73,6 +79,8 @@ public final class FramesConfig
         final Xml node = new Xml(NODE_FRAMES);
         node.writeInteger(ATT_HORIZONTAL, config.getHorizontal());
         node.writeInteger(ATT_VERTICAL, config.getVertical());
+        node.writeInteger(ATT_OFFSET_X, config.getOffsetX());
+        node.writeInteger(ATT_OFFSET_Y, config.getOffsetY());
 
         return node;
     }
@@ -81,17 +89,27 @@ public final class FramesConfig
     private final int horizontalFrames;
     /** The number of vertical frames. */
     private final int verticalFrames;
+    /** The horizontal offset. */
+    private final int offsetX;
+    /** The vertical offset. */
+    private final int offsetY;
 
     /**
      * Create the frames configuration.
      * 
      * @param horizontalFrames The horizontal frames value.
      * @param verticalFrames The vertical frames value.
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
      */
-    public FramesConfig(int horizontalFrames, int verticalFrames)
+    public FramesConfig(int horizontalFrames, int verticalFrames, int offsetX, int offsetY)
     {
+        super();
+
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
     }
 
     /**
@@ -114,6 +132,26 @@ public final class FramesConfig
         return verticalFrames;
     }
 
+    /**
+     * Get the horizontal offset.
+     * 
+     * @return The horizontal offset.
+     */
+    public int getOffsetX()
+    {
+        return offsetX;
+    }
+
+    /**
+     * Get the vertical offset.
+     * 
+     * @return The vertical offset.
+     */
+    public int getOffsetY()
+    {
+        return offsetY;
+    }
+
     /*
      * Object
      */
@@ -125,6 +163,8 @@ public final class FramesConfig
         int result = 1;
         result = prime * result + horizontalFrames;
         result = prime * result + verticalFrames;
+        result = prime * result + offsetX;
+        result = prime * result + offsetY;
         return result;
     }
 
@@ -140,7 +180,10 @@ public final class FramesConfig
             return false;
         }
         final FramesConfig other = (FramesConfig) object;
-        return other.getHorizontal() == getHorizontal() && other.getVertical() == getVertical();
+        return other.getHorizontal() == getHorizontal()
+               && other.getVertical() == getVertical()
+               && other.getOffsetX() == getOffsetX()
+               && other.getOffsetY() == getOffsetY();
     }
 
     @Override
@@ -151,6 +194,10 @@ public final class FramesConfig
                                   .append(horizontalFrames)
                                   .append(", verticalFrames=")
                                   .append(verticalFrames)
+                                  .append(", offsetX=")
+                                  .append(offsetX)
+                                  .append(", offsetY=")
+                                  .append(offsetY)
                                   .append("]")
                                   .toString();
     }
