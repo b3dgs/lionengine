@@ -62,11 +62,11 @@ public class AnimationList extends ObjectList<Animation>
     protected Animation copyObject(Animation animation)
     {
         return new Animation(animation.getName(),
-                                    animation.getFirst(),
-                                    animation.getLast(),
-                                    animation.getSpeed(),
-                                    animation.getReverse(),
-                                    animation.getRepeat());
+                             animation.getFirst(),
+                             animation.getLast(),
+                             animation.getSpeed(),
+                             animation.getReverse(),
+                             animation.getRepeat());
     }
 
     @Override

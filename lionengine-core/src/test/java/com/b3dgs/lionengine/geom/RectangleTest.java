@@ -197,7 +197,6 @@ public class RectangleTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("Rectangle [x=0.0, y=1.0, width=2.0, height=3.0]",
-                            new Rectangle(0, 1, 2, 3).toString());
+        Assert.assertEquals("Rectangle [x=0.0, y=1.0, width=2.0, height=3.0]", new Rectangle(0, 1, 2, 3).toString());
     }
 }
