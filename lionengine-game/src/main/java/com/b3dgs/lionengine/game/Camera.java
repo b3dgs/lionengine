@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
+import com.b3dgs.lionengine.SurfaceTile;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.util.UtilMath;
@@ -225,13 +228,45 @@ public class Camera extends FeaturableModel implements Viewer
      * </p>
      * 
      * @param surface The surface reference.
+     * @throws LionEngineException If <code>null</code> surface.
      */
     public void setLimits(Surface surface)
     {
-        limitRight = Math.max(0, surface.getWidth() - width);
+        setLimits(surface, 1, 1);
+    }
+
+    /**
+     * Define the maximum view limit. This function will allow to let the camera know the max rendering size, and so,
+     * know which part can be viewed without being outside the extremity.
+     * <p>
+     * Note: Must be called after set view ({@link #setView(int, int, int, int, int)}).
+     * </p>
+     * 
+     * @param surface The surface reference.
+     * @throws LionEngineException If <code>null</code> surface.
+     */
+    public void setLimits(SurfaceTile surface)
+    {
+        setLimits(surface, surface.getTileWidth(), surface.getTileHeight());
+    }
+
+    /**
+     * Define the maximum view limit.
+     * 
+     * @param surface The surface reference.
+     * @param gridH The horizontal grid.
+     * @param gridV The vertical grid.
+     * @throws LionEngineException If <code>null</code> surface.
+     */
+    private void setLimits(Surface surface, int gridH, int gridV)
+    {
+        Check.notNull(surface);
+
+        limitRight = Math.max(0, surface.getWidth() - UtilMath.getRounded(width, gridH));
         limitLeft = 0;
-        limitTop = Math.max(0, surface.getHeight() - height);
+        limitTop = Math.max(0, surface.getHeight() - UtilMath.getRounded(height, gridV));
         limitBottom = 0;
+
         moveLocation(1.0, 0.0, 0.0);
     }
 
