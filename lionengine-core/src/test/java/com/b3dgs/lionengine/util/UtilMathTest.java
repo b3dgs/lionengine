@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Test the utility math class.
@@ -106,6 +107,39 @@ public class UtilMathTest
     {
         Assert.assertTrue(UtilMath.curveValue(0.0, 1.0, 0.5) > 0.0);
         Assert.assertTrue(UtilMath.curveValue(0.0, -1.0, 0.5) < 0.0);
+    }
+
+    /**
+     * Test the distance function between two localizable.
+     */
+    @Test
+    public void testDistanceLocalizable()
+    {
+        Assert.assertEquals(0.0,
+                            UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 0.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(1.0,
+                            UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(1.0, 0.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(1.0,
+                            UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 1.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(1.0,
+                            UtilMath.getDistance(Geom.createLocalizable(1.0, 0.0), Geom.createLocalizable(0.0, 0.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(1.0,
+                            UtilMath.getDistance(Geom.createLocalizable(0.0, 1.0), Geom.createLocalizable(0.0, 0.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(Math.sqrt(2),
+                            UtilMath.getDistance(Geom.createLocalizable(1.0, 1.0), Geom.createLocalizable(2.0, 2.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(2.0,
+                            UtilMath.getDistance(Geom.createLocalizable(4.0, 6.0), Geom.createLocalizable(6.0, 6.0)),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(2.0,
+                            UtilMath.getDistance(Geom.createLocalizable(-4.0, -6.0),
+                                                 Geom.createLocalizable(-6.0, -6.0)),
+                            UtilTests.PRECISION);
     }
 
     /**

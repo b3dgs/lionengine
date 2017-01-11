@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.util;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 
 /**
  * Static functions around math manipulation.
@@ -148,7 +149,25 @@ public final class UtilMath
      */
     public static double getDistance(double x1, double y1, double x2, double y2)
     {
-        return StrictMath.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        final double x = x2 - x1;
+        final double y = y2 - y1;
+
+        return StrictMath.sqrt(x * x + y * y);
+    }
+
+    /**
+     * Get distance of two points.
+     * 
+     * @param a The first localizable.
+     * @param b The second localizable.
+     * @return The distance between them.
+     */
+    public static double getDistance(Localizable a, Localizable b)
+    {
+        final double x = b.getX() - a.getX();
+        final double y = b.getY() - a.getY();
+
+        return StrictMath.sqrt(x * x + y * y);
     }
 
     /**
