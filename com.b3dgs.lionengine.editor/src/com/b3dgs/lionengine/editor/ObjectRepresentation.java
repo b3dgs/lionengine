@@ -86,7 +86,7 @@ public class ObjectRepresentation extends FeaturableModel
         surface.prepare();
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
+        transformable.setSize(surface.getTileWidth(), surface.getTileHeight());
 
         addFeature(new RefreshableModel(extrp ->
         {

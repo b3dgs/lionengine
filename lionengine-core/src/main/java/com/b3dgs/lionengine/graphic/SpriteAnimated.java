@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.graphic;
 
 import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.SurfaceTile;
 
 /**
  * <p>
@@ -55,7 +56,7 @@ import com.b3dgs.lionengine.Animator;
  * @see com.b3dgs.lionengine.Animation
  * @see com.b3dgs.lionengine.AnimState
  */
-public interface SpriteAnimated extends Sprite, Animator
+public interface SpriteAnimated extends Sprite, SurfaceTile, Animator
 {
     /**
      * Set frame offsets (offsets on rendering).
@@ -78,20 +79,6 @@ public interface SpriteAnimated extends Sprite, Animator
      * @return The number of vertical frames.
      */
     int getFramesVertical();
-
-    /**
-     * Get current frame width.
-     * 
-     * @return The tile width.
-     */
-    int getFrameWidth();
-
-    /**
-     * Get current frame height.
-     * 
-     * @return The tile height.
-     */
-    int getFrameHeight();
 
     /**
      * Get the horizontal frame offset.

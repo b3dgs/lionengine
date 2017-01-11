@@ -92,8 +92,8 @@ public class SpriteAnimatedTest
         final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(media, framesH, framesV);
         final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(media, spriteC);
 
-        Assert.assertEquals(info.getWidth() / framesH, spriteC.getFrameWidth());
-        Assert.assertEquals(info.getHeight() / framesV, spriteC.getFrameHeight());
+        Assert.assertEquals(info.getWidth() / framesH, spriteC.getTileWidth());
+        Assert.assertEquals(info.getHeight() / framesV, spriteC.getTileHeight());
 
         DrawableTestTool.testSpriteLoading(spriteC);
         DrawableTestTool.testSpriteModification(2, spriteA);

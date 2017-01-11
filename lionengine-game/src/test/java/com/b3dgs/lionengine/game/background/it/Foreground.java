@@ -313,7 +313,7 @@ class Foreground extends BackgroundGame
             anim.update(extrp);
 
             data.setOffsetX(data.getOffsetX() + speed);
-            data.setOffsetX(UtilMath.wrapDouble(data.getOffsetX(), 0.0, anim.getFrameWidth()));
+            data.setOffsetX(UtilMath.wrapDouble(data.getOffsetX(), 0.0, anim.getTileWidth()));
             data.setOffsetY(y);
 
             height += water.getSpeed() * extrp;
@@ -341,7 +341,7 @@ class Foreground extends BackgroundGame
             }
 
             // animation rendering
-            w = (int) Math.ceil(screenWidth / (double) anim.getFrameWidth());
+            w = (int) Math.ceil(screenWidth / (double) anim.getTileWidth());
             final int x = (int) (-data.getOffsetX() + data.getMainX());
             y = (int) (data.getOffsetY() + data.getMainY() - 16.0 + water.getHeight());
 
@@ -349,7 +349,7 @@ class Foreground extends BackgroundGame
             {
                 for (int j = 0; j <= w; j++)
                 {
-                    anim.setLocation(x + anim.getFrameWidth() * j, y);
+                    anim.setLocation(x + anim.getTileWidth() * j, y);
                     anim.render(g);
                 }
             }

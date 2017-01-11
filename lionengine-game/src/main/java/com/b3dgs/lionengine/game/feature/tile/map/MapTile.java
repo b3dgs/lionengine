@@ -22,7 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Surface;
+import com.b3dgs.lionengine.SurfaceTile;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.SpriteTiled;
  * @see Minimap
  * @see Tile
  */
-public interface MapTile extends Surface, Featurable
+public interface MapTile extends SurfaceTile, Featurable
 {
     /**
      * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(Tile)}).
@@ -279,20 +279,6 @@ public interface MapTile extends Surface, Featurable
      * @return The number of non <code>null</code> tile.
      */
     int getTilesNumber();
-
-    /**
-     * Get width of a tile.
-     * 
-     * @return The tile width.
-     */
-    int getTileWidth();
-
-    /**
-     * Get height of a tile.
-     * 
-     * @return The tile height.
-     */
-    int getTileHeight();
 
     /**
      * Get number of horizontal tiles.

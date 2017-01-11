@@ -114,7 +114,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         final int ox = frame % horizontalFrames;
         final int oy = (int) Math.floor(frame / (double) horizontalFrames);
 
-        render(g, fx, fy, getFrameWidth(), getFrameHeight(), ox, oy);
+        render(g, fx, fy, getTileWidth(), getTileHeight(), ox, oy);
     }
 
     @Override
@@ -167,13 +167,13 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
-    public int getFrameWidth()
+    public int getTileWidth()
     {
         return getWidth() / horizontalFrames;
     }
 
     @Override
-    public int getFrameHeight()
+    public int getTileHeight()
     {
         return getHeight() / verticalFrames;
     }
@@ -222,8 +222,8 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         final SpriteAnimated sprite = (SpriteAnimated) object;
 
         final boolean sameSprite = super.equals(object);
-        final boolean sameFrameWidth = sprite.getFrameWidth() == getFrameWidth();
-        final boolean sameFrameHeight = sprite.getFrameHeight() == getFrameHeight();
+        final boolean sameFrameWidth = sprite.getTileWidth() == getTileWidth();
+        final boolean sameFrameHeight = sprite.getTileHeight() == getTileHeight();
         final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
         final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
 

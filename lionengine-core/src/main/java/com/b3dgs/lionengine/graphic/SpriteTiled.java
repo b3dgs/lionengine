@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.SurfaceTile;
+
 /**
  * Tiled sprite are mainly used for tile based levels. It works by loading an image and render only a part of it
  * (virtually splited). The first tile is 0.
@@ -35,7 +37,7 @@ package com.b3dgs.lionengine.graphic;
  * tilesheet.render(g);
  * </pre>
  */
-public interface SpriteTiled extends Sprite
+public interface SpriteTiled extends Sprite, SurfaceTile
 {
     /**
      * Set the active tile.
@@ -58,18 +60,4 @@ public interface SpriteTiled extends Sprite
      * @return The number of vertical tiles.
      */
     int getTilesVertical();
-
-    /**
-     * Get current tile width.
-     * 
-     * @return The tile width.
-     */
-    int getTileWidth();
-
-    /**
-     * Get current tile height.
-     * 
-     * @return The tile height.
-     */
-    int getTileHeight();
 }
