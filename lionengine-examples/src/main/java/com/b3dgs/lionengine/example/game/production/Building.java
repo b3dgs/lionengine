@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
@@ -76,20 +77,20 @@ class Building extends FeaturableModel implements ProducibleListener
     }
 
     @Override
-    public void notifyProductionStarted()
+    public void notifyProductionStarted(Producer producer)
     {
         surface.setLocation(viewer, transformable);
         visible = true;
     }
 
     @Override
-    public void notifyProductionProgress()
+    public void notifyProductionProgress(Producer producer)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyProductionEnded()
+    public void notifyProductionEnded(Producer producer)
     {
         surface.setFrame(2);
     }

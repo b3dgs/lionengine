@@ -93,19 +93,19 @@ public class UtilProducible
         return new ProducibleListener()
         {
             @Override
-            public void notifyProductionStarted()
+            public void notifyProductionStarted(Producer producer)
             {
                 start.set(true);
             }
 
             @Override
-            public void notifyProductionProgress()
+            public void notifyProductionProgress(Producer producer)
             {
                 progress.set(true);
             }
 
             @Override
-            public void notifyProductionEnded()
+            public void notifyProductionEnded(Producer producer)
             {
                 end.set(true);
             }
@@ -158,19 +158,19 @@ public class UtilProducible
         return new ProducibleListener()
         {
             @Override
-            public void notifyProductionStarted()
+            public void notifyProductionStarted(Producer producer)
             {
                 // Mock
             }
 
             @Override
-            public void notifyProductionProgress()
+            public void notifyProductionProgress(Producer producer)
             {
                 // Mock
             }
 
             @Override
-            public void notifyProductionEnded()
+            public void notifyProductionEnded(Producer producer)
             {
                 // Mock
             }

@@ -24,16 +24,22 @@ public interface ProducibleListener
 {
     /**
      * Notify listener that production has been started.
+     * 
+     * @param producer The producer reference.
      */
-    void notifyProductionStarted();
+    void notifyProductionStarted(Producer producer);
 
     /**
      * Notify listener that production is currently in progress.
+     * 
+     * @param producer The producer reference.
      */
-    void notifyProductionProgress();
+    void notifyProductionProgress(Producer producer);
 
     /**
      * Notify listener that production is over.
+     * 
+     * @param producer The producer reference.
      */
-    void notifyProductionEnded();
+    void notifyProductionEnded(Producer producer);
 }

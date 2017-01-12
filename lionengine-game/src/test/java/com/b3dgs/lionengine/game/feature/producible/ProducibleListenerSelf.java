@@ -35,19 +35,19 @@ class ProducibleListenerSelf extends FeaturableModel implements ProducibleListen
     }
 
     @Override
-    public void notifyProductionStarted()
+    public void notifyProductionStarted(Producer producer)
     {
         // Mock
     }
 
     @Override
-    public void notifyProductionProgress()
+    public void notifyProductionProgress(Producer producer)
     {
         // Mock
     }
 
     @Override
-    public void notifyProductionEnded()
+    public void notifyProductionEnded(Producer producer)
     {
         // Mock
     }

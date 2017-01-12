@@ -120,7 +120,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         }
         for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
         {
-            listener.notifyProductionProgress();
+            listener.notifyProductionProgress(this);
         }
         progress += speed * extrp;
 
@@ -143,7 +143,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         }
         for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
         {
-            listener.notifyProductionEnded();
+            listener.notifyProductionEnded(this);
         }
         currentObject = null;
         progress = -1;
@@ -201,7 +201,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         }
         for (final ProducibleListener listener : featurable.getFeature(Producible.class).getListeners())
         {
-            listener.notifyProductionStarted();
+            listener.notifyProductionStarted(this);
         }
     }
 
