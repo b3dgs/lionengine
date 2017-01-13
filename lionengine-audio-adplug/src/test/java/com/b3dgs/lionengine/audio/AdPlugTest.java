@@ -63,7 +63,9 @@ public class AdPlugTest
         catch (final LionEngineException exception)
         {
             final String message = exception.getMessage();
-            Assert.assertTrue(message, message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY));
+            Assert.assertTrue(message,
+                              message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY)
+                                       || message.contains(AudioFactory.ERROR_FORMAT));
             Assume.assumeFalse("AdPlug not supported on test machine - Test skipped",
                                message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY));
         }
