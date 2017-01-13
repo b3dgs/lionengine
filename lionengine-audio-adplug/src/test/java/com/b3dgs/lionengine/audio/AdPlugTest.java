@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -99,7 +100,9 @@ public class AdPlugTest
         try
         {
             UtilEnum.setStaticFinal(field, "void");
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             Assert.assertEquals(AudioVoidFormat.class, AdPlugFormat.getFailsafe().getClass());
+            Verbose.info("****************************************************************************************");
         }
         finally
         {

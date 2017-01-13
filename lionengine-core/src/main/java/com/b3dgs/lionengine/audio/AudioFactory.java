@@ -70,7 +70,14 @@ public final class AudioFactory
         final String extension = UtilFile.getExtension(media.getPath());
         if (FACTORIES.containsKey(extension))
         {
-            return type.cast(FACTORIES.get(extension).loadAudio(media));
+            try
+            {
+                return type.cast(FACTORIES.get(extension).loadAudio(media));
+            }
+            catch (final ClassCastException exception)
+            {
+                throw new LionEngineException(exception, media, ERROR_FORMAT);
+            }
         }
         throw new LionEngineException(media, ERROR_FORMAT);
     }
