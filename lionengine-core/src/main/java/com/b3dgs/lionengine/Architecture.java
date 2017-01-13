@@ -35,8 +35,15 @@ public enum Architecture
     /** Unknown item. */
     private static final String DEFAULT = "unknown";
     /** The architecture used. */
-    private static final Architecture ARCHI = Architecture.find(Constant.getSystemProperty("sun.arch.data.model",
-                                                                                           DEFAULT));
+    private static final Architecture ARCHI;
+
+    /**
+     * Specific case to not inline for test purpose.
+     */
+    static
+    {
+        ARCHI = Architecture.find(Constant.getSystemProperty("sun.arch.data.model", DEFAULT));
+    }
 
     /**
      * Find the current architecture.

@@ -17,16 +17,22 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import java.lang.reflect.Field;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.util.UtilEnum;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the AdPlug player.
@@ -46,10 +52,12 @@ public class AdPlugTest
     {
         try
         {
-            AudioFactory.addFormat(new AdPlugFormat());
+            final AudioFormat<?> format = AdPlugFormat.getFailsafe();
+            AudioFactory.addFormat(format);
             Medias.setLoadFromJar(AdPlugTest.class);
             music = Medias.create("music.lds");
             adplug = AudioFactory.loadAudio(music, AdPlug.class);
+            format.close();
         }
         catch (final LionEngineException exception)
         {
@@ -76,6 +84,72 @@ public class AdPlugTest
     public void testNullArgument()
     {
         Assert.assertNotNull(AudioFactory.loadAudio(null, AdPlug.class));
+    }
+
+    /**
+     * Test with missing library.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testMissingLibrary() throws Exception
+    {
+        final Field field = AdPlugFormat.class.getDeclaredField("LIBRARY_NAME");
+        final String back = UtilReflection.getField(AdPlugFormat.class, "LIBRARY_NAME");
+        try
+        {
+            UtilEnum.setStaticFinal(field, "void");
+            Assert.assertEquals(AudioVoidFormat.class, AdPlugFormat.getFailsafe().getClass());
+        }
+        finally
+        {
+            UtilEnum.setStaticFinal(field, back);
+        }
+    }
+
+    /**
+     * Test with other architecture linkage error.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testArch() throws Exception
+    {
+        final Field field = Architecture.class.getDeclaredField("ARCHI");
+        final Architecture back = UtilReflection.getField(Architecture.class, "ARCHI");
+        final Architecture x64 = Architecture.X64;
+        try
+        {
+            UtilEnum.setStaticFinal(field, Architecture.getArchitecture() == x64 ? Architecture.X86 : x64);
+            Assert.assertNull(new AdPlugFormat());
+        }
+        finally
+        {
+            UtilEnum.setStaticFinal(field, back);
+        }
+    }
+
+    /**
+     * Test with other OS linkage error.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testOs() throws Exception
+    {
+        final Field field = OperatingSystem.class.getDeclaredField("OS");
+        final OperatingSystem back = UtilReflection.getField(OperatingSystem.class, "OS");
+        final OperatingSystem unix = OperatingSystem.UNIX;
+        try
+        {
+            UtilEnum.setStaticFinal(field,
+                                    OperatingSystem.getOperatingSystem() == unix ? OperatingSystem.WINDOWS : unix);
+            Assert.assertNull(new AdPlugFormat());
+        }
+        finally
+        {
+            UtilEnum.setStaticFinal(field, back);
+        }
     }
 
     /**

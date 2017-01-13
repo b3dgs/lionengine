@@ -38,7 +38,7 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading AdPlug Library: ";
     /** Standard library name. */
-    private static final String LIBRARY_NAME = "adplugplayer";
+    private static final String LIBRARY_NAME;
     /** DLL extension. */
     private static final String EXTENSION_DLL = ".dll";
     /** SO extension. */
@@ -56,6 +56,14 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
     {
         "lds"
     };
+
+    /**
+     * Specific case to not inline for test purpose.
+     */
+    static
+    {
+        LIBRARY_NAME = "adplugplayer";
+    }
 
     /**
      * Get the AdPlug library, or disabled format if not found.

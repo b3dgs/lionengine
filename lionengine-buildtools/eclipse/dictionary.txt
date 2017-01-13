@@ -227,3 +227,4 @@ bot
 sonic
 lifecycle
 recycler
+inline

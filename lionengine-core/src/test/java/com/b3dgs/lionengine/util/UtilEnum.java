@@ -549,7 +549,7 @@ public final class UtilEnum<E extends Enum<E>>
      * @throws NoSuchFieldException If error.
      * @throws IllegalAccessException If error.
      */
-    private static void setStaticFinal(Field field, Object value) throws NoSuchFieldException, IllegalAccessException
+    public static void setStaticFinal(Field field, Object value) throws NoSuchFieldException, IllegalAccessException
     {
         field.setAccessible(true);
 

@@ -41,8 +41,15 @@ public enum OperatingSystem
     /** Unknown item. */
     private static final String DEFAULT = "unknown";
     /** The OS enum. */
-    private static final OperatingSystem OS = find(Constant.getSystemProperty("os.name", DEFAULT)
-                                                           .toLowerCase(Locale.ENGLISH));
+    private static final OperatingSystem OS;
+
+    /**
+     * Specific case to not inline for test purpose.
+     */
+    static
+    {
+        OS = find(Constant.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.ENGLISH));
+    }
 
     /**
      * Find the current system.
