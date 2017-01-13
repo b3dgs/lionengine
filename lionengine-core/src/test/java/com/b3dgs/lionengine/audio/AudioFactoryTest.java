@@ -81,9 +81,9 @@ public class AudioFactoryTest
             Assert.assertNull(AudioFactory.loadAudio(Medias.create("image.png"), MyAudio.class));
             Assert.fail();
         }
-        catch (final ClassCastException exception)
+        catch (final LionEngineException exception)
         {
-            Assert.assertNotNull(exception);
+            Assert.assertEquals(ClassCastException.class, exception.getCause().getClass());
         }
         try
         {
