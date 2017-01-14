@@ -38,7 +38,7 @@ public final class Sc68Format implements AudioFormat<Sc68>
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
     /** Standard library name. */
-    private static final String LIBRARY_NAME = "sc68player";
+    private static final String LIBRARY_NAME;
     /** DLL extension. */
     private static final String EXTENSION_DLL = ".dll";
     /** SO extension. */
@@ -58,6 +58,14 @@ public final class Sc68Format implements AudioFormat<Sc68>
     };
 
     /**
+     * Specific case to not inline for test purpose.
+     */
+    static
+    {
+        LIBRARY_NAME = "sc68player";
+    }
+
+    /**
      * Load the library.
      * 
      * @param name The library name.
@@ -68,6 +76,10 @@ public final class Sc68Format implements AudioFormat<Sc68>
     private static Sc68Binding loadLibrary(String name, String library)
     {
         final InputStream input = Sc68Format.class.getResourceAsStream(library);
+        if (input == null)
+        {
+            throw new LionEngineException(ERROR_LOAD_LIBRARY, library, " not found !");
+        }
         try
         {
             final File tempLib = UtilStream.getCopy(name, input);

@@ -17,16 +17,22 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import java.lang.reflect.Field;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.util.UtilEnum;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the sc68 player.
@@ -80,6 +86,72 @@ public class Sc68Test
     }
 
     /**
+     * Test with missing library.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testMissingLibrary() throws Exception
+    {
+        final Field field = Sc68Format.class.getDeclaredField("LIBRARY_NAME");
+        final String back = UtilReflection.getField(Sc68Format.class, "LIBRARY_NAME");
+        try
+        {
+            UtilEnum.setStaticFinal(field, "void");
+            Assert.assertNull(new Sc68Format());
+        }
+        finally
+        {
+            UtilEnum.setStaticFinal(field, back);
+        }
+    }
+
+    /**
+     * Test with other architecture linkage error.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testArch() throws Exception
+    {
+        final Field field = Architecture.class.getDeclaredField("ARCHI");
+        final Architecture back = UtilReflection.getField(Architecture.class, "ARCHI");
+        final Architecture x64 = Architecture.X64;
+        try
+        {
+            UtilEnum.setStaticFinal(field, Architecture.getArchitecture() == x64 ? Architecture.X86 : x64);
+            Assert.assertNull(new Sc68Format());
+        }
+        finally
+        {
+            UtilEnum.setStaticFinal(field, back);
+        }
+    }
+
+    /**
+     * Test with other OS linkage error.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testOs() throws Exception
+    {
+        final Field field = OperatingSystem.class.getDeclaredField("OS");
+        final OperatingSystem back = UtilReflection.getField(OperatingSystem.class, "OS");
+        final OperatingSystem unix = OperatingSystem.UNIX;
+        try
+        {
+            UtilEnum.setStaticFinal(field,
+                                    OperatingSystem.getOperatingSystem() == unix ? OperatingSystem.WINDOWS : unix);
+            Assert.assertNull(new Sc68Format());
+        }
+        finally
+        {
+            UtilEnum.setStaticFinal(field, back);
+        }
+    }
+
+    /**
      * Test with negative volume.
      */
     @Test(expected = LionEngineException.class)
@@ -107,6 +179,9 @@ public class Sc68Test
     @Test
     public void testSc68() throws InterruptedException
     {
+        sc68.setStart(0L);
+        sc68.setLoop(0L, 0L);
+
         sc68.setVolume(15);
         sc68.setConfig(true, false);
         sc68.play();
