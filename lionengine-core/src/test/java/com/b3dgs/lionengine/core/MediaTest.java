@@ -155,7 +155,8 @@ public class MediaTest
     @Test
     public void testOutputStream() throws IOException
     {
-        final Media media = Medias.create(File.createTempFile("temp", ".tmp").getPath());
+        Medias.setLoadFromJar(MediaTest.class);
+        final Media media = Medias.create(String.valueOf(System.nanoTime()), "test");
 
         OutputStream output = null;
         try
