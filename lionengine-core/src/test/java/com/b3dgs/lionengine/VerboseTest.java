@@ -47,7 +47,9 @@ public class VerboseTest
         Verbose.warning("warning");
         Verbose.warning(VerboseTest.class, "testVerbose", "warning");
         Verbose.critical(VerboseTest.class, "testVerbose", "critical");
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Verbose.exception(new LionEngineException("exception"), "exception");
+        Verbose.info("****************************************************************************************");
     }
 
     /**

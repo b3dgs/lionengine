@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -129,7 +130,9 @@ public class ImageInfoTest
         testImageInfoFailure(Medias.create("image_error5.tiff"));
         testImageInfoFailure(Medias.create("image_error6.tiff"));
         testImageInfoFailure(Medias.create("image_error7.tiff"));
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertFalse(ImageInfo.isImage(Medias.create("image_error7.tiff")));
+        Verbose.info("****************************************************************************************");
     }
 
     /**

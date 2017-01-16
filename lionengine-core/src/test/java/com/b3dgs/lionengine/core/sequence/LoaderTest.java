@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.EngineMock;
@@ -122,8 +123,16 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testFailSequence()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceFailMock.class).await();
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        try
+        {
+            final Loader loader = new Loader();
+            loader.start(CONFIG, SequenceFailMock.class).await();
+        }
+        finally
+        {
+            Verbose.info("****************************************************************************************");
+        }
     }
 
     /**
@@ -132,8 +141,16 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testFailNextSequence()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceNextFailMock.class).await();
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        try
+        {
+            final Loader loader = new Loader();
+            loader.start(CONFIG, SequenceNextFailMock.class).await();
+        }
+        finally
+        {
+            Verbose.info("****************************************************************************************");
+        }
     }
 
     /**
@@ -142,8 +159,16 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testMalformedSequence()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceMalformedMock.class).await();
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        try
+        {
+            final Loader loader = new Loader();
+            loader.start(CONFIG, SequenceMalformedMock.class).await();
+        }
+        finally
+        {
+            Verbose.info("****************************************************************************************");
+        }
     }
 
     /**
@@ -223,12 +248,14 @@ public class LoaderTest
                     semaphore.release();
                 }
             });
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             thread.start();
             semaphore.acquire();
             Assert.assertTrue(exception.get().getCause() instanceof NullPointerException);
         }
         finally
         {
+            Verbose.info("****************************************************************************************");
             Graphics.setFactoryGraphic(new FactoryGraphicMock());
         }
     }
@@ -240,8 +267,15 @@ public class LoaderTest
     public void testStarted()
     {
         final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceSingleMock.class);
-        loader.start(CONFIG, SequenceSingleMock.class).await();
+        final TaskFuture future = loader.start(CONFIG, SequenceSingleMock.class);
+        try
+        {
+            loader.start(CONFIG, SequenceSingleMock.class).await();
+        }
+        finally
+        {
+            future.await();
+        }
     }
 
     /**
@@ -252,6 +286,7 @@ public class LoaderTest
     {
         final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSingleMock.class).await();
+        Assert.assertTrue(Engine.isStarted());
     }
 
     /**
@@ -327,10 +362,12 @@ public class LoaderTest
         {
             ScreenMock.setScreenWait(true);
             final Loader loader = new Loader();
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             loader.start(CONFIG, SequenceSingleMock.class).await();
         }
         finally
         {
+            Verbose.info("****************************************************************************************");
             ScreenMock.setScreenWait(false);
         }
     }
