@@ -38,6 +38,8 @@ public class SelectorModel extends FeatureModel implements SelectorConfigurer
     private double selectRawY;
     /** Raw selection height (used on rendering side). */
     private double selectRawH;
+    /** Enabled flag. */
+    private boolean enabled = true;
 
     /**
      * Create a selector.
@@ -137,6 +139,16 @@ public class SelectorModel extends FeatureModel implements SelectorConfigurer
         return selectRawH;
     }
 
+    /**
+     * Get the enabled flag.
+     * 
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
     /*
      * SelectorConfigurer
      */
@@ -157,5 +169,11 @@ public class SelectorModel extends FeatureModel implements SelectorConfigurer
     public void setClickableArea(Viewer viewer)
     {
         clickableArea.set(viewer.getViewX(), viewer.getViewY(), viewer.getWidth(), viewer.getHeight());
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 }

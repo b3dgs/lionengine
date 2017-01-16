@@ -33,10 +33,10 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
 {
     /** Selector model reference. */
     private final SelectorModel model;
-    /** Viewer reference. */
-    private Viewer viewer;
     /** Cursor selection color. */
     private ColorRgba colorSelection = ColorRgba.GRAY;
+    /** Viewer reference. */
+    private Viewer viewer;
 
     /**
      * Create a selector.
@@ -84,9 +84,9 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
         if (model.isSelecting())
         {
             final Rectangle selectionArea = model.getSelectionArea();
-            final int x = (int) (selectionArea.getX() - viewer.getX());
+            final int x = (int) viewer.getViewpointX(selectionArea.getX());
             final int w = selectionArea.getWidth();
-            int y = (int) (viewer.getY() + viewer.getHeight() - model.getSelectRawY());
+            int y = (int) viewer.getViewpointY(model.getSelectRawY());
             int h = (int) model.getSelectRawH();
             if (h < 0)
             {
@@ -98,8 +98,11 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
                 h += y;
                 y = 0;
             }
-            g.setColor(colorSelection);
-            g.drawRect(x, y, w, h, false);
+            if (w > 0 && h > 0)
+            {
+                g.setColor(colorSelection);
+                g.drawRect(x, y, w, h, false);
+            }
         }
     }
 }

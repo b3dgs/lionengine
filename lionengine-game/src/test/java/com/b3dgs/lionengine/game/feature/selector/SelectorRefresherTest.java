@@ -25,9 +25,12 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.MouseMock;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -67,7 +70,11 @@ public class SelectorRefresherTest
         cursor.setSyncMode(true);
 
         services.add(new Camera());
-        refresher.prepare(new FeaturableModel(), services);
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new TransformableModel());
+        featurable.addFeature(new CollidableModel());
+        featurable.prepareFeatures(services);
+        refresher.prepare(featurable, services);
     }
 
     /**
@@ -78,6 +85,7 @@ public class SelectorRefresherTest
     {
         Assert.assertFalse(model.isSelecting());
 
+        refresher.update(1.0);
         mouse.setClick(1);
         refresher.update(1.0);
 
@@ -120,6 +128,7 @@ public class SelectorRefresherTest
 
         mouse.setClick(0);
         cursor.update(1.0);
+        refresher.update(1.0);
         refresher.update(1.0);
 
         Assert.assertEquals(new Rectangle(1.0, 0.0, 10, 1.0), done.get());

@@ -17,40 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.selector;
 
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.geom.Rectangle;
+import java.util.List;
 
 /**
- * Allows to configure the selector.
+ * Listen to elements selection event.
  */
-public interface SelectorConfigurer
+public interface SelectionListener
 {
     /**
-     * Set the mouse click selection value.
+     * Notify selected featurables.
      * 
-     * @param click The click number.
-     * @see com.b3dgs.lionengine.io.InputDevicePointer
+     * @param selection The selected elements.
      */
-    void setClickSelection(int click);
-
-    /**
-     * Set clickable area (where selection can be performed on screen).
-     * 
-     * @param area The representation of the clickable area.
-     */
-    void setClickableArea(Rectangle area);
-
-    /**
-     * Set clickable area (where selection can be performed on screen).
-     * 
-     * @param viewer The viewer reference.
-     */
-    void setClickableArea(Viewer viewer);
-
-    /**
-     * Set the enabled flag.
-     * 
-     * @param enabled <code>true</code> if enabled, <code>false</code> else.
-     */
-    void setEnabled(boolean enabled);
+    void notifySelected(List<Selectable> selection);
 }

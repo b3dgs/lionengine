@@ -17,9 +17,20 @@
  */
 package com.b3dgs.lionengine.game.feature.selector;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.collidable.Collidable;
+import com.b3dgs.lionengine.game.feature.collidable.CollidableListener;
+import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.feature.collidable.Collision;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
@@ -33,12 +44,15 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  * </ul>
  * Result can be retrieved by using {@link #addListener(SelectorListener)} to notify them the computed selection.
  * It will be then easy to check if objects are inside this area, and set them as <i>selected</i>.
+ * <p>
+ * {@link Selectable} will be notified with {@link Selectable#onSelection(boolean)} when selection changed.
+ * </p>
  * 
  * @see SelectorListener
  * @see Cursor
  * @see Viewer
  */
-public class Selector extends FeaturableModel implements SelectorConfigurer
+public class Selector extends FeaturableModel implements Updatable, SelectorConfigurer, CollidableListener
 {
     /** Selector model. */
     private final SelectorModel model = addFeatureAndGet(new SelectorModel());
@@ -46,6 +60,35 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     private final SelectorRefresher refresher = addFeatureAndGet(new SelectorRefresher(model));
     /** Selector displayer. */
     private final SelectorDisplayer displayer = addFeatureAndGet(new SelectorDisplayer(model));
+    /** Backed selection. */
+    private final List<Selectable> selected = new ArrayList<Selectable>();
+    /** Selection listeners. */
+    private final List<SelectionListener> listeners = new ArrayList<SelectionListener>();
+    /** Void notify. */
+    private final Action check = new Action()
+    {
+        @Override
+        public void notifySelection()
+        {
+            // Nothing to do
+        }
+    };
+    /** Void notify. */
+    private final Action notifyAll = new Action()
+    {
+        @Override
+        public void notifySelection()
+        {
+            final int n = listeners.size();
+            for (int i = 0; i < n; i++)
+            {
+                listeners.get(i).notifySelected(selected);
+            }
+            notifyAction = check;
+        }
+    };
+    /** Notify action. */
+    private Action notifyAction = check;
 
     /**
      * Create the selector.
@@ -53,6 +96,9 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     public Selector()
     {
         super();
+
+        addFeature(new TransformableModel());
+        addFeature(new CollidableModel());
     }
 
     /**
@@ -63,6 +109,16 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     public void addListener(SelectorListener listener)
     {
         refresher.addListener(listener);
+    }
+
+    /**
+     * Add a selection listener.
+     * 
+     * @param listener The selection listener reference.
+     */
+    public void addListener(SelectionListener listener)
+    {
+        listeners.add(listener);
     }
 
     /**
@@ -85,6 +141,72 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
         displayer.setSelectionColor(color);
     }
 
+    /**
+     * Get the current selection.
+     * 
+     * @return The current selection.
+     */
+    public List<Selectable> getSelection()
+    {
+        return selected;
+    }
+
+    /**
+     * Unselect all elements.
+     */
+    private void unSelectAll()
+    {
+        final int n = selected.size();
+        for (int i = 0; i < n; i++)
+        {
+            selected.get(i).onSelection(false);
+        }
+        selected.clear();
+    }
+
+    /*
+     * FeaturableModel
+     */
+
+    @Override
+    public void prepareFeatures(Services services)
+    {
+        super.prepareFeatures(services);
+
+        final Transformable transformable = getFeature(Transformable.class);
+        final Collidable collidable = getFeature(Collidable.class);
+        collidable.addCollision(Collision.AUTOMATIC);
+
+        addListener(new SelectorListener()
+        {
+            @Override
+            public void notifySelectionStarted(Rectangle selection)
+            {
+                unSelectAll();
+            }
+
+            @Override
+            public void notifySelectionDone(Rectangle selection)
+            {
+                transformable.transform(selection.getX(),
+                                        selection.getY(),
+                                        selection.getWidth(),
+                                        selection.getHeight());
+                notifyAction = notifyAll;
+            }
+        });
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        notifyAction.notifySelection();
+    }
+
     /*
      * SelectorConfigurer
      */
@@ -105,5 +227,37 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     public void setClickableArea(Viewer viewer)
     {
         model.setClickableArea(viewer);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        model.setEnabled(enabled);
+    }
+
+    /*
+     * CollidableListener
+     */
+
+    @Override
+    public void notifyCollided(Collidable collidable)
+    {
+        if (collidable.hasFeature(Selectable.class))
+        {
+            final Selectable selectable = collidable.getFeature(Selectable.class);
+            selectable.onSelection(true);
+            selected.add(selectable);
+        }
+    }
+
+    /**
+     * Notify action.
+     */
+    private interface Action
+    {
+        /**
+         * Notify current selection.
+         */
+        void notifySelection();
     }
 }

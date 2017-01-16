@@ -17,40 +17,37 @@
  */
 package com.b3dgs.lionengine.game.feature.selector;
 
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
- * Allows to configure the selector.
+ * Selectable model base.
  */
-public interface SelectorConfigurer
+public class SelectableModel extends FeatureModel implements Selectable
 {
-    /**
-     * Set the mouse click selection value.
-     * 
-     * @param click The click number.
-     * @see com.b3dgs.lionengine.io.InputDevicePointer
-     */
-    void setClickSelection(int click);
+    /** Selected flag. */
+    private boolean selected;
 
     /**
-     * Set clickable area (where selection can be performed on screen).
-     * 
-     * @param area The representation of the clickable area.
+     * Create selectable.
      */
-    void setClickableArea(Rectangle area);
+    public SelectableModel()
+    {
+        super();
+    }
 
-    /**
-     * Set clickable area (where selection can be performed on screen).
-     * 
-     * @param viewer The viewer reference.
+    /*
+     * Selectable
      */
-    void setClickableArea(Viewer viewer);
 
-    /**
-     * Set the enabled flag.
-     * 
-     * @param enabled <code>true</code> if enabled, <code>false</code> else.
-     */
-    void setEnabled(boolean enabled);
+    @Override
+    public void onSelection(boolean selected)
+    {
+        this.selected = selected;
+    }
+
+    @Override
+    public boolean isSelected()
+    {
+        return selected;
+    }
 }
