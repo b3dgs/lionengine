@@ -18,7 +18,7 @@
 
 /**
  * Describe the assign system, designed to represent to consequence of an
- * {@link com.b3dgs.lionengine.game.feature.actionable.Action} (after the click on the button, where it should be
+ * {@link com.b3dgs.lionengine.game.Action} (after the click on the button, where it should be
  * assigned, usually somewhere on the map).
  */
 package com.b3dgs.lionengine.game.feature.assignable;

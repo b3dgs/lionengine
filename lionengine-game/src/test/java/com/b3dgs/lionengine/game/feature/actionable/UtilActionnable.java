@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Action;
+import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;

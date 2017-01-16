@@ -170,5 +170,4 @@ public final class ProducibleConfig
                                   .append("]")
                                   .toString();
     }
-
 }

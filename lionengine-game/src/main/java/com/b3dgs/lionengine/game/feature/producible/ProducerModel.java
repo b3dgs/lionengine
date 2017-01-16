@@ -20,15 +20,20 @@ package com.b3dgs.lionengine.game.feature.producible;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.ActionRef;
+import com.b3dgs.lionengine.game.ActionsConfig;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Recyclable;
@@ -43,12 +48,21 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
     /** Production queue. */
     private final Queue<Featurable> productions = new ArrayDeque<Featurable>();
+    /** Allowed actions name. */
+    private final List<ActionRef> actions;
     /** Handler reference. */
     private Handler handler;
     /** Tick timer rate. */
     private double desiredFps;
     /** Production checker. */
-    private ProducerChecker checker;
+    private ProducerChecker checker = new ProducerChecker()
+    {
+        @Override
+        public boolean checkProduction(Featurable featurable)
+        {
+            return true;
+        }
+    };
     /** Steps per second. */
     private double stepsPerSecond;
     /** Current element being under production. */
@@ -84,6 +98,36 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     public ProducerModel()
     {
         super();
+
+        actions = Collections.emptyList();
+
+        recycle();
+    }
+
+    /**
+     * Create a producer model.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Handler}</li>
+     * <li>{@link Integer} (for the desired fps).</li>
+     * </ul>
+     * <p>
+     * The {@link Featurable} must be a {@link ProducerChecker}.
+     * </p>
+     * <p>
+     * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
+     * {@link #addListener(ProducerListener)} on it.
+     * </p>
+     * 
+     * @param setup The setup reference.
+     */
+    public ProducerModel(Setup setup)
+    {
+        super();
+
+        actions = ActionsConfig.imports(setup);
 
         recycle();
     }
@@ -348,6 +392,12 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     public Iterator<Featurable> iterator()
     {
         return productions.iterator();
+    }
+
+    @Override
+    public List<ActionRef> getActions()
+    {
+        return actions;
     }
 
     @Override

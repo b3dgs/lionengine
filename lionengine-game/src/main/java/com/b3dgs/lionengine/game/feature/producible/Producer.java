@@ -22,12 +22,12 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.Actioner;
 
 /**
  * Represents an ability of creating new object.
  */
-public interface Producer extends Feature, Updatable
+public interface Producer extends Actioner, Updatable
 {
     /**
      * Add a producer listener.

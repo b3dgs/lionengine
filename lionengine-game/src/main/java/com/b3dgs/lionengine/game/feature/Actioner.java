@@ -15,21 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.assignable;
+package com.b3dgs.lionengine.game.feature;
+
+import java.util.List;
+
+import com.b3dgs.lionengine.game.ActionRef;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Represents something that can be assigned by an {@link Assignable} from an
- * {@link com.b3dgs.lionengine.game.Action}. Usually a consequence of a
- * click over a button, ready to assign on map (in other this is the second part of the action).
- * 
- * @see Assignable
- * @see com.b3dgs.lionengine.game.feature.actionable.Actionable
- * @see com.b3dgs.lionengine.game.Action
+ * Represents an ability of performing actions.
  */
-public interface Assign
+public interface Actioner extends Feature
 {
     /**
-     * Assign the action somewhere.
+     * Get the allowed actions name.
+     * 
+     * @return The allowed actions name.
      */
-    void assign();
+    List<ActionRef> getActions();
 }

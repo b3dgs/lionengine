@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.game.Action;
+import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.actionable.Action;
-import com.b3dgs.lionengine.game.feature.actionable.ActionConfig;
 
 /**
  * Represents an action as a feature.

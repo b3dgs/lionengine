@@ -30,6 +30,7 @@
     <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.FeaturableModel" lines="248"/>
     <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.feature.IdentifiableModel" lines="60"/>
     <suppress checks="BooleanExpressionComplexity" files="com.b3dgs.lionengine.game.feature.TransformableModel" lines="86"/>
+    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.game.ActionRef" lines="96"/>
     <!-- Network -->
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="102, 110, 118"/>
