@@ -353,11 +353,22 @@ public class CollidableModel extends FeatureModel
             for (int i = 0; i < size; i++)
             {
                 final Collision collision = cacheColls.get(i);
-                final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
-                                                collision.getWidth());
-                final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
-                                                collision.getHeight());
-                g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
+                if (Collision.AUTOMATIC == collision)
+                {
+                    final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX()),
+                                                    transformable.getWidth());
+                    final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY()),
+                                                    transformable.getHeight());
+                    g.drawRect(x, y, transformable.getWidth(), transformable.getHeight(), false);
+                }
+                else
+                {
+                    final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
+                                                    collision.getWidth());
+                    final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
+                                                    collision.getHeight());
+                    g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
+                }
             }
         }
     }
