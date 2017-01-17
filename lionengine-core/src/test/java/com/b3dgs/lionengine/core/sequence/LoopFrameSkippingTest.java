@@ -131,7 +131,7 @@ public class LoopFrameSkippingTest
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
         Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() < expectedRate);
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > expectedRate - 1.0);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > 0);
     }
 
     /**
@@ -184,7 +184,8 @@ public class LoopFrameSkippingTest
         thread.join();
 
         Assert.assertTrue(tick.get() + " " + maxTick.get(), tick.get() >= maxTick.get());
-        Assert.assertEquals(tick.get(), rendered.get());
+        Assert.assertTrue(rendered.get() + " " + tick.get(), rendered.get() <= tick.get());
+        Assert.assertTrue(String.valueOf(rendered.get()), rendered.get() > 0);
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
