@@ -107,6 +107,8 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     private Integer surfaceId;
     /** Current surface. */
     private Image surface;
+    /** Next surface. */
+    private Image nextSurface;
     /** Rendering horizontal offset. */
     private int offsetX;
     /** Rendering vertical offset. */
@@ -213,7 +215,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         this.surfaceId = Integer.valueOf(surfaceId);
         if (surfaces.containsKey(this.surfaceId))
         {
-            surface = surfaces.get(this.surfaceId);
+            nextSurface = surfaces.get(this.surfaceId);
         }
         else
         {
@@ -447,6 +449,11 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         for (final Image current : surfaces.values())
         {
             current.setLocation(x + offsetX, y + offsetY);
+        }
+        if (nextSurface != null)
+        {
+            surface = nextSurface;
+            nextSurface = null;
         }
     }
 
