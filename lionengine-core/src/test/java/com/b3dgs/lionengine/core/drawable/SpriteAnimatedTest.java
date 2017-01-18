@@ -94,6 +94,13 @@ public class SpriteAnimatedTest
 
         Assert.assertEquals(info.getWidth() / framesH, spriteC.getTileWidth());
         Assert.assertEquals(info.getHeight() / framesV, spriteC.getTileHeight());
+        Assert.assertEquals(0, spriteC.getFrameOffsetX());
+        Assert.assertEquals(0, spriteC.getFrameOffsetY());
+
+        spriteC.setFrameOffsets(1, 2);
+
+        Assert.assertEquals(1, spriteC.getFrameOffsetX());
+        Assert.assertEquals(2, spriteC.getFrameOffsetY());
 
         DrawableTestTool.testSpriteLoading(spriteC);
         DrawableTestTool.testSpriteModification(2, spriteA);
@@ -145,7 +152,6 @@ public class SpriteAnimatedTest
         // Test render
         DrawableTestTool.testImageRender(g, spriteC);
         spriteC.setMirror(Mirror.HORIZONTAL);
-        spriteC.setFrameOffsets(1, 2);
         spriteC.setLocation(1.0, 2.0);
         spriteC.render(g);
         spriteC.setMirror(Mirror.VERTICAL);
