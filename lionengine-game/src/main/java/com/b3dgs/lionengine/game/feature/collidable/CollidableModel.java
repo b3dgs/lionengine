@@ -491,8 +491,8 @@ public class CollidableModel extends FeatureModel
                 {
                     maxHeight = height;
                 }
-                final double x = origin.getX(transformable.getOldX() + offsetX, width);
-                final double y = origin.getY(transformable.getOldY() + offsetY, height);
+                final double x = transformable.getOldX() + offsetX;
+                final double y = transformable.getOldY() + offsetY;
 
                 update(collision, x, y, width, height);
             }

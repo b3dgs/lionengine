@@ -66,7 +66,7 @@ public class TextGame implements Text
     public void update(Viewer viewer)
     {
         x = (int) viewer.getX();
-        y = (int) viewer.getY();
+        y = (int) viewer.getY() - viewer.getViewY();
         height = viewer.getHeight();
     }
 
