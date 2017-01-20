@@ -106,6 +106,7 @@ public class SetupTest
         final Setup setup = new Setup(config);
 
         Assert.assertEquals(Medias.create("surface.png"), setup.getSurfaceFile());
+        Assert.assertEquals(Medias.create("icon.png"), setup.getIconFile());
         Assert.assertEquals(7, setup.getSurface().getWidth());
         Assert.assertEquals(11, setup.getSurface().getHeight());
     }

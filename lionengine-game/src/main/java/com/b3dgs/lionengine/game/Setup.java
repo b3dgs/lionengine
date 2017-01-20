@@ -35,6 +35,8 @@ public class Setup extends Configurer
     protected final ImageBuffer surface;
     /** Surface file name. */
     private final Media surfaceFile;
+    /** Icon file name. */
+    private final Media iconFile;
     /** Class reference. */
     private Class<?> clazz;
 
@@ -54,11 +56,13 @@ public class Setup extends Configurer
             final SurfaceConfig surfaceData = SurfaceConfig.imports(getRoot());
             final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
             surfaceFile = Medias.create(prefix + surfaceData.getImage());
+            iconFile = Medias.create(prefix + surfaceData.getIcon());
             surface = Graphics.getImageBuffer(surfaceFile);
         }
         else
         {
             surfaceFile = null;
+            iconFile = null;
             surface = null;
         }
     }
@@ -95,6 +99,16 @@ public class Setup extends Configurer
     public final Media getSurfaceFile()
     {
         return surfaceFile;
+    }
+
+    /**
+     * Get the icon file.
+     * 
+     * @return The surface file, <code>null</code> if not defined.
+     */
+    public final Media getIconFile()
+    {
+        return iconFile;
     }
 
     /**

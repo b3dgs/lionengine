@@ -55,10 +55,11 @@ public final class SurfaceConfig
      */
     public static SurfaceConfig imports(Xml root)
     {
-        final Xml node = root.getChild(SurfaceConfig.NODE_SURFACE);
-        final String surface = node.readString(SurfaceConfig.ATT_IMAGE);
+        final Xml node = root.getChild(NODE_SURFACE);
+        final String surface = node.readString(ATT_IMAGE);
+        final String icon = node.readString(null, ATT_ICON);
 
-        return new SurfaceConfig(surface, SurfaceConfig.getSurfaceIcon(root));
+        return new SurfaceConfig(surface, icon);
     }
 
     /**
@@ -70,26 +71,14 @@ public final class SurfaceConfig
      */
     public static Xml exports(SurfaceConfig config)
     {
-        final Xml node = new Xml(SurfaceConfig.NODE_SURFACE);
-        node.writeString(SurfaceConfig.ATT_IMAGE, config.getImage());
+        final Xml node = new Xml(NODE_SURFACE);
+        node.writeString(ATT_IMAGE, config.getImage());
         if (config.getIcon() != null)
         {
-            node.writeString(SurfaceConfig.ATT_ICON, config.getIcon());
+            node.writeString(ATT_ICON, config.getIcon());
         }
 
         return node;
-    }
-
-    /**
-     * Get the surface icon if existing.
-     * 
-     * @param root The root reference.
-     * @return The surface icon, <code>null</code> if none.
-     */
-    private static String getSurfaceIcon(Xml root)
-    {
-        final Xml node = root.getChild(SurfaceConfig.NODE_SURFACE);
-        return node.readString(null, SurfaceConfig.ATT_ICON);
     }
 
     /** The image descriptor. */
