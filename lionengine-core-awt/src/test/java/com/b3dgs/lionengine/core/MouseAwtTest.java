@@ -140,18 +140,18 @@ public class MouseAwtTest
         mouse.doClickAt(Mouse.RIGHT, 500, 500);
         try
         {
-            Assert.assertEquals(0, mouse.getOnScreenX());
-            Assert.assertEquals(0, mouse.getOnScreenY());
-            Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
+            Assert.assertEquals(500, mouse.getOnScreenX());
+            Assert.assertEquals(500, mouse.getOnScreenY());
+            Assert.assertTrue(mouse.hasClicked(Mouse.RIGHT));
         }
         finally
         {
             mouse.doClickAt(Mouse.LEFT, 499, 499);
         }
 
-        Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
+        Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
         mouse.doClick(Mouse.LEFT);
-        Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
+        Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
         mouse.doClick(Mouse.MIDDLE);
 
         mouse.lock();
