@@ -93,6 +93,44 @@ final class MouseMoveAwt implements MouseMotionListener
     }
 
     /**
+     * Move mouse with robot.
+     * 
+     * @param nx The new X.
+     * @param ny The new Y.
+     */
+    void robotMove(int nx, int ny)
+    {
+        oldX = x;
+        oldY = y;
+        x = nx;
+        y = ny;
+        wx = nx;
+        wy = ny;
+        mx = x - oldX;
+        my = y - oldY;
+        moved = true;
+    }
+
+    /**
+     * Teleport mouse with robot.
+     * 
+     * @param nx The new X.
+     * @param ny The new Y.
+     */
+    void robotTeleport(int nx, int ny)
+    {
+        oldX = nx;
+        oldY = ny;
+        x = nx;
+        y = ny;
+        wx = nx;
+        wy = ny;
+        mx = 0;
+        my = 0;
+        moved = false;
+    }
+
+    /**
      * Set the center.
      * 
      * @param x The horizontal center.

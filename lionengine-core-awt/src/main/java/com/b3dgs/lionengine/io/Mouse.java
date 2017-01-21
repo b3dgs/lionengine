@@ -76,6 +76,22 @@ public interface Mouse extends InputDevicePointer
     void doClick(int click);
 
     /**
+     * Teleport mouse without move.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
+    void doSetMouse(int x, int y);
+
+    /**
+     * Move mouse.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
+    void doMoveMouse(int x, int y);
+
+    /**
      * Perform a click at specified coordinate.
      * 
      * @param click The click to perform.

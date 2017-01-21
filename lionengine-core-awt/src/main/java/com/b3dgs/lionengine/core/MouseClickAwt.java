@@ -77,6 +77,37 @@ final class MouseClickAwt implements MouseListener
     }
 
     /**
+     * Robot click mouse.
+     * 
+     * @param click The click number.
+     */
+    void robotPress(int click)
+    {
+        lastClick = click;
+        if (lastClick < clicks.length)
+        {
+            clicks[lastClick] = true;
+        }
+    }
+
+    /**
+     * Robot release mouse.
+     * 
+     * @param click The click number.
+     */
+    void robotRelease(int click)
+    {
+        lastClick = 0;
+
+        final int button = click;
+        if (button < clicks.length)
+        {
+            clicks[button] = false;
+            clicked[button] = false;
+        }
+    }
+
+    /**
      * Add a pressed action.
      * 
      * @param click The action click.

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.InputEvent;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Verbose;
@@ -57,18 +56,22 @@ public final class MouseAwt implements Mouse
     /** Mouse move. */
     private final MouseMoveAwt mover = new MouseMoveAwt();
     /** Robot instance reference. */
-    private final Robot robot;
+    private final Robot robot = createRobot();
     /** Screen horizontal ratio. */
     private double xRatio;
     /** Screen vertical ratio. */
     private double yRatio;
+    /** Perform robot release. */
+    private int release = -1;
+    /** Do robot release. */
+    private boolean doRelease;
 
     /**
      * Constructor.
      */
     public MouseAwt()
     {
-        robot = createRobot();
+        super();
     }
 
     /**
@@ -130,47 +133,39 @@ public final class MouseAwt implements Mouse
         if (robot != null)
         {
             robot.mouseMove(x, y);
-            mover.lock();
         }
+        else
+        {
+            mover.robotMove(x, y);
+        }
+        mover.lock();
     }
 
     @Override
     public void doClick(int click)
     {
-        if (robot != null)
-        {
-            final int event;
-            switch (click)
-            {
-                case Mouse.LEFT:
-                    event = InputEvent.BUTTON1_MASK;
-                    break;
-                case Mouse.MIDDLE:
-                    event = InputEvent.BUTTON2_MASK;
-                    break;
-                case Mouse.RIGHT:
-                    event = InputEvent.BUTTON3_MASK;
-                    break;
-                default:
-                    event = 0;
-                    break;
-            }
-            if (event > -1)
-            {
-                robot.mousePress(event);
-                robot.mouseRelease(event);
-            }
-        }
+        clicker.robotPress(click);
+        release = click;
+    }
+
+    @Override
+    public void doSetMouse(int x, int y)
+    {
+        mover.robotTeleport(x, y);
+    }
+
+    @Override
+    public void doMoveMouse(int x, int y)
+    {
+        mover.robotMove(x, y);
     }
 
     @Override
     public void doClickAt(int click, int x, int y)
     {
-        if (robot != null)
-        {
-            robot.mouseMove(x, y);
-            doClick(click);
-        }
+        mover.robotTeleport(x, y);
+        clicker.robotPress(click);
+        release = click;
     }
 
     @Override
@@ -251,5 +246,15 @@ public final class MouseAwt implements Mouse
     public void update(double extrp)
     {
         mover.update();
+        if (release > -1 && !doRelease)
+        {
+            doRelease = true;
+        }
+        else if (doRelease)
+        {
+            clicker.robotRelease(release);
+            release = -1;
+            doRelease = false;
+        }
     }
 }
