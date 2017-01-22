@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.game.feature.selector.it.ActionModel</lionengine:class>
+    <lionengine:surface image="BuildFarmOrc.png"/>
+    <lionengine:action name="Build Farm" description="Build a Farm" x="4" y="118" width="27" height="19"/>
+    <media>FarmOrc.xml</media>
+</lionengine:skill>

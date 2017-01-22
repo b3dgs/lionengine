@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:entity name="Peon" xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.game.feature.selector.it.Entity</lionengine:class>
+    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
+    <lionengine:surface image="Peon.png"/>
+	<lionengine:frames horizontal="15" vertical="9" offsetX="8" offsetY="8"/>
+	<lionengine:size width="16" height="16"/>
+	<lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
+    <lionengine:pathfindable>
+        <lionengine:path category="ground" cost="1" block="false">
+            <lionengine:movement>UP</lionengine:movement>
+            <lionengine:movement>LEFT</lionengine:movement>
+            <lionengine:movement>RIGHT</lionengine:movement>
+            <lionengine:movement>DOWN</lionengine:movement>
+            <lionengine:movement>DIAGONAL_UP_LEFT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_UP_RIGHT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_DOWN_LEFT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_DOWN_RIGHT</lionengine:movement>
+        </lionengine:path>
+        <lionengine:path category="border" block="true"/>
+        <lionengine:path category="tree" block="true"/>
+        <lionengine:path category="water" block="true"/>
+    </lionengine:pathfindable>
+    <lionengine:producible steps="3"/>
+    <lionengine:actions>
+        <lionengine:action path="MoveOrc.xml"/>
+        <lionengine:action path="BuildingStandardOrc.xml">
+            <lionengine:action path="BuildFarmOrc.xml"/>
+            <lionengine:action path="CancelOrc.xml" cancel="true"/>
+        </lionengine:action>
+    </lionengine:actions>
+</lionengine:entity>
