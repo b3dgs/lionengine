@@ -80,6 +80,14 @@ public interface Featurable extends FeatureProvider
     void prepareFeatures(Services services);
 
     /**
+     * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will
+     * allow to add them automatically.
+     * 
+     * @param listener The listener to check.
+     */
+    void checkListener(Object listener);
+
+    /**
      * Add a feature.
      * <p>
      * <b>Caution:</b>

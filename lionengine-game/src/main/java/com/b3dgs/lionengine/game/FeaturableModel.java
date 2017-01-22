@@ -283,6 +283,7 @@ public class FeaturableModel implements Featurable
             final Feature feature = featuresToPrepare.get(i);
             fillServices(feature, services);
             feature.prepare(this, services);
+            checkListener(feature);
 
             for (int j = 0; j < length; j++)
             {
@@ -293,6 +294,18 @@ public class FeaturableModel implements Featurable
             }
         }
         featuresToPrepare.clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Does nothing by default.
+     * </p>
+     */
+    @Override
+    public void checkListener(Object listener)
+    {
+        // Nothing by default
     }
 
     @Override
