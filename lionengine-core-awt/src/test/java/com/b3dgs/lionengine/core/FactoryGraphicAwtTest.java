@@ -19,11 +19,14 @@ package com.b3dgs.lionengine.core;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.b3dgs.lionengine.graphic.FactoryGraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Test the factory graphic provider class.
@@ -46,6 +49,22 @@ public class FactoryGraphicAwtTest extends FactoryGraphicTest
     /*
      * FactoryGraphicTest
      */
+
+    /**
+     * Test rotate.
+     */
+    @Test
+    @Override
+    public void testRotate()
+    {
+        final ImageBuffer rotate = Graphics.rotate(image, 90);
+
+        Assert.assertNotEquals(image, rotate);
+        Assert.assertEquals(image.getWidth(), rotate.getHeight());
+        Assert.assertEquals(image.getHeight(), rotate.getWidth());
+
+        rotate.dispose();
+    }
 
     @Override
     public void testCreateScreen()
