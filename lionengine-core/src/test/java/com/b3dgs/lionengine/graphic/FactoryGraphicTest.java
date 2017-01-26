@@ -40,11 +40,11 @@ public class FactoryGraphicTest
     private static final Config CONFIG = new Config(UtilTests.RESOLUTION_320_240, 32, true);
 
     /** Image. */
+    protected static ImageBuffer image;
+    /** Image. */
     private static Media mediaImage;
     /** Save image. */
     private static Media mediaSave;
-    /** Image. */
-    private static ImageBuffer image;
 
     /**
      * Prepare test.
