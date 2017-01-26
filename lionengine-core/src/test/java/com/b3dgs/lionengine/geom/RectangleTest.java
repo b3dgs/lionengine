@@ -96,6 +96,19 @@ public class RectangleTest
     }
 
     /**
+     * Test the rectangle rotation.
+     */
+    @Test
+    public void testRotate()
+    {
+        final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
+
+        Assert.assertEquals(rectangle, rectangle.rotate(0));
+        Assert.assertEquals(new Rectangle(-1.5, 4.5, 10.0, 5.0), rectangle.rotate(90));
+        Assert.assertEquals(rectangle, rectangle.rotate(360));
+    }
+
+    /**
      * Test the rectangle getters.
      */
     @Test
@@ -174,6 +187,7 @@ public class RectangleTest
         Assert.assertEquals(rectangle, new Rectangle(0, 1, 2, 3));
 
         Assert.assertNotEquals(rectangle, new Object());
+        Assert.assertNotEquals(rectangle, null);
         Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 2, 0));
         Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 3));
         Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 0));

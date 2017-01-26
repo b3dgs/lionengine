@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.geom;
 
 import com.b3dgs.lionengine.Shape;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Rectangle interface.
@@ -117,6 +118,53 @@ public class Rectangle implements Shape
     {
         x += vx;
         y += vy;
+    }
+
+    /**
+     * Rotate rectangle with specific angle.
+     * 
+     * @param angle The angle in degree.
+     * @return The rotated encompassing rectangle.
+     */
+    public Rectangle rotate(double angle)
+    {
+        final double a = UtilMath.wrapDouble(angle, 0, 360);
+
+        final double x2 = x + width;
+        final double y2 = y;
+
+        final double x3 = x2;
+        final double y3 = y + height;
+
+        final double x4 = x;
+        final double y4 = y3;
+
+        final double cx = x + width / 2.0;
+        final double cy = y + height / 2.0;
+
+        final double cos = UtilMath.cos(a);
+        final double sin = UtilMath.sin(a);
+
+        final double rx1 = cos * (x - cx) - sin * (y - cy) + cx;
+        final double ry1 = sin * (x - cx) + cos * (y - cy) + cy;
+
+        final double rx2 = cos * (x2 - cx) - sin * (y2 - cy) + cx;
+        final double ry2 = sin * (x2 - cx) + cos * (y2 - cy) + cy;
+
+        final double rx3 = cos * (x3 - cx) - sin * (y3 - cy) + cx;
+        final double ry3 = sin * (x3 - cx) + cos * (y3 - cy) + cy;
+
+        final double rx4 = cos * (x4 - cx) - sin * (y4 - cy) + cx;
+        final double ry4 = sin * (x4 - cx) + cos * (y4 - cy) + cy;
+
+        final double nx1 = Math.min(Math.min(Math.min(rx1, rx2), rx3), rx4);
+        final double ny1 = Math.max(Math.max(Math.max(ry1, ry2), ry3), ry4);
+
+        final double nx2 = Math.max(Math.max(Math.max(rx1, rx2), rx3), rx4);
+
+        final double ny3 = Math.min(Math.min(Math.min(ry1, ry2), ry3), ry4);
+
+        return new Rectangle(nx1, ny3, nx2 - nx1, ny1 - ny3);
     }
 
     /**
