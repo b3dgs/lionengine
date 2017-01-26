@@ -42,8 +42,8 @@ public class CameraTrackerTest
         final Camera camera = new Camera();
         services.add(camera);
         camera.setView(0, 0, 16, 32, 32);
-        tracker.prepare(new FeaturableModel(), services);
-        tracker.update(1.0);
+        tracker.prepareFeatures(services);
+        tracker.getFeature(Refreshable.class).update(1.0);
 
         Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
@@ -52,7 +52,7 @@ public class CameraTrackerTest
         transformable.teleport(1.0, 2.0);
 
         tracker.track(transformable);
-        tracker.update(1.0);
+        tracker.getFeature(Refreshable.class).update(1.0);
 
         Assert.assertEquals(-7.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(-14.0, camera.getY(), UtilTests.PRECISION);
@@ -63,7 +63,7 @@ public class CameraTrackerTest
         transformable.teleport(2.0, 3.0);
 
         tracker.track(featurable);
-        tracker.update(1.0);
+        tracker.getFeature(Refreshable.class).update(1.0);
 
         Assert.assertEquals(-6.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(-13.0, camera.getY(), UtilTests.PRECISION);

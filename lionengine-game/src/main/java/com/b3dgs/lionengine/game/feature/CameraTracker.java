@@ -19,15 +19,22 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Services;
 
 /**
- * Camera tracking feature implementation.
+ * Camera tracking implementation.
+ * <p>
+ * The {@link Services} must provide:
+ * </p>
+ * <ul>
+ * <li>{@link Camera}</li>
+ * </ul>
  */
-public class CameraTracker extends FeatureModel implements Refreshable
+public class CameraTracker extends FeaturableModel
 {
     /** Followed element (can be <code>null</code>). */
     private Localizable tracked;
@@ -36,16 +43,24 @@ public class CameraTracker extends FeatureModel implements Refreshable
 
     /**
      * Create tracker.
-     * <p>
-     * The {@link Services} must provide:
-     * </p>
-     * <ul>
-     * <li>{@link Camera}</li>
-     * </ul>
      */
     public CameraTracker()
     {
         super();
+
+        addFeature(new RefreshableModel(new Updatable()
+        {
+            @Override
+            public void update(double extrp)
+            {
+                if (tracked != null)
+                {
+                    camera.setLocation(tracked.getX()
+                                       - camera.getWidth() / 2.0,
+                                       tracked.getY() - camera.getHeight() / 2.0);
+                }
+            }
+        }));
     }
 
     /**
@@ -80,19 +95,10 @@ public class CameraTracker extends FeatureModel implements Refreshable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepareFeatures(Services services)
     {
-        super.prepare(provider, services);
+        super.prepareFeatures(services);
 
         camera = services.get(Camera.class);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        if (tracked != null)
-        {
-            camera.setLocation(tracked.getX() - camera.getWidth() / 2.0, tracked.getY() - camera.getHeight() / 2.0);
-        }
     }
 }

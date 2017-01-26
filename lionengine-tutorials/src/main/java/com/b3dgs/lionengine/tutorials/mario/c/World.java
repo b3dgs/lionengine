@@ -93,9 +93,9 @@ class World extends WorldGame
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
 
-        final CameraTracker tracker = camera.addFeatureAndGet(new CameraTracker());
+        final CameraTracker tracker = new CameraTracker();
         camera.setLimits(map);
         tracker.track(mario);
-        handler.add(camera);
+        handler.add(tracker);
     }
 }
