@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.graphic.FactoryGraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.Transparency;
 
@@ -52,6 +54,22 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
         prepare();
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
         loadResources();
+    }
+
+    /**
+     * Test rotate.
+     */
+    @Test
+    @Override
+    public void testRotate()
+    {
+        final ImageBuffer rotate = Graphics.rotate(image, 90);
+
+        Assert.assertNotEquals(image, rotate);
+        Assert.assertEquals(image.getWidth(), rotate.getHeight());
+        Assert.assertEquals(image.getHeight(), rotate.getWidth());
+
+        rotate.dispose();
     }
 
     /**
