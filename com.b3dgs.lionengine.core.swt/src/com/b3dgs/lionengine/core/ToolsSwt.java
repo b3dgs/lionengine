@@ -37,6 +37,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.graphic.UtilColor;
@@ -235,7 +236,11 @@ public final class ToolsSwt
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
         final int height = sourceData.height;
-        final ImageData newData = new ImageData(width, height, sourceData.depth, sourceData.palette);
+
+        final Rectangle rectangle = new Rectangle(0, 0, width, height);
+        final Rectangle r = rectangle.rotate(angle);
+
+        final ImageData newData = new ImageData(r.getWidth(), r.getHeight(), sourceData.depth, sourceData.palette);
         newData.transparentPixel = sourceData.transparentPixel;
 
         final Device device = image.getDevice();
@@ -248,7 +253,7 @@ public final class ToolsSwt
 
         transform.setElements(cos, sin, -sin, cos, (float) (width / 2.0), (float) (height / 2.0));
         gc.setTransform(transform);
-        gc.drawImage(image, -width / 2, -height / 2);
+        gc.drawImage(image, (int) ((r.getWidth() - width) / 2.0), (int) ((r.getHeight() - height) / 2.0));
         gc.dispose();
 
         return rotated;

@@ -30,6 +30,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
@@ -131,7 +132,11 @@ public final class ToolsAndroid
     {
         final Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-        return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, false);
+
+        final Rectangle rectangle = new Rectangle(0, 0, image.getWidth(), image.getHeight());
+        final Rectangle r = rectangle.rotate(angle);
+
+        return Bitmap.createBitmap(image, 0, 0, r.getWidth(), r.getHeight(), matrix, false);
     }
 
     /**

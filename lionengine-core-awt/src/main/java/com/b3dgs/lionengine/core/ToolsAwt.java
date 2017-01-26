@@ -40,6 +40,7 @@ import javax.imageio.ImageIO;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.UtilColor;
 
@@ -205,12 +206,16 @@ public final class ToolsAwt
         final int width = image.getWidth();
         final int height = image.getHeight();
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage rotated = createImage(width, height, transparency);
+
+        final Rectangle rectangle = new Rectangle(0, 0, width, height);
+        final Rectangle r = rectangle.rotate(angle);
+
+        final BufferedImage rotated = createImage(r.getWidth(), r.getHeight(), transparency);
         final Graphics2D g = rotated.createGraphics();
 
         optimizeGraphics(g);
-        g.rotate(Math.toRadians(angle), width / 2.0, height / 2.0);
-        g.drawImage(image, null, 0, 0);
+        g.rotate(Math.toRadians(angle), r.getWidth() / 2.0, r.getHeight() / 2.0);
+        g.drawImage(image, null, (int) ((r.getWidth() - width) / 2.0), (int) ((r.getHeight() - height) / 2.0));
         g.dispose();
 
         return rotated;

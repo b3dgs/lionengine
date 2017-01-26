@@ -10,16 +10,18 @@
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.filter.FilterHq3x"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.filter.FilterHq2x"/>
     <!-- AWT -->
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.ToolsAwt" lines="364"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.ToolsAwt" lines="369"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.FactoryGraphicAwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.swing.UtilSwing"/>
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.swing.Theme" lines="81"/>
     <!-- SWT -->
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.ScreenSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.ToolsSwt" lines="356"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.ToolsSwt" lines="361"/>
     <suppress checks="FanOut" files="com.b3dgs.lionengine.core.FactoryGraphicSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.FactoryGraphicSwt"/>
+    <!-- Android -->
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.ToolsAndroid"/>
     <!-- Game -->
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel" lines="240"/>
