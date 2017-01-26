@@ -244,8 +244,8 @@ public class FactoryGraphicTest
         final ImageBuffer rotate = Graphics.rotate(image, 90);
 
         Assert.assertNotEquals(image, rotate);
-        Assert.assertEquals(image.getWidth(), rotate.getHeight());
-        Assert.assertEquals(image.getHeight(), rotate.getWidth());
+        Assert.assertEquals(image.getWidth(), rotate.getWidth());
+        Assert.assertEquals(image.getHeight(), rotate.getHeight());
 
         rotate.dispose();
     }
