@@ -53,9 +53,12 @@ public class LayerableModel extends FeatureModel implements Layerable
     {
         super();
 
-        final LayerableConfig config = LayerableConfig.imports(setup);
-        layerRefresh = Integer.valueOf(config.getLayerRefresh());
-        layerDisplay = Integer.valueOf(config.getLayerDisplay());
+        if (setup.hasNode(LayerableConfig.NODE_LAYERABLE))
+        {
+            final LayerableConfig config = LayerableConfig.imports(setup);
+            layerRefresh = Integer.valueOf(config.getLayerRefresh());
+            layerDisplay = Integer.valueOf(config.getLayerDisplay());
+        }
     }
 
     /**
