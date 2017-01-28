@@ -100,6 +100,15 @@ public interface MapTilePath extends Feature
      * 
      * @param mover The object moving on map.
      * @param tiled The object to search around.
+     * @return The free tile found (<code>null</code> if none).
+     */
+    CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled);
+
+    /**
+     * Search a free area from this location.
+     * 
+     * @param mover The object moving on map.
+     * @param tiled The object to search around.
      * @param radius The search radius.
      * @return The free tile found (<code>null</code> if none).
      */

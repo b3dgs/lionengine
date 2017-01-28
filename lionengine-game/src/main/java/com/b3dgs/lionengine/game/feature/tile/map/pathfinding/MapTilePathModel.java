@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -276,6 +277,17 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     }
 
     @Override
+    public CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled)
+    {
+        return getFreeTileAround(mover,
+                                 tiled.getInTileX(),
+                                 tiled.getInTileY(),
+                                 tiled.getInTileWidth(),
+                                 tiled.getInTileHeight(),
+                                 map.getInTileRadius());
+    }
+
+    @Override
     public CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius)
     {
         return getFreeTileAround(mover,
@@ -291,13 +303,14 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     {
         int size = 0;
         boolean search = true;
+        final Integer id = mover.getFeature(Identifiable.class).getId();
         while (search)
         {
             for (int ctx = tx - size; ctx <= tx + size; ctx++)
             {
                 for (int cty = ty - size; cty <= ty + size; cty++)
                 {
-                    if (isAreaAvailable(mover, ctx, cty, tw, th, null))
+                    if (isAreaAvailable(mover, ctx, cty, tw, th, id))
                     {
                         return new CoordTile(ctx, cty);
                     }
