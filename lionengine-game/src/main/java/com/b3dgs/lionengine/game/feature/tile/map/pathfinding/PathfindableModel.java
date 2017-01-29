@@ -144,6 +144,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     public PathfindableModel(Setup setup)
     {
         super();
+
         categories = PathfindableConfig.imports(setup);
 
         recycle();
@@ -159,14 +160,12 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         final int tw = transformable.getWidth() / map.getTileWidth();
         final int th = transformable.getHeight() / map.getTileHeight();
-        if (mapPath.isAreaAvailable(this, dtx, dty, tw, th, id))
+
+        for (int tx = dtx; tx < dtx + tw; tx++)
         {
-            for (int tx = dtx; tx < dtx + tw; tx++)
+            for (int ty = dty; ty < dty + th; ty++)
             {
-                for (int ty = dty; ty < dty + th; ty++)
-                {
-                    mapPath.addObjectId(tx, ty, id);
-                }
+                mapPath.addObjectId(tx, ty, id);
             }
         }
     }
@@ -555,6 +554,12 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     }
 
     @Override
+    public void clearPath()
+    {
+        removeObjectId(getInTileX(), getInTileY());
+    }
+
+    @Override
     public void clearSharedPathIds()
     {
         sharedPathIds.clear();
@@ -708,14 +713,17 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     }
 
     @Override
+    public void setLocation(CoordTile coord)
+    {
+        setLocation(coord.getX(), coord.getY());
+    }
+
+    @Override
     public void setLocation(int tx, int ty)
     {
-        if (checkObjectId(tx, ty))
-        {
-            removeObjectId(getInTileX(), getInTileY());
-            transformable.setLocation(tx * (double) map.getTileWidth(), ty * (double) map.getTileHeight());
-            assignObjectId(getInTileX(), getInTileY());
-        }
+        removeObjectId(getInTileX(), getInTileY());
+        transformable.teleport(tx * (double) map.getTileWidth(), ty * (double) map.getTileHeight());
+        assignObjectId(getInTileX(), getInTileY());
     }
 
     @Override

@@ -40,6 +40,11 @@ public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Ren
     void addListener(PathfindableListener listener);
 
     /**
+     * Clear current used path ID.
+     */
+    void clearPath();
+
+    /**
      * Clear all ignored objects ID.
      */
     void clearIgnoredId();
@@ -110,6 +115,13 @@ public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Ren
      * @return <code>true</code> if destination reachable, <code>false</code> else.
      */
     boolean setDestination(int tx, int ty);
+
+    /**
+     * Set specified location in tile.
+     * 
+     * @param coord The coordinate in tile.
+     */
+    void setLocation(CoordTile coord);
 
     /**
      * Set specified location in tile.
