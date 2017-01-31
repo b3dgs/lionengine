@@ -61,14 +61,13 @@ class Peon extends FeaturableModel
     {
         super();
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel());
-        transformable.teleport(320, 256);
-
         addFeature(new LayerableModel(1));
 
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
+
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        surface.setOrigin(Origin.BOTTOM_LEFT);
+        surface.setFrameOffsets(8, 8);
 
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
@@ -82,7 +81,7 @@ class Peon extends FeaturableModel
 
                 if (timing.elapsed(500L))
                 {
-                    pathfindable.setDestination(12, 12);
+                    pathfindable.setDestination(18, 14);
                     timing.stop();
                 }
             }
@@ -104,8 +103,7 @@ class Peon extends FeaturableModel
     {
         super.prepareFeatures(services);
 
-        pathfindable.setSpeed(5.0, 5.0);
-        pathfindable.setDestination(28, 8);
+        pathfindable.setSpeed(6.0, 6.0);
 
         timing.start();
     }

@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.feature.ComponentDisplayable;
@@ -36,6 +37,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
@@ -90,7 +92,15 @@ class Scene extends Sequence
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         final Factory factory = services.create(Factory.class);
-        handler.add(factory.create(Peon.MEDIA));
+
+        Featurable peon = factory.create(Peon.MEDIA);
+        peon.getFeature(Pathfindable.class).setLocation(20, 16);
+        peon.getFeature(Pathfindable.class).setDestination(20, 12);
+        handler.add(peon);
+
+        peon = factory.create(Peon.MEDIA);
+        peon.getFeature(Pathfindable.class).setLocation(22, 14);
+        handler.add(peon);
 
         timing.start();
     }
