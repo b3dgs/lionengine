@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Mario controlling implementation.

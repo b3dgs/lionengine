@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * World implementation.

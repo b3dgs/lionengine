@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Text;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Move action.

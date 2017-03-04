@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineAwt;
+import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.core.sequence.Loader;
 import com.b3dgs.lionengine.util.UtilFolder;
 

@@ -41,8 +41,8 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
-import com.b3dgs.lionengine.io.Keyboard;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Game loop designed to handle our little world.

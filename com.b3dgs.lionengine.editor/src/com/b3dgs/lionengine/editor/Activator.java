@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.EngineSwt;
+import com.b3dgs.lionengine.core.swt.EngineSwt;
 
 /**
  * Plugin activator.

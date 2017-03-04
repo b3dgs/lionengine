@@ -45,8 +45,8 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Text;
-import com.b3dgs.lionengine.io.Mouse;
 import com.b3dgs.lionengine.io.Xml;
+import com.b3dgs.lionengine.io.awt.Mouse;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**

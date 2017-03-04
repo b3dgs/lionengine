@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * This is where the game loop is running.

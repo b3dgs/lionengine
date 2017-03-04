@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuit;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Handle the interaction with tiles.

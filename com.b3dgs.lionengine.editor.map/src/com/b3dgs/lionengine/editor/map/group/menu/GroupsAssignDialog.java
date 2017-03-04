@@ -76,7 +76,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionMo
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Edit map tile groups dialog.

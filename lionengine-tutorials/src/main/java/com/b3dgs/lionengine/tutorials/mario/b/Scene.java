@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Game loop designed to handle our little world.

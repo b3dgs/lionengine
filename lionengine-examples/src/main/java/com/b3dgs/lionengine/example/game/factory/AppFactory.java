@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.example.game.factory;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.EngineAwt;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Factory;
 

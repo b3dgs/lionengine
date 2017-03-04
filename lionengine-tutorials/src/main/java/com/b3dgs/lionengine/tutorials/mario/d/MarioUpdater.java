@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Mario specific implementation.

@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Text;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Button action implementation.

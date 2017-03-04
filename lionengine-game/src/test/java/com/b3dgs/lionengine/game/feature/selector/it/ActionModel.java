@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.feature.selector.Selector;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Move action.

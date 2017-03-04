@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Mario updating implementation.

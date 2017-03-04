@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFactory;
-import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.sequence.Sequence;
@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Game loop designed to handle our little world.

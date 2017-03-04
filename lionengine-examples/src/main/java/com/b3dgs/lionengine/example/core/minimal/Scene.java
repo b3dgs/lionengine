@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.sequence.Loader;
 import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * This is where the game loop is running. A sequence represents a thread handled by the {@link Loader}.

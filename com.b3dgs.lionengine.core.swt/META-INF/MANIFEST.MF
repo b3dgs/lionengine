@@ -9,5 +9,5 @@ Require-Bundle: org.eclipse.swt,
  com.b3dgs.lionengine.core
 Bundle-ClassPath: .
 Export-Package: com.b3dgs.lionengine,
- com.b3dgs.lionengine.core,
- com.b3dgs.lionengine.io
+ com.b3dgs.lionengine.core.swt,
+ com.b3dgs.lionengine.io.swt

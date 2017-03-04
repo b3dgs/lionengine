@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.feature.ComponentRefreshable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Game loop designed to handle our little world.

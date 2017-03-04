@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.core.drawable;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.io.Keyboard;
+import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * This is where the game loop is running.
@@ -112,12 +113,13 @@ class Scene extends Sequence
 
         // Place images
         image.setLocation(0, 0);
-        sprite.setLocation(16, 160);
+        sprite.setLocation(48, 192);
         animation.setLocation(80, 150);
         animationMirror.setLocation(100, 150);
         tilesheet.setLocation(150, 150);
         tilesheets.setLocation(175, 150);
 
+        sprite.setOrigin(Origin.CENTER_BOTTOM);
         animationMirror.setMirror(Mirror.HORIZONTAL);
 
         // Set animation to play

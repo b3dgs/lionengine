@@ -37,8 +37,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.io.Keyboard;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Game loop designed to handle our little world.

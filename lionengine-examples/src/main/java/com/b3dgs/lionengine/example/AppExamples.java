@@ -31,6 +31,8 @@ import javax.swing.SwingUtilities;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.awt.swing.Theme;
+import com.b3dgs.lionengine.awt.swing.UtilSwing;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.action.AppAction;
@@ -51,8 +53,6 @@ import com.b3dgs.lionengine.example.game.selector.AppSelector;
 import com.b3dgs.lionengine.example.game.state.AppState;
 import com.b3dgs.lionengine.example.helloworld.AppHelloWorld;
 import com.b3dgs.lionengine.example.pong.AppPong;
-import com.b3dgs.lionengine.swing.Theme;
-import com.b3dgs.lionengine.swing.UtilSwing;
 
 /**
  * Program starts here.
