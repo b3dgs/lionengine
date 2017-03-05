@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.io.awt.Mouse;
+import com.b3dgs.lionengine.io.swt.Mouse;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**

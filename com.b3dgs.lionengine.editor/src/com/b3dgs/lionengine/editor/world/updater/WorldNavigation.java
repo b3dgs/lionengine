@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.swt.Keyboard;
 
 /**
  * Handle the world navigation by using keyboard arrows key as input or mouse drag.
