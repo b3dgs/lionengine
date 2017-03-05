@@ -15,30 +15,51 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.sample.android;
+package com.b3dgs.lionengine.core.android;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.android.ActivityGame;
-import com.b3dgs.lionengine.core.android.EngineAndroid;
-import com.b3dgs.lionengine.core.sequence.Loader;
-import com.b3dgs.sample.Scene;
+import com.b3dgs.lionengine.core.Engine;
 
 /**
- * Android entry point.
+ * Activity base implementation for game.
  */
-public final class AppAndroid extends ActivityGame
+public abstract class ActivityGame extends Activity
 {
-    @Override
-    protected void start(Bundle bundle)
+    /**
+     * Constructor.
+     */
+    public ActivityGame()
     {
-        EngineAndroid.start("AppAndroid", Version.create(1, 0, 0), this);
-        final Resolution output = new Resolution(240, 320, 60);
-        final Config config = new Config(output, 32, false);
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        super();
+    }
+
+    /**
+     * Start the activity.
+     * 
+     * @param bundle The bundle reference.
+     */
+    protected abstract void start(Bundle bundle);
+
+    /*
+     * Activity
+     */
+
+    @Override
+    protected void onCreate(Bundle bundle)
+    {
+        super.onCreate(bundle);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        start(bundle);
+    }
+
+    @Override
+    public void finish()
+    {
+        super.finish();
+        Engine.terminate();
     }
 }
