@@ -15,39 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.selector;
-
-import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
- * Selectable model base.
+ * Selector system which allows to select and area and notify it.
  */
-public class SelectableModel extends FeatureModel implements Selectable
-{
-    /** Selected flag. */
-    private boolean selected;
-
-    /**
-     * Create selectable.
-     */
-    public SelectableModel()
-    {
-        super();
-    }
-
-    /*
-     * Selectable
-     */
-
-    @Override
-    public void onSelection(boolean selected)
-    {
-        this.selected = selected;
-    }
-
-    @Override
-    public boolean isSelected()
-    {
-        return selected;
-    }
-}
+package com.b3dgs.lionengine.game.feature.collidable.selector;

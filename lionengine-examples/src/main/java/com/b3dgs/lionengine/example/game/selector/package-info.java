@@ -17,6 +17,6 @@
  */
 
 /**
- * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.selector} API to select elements.
+ * This example will show how to use the {@link com.b3dgs.lionengine.game.feature.collidable.selector} API to select elements.
  */
 package com.b3dgs.lionengine.example.game.selector;

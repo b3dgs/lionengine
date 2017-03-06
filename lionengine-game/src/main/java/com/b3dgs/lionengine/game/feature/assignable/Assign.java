@@ -23,7 +23,7 @@ package com.b3dgs.lionengine.game.feature.assignable;
  * click over a button, ready to assign on map (in other this is the second part of the action).
  * 
  * @see Assignable
- * @see com.b3dgs.lionengine.game.feature.actionable.Actionable
+ * @see com.b3dgs.lionengine.game.feature.Actionable
  * @see com.b3dgs.lionengine.game.Action
  */
 public interface Assign

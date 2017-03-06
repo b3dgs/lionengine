@@ -15,19 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.selector;
+package com.b3dgs.lionengine.game.feature.collidable.selector;
 
-import java.util.List;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Listen to elements selection event.
+ * Selection event linking.
  */
-public interface SelectionListener
+public interface Selectable extends Feature
 {
     /**
-     * Notify selected featurables.
+     * Called when has been selected.
      * 
-     * @param selection The selected elements.
+     * @param selected <code>true</code> if selected, <code>false</code> if unselected.
      */
-    void notifySelected(List<Selectable> selection);
+    void onSelection(boolean selected);
+
+    /**
+     * Check if is selected.
+     * 
+     * @return <code>true</code> if selected, <code>false</code> else.
+     */
+    boolean isSelected();
 }

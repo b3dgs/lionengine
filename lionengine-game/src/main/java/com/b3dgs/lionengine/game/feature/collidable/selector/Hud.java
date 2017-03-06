@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.selector;
+package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Actioner;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -45,7 +46,6 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
-import com.b3dgs.lionengine.game.feature.actionable.Actionable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;

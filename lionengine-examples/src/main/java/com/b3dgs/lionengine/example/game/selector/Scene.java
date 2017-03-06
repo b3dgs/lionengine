@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.ComponentRefreshable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
-import com.b3dgs.lionengine.game.feature.selector.Selector;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;

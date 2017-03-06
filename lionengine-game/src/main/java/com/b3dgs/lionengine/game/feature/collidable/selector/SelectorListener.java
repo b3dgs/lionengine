@@ -15,8 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.game.feature.collidable.selector;
+
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
- * Selector system which allows to select and area and notify it.
+ * List of events linked to the {@link Selector}.
  */
-package com.b3dgs.lionengine.game.feature.selector;
+public interface SelectorListener
+{
+    /**
+     * Notify when selection started.
+     * 
+     * @param selection The selection.
+     */
+    void notifySelectionStarted(Rectangle selection);
+
+    /**
+     * Notify when selection is done.
+     * 
+     * @param selection The selection.
+     */
+    void notifySelectionDone(Rectangle selection);
+}

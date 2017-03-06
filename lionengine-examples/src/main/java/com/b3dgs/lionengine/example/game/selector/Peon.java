@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
-import com.b3dgs.lionengine.game.feature.selector.SelectorListener;
+import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorListener;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;

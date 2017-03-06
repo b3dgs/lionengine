@@ -15,26 +15,39 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.selector;
+package com.b3dgs.lionengine.game.feature.collidable.selector;
 
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
- * List of events linked to the {@link Selector}.
+ * Selectable model base.
  */
-public interface SelectorListener
+public class SelectableModel extends FeatureModel implements Selectable
 {
-    /**
-     * Notify when selection started.
-     * 
-     * @param selection The selection.
-     */
-    void notifySelectionStarted(Rectangle selection);
+    /** Selected flag. */
+    private boolean selected;
 
     /**
-     * Notify when selection is done.
-     * 
-     * @param selection The selection.
+     * Create selectable.
      */
-    void notifySelectionDone(Rectangle selection);
+    public SelectableModel()
+    {
+        super();
+    }
+
+    /*
+     * Selectable
+     */
+
+    @Override
+    public void onSelection(boolean selected)
+    {
+        this.selected = selected;
+    }
+
+    @Override
+    public boolean isSelected()
+    {
+        return selected;
+    }
 }

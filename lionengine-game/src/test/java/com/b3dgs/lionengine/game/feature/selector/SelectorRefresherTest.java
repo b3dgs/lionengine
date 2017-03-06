@@ -31,6 +31,9 @@ import com.b3dgs.lionengine.game.MouseMock;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorListener;
+import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorModel;
+import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorRefresher;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
