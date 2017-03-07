@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Handle tick measure, in updated frames number.
  */
@@ -34,6 +37,10 @@ public final class Tick implements Updatable
         }
     };
 
+    /** Actions. */
+    private final Collection<TickActionDelayed> actions = new ArrayList<TickActionDelayed>();
+    /** Actions executed. */
+    private final Collection<TickActionDelayed> toRemove = new ArrayList<TickActionDelayed>();
     /** Update. */
     private final Updatable updating = new Updatable()
     {
@@ -56,6 +63,17 @@ public final class Tick implements Updatable
     public Tick()
     {
         super();
+    }
+
+    /**
+     * Add an action to execute once tick delay elapsed.
+     * 
+     * @param action The action to execute.
+     * @param tickDelay The tick delay used as trigger.
+     */
+    public void addAction(TickAction action, int tickDelay)
+    {
+        actions.add(new TickActionDelayed(action, tickDelay));
     }
 
     /**
@@ -174,5 +192,62 @@ public final class Tick implements Updatable
     public void update(double extrp)
     {
         updater.update(extrp);
+
+        for (final TickActionDelayed action : actions)
+        {
+            if (elapsed(action.getTickDelay()))
+            {
+                action.getAction().execute();
+                toRemove.add(action);
+            }
+        }
+        if (!toRemove.isEmpty())
+        {
+            actions.removeAll(toRemove);
+            toRemove.clear();
+        }
+    }
+
+    /**
+     * Delayed tick action data.
+     */
+    private static class TickActionDelayed
+    {
+        /** Action reference. */
+        private final TickAction action;
+        /** Tick delay trigger. */
+        private final int tickDelay;
+
+        /**
+         * Create delayed action data.
+         * 
+         * @param action The action reference.
+         * @param tickDelay The tick delay.
+         */
+        TickActionDelayed(TickAction action, int tickDelay)
+        {
+            this.action = action;
+            this.tickDelay = tickDelay;
+        }
+
+        /**
+         * Get action reference.
+         * 
+         * @return The action reference.
+         */
+        public TickAction getAction()
+        {
+            return action;
+        }
+
+        /**
+         * Get the tick delay.
+         * 
+         * @return The tick delay.
+         */
+        public int getTickDelay()
+        {
+            return tickDelay;
+        }
     }
 }

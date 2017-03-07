@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,6 +68,37 @@ public class TickTest
     }
 
     private final Tick tick = new Tick();
+
+    /**
+     * Test the delayed action tick.
+     */
+    @Test
+    public void testAddAction()
+    {
+        final AtomicBoolean action = new AtomicBoolean();
+        tick.addAction(new TickAction()
+        {
+            @Override
+            public void execute()
+            {
+                action.set(true);
+            }
+        }, 2);
+
+        Assert.assertFalse(action.get());
+
+        tick.start();
+
+        Assert.assertFalse(action.get());
+
+        tick.update(1.0);
+
+        Assert.assertFalse(action.get());
+
+        tick.update(1.0);
+
+        Assert.assertTrue(action.get());
+    }
 
     /**
      * Test the start case.
