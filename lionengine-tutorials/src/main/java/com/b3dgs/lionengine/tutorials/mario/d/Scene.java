@@ -27,8 +27,8 @@ import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.SequenceGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
@@ -40,13 +40,12 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
 /**
  * Game loop designed to handle our little world.
  */
-class Scene extends Sequence
+class Scene extends SequenceGame
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
     private static final Media LEVEL = Medias.create("map", "level.lvl");
 
     private final Midi music = AudioFactory.loadAudio(Medias.create("music", "music.mid"), Midi.class);
-    private final World world;
 
     /**
      * Constructor.
@@ -55,9 +54,8 @@ class Scene extends Sequence
      */
     public Scene(Context context)
     {
-        super(context, NATIVE);
+        super(context, NATIVE, (c, s) -> new World(c, s));
 
-        world = new World(context);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 

@@ -73,7 +73,7 @@ class Scene extends Sequence
         handler.addComponent(new ComponentDisplayable());
 
         services.add(getInputDevice(Keyboard.class));
-        services.add(Integer.valueOf(getConfig().getSource().getRate()));
+        services.add(context);
     }
 
     @Override

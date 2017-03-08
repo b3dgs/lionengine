@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.collision;
 
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
@@ -38,6 +39,8 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
+    private static final double GRAVITY = 6.0;
+
     private final Force movement;
     private final Force jump;
 
@@ -47,6 +50,8 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     @Service private Collidable collidable;
     @Service private TileCollidable tileCollidable;
     @Service private Keyboard keyboard;
+
+    @Service private Context context;
 
     /**
      * Create updater.
@@ -67,8 +72,8 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
         collidable.setOrigin(Origin.CENTER_BOTTOM);
         transformable.teleport(80, 32);
 
-        body.setDesiredFps(60);
-        body.setMass(2.0);
+        body.setDesiredFps(context.getConfig().getSource().getRate());
+        body.setGravity(GRAVITY);
         body.setVectors(movement, jump);
     }
 

@@ -70,6 +70,7 @@ public class BodyTest
 
         body.prepare(object, services);
         body.setMass(2.0);
+        body.setDesiredFps(50);
 
         Assert.assertEquals(2.0, body.getMass(), UtilTests.PRECISION);
         Assert.assertEquals(2.0 * Body.GRAVITY_EARTH, body.getWeight(), UtilTests.PRECISION);
@@ -88,12 +89,12 @@ public class BodyTest
         body.update(1.0);
 
         Assert.assertEquals(6.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(5.85, transformable.getY(), UtilTests.PRECISION);
 
         body.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(-8.0, transformable.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(5.85, transformable.getOldY(), UtilTests.PRECISION);
+        Assert.assertEquals(5.55, transformable.getY(), UtilTests.PRECISION);
     }
 
     /**
@@ -108,17 +109,18 @@ public class BodyTest
         body.setMass(2.0);
         body.setGravity(3.0);
         body.setGravityMax(8.0);
+        body.setDesiredFps(50);
         body.setVectors(new Force(0.0, 0.0));
         body.update(1.0);
 
         Assert.assertEquals(6.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(5.85, transformable.getY(), UtilTests.PRECISION);
 
         body.resetGravity();
         body.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(-6.0, transformable.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(5.85, transformable.getOldY(), UtilTests.PRECISION);
+        Assert.assertEquals(5.7, transformable.getY(), UtilTests.PRECISION);
     }
 
     /**
@@ -137,11 +139,11 @@ public class BodyTest
         body.update(1.0);
 
         Assert.assertEquals(6.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(4.98, transformable.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(4.95, transformable.getY(), UtilTests.PRECISION);
 
         body.update(0.5);
 
-        Assert.assertEquals(4.98, transformable.getOldY(), 0.01);
-        Assert.assertEquals(4.46, transformable.getY(), 0.01);
+        Assert.assertEquals(4.95, transformable.getOldY(), 0.01);
+        Assert.assertEquals(4.41, transformable.getY(), 0.01);
     }
 }

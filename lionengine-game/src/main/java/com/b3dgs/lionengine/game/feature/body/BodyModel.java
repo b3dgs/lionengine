@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.body;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -37,7 +38,7 @@ public class BodyModel extends FeatureModel implements Body
     /** Body location. */
     private Transformable transformable;
     /** Gravity used. */
-    private double gravity = Body.GRAVITY_EARTH;
+    private double gravity = GRAVITY_EARTH;
     /** Vector used. */
     private Direction[] vectors = new Direction[0];
     /** Body mass. */
@@ -67,22 +68,14 @@ public class BodyModel extends FeatureModel implements Body
     public void prepare(FeatureProvider provider, Services services)
     {
         super.prepare(provider, services);
+
         transformable = provider.getFeature(Transformable.class);
     }
 
     @Override
     public void update(double extrp)
     {
-        final double factor;
-        if (desiredFps > 0)
-        {
-            factor = desiredFps * extrp;
-        }
-        else
-        {
-            factor = 1.0;
-        }
-        force.addDirection(extrp, 0.0, -getWeight() / factor);
+        force.addDirection(extrp, 0.0, -gravity * (desiredFps / (double) Constant.ONE_SECOND_IN_MILLI) * extrp);
         transformable.moveLocation(extrp, force, vectors);
     }
 

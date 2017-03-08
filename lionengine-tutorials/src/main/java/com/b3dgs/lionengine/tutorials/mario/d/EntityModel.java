@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -35,6 +36,8 @@ import com.b3dgs.lionengine.graphic.SpriteAnimated;
  */
 class EntityModel extends FeatureModel
 {
+    private static final double GRAVITY = 7.0;
+
     private final Force movement = new Force();
     private final Force jump = new Force();
     private final SpriteAnimated surface;
@@ -42,6 +45,8 @@ class EntityModel extends FeatureModel
 
     @Service private Body body;
     @Service private Collidable collidable;
+
+    @Service private Context context;
 
     /**
      * Constructor.
@@ -66,8 +71,8 @@ class EntityModel extends FeatureModel
         super.prepare(provider, services);
 
         body.setVectors(movement, jump);
-        body.setDesiredFps(60);
-        body.setMass(2.0);
+        body.setGravity(GRAVITY);
+        body.setDesiredFps(context.getConfig().getSource().getRate());
 
         collidable.setOrigin(Origin.CENTER_TOP);
     }

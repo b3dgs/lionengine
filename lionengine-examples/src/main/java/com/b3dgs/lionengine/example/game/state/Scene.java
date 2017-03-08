@@ -54,6 +54,7 @@ class Scene extends Sequence
 
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
+        services.add(context);
     }
 
     /*

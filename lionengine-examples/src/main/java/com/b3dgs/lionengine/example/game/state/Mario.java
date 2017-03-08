@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.state;
 
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
@@ -51,6 +52,9 @@ class Mario extends FeaturableModel
     public static final Media MEDIA = Medias.create("Mario.xml");
     /** Ground location y. */
     static final int GROUND = 32;
+    private static final double GRAVITY = 6.0;
+
+    private final Body body = addFeatureAndGet(new BodyModel());
 
     private final StateFactory factory = new StateFactory();
     private final StateHandler handler = new StateHandler(factory);
@@ -59,6 +63,7 @@ class Mario extends FeaturableModel
     private final Setup setup;
     private final SpriteAnimated surface;
 
+    @Service private Context context;
     @Service private Camera camera;
 
     /**
@@ -75,10 +80,8 @@ class Mario extends FeaturableModel
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(160, GROUND);
 
-        final Body body = addFeatureAndGet(new BodyModel());
         body.setVectors(movement, jump);
-        body.setDesiredFps(60);
-        body.setMass(2.0);
+        body.setGravity(GRAVITY);
 
         final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
 
@@ -111,6 +114,8 @@ class Mario extends FeaturableModel
     public void prepareFeatures(Services services)
     {
         super.prepareFeatures(services);
+
+        body.setDesiredFps(context.getConfig().getSource().getRate());
 
         StateAnimationBased.Util.loadStates(MarioState.values(), factory, this, setup);
         handler.changeState(MarioState.IDLE);

@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.CameraTracker;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -51,13 +52,13 @@ class World extends WorldGame
      * Constructor.
      * 
      * @param context The config reference.
+     * @param services The services reference.
      */
-    public World(Context context)
+    public World(Context context, Services services)
     {
-        super(context);
+        super(context, services);
 
         services.add(getInputDevice(Keyboard.class));
-        services.add(Integer.valueOf(source.getRate()));
 
         camera.setIntervals(16, 0);
 
