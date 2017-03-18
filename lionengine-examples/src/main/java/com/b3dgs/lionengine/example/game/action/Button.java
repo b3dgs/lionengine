@@ -17,12 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import java.util.Arrays;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
@@ -31,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.io.awt.Mouse;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Button action implementation.
@@ -46,31 +49,31 @@ class Button extends FeaturableModel
     /** Media cancel reference. */
     public static final Media CANCEL = Medias.create("Cancel.xml");
 
-    @Service private Text text;
-
     /**
      * Create build farm action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Button(Setup setup)
+    public Button(Services services, Setup setup)
     {
         super();
 
         addFeature(new ButtonLink());
 
-        final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
+        final Actionable actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setClickAction(Mouse.LEFT);
 
-        final ActionFeature action = setup.getImplementation(ActionFeature.class,
-                                                             Setup.class,
-                                                             setup,
-                                                             ActionConfig.NODE_ACTION);
-        actionable.setAction(action);
-        addFeature(action);
+        final ActionFeature action = addFeatureAndGet(setup.getImplementation(ActionFeature.class,
+                                                                              UtilReflection.getParamTypes(setup),
+                                                                              Arrays.asList(setup),
+                                                                              ActionConfig.NODE_ACTION));
+        actionable.setAction(action.create(services));
 
         final Image image = Drawable.loadImage(setup.getSurface());
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
+
+        final Text text = services.get(Text.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

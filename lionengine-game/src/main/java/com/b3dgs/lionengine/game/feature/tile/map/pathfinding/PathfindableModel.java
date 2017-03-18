@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.game.feature.tile.map.Orientable;
 import com.b3dgs.lionengine.game.feature.tile.map.OrientableModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -67,19 +66,19 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     /** Object id. */
     private Integer id;
     /** Viewer reference. */
-    private Viewer viewer;
+    private final Viewer viewer;
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Map path reference. */
-    private MapTilePath mapPath;
+    private final MapTilePath mapPath;
     /** Pathfinder reference. */
-    private PathFinder pathfinder;
+    private final PathFinder pathfinder;
     /** List of categories. */
     private final Map<String, PathData> categories;
     /** Transformable model. */
     private Transformable transformable;
     /** Orientable model. */
-    private Orientable orientable;
+    private final OrientableModel orientable;
     /** Last valid path found. */
     private Path path;
     /** Text debug rendering. */
@@ -139,13 +138,22 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * {@link #addListener(PathfindableListener)} on it.
      * </p>
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public PathfindableModel(Setup setup)
+    public PathfindableModel(Services services, Setup setup)
     {
         super();
 
+        map = services.get(MapTile.class);
+        viewer = services.get(Viewer.class);
+        mapPath = map.getFeature(MapTilePath.class);
         categories = PathfindableConfig.imports(setup);
+        orientable = new OrientableModel(services);
+
+        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
+                                          + map.getInTileHeight() * (double) map.getInTileHeight());
+        pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());
 
         recycle();
     }
@@ -524,22 +532,13 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
-        map = services.get(MapTile.class);
-        viewer = services.get(Viewer.class);
-        mapPath = map.getFeature(MapTilePath.class);
         id = provider.getFeature(Identifiable.class).getId();
-        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
-                                          + map.getInTileHeight() * (double) map.getInTileHeight());
-        pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());
-
         transformable = provider.getFeature(Transformable.class);
-        final OrientableModel orientableModel = new OrientableModel();
-        orientableModel.prepare(provider, services);
-        orientable = orientableModel;
+        orientable.prepare(provider);
 
         if (provider instanceof PathfindableListener)
         {

@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -132,11 +131,9 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     /** Collisions groups list. */
     private final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Map tile group. */
-    private MapTileGroup mapGroup;
-    /** The services reference. */
-    private Services services;
+    private final MapTileGroup mapGroup;
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -144,10 +141,15 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
 
     /**
      * Create the map tile collision.
+     * 
+     * @param services The services reference.
      */
-    public MapTileCollisionModel()
+    public MapTileCollisionModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
     }
 
     /**
@@ -230,7 +232,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         {
             tileCollision = new TileCollisionModel(tile);
             tile.addFeature(tileCollision);
-            tile.prepareFeatures(services);
         }
         else
         {
@@ -389,16 +390,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     /*
      * MapTileCollision
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        this.services = services;
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-    }
 
     @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups)

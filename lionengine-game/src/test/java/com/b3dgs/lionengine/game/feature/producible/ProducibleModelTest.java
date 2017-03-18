@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
@@ -62,17 +61,15 @@ public class ProducibleModelTest
     @Test
     public void testProducible()
     {
-        final Services services = new Services();
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
-        featurable.prepareFeatures(services);
 
         final Producible producible = new ProducibleModel(setup);
         final ProducibleListener listener = UtilProducible.createListener();
         producible.setLocation(1.0, 2.0);
-        producible.prepare(featurable, services);
+        producible.prepare(featurable);
         producible.addListener(listener);
 
         Assert.assertEquals(media, producible.getMedia());
@@ -93,13 +90,11 @@ public class ProducibleModelTest
     @Test
     public void testProducibleSelf()
     {
-        final Services services = new Services();
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final ProducibleListenerSelf object = new ProducibleListenerSelf();
         final Producible producible = new ProducibleModel(setup);
-        producible.prepare(object, services);
-        object.prepareFeatures(services);
+        producible.prepare(object);
 
         Assert.assertTrue(producible.getListeners().contains(object));
 
@@ -117,7 +112,6 @@ public class ProducibleModelTest
         final Setup setup = new Setup(media);
         final ProducibleListenerSelf object = new ProducibleListenerSelf();
         final Producible producible = new ProducibleModel(setup);
-        object.prepareFeatures(new Services());
         producible.checkListener(object);
 
         Assert.assertTrue(producible.getListeners().contains(object));

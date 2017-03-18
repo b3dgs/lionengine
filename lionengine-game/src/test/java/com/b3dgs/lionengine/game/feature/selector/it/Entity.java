@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -53,22 +53,20 @@ import com.b3dgs.lionengine.graphic.SpriteAnimated;
  */
 public class Entity extends FeaturableModel
 {
-    @Service private MapTile map;
-    @Service private Viewer viewer;
-
     /**
      * Create entity.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Entity(Setup setup)
+    public Entity(Services services, Setup setup)
     {
-        super(setup);
+        super(services, setup);
 
-        addFeature(new LayerableModel(setup));
+        addFeature(new LayerableModel(services, setup));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
 
         final FramesConfig config = FramesConfig.imports(setup);
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(),
@@ -77,14 +75,16 @@ public class Entity extends FeaturableModel
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
-        final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
+        final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
         collidable.setGroup(2);
         collidable.addCollision(Collision.AUTOMATIC);
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        final Producer producer = addFeatureAndGet(new ProducerModel(setup));
+        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
         producer.setStepsPerSecond(1.0);
+
+        final MapTile map = services.get(MapTile.class);
 
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
         producible.addListener(new ProducibleListener()
@@ -108,6 +108,8 @@ public class Entity extends FeaturableModel
                 surface.setFrame(2);
             }
         });
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(new Updatable()
         {

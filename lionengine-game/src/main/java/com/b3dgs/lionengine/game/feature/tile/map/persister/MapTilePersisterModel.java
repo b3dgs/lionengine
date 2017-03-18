@@ -22,7 +22,6 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -41,7 +40,7 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
     private static final int BLOC_SIZE = 256;
 
     /** The services reference. */
-    private MapTile map;
+    private final MapTile map;
 
     /**
      * Create the persister.
@@ -51,10 +50,14 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public MapTilePersisterModel()
+    public MapTilePersisterModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
     }
 
     /**
@@ -156,14 +159,6 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
     /*
      * Persistable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        map = services.get(MapTile.class);
-    }
 
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):

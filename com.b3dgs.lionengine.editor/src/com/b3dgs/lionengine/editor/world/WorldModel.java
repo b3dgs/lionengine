@@ -66,14 +66,13 @@ public class WorldModel
         final Selection selection = new Selection();
         services.add(selection);
 
-        map.addFeature(new MapTileViewerModel());
+        map.addFeature(new MapTileViewerModel(services));
         map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTileTransitionModel());
-        map.addFeature(new MapTileCircuitModel());
-        map.addFeature(new MapTilePathModel());
-        map.addFeature(new MapTileCollisionModel());
-        map.addFeature(new MapTileCollisionRendererModel());
-        map.prepareFeatures(services);
+        map.addFeature(new MapTileTransitionModel(services));
+        map.addFeature(new MapTileCircuitModel(services));
+        map.addFeature(new MapTilePathModel(services));
+        map.addFeature(new MapTileCollisionModel(services));
+        map.addFeature(new MapTileCollisionRendererModel(services));
     }
 
     /**

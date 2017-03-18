@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Services;
 
 /**
  * 
@@ -52,7 +51,7 @@ class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, 
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         // Mock
     }

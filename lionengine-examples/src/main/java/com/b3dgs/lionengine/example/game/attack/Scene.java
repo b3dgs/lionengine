@@ -31,9 +31,7 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -73,30 +71,26 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTileViewerModel());
-        map.create(Medias.create("level.png"));
-
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
-
         final Camera camera = services.create(Camera.class);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
+
+        final MapTile map = services.create(MapTileGame.class);
+        map.addFeature(new MapTileViewerModel(services));
+        map.create(Medias.create("level.png"));
+        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
+        map.addFeatureAndGet(new MapTilePathModel(services)).loadPathfinding(Medias.create("pathfinding.xml"));
         camera.setLimits(map);
-        camera.setLocation(0, 0);
 
         handler.add(map);
-        mapGroup.loadGroups(Medias.create("groups.xml"));
-        mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         final Grunt grunt1 = factory.create(Grunt.MEDIA);
+        grunt1.teleport(2, 6);
         handler.add(grunt1);
 
         final Grunt grunt2 = factory.create(Grunt.MEDIA);
+        grunt2.teleport(4, 10);
         handler.add(grunt2);
 
-        grunt1.teleport(2, 6);
-        grunt2.teleport(4, 10);
         grunt1.attack(grunt2.getFeature(Transformable.class));
     }
 

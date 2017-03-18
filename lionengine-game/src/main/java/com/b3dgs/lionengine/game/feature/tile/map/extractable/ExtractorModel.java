@@ -39,7 +39,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     /** Resources location. */
     private ResourceLocation resourceLocation;
     /** Tick timer rate. */
-    private double desiredFps;
+    private final double desiredFps;
     /** Extractor checker reference. */
     private ExtractorChecker checker;
     /** Current resource object. */
@@ -69,10 +69,14 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      * <ul>
      * <li>{@link Integer}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public ExtractorModel()
+    public ExtractorModel(Services services)
     {
         super();
+
+        desiredFps = services.get(Integer.class).intValue();
 
         recycle();
     }
@@ -190,11 +194,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
-
-        desiredFps = services.get(Integer.class).intValue();
+        super.prepare(provider);
 
         if (provider instanceof ExtractorListener)
         {

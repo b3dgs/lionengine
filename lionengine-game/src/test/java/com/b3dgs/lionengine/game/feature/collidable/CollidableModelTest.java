@@ -96,9 +96,6 @@ public class CollidableModelTest
 
         collidable1.addAccept(collidable2.getGroup().intValue());
         collidable2.addAccept(collidable1.getGroup().intValue());
-
-        featurable1.prepareFeatures(services);
-        featurable2.prepareFeatures(services);
     }
 
     /**
@@ -117,7 +114,7 @@ public class CollidableModelTest
         transformable.setLocation(1.0, 2.0);
         transformable.setSize(2, 2);
 
-        featurable.addFeature(new CollidableModel(setup));
+        featurable.addFeature(new CollidableModel(services, setup));
 
         return featurable;
     }

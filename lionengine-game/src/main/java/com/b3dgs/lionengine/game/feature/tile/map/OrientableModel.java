@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 public class OrientableModel extends FeatureModel implements Orientable, Recyclable
 {
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Localizable reference. */
     private Transformable transformable;
     /** Current orientation. */
@@ -52,10 +52,14 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public OrientableModel()
+    public OrientableModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
 
         recycle();
     }
@@ -75,10 +79,9 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         transformable = provider.getFeature(Transformable.class);
-        map = services.get(MapTile.class);
     }
 
     @Override

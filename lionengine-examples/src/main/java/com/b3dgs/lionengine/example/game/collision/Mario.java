@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.collision;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -38,21 +39,22 @@ class Mario extends FeaturableModel
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Mario(Setup setup)
+    public Mario(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
+        addFeature(new LayerableModel(1));
         addFeature(new TransformableModel());
         addFeature(new BodyModel());
-        addFeature(new CollidableModel(setup));
-        addFeature(new TileCollidableModel(setup));
+        addFeature(new CollidableModel(services, setup));
+        addFeature(new TileCollidableModel(services, setup));
 
         final MarioModel model = new MarioModel(setup);
-        addFeature(new MarioController(model));
-        addFeature(new MarioUpdater(model));
-        addFeature(new MarioRenderer(model));
-        addFeature(new LayerableModel(1));
+        addFeature(new MarioController(services, model));
+        addFeature(new MarioUpdater(services, model));
+        addFeature(new MarioRenderer(services, model));
     }
 }

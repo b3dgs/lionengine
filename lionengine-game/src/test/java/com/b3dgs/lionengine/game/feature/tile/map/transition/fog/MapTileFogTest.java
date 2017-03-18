@@ -72,16 +72,17 @@ public class MapTileFogTest
     @Test
     public void testFog()
     {
-        final FovableModel fovable = new FovableModel();
         final Services services = new Services();
         final MapTile map = UtilMap.createMap(5);
         services.add(map);
+
+        final FovableModel fovable = new FovableModel(services);
 
         final Setup setup = new Setup(UtilSetup.createConfig());
         final FeaturableModel object = new FeaturableModel();
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(3, 3);
-        fovable.prepare(object, services);
+        fovable.prepare(object);
         fovable.setFov(1);
 
         final MapTileFog fog = new MapTileFog();

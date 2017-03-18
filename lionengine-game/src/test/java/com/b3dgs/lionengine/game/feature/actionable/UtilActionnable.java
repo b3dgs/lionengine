@@ -102,10 +102,8 @@ public class UtilActionnable
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
 
-        final ActionableModel actionable = new ActionableModel(setup);
-        actionable.prepare(featurable, services);
-
-        featurable.prepareFeatures(services);
+        final ActionableModel actionable = new ActionableModel(services, setup);
+        actionable.prepare(featurable);
 
         return actionable;
     }

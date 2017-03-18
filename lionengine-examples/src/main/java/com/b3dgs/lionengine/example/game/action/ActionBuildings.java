@@ -17,7 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Action;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -27,9 +28,6 @@ import com.b3dgs.lionengine.game.feature.Handler;
  */
 class ActionBuildings extends ActionFeature
 {
-    @Service private Factory factory;
-    @Service private Handler handler;
-
     /**
      * Create feature.
      * 
@@ -41,19 +39,29 @@ class ActionBuildings extends ActionFeature
     }
 
     @Override
-    public void execute()
+    public Action create(Services services)
     {
-        final Button cancel = factory.create(Button.CANCEL);
-        handler.add(cancel);
+        final Factory factory = services.get(Factory.class);
+        final Handler handler = services.get(Handler.class);
 
-        final Button buildFarm = factory.create(Button.BUILD_FARM);
-        cancel.getFeature(ButtonLink.class).addToDelete(buildFarm);
-        handler.add(buildFarm);
+        return new Action()
+        {
+            @Override
+            public void execute()
+            {
+                final Button cancel = factory.create(Button.CANCEL);
+                handler.add(cancel);
 
-        final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
-        cancel.getFeature(ButtonLink.class).addToDelete(buildBarracks);
-        handler.add(buildBarracks);
+                final Button buildFarm = factory.create(Button.BUILD_FARM);
+                cancel.getFeature(ButtonLink.class).addToDelete(buildFarm);
+                handler.add(buildFarm);
 
-        getFeature(ButtonLink.class).terminate();
+                final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
+                cancel.getFeature(ButtonLink.class).addToDelete(buildBarracks);
+                handler.add(buildBarracks);
+
+                getFeature(ButtonLink.class).terminate();
+            }
+        };
     }
 }

@@ -109,12 +109,11 @@ public class TileCollidableModelTest
     {
         services.add(new Camera());
         map.addFeature(new MapTileGroupModel());
-        map.prepareFeatures(services);
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        mapCollision.prepare(map, services);
+        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
+        mapCollision.prepare(map);
 
         formulasConfig = UtilConfig.createFormulaConfig(formulaV, formulaH);
         groupsConfig = UtilConfig.createGroupsConfig(group);
@@ -295,10 +294,8 @@ public class TileCollidableModelTest
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(2, 2);
 
-        collidable = featurable.addFeatureAndGet(new TileCollidableModel(setup));
+        collidable = featurable.addFeatureAndGet(new TileCollidableModel(services, setup));
         collidable.setEnabled(true);
-
-        featurable.prepareFeatures(services);
 
         Assert.assertEquals(Arrays.asList(categoryY, categoryX), collidable.getCategories());
 

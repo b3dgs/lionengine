@@ -32,8 +32,9 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -74,16 +75,19 @@ public class FeaturableModelTest
         Assert.assertTrue(featurable.hasFeature(MyFeatureInterface.class));
         Assert.assertTrue(featurable.hasFeature(MyFeature.class));
 
-        featurable.prepareFeatures(new Services());
-
         Assert.assertEquals(feature, featurable.getFeature(MyFeature.class));
         for (final Feature current : featurable.getFeatures())
         {
-            Assert.assertEquals(feature, current);
+            Assert.assertTrue(current.getClass().getName(),
+                              feature.getClass().equals(current.getClass())
+                                                            || Identifiable.class.isAssignableFrom(current.getClass()));
         }
         for (final Class<? extends Feature> type : featurable.getFeaturesType())
         {
-            Assert.assertTrue(MyFeatureInterface.class.isAssignableFrom(type));
+            Assert.assertTrue(type.getName(),
+                              MyFeatureInterface.class.isAssignableFrom(type)
+                                              || Identifiable.class.isAssignableFrom(type)
+                                              || Recyclable.class.isAssignableFrom(type));
         }
     }
 
@@ -99,16 +103,19 @@ public class FeaturableModelTest
 
         Assert.assertTrue(featurable.hasFeature(MyFeatureNotCompatible.class));
 
-        featurable.prepareFeatures(new Services());
-
         Assert.assertEquals(feature, featurable.getFeature(MyFeatureNotCompatible.class));
         for (final Feature current : featurable.getFeatures())
         {
-            Assert.assertEquals(feature, current);
+            Assert.assertTrue(current.getClass().getName(),
+                              feature.getClass().equals(current.getClass())
+                                                            || Identifiable.class.isAssignableFrom(current.getClass()));
         }
         for (final Class<? extends Feature> type : featurable.getFeaturesType())
         {
-            Assert.assertTrue(MyFeatureNotCompatible.class.isAssignableFrom(type));
+            Assert.assertTrue(type.getName(),
+                              MyFeatureNotCompatible.class.isAssignableFrom(type)
+                                              || Identifiable.class.isAssignableFrom(type)
+                                              || Recyclable.class.isAssignableFrom(type));
         }
     }
 
@@ -119,34 +126,24 @@ public class FeaturableModelTest
     public void testServiceAnnotation()
     {
         final Featurable featurable = new FeaturableModel();
-        final AtomicReference<Factory> filledService = new AtomicReference<Factory>();
-        final AtomicReference<Object> filledObject = new AtomicReference<Object>();
         final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<MyFeatureInterface>();
+
+        final MyFeatureInterface featureModel = new MyFeature();
+        featurable.addFeature(featureModel);
+
         final Feature feature = new FeatureModel()
         {
-            private @Service Factory factory;
-            private @Service Object object;
-            private @Service MyFeatureInterface feature;
+            private @FeatureGet MyFeatureInterface feature;
 
             @Override
-            public void prepare(FeatureProvider provider, Services services)
+            public void prepare(FeatureProvider provider)
             {
-                super.prepare(provider, services);
-                filledService.set(factory);
-                filledObject.set(object);
+                super.prepare(provider);
                 filledFeature.set(feature);
             }
         };
         featurable.addFeature(feature);
 
-        final Services services = new Services();
-        final Factory factory = services.create(Factory.class);
-        final MyFeatureInterface featureModel = new MyFeature();
-        featurable.addFeature(featureModel);
-        featurable.prepareFeatures(services);
-
-        Assert.assertEquals(factory, filledService.get());
-        Assert.assertEquals(factory, filledObject.get());
         Assert.assertEquals(featureModel, filledFeature.get());
     }
 
@@ -157,35 +154,31 @@ public class FeaturableModelTest
     public void testServiceAnnotationTwice()
     {
         final Featurable featurable = new FeaturableModel();
-        final AtomicReference<Factory> filledService = new AtomicReference<Factory>();
+        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<MyFeatureInterface>();
+
+        final MyFeatureInterface featureModel = new MyFeature();
+        featurable.addFeature(featureModel);
+
         final Feature feature = new FeatureModel()
         {
-            private @Service Factory factory;
+            private @FeatureGet MyFeatureInterface feature;
 
             @Override
-            public void prepare(FeatureProvider provider, Services services)
+            public void prepare(FeatureProvider provider)
             {
-                super.prepare(provider, services);
-                filledService.set(factory);
+                super.prepare(provider);
+                filledFeature.set(feature);
             }
         };
         featurable.addFeature(feature);
 
-        final Services services = new Services();
-        final Factory factory = services.create(Factory.class);
-        final MyFeatureInterface featureModel = new MyFeature();
-        featurable.addFeature(featureModel);
+        Assert.assertEquals(featureModel, filledFeature.get());
 
-        featurable.prepareFeatures(services);
-
-        Assert.assertEquals(factory, filledService.get());
-
-        filledService.set(null);
+        filledFeature.set(null);
 
         featurable.addFeature(feature);
-        featurable.prepareFeatures(services);
 
-        Assert.assertEquals(factory, filledService.get());
+        Assert.assertEquals(featureModel, filledFeature.get());
     }
 
     /**
@@ -198,17 +191,16 @@ public class FeaturableModelTest
         final AtomicReference<String> unfilledType = new AtomicReference<String>();
         final Feature feature = new FeatureModel()
         {
-            private @Service String type;
+            private @FeatureGet String type;
 
             @Override
-            public void prepare(FeatureProvider provider, Services services)
+            public void prepare(FeatureProvider provider)
             {
-                super.prepare(provider, services);
+                super.prepare(provider);
                 unfilledType.set(type);
             }
         };
         featurable.addFeature(feature);
-        featurable.prepareFeatures(new Services());
     }
 
     /**
@@ -218,7 +210,7 @@ public class FeaturableModelTest
     public void testFeatureItself()
     {
         final FeatureItself object = new FeatureItself();
-        object.prepare(object, new Services());
+        object.prepare(object);
 
         Assert.assertFalse(object.hasFeature(FeatureItself.class));
     }
@@ -267,10 +259,14 @@ public class FeaturableModelTest
 
         root.save(media);
 
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeatures(new Setup(media));
+        final Featurable featurable = new FeaturableModel(new Services(), new Setup(media));
 
-        Assert.assertEquals(MyFeature.class.getName(), featurable.getFeatures().iterator().next().getClass().getName());
+        for (final Feature next : featurable.getFeatures())
+        {
+            Assert.assertTrue(next.getClass().getName(),
+                              MyFeature.class.equals(next.getClass())
+                                                         || Identifiable.class.isAssignableFrom(next.getClass()));
+        }
     }
 
     /**
@@ -305,7 +301,7 @@ public class FeaturableModelTest
         @SuppressWarnings("unused") private Object object;
 
         @Override
-        public void prepare(FeatureProvider provider, Services services)
+        public void prepare(FeatureProvider provider)
         {
             // Mock
         }

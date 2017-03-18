@@ -51,7 +51,6 @@ public class LaunchableModelTest
     public void prepare()
     {
         services.add(new MapTileGame());
-        featurable.prepareFeatures(services);
     }
 
     /**
@@ -160,7 +159,6 @@ public class LaunchableModelTest
         featurable.addFeature(new TransformableModel());
         featurable.addFeature(new LaunchableModel());
         featurable.addFeature(new Self());
-        featurable.prepareFeatures(new Services());
     }
 
     /**

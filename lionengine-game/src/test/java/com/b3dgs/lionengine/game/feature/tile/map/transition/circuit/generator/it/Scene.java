@@ -30,11 +30,8 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
-import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuit;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator.GeneratorParameter;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator.MapGenerator;
@@ -55,7 +52,7 @@ class Scene extends Sequence
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
+    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
     private final Timing timingGen = new Timing();
@@ -75,17 +72,11 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("forest.png"));
-        mapViewer.prepare(map, services);
+        mapViewer.prepare(map);
 
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
-        final MapTileCircuit mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel());
-
-        map.prepareFeatures(services);
-
-        mapGroup.loadGroups(Medias.create("groups.xml"));
-        mapTransition.loadTransitions(Medias.create("transitions.xml"));
-        mapCircuit.loadCircuits(Medias.create("circuits.xml"));
+        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
+        map.addFeatureAndGet(new MapTileTransitionModel(services)).loadTransitions(Medias.create("transitions.xml"));
+        map.addFeatureAndGet(new MapTileCircuitModel(services)).loadCircuits(Medias.create("circuits.xml"));
 
         camera.setView(0, 0, 1024, 768, getHeight());
         camera.setLimits(map);

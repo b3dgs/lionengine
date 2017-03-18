@@ -18,8 +18,7 @@
 package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -35,11 +34,11 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
 {
     private final Setup setup;
 
-    @Service private Transformable transformable;
-    @Service private TileCollidable tileCollidable;
-    @Service private Collidable collidable;
+    @FeatureGet private Transformable transformable;
+    @FeatureGet private TileCollidable tileCollidable;
+    @FeatureGet private Collidable collidable;
 
-    @Service private Keyboard keyboard;
+    @FeatureGet private Keyboard keyboard;
 
     /**
      * Constructor.
@@ -54,11 +53,11 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         StateAnimationBased.Util.loadStates(MarioState.values(), factory, provider, setup);
 
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         setControl(keyboard);
         respawn(160);

@@ -41,8 +41,8 @@ public class SceneMapTileRastered extends Sequence
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
-    private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel());
+    private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
+    private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel(services));
     private final Timing timingRaster = new Timing();
     private final Timing timing = new Timing();
 
@@ -61,7 +61,6 @@ public class SceneMapTileRastered extends Sequence
     @Override
     public void load()
     {
-        map.prepareFeatures(services);
         map.create(Medias.create("level.png"), 16, 16, 16);
         raster.loadSheets(Medias.create("raster.xml"), false);
 

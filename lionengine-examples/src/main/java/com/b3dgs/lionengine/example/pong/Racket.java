@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -53,20 +53,23 @@ class Racket extends FeaturableModel implements Updatable, Renderable, Collidabl
     private final double speed;
     /** Ball reference. */
     private Transformable target;
-
-    @Service private Viewer viewer;
+    /** Viewer reference. */
+    private final Viewer viewer;
 
     /**
      * Create an object.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Racket(Setup setup)
+    public Racket(Services services, Setup setup)
     {
         super();
 
+        viewer = services.get(Viewer.class);
+
         transformable = addFeatureAndGet(new TransformableModel(setup));
-        collidable = addFeatureAndGet(new CollidableModel(setup));
+        collidable = addFeatureAndGet(new CollidableModel(services, setup));
         collidable.setOrigin(Origin.MIDDLE);
 
         transformable.teleportY(240 / 2);

@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
@@ -75,7 +74,7 @@ public class MapTileGroupModelTest
     @Before
     public void prepare()
     {
-        mapGroup.prepare(featurable, new Services());
+        mapGroup.prepare(featurable);
     }
 
     /**

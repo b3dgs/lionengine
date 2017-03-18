@@ -69,17 +69,18 @@ public class FovableModelTest
     @Test
     public void testFovable()
     {
-        final Fovable fovable = new FovableModel();
         final Services services = new Services();
         final MapTile map = UtilMap.createMap(7);
         services.add(map);
+
+        final Fovable fovable = new FovableModel(services);
 
         final Setup setup = new Setup(config);
         final Featurable featurable = new FeaturableModel();
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);
-        fovable.prepare(featurable, services);
+        fovable.prepare(featurable);
         fovable.setFov(5);
 
         Assert.assertEquals(1, fovable.getInTileX());

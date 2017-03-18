@@ -80,6 +80,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
             if (model.getSelectionClick() != cursor.getClick())
             {
                 action = actionDone;
+                action.update(extrp);
             }
         }
     };
@@ -116,12 +117,12 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     };
     /** Selector model reference. */
     private final SelectorModel model;
+    /** Viewer reference. */
+    private final Viewer viewer;
+    /** Cursor reference. */
+    private final Cursor cursor;
     /** Collidable reference. */
     private Collidable collidable;
-    /** Viewer reference. */
-    private Viewer viewer;
-    /** Cursor reference. */
-    private Cursor cursor;
     /** Current update action. */
     private Updatable action = actionCheck;
     /** Mouse location x when started click selection. */
@@ -139,13 +140,17 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
      * <li>{@link Cursor}</li>
      * </ul>
      * 
+     * @param services The services reference.
      * @param model The model reference.
      */
-    public SelectorRefresher(SelectorModel model)
+    public SelectorRefresher(Services services, SelectorModel model)
     {
         super();
 
         this.model = model;
+
+        viewer = services.get(Viewer.class);
+        cursor = services.get(Cursor.class);
     }
 
     /**
@@ -225,13 +230,11 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         collidable = provider.getFeature(Collidable.class);
-        viewer = services.get(Viewer.class);
-        cursor = services.get(Cursor.class);
     }
 
     @Override

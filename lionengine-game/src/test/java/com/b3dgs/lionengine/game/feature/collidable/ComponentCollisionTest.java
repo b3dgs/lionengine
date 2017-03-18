@@ -99,7 +99,7 @@ public class ComponentCollisionTest
 
         featurable1 = new ObjectSelf();
         transformable1 = featurable1.addFeatureAndGet(new TransformableModel(setup));
-        collidable1 = featurable1.addFeatureAndGet(new CollidableModel(setup));
+        collidable1 = featurable1.addFeatureAndGet(new CollidableModel(services, setup));
         collidable1.setGroup(1);
         collidable1.addAccept(0);
 
@@ -117,7 +117,7 @@ public class ComponentCollisionTest
 
         featurable3 = new ObjectSelf();
         transformable3 = featurable3.addFeatureAndGet(new TransformableModel(setup));
-        collidable3 = featurable3.addFeatureAndGet(new CollidableModel(setup));
+        collidable3 = featurable3.addFeatureAndGet(new CollidableModel(services, setup));
         collidable3.setGroup(0);
 
         final ComponentCollision component = new ComponentCollision();

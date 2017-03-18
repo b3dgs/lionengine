@@ -114,13 +114,13 @@ public class CollidableModel extends FeatureModel
     private final List<Collision> cacheColls = new ArrayList<Collision>();
     /** Bounding box cache. */
     private final List<Rectangle> cacheRect = new ArrayList<Rectangle>();
+    /** The viewer reference. */
+    private final Viewer viewer;
 
     /** Associated group ID. */
     private Integer group = Integer.valueOf(0);
     /** Transformable owning this model. */
     private Transformable transformable;
-    /** The viewer reference. */
-    private Viewer viewer;
     /** Origin used. */
     private Origin origin = Origin.TOP_LEFT;
     /** Max width. */
@@ -150,10 +150,14 @@ public class CollidableModel extends FeatureModel
      * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
      * {@link #addListener(CollidableListener)} on it.
      * </p>
+     * 
+     * @param services The services reference.
      */
-    public CollidableModel()
+    public CollidableModel(Services services)
     {
         super();
+
+        viewer = services.get(Viewer.class);
 
         recycle();
     }
@@ -177,11 +181,14 @@ public class CollidableModel extends FeatureModel
      * {@link #addListener(CollidableListener)} on it.
      * </p>
      * 
+     * @param services The services reference.
      * @param setup The setup reference, must provide a valid {@link CollisionConfig}.
      */
-    public CollidableModel(Setup setup)
+    public CollidableModel(Services services, Setup setup)
     {
         super();
+
+        viewer = services.get(Viewer.class);
 
         group = CollidableConfig.imports(setup);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
@@ -273,11 +280,10 @@ public class CollidableModel extends FeatureModel
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
-        viewer = services.get(Viewer.class);
         transformable = provider.getFeature(Transformable.class);
         transformable.addListener(this);
 

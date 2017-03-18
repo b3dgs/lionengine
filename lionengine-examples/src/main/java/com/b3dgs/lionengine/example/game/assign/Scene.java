@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -83,21 +81,17 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTileViewerModel());
-        map.create(Medias.create("map", "level.png"));
-
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
-
         final Camera camera = services.create(Camera.class);
-        camera.setView(72, 12, 240, 176, getHeight());
-        camera.setLimits(map);
+        camera.setView(72, 12, 248, 188, getHeight());
         camera.setLocation(320, 208);
 
+        final MapTile map = services.create(MapTileGame.class);
+        map.addFeature(new MapTileViewerModel(services));
+        map.create(Medias.create("map", "level.png"));
+        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("map", "groups.xml"));
+        map.addFeatureAndGet(new MapTilePathModel(services)).loadPathfinding(Medias.create("map", "pathfinding.xml"));
+        camera.setLimits(map);
         handler.add(map);
-        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
-        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
         hud.load();
         hud.prepare();

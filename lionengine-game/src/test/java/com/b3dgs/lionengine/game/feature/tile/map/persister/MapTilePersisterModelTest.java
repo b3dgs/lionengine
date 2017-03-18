@@ -125,8 +125,7 @@ public class MapTilePersisterModelTest
 
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTilePersisterModel());
-        map.prepareFeatures(services);
+        map.addFeature(new MapTilePersisterModel(services));
         map.create(16, 32, 3, 3);
         map.loadSheets(config);
 
@@ -177,9 +176,9 @@ public class MapTilePersisterModelTest
     {
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
-        final MapTilePersister mapPersister = new MapTilePersisterModel();
+        final MapTilePersister mapPersister = new MapTilePersisterModel(services);
 
         Assert.assertNotNull(mapPersister);
-        mapPersister.prepare(map, services);
+        mapPersister.prepare(map);
     }
 }

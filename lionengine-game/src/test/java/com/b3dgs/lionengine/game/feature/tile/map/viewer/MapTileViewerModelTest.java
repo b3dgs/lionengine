@@ -24,9 +24,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -42,7 +42,8 @@ import com.b3dgs.lionengine.graphic.Transparency;
  */
 public class MapTileViewerModelTest
 {
-    private final MapTileViewer mapViewer = new MapTileViewerModel();
+    private final Services services = new Services();
+    private MapTileViewer mapViewer;
 
     /**
      * Prepare test.
@@ -50,16 +51,17 @@ public class MapTileViewerModelTest
     @Before
     public void prepare()
     {
-        final Services services = new Services();
         services.add(new Camera());
-        final MapTileGame map = new MapTileGame();
+        services.add(new ViewerMock());
+
+        final MapTileGame map = services.add(new MapTileGame());
         map.create(80, 80, 1, 1);
         map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80, Transparency.OPAQUE),
                                                               80,
                                                               80)));
         map.setTile(map.createTile(Integer.valueOf(0), 0, 0, 0));
-        services.add(map);
-        mapViewer.prepare(new FeaturableModel(), services);
+        mapViewer = new MapTileViewerModel(services);
+        mapViewer.prepare(map);
     }
 
     /**

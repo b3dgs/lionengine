@@ -58,12 +58,12 @@ public class LauncherModel extends FeatureModel implements Launcher
     private final Timing fire = new Timing();
     /** Levels configuration. */
     private final List<LauncherConfig> config;
+    /** Factory reference. */
+    private final Factory factory;
+    /** Handler reference. */
+    private final Handler handler;
     /** Launchable configuration. */
     private Iterable<LaunchableConfig> launchables;
-    /** Factory reference. */
-    private Factory factory;
-    /** Handler reference. */
-    private Handler handler;
     /** Localizable model. */
     private Localizable localizable;
     /** Target reference. */
@@ -101,11 +101,16 @@ public class LauncherModel extends FeatureModel implements Launcher
      * on it.
      * </p>
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public LauncherModel(Setup setup)
+    public LauncherModel(Services services, Setup setup)
     {
         super();
+
+        factory = services.get(Factory.class);
+        handler = services.get(Handler.class);
+
         config = LauncherConfig.imports(setup);
         launchables = config.get(0).getLaunchables();
         rate = config.get(0).getRate();
@@ -232,12 +237,10 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
         localizable = provider.getFeature(Transformable.class);
 
         if (provider instanceof LauncherListener)

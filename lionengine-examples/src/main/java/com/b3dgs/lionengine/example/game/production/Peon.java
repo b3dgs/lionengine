@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -52,31 +52,32 @@ class Peon extends FeaturableModel implements ProducerListener
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     private final Pathfindable pathfindable;
+    private final MapTile map;
 
     private boolean visible = true;
-
-    @Service private MapTile map;
-    @Service private Viewer viewer;
 
     /**
      * Create a peon.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Peon(Setup setup)
+    public Peon(Services services, Setup setup)
     {
         super();
+
+        map = services.get(MapTile.class);
 
         addFeature(new LayerableModel(2));
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        surface.setOrigin(Origin.BOTTOM_LEFT);
+        surface.setFrameOffsets(8, 8);
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(640, 860);
 
-        final Producer producer = addFeatureAndGet(new ProducerModel());
+        final Producer producer = addFeatureAndGet(new ProducerModel(services));
         producer.setStepsPerSecond(1.0);
         producer.setChecker(featurable ->
         {
@@ -89,7 +90,9 @@ class Peon extends FeaturableModel implements ProducerListener
                                          producible.getY());
         });
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

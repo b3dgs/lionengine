@@ -107,12 +107,11 @@ public class MapTileCollisionModelTest
     {
         services.add(new Camera());
         map.addFeature(new MapTileGroupModel());
-        map.prepareFeatures(services);
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        mapCollision.prepare(map, services);
+        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
+        mapCollision.prepare(map);
 
         formulasConfig = UtilConfig.createFormulaConfig(formulaV, formulaH);
         groupsConfig = UtilConfig.createGroupsConfig(group);
@@ -236,8 +235,8 @@ public class MapTileCollisionModelTest
     @Test
     public void testLoadCollisionWithout()
     {
-        final MapTileCollision mapTileCollision = new MapTileCollisionModel();
-        mapTileCollision.prepare(map, services);
+        final MapTileCollision mapTileCollision = new MapTileCollisionModel(services);
+        mapTileCollision.prepare(map);
         mapTileCollision.loadCollisions(Medias.create("void"), Medias.create("void2"));
 
         Assert.assertTrue(mapTileCollision.getCollisionFormulas().isEmpty());
@@ -277,10 +276,8 @@ public class MapTileCollisionModelTest
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(1, 1);
 
-        final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(setup));
+        final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(services, setup));
         collidable.setEnabled(true);
-
-        object.prepareFeatures(services);
 
         return transformable;
     }

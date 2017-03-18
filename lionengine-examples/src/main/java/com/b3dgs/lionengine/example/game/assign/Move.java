@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
@@ -47,34 +47,36 @@ class Move extends FeaturableModel
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Move.xml");
 
-    @Service private Text text;
-    @Service private Cursor cursor;
-    @Service private Handler handler;
-
     /**
      * Create move action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Move(Setup setup)
+    public Move(Services services, Setup setup)
     {
         super();
 
-        final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
+        final Actionable actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setClickAction(Mouse.LEFT);
-        final AtomicReference<Updatable> state = new AtomicReference<>(actionable);
-
-        final Assignable assignable = addFeatureAndGet(new AssignableModel());
-        assignable.setClickAssign(Mouse.LEFT);
 
         final Image image = Drawable.loadImage(setup.getSurface());
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
 
+        final Cursor cursor = services.get(Cursor.class);
+
+        final AtomicReference<Updatable> state = new AtomicReference<>(actionable);
+        
+        final Assignable assignable = addFeatureAndGet(new AssignableModel(services));
+        assignable.setClickAssign(Mouse.LEFT);
+        
         actionable.setAction(() ->
         {
             cursor.setSurfaceId(1);
             state.set(assignable);
         });
+
+        final Handler handler = services.get(Handler.class);
 
         assignable.setAssign(() ->
         {
@@ -85,6 +87,8 @@ class Move extends FeaturableModel
             cursor.setSurfaceId(0);
             state.set(actionable);
         });
+
+        final Text text = services.get(Text.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

@@ -21,8 +21,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
@@ -53,13 +52,13 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     private final SpriteAnimated surface;
     private final Setup setup;
 
-    @Service private Mirrorable mirrorable;
-    @Service private Transformable transformable;
-    @Service private Body body;
-    @Service private TileCollidable tileCollidable;
+    @FeatureGet private Mirrorable mirrorable;
+    @FeatureGet private Transformable transformable;
+    @FeatureGet private Body body;
+    @FeatureGet private TileCollidable tileCollidable;
 
-    @Service private Camera camera;
-    @Service private Keyboard keyboard;
+    @FeatureGet private Camera camera;
+    @FeatureGet private Keyboard keyboard;
 
     /**
      * Constructor.
@@ -77,9 +76,9 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         StateAnimationBased.Util.loadStates(MarioState.values(), factory, provider, setup);
         handler.changeState(MarioState.IDLE);

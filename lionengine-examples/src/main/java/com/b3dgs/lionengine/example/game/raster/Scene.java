@@ -89,8 +89,8 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
-        final MapTileRastered mapRaster = map.addFeatureAndGet(new MapTileRasteredModel());
+        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
+        final MapTileRastered mapRaster = map.addFeatureAndGet(new MapTileRasteredModel(services));
         handler.add(map);
         map.create(Medias.create("level.png"), 16, 16, 16);
         mapRaster.loadSheets(Medias.create("raster.xml"), false);
@@ -108,7 +108,7 @@ class Scene extends Sequence
         featurable.addFeature(new AnimatableModel(surface));
 
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
-        final Rasterable rasterable = new RasterableModel(setup);
+        final Rasterable rasterable = new RasterableModel(services, setup);
         featurable.addFeature(rasterable);
         featurable.addFeature(new RefreshableModel(extrp ->
         {

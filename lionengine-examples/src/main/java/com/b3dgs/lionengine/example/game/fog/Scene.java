@@ -78,18 +78,19 @@ class Scene extends Sequence
     @Override
     public void load()
     {
+        final Camera camera = services.create(Camera.class);
+        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
+        camera.setLocation(0, 0);
+
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("level.png"), 16, 16, 16);
+        camera.setLimits(map);
+        handler.add(map);
 
-        final MapTileViewer mapViewer = new MapTileViewerModel();
+        final MapTileViewer mapViewer = new MapTileViewerModel(services);
         map.addFeature(mapViewer);
         mapViewer.addRenderer(new MapTileRendererModel());
         mapViewer.addRenderer(fogOfWar);
-
-        final Camera camera = services.create(Camera.class);
-        camera.setView(0, 0, getWidth(), getHeight(), getHeight());
-        camera.setLimits(map);
-        camera.setLocation(0, 0);
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
         hide.load();
@@ -102,8 +103,6 @@ class Scene extends Sequence
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, true);
         fogOfWar.create(map, Medias.create("fog.xml"));
-
-        handler.add(map);
 
         final Factory factory = services.create(Factory.class);
         final Peon peon = factory.create(Peon.MEDIA);

@@ -71,10 +71,8 @@ public class UtilAssignable
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
 
-        final AssignableModel assignable = new AssignableModel();
-        assignable.prepare(featurable, services);
-
-        featurable.prepareFeatures(services);
+        final AssignableModel assignable = new AssignableModel(services);
+        assignable.prepare(featurable);
 
         return assignable;
     }

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -38,12 +37,12 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     /** Map tiles renderers. */
     private final Collection<MapTileRenderer> renderers = new ArrayList<MapTileRenderer>();
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Viewer reference. */
-    private Viewer viewer;
+    private final Viewer viewer;
 
     /**
-     * Create the viewer. It is shipped with a default renderer if no one defined: {@link MapTileRendererModel}.
+     * Create the viewer. It is shipped with a default renderer: {@link MapTileRendererModel}.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -51,10 +50,17 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
      * <li>{@link MapTile}</li>
      * <li>{@link Viewer}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public MapTileViewerModel()
+    public MapTileViewerModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
+        viewer = services.get(Viewer.class);
+
+        renderers.add(new MapTileRendererModel());
     }
 
     /**
@@ -107,19 +113,6 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     /*
      * MapTileViewer
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        map = services.get(MapTile.class);
-        viewer = services.get(Viewer.class);
-        if (renderers.isEmpty())
-        {
-            renderers.add(new MapTileRendererModel());
-        }
-    }
 
     @Override
     public void addRenderer(MapTileRenderer renderer)

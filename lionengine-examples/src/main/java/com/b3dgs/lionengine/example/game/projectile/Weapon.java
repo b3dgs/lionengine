@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -46,14 +47,15 @@ class Weapon extends FeaturableModel implements LaunchableListener
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Weapon(Setup setup)
+    public Weapon(Services services, Setup setup)
     {
         super();
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
-        launcher = addFeatureAndGet(new LauncherModel(setup));
+        launcher = addFeatureAndGet(new LauncherModel(services, setup));
 
         addFeature(new RefreshableModel(extrp -> transformable.teleport(ownerLocalizable.getX(),
                                                                         ownerLocalizable.getY())));

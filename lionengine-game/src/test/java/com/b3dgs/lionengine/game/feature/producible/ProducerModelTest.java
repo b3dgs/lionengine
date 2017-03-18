@@ -70,7 +70,7 @@ public class ProducerModelTest
 
     private final Services services = new Services();
     private final ProducerObject object = new ProducerObject();
-    private final ProducerModel producer = new ProducerModel();
+    private ProducerModel producer;
 
     /**
      * Prepare test.
@@ -80,8 +80,8 @@ public class ProducerModelTest
     {
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
-        object.prepareFeatures(services);
-        producer.prepare(object, services);
+        producer = new ProducerModel(services);
+        producer.prepare(object);
     }
 
     /**
@@ -163,8 +163,8 @@ public class ProducerModelTest
     public void testProductionListenerSelf()
     {
         final ProducerObjectSelf object = new ProducerObjectSelf();
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
+        final ProducerModel producer = new ProducerModel(services);
+        producer.prepare(object);
         producer.setStepsPerSecond(50.0);
         producer.addListener(object);
 
@@ -375,8 +375,8 @@ public class ProducerModelTest
     public void testListenerAutoAdd()
     {
         final ProducerObjectSelf object = new ProducerObjectSelf();
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
+        final ProducerModel producer = new ProducerModel(services);
+        producer.prepare(object);
         producer.setStepsPerSecond(50.0);
         producer.checkListener(object);
 
@@ -400,7 +400,7 @@ public class ProducerModelTest
     @Test
     public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
-        final ProducerModel producer = new ProducerModel();
+        final ProducerModel producer = new ProducerModel(services);
         final Field field = producer.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(producer, ProducerState.values()[5]);

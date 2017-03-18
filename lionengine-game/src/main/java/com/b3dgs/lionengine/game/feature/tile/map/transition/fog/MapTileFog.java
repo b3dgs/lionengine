@@ -65,8 +65,7 @@ public class MapTileFog
         final Services services = new Services();
         map = services.create(MapTileGame.class);
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        transition = map.addFeatureAndGet(new MapTileTransitionModel());
-        map.prepareFeatures(services);
+        transition = map.addFeatureAndGet(new MapTileTransitionModel(services));
     }
 
     /**

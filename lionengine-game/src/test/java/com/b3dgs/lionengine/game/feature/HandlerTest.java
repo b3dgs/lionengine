@@ -316,7 +316,6 @@ public class HandlerTest
         final Handler handler = new Handler(services);
         final Featurable featurable = new ObjectFeatures();
         featurable.addFeature(new IdentifiableModel());
-        featurable.prepareFeatures(services);
 
         handler.add(featurable);
         handler.update(1.0);

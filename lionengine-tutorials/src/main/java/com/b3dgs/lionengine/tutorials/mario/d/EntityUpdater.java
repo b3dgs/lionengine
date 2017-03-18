@@ -22,8 +22,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
@@ -59,13 +58,13 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     private final Force jump;
     private final SpriteAnimated surface;
 
-    @Service private Transformable transformable;
-    @Service private TileCollidable tileCollidable;
-    @Service private Collidable collidable;
-    @Service private Mirrorable mirrorable;
-    @Service private Body body;
+    @FeatureGet private Transformable transformable;
+    @FeatureGet private TileCollidable tileCollidable;
+    @FeatureGet private Collidable collidable;
+    @FeatureGet private Mirrorable mirrorable;
+    @FeatureGet private Body body;
 
-    @Service private Camera camera;
+    @FeatureGet private Camera camera;
 
     /**
      * Constructor.
@@ -83,9 +82,9 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         StateAnimationBased.Util.loadStates(EntityState.values(), factory, provider, setup);
         handler.changeState(EntityState.IDLE);

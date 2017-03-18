@@ -96,13 +96,13 @@ class Scene extends Sequence
         map.create(Medias.create("forest.png"));
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
+        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel(services));
 
         camera.setView(VIEW_X, VIEW_Y, getWidth() - VIEW_X, getHeight() - VIEW_Y, getHeight());
         camera.setLimits(map);
         camera.setLocation(160, 96);
 
-        map.addFeature(new MapTileViewerModel());
+        map.addFeature(new MapTileViewerModel(services));
         handler.add(map);
         mapGroup.loadGroups(Medias.create("groups.xml"));
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));

@@ -127,22 +127,11 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>
-     * <p>
-     * {@link Featurable#prepareFeatures(Services)} is automatically called.
-     * </p>
      * 
      * @param featurable The featurable to add.
      */
     public final void add(Featurable featurable)
     {
-        if (!featurable.hasFeature(Identifiable.class))
-        {
-            featurable.addFeature(new IdentifiableModel());
-        }
-        if (!featurable.isPrepared())
-        {
-            featurable.prepareFeatures(services);
-        }
         featurable.getFeature(Identifiable.class).addListener(this);
         toAdd.add(featurable);
         willAdd = true;

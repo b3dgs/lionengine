@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 
@@ -46,12 +45,37 @@ public class LayerableModel extends FeatureModel implements Layerable
 
     /**
      * Create a layerable model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link LayerableListener}</li>
+     * </ul>
      * 
-     * @param setup The setup reference.
+     * @param services The services reference.
      */
-    public LayerableModel(Setup setup)
+    public LayerableModel(Services services)
     {
         super();
+
+        addListener(services.get(LayerableListener.class));
+    }
+
+    /**
+     * Create a layerable model.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link LayerableListener}</li>
+     * </ul>
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    public LayerableModel(Services services, Setup setup)
+    {
+        this(services);
 
         if (setup.hasNode(LayerableConfig.NODE_LAYERABLE))
         {
@@ -88,14 +112,6 @@ public class LayerableModel extends FeatureModel implements Layerable
     /*
      * Layerable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        addListener(services.get(LayerableListener.class));
-    }
 
     @Override
     public void addListener(LayerableListener listener)

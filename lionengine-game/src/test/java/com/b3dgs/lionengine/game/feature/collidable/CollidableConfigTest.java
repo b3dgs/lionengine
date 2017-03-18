@@ -25,8 +25,10 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
@@ -149,7 +151,10 @@ public class CollidableConfigTest
             final Xml root = new Xml("test");
             root.save(media);
 
-            final Collidable collidable = new CollidableModel(new Setup(media));
+            final Services services = new Services();
+            services.add(new ViewerMock());
+
+            final Collidable collidable = new CollidableModel(services, new Setup(media));
             collidable.setGroup(1);
             CollidableConfig.exports(root, collidable);
 

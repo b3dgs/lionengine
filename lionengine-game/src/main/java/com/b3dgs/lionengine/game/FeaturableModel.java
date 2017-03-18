@@ -17,9 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +26,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -36,8 +35,6 @@ import com.b3dgs.lionengine.util.UtilReflection;
  */
 public class FeaturableModel implements Featurable
 {
-    /** Class constructor error. */
-    private static final String ERROR_CLASS_CONSTRUCTOR = "Class constructor error: ";
     /** Class not found error. */
     private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
     /** Inject service error. */
@@ -45,9 +42,7 @@ public class FeaturableModel implements Featurable
     /** Class loader. */
     private static final ClassLoader LOADER = Configurer.class.getClassLoader();
     /** Class cache. */
-    private static final Map<String, Constructor<?>> CLASS_CACHE = new HashMap<String, Constructor<?>>();
-    /** Constructor with setup (<code>true</code> of default constructor (<code>false</code>). */
-    private static final Map<String, Boolean> CONSTRUCTOR_TYPE = new HashMap<String, Boolean>();
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<String, Class<?>>();
 
     /**
      * Clear classes cache.
@@ -55,45 +50,30 @@ public class FeaturableModel implements Featurable
     public static void clearCache()
     {
         CLASS_CACHE.clear();
-        CONSTRUCTOR_TYPE.clear();
     }
 
     /**
      * Get all available features.
      * Default constructor of each feature must be available or with {@link Setup} as single parameter.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      * @return The available features.
      * @throws LionEngineException If invalid class.
      */
-    private static List<Feature> getFeatures(Setup setup)
+    private static List<Feature> getFeatures(Services services, Setup setup)
     {
         final List<Feature> features = new ArrayList<Feature>();
         for (final Xml featureNode : setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE))
         {
             final String className = featureNode.getText();
-            final Constructor<?> constructor = getConstructor(setup, className);
             final Feature feature;
             try
             {
-                if (CONSTRUCTOR_TYPE.get(className).booleanValue())
-                {
-                    feature = (Feature) constructor.newInstance(setup);
-                }
-                else
-                {
-                    feature = (Feature) constructor.newInstance();
-                }
+                final Class<?> clazz = getClass(className);
+                feature = UtilReflection.createReduce(clazz, services, setup);
             }
-            catch (final InvocationTargetException exception)
-            {
-                throw new LionEngineException(exception);
-            }
-            catch (final IllegalAccessException exception)
-            {
-                throw new LionEngineException(exception);
-            }
-            catch (final InstantiationException exception)
+            catch (final NoSuchMethodException exception)
             {
                 throw new LionEngineException(exception);
             }
@@ -103,14 +83,13 @@ public class FeaturableModel implements Featurable
     }
 
     /**
-     * Get the class implementation from its name by using a custom constructor.
+     * Get the class reference from its name using cache.
      * 
-     * @param setup The setup reference.
      * @param className The class name.
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    private static Constructor<?> getConstructor(Setup setup, String className)
+    private static Class<?> getClass(String className)
     {
         if (CLASS_CACHE.containsKey(className))
         {
@@ -119,27 +98,8 @@ public class FeaturableModel implements Featurable
         try
         {
             final Class<?> clazz = LOADER.loadClass(className);
-            Constructor<?> constructor;
-            try
-            {
-                constructor = UtilReflection.getCompatibleConstructor(clazz, UtilReflection.getParamTypes(setup));
-                CONSTRUCTOR_TYPE.put(className, Boolean.TRUE);
-            }
-            catch (@SuppressWarnings("unused") final NoSuchMethodException exception)
-            {
-                constructor = clazz.getDeclaredConstructor();
-                CONSTRUCTOR_TYPE.put(className, Boolean.FALSE);
-            }
-            if (!constructor.isAccessible())
-            {
-                UtilReflection.setAccessible(constructor, true);
-            }
-            CLASS_CACHE.put(className, constructor);
-            return constructor;
-        }
-        catch (final NoSuchMethodException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR, className);
+            CLASS_CACHE.put(className, clazz);
+            return clazz;
         }
         catch (final ClassNotFoundException exception)
         {
@@ -164,7 +124,7 @@ public class FeaturableModel implements Featurable
             for (int i = 0; i < length; i++)
             {
                 final Field field = fields[i];
-                if (field.isAnnotationPresent(Service.class))
+                if (field.isAnnotationPresent(FeatureGet.class))
                 {
                     toInject.add(field);
                 }
@@ -174,14 +134,12 @@ public class FeaturableModel implements Featurable
         return toInject;
     }
 
-    /** Features to prepare. */
-    private final List<Feature> featuresToPrepare = new ArrayList<Feature>();
     /** Features provider. */
     private final Features features = new Features();
     /** Associated media (<code>null</code> if none). */
     private final Media media;
-    /** Services filled. */
-    private boolean filled;
+    /** Services reference. */
+    private final Services services;
 
     /**
      * Create model.
@@ -190,20 +148,42 @@ public class FeaturableModel implements Featurable
     {
         super();
 
+        services = new Services();
         media = null;
+        addFeature(new IdentifiableModel());
     }
 
     /**
      * Create model. All features are loaded from setup.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public FeaturableModel(Setup setup)
+    public FeaturableModel(Services services, Setup setup)
     {
         super();
 
+        this.services = services;
         media = setup.getMedia();
-        addFeatures(setup);
+        addFeature(new IdentifiableModel());
+        addFeatures(services, setup);
+    }
+
+    /**
+     * Add all features declared in configuration.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    private void addFeatures(Services services, Setup setup)
+    {
+        final List<Feature> features = getFeatures(services, setup);
+        final int length = features.size();
+        for (int i = 0; i < length; i++)
+        {
+            final Feature feature = features.get(i);
+            addFeature(feature);
+        }
     }
 
     /**
@@ -251,7 +231,7 @@ public class FeaturableModel implements Featurable
                 }
                 else
                 {
-                    field.set(object, services.get(type));
+                    throw new LionEngineException(media, ERROR_CLASS_PRESENCE, String.valueOf(type));
                 }
             }
         }
@@ -269,33 +249,6 @@ public class FeaturableModel implements Featurable
      * Featurable
      */
 
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        if (!filled)
-        {
-            fillServices(this, services);
-            filled = true;
-        }
-        final int length = featuresToPrepare.size();
-        for (int i = 0; i < length; i++)
-        {
-            final Feature feature = featuresToPrepare.get(i);
-            fillServices(feature, services);
-            feature.prepare(this, services);
-            checkListener(feature);
-
-            for (int j = 0; j < length; j++)
-            {
-                if (i != j)
-                {
-                    featuresToPrepare.get(j).checkListener(feature);
-                }
-            }
-        }
-        featuresToPrepare.clear();
-    }
-
     /**
      * {@inheritDoc}
      * <p>
@@ -311,20 +264,14 @@ public class FeaturableModel implements Featurable
     @Override
     public final void addFeature(Feature feature)
     {
-        featuresToPrepare.add(feature);
-        features.add(feature);
-    }
-
-    @Override
-    public final void addFeatures(Setup setup)
-    {
-        final List<Feature> features = getFeatures(setup);
-        final int length = features.size();
-        for (int i = 0; i < length; i++)
+        fillServices(feature, services);
+        feature.prepare(this);
+        checkListener(feature);
+        for (final Feature other : getFeatures())
         {
-            final Feature feature = features.get(i);
-            addFeature(feature);
+            other.checkListener(feature);
         }
+        features.add(feature);
     }
 
     @Override
@@ -356,12 +303,6 @@ public class FeaturableModel implements Featurable
     public final boolean hasFeature(Class<? extends Feature> feature)
     {
         return features.contains(feature);
-    }
-
-    @Override
-    public final boolean isPrepared()
-    {
-        return filled;
     }
 
     @Override

@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Actionable;
@@ -62,31 +62,27 @@ class BuildButton extends FeaturableModel
     private Updatable state;
     private Rectangle area;
 
-    @Service private Text text;
-    @Service private Viewer viewer;
-    @Service private Cursor cursor;
-    @Service private Factory factory;
-    @Service private Handler handler;
-
     /**
      * Create build button action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public BuildButton(Setup setup)
+    public BuildButton(Services services, Setup setup)
     {
         super();
 
         addFeature(new LayerableModel(3));
 
-        final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
+        final Actionable actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setClickAction(Mouse.LEFT);
         state = actionable;
 
-        final Assignable assignable = addFeatureAndGet(new AssignableModel());
+        final Assignable assignable = addFeatureAndGet(new AssignableModel(services));
         assignable.setClickAssign(Mouse.LEFT);
 
         final Media target = Medias.create(setup.getText("media"));
+        final Cursor cursor = services.get(Cursor.class);
 
         actionable.setAction(() ->
         {
@@ -95,6 +91,9 @@ class BuildButton extends FeaturableModel
             area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
             cursor.setVisible(false);
         });
+
+        final Factory factory = services.get(Factory.class);
+        final Handler handler = services.get(Handler.class);
 
         assignable.setAssign(() ->
         {
@@ -112,6 +111,7 @@ class BuildButton extends FeaturableModel
         });
 
         final Image image = Drawable.loadImage(setup.getSurface());
+        final Text text = services.get(Text.class);
 
         addFeature(new RefreshableModel(extrp ->
         {
@@ -129,6 +129,8 @@ class BuildButton extends FeaturableModel
                          area.getHeightReal());
             }
         }));
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new DisplayableModel(g ->
         {

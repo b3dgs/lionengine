@@ -52,8 +52,7 @@ class Scene extends Sequence
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("map", "level.png"));
-        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
-        map.prepareFeatures(services);
+        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
         try (FileWriting output = new FileWriting(LEVEL))
         {
             mapPersister.save(output);

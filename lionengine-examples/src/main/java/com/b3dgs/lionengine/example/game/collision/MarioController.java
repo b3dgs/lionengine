@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.io.awt.Keyboard;
@@ -31,18 +31,19 @@ class MarioController extends FeatureModel implements Refreshable
 {
     private final Force movement;
     private final Force jump;
-
-    @Service private Keyboard keyboard;
+    private final Keyboard keyboard;
 
     /**
      * Create updater.
      * 
+     * @param services The services reference.
      * @param model The model reference.
      */
-    public MarioController(MarioModel model)
+    public MarioController(Services services, MarioModel model)
     {
         movement = model.getMovement();
         jump = model.getJump();
+        keyboard = services.get(Keyboard.class);
     }
 
     @Override

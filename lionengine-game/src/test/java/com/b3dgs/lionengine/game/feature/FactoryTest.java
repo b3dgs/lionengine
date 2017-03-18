@@ -179,7 +179,6 @@ public class FactoryTest
     {
         final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
         featurable.addFeature(new Recycler());
-        featurable.prepareFeatures(services);
 
         Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
 
@@ -195,7 +194,6 @@ public class FactoryTest
     public void testRecycleWithoutRecyclable()
     {
         final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
-        featurable.prepareFeatures(services);
 
         Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
 

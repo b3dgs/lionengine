@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -46,13 +45,13 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     /** Circuits as key. */
     private final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Map tile group. */
-    private MapTileGroup mapGroup;
+    private final MapTileGroup mapGroup;
     /** Map tile transition. */
-    private MapTileTransition mapTransition;
+    private final MapTileTransition mapTransition;
     /** Map circuit extractor. */
-    private MapCircuitExtractor extractor;
+    private final MapCircuitExtractor extractor;
 
     /**
      * Create a map tile circuit.
@@ -69,10 +68,17 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
      * <li>{@link MapTileGroup}</li>
      * <li>{@link MapTileTransition}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public MapTileCircuitModel()
+    public MapTileCircuitModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
+        extractor = new MapCircuitExtractor(map);
     }
 
     /**
@@ -256,17 +262,6 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     /*
      * MapTileCircuit
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-        mapTransition = map.getFeature(MapTileTransition.class);
-        extractor = new MapCircuitExtractor(map);
-    }
 
     @Override
     public void loadCircuits(Media circuitsConfig)

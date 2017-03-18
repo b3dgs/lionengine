@@ -47,8 +47,8 @@ public class ComponentRefreshableTest
         final FeaturableModel object = new FeaturableModel();
         object.addFeature(new IdentifiableModel());
 
-        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
-        layerable.prepare(object, services);
+        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services));
+        layerable.prepare(object);
 
         object.addFeature(new RefreshableModel(new Updatable()
         {
@@ -61,8 +61,6 @@ public class ComponentRefreshableTest
                 }
             }
         }));
-
-        object.prepareFeatures(services);
 
         return layerable;
     }

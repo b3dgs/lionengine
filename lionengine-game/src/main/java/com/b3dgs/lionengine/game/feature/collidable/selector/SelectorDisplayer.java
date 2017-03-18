@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -33,10 +32,10 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
 {
     /** Selector model reference. */
     private final SelectorModel model;
+    /** Viewer reference. */
+    private final Viewer viewer;
     /** Cursor selection color. */
     private ColorRgba colorSelection = ColorRgba.GRAY;
-    /** Viewer reference. */
-    private Viewer viewer;
 
     /**
      * Create a selector.
@@ -47,13 +46,15 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
      * <li>{@link Viewer}</li>
      * </ul>
      * 
+     * @param services The services reference.
      * @param model The model reference.
      */
-    public SelectorDisplayer(SelectorModel model)
+    public SelectorDisplayer(Services services, SelectorModel model)
     {
         super();
 
         this.model = model;
+        viewer = services.get(Viewer.class);
     }
 
     /**
@@ -69,14 +70,6 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
     /*
      * Displayable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        viewer = services.get(Viewer.class);
-    }
 
     @Override
     public void render(Graphic g)

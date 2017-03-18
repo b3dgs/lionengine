@@ -57,9 +57,9 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     /** Selector model. */
     private final SelectorModel model = addFeatureAndGet(new SelectorModel());
     /** Selector refresher. */
-    private final SelectorRefresher refresher = addFeatureAndGet(new SelectorRefresher(model));
+    private final SelectorRefresher refresher;
     /** Selector displayer. */
-    private final SelectorDisplayer displayer = addFeatureAndGet(new SelectorDisplayer(model));
+    private final SelectorDisplayer displayer;
     /** Backed selection. */
     private final List<Selectable> selected = new ArrayList<Selectable>();
     /** Selection listeners. */
@@ -92,13 +92,45 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
 
     /**
      * Create the selector.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * <li>{@link Cursor}</li>
+     * </ul>
+     * 
+     * @param services The services reference.
      */
-    public Selector()
+    public Selector(Services services)
     {
         super();
 
-        addFeature(new TransformableModel());
-        addFeature(new CollidableModel());
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        final Collidable collidable = addFeatureAndGet(new CollidableModel(services));
+        collidable.addCollision(Collision.AUTOMATIC);
+
+        refresher = addFeatureAndGet(new SelectorRefresher(services, model));
+        displayer = addFeatureAndGet(new SelectorDisplayer(services, model));
+
+        addListener(new SelectorListener()
+        {
+            @Override
+            public void notifySelectionStarted(Rectangle selection)
+            {
+                unSelectAll();
+            }
+
+            @Override
+            public void notifySelectionDone(Rectangle selection)
+            {
+                transformable.transform(selection.getX(),
+                                        selection.getY(),
+                                        selection.getWidth(),
+                                        selection.getHeight());
+                notifyAction = notifyAll;
+            }
+        });
     }
 
     /**
@@ -162,39 +194,6 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
             selected.get(i).onSelection(false);
         }
         selected.clear();
-    }
-
-    /*
-     * FeaturableModel
-     */
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        final Transformable transformable = getFeature(Transformable.class);
-        final Collidable collidable = getFeature(Collidable.class);
-        collidable.addCollision(Collision.AUTOMATIC);
-
-        addListener(new SelectorListener()
-        {
-            @Override
-            public void notifySelectionStarted(Rectangle selection)
-            {
-                unSelectAll();
-            }
-
-            @Override
-            public void notifySelectionDone(Rectangle selection)
-            {
-                transformable.transform(selection.getX(),
-                                        selection.getY(),
-                                        selection.getWidth(),
-                                        selection.getHeight());
-                notifyAction = notifyAll;
-            }
-        });
     }
 
     /*

@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
@@ -199,9 +198,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         animator = provider.getFeature(Animatable.class);
         transformable = provider.getFeature(Transformable.class);

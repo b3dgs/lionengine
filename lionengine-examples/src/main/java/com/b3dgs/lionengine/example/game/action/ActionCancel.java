@@ -17,7 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Action;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -27,9 +28,6 @@ import com.b3dgs.lionengine.game.feature.Handler;
  */
 class ActionCancel extends ActionFeature
 {
-    @Service private Factory factory;
-    @Service private Handler handler;
-
     /**
      * Create feature.
      * 
@@ -41,11 +39,21 @@ class ActionCancel extends ActionFeature
     }
 
     @Override
-    public void execute()
+    public Action create(Services services)
     {
-        final Button buildings = factory.create(Button.BUILDINGS);
-        handler.add(buildings);
+        final Factory factory = services.get(Factory.class);
+        final Handler handler = services.get(Handler.class);
 
-        getFeature(ButtonLink.class).terminate();
+        return new Action()
+        {
+            @Override
+            public void execute()
+            {
+                final Button buildings = factory.create(Button.BUILDINGS);
+                handler.add(buildings);
+
+                getFeature(ButtonLink.class).terminate();
+            }
+        };
     }
 }

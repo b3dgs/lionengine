@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.Check;
@@ -64,9 +65,68 @@ public final class UtilReflection
     public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws NoSuchMethodException
     {
         Check.notNull(type);
+
+        final Constructor<?> constructor = getCompatibleConstructor(type, paramTypes);
+        return create(type, constructor, params);
+    }
+
+    /**
+     * Create a class instance with its parameters. Use a compatible constructor with the following parameters, reducing
+     * parameter types array as a queue until empty in order to find a constructor.
+     * 
+     * @param <T> The element type used.
+     * @param type The class type.
+     * @param params The maximum parameters in sequential order.
+     * @return The constructor found.
+     * @throws NoSuchMethodException If no constructor found.
+     */
+    public static <T> T createReduce(Class<?> type, Object... params) throws NoSuchMethodException
+    {
+        final Class<?>[] paramTypes = getParamTypes(params);
+        final Queue<Class<?>> typesQueue = new ArrayDeque<Class<?>>(Arrays.asList(paramTypes));
+        final Queue<Object> paramsQueue = new ArrayDeque<Object>(Arrays.asList(params));
+        boolean stop = false;
+        while (!stop)
+        {
+            final int typesLength = typesQueue.size();
+            final Class<?>[] typesArray = typesQueue.toArray(new Class<?>[typesLength]);
+            for (final Constructor<?> constructor : type.getDeclaredConstructors())
+            {
+                final Class<?>[] constructorTypes = constructor.getParameterTypes();
+                if (constructorTypes.length == typesLength
+                    && (typesLength == 0 || hasCompatibleConstructor(typesArray, constructorTypes)))
+                {
+                    return create(type, constructor, paramsQueue.toArray());
+                }
+            }
+
+            stop = paramsQueue.isEmpty();
+            typesQueue.poll();
+            paramsQueue.poll();
+        }
+        throw new NoSuchMethodException(ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                        + type.getName()
+                                        + ERROR_WITH
+                                        + Arrays.asList(paramTypes));
+    }
+
+    /**
+     * Create a class instance with its parameters.
+     * 
+     * @param <T> The element type used.
+     * @param type The class type to instantiate.
+     * @param constructor The constructor to use.
+     * @param params The constructor parameters.
+     * @return The class instance.
+     * @throws NoSuchMethodException If no constructor found.
+     * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
+     */
+    private static <T> T create(Class<?> type, Constructor<?> constructor, Object... params)
+            throws NoSuchMethodException
+    {
+        Check.notNull(constructor);
         try
         {
-            final Constructor<?> constructor = getCompatibleConstructor(type, paramTypes);
             final boolean accessible = constructor.isAccessible();
             setAccessible(constructor, ACCESSIBLE.get());
             @SuppressWarnings("unchecked")
@@ -79,7 +139,13 @@ public final class UtilReflection
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
+            throw new LionEngineException(exception,
+                                          ERROR_CONSTRUCTOR
+                                                     + type
+                                                     + " "
+                                                     + Arrays.asList(constructor.getParameterTypes())
+                                                     + " with "
+                                                     + Arrays.asList(params));
         }
         catch (final InstantiationException exception)
         {
@@ -106,7 +172,14 @@ public final class UtilReflection
         final Collection<Object> types = new ArrayList<Object>();
         for (final Object argument : arguments)
         {
-            types.add(argument.getClass());
+            if (argument.getClass() == Class.class)
+            {
+                types.add(argument);
+            }
+            else
+            {
+                types.add(argument.getClass());
+            }
         }
         final Class<?>[] typesArray = new Class<?>[types.size()];
         return types.toArray(typesArray);

@@ -20,14 +20,16 @@ package com.b3dgs.lionengine.example.game.action;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.ActionConfig;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
  * Represents an action as a feature.
  */
-class ActionFeature extends FeatureModel implements Action
+class ActionFeature extends FeatureModel
 {
+    /** Action displayed name. */
     private final String name;
 
     /**
@@ -42,9 +44,21 @@ class ActionFeature extends FeatureModel implements Action
         name = ActionConfig.imports(setup).getName();
     }
 
-    @Override
-    public void execute()
+    /**
+     * Create the button action.
+     * 
+     * @param services The services reference.
+     * @return The created button action.
+     */
+    public Action create(Services services)
     {
-        Verbose.info(name);
+        return new Action()
+        {
+            @Override
+            public void execute()
+            {
+                Verbose.info(name);
+            }
+        };
     }
 }

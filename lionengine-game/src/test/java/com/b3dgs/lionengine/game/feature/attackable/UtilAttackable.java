@@ -61,7 +61,7 @@ public class UtilAttackable
         attacker.setAttackDistance(1, 2);
         attacker.setAttackFrame(1);
         attacker.setAttackTimer(0);
-        attacker.prepare(object, services);
+        attacker.prepare(object);
 
         return attacker;
     }

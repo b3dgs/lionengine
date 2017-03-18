@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -44,31 +44,32 @@ class Peon extends FeaturableModel
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    @Service private Viewer viewer;
-
     /**
      * Create a peon.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Peon(Setup setup)
+    public Peon(Services services, Setup setup)
     {
         super();
 
         addFeature(new LayerableModel(1));
 
-        final Fovable fovable = addFeatureAndGet(new FovableModel());
-        fovable.setFov(3);
-
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(64, 64);
 
+        final Fovable fovable = addFeatureAndGet(new FovableModel(services));
+        fovable.setFov(3);
+
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        surface.setOrigin(Origin.BOTTOM_LEFT);
+        surface.setFrameOffsets(8, 8);
 
         final Timing timing = new Timing();
         timing.start();
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

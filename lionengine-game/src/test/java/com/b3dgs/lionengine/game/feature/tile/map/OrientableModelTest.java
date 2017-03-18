@@ -38,7 +38,7 @@ public class OrientableModelTest
 {
     private final Services services = new Services();
     private final Featurable featurable = new FeaturableModel();
-    private final OrientableModel orientable = new OrientableModel();
+    private OrientableModel orientable;
 
     /**
      * Prepare test.
@@ -49,8 +49,9 @@ public class OrientableModelTest
         services.add(new MapTileGame());
         featurable.addFeature(new IdentifiableModel());
         featurable.addFeature(new TransformableModel());
-        featurable.prepareFeatures(services);
-        orientable.prepare(featurable, services);
+
+        orientable = new OrientableModel(services);
+        orientable.prepare(featurable);
     }
 
     /**

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Services;
 
 /**
  * Refreshable object mock.
@@ -49,7 +48,7 @@ class Refresher extends FeaturableModel implements Refreshable
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         // Mock
     }

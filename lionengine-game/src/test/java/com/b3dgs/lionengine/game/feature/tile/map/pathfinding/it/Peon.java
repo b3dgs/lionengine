@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -47,29 +46,30 @@ class Peon extends FeaturableModel
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    private final Timing timing = new Timing();
-    private final Pathfindable pathfindable;
-
-    @Service private Viewer viewer;
-
     /**
      * Create a peon.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Peon(Setup setup)
+    public Peon(Services services, Setup setup)
     {
         super();
 
         addFeature(new LayerableModel(1));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        transformable.teleport(208, 224);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(8, 8);
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+        pathfindable.setSpeed(6.0, 6.0);
+
+        final Viewer viewer = services.get(Viewer.class);
+        final Timing timing = new Timing();
 
         addFeature(new RefreshableModel(new Updatable()
         {
@@ -96,14 +96,6 @@ class Peon extends FeaturableModel
                 surface.render(g);
             }
         }));
-    }
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        pathfindable.setSpeed(6.0, 6.0);
 
         timing.start();
     }

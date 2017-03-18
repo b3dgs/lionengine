@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
@@ -54,24 +54,29 @@ public class ActionModel extends FeaturableModel
     protected final AtomicReference<Updatable> state;
 
     /** Cursor reference. */
-    @Service protected Cursor cursor;
+    protected final Cursor cursor;
     /** Handler reference. */
-    @Service protected Handler handler;
+    protected final Handler handler;
     /** Selector reference. */
-    @Service protected Selector selector;
+    protected final Selector selector;
 
     /**
      * Create move action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public ActionModel(Setup setup)
+    public ActionModel(Services services, Setup setup)
     {
         super();
 
+        cursor = services.get(Cursor.class);
+        handler = services.get(Handler.class);
+        selector = services.get(Selector.class);
+
         addFeature(new LayerableModel(4, 6));
 
-        actionable = addFeatureAndGet(new ActionableModel(setup));
+        actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setClickAction(Mouse.LEFT);
         actionable.setAction(new Action()
         {
@@ -87,7 +92,7 @@ public class ActionModel extends FeaturableModel
         });
         state = new AtomicReference<Updatable>(actionable);
 
-        assignable = addFeatureAndGet(new AssignableModel());
+        assignable = addFeatureAndGet(new AssignableModel(services));
         assignable.setClickAssign(Mouse.LEFT);
         assignable.setAssign(new Assign()
         {

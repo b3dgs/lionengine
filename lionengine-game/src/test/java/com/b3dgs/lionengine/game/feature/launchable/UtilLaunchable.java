@@ -52,7 +52,7 @@ public class UtilLaunchable
         featurable.addFeature(new TransformableModel());
 
         final Launchable launchable = new LaunchableModel();
-        launchable.prepare(featurable, services);
+        launchable.prepare(featurable);
         launchable.setLocation(0.0, 0.0);
         launchable.setVector(new Force(0.0, 1.0));
 
@@ -108,10 +108,9 @@ public class UtilLaunchable
         services.add(new Factory(services));
         services.add(new Handler(services));
         featurable.addFeature(new TransformableModel());
-        featurable.prepareFeatures(services);
 
-        final Launcher launcher = new LauncherModel(setup);
-        launcher.prepare(featurable, services);
+        final Launcher launcher = new LauncherModel(services, setup);
+        launcher.prepare(featurable);
         launcher.setOffset(1, 2);
         launcher.setRate(10);
 

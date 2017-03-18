@@ -92,9 +92,6 @@ public class Factory implements HandlerListener
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
      * </p>
      * <p>
-     * {@link Featurable#prepareFeatures(Services)} is automatically called.
-     * </p>
-     * <p>
      * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
      * {@link Recyclable} {@link Feature}s. If cache associated to media is available, it is
      * {@link Recyclable#recycle()} and then returned.
@@ -131,9 +128,6 @@ public class Factory implements HandlerListener
      * constructor must be public, and can have the following parameter: ({@link Setup}).
      * <p>
      * Automatically add {@link IdentifiableModel} if feature does not have {@link Identifiable} feature.
-     * </p>
-     * <p>
-     * {@link Featurable#prepareFeatures(Services)} is automatically called.
      * </p>
      * <p>
      * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
@@ -213,9 +207,9 @@ public class Factory implements HandlerListener
                 final Class<?> clazz = classLoader.loadClass(config.getClassName());
                 final Constructor<?> constructor = UtilReflection.getCompatibleConstructorParent(clazz, new Class<?>[]
                 {
-                    Setup.class
+                    Services.class, Setup.class
                 });
-                setupClass = constructor.getParameterTypes()[0];
+                setupClass = constructor.getParameterTypes()[1];
             }
             else
             {
@@ -247,21 +241,10 @@ public class Factory implements HandlerListener
      */
     private <O extends Featurable> O createFeaturable(Class<?> type, Setup setup) throws NoSuchMethodException
     {
-        try
-        {
-            final O featurable = UtilReflection.create(type, new Class<?>[]
-            {
-                setup.getClass()
-            }, setup);
-            prepare(featurable);
-            return featurable;
-        }
-        catch (@SuppressWarnings("unused") final NoSuchMethodException exception)
-        {
-            final O featurable = UtilReflection.create(type, new Class<?>[0]);
-            prepare(featurable);
-            return featurable;
-        }
+        final O featurable = UtilReflection.createReduce(type, services, setup);
+        prepare(featurable);
+
+        return featurable;
     }
 
     /**
@@ -271,13 +254,9 @@ public class Factory implements HandlerListener
      */
     private void prepare(Featurable featurable)
     {
-        if (!featurable.hasFeature(Identifiable.class))
+        for (final Feature feature : featurable.getFeatures())
         {
-            featurable.addFeature(new IdentifiableModel());
-        }
-        if (!featurable.isPrepared())
-        {
-            featurable.prepareFeatures(services);
+            featurable.checkListener(feature);
         }
     }
 

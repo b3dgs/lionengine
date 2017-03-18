@@ -23,7 +23,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
@@ -78,9 +77,9 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         if (provider instanceof ProducibleListener)
         {

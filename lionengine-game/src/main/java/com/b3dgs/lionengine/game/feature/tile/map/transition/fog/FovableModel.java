@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 public class FovableModel extends FeatureModel implements Fovable
 {
     /** Map tile reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Transformable model. */
     private Transformable transformable;
     /** Field of view in tile value. */
@@ -50,10 +50,14 @@ public class FovableModel extends FeatureModel implements Fovable
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public FovableModel()
+    public FovableModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
     }
 
     /*
@@ -61,12 +65,11 @@ public class FovableModel extends FeatureModel implements Fovable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         transformable = provider.getFeature(Transformable.class);
-        map = services.get(MapTile.class);
     }
 
     @Override

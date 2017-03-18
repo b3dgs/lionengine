@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.collision;
 
-import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -35,27 +35,29 @@ import com.b3dgs.lionengine.graphic.SpriteAnimated;
 class MarioRenderer extends FeatureModel implements Displayable
 {
     private final SpriteAnimated surface;
+    private final Viewer viewer;
 
-    @Service private Collidable collidable;
-    @Service private Transformable transformable;
-    @Service private Camera camera;
+    @FeatureGet private Collidable collidable;
+    @FeatureGet private Transformable transformable;
 
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param model The model reference.
      */
-    public MarioRenderer(MarioModel model)
+    public MarioRenderer(Services services, MarioModel model)
     {
         super();
 
+        viewer = services.get(Viewer.class);
         surface = model.getSurface();
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         collidable.setCollisionVisibility(true);
     }
@@ -63,7 +65,7 @@ class MarioRenderer extends FeatureModel implements Displayable
     @Override
     public void render(Graphic g)
     {
-        surface.setLocation(camera, transformable);
+        surface.setLocation(viewer, transformable);
         surface.render(g);
 
         g.setColor(ColorRgba.GREEN);

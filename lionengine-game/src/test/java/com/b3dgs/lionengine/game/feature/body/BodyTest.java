@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -37,7 +36,6 @@ import com.b3dgs.lionengine.util.UtilTests;
 public class BodyTest
 {
     private final Body body = new BodyModel();
-    private final Services services = new Services();
     private final FeaturableModel object = new FeaturableModel();
     private final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
 
@@ -48,7 +46,6 @@ public class BodyTest
     public void prepare()
     {
         object.addFeature(new IdentifiableModel());
-        object.prepareFeatures(services);
     }
 
     /**
@@ -68,7 +65,7 @@ public class BodyTest
     {
         transformable.teleport(0, 6.0);
 
-        body.prepare(object, services);
+        body.prepare(object);
         body.setMass(2.0);
         body.setDesiredFps(50);
 
@@ -105,7 +102,7 @@ public class BodyTest
     {
         transformable.teleport(0, 6.0);
 
-        body.prepare(object, services);
+        body.prepare(object);
         body.setMass(2.0);
         body.setGravity(3.0);
         body.setGravityMax(8.0);
@@ -131,7 +128,7 @@ public class BodyTest
     {
         transformable.teleport(0, 6.0);
 
-        body.prepare(object, services);
+        body.prepare(object);
         body.setMass(1.0);
         body.setGravity(1.0);
         body.setDesiredFps(50);

@@ -84,13 +84,12 @@ class Scene extends Sequence
     @Override
     public void load()
     {
+        camera.setView(72, 12, 248, 188, getHeight());
+        camera.setLocation(320, 208);
+
+        map.addFeature(new MapTileViewerModel(services));
         map.create(Medias.create("level.png"), 16, 16, 16);
-
-        camera.setView(72, 12, 240, 176, getHeight());
         camera.setLimits(map);
-        camera.setLocation(192, 96);
-
-        map.addFeature(new MapTileViewerModel());
         handler.add(map);
 
         minimap.load();
@@ -110,7 +109,7 @@ class Scene extends Sequence
         final Peon peon = factory.create(Peon.MEDIA);
         handler.add(peon);
 
-        final Selector selector = new Selector();
+        final Selector selector = new Selector(services);
         selector.addFeature(new LayerableModel(1));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);

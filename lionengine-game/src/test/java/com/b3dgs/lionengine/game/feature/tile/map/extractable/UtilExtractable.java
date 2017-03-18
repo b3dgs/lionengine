@@ -46,12 +46,10 @@ public class UtilExtractable
         featurable.addFeature(new IdentifiableModel());
         featurable.addFeature(new TransformableModel());
 
-        final Extractable extractable = new ExtractableModel();
+        final Extractable extractable = new ExtractableModel(services);
         extractable.setResourcesQuantity(10);
         extractable.setResourcesType(ResourceType.WOOD);
-        extractable.prepare(featurable, services);
-
-        featurable.prepareFeatures(services);
+        extractable.prepare(featurable);
 
         return extractable;
     }

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -49,17 +49,19 @@ class Effect extends FeaturableModel
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     private final SpriteAnimated surface;
     private final Animation animExplode;
-
-    @Service private Viewer viewer;
+    private final Viewer viewer;
 
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup the setup reference.
      */
-    public Effect(Setup setup)
+    public Effect(Services services, Setup setup)
     {
         super();
+
+        viewer = services.get(Viewer.class);
 
         final FramesConfig config = FramesConfig.imports(setup);
         final int scale = UtilRandom.getRandomInteger(75) + 50;

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import org.junit.Assert;
 
 import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 
 /**
@@ -30,11 +31,13 @@ public class ObjectWithIdentifiable extends FeaturableModel
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup Parameter.
      */
-    public ObjectWithIdentifiable(Setup setup)
+    public ObjectWithIdentifiable(Services services, Setup setup)
     {
-        super(setup);
+        super(services, setup);
+
         addFeature(new IdentifiableModel());
         Assert.assertNotNull(setup);
     }

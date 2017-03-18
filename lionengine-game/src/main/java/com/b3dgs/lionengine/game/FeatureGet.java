@@ -24,17 +24,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Service dependency injection. Any element annotated with will be injected with a compatible instance found in the
- * current {@link Services} during {@link Featurable#prepareFeatures(Services)}.
+ * {@link Feature} dependency injection. Any element annotated with will be injected with a compatible instance found in
+ * the current {@link Feature} set during {@link Feature#prepare(FeatureProvider)}.
  * <p>
- * If manually used, do not forget to call {@link Featurable#prepareFeatures(Services)}, else annotated
- * fields will remain <code>null</code>.
+ * If manually used, do not forget to call {@link Feature#prepare(FeatureProvider)}, else annotated fields will remain
+ * <code>null</code>.
  * </p>
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Service
+public @interface FeatureGet
 {
     // Nothing
 }

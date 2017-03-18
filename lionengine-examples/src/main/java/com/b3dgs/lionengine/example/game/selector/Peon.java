@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -48,28 +48,29 @@ class Peon extends FeaturableModel implements SelectorListener
     private final Collidable collidable;
     private boolean selected;
 
-    @Service private Viewer viewer;
-
     /**
      * Create a peon.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Peon(Setup setup)
+    public Peon(Services services, Setup setup)
     {
         super();
 
         addFeature(new LayerableModel(1));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        collidable = addFeatureAndGet(new CollidableModel(setup));
+        collidable = addFeatureAndGet(new CollidableModel(services, setup));
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        surface.setOrigin(Origin.BOTTOM_LEFT);
+        surface.setFrameOffsets(8, 8);
 
-        transformable.teleport(240, 160);
-        collidable.setOrigin(Origin.MIDDLE);
+        transformable.teleport(432, 272);
+        collidable.setOrigin(Origin.BOTTOM_LEFT);
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

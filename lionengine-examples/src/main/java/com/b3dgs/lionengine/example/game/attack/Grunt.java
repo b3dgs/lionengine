@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -50,21 +50,26 @@ class Grunt extends FeaturableModel implements AttackerChecker, AttackerListener
     private final Pathfindable pathfindable;
     private final Attacker attacker;
 
-    @Service private Viewer viewer;
-
     /**
      * Create a peon.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Grunt(Setup setup)
+    public Grunt(Services services, Setup setup)
     {
         super();
 
         addFeature(new LayerableModel(1));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 8, 7);
+        surface.setOrigin(Origin.MIDDLE);
+        surface.setFrameOffsets(-8, -8);
+
+        addFeature(new AnimatableModel(surface));
 
         attacker = addFeatureAndGet(new AttackerModel());
         attacker.setAttackDistance(16, 16);
@@ -72,9 +77,7 @@ class Grunt extends FeaturableModel implements AttackerChecker, AttackerListener
         attacker.setAttackFrame(1);
         attacker.setAttackTimer(1000);
 
-        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 8, 7);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {
@@ -82,7 +85,7 @@ class Grunt extends FeaturableModel implements AttackerChecker, AttackerListener
             attacker.update(extrp);
             surface.setLocation(viewer, transformable);
         }));
-        addFeature(new AnimatableModel(surface));
+
         addFeature(new DisplayableModel(surface::render));
     }
 

@@ -23,12 +23,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.MouseMock;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorListener;
@@ -44,10 +46,10 @@ public class SelectorRefresherTest
     private final Services services = new Services();
     private final Cursor cursor = services.create(Cursor.class);
     private final SelectorModel model = new SelectorModel();
-    private final SelectorRefresher refresher = new SelectorRefresher(model);
     private final MouseMock mouse = new MouseMock();
     private final AtomicReference<Rectangle> started = new AtomicReference<Rectangle>();
     private final AtomicReference<Rectangle> done = new AtomicReference<Rectangle>();
+    private SelectorRefresher refresher;
 
     /**
      * Prepare test.
@@ -55,6 +57,18 @@ public class SelectorRefresherTest
     @Before
     public void prepare()
     {
+        cursor.setInputDevice(mouse);
+        cursor.setSyncMode(true);
+
+        services.add(new Camera());
+        services.add(new ViewerMock());
+
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new LayerableModel(1));
+        featurable.addFeature(new TransformableModel());
+        featurable.addFeature(new CollidableModel(services));
+
+        refresher = new SelectorRefresher(services, model);
         refresher.addListener(new SelectorListener()
         {
             @Override
@@ -69,15 +83,7 @@ public class SelectorRefresherTest
                 done.set(selection);
             }
         });
-        cursor.setInputDevice(mouse);
-        cursor.setSyncMode(true);
-
-        services.add(new Camera());
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new TransformableModel());
-        featurable.addFeature(new CollidableModel());
-        featurable.prepareFeatures(services);
-        refresher.prepare(featurable, services);
+        refresher.prepare(featurable);
     }
 
     /**
@@ -121,19 +127,21 @@ public class SelectorRefresherTest
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(new Rectangle(1.0, 1.0, 0, 0.0), started.get());
+        Assert.assertEquals(new Rectangle(1.0, 1.0, 0.0, 0.0), started.get());
+        Assert.assertNull(done.get());
 
-        mouse.move(10, -20);
+        mouse.move(10, 20);
         cursor.update(1.0);
         refresher.update(1.0);
 
+        Assert.assertEquals(new Rectangle(1.0, 1.0, 0.0, 0.0), started.get());
         Assert.assertNull(done.get());
 
         mouse.setClick(0);
         cursor.update(1.0);
         refresher.update(1.0);
-        refresher.update(1.0);
 
-        Assert.assertEquals(new Rectangle(1.0, 0.0, 10, 1.0), done.get());
+        Assert.assertEquals(new Rectangle(1.0, 1.0, 0.0, 0.0), started.get());
+        Assert.assertEquals(new Rectangle(1.0, 1.0, 10.0, 20.0), done.get());
     }
 }

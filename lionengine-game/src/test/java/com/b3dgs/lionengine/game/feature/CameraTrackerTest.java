@@ -37,12 +37,11 @@ public class CameraTrackerTest
     @Test
     public void testTracker()
     {
-        final CameraTracker tracker = new CameraTracker();
         final Services services = new Services();
-        final Camera camera = new Camera();
-        services.add(camera);
+        final Camera camera = services.add(new Camera());
         camera.setView(0, 0, 16, 32, 32);
-        tracker.prepareFeatures(services);
+
+        final CameraTracker tracker = new CameraTracker(services);
         tracker.getFeature(Refreshable.class).update(1.0);
 
         Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -44,25 +44,26 @@ class Projectile extends FeaturableModel
     /** Media. */
     public static final Media PULSE = Medias.create("Pulse.xml");
 
-    @Service private Viewer viewer;
-
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Projectile(Setup setup)
+    public Projectile(Services services, Setup setup)
     {
         super();
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         final Launchable launchable = addFeatureAndGet(new LaunchableModel());
-        final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
+        final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
         collidable.setOrigin(Origin.MIDDLE);
         collidable.setGroup(0);
 
         final Sprite sprite = Drawable.loadSprite(setup.getSurface());
         sprite.setOrigin(Origin.MIDDLE);
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

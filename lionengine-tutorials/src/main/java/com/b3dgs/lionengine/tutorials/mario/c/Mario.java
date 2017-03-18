@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
@@ -38,9 +39,10 @@ class Mario extends FeaturableModel
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Mario(Setup setup)
+    public Mario(Services services, Setup setup)
     {
         super();
 
@@ -48,7 +50,7 @@ class Mario extends FeaturableModel
         addFeature(new LayerableModel(1));
         addFeature(new MirrorableModel());
         addFeature(new BodyModel());
-        addFeature(new TileCollidableModel(setup));
+        addFeature(new TileCollidableModel(services, setup));
 
         final MarioModel model = new MarioModel(setup);
         addFeature(model);

@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
@@ -43,19 +43,29 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
 
     private final Force movement = new Force();
     private final Force jump = new Force();
+    private final Context context;
+    private final Keyboard keyboard;
 
-    @Service private Body body;
-    @Service private Transformable transformable;
-    @Service private Collidable collidable;
-    @Service private TileCollidable tileCollidable;
+    @FeatureGet private Body body;
+    @FeatureGet private Transformable transformable;
+    @FeatureGet private Collidable collidable;
+    @FeatureGet private TileCollidable tileCollidable;
 
-    @Service private Context context;
-    @Service private Keyboard keyboard;
+    /**
+     * Create updater.
+     * 
+     * @param services The services reference.
+     */
+    public MarioUpdater(Services services)
+    {
+        context = services.get(Context.class);
+        keyboard = services.get(Keyboard.class);
+    }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         collidable.setOrigin(Origin.CENTER_BOTTOM);
 

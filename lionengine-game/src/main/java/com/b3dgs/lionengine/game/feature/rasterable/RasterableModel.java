@@ -48,7 +48,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     /** Raster height. */
     private final int height;
     /** The viewer reference. */
-    private Viewer viewer;
+    private final Viewer viewer;
     /** Transformable reference. */
     private Transformable transformable;
     /** Mirrorable reference. */
@@ -77,13 +77,16 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
      * <li>{@link Animatable}</li>
      * </ul>
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public RasterableModel(SetupSurfaceRastered setup)
+    public RasterableModel(Services services, SetupSurfaceRastered setup)
     {
         super();
 
         Check.notNull(setup);
+
+        viewer = services.get(Viewer.class);
 
         height = setup.getRasterHeight();
         rastersAnim = setup.getRasters();
@@ -97,12 +100,11 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         transformable = provider.getFeature(Transformable.class);
         mirrorable = provider.getFeature(Mirrorable.class);
         animator = provider.getFeature(Animatable.class);
-        viewer = services.get(Viewer.class);
     }
 
     @Override

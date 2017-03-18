@@ -69,61 +69,14 @@ import com.b3dgs.lionengine.Media;
 public interface Featurable extends FeatureProvider
 {
     /**
-     * Prepare all added feature. Must be called before feature usage. Does nothing for already prepared features.
-     * <p>
-     * This will call {@link Feature#prepare(FeatureProvider, Services)} and {@link Feature#checkListener(Object)} for
-     * each, fill annotated fields with {@link Service} with the right instance provided by the {@link Services}.
-     * </p>
-     * 
-     * @param services The services reference.
-     */
-    void prepareFeatures(Services services);
-
-    /**
-     * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will
-     * allow to add them automatically.
-     * 
-     * @param listener The listener to check.
-     */
-    void checkListener(Object listener);
-
-    /**
      * Add a feature.
-     * <p>
-     * <b>Caution:</b>
-     * </p>
-     * <p>
-     * At this point the feature may not be completely usable. A call to {@link #prepareFeatures(Services)} is required
-     * for a full usage, as annotated fields with {@link Service} will not be filled.
-     * </p>
      * 
      * @param feature The feature to add.
      */
     void addFeature(Feature feature);
 
     /**
-     * Add features.
-     * <p>
-     * <b>Caution:</b>
-     * </p>
-     * <p>
-     * At this point features may not be completely usable. A call to {@link #prepareFeatures(Services)} is required
-     * for a full usage, as annotated fields with {@link Service} will not be filled.
-     * </p>
-     * 
-     * @param setup The features to read from setup.
-     */
-    void addFeatures(Setup setup);
-
-    /**
      * Add a feature and retrieve it. Read all {@link FeaturableConfig#NODE_FEATURE} nodes.
-     * <p>
-     * <b>Caution:</b>
-     * </p>
-     * <p>
-     * At this point the feature may not be completely usable. A call to {@link #prepareFeatures(Services)} is required
-     * for a full usage, as annotated fields with {@link Service} will not be filled.
-     * </p>
      * 
      * @param <T> The feature type.
      * @param feature The feature to add.
@@ -132,11 +85,12 @@ public interface Featurable extends FeatureProvider
     <T extends Feature> T addFeatureAndGet(T feature);
 
     /**
-     * Check if features are prepared.
+     * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will
+     * allow to add them automatically.
      * 
-     * @return <code>true</code> if features prepared, <code>false</code> else.
+     * @param listener The listener to check.
      */
-    boolean isPrepared();
+    void checkListener(Object listener);
 
     /**
      * Get the associated media.

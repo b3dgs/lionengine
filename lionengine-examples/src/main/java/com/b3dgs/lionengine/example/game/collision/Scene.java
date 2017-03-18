@@ -31,10 +31,8 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRendererModel;
-import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRenderer;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRendererModel;
@@ -85,21 +83,20 @@ class Scene extends Sequence
         camera.setLimits(map);
         handler.add(camera);
 
-        final CameraTracker tracker = new CameraTracker();
+        final CameraTracker tracker = new CameraTracker(services);
         handler.add(tracker);
 
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        final MapTileCollisionRenderer mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
+        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
+        map.addFeatureAndGet(new MapTileCollisionModel(services)).loadCollisions(Medias.create("formulas.xml"),
+                                                                                 Medias.create("collisions.xml"));
+        final MapTileCollisionRenderer mapCollisionRenderer;
+        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel(services));
+        mapCollisionRenderer.createCollisionDraw();
 
-        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
+        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
         mapViewer.addRenderer(new MapTileRendererModel());
         mapViewer.addRenderer(mapCollisionRenderer);
         handler.add(map);
-
-        mapGroup.loadGroups(Medias.create("groups.xml"));
-        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
-        mapCollisionRenderer.createCollisionDraw();
 
         final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);

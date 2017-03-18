@@ -23,7 +23,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.Services;
 
 /**
  * Test the feature model class.
@@ -41,16 +40,23 @@ public class FeatureModelTest
         final Featurable featurable = new FeaturableModel();
         final Transformable transformable = new TransformableModel();
         featurable.addFeature(transformable);
-        feature.prepare(featurable, new Services());
+        feature.prepare(featurable);
 
         Assert.assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
         Assert.assertEquals(transformable, feature.getFeature(Transformable.class));
-        Assert.assertEquals(transformable, feature.getFeatures().iterator().next());
+
+        final Feature feature = featurable.getFeatures().iterator().next();
+        Assert.assertTrue(feature.getClass().getName(),
+                          feature.equals(featurable.getFeature(Identifiable.class)) || feature.equals(transformable));
+
         for (final Class<? extends Feature> type : feature.getFeaturesType())
         {
-            Assert.assertTrue(type == Transformable.class
-                              || type == TransformableModel.class
-                              || type == Recyclable.class);
+            Assert.assertTrue(type.getName(),
+                              type == Identifiable.class
+                                              || type == IdentifiableModel.class
+                                              || type == Transformable.class
+                                              || type == TransformableModel.class
+                                              || type == Recyclable.class);
         }
         Assert.assertTrue(feature.hasFeature(Transformable.class));
     }

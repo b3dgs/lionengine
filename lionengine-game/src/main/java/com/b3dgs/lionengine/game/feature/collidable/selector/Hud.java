@@ -91,7 +91,7 @@ public class Hud extends FeaturableModel
     }
 
     /** Selector reference. */
-    protected final Selector selector = new Selector();
+    protected final Selector selector;
     /** Hud surface. */
     protected final SpriteAnimated surface;
     /** Current active menus. */
@@ -99,20 +99,49 @@ public class Hud extends FeaturableModel
     /** Previous menus. */
     private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<ActionRef, Collection<ActionRef>>();
     /** Handler reference. */
-    private Handler handler;
+    private final Handler handler;
     /** Factory reference. */
-    private Factory factory;
+    private final Factory factory;
 
     /**
      * Create the HUD.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Hud(Setup setup)
+    public Hud(Services services, Setup setup)
     {
-        super(setup);
+        super(services, setup);
 
-        addFeature(new LayerableModel(setup));
+        handler = services.get(Handler.class);
+        factory = services.get(Factory.class);
+
+        selector = services.add(new Selector(services));
+        selector.addListener(new SelectorListener()
+        {
+            @Override
+            public void notifySelectionStarted(Rectangle selection)
+            {
+                clearMenus();
+            }
+
+            @Override
+            public void notifySelectionDone(Rectangle selection)
+            {
+                // Nothing to do
+            }
+        });
+        selector.addListener(new SelectionListener()
+        {
+            @Override
+            public void notifySelected(List<Selectable> selection)
+            {
+                createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection));
+            }
+        });
+        handler.add(selector);
+
+        addFeature(new LayerableModel(services, setup));
 
         final int h;
         final int v;
@@ -251,40 +280,6 @@ public class Hud extends FeaturableModel
     /*
      * FeaturableModel
      */
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        services.add(selector);
-        handler = services.get(Handler.class);
-        factory = services.get(Factory.class);
-
-        selector.addListener(new SelectorListener()
-        {
-            @Override
-            public void notifySelectionStarted(Rectangle selection)
-            {
-                clearMenus();
-            }
-
-            @Override
-            public void notifySelectionDone(Rectangle selection)
-            {
-                // Nothing to do
-            }
-        });
-        selector.addListener(new SelectionListener()
-        {
-            @Override
-            public void notifySelected(List<Selectable> selection)
-            {
-                createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection));
-            }
-        });
-        handler.add(selector);
-    }
 
     @Override
     public void checkListener(Object listener)

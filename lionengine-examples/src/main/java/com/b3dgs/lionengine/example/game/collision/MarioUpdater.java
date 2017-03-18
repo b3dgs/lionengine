@@ -19,9 +19,10 @@ package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
@@ -32,42 +33,42 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListener;
-import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Mario updating implementation.
  */
 class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
-    private static final double GRAVITY = 6.0;
+    private static final double GRAVITY = 5.0;
 
     private final Force movement;
     private final Force jump;
+    private final Context context;
 
-    @Service private Body body;
-    @Service private Transformable transformable;
-    @Service private MarioController controller;
-    @Service private Collidable collidable;
-    @Service private TileCollidable tileCollidable;
-    @Service private Keyboard keyboard;
-
-    @Service private Context context;
+    @FeatureGet private Body body;
+    @FeatureGet private Transformable transformable;
+    @FeatureGet private MarioController controller;
+    @FeatureGet private Collidable collidable;
+    @FeatureGet private TileCollidable tileCollidable;
 
     /**
      * Create updater.
      * 
+     * @param services The services reference.
      * @param model The model reference.
      */
-    public MarioUpdater(MarioModel model)
+    public MarioUpdater(Services services, MarioModel model)
     {
+        context = services.get(Context.class);
+
         movement = model.getMovement();
         jump = model.getJump();
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         collidable.setOrigin(Origin.CENTER_BOTTOM);
         transformable.teleport(80, 32);
@@ -96,9 +97,10 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     @Override
     public void notifyTileCollided(Tile tile, Axis axis)
     {
-        if (Axis.Y == axis)
+        if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
         {
             body.resetGravity();
+            jump.setDirection(Direction.ZERO);
         }
     }
 }

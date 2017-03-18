@@ -79,7 +79,6 @@ public class AttackerModelTest
         UtilAttackable.prepare(object);
         object.addFeature(new IdentifiableModel());
         attacker = UtilAttackable.createAttacker(object, services);
-        object.prepareFeatures(services);
     }
 
     /**

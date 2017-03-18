@@ -51,9 +51,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     /** Allowed actions name. */
     private final List<ActionRef> actions;
     /** Handler reference. */
-    private Handler handler;
+    private final Handler handler;
     /** Tick timer rate. */
-    private double desiredFps;
+    private final double desiredFps;
     /** Production checker. */
     private ProducerChecker checker = new ProducerChecker()
     {
@@ -94,10 +94,15 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
      * {@link #addListener(ProducerListener)} on it.
      * </p>
+     * 
+     * @param services The services reference.
      */
-    public ProducerModel()
+    public ProducerModel(Services services)
     {
         super();
+
+        handler = services.get(Handler.class);
+        desiredFps = services.get(Integer.class).intValue();
 
         actions = Collections.emptyList();
 
@@ -121,11 +126,15 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * {@link #addListener(ProducerListener)} on it.
      * </p>
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public ProducerModel(Setup setup)
+    public ProducerModel(Services services, Setup setup)
     {
         super();
+
+        handler = services.get(Handler.class);
+        desiredFps = services.get(Integer.class).intValue();
 
         actions = ActionsConfig.imports(setup);
 
@@ -254,12 +263,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
-
-        handler = services.get(Handler.class);
-        desiredFps = services.get(Integer.class).intValue();
+        super.prepare(provider);
 
         if (provider instanceof ProducerListener)
         {

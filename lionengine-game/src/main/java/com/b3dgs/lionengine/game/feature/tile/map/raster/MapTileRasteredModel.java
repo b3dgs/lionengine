@@ -27,7 +27,6 @@ import java.util.TreeMap;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -48,7 +47,7 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<Integer, List<SpriteTiled>>();
     /** Map tile reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Rasters smooth flag. */
     private boolean smooth;
 
@@ -60,10 +59,14 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
      * <ul>
      * <li>{@link MapTile}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public MapTileRasteredModel()
+    public MapTileRasteredModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
     }
 
     /**
@@ -124,14 +127,6 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     /*
      * MapTileRastered
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        map = services.get(MapTile.class);
-    }
 
     @Override
     public void loadSheets(Media rasterConfig, boolean smooth)

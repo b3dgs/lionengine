@@ -27,26 +27,28 @@ import com.b3dgs.lionengine.game.Services;
 
 /**
  * Camera tracking implementation.
- * <p>
- * The {@link Services} must provide:
- * </p>
- * <ul>
- * <li>{@link Camera}</li>
- * </ul>
  */
 public class CameraTracker extends FeaturableModel
 {
     /** Followed element (can be <code>null</code>). */
     private Localizable tracked;
-    /** Camera reference. */
-    private Camera camera;
 
     /**
      * Create tracker.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link Camera}</li>
+     * </ul>
+     * 
+     * @param services The services reference.
      */
-    public CameraTracker()
+    public CameraTracker(Services services)
     {
         super();
+
+        final Camera camera = services.get(Camera.class);
 
         addFeature(new RefreshableModel(new Updatable()
         {
@@ -88,17 +90,5 @@ public class CameraTracker extends FeaturableModel
     public void track(Featurable featurable)
     {
         tracked = featurable.getFeature(Transformable.class);
-    }
-
-    /*
-     * Refreshable
-     */
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        camera = services.get(Camera.class);
     }
 }

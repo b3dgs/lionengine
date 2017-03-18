@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
@@ -84,21 +82,17 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTileViewerModel());
-        map.create(Medias.create("map", "level.png"));
-
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
-
         final Camera camera = services.create(Camera.class);
         camera.setView(72, 12, 240, 176, getHeight());
-        camera.setLimits(map);
         camera.setLocation(192, 96);
 
+        final MapTile map = services.create(MapTileGame.class);
+        map.addFeature(new MapTileViewerModel(services));
+        map.create(Medias.create("map", "level.png"));
+        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("map", "groups.xml"));
+        map.addFeatureAndGet(new MapTilePathModel(services)).loadPathfinding(Medias.create("map", "pathfinding.xml"));
+        camera.setLimits(map);
         handler.add(map);
-        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
-        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
         hud.load();
         hud.prepare();
@@ -118,8 +112,8 @@ class Scene extends Sequence
         handler.add(factory.create(GoldMine.GOLD_MINE));
 
         final Peon peon = factory.create(Peon.MEDIA);
-        handler.add(peon);
         peon.getFeature(Pathfindable.class).setLocation(13, 10);
+        handler.add(peon);
     }
 
     @Override

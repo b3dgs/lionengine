@@ -24,12 +24,12 @@ package com.b3dgs.lionengine.game;
 public interface Feature extends FeatureProvider
 {
     /**
-     * Prepare the feature. Must be called before usage if {@link Services} are required.
+     * Prepare the feature. Automatically called when added with {@link Featurable#addFeature(Feature)} or
+     * {@link Featurable#addFeatureAndGet(Feature)}.
      * 
      * @param provider The owner reference.
-     * @param services The services reference.
      */
-    void prepare(FeatureProvider provider, Services services);
+    void prepare(FeatureProvider provider);
 
     /**
      * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will

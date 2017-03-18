@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -51,26 +51,23 @@ class Peon extends FeaturableModel implements ExtractorListener
     private final Pathfindable pathfindable;
     private boolean visible = true;
 
-    @Service private Viewer viewer;
-
     /**
      * Create a peon.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Peon(Setup setup)
+    public Peon(Services services, Setup setup)
     {
         super();
-
-        final Transformable transformable = addFeatureAndGet(new TransformableModel());
 
         addFeature(new LayerableModel(2));
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        surface.setOrigin(Origin.BOTTOM_LEFT);
+        surface.setFrameOffsets(8, 8);
 
-        final Extractor extractor = addFeatureAndGet(new ExtractorModel());
+        final Extractor extractor = addFeatureAndGet(new ExtractorModel(services));
         extractor.setExtractionPerSecond(1.0);
         extractor.setDropOffPerSecond(1.0);
         extractor.setCapacity(5);
@@ -92,7 +89,10 @@ class Peon extends FeaturableModel implements ExtractorListener
             }
         });
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {

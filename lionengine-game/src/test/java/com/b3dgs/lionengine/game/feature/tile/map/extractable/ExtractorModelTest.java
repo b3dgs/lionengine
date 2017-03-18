@@ -83,13 +83,12 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
+        final Extractor extractor = new ExtractorModel(services);
         extractor.setCapacity(5);
         extractor.setExtractionPerSecond(1.0);
         extractor.setDropOffPerSecond(2.0);
-        extractor.prepare(object, services);
+        extractor.prepare(object);
 
         Assert.assertEquals(5, extractor.getExtractionCapacity());
         Assert.assertEquals(1.0, extractor.getExtractionPerSecond(), UtilTests.PRECISION);
@@ -106,14 +105,13 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
+        final Extractor extractor = new ExtractorModel(services);
         extractor.setCapacity(6);
         extractor.setExtractionPerSecond(50.0);
         extractor.setChecker(object);
         extractor.setDropOffPerSecond(100.0);
-        extractor.prepare(object, services);
+        extractor.prepare(object);
 
         final AtomicReference<Enum<?>> goTo = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> startExtract = new AtomicReference<Enum<?>>();
@@ -185,13 +183,12 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(false, true);
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
+        final Extractor extractor = new ExtractorModel(services);
         extractor.setCapacity(1);
         extractor.setExtractionPerSecond(50.0);
         extractor.setDropOffPerSecond(50.0);
-        extractor.prepare(object, services);
+        extractor.prepare(object);
 
         final AtomicReference<Enum<?>> goTo = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> skip = new AtomicReference<Enum<?>>();
@@ -219,13 +216,12 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, false);
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
+        final Extractor extractor = new ExtractorModel(services);
         extractor.setCapacity(1);
         extractor.setExtractionPerSecond(50.0);
         extractor.setDropOffPerSecond(50.0);
-        extractor.prepare(object, services);
+        extractor.prepare(object);
 
         final AtomicReference<Enum<?>> drop = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> skip = new AtomicReference<Enum<?>>();
@@ -253,13 +249,12 @@ public class ExtractorModelTest
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
+        final Extractor extractor = new ExtractorModel(services);
         extractor.setCapacity(2);
         extractor.setExtractionPerSecond(25.0);
         extractor.setDropOffPerSecond(100.0);
-        extractor.prepare(object, services);
+        extractor.prepare(object);
         extractor.addListener(object);
 
         Assert.assertNull(extractor.getResourceLocation());
@@ -328,13 +323,12 @@ public class ExtractorModelTest
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
+        final Extractor extractor = new ExtractorModel(services);
         extractor.setCapacity(6);
         extractor.setExtractionPerSecond(50.0);
         extractor.setDropOffPerSecond(100.0);
-        extractor.prepare(object, services);
+        extractor.prepare(object);
         extractor.addListener(object);
 
         Assert.assertNull(extractor.getResourceLocation());
@@ -373,10 +367,9 @@ public class ExtractorModelTest
     {
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
-        extractor.prepare(object, services);
+        final Extractor extractor = new ExtractorModel(services);
+        extractor.prepare(object);
         extractor.setCapacity(6);
         extractor.setExtractionPerSecond(50.0);
         extractor.setDropOffPerSecond(100.0);
@@ -419,10 +412,9 @@ public class ExtractorModelTest
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf();
         object.addFeature(new TransformableModel());
-        object.prepareFeatures(services);
 
-        final Extractor extractor = new ExtractorModel();
-        extractor.prepare(object, services);
+        final Extractor extractor = new ExtractorModel(services);
+        extractor.prepare(object);
         extractor.checkListener(object);
         extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
@@ -443,7 +435,7 @@ public class ExtractorModelTest
     @Test
     public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
-        final ExtractorModel extractor = new ExtractorModel();
+        final ExtractorModel extractor = new ExtractorModel(services);
         final Field field = extractor.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(extractor, ExtractorState.values()[5]);

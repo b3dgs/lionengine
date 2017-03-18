@@ -57,6 +57,7 @@ public class TileGame extends FeaturableModel implements Tile
     public TileGame(Integer sheet, int number, double x, double y, int width, int height)
     {
         super();
+
         Check.notNull(sheet);
         Check.superiorOrEqual(sheet.intValue(), 0);
         Check.superiorOrEqual(number, 0);

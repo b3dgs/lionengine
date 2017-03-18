@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Services;
 
 /**
  * Feature model implementation.
@@ -46,7 +45,7 @@ public class FeatureModel implements Feature
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         this.provider = provider;
 

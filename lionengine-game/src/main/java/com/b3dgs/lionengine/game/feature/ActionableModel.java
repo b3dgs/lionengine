@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 public class ActionableModel extends FeatureModel implements Actionable
 {
     /** Cursor reference. */
-    private Cursor cursor;
+    private final Cursor cursor;
     /** Rectangle button area. */
     private final Rectangle button;
     /** Action description. */
@@ -57,11 +57,15 @@ public class ActionableModel extends FeatureModel implements Actionable
      * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public ActionableModel(Setup setup)
+    public ActionableModel(Services services, Setup setup)
     {
         super();
+
+        cursor = services.get(Cursor.class);
+
         final ActionConfig config = ActionConfig.imports(setup);
         button = new Rectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
@@ -72,11 +76,9 @@ public class ActionableModel extends FeatureModel implements Actionable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
-
-        cursor = services.get(Cursor.class);
+        super.prepare(provider);
 
         if (provider instanceof Action)
         {

@@ -85,8 +85,8 @@ public class CollisionCategoryConfigTest
 
         final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTileGroupModel());
-        mapCollision = new MapTileCollisionModel();
-        mapCollision.prepare(map, services);
+        mapCollision = new MapTileCollisionModel(services);
+        mapCollision.prepare(map);
     }
 
     /**

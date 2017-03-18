@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -136,9 +135,9 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     /** Existing group links. */
     private final Collection<GroupTransition> groupLinks = new HashSet<GroupTransition>();
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Map tile group. */
-    private MapTileGroup mapGroup;
+    private final MapTileGroup mapGroup;
     /** Transitive group handler. */
     private TransitiveGroup transitiveGroup;
 
@@ -156,10 +155,15 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
      * <ul>
      * <li>{@link MapTileGroup}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public MapTileTransitionModel()
+    public MapTileTransitionModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
     }
 
     /**
@@ -392,15 +396,6 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     /*
      * MapTileTransition
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-    }
 
     @Override
     public void loadTransitions(Media transitionsConfig)

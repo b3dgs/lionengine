@@ -48,7 +48,9 @@ public final class ObjectsTester extends PropertyTester
     {
         try
         {
-            return media.getFile().isFile() && new Xml(media).getNodeName().equals(FeaturableConfig.NODE_FEATURABLE);
+            return media != null
+                   && media.getFile().isFile()
+                   && new Xml(media).getNodeName().equals(FeaturableConfig.NODE_FEATURABLE);
         }
         catch (final LionEngineException exception)
         {

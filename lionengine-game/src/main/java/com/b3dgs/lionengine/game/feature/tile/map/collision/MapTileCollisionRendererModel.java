@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -145,9 +144,9 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
     }
 
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Map collision reference. */
-    private MapTileCollision mapCollision;
+    private final MapTileCollision mapCollision;
     /** Collision draw cache. */
     private Map<CollisionFormula, ImageBuffer> collisionCache;
 
@@ -160,10 +159,15 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      * <li>{@link MapTile}</li>
      * <li>{@link MapTileCollision}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public MapTileCollisionRendererModel()
+    public MapTileCollisionRendererModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
+        mapCollision = map.getFeature(MapTileCollision.class);
     }
 
     /**
@@ -190,15 +194,6 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
     /*
      * MapTileCollisionRenderer
      */
-
-    @Override
-    public void prepare(FeatureProvider provider, Services services)
-    {
-        super.prepare(provider, services);
-
-        map = services.get(MapTile.class);
-        mapCollision = map.getFeature(MapTileCollision.class);
-    }
 
     @Override
     public void createCollisionDraw()

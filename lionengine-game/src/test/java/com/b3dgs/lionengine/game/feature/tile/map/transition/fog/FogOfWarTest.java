@@ -71,9 +71,9 @@ public class FogOfWarTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    private final FovableModel fovable = new FovableModel();
     private final Services services = new Services();
-    private final MapTile map = UtilMap.createMap(5);
+    private final MapTile map = services.add(UtilMap.createMap(5));
+    private final FovableModel fovable = new FovableModel(services);
     private final FogOfWar fog = new FogOfWar();
 
     /**
@@ -96,7 +96,7 @@ public class FogOfWarTest
         final FeaturableModel object = new FeaturableModel();
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(3, 3);
-        fovable.prepare(object, services);
+        fovable.prepare(object);
         fovable.setFov(1);
 
         Medias.setLoadFromJar(MapTileFog.class);

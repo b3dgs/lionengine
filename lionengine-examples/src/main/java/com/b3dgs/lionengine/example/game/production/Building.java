@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -46,19 +46,21 @@ class Building extends FeaturableModel implements ProducibleListener
 
     private final Transformable transformable;
     private final SpriteAnimated surface;
+    private final Viewer viewer;
 
     private boolean visible;
-
-    @Service private Viewer viewer;
 
     /**
      * Create a building.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Building(Setup setup)
+    public Building(Services services, Setup setup)
     {
         super();
+
+        viewer = services.get(Viewer.class);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
 

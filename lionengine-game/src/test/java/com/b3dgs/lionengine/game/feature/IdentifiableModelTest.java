@@ -25,8 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -56,8 +56,9 @@ public class IdentifiableModelTest
         final Collection<Identifiable> identifiables = new ArrayList<Identifiable>();
         for (int i = 0; i < 10; i++)
         {
-            final Identifiable identifiable = new IdentifiableModel();
-            identifiable.prepare(new FeaturableModel(), new Services());
+            final Featurable featurable = new FeaturableModel();
+            final Identifiable identifiable = featurable.getFeature(Identifiable.class);
+            identifiable.prepare(featurable);
             identifiables.add(identifiable);
 
             Assert.assertEquals(Integer.valueOf(i), identifiable.getId());
@@ -72,7 +73,7 @@ public class IdentifiableModelTest
         }
 
         final Identifiable identifiable = new IdentifiableModel();
-        identifiable.prepare(new FeaturableModel(), new Services());
+        identifiable.prepare(new FeaturableModel());
         Assert.assertEquals(Integer.valueOf(0), identifiable.getId());
 
         identifiable.destroy();

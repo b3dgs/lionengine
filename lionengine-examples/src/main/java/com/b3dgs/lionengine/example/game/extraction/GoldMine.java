@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -45,38 +44,30 @@ class GoldMine extends FeaturableModel
     /** Gold mine media reference. */
     public static final Media GOLD_MINE = Medias.create("GoldMine.xml");
 
-    private final Pathfindable pathfindable;
-
-    @Service private Viewer viewer;
-
     /**
      * Create a building.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public GoldMine(Setup setup)
+    public GoldMine(Services services, Setup setup)
     {
         super();
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+        pathfindable.setLocation(21, 10);
 
         final Sprite surface = Drawable.loadSprite(setup.getSurface());
-        surface.setOrigin(Origin.TOP_LEFT);
+        surface.setOrigin(Origin.BOTTOM_LEFT);
 
-        final Extractable extractable = addFeatureAndGet(new ExtractableModel());
+        final Extractable extractable = addFeatureAndGet(new ExtractableModel(services));
         extractable.setResourcesQuantity(100);
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new LayerableModel(1));
         addFeature(new RefreshableModel(extrp -> surface.setLocation(viewer, transformable)));
         addFeature(new DisplayableModel(surface::render));
-    }
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        pathfindable.setLocation(21, 14);
     }
 }

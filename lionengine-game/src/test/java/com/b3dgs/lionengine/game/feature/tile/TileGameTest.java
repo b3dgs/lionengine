@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollision;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel;
 import com.b3dgs.lionengine.util.UtilTests;
@@ -86,7 +86,6 @@ public class TileGameTest
         final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
         final TileCollision feature = new TileCollisionModel(tile);
         tile.addFeature(feature);
-        tile.prepareFeatures(new Services());
 
         Assert.assertEquals(Integer.valueOf(0), tile.getSheet());
         Assert.assertEquals(1, tile.getNumber());
@@ -100,8 +99,9 @@ public class TileGameTest
         Assert.assertEquals(1, tile.getInTileHeight());
         Assert.assertTrue(tile.hasFeature(TileCollision.class));
         Assert.assertFalse(tile.hasFeature(MockFeature.class));
-        Assert.assertEquals(tile.getFeature(Feature.class), feature);
-        Assert.assertEquals(tile.getFeatures().iterator().next(), feature);
+
+        final Class<?> next = tile.getFeature(Feature.class).getClass();
+        Assert.assertTrue(next.getName(), next.equals(feature.getClass()) || next.isAssignableFrom(Identifiable.class));
     }
 
     /**

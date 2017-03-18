@@ -83,7 +83,7 @@ public class SceneRasterable extends Sequence
         featurable.addFeature(new AnimatableModel(surface));
 
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
-        final Rasterable rasterable = new RasterableModel(setup);
+        final Rasterable rasterable = new RasterableModel(services, setup);
         rasterable.setOrigin(Origin.MIDDLE);
         featurable.addFeature(rasterable);
         featurable.addFeature(new RefreshableModel(new Updatable()

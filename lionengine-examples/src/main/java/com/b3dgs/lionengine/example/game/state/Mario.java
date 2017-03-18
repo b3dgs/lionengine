@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -54,40 +53,41 @@ class Mario extends FeaturableModel
     static final int GROUND = 32;
     private static final double GRAVITY = 6.0;
 
-    private final Body body = addFeatureAndGet(new BodyModel());
-
     private final StateFactory factory = new StateFactory();
     private final StateHandler handler = new StateHandler(factory);
     private final Force movement = new Force();
     private final Force jump = new Force();
-    private final Setup setup;
     private final SpriteAnimated surface;
-
-    @Service private Context context;
-    @Service private Camera camera;
 
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Mario(Setup setup)
+    public Mario(Services services, Setup setup)
     {
         super();
 
-        this.setup = setup;
-
         final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(160, GROUND);
-
-        body.setVectors(movement, jump);
-        body.setGravity(GRAVITY);
 
         final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
+
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this, setup);
+        handler.changeState(MarioState.IDLE);
+
+        final Context context = services.get(Context.class);
+        final Camera camera = services.get(Camera.class);
+
+        final Body body = addFeatureAndGet(new BodyModel());
+        body.setVectors(movement, jump);
+        body.setGravity(GRAVITY);
+        body.setDesiredFps(context.getConfig().getSource().getRate());
 
         addFeature(new RefreshableModel(extrp ->
         {
@@ -108,17 +108,6 @@ class Mario extends FeaturableModel
         }));
 
         addFeature(new DisplayableModel(surface::render));
-    }
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        body.setDesiredFps(context.getConfig().getSource().getRate());
-
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this, setup);
-        handler.changeState(MarioState.IDLE);
     }
 
     /**

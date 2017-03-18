@@ -89,8 +89,8 @@ class Scene extends Sequence
         handler.add(camera);
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
+        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
+        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel(services));
 
         handler.add(map);
 
@@ -98,16 +98,16 @@ class Scene extends Sequence
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollisionRenderer.createCollisionDraw();
 
-        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel());
+        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
         mapViewer.addRenderer(new MapTileRendererModel());
         mapViewer.addRenderer(mapCollisionRenderer);
-        mapViewer.prepare(map, services);
+        mapViewer.prepare(map);
 
         final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
 
-        final CameraTracker tracker = new CameraTracker();
+        final CameraTracker tracker = new CameraTracker(services);
         tracker.track(mario);
         handler.add(tracker);
 

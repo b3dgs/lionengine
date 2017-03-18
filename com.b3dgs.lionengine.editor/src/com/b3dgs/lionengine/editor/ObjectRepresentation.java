@@ -21,17 +21,16 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
@@ -67,9 +66,8 @@ public class ObjectRepresentation extends FeaturableModel
 
     /** Rectangle. */
     private final Rectangle rectangle = new Rectangle();
-
-    @Service private Camera camera;
-    @Service private MapTile map;
+    /** Camera reference. */
+    private final Camera camera = WorldModel.INSTANCE.getCamera();
 
     /**
      * Create the object.

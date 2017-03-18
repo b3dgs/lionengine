@@ -33,7 +33,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     /** Resources count. */
     private final Alterable resources = new Alterable(Integer.MAX_VALUE);
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map;
     /** Transformable model. */
     private Transformable transformable;
     /** Resource type. */
@@ -53,10 +53,14 @@ public class ExtractableModel extends FeatureModel implements Extractable
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
+     * @param services The services reference.
      */
-    public ExtractableModel()
+    public ExtractableModel(Services services)
     {
         super();
+
+        map = services.get(MapTile.class);
     }
 
     /*
@@ -64,12 +68,11 @@ public class ExtractableModel extends FeatureModel implements Extractable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         transformable = provider.getFeature(Transformable.class);
-        map = services.get(MapTile.class);
     }
 
     @Override

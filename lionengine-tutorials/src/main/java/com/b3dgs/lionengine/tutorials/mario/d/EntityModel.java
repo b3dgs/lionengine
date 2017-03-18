@@ -23,8 +23,7 @@ import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.body.Body;
@@ -43,10 +42,10 @@ class EntityModel extends FeatureModel
     private final SpriteAnimated surface;
     private final Setup setup;
 
-    @Service private Body body;
-    @Service private Collidable collidable;
+    @FeatureGet private Body body;
+    @FeatureGet private Collidable collidable;
 
-    @Service private Context context;
+    @FeatureGet private Context context;
 
     /**
      * Constructor.
@@ -66,9 +65,9 @@ class EntityModel extends FeatureModel
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         body.setVectors(movement, jump);
         body.setGravity(GRAVITY);

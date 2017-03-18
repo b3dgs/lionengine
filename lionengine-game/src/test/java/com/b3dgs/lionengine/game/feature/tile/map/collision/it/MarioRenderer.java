@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision.it;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.TextGame;
@@ -43,18 +43,22 @@ class MarioRenderer extends FeatureModel implements Displayable
     private final TextGame text = new TextGame("Arial", 12, TextStyle.NORMAL);
     private final SpriteAnimated surface;
 
-    @Service private Collidable collidable;
-    @Service private Transformable transformable;
-    @Service private Camera camera;
+    private final Viewer viewer;
+
+    @FeatureGet private Collidable collidable;
+    @FeatureGet private Transformable transformable;
 
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public MarioRenderer(Setup setup)
+    public MarioRenderer(Services services, Setup setup)
     {
         super();
+
+        viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
@@ -66,9 +70,9 @@ class MarioRenderer extends FeatureModel implements Displayable
     }
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
+        super.prepare(provider);
 
         collidable.setCollisionVisibility(true);
     }
@@ -76,10 +80,10 @@ class MarioRenderer extends FeatureModel implements Displayable
     @Override
     public void render(Graphic g)
     {
-        surface.setLocation(camera, transformable);
+        surface.setLocation(viewer, transformable);
         surface.render(g);
 
-        text.update(camera);
+        text.update(viewer);
         text.setLocation((int) transformable.getX(), (int) transformable.getY());
         g.setColor(ColorRgba.BLACK);
         text.draw(g, transformable, 0, 28, Align.CENTER, "Mario");

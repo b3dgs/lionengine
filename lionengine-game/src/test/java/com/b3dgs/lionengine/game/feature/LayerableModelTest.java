@@ -91,7 +91,7 @@ public class LayerableModelTest
         services.add(new ComponentDisplayable());
 
         final Featurable featurable = new FeaturableModel();
-        layerable.prepare(featurable, services);
+        layerable.prepare(featurable);
 
         Assert.assertEquals(0, layerable.getLayerRefresh().intValue());
         Assert.assertEquals(0, layerable.getLayerDisplay().intValue());

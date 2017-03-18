@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 
 /**
@@ -74,7 +73,6 @@ public class HandlablesImplTest
     public void prepare()
     {
         object.addFeature(new IdentifiableModel());
-        object.prepareFeatures(new Services());
     }
 
     /**
@@ -122,7 +120,6 @@ public class HandlablesImplTest
     {
         final Mirrorable mirrorable = new MirrorableModel();
         object.addFeatureAndGet(mirrorable);
-        object.prepareFeatures(new Services());
         featurables.add(object);
 
         Assert.assertEquals(mirrorable, featurables.get(Mirrorable.class).iterator().next());
@@ -143,7 +140,6 @@ public class HandlablesImplTest
         final Featurable complex = new ObjectComplex();
         complex.addFeature(new MirrorableModel());
         complex.addFeature(new TransformableModel(setup));
-        complex.prepareFeatures(new Services());
         featurables.add(complex);
 
         int i = 0;
@@ -163,7 +159,6 @@ public class HandlablesImplTest
     {
         final Featurable inheritance = new ObjectComplex();
         inheritance.addFeature(new FeatureLevel2());
-        inheritance.prepareFeatures(new Services());
         featurables.add(inheritance);
 
         int i = 0;

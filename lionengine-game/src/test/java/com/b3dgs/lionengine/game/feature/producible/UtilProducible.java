@@ -125,7 +125,6 @@ public class UtilProducible
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new TransformableModel());
         featurable.addFeature(new ProducibleModel(setup));
-        featurable.prepareFeatures(services);
 
         return featurable;
     }

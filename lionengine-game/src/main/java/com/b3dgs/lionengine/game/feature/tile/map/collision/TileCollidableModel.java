@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
@@ -38,14 +37,12 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
 {
     /** Launcher listeners. */
     private final Collection<TileCollidableListener> listeners = new HashSet<TileCollidableListener>();
-    /** Configurer reference. */
-    private final Configurer configurer;
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The collisions used. */
-    private Collection<CollisionCategory> categories;
+    private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
-    private MapTileCollision map;
+    private final MapTileCollision map;
     /** Collision enabled. */
     private boolean enabled;
 
@@ -71,13 +68,16 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * {@link #addListener(TileCollidableListener)} on it.
      * </p>
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public TileCollidableModel(Setup setup)
+    public TileCollidableModel(Services services, Setup setup)
     {
         super();
 
-        configurer = setup;
+        map = services.get(MapTile.class).getFeature(MapTileCollision.class);
+        categories = CollisionCategoryConfig.imports(setup, map);
+
         recycle();
     }
 
@@ -123,11 +123,9 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
         transformable = provider.getFeature(Transformable.class);
-        map = services.get(MapTile.class).getFeature(MapTileCollision.class);
-        categories = CollisionCategoryConfig.imports(configurer, map);
 
         if (provider instanceof TileCollidableListener)
         {

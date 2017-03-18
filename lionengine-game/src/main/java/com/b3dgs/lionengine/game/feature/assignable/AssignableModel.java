@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class AssignableModel extends FeatureModel implements Assignable
 {
     /** Cursor reference. */
-    private Cursor cursor;
+    private final Cursor cursor;
     /** Viewer reference. */
-    private Viewer viewer;
+    private final Viewer viewer;
     /** Mouse click number to assign action. */
     private int clickAssign;
     /** Assign used. */
@@ -51,10 +51,15 @@ public class AssignableModel extends FeatureModel implements Assignable
      * <p>
      * If the {@link Featurable} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
      * </p>
+     * 
+     * @param services The services reference.
      */
-    public AssignableModel()
+    public AssignableModel(Services services)
     {
         super();
+
+        cursor = services.get(Cursor.class);
+        viewer = services.get(Viewer.class);
     }
 
     /*
@@ -62,12 +67,9 @@ public class AssignableModel extends FeatureModel implements Assignable
      */
 
     @Override
-    public void prepare(FeatureProvider provider, Services services)
+    public void prepare(FeatureProvider provider)
     {
-        super.prepare(provider, services);
-
-        cursor = services.get(Cursor.class);
-        viewer = services.get(Viewer.class);
+        super.prepare(provider);
 
         if (provider instanceof Assign)
         {

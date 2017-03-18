@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -56,35 +55,46 @@ class Ship extends FeaturableModel implements CollidableListener
     private final double speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     private final SpriteAnimated sprite;
+    private final Weapon weapon;
+    private final Collidable collidable;
 
-    private Weapon weapon;
     private Localizable target;
     private double location;
     private int x = 64;
     private int y = 192;
 
-    @Service private Collidable collidable;
-
-    @Service private Factory factory;
-    @Service private Handler handler;
-    @Service private Viewer viewer;
-
     /**
      * Constructor.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Ship(Setup setup)
+    public Ship(Services services, Setup setup)
     {
         super();
 
         addFeature(new LayerableModel(1));
-        addFeature(new CollidableModel(setup));
 
         final FramesConfig config = FramesConfig.imports(setup);
         sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
+
+        transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
+
+        collidable = addFeatureAndGet(new CollidableModel(services, setup));
+        collidable.setOrigin(Origin.MIDDLE);
+        collidable.setGroup(group++);
+
+        final Factory factory = services.get(Factory.class);
+        weapon = factory.create(Weapon.PULSE_CANNON);
+        weapon.setOffset(6, -6);
+        weapon.setOwner(this);
+
+        final Handler handler = services.get(Handler.class);
+        handler.add(weapon);
+
+        final Viewer viewer = services.get(Viewer.class);
 
         addFeature(new RefreshableModel(extrp ->
         {
@@ -142,22 +152,6 @@ class Ship extends FeaturableModel implements CollidableListener
         {
             sprite.rotate(angle + 180);
         }
-    }
-
-    @Override
-    public void prepareFeatures(Services services)
-    {
-        super.prepareFeatures(services);
-
-        transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
-
-        collidable.setOrigin(Origin.MIDDLE);
-        collidable.setGroup(group++);
-
-        weapon = factory.create(Weapon.PULSE_CANNON);
-        weapon.setOffset(6, -6);
-        handler.add(weapon);
-        weapon.setOwner(this);
     }
 
     @Override

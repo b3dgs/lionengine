@@ -49,13 +49,13 @@ public class ViewerMock implements Viewer
     @Override
     public int getWidth()
     {
-        return 0;
+        return 320;
     }
 
     @Override
     public int getHeight()
     {
-        return 0;
+        return 240;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ViewerMock implements Viewer
     @Override
     public int getScreenHeight()
     {
-        return 0;
+        return 240;
     }
 
     @Override

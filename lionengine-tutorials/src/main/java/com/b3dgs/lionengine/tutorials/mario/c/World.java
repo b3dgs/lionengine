@@ -62,10 +62,10 @@ class World extends WorldGame
 
         camera.setIntervals(16, 0);
 
-        map.addFeature(new MapTilePersisterModel());
-        map.addFeature(new MapTileViewerModel());
+        map.addFeature(new MapTilePersisterModel(services));
+        map.addFeature(new MapTileViewerModel(services));
         map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTileCollisionModel());
+        map.addFeature(new MapTileCollisionModel(services));
     }
 
     @Override
@@ -94,7 +94,7 @@ class World extends WorldGame
         final Mario mario = factory.create(Mario.MEDIA);
         handler.add(mario);
 
-        final CameraTracker tracker = new CameraTracker();
+        final CameraTracker tracker = new CameraTracker(services);
         camera.setLimits(map);
         tracker.track(mario);
         handler.add(tracker);
