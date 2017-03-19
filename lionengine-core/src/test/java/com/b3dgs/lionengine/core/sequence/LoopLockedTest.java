@@ -233,6 +233,6 @@ public class LoopLockedTest
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
         Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() < expectedRate);
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > expectedRate - 1.0);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > 1.0);
     }
 }

@@ -24,10 +24,10 @@
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.android.ToolsAndroid"/>
     <!-- Game -->
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel" lines="240"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel" lines="246"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel" lines="92, 147"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="227"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="240, 245"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="221"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel" lines="234, 239"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathFinderImpl" lines="318"/>
     <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.FeaturableModel" lines="228"/>
     <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.feature.IdentifiableModel" lines="60"/>
