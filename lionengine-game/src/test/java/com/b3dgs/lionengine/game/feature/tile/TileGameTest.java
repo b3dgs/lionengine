@@ -101,7 +101,7 @@ public class TileGameTest
         Assert.assertFalse(tile.hasFeature(MockFeature.class));
 
         final Class<?> next = tile.getFeature(Feature.class).getClass();
-        Assert.assertTrue(next.getName(), next.equals(feature.getClass()) || next.isAssignableFrom(Identifiable.class));
+        Assert.assertTrue(next.getName(), next.equals(feature.getClass()) || Identifiable.class.isAssignableFrom(next));
     }
 
     /**
