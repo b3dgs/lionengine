@@ -17,17 +17,6 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseWheelListener;
-import org.eclipse.swt.widgets.Display;
-
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.io.swt.EventAction;
 import com.b3dgs.lionengine.io.swt.Mouse;
@@ -35,61 +24,23 @@ import com.b3dgs.lionengine.io.swt.Mouse;
 /**
  * Mouse input implementation.
  */
-public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, MouseWheelListener
+public final class MouseSwt implements Mouse
 {
-    /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
-    /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
-    /** Clicks flags. */
-    private final boolean[] clicks;
-    /** Clicked flags. */
-    private final boolean[] clicked;
+    /** Move click. */
+    private final MouseClickSwt clicker = new MouseClickSwt();
+    /** Mouse move. */
+    private final MouseMoveSwt mover = new MouseMoveSwt();
     /** Screen horizontal ratio. */
     private double xRatio;
     /** Screen vertical ratio. */
     private double yRatio;
-    /** On screen monitor location x. */
-    private int x;
-    /** On screen monitor location y. */
-    private int y;
-    /** On local window location x. */
-    private int wx;
-    /** On local window location y. */
-    private int wy;
-    /** Move value x. */
-    private int mx;
-    /** Move value y. */
-    private int my;
-    /** Old location x. */
-    private int oldX;
-    /** Old location y. */
-    private int oldY;
-    /** Last click number. */
-    private int lastClick;
-    /** Moved flag. */
-    private boolean moved;
 
     /**
      * Constructor.
-     * 
-     * @param display The display reference.
      */
-    public MouseSwt(Display display)
+    public MouseSwt()
     {
         super();
-        final int mouseButtons = 9;
-        clicks = new boolean[mouseButtons];
-        clicked = new boolean[mouseButtons];
-        display.getCursorLocation();
-        x = 0;
-        y = 0;
-        wx = 0;
-        wy = 0;
-        mx = 0;
-        my = 0;
-        oldX = x;
-        oldY = y;
     }
 
     /**
@@ -104,20 +55,23 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
     }
 
     /**
-     * Update coordinate from event.
+     * Get the click handler.
      * 
-     * @param event event consumed.
+     * @return The click handler.
      */
-    private void updateCoord(MouseEvent event)
+    public MouseClickSwt getClicker()
     {
-        oldX = x;
-        oldY = y;
-        x = event.x;
-        y = event.y;
-        wx = event.x;
-        wy = event.y;
-        mx = x - oldX;
-        my = y - oldY;
+        return clicker;
+    }
+
+    /**
+     * Get the movement handler.
+     * 
+     * @return The movement handler.
+     */
+    public MouseMoveSwt getMover()
+    {
+        return mover;
     }
 
     /*
@@ -127,47 +81,25 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
     @Override
     public void addActionPressed(int click, EventAction action)
     {
-        final List<EventAction> list;
-        final Integer key = Integer.valueOf(click);
-        if (actionsPressed.get(key) == null)
-        {
-            list = new ArrayList<>();
-            actionsPressed.put(key, list);
-        }
-        else
-        {
-            list = actionsPressed.get(key);
-        }
-        list.add(action);
+        clicker.addActionPressed(click, action);
     }
 
     @Override
     public void addActionReleased(int click, EventAction action)
     {
-        final Integer key = Integer.valueOf(click);
-        final List<EventAction> list;
-        if (actionsReleased.get(key) == null)
-        {
-            list = new ArrayList<>();
-            actionsReleased.put(key, list);
-        }
-        else
-        {
-            list = actionsReleased.get(key);
-        }
-        list.add(action);
+        clicker.addActionReleased(click, action);
     }
 
     @Override
     public int getOnScreenX()
     {
-        return x;
+        return mover.getX();
     }
 
     @Override
     public int getOnScreenY()
     {
-        return y;
+        return mover.getY();
     }
 
     /*
@@ -177,125 +109,49 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
     @Override
     public int getX()
     {
-        return (int) (wx / xRatio);
+        return (int) (mover.getWx() / xRatio);
     }
 
     @Override
     public int getY()
     {
-        return (int) (wy / yRatio);
+        return (int) (mover.getWy() / yRatio);
     }
 
     @Override
     public int getMoveX()
     {
-        return mx;
+        return mover.getMx();
     }
 
     @Override
     public int getMoveY()
     {
-        return my;
+        return mover.getMy();
     }
 
     @Override
     public int getClick()
     {
-        return lastClick;
+        return clicker.getClick();
     }
 
     @Override
     public boolean hasClicked(int click)
     {
-        return clicks[click];
+        return clicker.hasClicked(click);
     }
 
     @Override
     public boolean hasClickedOnce(int click)
     {
-        if (clicks[click] && !clicked[click])
-        {
-            clicked[click] = true;
-            return true;
-        }
-        return false;
+        return clicker.hasClickedOnce(click);
     }
 
     @Override
     public boolean hasMoved()
     {
-        if (moved)
-        {
-            moved = false;
-            return true;
-        }
-        return false;
-    }
-
-    /*
-     * MouseListener
-     */
-
-    @Override
-    public void mouseScrolled(MouseEvent event)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseDoubleClick(MouseEvent event)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseDown(MouseEvent event)
-    {
-        lastClick = event.button;
-        if (lastClick < clicks.length)
-        {
-            clicks[lastClick] = true;
-        }
-
-        final Integer key = Integer.valueOf(lastClick);
-        if (actionsPressed.containsKey(key))
-        {
-            final List<EventAction> actions = actionsPressed.get(key);
-            for (final EventAction current : actions)
-            {
-                current.action();
-            }
-        }
-    }
-
-    @Override
-    public void mouseUp(MouseEvent event)
-    {
-        final Integer key = Integer.valueOf(lastClick);
-        lastClick = 0;
-
-        final int button = event.button;
-        if (button < clicks.length)
-        {
-            clicks[button] = false;
-            clicked[button] = false;
-        }
-
-        if (actionsPressed.containsKey(key))
-        {
-            final List<EventAction> actions = actionsReleased.get(key);
-            for (final EventAction current : actions)
-            {
-                current.action();
-            }
-        }
-    }
-
-    @Override
-    public void mouseMove(MouseEvent event)
-    {
-        moved = true;
-        updateCoord(event);
+        return mover.hasMoved();
     }
 
     /*
@@ -305,9 +161,6 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
     @Override
     public void update(double extrp)
     {
-        mx = x - oldX;
-        my = y - oldY;
-        oldX = x;
-        oldY = y;
+        mover.update();
     }
 }

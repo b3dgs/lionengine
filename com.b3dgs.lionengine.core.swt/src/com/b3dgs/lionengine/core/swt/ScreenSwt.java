@@ -145,7 +145,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
      */
     private void addDeviceMouse()
     {
-        final MouseSwt mouse = new MouseSwt(display);
+        final MouseSwt mouse = new MouseSwt();
         addMouseListener(mouse);
         devices.put(Mouse.class, mouse);
         devices.put(InputDevicePointer.class, mouse);
@@ -177,9 +177,9 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
      */
     private void addMouseListener(MouseSwt mouse)
     {
-        canvas.addMouseListener(mouse);
-        canvas.addMouseMoveListener(mouse);
-        canvas.addMouseWheelListener(mouse);
+        canvas.addMouseListener(mouse.getClicker());
+        canvas.addMouseMoveListener(mouse.getMover());
+        canvas.addMouseWheelListener(mouse.getClicker());
         canvas.forceFocus();
     }
 

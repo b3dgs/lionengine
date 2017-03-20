@@ -46,7 +46,7 @@ public class MouseSwtTest
         final Config config = new Config(resolution, 32, false);
         config.setSource(resolution);
 
-        final MouseSwt mouse = new MouseSwt(ToolsSwt.getDisplay());
+        final MouseSwt mouse = new MouseSwt();
         mouse.setConfig(config);
 
         return mouse;
@@ -81,23 +81,25 @@ public class MouseSwtTest
         final MouseSwt mouse = createMouse();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
 
+        final MouseClickSwt click = mouse.getClicker();
+
         Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
-        mouse.mouseDown(createEvent(shell, Mouse.LEFT, 0, 0));
+        click.mouseDown(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
-        mouse.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
+        click.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
 
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mouseDown(createEvent(shell, Mouse.RIGHT, 0, 0));
+        click.mouseDown(createEvent(shell, Mouse.RIGHT, 0, 0));
         Assert.assertTrue(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mouseUp(createEvent(shell, Mouse.RIGHT, 0, 0));
+        click.mouseUp(createEvent(shell, Mouse.RIGHT, 0, 0));
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
 
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
-        mouse.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
+        click.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertTrue(mouse.hasClickedOnce(Mouse.MIDDLE));
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
-        mouse.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
+        click.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
 
         shell.dispose();
@@ -113,9 +115,11 @@ public class MouseSwtTest
         final MouseSwt mouse = createMouse();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
 
-        mouse.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
+        final MouseClickSwt click = mouse.getClicker();
+
+        click.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertEquals(Mouse.MIDDLE, mouse.getClick());
-        mouse.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
+        click.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertNotEquals(Mouse.MIDDLE, mouse.getClick());
 
         shell.dispose();
@@ -131,11 +135,13 @@ public class MouseSwtTest
         final MouseSwt mouse = createMouse();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
 
-        mouse.mouseMove(createEvent(shell, Mouse.LEFT, 0, 0));
+        final MouseMoveSwt move = mouse.getMover();
+
+        move.mouseMove(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertEquals(0, mouse.getX());
         Assert.assertEquals(0, mouse.getY());
 
-        mouse.mouseMove(createEvent(shell, Mouse.LEFT, 10, 20));
+        move.mouseMove(createEvent(shell, Mouse.LEFT, 10, 20));
         Assert.assertEquals(10, mouse.getX());
         Assert.assertEquals(20, mouse.getY());
 
@@ -150,10 +156,11 @@ public class MouseSwtTest
     {
         ScreenSwtTest.checkMultipleDisplaySupport();
         final MouseSwt mouse = createMouse();
+        final MouseMoveSwt move = mouse.getMover();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
 
-        mouse.mouseMove(createEvent(shell, 0, 0, 0));
-        mouse.mouseMove(createEvent(shell, 0, 0, 0));
+        move.mouseMove(createEvent(shell, 0, 0, 0));
+        move.mouseMove(createEvent(shell, 0, 0, 0));
         mouse.update(1.0);
         Assert.assertEquals(0, mouse.getMoveX());
         Assert.assertEquals(0, mouse.getMoveY());
@@ -210,20 +217,22 @@ public class MouseSwtTest
         });
         Assert.assertFalse(left.get());
 
-        mouse.mouseDown(createEvent(shell, Mouse.LEFT, 0, 0));
+        final MouseClickSwt click = mouse.getClicker();
+
+        click.mouseDown(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertTrue(left.get());
 
-        mouse.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
+        click.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertFalse(left.get());
 
-        mouse.mouseDown(createEvent(shell, 10, 0, 0));
+        click.mouseDown(createEvent(shell, 10, 0, 0));
         Assert.assertFalse(left.get());
 
-        mouse.mouseUp(createEvent(shell, 10, 0, 0));
+        click.mouseUp(createEvent(shell, 10, 0, 0));
         Assert.assertFalse(left.get());
 
-        mouse.mouseScrolled(createEvent(shell, Mouse.LEFT, 0, 0));
-        mouse.mouseDoubleClick(createEvent(shell, Mouse.LEFT, 0, 0));
+        click.mouseScrolled(createEvent(shell, Mouse.LEFT, 0, 0));
+        click.mouseDoubleClick(createEvent(shell, Mouse.LEFT, 0, 0));
 
         shell.dispose();
     }
