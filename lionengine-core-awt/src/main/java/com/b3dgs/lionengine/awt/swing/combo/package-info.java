@@ -17,6 +17,6 @@
  */
 
 /**
- * Swing base package.
+ * Disactivable combo box implementations package.
  */
-package com.b3dgs.lionengine.awt.swing;
+package com.b3dgs.lionengine.awt.swing.combo;
