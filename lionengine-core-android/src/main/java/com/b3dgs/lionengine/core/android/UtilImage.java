@@ -200,7 +200,7 @@ public final class UtilImage
      */
     static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        final Bitmap bitmap = (Bitmap) image.getSurface();
+        final Bitmap bitmap = image.getSurface();
         return new ImageBufferAndroid(ToolsAndroid.getRasterBuffer(bitmap, fr, fg, fb, er, eg, eb, refSize));
     }
 

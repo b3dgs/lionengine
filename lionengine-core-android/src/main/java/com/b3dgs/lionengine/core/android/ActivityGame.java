@@ -59,7 +59,7 @@ public abstract class ActivityGame extends Activity
     @Override
     public void finish()
     {
-        super.finish();
         Engine.terminate();
+        super.finish();
     }
 }
