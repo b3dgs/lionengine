@@ -269,7 +269,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        if (palette.isPalette(PaletteType.POINTER_TILE) && click > 0)
+        if (click > 0 && palette.isPalette(PaletteType.POINTER_TILE))
         {
             updatePointerTile(mx, my, click);
         }

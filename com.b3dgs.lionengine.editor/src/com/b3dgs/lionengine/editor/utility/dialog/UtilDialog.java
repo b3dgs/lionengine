@@ -34,18 +34,6 @@ import com.b3dgs.lionengine.game.feature.Factory;
  */
 public final class UtilDialog
 {
-    /** Xml filter. */
-    private static final String[] XML_FILTER = new String[]
-    {
-        Factory.FILE_DATA_EXTENSION
-    };
-
-    /** Image filter. */
-    private static final String[] IMAGE_FILTER = new String[]
-    {
-        "bmp", "png"
-    };
-
     /**
      * Select a media folder from dialog.
      * 
@@ -127,7 +115,10 @@ public final class UtilDialog
      */
     public static String[] getXmlFilter()
     {
-        return XML_FILTER;
+        return new String[]
+        {
+            Factory.FILE_DATA_EXTENSION
+        };
     }
 
     /**
@@ -137,7 +128,10 @@ public final class UtilDialog
      */
     public static String[] getImageFilter()
     {
-        return IMAGE_FILTER;
+        return new String[]
+        {
+            "bmp", "png"
+        };
     }
 
     /**

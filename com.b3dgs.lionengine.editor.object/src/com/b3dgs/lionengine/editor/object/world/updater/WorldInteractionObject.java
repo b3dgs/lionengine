@@ -137,7 +137,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         final Featurable featurable = objectControl.getFeaturable(mx, my);
         selection.reset();
 
-        if (objectControl.hasSelection() && featurable == null)
+        if (featurable == null && objectControl.hasSelection())
         {
             objectControl.unselectObjects();
             selection.start(mx, my);
@@ -291,7 +291,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         {
             updateDragging(click, oldMx, oldMy, mx, my);
         }
-        else if (palette.isPalette(PaletteType.SELECTION) && click == Mouse.LEFT)
+        else if (click == Mouse.LEFT && palette.isPalette(PaletteType.SELECTION))
         {
             updateSelection(oldMx, oldMy, mx, my);
         }

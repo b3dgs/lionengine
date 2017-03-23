@@ -431,7 +431,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        if (palette.isPalette(PaletteType.POINTER_COLLISION) && map.isCreated() && collStart != null)
+        if (collStart != null && palette.isPalette(PaletteType.POINTER_COLLISION) && map.isCreated())
         {
             updatePointerCollision(mx, my, false);
             if (collEnd != null)

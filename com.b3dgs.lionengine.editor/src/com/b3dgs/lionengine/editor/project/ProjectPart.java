@@ -87,7 +87,7 @@ public final class ProjectPart implements Focusable
         {
             final Configurer configurer = new Configurer(media);
             final Xml root = configurer.getRoot();
-            if (root.getNodeName().equals(FeaturableConfig.NODE_FEATURABLE))
+            if (FeaturableConfig.NODE_FEATURABLE.equals(root.getNodeName()))
             {
                 part.setInput(part.getTree(), configurer);
                 return true;
@@ -259,12 +259,8 @@ public final class ProjectPart implements Focusable
     {
         if (!tree.isDisposed())
         {
-            final Object data = tree.getSelection()[0];
-            if (data instanceof TreeItem)
-            {
-                final TreeItem item = (TreeItem) data;
-                updateSelection(item);
-            }
+            final TreeItem item = tree.getSelection()[0];
+            updateSelection(item);
         }
     }
 
