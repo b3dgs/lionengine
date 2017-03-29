@@ -58,6 +58,8 @@ public class Factory implements HandlerListener
     public static final String FILE_DATA_EXTENSION = "xml";
     /** Data file extension with dot as prefix. */
     public static final String FILE_DATA_DOT_EXTENSION = Constant.DOT + FILE_DATA_EXTENSION;
+    /** Constructor setup index. */
+    private static final int SETUP_INDEX = 1;
     /** Setup class error. */
     private static final String ERROR_SETUP_CLASS = "Setup class not found !";
     /** Construction error. */
@@ -209,7 +211,7 @@ public class Factory implements HandlerListener
                 {
                     Services.class, Setup.class
                 });
-                setupClass = constructor.getParameterTypes()[1];
+                setupClass = constructor.getParameterTypes()[SETUP_INDEX];
             }
             else
             {
@@ -242,22 +244,12 @@ public class Factory implements HandlerListener
     private <O extends Featurable> O createFeaturable(Class<?> type, Setup setup) throws NoSuchMethodException
     {
         final O featurable = UtilReflection.createReduce(type, services, setup);
-        prepare(featurable);
-
-        return featurable;
-    }
-
-    /**
-     * Prepare the featurable.
-     * 
-     * @param featurable The featurable to prepare.
-     */
-    private void prepare(Featurable featurable)
-    {
         for (final Feature feature : featurable.getFeatures())
         {
             featurable.checkListener(feature);
         }
+
+        return featurable;
     }
 
     /*

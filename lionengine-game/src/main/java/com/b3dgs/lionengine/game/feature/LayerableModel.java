@@ -114,7 +114,7 @@ public class LayerableModel extends FeatureModel implements Layerable
      */
 
     @Override
-    public void addListener(LayerableListener listener)
+    public final void addListener(LayerableListener listener)
     {
         listeners.add(listener);
     }

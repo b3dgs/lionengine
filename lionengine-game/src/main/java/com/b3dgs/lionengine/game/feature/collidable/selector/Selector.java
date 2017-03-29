@@ -138,7 +138,7 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
      * 
      * @param listener The selector listener reference.
      */
-    public void addListener(SelectorListener listener)
+    public final void addListener(SelectorListener listener)
     {
         refresher.addListener(listener);
     }
@@ -148,7 +148,7 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
      * 
      * @param listener The selection listener reference.
      */
-    public void addListener(SelectionListener listener)
+    public final void addListener(SelectionListener listener)
     {
         listeners.add(listener);
     }
@@ -158,7 +158,7 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
      * 
      * @param listener The selector listener reference.
      */
-    public void removeListener(SelectorListener listener)
+    public final void removeListener(SelectorListener listener)
     {
         refresher.removeListener(listener);
     }

@@ -229,14 +229,9 @@ public class FeaturableModelTest
             final Method method = FeaturableModel.class.getDeclaredMethod("setField",
                                                                           Field.class,
                                                                           Object.class,
-                                                                          Services.class,
                                                                           Class.class);
             UtilReflection.setAccessible(method, true);
-            method.invoke(featurable,
-                          featurable.getClass().getDeclaredField("object"),
-                          featurable,
-                          new Services(),
-                          Object.class);
+            method.invoke(featurable, featurable.getClass().getDeclaredField("object"), featurable, Object.class);
         }
         catch (final InvocationTargetException exception)
         {

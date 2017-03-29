@@ -138,8 +138,6 @@ public class FeaturableModel implements Featurable
     private final Features features = new Features();
     /** Associated media (<code>null</code> if none). */
     private final Media media;
-    /** Services reference. */
-    private final Services services;
 
     /**
      * Create model.
@@ -148,7 +146,6 @@ public class FeaturableModel implements Featurable
     {
         super();
 
-        services = new Services();
         media = null;
         addFeature(new IdentifiableModel());
     }
@@ -163,7 +160,6 @@ public class FeaturableModel implements Featurable
     {
         super();
 
-        this.services = services;
         media = setup.getMedia();
         addFeature(new IdentifiableModel());
         addFeatures(services, setup);
@@ -190,10 +186,9 @@ public class FeaturableModel implements Featurable
      * Fill services fields with their right instance.
      * 
      * @param object The object to update.
-     * @param services The services reference.
      * @throws LionEngineException If error on setting service.
      */
-    private void fillServices(Object object, Services services)
+    private void fillServices(Object object)
     {
         final List<Field> fields = getServiceFields(object);
         final int length = fields.size();
@@ -205,7 +200,7 @@ public class FeaturableModel implements Featurable
                 UtilReflection.setAccessible(field, true);
             }
             final Class<?> type = field.getType();
-            setField(field, object, services, type);
+            setField(field, object, type);
         }
     }
 
@@ -214,11 +209,10 @@ public class FeaturableModel implements Featurable
      * 
      * @param field The field to set.
      * @param object The object to update.
-     * @param services The services reference.
      * @param type The service type.
      * @throws LionEngineException If error on setting service.
      */
-    private void setField(Field field, Object object, Services services, Class<?> type)
+    private void setField(Field field, Object object, Class<?> type)
     {
         try
         {
@@ -264,7 +258,7 @@ public class FeaturableModel implements Featurable
     @Override
     public final void addFeature(Feature feature)
     {
-        fillServices(feature, services);
+        fillServices(feature);
         feature.prepare(this);
         checkListener(feature);
         for (final Feature other : getFeatures())
