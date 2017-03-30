@@ -30,12 +30,13 @@ import com.b3dgs.sample.Scene;
 /**
  * Android entry point.
  */
-public final class AppAndroid extends ActivityGame
+public final class AppSample extends ActivityGame
 {
     @Override
     protected void start(Bundle bundle)
     {
-        EngineAndroid.start("AppAndroid", Version.create(1, 0, 0), this);
+        EngineAndroid.start("Sample Project", Version.create(0, 1, 0), this);
+
         final Resolution output = new Resolution(240, 320, 60);
         final Config config = new Config(output, 32, false);
         final Loader loader = new Loader();

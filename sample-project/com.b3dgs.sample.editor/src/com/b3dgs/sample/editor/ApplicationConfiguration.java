@@ -41,12 +41,13 @@ import com.b3dgs.lionengine.editor.project.ProjectFactory;
  */
 public class ApplicationConfiguration
 {
+    /** Plugin name. */
+    public static final String PLUGIN_NAME = "Sample Editor";
     /** Import project argument. */
     private static final String ARG_IMPORT = "-import";
 
     /** Application reference. */
-    @Inject
-    private MApplication application;
+    @Inject private MApplication application;
 
     /**
      * Execute the injection.
@@ -57,7 +58,7 @@ public class ApplicationConfiguration
     public void execute(IEventBroker eventBroker)
     {
         final MWindow existingWindow = application.getChildren().get(0);
-        existingWindow.setLabel(Activator.PLUGIN_NAME);
+        existingWindow.setLabel(PLUGIN_NAME);
         eventBroker.subscribe(UIEvents.UILifeCycle.APP_STARTUP_COMPLETE, new AppStartupCompleteEventHandler());
     }
 
@@ -82,7 +83,7 @@ public class ApplicationConfiguration
             final String[] args = Platform.getApplicationArgs();
             for (int i = 0; i < args.length; i++)
             {
-                if (ApplicationConfiguration.ARG_IMPORT.equals(args[i]))
+                if (ARG_IMPORT.equals(args[i]))
                 {
                     i++;
                     if (i < args.length)

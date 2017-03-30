@@ -15,27 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.sample;
+package com.b3dgs.sample.pc;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.core.sequence.Loader;
+import com.b3dgs.sample.Scene;
 
 /**
  * Program starts here.
  */
 public final class AppSample
 {
-    /** Application name. */
-    public static final String NAME = "Sample Project";
-    /** Application version. */
-    public static final Version VERSION = Version.create(0, 1, 0);
-    /** Resources directory. */
-    public static final String RESOURCES_DIR = "resources";
-
     /**
      * Main function.
      * 
@@ -43,19 +36,11 @@ public final class AppSample
      */
     public static void main(String[] args)
     {
-        EngineAwt.start(NAME, VERSION, RESOURCES_DIR);
+        EngineAwt.start("Sample Project", Version.create(0, 1, 0), AppSample.class);
 
-        final Resolution output = new Resolution(640, 480, 60);
+        final Resolution output = new Resolution(480, 640, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
         loader.start(config, Scene.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private AppSample()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

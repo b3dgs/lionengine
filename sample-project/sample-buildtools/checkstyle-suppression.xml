@@ -7,4 +7,5 @@
 	<suppress checks="[a-zA-Z0-9]*" files="[\\/]resources[\\/]" />
 	<suppress checks="[a-zA-Z0-9]*" files="messages.properties" />
 	<suppress checks="StaticVariableName" files="Messages.java" />
+    <suppress checks="HideUtilityClassConstructor" files="com.b3dgs.sample.pc.AppSample" />
 </suppressions>

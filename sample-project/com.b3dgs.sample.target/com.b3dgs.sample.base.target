@@ -2,15 +2,15 @@
 <?pde version="3.8"?><target name="Sample Target Platform" sequenceNumber="24">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jdt.source.feature.group" version="3.11.0.v20150603-2000"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.11.0.v20150602-1417"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.5.0.v20150603-2331"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
+<unit id="org.eclipse.jdt.source.feature.group" version="3.12.0.v20160606-1100"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.12.0.v20160606-1311"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.6.0.v20160606-1342"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.6"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.b3dgs.lionengine.core.swt" version="8.3.1.201606151608"/>
-<unit id="com.b3dgs.lionengine.editor" version="8.3.1.201606151608"/>
-<repository location="jar:file:/C:/Users/DjThunder/git/lionengine/com.b3dgs.lionengine.repository/target/com.b3dgs.lionengine.repository-8.3.1-SNAPSHOT.zip!/"/>
+<unit id="com.b3dgs.lionengine.core.swt" version="8.4.0.201703202106"/>
+<unit id="com.b3dgs.lionengine.editor" version="8.4.0.201703202106"/>
+<repository location="jar:file:/C:/Users/DjThunder/git/lionengine/com.b3dgs.lionengine.repository/target/com.b3dgs.lionengine.repository-8.4.0-SNAPSHOT.zip!/"/>
 </location>
 </locations>
 </target>
