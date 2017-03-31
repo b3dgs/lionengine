@@ -101,6 +101,8 @@ public class SpriteTest
 
         DrawableTestTool.testSpriteLoading(spriteB);
         DrawableTestTool.testImageRender(g, spriteB);
+
+        Assert.assertFalse(spriteB.equals(null));
         Assert.assertFalse(spriteB.equals(Drawable.loadSprite(media)));
 
         // Hash code

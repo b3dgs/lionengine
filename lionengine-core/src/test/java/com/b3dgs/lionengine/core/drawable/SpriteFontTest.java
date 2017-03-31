@@ -114,6 +114,7 @@ public class SpriteFontTest
 
         sprite.stretch(90, 110);
 
+        Assert.assertFalse(sprite.equals(null));
         Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, font, 6, 7)));
 
         // Hash code

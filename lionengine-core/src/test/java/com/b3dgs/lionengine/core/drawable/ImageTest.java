@@ -170,7 +170,9 @@ public class ImageTest
         final Image imageE = Drawable.loadImage(surfaceB);
         final ImageBuffer surfaceC = Graphics.createImageBuffer(20, 16, Transparency.OPAQUE);
         final Image imageF = Drawable.loadImage(surfaceC);
+
         Assert.assertTrue(imageD.equals(imageD));
+        Assert.assertFalse(imageD.equals(null));
         Assert.assertFalse(imageD.equals(imageE));
         Assert.assertFalse(imageD.equals(imageF));
     }

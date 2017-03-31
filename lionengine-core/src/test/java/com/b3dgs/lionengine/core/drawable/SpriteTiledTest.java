@@ -114,6 +114,7 @@ public class SpriteTiledTest
         spriteE.stretch(100, 110);
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 110);
+        Assert.assertFalse(spriteD.equals(null));
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteTiled spriteF = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight);
         Assert.assertTrue(spriteD.equals(spriteF));

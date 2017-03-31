@@ -124,6 +124,7 @@ public class SpriteAnimatedTest
         Assert.assertTrue(hash != spriteD.hashCode());
         spriteD.setMirror(Mirror.VERTICAL);
         Assert.assertTrue(hash != spriteD.hashCode());
+        Assert.assertFalse(spriteD.equals(null));
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteAnimated spriteF = Drawable.loadSpriteAnimated(spriteD.getSurface(), framesH, framesV);
         Assert.assertTrue(spriteD.equals(spriteF));
