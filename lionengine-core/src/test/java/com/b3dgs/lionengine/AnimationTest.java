@@ -85,6 +85,7 @@ public class AnimationTest
         Assert.assertEquals(animation, new Animation("test", 1, 2, 3, true, true));
         Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, false));
 
+        Assert.assertNotEquals(animation, null);
         Assert.assertNotEquals(animation, new Object());
         Assert.assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));
     }

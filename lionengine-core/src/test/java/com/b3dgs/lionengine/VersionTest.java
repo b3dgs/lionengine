@@ -73,6 +73,7 @@ public class VersionTest
         Assert.assertEquals(version, version);
         Assert.assertEquals(version, Version.create(3, 2, 1));
 
+        Assert.assertNotEquals(version, null);
         Assert.assertNotEquals(version, new Object());
         Assert.assertNotEquals(version, Version.create(3, 2, 0));
         Assert.assertNotEquals(version, Version.create(3, 0, 1));

@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the constants.
@@ -32,9 +31,9 @@ public class ConstantTest
      * 
      * @throws Exception If error.
      */
-    @Test
+    @Test(expected = LionEngineException.class)
     public void testConstructor() throws Exception
     {
-        Assert.assertNotNull(UtilReflection.create(Constant.class, new Class<?>[0]));
+        UtilTests.testPrivateConstructor(Constant.class);
     }
 }

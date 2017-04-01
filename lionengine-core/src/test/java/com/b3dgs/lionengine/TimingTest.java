@@ -57,6 +57,14 @@ public class TimingTest
         Assert.assertTrue(timing.elapsed(PAUSE - PRECISION));
         Assert.assertFalse(timing.elapsed(PAUSE + PRECISION));
         Assert.assertEquals(time, timing.get());
+
+        timing.start();
+        UtilTests.pause(PAUSE);
+
+        Assert.assertTrue(timing.elapsed() > PAUSE - PRECISION);
+        Assert.assertTrue(timing.elapsed(PAUSE - PRECISION));
+        Assert.assertFalse(timing.elapsed(PAUSE + PAUSE + PRECISION));
+        Assert.assertEquals(time, timing.get());
     }
 
     /**
