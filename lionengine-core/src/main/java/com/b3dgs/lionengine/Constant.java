@@ -133,6 +133,6 @@ public final class Constant
      */
     private Constant()
     {
-        super();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }
