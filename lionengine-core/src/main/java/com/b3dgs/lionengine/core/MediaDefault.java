@@ -51,6 +51,8 @@ final class MediaDefault implements Media
     private static final String ERROR_OPEN_MEDIA_JAR = "Resource in JAR not found";
     /** Invalid path directory. */
     private static final String ERROR_PATH_DIR = "Invalid directory: ";
+    /** Unable to create media. */
+    private static final String ERROR_CREATE = "Unable to create media from path: ";
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
 
@@ -157,6 +159,36 @@ final class MediaDefault implements Media
         return prefix;
     }
 
+    /**
+     * Create media from file.
+     * 
+     * @param prefix The prefix path.
+     * @param prefixLength The prefix length.
+     * @param file The file to created as media.
+     * @return The created media.
+     */
+    private Media create(String prefix, int prefixLength, File file)
+    {
+        final String currentPath = file.getPath();
+        final String[] path = currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
+                                         .replace(File.separator, Constant.SLASH)
+                                         .split(Constant.SLASH);
+        final Media media;
+        if (loader != null)
+        {
+            media = new MediaDefault(separator, loader, UtilFolder.getPathSeparator(separator, path));
+        }
+        else if (resourcesDir != null)
+        {
+            media = new MediaDefault(separator, resourcesDir, UtilFolder.getPathSeparator(separator, path));
+        }
+        else
+        {
+            throw new LionEngineException(ERROR_CREATE, UtilFolder.getPath(path));
+        }
+        return media;
+    }
+
     /*
      * Media
      */
@@ -213,10 +245,7 @@ final class MediaDefault implements Media
 
             for (final File current : files)
             {
-                final String path = current.getPath();
-                final Media media = Medias.create(path.substring(path.indexOf(prefix) + prefixLength)
-                                                      .replace(File.separator, Constant.SLASH)
-                                                      .split(Constant.SLASH));
+                final Media media = create(prefix, prefixLength, current);
                 medias.add(media);
             }
             return medias;

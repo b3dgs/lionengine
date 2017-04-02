@@ -25,15 +25,6 @@ import java.util.Collection;
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
  * location, such as <code>HDD</code>, <code>JAR</code>... It could point to a file or a directory.
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), Verbose.CRITICAL, &quot;resources&quot;);
- * Medias.create(&quot;img&quot;, &quot;image.png&quot;);
- * print(com.b3dgs.lionengine.core.Medias.create()); // print: resources/img/image.png
- * </pre>
  */
 public interface Media
 {
