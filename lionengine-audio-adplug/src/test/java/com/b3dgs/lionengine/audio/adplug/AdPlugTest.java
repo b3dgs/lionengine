@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.audio.adplug;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Architecture;
@@ -31,12 +34,16 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilEnum;
+import com.b3dgs.lionengine.util.UtilFile;
 import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.util.UtilStream;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the AdPlug player.
@@ -44,15 +51,15 @@ import com.b3dgs.lionengine.util.UtilReflection;
 public class AdPlugTest
 {
     /** Binding. */
-    private static AdPlug adplug;
+    private AdPlug adplug;
     /** Media music. */
-    private static Media music;
+    private Media music;
 
     /**
      * Prepare tests.
      */
-    @BeforeClass
-    public static void prepare()
+    @Before
+    public void prepare()
     {
         try
         {
@@ -78,8 +85,8 @@ public class AdPlugTest
     /**
      * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @After
+    public void cleanUp()
     {
         Medias.setLoadFromJar(null);
     }
@@ -225,5 +232,42 @@ public class AdPlugTest
         adplug.stop();
         adplug.play();
         adplug.stop();
+    }
+
+    /**
+     * Test Sc68 with outside media.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testOutsideMedia() throws IOException
+    {
+        InputStream input = null;
+        OutputStream output = null;
+        try
+        {
+            input = music.getInputStream();
+            final Media media = Medias.create("music.lds");
+            Medias.setLoadFromJar(null);
+            Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+
+            output = media.getOutputStream();
+            UtilStream.copy(input, output);
+
+            final Audio audio = AudioFactory.loadAudio(media);
+            audio.setVolume(50);
+            audio.play();
+            UtilTests.pause(100L);
+            audio.stop();
+
+            UtilStream.safeClose(output);
+            UtilFile.deleteFile(media.getFile());
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+            UtilStream.safeClose(input);
+            UtilStream.safeClose(output);
+        }
     }
 }
