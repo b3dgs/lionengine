@@ -23,10 +23,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
@@ -43,15 +43,15 @@ import com.b3dgs.lionengine.core.Medias;
 public class MidiTest
 {
     /** Media music. */
-    private static Media music;
+    private Media music;
     /** Midi music. */
-    private static Midi midi;
+    private Midi midi;
 
     /**
      * Prepare the test.
      */
-    @BeforeClass
-    public static void prepareTest()
+    @Before
+    public void prepareTest()
     {
         AudioFactory.addFormat(new MidiFormat());
         Medias.setLoadFromJar(MidiTest.class);
@@ -73,8 +73,8 @@ public class MidiTest
     /**
      * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @After
+    public void cleanUp()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();
@@ -283,7 +283,7 @@ public class MidiTest
                     };
                 }
             });
-            Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("test")));
+            Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("test.midi")));
         }
         finally
         {
