@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.awt.swing;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -47,6 +50,15 @@ public class ThemeTest
         Theme.set(Theme.MOTIF);
         Theme.set(Theme.SYSTEM);
         Theme.set(Theme.METAL);
+        try
+        {
+            Theme.set(Theme.GTK);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertNotNull(exception);
+            Verbose.info("Theme GTK not supported on platform - Skipped");
+        }
     }
 
     /**
@@ -56,5 +68,26 @@ public class ThemeTest
     public void testFail()
     {
         Theme.set(null);
+    }
+
+    /**
+     * Test the unknown enum.
+     */
+    @Test
+    public void testAnEnumUnknown()
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        try
+        {
+            final UtilEnum<Theme> hack = new UtilEnum<Theme>(Theme.class, Theme.class);
+            final Theme fail = hack.make("FAIL");
+            hack.addByValue(fail);
+
+            Theme.set(fail);
+        }
+        finally
+        {
+            Verbose.info("****************************************************************************************");
+        }
     }
 }
