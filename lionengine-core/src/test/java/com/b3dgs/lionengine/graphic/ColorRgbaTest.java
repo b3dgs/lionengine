@@ -197,6 +197,7 @@ public class ColorRgbaTest
             }
         }
         Assert.assertEquals(ColorRgba.BLACK, ColorRgba.BLACK);
+        Assert.assertNotEquals(ColorRgba.WHITE, null);
         Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
         Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.class);
     }
