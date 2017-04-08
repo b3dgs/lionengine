@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the screen class.
@@ -92,10 +93,8 @@ public class ScreenSwtTest
     {
         checkMultipleDisplaySupport();
 
-        final Config config = new Config(com.b3dgs.lionengine.util.UtilTests.RESOLUTION_320_240,
-                                         32,
-                                         true,
-                                         Medias.create(IMAGE));
+        final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create(IMAGE));
+        config.setSource(UtilTests.RESOLUTION_320_240);
         testScreen(config);
     }
 
@@ -115,6 +114,7 @@ public class ScreenSwtTest
 
             final Resolution resolution = new Resolution(width, height, 60);
             final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
+            config.setSource(resolution);
 
             testScreen(config);
         }
@@ -130,6 +130,7 @@ public class ScreenSwtTest
 
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, true);
+        config.setSource(resolution);
         testScreen(config);
     }
 
@@ -143,6 +144,7 @@ public class ScreenSwtTest
 
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
+        config.setSource(resolution);
         testScreen(config);
     }
 
@@ -175,7 +177,9 @@ public class ScreenSwtTest
         screen.update();
         screen.showCursor();
         screen.hideCursor();
+        screen.update();
         screen.requestFocus();
+        screen.onSourceChanged(UtilTests.RESOLUTION_320_240);
         Assert.assertNotNull(screen.getConfig());
         Assert.assertNotNull(screen.getGraphic());
         Assert.assertTrue(screen.getReadyTimeOut() > -1L);
@@ -213,5 +217,27 @@ public class ScreenSwtTest
 
         screen.dispose();
         Assert.assertTrue(disposed.get());
+
+        screen.setIcon(null);
+        screen.addKeyListener(new InputDeviceKeyListener()
+        {
+            @Override
+            public void keyReleased(int keyCode, char keyChar)
+            {
+                // Mock
+            }
+
+            @Override
+            public void keyPressed(int keyCode, char keyChar)
+            {
+                // Mock
+            }
+        });
+        screen.update();
+        screen.requestFocus();
+        screen.hideCursor();
+        screen.showCursor();
+        Assert.assertEquals(0, screen.getX());
+        Assert.assertEquals(0, screen.getY());
     }
 }

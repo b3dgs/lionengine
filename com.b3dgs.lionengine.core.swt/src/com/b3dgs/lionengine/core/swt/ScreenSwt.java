@@ -239,16 +239,14 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     @Override
     public void update()
     {
-        display.readAndDispatch();
         if (!canvas.isDisposed())
         {
+            display.readAndDispatch();
+
             final GC gc = new GC(canvas);
             gc.drawImage(buffer.getSurface(), 0, 0);
             gc.dispose();
-            if (lastGc != null)
-            {
-                lastGc.dispose();
-            }
+            lastGc.dispose();
             gbuf = buffer.createGraphic();
             lastGc = (GC) gbuf.getGraphic();
             graphics.setGraphic(lastGc);
@@ -268,96 +266,99 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     @Override
     public void requestFocus()
     {
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                if (!frame.isDisposed())
+                @Override
+                public void run()
                 {
                     frame.forceFocus();
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public void hideCursor()
     {
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                if (!frame.isDisposed())
+                @Override
+                public void run()
                 {
                     frame.setCursor(cursorHidden);
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public void showCursor()
     {
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                if (!frame.isDisposed())
+                @Override
+                public void run()
                 {
                     frame.setCursor(cursorDefault);
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public void addKeyListener(final InputDeviceKeyListener listener)
     {
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                frame.addKeyListener(new KeyboardSwtListener(listener));
-            }
-        });
+                @Override
+                public void run()
+                {
+                    frame.addKeyListener(new KeyboardSwtListener(listener));
+                }
+            });
+        }
     }
 
     @Override
     public void setIcon(final String filename)
     {
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                if (!frame.isDisposed())
+                @Override
+                public void run()
                 {
                     final Image icon = new Image(display, filename);
                     frame.setImage(icon);
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public int getX()
     {
         final AtomicInteger x = new AtomicInteger(0);
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                if (!frame.isDisposed())
+                @Override
+                public void run()
                 {
                     x.set(frame.getLocation().x);
                 }
-            }
-        });
+            });
+        }
         return x.get();
     }
 
@@ -365,17 +366,17 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     public int getY()
     {
         final AtomicInteger y = new AtomicInteger(0);
-        display.syncExec(new Runnable()
+        if (!display.isDisposed())
         {
-            @Override
-            public void run()
+            display.syncExec(new Runnable()
             {
-                if (!frame.isDisposed())
+                @Override
+                public void run()
                 {
                     y.set(frame.getLocation().y);
                 }
-            }
-        });
+            });
+        }
         return y.get();
     }
 
