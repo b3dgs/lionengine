@@ -108,10 +108,50 @@ public class LoaderTest
     }
 
     /**
+     * Test the loader with a single sequence.
+     */
+    @Test
+    public void testSequenceSingle()
+    {
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceSingleMock.class).await();
+    }
+
+    /**
+     * Test the loader with a sequence that have arguments.
+     */
+    @Test
+    public void testSequenceArgument()
+    {
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceArgumentsMock.class, new Object()).await();
+    }
+
+    /**
+     * Test the loader with timed out screen.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSequenceTimeout()
+    {
+        try
+        {
+            ScreenMock.setScreenWait(true);
+            final Loader loader = new Loader();
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            loader.start(CONFIG, SequenceSingleMock.class).await();
+        }
+        finally
+        {
+            Verbose.info("****************************************************************************************");
+            ScreenMock.setScreenWait(false);
+        }
+    }
+
+    /**
      * Test the loader with no sequence.
      */
     @Test(expected = LionEngineException.class)
-    public void testNullSequence()
+    public void testSequenceNull()
     {
         final Loader loader = new Loader();
         loader.start(CONFIG, null).await();
@@ -121,7 +161,7 @@ public class LoaderTest
      * Test the loader with fail sequence.
      */
     @Test(expected = LionEngineException.class)
-    public void testFailSequence()
+    public void testSequenceFail()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
@@ -139,7 +179,7 @@ public class LoaderTest
      * Test the loader with fail next sequence.
      */
     @Test(expected = LionEngineException.class)
-    public void testFailNextSequence()
+    public void testSequenceFailNext()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
@@ -157,7 +197,7 @@ public class LoaderTest
      * Test the loader with malformed sequence.
      */
     @Test(expected = LionEngineException.class)
-    public void testMalformedSequence()
+    public void testSequenceMalformed()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
@@ -323,16 +363,6 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a single sequence.
-     */
-    @Test
-    public void testSequenceSingle()
-    {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceSingleMock.class).await();
-    }
-
-    /**
      * Test the loader with slow sequence.
      */
     @Test
@@ -340,36 +370,6 @@ public class LoaderTest
     {
         final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSlowMock.class).await();
-    }
-
-    /**
-     * Test the loader with a sequence that have arguments.
-     */
-    @Test
-    public void testSequenceArgument()
-    {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceArgumentsMock.class, new Object()).await();
-    }
-
-    /**
-     * Test the loader with timed out screen.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testSequenceTimeout()
-    {
-        try
-        {
-            ScreenMock.setScreenWait(true);
-            final Loader loader = new Loader();
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            loader.start(CONFIG, SequenceSingleMock.class).await();
-        }
-        finally
-        {
-            Verbose.info("****************************************************************************************");
-            ScreenMock.setScreenWait(false);
-        }
     }
 
     /**
