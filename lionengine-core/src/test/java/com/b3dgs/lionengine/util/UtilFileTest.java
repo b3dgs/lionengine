@@ -204,6 +204,32 @@ public class UtilFileTest
     }
 
     /**
+     * Test the get files with <code>null</code> returned.
+     * 
+     * @throws IOException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetFilesNull() throws IOException
+    {
+        Assert.assertNull(UtilFile.getFiles(new File("void")
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isDirectory()
+            {
+                return true;
+            }
+
+            @Override
+            public File[] listFiles()
+            {
+                return null;
+            }
+        }));
+    }
+
+    /**
      * Test the get files by extension.
      * 
      * @throws IOException If error.
@@ -211,6 +237,8 @@ public class UtilFileTest
     @Test
     public void testGetFilesByExtension() throws IOException
     {
+        Assert.assertTrue(UtilFile.getFilesByExtension(new File("void"), "txt").isEmpty());
+
         final File folder = TEMP.newFolder("temp");
         final File file1 = File.createTempFile("temp", ".tmp", folder);
         final File file2 = File.createTempFile("temp", ".txt", folder);
@@ -241,6 +269,8 @@ public class UtilFileTest
     @Test
     public void testGetFilesByName() throws IOException
     {
+        Assert.assertTrue(UtilFile.getFilesByName(new File("void"), "name").isEmpty());
+
         final File folder = TEMP.newFolder("temp");
         final File file1 = File.createTempFile("temp", ".tmp", folder);
         final File file2 = File.createTempFile("temp", ".tmp", folder);
