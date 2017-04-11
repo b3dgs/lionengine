@@ -215,6 +215,28 @@ public class UtilFolderTest
                 };
             }
         });
+        UtilFolder.deleteDirectory(new File("null")
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isDirectory()
+            {
+                return true;
+            }
+
+            @Override
+            public boolean delete()
+            {
+                return false;
+            }
+
+            @Override
+            public File[] listFiles()
+            {
+                return null;
+            }
+        });
         Verbose.info("****************************************************************************************");
     }
 
