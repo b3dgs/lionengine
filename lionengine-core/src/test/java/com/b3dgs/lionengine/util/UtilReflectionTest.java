@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Engine;
 
 /**
@@ -117,6 +118,41 @@ public class UtilReflectionTest
     }
 
     /**
+     * Create the create reduce.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test
+    public void testCreateReduce() throws NoSuchMethodException
+    {
+        Assert.assertEquals(ViewerMock.class,
+                            UtilReflection.createReduce(ViewerMock.class, Integer.valueOf(1), "void").getClass());
+    }
+
+    /**
+     * Create the create reduce with no constructor found.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = NoSuchMethodException.class)
+    public void testCreateReduceNoConstructor() throws NoSuchMethodException
+    {
+        Assert.assertNull(UtilReflection.createReduce(Config.class, Integer.valueOf(1), "void"));
+    }
+
+    /**
+     * Create the create reduce with no constructor found.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test
+    public void testCreateReduceMoreParameters() throws NoSuchMethodException
+    {
+        UtilReflection.createReduce(Reduce.class, Integer.valueOf(1), "test", Integer.valueOf(3));
+
+    }
+
+    /**
      * Test the get parameters types.
      */
     @Test
@@ -126,11 +162,13 @@ public class UtilReflectionTest
         params.add(Integer.valueOf(1));
         params.add("test");
         params.add(Double.valueOf(5.2));
+        params.add(Float.class);
 
         final Class<?>[] types = UtilReflection.getParamTypes(params.toArray());
         Assert.assertEquals(Integer.class, types[0]);
         Assert.assertEquals(String.class, types[1]);
         Assert.assertEquals(Double.class, types[2]);
+        Assert.assertEquals(Float.class, types[3]);
     }
 
     /**
@@ -291,5 +329,32 @@ public class UtilReflectionTest
 
         Assert.assertEquals(3, UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).size());
         Assert.assertTrue(UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).containsAll(interfaces));
+    }
+
+    /**
+     * Reduce class test.
+     */
+    static class Reduce
+    {
+        /**
+         * Create.
+         * 
+         * @param a First choice.
+         */
+        Reduce(Integer a)
+        {
+            super();
+        }
+
+        /**
+         * Create.
+         * 
+         * @param a First choice.
+         * @param b Second choice.
+         */
+        Reduce(Integer a, String b)
+        {
+            super();
+        }
     }
 }
