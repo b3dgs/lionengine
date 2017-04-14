@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import java.util.Arrays;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Nameable;
 
 /**
@@ -45,6 +47,9 @@ public class PathData implements Nameable
      */
     public PathData(String category, double cost, boolean blocking, Collection<MovementTile> movements)
     {
+        Check.notNull(category);
+        Check.notNull(movements);
+
         this.category = category;
         this.cost = cost;
         this.blocking = blocking;
@@ -89,5 +94,40 @@ public class PathData implements Nameable
     public String getName()
     {
         return category;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (blocking ? 1231 : 1237);
+        result = prime * result + category.hashCode();
+        final long temp = Double.doubleToLongBits(cost);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        result = prime * result + movements.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final PathData other = (PathData) object;
+        return getName().equals(other.getName())
+               && Double.compare(cost, other.getCost()) == 0
+               && blocking == other.isBlocking()
+               && Arrays.deepEquals(movements.toArray(), other.getAllowedMovements().toArray());
     }
 }
