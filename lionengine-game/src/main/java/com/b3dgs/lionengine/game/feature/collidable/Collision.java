@@ -162,7 +162,8 @@ public class Collision implements Nameable
         return other.mirror == mirror
                && other.width == width
                && other.height == height
-               && other.offsetX == other.offsetY
+               && other.offsetX == offsetX
+               && other.offsetY == offsetY
                && other.name.equals(name);
     }
 }
