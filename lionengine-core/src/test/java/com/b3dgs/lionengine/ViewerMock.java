@@ -22,12 +22,29 @@ package com.b3dgs.lionengine;
  */
 public class ViewerMock implements Viewer
 {
+    /** Viewer X. */
+    private int x;
+    /** Viewer Y. */
+    private int y;
+
     /**
      * Create mock.
      */
     public ViewerMock()
     {
         super();
+    }
+
+    /**
+     * Set the viewer location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    public void set(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     /*
@@ -37,13 +54,13 @@ public class ViewerMock implements Viewer
     @Override
     public double getX()
     {
-        return 0;
+        return x;
     }
 
     @Override
     public double getY()
     {
-        return 0;
+        return y;
     }
 
     @Override
