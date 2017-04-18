@@ -247,10 +247,10 @@ public class LauncherModelTest
 
         Thread.sleep(25);
         launcher.setLevel(1);
-        launcher.fire();
 
         Assert.assertNull(firedLaunchable.get());
 
+        launcher.fire();
         Thread.sleep(30);
         launcher.fire();
 
