@@ -207,9 +207,9 @@ public final class ToolsAndroid
         final int divisorGreen = 0x000100;
         final int divisorBlue = 0x000001;
 
-        final double sr = -((er - fr) / divisorRed) / (double) refSize;
-        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
-        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
+        final double sr = -((er - fr) / (double) divisorRed) / refSize;
+        final double sg = -((eg - fg) / (double) divisorGreen) / refSize;
+        final double sb = -((eb - fb) / (double) divisorBlue) / refSize;
 
         for (int i = 0; i < raster.getWidth(); i++)
         {
