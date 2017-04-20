@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.Label;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
@@ -28,6 +30,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.io.awt.EventAction;
 import com.b3dgs.lionengine.io.awt.Mouse;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the mouse class.
@@ -39,7 +42,7 @@ public class MouseAwtTest
      * 
      * @return The created mouse.
      */
-    private static MouseAwt createMouse()
+    static MouseAwt createMouse()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
         final Config config = new Config(resolution, 32, false);
@@ -138,6 +141,7 @@ public class MouseAwtTest
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
         mover.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
         mouse.doClickAt(Mouse.RIGHT, 500, 500);
+        mouse.update(1.0);
         try
         {
             Assert.assertEquals(500, mouse.getOnScreenX());
@@ -152,7 +156,17 @@ public class MouseAwtTest
         Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
         mouse.doClick(Mouse.LEFT);
         Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
+        mouse.update(1.0);
         mouse.doClick(Mouse.MIDDLE);
+        mouse.update(1.0);
+
+        mouse.doSetMouse(1, 2);
+        Assert.assertEquals(1, mouse.getOnScreenX());
+        Assert.assertEquals(2, mouse.getOnScreenY());
+
+        mouse.doMoveMouse(3, 4);
+        Assert.assertEquals(3, mouse.getOnScreenX());
+        Assert.assertEquals(4, mouse.getOnScreenY());
 
         mouse.lock();
         mouse.lock(500, 500);
@@ -231,5 +245,30 @@ public class MouseAwtTest
 
         clicker.mouseReleased(createEvent(Mouse.LEFT, 0, 0));
         Assert.assertFalse(left.get());
+    }
+
+    /**
+     * Test mouse in headless case.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testHeadless() throws Exception
+    {
+        final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
+        final Field field = GraphicsEnvironment.class.getDeclaredField("headless");
+        UtilReflection.setAccessible(field, true);
+        field.set(GraphicsEnvironment.class, Boolean.TRUE);
+        try
+        {
+            final MouseAwt mouse = MouseAwtTest.createMouse();
+            mouse.lock(1, 2);
+            Assert.assertEquals(1, mouse.getX());
+            Assert.assertEquals(2, mouse.getY());
+        }
+        finally
+        {
+            field.set(GraphicsEnvironment.class, old);
+        }
     }
 }

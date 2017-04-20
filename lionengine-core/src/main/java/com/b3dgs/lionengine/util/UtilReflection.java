@@ -118,11 +118,9 @@ public final class UtilReflection
      * @param constructor The constructor to use.
      * @param params The constructor parameters.
      * @return The class instance.
-     * @throws NoSuchMethodException If no constructor found.
      * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
      */
     private static <T> T create(Class<?> type, Constructor<?> constructor, Object... params)
-            throws NoSuchMethodException
     {
         Check.notNull(constructor);
         try
@@ -297,7 +295,7 @@ public final class UtilReflection
         try
         {
             final Class<?> clazz = getClass(object);
-            final Field field = clazz.getDeclaredField(name);
+            final Field field = getDeclaredFieldSuper(clazz, name);
             final boolean accessible = field.isAccessible();
             if (!accessible)
             {
@@ -318,6 +316,30 @@ public final class UtilReflection
         catch (final IllegalAccessException exception)
         {
             throw new LionEngineException(exception, ERROR_FIELD, name);
+        }
+    }
+
+    /**
+     * Get the field by reflection searching in super class if needed.
+     * 
+     * @param clazz The class to use.
+     * @param name The field name.
+     * @return The field found.
+     * @throws NoSuchFieldException If field not found.
+     */
+    private static Field getDeclaredFieldSuper(Class<?> clazz, String name) throws NoSuchFieldException
+    {
+        try
+        {
+            return clazz.getDeclaredField(name);
+        }
+        catch (final NoSuchFieldException exception)
+        {
+            if (clazz.getSuperclass() == null)
+            {
+                throw exception;
+            }
+            return getDeclaredFieldSuper(clazz.getSuperclass(), name);
         }
     }
 
