@@ -94,7 +94,7 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
         }
 
         lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
-        lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
+        lineHeight = (int) Math.floor(surface.getHeight() / (double) linesNumber * sy / 100.0);
         lines = Graphics.splitImage(surface, 1, linesNumber);
 
         final double factH = sx / 100.0 / AMPLITUDE_FACTOR;
