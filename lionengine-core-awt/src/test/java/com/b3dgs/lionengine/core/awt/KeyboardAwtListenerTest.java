@@ -54,6 +54,7 @@ public class KeyboardAwtListenerTest
             }
         });
 
+        listener.keyTyped(KeyboardAwtTest.createEvent(Keyboard.UP));
         listener.keyPressed(KeyboardAwtTest.createEvent(Keyboard.UP));
         listener.keyReleased(KeyboardAwtTest.createEvent(Keyboard.UP));
 
