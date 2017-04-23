@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +31,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -77,7 +77,7 @@ public class ToolsAwtTest
     @Test
     public void testUtility() throws IOException
     {
-        final BufferedImage image = ToolsAwt.createImage(100, 100, Transparency.OPAQUE);
+        final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.OPAQUE);
         Assert.assertNotNull(image);
         Assert.assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(ToolsAwt.flipHorizontal(image));
@@ -108,13 +108,24 @@ public class ToolsAwtTest
     }
 
     /**
+     * Test get transparency.
+     */
+    @Test
+    public void testTransparency()
+    {
+        Assert.assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
+        Assert.assertEquals(java.awt.Transparency.BITMASK, ToolsAwt.getTransparency(Transparency.BITMASK));
+        Assert.assertEquals(java.awt.Transparency.TRANSLUCENT, ToolsAwt.getTransparency(Transparency.TRANSLUCENT));
+    }
+
+    /**
      * Test the copy.
      */
     @Test
     public void testCopy()
     {
-        final BufferedImage image = ToolsAwt.createImage(100, 100, Transparency.TRANSLUCENT);
-        final BufferedImage copy = ToolsAwt.copyImage(image, Transparency.OPAQUE);
+        final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
+        final BufferedImage copy = ToolsAwt.copyImage(image, java.awt.Transparency.OPAQUE);
         Assert.assertEquals(image.getWidth(), copy.getWidth());
     }
 
