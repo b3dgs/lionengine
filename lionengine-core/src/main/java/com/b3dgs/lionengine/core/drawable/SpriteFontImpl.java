@@ -73,7 +73,7 @@ final class SpriteFontImpl implements SpriteFont
     /** Font surface. */
     private final SpriteTiled surface;
     /** Font data. */
-    private final Map<Character, Data> fontData;
+    private final Map<Character, FontCharData> fontData;
     /** Text. */
     private String text = Constant.EMPTY_STRING;
     /** Alignment. */
@@ -97,7 +97,7 @@ final class SpriteFontImpl implements SpriteFont
     SpriteFontImpl(Media media, Media mediaData, int tw, int th)
     {
         surface = new SpriteTiledImpl(media, tw, th);
-        fontData = new TreeMap<Character, Data>();
+        fontData = new TreeMap<Character, FontCharData>();
         lineHeight = surface.getTileHeight();
 
         // Load data for each characters
@@ -107,7 +107,7 @@ final class SpriteFontImpl implements SpriteFont
 
         for (final Xml node : children)
         {
-            final Data data = new Data(id, node.readInteger("width"), node.readInteger("height"));
+            final FontCharData data = new FontCharData(id, node.readInteger("width"), node.readInteger("height"));
             fontData.put(Character.valueOf(node.readString("char").charAt(0)), data);
             id++;
         }
@@ -160,7 +160,7 @@ final class SpriteFontImpl implements SpriteFont
         final int width = getCharWidth(text, align);
         for (int j = 0; j < length; j++)
         {
-            final Data d = fontData.get(Character.valueOf(text.charAt(j)));
+            final FontCharData d = fontData.get(Character.valueOf(text.charAt(j)));
             surface.setLocation(x + lx - width, y + ly + d.getHeight());
             surface.setTile(d.getId());
             surface.render(g);
@@ -182,7 +182,7 @@ final class SpriteFontImpl implements SpriteFont
             final int length = text.length();
             for (int j = 0; j < length; j++)
             {
-                final Data d = fontData.get(Character.valueOf(text.charAt(j)));
+                final FontCharData d = fontData.get(Character.valueOf(text.charAt(j)));
                 surface.setLocation(x + lx - (double) width, y + ly + (double) d.getHeight());
                 surface.setTile(d.getId());
                 surface.render(g);
@@ -269,7 +269,7 @@ final class SpriteFontImpl implements SpriteFont
 
         for (int i = 0; i < length; i++)
         {
-            final Data d = fontData.get(Character.valueOf(text.charAt(i)));
+            final FontCharData d = fontData.get(Character.valueOf(text.charAt(i)));
             lx += d.getWidth() + 1;
         }
 
@@ -369,62 +369,5 @@ final class SpriteFontImpl implements SpriteFont
         result = prime * result + lineHeight;
         result = prime * result + surface.hashCode();
         return result;
-    }
-
-    /**
-     * Character data.
-     */
-    private static final class Data
-    {
-        /** Character id. */
-        private final int id;
-        /** Character width. */
-        private final int width;
-        /** Character height. */
-        private final int height;
-
-        /**
-         * Internal constructor.
-         * 
-         * @param id The character id.
-         * @param width The character width.
-         * @param height The character height.
-         */
-        Data(int id, int width, int height)
-        {
-            this.id = id;
-            this.width = width;
-            this.height = height;
-        }
-
-        /**
-         * Get the character id.
-         * 
-         * @return The character id.
-         */
-        int getId()
-        {
-            return id;
-        }
-
-        /**
-         * Get the character width.
-         * 
-         * @return THe character width.
-         */
-        int getWidth()
-        {
-            return width;
-        }
-
-        /**
-         * Get the character height.
-         * 
-         * @return THe character height.
-         */
-        int getHeight()
-        {
-            return height;
-        }
     }
 }
