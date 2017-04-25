@@ -135,7 +135,7 @@ public class AnimationEditor extends AbstractEditor
 
         animationFrameSelector.setAnimationList(animationList);
         animationFrameSelector.setAnimationProperties(animationProperties);
-        animationProperties.setAnimationFrameSelector(animationFrameSelector);
+        animationProperties.setFrameSelector(animationFrameSelector);
         animationRenderer.setAnimationPlayer(animationPlayer);
 
         final Composite properties = new Composite(content, SWT.NONE);

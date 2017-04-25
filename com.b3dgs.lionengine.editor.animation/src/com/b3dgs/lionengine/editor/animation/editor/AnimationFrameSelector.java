@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Animation paint listener, rendering the current animation.
  */
-public final class AnimationFrameSelector implements PaintListener, MouseListener, MouseMoveListener
+public final class AnimationFrameSelector implements PaintListener, MouseListener, MouseMoveListener, FrameSelector
 {
     /** Frame color. */
     private static final ColorRgba COLOR_FRAME = new ColorRgba(128, 128, 192, 255);
@@ -134,19 +134,6 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     public void setAnimationProperties(AnimationProperties animationProperties)
     {
         this.animationProperties = animationProperties;
-    }
-
-    /**
-     * Set the frames selection index.
-     * 
-     * @param start The first selected frame.
-     * @param end The last selected frame.
-     */
-    public void setSelectedFrames(int start, int end)
-    {
-        selectedFirstFrame = start;
-        selectedLastFrame = end;
-        updateRender();
     }
 
     /**
@@ -359,5 +346,17 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
 
         updateMouse(mx, my);
         updateFrameSelection();
+    }
+
+    /*
+     * FrameSelector
+     */
+
+    @Override
+    public void setSelectedFrames(int start, int end)
+    {
+        selectedFirstFrame = start;
+        selectedLastFrame = end;
+        updateRender();
     }
 }

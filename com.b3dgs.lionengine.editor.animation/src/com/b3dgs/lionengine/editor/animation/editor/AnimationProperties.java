@@ -36,7 +36,7 @@ public class AnimationProperties extends ObjectProperties<Animation> implements 
     /** Maximum frame. */
     private final int maxFrame;
     /** Animation frame selector. */
-    private AnimationFrameSelector animationFrameSelector;
+    private FrameSelector frameSelector;
     /** First frame. */
     private Text firstFrame;
     /** Last frame. */
@@ -62,11 +62,11 @@ public class AnimationProperties extends ObjectProperties<Animation> implements 
     /**
      * Set the animation frame selector.
      * 
-     * @param animationFrameSelector The animation frame selector reference.
+     * @param frameSelector The animation frame selector reference.
      */
-    public void setAnimationFrameSelector(AnimationFrameSelector animationFrameSelector)
+    public void setFrameSelector(FrameSelector frameSelector)
     {
-        this.animationFrameSelector = animationFrameSelector;
+        this.frameSelector = frameSelector;
     }
 
     /**
@@ -130,7 +130,7 @@ public class AnimationProperties extends ObjectProperties<Animation> implements 
         setButtonSelection(reverseAnim, animation.getReverse());
         setButtonSelection(repeatAnim, animation.getRepeat());
 
-        animationFrameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
+        frameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
     }
 
     @Override
