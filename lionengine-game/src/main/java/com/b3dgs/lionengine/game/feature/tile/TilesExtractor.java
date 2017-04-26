@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -133,7 +134,7 @@ public final class TilesExtractor
         int tiles = 0;
         for (final Media levelRip : levelRips)
         {
-            final ImageInfo info = ImageInfo.get(levelRip);
+            final ImageHeader info = ImageInfo.get(levelRip);
             final int horizontalTiles = info.getWidth() / tileWidth;
             final int verticalTiles = info.getHeight() / tileHeight;
             tiles += horizontalTiles * verticalTiles;
