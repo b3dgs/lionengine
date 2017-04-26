@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.SurfaceConfig;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.io.Xml;
 
@@ -110,7 +111,7 @@ public class PropertiesFrames implements PropertiesProviderObject
         final Xml size;
         final File file = new File(configurer.getPath(),
                                    root.getChild(SurfaceConfig.NODE_SURFACE).readString(SurfaceConfig.ATT_IMAGE));
-        final ImageInfo info = ImageInfo.get(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
+        final ImageHeader info = ImageInfo.get(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         if (!root.hasChild(SizeConfig.NODE_SIZE))
         {
             size = root.createChild(SizeConfig.NODE_SIZE);

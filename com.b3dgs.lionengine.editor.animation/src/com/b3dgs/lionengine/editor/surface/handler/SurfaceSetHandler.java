@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.SurfaceConfig;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.io.Xml;
 
@@ -57,7 +58,7 @@ public final class SurfaceSetHandler
             final Xml root = configurer.getRoot();
             if (!root.hasChild(SizeConfig.NODE_SIZE))
             {
-                final ImageInfo info = ImageInfo.get(media);
+                final ImageHeader info = ImageInfo.get(media);
 
                 final Xml size = root.createChild(SizeConfig.NODE_SIZE);
                 size.writeInteger(SizeConfig.ATT_WIDTH, info.getWidth());

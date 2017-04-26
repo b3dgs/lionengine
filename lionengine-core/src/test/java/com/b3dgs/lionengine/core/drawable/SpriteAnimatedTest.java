@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.ImageInfo;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.Transparency;
 
@@ -90,7 +90,7 @@ public class SpriteAnimatedTest
         final int framesH = 4;
         final int framesV = 2;
         final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(media, framesH, framesV);
-        final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(media, spriteC);
+        final ImageHeader info = DrawableTestTool.assertImageInfoCorrect(media, spriteC);
 
         Assert.assertEquals(info.getWidth() / framesH, spriteC.getTileWidth());
         Assert.assertEquals(info.getHeight() / framesV, spriteC.getTileHeight());

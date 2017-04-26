@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.graphic.UtilColor;
@@ -83,7 +84,7 @@ class SpriteImpl implements Sprite
 
         this.media = media;
 
-        final ImageInfo info = ImageInfo.get(media);
+        final ImageHeader info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
 

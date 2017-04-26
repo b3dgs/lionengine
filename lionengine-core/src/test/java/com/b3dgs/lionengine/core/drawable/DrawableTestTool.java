@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageFormat;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
@@ -49,9 +50,9 @@ public final class DrawableTestTool
      * @param image The image reference.
      * @return The image info instance.
      */
-    public static ImageInfo assertImageInfoCorrect(Media media, Image image)
+    public static ImageHeader assertImageInfoCorrect(Media media, Image image)
     {
-        final ImageInfo info = ImageInfo.get(media);
+        final ImageHeader info = ImageInfo.get(media);
         Assert.assertNotNull(info);
         Assert.assertNotNull(image);
         Assert.assertEquals(info.getWidth(), image.getWidth());

@@ -73,7 +73,7 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public ImageBuffer getImageBuffer(Media media)
     {
-        final ImageInfo info = ImageInfo.get(media);
+        final ImageHeader info = ImageInfo.get(media);
         return new ImageBufferMock(info.getWidth(), info.getHeight(), Transparency.OPAQUE);
     }
 

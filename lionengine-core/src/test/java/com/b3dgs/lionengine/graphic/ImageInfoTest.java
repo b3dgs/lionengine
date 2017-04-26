@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the image info class.
@@ -96,13 +97,24 @@ public class ImageInfoTest
                 name = "image" + i;
             }
             final Media media = Medias.create(name + "." + type.name().toLowerCase(Locale.ENGLISH));
-            final ImageInfo info = ImageInfo.get(media);
+            final ImageHeader info = ImageInfo.get(media);
 
             Assert.assertEquals(64, info.getWidth());
             Assert.assertEquals(32, info.getHeight());
             Assert.assertEquals(type, info.getFormat());
             Assert.assertTrue(ImageInfo.isImage(media));
         }
+    }
+
+    /**
+     * Test the constructor.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Exception
+    {
+        UtilTests.testPrivateConstructor(ImageInfo.class);
     }
 
     /**
@@ -147,13 +159,19 @@ public class ImageInfoTest
         testImageInfo(ImageFormat.JPG, 3);
         testImageInfo(ImageFormat.TIFF, 2);
 
-        final ImageInfo info = ImageInfo.get(Medias.create("image.tif"));
+        final ImageHeader info = ImageInfo.get(Medias.create("image.tif"));
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals(ImageFormat.TIFF, info.getFormat());
 
-        final ImageInfo info2 = ImageInfo.get(Medias.create("image2.tiff"));
-        Assert.assertNotNull(info2);
+        try
+        {
+            Assert.assertNull(ImageInfo.get(Medias.create("image2.tiff")));
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertNotNull(exception);
+        }
     }
 
     /**
@@ -165,7 +183,9 @@ public class ImageInfoTest
     @Test(expected = IOException.class)
     public void testSkippedError() throws IOException, Throwable
     {
-        final Method method = ImageInfo.class.getDeclaredMethod("checkSkippedError", Long.TYPE, Integer.TYPE);
+        final Method method = ImageHeaderReaderModel.class.getDeclaredMethod("checkSkippedError",
+                                                                             Long.TYPE,
+                                                                             Integer.TYPE);
         final boolean back = method.isAccessible();
         UtilReflection.setAccessible(method, true);
         try

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 
 /**
@@ -69,7 +70,7 @@ class ImageImpl implements Image
         Check.notNull(media);
         this.media = media;
 
-        final ImageInfo info = ImageInfo.get(media);
+        final ImageHeader info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
     }

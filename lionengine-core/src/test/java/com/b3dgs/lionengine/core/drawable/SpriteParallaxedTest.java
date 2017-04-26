@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.SpriteParallaxed;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -75,7 +76,7 @@ public class SpriteParallaxedTest
     @Test
     public void testParallax()
     {
-        final ImageInfo info = ImageInfo.get(media);
+        final ImageHeader info = ImageInfo.get(media);
         final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
 
         spriteA.load(false);
