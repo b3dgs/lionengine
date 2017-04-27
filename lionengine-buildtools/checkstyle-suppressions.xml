@@ -10,7 +10,7 @@
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.filter.FilterHq3x"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.filter.FilterHq2x"/>
     <!-- AWT -->
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="369"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="370"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.awt.swing.combo.UtilSwing"/>
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.awt.swing.Theme" lines="81"/>

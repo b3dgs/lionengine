@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
+import java.awt.AWTException;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -342,9 +343,9 @@ public final class ToolsAwt
         final int divisorGreen = 0x000100;
         final int divisorBlue = 0x000001;
 
-        final double sr = -((er - fr) / divisorRed) / (double) size;
-        final double sg = -((eg - fg) / divisorGreen) / (double) size;
-        final double sb = -((eb - fb) / divisorBlue) / (double) size;
+        final double sr = -((er - fr) / (double) divisorRed) / size;
+        final double sg = -((eg - fg) / (double) divisorGreen) / size;
+        final double sb = -((eb - fb) / (double) divisorBlue) / size;
 
         for (int i = 0; i < raster.getWidth(); i++)
         {
@@ -368,23 +369,48 @@ public final class ToolsAwt
      */
     public static Cursor createHiddenCursor()
     {
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension dim = toolkit.getBestCursorSize(1, 1);
+        final BufferedImage c = createImage(Math.max(1, dim.width), Math.max(1, dim.height), Transparency.BITMASK);
+        final BufferedImage buffer = applyMask(c, Color.BLACK.getRGB());
+        return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
+    }
+
+    /**
+     * Create the buffer strategy using default capabilities.
+     * 
+     * @param component The component reference.
+     * @param conf The current configuration.
+     */
+    public static void createBufferStrategy(java.awt.Canvas component, GraphicsConfiguration conf)
+    {
         try
         {
-            final Toolkit toolkit = Toolkit.getDefaultToolkit();
-            final Dimension dim = toolkit.getBestCursorSize(1, 1);
-            final BufferedImage c = createImage(Math.max(1, dim.width), Math.max(1, dim.height), Transparency.BITMASK);
-            final BufferedImage buffer = applyMask(c, Color.BLACK.getRGB());
-            return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
+            component.createBufferStrategy(2, conf.getBufferCapabilities());
         }
-        catch (final java.awt.HeadlessException exception)
+        catch (final AWTException exception)
         {
             Verbose.exception(exception);
-            return Cursor.getDefaultCursor();
+            component.createBufferStrategy(1);
         }
-        catch (final java.awt.AWTError exception)
+    }
+
+    /**
+     * Create the buffer strategy using default capabilities.
+     * 
+     * @param component The component reference.
+     * @param conf The current configuration.
+     */
+    public static void createBufferStrategy(java.awt.Window component, GraphicsConfiguration conf)
+    {
+        try
+        {
+            component.createBufferStrategy(2, conf.getBufferCapabilities());
+        }
+        catch (final AWTException exception)
         {
             Verbose.exception(exception);
-            return Cursor.getDefaultCursor();
+            component.createBufferStrategy(1);
         }
     }
 

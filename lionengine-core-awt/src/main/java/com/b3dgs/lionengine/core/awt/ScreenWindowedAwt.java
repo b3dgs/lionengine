@@ -17,27 +17,13 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.awt.AWTException;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.graphic.ScreenListener;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 import com.b3dgs.lionengine.io.awt.Mouse;
 
@@ -47,18 +33,8 @@ import com.b3dgs.lionengine.io.awt.Mouse;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenWindowedAwt extends ScreenAwt
+final class ScreenWindowedAwt extends ScreenBaseAwt
 {
-    /** Error message windowed. */
-    private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
-
-    /** Graphic configuration reference. */
-    private final GraphicsConfiguration conf;
-    /** Frame reference. */
-    private final JFrame frame;
-    /** Windowed canvas. */
-    private Canvas canvas;
-
     /**
      * Internal constructor.
      * 
@@ -68,22 +44,6 @@ final class ScreenWindowedAwt extends ScreenAwt
     ScreenWindowedAwt(Config config)
     {
         super(config);
-
-        final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        final GraphicsDevice dev = env.getDefaultScreenDevice();
-        conf = dev.getDefaultConfiguration();
-        frame = initMainFrame();
-    }
-
-    /**
-     * Called when screen is disposed.
-     */
-    void onDisposed()
-    {
-        for (final ScreenListener listener : listeners)
-        {
-            listener.notifyClosed();
-        }
     }
 
     /**
@@ -94,118 +54,36 @@ final class ScreenWindowedAwt extends ScreenAwt
      */
     private void initWindowed(Resolution output)
     {
-        try
-        {
-            canvas = new Canvas(conf);
-            canvas.setBackground(Color.BLACK);
-            canvas.setEnabled(true);
-            canvas.setVisible(true);
-            canvas.setIgnoreRepaint(true);
+        final Canvas canvas = new Canvas(conf);
+        canvas.setBackground(Color.BLACK);
+        canvas.setEnabled(true);
+        canvas.setVisible(true);
+        canvas.setIgnoreRepaint(true);
 
-            frame.add(canvas);
+        frame.add(canvas);
 
-            canvas.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
-            frame.pack();
-            frame.setLocationRelativeTo(null);
+        canvas.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
 
-            createBufferStrategy();
-            buf = canvas.getBufferStrategy();
+        ToolsAwt.createBufferStrategy(canvas, conf);
+        buf = canvas.getBufferStrategy();
 
-            // Set input listeners
-            componentForKeyboard = canvas;
-            componentForMouse = canvas;
-            componentForCursor = frame;
-            frame.validate();
-        }
-        catch (final IllegalStateException exception)
-        {
-            throw new LionEngineException(exception, ScreenWindowedAwt.ERROR_WINDOWED);
-        }
+        // Set input listeners
+        componentForKeyboard = canvas;
+        componentForMouse = canvas;
+        componentForCursor = frame;
+        frame.validate();
     }
 
-    /**
-     * Create the buffer strategy using default capabilities.
+    /*
+     * ScreenAwt
      */
-    private void createBufferStrategy()
-    {
-        try
-        {
-            canvas.createBufferStrategy(2, conf.getBufferCapabilities());
-        }
-        catch (final AWTException exception)
-        {
-            Verbose.exception(exception);
-            canvas.createBufferStrategy(1);
-        }
-    }
-
-    /**
-     * Initialize the main frame.
-     * 
-     * @return The created main frame.
-     * @throws LionEngineException If engine has not been started.
-     */
-    private JFrame initMainFrame()
-    {
-        final String title = new StringBuilder().append(Engine.getProgramName())
-                                                .append(Constant.SPACE)
-                                                .append(Engine.getProgramVersion())
-                                                .toString();
-        final JFrame frame = new JFrame(title, conf);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent event)
-            {
-                onDisposed();
-            }
-        });
-        frame.setResizable(false);
-        frame.setIgnoreRepaint(true);
-
-        return frame;
-    }
 
     @Override
     protected void setResolution(Resolution output)
     {
         initWindowed(output);
         super.setResolution(output);
-    }
-
-    /*
-     * Screen
-     */
-
-    @Override
-    public void start()
-    {
-        super.start();
-        frame.validate();
-        frame.setEnabled(true);
-        frame.setVisible(true);
-    }
-
-    @Override
-    public void dispose()
-    {
-        super.dispose();
-        buf.dispose();
-        frame.dispose();
-    }
-
-    @Override
-    public void requestFocus()
-    {
-        frame.requestFocus();
-        super.requestFocus();
-    }
-
-    @Override
-    public void setIcon(String filename)
-    {
-        final ImageIcon icon = new ImageIcon(filename);
-        frame.setIconImage(icon.getImage());
     }
 }

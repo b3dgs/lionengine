@@ -17,27 +17,14 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.graphic.ScreenListener;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 import com.b3dgs.lionengine.io.awt.Mouse;
 
@@ -47,7 +34,7 @@ import com.b3dgs.lionengine.io.awt.Mouse;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenFullAwt extends ScreenAwt
+final class ScreenFullAwt extends ScreenBaseAwt
 {
     /** Error message unsupported full screen. */
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
@@ -75,13 +62,6 @@ final class ScreenFullAwt extends ScreenAwt
                                   .toString();
     }
 
-    /** Graphics device reference. */
-    private final GraphicsDevice dev;
-    /** Graphic configuration reference. */
-    private final GraphicsConfiguration conf;
-    /** Frame reference. */
-    private final JFrame frame;
-
     /**
      * Internal constructor.
      * 
@@ -91,50 +71,8 @@ final class ScreenFullAwt extends ScreenAwt
     ScreenFullAwt(Config config)
     {
         super(config);
-        final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        dev = env.getDefaultScreenDevice();
-        conf = dev.getDefaultConfiguration();
-        frame = initMainFrame();
-    }
 
-    /**
-     * Called when screen is disposed.
-     */
-    void onDisposed()
-    {
-        for (final ScreenListener listener : listeners)
-        {
-            listener.notifyClosed();
-        }
-    }
-
-    /**
-     * Initialize the main frame.
-     * 
-     * @return The created main frame.
-     * @throws LionEngineException If the engine has not been started.
-     */
-    private JFrame initMainFrame()
-    {
-        final String title = new StringBuilder().append(Engine.getProgramName())
-                                                .append(Constant.SPACE)
-                                                .append(Engine.getProgramVersion())
-                                                .toString();
-        final JFrame frame = new JFrame(title, conf);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent event)
-            {
-                onDisposed();
-            }
-        });
-        frame.setResizable(false);
         frame.setUndecorated(true);
-        frame.setIgnoreRepaint(true);
-
-        return frame;
     }
 
     /**
@@ -169,16 +107,7 @@ final class ScreenFullAwt extends ScreenAwt
         dev.setDisplayMode(disp);
         window.validate();
 
-        // Create buffer
-        try
-        {
-            window.createBufferStrategy(2, conf.getBufferCapabilities());
-        }
-        catch (final AWTException exception)
-        {
-            Verbose.exception(exception);
-            window.createBufferStrategy(1);
-        }
+        ToolsAwt.createBufferStrategy(window, conf);
         buf = window.getBufferStrategy();
 
         // Set input listeners
@@ -268,39 +197,8 @@ final class ScreenFullAwt extends ScreenAwt
     }
 
     /*
-     * Screen
+     * ScreenAwt
      */
-
-    @Override
-    public void start()
-    {
-        super.start();
-        frame.validate();
-        frame.setEnabled(true);
-        frame.setVisible(true);
-    }
-
-    @Override
-    public void dispose()
-    {
-        super.dispose();
-        buf.dispose();
-        frame.dispose();
-    }
-
-    @Override
-    public void requestFocus()
-    {
-        frame.requestFocus();
-        super.requestFocus();
-    }
-
-    @Override
-    public void setIcon(String filename)
-    {
-        final ImageIcon icon = new ImageIcon(filename);
-        frame.setIconImage(icon.getImage());
-    }
 
     @Override
     protected void setResolution(Resolution output)
