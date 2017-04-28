@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature.collidable.selector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -72,22 +71,28 @@ public class Hud extends FeaturableModel
             if (selectable.hasFeature(Actioner.class))
             {
                 final Actioner actioner = selectable.getFeature(Actioner.class);
-                if (actions.isEmpty())
-                {
-                    final Collection<ActionRef> other = actioner.getActions();
-                    if (other.isEmpty())
-                    {
-                        return Collections.emptySet();
-                    }
-                    actions.addAll(actioner.getActions());
-                }
-                else
-                {
-                    actions.retainAll(actioner.getActions());
-                }
+                checkActionsInCommon(actioner, actions);
             }
         }
         return actions;
+    }
+
+    /**
+     * Get all actions in common.
+     * 
+     * @param actioner The current selectable.
+     * @param actions The collected actions in common.
+     */
+    private static void checkActionsInCommon(Actioner actioner, Collection<ActionRef> actions)
+    {
+        if (actions.isEmpty())
+        {
+            actions.addAll(actioner.getActions());
+        }
+        else
+        {
+            actions.retainAll(actioner.getActions());
+        }
     }
 
     /** Selector reference. */
