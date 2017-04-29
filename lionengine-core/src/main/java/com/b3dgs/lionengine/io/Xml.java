@@ -17,13 +17,9 @@
  */
 package com.b3dgs.lionengine.io;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -38,7 +34,6 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -64,12 +59,8 @@ import com.b3dgs.lionengine.util.UtilStream;
  * node.writeBoolean(&quot;value&quot;, true);
  * </pre>
  */
-public class Xml
+public class Xml extends XmlReader
 {
-    /** Null string (represents a string stored as <code>null</code>). */
-    public static final String NULL = "null";
-    /** Error when reading the file. */
-    private static final String ERROR_READING = "An error occured while reading";
     /** Error when writing into file. */
     private static final String ERROR_WRITING = "An error occured while writing";
     /** Header attribute. */
@@ -83,16 +74,9 @@ public class Xml
     /** Node error. */
     private static final String ERROR_NODE = "Node not found: ";
     /** Attribute error. */
-    private static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
-    /** Attribute error. */
     private static final String ERROR_WRITE_ATTRIBUTE = "Error when setting the attribute:";
     /** Attribute error. */
     private static final String ERROR_WRITE_CONTENT = " with the following content: ";
-
-    /** Document. */
-    private final Document document;
-    /** Root reference. */
-    private final Element root;
 
     /**
      * Create node from media.
@@ -102,22 +86,7 @@ public class Xml
      */
     public Xml(Media media)
     {
-        Check.notNull(media);
-
-        final InputStream input = media.getInputStream();
-        try
-        {
-            document = DocumentFactory.createDocument(input);
-            root = document.getDocumentElement();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, media, ERROR_READING);
-        }
-        finally
-        {
-            UtilStream.safeClose(input);
-        }
+        super(media);
     }
 
     /**
@@ -128,16 +97,7 @@ public class Xml
      */
     public Xml(String name)
     {
-        Check.notNull(name);
-        try
-        {
-            document = DocumentFactory.createDocument();
-            root = document.createElement(name);
-        }
-        catch (final DOMException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        super(name);
     }
 
     /**
@@ -148,8 +108,7 @@ public class Xml
      */
     Xml(Document document, Element root)
     {
-        this.document = document;
-        this.root = root;
+        super(document, root);
     }
 
     /**
@@ -173,49 +132,6 @@ public class Xml
         {
             Verbose.exception(exception);
         }
-    }
-
-    /**
-     * Get the original element.
-     * 
-     * @return The jdom element.
-     */
-    Element getElement()
-    {
-        return root;
-    }
-
-    /**
-     * Get the attribute value.
-     * 
-     * @param attribute The attribute name.
-     * @return The attribute value.
-     * @throws LionEngineException If attribute is not valid or does not exist.
-     */
-    private String getValue(String attribute)
-    {
-        if (root.hasAttribute(attribute))
-        {
-            return root.getAttribute(attribute);
-        }
-        throw new LionEngineException(ERROR_ATTRIBUTE, attribute);
-    }
-
-    /**
-     * Get the attribute value.
-     * 
-     * @param defaultValue The value returned if attribute does not exist.
-     * @param attribute The attribute name.
-     * @return The attribute value.
-     * @throws LionEngineException If attribute is not valid or does not exist.
-     */
-    private String getValue(String defaultValue, String attribute)
-    {
-        if (root.hasAttribute(attribute))
-        {
-            return root.getAttribute(attribute);
-        }
-        return defaultValue;
     }
 
     /**
@@ -394,7 +310,7 @@ public class Xml
     }
 
     /**
-     * Write a string. If the content is equal to <code>null</code>, {@link Xml#NULL} is wrote instead.
+     * Write a string. If the content is equal to <code>null</code>, {@link #NULL} is wrote instead.
      * 
      * @param attribute The attribute name.
      * @param content The string value.
@@ -404,214 +320,12 @@ public class Xml
     {
         if (content == null)
         {
-            write(attribute, Xml.NULL);
+            write(attribute, NULL);
         }
         else
         {
             write(attribute, content);
         }
-    }
-
-    /**
-     * Read a boolean.
-     * 
-     * @param attribute The boolean name.
-     * @return The boolean value.
-     * @throws LionEngineException If error when reading.
-     */
-    public boolean readBoolean(String attribute)
-    {
-        return Boolean.parseBoolean(getValue(attribute));
-    }
-
-    /**
-     * Read a boolean.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The boolean name.
-     * @return The boolean value.
-     */
-    public boolean readBoolean(boolean defaultValue, String attribute)
-    {
-        return Boolean.parseBoolean(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a byte.
-     * 
-     * @param attribute The integer name.
-     * @return The byte value.
-     * @throws LionEngineException If error when reading.
-     */
-    public byte readByte(String attribute)
-    {
-        return Byte.parseByte(getValue(attribute));
-    }
-
-    /**
-     * Read a byte.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name.
-     * @return The byte value.
-     */
-    public byte readByte(byte defaultValue, String attribute)
-    {
-        return Byte.parseByte(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a short.
-     * 
-     * @param attribute The integer name.
-     * @return The short value.
-     * @throws LionEngineException If error when reading.
-     */
-    public short readShort(String attribute)
-    {
-        return Short.parseShort(getValue(attribute));
-    }
-
-    /**
-     * Read a short.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name.
-     * @return The short value.
-     */
-    public short readShort(short defaultValue, String attribute)
-    {
-        return Short.parseShort(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read an integer.
-     * 
-     * @param attribute The integer name.
-     * @return The integer value.
-     * @throws LionEngineException If error when reading.
-     */
-    public int readInteger(String attribute)
-    {
-        return Integer.parseInt(getValue(attribute));
-    }
-
-    /**
-     * Read an integer.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name.
-     * @return The integer value.
-     */
-    public int readInteger(int defaultValue, String attribute)
-    {
-        return Integer.parseInt(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a long.
-     * 
-     * @param attribute The float name.
-     * @return The long value.
-     * @throws LionEngineException If error when reading.
-     */
-    public long readLong(String attribute)
-    {
-        return Long.parseLong(getValue(attribute));
-    }
-
-    /**
-     * Read a long.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The float name.
-     * @return The long value.
-     */
-    public long readLong(long defaultValue, String attribute)
-    {
-        return Long.parseLong(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a float.
-     * 
-     * @param attribute The float name.
-     * @return The float value.
-     * @throws LionEngineException If error when reading.
-     */
-    public float readFloat(String attribute)
-    {
-        return Float.parseFloat(getValue(attribute));
-    }
-
-    /**
-     * Read a float.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The float name.
-     * @return The float value.
-     */
-    public float readFloat(float defaultValue, String attribute)
-    {
-        return Float.parseFloat(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a double.
-     * 
-     * @param attribute The double name.
-     * @return The double value.
-     * @throws LionEngineException If error when reading.
-     */
-    public double readDouble(String attribute)
-    {
-        return Double.parseDouble(getValue(attribute));
-    }
-
-    /**
-     * Read a double.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The double name.
-     * @return The double value.
-     */
-    public double readDouble(double defaultValue, String attribute)
-    {
-        return Double.parseDouble(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a string. If the read string is equal to {@link Xml#NULL}, <code>null</code> will be returned instead.
-     * 
-     * @param attribute The string name.
-     * @return The string value.
-     * @throws LionEngineException If error when reading.
-     */
-    public String readString(String attribute)
-    {
-        final String value = getValue(attribute);
-        if (Xml.NULL.equals(value))
-        {
-            return null;
-        }
-        return value;
-    }
-
-    /**
-     * Read a string. If the read string is equal to {@link Xml#NULL}, <code>null</code> will be returned instead.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The string name.
-     * @return The string value.
-     */
-    public String readString(String defaultValue, String attribute)
-    {
-        final String value = getValue(defaultValue, attribute);
-        if (Xml.NULL.equals(value))
-        {
-            return null;
-        }
-        return value;
     }
 
     /**
@@ -657,26 +371,6 @@ public class Xml
         {
             root.removeChild(child.getElement());
         }
-    }
-
-    /**
-     * Get the name of the current node.
-     * 
-     * @return The node name.
-     */
-    public String getNodeName()
-    {
-        return root.getTagName();
-    }
-
-    /**
-     * Return the text inside the node.
-     * 
-     * @return The text.
-     */
-    public String getText()
-    {
-        return root.getTextContent();
     }
 
     /**
@@ -739,53 +433,5 @@ public class Xml
             }
         }
         return nodes;
-    }
-
-    /**
-     * Get all attributes.
-     * 
-     * @return The attributes map reference.
-     */
-    public Map<String, String> getAttributes()
-    {
-        final Map<String, String> attributes = new HashMap<String, String>();
-        final NamedNodeMap map = root.getAttributes();
-        for (int i = 0; i < map.getLength(); i++)
-        {
-            final Node node = map.item(i);
-            attributes.put(node.getNodeName(), node.getNodeValue());
-        }
-        return attributes;
-    }
-
-    /**
-     * Check if node has the following attribute.
-     * 
-     * @param attribute The attribute name.
-     * @return <code>true</code> if attribute exists, <code>false</code> else.
-     */
-    public boolean hasAttribute(String attribute)
-    {
-        return root.hasAttribute(attribute);
-    }
-
-    /**
-     * Check if node has the following child.
-     * 
-     * @param child The child name.
-     * @return <code>true</code> if child exists, <code>false</code> else.
-     */
-    public boolean hasChild(String child)
-    {
-        final NodeList list = root.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            final Node node = list.item(i);
-            if (root.equals(node.getParentNode()) && node instanceof Element && node.getNodeName().equals(child))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 }
