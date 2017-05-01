@@ -47,6 +47,12 @@ public class ImageBufferAwtTest
         Assert.assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
         Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
         Assert.assertEquals(Transparency.OPAQUE, image.getTransparency());
+        Assert.assertEquals(Transparency.BITMASK,
+                            ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer, java.awt.Transparency.BITMASK))
+                                    .getTransparency());
+        Assert.assertEquals(Transparency.TRANSLUCENT,
+                            ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer, java.awt.Transparency.TRANSLUCENT))
+                                    .getTransparency());
         Assert.assertEquals(buffer.getWidth(), image.getWidth());
         Assert.assertEquals(buffer.getHeight(), image.getHeight());
 
