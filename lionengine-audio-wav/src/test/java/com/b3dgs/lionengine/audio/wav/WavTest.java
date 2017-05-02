@@ -47,6 +47,7 @@ public class WavTest
     public static void prepareTest()
     {
         Medias.setLoadFromJar(WavTest.class);
+        WavFormat.setMixer(null);
         AudioFactory.addFormat(new WavFormat());
         mediaSound = Medias.create("sound.wav");
         sound = AudioFactory.loadAudio(mediaSound, Wav.class);
