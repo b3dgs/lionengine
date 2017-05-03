@@ -379,9 +379,9 @@ public final class ToolsSwt
         final int divisorGreen = 0x000100;
         final int divisorBlue = 0x000001;
 
-        final double sr = -((er - fr) / divisorRed) / (double) refSize;
-        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
-        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
+        final double sr = -((er - fr) / (double) divisorRed) / refSize;
+        final double sg = -((eg - fg) / (double) divisorGreen) / refSize;
+        final double sb = -((eb - fb) / (double) divisorBlue) / refSize;
 
         int lastPixel = newColorsPixel.size();
         final int[][] pixels = new int[data.width][data.height];
