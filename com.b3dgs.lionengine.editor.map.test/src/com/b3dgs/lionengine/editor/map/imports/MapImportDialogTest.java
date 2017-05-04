@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.map.UtilNl;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -101,9 +101,9 @@ public class MapImportDialogTest
     public void testMapImportDialog()
     {
         Assert.assertNotNull(ImportProjectTest.createProject(BOT, getClass()));
-        UtilTests.copy(".map", Medias.create("sheets.xml"));
-        UtilTests.copy(".map", Medias.create("groups.xml"));
-        UtilTests.copy(".map", Medias.create("0.png"));
+        UtilEditorTests.copy(".map", Medias.create("sheets.xml"));
+        UtilEditorTests.copy(".map", Medias.create("groups.xml"));
+        UtilEditorTests.copy(".map", Medias.create("0.png"));
 
         BOT.menu(UtilNl.get("menu.map.import"), true).click();
         fillDialog(BOT);

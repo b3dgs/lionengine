@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.animation.editor.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 
@@ -47,10 +47,10 @@ public class AnimationEditorTest
     public void testAnimationEditor()
     {
         final File projectFolder = ImportProjectTest.createProject(BOT, getClass());
-        UtilTests.copy(".animation", Medias.create("Mario.png"));
-        UtilTests.copy(".animation", Medias.create("Mario.xml"));
+        UtilEditorTests.copy(".animation", Medias.create("Mario.png"));
+        UtilEditorTests.copy(".animation", Medias.create("Mario.xml"));
 
-        UtilTests.waitResourcesCopied(BOT, projectFolder, 3);
+        UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 3);
 
         BOT.tree(0).getTreeItem(projectFolder.getName()).getNode("resources").getNode("Mario.xml").click();
         BOT.tree(1).contextMenu(UtilNl.get("menu.animations-enable")).click();

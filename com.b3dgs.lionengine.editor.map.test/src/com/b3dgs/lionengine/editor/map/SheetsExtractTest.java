@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.map.sheet.extract.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -45,16 +45,17 @@ public class SheetsExtractTest
      * Fill extract dialog with test values.
      * 
      * @param bot The bot used.
+     * @return The main shell.
      */
-    static void fillDialog(SWTBot bot)
+    static SWTBotShell fillDialog(SWTBot bot)
     {
         bot.waitUntil(Conditions.shellIsActive(Messages.Title));
-        final SWTBotShell shellMain = bot.activeShell();
+        final SWTBotShell shellMain = bot.shell(Messages.Title);
 
         bot.buttonWithTooltip(com.b3dgs.lionengine.editor.widget.levelrip.Messages.AddLevelRip).click();
 
         bot.waitUntil(Conditions.shellIsActive(com.b3dgs.lionengine.editor.dialog.Messages.ResourceDialog_Title));
-        final SWTBotShell shellResources = bot.activeShell();
+        final SWTBotShell shellResources = bot.shell(com.b3dgs.lionengine.editor.dialog.Messages.ResourceDialog_Title);
 
         final SWTBot levelRips = shellResources.bot();
         final Project project = ProjectModel.INSTANCE.getProject();
@@ -67,13 +68,7 @@ public class SheetsExtractTest
         bot.textWithTooltip(Messages.TileHeight).setText("16");
         bot.button(com.b3dgs.lionengine.editor.dialog.Messages.Finish).click();
 
-        final SWTBotShell shellProgress = bot.activeShell();
-        if (shellProgress.getText().equals(Messages.Title_Progress))
-        {
-            bot.waitWhile(Conditions.shellCloses(shellProgress));
-        }
-
-        bot.waitUntil(Conditions.shellCloses(shellMain));
+        return shellMain;
     }
 
     /**
@@ -81,7 +76,7 @@ public class SheetsExtractTest
      */
     static void checkResult()
     {
-        final Media media = UtilTests.getMedia(TileSheetsConfig.FILENAME);
+        final Media media = UtilEditorTests.getMedia(TileSheetsConfig.FILENAME);
         final TileSheetsConfig config = TileSheetsConfig.imports(media);
 
         Assert.assertEquals(16, config.getTileWidth());
@@ -89,7 +84,7 @@ public class SheetsExtractTest
         Assert.assertTrue(config.getSheets().size() > 0);
         for (final String sheet : config.getSheets())
         {
-            Assert.assertTrue(UtilTests.getMedia(sheet).exists());
+            Assert.assertTrue(UtilEditorTests.getMedia(sheet).exists());
         }
     }
 

@@ -26,7 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.object.UtilNl;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.game.FeaturableConfig;
@@ -55,7 +55,7 @@ public class AddRemoveTest
            .click();
 
         BOT.activeShell().pressShortcut(Keystrokes.CR);
-        UtilTests.waitResourcesCopied(BOT, projectFolder, 2);
+        UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 2);
 
         final File file = new File(projectFolder, UtilFolder.getPath("resources", FeaturableConfig.DEFAULT_FILENAME));
 
@@ -68,7 +68,7 @@ public class AddRemoveTest
            .contextMenu(UtilNl.get("menu.object-delete"))
            .click();
 
-        UtilTests.waitResourcesCopied(BOT, projectFolder, 2);
+        UtilEditorTests.waitResourcesCopied(BOT, projectFolder, 2);
 
         Assert.assertFalse(file.getPath(), file.isFile());
     }

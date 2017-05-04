@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.editor.map;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,8 +45,10 @@ public class ExtractAllTest
 
         BOT.menu(UtilNl.get("menu.map.extract-all"), true).click();
 
-        SheetsExtractTest.fillDialog(BOT);
+        final SWTBotShell shellMain = SheetsExtractTest.fillDialog(BOT);
         GroupsEditTest.fillDialogAssign(BOT);
+
+        BOT.waitUntil(Conditions.shellCloses(shellMain));
 
         SheetsExtractTest.checkResult();
         GroupsEditTest.checkResult();

@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.map.constaint.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -81,7 +81,7 @@ public class ConstraintsExtractTest
      */
     static void checkResult()
     {
-        final Media media = UtilTests.getMedia(TransitionsConfig.FILENAME);
+        final Media media = UtilEditorTests.getMedia(TransitionsConfig.FILENAME);
         final Map<Transition, Collection<TileRef>> constraints = TransitionsConfig.imports(media);
 
         final String group = MapTileGroupModel.NO_GROUP_NAME;
@@ -96,9 +96,9 @@ public class ConstraintsExtractTest
     public void testConstraintsExtractDialog()
     {
         Assert.assertNotNull(ImportProjectTest.createProject(BOT, getClass()));
-        UtilTests.copy(".map", Medias.create("sheets.xml"));
-        UtilTests.copy(".map", Medias.create("groups.xml"));
-        UtilTests.copy(".map", Medias.create("0.png"));
+        UtilEditorTests.copy(".map", Medias.create("sheets.xml"));
+        UtilEditorTests.copy(".map", Medias.create("groups.xml"));
+        UtilEditorTests.copy(".map", Medias.create("0.png"));
 
         BOT.menu(UtilNl.get("menu.map.extract-constraints"), true).click();
         fillDialog(BOT);

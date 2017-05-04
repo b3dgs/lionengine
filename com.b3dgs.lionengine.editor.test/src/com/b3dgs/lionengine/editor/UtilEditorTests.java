@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 
 /**
- * Utility related to NL access.
+ * Utility related to editor test.
  */
-public class UtilTests
+public class UtilEditorTests
 {
     /**
      * Copy test resource file.

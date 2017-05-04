@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.map.group.editor.Messages;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -79,7 +79,7 @@ public class GroupsEditTest
     static void fillDialogAssign(SWTBot bot)
     {
         bot.waitUntil(Conditions.shellIsActive(com.b3dgs.lionengine.editor.map.group.menu.Messages.Title));
-        final SWTBotShell shellMain = bot.activeShell();
+        final SWTBotShell shellMain = bot.shell(com.b3dgs.lionengine.editor.map.group.menu.Messages.Title);
 
         final SWTBot groups = shellMain.bot();
         groups.comboBoxWithLabel(Messages.TileGroupType).setSelection(TileGroupType.TRANSITION.name());
@@ -93,7 +93,7 @@ public class GroupsEditTest
      */
     public static void checkResult()
     {
-        final Media media = UtilTests.getMedia(TileGroupsConfig.FILENAME);
+        final Media media = UtilEditorTests.getMedia(TileGroupsConfig.FILENAME);
         final Collection<TileGroup> tileGroups = TileGroupsConfig.imports(media);
 
         Assert.assertEquals(1, tileGroups.size());
@@ -110,8 +110,8 @@ public class GroupsEditTest
     public void testGroupsEditDialog()
     {
         Assert.assertNotNull(ImportProjectTest.createProject(BOT, getClass()));
-        UtilTests.copy(".map", Medias.create("sheets.xml"));
-        UtilTests.copy(".map", Medias.create("0.png"));
+        UtilEditorTests.copy(".map", Medias.create("sheets.xml"));
+        UtilEditorTests.copy(".map", Medias.create("0.png"));
 
         BOT.menu(UtilNl.get("menu.map.edit-groups"), true).click();
         fillDialogConfigure(BOT);

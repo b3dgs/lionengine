@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.UtilTests;
+import com.b3dgs.lionengine.editor.UtilEditorTests;
 import com.b3dgs.lionengine.editor.map.UtilNl;
 import com.b3dgs.lionengine.editor.map.imports.MapImportDialogTest;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
@@ -49,17 +49,17 @@ public class WorldNavigationTest
     public void testWorldNavigation()
     {
         Assert.assertNotNull(ImportProjectTest.createProject(BOT, getClass()));
-        UtilTests.copy(".map", Medias.create("sheets.xml"));
-        UtilTests.copy(".map", Medias.create("groups.xml"));
-        UtilTests.copy(".map", Medias.create("0.png"));
+        UtilEditorTests.copy(".map", Medias.create("sheets.xml"));
+        UtilEditorTests.copy(".map", Medias.create("groups.xml"));
+        UtilEditorTests.copy(".map", Medias.create("0.png"));
 
         BOT.menu(UtilNl.get("menu.map.import"), true).click();
         MapImportDialogTest.fillDialog(BOT);
 
         final Camera camera = WorldModel.INSTANCE.getCamera();
 
-        Assert.assertEquals(0.0, camera.getX(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getX(), 0.0);
+        Assert.assertEquals(0.0, camera.getY(), 0.0);
 
         final SWTBotCanvas canvas = BOT.canvas(1);
         canvas.setFocus();
@@ -67,17 +67,14 @@ public class WorldNavigationTest
 
         BOT.sleep(500);
 
-        Assert.assertEquals(WorldNavigation.GRID_MOVEMENT_SENSIBILITY
-                            * 16.0,
-                            camera.getX(),
-                            com.b3dgs.lionengine.util.UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
+        Assert.assertEquals(WorldNavigation.GRID_MOVEMENT_SENSIBILITY * 16.0, camera.getX(), 0.0);
+        Assert.assertEquals(0.0, camera.getY(), 0.0);
 
         canvas.pressShortcut(Keystrokes.LEFT);
 
         BOT.sleep(500);
 
-        Assert.assertEquals(0.0, camera.getX(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), com.b3dgs.lionengine.util.UtilTests.PRECISION);
+        Assert.assertEquals(0.0, camera.getX(), 0.0);
+        Assert.assertEquals(0.0, camera.getY(), 0.0);
     }
 }

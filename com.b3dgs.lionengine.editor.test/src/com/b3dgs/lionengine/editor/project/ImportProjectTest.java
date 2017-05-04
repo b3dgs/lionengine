@@ -24,6 +24,8 @@ import java.nio.file.Files;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,9 +54,11 @@ public class ImportProjectTest
     public static File createProject(SWTBot bot, Class<?> clazz)
     {
         final File projectFolder = copyProjectToTemp(clazz);
-
         bot.menu(UtilNl.get("menu.file.import-project"), true).click();
-        final SWTBot dialog = bot.activeShell().bot();
+        bot.waitUntil(Conditions.shellIsActive(UtilNl.get("menu.file.import-project")));
+
+        final SWTBotShell shell = bot.shell(UtilNl.get("menu.file.import-project"));
+        final SWTBot dialog = shell.activate().bot();
 
         dialog.text(1).setText(projectFolder.getAbsolutePath());
         dialog.text(2).setText("bin");
@@ -62,6 +66,8 @@ public class ImportProjectTest
         dialog.text(4).setText("resources");
 
         dialog.button(Messages.Finish).click();
+
+        bot.waitUntil(Conditions.shellCloses(shell));
 
         return projectFolder;
     }
