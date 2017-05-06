@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core.awt;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,8 +49,8 @@ public class ImageBufferAwtTest
     /**
      * Clean test.
      */
-    @BeforeClass
-    public static void cleanup()
+    @AfterClass
+    public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
     }

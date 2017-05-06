@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,8 +53,8 @@ public class ImageBufferSwtTest
     /**
      * Clean test.
      */
-    @BeforeClass
-    public static void cleanup()
+    @AfterClass
+    public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
     }

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.io.IOException;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -49,8 +50,8 @@ public class FactoryGraphicAwtTest extends FactoryGraphicTest
     /**
      * Clean test.
      */
-    @BeforeClass
-    public static void cleanup()
+    @AfterClass
+    public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
     }
