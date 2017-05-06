@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
 import com.b3dgs.lionengine.graphic.Transform;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
@@ -380,7 +379,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         // Scaled rendering
         else
         {
-            buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+            buf = Graphics.createImageBuffer(width, height);
             transform = getTransform(filter);
             final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());

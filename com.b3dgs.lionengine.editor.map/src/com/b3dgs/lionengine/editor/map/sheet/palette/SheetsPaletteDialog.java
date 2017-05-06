@@ -48,11 +48,11 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.Transition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionType;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Sheets palette dialog.
@@ -355,7 +355,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         final int width = horizontalTiles * tw;
         final int height = Math.max(horizontalTiles / Math.max(1, tiles.size()) * th, th);
 
-        final ImageBuffer buff = Graphics.createImageBuffer(width + 1, height + 1, Transparency.BITMASK);
+        final ImageBuffer buff = Graphics.createImageBuffer(width + 1, height + 1, ColorRgba.TRANSPARENT);
         final Graphic g = buff.createGraphic();
 
         int id = 0;

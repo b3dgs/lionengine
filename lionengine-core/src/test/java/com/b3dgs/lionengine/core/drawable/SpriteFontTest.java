@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.SpriteFont;
-import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -58,7 +57,7 @@ public class SpriteFontTest
 
         media = Medias.create("image.png");
         font = Medias.create("fontdata.xml");
-        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**

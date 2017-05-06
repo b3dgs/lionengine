@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * This class allows to extract unique tiles from a level rip.
@@ -68,7 +66,7 @@ public final class TilesExtractor
                 final int colorA = a.getRgb(x + xa, y + ya);
                 final int colorB = b.getRgb(x + xb, y + yb);
 
-                if (colorA != colorB && !UtilColor.isOpaqueTransparentExclusive(colorA, colorB))
+                if (colorA != colorB)
                 {
                     return false;
                 }
@@ -94,7 +92,6 @@ public final class TilesExtractor
 
         for (final ImageBuffer tile : tiles)
         {
-
             if (compareTile(tw, th, surface, x, y, tile, 0, 0))
             {
                 return true;
@@ -112,13 +109,16 @@ public final class TilesExtractor
      */
     private static ImageBuffer extract(SpriteTiled level, int number)
     {
-        final Transparency transparency = level.getSurface().getTransparency();
+        final ColorRgba transparency = level.getSurface().getTransparentColor();
         final ImageBuffer tile = Graphics.createImageBuffer(level.getTileWidth(), level.getTileHeight(), transparency);
         final Graphic g = tile.createGraphic();
         level.setTile(number);
         level.render(g);
         g.dispose();
-        return Graphics.getImageBuffer(tile);
+
+        final ImageBuffer copy = Graphics.getImageBuffer(tile);
+        tile.dispose();
+        return copy;
     }
 
     /**

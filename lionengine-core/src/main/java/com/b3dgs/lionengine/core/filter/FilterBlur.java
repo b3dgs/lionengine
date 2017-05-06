@@ -103,7 +103,7 @@ public class FilterBlur implements Filter
         compute(kernel, inPixels, outPixels, width, height, alpha, edge);
         compute(kernel, outPixels, inPixels, height, width, alpha, edge);
 
-        final ImageBuffer dest = Graphics.createImageBuffer(width, height, source.getTransparency());
+        final ImageBuffer dest = Graphics.createImageBuffer(width, height, source.getTransparentColor());
         dest.setRgb(0, 0, width, height, inPixels, 0, width);
         return dest;
     }

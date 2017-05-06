@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.swt;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -74,15 +75,54 @@ public final class ToolsSwt
     public static Image createImage(int width, int height, int transparency)
     {
         final Device device = getDisplay();
-        final Image image = new Image(device, width, height);
         if (transparency != SWT.TRANSPARENCY_NONE)
         {
-            final ImageData data = image.getImageData();
-            data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
-            image.dispose();
-            return new Image(device, data);
+            final PaletteData palette = new PaletteData(0xff, 0xff00, 0xff0000);
+            final ImageData data = new ImageData(width, height, 24, palette);
+            data.transparentPixel = -1;
+
+            final byte[] alpha = new byte[data.width];
+            Arrays.fill(alpha, (byte) 255);
+
+            for (int y = 0; y < data.height; y++)
+            {
+                data.setAlphas(0, y, alpha.length, alpha, 0);
+            }
         }
-        return image;
+        return new Image(device, width, height);
+    }
+
+    /**
+     * Create an image.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     * @param transparency The image transparency.
+     * @return The image.
+     * @throws SWTException If error on getting data.
+     */
+    public static Image createImage(int width, int height, ColorRgba transparency)
+    {
+        final Device device = getDisplay();
+
+        final PaletteData palette = new PaletteData(0xff, 0xff00, 0xff0000);
+        final ImageData data = new ImageData(width, height, 24, palette);
+        final int transparent = palette.getPixel(new RGB(transparency.getRed(),
+                                                         transparency.getGreen(),
+                                                         transparency.getBlue()));
+        data.transparentPixel = transparent;
+
+        final int[] pixels = new int[data.width];
+        for (int i = 0; i < pixels.length; i++)
+        {
+            pixels[i] = transparent;
+        }
+        for (int y = 0; y < data.height; y++)
+        {
+            data.setPixels(0, y, pixels.length, pixels, 0);
+        }
+
+        return new Image(device, data);
     }
 
     /**
@@ -100,7 +140,7 @@ public final class ToolsSwt
                 value = SWT.TRANSPARENCY_NONE;
                 break;
             case BITMASK:
-                value = SWT.TRANSPARENCY_MASK;
+                value = SWT.TRANSPARENCY_PIXEL;
                 break;
             case TRANSLUCENT:
                 value = SWT.TRANSPARENCY_ALPHA;
@@ -337,9 +377,26 @@ public final class ToolsSwt
     public static void saveImage(Image image, OutputStream output)
     {
         final ImageLoader imageLoader = new ImageLoader();
+        final ImageData data = image.getImageData();
+        final boolean hasAlpha = data.alphaData != null;
+        for (int x = 0; x < data.width; x++)
+        {
+            for (int y = 0; y < data.height; y++)
+            {
+                if (data.getPixel(x, y) == data.transparentPixel)
+                {
+                    data.setAlpha(x, y, 0);
+                }
+                else if (!hasAlpha)
+                {
+                    data.setAlpha(x, y, 255);
+                }
+            }
+        }
+        data.transparentPixel = -1;
         imageLoader.data = new ImageData[]
         {
-            image.getImageData()
+            data
         };
         imageLoader.save(output, SWT.IMAGE_PNG);
     }

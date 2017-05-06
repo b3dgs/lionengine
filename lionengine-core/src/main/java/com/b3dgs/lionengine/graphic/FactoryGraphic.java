@@ -63,10 +63,19 @@ public interface FactoryGraphic
      * 
      * @param width The image width.
      * @param height The image height.
-     * @param transparency The image transparency.
      * @return The image buffer.
      */
-    ImageBuffer createImageBuffer(int width, int height, Transparency transparency);
+    ImageBuffer createImageBuffer(int width, int height);
+
+    /**
+     * Create an image buffer.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     * @param transparency The color transparency.
+     * @return The image buffer.
+     */
+    ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency);
 
     /**
      * Get an image buffer from an image file.

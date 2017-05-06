@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transform;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * HQ3X implementation.
@@ -55,7 +54,10 @@ public final class FilterHq3x implements Filter
         source.getRgb(0, 0, width, height, srcData, 0, width);
 
         final RawScale3x scaler = new RawScale3x(width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
+        final ImageBuffer image = Graphics.createImageBuffer(width
+                                                             * SCALE,
+                                                             height * SCALE,
+                                                             source.getTransparentColor());
         image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(srcData), 0, width * SCALE);
         return image;
     }

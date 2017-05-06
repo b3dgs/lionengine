@@ -65,28 +65,34 @@ public class FactoryGraphicMock implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
+    public ImageBuffer createImageBuffer(int width, int height)
     {
-        return new ImageBufferMock(width, height, transparency);
+        return new ImageBufferMock(width, height);
+    }
+
+    @Override
+    public ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
+    {
+        return new ImageBufferMock(width, height);
     }
 
     @Override
     public ImageBuffer getImageBuffer(Media media)
     {
         final ImageHeader info = ImageInfo.get(media);
-        return new ImageBufferMock(info.getWidth(), info.getHeight(), Transparency.OPAQUE);
+        return new ImageBufferMock(info.getWidth(), info.getHeight());
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        return new ImageBufferMock(imageBuffer.getWidth(), imageBuffer.getHeight(), imageBuffer.getTransparency());
+        return new ImageBufferMock(imageBuffer.getWidth(), imageBuffer.getHeight());
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
-        return new ImageBufferMock(imageBuffer.getWidth(), imageBuffer.getHeight(), imageBuffer.getTransparency());
+        return new ImageBufferMock(imageBuffer.getWidth(), imageBuffer.getHeight());
     }
 
     @Override
@@ -103,25 +109,25 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
+        return new ImageBufferMock(image.getWidth(), image.getHeight());
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return new ImageBufferMock(width, height, image.getTransparency());
+        return new ImageBufferMock(width, height);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
+        return new ImageBufferMock(image.getWidth(), image.getHeight());
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer image)
     {
-        return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
+        return new ImageBufferMock(image.getWidth(), image.getHeight());
     }
 
     @Override
@@ -143,6 +149,6 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
+        return new ImageBufferMock(image.getWidth(), image.getHeight());
     }
 }

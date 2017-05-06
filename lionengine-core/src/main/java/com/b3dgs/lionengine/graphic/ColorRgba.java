@@ -209,4 +209,18 @@ public final class ColorRgba
         final ColorRgba color = (ColorRgba) object;
         return color.value == value;
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append("red = ")
+                                  .append(red)
+                                  .append(" | green = ")
+                                  .append(green)
+                                  .append(" | blue = ")
+                                  .append(blue)
+                                  .append(" | alpha = ")
+                                  .append(alpha)
+                                  .toString();
+    }
 }

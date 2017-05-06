@@ -30,23 +30,19 @@ public class ImageBufferMock implements ImageBuffer
     private final int height;
     /** Rgba. */
     private final int[] rgba;
-    /** Transparency. */
-    private final Transparency transparency;
 
     /**
      * Constructor.
      * 
      * @param width The buffer width.
      * @param height The buffer height.
-     * @param transparency The transparency.
      */
-    public ImageBufferMock(int width, int height, Transparency transparency)
+    public ImageBufferMock(int width, int height)
     {
         Check.superiorOrEqual(width, 0);
         Check.superiorOrEqual(height, 0);
         this.width = width;
         this.height = height;
-        this.transparency = transparency;
         rgba = new int[width * height];
     }
 
@@ -120,6 +116,12 @@ public class ImageBufferMock implements ImageBuffer
     @Override
     public Transparency getTransparency()
     {
-        return transparency;
+        return Transparency.BITMASK;
+    }
+
+    @Override
+    public ColorRgba getTransparentColor()
+    {
+        return ColorRgba.TRANSPARENT;
     }
 }

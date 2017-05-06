@@ -125,7 +125,7 @@ public class ToolsAwtTest
     public void testCopy()
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
-        final BufferedImage copy = ToolsAwt.copyImage(image, java.awt.Transparency.OPAQUE);
+        final BufferedImage copy = ToolsAwt.copyImage(image);
         Assert.assertEquals(image.getWidth(), copy.getWidth());
     }
 
@@ -158,9 +158,7 @@ public class ToolsAwtTest
             {
                 UtilStream.close(output);
             }
-            Assert.assertTrue(save.getFile().exists());
-            Assert.assertTrue(save.getFile().delete());
-            Assert.assertFalse(save.getFile().exists());
+            Assert.assertTrue(save.getFile().getAbsolutePath(), save.getFile().exists());
         }
         finally
         {

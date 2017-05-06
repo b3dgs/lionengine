@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the sprite tiled class.
@@ -51,7 +50,7 @@ public class SpriteTiledTest
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -75,7 +74,7 @@ public class SpriteTiledTest
         final int width = 16;
         final int height = 16;
         final int tileSize = 1;
-        final ImageBuffer buffer = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+        final ImageBuffer buffer = Graphics.createImageBuffer(width, height);
         final SpriteTiled spriteA = Drawable.loadSpriteTiled(buffer, tileSize, tileSize);
 
         Assert.assertNotNull(spriteA.getSurface());

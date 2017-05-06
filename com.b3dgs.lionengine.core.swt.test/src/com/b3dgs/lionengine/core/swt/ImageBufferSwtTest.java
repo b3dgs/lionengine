@@ -17,15 +17,18 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -35,6 +38,26 @@ import com.b3dgs.lionengine.util.UtilReflection;
  */
 public class ImageBufferSwtTest
 {
+    /**
+     * Prepare test.
+     * 
+     * @throws IOException If error.
+     */
+    @BeforeClass
+    public static void setUp() throws IOException
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicSwt());
+    }
+
+    /**
+     * Clean test.
+     */
+    @BeforeClass
+    public static void cleanup()
+    {
+        Graphics.setFactoryGraphic(null);
+    }
+
     /**
      * Test the image.
      * 
@@ -70,5 +93,17 @@ public class ImageBufferSwtTest
         Assert.assertEquals(Transparency.BITMASK, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_MASK));
 
         image.dispose();
+    }
+
+    /**
+     * Test the image transparency
+     */
+    @Test
+    public void testImageTransparency()
+    {
+        final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
+
+        Assert.assertEquals(Transparency.BITMASK, image.getTransparency());
+        Assert.assertEquals(ColorRgba.RED, image.getTransparentColor());
     }
 }

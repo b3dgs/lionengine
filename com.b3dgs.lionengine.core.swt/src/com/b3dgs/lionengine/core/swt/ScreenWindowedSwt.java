@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.io.swt.Keyboard;
 import com.b3dgs.lionengine.io.swt.Mouse;
 
@@ -71,9 +70,7 @@ final class ScreenWindowedSwt extends ScreenSwt
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.getWidth(),
-                                                                 output.getHeight(),
-                                                                 Transparency.OPAQUE);
+            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.getWidth(), output.getHeight());
             frame.pack();
 
             final Monitor primary = frame.getDisplay().getPrimaryMonitor();

@@ -38,4 +38,11 @@ public interface ImageSurface extends Surface
      * @return The image transparency type.
      */
     Transparency getTransparency();
+
+    /**
+     * Get the transparent color.
+     * 
+     * @return The transparent color used, <code>null</code> if not transparency.
+     */
+    ColorRgba getTransparentColor();
 }

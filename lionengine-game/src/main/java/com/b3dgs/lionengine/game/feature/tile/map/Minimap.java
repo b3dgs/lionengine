@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
@@ -196,7 +195,7 @@ public class Minimap implements Image
     {
         if (surface == null)
         {
-            surface = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), Transparency.TRANSLUCENT);
+            surface = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), ColorRgba.TRANSPARENT);
         }
     }
 

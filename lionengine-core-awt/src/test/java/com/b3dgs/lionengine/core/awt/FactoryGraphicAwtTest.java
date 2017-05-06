@@ -46,6 +46,15 @@ public class FactoryGraphicAwtTest extends FactoryGraphicTest
         loadResources();
     }
 
+    /**
+     * Clean test.
+     */
+    @BeforeClass
+    public static void cleanup()
+    {
+        Graphics.setFactoryGraphic(null);
+    }
+
     /*
      * FactoryGraphicTest
      */

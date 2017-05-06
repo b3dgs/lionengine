@@ -201,4 +201,14 @@ public class ColorRgbaTest
         Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
         Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.class);
     }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        Assert.assertEquals("red = 100 | green = 150 | blue = 200 | alpha = 255",
+                            new ColorRgba(100, 150, 200, 255).toString());
+    }
 }

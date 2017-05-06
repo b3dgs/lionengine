@@ -180,7 +180,7 @@ public class UtilColorTest
     @Test
     public void testColorWeighted()
     {
-        final ImageBuffer surface = Graphics.createImageBuffer(2, 2, Transparency.TRANSLUCENT);
+        final ImageBuffer surface = Graphics.createImageBuffer(2, 2, ColorRgba.TRANSPARENT);
 
         Assert.assertEquals(ColorRgba.TRANSPARENT,
                             UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));

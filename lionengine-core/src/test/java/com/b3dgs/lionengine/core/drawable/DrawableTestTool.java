@@ -36,7 +36,6 @@ import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.SpriteFont;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test tools set for image testing.
@@ -206,7 +205,7 @@ public final class DrawableTestTool
     {
         try
         {
-            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(buffer, tw, th);
             Assert.assertNotNull(sprite);
             Assert.fail();
@@ -240,7 +239,7 @@ public final class DrawableTestTool
     {
         try
         {
-            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16);
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();

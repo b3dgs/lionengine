@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core.android;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -29,17 +30,17 @@ import com.b3dgs.lionengine.graphic.Transparency;
  */
 final class ImageBufferAndroid implements ImageBuffer
 {
-    /** Buffered image. */
-    private final Bitmap bufferedImage;
+    /** Bitmap image. */
+    private final Bitmap image;
 
     /**
      * Internal constructor.
      * 
-     * @param bufferedImage The buffered image.
+     * @param image The bitmap image.
      */
-    ImageBufferAndroid(Bitmap bufferedImage)
+    ImageBufferAndroid(Bitmap image)
     {
-        this.bufferedImage = bufferedImage;
+        this.image = image;
     }
 
     /**
@@ -49,7 +50,7 @@ final class ImageBufferAndroid implements ImageBuffer
      */
     Bitmap getBuffer()
     {
-        return bufferedImage;
+        return image;
     }
 
     /*
@@ -65,66 +66,72 @@ final class ImageBufferAndroid implements ImageBuffer
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicAndroid(new Canvas(bufferedImage));
+        return new GraphicAndroid(new Canvas(image));
     }
 
     @Override
     public void dispose()
     {
-        bufferedImage.recycle();
+        image.recycle();
     }
 
     @Override
     public void setRgb(int x, int y, int rgb)
     {
-        bufferedImage.setPixel(x, y, rgb);
+        image.setPixel(x, y, rgb);
     }
 
     @Override
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        bufferedImage.setPixels(rgbArray, offset, scansize, startX, startY, w, h);
+        image.setPixels(rgbArray, offset, scansize, startX, startY, w, h);
     }
 
     @Override
     public int getRgb(int x, int y)
     {
-        return bufferedImage.getPixel(x, y);
+        return image.getPixel(x, y);
     }
 
     @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        bufferedImage.getPixels(rgbArray, offset, scansize, startX, startY, w, h);
+        image.getPixels(rgbArray, offset, scansize, startX, startY, w, h);
         return rgbArray;
     }
 
     @Override
     public int getWidth()
     {
-        return bufferedImage.getWidth();
+        return image.getWidth();
     }
 
     @Override
     public int getHeight()
     {
-        return bufferedImage.getHeight();
+        return image.getHeight();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Bitmap getSurface()
     {
-        return bufferedImage;
+        return image;
     }
 
     @Override
     public Transparency getTransparency()
     {
-        if (bufferedImage.hasAlpha())
+        if (image.hasAlpha())
         {
             return Transparency.TRANSLUCENT;
         }
         return Transparency.BITMASK;
+    }
+
+    @Override
+    public ColorRgba getTransparentColor()
+    {
+        return ColorRgba.TRANSPARENT;
     }
 }

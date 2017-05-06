@@ -64,7 +64,7 @@ public class GraphicTest
     @Test
     public void testGraphic()
     {
-        final ImageBuffer image = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE);
+        final ImageBuffer image = Graphics.createImageBuffer(100, 100);
         final Graphic g = image.createGraphic();
 
         Assert.assertNotNull(g.getGraphic());

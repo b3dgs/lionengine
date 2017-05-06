@@ -96,7 +96,7 @@ public class GraphicsTest
     @Test(expected = LionEngineException.class)
     public void testNegativeImageWidth()
     {
-        Assert.assertNull(Graphics.createImageBuffer(-1, 1, Transparency.OPAQUE));
+        Assert.assertNull(Graphics.createImageBuffer(-1, 1));
     }
 
     /**
@@ -105,7 +105,7 @@ public class GraphicsTest
     @Test(expected = LionEngineException.class)
     public void testNegativeImageHeight()
     {
-        Assert.assertNull(Graphics.createImageBuffer(1, -1, Transparency.OPAQUE));
+        Assert.assertNull(Graphics.createImageBuffer(1, -1));
     }
 
     /**
@@ -141,7 +141,7 @@ public class GraphicsTest
     @Test
     public void testCreateImageBuffer()
     {
-        final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, Transparency.OPAQUE);
+        final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
 
         Assert.assertEquals(imageBuffer.getWidth(), 16);
         Assert.assertEquals(imageBuffer.getHeight(), 32);
@@ -150,16 +150,16 @@ public class GraphicsTest
     }
 
     /**
-     * Test create image buffer translucent.
+     * Test create image buffer transparent color.
      */
     @Test
-    public void testCreateImageBufferTranslucent()
+    public void testCreateImageBufferTransparentColor()
     {
-        final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, Transparency.TRANSLUCENT);
+        final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, ColorRgba.TRANSPARENT);
 
         Assert.assertEquals(imageBuffer.getWidth(), 16);
         Assert.assertEquals(imageBuffer.getHeight(), 32);
-        Assert.assertEquals(imageBuffer.getTransparency(), Transparency.TRANSLUCENT);
+        Assert.assertEquals(imageBuffer.getTransparency(), Transparency.BITMASK);
 
         imageBuffer.dispose();
     }
@@ -170,7 +170,7 @@ public class GraphicsTest
     @Test
     public void testGetImageBufferFromImage()
     {
-        final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, Transparency.OPAQUE);
+        final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
         final ImageBuffer copy = Graphics.getImageBuffer(imageBuffer);
 
         Assert.assertEquals(imageBuffer.getWidth(), copy.getWidth());
@@ -324,10 +324,10 @@ public class GraphicsTest
     @Test
     public void testSaveImage() throws IOException
     {
-        final File temp = File.createTempFile("save", "png");
+        final File temp = File.createTempFile("save", ".png");
         UtilFile.deleteFile(temp);
 
-        final Media media = Medias.create(temp.getAbsolutePath());
+        final Media media = Medias.create(temp.getName());
         Graphics.saveImage(image, media);
         UtilFile.deleteFile(media.getFile());
     }

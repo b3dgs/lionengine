@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transform;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * World paint listener, rendering the current world.
@@ -157,7 +156,7 @@ public class WorldRenderer implements PaintListener
             final int width = (int) Math.ceil(paintEvent.width / scale);
             final int height = (int) Math.ceil(paintEvent.height / scale);
 
-            final ImageBuffer buffer = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+            final ImageBuffer buffer = Graphics.createImageBuffer(width, height);
             final Graphic gbuffer = buffer.createGraphic();
             render(gbuffer, width, height);
             gbuffer.dispose();

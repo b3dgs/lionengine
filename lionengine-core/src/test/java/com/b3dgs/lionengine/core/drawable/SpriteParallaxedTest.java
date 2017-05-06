@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.SpriteParallaxed;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the parallaxed sprite class.
@@ -55,7 +54,7 @@ public class SpriteParallaxedTest
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**

@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the animated sprite class.
@@ -57,7 +56,7 @@ public class SpriteAnimatedTest
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -78,7 +77,7 @@ public class SpriteAnimatedTest
     @Test
     public void testSpriteAnimated()
     {
-        final ImageBuffer buffer = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer buffer = Graphics.createImageBuffer(16, 16);
         final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(buffer, 1, 1);
 
         Assert.assertNotNull(spriteA.getSurface());

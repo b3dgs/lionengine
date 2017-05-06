@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.GraphicMock;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the map tile viewer class.
@@ -56,9 +55,7 @@ public class MapTileViewerModelTest
 
         final MapTileGame map = services.add(new MapTileGame());
         map.create(80, 80, 1, 1);
-        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80, Transparency.OPAQUE),
-                                                              80,
-                                                              80)));
+        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 80, 80)));
         map.setTile(map.createTile(Integer.valueOf(0), 0, 0, 0));
         mapViewer = new MapTileViewerModel(services);
         mapViewer.prepare(map);

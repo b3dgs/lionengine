@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the image class.
@@ -54,7 +53,7 @@ public class ImageTest
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -77,7 +76,7 @@ public class ImageTest
     {
         try
         {
-            Graphics.createImageBuffer(-16, 16, Transparency.OPAQUE);
+            Graphics.createImageBuffer(-16, 16);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -87,7 +86,7 @@ public class ImageTest
         }
         try
         {
-            Graphics.createImageBuffer(16, -16, Transparency.OPAQUE);
+            Graphics.createImageBuffer(16, -16);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -108,7 +107,7 @@ public class ImageTest
         }
         try
         {
-            Drawable.loadImage(Graphics.createImageBuffer(1, 1, Transparency.OPAQUE)).load();
+            Drawable.loadImage(Graphics.createImageBuffer(1, 1)).load();
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -126,7 +125,7 @@ public class ImageTest
     {
         final int width = 16;
         final int height = 16;
-        final ImageBuffer surface = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+        final ImageBuffer surface = Graphics.createImageBuffer(width, height);
         final Image imageA = Drawable.loadImage(surface);
 
         final Image check = Drawable.loadImage(Medias.create("image.png"));
@@ -164,11 +163,11 @@ public class ImageTest
         Assert.assertFalse(imageC.equals(Drawable.loadImage(media)));
 
         // Equals
-        final ImageBuffer surfaceA = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surfaceA = Graphics.createImageBuffer(16, 16);
         final Image imageD = Drawable.loadImage(surfaceA);
-        final ImageBuffer surfaceB = Graphics.createImageBuffer(16, 20, Transparency.OPAQUE);
+        final ImageBuffer surfaceB = Graphics.createImageBuffer(16, 20);
         final Image imageE = Drawable.loadImage(surfaceB);
-        final ImageBuffer surfaceC = Graphics.createImageBuffer(20, 16, Transparency.OPAQUE);
+        final ImageBuffer surfaceC = Graphics.createImageBuffer(20, 16);
         final Image imageF = Drawable.loadImage(surfaceC);
 
         Assert.assertTrue(imageD.equals(imageD));

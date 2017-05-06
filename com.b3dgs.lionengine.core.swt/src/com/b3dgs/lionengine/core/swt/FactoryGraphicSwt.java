@@ -89,18 +89,30 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
+    public ImageBuffer createImageBuffer(int width, int height)
     {
         Check.superiorOrEqual(width, 0);
         Check.superiorOrEqual(height, 0);
 
-        final Image image = ToolsSwt.createImage(width, height, ToolsSwt.getTransparency(transparency));
+        final Image image = ToolsSwt.createImage(width, height, ToolsSwt.getTransparency(Transparency.OPAQUE));
         final ImageBufferSwt buffer = new ImageBufferSwt(image);
 
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.BLACK);
         g.drawRect(0, 0, width, height, true);
         g.dispose();
+
+        return buffer;
+    }
+
+    @Override
+    public ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
+    {
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
+
+        final Image image = ToolsSwt.createImage(width, height, transparency);
+        final ImageBufferSwt buffer = new ImageBufferSwt(image);
 
         return buffer;
     }

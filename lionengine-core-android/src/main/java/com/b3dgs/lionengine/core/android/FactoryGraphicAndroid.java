@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transform;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Graphic factory implementation.
@@ -71,7 +70,13 @@ public final class FactoryGraphicAndroid implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
+    public ImageBuffer createImageBuffer(int width, int height)
+    {
+        return UtilImage.createImage(width, height);
+    }
+
+    @Override
+    public ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
     {
         return UtilImage.createImage(width, height);
     }

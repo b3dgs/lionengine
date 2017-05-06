@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the factory graphic provider class.
@@ -137,7 +136,7 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
     @Test(expected = LionEngineException.class)
     public void testSaveImageException()
     {
-        Graphics.saveImage(new ImageBufferMock(16, 32, Transparency.BITMASK)
+        Graphics.saveImage(new ImageBufferMock(16, 32)
         {
             @SuppressWarnings("unchecked")
             @Override

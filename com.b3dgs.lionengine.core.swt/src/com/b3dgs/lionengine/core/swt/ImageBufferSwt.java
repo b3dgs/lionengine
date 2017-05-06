@@ -49,9 +49,9 @@ public final class ImageBufferSwt implements ImageBuffer
                 value = Transparency.OPAQUE;
                 break;
             case SWT.TRANSPARENCY_MASK:
+            case SWT.TRANSPARENCY_PIXEL:
                 value = Transparency.BITMASK;
                 break;
-            case SWT.TRANSPARENCY_PIXEL:
             case SWT.TRANSPARENCY_ALPHA:
                 value = Transparency.TRANSLUCENT;
                 break;
@@ -162,12 +162,13 @@ public final class ImageBufferSwt implements ImageBuffer
     @Override
     public int getRgb(int x, int y)
     {
+        final int alpha = data.getAlpha(x, y);
         final int pixel = data.getPixel(x, y);
-        if (pixel == data.transparentPixel)
-        {
-            return ColorRgba.TRANSPARENT.getRgba();
-        }
         final RGB rgb = data.palette.getRGB(pixel);
+        if (alpha == 0)
+        {
+            return new ColorRgba(rgb.red, rgb.green, rgb.blue, 255).getRgba();
+        }
         return new ColorRgba(rgb.red, rgb.green, rgb.blue, data.getAlpha(x, y)).getRgba();
     }
 
@@ -201,5 +202,17 @@ public final class ImageBufferSwt implements ImageBuffer
     public Transparency getTransparency()
     {
         return transparency;
+    }
+
+    @Override
+    public ColorRgba getTransparentColor()
+    {
+        final int pixel = data.transparentPixel;
+        if (pixel == -1)
+        {
+            return null;
+        }
+        final RGB rgb = data.palette.getRGB(pixel);
+        return new ColorRgba(rgb.red, rgb.green, rgb.blue, 255);
     }
 }

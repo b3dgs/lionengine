@@ -18,11 +18,14 @@
 package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
 
@@ -31,6 +34,26 @@ import com.b3dgs.lionengine.graphic.Transparency;
  */
 public class ImageBufferAwtTest
 {
+    /**
+     * Prepare test.
+     * 
+     * @throws IOException If error.
+     */
+    @BeforeClass
+    public static void setUp() throws IOException
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicAwt());
+    }
+
+    /**
+     * Clean test.
+     */
+    @BeforeClass
+    public static void cleanup()
+    {
+        Graphics.setFactoryGraphic(null);
+    }
+
     /**
      * Test the image.
      */
@@ -47,12 +70,7 @@ public class ImageBufferAwtTest
         Assert.assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
         Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
         Assert.assertEquals(Transparency.OPAQUE, image.getTransparency());
-        Assert.assertEquals(Transparency.BITMASK,
-                            ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer, java.awt.Transparency.BITMASK))
-                                    .getTransparency());
-        Assert.assertEquals(Transparency.TRANSLUCENT,
-                            ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer, java.awt.Transparency.TRANSLUCENT))
-                                    .getTransparency());
+        Assert.assertEquals(Transparency.OPAQUE, ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer)).getTransparency());
         Assert.assertEquals(buffer.getWidth(), image.getWidth());
         Assert.assertEquals(buffer.getHeight(), image.getHeight());
 
@@ -61,5 +79,17 @@ public class ImageBufferAwtTest
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
         image.dispose();
+    }
+
+    /**
+     * Test the image transparency
+     */
+    @Test
+    public void testImageTransparency()
+    {
+        final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
+
+        Assert.assertEquals(Transparency.BITMASK, image.getTransparency());
+        Assert.assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
     }
 }

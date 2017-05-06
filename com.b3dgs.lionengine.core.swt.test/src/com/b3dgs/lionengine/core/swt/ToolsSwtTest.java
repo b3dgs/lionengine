@@ -82,7 +82,7 @@ public class ToolsSwtTest
     public void testTransparency()
     {
         Assert.assertEquals(SWT.TRANSPARENCY_NONE, ToolsSwt.getTransparency(Transparency.OPAQUE));
-        Assert.assertEquals(SWT.TRANSPARENCY_MASK, ToolsSwt.getTransparency(Transparency.BITMASK));
+        Assert.assertEquals(SWT.TRANSPARENCY_PIXEL, ToolsSwt.getTransparency(Transparency.BITMASK));
         Assert.assertEquals(SWT.TRANSPARENCY_ALPHA, ToolsSwt.getTransparency(Transparency.TRANSLUCENT));
     }
 
@@ -92,7 +92,7 @@ public class ToolsSwtTest
     @Test
     public void testGetRasterColor()
     {
-        final Image image = ToolsSwt.createImage(16, 16, SWT.TRANSPARENCY_NONE);
+        final Image image = ToolsSwt.createImage(16, 16, SWT.TRANSPARENCY_PIXEL);
         final PaletteData palette = new PaletteData(new RGB[]
         {
             new RGB(0, 0, 0), new RGB(1, 0, 0), new RGB(1, 1, 0), new RGB(1, 0, 1)

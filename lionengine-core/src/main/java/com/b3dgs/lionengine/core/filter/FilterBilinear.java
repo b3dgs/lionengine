@@ -54,7 +54,7 @@ public class FilterBilinear implements Filter
         compute(inPixels, outPixels, width, height, 1);
         compute(outPixels, inPixels, height, width, 1);
 
-        final ImageBuffer dest = Graphics.createImageBuffer(width, height, source.getTransparency());
+        final ImageBuffer dest = Graphics.createImageBuffer(width, height, source.getTransparentColor());
         dest.setRgb(0, 0, width, height, inPixels, 0, width);
         return dest;
     }

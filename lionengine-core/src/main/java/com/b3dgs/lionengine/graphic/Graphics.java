@@ -91,10 +91,22 @@ public final class Graphics
      * 
      * @param width The image width.
      * @param height The image height.
-     * @param transparency The image transparency.
      * @return The image buffer.
      */
-    public static ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
+    public static ImageBuffer createImageBuffer(int width, int height)
+    {
+        return factoryGraphic.createImageBuffer(width, height);
+    }
+
+    /**
+     * Create an image buffer.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     * @param transparency The color transparency.
+     * @return The image buffer.
+     */
+    public static ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
     {
         return factoryGraphic.createImageBuffer(width, height, transparency);
     }

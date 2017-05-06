@@ -19,9 +19,12 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * Image buffer implementation.
@@ -78,7 +81,12 @@ final class ImageBufferAwt implements ImageBuffer
     @Override
     public int getRgb(int x, int y)
     {
-        return bufferedImage.getRGB(x, y);
+        final int pixel = bufferedImage.getRGB(x, y);
+        if (UtilConversion.mask(pixel >> Constant.BYTE_4) == 0)
+        {
+            return ColorRgba.TRANSPARENT.getRgba();
+        }
+        return pixel;
     }
 
     @Override
@@ -125,5 +133,11 @@ final class ImageBufferAwt implements ImageBuffer
                 value = Transparency.OPAQUE;
         }
         return value;
+    }
+
+    @Override
+    public ColorRgba getTransparentColor()
+    {
+        return ColorRgba.TRANSPARENT;
     }
 }

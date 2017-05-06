@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Applet screen implementation.
@@ -56,9 +55,7 @@ final class ScreenAppletAwt extends ScreenAwt
      */
     private void initApplet(Resolution output)
     {
-        buffer = (ImageBufferAwt) Graphics.createImageBuffer(output.getWidth(),
-                                                             output.getHeight(),
-                                                             Transparency.OPAQUE);
+        buffer = (ImageBufferAwt) Graphics.createImageBuffer(output.getWidth(), output.getHeight());
         gbuf = buffer.createGraphic();
         graphics.setGraphic(gbuf);
         componentForKeyboard = applet;

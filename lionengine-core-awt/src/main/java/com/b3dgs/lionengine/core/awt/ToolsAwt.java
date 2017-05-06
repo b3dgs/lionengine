@@ -113,7 +113,7 @@ public final class ToolsAwt
         {
             throw new IOException("Invalid image !");
         }
-        return copyImage(buffer, buffer.getTransparency());
+        return copyImage(buffer);
     }
 
     /**
@@ -143,12 +143,13 @@ public final class ToolsAwt
      * Create an image.
      * 
      * @param image The image reference.
-     * @param transparency The transparency;
      * @return The image copy.
      */
-    public static BufferedImage copyImage(BufferedImage image, int transparency)
+    public static BufferedImage copyImage(BufferedImage image)
     {
-        final BufferedImage copy = createImage(image.getWidth(), image.getHeight(), transparency);
+        final BufferedImage copy = createImage(image.getWidth(),
+                                               image.getHeight(),
+                                               image.getColorModel().getTransparency());
         final Graphics2D g = copy.createGraphics();
         g.setComposite(AlphaComposite.Src);
         g.drawImage(image, 0, 0, null);
@@ -176,7 +177,7 @@ public final class ToolsAwt
      */
     public static BufferedImage applyMask(BufferedImage image, int rgba)
     {
-        final BufferedImage mask = copyImage(image, Transparency.BITMASK);
+        final BufferedImage mask = copyImage(image);
         final int height = mask.getHeight();
         final int width = mask.getWidth();
 

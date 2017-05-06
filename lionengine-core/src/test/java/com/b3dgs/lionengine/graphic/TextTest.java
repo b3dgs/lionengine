@@ -59,7 +59,7 @@ public class TextTest
      */
     protected static void prepare()
     {
-        final ImageBuffer buffer = Graphics.createImageBuffer(320, 240, Transparency.OPAQUE);
+        final ImageBuffer buffer = Graphics.createImageBuffer(320, 240);
         buffer.prepare();
         g = buffer.createGraphic();
     }

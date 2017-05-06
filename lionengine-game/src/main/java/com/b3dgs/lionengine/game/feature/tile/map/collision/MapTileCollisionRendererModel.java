@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -48,7 +47,7 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      */
     public static ImageBuffer createFunctionDraw(CollisionFormula collision, int tw, int th)
     {
-        final ImageBuffer buffer = Graphics.createImageBuffer(tw, th, Transparency.TRANSLUCENT);
+        final ImageBuffer buffer = Graphics.createImageBuffer(tw, th, ColorRgba.TRANSPARENT);
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.PURPLE);
 

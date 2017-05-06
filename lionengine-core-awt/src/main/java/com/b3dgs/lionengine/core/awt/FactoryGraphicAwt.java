@@ -97,9 +97,31 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
+    public ImageBuffer createImageBuffer(int width, int height)
     {
-        return new ImageBufferAwt(ToolsAwt.createImage(width, height, ToolsAwt.getTransparency(transparency)));
+        final BufferedImage image = ToolsAwt.createImage(width, height, ToolsAwt.getTransparency(Transparency.OPAQUE));
+        final ImageBuffer buffer = new ImageBufferAwt(image);
+
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.BLACK);
+        g.drawRect(0, 0, width, height, true);
+        g.dispose();
+
+        return buffer;
+    }
+
+    @Override
+    public ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
+    {
+        final BufferedImage image = ToolsAwt.createImage(width, height, ToolsAwt.getTransparency(Transparency.BITMASK));
+        final ImageBuffer buffer = new ImageBufferAwt(image);
+
+        final Graphic g = buffer.createGraphic();
+        g.setColor(transparency);
+        g.drawRect(0, 0, width, height, true);
+        g.dispose();
+
+        return buffer;
     }
 
     @Override
@@ -125,7 +147,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     public ImageBuffer getImageBuffer(ImageBuffer image)
     {
         final BufferedImage surface = image.getSurface();
-        return new ImageBufferAwt(ToolsAwt.copyImage(surface, ToolsAwt.getTransparency(image.getTransparency())));
+        return new ImageBufferAwt(ToolsAwt.copyImage(surface));
     }
 
     @Override

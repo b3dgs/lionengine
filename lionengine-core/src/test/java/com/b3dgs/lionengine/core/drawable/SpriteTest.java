@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Sprite;
-import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the sprite class.
@@ -55,7 +54,7 @@ public class SpriteTest
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -77,7 +76,7 @@ public class SpriteTest
     public void testSprite()
     {
         // Sprite with existing surface
-        final ImageBuffer surface = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surface = Graphics.createImageBuffer(16, 16);
         final Sprite spriteA = Drawable.loadSprite(surface);
 
         spriteA.setOrigin(Origin.TOP_LEFT);

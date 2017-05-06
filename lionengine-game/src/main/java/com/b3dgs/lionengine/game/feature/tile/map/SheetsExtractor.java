@@ -63,7 +63,7 @@ public final class SheetsExtractor
 
                 final int width = Math.max(tw, horizontals * tw);
                 final int height = Math.max(th, verticals * th);
-                sheet = Graphics.createImageBuffer(width, height, tile.getTransparency());
+                sheet = Graphics.createImageBuffer(width, height, tile.getTransparentColor());
                 g = sheet.createGraphic();
             }
             final int x = number % horizontals;
