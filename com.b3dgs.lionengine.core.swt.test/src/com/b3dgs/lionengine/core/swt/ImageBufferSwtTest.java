@@ -104,7 +104,12 @@ public class ImageBufferSwtTest
     {
         final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
 
-        Assert.assertNotEquals(Transparency.OPAQUE, image.getTransparency());
-        Assert.assertEquals(ColorRgba.RED, image.getTransparentColor());
+        Assert.assertTrue(image.getTransparency()
+                          + " "
+                          + image.getTransparentColor(),
+                          image.getTransparency() == Transparency.BITMASK
+                                                         && ColorRgba.RED.equals(image.getTransparentColor())
+                                                         || image.getTransparency() == Transparency.TRANSLUCENT
+                                                            && image.getTransparentColor() == null);
     }
 }

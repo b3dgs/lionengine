@@ -164,7 +164,14 @@ public class FactoryGraphicTest
 
         Assert.assertEquals(16, imageBuffer.getWidth());
         Assert.assertEquals(32, imageBuffer.getHeight());
-        Assert.assertNotEquals(Transparency.OPAQUE, imageBuffer.getTransparency());
+        final String info = imageBuffer.getTransparency() + " " + imageBuffer.getTransparentColor();
+        Assert.assertTrue(info,
+                          imageBuffer.getTransparency() == Transparency.BITMASK
+                                && imageBuffer.getTransparentColor().getRed() == 0
+                                && imageBuffer.getTransparentColor().getGreen() == 0
+                                && imageBuffer.getTransparentColor().getBlue() == 0
+                                || imageBuffer.getTransparency() == Transparency.TRANSLUCENT
+                                   && imageBuffer.getTransparentColor() == null);
 
         imageBuffer.dispose();
     }
