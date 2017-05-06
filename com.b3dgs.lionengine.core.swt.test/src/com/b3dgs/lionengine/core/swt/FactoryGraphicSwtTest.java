@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -53,6 +54,15 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
         prepare();
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
         loadResources();
+    }
+
+    /**
+     * Clean test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
