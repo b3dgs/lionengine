@@ -17,7 +17,7 @@
     <!-- SWT -->
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="361"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="418"/>
     <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt"/>
     <!-- Android -->
