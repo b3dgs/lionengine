@@ -33,6 +33,11 @@ package com.b3dgs.lionengine;
  */
 public final class Resolution
 {
+    /** Double factor. */
+    private static final int FACTOR_2X = 2;
+    /** Triple factor. */
+    private static final int FACTOR_3X = 3;
+
     /** Display rate. */
     private final int rate;
     /** Resolution width. */
@@ -57,6 +62,42 @@ public final class Resolution
         this.width = width;
         this.height = height;
         this.rate = rate;
+    }
+
+    /**
+     * Get scaled by 2.
+     * 
+     * @return The scaled by 2 resolution.
+     */
+    public Resolution get2x()
+    {
+        return getScaled(FACTOR_2X, FACTOR_2X);
+    }
+
+    /**
+     * Get scaled by 3.
+     * 
+     * @return The scaled by 3 resolution.
+     */
+    public Resolution get3x()
+    {
+        return getScaled(FACTOR_3X, FACTOR_3X);
+    }
+
+    /**
+     * Get scaled resolution.
+     * 
+     * @param factorX The horizontal scale factor.
+     * @param factorY The vertical scale factor.
+     * @return The scaled resolution.
+     * @throws LionEngineException If factor is not strictly superior to 0.
+     */
+    public Resolution getScaled(int factorX, int factorY)
+    {
+        Check.superiorStrict(factorX, 0);
+        Check.superiorStrict(factorY, 0);
+
+        return new Resolution(width * factorX, height * factorY, rate);
     }
 
     /**
@@ -87,5 +128,35 @@ public final class Resolution
     public int getRate()
     {
         return rate;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + rate;
+        result = prime * result + width;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Resolution other = (Resolution) obj;
+        return width == other.width && height == other.height && rate == other.rate;
     }
 }
