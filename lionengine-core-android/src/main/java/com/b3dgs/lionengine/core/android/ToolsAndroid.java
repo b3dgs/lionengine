@@ -57,7 +57,9 @@ public final class ToolsAndroid
      */
     public static Bitmap getImage(InputStream input)
     {
-        return BitmapFactory.decodeStream(input);
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        return BitmapFactory.decodeStream(input, null, options);
     }
 
     /**
