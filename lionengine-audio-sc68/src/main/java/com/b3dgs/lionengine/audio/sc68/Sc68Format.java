@@ -17,18 +17,13 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFormat;
-import com.b3dgs.lionengine.util.UtilStream;
 import com.sun.jna.Native;
 
 /**
@@ -40,18 +35,6 @@ public final class Sc68Format implements AudioFormat<Sc68>
     public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
     /** Standard library name. */
     private static final String LIBRARY_NAME;
-    /** DLL extension. */
-    private static final String EXTENSION_DLL = ".dll";
-    /** SO extension. */
-    private static final String EXTENSION_SO = ".so";
-    /** Windows system. */
-    private static final String SYSTEM_WINDOW = "win32-";
-    /** Linux system. */
-    private static final String SYSTEM_LINUX = "linux-";
-    /** 64bits architecture. */
-    private static final String ARCHITECTURE_X64 = "x86-64";
-    /** 32bits architecture. */
-    private static final String ARCHITECTURE_X86 = "x86";
     /** Audio extensions. */
     private static final String[] FORMATS =
     {
@@ -69,79 +52,22 @@ public final class Sc68Format implements AudioFormat<Sc68>
     /**
      * Load the library.
      * 
-     * @param name The library name.
-     * @param library The library path.
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
-    private static Sc68Binding loadLibrary(String name, String library)
+    private static Sc68Binding loadLibrary()
     {
-        final InputStream input = Sc68Format.class.getResourceAsStream(library);
-        if (input == null)
-        {
-            throw new LionEngineException(ERROR_LOAD_LIBRARY, library, " not found !");
-        }
         try
         {
-            final File tempLib = UtilStream.getCopy(name, input);
-            Verbose.info("Temporary copy: ", tempLib.getPath());
-            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getPath(), Sc68Binding.class);
-            Verbose.info("Library ", library, " loaded");
+            Verbose.info("Load library: ", LIBRARY_NAME);
+            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(LIBRARY_NAME, Sc68Binding.class);
+            Verbose.info("Library ", LIBRARY_NAME, " loaded");
             return binding;
         }
         catch (final LinkageError exception)
         {
-            throw new LionEngineException(exception, ERROR_LOAD_LIBRARY, library);
+            throw new LionEngineException(exception, ERROR_LOAD_LIBRARY, LIBRARY_NAME);
         }
-        finally
-        {
-            UtilStream.safeClose(input);
-        }
-    }
-
-    /**
-     * Get the library system.
-     * 
-     * @return The library system.
-     */
-    private static String getLibrarySystem()
-    {
-        final OperatingSystem system = OperatingSystem.getOperatingSystem();
-        if (OperatingSystem.WINDOWS == system)
-        {
-            return SYSTEM_WINDOW;
-        }
-        return SYSTEM_LINUX;
-    }
-
-    /**
-     * Get the library extension.
-     * 
-     * @return The library extension.
-     */
-    private static String getLibraryExtension()
-    {
-        final OperatingSystem system = OperatingSystem.getOperatingSystem();
-        if (OperatingSystem.WINDOWS == system)
-        {
-            return EXTENSION_DLL;
-        }
-        return EXTENSION_SO;
-    }
-
-    /**
-     * Get the library architecture.
-     * 
-     * @return The library architecture.
-     */
-    private static String getLibraryArchitecture()
-    {
-        final Architecture architecture = Architecture.getArchitecture();
-        if (Architecture.X64 == architecture)
-        {
-            return ARCHITECTURE_X64;
-        }
-        return ARCHITECTURE_X86;
     }
 
     /** Sc68 binding. */
@@ -154,14 +80,7 @@ public final class Sc68Format implements AudioFormat<Sc68>
      */
     public Sc68Format()
     {
-        final String ext = getLibraryExtension();
-        final String sys = getLibrarySystem();
-        final String arch = getLibraryArchitecture();
-
-        final String name = LIBRARY_NAME + ext;
-        final String library = sys + arch + '/' + name;
-        Verbose.info("Load library: ", library);
-        bind = loadLibrary(name, library);
+        bind = loadLibrary();
     }
 
     /*

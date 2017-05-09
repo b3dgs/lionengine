@@ -28,11 +28,9 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
@@ -106,51 +104,6 @@ public class Sc68Test
         try
         {
             UtilEnum.setStaticFinal(field, "void");
-            Assert.assertNull(new Sc68Format());
-        }
-        finally
-        {
-            UtilEnum.setStaticFinal(field, back);
-        }
-    }
-
-    /**
-     * Test with other architecture linkage error.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testArch() throws Exception
-    {
-        final Field field = Architecture.class.getDeclaredField("ARCHI");
-        final Architecture back = UtilReflection.getField(Architecture.class, "ARCHI");
-        final Architecture x64 = Architecture.X64;
-        try
-        {
-            UtilEnum.setStaticFinal(field, Architecture.getArchitecture() == x64 ? Architecture.X86 : x64);
-            Assert.assertNull(new Sc68Format());
-        }
-        finally
-        {
-            UtilEnum.setStaticFinal(field, back);
-        }
-    }
-
-    /**
-     * Test with other OS linkage error.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testOs() throws Exception
-    {
-        final Field field = OperatingSystem.class.getDeclaredField("OS");
-        final OperatingSystem back = UtilReflection.getField(OperatingSystem.class, "OS");
-        final OperatingSystem unix = OperatingSystem.UNIX;
-        try
-        {
-            UtilEnum.setStaticFinal(field,
-                                    OperatingSystem.getOperatingSystem() == unix ? OperatingSystem.WINDOWS : unix);
             Assert.assertNull(new Sc68Format());
         }
         finally
