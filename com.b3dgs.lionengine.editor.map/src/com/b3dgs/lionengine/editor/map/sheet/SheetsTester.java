@@ -21,7 +21,6 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 import com.b3dgs.lionengine.io.Xml;
@@ -48,9 +47,8 @@ public final class SheetsTester extends PropertyTester
         {
             return media.getFile().isFile() && TileSheetsConfig.NODE_TILE_SHEETS.equals(new Xml(media).getNodeName());
         }
-        catch (final LionEngineException exception)
+        catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
-            Verbose.exception(exception);
             return false;
         }
     }

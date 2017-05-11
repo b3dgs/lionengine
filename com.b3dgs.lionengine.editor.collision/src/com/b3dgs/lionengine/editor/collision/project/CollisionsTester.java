@@ -21,7 +21,6 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionGroupConfig;
@@ -74,9 +73,8 @@ public final class CollisionsTester extends PropertyTester
         {
             return media.getFile().isFile() && CollisionGroupConfig.COLLISIONS.equals(new Xml(media).getNodeName());
         }
-        catch (final LionEngineException exception)
+        catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
-            Verbose.exception(exception);
             return false;
         }
     }

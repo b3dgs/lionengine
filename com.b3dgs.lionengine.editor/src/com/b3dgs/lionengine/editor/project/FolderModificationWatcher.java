@@ -214,10 +214,9 @@ public final class FolderModificationWatcher
                 {
                     Thread.sleep(CHECK_TIME);
                 }
-                catch (final InterruptedException exception)
+                catch (@SuppressWarnings("unused") final InterruptedException exception)
                 {
                     Thread.currentThread().interrupt();
-                    Verbose.exception(exception);
                     break;
                 }
             }

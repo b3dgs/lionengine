@@ -50,9 +50,8 @@ public final class MapCollisionTester extends PropertyTester
             final Xml node = new Xml(media);
             return CollisionFormulaConfig.FORMULAS.equals(node.getNodeName());
         }
-        catch (final LionEngineException exception)
+        catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
-            Verbose.exception(exception);
             return false;
         }
     }
