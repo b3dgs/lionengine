@@ -3,9 +3,6 @@
    <bundle id="com.b3dgs.lionengine.audio.midi">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
-   <bundle id="com.b3dgs.lionengine.audio.sc68">
-      <category name="com.b3dgs.lionengine"/>
-   </bundle>
    <bundle id="com.b3dgs.lionengine.audio.wav">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
@@ -19,6 +16,33 @@
       <category name="com.b3dgs.lionengine"/>
    </bundle>
    <bundle id="com.b3dgs.lionengine.editor">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.test">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.animation">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.animation.test">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.collision">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.map">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.map.test">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.object">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.object.test">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.editor.pathfinding">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
    <bundle id="com.b3dgs.lionengine.game">
