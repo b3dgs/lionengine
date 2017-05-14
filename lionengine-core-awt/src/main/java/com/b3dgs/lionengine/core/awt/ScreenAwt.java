@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.ScreenBase;
 import com.b3dgs.lionengine.graphic.ScreenListener;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 import com.b3dgs.lionengine.io.awt.Mouse;
@@ -126,6 +127,7 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
         final KeyboardAwt keyboard = new KeyboardAwt();
         addKeyboardListener(keyboard);
         devices.put(Keyboard.class, keyboard);
+        devices.put(InputDeviceDirectional.class, keyboard);
     }
 
     /**

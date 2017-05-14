@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ScreenBase;
 import com.b3dgs.lionengine.graphic.ScreenListener;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.lionengine.io.swt.Keyboard;
 import com.b3dgs.lionengine.io.swt.Mouse;
@@ -138,6 +139,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
         final KeyboardSwt keyboard = new KeyboardSwt();
         addKeyboardListener(keyboard);
         devices.put(Keyboard.class, keyboard);
+        devices.put(InputDeviceDirectional.class, keyboard);
     }
 
     /**
