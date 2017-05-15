@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.Focusable;
@@ -44,6 +43,7 @@ import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeaturableConfig;
 import com.b3dgs.lionengine.io.Xml;
@@ -57,8 +57,6 @@ public final class ProjectPart implements Focusable
     public static final String ID = Activator.PLUGIN_ID + ".part.project";
     /** Menu ID. */
     public static final String MENU_ID = ProjectPart.ID + ".menu";
-    /** Error open file. */
-    private static final String ERROR_UNABLE_TO_OPEN_FILE = "Unable to open file: ";
 
     /**
      * Update the properties view with the selected media. Shows object properties, or nothing if not an object.
@@ -244,10 +242,11 @@ public final class ProjectPart implements Focusable
             {
                 java.awt.Desktop.getDesktop().open(media.getFile());
             }
-            catch (final IOException exception)
+            catch (@SuppressWarnings("unused") final IOException exception)
             {
-                // Not able to open the file, just skip
-                Verbose.exception(exception, ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
+                UtilDialog.error(tree.getShell(),
+                                 com.b3dgs.lionengine.editor.utility.dialog.Messages.Error,
+                                 Messages.Project_UnableOpen + media);
             }
         }
     }
