@@ -65,10 +65,17 @@ public final class ProjectPart implements Focusable
      */
     private static void updateProperties(Media media)
     {
-        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
-        if (!updateIfObject(part, media))
+        try
         {
-            part.setInput(part.getTree(), (Configurer) null);
+            final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
+            if (!updateIfObject(part, media))
+            {
+                part.setInput(part.getTree(), (Configurer) null);
+            }
+        }
+        catch (@SuppressWarnings("unused") final IllegalStateException exception)
+        {
+            // Skip as there is not window available for update
         }
     }
 
