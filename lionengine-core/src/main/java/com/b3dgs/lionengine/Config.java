@@ -42,6 +42,31 @@ package com.b3dgs.lionengine;
  */
 public final class Config
 {
+    /** Default color depth. */
+    private static final int DEPTH_DEFAULT = 32;
+
+    /**
+     * Create a 32 bits color depth and windowed configuration using output resolution.
+     * 
+     * @param output The output resolution (used on rendering).
+     * @return The created windowed configuration.
+     */
+    public static Config windowed(Resolution output)
+    {
+        return new Config(output, DEPTH_DEFAULT, Boolean.TRUE.booleanValue());
+    }
+
+    /**
+     * Create a 32 bits color depth and fullscreen configuration using output resolution.
+     * 
+     * @param output The output resolution (used on rendering).
+     * @return The created fullscreen configuration.
+     */
+    public static Config fullscreen(Resolution output)
+    {
+        return new Config(output, DEPTH_DEFAULT, Boolean.FALSE.booleanValue());
+    }
+
     /** Output resolution reference. */
     private final Resolution output;
     /** Display depth. */

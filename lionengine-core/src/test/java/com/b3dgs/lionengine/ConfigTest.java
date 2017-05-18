@@ -103,4 +103,28 @@ public class ConfigTest
         final Config config = new Config(CONFIG.getOutput(), CONFIG.getDepth(), CONFIG.isWindowed(), icon);
         Assert.assertEquals(icon, config.getIcon());
     }
+
+    /**
+     * Test the default windowed config.
+     */
+    @Test
+    public void testDefaultWindowed()
+    {
+        final Config config = Config.windowed(OUTPUT);
+        Assert.assertTrue(config.isWindowed());
+        Assert.assertEquals(OUTPUT, config.getOutput());
+        Assert.assertEquals(32, config.getDepth());
+    }
+
+    /**
+     * Test the default windowed config.
+     */
+    @Test
+    public void testDefaultFullscreen()
+    {
+        final Config config = Config.fullscreen(OUTPUT);
+        Assert.assertFalse(config.isWindowed());
+        Assert.assertEquals(OUTPUT, config.getOutput());
+        Assert.assertEquals(32, config.getDepth());
+    }
 }
