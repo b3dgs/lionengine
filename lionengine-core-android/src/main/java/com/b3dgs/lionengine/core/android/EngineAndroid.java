@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 public final class EngineAndroid extends Engine
 {
     /**
-     * Create engine.
+     * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).

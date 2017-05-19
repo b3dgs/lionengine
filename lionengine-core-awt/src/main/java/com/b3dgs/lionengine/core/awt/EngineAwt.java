@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.util.UtilFolder;
 public class EngineAwt extends Engine
 {
     /**
-     * Start engine.
+     * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
@@ -46,7 +46,7 @@ public class EngineAwt extends Engine
     }
 
     /**
-     * Start engine.
+     * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
@@ -59,7 +59,7 @@ public class EngineAwt extends Engine
     }
 
     /**
-     * Start engine.
+     * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
