@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import java.util.Locale;
+
 /**
  * Represents the image format type.
  */
@@ -32,4 +34,14 @@ public enum ImageFormat
     JPG,
     /** TIFF format. */
     TIFF;
+
+    /*
+     * Object
+     */
+
+    @Override
+    public String toString()
+    {
+        return name().toLowerCase(Locale.ENGLISH);
+    }
 }
