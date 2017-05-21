@@ -115,21 +115,6 @@
             </modules>
         </profile>
         <profile>
-            <id>plugins-editor</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../com.b3dgs.lionengine.target</module>
-                <module>../com.b3dgs.lionengine.core.swt</module>
-                <module>../com.b3dgs.lionengine.core.swt.test</module>
-                <module>../com.b3dgs.lionengine.editor</module>
-                <module>../com.b3dgs.lionengine.editor.object</module>
-                <module>../com.b3dgs.lionengine.editor.map</module>
-                <module>../com.b3dgs.lionengine.editor.animation</module>
-                <module>../com.b3dgs.lionengine.editor.collision</module>
-                <module>../com.b3dgs.lionengine.editor.pathfinding</module>
-            </modules>
-        </profile>
-        <profile>
             <id>repository</id>
             <modules>
                 <module>../lionengine-buildtools</module>
@@ -166,38 +151,32 @@
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
+                <module>../com.b3dgs.lionengine.editor.test</module>
                 <module>../com.b3dgs.lionengine.editor.object</module>
+                <module>../com.b3dgs.lionengine.editor.object.test</module>
                 <module>../com.b3dgs.lionengine.editor.map</module>
+                <module>../com.b3dgs.lionengine.editor.map.test</module>
                 <module>../com.b3dgs.lionengine.editor.animation</module>
+                <module>../com.b3dgs.lionengine.editor.animation.test</module>
                 <module>../com.b3dgs.lionengine.editor.collision</module>
                 <module>../com.b3dgs.lionengine.editor.pathfinding</module>
-                <module>../com.b3dgs.lionengine.editor.product</module>
-                <module>../com.b3dgs.lionengine.editor.test</module>
-                <module>../com.b3dgs.lionengine.editor.object.test</module>
-                <module>../com.b3dgs.lionengine.editor.map.test</module>
-                <module>../com.b3dgs.lionengine.editor.animation.test</module>
             </modules>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.eclipse.tycho</groupId>
-                            <artifactId>tycho-surefire-plugin</artifactId>
-                            <version>${tycho.version}</version>
-                            <configuration>
-                                <useUIHarness>true</useUIHarness>
-                                <useUIThread>false</useUIThread>
-                                <configuration>
-                                    <includes>
-                                        <include>**/*Test.java</include>
-                                    </includes>
-                                </configuration>
-                                <product>com.b3dgs.lionengine.editor.product</product>
-                                <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-surefire-plugin</artifactId>
+                        <version>${tycho.version}</version>
+                        <configuration>
+                            <useUIHarness>true</useUIHarness>
+                            <useUIThread>false</useUIThread>
+                            <product>com.b3dgs.lionengine.editor.product</product>
+                            <application>org.eclipse.e4.ui.workbench.swt.E4Application</application>
+                            <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+                            <showEclipseLog>true</showEclipseLog>
+                        </configuration>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
         <profile>
@@ -239,6 +218,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>lionengine-audio-sc68</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>lionengine-audio-adplug</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

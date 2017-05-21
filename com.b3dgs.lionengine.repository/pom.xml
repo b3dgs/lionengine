@@ -39,6 +39,10 @@
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-audio-sc68</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-audio-adplug</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -53,7 +57,6 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-p2-repository-plugin</artifactId>
-                <version>${tycho.version}</version>
             </plugin>
         </plugins>
     </build>

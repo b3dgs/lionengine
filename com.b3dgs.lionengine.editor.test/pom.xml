@@ -20,6 +20,11 @@
             <url>http://download.eclipse.org/releases/neon</url>
             <layout>p2</layout>
         </repository>
+        <repository>
+            <id>swtbot</id>
+            <layout>p2</layout>
+            <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -85,11 +90,6 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-surefire-plugin</artifactId>
-                <configuration>
-                    <useUIHarness>true</useUIHarness>
-                    <useUIThread>true</useUIThread>
-                    <product>com.b3dgs.lionengine.editor.product</product>
-                </configuration>
             </plugin>
         </plugins>
     </build>
