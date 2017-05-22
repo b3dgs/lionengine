@@ -84,7 +84,7 @@ public class Polygon
      */
     public void addPoint(double x, double y)
     {
-        if (npoints >= xpoints.length || npoints >= ypoints.length)
+        if (npoints >= xpoints.length)
         {
             final int newLength = npoints * 2;
             xpoints = Arrays.copyOf(xpoints, newLength);
