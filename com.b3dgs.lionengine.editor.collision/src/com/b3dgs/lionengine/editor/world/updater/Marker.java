@@ -22,16 +22,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.geom.Point;
 
 /**
  * Represents a tile marker.
  */
 public class Marker
 {
-    /** Horizontal. */
-    private final int x;
-    /** Vertical. */
-    private final int y;
+    /** Point reference. */
+    private final Point point;
     /** Associated tile. */
     private Collection<Tile> tiles;
 
@@ -43,8 +42,7 @@ public class Marker
      */
     public Marker(int x, int y)
     {
-        this.x = x;
-        this.y = y;
+        point = new Point(x, y);
     }
 
     /**
@@ -78,25 +76,12 @@ public class Marker
     @Override
     public int hashCode()
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + x;
-        result = prime * result + y;
-        return result;
+        return point.hashCode();
     }
 
     @Override
     public boolean equals(Object object)
     {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass())
-        {
-            return false;
-        }
-        final Marker other = (Marker) object;
-        return x == other.x && y == other.y;
+        return point.equals(object);
     }
 }
