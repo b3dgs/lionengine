@@ -254,15 +254,18 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
      */
     private void render()
     {
-        final Graphic g = screen.getGraphic();
-        if (directRendering)
+        if (screen.isReady())
         {
-            render(g);
-        }
-        else
-        {
-            render(graphic);
-            g.drawImage(filter.filter(buf), transform, 0, 0);
+            final Graphic g = screen.getGraphic();
+            if (directRendering)
+            {
+                render(g);
+            }
+            else
+            {
+                render(graphic);
+                g.drawImage(filter.filter(buf), transform, 0, 0);
+            }
         }
     }
 

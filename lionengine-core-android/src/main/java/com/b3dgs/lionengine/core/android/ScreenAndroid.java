@@ -126,13 +126,23 @@ public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Cal
     public void preUpdate()
     {
         canvas = holder.lockCanvas();
-        graphics.setGraphic(canvas);
+        if (canvas != null)
+        {
+            graphics.setGraphic(canvas);
+        }
     }
 
     @Override
     public void update()
     {
-        holder.unlockCanvasAndPost(canvas);
+        try
+        {
+            holder.unlockCanvasAndPost(canvas);
+        }
+        catch (@SuppressWarnings("unused") final IllegalStateException exception)
+        {
+            // Skip
+        }
     }
 
     @Override
