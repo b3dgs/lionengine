@@ -62,6 +62,10 @@ public final class LoopUnlocked implements Loop
                 final long currentTime = Math.max(lastTime + 1, System.nanoTime());
                 frame.computeFrameRate(lastTime, currentTime);
             }
+            else
+            {
+                UtilSequence.pause(Constant.DECADE);
+            }
 
             if (!Engine.isStarted())
             {

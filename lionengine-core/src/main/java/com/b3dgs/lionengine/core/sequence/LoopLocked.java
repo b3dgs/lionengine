@@ -81,6 +81,10 @@ public final class LoopLocked implements Loop
                 final long currentTime = Math.max(lastTime + 1, System.nanoTime());
                 frame.computeFrameRate(lastTime, currentTime);
             }
+            else
+            {
+                UtilSequence.pause(Constant.DECADE);
+            }
 
             if (!Engine.isStarted())
             {

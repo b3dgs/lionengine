@@ -106,6 +106,10 @@ public final class LoopFrameSkipping implements Loop
 
                 frame.computeFrameRate(firstTime, Math.max(firstTime + 1, System.nanoTime()));
             }
+            else
+            {
+                UtilSequence.pause(Constant.DECADE);
+            }
 
             if (!Engine.isStarted())
             {

@@ -84,6 +84,10 @@ public final class LoopExtrapolated implements Loop
                 extrp = source.getRate() / (double) Constant.ONE_SECOND_IN_NANO * (currentTime - lastTime);
                 frame.computeFrameRate(lastTime, currentTime);
             }
+            else
+            {
+                UtilSequence.pause(Constant.DECADE);
+            }
 
             if (!Engine.isStarted())
             {

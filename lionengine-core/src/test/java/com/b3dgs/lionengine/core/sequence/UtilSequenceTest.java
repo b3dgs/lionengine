@@ -23,10 +23,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.util.UtilTests;
@@ -165,5 +167,42 @@ public class UtilSequenceTest
                 return new Config(new Resolution(320, 240, 60), 32, true);
             }
         }, new Object()));
+    }
+
+    /**
+     * Test pause.
+     */
+    @Test
+    public void testPause()
+    {
+        final Timing timing = new Timing();
+        timing.start();
+
+        UtilSequence.pause(Constant.DECADE);
+
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() > 0);
+    }
+
+    /**
+     * Test pause interrupted.
+     */
+    @Test
+    public void testPauseInterrupted()
+    {
+        final Timing timing = new Timing();
+        timing.start();
+
+        final Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                UtilSequence.pause(Constant.THOUSAND);
+            }
+        };
+        thread.start();
+        thread.interrupt();
+
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() < Constant.THOUSAND);
     }
 }

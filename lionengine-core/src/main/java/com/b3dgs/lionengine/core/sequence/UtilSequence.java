@@ -57,6 +57,23 @@ public final class UtilSequence
     }
 
     /**
+     * Pause time.
+     * 
+     * @param delay The delay in millisecond.
+     */
+    public static void pause(long delay)
+    {
+        try
+        {
+            Thread.sleep(delay);
+        }
+        catch (@SuppressWarnings("unused") final InterruptedException exception)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
      * Get the parameter types as array.
      * 
      * @param context The context reference.
