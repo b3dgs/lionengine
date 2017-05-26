@@ -176,7 +176,6 @@ public class LoopUnlockedTest
         thread.join();
 
         Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertTrue(String.valueOf(computed.get()),
-                          computed.get().doubleValue() > screen.getConfig().getOutput().getRate());
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > 0);
     }
 }
