@@ -46,11 +46,11 @@ final class GraphicAndroid implements Graphic
     /** Gradient cache. */
     private final Map<ColorGradient, LinearGradient> colorGradients = new HashMap<ColorGradient, LinearGradient>();
     /** Paint mode. */
-    private final Paint paint;
+    private final Paint paint = new Paint();
     /** Last matrix. */
-    private final Matrix scale;
+    private final Matrix scale = new Matrix();
     /** Flip matrix. */
-    private final Matrix flip;
+    private final Matrix flip = new Matrix();
     /** The graphic output. */
     private Canvas g;
     /** Linear gradient. */
@@ -71,10 +71,9 @@ final class GraphicAndroid implements Graphic
      */
     GraphicAndroid(Canvas g)
     {
+        super();
+
         this.g = g;
-        paint = new Paint();
-        scale = new Matrix();
-        flip = new Matrix();
         flip.preScale(-1, 1);
     }
 
@@ -110,7 +109,6 @@ final class GraphicAndroid implements Graphic
     {
         colorGradients.clear();
         linearGradient = null;
-        g = null;
     }
 
     @Override

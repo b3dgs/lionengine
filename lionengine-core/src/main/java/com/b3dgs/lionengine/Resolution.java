@@ -92,12 +92,12 @@ public final class Resolution
      * @return The scaled resolution.
      * @throws LionEngineException If factor is not strictly superior to 0.
      */
-    public Resolution getScaled(int factorX, int factorY)
+    public Resolution getScaled(double factorX, double factorY)
     {
         Check.superiorStrict(factorX, 0);
         Check.superiorStrict(factorY, 0);
 
-        return new Resolution(width * factorX, height * factorY, rate);
+        return new Resolution((int) (width * factorX), (int) (height * factorY), rate);
     }
 
     /**

@@ -53,7 +53,7 @@ public final class Config
      */
     public static Config windowed(Resolution output)
     {
-        return new Config(output, DEPTH_DEFAULT, Boolean.TRUE.booleanValue());
+        return new Config(output, DEPTH_DEFAULT, true);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class Config
      */
     public static Config fullscreen(Resolution output)
     {
-        return new Config(output, DEPTH_DEFAULT, Boolean.FALSE.booleanValue());
+        return new Config(output, DEPTH_DEFAULT, false);
     }
 
     /** Output resolution reference. */
