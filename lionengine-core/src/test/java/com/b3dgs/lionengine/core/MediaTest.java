@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.util.UtilFolder;
 import com.b3dgs.lionengine.util.UtilStream;
 
 /**
@@ -144,6 +145,36 @@ public class MediaTest
         finally
         {
             UtilStream.close(input);
+        }
+    }
+
+    /**
+     * Test the input stream with no existing in JAR.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testInputStreamNotExistsInJar() throws IOException
+    {
+        Medias.setLoadFromJar(MediaTest.class);
+        final File file = File.createTempFile("void", "");
+        final File dir = new File(file.getParentFile(), MediaTest.class.getSimpleName());
+        dir.mkdir();
+        final File file2 = File.createTempFile("void", "", dir);
+        final Media media = Medias.create(file2.getName());
+
+        InputStream input = null;
+        try
+        {
+            input = media.getInputStream();
+            Assert.assertNotNull(input);
+        }
+        finally
+        {
+            UtilStream.close(input);
+            Assert.assertTrue(file.delete());
+            Assert.assertTrue(file2.delete());
+            UtilFolder.deleteDirectory(dir);
         }
     }
 

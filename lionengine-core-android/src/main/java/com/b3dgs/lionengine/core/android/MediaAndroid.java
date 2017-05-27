@@ -18,22 +18,25 @@
 package com.b3dgs.lionengine.core.android;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.net.Uri;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.util.UtilFile;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
@@ -45,11 +48,13 @@ final class MediaAndroid implements Media
     private static final String NO_PARENT = Constant.EMPTY_STRING;
     /** Error get stream. */
     private static final String ERROR_GET_STREAM = "Error on getting stream of: ";
+    /** Error get stream. */
+    private static final String ERROR_CREATE_FOLDER = "Unable to create folder: ";
 
     /** Asset manager. */
     private final AssetManager assetManager;
-    /** Content resolver. */
-    private final ContentResolver contentResolver;
+    /** Context reference. */
+    private final Context context;
     /** Separator. */
     private final String separator;
     /** Resources directory. */
@@ -58,33 +63,27 @@ final class MediaAndroid implements Media
     private final String path;
     /** Media parent path. */
     private final String parent;
-    /** File reference. */
-    private final File file;
 
     /**
      * Internal constructor.
      * 
      * @param assetManager The asset manager.
-     * @param contentResolver The content resolver.
+     * @param context The context reference.
      * @param separator The path separator.
      * @param resourcesDir The resources directory.
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(AssetManager assetManager,
-                 ContentResolver contentResolver,
-                 String separator,
-                 String resourcesDir,
-                 String path)
+    MediaAndroid(AssetManager assetManager, Context context, String separator, String resourcesDir, String path)
     {
         Check.notNull(assetManager);
-        Check.notNull(contentResolver);
+        Check.notNull(context);
         Check.notNull(separator);
         Check.notNull(resourcesDir);
         Check.notNull(path);
 
         this.assetManager = assetManager;
-        this.contentResolver = contentResolver;
+        this.context = context;
         this.separator = separator;
         this.resourcesDir = resourcesDir;
         this.path = path;
@@ -97,7 +96,6 @@ final class MediaAndroid implements Media
         {
             parent = NO_PARENT;
         }
-        file = new File(path);
     }
 
     /**
@@ -109,11 +107,18 @@ final class MediaAndroid implements Media
     {
         try
         {
-            return assetManager.openFd(getAbsolutePath());
+            return assetManager.openFd(getPathAbsolute());
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, this);
+            try
+            {
+                return assetManager.openFd(getPathTemp());
+            }
+            catch (@SuppressWarnings("unused") final IOException exception2)
+            {
+                throw new LionEngineException(exception, this);
+            }
         }
     }
 
@@ -122,9 +127,21 @@ final class MediaAndroid implements Media
      * 
      * @return The absolute media path.
      */
-    private String getAbsolutePath()
+    private String getPathAbsolute()
     {
         return UtilFolder.getPathSeparator(separator, resourcesDir, path);
+    }
+
+    /**
+     * Get the temporary path equivalent.
+     * 
+     * @return The temporary path.
+     */
+    private String getPathTemp()
+    {
+        return UtilFolder.getPathSeparator(File.separator,
+                                           context.getCacheDir().getAbsolutePath(),
+                                           path.replace(separator, File.separator));
     }
 
     /*
@@ -146,7 +163,11 @@ final class MediaAndroid implements Media
     @Override
     public File getFile()
     {
-        return file;
+        if (UtilFile.exists(getPathAbsolute()))
+        {
+            return new File(getPathAbsolute());
+        }
+        return new File(getPathTemp());
     }
 
     @Override
@@ -155,7 +176,7 @@ final class MediaAndroid implements Media
         try
         {
             final Collection<Media> medias = new ArrayList<Media>();
-            final String fullPath = getAbsolutePath();
+            final String fullPath = getPathAbsolute();
             final String prefix = fullPath.substring(resourcesDir.length());
             for (final String file : assetManager.list(fullPath))
             {
@@ -176,11 +197,18 @@ final class MediaAndroid implements Media
 
         try
         {
-            return assetManager.open(getAbsolutePath());
+            return assetManager.open(getPathAbsolute());
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, this, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
+            try
+            {
+                return new FileInputStream(new File(getPathTemp()));
+            }
+            catch (@SuppressWarnings("unused") final IOException exception2)
+            {
+                throw new LionEngineException(exception, this, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
+            }
         }
     }
 
@@ -191,9 +219,13 @@ final class MediaAndroid implements Media
 
         try
         {
-            return contentResolver.openOutputStream(Uri.parse(Uri.encode(UtilFolder.getPathSeparator(separator,
-                                                                                                     resourcesDir,
-                                                                                                     path))));
+            final File file = new File(getPathTemp());
+            final File parent = file.getParentFile();
+            if (!parent.exists() && !parent.mkdirs())
+            {
+                Verbose.warning(ERROR_CREATE_FOLDER, parent.getAbsolutePath());
+            }
+            return new FileOutputStream(file);
         }
         catch (final IOException exception)
         {
@@ -204,7 +236,15 @@ final class MediaAndroid implements Media
     @Override
     public boolean exists()
     {
-        return file.exists();
+        try
+        {
+            assetManager.openFd(getPathAbsolute()).close();
+        }
+        catch (@SuppressWarnings("unused") final IOException exception)
+        {
+            return new File(getPathTemp()).exists();
+        }
+        return true;
     }
 
     @Override

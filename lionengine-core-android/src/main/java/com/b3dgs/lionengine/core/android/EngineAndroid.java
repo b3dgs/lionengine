@@ -67,7 +67,9 @@ public final class EngineAndroid extends Engine
     public EngineAndroid(String name, Version version, Activity activity)
     {
         super(name, version);
+
         Check.notNull(activity);
+
         this.activity = activity;
     }
 
@@ -87,7 +89,7 @@ public final class EngineAndroid extends Engine
         activity.setContentView(view);
 
         FactoryMediaAndroid.setAssertManager(activity.getAssets());
-        FactoryMediaAndroid.setContentResolver(activity.getContentResolver());
+        FactoryMediaAndroid.setContext(activity.getBaseContext());
 
         AudioFactory.addFormat(new WavFormat());
 
@@ -100,7 +102,7 @@ public final class EngineAndroid extends Engine
     protected void close()
     {
         FactoryMediaAndroid.setAssertManager(null);
-        FactoryMediaAndroid.setContentResolver(null);
+        FactoryMediaAndroid.setContext(null);
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Graphics.setFactoryGraphic(null);

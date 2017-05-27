@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.core.android;
 
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.res.AssetManager;
 
 import com.b3dgs.lionengine.Constant;
@@ -33,8 +33,8 @@ final class FactoryMediaAndroid implements FactoryMedia
 {
     /** Asset manager. */
     private static volatile AssetManager assetManager;
-    /** Content resolver. */
-    private static volatile ContentResolver contentResolver;
+    /** Context reference. */
+    private static volatile Context context;
 
     /**
      * Set the asset manager.
@@ -47,13 +47,13 @@ final class FactoryMediaAndroid implements FactoryMedia
     }
 
     /**
-     * Set the content resolver.
+     * Set the context reference.
      * 
-     * @param contentResolver The content resolver.
+     * @param context The context reference.
      */
-    static synchronized void setContentResolver(ContentResolver contentResolver)
+    static synchronized void setContext(Context context)
     {
-        FactoryMediaAndroid.contentResolver = contentResolver;
+        FactoryMediaAndroid.context = context;
     }
 
     /**
@@ -72,7 +72,7 @@ final class FactoryMediaAndroid implements FactoryMedia
     public Media create(String separator, String resourcesDir, String... path)
     {
         return new MediaAndroid(assetManager,
-                                contentResolver,
+                                context,
                                 separator,
                                 resourcesDir,
                                 UtilFolder.getPathSeparator(separator, path));
@@ -82,7 +82,7 @@ final class FactoryMediaAndroid implements FactoryMedia
     public Media create(String separator, Class<?> loader, String... path)
     {
         return new MediaAndroid(assetManager,
-                                contentResolver,
+                                context,
                                 separator,
                                 loader.getPackage().getName().replace(Constant.DOT, Medias.getSeparator()),
                                 UtilFolder.getPathSeparator(separator, path));

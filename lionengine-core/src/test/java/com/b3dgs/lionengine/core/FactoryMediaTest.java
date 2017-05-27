@@ -51,6 +51,6 @@ public class FactoryMediaTest
         final Media media = FACTORY.create("/", FactoryMediaTest.class, "test.txt");
         Assert.assertEquals("", media.getParentPath());
         Assert.assertEquals("test.txt", media.getPath());
-        Assert.assertEquals("test.txt", media.getFile().getPath());
+        Assert.assertTrue(media.getFile().getPath().endsWith("test.txt"));
     }
 }

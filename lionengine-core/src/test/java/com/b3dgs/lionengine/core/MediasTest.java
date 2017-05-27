@@ -114,12 +114,12 @@ public class MediasTest
         final Media media = Medias.create("test.txt");
         Assert.assertEquals("", media.getParentPath());
         Assert.assertEquals("test.txt", media.getPath());
-        Assert.assertEquals("test.txt", media.getFile().getPath());
+        Assert.assertTrue(media.getFile().getPath().endsWith("test.txt"));
 
         final Media media2 = Medias.create("test", "toto.txt");
         Assert.assertEquals("test", media2.getParentPath());
         Assert.assertEquals("test/toto.txt", media2.getPath());
-        Assert.assertEquals("test" + File.separator + "toto.txt", media2.getFile().getPath());
+        Assert.assertTrue(media2.getFile().getPath().endsWith("test" + File.separator + "toto.txt"));
     }
 
     /**
