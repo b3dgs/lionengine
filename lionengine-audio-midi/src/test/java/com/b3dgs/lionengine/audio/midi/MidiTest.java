@@ -233,6 +233,12 @@ public class MidiTest
                     return new Media()
                     {
                         @Override
+                        public String getName()
+                        {
+                            return null;
+                        }
+
+                        @Override
                         public String getPath()
                         {
                             return null;
