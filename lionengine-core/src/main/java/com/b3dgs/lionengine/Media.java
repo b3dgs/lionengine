@@ -26,7 +26,7 @@ import java.util.Collection;
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
  * location, such as <code>HDD</code>, <code>JAR</code>... It could point to a file or a directory.
  */
-public interface Media
+public interface Media extends Nameable
 {
     /**
      * Get the media path.
@@ -80,4 +80,16 @@ public interface Media
      * @return <code>true</code> if media is an existing file or directory, <code>false</code> else.
      */
     boolean exists();
+
+    /*
+     * Nameable
+     */
+
+    /**
+     * Get the media name (excluding its path).
+     * 
+     * @return The media name without its path.
+     */
+    @Override
+    String getName();
 }

@@ -63,6 +63,8 @@ final class MediaAndroid implements Media
     private final String path;
     /** Media parent path. */
     private final String parent;
+    /** Media name. */
+    private final String name;
 
     /**
      * Internal constructor.
@@ -96,6 +98,7 @@ final class MediaAndroid implements Media
         {
             parent = NO_PARENT;
         }
+        name = path.substring(path.lastIndexOf(separator) + 1);
     }
 
     /**
@@ -147,6 +150,12 @@ final class MediaAndroid implements Media
     /*
      * Media
      */
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
 
     @Override
     public String getPath()

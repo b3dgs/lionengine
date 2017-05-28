@@ -90,6 +90,12 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
         Graphics.getImageBuffer(new Media()
         {
             @Override
+            public String getName()
+            {
+                return null;
+            }
+
+            @Override
             public String getPath()
             {
                 return null;
@@ -156,6 +162,12 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
             }
         }, new Media()
         {
+            @Override
+            public String getName()
+            {
+                return null;
+            }
+
             @Override
             public String getPath()
             {

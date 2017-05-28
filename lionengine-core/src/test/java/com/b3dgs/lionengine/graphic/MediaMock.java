@@ -31,6 +31,12 @@ import com.b3dgs.lionengine.Media;
 final class MediaMock implements Media
 {
     @Override
+    public String getName()
+    {
+        return null;
+    }
+
+    @Override
     public String getPath()
     {
         return null;

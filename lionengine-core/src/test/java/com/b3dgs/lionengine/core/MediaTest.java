@@ -259,4 +259,15 @@ public class MediaTest
         Assert.assertNotEquals(media, media2);
         Assert.assertNotEquals(media, new Object());
     }
+
+    /**
+     * Test the get name.
+     */
+    @Test
+    public void testGetName()
+    {
+        final Media media = Medias.create("test", "media.ext");
+
+        Assert.assertEquals("media.ext", media.getName());
+    }
 }
