@@ -18,10 +18,13 @@
 package com.b3dgs.lionengine.graphic;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Factory graphic mock.
@@ -135,9 +138,16 @@ public class FactoryGraphicMock implements FactoryGraphic
     {
         try
         {
-            if (!media.getFile().exists() && !media.getFile().createNewFile())
+            media.getFile().getParentFile().mkdirs();
+            OutputStream output = null;
+            try
             {
-                throw new LionEngineException(media, "Unable to create file !");
+                output = media.getOutputStream();
+                UtilStream.copy(Medias.create("image.png").getInputStream(), output);
+            }
+            finally
+            {
+                UtilStream.safeClose(output);
             }
         }
         catch (final IOException exception)
