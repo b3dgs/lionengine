@@ -20,44 +20,44 @@ package com.b3dgs.lionengine.game.background;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageInfo;
+import com.b3dgs.lionengine.graphic.RasterImage;
 import com.b3dgs.lionengine.graphic.Sprite;
-import com.b3dgs.lionengine.graphic.UtilColor;
+import com.b3dgs.lionengine.util.UtilFile;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Specific background element, supporting raster effects.
  */
-public abstract class BackgroundElementRastered extends BackgroundElement
+public class BackgroundElementRastered extends BackgroundElement
 {
     /** Rasters list. */
-    private final List<Sprite> rasters;
+    private final List<Sprite> rasters = new ArrayList<Sprite>();
 
     /**
      * Create a rastered background element.
      * 
      * @param mainX The main location x.
      * @param mainY The main location y.
-     * @param sprite The sprite to be rastered.
+     * @param media The image media.
+     * @param rasterFile The raster media.
      * @param rastersNumber The number of rasters.
      */
-    public BackgroundElementRastered(int mainX, int mainY, Sprite sprite, int rastersNumber)
+    public BackgroundElementRastered(int mainX, int mainY, Media media, Media rasterFile, int rastersNumber)
     {
-        super(mainX, mainY, sprite);
-        rasters = new ArrayList<Sprite>(rastersNumber);
-        initialize(sprite, rastersNumber);
-    }
+        super(mainX, mainY, null);
 
-    /**
-     * Load rasters from original sprite.
-     * 
-     * @param sprite The original sprite.
-     * @param rastersNumber The number of rasters to use.
-     */
-    protected abstract void load(Sprite sprite, int rastersNumber);
+        final RasterImage raster = new RasterImage(media, rasterFile, rastersNumber, false);
+        raster.loadRasters(ImageInfo.get(media).getHeight(), true, UtilFile.removeExtension(media.getName()));
+
+        for (final ImageBuffer surface : raster.getRasters())
+        {
+            rasters.add(Drawable.loadSprite(surface));
+        }
+    }
 
     /**
      * Get raster surface from its id.
@@ -68,44 +68,5 @@ public abstract class BackgroundElementRastered extends BackgroundElement
     public Sprite getRaster(int id)
     {
         return rasters.get(UtilMath.clamp(id, 0, rasters.size() - 1));
-    }
-
-    /**
-     * Add a raster with specified color code.
-     * 
-     * @param sprite The original sprite.
-     * @param fr The red color offset.
-     * @param fg The green color offset.
-     * @param fb The blue color offset.
-     * @throws LionEngineException If arguments are invalid.
-     */
-    protected void addRaster(Sprite sprite, int fr, int fg, int fb)
-    {
-        final ImageBuffer buf = sprite.getSurface();
-        final ImageBuffer rasterBuf = Graphics.getImageBuffer(buf);
-
-        for (int i = 0; i < rasterBuf.getWidth(); i++)
-        {
-            for (int j = 0; j < rasterBuf.getHeight(); j++)
-            {
-                final int rgb = buf.getRgb(i, j);
-                final int filtered = UtilColor.filterRgb(rgb, fr, fg, fb);
-                rasterBuf.setRgb(i, j, filtered);
-            }
-        }
-
-        final Sprite raster = Drawable.loadSpriteTiled(rasterBuf, sprite.getWidth(), sprite.getHeight());
-        rasters.add(raster);
-    }
-
-    /**
-     * Initialize rastered element.
-     * 
-     * @param sprite The sprite reference.
-     * @param rastersNumber The number of rasters
-     */
-    private void initialize(Sprite sprite, int rastersNumber)
-    {
-        load(sprite, rastersNumber);
     }
 }

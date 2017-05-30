@@ -27,17 +27,14 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Setup;
-import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Raster;
 import com.b3dgs.lionengine.graphic.RasterColor;
+import com.b3dgs.lionengine.graphic.RasterImage;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.util.UtilConversion;
+import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
- * 
- * @see com.b3dgs.lionengine.game.Configurer
  */
 public class SetupSurfaceRastered extends Setup
 {
@@ -49,19 +46,9 @@ public class SetupSurfaceRastered extends Setup
     private static final String ATTRIBUTE_RASTER_SMOOTH = "smooth";
 
     /** List of rasters animation. */
-    private final List<SpriteAnimated> rastersAnim;
-    /** Raster filename. */
-    private final Media rasterFile;
-    /** Raster smooth flag. */
-    private final boolean rasterSmooth;
-    /** Vertical frames. */
-    private final int vf;
-    /** Horizontal frames. */
-    private final int hf;
-    /** Frame height. */
-    private final int frameHeight;
-    /** Raster height. */
-    private final int rasterHeight;
+    private final List<SpriteAnimated> rastersAnim = new ArrayList<SpriteAnimated>(RasterColor.MAX_RASTERS);
+    /** List of rasters animation. */
+    private final RasterImage raster;
 
     /**
      * Create a setup.
@@ -73,21 +60,24 @@ public class SetupSurfaceRastered extends Setup
     public SetupSurfaceRastered(Media config, Media rasterFile)
     {
         super(config);
-        Check.notNull(config);
+
         Check.notNull(rasterFile);
 
-        this.rasterFile = rasterFile;
-
-        rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
-        rasterSmooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
-        rastersAnim = new ArrayList<SpriteAnimated>(RasterColor.MAX_RASTERS);
+        final int rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
+        final boolean smooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
+        raster = new RasterImage(surface, rasterFile, rasterHeight, smooth);
 
         final FramesConfig framesData = FramesConfig.imports(getRoot());
-        hf = framesData.getHorizontal();
-        vf = framesData.getVertical();
-        frameHeight = surface.getHeight() / vf;
+        final int hf = framesData.getHorizontal();
+        final int vf = framesData.getVertical();
+        final int frameHeight = surface.getHeight() / vf;
+        raster.loadRasters(frameHeight, true, UtilFile.removeExtension(config.getName()));
 
-        loadRasters();
+        for (final ImageBuffer buffer : raster.getRasters())
+        {
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
+            rastersAnim.add(sprite);
+        }
     }
 
     /**
@@ -107,7 +97,7 @@ public class SetupSurfaceRastered extends Setup
      */
     public Media getFile()
     {
-        return rasterFile;
+        return raster.getFile();
     }
 
     /**
@@ -117,61 +107,16 @@ public class SetupSurfaceRastered extends Setup
      */
     public int getRasterHeight()
     {
-        return rasterHeight;
+        return raster.getHeight();
     }
 
     /**
-     * Check if smooth raster.
+     * Get smooth raster flag.
      * 
      * @return <code>true</code> if smooth enabled, <code>false</code> else.
      */
     public boolean hasSmooth()
     {
-        return rasterSmooth;
-    }
-
-    /**
-     * Load rasters.
-     *
-     * @throws LionEngineException If the raster data from the media are invalid.
-     */
-    private void loadRasters()
-    {
-        final Raster raster = Raster.load(rasterFile);
-        final int max = UtilConversion.boolToInt(rasterSmooth) + 1;
-
-        for (int m = 0; m < max; m++)
-        {
-            for (int i = 1; i <= RasterColor.MAX_RASTERS; i++)
-            {
-                final RasterColor red = RasterColor.load(raster.getRed(), m, i, rasterSmooth);
-                final RasterColor green = RasterColor.load(raster.getGreen(), m, i, rasterSmooth);
-                final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, rasterSmooth);
-
-                addRaster(red, green, blue);
-            }
-        }
-    }
-
-    /**
-     * Add raster.
-     * 
-     * @param red The red color transition.
-     * @param green The green color transition.
-     * @param blue The blue color transition.
-     * @throws LionEngineException If arguments are invalid.
-     */
-    private void addRaster(RasterColor red, RasterColor green, RasterColor blue)
-    {
-        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(surface,
-                                                               red.getStart(),
-                                                               green.getStart(),
-                                                               blue.getStart(),
-                                                               red.getEnd(),
-                                                               green.getEnd(),
-                                                               blue.getEnd(),
-                                                               frameHeight);
-        final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);
-        rastersAnim.add(raster);
+        return raster.hasSmooth();
     }
 }

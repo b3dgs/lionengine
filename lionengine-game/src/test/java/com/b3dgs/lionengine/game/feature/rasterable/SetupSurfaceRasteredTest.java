@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Test the setup surface rastered class.
@@ -77,6 +78,7 @@ public class SetupSurfaceRasteredTest
             Assert.assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
             Assert.assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
         }
+        UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
     }
 
     /**
@@ -95,6 +97,7 @@ public class SetupSurfaceRasteredTest
             Assert.assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
             Assert.assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
         }
+        UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
     }
 
     /**

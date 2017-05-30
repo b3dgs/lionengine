@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Services;
@@ -32,12 +31,10 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Raster;
 import com.b3dgs.lionengine.graphic.RasterColor;
+import com.b3dgs.lionengine.graphic.RasterImage;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * Rastered map tile implementation.
@@ -70,58 +67,20 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     }
 
     /**
-     * Load raster from data.
+     * Get the associated raster sheets for a sheet number. Create it if needed.
      * 
-     * @param sheet The current sheet.
-     * @param raster The raster data.
-     * @throws LionEngineException If arguments are invalid.
+     * @param sheet The sheet number
+     * @return The raster sheets collection found.
      */
-    private void loadRaster(Integer sheet, Raster raster)
+    private List<SpriteTiled> getRasters(Integer sheet)
     {
-        final int max = UtilConversion.boolToInt(smooth) + 1;
-        for (int m = 0; m < max; m++)
-        {
-            for (int i = 1; i <= RasterColor.MAX_RASTERS; i++)
-            {
-                final RasterColor red = RasterColor.load(raster.getRed(), m, i, smooth);
-                final RasterColor green = RasterColor.load(raster.getGreen(), m, i, smooth);
-                final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, smooth);
-
-                addRasterSheet(sheet, red, green, blue);
-            }
-        }
-    }
-
-    /**
-     * Add a raster sheet.
-     * 
-     * @param sheet The current sheet.
-     * @param red The red color transition.
-     * @param green The green color transition.
-     * @param blue The blue color transition.
-     * @throws LionEngineException If arguments are invalid.
-     */
-    private void addRasterSheet(Integer sheet, RasterColor red, RasterColor green, RasterColor blue)
-    {
-        final SpriteTiled original = map.getSheet(sheet);
-        final ImageBuffer buf = original.getSurface();
-        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(buf,
-                                                               red.getStart(),
-                                                               green.getStart(),
-                                                               blue.getStart(),
-                                                               red.getEnd(),
-                                                               green.getEnd(),
-                                                               blue.getEnd(),
-                                                               map.getTileHeight());
-
         List<SpriteTiled> rasters = rasterSheets.get(sheet);
         if (rasters == null)
         {
             rasters = new ArrayList<SpriteTiled>(RasterColor.MAX_RASTERS);
             rasterSheets.put(sheet, rasters);
         }
-        final SpriteTiled raster = Drawable.loadSpriteTiled(rasterBuf, map.getTileWidth(), map.getTileHeight());
-        rasters.add(raster);
+        return rasters;
     }
 
     /*
@@ -131,16 +90,22 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     @Override
     public void loadSheets(Media rasterConfig, boolean smooth)
     {
-        this.smooth = smooth;
-
-        final Raster raster = Raster.load(rasterConfig);
         final Collection<Integer> sheets = map.getSheets();
         final Iterator<Integer> itr = sheets.iterator();
+        final int th = map.getTileHeight();
 
         while (itr.hasNext())
         {
             final Integer sheet = itr.next();
-            loadRaster(sheet, raster);
+            final RasterImage raster = new RasterImage(map.getSheet(sheet).getSurface(), rasterConfig, th, smooth);
+            raster.loadRasters(map.getTileHeight(), false, sheet.toString());
+
+            final List<SpriteTiled> rastersSheet = getRasters(sheet);
+            for (final ImageBuffer bufferRaster : raster.getRasters())
+            {
+                final SpriteTiled sheetRaster = Drawable.loadSpriteTiled(bufferRaster, map.getTileWidth(), th);
+                rastersSheet.add(sheetRaster);
+            }
         }
     }
 
