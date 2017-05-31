@@ -112,7 +112,7 @@ public interface Keyboard extends InputDeviceDirectional
     /**
      * Get the current pressed key code.
      * 
-     * @return The pressed key code (<code>{@value  #NO_KEY_CODE}</code> if key never pressed).
+     * @return The pressed key code (<code>{@link Keyboard#NO_KEY_CODE}</code> if key never pressed).
      */
     Integer getKeyCode();
 
