@@ -237,6 +237,18 @@ public abstract class WorldGame implements Updatable, Renderable
         return context.getInputDevice(type);
     }
 
+    /**
+     * Called when the resolution changed. Does nothing by default.
+     * 
+     * @param width The new screen width.
+     * @param height The new screen height.
+     * @param rate The new rate.
+     */
+    public void onResolutionChanged(int width, int height, int rate)
+    {
+        // Nothing by default
+    }
+
     /*
      * Updatable
      */

@@ -80,7 +80,7 @@ import com.b3dgs.lionengine.graphic.Transform;
  * @see Resolution
  * @see InputDevice
  */
-public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
+public abstract class Sequence implements Sequencable, Sequencer, ResolutionChanger, ScreenListener
 {
     /** Context reference. */
     private final Context context;
@@ -233,6 +233,43 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
     }
 
     /**
+     * Initialize resolution.
+     * 
+     * @param source The resolution source.
+     */
+    private void initResolution(Resolution source)
+    {
+        Check.notNull(source);
+
+        config.setSource(source);
+        screen.onSourceChanged(source);
+
+        // Store source size
+        final int width = source.getWidth();
+        final int height = source.getHeight();
+
+        // Standard rendering
+        final Resolution output = config.getOutput();
+        if (Filter.NO_FILTER.equals(filter)
+            && source.getWidth() == output.getWidth()
+            && source.getHeight() == output.getHeight())
+        {
+            buf = null;
+            transform = null;
+            directRendering = true;
+        }
+        // Scaled rendering
+        else
+        {
+            buf = Graphics.createImageBuffer(width, height);
+            transform = getTransform(filter);
+            final Graphic gbuf = buf.createGraphic();
+            graphic.setGraphic(gbuf.getGraphic());
+            directRendering = false;
+        }
+    }
+
+    /**
      * Get the transform associated to the filter keeping screen scale independent.
      * 
      * @param filter The filter reference.
@@ -300,7 +337,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
         }
 
         nextSequence = null;
-        setResolution(resolution);
+        initResolution(resolution);
 
         // Prepare sequence to be started
         currentFrameRate = config.getOutput().getRate();
@@ -359,37 +396,8 @@ public abstract class Sequence implements Sequencable, Sequencer, ScreenListener
     @Override
     public final void setResolution(Resolution source)
     {
-        Check.notNull(source);
-
-        config.setSource(source);
-        screen.onSourceChanged(source);
-
-        // Store source size
-        final int width = source.getWidth();
-        final int height = source.getHeight();
-
-        // Standard rendering
-        final Resolution output = config.getOutput();
-        if (Filter.NO_FILTER.equals(filter)
-            && source.getWidth() == output.getWidth()
-            && source.getHeight() == output.getHeight())
-        {
-            buf = null;
-            transform = null;
-            graphic.setGraphic(null);
-            directRendering = true;
-        }
-        // Scaled rendering
-        else
-        {
-            buf = Graphics.createImageBuffer(width, height);
-            transform = getTransform(filter);
-            final Graphic gbuf = buf.createGraphic();
-            graphic.setGraphic(gbuf.getGraphic());
-            directRendering = false;
-        }
-
-        onResolutionChanged(width, height, config.getSource().getRate());
+        initResolution(source);
+        onResolutionChanged(source.getWidth(), source.getHeight(), config.getSource().getRate());
     }
 
     @Override

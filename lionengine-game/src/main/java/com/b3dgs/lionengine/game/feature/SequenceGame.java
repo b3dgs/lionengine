@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.sequence.ResolutionChanger;
 import com.b3dgs.lionengine.core.sequence.Sequencable;
 import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.core.sequence.Sequencer;
@@ -87,10 +88,31 @@ public abstract class SequenceGame extends Sequence
                 SequenceGame.this.end(nextSequenceClass, arguments);
             }
         });
+        services.add(new ResolutionChanger()
+        {
+            @Override
+            public void setResolution(Resolution resolution)
+            {
+                SequenceGame.this.setResolution(resolution);
+            }
+        });
 
         world = services.add(creator.createWorld(context, services));
 
         setSystemCursorVisible(false);
+    }
+
+    /**
+     * Called when the resolution changed. Update world resolution.
+     * 
+     * @param width The new screen width.
+     * @param height The new screen height.
+     * @param rate The new rate.
+     */
+    @Override
+    protected void onResolutionChanged(int width, int height, int rate)
+    {
+        world.onResolutionChanged(width, height, rate);
     }
 
     /*

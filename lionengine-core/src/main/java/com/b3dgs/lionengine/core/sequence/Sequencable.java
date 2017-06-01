@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -44,14 +43,6 @@ public interface Sequencable extends Updatable, Renderable
      * @param listener The listener to add.
      */
     void addKeyListener(InputDeviceKeyListener listener);
-
-    /**
-     * Set the new resolution used by the sequence.
-     * 
-     * @param newSource The new resolution used.
-     * @throws LionEngineException If the resolution is <code>null</code>.
-     */
-    void setResolution(Resolution newSource);
 
     /**
      * Set the system cursor visibility.
