@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import java.util.Locale;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.util.UtilTests;
@@ -35,5 +38,17 @@ public class ImageFormatTest
     public void testEnum() throws Exception
     {
         UtilTests.testEnum(ImageFormat.class);
+    }
+
+    /**
+     * Test to string.
+     */
+    @Test
+    public void testToString()
+    {
+        for (final ImageFormat format : ImageFormat.values())
+        {
+            Assert.assertEquals(format.name().toLowerCase(Locale.ENGLISH), format.toString());
+        }
     }
 }
