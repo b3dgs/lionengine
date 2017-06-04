@@ -200,10 +200,11 @@ public class AdPlugTest
         try
         {
             input = music.getInputStream();
-            final Media media = Medias.create("music.lds");
+
             Medias.setLoadFromJar(null);
             Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
 
+            final Media media = Medias.create("music.lds");
             output = media.getOutputStream();
             UtilStream.copy(input, output);
 

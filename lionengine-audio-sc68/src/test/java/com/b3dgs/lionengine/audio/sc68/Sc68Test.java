@@ -199,10 +199,11 @@ public class Sc68Test
         try
         {
             input = music.getInputStream();
-            final Media media = Medias.create("music.sc68");
+
             Medias.setLoadFromJar(null);
             Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
 
+            final Media media = Medias.create("music.sc68");
             output = media.getOutputStream();
             UtilStream.copy(input, output);
 
