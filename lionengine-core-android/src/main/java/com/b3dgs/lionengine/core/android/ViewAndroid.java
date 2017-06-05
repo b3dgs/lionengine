@@ -58,7 +58,7 @@ final class ViewAndroid extends SurfaceView
     {
         if (mouse != null)
         {
-            mouse.updateCoord(event);
+            mouse.updateEvent(event);
         }
         return true;
     }
