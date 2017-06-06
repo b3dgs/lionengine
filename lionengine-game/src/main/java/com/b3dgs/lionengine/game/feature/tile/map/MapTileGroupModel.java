@@ -54,6 +54,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     public MapTileGroupModel()
     {
         super();
+
         groupTiles.put(NO_GROUP_NAME, new HashSet<TileRef>());
     }
 

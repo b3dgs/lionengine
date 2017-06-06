@@ -112,9 +112,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
         Check.superiorOrEqual(height, 0);
 
         final Image image = ToolsSwt.createImage(width, height, transparency);
-        final ImageBufferSwt buffer = new ImageBufferSwt(image);
-
-        return buffer;
+        return new ImageBufferSwt(image);
     }
 
     @Override

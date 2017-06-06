@@ -112,7 +112,7 @@ final class GraphicAndroid implements Graphic
     }
 
     @Override
-    public void copyArea(int x, int y, int width, int height, int dx, int dy)
+    public void copyArea(int sx, int sy, int width, int height, int dx, int dy)
     {
         // TODO : throw new UnsupportedOperationException("copyArea is not supported !");
     }
