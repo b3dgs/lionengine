@@ -143,7 +143,7 @@ public class CollidableModelTest
         Assert.assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
         Assert.assertEquals(collision1, collidable1.getCollisions().iterator().next());
 
-        transformable2.moveLocation(1.0, 5.0, 5.0);
+        transformable2.moveLocation(1.0, 2.0, 2.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
 
@@ -207,13 +207,15 @@ public class CollidableModelTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
-        transformable1.teleport(1, 1);
+        transformable1.teleport(0, 0);
         transformable2.moveLocation(0.0, 0.0, 0.0);
 
-        Assert.assertEquals(collision1, collidable1.collide(collidable2));
+        Assert.assertNull(collidable1.collide(collidable2));
+        Assert.assertNull(collidable2.collide(collidable1));
 
         transformable1.teleport(2.0, 2.0);
 
+        Assert.assertEquals(collision1, collidable1.collide(collidable2));
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
     }
 

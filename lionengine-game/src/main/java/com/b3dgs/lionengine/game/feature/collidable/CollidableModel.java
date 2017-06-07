@@ -206,10 +206,14 @@ public class CollidableModel extends FeatureModel
      */
     private Collision collide(Collidable other, Collision collision, Rectangle rectangle)
     {
+        final Mirror mirror = getMirror(collision);
+        final int offsetX = getOffsetX(collision, mirror);
+        final int offsetY = getOffsetY(collision, mirror);
+
         final double sh = rectangle.getX();
         final double sv = rectangle.getY();
-        final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidthReal()) - sh;
-        final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeightReal()) - sv;
+        final double dh = origin.getX(transformable.getX() + offsetX, rectangle.getWidthReal()) - sh;
+        final double dv = origin.getY(transformable.getY() + offsetY, rectangle.getHeightReal()) - sv;
         final double norm = Math.sqrt(dh * dh + dv * dv);
         final double sx;
         final double sy;
@@ -497,8 +501,8 @@ public class CollidableModel extends FeatureModel
                 {
                     maxHeight = height;
                 }
-                final double x = transformable.getOldX() + offsetX;
-                final double y = transformable.getOldY() + offsetY;
+                final double x = origin.getX(transformable.getX() + offsetX, collision.getWidth());
+                final double y = origin.getY(transformable.getY() + offsetY, collision.getHeight());
 
                 update(collision, x, y, width, height);
             }
