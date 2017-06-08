@@ -247,6 +247,13 @@ public class Factory implements HandlerListener
         for (final Feature feature : featurable.getFeatures())
         {
             featurable.checkListener(feature);
+            for (final Feature other : featurable.getFeatures())
+            {
+                if (feature != other)
+                {
+                    other.checkListener(feature);
+                }
+            }
         }
 
         return featurable;

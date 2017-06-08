@@ -260,11 +260,6 @@ public class FeaturableModel implements Featurable
     {
         fillServices(feature);
         feature.prepare(this);
-        checkListener(feature);
-        for (final Feature other : getFeatures())
-        {
-            other.checkListener(feature);
-        }
         features.add(feature);
     }
 
