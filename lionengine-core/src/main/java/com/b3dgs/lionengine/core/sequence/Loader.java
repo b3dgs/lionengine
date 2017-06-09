@@ -25,69 +25,35 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 
 /**
- * Engine starter, need to be called only one time with the first {@link Sequence} to start, by using
+ * Routine starter, need to be called only one time with the first {@link Sequence} to start, by using
  * {@link #start(Config, Class, Object...)}.
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
- * final Resolution output = new Resolution(640, 480, 60);
- * final Config config = new Config(output, 16, true);
- * final Loader loader = new Loader();
- * loader.start(config, Scene.class);
- * </pre>
- * 
- * <p>
- * This class is Thread-Safe.
- * </p>
- * 
- * @see Config
  */
 public final class Loader
 {
-    /** Error message already started. */
-    private static final String ERROR_STARTED = "Loader has already been started !";
     /** Error task stopped. */
     private static final String ERROR_TASK_STOPPED = "Task stopped before ended !";
 
-    /** Started state. */
-    private volatile boolean started;
-
     /**
-     * Create a loader.
-     */
-    public Loader()
-    {
-        super();
-    }
-
-    /**
-     * Start the loader with an initial sequence. Has to be called only one time.
+     * Start the loader with an initial sequence.
      * 
      * @param config The configuration used (must not be <code>null</code>).
      * @param sequenceClass The the next sequence to start (must not be <code>null</code>).
      * @param arguments The sequence arguments list if needed by its constructor.
      * @return The asynchronous task executed.
-     * @throws LionEngineException If the loader has already been started or sequence is invalid.
+     * @throws LionEngineException If sequence is invalid or wrong arguments.
      */
-    public synchronized TaskFuture start(final Config config,
-                                         final Class<? extends Sequencable> sequenceClass,
-                                         final Object... arguments)
+    public static TaskFuture start(final Config config,
+                                   final Class<? extends Sequencable> sequenceClass,
+                                   final Object... arguments)
     {
         Check.notNull(config);
         Check.notNull(sequenceClass);
         Check.notNull(arguments);
-
-        if (started)
-        {
-            throw new LionEngineException(ERROR_STARTED);
-        }
 
         final Runnable runnable = new Runnable()
         {
@@ -110,8 +76,6 @@ public final class Loader
         });
         thread.start();
 
-        started = true;
-
         return new TaskFuture()
         {
             @Override
@@ -130,7 +94,7 @@ public final class Loader
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If an exception occurred.
      */
-    void handle(Config config, Class<? extends Sequencable> sequenceClass, Object... arguments)
+    private static void handle(Config config, Class<? extends Sequencable> sequenceClass, Object... arguments)
     {
         Screen screen = null;
         try
@@ -160,7 +124,6 @@ public final class Loader
             {
                 screen.dispose();
             }
-            started = false;
         }
     }
 
@@ -170,7 +133,7 @@ public final class Loader
      * @param thread The thread reference.
      * @param reference The thread exception referencer.
      */
-    void check(Thread thread, AtomicReference<Throwable> reference)
+    private static void check(Thread thread, AtomicReference<Throwable> reference)
     {
         try
         {
@@ -184,11 +147,20 @@ public final class Loader
         final Throwable throwable = reference.get();
         if (throwable != null)
         {
+            Engine.terminate();
             if (throwable instanceof LionEngineException)
             {
                 throw (LionEngineException) throwable;
             }
             throw new LionEngineException(throwable);
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Loader()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

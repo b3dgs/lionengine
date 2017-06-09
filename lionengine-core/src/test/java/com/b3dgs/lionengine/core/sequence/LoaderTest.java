@@ -98,13 +98,23 @@ public class LoaderTest
     }
 
     /**
+     * Test the constructor.
+     * 
+     * @throws Exception If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Exception
+    {
+        UtilTests.testPrivateConstructor(Loader.class);
+    }
+
+    /**
      * Test the loader with no config.
      */
     @Test(expected = LionEngineException.class)
     public void testNullConfig()
     {
-        final Loader loader = new Loader();
-        loader.start(null, SequenceSingleMock.class).await();
+        Loader.start(null, SequenceSingleMock.class).await();
     }
 
     /**
@@ -113,8 +123,7 @@ public class LoaderTest
     @Test
     public void testSequenceSingle()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceSingleMock.class).await();
+        Loader.start(CONFIG, SequenceSingleMock.class).await();
     }
 
     /**
@@ -123,8 +132,7 @@ public class LoaderTest
     @Test
     public void testSequenceArgument()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceArgumentsMock.class, new Object()).await();
+        Loader.start(CONFIG, SequenceArgumentsMock.class, new Object()).await();
     }
 
     /**
@@ -136,9 +144,8 @@ public class LoaderTest
         try
         {
             ScreenMock.setScreenWait(true);
-            final Loader loader = new Loader();
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            loader.start(CONFIG, SequenceSingleMock.class).await();
+            Loader.start(CONFIG, SequenceSingleMock.class).await();
         }
         finally
         {
@@ -153,8 +160,7 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testSequenceNull()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, null).await();
+        Loader.start(CONFIG, null).await();
     }
 
     /**
@@ -166,8 +172,7 @@ public class LoaderTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
         {
-            final Loader loader = new Loader();
-            loader.start(CONFIG, SequenceFailMock.class).await();
+            Loader.start(CONFIG, SequenceFailMock.class).await();
         }
         finally
         {
@@ -184,8 +189,7 @@ public class LoaderTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
         {
-            final Loader loader = new Loader();
-            loader.start(CONFIG, SequenceNextFailMock.class).await();
+            Loader.start(CONFIG, SequenceNextFailMock.class).await();
         }
         finally
         {
@@ -202,8 +206,7 @@ public class LoaderTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
         {
-            final Loader loader = new Loader();
-            loader.start(CONFIG, SequenceMalformedMock.class).await();
+            Loader.start(CONFIG, SequenceMalformedMock.class).await();
         }
         finally
         {
@@ -227,8 +230,7 @@ public class LoaderTest
             @Override
             public void run()
             {
-                final Loader loader = new Loader();
-                final TaskFuture future = loader.start(CONFIG, SequenceInterruptMock.class);
+                final TaskFuture future = Loader.start(CONFIG, SequenceInterruptMock.class);
                 future.await();
             }
         };
@@ -274,8 +276,7 @@ public class LoaderTest
                 @Override
                 public void run()
                 {
-                    final Loader loader = new Loader();
-                    final TaskFuture future = loader.start(CONFIG, SequenceInterruptMock.class);
+                    final TaskFuture future = Loader.start(CONFIG, SequenceInterruptMock.class);
                     future.await();
                 }
             };
@@ -303,14 +304,13 @@ public class LoaderTest
     /**
      * Test the loader already started.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testStarted()
     {
-        final Loader loader = new Loader();
-        final TaskFuture future = loader.start(CONFIG, SequenceSingleMock.class);
+        final TaskFuture future = Loader.start(CONFIG, SequenceSingleMock.class);
         try
         {
-            loader.start(CONFIG, SequenceSingleMock.class).await();
+            Loader.start(CONFIG, SequenceSingleMock.class).await();
         }
         finally
         {
@@ -324,8 +324,7 @@ public class LoaderTest
     @Test
     public void testEngineStarted()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceSingleMock.class).await();
+        Loader.start(CONFIG, SequenceSingleMock.class).await();
         Assert.assertTrue(Engine.isStarted());
     }
 
@@ -336,8 +335,7 @@ public class LoaderTest
     public void testNoIconWindowed()
     {
         final Config config = new Config(OUTPUT, 16, true, Medias.create("void"));
-        final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        Loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -347,8 +345,7 @@ public class LoaderTest
     public void testIconWindowed()
     {
         final Config config = new Config(OUTPUT, 16, true, icon);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        Loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -358,8 +355,7 @@ public class LoaderTest
     public void testIconFullScreen()
     {
         final Config config = new Config(OUTPUT, 16, false, icon);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        Loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -368,8 +364,7 @@ public class LoaderTest
     @Test
     public void testSlowSequence()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceSlowMock.class).await();
+        Loader.start(CONFIG, SequenceSlowMock.class).await();
     }
 
     /**
@@ -424,8 +419,7 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        Loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -436,8 +430,7 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceEngineTerminateMock.class).await();
+        Loader.start(config, SequenceEngineTerminateMock.class).await();
     }
 
     /**
@@ -448,8 +441,7 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        Loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -460,8 +452,7 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceFilterMock.class, new FilterBilinear()).await();
+        Loader.start(config, SequenceFilterMock.class, new FilterBilinear()).await();
     }
 
     /**
@@ -476,18 +467,17 @@ public class LoaderTest
         blur.setAlpha(true);
         final Config config = new Config(output, 16, true);
 
-        final Loader loader = new Loader();
-        loader.start(config, SequenceFilterMock.class, blur).await();
+        Loader.start(config, SequenceFilterMock.class, blur).await();
 
         blur.setEdgeMode(FilterBlur.WRAP_EDGES);
-        loader.start(config, SequenceFilterMock.class, blur).await();
+        Loader.start(config, SequenceFilterMock.class, blur).await();
 
         blur.setAlpha(false);
-        loader.start(config, SequenceFilterMock.class, blur).await();
+        Loader.start(config, SequenceFilterMock.class, blur).await();
 
         blur.setAlpha(true);
         blur.setRadius(0.5f);
-        loader.start(config, SequenceFilterMock.class, blur).await();
+        Loader.start(config, SequenceFilterMock.class, blur).await();
     }
 
     /**
@@ -498,8 +488,7 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, false);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceFilterMock.class, new FilterHq2x()).await();
+        Loader.start(config, SequenceFilterMock.class, new FilterHq2x()).await();
     }
 
     /**
@@ -510,7 +499,6 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(960, 720, 60);
         final Config config = new Config(output, 16, false);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceFilterMock.class, new FilterHq3x()).await();
+        Loader.start(config, SequenceFilterMock.class, new FilterHq3x()).await();
     }
 }

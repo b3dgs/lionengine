@@ -39,8 +39,6 @@ public class AppCursor
     {
         EngineAwt.start(AppCursor.class.getSimpleName(), Version.create(1, 0, 0), AppCursor.class);
         final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        Loader.start(Config.windowed(output), Scene.class);
     }
 }

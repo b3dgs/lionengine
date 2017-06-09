@@ -88,7 +88,6 @@ public class SequenceGameTest
     @Test(timeout = 1000L)
     public void testSequenceGame()
     {
-        final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceGameMock.class).await();
+        Loader.start(CONFIG, SequenceGameMock.class).await();
     }
 }

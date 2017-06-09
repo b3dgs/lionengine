@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.core.minimal;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.core.sequence.Loader;
@@ -44,18 +43,9 @@ public class AppJava
         // To load resources from JAR, this alternative is preferred if external folder is not possible:
         EngineAwt.start(AppJava.class.getSimpleName(), Version.create(1, 0, 0), AppJava.class);
 
-        // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.
-        // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
-        // If the current frame rate is lower than the required in the native,
-        // the extrapolation value will allow to compensate any data calculation.
-        final Resolution output = new Resolution(640, 480, 60);
-
         // Final configuration (rendering will be scaled by 2 considering source and output resolution).
         // This is the final configuration container, including color depth and window mode.
-        final Config config = new Config(output, 16, true);
-
         // Program starter, setup with our configuration. It just needs one sequence reference to start.
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 }
