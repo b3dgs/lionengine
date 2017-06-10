@@ -86,7 +86,7 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
     /**
      * Transition from {@link StateTurn} to {@link StateIdle}.
      */
-    private final class TransitionTurnToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionTurnToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -114,7 +114,7 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
     /**
      * Transition from {@link StateTurn} to {@link StateWalk}.
      */
-    private final class TransitionTurnToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionTurnToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -136,7 +136,7 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
     /**
      * Transition from {@link StateTurn} to {@link StateJump}.
      */
-    private final class TransitionTurnToJump extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionTurnToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

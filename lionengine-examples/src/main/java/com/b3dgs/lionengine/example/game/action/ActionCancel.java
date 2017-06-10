@@ -41,19 +41,15 @@ class ActionCancel extends ActionFeature
     @Override
     public Action create(Services services)
     {
-        final Factory factory = services.get(Factory.class);
-        final Handler handler = services.get(Handler.class);
-
-        return new Action()
+        return () ->
         {
-            @Override
-            public void execute()
-            {
-                final Button buildings = factory.create(Button.BUILDINGS);
-                handler.add(buildings);
+            final Factory factory = services.get(Factory.class);
+            final Handler handler = services.get(Handler.class);
 
-                getFeature(ButtonLink.class).terminate();
-            }
+            final Button buildings = factory.create(Button.BUILDINGS);
+            handler.add(buildings);
+
+            getFeature(ButtonLink.class).terminate();
         };
     }
 }

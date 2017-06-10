@@ -41,24 +41,28 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Image reference. */
-    private final Image image;
-    /** Sprite reference. */
-    private final Sprite sprite;
-    /** Animation reference. */
-    private final SpriteAnimated animation;
-    /** Animation mirror reference. */
-    private final SpriteAnimated animationMirror;
-    /** Tile reference. */
-    private final Sprite tilesheets;
-    /** Tile reference. */
-    private final SpriteTiled tilesheet;
-    /** Animation to play. */
-    private final Animation anim;
-    /** Displayed tile number. */
+    // As we defined our resources class loader with: AppDrawable.class
+    // Any call to Medias.get(...) will load from AppDrawable class path
+
+    // Load an image (com/b3dgs/lionengine/example/core/drawable/image.png)
+    private final Image image = Drawable.loadImage(Medias.create("image.jpg"));
+
+    // Load a sprite (com/b3dgs/lionengine/example/core/drawable/sprite.png)
+    private final Sprite sprite = Drawable.loadSprite(Medias.create("sprite.png"));
+
+    // Load an animated sprite, with 7 horizontal frames only
+    private final SpriteAnimated animation = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
+    private final SpriteAnimated animationMirror = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
+
+    // Load a tile in 16*16
+    private final Sprite tilesheets = Drawable.loadSprite(Medias.create("tilesheet.png"));
+    private final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Medias.create("tilesheet.png"), 16, 16);
+
+    // Set animation data (frames between 4-6, at a speed of 0.125, looped)
+    private final Animation anim = new Animation(null, 4, 6, 0.125, false, true);
+
     private double tile;
 
     /**
@@ -69,27 +73,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        // As we defined our resources class loader with: AppDrawable.class
-        // Any call to Medias.get(...) will load from AppDrawable class path
 
-        // Load an image (com/b3dgs/lionengine/example/core/drawable/image.png)
-        image = Drawable.loadImage(Medias.create("image.jpg"));
-
-        // Load a sprite (com/b3dgs/lionengine/example/core/drawable/sprite.png)
-        sprite = Drawable.loadSprite(Medias.create("sprite.png"));
-
-        // Load an animated sprite, with 7 horizontal frames only
-        animation = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
-        animationMirror = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
-
-        // Load a tile in 16*16
-        tilesheets = Drawable.loadSprite(Medias.create("tilesheet.png"));
-        tilesheet = Drawable.loadSpriteTiled(Medias.create("tilesheet.png"), 16, 16);
-
-        // Set animation data (frames between 4-6, at a speed of 0.125, looped)
-        anim = new Animation(null, 4, 6, 0.125, false, true);
-
-        // Exit
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
@@ -113,7 +97,7 @@ class Scene extends Sequence
 
         // Place images
         image.setLocation(0, 0);
-        sprite.setLocation(48, 192);
+        sprite.setLocation(16, 160);
         animation.setLocation(80, 150);
         animationMirror.setLocation(100, 150);
         tilesheet.setLocation(150, 150);

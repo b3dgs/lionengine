@@ -52,13 +52,6 @@ class ActionFeature extends FeatureModel
      */
     public Action create(Services services)
     {
-        return new Action()
-        {
-            @Override
-            public void execute()
-            {
-                Verbose.info(name);
-            }
-        };
+        return () -> Verbose.info(name);
     }
 }

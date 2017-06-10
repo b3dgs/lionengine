@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FeatureGet;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;

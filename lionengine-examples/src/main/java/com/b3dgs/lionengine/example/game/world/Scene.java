@@ -21,19 +21,16 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.sequence.Sequence;
-import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.game.feature.SequenceGame;
 
 /**
  * Game loop designed to handle our world.
  * 
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene extends Sequence
+class Scene extends SequenceGame
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-
-    private final World world;
 
     /**
      * Constructor.
@@ -42,26 +39,13 @@ class Scene extends Sequence
      */
     public Scene(Context context)
     {
-        super(context, NATIVE);
-        world = new World(context);
+        super(context, NATIVE, (c, s) -> new World(c, s));
     }
 
     @Override
     public void load()
     {
         world.loadFromFile(Medias.create("world.lvl"));
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        world.update(extrp);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        world.render(g);
     }
 
     @Override

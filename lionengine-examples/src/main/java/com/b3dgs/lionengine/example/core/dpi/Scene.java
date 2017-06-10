@@ -35,12 +35,9 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(640, 360, 60);
 
-    /** Timing exit. */
     private final Timing timing = new Timing();
-    /** Image reference. */
     private final Image image;
 
     /**

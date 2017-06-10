@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
 class Scene extends Sequence
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /**
      * Constructor.
@@ -43,6 +43,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 

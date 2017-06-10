@@ -23,15 +23,16 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.feature.collidable.Collision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorListener;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -58,16 +59,18 @@ class Peon extends FeaturableModel implements SelectorListener
     {
         super();
 
-        addFeature(new LayerableModel(1));
-
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(services, setup));
 
-        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        final FramesConfig config = FramesConfig.imports(setup);
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(),
+                                                                   config.getHorizontal(),
+                                                                   config.getVertical());
         surface.setOrigin(Origin.BOTTOM_LEFT);
-        surface.setFrameOffsets(8, 8);
+        surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
         transformable.teleport(432, 272);
+        collidable.addCollision(Collision.AUTOMATIC);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
         final Viewer viewer = services.get(Viewer.class);
@@ -84,9 +87,9 @@ class Peon extends FeaturableModel implements SelectorListener
             {
                 g.setColor(ColorRgba.GREEN);
                 g.drawRect(viewer,
-                           Origin.MIDDLE,
-                           transformable.getX() + 8,
-                           transformable.getY() + 8,
+                           Origin.BOTTOM_LEFT,
+                           transformable.getX(),
+                           transformable.getY(),
                            transformable.getWidth(),
                            transformable.getHeight(),
                            false);

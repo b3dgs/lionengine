@@ -66,10 +66,10 @@ class Move extends FeaturableModel
         final Cursor cursor = services.get(Cursor.class);
 
         final AtomicReference<Updatable> state = new AtomicReference<>(actionable);
-        
+
         final Assignable assignable = addFeatureAndGet(new AssignableModel(services));
         assignable.setClickAssign(Mouse.LEFT);
-        
+
         actionable.setAction(() ->
         {
             cursor.setSurfaceId(1);

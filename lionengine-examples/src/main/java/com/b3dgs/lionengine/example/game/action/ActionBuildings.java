@@ -41,27 +41,23 @@ class ActionBuildings extends ActionFeature
     @Override
     public Action create(Services services)
     {
-        final Factory factory = services.get(Factory.class);
-        final Handler handler = services.get(Handler.class);
-
-        return new Action()
+        return () ->
         {
-            @Override
-            public void execute()
-            {
-                final Button cancel = factory.create(Button.CANCEL);
-                handler.add(cancel);
+            final Factory factory = services.get(Factory.class);
+            final Handler handler = services.get(Handler.class);
 
-                final Button buildFarm = factory.create(Button.BUILD_FARM);
-                cancel.getFeature(ButtonLink.class).addToDelete(buildFarm);
-                handler.add(buildFarm);
+            final Button cancel = factory.create(Button.CANCEL);
+            handler.add(cancel);
 
-                final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
-                cancel.getFeature(ButtonLink.class).addToDelete(buildBarracks);
-                handler.add(buildBarracks);
+            final Button buildFarm = factory.create(Button.BUILD_FARM);
+            cancel.getFeature(ButtonLink.class).addToDelete(buildFarm);
+            handler.add(buildFarm);
 
-                getFeature(ButtonLink.class).terminate();
-            }
+            final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
+            cancel.getFeature(ButtonLink.class).addToDelete(buildBarracks);
+            handler.add(buildBarracks);
+
+            getFeature(ButtonLink.class).terminate();
         };
     }
 }

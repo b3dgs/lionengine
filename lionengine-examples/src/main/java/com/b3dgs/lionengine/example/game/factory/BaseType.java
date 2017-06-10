@@ -18,21 +18,27 @@
 package com.b3dgs.lionengine.example.game.factory;
 
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.FeatureGet;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Setup;
 
 /**
  * Type base implementation.
  */
 class BaseType extends FeaturableModel
 {
-    @FeatureGet private Object param;
+    private final Object param;
 
     /**
      * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public BaseType()
+    public BaseType(Services services, Setup setup)
     {
         super();
+
+        param = services.get(Object.class);
     }
 
     /**

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.raster;
 
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
@@ -102,6 +103,7 @@ class Scene extends Sequence
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create("object.xml"),
                                                                     Medias.create("raster.xml"));
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
+        surface.play(new Animation("default", 1, 10, 0.2, false, true));
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new LayerableModel(1));
         featurable.addFeature(new MirrorableModel());
