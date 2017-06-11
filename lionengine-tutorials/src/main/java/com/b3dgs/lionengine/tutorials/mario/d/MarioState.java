@@ -40,7 +40,7 @@ enum MarioState implements StateAnimationBased
      * 
      * @param clazz The associated class reference.
      */
-    private MarioState(Class<? extends State> clazz)
+    MarioState(Class<? extends State> clazz)
     {
         this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);

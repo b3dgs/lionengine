@@ -17,33 +17,29 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
  * Entity rendering implementation.
  */
 class EntityRenderer extends FeatureModel implements Displayable
 {
-    private final SpriteAnimated surface;
+    @FeatureGet private EntityModel model;
 
     /**
      * Constructor.
-     * 
-     * @param model The model reference.
      */
-    public EntityRenderer(EntityModel model)
+    public EntityRenderer()
     {
         super();
-
-        surface = model.getSurface();
     }
 
     @Override
     public void render(Graphic g)
     {
-        surface.render(g);
+        model.getSurface().render(g);
     }
 }

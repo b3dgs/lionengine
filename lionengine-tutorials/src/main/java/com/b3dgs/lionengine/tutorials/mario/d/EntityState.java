@@ -46,7 +46,7 @@ enum EntityState implements StateAnimationBased
      * 
      * @param clazz The associated class reference.
      */
-    private EntityState(Class<? extends State> clazz)
+    EntityState(Class<? extends State> clazz)
     {
         this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);

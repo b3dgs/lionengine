@@ -17,33 +17,21 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.c;
 
+import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
  * Mario rendering implementation.
  */
 class MarioRenderer extends FeatureModel implements Displayable
 {
-    private final SpriteAnimated surface;
-
-    /**
-     * Constructor.
-     * 
-     * @param model The mario model.
-     */
-    public MarioRenderer(MarioModel model)
-    {
-        super();
-
-        surface = model.getSurface();
-    }
+    @FeatureGet private MarioModel model;
 
     @Override
     public void render(Graphic g)
     {
-        surface.render(g);
+        model.getSurface().render(g);
     }
 }

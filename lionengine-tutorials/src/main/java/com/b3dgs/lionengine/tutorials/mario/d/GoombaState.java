@@ -40,7 +40,7 @@ enum GoombaState implements StateAnimationBased
      * 
      * @param clazz The associated class reference.
      */
-    private GoombaState(Class<? extends State> clazz)
+    GoombaState(Class<? extends State> clazz)
     {
         this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);

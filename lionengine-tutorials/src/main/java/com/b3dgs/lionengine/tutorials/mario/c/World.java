@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.CameraTracker;
 import com.b3dgs.lionengine.game.feature.WorldGame;
@@ -37,48 +39,49 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * World implementation.
  */
 class World extends WorldGame
 {
+    private static final Media MARIO = Medias.create("entity", "Mario.xml");
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
     private final MapTile map = services.create(MapTileGame.class);
+    private final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
+    private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+    private final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
 
     /**
-     * Constructor.
+     * Create world.
      * 
-     * @param context The config reference.
+     * @param context The context reference.
      * @param services The services reference.
      */
     public World(Context context, Services services)
     {
         super(context, services);
 
-        services.add(getInputDevice(Keyboard.class));
+        services.add(getInputDevice(InputDeviceDirectional.class));
 
-        camera.setIntervals(16, 0);
-
-        map.addFeature(new MapTilePersisterModel(services));
         map.addFeature(new MapTileViewerModel(services));
-        map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTileCollisionModel(services));
+        camera.setIntervals(16, 0);
     }
 
     @Override
     public void render(Graphic g)
     {
         fill(g, BACKGROUND_COLOR);
+
         super.render(g);
     }
 
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.getFeature(MapTilePersister.class).save(file);
+        mapPersister.save(file);
     }
 
     @Override
@@ -86,12 +89,11 @@ class World extends WorldGame
     {
         handler.add(map);
 
-        map.getFeature(MapTilePersister.class).load(file);
-        map.getFeature(MapTileGroup.class).loadGroups(Medias.create("map", "groups.xml"));
-        map.getFeature(MapTileCollision.class).loadCollisions(Medias.create("map", "formulas.xml"),
-                                                              Medias.create("map", "collisions.xml"));
+        mapPersister.load(file);
+        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
+        mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
 
-        final Mario mario = factory.create(Mario.MEDIA);
+        final Featurable mario = factory.create(MARIO);
         handler.add(mario);
 
         final CameraTracker tracker = new CameraTracker(services);

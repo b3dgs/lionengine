@@ -130,7 +130,7 @@ class StateJump extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateJump} to {@link StateIdle}.
      */
-    private final class TransitionJumpToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionJumpToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

@@ -103,7 +103,7 @@ class StateIdle extends StateGame implements TileCollidableListener
     /**
      * Transition from {@link StateIdle} to {@link StateWalk}.
      */
-    private final class TransitionIdleToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionIdleToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -123,7 +123,7 @@ class StateIdle extends StateGame implements TileCollidableListener
     /**
      * Transition from {@link StateIdle} to {@link StateJump}.
      */
-    private final class TransitionIdleToJump extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionIdleToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

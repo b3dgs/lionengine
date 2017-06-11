@@ -64,12 +64,16 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     public StateWalk(Featurable featurable, Animation animation)
     {
         super(MarioState.WALK);
+
         this.animation = animation;
+
         mirrorable = featurable.getFeature(Mirrorable.class);
         tileCollidable = featurable.getFeature(TileCollidable.class);
+
         final MarioModel model = featurable.getFeature(MarioModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
+
         addTransition(new TransitionWalkToIdle());
         addTransition(new TransitionWalkToTurn());
         addTransition(new TransitionWalkToJump());
@@ -132,7 +136,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateWalk} to {@link StateIdle}.
      */
-    private final class TransitionWalkToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionWalkToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -152,7 +156,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateWalk} to {@link StateTurn}.
      */
-    private final class TransitionWalkToTurn extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionWalkToTurn extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -173,7 +177,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateWalk} to {@link StateJump}.
      */
-    private final class TransitionWalkToJump extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionWalkToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

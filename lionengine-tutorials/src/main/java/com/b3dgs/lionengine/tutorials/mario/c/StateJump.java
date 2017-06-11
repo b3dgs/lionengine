@@ -58,13 +58,16 @@ class StateJump extends StateGame implements StateInputDirectionalUpdater, TileC
     public StateJump(Featurable featurable, Animation animation)
     {
         super(MarioState.JUMP);
+
         this.animation = animation;
         mirrorable = featurable.getFeature(Mirrorable.class);
         tileCollidable = featurable.getFeature(TileCollidable.class);
+
         final MarioModel model = featurable.getFeature(MarioModel.class);
         animator = model.getSurface();
         movement = model.getMovement();
         jump = model.getJump();
+
         addTransition(new TransitionJumpToIdle());
     }
 
@@ -113,7 +116,7 @@ class StateJump extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateJump} to {@link StateIdle}.
      */
-    private final class TransitionJumpToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionJumpToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

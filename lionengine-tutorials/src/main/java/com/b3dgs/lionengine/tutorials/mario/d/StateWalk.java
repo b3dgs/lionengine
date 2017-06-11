@@ -144,7 +144,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateWalk} to {@link StateIdle}.
      */
-    private final class TransitionWalkToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionWalkToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -164,7 +164,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateWalk} to {@link StateTurn}.
      */
-    private final class TransitionWalkToTurn extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionWalkToTurn extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -185,7 +185,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Transition from {@link StateWalk} to {@link StateJump}.
      */
-    private final class TransitionWalkToJump extends StateTransition implements StateTransitionInputDirectionalChecker
+    private class TransitionWalkToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

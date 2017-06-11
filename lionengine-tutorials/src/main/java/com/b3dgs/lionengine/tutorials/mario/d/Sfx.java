@@ -45,7 +45,7 @@ enum Sfx
     /**
      * Constructor.
      */
-    private Sfx()
+    Sfx()
     {
         final Media media = Medias.create("sfx", name().toLowerCase(Locale.ENGLISH) + AUDIO_FILE_EXTENSION);
         sound = AudioFactory.loadAudio(media);

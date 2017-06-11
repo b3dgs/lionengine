@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 
@@ -39,7 +38,8 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class Scene extends SequenceGame
 {
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Native resolution. */
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
     private static final Media LEVEL = Medias.create("map", "level.lvl");
 
     /**
@@ -50,6 +50,7 @@ class Scene extends SequenceGame
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("map", "level.png"));
+
         final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
         try (FileWriting output = new FileWriting(LEVEL))
         {
@@ -81,17 +82,5 @@ class Scene extends SequenceGame
             importAndSave();
         }
         world.loadFromFile(LEVEL);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        world.update(extrp);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        world.render(g);
     }
 }

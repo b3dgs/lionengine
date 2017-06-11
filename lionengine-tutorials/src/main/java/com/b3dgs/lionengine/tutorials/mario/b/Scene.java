@@ -24,24 +24,22 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.SequenceGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Game loop designed to handle our little world.
  */
-class Scene extends Sequence
+class Scene extends SequenceGame
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
-    /** Level file. */
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
     private static final Media LEVEL = Medias.create("map", "level.lvl");
 
     /**
@@ -52,6 +50,7 @@ class Scene extends Sequence
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("map", "level.png"));
+
         final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
         try (FileWriting output = new FileWriting(LEVEL))
         {
@@ -63,9 +62,6 @@ class Scene extends Sequence
         }
     }
 
-    /** World reference. */
-    private final World world;
-
     /**
      * Constructor.
      * 
@@ -73,8 +69,8 @@ class Scene extends Sequence
      */
     public Scene(Context context)
     {
-        super(context, NATIVE);
-        world = new World(context);
+        super(context, NATIVE, (c, s) -> new World(c, s));
+
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
@@ -86,17 +82,5 @@ class Scene extends Sequence
             importAndSave();
         }
         world.loadFromFile(LEVEL);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        world.update(extrp);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        world.render(g);
     }
 }

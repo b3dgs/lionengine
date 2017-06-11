@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 
@@ -42,22 +41,9 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class Scene extends SequenceGame
 {
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Native resolution. */
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
     private static final Media LEVEL = Medias.create("map", "level.lvl");
-
-    private final Midi music = AudioFactory.loadAudio(Medias.create("music", "music.mid"), Midi.class);
-
-    /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     */
-    public Scene(Context context)
-    {
-        super(context, NATIVE, (c, s) -> new World(c, s));
-
-        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
-    }
 
     /**
      * Import and save the level.
@@ -67,6 +53,7 @@ class Scene extends SequenceGame
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("map", "level.png"));
+
         final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
         try (FileWriting output = new FileWriting(LEVEL))
         {
@@ -76,6 +63,20 @@ class Scene extends SequenceGame
         {
             Verbose.exception(exception, "Error on saving map !");
         }
+    }
+
+    private final Midi music = AudioFactory.loadAudio(Medias.create("music", "music.mid"), Midi.class);
+
+    /**
+     * Create world.
+     * 
+     * @param context The context reference.
+     */
+    public Scene(Context context)
+    {
+        super(context, NATIVE, (c, s) -> new World(c, s));
+
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
@@ -88,18 +89,6 @@ class Scene extends SequenceGame
         world.loadFromFile(LEVEL);
         music.setVolume(30);
         music.play(true);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        world.update(extrp);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        world.render(g);
     }
 
     @Override

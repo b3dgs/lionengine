@@ -17,39 +17,39 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FeatureGet;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
-import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * Mario specific implementation.
  */
-public class MarioUpdater extends EntityUpdater implements CollidableListener
+class MarioUpdater extends EntityUpdater implements CollidableListener
 {
-    private final Setup setup;
+    private final InputDeviceDirectional keyboard;
 
     @FeatureGet private Transformable transformable;
     @FeatureGet private TileCollidable tileCollidable;
     @FeatureGet private Collidable collidable;
 
-    @FeatureGet private Keyboard keyboard;
-
     /**
      * Constructor.
      * 
-     * @param model The model reference.
+     * @param setup The setup reference.
+     * @param services The services reference.
      */
-    public MarioUpdater(EntityModel model)
+    public MarioUpdater(Services services, Setup setup)
     {
-        super(model);
+        super(services, setup);
 
-        setup = model.getSetup();
+        keyboard = services.get(InputDeviceDirectional.class);
     }
 
     @Override
@@ -59,6 +59,8 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
 
         super.prepare(provider);
 
+        collidable.setGroup(0);
+        collidable.addAccept(1);
         setControl(keyboard);
         respawn(160);
     }

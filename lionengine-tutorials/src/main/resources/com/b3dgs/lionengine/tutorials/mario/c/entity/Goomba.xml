@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.lionengine.tutorials.mario.d.Entity</lionengine:class>
-    <lionengine:updater>com.b3dgs.lionengine.tutorials.mario.d.GoombaUpdater</lionengine:updater>
+    <lionengine:feature>com.b3dgs.lionengine.game.feature.MirrorableModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.lionengine.game.feature.TransformableModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.lionengine.game.feature.body.BodyModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.lionengine.game.feature.collidable.CollidableModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.lionengine.tutorials.mario.d.EntityModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.lionengine.tutorials.mario.d.GoombaUpdater</lionengine:feature>
     <lionengine:surface image="Goomba.png"/>
     <lionengine:frames horizontal="3" vertical="1"/>
     <lionengine:size height="16" width="16"/>

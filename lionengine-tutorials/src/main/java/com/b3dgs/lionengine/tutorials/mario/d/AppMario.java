@@ -18,14 +18,12 @@
 package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.midi.MidiFormat;
 import com.b3dgs.lionengine.audio.wav.WavFormat;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.core.sequence.Loader;
-import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Program starts here.
@@ -36,8 +34,6 @@ public class AppMario
     private static final String NAME = "Mario";
     /** Application version. */
     private static final Version VERSION = Version.create(1, 0, 0);
-    /** Resources directory. */
-    private static final String RESOURCES = UtilFolder.getPath("resources", "mario", "d");
 
     /**
      * Main function.
@@ -46,12 +42,8 @@ public class AppMario
      */
     public static void main(String[] args)
     {
-        EngineAwt.start(NAME, VERSION, RESOURCES);
+        EngineAwt.start(NAME, VERSION, AppMario.class);
         AudioFactory.addFormat(new WavFormat(), new MidiFormat());
-
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 }

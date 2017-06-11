@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FeatureGet;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -32,10 +33,8 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 /**
  * Goomba specific implementation.
  */
-public class GoombaUpdater extends EntityUpdater implements InputDeviceDirectional, CollidableListener
+class GoombaUpdater extends EntityUpdater implements InputDeviceDirectional, CollidableListener
 {
-    private final Setup setup;
-
     @FeatureGet private Transformable transformable;
     @FeatureGet private TileCollidable tileCollidable;
     @FeatureGet private Collidable collidable;
@@ -46,13 +45,12 @@ public class GoombaUpdater extends EntityUpdater implements InputDeviceDirection
     /**
      * Constructor.
      * 
-     * @param model The model reference.
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public GoombaUpdater(EntityModel model)
+    public GoombaUpdater(Services services, Setup setup)
     {
-        super(model);
-
-        setup = model.getSetup();
+        super(services, setup);
     }
 
     @Override
@@ -61,7 +59,8 @@ public class GoombaUpdater extends EntityUpdater implements InputDeviceDirection
         StateAnimationBased.Util.loadStates(GoombaState.values(), factory, provider, setup);
 
         super.prepare(provider);
-
+        collidable.setGroup(1);
+        collidable.addAccept(0);
         setControl(this);
     }
 

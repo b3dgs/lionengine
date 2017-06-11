@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.FeatureGet;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
@@ -54,31 +54,27 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     /** Entity configurer. */
     protected final Setup setup;
 
-    private final Force movement;
-    private final Force jump;
-    private final SpriteAnimated surface;
+    private final Camera camera;
 
+    @FeatureGet private EntityModel model;
     @FeatureGet private Transformable transformable;
     @FeatureGet private TileCollidable tileCollidable;
     @FeatureGet private Collidable collidable;
     @FeatureGet private Mirrorable mirrorable;
     @FeatureGet private Body body;
 
-    @FeatureGet private Camera camera;
-
     /**
      * Constructor.
      * 
-     * @param model The model reference.
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public EntityUpdater(EntityModel model)
+    public EntityUpdater(Services services, Setup setup)
     {
         super();
 
-        movement = model.getMovement();
-        jump = model.getJump();
-        surface = model.getSurface();
-        setup = model.getSetup();
+        this.setup = setup;
+        camera = services.get(Camera.class);
     }
 
     @Override
@@ -97,7 +93,7 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     {
         body.resetGravity();
         changeState(EntityState.JUMP);
-        jump.setDirection(0.0, 6.0);
+        model.getJump().setDirection(0.0, 6.0);
     }
 
     /**
@@ -120,7 +116,7 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
     {
         mirrorable.mirror(Mirror.NONE);
         transformable.teleport(x, GROUND);
-        jump.setDirection(Direction.ZERO);
+        model.getJump().setDirection(Direction.ZERO);
         body.resetGravity();
         collidable.setEnabled(true);
         tileCollidable.setEnabled(true);
@@ -153,11 +149,12 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
         handler.update(extrp);
         mirrorable.update(extrp);
 
-        movement.update(extrp);
-        jump.update(extrp);
+        model.getMovement().update(extrp);
+        model.getJump().update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
 
+        final SpriteAnimated surface = model.getSurface();
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
         surface.setLocation(camera, transformable);

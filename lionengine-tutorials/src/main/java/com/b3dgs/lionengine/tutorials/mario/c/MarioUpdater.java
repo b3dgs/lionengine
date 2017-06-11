@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.FeatureGet;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * Mario updating implementation.
@@ -47,32 +47,29 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
 
     private final StateFactory factory = new StateFactory();
     private final StateHandler handler = new StateHandler(factory);
-    private final Force movement;
-    private final Force jump;
-    private final SpriteAnimated surface;
     private final Setup setup;
+    private final Camera camera;
+    private final InputDeviceDirectional keyboard;
 
     @FeatureGet private Mirrorable mirrorable;
     @FeatureGet private Transformable transformable;
     @FeatureGet private Body body;
     @FeatureGet private TileCollidable tileCollidable;
-
-    @FeatureGet private Camera camera;
-    @FeatureGet private Keyboard keyboard;
+    @FeatureGet private MarioModel model;
 
     /**
      * Constructor.
      * 
-     * @param model The mario model.
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public MarioUpdater(MarioModel model)
+    public MarioUpdater(Services services, Setup setup)
     {
         super();
 
-        movement = model.getMovement();
-        jump = model.getJump();
-        surface = model.getSurface();
-        setup = model.getSetup();
+        this.setup = setup;
+        camera = services.get(Camera.class);
+        keyboard = services.get(InputDeviceDirectional.class);
     }
 
     @Override
@@ -94,7 +91,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     {
         transformable.teleport(400, GROUND);
         camera.resetInterval(transformable);
-        jump.setDirection(Direction.ZERO);
+        model.getJump().setDirection(Direction.ZERO);
         body.resetGravity();
     }
 
@@ -103,8 +100,8 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     {
         handler.update(extrp);
         mirrorable.update(extrp);
-        movement.update(extrp);
-        jump.update(extrp);
+        model.getMovement().update(extrp);
+        model.getJump().update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
 
@@ -113,6 +110,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
             respawn();
         }
 
+        final SpriteAnimated surface = model.getSurface();
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
         surface.setLocation(camera, transformable);
