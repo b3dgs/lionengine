@@ -15,4 +15,5 @@ org.sonar.ide.eclipse.core.prefs
 .checkstyle
 .lionengine
 .sonar
+.scannerwork
 built-jar.properties

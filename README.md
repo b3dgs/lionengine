@@ -24,7 +24,7 @@
 
 ## Presentation
 
-The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake] (http://www.b3dgs.com/v7/page.php?lang=en&section=lionheart_remake) for an easy Java use.
+The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake](http://www.b3dgs.com/v7/page.php?lang=en&section=lionheart_remake) for an easy Java use.
 The engine is as a library, in Jar format (_including its javadoc_), which can be included in any project;
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
@@ -32,13 +32,13 @@ Using Java 6 internal libraries, it is specifically designed for 2D games (no su
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Lds_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
-In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
-
-Since the version 6, it supports __Android 1.5__ *(API 3)*.
+It supports __Android 4.0__ *(API 14)*.
 The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
 Everything else is fully compatible and does not require any changes.
 
-Since the version __7__, it includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
+It includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
+
+In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
 <a href="http://lionengine.b3dgs.com/page.php?lang=en&section=home"><img src="http://lionengine.b3dgs.com/img/home/overview_en.png"/></a>
 
@@ -65,7 +65,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 
 
 * #### __lionengine-core-android__
->  * Engine implementation using __Android 1.5 (API 3)__
+>  * Engine implementation using __Android 4.0 (API 14)__
 
 
 * #### __lionengine-game__
@@ -125,15 +125,15 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 
 Steps to include the __LionEngine__ in your project:
 
-1. Install at least the [Java JDK 6] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-2. Install the [Android SDK 1.5] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
-3. Choose your favourite IDE ([Eclipse] (http://www.eclipse.org/downloads/), [Netbeans] (https://netbeans.org/downloads/)...)
-4. Download the latest [LionEngine] (http://lionengine.b3dgs.com/page.php?lang=en&section=downloads)
+1. Install at least the [Java JDK 6](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+2. Install the [Android SDK 4.0](http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
+3. Choose your favourite IDE ([Eclipse](http://www.eclipse.org/downloads/), [Netbeans](https://netbeans.org/downloads/)...)
+4. Download the latest [LionEngine](http://lionengine.b3dgs.com/page.php?lang=en&section=downloads)
 5. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
     * __lionengine-core-awt__ _(uses_ __AWT__ _as graphic renderer, target for computer)_
     * __lionengine-core-swt__ _(uses_ __SWT__ _as graphic renderer, target for computer)_
-    * __lionengine-core-android__ _(uses_ __Android 1.5__, _target for phones)_
+    * __lionengine-core-android__ _(uses_ __Android 4.0__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
     * __lionengine-network__ _(support for network)_
     * __lionengine-audio-wav__ _(support for Wav sound)_
@@ -151,31 +151,25 @@ Once you installed the __LionEngine__ in your project, you may would like to kno
 
 * Using __lionengine-core-awt__ or __lionengine-core-swt__
 ```java
-public final class AppJava
+public class AppSamplePc
 {
     public static void main(String[] args)
     {
-        EngineAwt.start("AppJava", Version.create(1, 0, 0), "resources");
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        EngineAwt.start("Sample Project", Version.create(0, 1, 0), AppSamplePc.class);
+        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 }
 ```
 
 * Using __lionengine-core-android__
 ```java
-public final class AppSample extends ActivityGame
+public class ActivitySample extends ActivityGame
 {
     @Override
     protected void start(Bundle bundle)
     {
         EngineAndroid.start("Sample Project", Version.create(0, 1, 0), this);
-        final Resolution output = new Resolution(240, 320, 60);
-        final Config config = new Config(output, 32, false);
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        Loader.start(Config.fullscreen(Scene.NATIVE), Scene.class);
     }
 }
 ```
