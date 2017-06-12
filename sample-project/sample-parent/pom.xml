@@ -3,14 +3,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <b3dgs.version>1.0.2</b3dgs.version>
         <buildtools-project>sample-buildtools</buildtools-project>
         <lionengine.version>8.4.0-SNAPSHOT</lionengine.version>
     </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.4</version>
     </parent>
     <groupId>com.b3dgs.sample</groupId>
     <artifactId>sample-parent</artifactId>

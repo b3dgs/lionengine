@@ -12,8 +12,8 @@
     <packaging>eclipse-plugin</packaging>
     <repositories>
         <repository>
-            <id>mars</id>
-            <url>http://download.eclipse.org/releases/mars</url>
+            <id>neon</id>
+            <url>http://download.eclipse.org/releases/neon</url>
             <layout>p2</layout>
         </repository>
     </repositories>

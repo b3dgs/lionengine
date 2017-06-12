@@ -2,6 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <android.version>4.1.1.4</android.version>
+        <android.sdk>19</android.sdk>
+    </properties>
     <parent>
         <groupId>com.b3dgs.sample</groupId>
         <artifactId>sample-parent</artifactId>
@@ -86,7 +90,6 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
-                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
