@@ -3,7 +3,6 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <b3dgs.version>1.0.3</b3dgs.version>
         <buildtools-project>lionengine-buildtools</buildtools-project>
         <radial-encapsulation-maven-plugin.version>1.0.0</radial-encapsulation-maven-plugin.version>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
@@ -11,7 +10,7 @@
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </parent>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
