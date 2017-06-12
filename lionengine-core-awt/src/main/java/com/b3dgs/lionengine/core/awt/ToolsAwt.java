@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.UtilColor;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Misc tools for AWT.
@@ -217,7 +218,15 @@ public final class ToolsAwt
 
         optimizeGraphics(g);
         g.rotate(Math.toRadians(angle), r.getWidth() / 2.0, r.getHeight() / 2.0);
-        g.drawImage(image, null, (int) ((r.getWidth() - width) / 2.0), (int) ((r.getHeight() - height) / 2.0));
+
+        final double ox = r.getWidth() - width;
+        final double oy = r.getHeight() - height;
+        final double cos = UtilMath.cos(angle);
+        final double sin = UtilMath.sin(angle);
+        final double angleOffsetX = sin * ox + cos * oy;
+        final double angleOffsetY = -sin * oy + cos * ox;
+
+        g.drawImage(image, null, (int) ((ox - angleOffsetX) / 2.0), (int) ((oy - angleOffsetY) / 2.0));
         g.dispose();
 
         return rotated;
