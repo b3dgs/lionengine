@@ -29,8 +29,6 @@ public class TimingTest
 {
     /** Pause time value. */
     private static final long PAUSE = 50L;
-    /** Time precision (latency margin). */
-    private static final long PRECISION = 10L;
 
     /**
      * Test the start timing.
@@ -53,18 +51,16 @@ public class TimingTest
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(timing.elapsed() > PAUSE - PRECISION);
-        Assert.assertTrue(timing.elapsed(PAUSE - PRECISION));
-        Assert.assertFalse(timing.elapsed(PAUSE + PRECISION));
-        Assert.assertEquals(time, timing.get());
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
+        Assert.assertEquals(time + " " + timing.elapsed(), time, timing.get());
 
         timing.start();
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(timing.elapsed() > PAUSE - PRECISION);
-        Assert.assertTrue(timing.elapsed(PAUSE - PRECISION));
-        Assert.assertFalse(timing.elapsed(PAUSE + PAUSE + PRECISION));
-        Assert.assertEquals(time, timing.get());
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
+        Assert.assertEquals(time + " " + timing.elapsed(), time, timing.get());
     }
 
     /**
@@ -80,7 +76,7 @@ public class TimingTest
         timing.stop();
         Assert.assertFalse(timing.isStarted());
         Assert.assertEquals(0L, timing.get());
-        Assert.assertFalse(timing.elapsed(PAUSE));
+        Assert.assertFalse(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
     }
 
     /**
@@ -100,8 +96,8 @@ public class TimingTest
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertEquals(old, timing.get());
-        Assert.assertEquals(elapsed, timing.elapsed());
+        Assert.assertEquals(old + " " + timing.elapsed(), old, timing.get());
+        Assert.assertEquals(elapsed + " " + timing.elapsed(), elapsed, timing.elapsed());
     }
 
     /**
@@ -122,10 +118,9 @@ public class TimingTest
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(timing.elapsed(PAUSE - PRECISION));
-        Assert.assertFalse(timing.elapsed(PAUSE + PRECISION));
-        Assert.assertTrue(timing.get() > old);
-        Assert.assertTrue(timing.elapsed() > elapsed);
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
+        Assert.assertTrue(timing + " " + timing.elapsed(), timing.get() > old);
+        Assert.assertTrue(timing + " " + timing.elapsed(), timing.elapsed() > elapsed);
     }
 
     /**
@@ -139,13 +134,13 @@ public class TimingTest
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(timing.elapsed() > PAUSE - PRECISION);
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
 
         timing.restart();
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(timing.elapsed() > PAUSE - PRECISION && timing.elapsed() < PAUSE + PRECISION);
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
     }
 
     /**
@@ -158,6 +153,6 @@ public class TimingTest
         timing.set(PAUSE);
 
         Assert.assertTrue(timing.isStarted());
-        Assert.assertTrue(timing.elapsed(PAUSE));
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
     }
 }
