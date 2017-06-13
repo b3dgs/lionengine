@@ -174,7 +174,7 @@ public class LoopExtrapolatedTest
 
         Assert.assertEquals(maxTick.get(), tick.get());
         Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertTrue(String.valueOf(extrapolation.get()), extrapolation.get().doubleValue() < 0.1);
+        Assert.assertTrue(String.valueOf(extrapolation.get()), extrapolation.get().doubleValue() > 0);
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
