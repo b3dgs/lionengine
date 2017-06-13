@@ -89,13 +89,13 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
         final int height = (int) Math.ceil(tiles.size() / (double) horizontalTiles);
         if (height > oldHeight && !tiles.isEmpty())
         {
+            final ImageBuffer tile = tiles.iterator().next();
+            label.setLayoutData(new GridData(horizontalTiles * tile.getWidth(), (height + 1) * tile.getHeight()));
+            label.getParent().pack(true);
             if (gc != null)
             {
                 gc.dispose();
             }
-            final ImageBuffer tile = tiles.iterator().next();
-            label.setLayoutData(new GridData(horizontalTiles * tile.getWidth(), (height + 1) * tile.getHeight()));
-            label.getParent().pack(true);
             gc = new GC(label);
             oldHeight = height;
         }
