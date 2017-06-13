@@ -247,7 +247,7 @@ final class MediaAndroid implements Media
     {
         try
         {
-            assetManager.openFd(getPathAbsolute()).close();
+            assetManager.open(getPathAbsolute()).close();
         }
         catch (@SuppressWarnings("unused") final IOException exception)
         {
