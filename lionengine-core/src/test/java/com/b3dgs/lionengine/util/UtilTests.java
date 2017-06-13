@@ -98,21 +98,16 @@ public final class UtilTests
     }
 
     /**
-     * Pause time.
+     * Pause time with accurate precision.
      * 
      * @param milli Time to wait in millisecond.
-     * @throws LionEngineException If interrupted.
      */
     public static void pause(long milli)
     {
-        try
+        final double old = System.nanoTime() / Constant.NANO_TO_MILLI;
+        while (System.nanoTime() / Constant.NANO_TO_MILLI - old < milli)
         {
-            Thread.sleep(milli);
-        }
-        catch (final InterruptedException exception)
-        {
-            Thread.currentThread().interrupt();
-            throw new LionEngineException(exception);
+            Thread.yield();
         }
     }
 
