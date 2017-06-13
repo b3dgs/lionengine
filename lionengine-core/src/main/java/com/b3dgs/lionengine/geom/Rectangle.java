@@ -128,8 +128,6 @@ public class Rectangle implements Shape
      */
     public Rectangle rotate(double angle)
     {
-        final double a = UtilMath.wrapDouble(angle, 0, 360);
-
         final double x2 = x + width;
         final double y2 = y;
 
@@ -142,6 +140,7 @@ public class Rectangle implements Shape
         final double cx = x + width / 2.0;
         final double cy = y + height / 2.0;
 
+        final double a = UtilMath.wrapDouble(angle, 0, 360);
         final double cos = UtilMath.cos(a);
         final double sin = UtilMath.sin(a);
 
