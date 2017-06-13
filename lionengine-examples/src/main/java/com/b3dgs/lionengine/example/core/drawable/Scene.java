@@ -103,7 +103,7 @@ class Scene extends Sequence
         tilesheet.setLocation(150, 150);
         tilesheets.setLocation(175, 150);
 
-        sprite.setOrigin(Origin.CENTER_BOTTOM);
+        sprite.setOrigin(Origin.MIDDLE);
         animationMirror.setMirror(Mirror.HORIZONTAL);
 
         // Set animation to play
