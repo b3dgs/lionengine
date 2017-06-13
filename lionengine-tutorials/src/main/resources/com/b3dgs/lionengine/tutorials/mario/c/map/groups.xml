@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:group name="block" type="NONE">
+    <lionengine:group name="none" type="NONE">
+        <lionengine:tile number="1" sheet="0"/>
         <lionengine:tile number="0" sheet="0"/>
-        <lionengine:tile number="16" sheet="0"/>
+        <lionengine:tile number="28" sheet="0"/>
+        <lionengine:tile number="27" sheet="0"/>
+        <lionengine:tile number="26" sheet="0"/>
+        <lionengine:tile number="25" sheet="0"/>
+        <lionengine:tile number="24" sheet="0"/>
+        <lionengine:tile number="23" sheet="0"/>
+        <lionengine:tile number="22" sheet="0"/>
+        <lionengine:tile number="21" sheet="0"/>
+        <lionengine:tile number="20" sheet="0"/>
+        <lionengine:tile number="19" sheet="0"/>
+        <lionengine:tile number="18" sheet="0"/>
         <lionengine:tile number="15" sheet="0"/>
+        <lionengine:tile number="14" sheet="0"/>
+        <lionengine:tile number="13" sheet="0"/>
+        <lionengine:tile number="12" sheet="0"/>
         <lionengine:tile number="9" sheet="0"/>
-        <lionengine:tile number="10" sheet="0"/>
+        <lionengine:tile number="7" sheet="0"/>
+        <lionengine:tile number="6" sheet="0"/>
+        <lionengine:tile number="5" sheet="0"/>
+        <lionengine:tile number="4" sheet="0"/>
+        <lionengine:tile number="3" sheet="0"/>
+        <lionengine:tile number="2" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="block" type="NONE">
+        <lionengine:tile number="17" sheet="0"/>
+        <lionengine:tile number="16" sheet="0"/>
+        <lionengine:tile number="29" sheet="0"/>
         <lionengine:tile number="11" sheet="0"/>
+        <lionengine:tile number="10" sheet="0"/>
+        <lionengine:tile number="8" sheet="0"/>
     </lionengine:group>
 </lionengine:groups>
