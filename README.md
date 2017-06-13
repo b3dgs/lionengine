@@ -1,6 +1,6 @@
 # LionEngine
 [![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.4.0)](https://travis-ci.org/b3dgs/lionengine) ![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg) ![Lines of code](https://img.shields.io/badge/lines%20of%20code-49k-lightgrey.svg) 
-[![Maven Central](https://img.shields.io/badge/maven--central-8.3.6-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
+[![Maven Central](https://img.shields.io/badge/maven--central-8.4.0-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
 <table>
     <tr>
         <td>
@@ -119,7 +119,7 @@ In its current version, the engine greatly simplifies the development of __Platf
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v7/projects/lionengine/files/LionEngine_8.3.6_lib.zip)
+* [Last version](http://www.b3dgs.com/v7/projects/lionengine/files/LionEngine_8.4.0_lib.zip)
 
 ## Installation
 
