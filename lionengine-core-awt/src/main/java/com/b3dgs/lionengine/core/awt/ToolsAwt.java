@@ -219,8 +219,8 @@ public final class ToolsAwt
         optimizeGraphics(g);
         g.rotate(Math.toRadians(angle), r.getWidth() / 2.0, r.getHeight() / 2.0);
 
-        final double ox = r.getWidth() - width;
-        final double oy = r.getHeight() - height;
+        final double ox = r.getWidth() - (double) width;
+        final double oy = r.getHeight() - (double) height;
         final double cos = UtilMath.cos(angle);
         final double sin = UtilMath.sin(angle);
         final double angleOffsetX = sin * ox + cos * oy;
