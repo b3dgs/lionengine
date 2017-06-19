@@ -156,7 +156,7 @@ public class AppSamplePc
     public static void main(String[] args)
     {
         EngineAwt.start("Sample Project", Version.create(0, 1, 0), AppSamplePc.class);
-        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
+        Loader.start(Config.windowed(Scene.RESOLUTION.get2x()), Scene.class);
     }
 }
 ```
@@ -169,7 +169,7 @@ public class ActivitySample extends ActivityGame
     protected void start(Bundle bundle)
     {
         EngineAndroid.start("Sample Project", Version.create(0, 1, 0), this);
-        Loader.start(Config.fullscreen(Scene.NATIVE), Scene.class);
+        Loader.start(Config.fullscreen(Scene.RESOLUTION), Scene.class);
     }
 }
 ```
