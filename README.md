@@ -40,7 +40,7 @@ It includes an abstract editor that should allow to write easily a dedicated lev
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
-<a href="http://lionengine.b3dgs.com/page.php?lang=en&section=home"><img src="http://lionengine.b3dgs.com/img/home/overview_en.png"/></a>
+<a href="http://lionengine.b3dgs.com/v8-4/page.php?lang=en&section=home"><img src="http://lionengine.b3dgs.com/v8-4/img/home/overview_en.png"/></a>
 
 ## General Features
 
