@@ -12,7 +12,7 @@
 <unit id="org.eclipse.swtbot.feature.group" version="2.5.0.201609021837"/>
 <unit id="org.eclipse.swtbot.ide.feature.group" version="2.5.0.201609021837"/>
 <unit id="org.eclipse.swtbot.eclipse.test.junit.feature.group" version="2.5.0.201609021837"/>
-<repository location="http://download.eclipse.org/technology/swtbot/releases/latest/"/>
+<repository location="http://download.eclipse.org/technology/swtbot/releases/2.5.0/"/>
 </location>
 </locations>
 </target>
