@@ -15,5 +15,5 @@ before_install:
 script:
 - cd lionengine-parent
 - jdk_switcher use oraclejdk8
-- mvn clean install -Pcore -Dgpg.skip=true -Dmaven.javadoc.skip=true
+- mvn clean install -Pcore -Dgpg.skip=true -Dmaven.javadoc.skip=true -X
 - mvn clean verify -Pplugins -Dgpg.skip=true -Dmaven.javadoc.skip=true
