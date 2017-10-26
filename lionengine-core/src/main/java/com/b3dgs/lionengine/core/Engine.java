@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Version;
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android engine implementation).
  * 
- * @version 8.4.0
+ * @version 8.4.1
  * @since 13 June 2010
  */
 public abstract class Engine
