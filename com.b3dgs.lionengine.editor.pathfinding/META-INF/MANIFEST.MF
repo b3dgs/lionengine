@@ -23,12 +23,12 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.e4.ui.workbench.swt;bundle-version="0.12.2",
  org.eclipse.core.expressions;bundle-version="3.4.501",
  org.eclipse.e4.core.services;bundle-version="1.1.0",
- com.b3dgs.lionengine.core;bundle-version="8.4.0",
- com.b3dgs.lionengine.core.swt;bundle-version="8.4.0",
- com.b3dgs.lionengine.game;bundle-version="8.4.0",
- com.b3dgs.lionengine.editor;bundle-version="8.4.0",
- com.b3dgs.lionengine.editor.map;bundle-version="8.4.0",
- com.b3dgs.lionengine.editor.object;bundle-version="8.4.0"
+ com.b3dgs.lionengine.core;bundle-version="8.4.1",
+ com.b3dgs.lionengine.core.swt;bundle-version="8.4.1",
+ com.b3dgs.lionengine.game;bundle-version="8.4.1",
+ com.b3dgs.lionengine.editor;bundle-version="8.4.1",
+ com.b3dgs.lionengine.editor.map;bundle-version="8.4.1",
+ com.b3dgs.lionengine.editor.object;bundle-version="8.4.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
 Import-Package: javax.annotation;version="1.0.0",
