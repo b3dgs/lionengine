@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -59,6 +60,14 @@ public class ImportProjectTest
 
         final SWTBotShell shell = bot.shell(UtilNl.get("menu.file.import-project"));
         final SWTBot dialog = shell.activate().bot();
+
+        Display.getDefault().syncExec(() ->
+        {
+            dialog.text(1).widget.setEditable(true);
+            dialog.text(2).widget.setEditable(true);
+            dialog.text(3).widget.setEditable(true);
+            dialog.text(4).widget.setEditable(true);
+        });
 
         dialog.text(1).setText(projectFolder.getAbsolutePath());
         dialog.text(2).setText("bin");
