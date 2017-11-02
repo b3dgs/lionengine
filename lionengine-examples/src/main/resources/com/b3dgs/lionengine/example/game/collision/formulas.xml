@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:formula name="top">
-        <lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/>
-        <lionengine:function type="LINEAR" a="0" b="15"/>
-        <lionengine:constraint group="block" orientation="NORTH"/>
+    <lionengine:formula name="ground">
+        <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="0.0" b="0.0" type="LINEAR"/>
     </lionengine:formula>
-    <lionengine:formula name="bottom">
-        <lionengine:range output="Y" minX="0" maxX="15" minY="0" maxY="0"/>
-        <lionengine:function type="LINEAR" a="0" b="0"/>
-        <lionengine:constraint group="block" orientation="SOUTH"/>
+    <lionengine:formula name="slope_left_0">
+        <lionengine:range maxX="15" maxY="15" minX="14" minY="0" output="Y"/>
+        <lionengine:function a="0.5" b="-7.0" type="LINEAR"/>
     </lionengine:formula>
-    <lionengine:formula name="left">
-        <lionengine:range output="X" minX="0" maxX="0" minY="0" maxY="15"/>
-        <lionengine:function type="LINEAR" a="0" b="0"/>
-        <lionengine:constraint group="block" orientation="WEST"/>
+    <lionengine:formula name="slope_left_1">
+        <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="0.5" b="1.0" type="LINEAR"/>
     </lionengine:formula>
-    <lionengine:formula name="right">
-        <lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>
-        <lionengine:function type="LINEAR" a="0" b="15"/>
-        <lionengine:constraint group="block" orientation="EAST"/>
+    <lionengine:formula name="slope_left_2">
+        <lionengine:range maxX="14" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="0.5" b="9.0" type="LINEAR"/>
+    </lionengine:formula>
+    <lionengine:formula name="slope_right_0">
+        <lionengine:range maxX="2" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="1.0" type="LINEAR"/>
+    </lionengine:formula>
+	<lionengine:formula name="slope_right_1">
+        <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="9.0" type="LINEAR"/>
+    </lionengine:formula>
+	<lionengine:formula name="slope_right_2">
+        <lionengine:range maxX="15" maxY="15" minX="3" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="17.0" type="LINEAR"/>
     </lionengine:formula>
 </lionengine:formulas>
