@@ -25,16 +25,15 @@ import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.body.BodyModel;
-import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableModel;
 
 /**
- * Mario description implementation.
+ * Player description implementation.
  */
-class Mario extends FeaturableModel
+class Player extends FeaturableModel
 {
     /** Media reference. */
-    public static final Media MEDIA = Medias.create("Mario.xml");
+    public static final Media MEDIA = Medias.create("Player.xml");
 
     /**
      * Constructor.
@@ -42,19 +41,18 @@ class Mario extends FeaturableModel
      * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Mario(Services services, Setup setup)
+    public Player(Services services, Setup setup)
     {
         super(services, setup);
 
         addFeature(new LayerableModel(1));
         addFeature(new TransformableModel());
         addFeature(new BodyModel());
-        addFeature(new CollidableModel(services, setup));
         addFeature(new TileCollidableModel(services, setup));
 
-        final MarioModel model = new MarioModel(setup);
-        addFeature(new MarioController(services, model));
-        addFeature(new MarioUpdater(services, model));
-        addFeature(new MarioRenderer(services, model));
+        final PlayerModel model = new PlayerModel(setup);
+        addFeature(new PlayerController(services, model));
+        addFeature(new PlayerUpdater(services, model));
+        addFeature(new PlayerRenderer(services, model));
     }
 }

@@ -5,27 +5,27 @@
         <lionengine:function a="0.0" b="0.0" type="LINEAR"/>
     </lionengine:formula>
     <lionengine:formula name="slope_left_0">
-        <lionengine:range maxX="15" maxY="15" minX="14" minY="0" output="Y"/>
-        <lionengine:function a="0.5" b="-7.0" type="LINEAR"/>
-    </lionengine:formula>
-    <lionengine:formula name="slope_left_1">
         <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
         <lionengine:function a="0.5" b="1.0" type="LINEAR"/>
     </lionengine:formula>
-    <lionengine:formula name="slope_left_2">
+    <lionengine:formula name="slope_left_1">
         <lionengine:range maxX="14" maxY="15" minX="0" minY="0" output="Y"/>
         <lionengine:function a="0.5" b="9.0" type="LINEAR"/>
     </lionengine:formula>
+    <lionengine:formula name="slope_left_2">
+        <lionengine:range maxX="15" maxY="15" minX="14" minY="0" output="Y"/>
+        <lionengine:function a="0.5" b="-7.0" type="LINEAR"/>
+    </lionengine:formula>
     <lionengine:formula name="slope_right_0">
-        <lionengine:range maxX="2" maxY="15" minX="0" minY="0" output="Y"/>
-        <lionengine:function a="-0.5" b="1.0" type="LINEAR"/>
+        <lionengine:range maxX="1" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="0.0" type="LINEAR"/>
     </lionengine:formula>
 	<lionengine:formula name="slope_right_1">
-        <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
-        <lionengine:function a="-0.5" b="9.0" type="LINEAR"/>
+        <lionengine:range maxX="15" maxY="15" minX="2" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="16.0" type="LINEAR"/>
     </lionengine:formula>
 	<lionengine:formula name="slope_right_2">
-        <lionengine:range maxX="15" maxY="15" minX="3" minY="0" output="Y"/>
-        <lionengine:function a="-0.5" b="17.0" type="LINEAR"/>
+        <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="8.0" type="LINEAR"/>
     </lionengine:formula>
 </lionengine:formulas>

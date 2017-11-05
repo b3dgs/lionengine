@@ -21,27 +21,26 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Setup;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.Sprite;
 
 /**
- * Mario model implementation.
+ * Player model implementation.
  */
-public class MarioModel
+public class PlayerModel
 {
     private final Force movement = new Force();
     private final Force jump = new Force();
-    private final SpriteAnimated surface;
+    private final Sprite surface;
 
     /**
      * Create model.
      * 
      * @param setup The setup reference.
      */
-    public MarioModel(Setup setup)
+    public PlayerModel(Setup setup)
     {
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
+        surface = Drawable.loadSprite(setup.getSurface());
         surface.setOrigin(Origin.CENTER_BOTTOM);
-        surface.setFrameOffsets(-1, 0);
 
         jump.setVelocity(0.1);
         jump.setDestination(0.0, 0.0);
@@ -72,7 +71,7 @@ public class MarioModel
      * 
      * @return The surface.
      */
-    public SpriteAnimated getSurface()
+    public Sprite getSurface()
     {
         return surface;
     }

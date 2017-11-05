@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRend
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
-import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 
@@ -49,8 +48,8 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class Scene extends Sequence
 {
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
-    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
+    /** Native resolution. */
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
@@ -99,9 +98,9 @@ class Scene extends Sequence
         handler.add(map);
 
         final Factory factory = services.create(Factory.class);
-        final Mario mario = factory.create(Mario.MEDIA);
-        handler.add(mario);
-        tracker.track(mario);
+        final Player player = factory.create(Player.MEDIA);
+        handler.add(player);
+        tracker.track(player);
     }
 
     @Override
@@ -113,8 +112,7 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        g.setColor(Scene.BACKGROUND_COLOR);
-        g.drawRect(0, 0, getWidth(), getHeight(), true);
+        g.clear(0, 0, getWidth(), getHeight());
 
         handler.render(g);
     }

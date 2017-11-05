@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.core.sequence.Loader;
@@ -38,7 +37,6 @@ public class AppCollision
     public static void main(String[] args)
     {
         EngineAwt.start(AppCollision.class.getSimpleName(), Version.create(1, 0, 0), AppCollision.class);
-        final Resolution output = new Resolution(640, 480, 60);
-        Loader.start(Config.windowed(output), Scene.class);
+        Loader.start(Config.windowed(Scene.NATIVE.get3x()), Scene.class);
     }
 }

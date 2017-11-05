@@ -10,13 +10,13 @@
         <lionengine:tile number="11" sheet="0"/>
     </lionengine:group>
     <lionengine:group name="slope_left_2" type="NONE">
-        <lionengine:tile number="12" sheet="0"/>
+        <lionengine:tile number="4" sheet="0"/>
     </lionengine:group>
     <lionengine:group name="slope_right_0" type="NONE">
-        <lionengine:tile number="15" sheet="0"/>
+        <lionengine:tile number="5" sheet="0"/>
     </lionengine:group>
     <lionengine:group name="slope_right_1" type="NONE">
-        <lionengine:tile number="14" sheet="0"/>
+        <lionengine:tile number="12" sheet="0"/>
     </lionengine:group>
     <lionengine:group name="slope_right_2" type="NONE">
         <lionengine:tile number="13" sheet="0"/>

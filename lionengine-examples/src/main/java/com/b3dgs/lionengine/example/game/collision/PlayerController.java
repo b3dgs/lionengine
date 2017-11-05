@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
- * Mario controlling implementation.
+ * Player controlling implementation.
  */
-class MarioController extends FeatureModel implements Refreshable
+class PlayerController extends FeatureModel implements Refreshable
 {
     private final Force movement;
     private final Force jump;
@@ -39,7 +39,7 @@ class MarioController extends FeatureModel implements Refreshable
      * @param services The services reference.
      * @param model The model reference.
      */
-    public MarioController(Services services, MarioModel model)
+    public PlayerController(Services services, PlayerModel model)
     {
         movement = model.getMovement();
         jump = model.getJump();
