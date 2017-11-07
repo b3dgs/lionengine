@@ -23,8 +23,6 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.ActionRef;
-
 /**
  * Test the action ref class.
  */
