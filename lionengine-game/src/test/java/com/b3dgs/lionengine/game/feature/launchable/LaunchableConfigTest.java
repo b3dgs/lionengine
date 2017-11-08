@@ -66,8 +66,7 @@ public class LaunchableConfigTest
             root.add(LaunchableConfig.exports(launchable));
             root.save(media);
 
-            final LaunchableConfig loaded = LaunchableConfig.imports(new Xml(media)
-                                                                        .getChild(LaunchableConfig.NODE_LAUNCHABLE));
+            final LaunchableConfig loaded = LaunchableConfig.imports(new Xml(media).getChild(LaunchableConfig.NODE_LAUNCHABLE));
 
             Assert.assertEquals(launchable, loaded);
         }
