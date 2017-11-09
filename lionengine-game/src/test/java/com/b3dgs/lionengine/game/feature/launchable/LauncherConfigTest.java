@@ -69,8 +69,7 @@ public class LauncherConfigTest
             root.add(LauncherConfig.exports(launcher));
             root.save(media);
 
-            final LauncherConfig loaded = LauncherConfig.imports(new Xml(media)
-                                                                    .getChild(LauncherConfig.NODE_LAUNCHER));
+            final LauncherConfig loaded = LauncherConfig.imports(new Xml(media).getChild(LauncherConfig.NODE_LAUNCHER));
 
             Assert.assertEquals(launcher, loaded);
         }
