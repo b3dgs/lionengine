@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  */
 public class BodyModel extends FeatureModel implements Body
 {
+    /** Default FPS. */
+    private static final int DEFAULT_FPS = 60;
     /** Body force. */
     private final Force force = new Force();
     /** Maximum gravity value. */
@@ -42,8 +44,8 @@ public class BodyModel extends FeatureModel implements Body
     private Direction[] vectors = new Direction[0];
     /** Body mass. */
     private double mass;
-    /** Desired fps. */
-    private int desiredFps;
+    /** Desired FPS. */
+    private int desiredFps = DEFAULT_FPS;
 
     /**
      * Create a body model.
