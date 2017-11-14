@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.game.feature.rasterable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Setup;
@@ -54,14 +54,33 @@ public class SetupSurfaceRastered extends Setup
      * Create a setup.
      * 
      * @param config The config media.
-     * @param rasterFile The raster media.
      * @throws LionEngineException If error when opening the media or invalid raster file.
      */
-    public SetupSurfaceRastered(Media config, Media rasterFile)
+    public SetupSurfaceRastered(Media config)
+    {
+        this(config, null);
+    }
+
+    /**
+     * Create a setup.
+     * 
+     * @param config The config media.
+     * @param rasterMedia The raster media.
+     * @throws LionEngineException If error when opening the media or invalid raster file.
+     */
+    public SetupSurfaceRastered(Media config, Media rasterMedia)
     {
         super(config);
 
-        Check.notNull(rasterFile);
+        final Media rasterFile;
+        if (rasterMedia != null)
+        {
+            rasterFile = rasterMedia;
+        }
+        else
+        {
+            rasterFile = Medias.create(getString("file", NODE_RASTER));
+        }
 
         final int rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
         final boolean smooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
