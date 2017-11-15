@@ -102,7 +102,8 @@ public final class TileGroupsConfig
         }
 
         final String groupName = nodeGroup.readString(ATTRIBUTE_GROUP_NAME);
-        final TileGroupType groupType = TileGroupType.from(nodeGroup.readString(ATTRIBUTE_GROUP_TYPE));
+        final TileGroupType groupType = TileGroupType.from(nodeGroup.readString(TileGroupType.NONE.name(),
+                                                                                ATTRIBUTE_GROUP_TYPE));
         return new TileGroup(groupName, groupType, tiles);
     }
 
