@@ -379,7 +379,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         final double ov = UtilMath.getRound(sy, v);
 
         final CollisionResult result;
-        result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h), UtilMath.getRound(sy, v + sy));
+        result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v));
         if (result == null)
         {
             return computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v + sy));
