@@ -163,7 +163,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, 0.0, -2.0);
         collidable.update(1.0);
 
-        Assert.assertEquals(map.getTile(0, 1), collided.get());
+        Assert.assertEquals(map.getTile(0, 2), collided.get());
     }
 
     /**
@@ -217,7 +217,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, -2.0, 0.0);
         collidable.update(1.0);
 
-        Assert.assertEquals(map.getTile(2, 1), collided.get());
+        Assert.assertEquals(map.getTile(1, 1), collided.get());
     }
 
     /**
