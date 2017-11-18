@@ -176,4 +176,18 @@ public class TileGame extends FeaturableModel implements Tile
                && inTileY == other.inTileY
                && sheet.equals(other.sheet);
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append("sheet = ")
+                                  .append(sheet)
+                                  .append(" | number = ")
+                                  .append(number)
+                                  .append(" | tx = ")
+                                  .append(inTileX)
+                                  .append(" | ty = ")
+                                  .append(inTileY)
+                                  .toString();
+    }
 }
