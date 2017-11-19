@@ -145,6 +145,16 @@ public class TileGameTest
     }
 
     /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        Assert.assertEquals("sheet = 0 | number = 1 | tx = 2 | ty = 3",
+                            new TileGame(Integer.valueOf(0), 1, 32, 48, 16, 16).toString());
+    }
+
+    /**
      * Mock feature.
      */
     private interface MockFeature extends Feature
