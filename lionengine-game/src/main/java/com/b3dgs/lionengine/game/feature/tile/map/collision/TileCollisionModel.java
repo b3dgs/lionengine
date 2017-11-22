@@ -59,9 +59,9 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
         switch (input)
         {
             case X:
-                return (int) (x - tile.getX());
+                return (int) Math.floor(x - tile.getX());
             case Y:
-                return (int) (y - tile.getY());
+                return (int) Math.floor(y - tile.getY());
             default:
                 throw new LionEngineException(input);
         }
