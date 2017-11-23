@@ -184,8 +184,7 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
             final ImageBuffer buffer = collisionCache.get(collision);
             if (buffer != null)
             {
-                // x - 1 because collision result is outside tile area
-                g.drawImage(buffer, x - 1, y);
+                g.drawImage(buffer, x, y);
             }
         }
     }
