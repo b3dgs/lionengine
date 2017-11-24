@@ -470,17 +470,26 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         double h = sh;
         double v = sv;
 
+        CollisionResult found = null;
         for (int count = 0; count < norm; count++)
         {
-            final CollisionResult found = getResult(category, sx, sy, h, v);
-            if (found != null)
+            final CollisionResult res = getResult(category, sx, sy, h, v);
+            if (res != null)
             {
-                return found;
+                found = res;
+                if (res.getX() != null)
+                {
+                    h = res.getX().doubleValue();
+                }
+                if (res.getY() != null)
+                {
+                    v = res.getY().doubleValue();
+                }
             }
             v += sy;
             h += sx;
         }
-        return null;
+        return found;
     }
 
     @Override
