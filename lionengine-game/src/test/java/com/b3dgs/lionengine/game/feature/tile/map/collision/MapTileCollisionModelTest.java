@@ -155,7 +155,7 @@ public class MapTileCollisionModelTest
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
         Assert.assertNull(result.getX());
-        Assert.assertEquals(Double.valueOf(-1.0), result.getY());
+        Assert.assertEquals(Double.valueOf(3.0), result.getY());
     }
 
     /**
@@ -169,7 +169,7 @@ public class MapTileCollisionModelTest
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
         Assert.assertNull(result.getY());
-        Assert.assertEquals(Double.valueOf(-1.0), result.getX());
+        Assert.assertEquals(Double.valueOf(1.0), result.getX());
     }
 
     /**
@@ -183,7 +183,7 @@ public class MapTileCollisionModelTest
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
         Assert.assertNull(result.getY());
-        Assert.assertEquals(Double.valueOf(3.0), result.getX());
+        Assert.assertEquals(Double.valueOf(2.0), result.getX());
     }
 
     /**
