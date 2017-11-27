@@ -29,6 +29,9 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 class PlayerController extends FeatureModel implements Refreshable
 {
+    private static final double SPEED = 3;
+    private static final double JUMP = 8.0;
+
     private final Force movement;
     private final Force jump;
     private final Keyboard keyboard;
@@ -52,15 +55,15 @@ class PlayerController extends FeatureModel implements Refreshable
         movement.setDirection(Direction.ZERO);
         if (keyboard.isPressed(Keyboard.LEFT))
         {
-            movement.setDirection(-2, 0);
+            movement.setDirection(-SPEED, 0);
         }
         if (keyboard.isPressed(Keyboard.RIGHT))
         {
-            movement.setDirection(2, 0);
+            movement.setDirection(SPEED, 0);
         }
         if (keyboard.isPressedOnce(Keyboard.UP))
         {
-            jump.setDirection(0.0, 8.0);
+            jump.setDirection(0.0, JUMP);
         }
     }
 }
