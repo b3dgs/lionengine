@@ -133,17 +133,16 @@ public abstract class Engine
      */
     private static String getStartingMessage(Engine engine)
     {
-        final StringBuilder message = new StringBuilder();
-        message.append(ENGINE_STARTING)
-               .append(Constant.ENGINE_VERSION)
-               .append(Constant.QUOTE)
-               .append(FOR)
-               .append(Constant.QUOTE)
-               .append(engine.getName())
-               .append(Constant.SPACE)
-               .append(engine.getVersion())
-               .append(Constant.QUOTE);
-        return message.toString();
+        return new StringBuilder().append(ENGINE_STARTING)
+                                  .append(Constant.ENGINE_VERSION)
+                                  .append(Constant.QUOTE)
+                                  .append(FOR)
+                                  .append(Constant.QUOTE)
+                                  .append(engine.getName())
+                                  .append(Constant.SPACE)
+                                  .append(engine.getVersion())
+                                  .append(Constant.QUOTE)
+                                  .toString();
     }
 
     /** User program name. */
