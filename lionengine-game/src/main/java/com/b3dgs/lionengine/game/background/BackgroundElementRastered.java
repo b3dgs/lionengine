@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.background;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.b3dgs.lionengine.Media;
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class BackgroundElementRastered extends BackgroundElement
 {
     /** Rasters list. */
-    private final List<Sprite> rasters = new ArrayList<Sprite>();
+    private final List<Sprite> rasters;
 
     /**
      * Create a rastered background element.
@@ -53,7 +54,9 @@ public class BackgroundElementRastered extends BackgroundElement
         final RasterImage raster = new RasterImage(media, rasterFile, rastersNumber, false);
         raster.loadRasters(ImageInfo.get(media).getHeight(), true, UtilFile.removeExtension(media.getName()));
 
-        for (final ImageBuffer surface : raster.getRasters())
+        final Collection<ImageBuffer> surfaces = raster.getRasters();
+        rasters = new ArrayList<Sprite>(surfaces.size());
+        for (final ImageBuffer surface : surfaces)
         {
             rasters.add(Drawable.loadSprite(surface));
         }

@@ -146,7 +146,7 @@ public final class UtilCombo
     private static <T> Combo create(Composite parent, String legend, boolean editable, T... values)
     {
         final String[] items = new String[values.length];
-        final Map<String, T> links = new HashMap<>();
+        final Map<String, T> links = new HashMap<>(values.length);
         for (int i = 0; i < values.length; i++)
         {
             items[i] = values[i].toString();

@@ -55,9 +55,10 @@ public final class TileGroupsConfig
     public static Collection<TileGroup> imports(Media groupsConfig)
     {
         final Xml nodeGroups = new Xml(groupsConfig);
-        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
 
-        for (final Xml nodeGroup : nodeGroups.getChildren(NODE_GROUP))
+        final Collection<Xml> children = nodeGroups.getChildren(NODE_GROUP);
+        final Collection<TileGroup> groups = new ArrayList<TileGroup>(children.size());
+        for (final Xml nodeGroup : children)
         {
             final TileGroup group = importGroup(nodeGroup);
             groups.add(group);
@@ -94,8 +95,9 @@ public final class TileGroupsConfig
      */
     private static TileGroup importGroup(Xml nodeGroup)
     {
-        final Collection<TileRef> tiles = new ArrayList<TileRef>();
-        for (final Xml nodeTileRef : nodeGroup.getChildren(TileConfig.NODE_TILE))
+        final Collection<Xml> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
+        final Collection<TileRef> tiles = new ArrayList<TileRef>(children.size());
+        for (final Xml nodeTileRef : children)
         {
             final TileRef tileRef = TileConfig.create(nodeTileRef);
             tiles.add(tileRef);

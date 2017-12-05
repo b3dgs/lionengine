@@ -49,7 +49,7 @@ public class TransitiveGroup
      */
     static void reduceTransitive(Collection<GroupTransition> transitive)
     {
-        final Collection<GroupTransition> localChecked = new ArrayList<GroupTransition>();
+        final Collection<GroupTransition> localChecked = new ArrayList<GroupTransition>(transitive.size());
         final Collection<GroupTransition> toRemove = new ArrayList<GroupTransition>();
 
         final Iterator<GroupTransition> iterator = transitive.iterator();

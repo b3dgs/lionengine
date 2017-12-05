@@ -394,9 +394,10 @@ public class XmlReader
      */
     public Map<String, String> getAttributes()
     {
-        final Map<String, String> attributes = new HashMap<String, String>();
         final NamedNodeMap map = root.getAttributes();
-        for (int i = 0; i < map.getLength(); i++)
+        final int length = map.getLength();
+        final Map<String, String> attributes = new HashMap<String, String>(length);
+        for (int i = 0; i < length; i++)
         {
             final Node node = map.item(i);
             attributes.put(node.getNodeName(), node.getNodeValue());

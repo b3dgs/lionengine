@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Services;
@@ -201,9 +202,10 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
      */
     private String getTransitiveGroup(Circuit initialCircuit, Tile tile)
     {
-        final Collection<String> groups = new HashSet<String>();
+        final Set<Circuit> circuitSet = circuits.keySet();
+        final Collection<String> groups = new HashSet<String>(circuitSet.size());
         final String groupIn = mapGroup.getGroup(tile);
-        for (final Circuit circuit : circuits.keySet())
+        for (final Circuit circuit : circuitSet)
         {
             final String groupOut = circuit.getOut();
             for (final Tile neighbor : map.getNeighbors(tile))

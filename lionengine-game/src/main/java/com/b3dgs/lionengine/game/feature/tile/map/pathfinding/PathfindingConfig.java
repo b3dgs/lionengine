@@ -51,13 +51,15 @@ public final class PathfindingConfig
      */
     public static Collection<PathCategory> imports(Media configPathfinding)
     {
-        final Collection<PathCategory> categories = new HashSet<PathCategory>();
         final Xml nodeCategories = new Xml(configPathfinding);
-        for (final Xml node : nodeCategories.getChildren(TILE_PATH))
+        final Collection<Xml> childrenTile = nodeCategories.getChildren(TILE_PATH);
+        final Collection<PathCategory> categories = new HashSet<PathCategory>(childrenTile.size());
+        for (final Xml node : childrenTile)
         {
             final String name = node.readString(CATEGORY);
-            final Collection<String> groups = new HashSet<String>();
-            for (final Xml groupNode : node.getChildren(TileGroupsConfig.NODE_GROUP))
+            final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+            final Collection<String> groups = new HashSet<String>(childrenGroup.size());
+            for (final Xml groupNode : childrenGroup)
             {
                 groups.add(groupNode.getText());
             }

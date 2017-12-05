@@ -114,11 +114,7 @@ public class GroupChooser extends AbstractDialog
         dialog.create();
         dialog.openAndWait();
 
-        final Collection<String> values = new ArrayList<>();
-        for (final String group : mapGroup.getGroups())
-        {
-            values.add(group);
-        }
+        final Collection<String> values = new ArrayList<>(mapGroup.getGroups());
         if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {
             values.add(TileGroupsConfig.REMOVE_GROUP_NAME);

@@ -86,8 +86,9 @@ public class GroupsEditDialog extends AbstractEditor
     {
         list.save();
 
-        final Collection<TileGroup> groups = new ArrayList<>();
-        for (final TreeItem item : list.getTree().getItems())
+        final TreeItem[] items = list.getTree().getItems();
+        final Collection<TileGroup> groups = new ArrayList<>(items.length);
+        for (final TreeItem item : items)
         {
             final TileGroup group = (TileGroup) item.getData();
             groups.add(group);

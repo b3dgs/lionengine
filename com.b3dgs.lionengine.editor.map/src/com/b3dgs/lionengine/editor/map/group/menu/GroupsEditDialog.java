@@ -60,8 +60,9 @@ public class GroupsEditDialog extends AbstractDialog
     {
         final int tw = config.getTileWidth();
         final int th = config.getTileHeight();
-        final Collection<SpriteTiled> sheets = new ArrayList<>();
-        for (final String sheet : config.getSheets())
+        final Collection<String> configSheets = config.getSheets();
+        final Collection<SpriteTiled> sheets = new ArrayList<>(configSheets.size());
+        for (final String sheet : configSheets)
         {
             final Media media = Medias.create(folder, sheet);
             final SpriteTiled surface = Drawable.loadSpriteTiled(media, tw, th);

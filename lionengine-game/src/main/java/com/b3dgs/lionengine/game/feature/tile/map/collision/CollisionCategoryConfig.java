@@ -56,11 +56,13 @@ public final class CollisionCategoryConfig
      */
     public static Collection<CollisionCategory> imports(Xml root)
     {
-        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
-        for (final Xml node : root.getChildren(CATEGORY))
+        final Collection<Xml> childrenCategory = root.getChildren(CATEGORY);
+        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>(childrenCategory.size());
+        for (final Xml node : childrenCategory)
         {
-            final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
-            for (final Xml group : node.getChildren(TileGroupsConfig.NODE_GROUP))
+            final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+            final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>(childrenGroup.size());
+            for (final Xml group : childrenGroup)
             {
                 final String name = group.getText();
                 groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
@@ -87,8 +89,9 @@ public final class CollisionCategoryConfig
      */
     public static Collection<CollisionCategory> imports(Configurer configurer, MapTileCollision map)
     {
-        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
-        for (final Xml node : configurer.getRoot().getChildren(CATEGORY))
+        final Collection<Xml> children = configurer.getRoot().getChildren(CATEGORY);
+        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>(children.size());
+        for (final Xml node : children)
         {
             final CollisionCategory category = imports(node, map);
             categories.add(category);
@@ -106,8 +109,9 @@ public final class CollisionCategoryConfig
      */
     public static CollisionCategory imports(Xml root, MapTileCollision map)
     {
-        final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
-        for (final Xml groupNode : root.getChildren(TileGroupsConfig.NODE_GROUP))
+        final Collection<Xml> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
+        final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>(children.size());
+        for (final Xml groupNode : children)
         {
             final String groupName = groupNode.getText();
             final CollisionGroup group = map.getCollisionGroup(groupName);

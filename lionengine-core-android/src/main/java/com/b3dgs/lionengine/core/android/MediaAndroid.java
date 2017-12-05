@@ -184,10 +184,11 @@ final class MediaAndroid implements Media
     {
         try
         {
-            final Collection<Media> medias = new ArrayList<Media>();
             final String fullPath = getPathAbsolute();
             final String prefix = fullPath.substring(resourcesDir.length());
-            for (final String file : assetManager.list(fullPath))
+            final String[] files = assetManager.list(fullPath);
+            final Collection<Media> medias = new ArrayList<Media>(files.length);
+            for (final String file : files)
             {
                 medias.add(Medias.create(prefix, file));
             }

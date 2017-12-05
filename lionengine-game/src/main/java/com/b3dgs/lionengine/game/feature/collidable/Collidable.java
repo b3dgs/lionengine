@@ -120,7 +120,7 @@ public interface Collidable extends Feature, Renderable, CollidableListener
      * 
      * @return The accepted groups.
      */
-    List<Integer> getAccepted();
+    Collection<Integer> getAccepted();
 
     /**
      * Get the current max width.

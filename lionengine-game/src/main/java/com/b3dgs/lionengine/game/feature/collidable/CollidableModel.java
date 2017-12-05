@@ -107,7 +107,7 @@ public class CollidableModel extends FeatureModel
     /** The accepted groups. */
     private final Collection<Integer> accepted = new HashSet<Integer>();
     /** The accepted groups as list. */
-    private final List<Integer> acceptedList = new ArrayList<Integer>();
+    private final Collection<Integer> acceptedList = new HashSet<Integer>();
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
     /** Collisions cache. */
@@ -437,7 +437,7 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public List<Integer> getAccepted()
+    public Collection<Integer> getAccepted()
     {
         return acceptedList;
     }

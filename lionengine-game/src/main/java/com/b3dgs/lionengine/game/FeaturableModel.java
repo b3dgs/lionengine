@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +64,9 @@ public class FeaturableModel implements Featurable
      */
     private static List<Feature> getFeatures(Services services, Setup setup)
     {
-        final List<Feature> features = new ArrayList<Feature>();
-        for (final Xml featureNode : setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE))
+        final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
+        final List<Feature> features = new ArrayList<Feature>(children.size());
+        for (final Xml featureNode : children)
         {
             final String className = featureNode.getText();
             final Feature feature;

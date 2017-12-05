@@ -63,7 +63,7 @@ public class WorldRenderer implements PaintListener
     /** Part service. */
     protected final EPartService partService;
     /** Rendering listener. */
-    private final Collection<WorldRenderListener> listeners = new ArrayList<>();
+    private final Collection<WorldRenderListener> listeners;
     /** Scale transform. */
     private final Transform transform = Graphics.createTransform();
     /** Camera reference. */
@@ -96,9 +96,12 @@ public class WorldRenderer implements PaintListener
         zoom = services.get(WorldZoomUpdater.class);
 
         UtilExtension.clearCache();
-        for (final WorldRenderListener listener : UtilExtension.get(WorldRenderListener.class,
-                                                                    WorldRenderListener.EXTENSION_ID,
-                                                                    services))
+
+        final Collection<WorldRenderListener> declaredListeners = UtilExtension.get(WorldRenderListener.class,
+                                                                                    WorldRenderListener.EXTENSION_ID,
+                                                                                    services);
+        listeners = new ArrayList<>(declaredListeners.size());
+        for (final WorldRenderListener listener : declaredListeners)
         {
             services.add(listener);
             listeners.add(listener);

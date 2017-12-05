@@ -180,11 +180,8 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
      */
     private void checkOthers(Collidable objectA, Entry<Point, List<Collidable>> current)
     {
-        final List<Integer> accepted = objectA.getAccepted();
-        final int acceptedLength = accepted.size();
-        for (int j = 0; j < acceptedLength; j++)
+        for (final Integer acceptedGroup : objectA.getAccepted())
         {
-            final Integer acceptedGroup = accepted.get(j);
             // Others to compare only in accepted group
             if (collidables.containsKey(acceptedGroup))
             {

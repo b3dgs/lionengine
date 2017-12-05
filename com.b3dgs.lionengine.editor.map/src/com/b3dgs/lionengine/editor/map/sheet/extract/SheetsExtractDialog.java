@@ -206,8 +206,8 @@ public class SheetsExtractDialog extends AbstractDialog
      */
     private Collection<String> getSheetNames()
     {
-        final Collection<String> sheetsName = new ArrayList<>();
         final int size = getSheets().size();
+        final Collection<String> sheetsName = new ArrayList<>(size);
         for (int i = 0; i < size; i++)
         {
             sheetsName.add(i + SHEET_EXTENSION);

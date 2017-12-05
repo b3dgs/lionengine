@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.dialog;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -75,7 +74,7 @@ public class ResourceDialog extends AbstractDialog
     }
 
     /** Selection. */
-    private final Collection<Media> selection = new ArrayList<>();
+    private final Collection<Media> selection = new HashSet<>();
     /** Selection flag. */
     private final int flag;
     /** Allowed file type. */

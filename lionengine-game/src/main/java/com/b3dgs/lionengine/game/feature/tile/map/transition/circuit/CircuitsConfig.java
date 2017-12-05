@@ -62,7 +62,7 @@ public final class CircuitsConfig
         final Xml root = new Xml(circuitsConfig);
         final Collection<Xml> nodesCircuit = root.getChildren(NODE_CIRCUIT);
         final Map<Circuit, Collection<TileRef>> circuits;
-        circuits = new HashMap<Circuit, Collection<TileRef>>();
+        circuits = new HashMap<Circuit, Collection<TileRef>>(nodesCircuit.size());
 
         for (final Xml nodeCircuit : nodesCircuit)
         {

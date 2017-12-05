@@ -65,11 +65,7 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
     {
         final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
-        final Collection<String> values = new ArrayList<>();
-        for (final String group : mapGroup.getGroups())
-        {
-            values.add(group);
-        }
+        final Collection<String> values = new ArrayList<>(mapGroup.getGroups());
         if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {
             values.add(TileGroupsConfig.REMOVE_GROUP_NAME);

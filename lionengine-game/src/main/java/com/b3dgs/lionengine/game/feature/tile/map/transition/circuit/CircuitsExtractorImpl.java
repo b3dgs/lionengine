@@ -146,7 +146,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
                                                          Media sheetsConfig,
                                                          Media groupsConfig)
     {
-        final Collection<MapTile> mapsSet = new HashSet<MapTile>();
+        final Collection<MapTile> mapsSet = new HashSet<MapTile>(levels.size());
         for (final Media level : levels)
         {
             final Services services = new Services();

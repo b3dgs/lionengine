@@ -116,7 +116,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
                                                                Media sheetsConfig,
                                                                Media groupsConfig)
     {
-        final Collection<MapTile> mapsSet = new HashSet<MapTile>();
+        final Collection<MapTile> mapsSet = new HashSet<MapTile>(levels.size());
         for (final Media level : levels)
         {
             final MapTile map = new MapTileGame();

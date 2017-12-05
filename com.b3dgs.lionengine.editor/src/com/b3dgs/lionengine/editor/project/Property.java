@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
@@ -55,7 +55,7 @@ public enum Property
      */
     Property(String... extensions)
     {
-        this.extensions = new ArrayList<>(extensions.length);
+        this.extensions = new HashSet<>(extensions.length);
         for (final String extension : extensions)
         {
             this.extensions.add(extension.replace(Constant.DOT, Constant.EMPTY_STRING));

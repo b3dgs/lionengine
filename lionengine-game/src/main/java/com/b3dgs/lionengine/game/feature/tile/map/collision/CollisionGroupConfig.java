@@ -55,11 +55,13 @@ public final class CollisionGroupConfig
     public static CollisionGroupConfig imports(Media config)
     {
         final Xml root = new Xml(config);
-        final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
-        for (final Xml node : root.getChildren(COLLISION))
+        final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
+        final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>(childrenCollision.size());
+        for (final Xml node : childrenCollision)
         {
-            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
-            for (final Xml formula : node.getChildren(CollisionFormulaConfig.FORMULA))
+            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.FORMULA);
+            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>(childrenFormula.size());
+            for (final Xml formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
                 formulas.add(new CollisionFormula(formulaName, null, null, null));
@@ -81,11 +83,13 @@ public final class CollisionGroupConfig
      */
     public static CollisionGroupConfig imports(Xml root, MapTileCollision map)
     {
-        final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
-        for (final Xml node : root.getChildren(COLLISION))
+        final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
+        final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>(childrenCollision.size());
+        for (final Xml node : childrenCollision)
         {
-            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
-            for (final Xml formula : node.getChildren(CollisionFormulaConfig.FORMULA))
+            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.FORMULA);
+            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>(childrenFormula.size());
+            for (final Xml formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
                 formulas.add(map.getCollisionFormula(formulaName));

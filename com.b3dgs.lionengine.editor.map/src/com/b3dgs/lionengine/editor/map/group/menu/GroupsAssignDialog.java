@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -215,8 +216,9 @@ public class GroupsAssignDialog extends AbstractDialog implements WorldView, Foc
                 }
             }
         }
-        final Collection<TileGroup> groups = new HashSet<>();
-        for (final Entry<String, Collection<TileRef>> entry : groupsRef.entrySet())
+        final Set<Entry<String, Collection<TileRef>>> set = groupsRef.entrySet();
+        final Collection<TileGroup> groups = new HashSet<>(set.size());
+        for (final Entry<String, Collection<TileRef>> entry : set)
         {
             final String name = entry.getKey();
             final TileGroupType type;

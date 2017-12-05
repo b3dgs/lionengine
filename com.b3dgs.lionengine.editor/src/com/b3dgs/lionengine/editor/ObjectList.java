@@ -237,8 +237,9 @@ public abstract class ObjectList<T extends Nameable>
      */
     public Collection<T> getObjects()
     {
-        final Collection<T> objects = new ArrayList<>();
-        for (final TreeItem item : objectsTree.getItems())
+        final TreeItem[] items = objectsTree.getItems();
+        final Collection<T> objects = new ArrayList<>(items.length);
+        for (final TreeItem item : items)
         {
             objects.add(cast(item.getData()));
         }
@@ -252,8 +253,9 @@ public abstract class ObjectList<T extends Nameable>
      */
     public Collection<String> getObjectsName()
     {
-        final Collection<String> objects = new ArrayList<>();
-        for (final TreeItem item : objectsTree.getItems())
+        final TreeItem[] items = objectsTree.getItems();
+        final Collection<String> objects = new ArrayList<>(items.length);
+        for (final TreeItem item : items)
         {
             final String object = item.getText();
             objects.add(object);

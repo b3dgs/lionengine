@@ -62,7 +62,7 @@ public final class TransitionsConfig
         final Xml root = new Xml(config);
         final Collection<Xml> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<Transition, Collection<TileRef>> transitions;
-        transitions = new HashMap<Transition, Collection<TileRef>>();
+        transitions = new HashMap<Transition, Collection<TileRef>>(nodesTransition.size());
 
         for (final Xml nodeTransition : nodesTransition)
         {
