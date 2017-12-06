@@ -146,7 +146,7 @@ public final class ToolsSwt
                 value = SWT.TRANSPARENCY_ALPHA;
                 break;
             default:
-                value = 0;
+                throw new LionEngineException(transparency);
         }
         return value;
     }

@@ -228,4 +228,11 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
     {
         Assume.assumeFalse("Unable to perform this test", false);
     }
+
+    @Override
+    @Test
+    public void testCreateText()
+    {
+        // Skip to allow enum hack
+    }
 }

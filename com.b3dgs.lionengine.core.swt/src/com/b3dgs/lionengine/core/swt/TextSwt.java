@@ -57,7 +57,7 @@ final class TextSwt implements Text
                 value = SWT.ITALIC;
                 break;
             default:
-                value = SWT.NORMAL;
+                throw new LionEngineException(style);
         }
         return value;
     }

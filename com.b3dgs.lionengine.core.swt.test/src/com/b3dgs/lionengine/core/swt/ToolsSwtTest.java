@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -81,6 +82,20 @@ public class ToolsSwtTest
     @Test
     public void testTransparency()
     {
+        final UtilEnum<Transparency> hack = new UtilEnum<>(Transparency.class, Transparency.class);
+        final Transparency fail = hack.make("FAIL");
+        hack.addByValue(fail);
+        try
+        {
+            Assert.assertNotEquals(0, ToolsSwt.getTransparency(fail));
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertNotNull(exception);
+        }
+        hack.restore();
+
         Assert.assertEquals(SWT.TRANSPARENCY_NONE, ToolsSwt.getTransparency(Transparency.OPAQUE));
         Assert.assertEquals(SWT.TRANSPARENCY_PIXEL, ToolsSwt.getTransparency(Transparency.BITMASK));
         Assert.assertEquals(SWT.TRANSPARENCY_ALPHA, ToolsSwt.getTransparency(Transparency.TRANSLUCENT));

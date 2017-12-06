@@ -111,5 +111,7 @@ public class ImageBufferSwtTest
                                                          && ColorRgba.RED.equals(image.getTransparentColor())
                                                          || image.getTransparency() == Transparency.TRANSLUCENT
                                                             && image.getTransparentColor() == null);
+        Assert.assertEquals(Transparency.TRANSLUCENT, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_ALPHA));
+        Assert.assertEquals(Transparency.OPAQUE, ImageBufferSwt.getTransparency(-1));
     }
 }
