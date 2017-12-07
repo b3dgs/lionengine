@@ -51,6 +51,18 @@ public final class UtilEnum<E extends Enum<E>>
     /** Modifiers field. */
     private static final String MODIFIERS_FIELD = "modifiers";
 
+    /**
+     * Make a new enum instance, without adding it to the values array and using the default ordinal of 0.
+     * 
+     * @param clazz The enum type.
+     * @param value The enum name.
+     * @return The enum instance.
+     */
+    public static <E extends Enum<E>> E make(Class<E> clazz, String value)
+    {
+        return new UtilEnum<E>(clazz).make(value);
+    }
+
     /** Enum type. */
     private final Class<E> clazz;
     /** Switch fields. */

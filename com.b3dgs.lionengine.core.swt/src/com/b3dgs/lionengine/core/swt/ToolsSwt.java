@@ -134,19 +134,21 @@ public final class ToolsSwt
     public static int getTransparency(Transparency transparency)
     {
         final int value;
-        switch (transparency)
+        if (Transparency.OPAQUE == transparency)
         {
-            case OPAQUE:
-                value = SWT.TRANSPARENCY_NONE;
-                break;
-            case BITMASK:
-                value = SWT.TRANSPARENCY_PIXEL;
-                break;
-            case TRANSLUCENT:
-                value = SWT.TRANSPARENCY_ALPHA;
-                break;
-            default:
-                throw new LionEngineException(transparency);
+            value = SWT.TRANSPARENCY_NONE;
+        }
+        else if (Transparency.BITMASK == transparency)
+        {
+            value = SWT.TRANSPARENCY_PIXEL;
+        }
+        else if (Transparency.TRANSLUCENT == transparency)
+        {
+            value = SWT.TRANSPARENCY_ALPHA;
+        }
+        else
+        {
+            throw new LionEngineException(transparency);
         }
         return value;
     }

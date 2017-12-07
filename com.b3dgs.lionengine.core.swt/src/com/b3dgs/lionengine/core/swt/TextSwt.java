@@ -45,19 +45,21 @@ final class TextSwt implements Text
     private static int getStyle(TextStyle style)
     {
         final int value;
-        switch (style)
+        if (TextStyle.NORMAL == style)
         {
-            case NORMAL:
-                value = SWT.NORMAL;
-                break;
-            case BOLD:
-                value = SWT.BOLD;
-                break;
-            case ITALIC:
-                value = SWT.ITALIC;
-                break;
-            default:
-                throw new LionEngineException(style);
+            value = SWT.NORMAL;
+        }
+        else if (TextStyle.BOLD == style)
+        {
+            value = SWT.BOLD;
+        }
+        else if (TextStyle.ITALIC == style)
+        {
+            value = SWT.ITALIC;
+        }
+        else
+        {
+            throw new LionEngineException(style);
         }
         return value;
     }
@@ -123,23 +125,26 @@ final class TextSwt implements Text
         final int tx;
         final int ty;
 
-        switch (alignment)
+        if (Align.LEFT == alignment)
         {
-            case LEFT:
-                tx = x;
-                ty = y;
-                break;
-            case CENTER:
-                tx = x - textSize.x / 2;
-                ty = y;
-                break;
-            case RIGHT:
-                tx = x - textSize.x;
-                ty = y;
-                break;
-            default:
-                throw new LionEngineException(alignment);
+            tx = x;
+            ty = y;
         }
+        else if (Align.CENTER == alignment)
+        {
+            tx = x - textSize.x / 2;
+            ty = y;
+        }
+        else if (Align.RIGHT == alignment)
+        {
+            tx = x - textSize.x;
+            ty = y;
+        }
+        else
+        {
+            throw new LionEngineException(alignment);
+        }
+
         final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);
         gc.drawString(text, tx, ty, true);

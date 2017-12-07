@@ -44,14 +44,6 @@ public class TextSwtTest
     private static final String VALUE = "test";
     /** Graphic. */
     private static Graphic g;
-    /** Hack style. */
-    private static UtilEnum<TextStyle> hackStyle;
-    /** Hack align. */
-    private static UtilEnum<Align> hackAlign;
-    /** Style fail. */
-    private static TextStyle failStyle;
-    /** Fail align. */
-    private static Align failAlign;
 
     /**
      * Setup test.
@@ -59,14 +51,6 @@ public class TextSwtTest
     @BeforeClass
     public static void setUp()
     {
-        hackStyle = new UtilEnum<>(TextStyle.class, TextStyle.class);
-        failStyle = hackStyle.make("FAIL");
-        hackStyle.addByValue(failStyle);
-
-        hackAlign = new UtilEnum<>(Align.class, Align.class);
-        failAlign = hackAlign.make("FAIL");
-        hackAlign.addByValue(failAlign);
-
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
         final ImageBuffer buffer = Graphics.createImageBuffer(320, 240);
         buffer.prepare();
@@ -79,8 +63,6 @@ public class TextSwtTest
     @AfterClass
     public static void cleanUp()
     {
-        hackStyle.restore();
-        hackAlign.restore();
         g.dispose();
         Graphics.setFactoryGraphic(null);
     }
@@ -143,7 +125,7 @@ public class TextSwtTest
     {
         try
         {
-            Assert.assertNull(Graphics.createText(Constant.EMPTY_STRING, 10, failStyle));
+            Assert.assertNull(Graphics.createText(Constant.EMPTY_STRING, 10, UtilEnum.make(TextStyle.class, "FAIL")));
         }
         catch (final LionEngineException exception)
         {
@@ -164,7 +146,7 @@ public class TextSwtTest
         g.setGraphic(gc);
         try
         {
-            text.draw(g, 0, 0, failAlign, Constant.EMPTY_STRING);
+            text.draw(g, 0, 0, UtilEnum.make(Align.class, "FAIL"), Constant.EMPTY_STRING);
             Assert.fail();
         }
         catch (final LionEngineException exception)
