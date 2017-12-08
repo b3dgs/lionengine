@@ -17,21 +17,27 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
+import java.awt.BufferCapabilities;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -108,11 +114,21 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test get transparency.
+     * Test transparency with unknown enum.
      */
     @Test
     public void testTransparency()
     {
+        try
+        {
+            Assert.assertNotEquals(0, ToolsAwt.getTransparency(UtilEnum.make(Transparency.class, "FAIL")));
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertNotNull(exception);
+        }
+
         Assert.assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
         Assert.assertEquals(java.awt.Transparency.BITMASK, ToolsAwt.getTransparency(Transparency.BITMASK));
         Assert.assertEquals(java.awt.Transparency.TRANSLUCENT, ToolsAwt.getTransparency(Transparency.TRANSLUCENT));
@@ -210,5 +226,61 @@ public class ToolsAwtTest
         {
             UtilStream.close(input);
         }
+    }
+
+    /**
+     * Test the buffer strategy creation failure.
+     */
+    @Test
+    public void testCreateBufferStrategyFailCanvas()
+    {
+        final AtomicReference<Integer> result = new AtomicReference<Integer>();
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        ToolsAwt.createBufferStrategy(new java.awt.Canvas(null)
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
+            {
+                if (numBuffers != 1)
+                {
+                    throw new java.awt.AWTException(Constant.EMPTY_STRING);
+                }
+                result.set(Integer.valueOf(numBuffers));
+            }
+        }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+        Verbose.info("****************************************************************************************");
+
+        Assert.assertEquals(1, result.get().intValue());
+    }
+
+    /**
+     * Test the buffer strategy creation failure.
+     */
+    @Test
+    public void testCreateBufferStrategyFailWindow()
+    {
+        final AtomicReference<Integer> result = new AtomicReference<Integer>();
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        ToolsAwt.createBufferStrategy(new java.awt.Window(null)
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
+            {
+                if (numBuffers != 1)
+                {
+                    throw new java.awt.AWTException(Constant.EMPTY_STRING);
+                }
+                result.set(Integer.valueOf(numBuffers));
+            }
+        }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+        Verbose.info("****************************************************************************************");
+
+        Assert.assertEquals(1, result.get().intValue());
     }
 }

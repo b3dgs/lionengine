@@ -29,7 +29,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -43,6 +42,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.graphic.UtilColor;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -64,22 +64,24 @@ public final class ToolsAwt
      * @param transparency The transparency type.
      * @return The transparency value.
      */
-    public static int getTransparency(com.b3dgs.lionengine.graphic.Transparency transparency)
+    public static int getTransparency(Transparency transparency)
     {
         final int value;
-        switch (transparency)
+        if (Transparency.OPAQUE == transparency)
         {
-            case OPAQUE:
-                value = Transparency.OPAQUE;
-                break;
-            case BITMASK:
-                value = Transparency.BITMASK;
-                break;
-            case TRANSLUCENT:
-                value = Transparency.TRANSLUCENT;
-                break;
-            default:
-                throw new LionEngineException(transparency);
+            value = java.awt.Transparency.OPAQUE;
+        }
+        else if (Transparency.BITMASK == transparency)
+        {
+            value = java.awt.Transparency.BITMASK;
+        }
+        else if (Transparency.TRANSLUCENT == transparency)
+        {
+            value = java.awt.Transparency.TRANSLUCENT;
+        }
+        else
+        {
+            throw new LionEngineException(transparency);
         }
         return value;
     }
@@ -381,7 +383,9 @@ public final class ToolsAwt
     {
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension dim = toolkit.getBestCursorSize(1, 1);
-        final BufferedImage c = createImage(Math.max(1, dim.width), Math.max(1, dim.height), Transparency.BITMASK);
+        final BufferedImage c = createImage(Math.max(1, dim.width),
+                                            Math.max(1, dim.height),
+                                            java.awt.Transparency.BITMASK);
         final BufferedImage buffer = applyMask(c, Color.BLACK.getRGB());
         return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
     }

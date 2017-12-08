@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
 import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the screen class.
@@ -80,6 +81,7 @@ public class ScreenAwtTest
                                          32,
                                          true,
                                          Medias.create(IMAGE));
+        config.setSource(com.b3dgs.lionengine.util.UtilTests.RESOLUTION_320_240);
         testScreen(config);
         testHeadless(config);
     }
@@ -97,6 +99,7 @@ public class ScreenAwtTest
                                          false,
                                          Medias.create(IMAGE));
         config.setApplet(new AppletAwt());
+        config.setSource(com.b3dgs.lionengine.util.UtilTests.RESOLUTION_320_240);
 
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         testScreen(config);
@@ -120,6 +123,7 @@ public class ScreenAwtTest
 
             final Resolution resolution = new Resolution(width, height, 60);
             final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
+            config.setSource(resolution);
 
             testScreen(config);
             testHeadless(config);
@@ -136,6 +140,7 @@ public class ScreenAwtTest
     {
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
+        config.setSource(resolution);
         testScreen(config);
         testHeadless(config);
     }
@@ -195,6 +200,7 @@ public class ScreenAwtTest
         screen.showCursor();
         screen.hideCursor();
         screen.requestFocus();
+        screen.onSourceChanged(UtilTests.RESOLUTION_320_240);
         Assert.assertNotNull(screen.getConfig());
         Assert.assertNotNull(screen.getGraphic());
         Assert.assertTrue(screen.getReadyTimeOut() > -1L);

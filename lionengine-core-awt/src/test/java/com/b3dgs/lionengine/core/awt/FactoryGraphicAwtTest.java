@@ -25,6 +25,7 @@ import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.FactoryGraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -80,5 +81,23 @@ public class FactoryGraphicAwtTest extends FactoryGraphicTest
     public void testCreateScreen()
     {
         Assume.assumeFalse("Unable to perform this test", false);
+    }
+
+    /**
+     * Test get image with error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetImageError()
+    {
+        Assert.assertNull(Graphics.getImageBuffer(new MediaMock()));
+    }
+
+    /**
+     * Test save image with error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSaveImageError()
+    {
+        Graphics.saveImage(image, new MediaMock());
     }
 }

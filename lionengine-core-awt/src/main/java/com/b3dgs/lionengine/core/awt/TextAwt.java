@@ -44,19 +44,21 @@ final class TextAwt implements Text
     private static int getStyle(TextStyle style)
     {
         final int value;
-        switch (style)
+        if (TextStyle.NORMAL == style)
         {
-            case NORMAL:
-                value = Font.TRUETYPE_FONT;
-                break;
-            case BOLD:
-                value = Font.BOLD;
-                break;
-            case ITALIC:
-                value = Font.ITALIC;
-                break;
-            default:
-                throw new LionEngineException(style);
+            value = Font.TRUETYPE_FONT;
+        }
+        else if (TextStyle.BOLD == style)
+        {
+            value = Font.BOLD;
+        }
+        else if (TextStyle.ITALIC == style)
+        {
+            value = Font.ITALIC;
+        }
+        else
+        {
+            throw new LionEngineException(style);
         }
         return value;
     }
@@ -116,22 +118,24 @@ final class TextAwt implements Text
         final int tx;
         final int ty;
 
-        switch (alignment)
+        if (Align.LEFT == alignment)
         {
-            case LEFT:
-                tx = x;
-                ty = (int) textSize.getHeight() + y;
-                break;
-            case CENTER:
-                tx = x - (int) textSize.getWidth() / 2;
-                ty = (int) textSize.getHeight() + y;
-                break;
-            case RIGHT:
-                tx = x - (int) textSize.getWidth();
-                ty = (int) textSize.getHeight() + y;
-                break;
-            default:
-                throw new LionEngineException(alignment);
+            tx = x;
+            ty = (int) textSize.getHeight() + y;
+        }
+        else if (Align.CENTER == alignment)
+        {
+            tx = x - (int) textSize.getWidth() / 2;
+            ty = (int) textSize.getHeight() + y;
+        }
+        else if (Align.RIGHT == alignment)
+        {
+            tx = x - (int) textSize.getWidth();
+            ty = (int) textSize.getHeight() + y;
+        }
+        else
+        {
+            throw new LionEngineException(alignment);
         }
 
         final ColorRgba colorOld = g.getColor();

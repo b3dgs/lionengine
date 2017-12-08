@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transform;
-import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.util.UtilStream;
 
 /**
@@ -99,7 +98,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer createImageBuffer(int width, int height)
     {
-        final BufferedImage image = ToolsAwt.createImage(width, height, ToolsAwt.getTransparency(Transparency.OPAQUE));
+        final BufferedImage image = ToolsAwt.createImage(width, height, java.awt.Transparency.OPAQUE);
         final ImageBuffer buffer = new ImageBufferAwt(image);
 
         final Graphic g = buffer.createGraphic();
@@ -113,7 +112,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
     {
-        final BufferedImage image = ToolsAwt.createImage(width, height, ToolsAwt.getTransparency(Transparency.BITMASK));
+        final BufferedImage image = ToolsAwt.createImage(width, height, java.awt.Transparency.BITMASK);
         final ImageBuffer buffer = new ImageBufferAwt(image);
 
         final Graphic g = buffer.createGraphic();
