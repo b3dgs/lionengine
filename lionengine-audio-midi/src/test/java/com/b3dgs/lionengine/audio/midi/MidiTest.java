@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
-import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -223,77 +222,62 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testMidiInvalidStream()
     {
-        try
+        Assert.assertNotNull(AudioFactory.loadAudio(new Media()
         {
-            Medias.setFactoryMedia(new FactoryMediaDefault()
+            @Override
+            public String getName()
             {
-                @Override
-                public Media create(String separator, Class<?> loader, String... path)
+                return null;
+            }
+
+            @Override
+            public String getPath()
+            {
+                return null;
+            }
+
+            @Override
+            public String getParentPath()
+            {
+                return null;
+            }
+
+            @Override
+            public OutputStream getOutputStream()
+            {
+                return null;
+            }
+
+            @Override
+            public InputStream getInputStream()
+            {
+                return new InputStream()
                 {
-                    return new Media()
+                    @Override
+                    public int read() throws IOException
                     {
-                        @Override
-                        public String getName()
-                        {
-                            return null;
-                        }
+                        throw new IOException();
+                    }
+                };
+            }
 
-                        @Override
-                        public String getPath()
-                        {
-                            return null;
-                        }
+            @Override
+            public File getFile()
+            {
+                return null;
+            }
 
-                        @Override
-                        public String getParentPath()
-                        {
-                            return null;
-                        }
+            @Override
+            public Collection<Media> getMedias()
+            {
+                return null;
+            }
 
-                        @Override
-                        public OutputStream getOutputStream()
-                        {
-                            return null;
-                        }
-
-                        @Override
-                        public InputStream getInputStream()
-                        {
-                            return new InputStream()
-                            {
-                                @Override
-                                public int read() throws IOException
-                                {
-                                    throw new IOException();
-                                }
-                            };
-                        }
-
-                        @Override
-                        public File getFile()
-                        {
-                            return null;
-                        }
-
-                        @Override
-                        public Collection<Media> getMedias()
-                        {
-                            return null;
-                        }
-
-                        @Override
-                        public boolean exists()
-                        {
-                            return true;
-                        }
-                    };
-                }
-            });
-            Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("test.midi")));
-        }
-        finally
-        {
-            Medias.setFactoryMedia(new FactoryMediaDefault());
-        }
+            @Override
+            public boolean exists()
+            {
+                return true;
+            }
+        }));
     }
 }
