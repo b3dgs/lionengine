@@ -18,14 +18,14 @@
     </lionengine:formula>
     <lionengine:formula name="slope_right_0">
         <lionengine:range maxX="1" maxY="15" minX="0" minY="0" output="Y"/>
-        <lionengine:function a="-0.5" b="0.0" type="LINEAR"/>
+        <lionengine:function a="-0.5" b="0.5" type="LINEAR"/>
     </lionengine:formula>
 	<lionengine:formula name="slope_right_1">
-        <lionengine:range maxX="15" maxY="15" minX="2" minY="0" output="Y"/>
-        <lionengine:function a="-0.5" b="16.0" type="LINEAR"/>
+        <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
+        <lionengine:function a="-0.5" b="16.5" type="LINEAR"/>
     </lionengine:formula>
 	<lionengine:formula name="slope_right_2">
         <lionengine:range maxX="15" maxY="15" minX="0" minY="0" output="Y"/>
-        <lionengine:function a="-0.5" b="8.0" type="LINEAR"/>
+        <lionengine:function a="-0.5" b="8.5" type="LINEAR"/>
     </lionengine:formula>
 </lionengine:formulas>
