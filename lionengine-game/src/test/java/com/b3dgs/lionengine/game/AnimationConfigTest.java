@@ -90,6 +90,10 @@ public class AnimationConfigTest
         Assert.assertEquals(animation2, imported.getAnimation("anim2"));
         Assert.assertTrue(imported.getAnimations().containsAll(Arrays.asList(animation1, animation2)));
 
+        Assert.assertFalse(imported.hasAnimation("anim"));
+        Assert.assertTrue(imported.hasAnimation("anim1"));
+        Assert.assertTrue(imported.hasAnimation("anim2"));
+
         imported.clear();
 
         Assert.assertFalse(imported.getAnimations().containsAll(Arrays.asList(animation1, animation2)));
