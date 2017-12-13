@@ -33,6 +33,13 @@ public class ForceTest
     @Test
     public void testFromVector()
     {
+        final Force force0 = Force.fromVector(0.0, 0.0, 0.0, 0.0);
+
+        Assert.assertEquals(0.0, force0.getDirectionHorizontal(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, force0.getDirectionVertical(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, force0.getVelocity(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, force0.getSensibility(), UtilTests.PRECISION);
+
         final Force force1 = Force.fromVector(0.0, 1.0, 3.0, 5.0);
 
         Assert.assertEquals(0.75, force1.getDirectionHorizontal(), UtilTests.PRECISION);
