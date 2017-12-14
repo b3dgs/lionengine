@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Range;
+
 /**
  * Test damages class.
  */
@@ -45,6 +47,10 @@ public class DamagesTest
         damagesA.setMax(4);
         Assert.assertTrue(damagesA.getMin() == 0);
         Assert.assertTrue(damagesA.getMax() == 4);
+
+        final Range range = damagesA.getDamages();
+        Assert.assertTrue(range.getMin() == damagesA.getMin());
+        Assert.assertTrue(range.getMax() == damagesA.getMax());
 
         final int last = damagesA.getRandom();
         Assert.assertTrue(damagesA.getLast() == last);
