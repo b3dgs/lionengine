@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
@@ -185,6 +186,18 @@ public class FactoryTest
         factory.notifyHandlableRemoved(featurable);
 
         Assert.assertEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+
+        final Media media = UtilSetup.createMedia(ObjectWithIdentifiable.class);
+        final Featurable featurable2 = factory.create(media);
+
+        factory.notifyHandlableRemoved(featurable2);
+
+        Assert.assertNotEquals(featurable2, factory.create(media));
+
+        featurable2.addFeature(new Recycler());
+        factory.notifyHandlableRemoved(featurable2);
+
+        Assert.assertEquals(featurable2, factory.create(media));
     }
 
     /**
