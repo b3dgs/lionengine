@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
@@ -263,6 +264,16 @@ public class UtilReflectionTest
     }
 
     /**
+     * Test field accessible from super class.
+     */
+    @Test
+    public void testGetFieldSuperClass()
+    {
+        final String accessible = UtilReflection.getField(FieldTest2.class, "test");
+        Assert.assertNotNull(accessible);
+    }
+
+    /**
      * Test the get field unknown.
      */
     @Test(expected = LionEngineException.class)
@@ -356,5 +367,22 @@ public class UtilReflectionTest
         {
             super();
         }
+    }
+
+    /**
+     * Test field class without field
+     */
+    class FieldTest
+    {
+        /** Test field. */
+        static final String test = Constant.EMPTY_STRING;
+    }
+
+    /**
+     * Test field class without field
+     */
+    class FieldTest2 extends FieldTest
+    {
+        // No field
     }
 }
