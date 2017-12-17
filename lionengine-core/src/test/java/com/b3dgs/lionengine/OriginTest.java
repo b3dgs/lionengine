@@ -103,9 +103,7 @@ public class OriginTest
     @Test
     public void testEnumFail()
     {
-        final UtilEnum<Origin> hack = new UtilEnum<Origin>(Origin.class, Origin.class);
-        final Origin fail = hack.make("FAIL");
-
+        final Origin fail = UtilEnum.make(Origin.class, "FAIL");
         try
         {
             Assert.assertEquals(-1, fail.getX(0.0, 0), UtilTests.PRECISION);
