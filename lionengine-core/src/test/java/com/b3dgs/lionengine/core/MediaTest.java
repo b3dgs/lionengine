@@ -30,7 +30,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilFolder;
+import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilStream;
 
 /**
@@ -229,6 +231,33 @@ public class MediaTest
     }
 
     /**
+     * Test temp path creation unable.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testUnableCreateTempDir() throws IOException
+    {
+        final String tempFolder = UtilReflection.getField(MediaDefault.class, "TEMP");
+        final File folder = new File(tempFolder, MediasTest.class.getClass().getSimpleName());
+        folder.mkdirs();
+        Assert.assertTrue(folder.delete());
+        Assert.assertTrue(folder.createNewFile());
+
+        try
+        {
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            final String path = UtilReflection.getMethod(MediaDefault.class, "getTempDir", MediasTest.class.getClass());
+            Assert.assertEquals(folder.getPath(), path);
+            Verbose.info("****************************************************************************************");
+        }
+        finally
+        {
+            Assert.assertTrue(folder.delete());
+        }
+    }
+
+    /**
      * Test the hash code.
      */
     @Test
@@ -257,6 +286,7 @@ public class MediaTest
         Assert.assertEquals(media, media);
         Assert.assertEquals(media, media1);
         Assert.assertNotEquals(media, media2);
+        Assert.assertNotEquals(media, null);
         Assert.assertNotEquals(media, new Object());
     }
 

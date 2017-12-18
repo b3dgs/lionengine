@@ -63,7 +63,7 @@ final class MediaDefault implements Media
     {
         final File temp = new File(TEMP, loader.getSimpleName());
         final String path = temp.getAbsolutePath();
-        if (!temp.exists() && !temp.mkdir())
+        if (!temp.isDirectory() && !temp.mkdir())
         {
             Verbose.warning(ERROR_CREATE_TEMP_DIR, path);
         }
