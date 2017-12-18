@@ -251,7 +251,7 @@ public class AttackerModelTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test
+    @Test(timeout = 1000L)
     public void testListener() throws InterruptedException
     {
         canAttack.set(true);
@@ -285,8 +285,10 @@ public class AttackerModelTest
 
         Assert.assertTrue(preparing.get());
 
-        Thread.sleep(11);
-        attacker.update(1.0);
+        while (!target.equals(started.get()))
+        {
+            attacker.update(1.0);
+        }
 
         Assert.assertTrue(attacker.isAttacking());
         Assert.assertEquals(target, started.get());
