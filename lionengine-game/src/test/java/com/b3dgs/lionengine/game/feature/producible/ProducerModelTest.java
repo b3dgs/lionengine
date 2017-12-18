@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -91,6 +92,71 @@ public class ProducerModelTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
+    }
+
+    /**
+     * Test the default production with default checker.
+     */
+    @Test
+    public void testDefaultProduction()
+    {
+        final ProducerModel producer = new ProducerModel(services);
+        producer.prepare(new FeaturableModel());
+
+        producer.setStepsPerSecond(25.0);
+
+        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> current = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> cant = new AtomicReference<Featurable>();
+        producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
+
+        producer.update(1.0);
+
+        Assert.assertNull(producer.getProducingElement());
+        Assert.assertEquals(-1.0, producer.getProgress(), UtilTests.PRECISION);
+        Assert.assertEquals(-1, producer.getProgressPercent());
+        Assert.assertEquals(0, producer.getQueueLength());
+        Assert.assertFalse(producer.isProducing());
+
+        final Featurable featurable = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(featurable);
+
+        Assert.assertEquals(0, producer.getQueueLength());
+        Assert.assertNull(start.get());
+        Assert.assertFalse(producer.isProducing());
+
+        producer.update(1.0);
+
+        Assert.assertEquals(0.0, producer.getProgress(), UtilTests.PRECISION);
+        Assert.assertEquals(0, producer.getProgressPercent());
+        Assert.assertEquals(0, producer.getQueueLength());
+        Assert.assertEquals(featurable, start.get());
+        Assert.assertNull(current.get());
+        Assert.assertTrue(producer.isProducing());
+        Assert.assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
+
+        producer.update(1.0);
+
+        Assert.assertEquals(0.5, producer.getProgress(), UtilTests.PRECISION);
+        Assert.assertEquals(50, producer.getProgressPercent());
+        Assert.assertEquals(featurable, current.get());
+        Assert.assertNull(done.get());
+        Assert.assertTrue(producer.isProducing());
+
+        producer.update(1.0);
+
+        Assert.assertEquals(1.0, producer.getProgress(), UtilTests.PRECISION);
+        Assert.assertEquals(100, producer.getProgressPercent());
+        Assert.assertEquals(featurable, current.get());
+        Assert.assertNull(done.get());
+        Assert.assertFalse(producer.isProducing());
+
+        producer.update(1.0);
+
+        Assert.assertEquals(featurable, done.get());
+        Assert.assertNull(cant.get());
+        Assert.assertFalse(producer.isProducing());
     }
 
     /**
