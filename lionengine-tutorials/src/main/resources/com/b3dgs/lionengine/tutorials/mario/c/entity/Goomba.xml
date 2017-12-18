@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.tutorials.mario.d.Entity</lionengine:class>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:feature>com.b3dgs.lionengine.game.feature.MirrorableModel</lionengine:feature>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.TransformableModel</lionengine:feature>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.body.BodyModel</lionengine:feature>
@@ -29,4 +28,4 @@
         <lionengine:group>block</lionengine:group>
     </lionengine:category>
     <lionengine:collision height="15" mirror="false" name="default" offsetX="0" offsetY="0" width="12"/>
-</lionengine:object>
+</lionengine:featurable>

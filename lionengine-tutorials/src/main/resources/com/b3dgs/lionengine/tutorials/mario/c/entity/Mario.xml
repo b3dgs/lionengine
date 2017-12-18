@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:feature>com.b3dgs.lionengine.game.feature.MirrorableModel</lionengine:feature>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.TransformableModel</lionengine:feature>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.LayerableModel</lionengine:feature>
@@ -43,4 +43,4 @@
     <lionengine:animation end="2" name="death" repeat="false" reversed="false" speed="0.25" start="2"/>
     <lionengine:animation end="3" name="jump" repeat="false" reversed="false" speed="0.25" start="3"/>
     <lionengine:collision height="15" mirror="false" name="default" offsetX="0" offsetY="0" width="12"/>
-</lionengine:object>
+</lionengine:featurable>
