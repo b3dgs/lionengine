@@ -32,7 +32,11 @@ import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
@@ -79,12 +83,29 @@ public class ObjectRepresentation extends FeaturableModel
     {
         super();
 
-        final SpriteAnimated surface = getSprite(setup, setup.getSurface());
-        surface.setOrigin(Origin.BOTTOM_LEFT);
-        surface.prepare();
-
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        transformable.setSize(surface.getTileWidth(), surface.getTileHeight());
+        final Sprite surface;
+        if (setup.getSurface() != null)
+        {
+            final SpriteAnimated anim = getSprite(setup, setup.getSurface());
+            anim.prepare();
+            surface = anim;
+            transformable.setSize(anim.getTileWidth(), anim.getTileHeight());
+        }
+        else
+        {
+            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16);
+            final Graphic g = buffer.createGraphic();
+            g.setColor(ColorRgba.RED);
+            g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
+            g.dispose();
+
+            surface = Drawable.loadSprite(buffer);
+            surface.prepare();
+            transformable.setSize(surface.getWidth(), surface.getHeight());
+        }
+
+        surface.setOrigin(Origin.BOTTOM_LEFT);
 
         addFeature(new RefreshableModel(extrp ->
         {
