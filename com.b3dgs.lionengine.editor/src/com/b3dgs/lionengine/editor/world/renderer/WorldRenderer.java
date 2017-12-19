@@ -153,31 +153,28 @@ public class WorldRenderer implements PaintListener
     @Override
     public void paintControl(PaintEvent paintEvent)
     {
-        if (map.isCreated())
+        final double scale = zoom.getScale();
+        final int width = (int) Math.ceil(paintEvent.width / scale);
+        final int height = (int) Math.ceil(paintEvent.height / scale);
+
+        final ImageBuffer buffer = Graphics.createImageBuffer(width, height);
+        final Graphic gbuffer = buffer.createGraphic();
+        render(gbuffer, width, height);
+        gbuffer.dispose();
+
+        final GC gc = paintEvent.gc;
+        final Graphic g = Graphics.createGraphic();
+        g.setGraphic(gc);
+
+        transform.scale(scale, scale);
+        g.drawImage(buffer, transform, 0, 0);
+        buffer.dispose();
+
+        final int tw = (int) Math.ceil(map.getTileWidth() * scale);
+        final int th = (int) Math.ceil(map.getTileHeight() * scale);
+        for (final WorldRenderListener listener : listeners)
         {
-            final double scale = zoom.getScale();
-            final int width = (int) Math.ceil(paintEvent.width / scale);
-            final int height = (int) Math.ceil(paintEvent.height / scale);
-
-            final ImageBuffer buffer = Graphics.createImageBuffer(width, height);
-            final Graphic gbuffer = buffer.createGraphic();
-            render(gbuffer, width, height);
-            gbuffer.dispose();
-
-            final GC gc = paintEvent.gc;
-            final Graphic g = Graphics.createGraphic();
-            g.setGraphic(gc);
-
-            transform.scale(scale, scale);
-            g.drawImage(buffer, transform, 0, 0);
-            buffer.dispose();
-
-            final int tw = (int) Math.ceil(map.getTileWidth() * scale);
-            final int th = (int) Math.ceil(map.getTileHeight() * scale);
-            for (final WorldRenderListener listener : listeners)
-            {
-                listener.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
-            }
+            listener.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
         }
     }
 }
