@@ -81,10 +81,8 @@ public class GroupsEditTest
         bot.waitUntil(Conditions.shellIsActive(com.b3dgs.lionengine.editor.map.group.menu.Messages.Title));
         final SWTBotShell shellMain = bot.shell(com.b3dgs.lionengine.editor.map.group.menu.Messages.Title);
 
-        final SWTBot groups = shellMain.bot();
-        groups.comboBoxWithLabel(Messages.TileGroupType).setSelection(TileGroupType.TRANSITION.name());
-        groups.button(com.b3dgs.lionengine.editor.dialog.Messages.Finish).click();
-
+        bot.comboBoxWithLabel(Messages.TileGroupType).setSelection(TileGroupType.TRANSITION.name());
+        bot.button(com.b3dgs.lionengine.editor.dialog.Messages.Finish).click();
         bot.waitUntil(Conditions.shellCloses(shellMain));
     }
 
