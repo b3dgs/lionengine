@@ -28,7 +28,7 @@ public final class Messages extends NLS
 {
     /** Add object title. */
     public static String Title;
-    /** Add object title. */
+    /** Add object text. */
     public static String Text;
     /** Remove object title. */
     public static String RemoveObjectTitle;
