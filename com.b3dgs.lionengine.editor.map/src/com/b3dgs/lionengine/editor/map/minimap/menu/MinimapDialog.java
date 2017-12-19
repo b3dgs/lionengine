@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -256,15 +257,16 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     {
         final Shell miniShell = new Shell(parent, SWT.NONE);
         miniShell.setLayout(UtilSwt.borderless());
+        miniShell.setText(Messages.Title);
 
-        final Label label = new Label(miniShell, SWT.DOUBLE_BUFFERED);
-        label.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
-        label.setImage((Image) minimap.getSurface().getSurface());
-        label.addMouseListener(this);
-        label.addMouseMoveListener(this);
-        label.addMouseWheelListener(this);
-        label.addMouseTrackListener(UtilSwt.createFocusListener(label::forceFocus));
-        label.addDisposeListener(event -> part.getUpdater().removeListeners(this));
+        final Canvas canvas = new Canvas(miniShell, SWT.DOUBLE_BUFFERED);
+        canvas.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
+        canvas.setBackgroundImage((Image) minimap.getSurface().getSurface());
+        canvas.addMouseListener(this);
+        canvas.addMouseMoveListener(this);
+        canvas.addMouseWheelListener(this);
+        canvas.addMouseTrackListener(UtilSwt.createFocusListener(canvas::forceFocus));
+        canvas.addDisposeListener(event -> part.getUpdater().removeListeners(this));
 
         final WorldPart worldPart = part;
         miniShell.setLocation(worldPart.getLocation());
@@ -284,7 +286,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         });
         miniShell.pack();
         miniShell.open();
-        gc = new GC(label);
+        gc = new GC(canvas);
         return miniShell;
     }
 
