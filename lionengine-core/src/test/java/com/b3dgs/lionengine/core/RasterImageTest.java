@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.graphic;
+package com.b3dgs.lionengine.core;
 
 import java.io.IOException;
 
@@ -26,7 +26,10 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBufferMock;
+import com.b3dgs.lionengine.graphic.ImageFormat;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**

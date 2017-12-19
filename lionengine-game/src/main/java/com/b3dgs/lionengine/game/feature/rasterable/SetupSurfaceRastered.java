@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.RasterImage;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.RasterColor;
-import com.b3dgs.lionengine.graphic.RasterImage;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.util.UtilFile;
 

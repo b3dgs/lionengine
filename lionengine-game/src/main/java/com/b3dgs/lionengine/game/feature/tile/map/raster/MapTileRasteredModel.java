@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.RasterImage;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -33,7 +34,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.RasterColor;
-import com.b3dgs.lionengine.graphic.RasterImage;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
 
 /**

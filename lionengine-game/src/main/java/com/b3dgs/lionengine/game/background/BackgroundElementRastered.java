@@ -22,10 +22,10 @@ import java.util.Collection;
 import java.util.List;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.RasterImage;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageInfo;
-import com.b3dgs.lionengine.graphic.RasterImage;
 import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.util.UtilFile;
 import com.b3dgs.lionengine.util.UtilMath;
