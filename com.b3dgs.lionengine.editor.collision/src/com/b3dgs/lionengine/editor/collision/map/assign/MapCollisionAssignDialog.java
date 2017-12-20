@@ -115,8 +115,8 @@ public class MapCollisionAssignDialog extends AbstractDialog
                 part.getUpdater().switchCollisionsEnabled();
             }
             part.update();
+            setFinishEnabled(true);
         });
-        UtilButton.setAction(check, () -> setFinishEnabled(true));
 
         return check;
     }
