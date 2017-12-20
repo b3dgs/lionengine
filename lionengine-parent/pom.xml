@@ -81,8 +81,8 @@
                                         <goal>prepare-agent</goal>
                                     </goals>
                                     <configuration>
-                                        <destFile>${project.build.directory}/jacoco-it.exec</destFile>
-                                        <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+                                        <destFile>${project.basedir}/../jacoco-it.exec</destFile>
+                                        <dataFile>${project.basedir}/../jacoco-it.exec</dataFile>
                                         <append>true</append>
                                     </configuration>
                                 </execution>
@@ -93,8 +93,8 @@
                                         <goal>report</goal>
                                     </goals>
                                     <configuration>
-                                        <destFile>${project.build.directory}/jacoco-it.exec</destFile>
-                                        <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+                                        <destFile>${project.basedir}/../jacoco-it.exec</destFile>
+                                        <dataFile>${project.basedir}/../jacoco-it.exec</dataFile>
                                         <append>true</append>
                                     </configuration>
                                 </execution>
@@ -240,6 +240,36 @@
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <id>jacoco-initialize</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.basedir}/../jacoco-ut.exec</destFile>
+                                <dataFile>${project.basedir}/../jacoco-ut.exec</dataFile>
+                                <append>true</append>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>jacoco-site</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.basedir}/../jacoco-ut.exec</destFile>
+                                <dataFile>${project.basedir}/../jacoco-ut.exec</dataFile>
+                                <append>true</append>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>com.mobilepetroleum.radialencapsulation</groupId>
                     <artifactId>radial-encapsulation-maven-plugin</artifactId>
