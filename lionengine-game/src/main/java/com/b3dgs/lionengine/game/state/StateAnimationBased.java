@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.state;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.AnimationConfig;
-import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -28,8 +27,8 @@ import com.b3dgs.lionengine.util.UtilReflection;
 /**
  * Represents an animation based state, where the state enum is corresponding to an animation.
  * <p>
- * Class which implements this interface must have its first constructor with the following types: ({@link Featurable},
- * {@link Animation}).
+ * Class which implements this interface must have its first constructor with the following types:
+ * ({@link FeatureProvider}, {@link Animation}).
  * </p>
  * 
  * @see Util#loadStates(StateAnimationBased[], StateFactory, FeatureProvider, Setup)
