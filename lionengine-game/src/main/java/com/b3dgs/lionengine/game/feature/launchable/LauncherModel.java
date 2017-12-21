@@ -281,32 +281,34 @@ public class LauncherModel extends FeatureModel implements Launcher
     }
 
     @Override
-    public void fire()
+    public boolean fire()
     {
-        fire(Direction.ZERO, null);
+        return fire(Direction.ZERO, null);
     }
 
     @Override
-    public void fire(Direction initial)
+    public boolean fire(Direction initial)
     {
-        fire(initial, null);
+        return fire(initial, null);
     }
 
     @Override
-    public void fire(Localizable target)
+    public boolean fire(Localizable target)
     {
-        fire(Direction.ZERO, target);
+        return fire(Direction.ZERO, target);
     }
 
     @Override
-    public void fire(Direction initial, Localizable target)
+    public boolean fire(Direction initial, Localizable target)
     {
         this.target = target;
         if (fire.elapsed(rate))
         {
             fired(initial);
             fire.restart();
+            return true;
         }
+        return false;
     }
 
     @Override

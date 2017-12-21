@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -155,10 +154,12 @@ public class LaunchableModelTest
     @Test
     public void testCheck()
     {
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new TransformableModel());
-        featurable.addFeature(new LaunchableModel());
-        featurable.addFeature(new Self());
+        final Launchable launchable = new LaunchableModel();
+        final Self self = new Self();
+        launchable.checkListener(self);
+        launchable.launch();
+
+        Assert.assertTrue(self.fired.get());
     }
 
     /**
@@ -166,6 +167,8 @@ public class LaunchableModelTest
      */
     private static class Self extends FeatureModel implements LaunchableListener
     {
+        final AtomicBoolean fired = new AtomicBoolean();
+
         /**
          * Create self.
          */
@@ -177,7 +180,7 @@ public class LaunchableModelTest
         @Override
         public void notifyFired(Launchable launchable)
         {
-            // Nothing to do
+            fired.set(true);
         }
     }
 }

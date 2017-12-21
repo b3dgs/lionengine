@@ -49,9 +49,10 @@ public interface Launcher extends Refreshable
      * {@link LauncherListener#notifyFired()} first, and {@link LaunchableListener#notifyFired(Launchable)} for each
      * launch.
      * 
+     * @return <code>true</code> if fired, <code>false</code> else.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    void fire();
+    boolean fire();
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
@@ -59,9 +60,10 @@ public interface Launcher extends Refreshable
      * launch.
      * 
      * @param initial The fire initial speed, used to transfer the initial force on launch.
+     * @return <code>true</code> if fired, <code>false</code> else.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    void fire(Direction initial);
+    boolean fire(Direction initial);
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
@@ -69,9 +71,10 @@ public interface Launcher extends Refreshable
      * launch.
      * 
      * @param target The launch target.
+     * @return <code>true</code> if fired, <code>false</code> else.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    void fire(Localizable target);
+    boolean fire(Localizable target);
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
@@ -80,9 +83,10 @@ public interface Launcher extends Refreshable
      * 
      * @param initial The fire initial speed, used to transfer the initial force on launch.
      * @param target The launch target.
+     * @return <code>true</code> if fired, <code>false</code> else.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    void fire(Direction initial, Localizable target);
+    boolean fire(Direction initial, Localizable target);
 
     /**
      * Set the launcher position offset. Modify the {@link Launchable} starting position on fire.

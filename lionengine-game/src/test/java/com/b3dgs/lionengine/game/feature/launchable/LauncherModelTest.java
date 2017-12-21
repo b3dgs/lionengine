@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
@@ -106,8 +107,10 @@ public class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        Thread.sleep(11);
-        launcher.fire();
+        while (!launcher.fire())
+        {
+            continue;
+        }
 
         Assert.assertTrue(fired.get());
         Assert.assertNotNull(firedLaunchable.get());
@@ -118,8 +121,11 @@ public class LauncherModelTest
 
         Assert.assertEquals(1, handler.size());
 
-        Thread.sleep(11);
-        launcher.fire(new TransformableModel());
+        final Transformable transformable = new TransformableModel();
+        while (!launcher.fire(transformable))
+        {
+            continue;
+        }
 
         Assert.assertNotNull(firedLaunchable.get());
         firedLaunchable.set(null);
@@ -128,8 +134,11 @@ public class LauncherModelTest
 
         Assert.assertEquals(2, handler.size());
 
-        Thread.sleep(11);
-        launcher.fire(UtilLaunchable.createLocalizable());
+        final Localizable localizable = UtilLaunchable.createLocalizable();
+        while (!launcher.fire(localizable))
+        {
+            continue;
+        }
 
         Assert.assertNotNull(firedLaunchable.get());
 
@@ -156,8 +165,11 @@ public class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        Thread.sleep(11);
-        launcher.fire(new Force(1.0, 2.0));
+        final Force force = new Force(1.0, 2.0);
+        while (!launcher.fire(force))
+        {
+            continue;
+        }
 
         Assert.assertTrue(fired.get());
         Assert.assertNotNull(firedLaunchable.get());
@@ -195,8 +207,10 @@ public class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        Thread.sleep(11);
-        launcher.fire();
+        while (!launcher.fire())
+        {
+            continue;
+        }
 
         final Handler handler = services.get(Handler.class);
         launcher.update(1.0);
@@ -206,7 +220,7 @@ public class LauncherModelTest
         Assert.assertTrue(fired.get());
         Assert.assertNull(firedLaunchable.get());
 
-        Thread.sleep(11);
+        Thread.sleep(50);
         launcher.update(1.0);
         handler.update(1.0);
 
@@ -233,8 +247,10 @@ public class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        Thread.sleep(11);
-        launcher.fire();
+        while (!launcher.fire())
+        {
+            continue;
+        }
 
         Assert.assertTrue(fired.get());
         Assert.assertNotNull(firedLaunchable.get());
@@ -245,20 +261,24 @@ public class LauncherModelTest
 
         Assert.assertEquals(1, handler.size());
 
-        Thread.sleep(25);
         launcher.setLevel(1);
 
         Assert.assertNull(firedLaunchable.get());
 
-        launcher.fire();
-        Thread.sleep(30);
-        launcher.fire();
+        while (!launcher.fire())
+        {
+            continue;
+        }
+        while (!launcher.fire())
+        {
+            continue;
+        }
 
         Assert.assertNotNull(firedLaunchable.get());
 
         handler.update(1.0);
 
-        Assert.assertEquals(2, handler.size());
+        Assert.assertEquals(3, handler.size());
 
         handler.removeAll();
         handler.update(1.0);
@@ -282,8 +302,10 @@ public class LauncherModelTest
         Assert.assertFalse(object.fired.get());
         Assert.assertNull(object.firedLaunchable.get());
 
-        Thread.sleep(11);
-        launcher.fire();
+        while (!launcher.fire())
+        {
+            continue;
+        }
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
@@ -311,8 +333,10 @@ public class LauncherModelTest
         Assert.assertFalse(object.fired.get());
         Assert.assertNull(object.firedLaunchable.get());
 
-        Thread.sleep(11);
-        launcher.fire();
+        while (!launcher.fire())
+        {
+            continue;
+        }
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
@@ -340,9 +364,14 @@ public class LauncherModelTest
 
         try
         {
-            launcher.fire();
-            Thread.sleep(11);
-            launcher.fire();
+            while (!launcher.fire())
+            {
+                continue;
+            }
+            while (!launcher.fire())
+            {
+                continue;
+            }
             Assert.fail();
         }
         finally
@@ -371,8 +400,10 @@ public class LauncherModelTest
 
         try
         {
-            Thread.sleep(11);
-            launcher.fire();
+            while (!launcher.fire())
+            {
+                continue;
+            }
             Assert.fail();
         }
         finally
