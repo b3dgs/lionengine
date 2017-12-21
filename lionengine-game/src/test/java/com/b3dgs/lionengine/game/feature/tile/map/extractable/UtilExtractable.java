@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 

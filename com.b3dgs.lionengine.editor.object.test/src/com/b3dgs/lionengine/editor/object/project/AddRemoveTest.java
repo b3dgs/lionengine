@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.editor.object.UtilNl;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**

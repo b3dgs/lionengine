@@ -24,7 +24,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.io.Xml;
 
 /**

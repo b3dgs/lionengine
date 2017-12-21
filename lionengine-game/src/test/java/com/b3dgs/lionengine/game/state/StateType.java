@@ -19,6 +19,9 @@ package com.b3dgs.lionengine.game.state;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.feature.StateAnimationBased;
+
 /**
  * State types test.
  */

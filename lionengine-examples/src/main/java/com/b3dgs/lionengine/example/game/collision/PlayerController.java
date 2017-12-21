@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**

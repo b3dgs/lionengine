@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.game.Feature;
-
 /**
  * Represents something that can support layer, in order to define an order.
  */

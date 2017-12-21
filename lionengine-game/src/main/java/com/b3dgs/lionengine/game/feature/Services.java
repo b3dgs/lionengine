@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.feature;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * Represents something designed to keep references on main types, such as:
  * <ul>
  * <li>{@link com.b3dgs.lionengine.game.feature.Handler}</li>
- * <li>{@link com.b3dgs.lionengine.game.Camera}</li>
+ * <li>{@link com.b3dgs.lionengine.game.feature.Camera}</li>
  * <li>{@link com.b3dgs.lionengine.game.Cursor}</li>
  * <li>...</li>
  * </ul>

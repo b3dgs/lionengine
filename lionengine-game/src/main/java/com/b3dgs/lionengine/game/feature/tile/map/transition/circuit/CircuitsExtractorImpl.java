@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;

@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**

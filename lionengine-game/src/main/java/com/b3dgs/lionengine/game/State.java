@@ -15,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
+package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.state.StateHandler;
+import com.b3dgs.lionengine.game.state.StateInputUpdater;
 
 /**
  * States are designed to implement easily a gameplay by reducing implementation complexity.

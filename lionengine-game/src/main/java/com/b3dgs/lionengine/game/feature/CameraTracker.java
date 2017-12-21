@@ -20,10 +20,6 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
 
 /**
  * Camera tracking implementation.

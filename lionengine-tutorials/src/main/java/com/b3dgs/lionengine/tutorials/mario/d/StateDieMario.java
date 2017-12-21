@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
-import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.state.StateGame;
 
 /**

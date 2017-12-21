@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.FeatureProvider;
-
 /**
  * Refreshable object mock.
  */

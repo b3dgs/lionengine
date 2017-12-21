@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
 
 /**
  * Test the component updatable.

@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.io.Xml;
 
 /**

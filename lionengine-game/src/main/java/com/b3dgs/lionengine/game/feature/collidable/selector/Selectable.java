@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Selection event linking.

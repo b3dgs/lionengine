@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * Tile representation.

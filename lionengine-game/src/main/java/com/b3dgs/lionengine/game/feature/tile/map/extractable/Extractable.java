@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
-import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Represents an entity that can be extractible, such as a Gold Mine.

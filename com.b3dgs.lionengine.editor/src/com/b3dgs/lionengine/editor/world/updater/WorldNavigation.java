@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Camera;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.io.swt.Keyboard;
 

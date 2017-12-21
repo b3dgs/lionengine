@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.game.Feature;
-
 /**
  * Recycler implementation, searching for {@link Recyclable} {@link Feature}s.
  */

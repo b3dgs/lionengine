@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.FeaturableConfig;
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilFile;
 

@@ -23,7 +23,7 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;

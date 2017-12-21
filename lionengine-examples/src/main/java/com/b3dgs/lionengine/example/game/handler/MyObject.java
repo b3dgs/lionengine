@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 
 /**

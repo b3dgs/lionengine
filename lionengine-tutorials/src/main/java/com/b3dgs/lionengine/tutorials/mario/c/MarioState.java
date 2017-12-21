@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import java.util.Locale;
 
-import com.b3dgs.lionengine.game.state.State;
-import com.b3dgs.lionengine.game.state.StateAnimationBased;
+import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.feature.StateAnimationBased;
 
 /**
  * List of mario states.

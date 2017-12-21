@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;

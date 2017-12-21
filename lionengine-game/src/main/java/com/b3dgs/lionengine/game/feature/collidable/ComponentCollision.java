@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.feature.ComponentUpdater;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handlables;
 import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.Transformable;

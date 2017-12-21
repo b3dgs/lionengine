@@ -15,27 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.feature;
 
 /**
- * Represents something that can be delegated to perform specialized computing and reduce {@link Featurable} visible
- * complexity.
+ * Setup without constructor.
  */
-public interface Feature extends FeatureProvider
+public class SetupNoConstructor extends Setup
 {
     /**
-     * Prepare the feature. Automatically called when added with {@link Featurable#addFeature(Feature)} or
-     * {@link Featurable#addFeatureAndGet(Feature)}.
-     * 
-     * @param provider The owner reference.
+     * Constructor.
      */
-    void prepare(FeatureProvider provider);
-
-    /**
-     * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will
-     * allow to add them automatically.
-     * 
-     * @param listener The listener to check.
-     */
-    void checkListener(Object listener);
+    private SetupNoConstructor()
+    {
+        super(null);
+    }
 }

@@ -23,7 +23,6 @@ import java.util.List;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
-import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.SizeConfig;
 
 /**

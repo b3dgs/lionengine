@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.SurfaceTile;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.Mover;
+import com.b3dgs.lionengine.game.MoverModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.util.UtilMath;
 

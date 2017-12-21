@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Launchable object test with exception.

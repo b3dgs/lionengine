@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * Represents the featurables handled by the handler, providing quick access to them from their type.

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.RasterImage;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.RasterColor;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;

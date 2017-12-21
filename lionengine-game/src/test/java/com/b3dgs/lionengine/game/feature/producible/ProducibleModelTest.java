@@ -25,11 +25,11 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**

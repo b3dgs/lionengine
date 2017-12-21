@@ -15,15 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.feature;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**

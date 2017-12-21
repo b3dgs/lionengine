@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.game.Featurable;
-
 /**
  * Describe the {@link Handler} events.
  */

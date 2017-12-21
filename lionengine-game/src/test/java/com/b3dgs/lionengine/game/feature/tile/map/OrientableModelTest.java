@@ -22,12 +22,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.util.UtilTests;
 

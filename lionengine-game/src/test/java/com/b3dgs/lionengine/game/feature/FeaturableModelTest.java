@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.feature;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -32,9 +32,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilReflection;
 

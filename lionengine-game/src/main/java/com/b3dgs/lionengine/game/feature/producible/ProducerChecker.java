@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * Allows to check if production can be performed.

@@ -15,12 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
+package com.b3dgs.lionengine.game;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.state.StateIdle;
+import com.b3dgs.lionengine.game.state.StateType;
+import com.b3dgs.lionengine.game.state.StateWalk;
 
 /**
  * Test the state factory.

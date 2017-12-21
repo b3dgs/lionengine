@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Animator;
-import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Animator feature wrapper.

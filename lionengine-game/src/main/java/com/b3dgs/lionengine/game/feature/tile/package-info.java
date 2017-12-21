@@ -17,7 +17,7 @@
  */
 
 /**
- * Tile based handling with {@link com.b3dgs.lionengine.game.Feature} layer that will allow to customize the
+ * Tile based handling with {@link com.b3dgs.lionengine.game.feature.Feature} layer that will allow to customize the
  * services provided by the tile dynamically.
  */
 package com.b3dgs.lionengine.game.feature.tile;

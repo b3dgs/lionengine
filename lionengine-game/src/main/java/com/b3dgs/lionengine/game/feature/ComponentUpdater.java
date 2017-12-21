@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * Describe the main component requirement, which is aimed to provide {@link Updatable} feature for a {@link Featurable}

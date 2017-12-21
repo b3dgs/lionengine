@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**

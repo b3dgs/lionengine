@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.map.imports.MapImportDialogTest;
 import com.b3dgs.lionengine.editor.project.ImportProjectTest;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldNavigation;
-import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.feature.Camera;
 
 /**
  * Test the world navigation with imported map.

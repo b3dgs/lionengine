@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Object self collision listener mock.

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import com.b3dgs.lionengine.game.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Camera;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.graphic.ColorRgba;

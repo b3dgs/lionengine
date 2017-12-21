@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Represents something which can enter in collision with a {@link TileCollision}.

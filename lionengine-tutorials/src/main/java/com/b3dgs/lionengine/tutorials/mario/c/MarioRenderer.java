@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.c;
 
-import com.b3dgs.lionengine.game.FeatureGet;
 import com.b3dgs.lionengine.game.feature.Displayable;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 

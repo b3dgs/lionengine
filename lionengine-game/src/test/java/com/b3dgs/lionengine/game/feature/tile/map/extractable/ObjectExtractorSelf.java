@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**

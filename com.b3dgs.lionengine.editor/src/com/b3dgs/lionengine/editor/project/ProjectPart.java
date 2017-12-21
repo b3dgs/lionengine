@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeaturableConfig;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.io.Xml;
 
 /**

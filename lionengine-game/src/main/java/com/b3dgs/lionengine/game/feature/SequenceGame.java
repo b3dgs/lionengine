@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.sequence.ResolutionChanger;
 import com.b3dgs.lionengine.core.sequence.Sequencable;
 import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.core.sequence.Sequencer;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**

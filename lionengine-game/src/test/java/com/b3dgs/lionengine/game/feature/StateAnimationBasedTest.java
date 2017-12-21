@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
+package com.b3dgs.lionengine.game.feature;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -28,9 +28,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.AnimationConfig;
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.state.InputDirectionalMock;
+import com.b3dgs.lionengine.game.state.InputPointerMock;
+import com.b3dgs.lionengine.game.state.StateHandler;
+import com.b3dgs.lionengine.game.state.StateType;
+import com.b3dgs.lionengine.game.state.StateTypeError;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 

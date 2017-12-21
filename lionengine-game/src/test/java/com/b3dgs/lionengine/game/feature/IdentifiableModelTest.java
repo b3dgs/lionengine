@@ -25,8 +25,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**

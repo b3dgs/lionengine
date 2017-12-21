@@ -20,9 +20,6 @@ package com.b3dgs.lionengine.game.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.Setup;
-
 /**
  * Layerable model implementation.
  */

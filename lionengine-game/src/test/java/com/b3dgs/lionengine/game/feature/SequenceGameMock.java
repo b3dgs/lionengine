@@ -21,7 +21,6 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.core.sequence.Sequencer;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 

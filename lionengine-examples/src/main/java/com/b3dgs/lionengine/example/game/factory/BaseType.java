@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
-import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Type base implementation.
