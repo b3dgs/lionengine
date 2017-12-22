@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.b3dgs.lionengine.editor.map.test;singleton:=true
-Bundle-Version: 8.4.1.qualifier
+Bundle-Version: 8.4.1
 Bundle-Vendor: %Bundle-Vendor
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
 Require-Bundle: javax.inject;bundle-version="1.0.0",
@@ -32,4 +32,4 @@ Import-Package: javax.annotation;version="1.0.0",
  org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- lib/lionengine-core-8.4.1-SNAPSHOT-tests.jar
+ lib/lionengine-core-8.4.1-tests.jar
