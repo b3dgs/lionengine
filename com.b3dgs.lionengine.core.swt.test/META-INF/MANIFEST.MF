@@ -4,7 +4,7 @@ Bundle-Name: LionEngine Core SWT Test
 Bundle-SymbolicName: com.b3dgs.lionengine.core.swt.test;singleton:=true
 Bundle-Version: 9.0.0.qualifier
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.swt,
  com.b3dgs.lionengine.core,
  com.b3dgs.lionengine.core.swt,

@@ -132,7 +132,6 @@
     <module name="LeftCurly">
       <property name="severity" value="error"/>
       <property name="option" value="nl"/>
-      <property name="maxLineLength" value="120"/>
     </module>
     <module name="NeedBraces">
       <property name="severity" value="error"/>
@@ -257,7 +256,8 @@
       <property name="severity" value="error"/>
     </module>
     <module name="SummaryJavadoc">
-      <property name="severity" value="error"/>
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="error"/>
     </module>
     <module name="AtclauseOrder">
       <property name="severity" value="error"/>
@@ -291,13 +291,15 @@
     <module name="ImportOrder">
       <property name="severity" value="error"/>
       <property name="groups" value="java, javax, org, android, com"/>
+      <property name="separated" value="true"/>
     </module>
     <module name="ImportControl">
       <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="error"/>
     </module>
     <module name="CustomImportOrder">
       <property name="severity" value="error"/>
+      <property name="customImportOrderRules" value="STATIC###STANDARD_JAVA_PACKAGE###SPECIAL_IMPORTS"/>
+      <property name="sortImportsInGroupAlphabetically" value="false"/>
     </module>
     <module name="AnonInnerLength">
       <property name="severity" value="error"/>
