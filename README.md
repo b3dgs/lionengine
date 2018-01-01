@@ -1,5 +1,5 @@
 # LionEngine
-[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.4.1)](https://travis-ci.org/b3dgs/lionengine) ![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg) ![Lines of code](https://img.shields.io/badge/lines%20of%20code-49k-lightgrey.svg) 
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-9.0.0)](https://travis-ci.org/b3dgs/lionengine) ![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg) ![Lines of code](https://img.shields.io/badge/lines%20of%20code-49k-lightgrey.svg) 
 [![Maven Central](https://img.shields.io/badge/maven--central-8.4.1-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
 <table>
     <tr>
@@ -28,11 +28,11 @@ The __LionEngine__ is a game engine especially developed during the project [Lio
 The engine is as a library, in Jar format (_including its javadoc_), which can be included in any project;
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
-Using Java 6 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
+Using Java 8 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Lds_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
-It supports __Android 4.0__ *(API 14)*.
+It supports __Android 7.0__ *(API 24)*.
 The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
 Everything else is fully compatible and does not require any changes.
 
@@ -57,15 +57,15 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 
 * #### __lionengine-core-awt__
->  * Engine implementation using __AWT__ from _JDK 6_
+>  * Engine implementation using __AWT__ from _JDK 8_
 
 
 * #### __lionengine-core-swt__
->  * Engine implementation by using __SWT 3.5.1__
+>  * Engine implementation by using __SWT 4.7.2__
 
 
 * #### __lionengine-core-android__
->  * Engine implementation using __Android 4.0 (API 14)__
+>  * Engine implementation using __Android 7.0 (API 24)__
 
 
 * #### __lionengine-game__
