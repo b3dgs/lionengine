@@ -21,7 +21,7 @@
     <iu id='com.basistech.m2e.code.quality.checkstyle.feature.feature.group' name='Checkstyle configuration plugin for M2Eclipse' version='1.0.0.201503101518'>
       <repositories size='2'>
         <repository location='http://m2e-code-quality.github.io/m2e-code-quality/site/'/>
-        <repository location='http://m2e-code-quality.github.com/m2e-code-quality/site/latest/'/>
+        <repository location='http://m2e-code-quality.github.com/m2e-code-quality/site/2.6.0/'/>
       </repositories>
     </iu>
     <iu id='com.mountainminds.eclemma.feature.feature.group' name='EclEmma Java Code Coverage' version='2.3.2.201409141915'>
