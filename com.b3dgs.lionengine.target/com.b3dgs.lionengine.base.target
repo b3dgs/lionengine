@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="LionEngine Target Platform" sequenceNumber="17">
+<?pde version="3.8"?><target name="LionEngine Target Platform" sequenceNumber="19">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jdt.source.feature.group" version="3.12.3.v20170301-0400"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.12.0.v20170209-1843"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.6.3.v20170301-0400"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.6"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.2.v20171108-1834"/>
+<unit id="org.eclipse.jdt.source.feature.group" version="3.13.2.v20171130-0906"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.7.2.v20171130-0510"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.7"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.5.0.201609021837"/>
-<unit id="org.eclipse.swtbot.feature.group" version="2.5.0.201609021837"/>
-<unit id="org.eclipse.swtbot.ide.feature.group" version="2.5.0.201609021837"/>
-<unit id="org.eclipse.swtbot.eclipse.test.junit.feature.group" version="2.5.0.201609021837"/>
-<repository location="http://download.eclipse.org/technology/swtbot/releases/2.5.0/"/>
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.6.0.201706141832"/>
+<unit id="org.eclipse.swtbot.eclipse.test.junit.feature.group" version="2.6.0.201706141832"/>
+<unit id="org.eclipse.swtbot.feature.group" version="2.6.0.201706141832"/>
+<unit id="org.eclipse.swtbot.ide.feature.group" version="2.6.0.201706141832"/>
+<repository location="http://download.eclipse.org/technology/swtbot/releases/2.6.0/"/>
 </location>
 </locations>
 </target>
