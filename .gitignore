@@ -8,6 +8,7 @@
 *.bat
 *xml.versionsBackup
 .project
+jacoco-ut.exec
 org.eclipse.core.resources.prefs
 org.eclipse.m2e.core.prefs
 org.sonar.ide.eclipse.core.prefs
