@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.audio.adplug;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.b3dgs.lionengine.Check;
@@ -43,17 +44,15 @@ final class AdPlugPlayer implements AdPlug
      */
     private static String extractFromJar(Media media)
     {
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             final File file = UtilStream.getCopy(media.getFile().getName(), input);
             file.deleteOnExit();
             return file.getAbsolutePath();
         }
-        finally
+        catch (final IOException exception)
         {
-            UtilStream.safeClose(input);
+            throw new LionEngineException(exception);
         }
     }
 

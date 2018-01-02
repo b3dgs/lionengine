@@ -195,18 +195,16 @@ public class AdPlugTest
     @Test
     public void testOutsideMedia() throws IOException
     {
-        InputStream input = null;
-        OutputStream output = null;
-        try
+        try (InputStream input = music.getInputStream())
         {
-            input = music.getInputStream();
-
             Medias.setLoadFromJar(null);
             Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
 
             final Media media = Medias.create("music.lds");
-            output = media.getOutputStream();
-            UtilStream.copy(input, output);
+            try (OutputStream output = media.getOutputStream())
+            {
+                UtilStream.copy(input, output);
+            }
 
             final Audio audio = AudioFactory.loadAudio(media);
             audio.setVolume(50);
@@ -214,14 +212,11 @@ public class AdPlugTest
             UtilTests.pause(100L);
             audio.stop();
 
-            UtilStream.safeClose(output);
             UtilFile.deleteFile(media.getFile());
         }
         finally
         {
             Medias.setResourcesDirectory(Constant.EMPTY_STRING);
-            UtilStream.safeClose(input);
-            UtilStream.safeClose(output);
         }
     }
 }
