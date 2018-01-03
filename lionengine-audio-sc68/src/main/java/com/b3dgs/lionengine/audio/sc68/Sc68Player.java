@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.b3dgs.lionengine.Align;
@@ -45,16 +46,14 @@ final class Sc68Player implements Sc68
      */
     private static String extractFromJar(Media media)
     {
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             final File file = UtilStream.getCopy(media.getFile().getName(), input);
             return file.getAbsolutePath();
         }
-        finally
+        catch (final IOException exception)
         {
-            UtilStream.safeClose(input);
+            throw new LionEngineException(exception);
         }
     }
 
