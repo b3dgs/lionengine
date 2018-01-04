@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import javax.sound.sampled.Mixer;
 
@@ -34,14 +33,7 @@ import com.b3dgs.lionengine.audio.AudioFormat;
 public final class WavFormat implements AudioFormat<Wav>
 {
     /** Channels handler. */
-    private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(new ThreadFactory()
-    {
-        @Override
-        public Thread newThread(Runnable runnable)
-        {
-            return new Thread(runnable, WavFormat.class.getSimpleName());
-        }
-    });
+    private static final ExecutorService EXECUTOR;
 
     /** Audio extensions. */
     private static final String[] FORMATS =
@@ -51,6 +43,14 @@ public final class WavFormat implements AudioFormat<Wav>
 
     /** Custom mixer, <code>null</code> for default. */
     static volatile Mixer.Info mixer;
+
+    /*
+     * Init
+     */
+    static
+    {
+        EXECUTOR = Executors.newCachedThreadPool(runnable -> new Thread(runnable, WavFormat.class.getSimpleName()));
+    }
 
     /**
      * Set the mixer to use.

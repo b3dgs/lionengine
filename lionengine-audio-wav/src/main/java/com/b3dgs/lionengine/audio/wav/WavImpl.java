@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilMath;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Wav audio implementation.
@@ -97,6 +96,7 @@ final class WavImpl implements Wav
      * @return The audio source data.
      * @throws IOException If no audio line available (may be already opened).
      */
+    @SuppressWarnings("resource")
     private static SourceDataLine getDataLine(AudioInputStream input) throws IOException
     {
         final AudioFormat format = input.getFormat();
@@ -200,7 +200,7 @@ final class WavImpl implements Wav
     }
 
     /** Opened playback. */
-    private final Map<Media, Playback> opened = new ConcurrentHashMap<Media, Playback>();
+    private final Map<Media, Playback> opened = new ConcurrentHashMap<>();
     /** Tasks executor. */
     private final ExecutorService executor;
     /** Sound file reference. */
@@ -233,14 +233,12 @@ final class WavImpl implements Wav
      */
     private void play(Media media, Align alignment)
     {
-        Playback playback = null;
-        try
+        try (Playback playback = createPlayback(media, alignment, volume))
         {
             if (opened.containsKey(media))
             {
                 opened.get(media).close();
             }
-            playback = createPlayback(media, alignment, volume);
             opened.put(media, playback);
 
             final AudioInputStream input = openStream(media);
@@ -256,7 +254,6 @@ final class WavImpl implements Wav
                 Verbose.exception(exception, media.toString());
                 last = exception;
             }
-            UtilStream.safeClose(playback);
         }
     }
 
@@ -273,16 +270,10 @@ final class WavImpl implements Wav
     @Override
     public void play(final Align alignment)
     {
-        executor.execute(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                play(media, alignment);
-            }
-        });
+        executor.execute(() -> play(media, alignment));
     }
 
+    @SuppressWarnings("resource")
     @Override
     public void stop()
     {
