@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.graphic.Transform;
 final class GraphicAndroid implements Graphic
 {
     /** Gradient cache. */
-    private final Map<ColorGradient, LinearGradient> colorGradients = new HashMap<ColorGradient, LinearGradient>();
+    private final Map<ColorGradient, LinearGradient> colorGradients = new HashMap<>();
     /** Paint mode. */
     private final Paint paint = new Paint();
     /** Last matrix. */

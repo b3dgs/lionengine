@@ -59,11 +59,9 @@ public final class UtilImage
      */
     static ImageBuffer getImage(Media media)
     {
-        try
+        try (InputStream input = media.getInputStream())
         {
-            final InputStream input = media.getInputStream();
             final Bitmap image = ToolsAndroid.getImage(input);
-            input.close();
             return new ImageBufferAndroid(image);
         }
         catch (final IOException exception)
@@ -170,19 +168,17 @@ public final class UtilImage
      */
     static void saveImage(ImageBuffer image, Media media)
     {
-        final OutputStream output = media.getOutputStream();
-        if (ToolsAndroid.saveImage((Bitmap) image.getSurface(), output))
+        try (OutputStream output = media.getOutputStream())
         {
-            try
+            if (!ToolsAndroid.saveImage((Bitmap) image.getSurface(), output))
             {
-                output.close();
-            }
-            catch (final IOException exception)
-            {
-                throw new LionEngineException(exception, UtilImage.ERROR_IMAGE_SAVE);
+                throw new LionEngineException(UtilImage.ERROR_IMAGE_SAVE);
             }
         }
-        throw new LionEngineException(UtilImage.ERROR_IMAGE_SAVE);
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, UtilImage.ERROR_IMAGE_SAVE);
+        }
     }
 
     /**
