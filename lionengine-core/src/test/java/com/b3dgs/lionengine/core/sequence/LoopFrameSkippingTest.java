@@ -62,7 +62,7 @@ public class LoopFrameSkippingTest
     }
 
     private final AtomicLong rendered = new AtomicLong();
-    private final AtomicReference<Double> computed = new AtomicReference<Double>();
+    private final AtomicReference<Double> computed = new AtomicReference<>();
     private final AtomicLong tick = new AtomicLong();
     private final AtomicLong maxTick = new AtomicLong(4);
     private final AtomicLong pause = new AtomicLong();

@@ -61,7 +61,7 @@ public class LoopLockedTest
     }
 
     private final AtomicLong rendered = new AtomicLong();
-    private final AtomicReference<Double> computed = new AtomicReference<Double>();
+    private final AtomicReference<Double> computed = new AtomicReference<>();
     private final AtomicLong tick = new AtomicLong();
     private final AtomicLong maxTick = new AtomicLong(5);
     private final Loop loop = new LoopLocked();
