@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.awt.swing.Theme;
-import com.b3dgs.lionengine.awt.swing.combo.UtilSwing;
+import com.b3dgs.lionengine.awt.swing.UtilSwing;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.action.AppAction;
