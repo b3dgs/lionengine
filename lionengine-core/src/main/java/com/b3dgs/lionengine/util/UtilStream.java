@@ -28,7 +28,6 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Tools related to files and directories handling.
@@ -40,8 +39,6 @@ public final class UtilStream
 {
     /** Error temporary file. */
     private static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
-    /** Close stream failure. */
-    private static final String ERROR_CLOSE_STREAM = "Unable to close stream !";
     /** Temporary file prefix. */
     private static final String PREFIX_TEMP = "temp";
     /** Copy buffer. */
@@ -69,26 +66,6 @@ public final class UtilStream
                 break;
             }
             destination.write(buffer, 0, read);
-        }
-    }
-
-    /**
-     * Close and log exception if unable to close.
-     * 
-     * @param closeable The closeable to close.
-     */
-    public static void safeClose(Closeable closeable)
-    {
-        if (closeable != null)
-        {
-            try
-            {
-                closeable.close();
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(exception, ERROR_CLOSE_STREAM);
-            }
         }
     }
 
@@ -143,14 +120,9 @@ public final class UtilStream
         try
         {
             final File temp = File.createTempFile(prefix, suffix);
-            final OutputStream output = new BufferedOutputStream(new FileOutputStream(temp));
-            try
+            try (OutputStream output = new BufferedOutputStream(new FileOutputStream(temp)))
             {
                 copy(input, output);
-            }
-            finally
-            {
-                output.close();
             }
             return temp;
         }
