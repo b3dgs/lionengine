@@ -73,7 +73,7 @@ public class ComponentCollisionTest
     private final Services services = new Services();
     private final Handler handler = new Handler(services);
     private final Setup setup = new Setup(config);
-    private final AtomicReference<Collidable> collide = new AtomicReference<Collidable>();
+    private final AtomicReference<Collidable> collide = new AtomicReference<>();
 
     private final Featurable nonCollidable = new FeaturableModel();
 

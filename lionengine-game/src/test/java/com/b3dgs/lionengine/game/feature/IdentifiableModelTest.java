@@ -51,7 +51,7 @@ public class IdentifiableModelTest
         UtilReflection.setAccessible(field, true);
         field.set(IdentifiableModel.class, Integer.valueOf(0));
 
-        final Collection<Identifiable> identifiables = new ArrayList<Identifiable>();
+        final Collection<Identifiable> identifiables = new ArrayList<>();
         for (int i = 0; i < 10; i++)
         {
             final Featurable featurable = new FeaturableModel();

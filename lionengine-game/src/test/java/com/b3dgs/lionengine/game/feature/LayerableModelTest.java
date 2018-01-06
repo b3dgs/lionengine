@@ -65,7 +65,7 @@ public class LayerableModelTest
     {
         final LayerableModel layerable = new LayerableModel();
 
-        final AtomicReference<FeatureProvider> objectRef = new AtomicReference<FeatureProvider>();
+        final AtomicReference<FeatureProvider> objectRef = new AtomicReference<>();
         final AtomicInteger oldLayerRef = new AtomicInteger();
         final AtomicInteger newLayerRef = new AtomicInteger();
         layerable.addListener(new LayerableListener()

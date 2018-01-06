@@ -168,8 +168,8 @@ public class HandlerTest
     public void testAddRemoveListener()
     {
         final Handler handler = new Handler(new Services());
-        final AtomicReference<Featurable> added = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> removed = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> added = new AtomicReference<>();
+        final AtomicReference<Featurable> removed = new AtomicReference<>();
         final HandlerListener listener = new HandlerListener()
         {
             @Override
@@ -227,8 +227,8 @@ public class HandlerTest
     public void testUpdatable()
     {
         final Handler handler = new Handler(new Services());
-        final AtomicReference<Double> extrapolation = new AtomicReference<Double>();
-        final AtomicReference<Featurable> updated = new AtomicReference<Featurable>();
+        final AtomicReference<Double> extrapolation = new AtomicReference<>();
+        final AtomicReference<Featurable> updated = new AtomicReference<>();
         handler.addComponent(new ComponentUpdater()
         {
             @Override
@@ -265,7 +265,7 @@ public class HandlerTest
     public void testRenderable()
     {
         final Handler handler = new Handler(new Services());
-        final AtomicReference<Featurable> rendered = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> rendered = new AtomicReference<>();
         handler.addComponent(new ComponentRenderer()
         {
             @Override

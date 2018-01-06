@@ -155,7 +155,7 @@ public class TileCollidableModelTest
     public void testFromTop()
     {
         final Transformable transformable = createObject(new FeaturableModel());
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
@@ -173,7 +173,7 @@ public class TileCollidableModelTest
     public void testFromBottom()
     {
         final Transformable transformable = createObject(new FeaturableModel());
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
@@ -191,7 +191,7 @@ public class TileCollidableModelTest
     public void testFromLeft()
     {
         final Transformable transformable = createObject(new FeaturableModel());
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
@@ -209,7 +209,7 @@ public class TileCollidableModelTest
     public void testFromRight()
     {
         final Transformable transformable = createObject(new FeaturableModel());
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
@@ -227,7 +227,7 @@ public class TileCollidableModelTest
     public void testDisabled()
     {
         final Transformable transformable = createObject(new FeaturableModel());
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
         collidable.setEnabled(false);
@@ -246,7 +246,7 @@ public class TileCollidableModelTest
     public void testRemoveListener()
     {
         final Transformable transformable = createObject(new FeaturableModel());
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
@@ -266,7 +266,7 @@ public class TileCollidableModelTest
     {
         final ObjectSelf self = new ObjectSelf();
         final Transformable transformable = createObject(self);
-        final AtomicReference<Tile> collided = new AtomicReference<Tile>();
+        final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 

@@ -90,7 +90,7 @@ public class ActionModel extends FeaturableModel
                 ActionModel.this.action();
             }
         });
-        state = new AtomicReference<Updatable>(actionable);
+        state = new AtomicReference<>(actionable);
 
         assignable = addFeatureAndGet(new AssignableModel(services));
         assignable.setClickAssign(Mouse.LEFT);
