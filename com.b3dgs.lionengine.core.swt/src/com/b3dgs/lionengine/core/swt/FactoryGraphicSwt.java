@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -36,7 +37,6 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transform;
 import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Graphic factory implementation.
@@ -118,18 +118,13 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     @Override
     public ImageBuffer getImageBuffer(Media media)
     {
-        final InputStream input = media.getInputStream();
-        try
+        try (InputStream input = media.getInputStream())
         {
             return new ImageBufferSwt(ToolsSwt.getDisplay(), ToolsSwt.getImageData(input));
         }
-        catch (final SWTException exception)
+        catch (final SWTException | IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
-        }
-        finally
-        {
-            UtilStream.safeClose(input);
         }
     }
 
@@ -184,18 +179,13 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     @Override
     public void saveImage(ImageBuffer image, Media media)
     {
-        final OutputStream output = media.getOutputStream();
-        try
+        try (OutputStream output = media.getOutputStream())
         {
             ToolsSwt.saveImage((Image) image.getSurface(), output);
         }
-        catch (final SWTException exception)
+        catch (final SWTException | IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
-        }
-        finally
-        {
-            UtilStream.safeClose(output);
         }
     }
 
