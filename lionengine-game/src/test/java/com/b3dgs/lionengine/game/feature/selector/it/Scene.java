@@ -150,15 +150,13 @@ class Scene extends Sequence
         {
             case 0: // Perform selection
                 Assert.assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
-                mouse.doSetMouse((int) camera.getViewpointX(transformable.getX() - 16)
-                                 * 2,
+                mouse.doSetMouse((int) camera.getViewpointX(transformable.getX() - 16) * 2,
                                  (int) camera.getViewpointY(transformable.getY() - 16) * 2);
                 mouse.doClick(Mouse.LEFT);
                 click = 1;
                 break;
             case 1: // Selection done
-                mouse.doMoveMouse((int) camera.getViewpointX(transformable.getX() + 32)
-                                  * 2,
+                mouse.doMoveMouse((int) camera.getViewpointX(transformable.getX() + 32) * 2,
                                   (int) camera.getViewpointY(transformable.getY() + 32) * 2);
                 click = 2;
                 break;

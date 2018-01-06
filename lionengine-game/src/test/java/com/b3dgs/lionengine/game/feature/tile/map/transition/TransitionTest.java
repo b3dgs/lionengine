@@ -101,8 +101,7 @@ public class TransitionTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals(TransitionType.CENTER.name()
-                            + " a -> b",
+        Assert.assertEquals(TransitionType.CENTER.name() + " a -> b",
                             new Transition(TransitionType.CENTER, "a", "b").toString());
     }
 }

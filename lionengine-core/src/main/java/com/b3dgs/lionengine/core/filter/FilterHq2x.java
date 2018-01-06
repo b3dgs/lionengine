@@ -54,8 +54,7 @@ public final class FilterHq2x implements Filter
         source.getRgb(0, 0, width, height, srcData, 0, width);
 
         final RawScale2x scaler = new RawScale2x(width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width
-                                                             * SCALE,
+        final ImageBuffer image = Graphics.createImageBuffer(width * SCALE,
                                                              height * SCALE,
                                                              source.getTransparentColor());
         image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(srcData), 0, width * SCALE);

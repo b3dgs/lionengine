@@ -68,8 +68,10 @@ public class ImageBufferSwtTest
      * @throws NoSuchMethodException If error.
      */
     @Test
-    public void testImage()
-            throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
+    public void testImage() throws IllegalArgumentException,
+            IllegalAccessException,
+            InvocationTargetException,
+            NoSuchMethodException
     {
         final Image buffer = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         final ImageData data = buffer.getImageData();

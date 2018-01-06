@@ -101,8 +101,7 @@ public class CircuitTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals(CircuitType.MIDDLE.name()
-                            + " a -> b",
+        Assert.assertEquals(CircuitType.MIDDLE.name() + " a -> b",
                             new Circuit(CircuitType.MIDDLE, "a", "b").toString());
     }
 }
