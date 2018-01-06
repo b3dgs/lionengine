@@ -51,9 +51,9 @@ abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkMo
     NetworkedWorldModel(N network)
     {
         this.network = network;
-        networkables = new HashSet<Networkable>(1);
-        toAdd = new ArrayList<Networkable>(1);
-        listeners = new ArrayList<L>(1);
+        networkables = new HashSet<>(1);
+        toAdd = new ArrayList<>(1);
+        listeners = new ArrayList<>(1);
         willAdd = false;
     }
 

@@ -37,7 +37,7 @@ public class NetworkableModel implements Networkable
      */
     public NetworkableModel()
     {
-        messages = new ArrayList<NetworkMessage>();
+        messages = new ArrayList<>();
         clientId = Byte.valueOf((byte) -1);
     }
 

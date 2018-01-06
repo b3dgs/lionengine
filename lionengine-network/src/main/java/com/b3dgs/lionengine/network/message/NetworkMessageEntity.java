@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.util.UtilConversion;
 public abstract class NetworkMessageEntity<M extends Enum<M>> extends NetworkMessage
 {
     /** List of actions. */
-    private final Map<M, Object> actions = new HashMap<M, Object>(1);
+    private final Map<M, Object> actions = new HashMap<>(1);
     /** Entity number. */
     private short entityId;
 

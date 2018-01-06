@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Server implementation.
@@ -107,8 +106,8 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     ServerImpl(NetworkMessageDecoder decoder)
     {
         super(decoder);
-        clients = new HashMap<Byte, ClientSocket>(1);
-        toRemove = new HashSet<ClientSocket>(1);
+        clients = new HashMap<>(1);
+        toRemove = new HashSet<>(1);
         bandwidthTimer = new Timing();
         willRemove = false;
         clientsNumber = 0;
@@ -485,7 +484,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         clientConnectionListener.terminate();
 
         // Disconnect all clients
-        final Collection<ClientSocket> delete = new ArrayList<ClientSocket>(clients.size());
+        final Collection<ClientSocket> delete = new ArrayList<>(clients.size());
         for (final ClientSocket client : clients.values())
         {
             for (final ClientSocket other : clients.values())
@@ -533,8 +532,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         {
             // Get client data from socket
             final byte[] data = client.receiveMessages();
-            final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
-            try
+            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
             {
                 final byte messageSystemId = buffer.readByte();
                 final byte from = buffer.readByte();
@@ -550,10 +548,6 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             catch (final IOException exception)
             {
                 Verbose.exception(exception, "Error on updating server");
-            }
-            finally
-            {
-                UtilStream.safeClose(buffer);
             }
         }
         // Remove deleted clients
@@ -581,10 +575,8 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 {
                     continue;
                 }
-                ByteArrayOutputStream encode = null;
-                try
+                try (ByteArrayOutputStream encode = message.encode())
                 {
-                    encode = message.encode();
                     final byte[] encoded = encode.toByteArray();
                     // Message header
                     client.getOut().writeByte(NetworkMessageSystemId.USER_MESSAGE);
@@ -604,10 +596,6 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                     Verbose.exception(exception,
                                       "Unable to send the messages for client: ",
                                       String.valueOf(client.getId()));
-                }
-                finally
-                {
-                    UtilStream.safeClose(encode);
                 }
             }
         }

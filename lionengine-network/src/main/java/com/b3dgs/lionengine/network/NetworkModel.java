@@ -49,9 +49,9 @@ abstract class NetworkModel<L extends ClientListener> implements Networker<L>
     NetworkModel(NetworkMessageDecoder decoder)
     {
         this.decoder = decoder;
-        messagesOut = new ArrayList<NetworkMessage>();
-        messagesIn = new ArrayList<NetworkMessage>();
-        listeners = new ArrayList<L>(1);
+        messagesOut = new ArrayList<>();
+        messagesIn = new ArrayList<>();
+        listeners = new ArrayList<>(1);
     }
 
     /**

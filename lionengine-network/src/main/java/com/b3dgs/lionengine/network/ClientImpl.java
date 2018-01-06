@@ -312,21 +312,9 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             final byte[] data = new byte[size];
             if (in.read(data) != -1)
             {
-                final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
-                try
+                try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
                 {
                     decodeMessage(type, from, dest, buffer);
-                }
-                finally
-                {
-                    try
-                    {
-                        buffer.close();
-                    }
-                    catch (final IOException exception)
-                    {
-                        Verbose.exception(exception);
-                    }
                 }
             }
         }
@@ -341,10 +329,8 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
      */
     private void sendMessage(NetworkMessage message)
     {
-        ByteArrayOutputStream encode = null;
-        try
+        try (ByteArrayOutputStream encode = message.encode())
         {
-            encode = message.encode();
             final byte[] encoded = encode.toByteArray();
             // Message header
             out.writeByte(NetworkMessageSystemId.USER_MESSAGE);
@@ -362,20 +348,6 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         catch (final IOException exception)
         {
             Verbose.exception(exception, "Unable to send the message for client: ", String.valueOf(clientId));
-        }
-        finally
-        {
-            try
-            {
-                if (encode != null)
-                {
-                    encode.close();
-                }
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(exception);
-            }
         }
     }
 
