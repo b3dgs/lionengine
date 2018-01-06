@@ -136,19 +136,10 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public void saveImage(ImageBuffer image, Media media)
     {
-        try
+        media.getFile().getParentFile().mkdirs();
+        try (OutputStream output = media.getOutputStream())
         {
-            media.getFile().getParentFile().mkdirs();
-            OutputStream output = null;
-            try
-            {
-                output = media.getOutputStream();
-                UtilStream.copy(Medias.create("image.png").getInputStream(), output);
-            }
-            finally
-            {
-                UtilStream.safeClose(output);
-            }
+            UtilStream.copy(Medias.create("image.png").getInputStream(), output);
         }
         catch (final IOException exception)
         {

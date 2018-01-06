@@ -222,7 +222,7 @@ public class LoaderTest
     @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L, expected = LionEngineException.class)
     public void testInterrupted() throws Throwable
     {
-        final AtomicReference<Throwable> exception = new AtomicReference<Throwable>();
+        final AtomicReference<Throwable> exception = new AtomicReference<>();
         final Semaphore semaphore = new Semaphore(0);
 
         final Thread thread = new Thread()
@@ -269,7 +269,7 @@ public class LoaderTest
                 }
             });
 
-            final AtomicReference<Throwable> exception = new AtomicReference<Throwable>();
+            final AtomicReference<Throwable> exception = new AtomicReference<>();
             final Semaphore semaphore = new Semaphore(0);
             final Thread thread = new Thread()
             {
@@ -378,7 +378,7 @@ public class LoaderTest
         try
         {
             ScreenMock.setScreenWait(true);
-            final AtomicReference<Throwable> exception = new AtomicReference<Throwable>();
+            final AtomicReference<Throwable> exception = new AtomicReference<>();
             final Semaphore semaphore = new Semaphore(0);
             final Thread thread = new Thread()
             {

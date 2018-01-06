@@ -89,8 +89,9 @@ public class UtilReflectionTest
      * @throws IllegalAccessException If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testCreateConstructorNotAccessible()
-            throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException
+    public void testCreateConstructorNotAccessible() throws NoSuchMethodException,
+            NoSuchFieldException,
+            IllegalAccessException
     {
         final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
         try
@@ -159,7 +160,7 @@ public class UtilReflectionTest
     @Test
     public void testGetParamTypes()
     {
-        final Collection<Object> params = new ArrayList<Object>();
+        final Collection<Object> params = new ArrayList<>();
         params.add(Integer.valueOf(1));
         params.add("test");
         params.add(Double.valueOf(5.2));
@@ -329,7 +330,7 @@ public class UtilReflectionTest
         Assert.assertEquals(Interface2.class,
                             UtilReflection.getInterfaces(Interface3.class, Interface0.class).iterator().next());
 
-        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        final Collection<Class<?>> interfaces = new ArrayList<>();
         interfaces.add(Interface1.class);
 
         Assert.assertEquals(1, UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).size());

@@ -60,7 +60,7 @@ public final class UtilEnum<E extends Enum<E>>
      */
     public static <E extends Enum<E>> E make(Class<E> clazz, String value)
     {
-        return new UtilEnum<E>(clazz).make(value);
+        return new UtilEnum<>(clazz).make(value);
     }
 
     /** Enum type. */
@@ -68,7 +68,7 @@ public final class UtilEnum<E extends Enum<E>>
     /** Switch fields. */
     private final Collection<Field> switchFields;
     /** Operation performed. */
-    private final Deque<Memento> undoStack = new LinkedList<Memento>();
+    private final Deque<Memento> undoStack = new LinkedList<>();
 
     /**
      * Construct an EnumBuster for the given enum class and keep the switch statements of the classes specified in
@@ -308,7 +308,9 @@ public final class UtilEnum<E extends Enum<E>>
      * @throws IllegalArgumentException If error.
      */
     private E constructEnum(Class<E> clazz, sun.reflect.ConstructorAccessor ca, String value, int ord, Object[] more)
-            throws IllegalArgumentException, InstantiationException, InvocationTargetException
+            throws IllegalArgumentException,
+            InstantiationException,
+            InvocationTargetException
     {
         final Object[] parms = new Object[more.length + 2];
         parms[0] = value;
@@ -424,7 +426,7 @@ public final class UtilEnum<E extends Enum<E>>
      */
     private Collection<Field> findRelatedSwitchFields(Class<?>[] switchUsers)
     {
-        final Collection<Field> result = new ArrayList<Field>();
+        final Collection<Field> result = new ArrayList<>();
         for (final Class<?> switchUser : switchUsers)
         {
             final Class<?>[] clazzes = switchUser.getDeclaredClasses();
@@ -489,7 +491,7 @@ public final class UtilEnum<E extends Enum<E>>
         /** Enum values. */
         private final E[] values;
         /** Switch fields saved. */
-        private final Map<Field, int[]> savedSwitchFieldValues = new HashMap<Field, int[]>();
+        private final Map<Field, int[]> savedSwitchFieldValues = new HashMap<>();
 
         /**
          * Constructor.
@@ -529,7 +531,7 @@ public final class UtilEnum<E extends Enum<E>>
                 setOrdinal(values[i], i);
             }
 
-            final Map<String, E> valuesMap = new HashMap<String, E>();
+            final Map<String, E> valuesMap = new HashMap<>();
             for (final E enumValue : values)
             {
                 valuesMap.put(enumValue.name(), enumValue);

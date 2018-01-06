@@ -39,7 +39,7 @@ public abstract class ScreenBase implements Screen
     private static final String ERROR_SCREEN_READY = "Unable to get screen ready !";
 
     /** Screen listeners. */
-    protected final Collection<ScreenListener> listeners = new ConcurrentLinkedQueue<ScreenListener>();
+    protected final Collection<ScreenListener> listeners = new ConcurrentLinkedQueue<>();
     /** Input devices. */
     protected final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Configuration reference. */
@@ -62,7 +62,7 @@ public abstract class ScreenBase implements Screen
 
         this.config = config;
         this.readyTimeout = readyTimeout;
-        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
+        devices = new HashMap<>(1);
         graphics = Graphics.createGraphic();
     }
 

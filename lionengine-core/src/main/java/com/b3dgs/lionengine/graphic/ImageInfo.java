@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Get quick information from an image without reading all data.
@@ -101,11 +100,11 @@ public final class ImageInfo
      */
     private static Collection<ImageHeaderReader> getFormats()
     {
-        return new ArrayList<ImageHeaderReader>(Arrays.asList(new ImageHeaderPng(),
-                                                              new ImageHeaderBmp(),
-                                                              new ImageHeaderGif(),
-                                                              new ImageHeaderTiff(),
-                                                              new ImageHeaderJpg()));
+        return new ArrayList<>(Arrays.asList(new ImageHeaderPng(),
+                                             new ImageHeaderBmp(),
+                                             new ImageHeaderGif(),
+                                             new ImageHeaderTiff(),
+                                             new ImageHeaderJpg()));
     }
 
     /**
@@ -119,18 +118,13 @@ public final class ImageInfo
     private static ImageHeader read(Media media, ImageHeaderReader reader)
     {
         Check.notNull(media);
-        final InputStream input = media.getInputStream();
-        try
+        try (InputStream input = media.getInputStream())
         {
             return reader.readHeader(input);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_READ);
-        }
-        finally
-        {
-            UtilStream.safeClose(input);
         }
     }
 

@@ -152,7 +152,7 @@ public class ResourceLoaderTest
             }
         };
 
-        final AtomicReference<LionEngineException> exception = new AtomicReference<LionEngineException>();
+        final AtomicReference<LionEngineException> exception = new AtomicReference<>();
         thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
         {
             @Override

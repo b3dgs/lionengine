@@ -180,7 +180,7 @@ public class UtilFileTest
         final File file2 = File.createTempFile("temp", ".tmp", folder);
         final File dir = folder;
 
-        final List<File> found = new ArrayList<File>(UtilFile.getFiles(dir));
+        final List<File> found = new ArrayList<>(UtilFile.getFiles(dir));
         final List<File> expected = Arrays.asList(file1, file2);
         Collections.sort(found);
         Collections.sort(expected);

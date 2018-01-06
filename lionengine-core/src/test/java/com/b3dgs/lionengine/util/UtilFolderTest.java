@@ -101,7 +101,7 @@ public class UtilFolderTest
     {
         final File dir = TEMP.newFolder("temp");
         final File file = File.createTempFile("temp", ".tmp", dir);
-        final List<File> expected = new ArrayList<File>();
+        final List<File> expected = new ArrayList<>();
         for (int i = 0; i < 5; i++)
         {
             final TemporaryFolder folder = new TemporaryFolder(dir);

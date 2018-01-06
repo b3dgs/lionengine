@@ -271,7 +271,7 @@ final class MediaDefault implements Media
         final File[] files = file.listFiles();
         if (files != null)
         {
-            final Collection<Media> medias = new ArrayList<Media>(files.length);
+            final Collection<Media> medias = new ArrayList<>(files.length);
             final String prefix = getPrefix();
             final int prefixLength = prefix.length();
 

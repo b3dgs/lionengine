@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class RasterImage
 {
     /** List of rasters. */
-    private final List<ImageBuffer> rasters = new ArrayList<ImageBuffer>(RasterColor.MAX_RASTERS);
+    private final List<ImageBuffer> rasters = new ArrayList<>(RasterColor.MAX_RASTERS);
     /** Original image. */
     private final ImageBuffer surface;
     /** Raster filename. */

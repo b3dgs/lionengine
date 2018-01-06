@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.util;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,7 +32,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.io.InputStreamMock;
 import com.b3dgs.lionengine.io.OutputStreamMock;
@@ -196,24 +194,6 @@ public class UtilStreamTest
     public void testGetCopyNullStream() throws IOException
     {
         Assert.assertNull(UtilStream.getCopy("temp", null));
-    }
-
-    /**
-     * Test the safe close error.
-     */
-    @Test
-    public void testSafeCloseError()
-    {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        UtilStream.safeClose(new Closeable()
-        {
-            @Override
-            public void close() throws IOException
-            {
-                throw new IOException();
-            }
-        });
-        Verbose.info("****************************************************************************************");
     }
 
     /**

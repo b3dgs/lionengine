@@ -32,7 +32,6 @@ import org.w3c.dom.NodeList;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
@@ -74,8 +73,7 @@ public class XmlReader
     {
         Check.notNull(media);
 
-        final InputStream input = media.getInputStream();
-        try
+        try (InputStream input = media.getInputStream())
         {
             document = DocumentFactory.createDocument(input);
             root = document.getDocumentElement();
@@ -83,10 +81,6 @@ public class XmlReader
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, ERROR_READING);
-        }
-        finally
-        {
-            UtilStream.safeClose(input);
         }
     }
 
@@ -396,7 +390,7 @@ public class XmlReader
     {
         final NamedNodeMap map = root.getAttributes();
         final int length = map.getLength();
-        final Map<String, String> attributes = new HashMap<String, String>(length);
+        final Map<String, String> attributes = new HashMap<>(length);
         for (int i = 0; i < length; i++)
         {
             final Node node = map.item(i);

@@ -64,7 +64,7 @@ public final class Loader
             }
         };
         final Thread thread = new Thread(runnable, Constant.ENGINE_NAME);
-        final AtomicReference<Throwable> reference = new AtomicReference<Throwable>();
+        final AtomicReference<Throwable> reference = new AtomicReference<>();
         thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
         {
             @Override

@@ -123,7 +123,7 @@ public final class Medias
     public static synchronized List<Media> getByExtension(File jar, String fullPath, int prefixLength, String extension)
     {
         final Collection<ZipEntry> entries = UtilZip.getEntriesByExtension(jar, fullPath, extension);
-        final List<Media> medias = new ArrayList<Media>(entries.size());
+        final List<Media> medias = new ArrayList<>(entries.size());
         for (final ZipEntry entry : entries)
         {
             final Media media = create(entry.getName().substring(prefixLength));
@@ -141,7 +141,7 @@ public final class Medias
      */
     private static List<Media> getFilesByExtension(Media path, String extension)
     {
-        final List<Media> filesList = new ArrayList<Media>(1);
+        final List<Media> filesList = new ArrayList<>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }

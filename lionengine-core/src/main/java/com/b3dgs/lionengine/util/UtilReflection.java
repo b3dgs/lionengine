@@ -83,8 +83,8 @@ public final class UtilReflection
     public static <T> T createReduce(Class<?> type, Object... params) throws NoSuchMethodException
     {
         final Class<?>[] paramTypes = getParamTypes(params);
-        final Queue<Class<?>> typesQueue = new ArrayDeque<Class<?>>(Arrays.asList(paramTypes));
-        final Queue<Object> paramsQueue = new ArrayDeque<Object>(Arrays.asList(params));
+        final Queue<Class<?>> typesQueue = new ArrayDeque<>(Arrays.asList(paramTypes));
+        final Queue<Object> paramsQueue = new ArrayDeque<>(Arrays.asList(params));
         boolean stop = false;
         while (!stop)
         {
@@ -167,7 +167,7 @@ public final class UtilReflection
      */
     public static Class<?>[] getParamTypes(Object... arguments)
     {
-        final Collection<Object> types = new ArrayList<Object>();
+        final Collection<Object> types = new ArrayList<>();
         for (final Object argument : arguments)
         {
             if (argument.getClass() == Class.class)
@@ -371,12 +371,12 @@ public final class UtilReflection
      */
     public static Collection<Class<?>> getInterfaces(Class<?> object, Class<?> base)
     {
-        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        final Collection<Class<?>> interfaces = new ArrayList<>();
         Class<?> current = object;
         while (current != null)
         {
-            final Deque<Class<?>> currents = new ArrayDeque<Class<?>>(filterInterfaces(current, base));
-            final Deque<Class<?>> nexts = new ArrayDeque<Class<?>>();
+            final Deque<Class<?>> currents = new ArrayDeque<>(filterInterfaces(current, base));
+            final Deque<Class<?>> nexts = new ArrayDeque<>();
             while (!currents.isEmpty())
             {
                 nexts.clear();
@@ -421,7 +421,7 @@ public final class UtilReflection
      */
     private static Collection<Class<?>> filterInterfaces(Class<?> object, Class<?> base)
     {
-        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        final Collection<Class<?>> interfaces = new ArrayList<>();
         for (final Class<?> current : object.getInterfaces())
         {
             if (base.isAssignableFrom(current) && !current.equals(base))

@@ -107,10 +107,9 @@ public final class UtilProjectStats
      */
     public static void countFileLines(String fileName)
     {
-        BufferedReader in = null;
-        try
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),
+                                                                          Constant.UTF_8)))
         {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), Constant.UTF_8));
             boolean stop = false;
             while (!stop)
             {
@@ -130,7 +129,6 @@ public final class UtilProjectStats
         {
             Verbose.exception(exception);
         }
-        UtilStream.safeClose(in);
     }
 
     /**

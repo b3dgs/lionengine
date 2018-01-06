@@ -38,9 +38,9 @@ public final class Tick implements Updatable
     };
 
     /** Actions. */
-    private final Collection<TickActionDelayed> actions = new ArrayList<TickActionDelayed>();
+    private final Collection<TickActionDelayed> actions = new ArrayList<>();
     /** Actions executed. */
-    private final Collection<TickActionDelayed> toRemove = new ArrayList<TickActionDelayed>();
+    private final Collection<TickActionDelayed> toRemove = new ArrayList<>();
     /** Update. */
     private final Updatable updating = new Updatable()
     {

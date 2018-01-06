@@ -47,7 +47,7 @@ public final class UtilFolder
     public static List<File> getDirectories(File path)
     {
         final File[] files = path.listFiles();
-        final List<File> directories = new ArrayList<File>();
+        final List<File> directories = new ArrayList<>();
         if (files != null)
         {
             for (final File current : files)

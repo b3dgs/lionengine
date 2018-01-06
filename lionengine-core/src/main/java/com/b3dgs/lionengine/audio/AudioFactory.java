@@ -33,7 +33,7 @@ public final class AudioFactory
     /** Unknown audio format. */
     public static final String ERROR_FORMAT = "Unsupported audio format: ";
     /** Supported audio formats. */
-    private static final Map<String, AudioFormat<?>> FACTORIES = new HashMap<String, AudioFormat<?>>();
+    private static final Map<String, AudioFormat<?>> FACTORIES = new HashMap<>();
 
     /**
      * Load an audio file and prepare it to be played.

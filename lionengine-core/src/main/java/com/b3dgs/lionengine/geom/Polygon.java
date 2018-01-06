@@ -148,7 +148,7 @@ public class Polygon
      */
     public Collection<Line> getPoints()
     {
-        final Collection<Line> list = new ArrayList<Line>(npoints);
+        final Collection<Line> list = new ArrayList<>(npoints);
         for (int i = 0; i < npoints / 2; i++)
         {
             list.add(new Line(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));

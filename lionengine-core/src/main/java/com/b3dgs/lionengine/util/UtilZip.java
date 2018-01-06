@@ -79,7 +79,7 @@ public final class UtilZip
      */
     private static Collection<ZipEntry> checkEntries(ZipFile zip, String path, String extension)
     {
-        final Collection<ZipEntry> entries = new ArrayList<ZipEntry>();
+        final Collection<ZipEntry> entries = new ArrayList<>();
         final Enumeration<? extends ZipEntry> zipEntries = zip.entries();
         while (zipEntries.hasMoreElements())
         {

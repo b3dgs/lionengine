@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.io;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +42,6 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
@@ -164,8 +164,7 @@ public class Xml extends XmlReader
         Check.notNull(root);
         Check.notNull(media);
 
-        final OutputStream output = media.getOutputStream();
-        try
+        try (OutputStream output = media.getOutputStream())
         {
             final Transformer transformer = DocumentFactory.createTransformer();
             normalize(NORMALIZE);
@@ -178,13 +177,9 @@ public class Xml extends XmlReader
             transformer.setOutputProperty(PROPERTY_INDENT, "4");
             transformer.transform(source, result);
         }
-        catch (final TransformerException exception)
+        catch (final TransformerException | IOException exception)
         {
             throw new LionEngineException(exception, media, ERROR_WRITING);
-        }
-        finally
-        {
-            UtilStream.safeClose(output);
         }
     }
 
@@ -402,7 +397,7 @@ public class Xml extends XmlReader
      */
     public Collection<Xml> getChildren(String name)
     {
-        final Collection<Xml> nodes = new ArrayList<Xml>(1);
+        final Collection<Xml> nodes = new ArrayList<>(1);
         final NodeList list = root.getElementsByTagName(name);
         for (int i = 0; i < list.getLength(); i++)
         {
@@ -422,7 +417,7 @@ public class Xml extends XmlReader
      */
     public Collection<Xml> getChildren()
     {
-        final Collection<Xml> nodes = new ArrayList<Xml>(1);
+        final Collection<Xml> nodes = new ArrayList<>(1);
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {

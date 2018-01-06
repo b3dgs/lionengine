@@ -24,7 +24,6 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Image header reader interface.
@@ -152,10 +151,8 @@ abstract class ImageHeaderReaderModel implements ImageHeaderReader
     {
         for (final HeaderProvider provider : providers)
         {
-            InputStream input = null;
-            try
+            try (InputStream input = media.getInputStream())
             {
-                input = media.getInputStream();
                 if (checkHeader(input, provider.getHeader()))
                 {
                     return true;
@@ -165,10 +162,6 @@ abstract class ImageHeaderReaderModel implements ImageHeaderReader
             {
                 Verbose.exception(exception);
                 return false;
-            }
-            finally
-            {
-                UtilStream.safeClose(input);
             }
         }
         return false;

@@ -149,7 +149,7 @@ public final class UtilFile
      */
     public static List<File> getFilesByExtension(File path, String extension)
     {
-        final List<File> filesList = new ArrayList<File>(1);
+        final List<File> filesList = new ArrayList<>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }
@@ -163,7 +163,7 @@ public final class UtilFile
      */
     public static List<File> getFilesByName(File path, String name)
     {
-        final List<File> filesList = new ArrayList<File>(1);
+        final List<File> filesList = new ArrayList<>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
     }

@@ -82,7 +82,7 @@ public final class UtilSequence
      */
     private static Class<?>[] getParamTypes(Context context, Object... arguments)
     {
-        final Collection<Object> params = new ArrayList<Object>();
+        final Collection<Object> params = new ArrayList<>();
         params.add(context);
         params.addAll(Arrays.asList(arguments));
         return UtilReflection.getParamTypes(params.toArray());
@@ -97,7 +97,7 @@ public final class UtilSequence
      */
     private static Object[] getParams(Context context, Object... arguments)
     {
-        final Collection<Object> params = new ArrayList<Object>(1);
+        final Collection<Object> params = new ArrayList<>(1);
         params.add(context);
         params.addAll(Arrays.asList(arguments));
         return params.toArray();
