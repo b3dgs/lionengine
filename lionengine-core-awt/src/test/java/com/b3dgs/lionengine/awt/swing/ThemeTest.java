@@ -79,7 +79,7 @@ public class ThemeTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         try
         {
-            final UtilEnum<Theme> hack = new UtilEnum<Theme>(Theme.class, Theme.class);
+            final UtilEnum<Theme> hack = new UtilEnum<>(Theme.class, Theme.class);
             final Theme fail = hack.make("FAIL");
             hack.addByValue(fail);
 

@@ -234,7 +234,7 @@ public class ToolsAwtTest
     @Test
     public void testCreateBufferStrategyFailCanvas()
     {
-        final AtomicReference<Integer> result = new AtomicReference<Integer>();
+        final AtomicReference<Integer> result = new AtomicReference<>();
 
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         ToolsAwt.createBufferStrategy(new java.awt.Canvas(null)
@@ -262,7 +262,7 @@ public class ToolsAwtTest
     @Test
     public void testCreateBufferStrategyFailWindow()
     {
-        final AtomicReference<Integer> result = new AtomicReference<Integer>();
+        final AtomicReference<Integer> result = new AtomicReference<>();
 
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         ToolsAwt.createBufferStrategy(new java.awt.Window(null)

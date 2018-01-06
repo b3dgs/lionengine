@@ -38,13 +38,13 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     private static final char EMPTY_KEY_NAME = ' ';
 
     /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
     /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** List of keys. */
-    private final Collection<Integer> keys = new HashSet<Integer>();
+    private final Collection<Integer> keys = new HashSet<>();
     /** Pressed states. */
-    private final Collection<Integer> pressed = new HashSet<Integer>();
+    private final Collection<Integer> pressed = new HashSet<>();
     /** Last key code. */
     private volatile Integer lastCode = NO_KEY_CODE;
     /** Last key name. */
@@ -77,7 +77,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         final List<EventAction> list;
         if (actionsPressed.get(key) == null)
         {
-            list = new ArrayList<EventAction>();
+            list = new ArrayList<>();
             actionsPressed.put(key, list);
         }
         else
@@ -93,7 +93,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         final List<EventAction> list;
         if (actionsReleased.get(key) == null)
         {
-            list = new ArrayList<EventAction>();
+            list = new ArrayList<>();
             actionsReleased.put(key, list);
         }
         else

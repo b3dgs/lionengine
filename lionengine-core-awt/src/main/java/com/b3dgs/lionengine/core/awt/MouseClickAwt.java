@@ -56,9 +56,9 @@ final class MouseClickAwt implements MouseListener
     }
 
     /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
     /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
@@ -119,7 +119,7 @@ final class MouseClickAwt implements MouseListener
         final Integer key = Integer.valueOf(click);
         if (actionsPressed.get(key) == null)
         {
-            list = new ArrayList<EventAction>();
+            list = new ArrayList<>();
             actionsPressed.put(key, list);
         }
         else
@@ -141,7 +141,7 @@ final class MouseClickAwt implements MouseListener
         final List<EventAction> list;
         if (actionsReleased.get(key) == null)
         {
-            list = new ArrayList<EventAction>();
+            list = new ArrayList<>();
             actionsReleased.put(key, list);
         }
         else

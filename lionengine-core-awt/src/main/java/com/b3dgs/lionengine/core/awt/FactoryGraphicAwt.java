@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transform;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Graphic factory implementation.
@@ -127,18 +126,13 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     public ImageBuffer getImageBuffer(Media media)
     {
         Check.notNull(media);
-        final InputStream input = media.getInputStream();
-        try
+        try (InputStream input = media.getInputStream())
         {
             return new ImageBufferAwt(ToolsAwt.getImage(input));
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
-        }
-        finally
-        {
-            UtilStream.safeClose(input);
         }
     }
 
@@ -202,18 +196,13 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     {
         Check.notNull(media);
         final BufferedImage surface = image.getSurface();
-        final OutputStream output = media.getOutputStream();
-        try
+        try (OutputStream output = media.getOutputStream())
         {
             ToolsAwt.saveImage(surface, output);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
-        }
-        finally
-        {
-            UtilStream.safeClose(output);
         }
     }
 
