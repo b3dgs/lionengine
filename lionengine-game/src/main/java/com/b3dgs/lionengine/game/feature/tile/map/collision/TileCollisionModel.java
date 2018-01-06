@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class TileCollisionModel extends FeatureModel implements TileCollision
 {
     /** The collision formulas used. */
-    private final Collection<CollisionFormula> formulas = new HashSet<CollisionFormula>();
+    private final Collection<CollisionFormula> formulas = new HashSet<>();
     /** Tile reference. */
     private final Tile tile;
 

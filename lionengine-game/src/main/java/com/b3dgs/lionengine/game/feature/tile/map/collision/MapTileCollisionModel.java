@@ -127,9 +127,9 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     }
 
     /** Collision formulas list. */
-    private final Map<String, CollisionFormula> formulas = new HashMap<String, CollisionFormula>();
+    private final Map<String, CollisionFormula> formulas = new HashMap<>();
     /** Collisions groups list. */
-    private final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
+    private final Map<String, CollisionGroup> groups = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -268,7 +268,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
      */
     private void applyConstraints()
     {
-        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<Tile, Collection<CollisionFormula>>();
+        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
             for (int h = 0; h < map.getInTileWidth(); h++)
@@ -307,7 +307,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         final Tile left = map.getTile(h - 1, v);
         final Tile right = map.getTile(h + 1, v);
 
-        final Collection<CollisionFormula> toRemove = new ArrayList<CollisionFormula>();
+        final Collection<CollisionFormula> toRemove = new ArrayList<>();
         for (final CollisionFormula formula : tile.getCollisionFormulas())
         {
             final CollisionConstraint constraint = formula.getConstraint();

@@ -81,7 +81,7 @@ public class PathfindableConfigTest
             final Xml root = new Xml("test");
             final PathData data = new PathData("category", 1.0, true, Arrays.asList(MovementTile.UP));
 
-            final Map<String, PathData> map = new HashMap<String, PathData>();
+            final Map<String, PathData> map = new HashMap<>();
             map.put(data.getName(), data);
             root.add(PathfindableConfig.exports(map));
             root.save(media);
@@ -128,7 +128,7 @@ public class PathfindableConfigTest
             final Xml root = new Xml("test");
             final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
 
-            final Map<String, PathData> map = new HashMap<String, PathData>();
+            final Map<String, PathData> map = new HashMap<>();
             map.put(data.getName(), data);
             root.add(PathfindableConfig.exports(map));
             root.save(media);

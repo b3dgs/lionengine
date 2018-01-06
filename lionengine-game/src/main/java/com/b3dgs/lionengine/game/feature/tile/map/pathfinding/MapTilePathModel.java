@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class MapTilePathModel extends FeatureModel implements MapTilePath
 {
     /** Categories list. */
-    private final Map<String, PathCategory> categories = new HashMap<String, PathCategory>();
+    private final Map<String, PathCategory> categories = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map group reference. */

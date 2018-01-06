@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class SelectorRefresher extends FeatureModel implements Refreshable
 {
     /** List of listeners. */
-    private final Collection<SelectorListener> listeners = new HashSet<SelectorListener>(1);
+    private final Collection<SelectorListener> listeners = new HashSet<>(1);
     /** Selection check action. */
     private final Updatable actionCheck = new Updatable()
     {

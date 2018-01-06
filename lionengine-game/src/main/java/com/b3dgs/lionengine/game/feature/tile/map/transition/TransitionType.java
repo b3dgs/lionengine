@@ -71,7 +71,7 @@ public enum TransitionType
     /** Bit down right. */
     private static final int BIT_DOWN_RIGHT = 3;
     /** Transition types mapping with their index. */
-    private static final Map<Integer, TransitionType> TYPES = new HashMap<Integer, TransitionType>();
+    private static final Map<Integer, TransitionType> TYPES = new HashMap<>();
     /** Error transition name. */
     private static final String ERROR_TRANSITION_NAME = "Unknown transition name: ";
 

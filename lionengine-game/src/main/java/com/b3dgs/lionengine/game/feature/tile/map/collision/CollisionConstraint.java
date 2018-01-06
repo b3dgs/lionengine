@@ -39,7 +39,7 @@ public class CollisionConstraint
      */
     public CollisionConstraint()
     {
-        constraints = new EnumMap<Orientation, Collection<String>>(Orientation.class);
+        constraints = new EnumMap<>(Orientation.class);
         for (final Orientation orientation : Orientation.values())
         {
             constraints.put(orientation, new ArrayList<String>());

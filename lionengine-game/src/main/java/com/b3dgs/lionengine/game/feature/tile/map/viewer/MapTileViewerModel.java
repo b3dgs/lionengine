@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 public class MapTileViewerModel extends FeatureModel implements MapTileViewer
 {
     /** Map tiles renderers. */
-    private final Collection<MapTileRenderer> renderers = new ArrayList<MapTileRenderer>();
+    private final Collection<MapTileRenderer> renderers = new ArrayList<>();
     /** Map reference. */
     private final MapTile map;
     /** Viewer reference. */

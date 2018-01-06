@@ -40,8 +40,8 @@ public final class SortedList<E extends Comparable<E>>
      */
     public SortedList()
     {
-        list = new ArrayList<E>();
-        set = new HashSet<E>();
+        list = new ArrayList<>();
+        set = new HashSet<>();
     }
 
     /**

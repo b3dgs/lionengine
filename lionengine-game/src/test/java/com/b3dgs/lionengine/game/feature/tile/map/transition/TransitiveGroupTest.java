@@ -114,13 +114,13 @@ public class TransitiveGroupTest
     @Test
     public void testReduce()
     {
-        final Collection<GroupTransition> transitive = new ArrayList<GroupTransition>();
+        final Collection<GroupTransition> transitive = new ArrayList<>();
         transitive.add(new GroupTransition("a", "b"));
         transitive.add(new GroupTransition("b", "c"));
         transitive.add(new GroupTransition("c", "b"));
         transitive.add(new GroupTransition("b", "d"));
 
-        final Collection<GroupTransition> expected = new ArrayList<GroupTransition>();
+        final Collection<GroupTransition> expected = new ArrayList<>();
         expected.add(new GroupTransition("a", "b"));
         expected.add(new GroupTransition("b", "d"));
 

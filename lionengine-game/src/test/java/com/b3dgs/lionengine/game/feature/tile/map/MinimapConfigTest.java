@@ -74,7 +74,7 @@ public class MinimapConfigTest
     public void testConfig()
     {
         final Media config = Medias.create("minimap.xml");
-        final Map<TileRef, ColorRgba> tiles = new HashMap<TileRef, ColorRgba>();
+        final Map<TileRef, ColorRgba> tiles = new HashMap<>();
         tiles.put(new TileRef(0, 0), ColorRgba.RED);
         tiles.put(new TileRef(0, 1), ColorRgba.BLUE);
         tiles.put(new TileRef(1, 0), ColorRgba.GREEN);

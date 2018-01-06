@@ -131,7 +131,7 @@ public class MapTileGroupModelTest
     public void testLoadMedia()
     {
         final Media configGroups = Medias.create("groups.xml");
-        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
+        final Collection<TileGroup> groups = new ArrayList<>();
         groups.add(new TileGroup("water", TileGroupType.PLAIN, Arrays.asList(new TileRef(0, 0))));
         TileGroupsConfig.exports(configGroups, groups);
 

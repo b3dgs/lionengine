@@ -101,19 +101,19 @@ public class CollidableModel extends FeatureModel
     }
 
     /** The collision listener reference. */
-    private final List<CollidableListener> listeners = new ArrayList<CollidableListener>();
+    private final List<CollidableListener> listeners = new ArrayList<>();
     /** The collisions used. */
-    private final List<Collision> collisions = new ArrayList<Collision>();
+    private final List<Collision> collisions = new ArrayList<>();
     /** The accepted groups. */
-    private final Collection<Integer> accepted = new HashSet<Integer>();
+    private final Collection<Integer> accepted = new HashSet<>();
     /** The accepted groups as list. */
-    private final Collection<Integer> acceptedList = new HashSet<Integer>();
+    private final Collection<Integer> acceptedList = new HashSet<>();
     /** Temp bounding box from polygon. */
-    private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
+    private final Map<Collision, Rectangle> boxs = new HashMap<>();
     /** Collisions cache. */
-    private final List<Collision> cacheColls = new ArrayList<Collision>();
+    private final List<Collision> cacheColls = new ArrayList<>();
     /** Bounding box cache. */
-    private final List<Rectangle> cacheRect = new ArrayList<Rectangle>();
+    private final List<Rectangle> cacheRect = new ArrayList<>();
     /** The viewer reference. */
     private final Viewer viewer;
 

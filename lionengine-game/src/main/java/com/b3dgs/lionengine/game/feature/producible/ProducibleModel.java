@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 public class ProducibleModel extends FeatureModel implements Producible, Recyclable
 {
     /** Producer listeners. */
-    private final Collection<ProducibleListener> listeners = new ArrayList<ProducibleListener>();
+    private final Collection<ProducibleListener> listeners = new ArrayList<>();
     /** Producible media. */
     private final Media media;
     /** Production steps needed. */

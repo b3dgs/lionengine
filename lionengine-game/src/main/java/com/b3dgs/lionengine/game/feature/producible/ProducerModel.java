@@ -45,9 +45,9 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 public class ProducerModel extends FeatureModel implements Producer, Recyclable
 {
     /** Producer listeners. */
-    private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
+    private final Collection<ProducerListener> listeners = new ArrayList<>();
     /** Production queue. */
-    private final Queue<Featurable> productions = new ArrayDeque<Featurable>();
+    private final Queue<Featurable> productions = new ArrayDeque<>();
     /** Allowed actions name. */
     private final List<ActionRef> actions;
     /** Handler reference. */

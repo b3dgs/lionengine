@@ -62,7 +62,7 @@ public final class TransitionsConfig
         final Xml root = new Xml(config);
         final Collection<Xml> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<Transition, Collection<TileRef>> transitions;
-        transitions = new HashMap<Transition, Collection<TileRef>>(nodesTransition.size());
+        transitions = new HashMap<>(nodesTransition.size());
 
         for (final Xml nodeTransition : nodesTransition)
         {
@@ -131,7 +131,7 @@ public final class TransitionsConfig
      */
     private static Collection<TileRef> importTiles(Collection<Xml> nodesTileRef)
     {
-        final Collection<TileRef> tilesRef = new HashSet<TileRef>(nodesTileRef.size());
+        final Collection<TileRef> tilesRef = new HashSet<>(nodesTileRef.size());
         for (final Xml nodeTileRef : nodesTileRef)
         {
             final TileRef tileRef = TileConfig.create(nodeTileRef);

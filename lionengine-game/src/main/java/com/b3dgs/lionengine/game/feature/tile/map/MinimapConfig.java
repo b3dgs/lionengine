@@ -62,7 +62,7 @@ public final class MinimapConfig
     {
         Check.notNull(configMinimap);
 
-        final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
+        final Map<TileRef, ColorRgba> colors = new HashMap<>();
         final Xml nodeMinimap = new Xml(configMinimap);
 
         for (final Xml nodeColor : nodeMinimap.getChildren(NODE_COLOR))
@@ -121,7 +121,7 @@ public final class MinimapConfig
      */
     private static Map<ColorRgba, Collection<TileRef>> convertToColorKey(Map<TileRef, ColorRgba> tiles)
     {
-        final Map<ColorRgba, Collection<TileRef>> colors = new HashMap<ColorRgba, Collection<TileRef>>();
+        final Map<ColorRgba, Collection<TileRef>> colors = new HashMap<>();
         for (final Map.Entry<TileRef, ColorRgba> entry : tiles.entrySet())
         {
             final Collection<TileRef> tilesRef = getTiles(colors, entry.getValue());

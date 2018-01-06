@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.graphic.SpriteTiled;
 public class MapTileRasteredModel extends FeatureModel implements MapTileRastered
 {
     /** List of rastered sheets. */
-    private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<Integer, List<SpriteTiled>>();
+    private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
     /** Map tile reference. */
     private final MapTile map;
     /** Rasters smooth flag. */
@@ -77,7 +77,7 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
         List<SpriteTiled> rasters = rasterSheets.get(sheet);
         if (rasters == null)
         {
-            rasters = new ArrayList<SpriteTiled>(RasterColor.MAX_RASTERS);
+            rasters = new ArrayList<>(RasterColor.MAX_RASTERS);
             rasterSheets.put(sheet, rasters);
         }
         return rasters;

@@ -43,7 +43,7 @@ public class FeaturableModel implements Featurable
     /** Class loader. */
     private static final ClassLoader LOADER = Configurer.class.getClassLoader();
     /** Class cache. */
-    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<String, Class<?>>();
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
 
     /**
      * Clear classes cache.
@@ -65,7 +65,7 @@ public class FeaturableModel implements Featurable
     private static List<Feature> getFeatures(Services services, Setup setup)
     {
         final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
-        final List<Feature> features = new ArrayList<Feature>(children.size());
+        final List<Feature> features = new ArrayList<>(children.size());
         for (final Xml featureNode : children)
         {
             final String className = featureNode.getText();
@@ -117,7 +117,7 @@ public class FeaturableModel implements Featurable
      */
     private static List<Field> getServiceFields(Object object)
     {
-        final List<Field> toInject = new ArrayList<Field>();
+        final List<Field> toInject = new ArrayList<>();
         Class<?> clazz = object.getClass();
         while (clazz != null)
         {

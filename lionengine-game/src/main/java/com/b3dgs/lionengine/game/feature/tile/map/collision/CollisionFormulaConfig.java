@@ -52,7 +52,7 @@ public final class CollisionFormulaConfig
     public static CollisionFormulaConfig imports(Media config)
     {
         final Xml root = new Xml(config);
-        final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
+        final Map<String, CollisionFormula> collisions = new HashMap<>(0);
         for (final Xml node : root.getChildren(FORMULA))
         {
             final String name = node.readString(NAME);

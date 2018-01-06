@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 public class TileCollidableModel extends FeatureModel implements TileCollidable, Recyclable
 {
     /** Launcher listeners. */
-    private final Collection<TileCollidableListener> listeners = new HashSet<TileCollidableListener>();
+    private final Collection<TileCollidableListener> listeners = new HashSet<>();
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The collisions used. */

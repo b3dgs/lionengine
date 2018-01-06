@@ -44,7 +44,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      */
     private static Map<Transition, Collection<TileRef>> getTransitions(MapTile map)
     {
-        final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
+        final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
         final MapTransitionExtractor extractor = new MapTransitionExtractor(map);
         for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
         {
@@ -116,7 +116,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
                                                                Media sheetsConfig,
                                                                Media groupsConfig)
     {
-        final Collection<MapTile> mapsSet = new HashSet<MapTile>(levels.size());
+        final Collection<MapTile> mapsSet = new HashSet<>(levels.size());
         for (final Media level : levels)
         {
             final MapTile map = new MapTileGame();
@@ -134,7 +134,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
     @Override
     public Map<Transition, Collection<TileRef>> getTransitions(MapTile... maps)
     {
-        final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
+        final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
         for (final MapTile map : maps)
         {
             final Map<Transition, Collection<TileRef>> currents = getTransitions(map);

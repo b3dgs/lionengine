@@ -45,8 +45,8 @@ final class HandlablesImpl implements Handlables
      */
     HandlablesImpl()
     {
-        featurables = new HashMap<Integer, Featurable>();
-        items = new HashMap<Class<?>, Set<Object>>();
+        featurables = new HashMap<>();
+        items = new HashMap<>();
     }
 
     /**
@@ -125,7 +125,7 @@ final class HandlablesImpl implements Handlables
     {
         if (!items.containsKey(type))
         {
-            items.put(type, new HashSet<Object>());
+            items.put(type, new HashSet<>());
         }
         items.get(type).add(object);
     }

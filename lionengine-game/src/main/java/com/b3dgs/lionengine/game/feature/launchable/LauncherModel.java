@@ -47,13 +47,13 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class LauncherModel extends FeatureModel implements Launcher
 {
     /** Launcher listeners. */
-    private final Collection<LauncherListener> listenersLauncher = new HashSet<LauncherListener>();
+    private final Collection<LauncherListener> listenersLauncher = new HashSet<>();
     /** Launchable listeners. */
-    private final Collection<LaunchableListener> listenersLaunchable = new HashSet<LaunchableListener>();
+    private final Collection<LaunchableListener> listenersLaunchable = new HashSet<>();
     /** Delayed launches. */
-    private final Collection<DelayedLaunch> delayed = new ArrayList<DelayedLaunch>();
+    private final Collection<DelayedLaunch> delayed = new ArrayList<>();
     /** Delayed launches launched. */
-    private final Collection<DelayedLaunch> launched = new ArrayList<DelayedLaunch>();
+    private final Collection<DelayedLaunch> launched = new ArrayList<>();
     /** Fire timer. */
     private final Timing fire = new Timing();
     /** Levels configuration. */

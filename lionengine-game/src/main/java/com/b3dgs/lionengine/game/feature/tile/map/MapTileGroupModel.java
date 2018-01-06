@@ -40,11 +40,11 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     public static final String NO_GROUP_NAME = "none";
 
     /** Group tiles mapping. */
-    private final Map<String, Collection<TileRef>> groupTiles = new HashMap<String, Collection<TileRef>>();
+    private final Map<String, Collection<TileRef>> groupTiles = new HashMap<>();
     /** Group types mapping. */
-    private final Map<String, TileGroupType> groupTypes = new HashMap<String, TileGroupType>();
+    private final Map<String, TileGroupType> groupTypes = new HashMap<>();
     /** Tiles group mapping. */
-    private final Map<TileRef, String> tilesGroup = new HashMap<TileRef, String>();
+    private final Map<TileRef, String> tilesGroup = new HashMap<>();
     /** Groups configuration file. */
     private Media groupsConfig;
 

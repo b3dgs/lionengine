@@ -42,8 +42,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 public class ExtractorModelTest
 {
     /** Hack enum. */
-    private static final UtilEnum<ExtractorState> HACK = new UtilEnum<ExtractorState>(ExtractorState.class,
-                                                                                      ExtractorModel.class);
+    private static final UtilEnum<ExtractorState> HACK = new UtilEnum<>(ExtractorState.class, ExtractorModel.class);
 
     /**
      * Prepare test.
@@ -113,12 +112,12 @@ public class ExtractorModelTest
         extractor.setDropOffPerSecond(100.0);
         extractor.prepare(object);
 
-        final AtomicReference<Enum<?>> goTo = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> startExtract = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> extracted = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> carry = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> startDrop = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> endDrop = new AtomicReference<Enum<?>>();
+        final AtomicReference<Enum<?>> goTo = new AtomicReference<>();
+        final AtomicReference<Enum<?>> startExtract = new AtomicReference<>();
+        final AtomicReference<Enum<?>> extracted = new AtomicReference<>();
+        final AtomicReference<Enum<?>> carry = new AtomicReference<>();
+        final AtomicReference<Enum<?>> startDrop = new AtomicReference<>();
+        final AtomicReference<Enum<?>> endDrop = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, carry, startDrop, endDrop));
 
         Assert.assertNull(extractor.getResourceLocation());
@@ -190,8 +189,8 @@ public class ExtractorModelTest
         extractor.setDropOffPerSecond(50.0);
         extractor.prepare(object);
 
-        final AtomicReference<Enum<?>> goTo = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> skip = new AtomicReference<Enum<?>>();
+        final AtomicReference<Enum<?>> goTo = new AtomicReference<>();
+        final AtomicReference<Enum<?>> skip = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, skip, skip, skip, skip, skip));
         extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
@@ -223,8 +222,8 @@ public class ExtractorModelTest
         extractor.setDropOffPerSecond(50.0);
         extractor.prepare(object);
 
-        final AtomicReference<Enum<?>> drop = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> skip = new AtomicReference<Enum<?>>();
+        final AtomicReference<Enum<?>> drop = new AtomicReference<>();
+        final AtomicReference<Enum<?>> skip = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(skip, skip, skip, skip, drop, skip));
         extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
@@ -374,10 +373,10 @@ public class ExtractorModelTest
         extractor.setExtractionPerSecond(50.0);
         extractor.setDropOffPerSecond(100.0);
 
-        final AtomicReference<Enum<?>> goTo = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> startExtract = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> empty = new AtomicReference<Enum<?>>();
-        final AtomicReference<Enum<?>> extracted = new AtomicReference<Enum<?>>();
+        final AtomicReference<Enum<?>> goTo = new AtomicReference<>();
+        final AtomicReference<Enum<?>> startExtract = new AtomicReference<>();
+        final AtomicReference<Enum<?>> empty = new AtomicReference<>();
+        final AtomicReference<Enum<?>> extracted = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, empty, empty, empty));
 
         Assert.assertNull(extractor.getResourceLocation());

@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
 public class AttackerModelTest
 {
     /** Hack enum. */
-    private static final UtilEnum<AttackState> HACK = new UtilEnum<AttackState>(AttackState.class, AttackerModel.class);
+    private static final UtilEnum<AttackState> HACK = new UtilEnum<>(AttackState.class, AttackerModel.class);
 
     /**
      * Prepare test.
@@ -257,10 +257,10 @@ public class AttackerModelTest
         canAttack.set(true);
 
         final AtomicBoolean preparing = new AtomicBoolean();
-        final AtomicReference<Transformable> reaching = new AtomicReference<Transformable>();
-        final AtomicReference<Transformable> started = new AtomicReference<Transformable>();
+        final AtomicReference<Transformable> reaching = new AtomicReference<>();
+        final AtomicReference<Transformable> started = new AtomicReference<>();
         final AtomicBoolean anim = new AtomicBoolean();
-        final AtomicReference<Transformable> ended = new AtomicReference<Transformable>();
+        final AtomicReference<Transformable> ended = new AtomicReference<>();
         attacker.addListener(UtilAttackable.createListener(preparing, reaching, started, ended, anim));
 
         attacker.update(1.0);

@@ -49,7 +49,7 @@ public final class LauncherConfig
     public static List<LauncherConfig> imports(Configurer configurer)
     {
         final Collection<Xml> children = configurer.getRoot().getChildren(NODE_LAUNCHER);
-        final List<LauncherConfig> launchers = new ArrayList<LauncherConfig>(children.size());
+        final List<LauncherConfig> launchers = new ArrayList<>(children.size());
         for (final Xml launcher : children)
         {
             launchers.add(imports(launcher));
@@ -67,7 +67,7 @@ public final class LauncherConfig
     public static LauncherConfig imports(Xml node)
     {
         final Collection<Xml> children = node.getChildren(LaunchableConfig.NODE_LAUNCHABLE);
-        final Collection<LaunchableConfig> launchables = new ArrayList<LaunchableConfig>(children.size());
+        final Collection<LaunchableConfig> launchables = new ArrayList<>(children.size());
         for (final Xml launchable : children)
         {
             launchables.add(LaunchableConfig.imports(launchable));

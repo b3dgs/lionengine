@@ -49,8 +49,8 @@ public class TransitiveGroup
      */
     static void reduceTransitive(Collection<GroupTransition> transitive)
     {
-        final Collection<GroupTransition> localChecked = new ArrayList<GroupTransition>(transitive.size());
-        final Collection<GroupTransition> toRemove = new ArrayList<GroupTransition>();
+        final Collection<GroupTransition> localChecked = new ArrayList<>(transitive.size());
+        final Collection<GroupTransition> toRemove = new ArrayList<>();
 
         final Iterator<GroupTransition> iterator = transitive.iterator();
         GroupTransition first = iterator.next();
@@ -100,7 +100,7 @@ public class TransitiveGroup
         this.map = map;
         mapGroup = map.getFeature(MapTileGroup.class);
         mapTransition = map.getFeature(MapTileTransition.class);
-        transitives = new HashMap<GroupTransition, Collection<GroupTransition>>();
+        transitives = new HashMap<>();
     }
 
     /**
@@ -191,10 +191,10 @@ public class TransitiveGroup
             transitives.put(groupTransition, new ArrayList<GroupTransition>());
         }
 
-        final Collection<GroupTransition> localChecked = new HashSet<GroupTransition>();
+        final Collection<GroupTransition> localChecked = new HashSet<>();
         final Collection<GroupTransition> found = transitives.get(groupTransition);
 
-        final Deque<GroupTransition> collect = new ArrayDeque<GroupTransition>();
+        final Deque<GroupTransition> collect = new ArrayDeque<>();
         checkTransitive(groupIn, groupIn, groupOut, localChecked, collect, true);
 
         if (collect.size() >= MINIMUM_TRANSITION_FOR_CYCLE)

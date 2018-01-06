@@ -129,11 +129,11 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     }
 
     /** Tile as key. */
-    private final Map<TileRef, Collection<Transition>> tiles = new HashMap<TileRef, Collection<Transition>>();
+    private final Map<TileRef, Collection<Transition>> tiles = new HashMap<>();
     /** Transitions as key. */
-    private final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
+    private final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
     /** Existing group links. */
-    private final Collection<GroupTransition> groupLinks = new HashSet<GroupTransition>();
+    private final Collection<GroupTransition> groupLinks = new HashSet<>();
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -439,13 +439,13 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     @Override
     public Collection<Tile> resolve(Tile tile)
     {
-        final Collection<Tile> resolved = new HashSet<Tile>();
+        final Collection<Tile> resolved = new HashSet<>();
         checkTransitives(resolved, tile);
 
-        final Collection<Tile> toResolve = new ArrayList<Tile>();
+        final Collection<Tile> toResolve = new ArrayList<>();
         resolve(resolved, toResolve, tile);
 
-        final Collection<Tile> toResolveAfter = new ArrayList<Tile>();
+        final Collection<Tile> toResolveAfter = new ArrayList<>();
         for (final Tile next : toResolve)
         {
             resolve(resolved, toResolveAfter, next);

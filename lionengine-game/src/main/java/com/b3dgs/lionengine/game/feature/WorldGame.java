@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Default world model, designed to contain game elements ({@link Factory}, {@link Handler} ...).
@@ -172,18 +171,13 @@ public abstract class WorldGame implements Updatable, Renderable
      */
     public final void saveToFile(Media media)
     {
-        final FileWriting writing = new FileWriting(media);
-        try
+        try (FileWriting writing = new FileWriting(media))
         {
             saving(writing);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, "Error on saving to file !");
-        }
-        finally
-        {
-            UtilStream.safeClose(writing);
         }
     }
 
@@ -195,18 +189,13 @@ public abstract class WorldGame implements Updatable, Renderable
      */
     public final void loadFromFile(Media media)
     {
-        final FileReading reading = new FileReading(media);
-        try
+        try (FileReading reading = new FileReading(media))
         {
             loading(reading);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, "Error on loading from file !");
-        }
-        finally
-        {
-            UtilStream.safeClose(reading);
         }
     }
 

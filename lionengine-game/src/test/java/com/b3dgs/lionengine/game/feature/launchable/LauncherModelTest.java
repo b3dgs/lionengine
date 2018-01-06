@@ -103,7 +103,7 @@ public class LauncherModelTest
     public void testLauncher() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -161,7 +161,7 @@ public class LauncherModelTest
     public void testLauncherInitial() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -203,7 +203,7 @@ public class LauncherModelTest
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
 
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
@@ -243,7 +243,7 @@ public class LauncherModelTest
     public void testLauncherLevel() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+        final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 

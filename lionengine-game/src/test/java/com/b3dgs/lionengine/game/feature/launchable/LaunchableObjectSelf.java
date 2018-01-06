@@ -30,7 +30,7 @@ class LaunchableObjectSelf extends LaunchableObject implements LauncherListener,
     /** Fired flag. */
     final AtomicBoolean fired = new AtomicBoolean();
     /** Fired launchable flag. */
-    final AtomicReference<Launchable> firedLaunchable = new AtomicReference<Launchable>();
+    final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
 
     /**
      * Constructor.

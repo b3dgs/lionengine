@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 public class ExtractorModel extends FeatureModel implements Extractor, Recyclable
 {
     /** Extractor listeners. */
-    private final Collection<ExtractorListener> listeners = new ArrayList<ExtractorListener>();
+    private final Collection<ExtractorListener> listeners = new ArrayList<>();
     /** Resources location. */
     private ResourceLocation resourceLocation;
     /** Tick timer rate. */

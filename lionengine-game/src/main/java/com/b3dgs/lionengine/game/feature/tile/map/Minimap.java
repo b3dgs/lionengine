@@ -61,7 +61,7 @@ public class Minimap implements Image
     private static final String ERROR_SURFACE = "Surface has not beed loaded !";
 
     /** Pixel configuration. */
-    private Map<TileRef, ColorRgba> pixels = new HashMap<TileRef, ColorRgba>();
+    private Map<TileRef, ColorRgba> pixels = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Minimap image reference. */
@@ -104,7 +104,7 @@ public class Minimap implements Image
      */
     public void automaticColor()
     {
-        final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
+        final Map<TileRef, ColorRgba> colors = new HashMap<>();
         for (final Integer sheet : map.getSheets())
         {
             computeSheet(colors, sheet);

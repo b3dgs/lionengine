@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 public class ObjectSelf extends FeaturableModel implements CollidableListener
 {
     /** Called flag. */
-    final AtomicReference<Collidable> called = new AtomicReference<Collidable>();
+    final AtomicReference<Collidable> called = new AtomicReference<>();
 
     @Override
     public void notifyCollided(Collidable collidable)

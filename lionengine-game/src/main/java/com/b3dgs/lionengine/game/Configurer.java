@@ -45,7 +45,7 @@ public class Configurer
     /** Class not found error. */
     private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
     /** Class cache. */
-    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<String, Class<?>>();
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
 
     /**
      * Clear classes cache.

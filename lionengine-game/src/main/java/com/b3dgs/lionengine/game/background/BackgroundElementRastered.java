@@ -55,7 +55,7 @@ public class BackgroundElementRastered extends BackgroundElement
         raster.loadRasters(ImageInfo.get(media).getHeight(), true, UtilFile.removeExtension(media.getName()));
 
         final Collection<ImageBuffer> surfaces = raster.getRasters();
-        rasters = new ArrayList<Sprite>(surfaces.size());
+        rasters = new ArrayList<>(surfaces.size());
         for (final ImageBuffer surface : surfaces)
         {
             rasters.add(Drawable.loadSprite(surface));

@@ -26,7 +26,7 @@ import java.util.Collection;
 public class LayerableModel extends FeatureModel implements Layerable
 {
     /** Layers listener. */
-    private final Collection<LayerableListener> listeners = new ArrayList<LayerableListener>();
+    private final Collection<LayerableListener> listeners = new ArrayList<>();
     /** Layer refresh value. */
     private Integer layerRefresh = Integer.valueOf(0);
     /** Layer display value. */

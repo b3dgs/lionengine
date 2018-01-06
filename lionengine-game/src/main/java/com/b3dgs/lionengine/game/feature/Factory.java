@@ -61,9 +61,9 @@ public class Factory implements HandlerListener
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
     /** Setups list. */
-    private final Map<Media, Setup> setups = new HashMap<Media, Setup>();
+    private final Map<Media, Setup> setups = new HashMap<>();
     /** Cached instances. */
-    private final Map<Media, Deque<Featurable>> cache = new HashMap<Media, Deque<Featurable>>();
+    private final Map<Media, Deque<Featurable>> cache = new HashMap<>();
     /** Services reference. */
     private final Services services;
     /** Class loader. */

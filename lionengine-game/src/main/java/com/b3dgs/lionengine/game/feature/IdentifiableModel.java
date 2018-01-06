@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.LionEngineException;
 public class IdentifiableModel extends FeatureModel implements Identifiable, Recyclable
 {
     /** ID used (list of active id used). */
-    private static final Collection<Integer> IDS = new HashSet<Integer>();
+    private static final Collection<Integer> IDS = new HashSet<>();
     /** Recycle ID (reuse previous removed object ID). */
-    private static final Queue<Integer> RECYCLE = new ArrayDeque<Integer>();
+    private static final Queue<Integer> RECYCLE = new ArrayDeque<>();
     /** Free ID error. */
     private static final String ERROR_FREE_ID = "No more free id available !";
     /** Last ID used (last maximum id value). */
@@ -66,7 +66,7 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     }
 
     /** Listeners. */
-    private final Collection<IdentifiableListener> listeners = new HashSet<IdentifiableListener>(1);
+    private final Collection<IdentifiableListener> listeners = new HashSet<>(1);
     /** Unique ID. */
     private final Integer id = getFreeId();
     /** Destroy request flag. */

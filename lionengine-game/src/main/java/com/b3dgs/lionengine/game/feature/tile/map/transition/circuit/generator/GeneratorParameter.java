@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 public class GeneratorParameter
 {
     /** Preferences defined. */
-    private final List<Preference> preferences = new ArrayList<Preference>();
+    private final List<Preference> preferences = new ArrayList<>();
 
     /**
      * Create the generator parameters.

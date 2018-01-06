@@ -40,7 +40,7 @@ public class StateFactory
      */
     public StateFactory()
     {
-        states = new HashMap<Enum<?>, State>();
+        states = new HashMap<>();
     }
 
     /**

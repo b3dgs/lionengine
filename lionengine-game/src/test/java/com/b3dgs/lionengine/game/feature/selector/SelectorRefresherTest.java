@@ -47,8 +47,8 @@ public class SelectorRefresherTest
     private final Cursor cursor = services.create(Cursor.class);
     private final SelectorModel model = new SelectorModel();
     private final MouseMock mouse = new MouseMock();
-    private final AtomicReference<Rectangle> started = new AtomicReference<Rectangle>();
-    private final AtomicReference<Rectangle> done = new AtomicReference<Rectangle>();
+    private final AtomicReference<Rectangle> started = new AtomicReference<>();
+    private final AtomicReference<Rectangle> done = new AtomicReference<>();
     private SelectorRefresher refresher;
 
     /**

@@ -72,7 +72,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
 
     /** Surface reference. */
-    private final Map<Integer, Image> surfaces = new HashMap<Integer, Image>();
+    private final Map<Integer, Image> surfaces = new HashMap<>();
     /** Pointer reference. */
     private InputDevicePointer pointer;
     /** Viewer reference. */

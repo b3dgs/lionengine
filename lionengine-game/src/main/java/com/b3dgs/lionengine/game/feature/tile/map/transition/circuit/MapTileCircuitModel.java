@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionType;
 public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
 {
     /** Circuits as key. */
-    private final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
+    private final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -203,7 +203,7 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     private String getTransitiveGroup(Circuit initialCircuit, Tile tile)
     {
         final Set<Circuit> circuitSet = circuits.keySet();
-        final Collection<String> groups = new HashSet<String>(circuitSet.size());
+        final Collection<String> groups = new HashSet<>(circuitSet.size());
         final String groupIn = mapGroup.getGroup(tile);
         for (final Circuit circuit : circuitSet)
         {

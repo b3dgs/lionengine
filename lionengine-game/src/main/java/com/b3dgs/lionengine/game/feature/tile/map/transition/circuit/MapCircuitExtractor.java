@@ -40,7 +40,7 @@ public class MapCircuitExtractor
      */
     private static Circuit getCircuitGroups(String group, Collection<String> neighborGroups)
     {
-        final Collection<String> set = new HashSet<String>(neighborGroups);
+        final Collection<String> set = new HashSet<>(neighborGroups);
         final Circuit circuit;
         if (set.size() > 1)
         {
@@ -109,7 +109,7 @@ public class MapCircuitExtractor
     public Circuit getCircuit(Tile tile)
     {
         final Collection<String> neighborGroups = getNeighborGroups(tile);
-        final Collection<String> groups = new HashSet<String>(neighborGroups);
+        final Collection<String> groups = new HashSet<>(neighborGroups);
         final String group = mapGroup.getGroup(tile);
         final Circuit circuit;
 
@@ -140,7 +140,7 @@ public class MapCircuitExtractor
      */
     private Collection<String> getNeighborGroups(Tile tile)
     {
-        final Collection<String> neighborGroups = new ArrayList<String>(CircuitType.BITS);
+        final Collection<String> neighborGroups = new ArrayList<>(CircuitType.BITS);
 
         addNeighborGroup(neighborGroups, tile, 0, 1);
         addNeighborGroup(neighborGroups, tile, -1, 0);

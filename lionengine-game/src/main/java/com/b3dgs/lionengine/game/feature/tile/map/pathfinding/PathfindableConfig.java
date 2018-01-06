@@ -60,7 +60,7 @@ public final class PathfindableConfig
         {
             return Collections.emptyMap();
         }
-        final Map<String, PathData> categories = new HashMap<String, PathData>(0);
+        final Map<String, PathData> categories = new HashMap<>(0);
         final Xml nodePathfindable = root.getChild(PATHFINDABLE);
         for (final Xml nodePath : nodePathfindable.getChildren(PATH))
         {

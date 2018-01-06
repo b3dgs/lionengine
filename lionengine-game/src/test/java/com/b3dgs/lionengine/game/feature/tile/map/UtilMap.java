@@ -94,7 +94,7 @@ public class UtilMap
      */
     public static void setGroups(MapTile map)
     {
-        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
+        final Collection<TileGroup> groups = new ArrayList<>();
         groups.add(new TileGroup(WATER, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_WATER))));
         groups.add(new TileGroup(GROUND, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_GROUND))));
         groups.add(new TileGroup(TREE, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_TREE))));

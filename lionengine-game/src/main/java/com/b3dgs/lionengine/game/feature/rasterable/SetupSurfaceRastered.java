@@ -46,7 +46,7 @@ public class SetupSurfaceRastered extends Setup
     private static final String ATTRIBUTE_RASTER_SMOOTH = "smooth";
 
     /** List of rasters animation. */
-    private final List<SpriteAnimated> rastersAnim = new ArrayList<SpriteAnimated>(RasterColor.MAX_RASTERS);
+    private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterColor.MAX_RASTERS);
     /** List of rasters animation. */
     private final RasterImage raster;
 

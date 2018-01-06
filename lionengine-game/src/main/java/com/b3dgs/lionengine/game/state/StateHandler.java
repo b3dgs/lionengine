@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
 public class StateHandler implements Updatable
 {
     /** Inputs used. */
-    private final Collection<InputDevice> inputs = new ArrayList<InputDevice>();
+    private final Collection<InputDevice> inputs = new ArrayList<>();
     /** State factory reference. */
     private final StateFactory factory;
     /** Current state pointer (<code>null</code> if none). */

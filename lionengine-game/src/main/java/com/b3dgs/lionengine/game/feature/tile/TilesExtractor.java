@@ -155,7 +155,7 @@ public final class TilesExtractor
     }
 
     /** Progress listener. */
-    private final Collection<ProgressListener> listeners = new HashSet<ProgressListener>();
+    private final Collection<ProgressListener> listeners = new HashSet<>();
 
     /**
      * Create the extractor.
@@ -202,7 +202,7 @@ public final class TilesExtractor
     public Collection<ImageBuffer> extract(Canceler canceler, int tw, int th, Collection<Media> levelRips)
     {
         final int tilesNumber = getTilesNumber(tw, th, levelRips);
-        final Collection<ImageBuffer> tiles = new ArrayList<ImageBuffer>();
+        final Collection<ImageBuffer> tiles = new ArrayList<>();
         int checkedTiles = 0;
         for (final Media levelRip : levelRips)
         {

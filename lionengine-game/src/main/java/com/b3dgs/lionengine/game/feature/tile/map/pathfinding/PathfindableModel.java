@@ -58,11 +58,11 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     private static final int TEXT_DEBUG_SIZE = 8;
 
     /** Pathfindable listeners. */
-    private final Collection<PathfindableListener> listeners = new ArrayList<PathfindableListener>();
+    private final Collection<PathfindableListener> listeners = new ArrayList<>();
     /** List of shared path id. */
-    private final Collection<Integer> sharedPathIds = new HashSet<Integer>(0);
+    private final Collection<Integer> sharedPathIds = new HashSet<>(0);
     /** List of ignored id. */
-    private final Collection<Integer> ignoredIds = new HashSet<Integer>(0);
+    private final Collection<Integer> ignoredIds = new HashSet<>(0);
     /** Object id. */
     private Integer id;
     /** Viewer reference. */

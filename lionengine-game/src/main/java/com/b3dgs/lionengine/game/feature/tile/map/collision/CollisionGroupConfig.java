@@ -56,11 +56,11 @@ public final class CollisionGroupConfig
     {
         final Xml root = new Xml(config);
         final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
-        final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>(childrenCollision.size());
+        final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
         for (final Xml node : childrenCollision)
         {
             final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.FORMULA);
-            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>(childrenFormula.size());
+            final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
             for (final Xml formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
@@ -84,11 +84,11 @@ public final class CollisionGroupConfig
     public static CollisionGroupConfig imports(Xml root, MapTileCollision map)
     {
         final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
-        final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>(childrenCollision.size());
+        final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
         for (final Xml node : childrenCollision)
         {
             final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.FORMULA);
-            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>(childrenFormula.size());
+            final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
             for (final Xml formula : childrenFormula)
             {
                 final String formulaName = formula.getText();

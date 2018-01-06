@@ -53,12 +53,12 @@ public final class PathfindingConfig
     {
         final Xml nodeCategories = new Xml(configPathfinding);
         final Collection<Xml> childrenTile = nodeCategories.getChildren(TILE_PATH);
-        final Collection<PathCategory> categories = new HashSet<PathCategory>(childrenTile.size());
+        final Collection<PathCategory> categories = new HashSet<>(childrenTile.size());
         for (final Xml node : childrenTile)
         {
             final String name = node.readString(CATEGORY);
             final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
-            final Collection<String> groups = new HashSet<String>(childrenGroup.size());
+            final Collection<String> groups = new HashSet<>(childrenGroup.size());
             for (final Xml groupNode : childrenGroup)
             {
                 groups.add(groupNode.getText());

@@ -63,7 +63,7 @@ public class Hud extends FeaturableModel
      */
     private static Collection<ActionRef> getActionsInCommon(List<Selectable> selection)
     {
-        final Collection<ActionRef> actions = new HashSet<ActionRef>();
+        final Collection<ActionRef> actions = new HashSet<>();
         final int n = selection.size();
         for (int i = 0; i < n; i++)
         {
@@ -100,9 +100,9 @@ public class Hud extends FeaturableModel
     /** Hud surface. */
     protected final SpriteAnimated surface;
     /** Current active menus. */
-    private final Collection<Featurable> menus = new ArrayList<Featurable>();
+    private final Collection<Featurable> menus = new ArrayList<>();
     /** Previous menus. */
-    private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<ActionRef, Collection<ActionRef>>();
+    private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<>();
     /** Handler reference. */
     private final Handler handler;
     /** Factory reference. */

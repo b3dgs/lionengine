@@ -36,17 +36,17 @@ import com.b3dgs.lionengine.graphic.Renderable;
 public class Handler implements Handlables, Updatable, Renderable, IdentifiableListener
 {
     /** Handler listeners. */
-    private final Collection<HandlerListener> listeners = new HashSet<HandlerListener>();
+    private final Collection<HandlerListener> listeners = new HashSet<>();
     /** List of components. */
-    private final Collection<ComponentUpdater> updaters = new ArrayList<ComponentUpdater>();
+    private final Collection<ComponentUpdater> updaters = new ArrayList<>();
     /** List of components. */
-    private final Collection<ComponentRenderer> renderers = new ArrayList<ComponentRenderer>();
+    private final Collection<ComponentRenderer> renderers = new ArrayList<>();
     /** List of items. */
     private final HandlablesImpl featurables = new HandlablesImpl();
     /** To add list. */
-    private final Collection<Featurable> toAdd = new HashSet<Featurable>();
+    private final Collection<Featurable> toAdd = new HashSet<>();
     /** To delete list. */
-    private final Collection<Integer> toDelete = new HashSet<Integer>();
+    private final Collection<Integer> toDelete = new HashSet<>();
     /** Services reference. */
     private final Services services;
     /** Will delete flag. */

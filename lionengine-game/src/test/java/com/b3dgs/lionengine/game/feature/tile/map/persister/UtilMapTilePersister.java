@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Utilities related to map tile persister test.
@@ -72,15 +71,9 @@ public class UtilMapTilePersister
      */
     public static void saveMap(MapTile map, Media level) throws IOException
     {
-        FileWriting output = null;
-        try
+        try (FileWriting output = new FileWriting(level))
         {
-            output = new FileWriting(level);
             map.getFeature(MapTilePersister.class).save(output);
-        }
-        finally
-        {
-            UtilStream.safeClose(output);
         }
     }
 
@@ -96,15 +89,9 @@ public class UtilMapTilePersister
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
         map.addFeature(new MapTilePersisterModel(services));
-        FileReading input = null;
-        try
+        try (FileReading input = new FileReading(level))
         {
-            input = new FileReading(level);
             map.getFeature(MapTilePersister.class).load(input);
-        }
-        finally
-        {
-            UtilStream.safeClose(input);
         }
         return map;
     }

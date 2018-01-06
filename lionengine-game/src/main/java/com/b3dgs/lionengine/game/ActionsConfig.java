@@ -78,7 +78,7 @@ public final class ActionsConfig
     private static List<ActionRef> getRefs(Xml node)
     {
         final Collection<Xml> children = node.getChildren(NODE_ACTION);
-        final List<ActionRef> actions = new ArrayList<ActionRef>(children.size());
+        final List<ActionRef> actions = new ArrayList<>(children.size());
         for (final Xml action : children)
         {
             final String path = action.readString(ATT_PATH);

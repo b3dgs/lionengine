@@ -72,7 +72,7 @@ public class TileGroupsConfigTest
     @Test
     public void testConfiguration()
     {
-        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
+        final Collection<TileGroup> groups = new ArrayList<>();
         groups.add(new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
 
         final Media config = Medias.create("tilegroups.xml");

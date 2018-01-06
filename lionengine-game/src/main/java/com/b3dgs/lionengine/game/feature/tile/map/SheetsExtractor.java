@@ -46,7 +46,7 @@ public final class SheetsExtractor
         final int horizontals = surface.getWidth();
         final int verticals = surface.getHeight();
         final int tilesPerSheet = Math.min(tiles.size(), horizontals * verticals);
-        final Collection<SpriteTiled> sheets = new ArrayList<SpriteTiled>();
+        final Collection<SpriteTiled> sheets = new ArrayList<>();
 
         ImageBuffer sheet = null;
         Graphic g = null;

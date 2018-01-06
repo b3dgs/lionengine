@@ -55,7 +55,7 @@ public class MapTransitionExtractor
      */
     private static Transition getTransitionTwoGroups(Collection<String> neighborGroups)
     {
-        final Iterator<String> iterator = new HashSet<String>(neighborGroups).iterator();
+        final Iterator<String> iterator = new HashSet<>(neighborGroups).iterator();
         final String groupIn = iterator.next();
         final String groupOut = iterator.next();
         final TransitionType type = getTransitionType(groupIn, neighborGroups);
@@ -114,7 +114,7 @@ public class MapTransitionExtractor
     public Transition getTransition(Tile tile)
     {
         final Collection<String> neighborGroups = getNeighborGroups(tile);
-        final Collection<String> groups = new HashSet<String>(neighborGroups);
+        final Collection<String> groups = new HashSet<>(neighborGroups);
 
         final Transition transition;
         if (groups.size() == 1 && mapGroup.getGroup(tile).equals(groups.iterator().next()))
@@ -141,7 +141,7 @@ public class MapTransitionExtractor
      */
     private Collection<String> getNeighborGroups(Tile tile)
     {
-        final Collection<String> neighborGroups = new ArrayList<String>(TransitionType.BITS);
+        final Collection<String> neighborGroups = new ArrayList<>(TransitionType.BITS);
 
         addNeighborGroup(neighborGroups, tile, 1, -1);
         addNeighborGroup(neighborGroups, tile, -1, -1);
@@ -232,7 +232,7 @@ public class MapTransitionExtractor
     {
         final Collection<Tile> neighbors1 = map.getNeighbors(tile1);
         final Collection<Tile> neighbors2 = map.getNeighbors(tile2);
-        final Collection<Tile> sharedNeighbors = new HashSet<Tile>(2);
+        final Collection<Tile> sharedNeighbors = new HashSet<>(2);
         for (final Tile neighbor : neighbors1)
         {
             if (neighbors2.contains(neighbor))

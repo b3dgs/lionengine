@@ -96,7 +96,7 @@ public final class TileSheetsConfig
     private static Collection<String> importSheets(Xml nodeSheets)
     {
         final Collection<Xml> children = nodeSheets.getChildren(NODE_TILE_SHEET);
-        final Collection<String> sheets = new ArrayList<String>(children.size());
+        final Collection<String> sheets = new ArrayList<>(children.size());
         for (final Xml nodeSheet : children)
         {
             final String sheetFilename = nodeSheet.getText();

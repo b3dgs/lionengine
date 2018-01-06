@@ -34,7 +34,7 @@ public final class Path
      */
     public Path()
     {
-        steps = new ArrayList<Step>();
+        steps = new ArrayList<>();
     }
 
     /**

@@ -51,9 +51,9 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     }
 
     /** Sorted layers index. */
-    private final Set<Integer> indexs = new TreeSet<Integer>();
+    private final Set<Integer> indexs = new TreeSet<>();
     /** Layers to render. */
-    private final Map<Integer, Collection<Refreshable>> layers = new HashMap<Integer, Collection<Refreshable>>();
+    private final Map<Integer, Collection<Refreshable>> layers = new HashMap<>();
 
     /**
      * Create component.
@@ -74,7 +74,7 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         final Collection<Refreshable> refreshables;
         if (!layers.containsKey(layer))
         {
-            refreshables = new HashSet<Refreshable>();
+            refreshables = new HashSet<>();
             layers.put(layer, refreshables);
         }
         else

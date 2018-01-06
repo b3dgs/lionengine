@@ -69,7 +69,7 @@ public final class AnimationConfig
      */
     public static AnimationConfig imports(Xml root)
     {
-        final Map<String, Animation> animations = new HashMap<String, Animation>(0);
+        final Map<String, Animation> animations = new HashMap<>(0);
         for (final Xml node : root.getChildren(ANIMATION))
         {
             final String anim = node.readString(ANIMATION_NAME);

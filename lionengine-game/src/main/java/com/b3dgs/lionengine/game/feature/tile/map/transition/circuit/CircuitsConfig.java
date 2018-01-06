@@ -62,7 +62,7 @@ public final class CircuitsConfig
         final Xml root = new Xml(circuitsConfig);
         final Collection<Xml> nodesCircuit = root.getChildren(NODE_CIRCUIT);
         final Map<Circuit, Collection<TileRef>> circuits;
-        circuits = new HashMap<Circuit, Collection<TileRef>>(nodesCircuit.size());
+        circuits = new HashMap<>(nodesCircuit.size());
 
         for (final Xml nodeCircuit : nodesCircuit)
         {
@@ -129,7 +129,7 @@ public final class CircuitsConfig
      */
     private static Collection<TileRef> importTiles(Collection<Xml> nodesTileRef)
     {
-        final Collection<TileRef> tilesRef = new HashSet<TileRef>(nodesTileRef.size());
+        final Collection<TileRef> tilesRef = new HashSet<>(nodesTileRef.size());
         for (final Xml nodeTileRef : nodesTileRef)
         {
             final TileRef tileRef = TileConfig.create(nodeTileRef);

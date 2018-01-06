@@ -59,7 +59,7 @@ public final class CollisionConfig
      */
     public static CollisionConfig imports(Configurer configurer)
     {
-        final Map<String, Collision> collisions = new HashMap<String, Collision>(0);
+        final Map<String, Collision> collisions = new HashMap<>(0);
         for (final Xml node : configurer.getRoot().getChildren(COLLISION))
         {
             final String coll = node.readString(COLLISION_NAME);

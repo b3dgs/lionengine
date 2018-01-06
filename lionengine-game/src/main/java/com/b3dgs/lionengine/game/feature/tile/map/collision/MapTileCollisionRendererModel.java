@@ -199,7 +199,7 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
         clearCollisionDraw();
 
         final Collection<CollisionFormula> formulas = mapCollision.getCollisionFormulas();
-        collisionCache = new HashMap<CollisionFormula, ImageBuffer>(formulas.size());
+        collisionCache = new HashMap<>(formulas.size());
 
         for (final CollisionFormula collision : formulas)
         {

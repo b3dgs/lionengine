@@ -91,7 +91,7 @@ public class CollisionCategory implements Nameable
         this.x = x;
         this.y = y;
         this.groups = groups;
-        formulas = new HashSet<CollisionFormula>();
+        formulas = new HashSet<>();
         for (final CollisionGroup group : groups)
         {
             formulas.addAll(group.getFormulas());

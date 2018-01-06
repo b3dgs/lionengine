@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 public class LaunchableModel extends FeatureModel implements Launchable
 {
     /** Launcher listeners. */
-    private final Collection<LaunchableListener> listeners = new HashSet<LaunchableListener>();
+    private final Collection<LaunchableListener> listeners = new HashSet<>();
     /** Transformable reference. */
     private Transformable transformable;
     /** Vector reference. */

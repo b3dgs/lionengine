@@ -46,8 +46,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 public class ProducerModelTest
 {
     /** Hack enum. */
-    private static final UtilEnum<ProducerState> HACK = new UtilEnum<ProducerState>(ProducerState.class,
-                                                                                    ProducerModel.class);
+    private static final UtilEnum<ProducerState> HACK = new UtilEnum<>(ProducerState.class, ProducerModel.class);
 
     /**
      * Prepare test.
@@ -105,10 +104,10 @@ public class ProducerModelTest
 
         producer.setStepsPerSecond(25.0);
 
-        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> current = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> cant = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> start = new AtomicReference<>();
+        final AtomicReference<Featurable> current = new AtomicReference<>();
+        final AtomicReference<Featurable> done = new AtomicReference<>();
+        final AtomicReference<Featurable> cant = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
 
         producer.update(1.0);
@@ -167,10 +166,10 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(25.0);
 
-        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> current = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> cant = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> start = new AtomicReference<>();
+        final AtomicReference<Featurable> current = new AtomicReference<>();
+        final AtomicReference<Featurable> done = new AtomicReference<>();
+        final AtomicReference<Featurable> cant = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
         producer.setChecker(object);
 
@@ -262,8 +261,8 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> start = new AtomicReference<>();
+        final AtomicReference<Featurable> skip = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(start, skip, skip, skip));
 
         final Featurable featurable = UtilProducible.createProducible(services);
@@ -298,8 +297,8 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Featurable> start = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> start = new AtomicReference<>();
+        final AtomicReference<Featurable> skip = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(start, skip, skip, skip));
 
         final Featurable featurable = UtilProducible.createProducible(services);
@@ -324,8 +323,8 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> done = new AtomicReference<>();
+        final AtomicReference<Featurable> skip = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
 
         producer.skipProduction();
@@ -351,8 +350,8 @@ public class ProducerModelTest
     {
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Featurable> done = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> done = new AtomicReference<>();
+        final AtomicReference<Featurable> skip = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
 
         final Featurable featurable = UtilProducible.createProducible(services);
@@ -385,8 +384,8 @@ public class ProducerModelTest
         object.check.set(false);
         producer.setStepsPerSecond(50.0);
 
-        final AtomicReference<Featurable> skip = new AtomicReference<Featurable>();
-        final AtomicReference<Featurable> cant = new AtomicReference<Featurable>();
+        final AtomicReference<Featurable> skip = new AtomicReference<>();
+        final AtomicReference<Featurable> cant = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, skip, cant));
 
         final Featurable featurable = UtilProducible.createProducible(services);

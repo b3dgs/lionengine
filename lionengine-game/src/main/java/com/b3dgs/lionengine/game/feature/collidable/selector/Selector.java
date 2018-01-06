@@ -61,9 +61,9 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     /** Selector displayer. */
     private final SelectorDisplayer displayer;
     /** Backed selection. */
-    private final List<Selectable> selected = new ArrayList<Selectable>();
+    private final List<Selectable> selected = new ArrayList<>();
     /** Selection listeners. */
-    private final List<SelectionListener> listeners = new ArrayList<SelectionListener>();
+    private final List<SelectionListener> listeners = new ArrayList<>();
     /** Void notify. */
     private final Action check = new Action()
     {

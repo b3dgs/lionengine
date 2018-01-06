@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.SizeConfig;
 public class TransformableModel extends FeatureModel implements Transformable, Recyclable
 {
     /** Listeners. */
-    private final List<TransformableListener> listeners = new ArrayList<TransformableListener>();
+    private final List<TransformableListener> listeners = new ArrayList<>();
     /** Mover model. */
     private final Mover mover = new MoverModel();
     /** Body width. */

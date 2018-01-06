@@ -61,7 +61,7 @@ public class Services
     private static final String ERROR_SERVICE_GET = "Service not found: ";
 
     /** Services list. */
-    private final Collection<Object> services = new HashSet<Object>();
+    private final Collection<Object> services = new HashSet<>();
 
     /**
      * Create a services container.

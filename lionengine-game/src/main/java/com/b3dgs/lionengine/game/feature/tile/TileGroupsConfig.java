@@ -57,7 +57,7 @@ public final class TileGroupsConfig
         final Xml nodeGroups = new Xml(groupsConfig);
 
         final Collection<Xml> children = nodeGroups.getChildren(NODE_GROUP);
-        final Collection<TileGroup> groups = new ArrayList<TileGroup>(children.size());
+        final Collection<TileGroup> groups = new ArrayList<>(children.size());
         for (final Xml nodeGroup : children)
         {
             final TileGroup group = importGroup(nodeGroup);
@@ -96,7 +96,7 @@ public final class TileGroupsConfig
     private static TileGroup importGroup(Xml nodeGroup)
     {
         final Collection<Xml> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
-        final Collection<TileRef> tiles = new ArrayList<TileRef>(children.size());
+        final Collection<TileRef> tiles = new ArrayList<>(children.size());
         for (final Xml nodeTileRef : children)
         {
             final TileRef tileRef = TileConfig.create(nodeTileRef);

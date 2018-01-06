@@ -38,7 +38,7 @@ public class Features
      */
     public Features()
     {
-        features = new HashMap<Class<? extends Feature>, Feature>();
+        features = new HashMap<>();
     }
 
     /**

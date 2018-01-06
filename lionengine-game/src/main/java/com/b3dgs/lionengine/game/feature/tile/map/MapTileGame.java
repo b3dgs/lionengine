@@ -71,9 +71,9 @@ public class MapTileGame extends FeaturableModel implements MapTile
     private static final String ERROR_APPEND_MAP_TILE_SIZE = "Appended map does not have the same tile size: ";
 
     /** Tile set listeners. */
-    private final Collection<TileSetListener> tileSetListeners = new ArrayList<TileSetListener>();
+    private final Collection<TileSetListener> tileSetListeners = new ArrayList<>();
     /** Sheets list. */
-    private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
+    private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Tile width. */
@@ -182,7 +182,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
         this.heightInTile = heightInTile;
 
         radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
-        tiles = new ArrayList<List<Tile>>(heightInTile);
+        tiles = new ArrayList<>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
         {
@@ -425,7 +425,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     {
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
-        final Collection<Tile> neighbors = new HashSet<Tile>(8);
+        final Collection<Tile> neighbors = new HashSet<>(8);
         for (int ox = -1; ox < 2; ox++)
         {
             for (int oy = -1; oy < 2; oy++)
@@ -450,7 +450,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
         double h = ox;
         double v = oy;
 
-        final Collection<Tile> found = new ArrayList<Tile>();
+        final Collection<Tile> found = new ArrayList<>();
         for (int count = 0; count < force.getVelocity(); count++)
         {
             v += sy;

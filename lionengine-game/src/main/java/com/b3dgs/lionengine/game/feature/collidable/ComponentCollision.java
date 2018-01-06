@@ -75,7 +75,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     {
         super();
 
-        collidables = new HashMap<Integer, Map<Point, List<Collidable>>>();
+        collidables = new HashMap<>();
     }
 
     /**

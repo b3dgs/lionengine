@@ -123,7 +123,7 @@ public class FeaturableModelTest
     public void testServiceAnnotation()
     {
         final Featurable featurable = new FeaturableModel();
-        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<MyFeatureInterface>();
+        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<>();
 
         final MyFeatureInterface featureModel = new MyFeature();
         featurable.addFeature(featureModel);
@@ -151,7 +151,7 @@ public class FeaturableModelTest
     public void testServiceAnnotationTwice()
     {
         final Featurable featurable = new FeaturableModel();
-        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<MyFeatureInterface>();
+        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<>();
 
         final MyFeatureInterface featureModel = new MyFeature();
         featurable.addFeature(featureModel);
@@ -185,7 +185,7 @@ public class FeaturableModelTest
     public void testServiceAnnotationNotFound()
     {
         final Featurable featurable = new FeaturableModel();
-        final AtomicReference<String> unfilledType = new AtomicReference<String>();
+        final AtomicReference<String> unfilledType = new AtomicReference<>();
         final Feature feature = new FeatureModel()
         {
             private @FeatureGet String type;

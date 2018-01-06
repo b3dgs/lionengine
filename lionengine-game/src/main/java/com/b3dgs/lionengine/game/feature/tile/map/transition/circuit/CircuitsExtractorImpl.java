@@ -49,7 +49,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
     private static Map<Circuit, Collection<TileRef>> getCircuits(MapTile map)
     {
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
+        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>();
         final MapCircuitExtractor extractor = new MapCircuitExtractor(map);
         for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
         {
@@ -146,7 +146,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
                                                          Media sheetsConfig,
                                                          Media groupsConfig)
     {
-        final Collection<MapTile> mapsSet = new HashSet<MapTile>(levels.size());
+        final Collection<MapTile> mapsSet = new HashSet<>(levels.size());
         for (final Media level : levels)
         {
             final Services services = new Services();
@@ -168,7 +168,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
     @Override
     public Map<Circuit, Collection<TileRef>> getCircuits(MapTile... maps)
     {
-        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
+        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>();
         for (final MapTile map : maps)
         {
             final Map<Circuit, Collection<TileRef>> currents = getCircuits(map);

@@ -49,7 +49,7 @@ public class MapTileFog
     private static final String TRANSITION_GROUP = "transition";
 
     /** Revealed tiles. */
-    private final Collection<Tile> revealed = new HashSet<Tile>();
+    private final Collection<Tile> revealed = new HashSet<>();
     /** Hidden map. */
     private final MapTile map;
     /** Map group. */

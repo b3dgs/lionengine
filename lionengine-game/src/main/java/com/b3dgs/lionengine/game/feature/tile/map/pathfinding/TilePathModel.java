@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 public class TilePathModel extends FeatureModel implements TilePath
 {
     /** Object id reference. */
-    private final Set<Integer> objectsId = new HashSet<Integer>();
+    private final Set<Integer> objectsId = new HashSet<>();
     /** Category name. */
     private final String category;
 

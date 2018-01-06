@@ -52,9 +52,9 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     }
 
     /** Sorted layers index. */
-    private final Set<Integer> indexs = new TreeSet<Integer>();
+    private final Set<Integer> indexs = new TreeSet<>();
     /** Layers to render. */
-    private final Map<Integer, Collection<Displayable>> layers = new HashMap<Integer, Collection<Displayable>>();
+    private final Map<Integer, Collection<Displayable>> layers = new HashMap<>();
 
     /**
      * Create a renderer component.
@@ -75,7 +75,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         final Collection<Displayable> displayables;
         if (!layers.containsKey(layer))
         {
-            displayables = new HashSet<Displayable>();
+            displayables = new HashSet<>();
             layers.put(layer, displayables);
         }
         else

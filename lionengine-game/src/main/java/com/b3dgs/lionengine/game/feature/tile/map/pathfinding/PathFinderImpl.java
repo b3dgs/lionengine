@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 final class PathFinderImpl implements PathFinder
 {
     /** Closed list. */
-    private final Collection<Node> closed = new ArrayList<Node>(8);
+    private final Collection<Node> closed = new ArrayList<>(8);
     /** Open list. */
-    private final SortedList<Node> open = new SortedList<Node>();
+    private final SortedList<Node> open = new SortedList<>();
     /** Map reference. */
     private final MapTile map;
     /** Map path reference. */

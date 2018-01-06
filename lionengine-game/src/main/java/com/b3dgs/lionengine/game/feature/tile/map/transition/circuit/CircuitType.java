@@ -77,7 +77,7 @@ public enum CircuitType
     private static final int BIT_TOP = 3;
 
     /** Circuit part types mapping with their index. */
-    private static final Map<Integer, CircuitType> TYPES = new HashMap<Integer, CircuitType>();
+    private static final Map<Integer, CircuitType> TYPES = new HashMap<>();
     /** Error circuit name. */
     private static final String ERROR_CIRCUIT_NAME = "Unknown circuit part name: ";
 
