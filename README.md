@@ -125,15 +125,15 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 Steps to include the __LionEngine__ in your project:
 
-1. Install at least the [Java JDK 6](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-2. Install the [Android SDK 4.0](http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
+1. Install at least the [Java JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+2. Install the [Android SDK 7.0](http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
 3. Choose your favourite IDE ([Eclipse](http://www.eclipse.org/downloads/), [Netbeans](https://netbeans.org/downloads/)...)
 4. Download the latest [LionEngine](http://lionengine.b3dgs.com/page.php?lang=en&section=downloads)
 5. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
     * __lionengine-core-awt__ _(uses_ __AWT__ _as graphic renderer, target for computer)_
     * __lionengine-core-swt__ _(uses_ __SWT__ _as graphic renderer, target for computer)_
-    * __lionengine-core-android__ _(uses_ __Android 4.0__, _target for phones)_
+    * __lionengine-core-android__ _(uses_ __Android 7.0__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
     * __lionengine-network__ _(support for network)_
     * __lionengine-audio-wav__ _(support for Wav sound)_
