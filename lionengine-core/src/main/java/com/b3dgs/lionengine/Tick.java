@@ -28,32 +28,21 @@ public final class Tick implements Updatable
     /** One second to milli. */
     private static final double ONE_SECOND_IN_MILLI = Constant.ONE_SECOND_IN_MILLI;
     /** No update. */
-    private static final Updatable PAUSE = new Updatable()
+    private static final Updatable PAUSE = extrp ->
     {
-        @Override
-        public void update(double extrp)
-        {
-            // Nothing to do
-        }
+        // Nothing to do
     };
 
     /** Actions. */
     private final Collection<TickActionDelayed> actions = new ArrayList<>();
     /** Actions executed. */
     private final Collection<TickActionDelayed> toRemove = new ArrayList<>();
-    /** Update. */
-    private final Updatable updating = new Updatable()
-    {
-        @Override
-        public void update(double extrp)
-        {
-            currentTicks++;
-        }
-    };
-    /** Update loop. */
-    private Updatable updater = PAUSE;
     /** Current tick. */
     private int currentTicks;
+    /** Update. */
+    private final Updatable updating = extrp -> currentTicks++;
+    /** Update loop. */
+    private Updatable updater = PAUSE;
     /** Started flag. */
     private boolean started;
 

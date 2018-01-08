@@ -76,14 +76,7 @@ public class TickTest
     public void testAddAction()
     {
         final AtomicBoolean action = new AtomicBoolean();
-        tick.addAction(new TickAction()
-        {
-            @Override
-            public void execute()
-            {
-                action.set(true);
-            }
-        }, 2);
+        tick.addAction(() -> action.set(true), 2);
 
         Assert.assertFalse(action.get());
 
