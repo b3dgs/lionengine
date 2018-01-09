@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Check;
@@ -55,35 +54,17 @@ public final class Loader
         Check.notNull(sequenceClass);
         Check.notNull(arguments);
 
-        final Runnable runnable = new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                handle(config, sequenceClass, arguments);
-            }
-        };
+        final Runnable runnable = () -> handle(config, sequenceClass, arguments);
         final Thread thread = new Thread(runnable, Constant.ENGINE_NAME);
         final AtomicReference<Throwable> reference = new AtomicReference<>();
-        thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
+        thread.setUncaughtExceptionHandler((t, e) ->
         {
-            @Override
-            public void uncaughtException(Thread t, Throwable e)
-            {
-                reference.set(e);
-                Verbose.exception(e);
-            }
+            reference.set(e);
+            Verbose.exception(e);
         });
         thread.start();
 
-        return new TaskFuture()
-        {
-            @Override
-            public void await()
-            {
-                check(thread, reference);
-            }
-        };
+        return () -> check(thread, reference);
     }
 
     /**
