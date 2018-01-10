@@ -234,14 +234,10 @@ public class LoaderTest
                 future.await();
             }
         };
-        thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+        thread.setUncaughtExceptionHandler((t, throwable) ->
         {
-            @Override
-            public void uncaughtException(Thread t, Throwable throwable)
-            {
-                exception.set(throwable);
-                semaphore.release();
-            }
+            exception.set(throwable);
+            semaphore.release();
         });
         thread.start();
         UtilTests.pause(SequenceInterruptMock.PAUSE_MILLI / 2L);
@@ -280,14 +276,10 @@ public class LoaderTest
                     future.await();
                 }
             };
-            thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+            thread.setUncaughtExceptionHandler((t, throwable) ->
             {
-                @Override
-                public void uncaughtException(Thread t, Throwable throwable)
-                {
-                    exception.set(throwable);
-                    semaphore.release();
-                }
+                exception.set(throwable);
+                semaphore.release();
             });
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             thread.start();
@@ -390,14 +382,10 @@ public class LoaderTest
                     screen.awaitReady();
                 }
             };
-            thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+            thread.setUncaughtExceptionHandler((t, throwable) ->
             {
-                @Override
-                public void uncaughtException(Thread t, Throwable throwable)
-                {
-                    exception.set(throwable);
-                    semaphore.release();
-                }
+                exception.set(throwable);
+                semaphore.release();
             });
             thread.start();
             UtilTests.pause(ScreenMock.READY_TIMEOUT / 2L);
