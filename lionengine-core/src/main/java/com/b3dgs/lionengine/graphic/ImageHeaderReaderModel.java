@@ -121,14 +121,7 @@ abstract class ImageHeaderReaderModel implements ImageHeaderReader
     {
         this(new HeaderProvider[]
         {
-            new HeaderProvider()
-            {
-                @Override
-                public int[] getHeader()
-                {
-                    return headers;
-                }
-            }
+            () -> headers
         });
     }
 
