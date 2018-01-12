@@ -54,26 +54,12 @@ final class ImageHeaderTiff extends ImageHeaderReaderModel
      */
     ImageHeaderTiff()
     {
-        super(new HeaderProvider()
+        super(() -> new int[]
         {
-            @Override
-            public int[] getHeader()
-            {
-                return new int[]
-                {
-                    HEADER_M, HEADER_M, HEADER_0, HEADER_42
-                };
-            }
-        }, new HeaderProvider()
+            HEADER_M, HEADER_M, HEADER_0, HEADER_42
+        }, () -> new int[]
         {
-            @Override
-            public int[] getHeader()
-            {
-                return new int[]
-                {
-                    HEADER_I, HEADER_I, HEADER_42, HEADER_0
-                };
-            }
+            HEADER_I, HEADER_I, HEADER_42, HEADER_0
         });
     }
 
