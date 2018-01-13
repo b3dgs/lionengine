@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.PrivilegedAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -351,14 +352,10 @@ public final class UtilReflection
      */
     public static void setAccessible(final AccessibleObject object, final boolean accessible)
     {
-        java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Void>()
+        java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () ->
         {
-            @Override
-            public Void run()
-            {
-                object.setAccessible(accessible);
-                return null;
-            }
+            object.setAccessible(accessible);
+            return null;
         });
     }
 
