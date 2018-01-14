@@ -153,15 +153,11 @@ public class ResourceLoaderTest
         };
 
         final AtomicReference<LionEngineException> exception = new AtomicReference<>();
-        thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+        thread.setUncaughtExceptionHandler((t, throwable) ->
         {
-            @Override
-            public void uncaughtException(Thread t, Throwable throwable)
+            if (throwable instanceof LionEngineException)
             {
-                if (throwable instanceof LionEngineException)
-                {
-                    exception.set((LionEngineException) throwable);
-                }
+                exception.set((LionEngineException) throwable);
             }
         });
         thread.start();
