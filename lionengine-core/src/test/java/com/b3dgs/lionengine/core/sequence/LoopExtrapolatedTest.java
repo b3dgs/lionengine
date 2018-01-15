@@ -69,38 +69,31 @@ public class LoopExtrapolatedTest
 
     private Thread getTask(final Screen screen)
     {
-        return new Thread(new Runnable()
+        return new Thread(() -> loop.start(screen, new Frame()
         {
             @Override
-            public void run()
+            public void update(double extrp)
             {
-                loop.start(screen, new Frame()
+                extrapolation.set(Double.valueOf(extrp));
+                if (tick.incrementAndGet() == maxTick.get())
                 {
-                    @Override
-                    public void update(double extrp)
-                    {
-                        extrapolation.set(Double.valueOf(extrp));
-                        if (tick.incrementAndGet() == maxTick.get())
-                        {
-                            loop.stop();
-                        }
-                    }
-
-                    @Override
-                    public void render()
-                    {
-                        rendered.incrementAndGet();
-                    }
-
-                    @Override
-                    public void computeFrameRate(double lastTime, double currentTime)
-                    {
-                        final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
-                        computed.set(Double.valueOf(fps));
-                    }
-                });
+                    loop.stop();
+                }
             }
-        });
+
+            @Override
+            public void render()
+            {
+                rendered.incrementAndGet();
+            }
+
+            @Override
+            public void computeFrameRate(double lastTime, double currentTime)
+            {
+                final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
+                computed.set(Double.valueOf(fps));
+            }
+        }));
     }
 
     /**
