@@ -70,42 +70,35 @@ public class LoopFrameSkippingTest
 
     private Thread getTask(final Screen screen)
     {
-        return new Thread(new Runnable()
+        return new Thread(() -> loop.start(screen, new Frame()
         {
             @Override
-            public void run()
+            public void update(double extrp)
             {
-                loop.start(screen, new Frame()
+                if (tick.incrementAndGet() == maxTick.get())
                 {
-                    @Override
-                    public void update(double extrp)
-                    {
-                        if (tick.incrementAndGet() == maxTick.get())
-                        {
-                            loop.stop();
-                        }
-                    }
-
-                    @Override
-                    public void render()
-                    {
-                        final long old = System.nanoTime();
-                        while (UtilTests.getElapsedMilli(old, System.nanoTime()) < pause.get())
-                        {
-                            // Pause
-                        }
-                        rendered.incrementAndGet();
-                    }
-
-                    @Override
-                    public void computeFrameRate(double lastTime, double currentTime)
-                    {
-                        final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
-                        computed.set(Double.valueOf(fps));
-                    }
-                });
+                    loop.stop();
+                }
             }
-        });
+
+            @Override
+            public void render()
+            {
+                final long old = System.nanoTime();
+                while (UtilTests.getElapsedMilli(old, System.nanoTime()) < pause.get())
+                {
+                    // Pause
+                }
+                rendered.incrementAndGet();
+            }
+
+            @Override
+            public void computeFrameRate(double lastTime, double currentTime)
+            {
+                final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
+                computed.set(Double.valueOf(fps));
+            }
+        }));
     }
 
     /**
