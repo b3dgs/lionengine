@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Widget;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.io.swt.EventAction;
 import com.b3dgs.lionengine.io.swt.Keyboard;
 
 /**
@@ -141,38 +140,10 @@ public class KeyboardSwtTest
         final Shell shell = new Shell(ToolsSwt.getDisplay());
         final AtomicBoolean left = new AtomicBoolean(false);
 
-        keyboard.addActionPressed(Keyboard.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(true);
-            }
-        });
-        keyboard.addActionPressed(Keyboard.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(true);
-            }
-        });
-        keyboard.addActionReleased(Keyboard.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(false);
-            }
-        });
-        keyboard.addActionReleased(Keyboard.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(false);
-            }
-        });
+        keyboard.addActionPressed(Keyboard.LEFT, () -> left.set(true));
+        keyboard.addActionPressed(Keyboard.LEFT, () -> left.set(true));
+        keyboard.addActionReleased(Keyboard.LEFT, () -> left.set(false));
+        keyboard.addActionReleased(Keyboard.LEFT, () -> left.set(false));
         Assert.assertFalse(left.get());
 
         keyboard.keyPressed(createEvent(shell, Keyboard.LEFT));
