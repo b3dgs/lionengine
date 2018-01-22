@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.core.swt;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Cursor;
@@ -120,14 +118,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
             shell.setBounds(display.getPrimaryMonitor().getBounds());
         }
         shell.setText(Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion());
-        shell.addDisposeListener(new DisposeListener()
-        {
-            @Override
-            public void widgetDisposed(DisposeEvent event)
-            {
-                onDisposed();
-            }
-        });
+        shell.addDisposeListener(event -> onDisposed());
         return shell;
     }
 
@@ -270,14 +261,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     {
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    frame.forceFocus();
-                }
-            });
+            display.syncExec(() -> frame.forceFocus());
         }
     }
 
@@ -286,14 +270,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     {
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    frame.setCursor(cursorHidden);
-                }
-            });
+            display.syncExec(() -> frame.setCursor(cursorHidden));
         }
     }
 
@@ -302,14 +279,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     {
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    frame.setCursor(cursorDefault);
-                }
-            });
+            display.syncExec(() -> frame.setCursor(cursorDefault));
         }
     }
 
@@ -318,14 +288,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     {
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    frame.addKeyListener(new KeyboardSwtListener(listener));
-                }
-            });
+            display.syncExec(() -> frame.addKeyListener(new KeyboardSwtListener(listener)));
         }
     }
 
@@ -334,14 +297,10 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
     {
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
+            display.syncExec(() ->
             {
-                @Override
-                public void run()
-                {
-                    final Image icon = new Image(display, filename);
-                    frame.setImage(icon);
-                }
+                final Image icon = new Image(display, filename);
+                frame.setImage(icon);
             });
         }
     }
@@ -352,14 +311,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
         final AtomicInteger x = new AtomicInteger(0);
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    x.set(frame.getLocation().x);
-                }
-            });
+            display.syncExec(() -> x.set(frame.getLocation().x));
         }
         return x.get();
     }
@@ -370,14 +322,7 @@ public abstract class ScreenSwt extends ScreenBase implements FocusListener
         final AtomicInteger y = new AtomicInteger(0);
         if (!display.isDisposed())
         {
-            display.syncExec(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    y.set(frame.getLocation().y);
-                }
-            });
+            display.syncExec(() -> y.set(frame.getLocation().y));
         }
         return y.get();
     }
