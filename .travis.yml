@@ -23,5 +23,4 @@ before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
 - cd lionengine-parent
-- mvn clean install -Pcore -Dgpg.skip=true -Dmaven.javadoc.skip=true
-- mvn sonar:sonar -Dsonar.organization=djthunder-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82
+- mvn clean install sonar:sonar -Pcore -Dsonar.organization=djthunder-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82 -Dgpg.skip=true -Dmaven.javadoc.skip=true
