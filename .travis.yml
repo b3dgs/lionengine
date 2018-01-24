@@ -13,6 +13,13 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - libstdc++-4.9-dev
+      - portaudio19-dev
+      - libasound2-dev
+      - libasound-dev
+      - alsa-utils
+      - alsa-oss
+      - alsamixer
+      - jack2
 notifications:
   email:
     on_success: never
@@ -28,12 +35,6 @@ env:
     - AUDIODEV=null
     - DISPLAY=:99.0
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y portaudio19-dev
-  - sudo apt-get install libasound2-dev alsa-utils alsa-oss
-  - sudo bash prepare_sndcard.sh
-  - sudo modprobe snd-dummy
-  - sudo lsmod
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
   - cd lionengine-parent
