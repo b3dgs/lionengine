@@ -31,6 +31,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
@@ -65,6 +66,7 @@ public class Sc68Test
         }
         catch (final LionEngineException exception)
         {
+            Verbose.exception(exception);
             final String message = exception.getMessage();
             Assert.assertTrue(message, message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
             Assume.assumeFalse("Sc68 not supported on test machine - Test skipped",

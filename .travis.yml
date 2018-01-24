@@ -9,8 +9,6 @@ addons:
     branches:
       - lionengine-9.0.0
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
       - libstdc++-4.9-dev
 notifications:
