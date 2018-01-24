@@ -20,10 +20,16 @@ jdk:
   - oraclejdk8
 env:
   global:
+    - AUDIODEV=null
     - DISPLAY=:99.0
 before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y portaudio19-dev
+  - sudo apt-get install libasound2-dev alsa-utils alsa-oss
+  - sudo bash test/prep-dummy-soundcard.sh
+  - sudo modprobe snd-dummy
+  - sudo lsmod
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
-  - export AUDIODEV=null
   - cd lionengine-parent
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Pcore -Dsonar.organization=djthunder-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82 -Dgpg.skip=true -Dmaven.javadoc.skip=true
