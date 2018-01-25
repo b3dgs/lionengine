@@ -28,7 +28,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.io.awt.EventAction;
 import com.b3dgs.lionengine.io.awt.Mouse;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -204,38 +203,10 @@ public class MouseAwtTest
         final MouseAwt mouse = createMouse();
         final AtomicBoolean left = new AtomicBoolean(false);
 
-        mouse.addActionPressed(Mouse.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(true);
-            }
-        });
-        mouse.addActionPressed(Mouse.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(true);
-            }
-        });
-        mouse.addActionReleased(Mouse.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(false);
-            }
-        });
-        mouse.addActionReleased(Mouse.LEFT, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                left.set(false);
-            }
-        });
+        mouse.addActionPressed(Mouse.LEFT, () -> left.set(true));
+        mouse.addActionPressed(Mouse.LEFT, () -> left.set(true));
+        mouse.addActionReleased(Mouse.LEFT, () -> left.set(false));
+        mouse.addActionReleased(Mouse.LEFT, () -> left.set(false));
         Assert.assertFalse(left.get());
 
         final MouseClickAwt clicker = mouse.getClicker();
