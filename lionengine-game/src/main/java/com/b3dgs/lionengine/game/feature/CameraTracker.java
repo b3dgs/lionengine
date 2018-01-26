@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.Updatable;
 
 /**
  * Camera tracking implementation.
@@ -46,17 +45,11 @@ public class CameraTracker extends FeaturableModel
 
         final Camera camera = services.get(Camera.class);
 
-        addFeature(new RefreshableModel(new Updatable()
+        addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
+            if (tracked != null)
             {
-                if (tracked != null)
-                {
-                    camera.setLocation(tracked.getX()
-                                       - camera.getWidth() / 2.0,
-                                       tracked.getY() - camera.getHeight() / 2.0);
-                }
+                camera.setLocation(tracked.getX() - camera.getWidth() / 2.0, tracked.getY() - camera.getHeight() / 2.0);
             }
         }));
     }
