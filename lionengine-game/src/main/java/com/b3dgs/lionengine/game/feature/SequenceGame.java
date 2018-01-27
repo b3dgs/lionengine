@@ -87,14 +87,7 @@ public abstract class SequenceGame extends Sequence
                 SequenceGame.this.end(nextSequenceClass, arguments);
             }
         });
-        services.add(new ResolutionChanger()
-        {
-            @Override
-            public void setResolution(Resolution resolution)
-            {
-                SequenceGame.this.setResolution(resolution);
-            }
-        });
+        services.add((ResolutionChanger) resolution1 -> SequenceGame.this.setResolution(resolution1));
 
         world = services.add(creator.createWorld(context, services));
 
