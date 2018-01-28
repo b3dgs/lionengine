@@ -25,10 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.ActionRef;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Actionable;
@@ -46,7 +44,6 @@ import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.geom.Rectangle;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
@@ -136,14 +133,7 @@ public class Hud extends FeaturableModel
                 // Nothing to do
             }
         });
-        selector.addListener(new SelectionListener()
-        {
-            @Override
-            public void notifySelected(List<Selectable> selection)
-            {
-                createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection));
-            }
-        });
+        selector.addListener(selection -> createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection)));
         handler.add(selector);
 
         addFeature(new LayerableModel(services, setup));
@@ -164,26 +154,15 @@ public class Hud extends FeaturableModel
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), h, v);
         surface.prepare();
 
-        addFeature(new RefreshableModel(new Updatable()
+        addFeature(new RefreshableModel(extrp -> selector.update(extrp)));
+        addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void update(double extrp)
+            surface.render(g);
+            for (final Feature feature : getFeatures())
             {
-                selector.update(extrp);
-            }
-        }));
-        addFeature(new DisplayableModel(new Renderable()
-        {
-            @Override
-            public void render(Graphic g)
-            {
-                surface.render(g);
-                for (final Feature feature : getFeatures())
+                if (feature instanceof Renderable && !(feature instanceof Displayable))
                 {
-                    if (feature instanceof Renderable && !(feature instanceof Displayable))
-                    {
-                        ((Renderable) feature).render(g);
-                    }
+                    ((Renderable) feature).render(g);
                 }
             }
         }));
@@ -251,14 +230,10 @@ public class Hud extends FeaturableModel
      */
     private void generateSubMenu(final Collection<ActionRef> parents, final ActionRef action, Featurable menu)
     {
-        menu.getFeature(Actionable.class).setAction(new Action()
+        menu.getFeature(Actionable.class).setAction(() ->
         {
-            @Override
-            public void execute()
-            {
-                clearMenus();
-                createMenus(parents, action.getRefs());
-            }
+            clearMenus();
+            createMenus(parents, action.getRefs());
         });
     }
 
@@ -270,15 +245,11 @@ public class Hud extends FeaturableModel
      */
     private void generateCancel(final ActionRef action, Featurable menu)
     {
-        menu.getFeature(Actionable.class).setAction(new Action()
+        menu.getFeature(Actionable.class).setAction(() ->
         {
-            @Override
-            public void execute()
-            {
-                clearMenus();
-                final Collection<ActionRef> parents = previous.get(action);
-                createMenus(parents, parents);
-            }
+            clearMenus();
+            final Collection<ActionRef> parents = previous.get(action);
+            createMenus(parents, parents);
         });
     }
 
