@@ -65,27 +65,19 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     /** Selection listeners. */
     private final List<SelectionListener> listeners = new ArrayList<>();
     /** Void notify. */
-    private final Action check = new Action()
+    private final Action check = () ->
     {
-        @Override
-        public void notifySelection()
-        {
-            // Nothing to do
-        }
+        // Nothing to do
     };
     /** Void notify. */
-    private final Action notifyAll = new Action()
+    private final Action notifyAll = () ->
     {
-        @Override
-        public void notifySelection()
+        final int n = listeners.size();
+        for (int i = 0; i < n; i++)
         {
-            final int n = listeners.size();
-            for (int i = 0; i < n; i++)
-            {
-                listeners.get(i).notifySelected(selected);
-            }
-            notifyAction = check;
+            listeners.get(i).notifySelected(selected);
         }
+        notifyAction = check;
     };
     /** Notify action. */
     private Action notifyAction = check;
