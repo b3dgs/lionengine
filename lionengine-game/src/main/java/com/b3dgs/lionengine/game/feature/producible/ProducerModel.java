@@ -55,14 +55,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     /** Tick timer rate. */
     private final double desiredFps;
     /** Production checker. */
-    private ProducerChecker checker = new ProducerChecker()
-    {
-        @Override
-        public boolean checkProduction(Featurable featurable)
-        {
-            return true;
-        }
-    };
+    private ProducerChecker checker = featurable -> true;
     /** Steps per second. */
     private double stepsPerSecond;
     /** Current element being under production. */
