@@ -24,8 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -48,15 +46,11 @@ public class ComponentDisplayableTest
         final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services));
         layerable.prepare(object);
 
-        object.addFeature(new DisplayableModel(new Renderable()
+        object.addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void render(Graphic g)
+            if (object.getFeature(Identifiable.class).getId() != null)
             {
-                if (object.getFeature(Identifiable.class).getId() != null)
-                {
-                    last.set(object.getFeature(Identifiable.class).getId().intValue());
-                }
+                last.set(object.getFeature(Identifiable.class).getId().intValue());
             }
         }));
 
@@ -117,14 +111,7 @@ public class ComponentDisplayableTest
         final AtomicBoolean auto = new AtomicBoolean();
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new DisplayableModel(new Renderable()
-        {
-            @Override
-            public void render(Graphic g)
-            {
-                auto.set(true);
-            }
-        }));
+        featurable.addFeature(new DisplayableModel(g -> auto.set(true)));
         component.notifyHandlableAdded(featurable);
         component.render(null, null);
 
@@ -140,13 +127,9 @@ public class ComponentDisplayableTest
         final ComponentDisplayable component = new ComponentDisplayable();
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new DisplayableModel(new Renderable()
+        featurable.addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void render(Graphic g)
-            {
-                // Mock
-            }
+            // Mock
         }));
         component.notifyHandlableAdded(featurable);
 
