@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -47,15 +46,11 @@ public class ComponentRefreshableTest
         final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services));
         layerable.prepare(object);
 
-        object.addFeature(new RefreshableModel(new Updatable()
+        object.addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
+            if (object.getFeature(Identifiable.class).getId() != null)
             {
-                if (object.getFeature(Identifiable.class).getId() != null)
-                {
-                    last.set(object.getFeature(Identifiable.class).getId().intValue());
-                }
+                last.set(object.getFeature(Identifiable.class).getId().intValue());
             }
         }));
 
@@ -116,14 +111,7 @@ public class ComponentRefreshableTest
         final AtomicBoolean auto = new AtomicBoolean();
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new RefreshableModel(new Updatable()
-        {
-            @Override
-            public void update(double extrp)
-            {
-                auto.set(true);
-            }
-        }));
+        featurable.addFeature(new RefreshableModel(extrp -> auto.set(true)));
         component.notifyHandlableAdded(featurable);
         component.update(1.0, null);
 
@@ -139,13 +127,9 @@ public class ComponentRefreshableTest
         final ComponentRefreshable component = new ComponentRefreshable();
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new RefreshableModel(new Updatable()
+        featurable.addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
-            {
-                // Mock
-            }
+            // Mock
         }));
         component.notifyHandlableAdded(featurable);
 
