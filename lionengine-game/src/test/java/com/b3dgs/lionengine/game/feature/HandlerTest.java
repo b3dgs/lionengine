@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -229,16 +228,12 @@ public class HandlerTest
         final Handler handler = new Handler(new Services());
         final AtomicReference<Double> extrapolation = new AtomicReference<>();
         final AtomicReference<Featurable> updated = new AtomicReference<>();
-        handler.addComponent(new ComponentUpdater()
+        handler.addComponent((ComponentUpdater) (extrp, featurables) ->
         {
-            @Override
-            public void update(double extrp, Handlables featurables)
+            extrapolation.set(Double.valueOf(extrp));
+            for (final Featurable featurable : featurables.values())
             {
-                extrapolation.set(Double.valueOf(extrp));
-                for (final Featurable featurable : featurables.values())
-                {
-                    updated.set(featurable);
-                }
+                updated.set(featurable);
             }
         });
 
@@ -266,14 +261,8 @@ public class HandlerTest
     {
         final Handler handler = new Handler(new Services());
         final AtomicReference<Featurable> rendered = new AtomicReference<>();
-        handler.addComponent(new ComponentRenderer()
-        {
-            @Override
-            public void render(Graphic g, Handlables featurables)
-            {
-                rendered.set(featurables.values().iterator().next());
-            }
-        });
+        handler.addComponent((ComponentRenderer) (g,
+                                                  featurables) -> rendered.set(featurables.values().iterator().next()));
 
         Assert.assertNull(rendered.get());
 
@@ -297,17 +286,13 @@ public class HandlerTest
     public void testFeatures()
     {
         final Services services = new Services();
-        services.add(new LayerableListener()
+        services.add((LayerableListener) (provider,
+                                          layerRefreshOld,
+                                          layerRefreshNew,
+                                          layerDisplayOld,
+                                          layerDisplayNew) ->
         {
-            @Override
-            public void notifyLayerChanged(FeatureProvider provider,
-                                           Integer layerRefreshOld,
-                                           Integer layerRefreshNew,
-                                           Integer layerDisplayOld,
-                                           Integer layerDisplayNew)
-            {
-                // Mock
-            }
+            // Mock
         });
         final Handler handler = new Handler(services);
         final Featurable featurable = new ObjectFeatures();
