@@ -92,14 +92,7 @@ public class IdentifiableModelTest
     {
         final Identifiable identifiable = new IdentifiableModel();
         final AtomicBoolean destroyed = new AtomicBoolean();
-        final IdentifiableListener listener = new IdentifiableListener()
-        {
-            @Override
-            public void notifyDestroyed(Integer id)
-            {
-                destroyed.set(true);
-            }
-        };
+        final IdentifiableListener listener = id -> destroyed.set(true);
         identifiable.addListener(listener);
         identifiable.removeListener(listener);
         identifiable.destroy();
