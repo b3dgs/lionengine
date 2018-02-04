@@ -68,19 +68,11 @@ public class LayerableModelTest
         final AtomicReference<FeatureProvider> objectRef = new AtomicReference<>();
         final AtomicInteger oldLayerRef = new AtomicInteger();
         final AtomicInteger newLayerRef = new AtomicInteger();
-        layerable.addListener(new LayerableListener()
+        layerable.addListener((provider, layerRefreshOld, layerRefreshNew, layerDisplayOld, layerDisplayNew) ->
         {
-            @Override
-            public void notifyLayerChanged(FeatureProvider provider,
-                                           Integer layerRefreshOld,
-                                           Integer layerRefreshNew,
-                                           Integer layerDisplayOld,
-                                           Integer layerDisplayNew)
-            {
-                objectRef.set(provider);
-                oldLayerRef.set(layerRefreshOld.intValue());
-                newLayerRef.set(layerRefreshNew.intValue());
-            }
+            objectRef.set(provider);
+            oldLayerRef.set(layerRefreshOld.intValue());
+            newLayerRef.set(layerRefreshNew.intValue());
         });
 
         final Services services = new Services();
