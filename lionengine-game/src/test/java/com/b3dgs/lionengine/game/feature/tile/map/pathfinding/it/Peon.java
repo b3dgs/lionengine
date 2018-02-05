@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding.it;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
@@ -34,8 +33,6 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
@@ -71,30 +68,22 @@ class Peon extends FeaturableModel
         final Viewer viewer = services.get(Viewer.class);
         final Timing timing = new Timing();
 
-        addFeature(new RefreshableModel(new Updatable()
+        addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
-            {
-                pathfindable.update(extrp);
-                surface.setLocation(viewer, transformable);
+            pathfindable.update(extrp);
+            surface.setLocation(viewer, transformable);
 
-                if (timing.elapsed(500L))
-                {
-                    pathfindable.setDestination(18, 14);
-                    timing.stop();
-                }
+            if (timing.elapsed(500L))
+            {
+                pathfindable.setDestination(18, 14);
+                timing.stop();
             }
         }));
 
-        addFeature(new DisplayableModel(new Renderable()
+        addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void render(Graphic g)
-            {
-                pathfindable.render(g);
-                surface.render(g);
-            }
+            pathfindable.render(g);
+            surface.render(g);
         }));
 
         timing.start();

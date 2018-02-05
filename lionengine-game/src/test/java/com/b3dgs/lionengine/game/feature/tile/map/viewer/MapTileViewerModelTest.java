@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -68,14 +66,7 @@ public class MapTileViewerModelTest
     public void testViewer()
     {
         final AtomicBoolean rendered = new AtomicBoolean();
-        final MapTileRenderer renderer = new MapTileRenderer()
-        {
-            @Override
-            public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
-            {
-                rendered.set(true);
-            }
-        };
+        final MapTileRenderer renderer = (g, map, tile, x, y) -> rendered.set(true);
 
         final Graphic g = new GraphicMock();
 

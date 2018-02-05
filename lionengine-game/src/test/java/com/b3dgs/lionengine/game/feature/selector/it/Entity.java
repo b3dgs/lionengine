@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.feature.selector.it;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.FramesConfig;
@@ -44,8 +43,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
 /**
@@ -111,37 +108,29 @@ public class Entity extends FeaturableModel
 
         final Viewer viewer = services.get(Viewer.class);
 
-        addFeature(new RefreshableModel(new Updatable()
+        addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
-            {
-                pathfindable.update(extrp);
-                producer.update(extrp);
-                surface.setLocation(viewer, transformable);
-            }
+            pathfindable.update(extrp);
+            producer.update(extrp);
+            surface.setLocation(viewer, transformable);
         }));
 
         final Selectable selectable = addFeatureAndGet(new SelectableModel());
 
-        addFeature(new DisplayableModel(new Renderable()
+        addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void render(Graphic g)
+            surface.render(g);
+            collidable.render(g);
+            if (selectable.isSelected())
             {
-                surface.render(g);
-                collidable.render(g);
-                if (selectable.isSelected())
-                {
-                    g.setColor(ColorRgba.GREEN);
-                    g.drawRect(viewer,
-                               Origin.BOTTOM_LEFT,
-                               transformable.getX(),
-                               transformable.getY(),
-                               transformable.getWidth(),
-                               transformable.getHeight(),
-                               false);
-                }
+                g.setColor(ColorRgba.GREEN);
+                g.drawRect(viewer,
+                           Origin.BOTTOM_LEFT,
+                           transformable.getX(),
+                           transformable.getY(),
+                           transformable.getWidth(),
+                           transformable.getHeight(),
+                           false);
             }
         }));
     }

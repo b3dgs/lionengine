@@ -178,14 +178,7 @@ public class MapTileGameTest
         map.create(16, 16, 3, 3);
 
         final AtomicReference<Tile> set = new AtomicReference<>();
-        final TileSetListener listener = new TileSetListener()
-        {
-            @Override
-            public void onTileSet(Tile tile)
-            {
-                set.set(tile);
-            }
-        };
+        final TileSetListener listener = tile -> set.set(tile);
         map.addListener(listener);
 
         final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);

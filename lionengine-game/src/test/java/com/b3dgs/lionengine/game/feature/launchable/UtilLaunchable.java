@@ -148,14 +148,7 @@ public class UtilLaunchable
      */
     public static LauncherListener createListener(final AtomicBoolean fired)
     {
-        return new LauncherListener()
-        {
-            @Override
-            public void notifyFired()
-            {
-                fired.set(true);
-            }
-        };
+        return () -> fired.set(true);
     }
 
     /**
@@ -166,13 +159,6 @@ public class UtilLaunchable
      */
     public static LaunchableListener createListener(final AtomicReference<Launchable> firedLaunchable)
     {
-        return new LaunchableListener()
-        {
-            @Override
-            public void notifyFired(Launchable launchable)
-            {
-                firedLaunchable.set(launchable);
-            }
-        };
+        return launchable -> firedLaunchable.set(launchable);
     }
 }

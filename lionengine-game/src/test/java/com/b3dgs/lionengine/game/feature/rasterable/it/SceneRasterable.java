@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
@@ -43,7 +42,6 @@ import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
 import com.b3dgs.lionengine.game.feature.rasterable.RasterableModel;
 import com.b3dgs.lionengine.game.feature.rasterable.SetupSurfaceRastered;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -86,25 +84,14 @@ public class SceneRasterable extends Sequence
         final Rasterable rasterable = new RasterableModel(services, setup);
         rasterable.setOrigin(Origin.MIDDLE);
         featurable.addFeature(rasterable);
-        featurable.addFeature(new RefreshableModel(new Updatable()
+        featurable.addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
-            {
-                transformable.setLocationY(UtilMath.sin(count * 3) * 240);
-                surface.setLocation(camera, transformable);
-                rasterable.update(extrp);
-                surface.update(extrp);
-            }
+            transformable.setLocationY(UtilMath.sin(count * 3) * 240);
+            surface.setLocation(camera, transformable);
+            rasterable.update(extrp);
+            surface.update(extrp);
         }));
-        featurable.addFeature(new DisplayableModel(new Renderable()
-        {
-            @Override
-            public void render(Graphic g)
-            {
-                rasterable.render(g);
-            }
-        }));
+        featurable.addFeature(new DisplayableModel(g -> rasterable.render(g)));
 
         transformable.setLocationX(120);
         handler.add(featurable);

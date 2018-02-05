@@ -159,14 +159,7 @@ public class CollidableModelTest
     public void testDifferentSizes()
     {
         final AtomicBoolean auto = new AtomicBoolean();
-        collidable1.checkListener(new CollidableListener()
-        {
-            @Override
-            public void notifyCollided(Collidable collidable)
-            {
-                auto.set(true);
-            }
-        });
+        collidable1.checkListener((CollidableListener) collidable -> auto.set(true));
 
         collidable1.notifyCollided(collidable2);
         Assert.assertTrue(auto.get());

@@ -36,25 +36,18 @@ public class SequenceGameMock extends SequenceGame
      */
     public SequenceGameMock(Context context)
     {
-        super(context, new WorldCreator()
+        super(context, (context1, services) -> new WorldGame(context1)
         {
             @Override
-            public WorldGame createWorld(Context context, Services services)
+            protected void saving(FileWriting file) throws IOException
             {
-                return new WorldGame(context)
-                {
-                    @Override
-                    protected void saving(FileWriting file) throws IOException
-                    {
-                        // Mock
-                    }
+                // Mock
+            }
 
-                    @Override
-                    protected void loading(FileReading file) throws IOException
-                    {
-                        // Mock
-                    }
-                };
+            @Override
+            protected void loading(FileReading file) throws IOException
+            {
+                // Mock
             }
         });
     }

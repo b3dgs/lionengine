@@ -138,14 +138,7 @@ public class TileCollidableModelTest
      */
     private TileCollidableListener createListener(final AtomicReference<Tile> collided)
     {
-        return new TileCollidableListener()
-        {
-            @Override
-            public void notifyTileCollided(Tile tile, Axis axis)
-            {
-                collided.set(tile);
-            }
-        };
+        return (tile, axis) -> collided.set(tile);
     }
 
     /**

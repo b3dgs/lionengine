@@ -85,13 +85,6 @@ public class UtilAssignable
      */
     public static Assign createAssign(final AtomicBoolean assigned)
     {
-        return new Assign()
-        {
-            @Override
-            public void assign()
-            {
-                assigned.set(true);
-            }
-        };
+        return () -> assigned.set(true);
     }
 }

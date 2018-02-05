@@ -116,13 +116,6 @@ public class UtilActionnable
      */
     public static Action createAction(final AtomicBoolean executed)
     {
-        return new Action()
-        {
-            @Override
-            public void execute()
-            {
-                executed.set(true);
-            }
-        };
+        return () -> executed.set(true);
     }
 }
