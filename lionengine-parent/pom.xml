@@ -104,14 +104,6 @@
                 </pluginManagement>
             </build>
         </profile>
-        <profile>
-            <id>examples</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../lionengine-examples</module>
-                <module>../lionengine-tutorials</module>
-            </modules>
-        </profile>
     </profiles>
     <dependencyManagement>
         <dependencies>
