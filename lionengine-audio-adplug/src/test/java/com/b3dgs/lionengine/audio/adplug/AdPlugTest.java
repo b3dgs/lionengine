@@ -149,15 +149,21 @@ public class AdPlugTest
     @Test
     public void testAdPlug() throws InterruptedException
     {
-        adplug.setVolume(40);
-        adplug.play();
-        Thread.sleep(500);
-        adplug.pause();
-        Thread.sleep(500);
-        adplug.setVolume(60);
-        adplug.resume();
-        Thread.sleep(500);
-        adplug.stop();
+        try
+        {
+            adplug.setVolume(40);
+            adplug.play();
+            Thread.sleep(500);
+            adplug.pause();
+            Thread.sleep(500);
+            adplug.setVolume(60);
+            adplug.resume();
+            Thread.sleep(500);
+        }
+        finally
+        {
+            adplug.stop();
+        }
     }
 
     /**
@@ -168,23 +174,29 @@ public class AdPlugTest
     @Test
     public void testStress() throws InterruptedException
     {
-        adplug.play();
-        adplug.stop();
-        adplug.play();
-        Thread.sleep(Constant.HUNDRED);
-        adplug.stop();
-        adplug.play();
-        adplug.pause();
-        adplug.resume();
-        for (int i = 0; i < 5; i++)
+        try
         {
             adplug.play();
+            adplug.stop();
+            adplug.play();
             Thread.sleep(Constant.HUNDRED);
+            adplug.stop();
+            adplug.play();
+            adplug.pause();
+            adplug.resume();
+            for (int i = 0; i < 5; i++)
+            {
+                adplug.play();
+                Thread.sleep(Constant.HUNDRED);
+            }
+            Thread.sleep(250);
+            adplug.stop();
+            adplug.play();
         }
-        Thread.sleep(250);
-        adplug.stop();
-        adplug.play();
-        adplug.stop();
+        finally
+        {
+            adplug.stop();
+        }
     }
 
     /**

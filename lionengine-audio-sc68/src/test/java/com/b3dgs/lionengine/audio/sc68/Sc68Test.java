@@ -142,23 +142,29 @@ public class Sc68Test
     @Test
     public void testSc68() throws InterruptedException
     {
-        sc68.setStart(0L);
-        sc68.setLoop(0L, 0L);
+        try
+        {
+            sc68.setStart(0L);
+            sc68.setLoop(0L, 0L);
 
-        sc68.setVolume(15);
-        sc68.setConfig(true, false);
-        sc68.play();
-        Thread.sleep(500);
-        sc68.setConfig(false, false);
-        sc68.pause();
-        Thread.sleep(500);
-        sc68.setConfig(false, true);
-        sc68.setVolume(30);
-        sc68.resume();
-        Thread.sleep(500);
-        sc68.setConfig(true, true);
-        Assert.assertTrue(sc68.getTicks() >= 0);
-        sc68.stop();
+            sc68.setVolume(15);
+            sc68.setConfig(true, false);
+            sc68.play();
+            Thread.sleep(500);
+            sc68.setConfig(false, false);
+            sc68.pause();
+            Thread.sleep(500);
+            sc68.setConfig(false, true);
+            sc68.setVolume(30);
+            sc68.resume();
+            Thread.sleep(500);
+            sc68.setConfig(true, true);
+            Assert.assertTrue(sc68.getTicks() >= 0);
+        }
+        finally
+        {
+            sc68.stop();
+        }
     }
 
     /**
@@ -169,23 +175,29 @@ public class Sc68Test
     @Test
     public void testStress() throws InterruptedException
     {
-        sc68.play();
-        sc68.stop();
-        sc68.play();
-        Thread.sleep(Constant.HUNDRED);
-        sc68.stop();
-        sc68.play();
-        sc68.pause();
-        sc68.resume();
-        for (int i = 0; i < 5; i++)
+        try
         {
             sc68.play();
+            sc68.stop();
+            sc68.play();
             Thread.sleep(Constant.HUNDRED);
+            sc68.stop();
+            sc68.play();
+            sc68.pause();
+            sc68.resume();
+            for (int i = 0; i < 5; i++)
+            {
+                sc68.play();
+                Thread.sleep(Constant.HUNDRED);
+            }
+            Thread.sleep(250);
+            sc68.stop();
+            sc68.play();
         }
-        Thread.sleep(250);
-        sc68.stop();
-        sc68.play();
-        sc68.stop();
+        finally
+        {
+            sc68.stop();
+        }
     }
 
     /**
