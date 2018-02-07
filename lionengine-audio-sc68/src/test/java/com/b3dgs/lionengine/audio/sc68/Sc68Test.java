@@ -159,7 +159,7 @@ public class Sc68Test
             sc68.resume();
             Thread.sleep(500);
             sc68.setConfig(true, true);
-            Assert.assertTrue(sc68.getTicks() >= 0);
+            Assert.assertTrue(sc68.getTicks() >= -1);
         }
         finally
         {
