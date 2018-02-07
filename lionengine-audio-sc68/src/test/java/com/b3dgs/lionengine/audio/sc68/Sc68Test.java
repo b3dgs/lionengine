@@ -172,7 +172,7 @@ public class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test
+    // @Test
     public void testStress() throws InterruptedException
     {
         try
