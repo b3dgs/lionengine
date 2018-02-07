@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Raster>
-    <Red start="0x200000" step="-0x040000" force="60" amplitude="80" offset="10" type="0"/>
-    <Green start="0x000000" step="0x000001" force="10" amplitude="80" offset="10" type="0"/>
-    <Blue start="-0x000010" step="0x000005" force="60" amplitude="80" offset="10" type="0"/>
-</Raster>

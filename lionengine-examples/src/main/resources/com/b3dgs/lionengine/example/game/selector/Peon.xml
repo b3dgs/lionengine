@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.selector.Peon</lionengine:class>
-    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
-    <lionengine:surface image="Peon.png"/>
-    <lionengine:frames horizontal="15" vertical="9" offsetX="8" offsetY="8"/>
-    <lionengine:size width="16" height="16"/>
-</lionengine:object>

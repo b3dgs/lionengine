@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.production.BuildButton</lionengine:class>
-    <lionengine:surface image="BuildBarracks.png"/>
-    <lionengine:action name="Build Barracks" description="Build a Barracks" x="36" y="114" width="27" height ="19"/>
-    <media>Barracks.xml</media>
-</lionengine:skill>

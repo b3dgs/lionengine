@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.action.Button</lionengine:class>
-	<lionengine:surface image="Cancel.png"/>
-    <lionengine:action name="Cancel" description="Cancel" x="36" y="114" width="27" height ="19">
-        com.b3dgs.lionengine.example.game.action.ActionCancel
-    </lionengine:action>
-</lionengine:skill>

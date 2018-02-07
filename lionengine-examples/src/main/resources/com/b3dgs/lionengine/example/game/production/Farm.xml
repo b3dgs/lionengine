@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.production.Building</lionengine:class>
-    <lionengine:surface image="Farm.png"/>
-    <lionengine:size width="32" height="32"/>
-    <lionengine:producible steps="3"/>
-</lionengine:object>
