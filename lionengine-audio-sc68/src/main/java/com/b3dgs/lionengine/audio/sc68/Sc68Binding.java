@@ -62,6 +62,13 @@ interface Sc68Binding extends Library
     void Sc68Stop();
 
     /**
+     * Set track time start.
+     * 
+     * @param timeMilli The start time in millisecond.
+     */
+    void Sc68SetStart(int timeMilli);
+
+    /**
      * Get play index.
      * 
      * @return The play index.

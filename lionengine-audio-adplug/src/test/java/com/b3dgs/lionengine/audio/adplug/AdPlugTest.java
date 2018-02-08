@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
-import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilEnum;
@@ -48,25 +47,17 @@ import com.b3dgs.lionengine.util.UtilTests;
  */
 public class AdPlugTest
 {
-    /** Binding. */
-    private AdPlug adplug;
-    /** Media music. */
-    private Media music;
-
     /**
-     * Prepare tests.
+     * Create player.
+     * 
+     * @return The created player.
      */
-    @Before
-    public void prepare()
+    private static AdPlug createAdPlug()
     {
         try
         {
-            final AudioFormat<?> format = AdPlugFormat.getFailsafe();
-            AudioFactory.addFormat(format);
-            Medias.setLoadFromJar(AdPlugTest.class);
-            music = Medias.create("music.lds");
-            adplug = AudioFactory.loadAudio(music, AdPlug.class);
-            format.close();
+            final Media music = Medias.create("music.lds");
+            return AudioFactory.loadAudio(music, AdPlug.class);
         }
         catch (final LionEngineException exception)
         {
@@ -77,7 +68,18 @@ public class AdPlugTest
             final boolean skip = message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY)
                                  || message.contains(AudioFactory.ERROR_FORMAT);
             Assume.assumeFalse("AdPlug not supported on test machine - Test skipped", skip);
+            return null;
         }
+    }
+
+    /**
+     * Prepare tests.
+     */
+    @Before
+    public void prepare()
+    {
+        AudioFactory.addFormat(AdPlugFormat.getFailsafe());
+        Medias.setLoadFromJar(AdPlugTest.class);
     }
 
     /**
@@ -87,12 +89,13 @@ public class AdPlugTest
     public void cleanUp()
     {
         Medias.setLoadFromJar(null);
+        AudioFactory.clearFormats();
     }
 
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test(timeout = 1000, expected = LionEngineException.class)
     public void testNullArgument()
     {
         Assert.assertNotNull(AudioFactory.loadAudio(null, AdPlug.class));
@@ -124,41 +127,32 @@ public class AdPlugTest
     /**
      * Test with negative volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test(timeout = 1000, expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        adplug.setVolume(-1);
-        Assert.fail();
+        final AdPlug adplug = createAdPlug();
+        try
+        {
+            adplug.setVolume(-1);
+            Assert.fail();
+        }
+        finally
+        {
+            adplug.stop();
+        }
     }
 
     /**
      * Test with out of range volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test(timeout = 1000, expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        adplug.setVolume(101);
-        Assert.fail();
-    }
-
-    /**
-     * Test AdPlug sequence.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testAdPlug() throws InterruptedException
-    {
+        final AdPlug adplug = createAdPlug();
         try
         {
-            adplug.setVolume(40);
-            adplug.play();
-            Thread.sleep(500);
-            adplug.pause();
-            Thread.sleep(500);
-            adplug.setVolume(60);
-            adplug.resume();
-            Thread.sleep(500);
+            adplug.setVolume(101);
+            Assert.fail();
         }
         finally
         {
@@ -167,31 +161,20 @@ public class AdPlugTest
     }
 
     /**
-     * Test AdPlug stress.
+     * Test play sequence.
      * 
      * @throws InterruptedException If error.
      */
-    @Test
-    public void testStress() throws InterruptedException
+    @Test(timeout = 1000)
+    public void testPlay() throws InterruptedException
     {
+        final AdPlug adplug = createAdPlug();
         try
         {
+            adplug.setVolume(30);
             adplug.play();
-            adplug.stop();
-            adplug.play();
-            Thread.sleep(Constant.HUNDRED);
-            adplug.stop();
-            adplug.play();
-            adplug.pause();
-            adplug.resume();
-            for (int i = 0; i < 5; i++)
-            {
-                adplug.play();
-                Thread.sleep(Constant.HUNDRED);
-            }
-            Thread.sleep(250);
-            adplug.stop();
-            adplug.play();
+
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
@@ -200,13 +183,42 @@ public class AdPlugTest
     }
 
     /**
-     * Test Sc68 with outside media.
+     * Test pause sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(timeout = 1000)
+    public void testPause() throws InterruptedException
+    {
+        final AdPlug adplug = createAdPlug();
+        try
+        {
+            adplug.setVolume(30);
+            adplug.play();
+
+            UtilTests.pause(Constant.HUNDRED);
+
+            adplug.pause();
+            UtilTests.pause(Constant.BYTE_4);
+            adplug.resume();
+
+            UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            adplug.stop();
+        }
+    }
+
+    /**
+     * Test AdPlug with outside media.
      * 
      * @throws IOException If error.
      */
-    @Test
+    @Test(timeout = 1000)
     public void testOutsideMedia() throws IOException
     {
+        final Media music = Medias.create("music.lds");
         try (InputStream input = music.getInputStream())
         {
             Medias.setLoadFromJar(null);
@@ -218,11 +230,17 @@ public class AdPlugTest
                 UtilStream.copy(input, output);
             }
 
-            final Audio audio = AudioFactory.loadAudio(media);
-            audio.setVolume(50);
-            audio.play();
-            UtilTests.pause(100L);
-            audio.stop();
+            final Audio adplug = AudioFactory.loadAudio(media);
+            try
+            {
+                adplug.setVolume(50);
+                adplug.play();
+                UtilTests.pause(Constant.HUNDRED);
+            }
+            finally
+            {
+                adplug.stop();
+            }
 
             UtilFile.deleteFile(media.getFile());
         }

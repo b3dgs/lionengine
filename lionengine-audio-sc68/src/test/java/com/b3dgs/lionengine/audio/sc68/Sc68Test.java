@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
+import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilFile;
@@ -46,23 +47,17 @@ import com.b3dgs.lionengine.util.UtilTests;
  */
 public class Sc68Test
 {
-    /** Binding. */
-    private Sc68 sc68;
-    /** Media music. */
-    private Media music;
-
     /**
-     * Prepare tests.
+     * Create sc68 player.
+     * 
+     * @return The created player.
      */
-    @Before
-    public void prepare()
+    private static Sc68 createSc68()
     {
         try
         {
-            AudioFactory.addFormat(new Sc68Format());
-            Medias.setLoadFromJar(Sc68Test.class);
-            music = Medias.create("music.sc68");
-            sc68 = AudioFactory.loadAudio(music, Sc68.class);
+            final Media music = Medias.create("music.sc68");
+            return AudioFactory.loadAudio(music, Sc68.class);
         }
         catch (final LionEngineException exception)
         {
@@ -71,7 +66,18 @@ public class Sc68Test
             Assert.assertTrue(message, message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
             Assume.assumeFalse("Sc68 not supported on test machine - Test skipped",
                                message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
+            return null;
         }
+    }
+
+    /**
+     * Prepare tests.
+     */
+    @Before
+    public void prepare()
+    {
+        AudioFactory.addFormat(new Sc68Format());
+        Medias.setLoadFromJar(Sc68Test.class);
     }
 
     /**
@@ -87,7 +93,7 @@ public class Sc68Test
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test(timeout = 1000, expected = LionEngineException.class)
     public void testNullArgument()
     {
         Assert.assertNotNull(AudioFactory.loadAudio(null, Sc68.class));
@@ -98,7 +104,7 @@ public class Sc68Test
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testMissingLibrary() throws Exception
     {
         final Field field = Sc68Format.class.getDeclaredField("LIBRARY_NAME");
@@ -106,7 +112,9 @@ public class Sc68Test
         try
         {
             UtilEnum.setStaticFinal(field, "void");
-            Assert.assertNull(new Sc68Format());
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            Assert.assertEquals(AudioVoidFormat.class, Sc68Format.getFailsafe().getClass());
+            Verbose.info("****************************************************************************************");
         }
         finally
         {
@@ -117,49 +125,14 @@ public class Sc68Test
     /**
      * Test with negative volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test(timeout = 1000, expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        sc68.setVolume(-1);
-        Assert.fail();
-    }
-
-    /**
-     * Test with out of range volume.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testOutOfRangeVolume()
-    {
-        sc68.setVolume(101);
-        Assert.fail();
-    }
-
-    /**
-     * Test Sc68 sequence.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testSc68() throws InterruptedException
-    {
+        final Sc68 sc68 = createSc68();
         try
         {
-            sc68.setStart(0L);
-            sc68.setLoop(0L, 0L);
-
-            sc68.setVolume(15);
-            sc68.setConfig(true, false);
-            sc68.play();
-            Thread.sleep(500);
-            sc68.setConfig(false, false);
-            sc68.pause();
-            Thread.sleep(500);
-            sc68.setConfig(false, true);
-            sc68.setVolume(30);
-            sc68.resume();
-            Thread.sleep(500);
-            sc68.setConfig(true, true);
-            Assert.assertTrue(sc68.getTicks() >= -1);
+            sc68.setVolume(-1);
+            Assert.fail();
         }
         finally
         {
@@ -168,31 +141,172 @@ public class Sc68Test
     }
 
     /**
-     * Test Sc68 stress.
+     * Test with out of range volume.
+     */
+    @Test(timeout = 1000, expected = LionEngineException.class)
+    public void testOutOfRangeVolume()
+    {
+        final Sc68 sc68 = createSc68();
+        try
+        {
+            sc68.setVolume(101);
+            Assert.fail();
+        }
+        finally
+        {
+            sc68.stop();
+        }
+    }
+
+    /**
+     * Test play sequence.
      * 
      * @throws InterruptedException If error.
      */
-    // @Test
-    public void testStress() throws InterruptedException
+    @Test(timeout = 1000)
+    public void testPlay() throws InterruptedException
     {
+        final Sc68 sc68 = createSc68();
         try
         {
+            sc68.setVolume(30);
             sc68.play();
-            sc68.stop();
-            sc68.play();
-            Thread.sleep(Constant.HUNDRED);
-            sc68.stop();
-            sc68.play();
-            sc68.pause();
-            sc68.resume();
-            for (int i = 0; i < 5; i++)
+
+            while (sc68.getTicks() < 100)
             {
-                sc68.play();
-                Thread.sleep(Constant.HUNDRED);
+                continue;
             }
-            Thread.sleep(250);
+        }
+        finally
+        {
             sc68.stop();
+        }
+    }
+
+    /**
+     * Test start sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(timeout = 1000)
+    public void testStart() throws InterruptedException
+    {
+        final Sc68 sc68 = createSc68();
+        try
+        {
+            sc68.setVolume(30);
+            sc68.setStart(0);
             sc68.play();
+
+            while (sc68.getTicks() < 100)
+            {
+                continue;
+            }
+        }
+        finally
+        {
+            sc68.stop();
+        }
+    }
+
+    /**
+     * Test loop sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(timeout = 1000)
+    public void testLoop() throws InterruptedException
+    {
+        final Sc68 sc68 = createSc68();
+        try
+        {
+            sc68.setVolume(30);
+            sc68.setLoop(0, 100);
+            sc68.play();
+
+            while (sc68.getTicks() < 80)
+            {
+                continue;
+            }
+        }
+        finally
+        {
+            sc68.stop();
+        }
+    }
+
+    /**
+     * Test pause sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(timeout = 1000)
+    public void testPause() throws InterruptedException
+    {
+        final Sc68 sc68 = createSc68();
+        try
+        {
+            sc68.setVolume(30);
+            sc68.play();
+
+            while (sc68.getTicks() < 50)
+            {
+                continue;
+            }
+
+            sc68.pause();
+            UtilTests.pause(Constant.BYTE_4);
+            sc68.resume();
+
+            while (sc68.getTicks() < 100)
+            {
+                continue;
+            }
+        }
+        finally
+        {
+            sc68.stop();
+        }
+    }
+
+    /**
+     * Test the set configuration.
+     */
+    @Test(timeout = 1000)
+    public void testConfig()
+    {
+        final Sc68 sc68 = createSc68();
+        try
+        {
+            sc68.setVolume(30);
+            sc68.setConfig(false, false);
+
+            sc68.play();
+            while (sc68.getTicks() < 30)
+            {
+                continue;
+            }
+
+            sc68.setConfig(false, true);
+
+            while (sc68.getTicks() < 60)
+            {
+                continue;
+            }
+
+            sc68.setConfig(true, false);
+
+            while (sc68.getTicks() < 90)
+            {
+                continue;
+            }
+
+            sc68.setConfig(true, true);
+
+            while (sc68.getTicks() < 120)
+            {
+                continue;
+            }
         }
         finally
         {
@@ -205,9 +319,10 @@ public class Sc68Test
      * 
      * @throws IOException If error.
      */
-    @Test
+    @Test(timeout = 1000)
     public void testOutsideMedia() throws IOException
     {
+        final Media music = Medias.create("music.sc68");
         try (InputStream input = music.getInputStream())
         {
             Medias.setLoadFromJar(null);
@@ -220,10 +335,16 @@ public class Sc68Test
             }
 
             final Audio sc68 = AudioFactory.loadAudio(media);
-            sc68.setVolume(50);
-            sc68.play();
-            UtilTests.pause(100L);
-            sc68.stop();
+            try
+            {
+                sc68.setVolume(50);
+                sc68.play();
+                UtilTests.pause(Constant.HUNDRED);
+            }
+            finally
+            {
+                sc68.stop();
+            }
 
             UtilFile.deleteFile(media.getFile());
         }

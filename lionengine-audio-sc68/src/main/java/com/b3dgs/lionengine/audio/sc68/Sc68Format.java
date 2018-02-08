@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioFormat;
+import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
 
 /**
@@ -47,6 +48,24 @@ public final class Sc68Format implements AudioFormat<Sc68>
     static
     {
         LIBRARY_NAME = "sc68player";
+    }
+
+    /**
+     * Get the AdPlug library, or disabled format if not found.
+     * 
+     * @return The AdPlug audio format.
+     */
+    public static AudioFormat<?> getFailsafe()
+    {
+        try
+        {
+            return new Sc68Format();
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception, "Unable to load music library !");
+            return new AudioVoidFormat(FORMATS);
+        }
     }
 
     /**

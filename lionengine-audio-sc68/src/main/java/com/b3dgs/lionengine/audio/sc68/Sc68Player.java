@@ -123,7 +123,7 @@ final class Sc68Player implements Sc68
     @Override
     public void setStart(long tick)
     {
-        // Nothing to do
+        binding.Sc68SetStart((int) tick);
     }
 
     @Override
