@@ -95,7 +95,7 @@ public class AdPlugTest
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(timeout = 1000, expected = LionEngineException.class)
+    @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
         Assert.assertNotNull(AudioFactory.loadAudio(null, AdPlug.class));
@@ -127,7 +127,7 @@ public class AdPlugTest
     /**
      * Test with negative volume.
      */
-    @Test(timeout = 1000, expected = LionEngineException.class)
+    @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
         final AdPlug adplug = createAdPlug();
@@ -145,7 +145,7 @@ public class AdPlugTest
     /**
      * Test with out of range volume.
      */
-    @Test(timeout = 1000, expected = LionEngineException.class)
+    @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
         final AdPlug adplug = createAdPlug();
@@ -165,7 +165,7 @@ public class AdPlugTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testPlay() throws InterruptedException
     {
         final AdPlug adplug = createAdPlug();
@@ -187,7 +187,7 @@ public class AdPlugTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testPause() throws InterruptedException
     {
         final AdPlug adplug = createAdPlug();
@@ -215,7 +215,7 @@ public class AdPlugTest
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.lds");

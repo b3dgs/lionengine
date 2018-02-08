@@ -93,7 +93,7 @@ public class Sc68Test
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(timeout = 1000, expected = LionEngineException.class)
+    @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
         Assert.assertNotNull(AudioFactory.loadAudio(null, Sc68.class));
@@ -125,7 +125,7 @@ public class Sc68Test
     /**
      * Test with negative volume.
      */
-    @Test(timeout = 1000, expected = LionEngineException.class)
+    @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
         final Sc68 sc68 = createSc68();
@@ -143,7 +143,7 @@ public class Sc68Test
     /**
      * Test with out of range volume.
      */
-    @Test(timeout = 1000, expected = LionEngineException.class)
+    @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
         final Sc68 sc68 = createSc68();
@@ -163,7 +163,7 @@ public class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testPlay() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -188,7 +188,7 @@ public class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testStart() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -214,7 +214,7 @@ public class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testLoop() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -240,7 +240,7 @@ public class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testPause() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -272,7 +272,7 @@ public class Sc68Test
     /**
      * Test the set configuration.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testConfig()
     {
         final Sc68 sc68 = createSc68();
@@ -319,7 +319,7 @@ public class Sc68Test
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.sc68");
