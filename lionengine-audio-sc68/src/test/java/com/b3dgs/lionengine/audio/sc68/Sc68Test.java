@@ -169,13 +169,11 @@ public class Sc68Test
         final Sc68 sc68 = createSc68();
         try
         {
+            Assert.assertTrue(String.valueOf(sc68.getTicks()), sc68.getTicks() >= -1);
             sc68.setVolume(30);
             sc68.play();
 
-            while (sc68.getTicks() < 100)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
@@ -198,10 +196,7 @@ public class Sc68Test
             sc68.setStart(0);
             sc68.play();
 
-            while (sc68.getTicks() < 100)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
@@ -224,10 +219,7 @@ public class Sc68Test
             sc68.setLoop(0, 100);
             sc68.play();
 
-            while (sc68.getTicks() < 80)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
@@ -249,19 +241,13 @@ public class Sc68Test
             sc68.setVolume(30);
             sc68.play();
 
-            while (sc68.getTicks() < 50)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
 
             sc68.pause();
             UtilTests.pause(Constant.BYTE_4);
             sc68.resume();
 
-            while (sc68.getTicks() < 100)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
@@ -282,31 +268,19 @@ public class Sc68Test
             sc68.setConfig(false, false);
 
             sc68.play();
-            while (sc68.getTicks() < 30)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
 
             sc68.setConfig(false, true);
 
-            while (sc68.getTicks() < 60)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
 
             sc68.setConfig(true, false);
 
-            while (sc68.getTicks() < 90)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
 
             sc68.setConfig(true, true);
 
-            while (sc68.getTicks() < 120)
-            {
-                continue;
-            }
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
