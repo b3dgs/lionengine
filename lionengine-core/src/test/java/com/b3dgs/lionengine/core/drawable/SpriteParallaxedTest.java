@@ -72,6 +72,7 @@ public class SpriteParallaxedTest
     /**
      * Test parallax sprite.
      */
+    @SuppressWarnings("unlikely-arg-type")
     @Test
     public void testParallax()
     {

@@ -49,6 +49,7 @@ public final class DrawableTestTool
      * @param image The image reference.
      * @return The image info instance.
      */
+    @SuppressWarnings("unlikely-arg-type")
     public static ImageHeader assertImageInfoCorrect(Media media, Image image)
     {
         final ImageHeader info = ImageInfo.get(media);
