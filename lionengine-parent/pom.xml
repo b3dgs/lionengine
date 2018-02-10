@@ -39,7 +39,6 @@
                 <module>../lionengine-buildtools</module>
                 <module>../lionengine-core</module>
                 <module>../lionengine-core-awt</module>
-                <module>../lionengine-core-android</module>
                 <module>../lionengine-game</module>
                 <module>../lionengine-network</module>
                 <module>../lionengine-audio-wav</module>
