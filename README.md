@@ -1,6 +1,5 @@
 # LionEngine
-[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-9.0.0)](https://travis-ci.org/b3dgs/lionengine) ![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg) ![Lines of code](https://img.shields.io/badge/lines%20of%20code-49k-lightgrey.svg) 
-[![Maven Central](https://img.shields.io/badge/maven--central-8.4.1-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-9.0.0)](https://travis-ci.org/b3dgs/lionengine) [![Coverage](https://sonarcloud.io/api/badges/measure?key=com.b3dgs.lionengine:lionengine-parent:lionengine-9.0.0&metric=coverage)](https://sonarcloud.io/component_measures?id=com.b3dgs.lionengine:lionengine-parent:lionengine-9.0.0&metric=coverage) [![Lines of code](https://sonarcloud.io/api/badges/measure?key=com.b3dgs.lionengine:lionengine-parent:lionengine-9.0.0&metric=ncloc)](https://sonarcloud.io/component_measures?id=com.b3dgs.lionengine:lionengine-parent:lionengine-9.0.0&metric=ncloc) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core) [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 <table>
     <tr>
         <td>
@@ -32,12 +31,6 @@ Using Java 8 internal libraries, it is specifically designed for 2D games (no su
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Lds_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
-It supports __Android 7.0__ *(API 24)*.
-The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
-Everything else is fully compatible and does not require any changes.
-
-It includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
-
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
 <a href="http://lionengine.b3dgs.com/v8-4/page.php?lang=en&section=home"><img src="http://lionengine.b3dgs.com/v8-4/img/home/overview_en.png"/></a>
@@ -58,14 +51,6 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 * #### __lionengine-core-awt__
 >  * Engine implementation using __AWT__ from _JDK 8_
-
-
-* #### __lionengine-core-swt__
->  * Engine implementation by using __SWT 4.7.2__
-
-
-* #### __lionengine-core-android__
->  * Engine implementation using __Android 7.0 (API 24)__
 
 
 * #### __lionengine-game__
@@ -112,10 +97,6 @@ In its current version, the engine greatly simplifies the development of __Platf
 * #### __lionengine-audio-adplug__
 >  * Support for Loudness Sound music (AdPlug wrapper)
 
-* #### __lionengine-editor__
->  * Complete standalone editor which can be used in any project for general level edition
->  * Can be extended to perform more specific things
-
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)
@@ -126,50 +107,33 @@ In its current version, the engine greatly simplifies the development of __Platf
 Steps to include the __LionEngine__ in your project:
 
 1. Install at least the [Java JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-2. Install the [Android SDK 7.0](http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
-3. Choose your favourite IDE ([Eclipse](http://www.eclipse.org/downloads/), [Netbeans](https://netbeans.org/downloads/)...)
-4. Download the latest [LionEngine](http://lionengine.b3dgs.com/page.php?lang=en&section=downloads)
-5. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
+2. Choose your favourite IDE ([Eclipse](http://www.eclipse.org/downloads/), [Netbeans](https://netbeans.org/downloads/)...)
+3. Download the latest [LionEngine](http://lionengine.b3dgs.com/page.php?lang=en&section=downloads)
+4. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
     * __lionengine-core-awt__ _(uses_ __AWT__ _as graphic renderer, target for computer)_
-    * __lionengine-core-swt__ _(uses_ __SWT__ _as graphic renderer, target for computer)_
-    * __lionengine-core-android__ _(uses_ __Android 7.0__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
     * __lionengine-network__ _(support for network)_
     * __lionengine-audio-wav__ _(support for Wav sound)_
     * __lionengine-audio-midi__ _(support for Midi music)_
     * __lionengine-audio-sc68__ _(support for Sc68 Atari music)_
-	* __lionengine-audio-adplug__ _(support for LDS music)_
-6. Join (if you want) the javadoc for each library
-7. You are now ready to use the __LionEngine__ in your project
+    * __lionengine-audio-adplug__ _(support for LDS music)_
+5. You are now ready to use the __LionEngine__ in your project
 
 ## Getting Started
 
-Once you installed the __LionEngine__ in your project, you may would like to know how to prepare a quick sample as a first try.
+Once you installed the __LionEngine__ in your project, you may would like to know how to prepare a quick sample as a first try:s
 
 #### Main class
 
-* Using __lionengine-core-awt__ or __lionengine-core-swt__
+* Using __lionengine-core-awt__
 ```java
 public class AppSamplePc
 {
     public static void main(String[] args)
     {
         EngineAwt.start("Sample Project", Version.create(0, 1, 0), AppSamplePc.class);
-        Loader.start(Config.windowed(Scene.RESOLUTION.get2x()), Scene.class);
-    }
-}
-```
-
-* Using __lionengine-core-android__
-```java
-public class ActivitySample extends ActivityGame
-{
-    @Override
-    protected void start(Bundle bundle)
-    {
-        EngineAndroid.start("Sample Project", Version.create(0, 1, 0), this);
-        Loader.start(Config.fullscreen(Scene.RESOLUTION), Scene.class);
+        Loader.start(Config.windowed(Scene.NATIVE.get2x()), Scene.class);
     }
 }
 ```
@@ -178,11 +142,11 @@ public class ActivitySample extends ActivityGame
 ```java
 public class Scene extends Sequence
 {
-    public static final Resolution RESOLUTION = new Resolution(320, 240, 60);
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     public Scene(Context context)
     {
-        super(context, RESOLUTION);
+        super(context, NATIVE);
     }
 
     @Override
