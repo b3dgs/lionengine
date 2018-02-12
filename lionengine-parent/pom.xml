@@ -5,6 +5,8 @@
     <properties>
         <buildtools-project>lionengine-buildtools</buildtools-project>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
+        <sonar-branch>lionengine-9.0.0</sonar-branch>
+        <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
     </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
@@ -79,8 +81,8 @@
                                         <goal>prepare-agent</goal>
                                     </goals>
                                     <configuration>
-                                        <destFile>${project.basedir}/../jacoco-it.exec</destFile>
-                                        <dataFile>${project.basedir}/../jacoco-it.exec</dataFile>
+                                        <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+                                        <dataFile>${project.basedir}/../target/jacoco-it.exec</dataFile>
                                         <append>true</append>
                                     </configuration>
                                 </execution>
@@ -91,8 +93,8 @@
                                         <goal>report</goal>
                                     </goals>
                                     <configuration>
-                                        <destFile>${project.basedir}/../jacoco-it.exec</destFile>
-                                        <dataFile>${project.basedir}/../jacoco-it.exec</dataFile>
+                                        <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+                                        <dataFile>${project.basedir}/../target/jacoco-it.exec</dataFile>
                                         <append>true</append>
                                     </configuration>
                                 </execution>
@@ -100,6 +102,37 @@
                         </plugin>
                     </plugins>
                 </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>sonar</id>
+            <modules>
+                <module>../lionengine-core</module>
+                <module>../lionengine-core-awt</module>
+                <module>../lionengine-game</module>
+                <module>../lionengine-audio-sc68</module>
+                <module>../lionengine-audio-adplug</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                        <version>${sonar-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sonar-runner</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sonar</goal>
+                                </goals>
+                                <configuration>
+                                    <sonar.branch>${sonar-branch}</sonar.branch>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>
@@ -123,8 +156,8 @@
                                 <goal>prepare-agent</goal>
                             </goals>
                             <configuration>
-                                <destFile>${project.basedir}/../jacoco-ut.exec</destFile>
-                                <dataFile>${project.basedir}/../jacoco-ut.exec</dataFile>
+                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
+                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
                                 <append>true</append>
                             </configuration>
                         </execution>
@@ -135,8 +168,8 @@
                                 <goal>report</goal>
                             </goals>
                             <configuration>
-                                <destFile>${project.basedir}/../jacoco-ut.exec</destFile>
-                                <dataFile>${project.basedir}/../jacoco-ut.exec</dataFile>
+                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
+                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
                                 <append>true</append>
                             </configuration>
                         </execution>

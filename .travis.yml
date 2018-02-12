@@ -1,13 +1,21 @@
-sudo: false
 language: java
+
+jdk: oraclejdk8
+
+env:
+  global:
+    - AUDIODEV=null
+    - DISPLAY=:99.0
+
 install: true
+
 addons:
   sonarcloud:
-    organization: "djthunder-github"
+    organization: "b3dgs"
     token:
       secure: "TlhTTVsLiudrWdvXYpZ1wrl8PwTkkqh8WBpAnKE3eepekRTvqgYEMeHmDn+C5K0CaPqjy6Pc7aw4hUj/Vdp89nX6fZRnt+pI/PMTkTH2ujZY245TinhgeydV9WLVqt7OQRrQhL69bcBpFRrL8u9UxKVAindL0Ara+Z5UM3ho7SQ9WdEjE9I6IfNy0TC0po0zDc4cI+Hbz1lzLIlu1UQUV+JGbDPSOqYY2L6U7gYbGjJl2Vryi0W20kgqMHZKeaSYvGY/TmTWNN6Y41obMhytRQsAm21CBDETwtxOMWi9Wmo6loeoNKEhuo6wUZp2tTU5vSqHbOPf90Lx5XtJs3lu+wuRCiL0WHbUoR4ztXmoNvN5l71s4ccqrnub1zYEDrLdb62Y3LcbZcF7k148/gT2L/R9/4a/zOd8S5Qm1BjKdA2sgbAsk00LgciURDGTrL2FU4vrD4khXpD/PFn9PLz47jGInrHrXT3cWGIqwpV0k9f+Gd/pa/W6VUu+2b5vxmA5WJXwZJoAv+fFk8W5pCT3/tVcRAoAvUczjw10L6fJspEGOjWI1JshRcSXcdB1CAhwmW6Wg25JIuF2J6W6m9VOpF4v72HfqyTaxhsjBeHccX1hgNo2dOB7wKs6BKyQHiytorBWnTT09H8EuhaK4A+mt9gREcZ0aUtCZGWnTJkmDh8="
     branches:
-      - lionengine-9.0.0
+      - lionengine-editor-9.0.0
   apt:
     sources:
       - ubuntu-toolchain-r-test
@@ -15,25 +23,26 @@ addons:
       - libstdc++-5-dev
       - portaudio19-dev
       - libasound2-dev
-      - libasound-dev
-      - alsa-utils
-      - alsa-oss
-notifications:
-  email:
-    on_success: never
-    on_failure: change
+
+before_install:
+ - sudo apt-get update
+ - sudo apt-get install gnome-themes-standard
+ - sudo apt-get install metacity
+ - sudo apt-get install libwebkit-dev
+
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
-jdk:
-  - oraclejdk8
-env:
-  global:
-    - AUDIODEV=null
-    - DISPLAY=:99.0
-before_install:
-  - sh -e /etc/init.d/xvfb start - sleep 10
+
+before_script:
+ - sh -e /etc/init.d/xvfb start
+ - sleep 10
+ - metacity --sm-disable --replace &
+ - sleep 10
+
 script:
-  - cd lionengine-parent
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Pcore -Dsonar.organization=djthunder-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82 -Dgpg.skip=true -Dmaven.javadoc.skip=true
+  - export
+  - cd lionengine-editor-parent
+  - mvn clean install -Dgpg.skip=true -Dmaven.javadoc.skip=true
+  - mvn sonar:sonar -Psonar -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82 -Dgpg.skip=true -Dmaven.javadoc.skip=true
