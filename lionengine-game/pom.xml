@@ -17,6 +17,7 @@
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -28,6 +29,7 @@
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core-awt</artifactId>
+            <version>${project.version}</version>
             <optional>true</optional>
             <scope>test</scope>
         </dependency>
