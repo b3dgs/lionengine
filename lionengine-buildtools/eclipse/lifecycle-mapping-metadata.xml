@@ -17,5 +17,18 @@
                 <ignore></ignore>
             </action>
         </pluginExecution>
+		<pluginExecution>
+            <pluginExecutionFilter>
+                <groupId>com.b3dgs.radialencapsulation</groupId>
+                <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                <versionRange>[1.0.1,)</versionRange>
+                <goals>
+					<goal>radial-encapsulation</goal>
+                </goals>
+            </pluginExecutionFilter>
+            <action>
+                <ignore></ignore>
+            </action>
+        </pluginExecution>
     </pluginExecutions>
 </lifecycleMappingMetadata>
