@@ -47,7 +47,7 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
      */
     static
     {
-        LIBRARY_NAME = "adplugplayer";
+        LIBRARY_NAME = "adplug";
     }
 
     /**
@@ -79,7 +79,7 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
         Verbose.info("Load library: ", LIBRARY_NAME);
         try
         {
-            final AdPlugBinding binding = (AdPlugBinding) Native.loadLibrary(LIBRARY_NAME, AdPlugBinding.class);
+            final AdPlugBinding binding = Native.loadLibrary(LIBRARY_NAME, AdPlugBinding.class);
             Verbose.info("Library ", LIBRARY_NAME, " loaded");
             return binding;
         }
@@ -121,6 +121,6 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
     @Override
     public void close()
     {
-        // Nothing to do
+        bind.adplugStop();
     }
 }

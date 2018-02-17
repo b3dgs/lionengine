@@ -168,18 +168,38 @@ public class AdPlugTest
     @Test(timeout = 10000)
     public void testPlay() throws InterruptedException
     {
-        final AdPlug adplug = createAdPlug();
+        AdPlug adplug = createAdPlug();
         try
         {
             adplug.setVolume(30);
             adplug.play();
 
             UtilTests.pause(Constant.HUNDRED);
+
+            adplug.pause();
+
+            UtilTests.pause(Constant.HUNDRED);
+            adplug.resume();
+            UtilTests.pause(Constant.HUNDRED);
+
         }
         finally
         {
             adplug.stop();
         }
+
+        adplug = createAdPlug();
+
+        adplug.setVolume(30);
+        adplug.play();
+
+        UtilTests.pause(Constant.HUNDRED);
+
+        adplug.pause();
+
+        UtilTests.pause(Constant.HUNDRED);
+        adplug.resume();
+        UtilTests.pause(Constant.HUNDRED);
     }
 
     /**

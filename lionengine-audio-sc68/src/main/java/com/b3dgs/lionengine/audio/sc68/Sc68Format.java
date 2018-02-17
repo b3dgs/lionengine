@@ -47,7 +47,7 @@ public final class Sc68Format implements AudioFormat<Sc68>
      */
     static
     {
-        LIBRARY_NAME = "sc68player";
+        LIBRARY_NAME = "sc68";
     }
 
     /**
@@ -79,7 +79,7 @@ public final class Sc68Format implements AudioFormat<Sc68>
         try
         {
             Verbose.info("Load library: ", LIBRARY_NAME);
-            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(LIBRARY_NAME, Sc68Binding.class);
+            final Sc68Binding binding = Native.loadLibrary(LIBRARY_NAME, Sc68Binding.class);
             Verbose.info("Library ", LIBRARY_NAME, " loaded");
             return binding;
         }
@@ -121,6 +121,6 @@ public final class Sc68Format implements AudioFormat<Sc68>
     @Override
     public void close()
     {
-        // Nothing to do
+        bind.sc68Stop();
     }
 }

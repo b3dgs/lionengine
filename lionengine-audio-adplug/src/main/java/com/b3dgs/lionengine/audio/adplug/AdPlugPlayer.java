@@ -88,7 +88,7 @@ final class AdPlugPlayer implements AdPlug
     private void play(String track, String name)
     {
         Verbose.info(INFO_PLAYING, name);
-        binding.AdPlugPlay(track);
+        binding.adplugPlay(track);
     }
 
     /*
@@ -119,24 +119,24 @@ final class AdPlugPlayer implements AdPlug
         Check.superiorOrEqual(volume, 0);
         Check.inferiorOrEqual(volume, VOLUME_MAX);
 
-        binding.AdPlugSetVolume(volume);
+        binding.adplugSetVolume(volume);
     }
 
     @Override
     public void pause()
     {
-        binding.AdPlugPause();
+        binding.adplugPause();
     }
 
     @Override
     public void resume()
     {
-        binding.AdPlugResume();
+        binding.adplugResume();
     }
 
     @Override
     public void stop()
     {
-        binding.AdPlugStop();
+        binding.adplugStop();
     }
 }

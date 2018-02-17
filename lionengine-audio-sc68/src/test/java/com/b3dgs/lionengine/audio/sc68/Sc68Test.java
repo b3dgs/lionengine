@@ -189,7 +189,7 @@ public class Sc68Test
     @Test(timeout = 10000)
     public void testStart() throws InterruptedException
     {
-        final Sc68 sc68 = createSc68();
+        Sc68 sc68 = createSc68();
         try
         {
             sc68.setVolume(30);
@@ -202,6 +202,19 @@ public class Sc68Test
         {
             sc68.stop();
         }
+
+        sc68 = createSc68();
+
+        sc68.setVolume(30);
+        sc68.play();
+
+        UtilTests.pause(Constant.HUNDRED);
+
+        sc68.pause();
+
+        UtilTests.pause(Constant.HUNDRED);
+        sc68.resume();
+        UtilTests.pause(Constant.HUNDRED);
     }
 
     /**

@@ -89,7 +89,7 @@ final class Sc68Player implements Sc68
     private void play(String track, String name)
     {
         Verbose.info(INFO_PLAYING, name);
-        binding.Sc68Play(track);
+        binding.sc68Play(track);
     }
 
     /*
@@ -123,7 +123,7 @@ final class Sc68Player implements Sc68
     @Override
     public void setStart(long tick)
     {
-        binding.Sc68SetStart((int) tick);
+        binding.sc68SetStart((int) tick);
     }
 
     @Override
@@ -138,36 +138,36 @@ final class Sc68Player implements Sc68
         Check.superiorOrEqual(volume, 0);
         Check.inferiorOrEqual(volume, VOLUME_MAX);
 
-        binding.Sc68SetVolume(volume);
+        binding.sc68SetVolume(volume);
     }
 
     @Override
     public void setConfig(boolean interpolation, boolean joinStereo)
     {
-        binding.Sc68Config(UtilConversion.boolToInt(interpolation), UtilConversion.boolToInt(joinStereo));
+        binding.sc68Config(UtilConversion.boolToInt(interpolation), UtilConversion.boolToInt(joinStereo));
     }
 
     @Override
     public void pause()
     {
-        binding.Sc68Pause();
+        binding.sc68Pause();
     }
 
     @Override
     public void resume()
     {
-        binding.Sc68Resume();
+        binding.sc68Resume();
     }
 
     @Override
     public void stop()
     {
-        binding.Sc68Stop();
+        binding.sc68Stop();
     }
 
     @Override
     public long getTicks()
     {
-        return binding.Sc68Seek();
+        return binding.sc68Seek();
     }
 }

@@ -29,27 +29,27 @@ interface AdPlugBinding extends Library
      * 
      * @param name The track name.
      */
-    void AdPlugPlay(String name);
+    void adplugPlay(String name);
 
     /**
      * Set volume.
      * 
      * @param volume The value.
      */
-    void AdPlugSetVolume(int volume);
+    void adplugSetVolume(int volume);
 
     /**
      * Pause track.
      */
-    void AdPlugPause();
+    void adplugPause();
 
     /**
      * Resume track.
      */
-    void AdPlugResume();
+    void adplugResume();
 
     /**
      * Stop track.
      */
-    void AdPlugStop();
+    void adplugStop();
 }
