@@ -10,6 +10,9 @@
     <artifactId>lionengine-core-awt</artifactId>
     <packaging>jar</packaging>
     <name>LionEngine Core AWT</name>
+    <properties>
+        <radial.base-package>com.b3dgs.lionengine.core</radial.base-package>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -24,9 +27,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <properties>
-        <radial.base-package>com.b3dgs.lionengine.core</radial.base-package>
-    </properties>
     <build>
         <plugins>
             <plugin>
