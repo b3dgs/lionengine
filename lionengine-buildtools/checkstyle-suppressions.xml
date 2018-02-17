@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN" "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
     <!-- Core -->
@@ -12,16 +11,6 @@
     <!-- AWT -->
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="370"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.awt.swing.combo.UtilSwing"/>
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.awt.swing.Theme" lines="81"/>
-    <!-- SWT -->
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="420"/>
-    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt"/>
-    <!-- Android -->
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.android.ToolsAndroid"/>
     <!-- Game -->
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel" lines="248"/>
@@ -42,26 +31,6 @@
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.network.ClientImpl" lines="501"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ServerImpl" lines="175, 254, 329"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="367"/>
-    <!-- AdPlug -->
-    <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.adplug.AdPlugBinding"/>
-    <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.adplug.AdPlugBinding"/>
     <!-- Sc68 -->
-    <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
-    <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
-    <!-- Editor -->
-    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.map.group.menu.GroupsAssignDialog"/>
-    <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
-    <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
-    <suppress checks="LineLength" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
-    <suppress checks="TrailingComment" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
-    <suppress checks="MissingCtor" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
-    <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.test[\\/]"/>
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.map.test[\\/]"/>
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.object.test[\\/]"/>
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.editor.animation.test[\\/]"/>
-    <!-- Extra -->
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.example[\\/]"/>
-    <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.tutorials[\\/]"/>
+    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.audio.sc68.Sc68Format"/>
 </suppressions>
