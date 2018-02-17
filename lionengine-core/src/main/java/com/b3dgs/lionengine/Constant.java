@@ -67,13 +67,13 @@ public final class Constant
     /** Jar type. */
     public static final String TYPE_JAR = ".jar";
     /** One megabyte. */
-    public static final int MEGA_BYTE = 1048576;
+    public static final int MEGA_BYTE = 1_048_576;
     /** Maximum port value. */
-    public static final int MAX_PORT = 65535;
+    public static final int MAX_PORT = 65_535;
     /** Maximum degree value (excluded). */
     public static final int MAX_DEGREE = 360;
     /** Thousand. */
-    public static final int THOUSAND = 1000;
+    public static final int THOUSAND = 1_000;
     /** Hundred. */
     public static final int HUNDRED = 100;
     /** Decade. */
@@ -93,11 +93,11 @@ public final class Constant
     /** Half value. */
     public static final double HALF = 0.5;
     /** One second in milli. */
-    public static final long ONE_SECOND_IN_MILLI = 1000L;
+    public static final long ONE_SECOND_IN_MILLI = 1_000L;
     /** One second in nano. */
-    public static final long ONE_SECOND_IN_NANO = 1000000000L;
+    public static final long ONE_SECOND_IN_NANO = 1_000_000_000L;
     /** Nano to milli. */
-    public static final double NANO_TO_MILLI = 1000000.0;
+    public static final double NANO_TO_MILLI = 1_000_000.0;
     /** Error system property. */
     private static final String ERROR_PROPERTY = "Unable to get system property: ";
 
@@ -117,7 +117,7 @@ public final class Constant
         }
         catch (final SecurityException exception)
         {
-            final StringBuilder builder = new StringBuilder();
+            final StringBuilder builder = new StringBuilder(Constant.HUNDRED);
             builder.append(ERROR_PROPERTY)
                    .append(property)
                    .append(" (")

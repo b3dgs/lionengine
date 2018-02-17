@@ -48,7 +48,7 @@ package com.b3dgs.lionengine;
 public final class Timing
 {
     /** Nano millisecond. */
-    private static final long NANO_TO_MILLI = 1000000L;
+    private static final long NANO_TO_MILLI = 1_000_000L;
 
     /**
      * Get the system time.
