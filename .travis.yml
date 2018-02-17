@@ -20,7 +20,7 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - libstdc++-5-dev
+      - libstdc++5
       - portaudio19-dev
       - libasound2-dev
 
