@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
-import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.audio.Audio;
 
@@ -33,21 +32,6 @@ public interface Sc68 extends Audio
      * @param joinStereo <code>true</code> to join stereo, <code>false</code> else.
      */
     void setConfig(boolean interpolation, boolean joinStereo);
-
-    /**
-     * Play the audio.
-     * <p>
-     * The audio will be played from the beginning (can be set by {@link #setStart(long)}) until the end.
-     * </p>
-     * <p>
-     * In case of a loop, audio will be played in loop between the set ticks using {@link #setLoop(long, long)}.
-     * </p>
-     * 
-     * @param alignment The sound alignment.
-     * @param loop <code>true</code> to play in loop, <code>false</code> else.
-     * @throws LionEngineException If unable to play sound.
-     */
-    void play(Align alignment, boolean loop);
 
     /**
      * Set starting tick (starting audio position).

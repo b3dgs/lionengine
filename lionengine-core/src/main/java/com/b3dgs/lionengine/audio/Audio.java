@@ -24,11 +24,6 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public interface Audio
 {
-    /** Minimum volume value. */
-    int VOLUME_MIN = 0;
-    /** Maximum volume value. */
-    int VOLUME_MAX = 100;
-
     /**
      * Play the audio.
      * <p>
@@ -42,8 +37,8 @@ public interface Audio
     /**
      * Set the midi volume.
      * 
-     * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
-     * @throws LionEngineException If argument is invalid or midi not available.
+     * @param volume The volume in percent between included range <code>[0 - 100]</code>.
+     * @throws LionEngineException If invalid argument.
      */
     void setVolume(int volume);
 

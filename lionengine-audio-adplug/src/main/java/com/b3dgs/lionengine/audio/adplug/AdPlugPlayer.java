@@ -17,51 +17,18 @@
  */
 package com.b3dgs.lionengine.audio.adplug;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.util.UtilStream;
+import com.b3dgs.lionengine.audio.AbstractPlayer;
 
 /**
  * AdPlug player implementation.
  */
-final class AdPlugPlayer implements AdPlug
+final class AdPlugPlayer extends AbstractPlayer implements AdPlug
 {
-    /** Info playing. */
-    private static final String INFO_PLAYING = "Playing track: ";
-
-    /**
-     * Extract music from jar to temp file.
-     * 
-     * @param media The music media.
-     * @return The path of temp file.
-     */
-    private static String extractFromJar(Media media)
-    {
-        try (InputStream input = media.getInputStream())
-        {
-            final File file = UtilStream.getCopy(media.getFile().getName(), input);
-            file.deleteOnExit();
-            return file.getAbsolutePath();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /** Media reference. */
-    private final Media media;
     /** Binding reference. */
     private final AdPlugBinding binding;
-    /** Music cache. */
-    private String cache;
 
     /**
      * Internal constructor.
@@ -72,23 +39,11 @@ final class AdPlugPlayer implements AdPlug
      */
     AdPlugPlayer(Media media, AdPlugBinding binding)
     {
-        Check.notNull(media);
+        super(media);
+
         Check.notNull(binding);
 
-        this.media = media;
         this.binding = binding;
-    }
-
-    /**
-     * Play the track.
-     * 
-     * @param track The track path.
-     * @param name The track name.
-     */
-    private void play(String track, String name)
-    {
-        Verbose.info(INFO_PLAYING, name);
-        binding.adplugPlay(track);
     }
 
     /*
@@ -96,21 +51,9 @@ final class AdPlugPlayer implements AdPlug
      */
 
     @Override
-    public void play()
+    protected void play(String track)
     {
-        final String name = media.getPath();
-        if (Medias.getResourcesLoader() != null)
-        {
-            if (cache == null)
-            {
-                cache = extractFromJar(media);
-            }
-            play(cache, name);
-        }
-        else
-        {
-            play(media.getFile().getAbsolutePath(), name);
-        }
+        binding.adplugPlay(track);
     }
 
     @Override

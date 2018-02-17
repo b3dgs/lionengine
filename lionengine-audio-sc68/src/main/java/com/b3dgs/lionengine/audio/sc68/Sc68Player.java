@@ -17,52 +17,19 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.audio.AbstractPlayer;
 import com.b3dgs.lionengine.util.UtilConversion;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * SC68 player implementation.
  */
-final class Sc68Player implements Sc68
+final class Sc68Player extends AbstractPlayer implements Sc68
 {
-    /** Info playing. */
-    private static final String INFO_PLAYING = "Playing SC68 track: ";
-
-    /**
-     * Extract music from jar to temp file.
-     * 
-     * @param media The music media.
-     * @return The path of temp file.
-     */
-    private static String extractFromJar(Media media)
-    {
-        try (InputStream input = media.getInputStream())
-        {
-            final File file = UtilStream.getCopy(media.getFile().getName(), input);
-            return file.getAbsolutePath();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /** Media reference. */
-    private final Media media;
     /** Binding reference. */
     private final Sc68Binding binding;
-    /** Music cache. */
-    private String cache;
 
     /**
      * Internal constructor.
@@ -73,23 +40,11 @@ final class Sc68Player implements Sc68
      */
     Sc68Player(Media media, Sc68Binding binding)
     {
-        Check.notNull(media);
+        super(media);
+
         Check.notNull(binding);
 
-        this.media = media;
         this.binding = binding;
-    }
-
-    /**
-     * Play the track.
-     * 
-     * @param track The track path.
-     * @param name The track name.
-     */
-    private void play(String track, String name)
-    {
-        Verbose.info(INFO_PLAYING, name);
-        binding.sc68Play(track);
     }
 
     /*
@@ -97,27 +52,9 @@ final class Sc68Player implements Sc68
      */
 
     @Override
-    public void play()
+    protected void play(String track)
     {
-        play(Align.CENTER, true);
-    }
-
-    @Override
-    public void play(Align alignment, boolean loop)
-    {
-        final String name = media.getPath();
-        if (Medias.getResourcesLoader() != null)
-        {
-            if (cache == null)
-            {
-                cache = extractFromJar(media);
-            }
-            play(cache, name);
-        }
-        else
-        {
-            play(media.getFile().getAbsolutePath(), name);
-        }
+        binding.sc68Play(track);
     }
 
     @Override

@@ -24,6 +24,7 @@ import java.util.Collections;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
@@ -54,11 +55,11 @@ public final class AdlMidiFormat implements AudioFormat<AdlMidi>
     }
 
     /**
-     * Get the AdlMidi library, or disabled format if not found.
+     * Get the AdlMidi library, or void format if not found.
      * 
      * @return The AdlMidi audio format.
      */
-    public static AudioFormat<?> getFailsafe()
+    public static AudioFormat<? extends Audio> getFailsafe()
     {
         try
         {
@@ -66,7 +67,7 @@ public final class AdlMidiFormat implements AudioFormat<AdlMidi>
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception, "Unable to load music library !");
+            Verbose.exception(exception, ERROR_LOAD_LIBRARY);
             return new AudioVoidFormat(FORMATS);
         }
     }
