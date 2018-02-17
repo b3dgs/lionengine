@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Media;
 
@@ -35,9 +35,9 @@ public class AudioVoidFormat implements AudioFormat<AudioVoid>
      * 
      * @param formats Associated files type.
      */
-    public AudioVoidFormat(String... formats)
+    public AudioVoidFormat(Collection<String> formats)
     {
-        this.formats = Arrays.asList(formats);
+        this.formats = Collections.unmodifiableCollection(formats);
     }
 
     @Override

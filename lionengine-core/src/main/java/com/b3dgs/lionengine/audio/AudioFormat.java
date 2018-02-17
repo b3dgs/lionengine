@@ -39,7 +39,7 @@ public interface AudioFormat<T extends Audio>
     T loadAudio(Media media);
 
     /**
-     * Get the music audio formats.
+     * Get the music audio formats as read only.
      * 
      * @return The audio music formats.
      */

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.audio;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -71,7 +72,7 @@ public class AudioFactoryTest
     @Test
     public void testLoadAudio()
     {
-        AudioFactory.addFormat(new AudioVoidFormat("png"));
+        AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
 
         Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png")));
         Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png"), Audio.class));
@@ -102,7 +103,7 @@ public class AudioFactoryTest
     @Test
     public void testClearFormats()
     {
-        AudioFactory.addFormat(new AudioVoidFormat("png"));
+        AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
 
         Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png")));
 
@@ -135,7 +136,7 @@ public class AudioFactoryTest
             Assert.assertNotNull(exception);
         }
 
-        final AudioFormat<AudioVoid> format = new AudioVoidFormat("png");
+        final AudioFormat<AudioVoid> format = new AudioVoidFormat(Arrays.asList("png"));
         AudioFactory.addFormat(format);
 
         final Audio audio = AudioFactory.loadAudio(Medias.create("image.png"));

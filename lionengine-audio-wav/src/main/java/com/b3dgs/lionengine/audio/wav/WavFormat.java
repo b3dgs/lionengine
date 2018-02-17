@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio.wav;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,12 +35,8 @@ public final class WavFormat implements AudioFormat<Wav>
 {
     /** Channels handler. */
     private static final ExecutorService EXECUTOR;
-
     /** Audio extensions. */
-    private static final String[] FORMATS =
-    {
-        "wav", "wave"
-    };
+    private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("wav", "wave"));
 
     /** Custom mixer, <code>null</code> for default. */
     static volatile Mixer.Info mixer;
@@ -83,7 +80,7 @@ public final class WavFormat implements AudioFormat<Wav>
     @Override
     public Collection<String> getFormats()
     {
-        return Arrays.asList(FORMATS);
+        return FORMATS;
     }
 
     @Override

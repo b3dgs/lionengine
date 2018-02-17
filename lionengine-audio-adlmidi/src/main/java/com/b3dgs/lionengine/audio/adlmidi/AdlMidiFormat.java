@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio.adlmidi;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -36,11 +37,13 @@ public final class AdlMidiFormat implements AudioFormat<AdlMidi>
     public static final String ERROR_LOAD_LIBRARY = "Error on loading Library: ";
     /** Standard library name. */
     private static final String LIBRARY_NAME;
-    /** Audio extensions. */
-    private static final String[] FORMATS =
-    {
-        "xmi", "midi", "mdi", "rmi", "imf", "mus"
-    };
+    /** Audio extensions as read only. */
+    private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("xmi",
+                                                                                                       "midi",
+                                                                                                       "mdi",
+                                                                                                       "rmi",
+                                                                                                       "imf",
+                                                                                                       "mus"));
 
     /**
      * Specific case to not inline for test purpose.
@@ -115,7 +118,7 @@ public final class AdlMidiFormat implements AudioFormat<AdlMidi>
     @Override
     public Collection<String> getFormats()
     {
-        return Arrays.asList(FORMATS);
+        return FORMATS;
     }
 
     @Override
