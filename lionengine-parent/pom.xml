@@ -85,9 +85,9 @@
                 <module>../lionengine-game</module>
                 <module>../lionengine-network</module>
                 <module>../lionengine-audio-wav</module>
-                <module>../lionengine-audio-midi</module>
-                <module>../lionengine-audio-sc68</module>
+                <module>../lionengine-audio-adlmidi</module>
                 <module>../lionengine-audio-adplug</module>
+                <module>../lionengine-audio-sc68</module>
             </modules>
         </profile>
         <profile>
@@ -154,6 +154,7 @@
                 <module>../lionengine-game</module>
                 <module>../lionengine-audio-sc68</module>
                 <module>../lionengine-audio-adplug</module>
+                <module>../lionengine-audio-adlmidi</module>
             </modules>
             <build>
                 <plugins>

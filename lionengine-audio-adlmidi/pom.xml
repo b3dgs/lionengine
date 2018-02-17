@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.b3dgs.lionengine</groupId>
+        <artifactId>lionengine-parent</artifactId>
+        <version>9.0.0-SNAPSHOT</version>
+        <relativePath>../lionengine-parent</relativePath>
+    </parent>
+    <artifactId>lionengine-audio-adlmidi</artifactId>
+    <packaging>jar</packaging>
+    <name>LionEngine Audio AdlMidi</name>
+    <properties>
+        <radial.base-package>com.b3dgs.lionengine.audio</radial.base-package>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>4.5.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.groupId}.audio.adlmidi</Bundle-SymbolicName>
+                        <Import-Package>
+                            *,
+                            com.b3dgs.lionengine.test.util;resolution:=optional
+                        </Import-Package>
+                        <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
