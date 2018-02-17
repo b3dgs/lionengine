@@ -1,9 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <radial.base-package>com.b3dgs.lionengine.core</radial.base-package>
-    </properties>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
@@ -11,8 +8,8 @@
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-core-awt</artifactId>
-    <name>LionEngine Core AWT</name>
     <packaging>jar</packaging>
+    <name>LionEngine Core AWT</name>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -27,6 +24,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <properties>
+        <radial.base-package>com.b3dgs.lionengine.core</radial.base-package>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -35,7 +35,10 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core.awt</Bundle-SymbolicName>
-                        <Import-Package>*, com.b3dgs.lionengine.test;resolution:=optional</Import-Package>
+                        <Import-Package>
+                            *,
+                            com.b3dgs.lionengine.test;resolution:=optional
+                        </Import-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>

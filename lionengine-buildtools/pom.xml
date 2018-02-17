@@ -8,6 +8,6 @@
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-buildtools</artifactId>
-    <name>LionEngine Build Tools</name>
     <packaging>jar</packaging>
+    <name>LionEngine Build Tools</name>
 </project>

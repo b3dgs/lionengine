@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <buildtools-project>lionengine-buildtools</buildtools-project>
-        <radial.base-package>com.b3dgs.lionengine</radial.base-package>
-        <sonar-branch>lionengine-9.0.0</sonar-branch>
-        <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
-    </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
@@ -15,8 +9,8 @@
     </parent>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
-    <packaging>pom</packaging>
     <version>9.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
@@ -30,6 +24,54 @@
         <system>TravisCI</system>
         <url>https://travis-ci.org/b3dgs/lionengine</url>
     </ciManagement>
+    <properties>
+        <buildtools-project>lionengine-buildtools</buildtools-project>
+        <radial.base-package>com.b3dgs.lionengine</radial.base-package>
+        <sonar-branch>lionengine-9.0.0</sonar-branch>
+        <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
+    </properties>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <id>jacoco-initialize</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
+                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
+                                <append>true</append>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>jacoco-site</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
+                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
+                                <append>true</append>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <id>core</id>
@@ -136,46 +178,4 @@
             </build>
         </profile>
     </profiles>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.version}</version>
-                    <executions>
-                        <execution>
-                            <id>jacoco-initialize</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
-                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
-                                <append>true</append>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>jacoco-site</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
-                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
-                                <append>true</append>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

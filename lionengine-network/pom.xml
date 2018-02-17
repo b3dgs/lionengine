@@ -8,8 +8,8 @@
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-network</artifactId>
-    <name>LionEngine Network</name>
     <packaging>jar</packaging>
+    <name>LionEngine Network</name>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
