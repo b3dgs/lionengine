@@ -803,7 +803,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         {
             return categories.get(category).getCost();
         }
-        throw new LionEngineException(ERROR_CATEGORY, category);
+        throw new LionEngineException(ERROR_CATEGORY + category);
     }
 
     @Override
@@ -813,7 +813,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         {
             return categories.get(category).getAllowedMovements().contains(movement);
         }
-        throw new LionEngineException(ERROR_CATEGORY, category);
+        throw new LionEngineException(ERROR_CATEGORY + category);
     }
 
     @Override

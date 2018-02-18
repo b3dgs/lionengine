@@ -128,7 +128,7 @@ public final class UtilStream
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_TEMP_FILE, name);
+            throw new LionEngineException(exception, ERROR_TEMP_FILE + name);
         }
     }
 

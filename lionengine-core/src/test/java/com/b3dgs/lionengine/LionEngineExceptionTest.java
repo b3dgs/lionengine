@@ -133,10 +133,46 @@ public class LionEngineExceptionTest
     public void testLionEngineExceptionWithMedia()
     {
         stream.println("testLionEngineExceptionWithMedia");
+        try
+        {
+            throw new LionEngineException(Medias.create("media"));
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace(stream);
+        }
+        stream.println();
+    }
+
+    /**
+     * Test the exception with a media as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithMediaMessage()
+    {
+        stream.println("testLionEngineExceptionWithMediaMessage");
         final String message = "Exception test";
         try
         {
             throw new LionEngineException(Medias.create("media"), message);
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace(stream);
+        }
+        stream.println();
+    }
+
+    /**
+     * Test the exception with a media as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithMediaException()
+    {
+        stream.println("testLionEngineExceptionWithMediaException");
+        try
+        {
+            throw new LionEngineException(new RuntimeException(), Medias.create("media"));
         }
         catch (final LionEngineException exception)
         {

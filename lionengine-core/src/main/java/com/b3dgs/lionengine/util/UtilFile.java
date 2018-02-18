@@ -137,7 +137,7 @@ public final class UtilFile
                 return Arrays.asList(files);
             }
         }
-        throw new LionEngineException(ERROR_DIRECTORY, directory.getPath());
+        throw new LionEngineException(ERROR_DIRECTORY + directory.getPath());
     }
 
     /**
@@ -180,7 +180,7 @@ public final class UtilFile
 
         if (!file.delete())
         {
-            throw new LionEngineException(ERROR_DELETE_FILE, file.getAbsolutePath());
+            throw new LionEngineException(ERROR_DELETE_FILE + file.getAbsolutePath());
         }
     }
 

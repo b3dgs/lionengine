@@ -58,12 +58,12 @@ public final class CollisionFunctionConfig
                 case LINEAR:
                     return new CollisionFunctionLinear(node.readDouble(A), node.readDouble(B));
                 default:
-                    throw new LionEngineException(ERROR_TYPE, name);
+                    throw new LionEngineException(ERROR_TYPE + name);
             }
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_TYPE, name);
+            throw new LionEngineException(exception, ERROR_TYPE + name);
         }
     }
 

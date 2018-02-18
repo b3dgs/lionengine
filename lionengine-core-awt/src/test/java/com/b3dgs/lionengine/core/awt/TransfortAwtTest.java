@@ -54,6 +54,6 @@ public class TransfortAwtTest extends TransformTest
         {
             return AffineTransformOp.TYPE_BILINEAR;
         }
-        throw new LionEngineException("Unknown interpolation: ", String.valueOf(value));
+        throw new LionEngineException("Unknown interpolation: " + String.valueOf(value));
     }
 }

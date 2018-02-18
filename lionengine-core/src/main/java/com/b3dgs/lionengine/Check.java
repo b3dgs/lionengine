@@ -306,7 +306,7 @@ public final class Check
      */
     private static LionEngineException argumentError(int a, int b, String message)
     {
-        return new LionEngineException(ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
+        return new LionEngineException(ERROR_ARGUMENT + String.valueOf(a) + message + String.valueOf(b));
     }
 
     /**
@@ -319,7 +319,7 @@ public final class Check
      */
     private static LionEngineException argumentError(double a, double b, String message)
     {
-        return new LionEngineException(ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
+        return new LionEngineException(ERROR_ARGUMENT + String.valueOf(a) + message + String.valueOf(b));
     }
 
     /**

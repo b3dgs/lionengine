@@ -107,7 +107,7 @@ public class FeaturableModel implements Featurable
         }
         catch (final ClassNotFoundException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE, className);
+            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
         }
     }
 
@@ -229,17 +229,14 @@ public class FeaturableModel implements Featurable
                 }
                 else
                 {
-                    throw new LionEngineException(media, ERROR_CLASS_PRESENCE, String.valueOf(type));
+                    throw new LionEngineException(media, ERROR_CLASS_PRESENCE + String.valueOf(type));
                 }
             }
         }
         catch (final IllegalAccessException exception)
         {
             throw new LionEngineException(exception,
-                                          ERROR_INJECT,
-                                          type.getSimpleName(),
-                                          Constant.SLASH,
-                                          field.getName());
+                                          ERROR_INJECT + type.getSimpleName() + Constant.SLASH + field.getName());
         }
     }
 

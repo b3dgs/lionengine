@@ -115,6 +115,18 @@ public class ImageTest
             // Success
             Assert.assertNotNull(exception);
         }
+        try
+        {
+            final Image image = Drawable.loadImage(media);
+            image.load();
+            image.load();
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+            Assert.assertNotNull(exception);
+        }
     }
 
     /**

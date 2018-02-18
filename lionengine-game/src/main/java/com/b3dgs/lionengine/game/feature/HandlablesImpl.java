@@ -195,7 +195,7 @@ final class HandlablesImpl implements Handlables
         {
             return featurable;
         }
-        throw new LionEngineException(ERROR_FEATURABLE_NOT_FOUND, String.valueOf(id));
+        throw new LionEngineException(ERROR_FEATURABLE_NOT_FOUND + String.valueOf(id));
     }
 
     @Override

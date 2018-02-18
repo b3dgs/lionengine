@@ -83,7 +83,7 @@ public final class Sc68Format implements AudioFormat
         }
         catch (final LinkageError exception)
         {
-            throw new LionEngineException(exception, ERROR_LOAD_LIBRARY, LIBRARY_NAME);
+            throw new LionEngineException(exception, ERROR_LOAD_LIBRARY + LIBRARY_NAME);
         }
     }
 

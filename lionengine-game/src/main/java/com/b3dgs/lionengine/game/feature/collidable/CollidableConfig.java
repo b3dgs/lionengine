@@ -53,7 +53,7 @@ public final class CollidableConfig
             }
             catch (final NumberFormatException exception)
             {
-                throw new LionEngineException(exception, ERROR_INVALID_GROUP, group);
+                throw new LionEngineException(exception, ERROR_INVALID_GROUP + group);
             }
         }
         return DEFAULT_GROUP;

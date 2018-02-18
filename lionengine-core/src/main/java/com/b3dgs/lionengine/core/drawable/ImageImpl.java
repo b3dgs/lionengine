@@ -100,7 +100,11 @@ class ImageImpl implements Image
     {
         if (surface != null)
         {
-            throw new LionEngineException(media, ERROR_ALREADY_LOADED);
+            if (media != null)
+            {
+                throw new LionEngineException(media, ERROR_ALREADY_LOADED);
+            }
+            throw new LionEngineException(ERROR_ALREADY_LOADED);
         }
         surface = Graphics.getImageBuffer(media);
     }

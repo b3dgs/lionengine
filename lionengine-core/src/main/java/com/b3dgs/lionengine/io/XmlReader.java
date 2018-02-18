@@ -139,7 +139,7 @@ public class XmlReader
         {
             return root.getAttribute(attribute);
         }
-        throw new LionEngineException(ERROR_ATTRIBUTE, attribute);
+        throw new LionEngineException(ERROR_ATTRIBUTE + attribute);
     }
 
     /**

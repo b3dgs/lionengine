@@ -408,27 +408,27 @@ public class Configurer
         }
         catch (final InstantiationException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE, className);
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE, className);
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
         }
         catch (final InvocationTargetException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE, className);
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
         }
         catch (final NoSuchMethodException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR, className);
+            throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR + className);
         }
         catch (final IllegalAccessException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_ACCESSIBILITY, className);
+            throw new LionEngineException(exception, ERROR_CLASS_ACCESSIBILITY + className);
         }
         catch (final ClassNotFoundException exception)
         {
-            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE, className);
+            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
         }
     }
 

@@ -89,7 +89,7 @@ public class Setup extends Configurer
             }
             catch (final ClassNotFoundException exception)
             {
-                throw new LionEngineException(exception, Setup.ERROR_CLASS, getMedia().getPath());
+                throw new LionEngineException(exception, Setup.ERROR_CLASS + getMedia().getPath());
             }
         }
         return (Class<T>) clazz;

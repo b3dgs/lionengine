@@ -499,7 +499,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         {
             return formulas.get(name);
         }
-        throw new LionEngineException(ERROR_FORMULA, name);
+        throw new LionEngineException(ERROR_FORMULA + name);
     }
 
     @Override
@@ -509,7 +509,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         {
             return groups.get(name);
         }
-        throw new LionEngineException(ERROR_FORMULA, name);
+        throw new LionEngineException(ERROR_FORMULA + name);
     }
 
     @Override

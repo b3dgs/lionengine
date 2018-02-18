@@ -126,7 +126,7 @@ public final class CollisionCategoryConfig
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_AXIS, axisName);
+            throw new LionEngineException(exception, ERROR_AXIS + axisName);
         }
         final int x = root.readInteger(X);
         final int y = root.readInteger(Y);

@@ -65,7 +65,7 @@ public final class UtilZip
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_OPEN_ZIP, jar.getAbsolutePath());
+            throw new LionEngineException(exception, ERROR_OPEN_ZIP + jar.getAbsolutePath());
         }
     }
 

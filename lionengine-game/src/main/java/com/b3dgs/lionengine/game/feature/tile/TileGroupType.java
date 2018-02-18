@@ -51,7 +51,7 @@ public enum TileGroupType
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_TYPE_NAME, name);
+            throw new LionEngineException(exception, ERROR_TYPE_NAME + name);
         }
     }
 }

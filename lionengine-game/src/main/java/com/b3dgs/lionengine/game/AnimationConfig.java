@@ -163,7 +163,7 @@ public final class AnimationConfig
         final Animation animation = animations.get(name);
         if (animation == null)
         {
-            throw new LionEngineException("Animation not found: ", name);
+            throw new LionEngineException("Animation not found: " + name);
         }
         return animation;
     }

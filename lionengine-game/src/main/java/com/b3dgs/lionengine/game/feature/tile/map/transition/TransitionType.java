@@ -102,7 +102,7 @@ public enum TransitionType
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_TRANSITION_NAME, name);
+            throw new LionEngineException(exception, ERROR_TRANSITION_NAME + name);
         }
     }
 

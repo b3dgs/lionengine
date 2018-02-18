@@ -108,7 +108,7 @@ public enum CircuitType
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_CIRCUIT_NAME, name);
+            throw new LionEngineException(exception, ERROR_CIRCUIT_NAME + name);
         }
     }
 

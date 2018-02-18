@@ -203,6 +203,6 @@ public class Services
         {
             return service.cast(this);
         }
-        throw new LionEngineException(ERROR_SERVICE_GET, service.getName());
+        throw new LionEngineException(ERROR_SERVICE_GET + service.getName());
     }
 }

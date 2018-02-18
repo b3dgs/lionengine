@@ -149,7 +149,7 @@ public class Xml extends XmlReader
         }
         catch (final DOMException exception)
         {
-            throw new LionEngineException(exception, ERROR_WRITE_ATTRIBUTE, attribute, ERROR_WRITE_CONTENT, content);
+            throw new LionEngineException(exception, ERROR_WRITE_ATTRIBUTE + attribute + ERROR_WRITE_CONTENT + content);
         }
     }
 
@@ -386,7 +386,7 @@ public class Xml extends XmlReader
                 return new Xml(document, (Element) node);
             }
         }
-        throw new LionEngineException(ERROR_NODE, name);
+        throw new LionEngineException(ERROR_NODE + name);
     }
 
     /**

@@ -19,9 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Special engine exception implementation which limit the trace to the user side.
- * <p>
- * This class is Thread-Safe.
- * </p>
  */
 public final class LionEngineException extends RuntimeException
 {
@@ -38,21 +35,23 @@ public final class LionEngineException extends RuntimeException
      * Get formatted message with media.
      * 
      * @param media The media reference.
-     * @param messages The messages to concatenate.
      * @return The formatted message.
      */
-    private static String getMessage(Media media, String... messages)
+    private static String getMessage(Media media)
     {
-        final StringBuilder builder = new StringBuilder();
-        if (media != null)
-        {
-            builder.append('[').append(media.getPath()).append("] ");
-        }
-        for (final String message : messages)
-        {
-            builder.append(message);
-        }
-        return builder.toString();
+        return new StringBuilder(Constant.BYTE_4).append('[').append(media.getPath()).append("] ").toString();
+    }
+
+    /**
+     * Get formatted message with media.
+     * 
+     * @param media The media reference.
+     * @param message The message to concatenate.
+     * @return The formatted message.
+     */
+    private static String getMessage(Media media, String message)
+    {
+        return new StringBuilder(getMessage(media)).append(message).toString();
     }
 
     /**
@@ -71,24 +70,34 @@ public final class LionEngineException extends RuntimeException
     }
 
     /**
-     * Create an exception with messages if has.
+     * Create an exception with message.
      * 
-     * @param messages The exception message(s).
+     * @param message The exception message.
      */
-    public LionEngineException(String... messages)
+    public LionEngineException(String message)
     {
-        this(null, null, messages);
+        super(message);
     }
 
     /**
-     * Create an exception related to a media and messages if has.
+     * Create an exception with media.
      * 
-     * @param messages The exception message(s).
-     * @param media The media error source.
+     * @param media The media reference.
      */
-    public LionEngineException(Media media, String... messages)
+    public LionEngineException(Media media)
     {
-        this(null, media, messages);
+        super(getMessage(media));
+    }
+
+    /**
+     * Create an exception related to a media and messages.
+     * 
+     * @param media The media error source.
+     * @param message The exception message.
+     */
+    public LionEngineException(Media media, String message)
+    {
+        super(getMessage(media, message));
     }
 
     /**
@@ -98,29 +107,50 @@ public final class LionEngineException extends RuntimeException
      */
     public LionEngineException(Enum<?> type)
     {
-        this(ERROR_UNKNOWN_ENUM, getEnumName(type));
+        super(ERROR_UNKNOWN_ENUM + getEnumName(type));
     }
 
     /**
-     * Create an exception related to another exception and messages if has.
+     * Create an exception related to another exception.
      * 
      * @param exception The exception reference.
-     * @param messages The exception message(s).
      */
-    public LionEngineException(Throwable exception, String... messages)
+    public LionEngineException(Throwable exception)
     {
-        this(exception, null, messages);
+        super(exception);
     }
 
     /**
-     * Create an exception related to an existing exception and a media, plus additional messages if has.
+     * Create an exception related to another exception and message.
+     * 
+     * @param exception The exception reference.
+     * @param message The exception message.
+     */
+    public LionEngineException(Throwable exception, String message)
+    {
+        super(message, exception);
+    }
+
+    /**
+     * Create an exception related to an existing exception and a media.
      * 
      * @param exception The exception reference.
      * @param media The media error source.
-     * @param messages The exception message(s).
      */
-    public LionEngineException(Throwable exception, Media media, String... messages)
+    public LionEngineException(Throwable exception, Media media)
     {
-        super(getMessage(media, messages), exception);
+        super(getMessage(media), exception);
+    }
+
+    /**
+     * Create an exception related to an existing exception and a media, plus additional message.
+     * 
+     * @param exception The exception reference.
+     * @param media The media error source.
+     * @param message The exception message.
+     */
+    public LionEngineException(Throwable exception, Media media, String message)
+    {
+        super(getMessage(media, message), exception);
     }
 }

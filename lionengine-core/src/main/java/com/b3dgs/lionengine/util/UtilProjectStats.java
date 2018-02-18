@@ -166,7 +166,7 @@ public final class UtilProjectStats
 
         if (files == null)
         {
-            throw new LionEngineException(ERROR_DIR, dirName);
+            throw new LionEngineException(ERROR_DIR + dirName);
         }
         for (final File current : files)
         {

@@ -147,7 +147,7 @@ public final class CollisionConfig
         {
             return collisions.get(name);
         }
-        throw new LionEngineException(ERROR_COLLISION_NOT_FOUND, name);
+        throw new LionEngineException(ERROR_COLLISION_NOT_FOUND + name);
     }
 
     /**

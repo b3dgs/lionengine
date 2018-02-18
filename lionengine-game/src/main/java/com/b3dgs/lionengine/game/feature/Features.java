@@ -82,7 +82,7 @@ public class Features
                     return feature.cast(current);
                 }
             }
-            throw new LionEngineException(ERROR_FEATURE_NOT_FOUND, feature.getName());
+            throw new LionEngineException(ERROR_FEATURE_NOT_FOUND + feature.getName());
         }
         return value;
     }

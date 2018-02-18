@@ -293,8 +293,10 @@ public class MapTileGame extends FeaturableModel implements MapTile
 
         if (map.getTileWidth() != getTileWidth() || map.getTileHeight() != getTileHeight())
         {
-            throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE,
-                                          map.getTileWidth() + Constant.SPACE + getTileHeight());
+            throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE
+                                          + map.getTileWidth()
+                                          + Constant.SPACE
+                                          + getTileHeight());
         }
 
         final int newWidth = Math.max(widthInTile, widthInTile - (widthInTile - offsetX) + map.getInTileWidth());
@@ -329,8 +331,10 @@ public class MapTileGame extends FeaturableModel implements MapTile
             }
             else if (tw != map.getTileWidth() || th != map.getTileHeight())
             {
-                throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE,
-                                              map.getTileWidth() + Constant.SPACE + map.getTileHeight());
+                throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE
+                                              + map.getTileWidth()
+                                              + Constant.SPACE
+                                              + map.getTileHeight());
             }
 
             i++;
@@ -499,7 +503,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     {
         if (!sheets.containsKey(sheet))
         {
-            throw new LionEngineException(ERROR_SHEET_MISSING, sheet.toString());
+            throw new LionEngineException(ERROR_SHEET_MISSING + sheet.toString());
         }
         return sheets.get(sheet);
     }

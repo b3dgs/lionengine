@@ -69,7 +69,7 @@ public final class Medias
         {
             return factoryMedia.create(separator, resourcesDir, path);
         }
-        throw new LionEngineException(ERROR_CREATE, UtilFolder.getPath(path));
+        throw new LionEngineException(ERROR_CREATE + UtilFolder.getPath(path));
     }
 
     /**

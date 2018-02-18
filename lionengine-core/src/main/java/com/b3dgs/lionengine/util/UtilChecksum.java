@@ -130,7 +130,7 @@ public final class UtilChecksum
         }
         catch (final NoSuchAlgorithmException exception)
         {
-            throw new LionEngineException(exception, ERROR_ALGORITHM, algorithm);
+            throw new LionEngineException(exception, ERROR_ALGORITHM + algorithm);
         }
     }
 

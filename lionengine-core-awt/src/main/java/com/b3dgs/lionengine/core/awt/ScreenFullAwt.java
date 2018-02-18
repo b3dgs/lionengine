@@ -96,9 +96,9 @@ final class ScreenFullAwt extends ScreenBaseAwt
                                                              output.getRate()));
         if (disp == null)
         {
-            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN,
-                                          formatResolution(output, depth),
-                                          getSupportedResolutions());
+            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN
+                                          + formatResolution(output, depth)
+                                          + getSupportedResolutions());
         }
         if (!dev.isDisplayChangeSupported())
         {
