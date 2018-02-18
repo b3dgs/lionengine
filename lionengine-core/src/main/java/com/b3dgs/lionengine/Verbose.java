@@ -20,9 +20,10 @@ package com.b3dgs.lionengine;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Locale;
@@ -84,8 +85,6 @@ public enum Verbose
                                            + "-"
                                            + LOG_NUM
                                            + ".log";
-    /** Separator date. */
-    private static final String SEPARATOR_DATE = " - ";
     /** In. */
     private static final String IN = "in ";
     /** At. */
@@ -255,8 +254,18 @@ public enum Verbose
      */
     private static final class VerboseFormatter extends Formatter
     {
-        /** Date formatter. */
-        private final DateFormat format = DateFormat.getInstance();
+        private static final int DATE_LENGTH = 23;
+        private static final int LOG_LEVEL_LENGTH = 7;
+        private static final DateTimeFormatter DATE_TIME_FORMAT;
+
+        static
+        {
+            DATE_TIME_FORMAT = new DateTimeFormatterBuilder().parseCaseInsensitive()
+                                                             .append(DateTimeFormatter.ISO_LOCAL_DATE)
+                                                             .appendLiteral(Constant.SPACE)
+                                                             .append(DateTimeFormatter.ISO_LOCAL_TIME)
+                                                             .toFormatter(Locale.ENGLISH);
+        }
 
         /**
          * Internal constructor.
@@ -272,9 +281,23 @@ public enum Verbose
             final String clazz = event.getSourceClassName();
             final String function = event.getSourceMethodName();
             final Throwable thrown = event.getThrown();
-            final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(Constant.DOUBLE_DOT);
+            final StringBuilder message = new StringBuilder(Constant.HUNDRED);
 
-            message.append(format.format(Calendar.getInstance().getTime())).append(SEPARATOR_DATE);
+            final String date = LocalDateTime.now().format(DATE_TIME_FORMAT);
+            message.append(date);
+            for (int i = date.length(); i < DATE_LENGTH; i++)
+            {
+                message.append(Constant.SPACE);
+            }
+            message.append(Constant.SPACE);
+
+            final String logLevel = event.getLevel().getName();
+            for (int i = logLevel.length(); i < LOG_LEVEL_LENGTH; i++)
+            {
+                message.append(Constant.SPACE);
+            }
+            message.append(logLevel).append(Constant.DOUBLE_DOT);
+
             if (clazz != null)
             {
                 message.append(IN).append(clazz);
