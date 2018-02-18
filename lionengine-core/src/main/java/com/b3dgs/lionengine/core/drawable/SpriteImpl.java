@@ -314,7 +314,8 @@ class SpriteImpl implements Sprite
                 }
                 final int alphaKey = 0x00ffffff;
                 final int mc = Math.abs(alpha) << Constant.BYTE_4 | alphaKey;
-                surface.setRgb(cx, cy, UtilColor.inc(rgb[cx][cy], fade + alpha, fade + alpha, fade + alpha) & mc);
+                final int color = fade + alpha;
+                surface.setRgb(cx, cy, UtilColor.inc(rgb[cx][cy], color, color, color) & mc);
             }
         }
         firstAlpha = false;
