@@ -74,7 +74,7 @@ public final class TileGroupsConfig
      * @param groups The groups to export.
      * @throws LionEngineException If unable to write to media.
      */
-    public static void exports(Media groupsConfig, Collection<TileGroup> groups)
+    public static void exports(Media groupsConfig, Iterable<TileGroup> groups)
     {
         final Xml nodeGroups = new Xml(NODE_GROUPS);
         nodeGroups.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);

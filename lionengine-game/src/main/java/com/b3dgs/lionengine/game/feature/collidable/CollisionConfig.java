@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
+import com.b3dgs.lionengine.io.XmlReader;
 
 /**
  * Represents the collisions data from a configurer.
@@ -76,7 +77,7 @@ public final class CollisionConfig
      * @return The collision instance.
      * @throws LionEngineException If error when reading collision data.
      */
-    public static Collision createCollision(Xml node)
+    public static Collision createCollision(XmlReader node)
     {
         final String name = node.readString(COLLISION_NAME);
         final int offsetX = node.readInteger(COLLISION_OFFSETX);

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
+import com.b3dgs.lionengine.io.XmlReader;
 
 /**
  * Represents the collision range from a configurer node.
@@ -50,7 +51,7 @@ public final class CollisionRangeConfig
      * @return The collision range data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionRange imports(Xml node)
+    public static CollisionRange imports(XmlReader node)
     {
         final String axisName = node.readString(AXIS);
         try

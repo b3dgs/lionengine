@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
+import com.b3dgs.lionengine.io.XmlReader;
 
 /**
  * Represents the animations data from a configurer node.
@@ -92,7 +93,7 @@ public final class AnimationConfig
      * @return The animation instance.
      * @throws LionEngineException If error when reading animation data.
      */
-    public static Animation createAnimation(Xml node)
+    public static Animation createAnimation(XmlReader node)
     {
         final String name = node.readString(ANIMATION_NAME);
         final int start = node.readInteger(ANIMATION_START);

@@ -202,7 +202,7 @@ public class Xml extends XmlReader
      * @param node The child node.
      * @throws LionEngineException If error when adding the node.
      */
-    public void add(Xml node)
+    public void add(XmlReader node)
     {
         final Element element = node.getElement();
         document.adoptNode(element);

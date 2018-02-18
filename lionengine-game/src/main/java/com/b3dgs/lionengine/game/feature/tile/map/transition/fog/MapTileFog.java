@@ -120,7 +120,7 @@ public class MapTileFog
      * 
      * @param fovables The entities reference.
      */
-    public void update(Collection<Fovable> fovables)
+    public void update(Iterable<Fovable> fovables)
     {
         for (final Fovable fovable : fovables)
         {

@@ -142,7 +142,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      * 
      * @param featurable The featurable to remove.
      */
-    public final void remove(Featurable featurable)
+    public final void remove(FeatureProvider featurable)
     {
         toDelete.add(featurable.getFeature(Identifiable.class).getId());
         willDelete = true;
