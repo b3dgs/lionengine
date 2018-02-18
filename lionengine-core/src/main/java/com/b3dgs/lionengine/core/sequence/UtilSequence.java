@@ -40,7 +40,7 @@ public final class UtilSequence
      * @return The sequence instance.
      * @throws LionEngineException If not able to create the sequence for any reason.
      */
-    public static Sequence create(Class<? extends Sequencable> nextSequence, Context context, Object... arguments)
+    public static Sequencable create(Class<? extends Sequencable> nextSequence, Context context, Object... arguments)
     {
         Check.notNull(nextSequence);
         Check.notNull(context);

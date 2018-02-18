@@ -109,7 +109,7 @@ public class Factory implements HandlerListener
             return (O) featurable;
         }
         final Setup setup = getSetup(media);
-        final Class<?> type = setup.getConfigClass(classLoader);
+        final Class<O> type = setup.getConfigClass(classLoader);
         try
         {
             return createFeaturable(type, setup);
@@ -191,6 +191,7 @@ public class Factory implements HandlerListener
      * @param media The media reference.
      * @return The setup instance.
      */
+    @SuppressWarnings("unchecked")
     private Setup createSetup(Media media)
     {
         final Configurer configurer = new Configurer(media);
@@ -198,7 +199,7 @@ public class Factory implements HandlerListener
         {
             final FeaturableConfig config = FeaturableConfig.imports(configurer);
             final String setup = config.getSetupName();
-            final Class<?> setupClass;
+            final Class<? extends Setup> setupClass;
             if (setup.isEmpty())
             {
                 final Class<?> clazz = classLoader.loadClass(config.getClassName());
@@ -206,11 +207,11 @@ public class Factory implements HandlerListener
                 {
                     Services.class, Setup.class
                 });
-                setupClass = constructor.getParameterTypes()[SETUP_INDEX];
+                setupClass = (Class<? extends Setup>) constructor.getParameterTypes()[SETUP_INDEX];
             }
             else
             {
-                setupClass = classLoader.loadClass(config.getSetupName());
+                setupClass = (Class<? extends Setup>) classLoader.loadClass(config.getSetupName());
             }
             return UtilReflection.create(setupClass, new Class<?>[]
             {
@@ -236,7 +237,7 @@ public class Factory implements HandlerListener
      * @return The featurable instance.
      * @throws NoSuchMethodException If missing constructor.
      */
-    private <O extends Featurable> O createFeaturable(Class<?> type, Setup setup) throws NoSuchMethodException
+    private <O extends Featurable> O createFeaturable(Class<O> type, Setup setup) throws NoSuchMethodException
     {
         final O featurable = UtilReflection.createReduce(type, services, setup);
         for (final Feature feature : featurable.getFeatures())

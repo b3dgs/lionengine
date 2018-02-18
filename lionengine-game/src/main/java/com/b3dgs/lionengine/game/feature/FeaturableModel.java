@@ -72,7 +72,7 @@ public class FeaturableModel implements Featurable
             final Feature feature;
             try
             {
-                final Class<?> clazz = getClass(className);
+                final Class<? extends Feature> clazz = getClass(className);
                 feature = UtilReflection.createReduce(clazz, services, setup);
             }
             catch (final NoSuchMethodException exception)
@@ -87,21 +87,23 @@ public class FeaturableModel implements Featurable
     /**
      * Get the class reference from its name using cache.
      * 
+     * @param <T> The class type.
      * @param className The class name.
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
-    private static Class<?> getClass(String className)
+    @SuppressWarnings("unchecked")
+    private static <T> Class<T> getClass(String className)
     {
         if (CLASS_CACHE.containsKey(className))
         {
-            return CLASS_CACHE.get(className);
+            return (Class<T>) CLASS_CACHE.get(className);
         }
         try
         {
             final Class<?> clazz = LOADER.loadClass(className);
             CLASS_CACHE.put(className, clazz);
-            return clazz;
+            return (Class<T>) clazz;
         }
         catch (final ClassNotFoundException exception)
         {

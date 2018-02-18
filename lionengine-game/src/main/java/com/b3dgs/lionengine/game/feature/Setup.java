@@ -72,11 +72,13 @@ public class Setup extends Configurer
     /**
      * Get the class mapped to the setup. Lazy call (load class only first time, and keep its reference after).
      * 
+     * @param <T> The element type.
      * @param classLoader The class loader used.
      * @return The class mapped to the setup.
      * @throws LionEngineException If the class was not found by the class loader.
      */
-    public final Class<?> getConfigClass(ClassLoader classLoader)
+    @SuppressWarnings("unchecked")
+    public final <T> Class<T> getConfigClass(ClassLoader classLoader)
     {
         if (clazz == null)
         {
@@ -90,7 +92,7 @@ public class Setup extends Configurer
                 throw new LionEngineException(exception, Setup.ERROR_CLASS, getMedia().getPath());
             }
         }
-        return clazz;
+        return (Class<T>) clazz;
     }
 
     /**

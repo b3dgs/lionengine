@@ -63,11 +63,11 @@ public final class UtilReflection
      * @throws NoSuchMethodException If no constructor found.
      * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
      */
-    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws NoSuchMethodException
+    public static <T> T create(Class<T> type, Class<?>[] paramTypes, Object... params) throws NoSuchMethodException
     {
         Check.notNull(type);
 
-        final Constructor<?> constructor = getCompatibleConstructor(type, paramTypes);
+        final Constructor<T> constructor = getCompatibleConstructor(type, paramTypes);
         return create(type, constructor, params);
     }
 
@@ -81,7 +81,8 @@ public final class UtilReflection
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
      */
-    public static <T> T createReduce(Class<?> type, Object... params) throws NoSuchMethodException
+    @SuppressWarnings("unchecked")
+    public static <T> T createReduce(Class<T> type, Object... params) throws NoSuchMethodException
     {
         final Class<?>[] paramTypes = getParamTypes(params);
         final Queue<Class<?>> typesQueue = new ArrayDeque<>(Arrays.asList(paramTypes));
@@ -97,7 +98,7 @@ public final class UtilReflection
                 if (constructorTypes.length == typesLength
                     && (typesLength == 0 || hasCompatibleConstructor(typesArray, constructorTypes)))
                 {
-                    return create(type, constructor, paramsQueue.toArray());
+                    return create(type, (Constructor<T>) constructor, paramsQueue.toArray());
                 }
             }
 
@@ -121,15 +122,14 @@ public final class UtilReflection
      * @return The class instance.
      * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
      */
-    private static <T> T create(Class<?> type, Constructor<?> constructor, Object... params)
+    private static <T> T create(Class<T> type, Constructor<T> constructor, Object... params)
     {
         Check.notNull(constructor);
         try
         {
             final boolean accessible = constructor.isAccessible();
             setAccessible(constructor, ACCESSIBLE.get());
-            @SuppressWarnings("unchecked")
-            final T object = (T) constructor.newInstance(params);
+            final T object = constructor.newInstance(params);
             if (constructor.isAccessible() != accessible)
             {
                 setAccessible(constructor, accessible);
@@ -187,12 +187,14 @@ public final class UtilReflection
     /**
      * Get a compatible constructor with the following parameters.
      * 
+     * @param <T> The element type used.
      * @param type The class type.
      * @param paramTypes The parameters types.
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
      */
-    public static Constructor<?> getCompatibleConstructor(Class<?> type, Class<?>[] paramTypes)
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> getCompatibleConstructor(Class<T> type, Class<?>[] paramTypes)
             throws NoSuchMethodException
     {
         for (final Constructor<?> current : type.getDeclaredConstructors())
@@ -201,7 +203,7 @@ public final class UtilReflection
             if (constructorTypes.length == paramTypes.length
                 && (paramTypes.length == 0 || hasCompatibleConstructor(paramTypes, constructorTypes)))
             {
-                return current;
+                return (Constructor<T>) current;
             }
         }
         throw new NoSuchMethodException(ERROR_NO_CONSTRUCTOR_COMPATIBLE
@@ -213,12 +215,14 @@ public final class UtilReflection
     /**
      * Get a compatible constructor with the following parameters considering parent side.
      * 
+     * @param <T> The element type.
      * @param type The class type.
      * @param paramTypes The parameters types.
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
      */
-    public static Constructor<?> getCompatibleConstructorParent(Class<?> type, Class<?>[] paramTypes)
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> getCompatibleConstructorParent(Class<T> type, Class<?>[] paramTypes)
             throws NoSuchMethodException
     {
         for (final Constructor<?> current : type.getDeclaredConstructors())
@@ -227,7 +231,7 @@ public final class UtilReflection
             if (constructorTypes.length == paramTypes.length
                 && hasCompatibleConstructorParent(paramTypes, constructorTypes))
             {
-                return current;
+                return (Constructor<T>) current;
             }
         }
         throw new NoSuchMethodException(ERROR_NO_CONSTRUCTOR_COMPATIBLE

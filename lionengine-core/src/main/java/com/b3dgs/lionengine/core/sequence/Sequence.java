@@ -93,7 +93,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /** Filter reference. */
     private volatile Filter filter = Filter.NO_FILTER;
     /** Next sequence pointer. */
-    private Sequence nextSequence;
+    private Sequencable nextSequence;
     /** Loop mode. */
     private Loop loop = new LoopFrameSkipping();
     /** Current frame rate. */
