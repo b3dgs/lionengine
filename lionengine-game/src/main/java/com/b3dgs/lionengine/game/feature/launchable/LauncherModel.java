@@ -129,20 +129,20 @@ public class LauncherModel extends FeatureModel implements Launcher
         {
             listener.notifyFired();
         }
-        for (final LaunchableConfig config : launchables)
+        for (final LaunchableConfig launchableConfig : launchables)
         {
-            final Media media = Medias.create(config.getMedia());
+            final Media media = Medias.create(launchableConfig.getMedia());
             final Featurable featurable = factory.create(media);
             try
             {
                 final Launchable launchable = featurable.getFeature(Launchable.class);
-                if (config.getDelay() > 0)
+                if (launchableConfig.getDelay() > 0)
                 {
-                    delayed.add(new DelayedLaunch(config, initial, featurable, launchable));
+                    delayed.add(new DelayedLaunch(launchableConfig, initial, featurable, launchable));
                 }
                 else
                 {
-                    launch(config, initial, featurable, launchable);
+                    launch(launchableConfig, initial, featurable, launchable);
                 }
             }
             catch (final LionEngineException exception)

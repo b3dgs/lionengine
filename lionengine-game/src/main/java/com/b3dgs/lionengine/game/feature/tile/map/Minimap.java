@@ -161,18 +161,18 @@ public class Minimap implements Image
     private void computeSheet(Map<TileRef, ColorRgba> colors, Integer sheet)
     {
         final SpriteTiled tiles = map.getSheet(sheet);
-        final ImageBuffer surface = tiles.getSurface();
+        final ImageBuffer tilesSurface = tiles.getSurface();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
         int number = 0;
-        for (int i = 0; i < surface.getWidth(); i += tw)
+        for (int i = 0; i < tilesSurface.getWidth(); i += tw)
         {
-            for (int j = 0; j < surface.getHeight(); j += th)
+            for (int j = 0; j < tilesSurface.getHeight(); j += th)
             {
                 final int h = number * tw % tiles.getWidth();
                 final int v = number / tiles.getTilesHorizontal() * th;
-                final ColorRgba color = UtilColor.getWeightedColor(surface, h, v, tw, th);
+                final ColorRgba color = UtilColor.getWeightedColor(tilesSurface, h, v, tw, th);
 
                 if (!(NO_TILE.equals(color) || color.getAlpha() == 0))
                 {

@@ -159,9 +159,9 @@ public class Camera extends FeaturableModel implements Viewer
     {
         final int h = x + (int) Math.floor((getX() + getViewX()) / gridH);
         final int v = y + (int) -Math.floor((getY() + getHeight()) / gridV);
-        final int width = getWidth() / gridH;
-        final int height = getHeight() / gridV;
-        g.drawRect(h, v + surface.getHeight(), width, height, false);
+        final int tileWidth = getWidth() / gridH;
+        final int tileHeight = getHeight() / gridV;
+        g.drawRect(h, v + surface.getHeight(), tileWidth, tileHeight, false);
     }
 
     /**

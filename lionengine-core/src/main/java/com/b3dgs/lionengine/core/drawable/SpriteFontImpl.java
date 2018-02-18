@@ -175,14 +175,14 @@ final class SpriteFontImpl implements SpriteFont
         int ly = 0;
 
         // Render each character
-        for (final String text : texts)
+        for (final String word : texts)
         {
             // Get char width
-            final int width = getCharWidth(text, align);
-            final int length = text.length();
+            final int width = getCharWidth(word, align);
+            final int length = word.length();
             for (int j = 0; j < length; j++)
             {
-                final FontCharData d = fontData.get(Character.valueOf(text.charAt(j)));
+                final FontCharData d = fontData.get(Character.valueOf(word.charAt(j)));
                 surface.setLocation(x + lx - (double) width, y + ly + (double) d.getHeight());
                 surface.setTile(d.getId());
                 surface.render(g);

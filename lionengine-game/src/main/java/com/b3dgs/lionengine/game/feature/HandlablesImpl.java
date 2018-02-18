@@ -202,10 +202,10 @@ final class HandlablesImpl implements Handlables
     @SuppressWarnings("unchecked")
     public <I> Iterable<I> get(Class<I> type)
     {
-        final Set<?> featurables = items.get(type);
-        if (featurables != null)
+        final Set<?> typeFeaturables = items.get(type);
+        if (typeFeaturables != null)
         {
-            return (Iterable<I>) featurables;
+            return (Iterable<I>) typeFeaturables;
         }
         return Collections.emptySet();
     }

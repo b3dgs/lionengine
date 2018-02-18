@@ -168,17 +168,17 @@ final class MediaDefault implements Media
     private Media create(String prefix, int prefixLength, File file)
     {
         final String currentPath = file.getPath();
-        final String[] path = currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
+        final String[] systemPath = currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
                                          .replace(File.separator, Constant.SLASH)
                                          .split(Constant.SLASH);
         final Media media;
         if (loader != null)
         {
-            media = new MediaDefault(separator, loader, UtilFolder.getPathSeparator(separator, path));
+            media = new MediaDefault(separator, loader, UtilFolder.getPathSeparator(separator, systemPath));
         }
         else
         {
-            media = new MediaDefault(separator, resourcesDir, UtilFolder.getPathSeparator(separator, path));
+            media = new MediaDefault(separator, resourcesDir, UtilFolder.getPathSeparator(separator, systemPath));
         }
         return media;
     }

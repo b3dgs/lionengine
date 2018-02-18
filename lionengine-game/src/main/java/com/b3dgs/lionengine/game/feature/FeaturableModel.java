@@ -177,11 +177,11 @@ public class FeaturableModel implements Featurable
      */
     private void addFeatures(Services services, Setup setup)
     {
-        final List<Feature> features = getFeatures(services, setup);
-        final int length = features.size();
+        final List<Feature> rawFeatures = getFeatures(services, setup);
+        final int length = rawFeatures.size();
         for (int i = 0; i < length; i++)
         {
-            final Feature feature = features.get(i);
+            final Feature feature = rawFeatures.get(i);
             addFeature(feature);
         }
     }

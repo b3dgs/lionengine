@@ -210,9 +210,9 @@ public class MapTileGame extends FeaturableModel implements MapTile
         final Collection<ImageBuffer> tiles = tilesExtractor.extract(tileWidth, tileHeight, Arrays.asList(levelrip));
         loadSheets(SheetsExtractor.extract(tiles, horizontalTiles));
 
-        for (final ImageBuffer tile : tiles)
+        for (final ImageBuffer tileBuffer : tiles)
         {
-            tile.dispose();
+            tileBuffer.dispose();
         }
 
         LevelRipConverter.start(levelrip, this);

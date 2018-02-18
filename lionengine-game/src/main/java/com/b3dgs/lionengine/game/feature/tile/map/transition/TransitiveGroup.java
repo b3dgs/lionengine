@@ -168,12 +168,12 @@ public class TransitiveGroup
     public Collection<TileRef> getDirectTransitiveTiles(Transition transition)
     {
         final String groupOut = transition.getOut();
-        final Collection<GroupTransition> transitives = getTransitives(transition.getIn(), groupOut);
-        if (transitives.size() != 2)
+        final Collection<GroupTransition> currentTransitives = getTransitives(transition.getIn(), groupOut);
+        if (currentTransitives.size() != 2)
         {
             return Collections.emptySet();
         }
-        final GroupTransition groupTransition = transitives.iterator().next();
+        final GroupTransition groupTransition = currentTransitives.iterator().next();
         return mapTransition.getTiles(new Transition(transition.getType(), groupTransition.getOut(), groupOut));
     }
 

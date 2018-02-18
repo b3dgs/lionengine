@@ -89,9 +89,9 @@ class ScreenBaseAwt extends ScreenAwt
                                                 .append(Constant.SPACE)
                                                 .append(Engine.getProgramVersion())
                                                 .toString();
-        final JFrame frame = new JFrame(title, conf);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter()
+        final JFrame jframe = new JFrame(title, conf);
+        jframe.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        jframe.addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent event)
@@ -99,11 +99,11 @@ class ScreenBaseAwt extends ScreenAwt
                 onDisposed();
             }
         });
-        frame.setResizable(false);
-        frame.setUndecorated(false);
-        frame.setIgnoreRepaint(true);
+        jframe.setResizable(false);
+        jframe.setUndecorated(false);
+        jframe.setIgnoreRepaint(true);
 
-        return frame;
+        return jframe;
     }
 
     /*

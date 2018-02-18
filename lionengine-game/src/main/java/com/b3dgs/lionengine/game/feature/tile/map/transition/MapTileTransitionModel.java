@@ -357,8 +357,8 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
      */
     private void updateTransitive(Collection<Tile> resolved, Tile tile, Tile neighbor, GroupTransition transitive)
     {
-        final String transitiveGroup = transitive.getOut();
-        final Transition transition = new Transition(TransitionType.CENTER, transitiveGroup, transitiveGroup);
+        final String transitiveOut = transitive.getOut();
+        final Transition transition = new Transition(TransitionType.CENTER, transitiveOut, transitiveOut);
         final Collection<TileRef> refs = getTiles(transition);
         if (!refs.isEmpty())
         {
