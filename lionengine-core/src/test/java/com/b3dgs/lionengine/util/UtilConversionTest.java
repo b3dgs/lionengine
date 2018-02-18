@@ -96,7 +96,7 @@ public class UtilConversionTest
      * Test the utility conversion from binary.
      */
     @Test
-    public void testfromBinary()
+    public void testFromBinary()
     {
         Assert.assertEquals(0, UtilConversion.fromBinary(new boolean[1]));
         Assert.assertEquals(1, UtilConversion.fromBinary(new boolean[]

@@ -75,7 +75,7 @@ public class MapTransitionExtractorTest
      * Check the center transition.
      */
     @Test
-    public void checkTransitionCenter()
+    public void testTransitionCenter()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -102,7 +102,7 @@ public class MapTransitionExtractorTest
      * Check the corners transitions.
      */
     @Test
-    public void checkCorners()
+    public void testCorners()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -118,7 +118,7 @@ public class MapTransitionExtractorTest
      * Check the corners inverted transitions.
      */
     @Test
-    public void checkCornersInverted()
+    public void testCornersInverted()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -134,7 +134,7 @@ public class MapTransitionExtractorTest
      * Check the horizontal transitions.
      */
     @Test
-    public void checkHorizontals()
+    public void testHorizontals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -148,7 +148,7 @@ public class MapTransitionExtractorTest
      * Check the vertical transitions.
      */
     @Test
-    public void checkVerticals()
+    public void testVerticals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -162,7 +162,7 @@ public class MapTransitionExtractorTest
      * Check the diagonal transitions.
      */
     @Test
-    public void checkDiagonal()
+    public void testDiagonal()
     {
         final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
@@ -176,7 +176,7 @@ public class MapTransitionExtractorTest
      * Check the diagonal inverted transitions.
      */
     @Test
-    public void checkDiagonalInverted()
+    public void testDiagonalInverted()
     {
         final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
@@ -193,7 +193,7 @@ public class MapTransitionExtractorTest
      * </p>
      */
     @Test
-    public void checkSingleGroup()
+    public void testSingleGroup()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -209,7 +209,7 @@ public class MapTransitionExtractorTest
      * </p>
      */
     @Test
-    public void checkThreeGroups()
+    public void testThreeGroups()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -223,7 +223,7 @@ public class MapTransitionExtractorTest
      * Check the transition with <code>null</code> neighbors.
      */
     @Test
-    public void checkNullNeighbor()
+    public void testNullNeighbor()
     {
         final MapTile map = UtilMap.createMap(7);
         map.setTile(map.createTile(SHEET, TILE_WATER, 4, 2));
@@ -236,7 +236,7 @@ public class MapTransitionExtractorTest
      * Check the transition with different sheets.
      */
     @Test
-    public void checkDifferentSheet()
+    public void testDifferentSheet()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);

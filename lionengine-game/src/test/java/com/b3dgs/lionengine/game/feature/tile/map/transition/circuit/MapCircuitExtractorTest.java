@@ -74,7 +74,7 @@ public class MapCircuitExtractorTest
      * Check the middle circuit.
      */
     @Test
-    public void checkCircuitMiddle()
+    public void testCircuitMiddle()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -87,7 +87,7 @@ public class MapCircuitExtractorTest
      * Check the angles circuits.
      */
     @Test
-    public void checkAngles()
+    public void testAngles()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -104,7 +104,7 @@ public class MapCircuitExtractorTest
      * Check the horizontal circuits.
      */
     @Test
-    public void checkHorizontals()
+    public void testHorizontals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -121,7 +121,7 @@ public class MapCircuitExtractorTest
      * Check the vertical circuits.
      */
     @Test
-    public void checkVerticals()
+    public void testVerticals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -138,7 +138,7 @@ public class MapCircuitExtractorTest
      * Check the three way junction top circuits.
      */
     @Test
-    public void checkT3JTop()
+    public void testT3JTop()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -154,7 +154,7 @@ public class MapCircuitExtractorTest
      * Check the three way junction left circuits.
      */
     @Test
-    public void checkT3JLeft()
+    public void testT3JLeft()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -170,7 +170,7 @@ public class MapCircuitExtractorTest
      * Check the three way junction right circuits.
      */
     @Test
-    public void checkT3JRight()
+    public void testT3JRight()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -186,7 +186,7 @@ public class MapCircuitExtractorTest
      * Check the three way junction bottom circuits.
      */
     @Test
-    public void checkT3JBottom()
+    public void testT3JBottom()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -202,7 +202,7 @@ public class MapCircuitExtractorTest
      * Check the block circuits.
      */
     @Test
-    public void checkBlock()
+    public void testBlock()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -215,7 +215,7 @@ public class MapCircuitExtractorTest
      * Check the circuit with <code>null</code> neighbors.
      */
     @Test
-    public void checkNullNeighbor()
+    public void testNullNeighbor()
     {
         final MapTile map = UtilMap.createMap(7);
         map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 2));
@@ -228,7 +228,7 @@ public class MapCircuitExtractorTest
      * Check the circuit with different sheets.
      */
     @Test
-    public void checkDifferentSheet()
+    public void testDifferentSheet()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
