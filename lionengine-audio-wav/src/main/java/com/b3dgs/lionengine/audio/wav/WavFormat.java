@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.audio.AudioFormat;
 /**
  * Wav audio format implementation.
  */
-public final class WavFormat implements AudioFormat<Wav>
+public final class WavFormat implements AudioFormat
 {
     /** Channels handler. */
     private static final ExecutorService EXECUTOR;

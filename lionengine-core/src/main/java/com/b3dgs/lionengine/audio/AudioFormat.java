@@ -24,10 +24,8 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Describe audio format.
- * 
- * @param <T> The audio format used.
  */
-public interface AudioFormat<T extends Audio>
+public interface AudioFormat
 {
     /**
      * Load an audio file and prepare it to be played.
@@ -36,7 +34,7 @@ public interface AudioFormat<T extends Audio>
      * @return The loaded audio.
      * @throws LionEngineException If media is <code>null</code> or invalid audio or no audio player is available.
      */
-    T loadAudio(Media media);
+    Audio loadAudio(Media media);
 
     /**
      * Get the music audio formats as read only.

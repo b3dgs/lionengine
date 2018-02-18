@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Media;
 /**
  * Void audio format.
  */
-public class AudioVoidFormat implements AudioFormat<AudioVoid>
+public class AudioVoidFormat implements AudioFormat
 {
     /** Formats list. */
     private final Collection<String> formats;

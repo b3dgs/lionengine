@@ -136,7 +136,7 @@ public class AudioFactoryTest
             Assert.assertNotNull(exception);
         }
 
-        final AudioFormat<AudioVoid> format = new AudioVoidFormat(Arrays.asList("png"));
+        final AudioFormat format = new AudioVoidFormat(Arrays.asList("png"));
         AudioFactory.addFormat(format);
 
         final Audio audio = AudioFactory.loadAudio(Medias.create("image.png"));

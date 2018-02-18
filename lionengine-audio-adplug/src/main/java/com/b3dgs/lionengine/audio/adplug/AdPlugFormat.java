@@ -24,7 +24,6 @@ import java.util.Collections;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
@@ -32,7 +31,7 @@ import com.sun.jna.Native;
 /**
  * Handle audio AdPlug.
  */
-public final class AdPlugFormat implements AudioFormat<AdPlug>
+public final class AdPlugFormat implements AudioFormat
 {
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading AdPlug Library: ";
@@ -54,7 +53,7 @@ public final class AdPlugFormat implements AudioFormat<AdPlug>
      * 
      * @return The AdPlug audio format.
      */
-    public static AudioFormat<? extends Audio> getFailsafe()
+    public static AudioFormat getFailsafe()
     {
         try
         {

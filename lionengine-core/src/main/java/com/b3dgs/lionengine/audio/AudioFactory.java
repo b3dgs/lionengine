@@ -33,7 +33,7 @@ public final class AudioFactory
     /** Unknown audio format. */
     public static final String ERROR_FORMAT = "Unsupported audio format: ";
     /** Supported audio formats. */
-    private static final Map<String, AudioFormat<?>> FACTORIES = new HashMap<>();
+    private static final Map<String, AudioFormat> FACTORIES = new HashMap<>();
 
     /**
      * Load an audio file and prepare it to be played.
@@ -87,9 +87,9 @@ public final class AudioFactory
      * 
      * @param formats The supported formats.
      */
-    public static void addFormat(AudioFormat<?>... formats)
+    public static void addFormat(AudioFormat... formats)
     {
-        for (final AudioFormat<?> format : formats)
+        for (final AudioFormat format : formats)
         {
             for (final String current : format.getFormats())
             {
@@ -103,7 +103,7 @@ public final class AudioFactory
      */
     public static void clearFormats()
     {
-        for (final AudioFormat<?> format : FACTORIES.values())
+        for (final AudioFormat format : FACTORIES.values())
         {
             format.close();
         }

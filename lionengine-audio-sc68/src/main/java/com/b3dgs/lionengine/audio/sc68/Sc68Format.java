@@ -24,7 +24,6 @@ import java.util.Collections;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFormat;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
 import com.sun.jna.Native;
@@ -32,7 +31,7 @@ import com.sun.jna.Native;
 /**
  * Handle audio sc68.
  */
-public final class Sc68Format implements AudioFormat<Sc68>
+public final class Sc68Format implements AudioFormat
 {
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
@@ -54,7 +53,7 @@ public final class Sc68Format implements AudioFormat<Sc68>
      * 
      * @return The AdPlug audio format.
      */
-    public static AudioFormat<? extends Audio> getFailsafe()
+    public static AudioFormat getFailsafe()
     {
         try
         {
