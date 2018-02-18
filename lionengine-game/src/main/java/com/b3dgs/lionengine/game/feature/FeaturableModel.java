@@ -227,9 +227,13 @@ public class FeaturableModel implements Featurable
                 {
                     field.set(object, getFeature(clazz));
                 }
-                else
+                else if (media != null)
                 {
                     throw new LionEngineException(media, ERROR_CLASS_PRESENCE + String.valueOf(type));
+                }
+                else
+                {
+                    throw new LionEngineException(ERROR_CLASS_PRESENCE + String.valueOf(type));
                 }
             }
         }
