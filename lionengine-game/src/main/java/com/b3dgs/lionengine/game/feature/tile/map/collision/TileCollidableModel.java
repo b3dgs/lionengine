@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -177,7 +178,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     @Override
     public Collection<CollisionCategory> getCategories()
     {
-        return categories;
+        return Collections.unmodifiableCollection(categories);
     }
 
     /*

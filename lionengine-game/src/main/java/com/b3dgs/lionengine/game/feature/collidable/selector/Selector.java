@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.Updatable;
@@ -166,13 +167,13 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     }
 
     /**
-     * Get the current selection.
+     * Get the current selection as read only.
      * 
      * @return The current selection.
      */
     public List<Selectable> getSelection()
     {
-        return selected;
+        return Collections.unmodifiableList(selected);
     }
 
     /**

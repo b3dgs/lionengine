@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
@@ -90,7 +92,7 @@ public class CollisionCategory implements Nameable
         this.axis = axis;
         this.x = x;
         this.y = y;
-        this.groups = groups;
+        this.groups = new ArrayList<>(groups);
         formulas = new HashSet<>();
         for (final CollisionGroup group : groups)
         {
@@ -99,23 +101,23 @@ public class CollisionCategory implements Nameable
     }
 
     /**
-     * Get the defined groups.
+     * Get the defined groups as read only.
      * 
      * @return The defined groups.
      */
     public Collection<CollisionGroup> getGroups()
     {
-        return groups;
+        return Collections.unmodifiableCollection(groups);
     }
 
     /**
-     * Get the list of collision formulas to test.
+     * Get the list of collision formulas to test as read only.
      * 
      * @return The collision formulas list.
      */
     public Collection<CollisionFormula> getFormulas()
     {
-        return formulas;
+        return Collections.unmodifiableCollection(formulas);
     }
 
     /**

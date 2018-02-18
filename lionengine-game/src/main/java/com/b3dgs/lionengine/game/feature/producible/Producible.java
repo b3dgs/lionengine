@@ -36,7 +36,7 @@ public interface Producible extends Feature, Shape
     void addListener(ProducibleListener listener);
 
     /**
-     * Get the listeners reference.
+     * Get the listeners reference as read only.
      * 
      * @return The listeners reference.
      */

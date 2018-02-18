@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Nameable;
 
@@ -40,17 +42,17 @@ public class PathCategory implements Nameable
     public PathCategory(String name, Collection<String> groups)
     {
         this.name = name;
-        this.groups = groups;
+        this.groups = new ArrayList<>(groups);
     }
 
     /**
-     * Get the associated groups name.
+     * Get the associated groups name as read only.
      * 
      * @return The groups name.
      */
     public Collection<String> getGroups()
     {
-        return groups;
+        return Collections.unmodifiableCollection(groups);
     }
 
     /*

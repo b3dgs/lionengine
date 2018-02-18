@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Nameable;
@@ -53,7 +55,7 @@ public class PathData implements Nameable
         this.category = category;
         this.cost = cost;
         this.blocking = blocking;
-        this.movements = movements;
+        this.movements = new ArrayList<>(movements);
     }
 
     /**
@@ -77,13 +79,24 @@ public class PathData implements Nameable
     }
 
     /**
-     * Get the allowed movements.
+     * Check if the movement is allowed.
+     * 
+     * @param movement The movement to check.
+     * @return <code>true</code> if allowed, <code>false</code> else.
+     */
+    public boolean isAllowedMovement(MovementTile movement)
+    {
+        return movements.contains(movement);
+    }
+
+    /**
+     * Get the allowed movements as read only.
      * 
      * @return The allowed movements.
      */
     public Collection<MovementTile> getAllowedMovements()
     {
-        return movements;
+        return Collections.unmodifiableCollection(movements);
     }
 
     /*

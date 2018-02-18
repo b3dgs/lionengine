@@ -49,7 +49,7 @@ public interface TileCollidable extends Feature, Updatable
     void setEnabled(boolean enabled);
 
     /**
-     * Get the collision tile category used.
+     * Get the collision tile category used as read only..
      * 
      * @return The category used.
      */

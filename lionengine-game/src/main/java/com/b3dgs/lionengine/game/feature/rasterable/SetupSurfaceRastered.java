@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature.rasterable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.Constant;
@@ -100,13 +101,13 @@ public class SetupSurfaceRastered extends Setup
     }
 
     /**
-     * Get the rasters.
+     * Get the rasters as read only.
      * 
      * @return The rasters.
      */
     public List<SpriteAnimated> getRasters()
     {
-        return rastersAnim;
+        return Collections.unmodifiableList(rastersAnim);
     }
 
     /**

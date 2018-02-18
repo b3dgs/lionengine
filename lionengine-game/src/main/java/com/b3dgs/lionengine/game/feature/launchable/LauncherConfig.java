@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.Constant;
@@ -115,7 +116,7 @@ public final class LauncherConfig
     {
         this.level = level;
         this.rate = rate;
-        this.launchables = launchables;
+        this.launchables = new ArrayList<>(launchables);
     }
 
     /**
@@ -145,7 +146,7 @@ public final class LauncherConfig
      */
     public Iterable<LaunchableConfig> getLaunchables()
     {
-        return launchables;
+        return Collections.unmodifiableCollection(launchables);
     }
 
     /*

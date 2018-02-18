@@ -811,7 +811,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         if (categories.containsKey(category))
         {
-            return categories.get(category).getAllowedMovements().contains(movement);
+            return categories.get(category).isAllowedMovement(movement);
         }
         throw new LionEngineException(ERROR_CATEGORY + category);
     }

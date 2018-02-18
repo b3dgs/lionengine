@@ -396,7 +396,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     @Override
     public List<ActionRef> getActions()
     {
-        return actions;
+        return Collections.unmodifiableList(actions);
     }
 
     @Override

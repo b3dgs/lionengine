@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -107,7 +108,7 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     @Override
     public Collection<ProducibleListener> getListeners()
     {
-        return listeners;
+        return Collections.unmodifiableCollection(listeners);
     }
 
     @Override

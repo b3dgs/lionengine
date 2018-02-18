@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -410,13 +411,13 @@ public class CollidableModel extends FeatureModel
     @Override
     public Collection<Collision> getCollisions()
     {
-        return collisions;
+        return Collections.unmodifiableCollection(collisions);
     }
 
     @Override
     public List<Rectangle> getCollisionBounds()
     {
-        return cacheRect;
+        return Collections.unmodifiableList(cacheRect);
     }
 
     @Override

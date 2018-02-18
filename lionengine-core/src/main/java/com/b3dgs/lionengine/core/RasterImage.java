@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
@@ -135,13 +136,13 @@ public class RasterImage
     }
 
     /**
-     * Get all rasters.
+     * Get all rasters as read only.
      * 
      * @return The rasters.
      */
     public List<ImageBuffer> getRasters()
     {
-        return rasters;
+        return Collections.unmodifiableList(rasters);
     }
 
     /**

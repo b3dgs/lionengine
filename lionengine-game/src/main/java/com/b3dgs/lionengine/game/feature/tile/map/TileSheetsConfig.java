@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -143,7 +144,7 @@ public final class TileSheetsConfig
 
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        this.sheets = sheets;
+        this.sheets = new ArrayList<>(sheets);
     }
 
     /**
@@ -167,12 +168,12 @@ public final class TileSheetsConfig
     }
 
     /**
-     * Get the sheets filename defined.
+     * Get the sheets filename defined as read only.
      * 
      * @return The sheets filename defined.
      */
     public Collection<String> getSheets()
     {
-        return sheets;
+        return Collections.unmodifiableCollection(sheets);
     }
 }

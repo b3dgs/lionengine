@@ -95,14 +95,14 @@ public interface Collidable extends Feature, Renderable, CollidableListener
     void setCollisionVisibility(boolean visible);
 
     /**
-     * Get the declared collisions.
+     * Get the declared collisions as read only.
      * 
      * @return The declared collisions.
      */
     Collection<Collision> getCollisions();
 
     /**
-     * Get the collisions bounds.
+     * Get the collisions bounds as read only.
      * 
      * @return The collisions bounds.
      */

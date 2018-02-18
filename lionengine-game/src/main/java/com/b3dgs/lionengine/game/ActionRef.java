@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -51,7 +53,7 @@ public class ActionRef
 
         this.path = path;
         this.cancel = cancel;
-        this.refs = refs;
+        this.refs = new ArrayList<>(refs);
     }
 
     /**
@@ -75,13 +77,13 @@ public class ActionRef
     }
 
     /**
-     * Get the associated actions.
+     * Get the associated actions as read only.
      * 
      * @return The associated actions.
      */
     public Collection<ActionRef> getRefs()
     {
-        return refs;
+        return Collections.unmodifiableCollection(refs);
     }
 
     /*

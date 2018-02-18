@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.ActionRef;
 public interface Actioner extends Feature
 {
     /**
-     * Get the allowed actions name.
+     * Get the allowed actions name as read only.
      * 
      * @return The allowed actions name.
      */

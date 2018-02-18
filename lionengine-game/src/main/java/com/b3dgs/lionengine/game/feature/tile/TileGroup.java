@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Nameable;
 
@@ -60,7 +62,7 @@ public class TileGroup implements Nameable
     {
         this.name = name;
         this.type = type;
-        this.tiles = tiles;
+        this.tiles = new ArrayList<>(tiles);
     }
 
     /**
@@ -104,13 +106,13 @@ public class TileGroup implements Nameable
     }
 
     /**
-     * Get the tiles inside group.
+     * Get the tiles inside group as read only.
      * 
      * @return The tiles inside group.
      */
     public Collection<TileRef> getTiles()
     {
-        return tiles;
+        return Collections.unmodifiableCollection(tiles);
     }
 
     /*

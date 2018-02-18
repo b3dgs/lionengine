@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Nameable;
@@ -85,17 +87,17 @@ public class CollisionGroup implements Nameable
     public CollisionGroup(String name, Collection<CollisionFormula> formulas)
     {
         this.name = name;
-        this.formulas = formulas;
+        this.formulas = new ArrayList<>(formulas);
     }
 
     /**
-     * Get collision formulas reference.
+     * Get collision formulas reference as read only..
      * 
      * @return The collision formulas reference.
      */
     public Collection<CollisionFormula> getFormulas()
     {
-        return formulas;
+        return Collections.unmodifiableCollection(formulas);
     }
 
     /*
