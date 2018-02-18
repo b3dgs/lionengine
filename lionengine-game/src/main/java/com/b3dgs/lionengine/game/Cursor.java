@@ -78,13 +78,13 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     /** Viewer reference. */
     private Viewer viewer;
     /** Cursor screen location x. */
-    private double x;
+    private double screenX;
     /** Cursor screen location y. */
-    private double y;
+    private double screenY;
     /** Cursor viewer relative location x. */
-    private double viewX;
+    private double x;
     /** Cursor viewer relative location y. */
-    private double viewY;
+    private double y;
     /** Synchronization mode. */
     private boolean sync = true;
     /** Horizontal sensibility. */
@@ -199,8 +199,8 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public void setLocation(int x, int y)
     {
-        this.x = UtilMath.clamp(x, minX, maxX);
-        this.y = UtilMath.clamp(y, minY, maxY);
+        screenX = UtilMath.clamp(x, minX, maxX);
+        screenY = UtilMath.clamp(y, minY, maxY);
     }
 
     /**
@@ -345,7 +345,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public double getScreenX()
     {
-        return x;
+        return screenX;
     }
 
     /**
@@ -355,7 +355,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public double getScreenY()
     {
-        return y;
+        return screenY;
     }
 
     /**
@@ -420,13 +420,13 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         {
             if (sync)
             {
-                x = pointer.getX();
-                y = pointer.getY();
+                screenX = pointer.getX();
+                screenY = pointer.getY();
             }
             else
             {
-                x += pointer.getMoveX() * sensibilityHorizontal * extrp;
-                y += pointer.getMoveY() * sensibilityVertical * extrp;
+                screenX += pointer.getMoveX() * sensibilityHorizontal * extrp;
+                screenY += pointer.getMoveY() * sensibilityVertical * extrp;
             }
         }
         if (viewer != null)
@@ -435,20 +435,20 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
             offY = (int) viewer.getY() - viewer.getViewY();
         }
 
-        x = UtilMath.clamp(x, minX, maxX);
-        y = UtilMath.clamp(y, minY, maxY);
-        viewX = x + offX;
+        screenX = UtilMath.clamp(screenX, minX, maxX);
+        screenY = UtilMath.clamp(screenY, minY, maxY);
+        x = screenX + offX;
         if (viewer != null)
         {
-            viewY = viewer.getHeight() - y + offY;
+            y = viewer.getHeight() - screenY + offY;
         }
         else
         {
-            viewY = y + offY;
+            y = screenY + offY;
         }
         for (final Image current : surfaces.values())
         {
-            current.setLocation(x + offsetX, y + offsetY);
+            current.setLocation(screenX + offsetX, screenY + offsetY);
         }
         if (nextSurface != null)
         {
@@ -477,13 +477,13 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     @Override
     public double getX()
     {
-        return viewX;
+        return x;
     }
 
     @Override
     public double getY()
     {
-        return viewY;
+        return y;
     }
 
     @Override
