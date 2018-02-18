@@ -26,7 +26,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Get quick information from an image without reading all data.
@@ -86,9 +85,8 @@ public final class ImageInfo
             get(media);
             return true;
         }
-        catch (final LionEngineException exception)
+        catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
-            Verbose.exception(exception);
             return false;
         }
     }
