@@ -24,7 +24,7 @@
     <suppress checks="BooleanExpressionComplexity" files="com.b3dgs.lionengine.game.feature.TransformableModel" lines="85"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.game.feature.collidable.selector.Hud"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.feature.collidable.selector.Hud" lines="78"/>
-    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.game.ActionRef" lines="97"/>
+    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.game.ActionRef" lines="98"/>
     <!-- Network -->
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="102, 110, 118"/>
