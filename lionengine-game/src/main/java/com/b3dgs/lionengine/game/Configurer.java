@@ -406,15 +406,7 @@ public class Configurer
             }
             return type.cast(constructor.newInstance(paramsValue.toArray()));
         }
-        catch (final InstantiationException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
-        }
-        catch (final IllegalArgumentException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
-        }
-        catch (final InvocationTargetException exception)
+        catch (final InstantiationException | IllegalArgumentException | InvocationTargetException exception)
         {
             throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
         }

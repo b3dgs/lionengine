@@ -146,15 +146,7 @@ public final class UtilReflection
                                                      + " with "
                                                      + Arrays.asList(params));
         }
-        catch (final InstantiationException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
-        }
-        catch (final IllegalAccessException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
-        }
-        catch (final InvocationTargetException exception)
+        catch (final InstantiationException | IllegalAccessException | InvocationTargetException exception)
         {
             throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
         }
@@ -270,15 +262,7 @@ public final class UtilReflection
             }
             return value;
         }
-        catch (final NoSuchMethodException exception)
-        {
-            throw new LionEngineException(exception, ERROR_METHOD + name);
-        }
-        catch (final IllegalAccessException exception)
-        {
-            throw new LionEngineException(exception, ERROR_METHOD + name);
-        }
-        catch (final InvocationTargetException exception)
+        catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
         {
             throw new LionEngineException(exception, ERROR_METHOD + name);
         }
@@ -314,11 +298,7 @@ public final class UtilReflection
             }
             return value;
         }
-        catch (final NoSuchFieldException exception)
-        {
-            throw new LionEngineException(exception, ERROR_FIELD + name);
-        }
-        catch (final IllegalAccessException exception)
+        catch (final NoSuchFieldException | IllegalAccessException exception)
         {
             throw new LionEngineException(exception, ERROR_FIELD + name);
         }
