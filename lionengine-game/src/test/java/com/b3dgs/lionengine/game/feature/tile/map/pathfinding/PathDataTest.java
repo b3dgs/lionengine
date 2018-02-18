@@ -40,7 +40,8 @@ public class PathDataTest
         Assert.assertEquals("category", data.getName());
         Assert.assertEquals(1.0, data.getCost(), UtilTests.PRECISION);
         Assert.assertTrue(data.isBlocking());
-        Assert.assertEquals(EnumSet.of(MovementTile.UP, MovementTile.DOWN), data.getAllowedMovements());
+        Assert.assertArrayEquals(EnumSet.of(MovementTile.UP, MovementTile.DOWN).toArray(),
+                                 data.getAllowedMovements().toArray());
     }
 
     /**
