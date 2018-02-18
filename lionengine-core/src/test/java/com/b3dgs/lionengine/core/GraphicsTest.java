@@ -143,8 +143,8 @@ public class GraphicsTest
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
 
-        Assert.assertEquals(imageBuffer.getWidth(), 16);
-        Assert.assertEquals(imageBuffer.getHeight(), 32);
+        Assert.assertEquals(16, imageBuffer.getWidth());
+        Assert.assertEquals(32, imageBuffer.getHeight());
 
         imageBuffer.dispose();
     }
@@ -157,9 +157,9 @@ public class GraphicsTest
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, ColorRgba.TRANSPARENT);
 
-        Assert.assertEquals(imageBuffer.getWidth(), 16);
-        Assert.assertEquals(imageBuffer.getHeight(), 32);
-        Assert.assertEquals(imageBuffer.getTransparency(), Transparency.BITMASK);
+        Assert.assertEquals(16, imageBuffer.getWidth());
+        Assert.assertEquals(32, imageBuffer.getHeight());
+        Assert.assertEquals(Transparency.BITMASK, imageBuffer.getTransparency());
 
         imageBuffer.dispose();
     }

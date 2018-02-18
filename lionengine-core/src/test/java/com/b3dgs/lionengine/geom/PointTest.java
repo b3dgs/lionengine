@@ -32,25 +32,25 @@ public class PointTest
     public void testPoint()
     {
         final Point point = new Point();
-        Assert.assertEquals(point.getX(), 0);
-        Assert.assertEquals(point.getY(), 0);
+        Assert.assertEquals(0, point.getX());
+        Assert.assertEquals(0, point.getY());
 
         point.setX(4);
         point.setY(5);
-        Assert.assertEquals(point.getX(), 4);
-        Assert.assertEquals(point.getY(), 5);
+        Assert.assertEquals(4, point.getX());
+        Assert.assertEquals(5, point.getY());
 
         final Point point2 = new Point(1, 2);
-        Assert.assertEquals(point2.getX(), 1);
-        Assert.assertEquals(point2.getY(), 2);
+        Assert.assertEquals(1, point2.getX());
+        Assert.assertEquals(2, point2.getY());
 
         point2.translate(-2, -1);
-        Assert.assertEquals(point2.getX(), -1);
-        Assert.assertEquals(point2.getY(), 1);
+        Assert.assertEquals(-1, point2.getX());
+        Assert.assertEquals(1, point2.getY());
 
         point2.set(0, 0);
-        Assert.assertEquals(point2.getX(), 0);
-        Assert.assertEquals(point2.getY(), 0);
+        Assert.assertEquals(0, point2.getX());
+        Assert.assertEquals(0, point2.getY());
 
         Assert.assertNotEquals(point, point2);
         Assert.assertNotEquals(point.hashCode(), point2.hashCode());

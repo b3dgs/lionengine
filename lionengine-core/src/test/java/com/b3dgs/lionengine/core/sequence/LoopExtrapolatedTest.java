@@ -228,7 +228,7 @@ public class LoopExtrapolatedTest
         thread.join();
 
         Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertEquals(extrapolation.get().doubleValue(), 1.0, 0.1);
+        Assert.assertEquals(1.0, extrapolation.get().doubleValue(), 0.1);
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 

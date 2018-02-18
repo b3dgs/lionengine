@@ -32,21 +32,21 @@ public class CoordTest
     public void testCoord()
     {
         final Coord coord = new Coord();
-        Assert.assertEquals(coord.getX(), 0.0, 0.000001);
-        Assert.assertEquals(coord.getY(), 0.0, 0.000001);
+        Assert.assertEquals(0.0, coord.getX(), 0.000001);
+        Assert.assertEquals(0.0, coord.getY(), 0.000001);
 
         coord.setX(4.0);
         coord.setY(5.0);
-        Assert.assertEquals(coord.getX(), 4.0, 0.000001);
-        Assert.assertEquals(coord.getY(), 5.0, 0.000001);
+        Assert.assertEquals(4.0, coord.getX(), 0.000001);
+        Assert.assertEquals(5.0, coord.getY(), 0.000001);
 
         coord.set(1.0, 2.0);
-        Assert.assertEquals(coord.getX(), 1.0, 0.000001);
-        Assert.assertEquals(coord.getY(), 2.0, 0.000001);
+        Assert.assertEquals(1.0, coord.getX(), 0.000001);
+        Assert.assertEquals(2.0, coord.getY(), 0.000001);
 
         coord.translate(-2.0, -1.0);
-        Assert.assertEquals(coord.getX(), -1.0, 0.000001);
-        Assert.assertEquals(coord.getY(), 1.0, 0.000001);
+        Assert.assertEquals(-1.0, coord.getX(), 0.000001);
+        Assert.assertEquals(1.0, coord.getY(), 0.000001);
     }
 
     /**

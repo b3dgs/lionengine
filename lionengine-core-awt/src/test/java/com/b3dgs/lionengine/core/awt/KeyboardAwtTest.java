@@ -78,8 +78,8 @@ public class KeyboardAwtTest
         Assert.assertTrue(keyboard.isPressed(Keyboard.ALT));
         Assert.assertTrue(keyboard.isPressedOnce(Keyboard.ALT));
         Assert.assertFalse(keyboard.isPressedOnce(Keyboard.ALT));
-        Assert.assertEquals(keyboard.getKeyCode(), Keyboard.ALT);
-        Assert.assertEquals(keyboard.getKeyName(), ' ');
+        Assert.assertEquals(Keyboard.ALT, keyboard.getKeyCode());
+        Assert.assertEquals(' ', keyboard.getKeyName());
         Assert.assertTrue(keyboard.used());
 
         keyboard.keyReleased(createEvent(Keyboard.ALT));

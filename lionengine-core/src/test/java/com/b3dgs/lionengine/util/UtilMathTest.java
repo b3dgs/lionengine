@@ -222,9 +222,9 @@ public class UtilMathTest
     @Test
     public void testSign()
     {
-        Assert.assertEquals(UtilMath.getSign(-1.0), -1);
-        Assert.assertEquals(UtilMath.getSign(1.0), 1);
-        Assert.assertEquals(UtilMath.getSign(0), 0);
+        Assert.assertEquals(-1, UtilMath.getSign(-1.0));
+        Assert.assertEquals(1, UtilMath.getSign(1.0));
+        Assert.assertEquals(0, UtilMath.getSign(0));
     }
 
     /**

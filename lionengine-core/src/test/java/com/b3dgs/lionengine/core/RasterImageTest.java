@@ -76,8 +76,8 @@ public class RasterImageTest
         Assert.assertEquals(mediaRaster, raster.getFile());
         Assert.assertEquals(100, raster.getHeight());
         Assert.assertFalse(raster.hasSmooth());
-        Assert.assertEquals(raster.getRaster(0).getWidth(), 100);
-        Assert.assertEquals(raster.getRaster(0).getHeight(), 200);
+        Assert.assertEquals(100, raster.getRaster(0).getWidth());
+        Assert.assertEquals(200, raster.getRaster(0).getHeight());
     }
 
     /**
@@ -93,8 +93,8 @@ public class RasterImageTest
         Assert.assertEquals(mediaRaster, raster.getFile());
         Assert.assertEquals(100, raster.getHeight());
         Assert.assertTrue(raster.hasSmooth());
-        Assert.assertEquals(raster.getRaster(0).getWidth(), 100);
-        Assert.assertEquals(raster.getRaster(0).getHeight(), 200);
+        Assert.assertEquals(100, raster.getRaster(0).getWidth());
+        Assert.assertEquals(200, raster.getRaster(0).getHeight());
     }
 
     /**
@@ -110,8 +110,8 @@ public class RasterImageTest
         Assert.assertEquals(mediaRaster, raster.getFile());
         Assert.assertEquals(100, raster.getHeight());
         Assert.assertFalse(raster.hasSmooth());
-        Assert.assertEquals(raster.getRaster(0).getWidth(), 100);
-        Assert.assertEquals(raster.getRaster(0).getHeight(), 200);
+        Assert.assertEquals(100, raster.getRaster(0).getWidth());
+        Assert.assertEquals(200, raster.getRaster(0).getHeight());
 
         final Media folder = Medias.create("prefix_raster");
         Assert.assertTrue(folder.getFile().getAbsolutePath(), folder.exists());
@@ -142,8 +142,8 @@ public class RasterImageTest
         Assert.assertEquals(mediaRaster, raster.getFile());
         Assert.assertEquals(100, raster.getHeight());
         Assert.assertFalse(raster.hasSmooth());
-        Assert.assertEquals(raster.getRaster(0).getWidth(), 64);
-        Assert.assertEquals(raster.getRaster(0).getHeight(), 32);
+        Assert.assertEquals(64, raster.getRaster(0).getWidth());
+        Assert.assertEquals(32, raster.getRaster(0).getHeight());
 
         final Media folder = Medias.create("cache_raster");
         Assert.assertTrue(folder.getFile().getAbsolutePath(), folder.exists());
@@ -162,8 +162,8 @@ public class RasterImageTest
             Assert.assertEquals(mediaRaster, cache.getFile());
             Assert.assertEquals(100, cache.getHeight());
             Assert.assertFalse(cache.hasSmooth());
-            Assert.assertEquals(cache.getRaster(0).getWidth(), 64);
-            Assert.assertEquals(cache.getRaster(0).getHeight(), 32);
+            Assert.assertEquals(64, cache.getRaster(0).getWidth());
+            Assert.assertEquals(32, cache.getRaster(0).getHeight());
         }
         finally
         {
