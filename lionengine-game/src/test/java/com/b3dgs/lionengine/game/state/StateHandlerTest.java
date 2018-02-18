@@ -38,10 +38,10 @@ public class StateHandlerTest
     @Test
     public void testHandler()
     {
-        final StateTest idle = new StateIdle();
+        final StateBase idle = new StateIdle();
         factory.addState(idle);
 
-        final StateTest walk = new StateWalk();
+        final StateBase walk = new StateWalk();
         factory.addState(walk);
 
         handler.update(1.0);

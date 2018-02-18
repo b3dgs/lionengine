@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
 /**
  * State walk test implementation.
  */
-public class StateWalk extends StateTest implements StateInputPointerUpdater
+public class StateWalk extends StateBase implements StateInputPointerUpdater
 {
     /**
      * Create the state.

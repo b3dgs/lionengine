@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 /**
  * State idle test implementation.
  */
-public class StateIdle extends StateTest implements StateInputDirectionalUpdater
+public class StateIdle extends StateBase implements StateInputDirectionalUpdater
 {
     /**
      * Create the state.

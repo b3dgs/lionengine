@@ -456,15 +456,15 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         final double norm = Math.sqrt(dh * dh + dv * dv);
         final double sx;
         final double sy;
-        if (norm < 0 || norm > 0)
-        {
-            sx = dh / norm;
-            sy = dv / norm;
-        }
-        else
+        if (Double.compare(norm, 0.0) == 0)
         {
             sx = 0;
             sy = 0;
+        }
+        else
+        {
+            sx = dh / norm;
+            sy = dv / norm;
         }
 
         double h = sh;

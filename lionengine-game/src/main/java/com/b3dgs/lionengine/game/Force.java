@@ -62,15 +62,15 @@ public class Force implements Direction, Updatable
         }
         final double sx;
         final double sy;
-        if (norm < 0 || norm > 0)
-        {
-            sx = dh / norm;
-            sy = dv / norm;
-        }
-        else
+        if (Double.compare(norm, 0.0) == 0)
         {
             sx = 0;
             sy = 0;
+        }
+        else
+        {
+            sx = dh / norm;
+            sy = dv / norm;
         }
 
         final Force force = new Force(sx, sy);

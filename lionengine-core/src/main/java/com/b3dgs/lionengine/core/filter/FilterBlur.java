@@ -247,7 +247,7 @@ public class FilterBlur implements Filter
             total += matrix[index];
             index++;
         }
-        if (total < 0 || total > 0)
+        if (Float.compare(total, 0.0f) != 0)
         {
             for (int i = 0; i < rows; i++)
             {

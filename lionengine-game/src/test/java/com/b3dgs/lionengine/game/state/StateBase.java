@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.state;
 
 /**
- * State idle test implementation.
+ * State base test implementation.
  */
-public class StateTest extends StateGame
+public class StateBase extends StateGame
 {
     /** Entered flag. */
     private boolean entered;
@@ -34,7 +34,7 @@ public class StateTest extends StateGame
      * 
      * @param type The state type.
      */
-    public StateTest(Enum<?> type)
+    public StateBase(Enum<?> type)
     {
         super(type);
     }
