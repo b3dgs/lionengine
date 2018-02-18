@@ -139,15 +139,9 @@ public class SpriteAnimatedTest
             // Success
             Assert.assertNotNull(exception);
         }
-        try
-        {
-            animator.play(animation);
-            animator.update(1.0);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail(exception.getMessage());
-        }
+
+        animator.play(animation);
+        animator.update(1.0);
 
         // Test render
         DrawableTestTool.testImageRender(g, spriteC);

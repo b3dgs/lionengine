@@ -259,14 +259,7 @@ public class XmlTest
         Assert.assertNotNull(root.getChild("child1"));
         Assert.assertNotNull(root.getChild("child2"));
 
-        try
-        {
-            Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail(exception.getMessage());
-        }
+        Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
 
         for (final Xml child : root.getChildren())
         {
