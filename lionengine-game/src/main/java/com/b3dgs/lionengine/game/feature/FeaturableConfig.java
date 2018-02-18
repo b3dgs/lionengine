@@ -33,9 +33,9 @@ public final class FeaturableConfig
     /** Featurable node name. */
     public static final String NODE_FEATURABLE = Constant.XML_PREFIX + "featurable";
     /** Class attribute name. */
-    public static final String CLASS = Constant.XML_PREFIX + "class";
+    public static final String ATT_CLASS = Constant.XML_PREFIX + "class";
     /** Setup attribute name. */
-    public static final String SETUP = Constant.XML_PREFIX + "setup";
+    public static final String ATT_SETUP = Constant.XML_PREFIX + "setup";
     /** Feature node. */
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
     /** Default class name. */
@@ -63,9 +63,9 @@ public final class FeaturableConfig
     public static FeaturableConfig imports(Xml root)
     {
         final String clazz;
-        if (root.hasChild(CLASS))
+        if (root.hasChild(ATT_CLASS))
         {
-            clazz = root.getChild(CLASS).getText();
+            clazz = root.getChild(ATT_CLASS).getText();
         }
         else
         {
@@ -73,9 +73,9 @@ public final class FeaturableConfig
         }
 
         final String setup;
-        if (root.hasChild(SETUP))
+        if (root.hasChild(ATT_SETUP))
         {
-            setup = root.getChild(SETUP).getText();
+            setup = root.getChild(ATT_SETUP).getText();
         }
         else
         {
@@ -94,7 +94,7 @@ public final class FeaturableConfig
      */
     public static Xml exportClass(String clazz)
     {
-        final Xml node = new Xml(CLASS);
+        final Xml node = new Xml(ATT_CLASS);
         node.setText(clazz);
         return node;
     }
@@ -108,7 +108,7 @@ public final class FeaturableConfig
      */
     public static Xml exportSetup(String setup)
     {
-        final Xml node = new Xml(SETUP);
+        final Xml node = new Xml(ATT_SETUP);
         node.setText(setup);
         return node;
     }

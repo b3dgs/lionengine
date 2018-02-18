@@ -59,7 +59,7 @@ public final class CollisionGroupConfig
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
         for (final Xml node : childrenCollision)
         {
-            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.FORMULA);
+            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
             final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
             for (final Xml formula : childrenFormula)
             {
@@ -87,7 +87,7 @@ public final class CollisionGroupConfig
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
         for (final Xml node : childrenCollision)
         {
-            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.FORMULA);
+            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
             final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
             for (final Xml formula : childrenFormula)
             {
@@ -115,7 +115,7 @@ public final class CollisionGroupConfig
 
         for (final CollisionFormula formula : group.getFormulas())
         {
-            final Xml nodeFormula = node.createChild(CollisionFormulaConfig.FORMULA);
+            final Xml nodeFormula = node.createChild(CollisionFormulaConfig.NODE_FORMULA);
             nodeFormula.setText(formula.getName());
         }
     }

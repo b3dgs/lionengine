@@ -50,13 +50,13 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     /** Last key name. */
     private volatile char lastKeyName = EMPTY_KEY_NAME;
     /** Left key. */
-    private Integer left = LEFT;
+    private Integer leftKey = LEFT;
     /** Right key. */
-    private Integer right = RIGHT;
+    private Integer rightKey = RIGHT;
     /** Up key. */
-    private Integer up = UP;
+    private Integer upKey = UP;
     /** Down key. */
-    private Integer down = DOWN;
+    private Integer downKey = DOWN;
 
     /**
      * Constructor.
@@ -157,36 +157,36 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     @Override
     public void setHorizontalControlPositive(Integer code)
     {
-        right = code;
+        rightKey = code;
     }
 
     @Override
     public void setHorizontalControlNegative(Integer code)
     {
-        left = code;
+        leftKey = code;
     }
 
     @Override
     public void setVerticalControlPositive(Integer code)
     {
-        up = code;
+        upKey = code;
     }
 
     @Override
     public void setVerticalControlNegative(Integer code)
     {
-        down = code;
+        downKey = code;
     }
 
     @Override
     public double getHorizontalDirection()
     {
         final double direction;
-        if (isPressed(left))
+        if (isPressed(leftKey))
         {
             direction = -1;
         }
-        else if (isPressed(right))
+        else if (isPressed(rightKey))
         {
             direction = 1;
         }
@@ -201,11 +201,11 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public double getVerticalDirection()
     {
         final int direction;
-        if (isPressed(down))
+        if (isPressed(downKey))
         {
             direction = -1;
         }
-        else if (isPressed(up))
+        else if (isPressed(upKey))
         {
             direction = 1;
         }

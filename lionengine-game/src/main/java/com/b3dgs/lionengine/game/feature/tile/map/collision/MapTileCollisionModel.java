@@ -420,7 +420,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     {
         if (formulasConfig != null)
         {
-            final Xml formulasRoot = new Xml(CollisionFormulaConfig.FORMULAS);
+            final Xml formulasRoot = new Xml(CollisionFormulaConfig.NODE_FORMULAS);
             for (final CollisionFormula formula : getCollisionFormulas())
             {
                 CollisionFormulaConfig.exports(formulasRoot, formula);

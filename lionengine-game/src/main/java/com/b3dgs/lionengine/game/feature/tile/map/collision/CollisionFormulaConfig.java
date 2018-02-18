@@ -36,11 +36,11 @@ public final class CollisionFormulaConfig
     /** Configuration file name. */
     public static final String FILENAME = "formulas.xml";
     /** Collision formula root node. */
-    public static final String FORMULAS = Constant.XML_PREFIX + "formulas";
+    public static final String NODE_FORMULAS = Constant.XML_PREFIX + "formulas";
     /** Collision formula node. */
-    public static final String FORMULA = Constant.XML_PREFIX + "formula";
+    public static final String NODE_FORMULA = Constant.XML_PREFIX + "formula";
     /** The formula name attribute. */
-    public static final String NAME = "name";
+    public static final String ATT_NAME = "name";
 
     /**
      * Create the formula data from node.
@@ -53,9 +53,9 @@ public final class CollisionFormulaConfig
     {
         final Xml root = new Xml(config);
         final Map<String, CollisionFormula> collisions = new HashMap<>(0);
-        for (final Xml node : root.getChildren(FORMULA))
+        for (final Xml node : root.getChildren(NODE_FORMULA))
         {
-            final String name = node.readString(NAME);
+            final String name = node.readString(ATT_NAME);
             final CollisionFormula collision = createCollision(node);
             collisions.put(name, collision);
         }
@@ -71,8 +71,8 @@ public final class CollisionFormulaConfig
      */
     public static void exports(Xml root, CollisionFormula formula)
     {
-        final Xml node = root.createChild(FORMULA);
-        node.writeString(NAME, formula.getName());
+        final Xml node = root.createChild(NODE_FORMULA);
+        node.writeString(ATT_NAME, formula.getName());
 
         CollisionRangeConfig.exports(node, formula.getRange());
         CollisionFunctionConfig.exports(node, formula.getFunction());
@@ -88,7 +88,7 @@ public final class CollisionFormulaConfig
      */
     public static CollisionFormula createCollision(Xml node)
     {
-        final String name = node.readString(NAME);
+        final String name = node.readString(ATT_NAME);
         final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.RANGE));
         final CollisionFunction function = CollisionFunctionConfig.imports(node);
         final CollisionConstraint constraint = CollisionConstraintConfig.imports(node);
@@ -104,9 +104,9 @@ public final class CollisionFormulaConfig
      */
     public static void remove(Xml root, String formula)
     {
-        for (final Xml node : root.getChildren(FORMULA))
+        for (final Xml node : root.getChildren(NODE_FORMULA))
         {
-            if (node.readString(NAME).equals(formula))
+            if (node.readString(ATT_NAME).equals(formula))
             {
                 root.removeChild(node);
             }
@@ -122,9 +122,9 @@ public final class CollisionFormulaConfig
      */
     public static boolean has(Xml root, String formula)
     {
-        for (final Xml node : root.getChildren(FORMULA))
+        for (final Xml node : root.getChildren(NODE_FORMULA))
         {
-            if (node.readString(NAME).equals(formula))
+            if (node.readString(ATT_NAME).equals(formula))
             {
                 return true;
             }

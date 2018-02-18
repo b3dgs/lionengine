@@ -28,11 +28,11 @@ import com.b3dgs.lionengine.io.Xml;
 public final class Raster
 {
     /** Red channel. */
-    private static final String RED = "Red";
+    private static final String CHANNEL_RED = "Red";
     /** Green channel. */
-    private static final String GREEN = "Green";
+    private static final String CHANNEL_GREEN = "Green";
     /** Blue channel. */
-    private static final String BLUE = "Blue";
+    private static final String CHANNEL_BLUE = "Blue";
 
     /**
      * Load raster from media.
@@ -46,9 +46,9 @@ public final class Raster
         Check.notNull(media);
 
         final Xml root = new Xml(media);
-        final RasterData dataRed = RasterData.load(root, RED);
-        final RasterData dataGreen = RasterData.load(root, GREEN);
-        final RasterData dataBlue = RasterData.load(root, BLUE);
+        final RasterData dataRed = RasterData.load(root, CHANNEL_RED);
+        final RasterData dataGreen = RasterData.load(root, CHANNEL_GREEN);
+        final RasterData dataBlue = RasterData.load(root, CHANNEL_BLUE);
 
         return new Raster(dataRed, dataGreen, dataBlue);
     }

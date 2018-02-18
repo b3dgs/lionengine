@@ -60,13 +60,13 @@ public final class ColorRgba
     /** Color value. */
     private final int value;
     /** Red. */
-    private final int red;
+    private final int valueRed;
     /** Green. */
-    private final int green;
+    private final int valueGreen;
     /** Blue. */
-    private final int blue;
+    private final int valueBlue;
     /** Alpha. */
-    private final int alpha;
+    private final int valueAlpha;
 
     /**
      * Create an opaque color.
@@ -108,10 +108,10 @@ public final class ColorRgba
                 | UtilConversion.mask(r) << Constant.BYTE_3
                 | UtilConversion.mask(g) << Constant.BYTE_2
                 | UtilConversion.mask(b) << Constant.BYTE_1;
-        alpha = a;
-        red = r;
-        green = g;
-        blue = b;
+        valueAlpha = a;
+        valueRed = r;
+        valueGreen = g;
+        valueBlue = b;
     }
 
     /**
@@ -122,10 +122,10 @@ public final class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
-        alpha = UtilConversion.mask(value >> Constant.BYTE_4);
-        red = UtilConversion.mask(value >> Constant.BYTE_3);
-        green = UtilConversion.mask(value >> Constant.BYTE_2);
-        blue = UtilConversion.mask(value >> Constant.BYTE_1);
+        valueAlpha = UtilConversion.mask(value >> Constant.BYTE_4);
+        valueRed = UtilConversion.mask(value >> Constant.BYTE_3);
+        valueGreen = UtilConversion.mask(value >> Constant.BYTE_2);
+        valueBlue = UtilConversion.mask(value >> Constant.BYTE_1);
     }
 
     /**
@@ -145,7 +145,7 @@ public final class ColorRgba
      */
     public int getRed()
     {
-        return red;
+        return valueRed;
     }
 
     /**
@@ -155,7 +155,7 @@ public final class ColorRgba
      */
     public int getGreen()
     {
-        return green;
+        return valueGreen;
     }
 
     /**
@@ -165,7 +165,7 @@ public final class ColorRgba
      */
     public int getBlue()
     {
-        return blue;
+        return valueBlue;
     }
 
     /**
@@ -175,7 +175,7 @@ public final class ColorRgba
      */
     public int getAlpha()
     {
-        return alpha;
+        return valueAlpha;
     }
 
     /*
@@ -187,10 +187,10 @@ public final class ColorRgba
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + alpha;
-        result = prime * result + blue;
-        result = prime * result + green;
-        result = prime * result + red;
+        result = prime * result + valueAlpha;
+        result = prime * result + valueBlue;
+        result = prime * result + valueGreen;
+        result = prime * result + valueRed;
         result = prime * result + value;
         return result;
     }
@@ -214,13 +214,13 @@ public final class ColorRgba
     public String toString()
     {
         return new StringBuilder().append("red = ")
-                                  .append(red)
+                                  .append(valueRed)
                                   .append(" | green = ")
-                                  .append(green)
+                                  .append(valueGreen)
                                   .append(" | blue = ")
-                                  .append(blue)
+                                  .append(valueBlue)
                                   .append(" | alpha = ")
-                                  .append(alpha)
+                                  .append(valueAlpha)
                                   .toString();
     }
 }
