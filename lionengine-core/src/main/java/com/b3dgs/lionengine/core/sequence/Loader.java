@@ -61,6 +61,7 @@ public final class Loader
         {
             reference.set(e);
             Verbose.exception(e);
+            Engine.terminate();
         });
         thread.start();
 
