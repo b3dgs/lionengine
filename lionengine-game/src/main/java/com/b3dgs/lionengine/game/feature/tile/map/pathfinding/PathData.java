@@ -55,7 +55,14 @@ public class PathData implements Nameable
         this.category = category;
         this.cost = cost;
         this.blocking = blocking;
-        this.movements = EnumSet.copyOf(movements);
+        if (movements.isEmpty())
+        {
+            this.movements = EnumSet.noneOf(MovementTile.class);
+        }
+        else
+        {
+            this.movements = EnumSet.copyOf(movements);
+        }
     }
 
     /**
