@@ -89,7 +89,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail(exception.getMessage());
+                throw exception;
             }
         }
     }
@@ -118,7 +118,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail(exception.getMessage());
+                throw exception;
             }
         }
     }
@@ -149,7 +149,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail(exception.getMessage());
+                throw exception;
             }
         }
     }
@@ -180,7 +180,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail(exception.getMessage());
+                throw exception;
             }
         }
     }
@@ -206,7 +206,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail(exception.getMessage());
+                throw exception;
             }
         }
     }
@@ -233,7 +233,7 @@ public class DrawableTest
         {
             if (!fail)
             {
-                Assert.fail(exception.getMessage());
+                throw exception;
             }
         }
     }

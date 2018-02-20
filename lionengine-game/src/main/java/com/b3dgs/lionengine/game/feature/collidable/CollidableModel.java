@@ -106,9 +106,8 @@ public class CollidableModel extends FeatureModel
     /** The collisions used. */
     private final List<Collision> collisions = new ArrayList<>();
     /** The accepted groups. */
-    private final Collection<Integer> acceptedSet = new HashSet<>();
+    private final Collection<Integer> accepted = new HashSet<>();
     /** The accepted groups as list. */
-    private final Collection<Integer> accepted = new ArrayList<>();
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs = new HashMap<>();
     /** Collisions cache. */
@@ -325,7 +324,6 @@ public class CollidableModel extends FeatureModel
     public void addAccept(int group)
     {
         final Integer id = Integer.valueOf(group);
-        acceptedSet.add(id);
         accepted.add(id);
     }
 
@@ -333,14 +331,13 @@ public class CollidableModel extends FeatureModel
     public void removeAccept(int group)
     {
         final Integer id = Integer.valueOf(group);
-        acceptedSet.remove(id);
         accepted.remove(id);
     }
 
     @Override
     public Collision collide(Collidable other)
     {
-        if (enabled && acceptedSet.contains(other.getGroup()))
+        if (enabled && accepted.contains(other.getGroup()))
         {
             final int size = cacheColls.size();
             for (int i = 0; i < size; i++)

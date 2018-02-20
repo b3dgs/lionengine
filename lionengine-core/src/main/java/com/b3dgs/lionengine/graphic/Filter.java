@@ -25,53 +25,6 @@ package com.b3dgs.lionengine.graphic;
  */
 public interface Filter
 {
-    /** No filter. */
-    Filter NO_FILTER = new Filter()
-    {
-        @Override
-        public ImageBuffer filter(ImageBuffer source)
-        {
-            return source;
-        }
-
-        @Override
-        public Transform getTransform(final double scaleX, final double scaleY)
-        {
-            return new Transform()
-            {
-                @Override
-                public void setInterpolation(boolean bilinear)
-                {
-                    // Nothing to do
-                }
-
-                @Override
-                public void scale(double sx, double sy)
-                {
-                    // Nothing to do
-                }
-
-                @Override
-                public double getScaleY()
-                {
-                    return scaleX;
-                }
-
-                @Override
-                public double getScaleX()
-                {
-                    return scaleY;
-                }
-
-                @Override
-                public int getInterpolation()
-                {
-                    return 0;
-                }
-            };
-        }
-    };
-
     /**
      * Apply a filter to the image source.
      * 

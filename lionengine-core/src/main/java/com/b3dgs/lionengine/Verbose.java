@@ -18,12 +18,6 @@
 package com.b3dgs.lionengine;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Locale;
@@ -31,7 +25,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -85,16 +78,12 @@ public enum Verbose
                                            + "-"
                                            + LOG_NUM
                                            + ".log";
-    /** In. */
-    private static final String IN = "in ";
-    /** At. */
-    private static final String AT = " at ";
     /** Error formatter log file. */
     private static final String ERROR_LOG_FILE = "Unable to set log file !";
     /** Error formatter. */
     private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
     /** Verbose flag. */
-    private static final Collection<Verbose> LEVELS = EnumSet.copyOf(Arrays.asList(Verbose.values()));
+    private static final Collection<Verbose> LEVELS = EnumSet.allOf(Verbose.class);
 
     /**
      * Configure verbose.
@@ -247,74 +236,5 @@ public enum Verbose
             builder.append(element);
         }
         return builder.toString();
-    }
-
-    /**
-     * Verbose formatter.
-     */
-    private static final class VerboseFormatter extends Formatter
-    {
-        private static final int DATE_LENGTH = 23;
-        private static final int LOG_LEVEL_LENGTH = 7;
-        private static final DateTimeFormatter DATE_TIME_FORMAT;
-
-        static
-        {
-            DATE_TIME_FORMAT = new DateTimeFormatterBuilder().parseCaseInsensitive()
-                                                             .append(DateTimeFormatter.ISO_LOCAL_DATE)
-                                                             .appendLiteral(Constant.SPACE)
-                                                             .append(DateTimeFormatter.ISO_LOCAL_TIME)
-                                                             .toFormatter(Locale.ENGLISH);
-        }
-
-        /**
-         * Internal constructor.
-         */
-        VerboseFormatter()
-        {
-            super();
-        }
-
-        @Override
-        public String format(LogRecord event)
-        {
-            final String clazz = event.getSourceClassName();
-            final String function = event.getSourceMethodName();
-            final Throwable thrown = event.getThrown();
-            final StringBuilder message = new StringBuilder(Constant.HUNDRED);
-
-            final String date = LocalDateTime.now().format(DATE_TIME_FORMAT);
-            message.append(date);
-            for (int i = date.length(); i < DATE_LENGTH; i++)
-            {
-                message.append(Constant.SPACE);
-            }
-            message.append(Constant.SPACE);
-
-            final String logLevel = event.getLevel().getName();
-            for (int i = logLevel.length(); i < LOG_LEVEL_LENGTH; i++)
-            {
-                message.append(Constant.SPACE);
-            }
-            message.append(logLevel).append(Constant.DOUBLE_DOT);
-
-            if (clazz != null)
-            {
-                message.append(IN).append(clazz);
-            }
-            if (function != null)
-            {
-                message.append(AT).append(function).append(Constant.DOUBLE_DOT);
-            }
-            message.append(event.getMessage()).append(Constant.NEW_LINE);
-            if (thrown != null)
-            {
-                final StringWriter sw = new StringWriter();
-                thrown.printStackTrace(new PrintWriter(sw));
-                message.append(sw);
-            }
-
-            return message.toString();
-        }
     }
 }

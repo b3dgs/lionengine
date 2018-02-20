@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.graphic.Filter;
+import com.b3dgs.lionengine.graphic.FilterNone;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -91,7 +92,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /** Filter graphic. */
     private final Graphic graphic;
     /** Filter reference. */
-    private volatile Filter filter = Filter.NO_FILTER;
+    private volatile Filter filter = FilterNone.INSTANCE;
     /** Next sequence pointer. */
     private Sequencable nextSequence;
     /** Loop mode. */
@@ -154,13 +155,13 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Set the filter to use.
      * 
-     * @param filter The filter to use (if <code>null</code> then {@link Filter#NO_FILTER} is used).
+     * @param filter The filter to use (if <code>null</code> then {@link FilterNone#INSTANCE} is used).
      */
     public final void setFilter(Filter filter)
     {
         if (filter == null)
         {
-            this.filter = Filter.NO_FILTER;
+            this.filter = FilterNone.INSTANCE;
         }
         else
         {
@@ -250,7 +251,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
 
         // Standard rendering
         final Resolution output = config.getOutput();
-        if (Filter.NO_FILTER.equals(filter)
+        if (FilterNone.INSTANCE.equals(filter)
             && source.getWidth() == output.getWidth()
             && source.getHeight() == output.getHeight())
         {

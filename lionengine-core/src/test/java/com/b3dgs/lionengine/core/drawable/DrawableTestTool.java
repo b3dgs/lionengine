@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.Filter;
+import com.b3dgs.lionengine.graphic.FilterNone;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
@@ -278,7 +278,7 @@ public final class DrawableTestTool
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
-        sprite.filter(Filter.NO_FILTER);
+        sprite.filter(FilterNone.INSTANCE);
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
