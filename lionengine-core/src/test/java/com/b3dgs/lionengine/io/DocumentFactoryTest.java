@@ -32,7 +32,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilReflection;
-import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -61,15 +60,9 @@ public class DocumentFactoryTest
     {
         Assert.assertNotNull(DocumentFactory.createDocument());
 
-        InputStream input = null;
-        try
+        try (InputStream input = DocumentFactoryTest.class.getResourceAsStream("type.xml"))
         {
-            input = DocumentFactoryTest.class.getResourceAsStream("type.xml");
             Assert.assertNotNull(DocumentFactory.createDocument(input));
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -83,15 +76,9 @@ public class DocumentFactoryTest
     {
         Assert.assertNotNull(DocumentFactory.createDocument());
 
-        InputStream input = null;
-        try
+        try (InputStream input = DocumentFactoryTest.class.getResourceAsStream("malformed.xml"))
         {
-            input = DocumentFactoryTest.class.getResourceAsStream("malformed.xml");
             Assert.assertNotNull(DocumentFactory.createDocument(input));
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 

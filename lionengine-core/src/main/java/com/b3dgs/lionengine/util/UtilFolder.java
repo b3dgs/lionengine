@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,14 +122,25 @@ public final class UtilFolder
                     deleteDirectory(file);
                 }
             }
-            if (!element.delete())
+            try
             {
-                Verbose.warning(ERROR_DELETE_DIRECTORY, element.getAbsolutePath());
+                Files.delete(element.toPath());
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(exception, ERROR_DELETE_DIRECTORY, element.getAbsolutePath());
             }
         }
-        else if (element.isFile() && !element.delete())
+        else if (element.isFile())
         {
-            Verbose.warning(ERROR_DELETE_FILE, element.getAbsolutePath());
+            try
+            {
+                Files.delete(element.toPath());
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(exception, ERROR_DELETE_FILE, element.getAbsolutePath());
+            }
         }
     }
 

@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Engine;
@@ -193,7 +194,7 @@ public class UtilReflectionTest
         try
         {
             accessible.set(false);
-            Assert.assertNotNull(UtilReflection.getMethod(UtilProjectStats.class, "countLineTypes", "test"));
+            Assert.assertNotNull(UtilReflection.getMethod(Verbose.class, "getMessage", "test"));
         }
         finally
         {

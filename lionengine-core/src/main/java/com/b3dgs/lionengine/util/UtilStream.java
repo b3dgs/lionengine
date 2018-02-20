@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.util;
 
 import java.io.BufferedOutputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -66,20 +65,6 @@ public final class UtilStream
                 break;
             }
             destination.write(buffer, 0, read);
-        }
-    }
-
-    /**
-     * Close and log exception if unable to close.
-     * 
-     * @param closeable The closeable to close.
-     * @throws IOException If unable to close.
-     */
-    public static void close(Closeable closeable) throws IOException
-    {
-        if (closeable != null)
-        {
-            closeable.close();
         }
     }
 

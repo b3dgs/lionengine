@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Test the file writing and reading.
@@ -70,11 +69,8 @@ public class FileWritingReadingTest
      */
     private void testFileWriting() throws IOException
     {
-        FileWriting writing = null;
-        try
+        try (FileWriting writing = new FileWriting(fileData))
         {
-            writing = new FileWriting(fileData);
-
             writing.writeBoolean(BOOL_VALUE);
             writing.writeByte(BYTE_VALUE);
             writing.writeChar(CHAR_VALUE);
@@ -85,10 +81,6 @@ public class FileWritingReadingTest
             writing.writeDouble(DOUBLE_VALUE);
             writing.writeString(STRING_VALUE);
         }
-        finally
-        {
-            UtilStream.close(writing);
-        }
     }
 
     /**
@@ -98,11 +90,8 @@ public class FileWritingReadingTest
      */
     private void testFileReading() throws IOException
     {
-        FileReading reading = null;
-        try
+        try (FileReading reading = new FileReading(fileData))
         {
-            reading = new FileReading(fileData);
-
             Assert.assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(reading.readBoolean()));
             Assert.assertEquals(BYTE_VALUE, reading.readByte());
             Assert.assertEquals(CHAR_VALUE, reading.readChar());
@@ -112,10 +101,6 @@ public class FileWritingReadingTest
             Assert.assertEquals(LONG_VALUE, reading.readLong());
             Assert.assertEquals(DOUBLE_VALUE, reading.readDouble(), DOUBLE_PRECISION);
             Assert.assertEquals(STRING_VALUE, reading.readString());
-        }
-        finally
-        {
-            UtilStream.close(reading);
         }
     }
 }

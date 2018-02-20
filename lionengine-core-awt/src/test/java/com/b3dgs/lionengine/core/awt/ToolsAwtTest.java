@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.util.UtilEnum;
-import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -96,18 +95,12 @@ public class ToolsAwtTest
 
         final Media media = Medias.create("image.png");
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             final BufferedImage buffer = ToolsAwt.getImage(input);
             Assert.assertNotNull(buffer);
             Assert.assertNotNull(ToolsAwt.getImageData(image));
             ToolsAwt.optimizeGraphicsQuality(buffer.createGraphics());
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
 
         Assert.assertNotNull(ToolsAwt.createHiddenCursor());
@@ -155,30 +148,18 @@ public class ToolsAwtTest
     {
         final Media media = Medias.create("image.png");
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             final BufferedImage image = ToolsAwt.getImage(input);
             Assert.assertNotNull(image);
 
             final Media save = media;
 
-            OutputStream output = null;
-            try
+            try (OutputStream output = save.getOutputStream())
             {
-                output = save.getOutputStream();
                 ToolsAwt.saveImage(image, output);
             }
-            finally
-            {
-                UtilStream.close(output);
-            }
             Assert.assertTrue(save.getFile().getAbsolutePath(), save.getFile().exists());
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -192,16 +173,10 @@ public class ToolsAwtTest
     {
         final Media media = Medias.create("image.xml");
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             final BufferedImage image = ToolsAwt.getImage(input);
             Assert.assertNotNull(image);
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -215,16 +190,10 @@ public class ToolsAwtTest
     {
         final Media media = Medias.create("raster.xml");
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             final BufferedImage image = ToolsAwt.getImage(input);
             Assert.assertNotNull(image);
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 

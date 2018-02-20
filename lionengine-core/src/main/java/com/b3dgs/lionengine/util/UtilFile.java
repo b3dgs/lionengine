@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -178,9 +180,13 @@ public final class UtilFile
     {
         Check.notNull(file);
 
-        if (!file.delete())
+        try
         {
-            throw new LionEngineException(ERROR_DELETE_FILE + file.getAbsolutePath());
+            Files.delete(file.toPath());
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_DELETE_FILE + file.getAbsolutePath());
         }
     }
 

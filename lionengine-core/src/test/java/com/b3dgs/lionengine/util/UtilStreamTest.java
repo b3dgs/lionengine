@@ -84,20 +84,15 @@ public class UtilStreamTest
         final File temp1 = File.createTempFile("temp", ".tmp");
         final File temp2 = File.createTempFile("temp", ".tmp");
 
-        InputStream input = null;
-        OutputStream output = null;
-        try
+        try (InputStream input = new FileInputStream(temp1);
+             OutputStream output = new FileOutputStream(temp2))
         {
-            input = new FileInputStream(temp1);
-            output = new FileOutputStream(temp2);
             output.write(1);
             output.flush();
             UtilStream.copy(input, output);
         }
         finally
         {
-            UtilStream.close(input);
-            UtilStream.close(output);
             Assert.assertTrue(temp1.delete());
             Assert.assertTrue(temp2.delete());
         }
@@ -111,15 +106,9 @@ public class UtilStreamTest
     @Test(expected = LionEngineException.class)
     public void testCopyNullInput() throws IOException
     {
-        OutputStream output = null;
-        try
+        try (OutputStream output = new OutputStreamMock())
         {
-            output = new OutputStreamMock();
             UtilStream.copy(null, output);
-        }
-        finally
-        {
-            UtilStream.close(output);
         }
     }
 
@@ -131,15 +120,9 @@ public class UtilStreamTest
     @Test(expected = LionEngineException.class)
     public void testCopyNullOutput() throws IOException
     {
-        InputStream input = null;
-        try
+        try (InputStream input = new InputStreamMock())
         {
-            input = new InputStreamMock();
             UtilStream.copy(input, null);
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -151,17 +134,11 @@ public class UtilStreamTest
     @Test
     public void testGetCopy() throws IOException
     {
-        InputStream input = null;
-        try
+        try (InputStream input = new InputStreamMock())
         {
-            input = new InputStreamMock();
             Assert.assertTrue(UtilStream.getCopy("te", input).delete());
             Assert.assertTrue(UtilStream.getCopy("temp", input).delete());
             Assert.assertTrue(UtilStream.getCopy("temp.tmp", input).delete());
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -173,15 +150,9 @@ public class UtilStreamTest
     @Test(expected = LionEngineException.class)
     public void testGetCopyNullName() throws IOException
     {
-        InputStream input = null;
-        try
+        try (InputStream input = new InputStreamMock())
         {
-            input = new InputStreamMock();
             Assert.assertNull(UtilStream.getCopy(null, input));
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 

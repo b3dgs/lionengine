@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilFolder;
 import com.b3dgs.lionengine.util.UtilReflection;
-import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Test the media class.
@@ -113,15 +112,9 @@ public class MediaTest
 
         Assert.assertTrue(media.exists());
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             Assert.assertNotNull(input);
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -138,15 +131,9 @@ public class MediaTest
 
         Assert.assertFalse(media.exists());
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             Assert.assertNotNull(input);
-        }
-        finally
-        {
-            UtilStream.close(input);
         }
     }
 
@@ -165,15 +152,12 @@ public class MediaTest
         final File file2 = File.createTempFile("void", "", dir);
         final Media media = Medias.create(file2.getName());
 
-        InputStream input = null;
-        try
+        try (InputStream input = media.getInputStream())
         {
-            input = media.getInputStream();
             Assert.assertNotNull(input);
         }
         finally
         {
-            UtilStream.close(input);
             Assert.assertTrue(file.delete());
             Assert.assertTrue(file2.delete());
             UtilFolder.deleteDirectory(dir);
@@ -191,19 +175,16 @@ public class MediaTest
         Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create(String.valueOf(System.nanoTime()), "test");
 
-        OutputStream output = null;
-        try
+        try (OutputStream output = media.getOutputStream())
         {
-            output = media.getOutputStream();
             Assert.assertNotNull(output);
         }
         finally
         {
-            UtilStream.close(output);
+            Assert.assertTrue(media.getFile().exists());
+            Assert.assertTrue(media.getFile().delete());
+            Assert.assertFalse(media.getFile().exists());
         }
-        Assert.assertTrue(media.getFile().exists());
-        Assert.assertTrue(media.getFile().delete());
-        Assert.assertFalse(media.getFile().exists());
     }
 
     /**
