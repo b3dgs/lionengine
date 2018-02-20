@@ -31,14 +31,14 @@ public class Features
     private static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
 
     /** Features handled. */
-    private final Map<Class<? extends Feature>, Feature> features;
+    private final Map<Class<? extends Feature>, Feature> typeToFeature;
 
     /**
      * Create features handler.
      */
     public Features()
     {
-        features = new HashMap<>();
+        typeToFeature = new HashMap<>();
     }
 
     /**
@@ -48,12 +48,12 @@ public class Features
      */
     public void add(Feature feature)
     {
-        features.put(feature.getClass(), feature);
+        typeToFeature.put(feature.getClass(), feature);
         for (final Class<?> type : feature.getClass().getInterfaces())
         {
             if (Feature.class.isAssignableFrom(type))
             {
-                features.put(type.asSubclass(Feature.class), feature);
+                typeToFeature.put(type.asSubclass(Feature.class), feature);
             }
         }
     }
@@ -69,13 +69,13 @@ public class Features
     public <C extends Feature> C get(Class<C> feature)
     {
         final C value;
-        if (features.containsKey(feature))
+        if (typeToFeature.containsKey(feature))
         {
-            value = feature.cast(features.get(feature));
+            value = feature.cast(typeToFeature.get(feature));
         }
         else
         {
-            for (final Feature current : features.values())
+            for (final Feature current : typeToFeature.values())
             {
                 if (feature.isAssignableFrom(current.getClass()))
                 {
@@ -97,13 +97,13 @@ public class Features
     public <C extends Feature> boolean contains(Class<C> feature)
     {
         final boolean contains;
-        if (features.containsKey(feature))
+        if (typeToFeature.containsKey(feature))
         {
             contains = true;
         }
         else
         {
-            for (final Feature current : features.values())
+            for (final Feature current : typeToFeature.values())
             {
                 if (feature.isAssignableFrom(current.getClass()))
                 {
@@ -122,7 +122,7 @@ public class Features
      */
     public Iterable<Feature> getFeatures()
     {
-        return features.values();
+        return typeToFeature.values();
     }
 
     /**
@@ -132,6 +132,6 @@ public class Features
      */
     public Iterable<Class<? extends Feature>> getFeaturesType()
     {
-        return features.keySet();
+        return typeToFeature.keySet();
     }
 }

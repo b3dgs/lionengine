@@ -61,7 +61,7 @@ public class Services
     private static final String ERROR_SERVICE_GET = "Service not found: ";
 
     /** Services list. */
-    private final Collection<Object> services = new HashSet<>();
+    private final Collection<Object> servicesSet = new HashSet<>();
 
     /**
      * Create a services container.
@@ -166,7 +166,7 @@ public class Services
     public <S> S add(S service)
     {
         Check.notNull(service);
-        services.add(service);
+        servicesSet.add(service);
         return service;
     }
 
@@ -192,7 +192,7 @@ public class Services
     public <S> S get(Class<S> service)
     {
         Check.notNull(service);
-        for (final Object object : services)
+        for (final Object object : servicesSet)
         {
             if (service.isAssignableFrom(object.getClass()))
             {
