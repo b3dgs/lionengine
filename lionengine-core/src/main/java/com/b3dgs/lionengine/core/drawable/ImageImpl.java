@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.graphic.ImageInfo;
  */
 class ImageImpl implements Image
 {
-    /** Unsupported enum. */
-    static final String ERROR_ENUM = "Unknown enum type: ";
     /** Error already loaded. */
     private static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
 

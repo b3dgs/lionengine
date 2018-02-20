@@ -126,11 +126,11 @@ public final class TimedMessage implements Updatable, Renderable
     private static final class MessageData
     {
         /** The message content. */
-        final String message;
+        private final String message;
         /** The vertical location. */
-        final int x;
+        private final int x;
         /** The vertical location. */
-        final int y;
+        private final int y;
         /** The timer. */
         private final Timing timer;
         /** Max time. */
@@ -144,7 +144,7 @@ public final class TimedMessage implements Updatable, Renderable
          * @param y The vertical location.
          * @param time The remaining time.
          */
-        MessageData(String message, int x, int y, int time)
+        private MessageData(String message, int x, int y, int time)
         {
             this.message = message;
             this.x = x;
@@ -159,7 +159,7 @@ public final class TimedMessage implements Updatable, Renderable
          * 
          * @return <code>true</code> if elapsed, <code>false</code> else.
          */
-        boolean elapsed()
+        private boolean elapsed()
         {
             return timer.elapsed(time);
         }

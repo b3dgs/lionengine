@@ -231,7 +231,7 @@ public class FilterBlur implements Filter
         final float sigmaPi2 = (float) (2 * Math.PI * sigma);
         final float sqrtSigmaPi2 = (float) Math.sqrt(sigmaPi2);
         final float radius2 = radius * radius;
-        float total = 0;
+        float total = 0.0F;
         int index = 0;
         for (int row = -r; row <= r; row++)
         {
@@ -247,7 +247,7 @@ public class FilterBlur implements Filter
             total += matrix[index];
             index++;
         }
-        if (Float.compare(total, 0.0f) != 0)
+        if (Float.compare(total, 0.0F) != 0)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -275,7 +275,7 @@ public class FilterBlur implements Filter
     /**
      * Local kernel representation.
      */
-    private static class Kernel
+    private static final class Kernel
     {
         /** Kernel width. */
         private final int width;
@@ -288,7 +288,7 @@ public class FilterBlur implements Filter
          * @param width The kernel width.
          * @param matrix The kernel matrix.
          */
-        Kernel(int width, float[] matrix)
+        private Kernel(int width, float[] matrix)
         {
             this.width = width;
             this.matrix = matrix;
@@ -299,7 +299,7 @@ public class FilterBlur implements Filter
          * 
          * @return The matrix width.
          */
-        public int getWidth()
+        private int getWidth()
         {
             return width;
         }
@@ -309,7 +309,7 @@ public class FilterBlur implements Filter
          * 
          * @return The kernel matrix.
          */
-        public float[] getMatrix()
+        private float[] getMatrix()
         {
             return matrix;
         }

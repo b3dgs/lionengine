@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.LionEngineException;
 public class GroupTransition
 {
     /** Transition string representation. */
-    static final String TRANSITION = " -> ";
+    private static final String TRANSITION = " -> ";
 
     /** The first group. */
     private final String groupIn;

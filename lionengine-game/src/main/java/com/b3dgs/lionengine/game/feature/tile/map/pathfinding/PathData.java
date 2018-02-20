@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Nameable;
@@ -55,7 +55,7 @@ public class PathData implements Nameable
         this.category = category;
         this.cost = cost;
         this.blocking = blocking;
-        this.movements = new ArrayList<>(movements);
+        this.movements = EnumSet.copyOf(movements);
     }
 
     /**
