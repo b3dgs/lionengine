@@ -98,6 +98,12 @@ public final class Constant
     public static final long ONE_SECOND_IN_NANO = 1_000_000_000L;
     /** Nano to milli. */
     public static final double NANO_TO_MILLI = 1_000_000.0;
+    /** Gravity of Earth (in m/s²). */
+    public static final double GRAVITY_EARTH = 9.80665;
+    /** Gravity of Mars (in m/s²). */
+    public static final double GRAVITY_MARS = 3.71;
+    /** Gravity of the Moon (in m/s²). */
+    public static final double GRAVITY_MOON = 1.624;
     /** Error system property. */
     private static final String ERROR_PROPERTY = "Unable to get system property: ";
 

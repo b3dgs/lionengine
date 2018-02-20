@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.Verbose;
 final class DocumentFactory
 {
     /** Load factory. */
-    private static DocumentBuilder documentFactory;
+    private static DocumentBuilder documentBuilder;
     /** Save factory. */
     private static TransformerFactory transformerFactory;
 
@@ -95,7 +95,7 @@ final class DocumentFactory
      */
     private static synchronized DocumentBuilder getDocumentFactory()
     {
-        if (documentFactory == null)
+        if (documentBuilder == null)
         {
             final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
@@ -109,15 +109,15 @@ final class DocumentFactory
             }
             try
             {
-                documentFactory = documentBuilderFactory.newDocumentBuilder();
-                documentFactory.setErrorHandler(null);
+                documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                documentBuilder.setErrorHandler(null);
             }
             catch (final ParserConfigurationException exception)
             {
                 throw new LionEngineException(exception);
             }
         }
-        return documentFactory;
+        return documentBuilder;
     }
 
     /**

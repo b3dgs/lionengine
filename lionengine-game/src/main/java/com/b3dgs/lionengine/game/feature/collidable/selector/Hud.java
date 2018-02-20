@@ -154,7 +154,7 @@ public class Hud extends FeaturableModel
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), h, v);
         surface.prepare();
 
-        addFeature(new RefreshableModel(extrp -> selector.update(extrp)));
+        addFeature(new RefreshableModel(selector::update));
         addFeature(new DisplayableModel(g ->
         {
             surface.render(g);

@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -283,7 +284,7 @@ public class LauncherModel extends FeatureModel implements Launcher
     @Override
     public boolean fire()
     {
-        return fire(Direction.ZERO, null);
+        return fire(DirectionNone.INSTANCE, null);
     }
 
     @Override
@@ -295,7 +296,7 @@ public class LauncherModel extends FeatureModel implements Launcher
     @Override
     public boolean fire(Localizable target)
     {
-        return fire(Direction.ZERO, target);
+        return fire(DirectionNone.INSTANCE, target);
     }
 
     @Override

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.body;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -39,7 +40,7 @@ public class BodyModel extends FeatureModel implements Body
     /** Body location. */
     private Transformable transformable;
     /** Gravity used. */
-    private double gravity = GRAVITY_EARTH;
+    private double gravity = Constant.GRAVITY_EARTH;
     /** Vector used. */
     private Direction[] vectors = new Direction[0];
     /** Body mass. */
@@ -83,7 +84,7 @@ public class BodyModel extends FeatureModel implements Body
     @Override
     public void resetGravity()
     {
-        force.setDirection(Direction.ZERO);
+        force.setDirection(DirectionNone.INSTANCE);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class BodyModel extends FeatureModel implements Body
     public void setGravityMax(double max)
     {
         gravityMax.setDirection(0.0, -max);
-        force.setDirectionMaximum(Direction.ZERO);
+        force.setDirectionMaximum(DirectionNone.INSTANCE);
         force.setDirectionMinimum(gravityMax);
     }
 

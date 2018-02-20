@@ -22,22 +22,6 @@ package com.b3dgs.lionengine.game;
  */
 public interface Direction
 {
-    /** Zero direction. */
-    Direction ZERO = new Direction()
-    {
-        @Override
-        public double getDirectionVertical()
-        {
-            return 0;
-        }
-
-        @Override
-        public double getDirectionHorizontal()
-        {
-            return 0;
-        }
-    };
-
     /**
      * Get horizontal direction.
      * 

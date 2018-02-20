@@ -85,16 +85,13 @@ public final class AudioFactory
     /**
      * Add a supported audio format.
      * 
-     * @param formats The supported formats.
+     * @param format The supported format.
      */
-    public static void addFormat(AudioFormat... formats)
+    public static void addFormat(AudioFormat format)
     {
-        for (final AudioFormat format : formats)
+        for (final String current : format.getFormats())
         {
-            for (final String current : format.getFormats())
-            {
-                FACTORIES.put(current, format);
-            }
+            FACTORIES.put(current, format);
         }
     }
 

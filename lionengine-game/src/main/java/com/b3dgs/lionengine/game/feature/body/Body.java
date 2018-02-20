@@ -26,13 +26,6 @@ import com.b3dgs.lionengine.game.feature.Feature;
  */
 public interface Body extends Feature, Updatable
 {
-    /** Gravity of Earth (in m/s²). */
-    double GRAVITY_EARTH = 9.80665;
-    /** Gravity of Mars (in m/s²). */
-    double GRAVITY_MARS = 3.71;
-    /** Gravity of the Moon (in m/s²). */
-    double GRAVITY_MOON = 1.624;
-
     /**
      * Reset current gravity force (usually when hit the ground).
      */
@@ -53,7 +46,7 @@ public interface Body extends Feature, Updatable
     void setDesiredFps(int desiredFps);
 
     /**
-     * Set the gravity to use. {@link #GRAVITY_EARTH} is used by default.
+     * Set the gravity to use. {@link com.b3dgs.lionengine.Constant#GRAVITY_EARTH} is used by default.
      * 
      * @param gravity The gravity to use (in m/s²).
      */

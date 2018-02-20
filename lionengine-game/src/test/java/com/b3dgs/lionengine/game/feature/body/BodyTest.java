@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -70,7 +71,7 @@ public class BodyTest
         body.setDesiredFps(50);
 
         Assert.assertEquals(2.0, body.getMass(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0 * Body.GRAVITY_EARTH, body.getWeight(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0 * Constant.GRAVITY_EARTH, body.getWeight(), UtilTests.PRECISION);
 
         body.setGravity(3.0);
 

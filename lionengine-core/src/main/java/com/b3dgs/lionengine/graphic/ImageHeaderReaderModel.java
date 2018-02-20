@@ -117,7 +117,7 @@ abstract class ImageHeaderReaderModel implements ImageHeaderReader
      * 
      * @param headers The associated headers.
      */
-    protected ImageHeaderReaderModel(final int... headers)
+    protected ImageHeaderReaderModel(int... headers)
     {
         this(new HeaderProvider[]
         {

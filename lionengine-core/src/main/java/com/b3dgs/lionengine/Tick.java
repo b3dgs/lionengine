@@ -137,8 +137,7 @@ public final class Tick implements Updatable
         if (started)
         {
             final double frameTime = ONE_SECOND_IN_MILLI / context.getConfig().getSource().getRate();
-            // Equivalent to milli <= result
-            return !(milli > StrictMath.floor(currentTicks * frameTime));
+            return Double.compare(milli, StrictMath.floor(currentTicks * frameTime)) <= 0;
         }
         return false;
     }

@@ -96,7 +96,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         if (target == null)
         {
             state = AttackState.NONE;
-            attacking = false;
         }
         else
         {
@@ -108,7 +107,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
                                                      target.getY(),
                                                      target.getWidth(),
                                                      target.getHeight());
-
             checkTargetDistance(dist);
         }
     }

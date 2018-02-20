@@ -55,6 +55,12 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  */
 public class Selector extends FeaturableModel implements Updatable, SelectorConfigurer, CollidableListener
 {
+    /** Void notify. */
+    private static final Action CHECK = () ->
+    {
+        // Nothing to do
+    };
+
     /** Selector model. */
     private final SelectorModel model = addFeatureAndGet(new SelectorModel());
     /** Selector refresher. */
@@ -66,11 +72,6 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     /** Selection listeners. */
     private final List<SelectionListener> listeners = new ArrayList<>();
     /** Void notify. */
-    private final Action check = () ->
-    {
-        // Nothing to do
-    };
-    /** Void notify. */
     private final Action notifyAll = () ->
     {
         final int n = listeners.size();
@@ -78,10 +79,10 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
         {
             listeners.get(i).notifySelected(selected);
         }
-        notifyAction = check;
+        notifyAction = CHECK;
     };
     /** Notify action. */
-    private Action notifyAction = check;
+    private Action notifyAction = CHECK;
 
     /**
      * Create the selector.

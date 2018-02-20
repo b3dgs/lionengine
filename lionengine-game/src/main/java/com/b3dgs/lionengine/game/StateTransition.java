@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.state.StateTransitionInputChecker;
  * @see State
  * @see StateTransitionInputChecker
  */
-public abstract class StateTransition
+public class StateTransition
 {
     /** State enum. */
     private final Enum<?> state;

@@ -56,13 +56,13 @@ public final class TransformNone implements Transform
     }
 
     @Override
-    public double getScaleY()
+    public double getScaleX()
     {
         return scaleX;
     }
 
     @Override
-    public double getScaleX()
+    public double getScaleY()
     {
         return scaleY;
     }
