@@ -67,6 +67,6 @@ public class TileSheetsConfigTest
 
         Assert.assertEquals(16, config.getTileWidth());
         Assert.assertEquals(32, config.getTileHeight());
-        Assert.assertEquals(Arrays.asList("sheet"), config.getSheets());
+        Assert.assertArrayEquals(Arrays.asList("sheet").toArray(), config.getSheets().toArray());
     }
 }

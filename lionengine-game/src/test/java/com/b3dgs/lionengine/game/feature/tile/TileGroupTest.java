@@ -55,7 +55,7 @@ public class TileGroupTest
 
         Assert.assertEquals("test", tileGroup.getName());
         Assert.assertEquals(TileGroupType.PLAIN, tileGroup.getType());
-        Assert.assertEquals(tiles, tileGroup.getTiles());
+        Assert.assertArrayEquals(tiles.toArray(), tileGroup.getTiles().toArray());
     }
 
     /**

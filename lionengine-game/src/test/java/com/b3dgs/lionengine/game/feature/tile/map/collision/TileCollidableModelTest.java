@@ -290,7 +290,7 @@ public class TileCollidableModelTest
         collidable = featurable.addFeatureAndGet(new TileCollidableModel(services, setup));
         collidable.setEnabled(true);
 
-        Assert.assertEquals(Arrays.asList(categoryY, categoryX), collidable.getCategories());
+        Assert.assertArrayEquals(Arrays.asList(categoryY, categoryX).toArray(), collidable.getCategories().toArray());
 
         return transformable;
     }
