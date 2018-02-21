@@ -64,6 +64,7 @@ public final class LoopUnlocked implements Loop
             }
             else
             {
+                frame.check();
                 UtilSequence.pause(Constant.DECADE);
             }
 

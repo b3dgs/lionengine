@@ -25,6 +25,14 @@ import com.b3dgs.lionengine.Updatable;
 public interface Frame extends Updatable
 {
     /**
+     * Checking when not updating nor rendering. Does nothing by default.
+     */
+    default void check()
+    {
+        // Does nothing by default
+    }
+
+    /**
      * Render updated frame.
      */
     void render();

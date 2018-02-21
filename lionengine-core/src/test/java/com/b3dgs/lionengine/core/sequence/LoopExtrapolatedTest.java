@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.sequence;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -66,34 +67,44 @@ public class LoopExtrapolatedTest
     private final AtomicLong tick = new AtomicLong();
     private final AtomicLong maxTick = new AtomicLong(5);
     private final Loop loop = new LoopExtrapolated();
+    private final CountDownLatch latch = new CountDownLatch(1);
 
-    private Thread getTask(final Screen screen)
+    private Thread getTask(Screen screen)
     {
-        return new Thread(() -> loop.start(screen, new Frame()
+        return new Thread(() ->
         {
-            @Override
-            public void update(double extrp)
+            loop.start(screen, new Frame()
             {
-                extrapolation.set(Double.valueOf(extrp));
-                if (tick.incrementAndGet() == maxTick.get())
+                @Override
+                public void check()
                 {
-                    loop.stop();
+                    latch.countDown();
                 }
-            }
 
-            @Override
-            public void render()
-            {
-                rendered.incrementAndGet();
-            }
+                @Override
+                public void update(double extrp)
+                {
+                    extrapolation.set(Double.valueOf(extrp));
+                    if (tick.incrementAndGet() == maxTick.get())
+                    {
+                        loop.stop();
+                    }
+                }
 
-            @Override
-            public void computeFrameRate(double lastTime, double currentTime)
-            {
-                final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
-                computed.set(Double.valueOf(fps));
-            }
-        }));
+                @Override
+                public void render()
+                {
+                    rendered.incrementAndGet();
+                }
+
+                @Override
+                public void computeFrameRate(double lastTime, double currentTime)
+                {
+                    final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
+                    computed.set(Double.valueOf(fps));
+                }
+            });
+        });
     }
 
     /**
@@ -191,7 +202,7 @@ public class LoopExtrapolatedTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        Thread.sleep(100);
+        latch.await();
 
         loop.stop();
         thread.join();

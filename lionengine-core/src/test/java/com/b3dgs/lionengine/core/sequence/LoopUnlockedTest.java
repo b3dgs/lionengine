@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.sequence;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -65,11 +66,18 @@ public class LoopUnlockedTest
     private final AtomicLong tick = new AtomicLong();
     private final AtomicLong maxTick = new AtomicLong(5);
     private final Loop loop = new LoopUnlocked();
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     private Thread getTask(final Screen screen)
     {
         return new Thread(() -> loop.start(screen, new Frame()
         {
+            @Override
+            public void check()
+            {
+                latch.countDown();
+            }
+
             @Override
             public void update(double extrp)
             {
@@ -133,7 +141,7 @@ public class LoopUnlockedTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        Thread.sleep(100);
+        latch.await();
 
         loop.stop();
         thread.join();

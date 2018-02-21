@@ -86,6 +86,7 @@ public final class LoopExtrapolated implements Loop
             }
             else
             {
+                frame.check();
                 UtilSequence.pause(Constant.DECADE);
             }
 

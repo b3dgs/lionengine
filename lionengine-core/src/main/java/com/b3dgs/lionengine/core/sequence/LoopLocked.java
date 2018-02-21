@@ -83,6 +83,7 @@ public final class LoopLocked implements Loop
             }
             else
             {
+                frame.check();
                 UtilSequence.pause(Constant.DECADE);
             }
 

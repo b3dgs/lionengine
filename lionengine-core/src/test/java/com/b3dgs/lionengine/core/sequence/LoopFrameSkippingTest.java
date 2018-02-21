@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.sequence;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -67,11 +68,18 @@ public class LoopFrameSkippingTest
     private final AtomicLong maxTick = new AtomicLong(4);
     private final AtomicLong pause = new AtomicLong();
     private final Loop loop = new LoopFrameSkipping();
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     private Thread getTask(final Screen screen)
     {
         return new Thread(() -> loop.start(screen, new Frame()
         {
+            @Override
+            public void check()
+            {
+                latch.countDown();
+            }
+
             @Override
             public void update(double extrp)
             {
@@ -278,7 +286,7 @@ public class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        Thread.sleep(100);
+        latch.await();
 
         loop.stop();
         thread.join();

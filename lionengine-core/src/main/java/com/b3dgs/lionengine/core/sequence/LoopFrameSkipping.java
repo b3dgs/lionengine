@@ -108,6 +108,7 @@ public final class LoopFrameSkipping implements Loop
             }
             else
             {
+                frame.check();
                 UtilSequence.pause(Constant.DECADE);
             }
 
