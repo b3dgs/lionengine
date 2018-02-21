@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.game.it.feature.selector.ActionModel</lionengine:class>
+    <lionengine:surface image="CancelOrc.png"/>
+    <lionengine:action name="Cancel" description="Back to menu" x="38" y="141" width="27" height="19"/>
+</lionengine:skill>
