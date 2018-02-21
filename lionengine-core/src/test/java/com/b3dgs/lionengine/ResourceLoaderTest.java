@@ -72,7 +72,7 @@ public class ResourceLoaderTest
     @Test
     public void testResourceLoader()
     {
-        final ResourceLoader resourceLoader = new ResourceLoader();
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         final Image resource = Drawable.loadImage(Medias.create("image.png"));
 
         resourceLoader.add(Type.TEST, resource);
@@ -98,7 +98,7 @@ public class ResourceLoaderTest
     @Test(expected = LionEngineException.class)
     public void testResourceLoaderFailStart()
     {
-        final ResourceLoader resourceLoader = new ResourceLoader();
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
         resourceLoader.start();
     }
@@ -109,7 +109,7 @@ public class ResourceLoaderTest
     @Test(expected = LionEngineException.class)
     public void testResourceLoaderFailNotStartedGet()
     {
-        final ResourceLoader resourceLoader = new ResourceLoader();
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         Assert.assertNull(resourceLoader.get());
     }
 
@@ -119,7 +119,7 @@ public class ResourceLoaderTest
     @Test(expected = LionEngineException.class)
     public void testResourceLoaderFailNotStartedAwait()
     {
-        final ResourceLoader resourceLoader = new ResourceLoader();
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.await();
     }
 
@@ -129,7 +129,7 @@ public class ResourceLoaderTest
     @Test(expected = LionEngineException.class)
     public void testResourceLoaderFailStartedAdd()
     {
-        final ResourceLoader resourceLoader = new ResourceLoader();
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
         resourceLoader.add(null, null);
     }
@@ -150,7 +150,7 @@ public class ResourceLoaderTest
             {
                 startedLatch.countDown();
 
-                final ResourceLoader resourceLoader = new ResourceLoader();
+                final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
                 resourceLoader.add(Type.TEST, new SlowResource());
                 resourceLoader.start();
                 resourceLoader.await();

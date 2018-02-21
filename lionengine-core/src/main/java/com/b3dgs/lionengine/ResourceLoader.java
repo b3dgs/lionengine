@@ -30,8 +30,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * Call {@link #await()} where resources must be loaded, and access to them with {@link #get()}.
  * </p>
+ * 
+ * @param <T> The resource enum type.
  */
-public class ResourceLoader
+public class ResourceLoader<T extends Enum<T>>
 {
     /** Error started. */
     private static final String ERROR_STARTED = "Resource loader already started !";
@@ -43,7 +45,7 @@ public class ResourceLoader
     private static final String ERROR_SKIPPED = "Resource loader interrupted !";
 
     /** Handled resources. */
-    private final Map<Enum<?>, Resource> resources = new HashMap<>();
+    private final Map<T, Resource> resources = new HashMap<>();
     /** Done. */
     private final AtomicBoolean done = new AtomicBoolean(false);
     /** Started. */
@@ -66,7 +68,7 @@ public class ResourceLoader
      * @param resource The resource to load.
      * @throws LionEngineException If loader has already been started.
      */
-    public synchronized void add(Enum<?> key, Resource resource)
+    public synchronized void add(T key, Resource resource)
     {
         if (started.get())
         {
@@ -118,7 +120,7 @@ public class ResourceLoader
      * @return The loaded resources.
      * @throws LionEngineException If resources are not fully loaded.
      */
-    public synchronized Map<Enum<?>, Resource> get()
+    public synchronized Map<T, Resource> get()
     {
         if (!done.get())
         {
