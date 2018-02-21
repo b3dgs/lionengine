@@ -119,8 +119,8 @@ public final class AnimationConfig
         node.writeInteger(ANIMATION_START, animation.getFirst());
         node.writeInteger(ANIMATION_END, animation.getLast());
         node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
-        node.writeBoolean(ANIMATION_REVERSED, animation.getReverse());
-        node.writeBoolean(ANIMATION_REPEAT, animation.getRepeat());
+        node.writeBoolean(ANIMATION_REVERSED, animation.hasReverse());
+        node.writeBoolean(ANIMATION_REPEAT, animation.hasRepeat());
     }
 
     /** Animations map. */

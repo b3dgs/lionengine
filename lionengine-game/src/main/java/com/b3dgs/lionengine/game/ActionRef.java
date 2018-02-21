@@ -71,7 +71,7 @@ public class ActionRef
      * 
      * @return The cancel flag.
      */
-    public boolean getCancel()
+    public boolean hasCancel()
     {
         return cancel;
     }

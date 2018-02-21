@@ -196,7 +196,7 @@ public class Hud extends FeaturableModel
             {
                 generateSubMenu(actions, action, menu);
             }
-            else if (action.getCancel())
+            else if (action.hasCancel())
             {
                 previous.put(action, parents);
                 generateCancel(action, menu);

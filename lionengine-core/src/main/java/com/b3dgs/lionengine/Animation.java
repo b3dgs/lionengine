@@ -131,7 +131,7 @@ public class Animation implements Nameable
      * 
      * @return The reverse state.
      */
-    public boolean getReverse()
+    public boolean hasReverse()
     {
         return reverse;
     }
@@ -141,7 +141,7 @@ public class Animation implements Nameable
      * 
      * @return The repeat state.
      */
-    public boolean getRepeat()
+    public boolean hasRepeat()
     {
         return repeat;
     }

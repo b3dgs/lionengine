@@ -102,7 +102,7 @@ public final class ActionsConfig
         {
             final Xml nodeAction = node.createChild(NODE_ACTION);
             nodeAction.writeString(ATT_PATH, action.getPath());
-            if (action.getCancel())
+            if (action.hasCancel())
             {
                 nodeAction.writeBoolean(ATT_CANCEL, true);
             }

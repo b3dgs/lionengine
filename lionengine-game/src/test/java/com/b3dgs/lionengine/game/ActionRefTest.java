@@ -41,8 +41,8 @@ public class ActionRefTest
         Assert.assertEquals("path", actionRef1.getPath());
         Assert.assertEquals("path2", actionRef2.getPath());
 
-        Assert.assertFalse(actionRef1.getCancel());
-        Assert.assertTrue(actionRef2.getCancel());
+        Assert.assertFalse(actionRef1.hasCancel());
+        Assert.assertTrue(actionRef2.hasCancel());
 
         Assert.assertTrue(actionRef1.getRefs().isEmpty());
         Assert.assertEquals(actionRef1, actionRef2.getRefs().iterator().next());

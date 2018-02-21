@@ -138,8 +138,8 @@ final class AnimatorImpl implements Animator
         final int firstFrame = anim.getFirst();
         final int lastFrame = anim.getLast();
         final double animSpeed = anim.getSpeed();
-        final boolean animReverse = anim.getReverse();
-        final boolean animRepeat = anim.getRepeat();
+        final boolean animReverse = anim.hasReverse();
+        final boolean animRepeat = anim.hasRepeat();
 
         first = firstFrame;
         last = lastFrame;

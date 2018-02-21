@@ -46,8 +46,8 @@ public class AnimationTest
         Assert.assertEquals(first, animation.getFirst());
         Assert.assertEquals(last, animation.getLast());
         Assert.assertEquals(speed, animation.getSpeed(), 0.01);
-        Assert.assertTrue(reverse == animation.getReverse());
-        Assert.assertTrue(repeat == animation.getRepeat());
+        Assert.assertTrue(reverse == animation.hasReverse());
+        Assert.assertTrue(repeat == animation.hasRepeat());
     }
 
     /**

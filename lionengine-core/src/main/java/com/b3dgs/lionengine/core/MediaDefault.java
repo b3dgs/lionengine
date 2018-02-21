@@ -169,8 +169,8 @@ final class MediaDefault implements Media
     {
         final String currentPath = file.getPath();
         final String[] systemPath = currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
-                                         .replace(File.separator, Constant.SLASH)
-                                         .split(Constant.SLASH);
+                                               .replace(File.separator, Constant.SLASH)
+                                               .split(Constant.SLASH);
         final Media media;
         if (loader != null)
         {
