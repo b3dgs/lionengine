@@ -22,6 +22,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Verbose;
+
 /**
  * Test the image info TIFF class.
  */
@@ -35,7 +37,9 @@ public class ImageInfoTiffTest
     @Test(expected = IOException.class)
     public void testTiff() throws IOException
     {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertFalse(new ImageHeaderTiff().is(new MediaMock()));
         Assert.assertNull(new ImageHeaderTiff().readHeader(new MediaMock().getInputStream()));
+        Verbose.info("****************************************************************************************");
     }
 }

@@ -22,6 +22,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Verbose;
+
 /**
  * Test the image info JPG class.
  */
@@ -35,7 +37,9 @@ public class ImageInfoJpgTest
     @Test(expected = IOException.class)
     public void testJpg() throws IOException
     {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertFalse(new ImageHeaderJpg().is(new MediaMock()));
         Assert.assertNull(new ImageHeaderJpg().readHeader(new MediaMock().getInputStream()));
+        Verbose.info("****************************************************************************************");
     }
 }

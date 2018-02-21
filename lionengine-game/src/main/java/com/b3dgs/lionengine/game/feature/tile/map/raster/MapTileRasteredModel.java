@@ -74,13 +74,12 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
      */
     private List<SpriteTiled> getRasters(Integer sheet)
     {
-        List<SpriteTiled> rasters = rasterSheets.get(sheet);
-        if (rasters == null)
+        return rasterSheets.computeIfAbsent(sheet, s ->
         {
-            rasters = new ArrayList<>(RasterColor.MAX_RASTERS);
-            rasterSheets.put(sheet, rasters);
-        }
-        return rasters;
+            final List<SpriteTiled> rasters = new ArrayList<>(RasterColor.MAX_RASTERS);
+            rasterSheets.put(s, rasters);
+            return rasters;
+        });
     }
 
     /*
