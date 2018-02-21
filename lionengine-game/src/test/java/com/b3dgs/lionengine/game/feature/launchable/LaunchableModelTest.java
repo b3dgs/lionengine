@@ -83,7 +83,7 @@ public class LaunchableModelTest
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
 
-        Thread.sleep(11);
+        UtilTests.pause(11);
         launchable.update(1.0);
 
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
@@ -116,7 +116,7 @@ public class LaunchableModelTest
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
 
-        Thread.sleep(11);
+        UtilTests.pause(11);
         launchable.update(1.0);
 
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);

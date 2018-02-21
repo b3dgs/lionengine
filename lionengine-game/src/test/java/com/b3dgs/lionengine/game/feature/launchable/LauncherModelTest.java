@@ -220,7 +220,7 @@ public class LauncherModelTest
         Assert.assertTrue(fired.get());
         Assert.assertNull(firedLaunchable.get());
 
-        Thread.sleep(50);
+        UtilTests.pause(50L);
         launcher.update(1.0);
         handler.update(1.0);
 

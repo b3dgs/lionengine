@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
@@ -29,6 +30,7 @@ import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the resource loader class.
@@ -140,11 +142,14 @@ public class ResourceLoaderTest
     @Test(expected = LionEngineException.class, timeout = 500)
     public void testResourceLoaderSkip() throws InterruptedException
     {
+        final CountDownLatch startedLatch = new CountDownLatch(1);
         final Thread thread = new Thread()
         {
             @Override
             public void run()
             {
+                startedLatch.countDown();
+
                 final ResourceLoader resourceLoader = new ResourceLoader();
                 resourceLoader.add(Type.TEST, new SlowResource());
                 resourceLoader.start();
@@ -152,21 +157,22 @@ public class ResourceLoaderTest
             }
         };
 
+        final CountDownLatch exceptionLatch = new CountDownLatch(1);
         final AtomicReference<LionEngineException> exception = new AtomicReference<>();
         thread.setUncaughtExceptionHandler((t, throwable) ->
         {
             if (throwable instanceof LionEngineException)
             {
                 exception.set((LionEngineException) throwable);
+                exceptionLatch.countDown();
             }
         });
+
         thread.start();
-        Thread.sleep(Constant.HUNDRED);
+        startedLatch.await();
         thread.interrupt();
-        while (exception.get() == null)
-        {
-            Thread.sleep(Constant.DECADE);
-        }
+        exceptionLatch.await();
+
         throw exception.get();
     }
 
@@ -186,14 +192,7 @@ public class ResourceLoaderTest
         @Override
         public void load()
         {
-            try
-            {
-                Thread.sleep(Constant.THOUSAND);
-            }
-            catch (final InterruptedException exception)
-            {
-                throw new LionEngineException(exception);
-            }
+            UtilTests.pause(Constant.THOUSAND);
         }
 
         @Override

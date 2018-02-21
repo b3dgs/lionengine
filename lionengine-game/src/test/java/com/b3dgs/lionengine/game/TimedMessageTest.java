@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.util.UtilTests;
+
 /**
  * Test timed message class.
  */
@@ -43,10 +45,10 @@ public class TimedMessageTest
         Assert.assertTrue(timedMessage.hasMessage());
 
         timedMessage.update(0.0);
-        Thread.sleep(25);
+        UtilTests.pause(25);
         timedMessage.update(0.0);
         timedMessage.update(0.0);
-        Thread.sleep(100);
+        UtilTests.pause(100);
         timedMessage.update(0.0);
 
         Assert.assertFalse(timedMessage.hasMessage());

@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -64,14 +64,7 @@ public class SequenceSlowMock extends Sequence
     @Override
     public void update(double extrp)
     {
-        try
-        {
-            Thread.sleep(1100);
-        }
-        catch (final InterruptedException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        UtilTests.pause(Constant.THOUSAND + Constant.HUNDRED);
         notifyClosed();
     }
 
