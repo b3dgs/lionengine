@@ -10,6 +10,9 @@
     <artifactId>lionengine-network</artifactId>
     <packaging>jar</packaging>
     <name>LionEngine Network</name>
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
