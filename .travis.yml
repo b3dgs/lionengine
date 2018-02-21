@@ -45,4 +45,5 @@ script:
   - export
   - cd lionengine-parent
   - mvn clean install -Dgpg.skip=true -Dmaven.javadoc.skip=true
+  - mvn verify -Prun-its -Dgpg.skip=true -Dmaven.javadoc.skip=true
   - mvn sonar:sonar -Psonar -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82 -Dgpg.skip=true -Dmaven.javadoc.skip=true

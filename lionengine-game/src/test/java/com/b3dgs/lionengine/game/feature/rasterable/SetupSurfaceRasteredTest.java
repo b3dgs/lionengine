@@ -36,9 +36,9 @@ import com.b3dgs.lionengine.util.UtilFolder;
 public class SetupSurfaceRasteredTest
 {
     /** Object configuration file name. */
-    private static final String OBJECT_XML = "object.xml";
+    private static final String OBJECT_XML = "object_raster.xml";
     /** Object configuration file name. */
-    private static final String OBJECT_SMOOTH_XML = "object_smooth.xml";
+    private static final String OBJECT_SMOOTH_XML = "object_raster_smooth.xml";
     /** Raster configuration file name. */
     private static final String RASTER_XML = "raster.xml";
 

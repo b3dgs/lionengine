@@ -66,7 +66,7 @@ public class WorldTest
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         config.setSource(output);
-        final World world = new World(new Context()
+        final WorldMock world = new WorldMock(new Context()
         {
             @Override
             public int getX()
