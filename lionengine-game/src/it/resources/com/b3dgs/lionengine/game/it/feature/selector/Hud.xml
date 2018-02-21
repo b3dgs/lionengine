@@ -2,5 +2,5 @@
 <lionengine:entity name="Farm" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.lionengine.game.feature.collidable.selector.Hud</lionengine:class>
     <lionengine:layerable layerRefresh="3" layerDisplay="5"/>
-    <lionengine:surface image="Hud.png"/>
+    <lionengine:surface image="hud.png"/>
 </lionengine:entity>
