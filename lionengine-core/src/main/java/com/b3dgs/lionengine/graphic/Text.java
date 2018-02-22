@@ -76,13 +76,6 @@ import com.b3dgs.lionengine.Align;
  */
 public interface Text extends Renderable
 {
-    /** Standard text font sans serif. */
-    String SANS_SERIF = "SansSerif";
-    /** Standard text font serif. */
-    String SERIF = "Serif";
-    /** Standard text dialog. */
-    String DIALOG = "Dialog";
-
     /**
      * Renders text on graphic output, to the specified location.
      * 

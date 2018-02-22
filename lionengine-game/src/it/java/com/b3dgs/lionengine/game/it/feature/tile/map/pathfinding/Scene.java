@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map.pathfinding;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
@@ -38,7 +39,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.io.awt.Mouse;
 
@@ -49,7 +49,7 @@ class Scene extends Sequence
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+    private final TextGame text = new TextGame(Constant.FONT_SANS_SERIF, 10, TextStyle.NORMAL);
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);

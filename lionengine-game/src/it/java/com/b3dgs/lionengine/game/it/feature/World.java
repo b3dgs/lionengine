@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -37,7 +38,7 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
  */
 class World extends WorldGame
 {
-    private final Text text = Graphics.createText(Text.SERIF, 12, TextStyle.NORMAL);
+    private final Text text = Graphics.createText(Constant.FONT_SERIF, 12, TextStyle.NORMAL);
     private final boolean fail;
     private String str;
 

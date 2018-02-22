@@ -104,6 +104,12 @@ public final class Constant
     public static final double GRAVITY_MARS = 3.71;
     /** Gravity of the Moon (in m/s²). */
     public static final double GRAVITY_MOON = 1.624;
+    /** Standard text font sans serif. */
+    public static final String FONT_SANS_SERIF = "SansSerif";
+    /** Standard text font serif. */
+    public static final String FONT_SERIF = "Serif";
+    /** Standard text dialog. */
+    public static final String FONT_DIALOG = "Dialog";
     /** Error system property. */
     private static final String ERROR_PROPERTY = "Unable to get system property: ";
 

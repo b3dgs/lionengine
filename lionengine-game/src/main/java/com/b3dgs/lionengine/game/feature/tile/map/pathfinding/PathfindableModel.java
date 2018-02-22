@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Viewer;
@@ -737,7 +738,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         renderDebug = debug;
         if (text == null)
         {
-            text = Graphics.createText(Text.SANS_SERIF, TEXT_DEBUG_SIZE, TextStyle.NORMAL);
+            text = Graphics.createText(Constant.FONT_SANS_SERIF, TEXT_DEBUG_SIZE, TextStyle.NORMAL);
             text.setColor(ColorRgba.BLACK);
         }
     }
