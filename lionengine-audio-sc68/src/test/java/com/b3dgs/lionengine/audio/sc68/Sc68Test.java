@@ -159,6 +159,15 @@ public class Sc68Test
     }
 
     /**
+     * Test create fail safe.
+     */
+    @Test
+    public void testCreateFailsafe()
+    {
+        Assert.assertNotNull(Sc68Format.getFailsafe());
+    }
+
+    /**
      * Test play sequence.
      * 
      * @throws InterruptedException If error.
@@ -174,6 +183,8 @@ public class Sc68Test
             sc68.play();
 
             UtilTests.pause(Constant.HUNDRED);
+
+            Assert.assertTrue(String.valueOf(sc68.getTicks()), sc68.getTicks() > -1L);
         }
         finally
         {

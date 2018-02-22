@@ -161,6 +161,15 @@ public class AdlMidiTest
     }
 
     /**
+     * Test create fail safe.
+     */
+    @Test
+    public void testCreateFailsafe()
+    {
+        Assert.assertNotNull(AdlMidiFormat.getFailsafe());
+    }
+
+    /**
      * Test play sequence.
      * 
      * @throws InterruptedException If error.
@@ -183,6 +192,7 @@ public class AdlMidiTest
             adlmidi.resume();
             UtilTests.pause(Constant.HUNDRED);
 
+            Assert.assertTrue(String.valueOf(adlmidi.getTicks()), adlmidi.getTicks() > -1L);
         }
         finally
         {

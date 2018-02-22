@@ -161,6 +161,15 @@ public class AdPlugTest
     }
 
     /**
+     * Test create fail safe.
+     */
+    @Test
+    public void testCreateFailsafe()
+    {
+        Assert.assertNotNull(AdPlugFormat.getFailsafe());
+    }
+
+    /**
      * Test play sequence.
      * 
      * @throws InterruptedException If error.
@@ -181,7 +190,6 @@ public class AdPlugTest
             UtilTests.pause(Constant.HUNDRED);
             adplug.resume();
             UtilTests.pause(Constant.HUNDRED);
-
         }
         finally
         {
