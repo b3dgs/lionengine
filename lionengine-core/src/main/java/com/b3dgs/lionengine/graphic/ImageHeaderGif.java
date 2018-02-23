@@ -23,7 +23,7 @@ import java.io.InputStream;
 /**
  * Read GIF image info.
  */
-final class ImageHeaderGif extends ImageHeaderReaderModel
+final class ImageHeaderGif extends ImageHeaderReaderAbstract
 {
     /**
      * Internal constructor.

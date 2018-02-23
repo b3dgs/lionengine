@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.Verbose;
 /**
  * Image header reader interface.
  */
-abstract class ImageHeaderReaderModel implements ImageHeaderReader
+abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
 {
     /** Message skipped. */
     private static final String MESSAGE_SKIPPED = "Skipped ";
@@ -117,7 +117,7 @@ abstract class ImageHeaderReaderModel implements ImageHeaderReader
      * 
      * @param headers The associated headers.
      */
-    protected ImageHeaderReaderModel(int... headers)
+    protected ImageHeaderReaderAbstract(int... headers)
     {
         this(new HeaderProvider[]
         {
@@ -130,7 +130,7 @@ abstract class ImageHeaderReaderModel implements ImageHeaderReader
      * 
      * @param providers The associated headers.
      */
-    protected ImageHeaderReaderModel(HeaderProvider... providers)
+    protected ImageHeaderReaderAbstract(HeaderProvider... providers)
     {
         this.providers = Arrays.asList(providers);
     }

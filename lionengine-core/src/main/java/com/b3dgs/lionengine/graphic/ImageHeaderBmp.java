@@ -23,7 +23,7 @@ import java.io.InputStream;
 /**
  * Read BMP image info.
  */
-final class ImageHeaderBmp extends ImageHeaderReaderModel
+final class ImageHeaderBmp extends ImageHeaderReaderAbstract
 {
     /** Header 1. */
     private static final int HEADER_1 = 66;

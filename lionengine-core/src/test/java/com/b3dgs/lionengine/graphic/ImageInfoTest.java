@@ -183,9 +183,9 @@ public class ImageInfoTest
     @Test(expected = IOException.class)
     public void testSkippedError() throws IOException, Throwable
     {
-        final Method method = ImageHeaderReaderModel.class.getDeclaredMethod("checkSkippedError",
-                                                                             Long.TYPE,
-                                                                             Integer.TYPE);
+        final Method method = ImageHeaderReaderAbstract.class.getDeclaredMethod("checkSkippedError",
+                                                                                Long.TYPE,
+                                                                                Integer.TYPE);
         final boolean back = method.isAccessible();
         UtilReflection.setAccessible(method, true);
         try

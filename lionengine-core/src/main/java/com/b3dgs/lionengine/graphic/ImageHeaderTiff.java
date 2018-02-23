@@ -23,7 +23,7 @@ import java.io.InputStream;
 /**
  * Read TIFF image info.
  */
-final class ImageHeaderTiff extends ImageHeaderReaderModel
+final class ImageHeaderTiff extends ImageHeaderReaderAbstract
 {
     /** Header size. */
     private static final int HEADER_SIZE = 4;

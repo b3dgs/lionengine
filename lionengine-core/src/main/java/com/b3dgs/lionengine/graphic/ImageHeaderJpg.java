@@ -23,7 +23,7 @@ import java.io.InputStream;
 /**
  * Read JPG image info.
  */
-final class ImageHeaderJpg extends ImageHeaderReaderModel
+final class ImageHeaderJpg extends ImageHeaderReaderAbstract
 {
     /** Header 1. */
     private static final int HEADER_1 = 0xFF;

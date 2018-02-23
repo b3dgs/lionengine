@@ -23,7 +23,7 @@ import java.io.InputStream;
 /**
  * Read PNG image info.
  */
-final class ImageHeaderPng extends ImageHeaderReaderModel
+final class ImageHeaderPng extends ImageHeaderReaderAbstract
 {
     /** Header 1. */
     private static final int HEADER_1 = 137;
