@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.io.Xml;
 final class SpriteFontImpl implements SpriteFont
 {
     /** New line separator character. */
-    private static final String NL_STR = Constant.EMPTY_STRING + SpriteFont.NEW_LINE;
+    private static final String NL_STR = Constant.EMPTY_STRING + Constant.PERCENT;
 
     /**
      * Get character width depending of alignment.
@@ -285,7 +285,7 @@ final class SpriteFontImpl implements SpriteFont
         // Search next line
         for (int i = 0; i < length; i++)
         {
-            if (text.charAt(i) == SpriteFont.NEW_LINE)
+            if (Constant.PERCENT.equals(String.valueOf(text.charAt(i))))
             {
                 line++;
             }

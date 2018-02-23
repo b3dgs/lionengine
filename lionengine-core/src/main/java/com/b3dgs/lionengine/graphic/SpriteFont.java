@@ -27,14 +27,14 @@ import com.b3dgs.lionengine.Align;
  * <p>
  * It is based on a {@link SpriteTiled}, which allow to control each letter separately. There is then a correspondence
  * between each character and their image. It also supports a full text rendering, where the special character
- * {@link #NEW_LINE} can be used to insert a new line during rendering.
+ * {@link com.b3dgs.lionengine.Constant#PERCENT} can be used to insert a new line during rendering.
  * </p>
  * <p>
  * The usage is simple:
  * </p>
  * <ul>
  * <li>{@link #draw(Graphic, int, int, Align, String)} can be used to render a single text (which can contains
- * {@link #NEW_LINE} characters).</li>
+ * {@link com.b3dgs.lionengine.Constant#PERCENT} characters).</li>
  * <li>{@link #draw(Graphic, int, int, Align, String...)} can be used to render many texts, where each of them is
  * separated by a new line automatically.</li>
  * </ul>
@@ -44,11 +44,9 @@ import com.b3dgs.lionengine.Align;
  */
 public interface SpriteFont extends Sprite
 {
-    /** New line char. */
-    char NEW_LINE = '%';
-
     /**
-     * Draw a single text at specified location. Multiple lines can be used with {@link SpriteFont#NEW_LINE}.
+     * Draw a single text at specified location. Multiple lines can be used with
+     * {@link com.b3dgs.lionengine.Constant#PERCENT}.
      * 
      * @param g The graphics output.
      * @param x The location x.
