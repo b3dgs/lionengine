@@ -35,6 +35,8 @@ public class FilterBlur implements Filter
     public static final int WRAP_EDGES = 1;
     /** Default radius. */
     private static final float RADIUS_DEFAULT = 1.5F;
+    /** Minimum size. */
+    private static final int MIN_SIZE = 3;
 
     /** Current radius. */
     private volatile float radius;
@@ -94,6 +96,10 @@ public class FilterBlur implements Filter
     {
         final int width = source.getWidth();
         final int height = source.getHeight();
+        if (width < MIN_SIZE || height < MIN_SIZE)
+        {
+            return source;
+        }
 
         final int[] inPixels = new int[width * height];
         final int[] outPixels = new int[width * height];
@@ -247,12 +253,9 @@ public class FilterBlur implements Filter
             total += matrix[index];
             index++;
         }
-        if (Float.compare(total, 0.0F) != 0)
+        for (int i = 0; i < rows; i++)
         {
-            for (int i = 0; i < rows; i++)
-            {
-                matrix[i] /= total;
-            }
+            matrix[i] /= total;
         }
 
         final float[] data = new float[width * height];

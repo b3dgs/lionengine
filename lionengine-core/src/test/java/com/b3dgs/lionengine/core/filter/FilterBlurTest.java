@@ -102,4 +102,58 @@ public class FilterBlurTest
         blur.setRadius(1.0f);
         Assert.assertNotNull(blur.filter(image));
     }
+
+    /**
+     * Test the Hq2x filter with no pixel.
+     */
+    @Test
+    public void testNoPixel()
+    {
+        final FilterBlur blur = new FilterBlur();
+        final ImageBuffer image = Graphics.createImageBuffer(0, 0);
+        final ImageBuffer filtered = blur.filter(image);
+
+        Assert.assertNotNull(filtered);
+        Assert.assertEquals(image.getWidth(), filtered.getWidth());
+        Assert.assertEquals(image.getHeight(), filtered.getHeight());
+    }
+
+    /**
+     * Test the Hq2x filter with single pixel.
+     */
+    @Test
+    public void testSinglePixel()
+    {
+        final FilterBlur blur = new FilterBlur();
+        final ImageBuffer image = Graphics.createImageBuffer(1, 1);
+        final ImageBuffer filtered = blur.filter(image);
+
+        Assert.assertEquals(image, filtered);
+    }
+
+    /**
+     * Test the Hq2x filter with low width.
+     */
+    @Test
+    public void testLowWidth()
+    {
+        final FilterBlur blur = new FilterBlur();
+        final ImageBuffer image = Graphics.createImageBuffer(1, 3);
+        final ImageBuffer filtered = blur.filter(image);
+
+        Assert.assertEquals(image, filtered);
+    }
+
+    /**
+     * Test the Hq2x filter with low height.
+     */
+    @Test
+    public void testLowHeight()
+    {
+        final FilterBlur blur = new FilterBlur();
+        final ImageBuffer image = Graphics.createImageBuffer(3, 1);
+        final ImageBuffer filtered = blur.filter(image);
+
+        Assert.assertEquals(image, filtered);
+    }
 }

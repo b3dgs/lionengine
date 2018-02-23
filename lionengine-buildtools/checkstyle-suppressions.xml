@@ -5,7 +5,7 @@
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.graphic.ImageHeaderReaderModel" lines="142"/>
     <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.graphic.Filter" lines="29, 40"/>
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.filter.FilterBilinear" lines="79"/>
-    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.filter.FilterBlur" lines="148"/>
+    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.filter.FilterBlur" lines="154"/>
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.filter.RawScale3x"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.filter.RawScale2x"/>
     <!-- AWT -->
