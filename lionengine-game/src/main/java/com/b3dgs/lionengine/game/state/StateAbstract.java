@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
  * 
  * @see State
  */
-public abstract class StateGame implements State
+public abstract class StateAbstract implements State
 {
     /**
      * Check the next state depending of the input used.
@@ -68,7 +68,7 @@ public abstract class StateGame implements State
      * @param state The corresponding enum.
      * @throws LionEngineException If <code>null</code> argument.
      */
-    protected StateGame(Enum<?> state)
+    protected StateAbstract(Enum<?> state)
     {
         Check.notNull(state);
 

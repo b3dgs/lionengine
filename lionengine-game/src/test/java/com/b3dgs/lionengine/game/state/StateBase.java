@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.state;
 /**
  * State base test implementation.
  */
-public class StateBase extends StateGame
+public class StateBase extends StateAbstract
 {
     /** Entered flag. */
     private boolean entered;
