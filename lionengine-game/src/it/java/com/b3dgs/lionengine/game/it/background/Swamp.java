@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game.it.background;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.background.BackgroundAbstract;
 import com.b3dgs.lionengine.game.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.background.BackgroundElement;
 import com.b3dgs.lionengine.game.background.BackgroundElementRastered;
-import com.b3dgs.lionengine.game.background.BackgroundGame;
 import com.b3dgs.lionengine.game.background.Parallax;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Sprite;
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Swamp background implementation.
  */
-class Swamp extends BackgroundGame
+class Swamp extends BackgroundAbstract
 {
     /** Moon rasters. */
     private static final int MOON_RASTERS = 20;

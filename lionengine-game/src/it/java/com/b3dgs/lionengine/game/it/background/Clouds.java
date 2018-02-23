@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.game.it.background;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.background.CloudsGame;
+import com.b3dgs.lionengine.game.background.CloudsAbstract;
 
 /**
  * Clouds implementation.
  */
-class Clouds extends CloudsGame
+class Clouds extends CloudsAbstract
 {
     /**
      * Constructor.

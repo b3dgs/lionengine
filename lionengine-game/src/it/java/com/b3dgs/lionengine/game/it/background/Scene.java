@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.sequence.Sequence;
-import com.b3dgs.lionengine.game.background.BackgroundGame;
+import com.b3dgs.lionengine.game.background.BackgroundAbstract;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -35,7 +35,7 @@ class Scene extends Sequence
     static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Background. */
-    private final BackgroundGame background;
+    private final BackgroundAbstract background;
     /** Foreground. */
     private final Foreground foreground;
     /** Camera y. */

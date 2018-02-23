@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.graphic.Sprite;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
- * AbstractBackground skeleton, used for future backgrounds implementation.
+ * Background skeleton, used for future backgrounds implementation.
  */
-public abstract class BackgroundGame implements Background
+public abstract class BackgroundAbstract implements Background
 {
     /**
      * Create an element from a name, plus its coordinates.
@@ -97,7 +97,7 @@ public abstract class BackgroundGame implements Background
      * @param min The minimal y value for background.
      * @param max The maximal y value for background.
      */
-    public BackgroundGame(String theme, int min, int max)
+    public BackgroundAbstract(String theme, int min, int max)
     {
         this.theme = theme;
         components = new ArrayList<>(1);

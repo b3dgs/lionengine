@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * This class handle clouds effect.
  */
-public abstract class CloudsGame implements BackgroundComponent
+public abstract class CloudsAbstract implements BackgroundComponent
 {
     /** Clouds surface. */
     protected final SpriteTiled sprite;
@@ -56,7 +56,7 @@ public abstract class CloudsGame implements BackgroundComponent
      * @param decY The vertical offset.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    public CloudsGame(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
+    public CloudsAbstract(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
     {
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);
