@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.AbstractPlayer;
+import com.b3dgs.lionengine.core.PlayerAbstract;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -207,7 +207,7 @@ final class WavImpl implements Wav
     /** Sound file reference. */
     private final Media media;
     /** Volume used. */
-    private int volume = AbstractPlayer.VOLUME_MAX;
+    private int volume = PlayerAbstract.VOLUME_MAX;
     /** Exception flag. */
     private IOException last;
 

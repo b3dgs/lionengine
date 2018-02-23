@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.util.UtilStream;
 /**
  * Abstract player base implementation.
  */
-public abstract class AbstractPlayer implements Audio
+public abstract class PlayerAbstract implements Audio
 {
     /** Minimum volume value. */
     public static final int VOLUME_MIN = 0;
@@ -70,7 +70,7 @@ public abstract class AbstractPlayer implements Audio
      * @param media The media to play.
      * @throws LionEngineException If arguments are <code>null</code>
      */
-    protected AbstractPlayer(Media media)
+    protected PlayerAbstract(Media media)
     {
         Check.notNull(media);
 

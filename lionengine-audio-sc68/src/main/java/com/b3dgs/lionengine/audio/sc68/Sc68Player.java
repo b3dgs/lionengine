@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.audio.sc68;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.AbstractPlayer;
+import com.b3dgs.lionengine.core.PlayerAbstract;
 import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * SC68 player implementation.
  */
-final class Sc68Player extends AbstractPlayer implements Sc68
+final class Sc68Player extends PlayerAbstract implements Sc68
 {
     /** Binding reference. */
     private final Sc68Binding binding;

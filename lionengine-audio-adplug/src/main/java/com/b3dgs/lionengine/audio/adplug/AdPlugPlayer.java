@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.audio.adplug;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.AbstractPlayer;
+import com.b3dgs.lionengine.core.PlayerAbstract;
 
 /**
  * AdPlug player implementation.
  */
-final class AdPlugPlayer extends AbstractPlayer implements AdPlug
+final class AdPlugPlayer extends PlayerAbstract implements AdPlug
 {
     /** Binding reference. */
     private final AdPlugBinding binding;

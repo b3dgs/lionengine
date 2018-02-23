@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.audio.adlmidi;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.AbstractPlayer;
+import com.b3dgs.lionengine.core.PlayerAbstract;
 
 /**
  * AdlMidi player implementation.
  */
-final class AdlMidiPlayer extends AbstractPlayer implements AdlMidi
+final class AdlMidiPlayer extends PlayerAbstract implements AdlMidi
 {
     /** Binding reference. */
     private final AdlMidiBinding binding;
