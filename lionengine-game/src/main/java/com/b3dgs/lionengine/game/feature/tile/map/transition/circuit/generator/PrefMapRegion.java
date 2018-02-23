@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.util.UtilRandom;
 /**
  * Describe a region, filled by a tile in a particular area for a specified amount of random.
  */
-public class PrefMapRegion extends PrefBase
+public class PrefMapRegion extends PrefAbstract
 {
     /** The sheet value. */
     private final Integer sheet;

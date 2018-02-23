@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 /**
  * Describe the map size preference for map generator.
  */
-public class PrefMapSize extends PrefBase
+public class PrefMapSize extends PrefAbstract
 {
     /** Tile width. */
     private final int tileWidth;

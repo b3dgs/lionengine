@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Check;
 /**
  * Describe the preference base for map generator.
  */
-public abstract class PrefBase implements Preference
+public abstract class PrefAbstract implements Preference
 {
     /** Must be executed first. */
     private final Integer priority;
@@ -32,7 +32,7 @@ public abstract class PrefBase implements Preference
      * 
      * @param priority The priority value (must be superior or equal to 0).
      */
-    public PrefBase(int priority)
+    public PrefAbstract(int priority)
     {
         super();
         Check.superiorOrEqual(priority, 0);

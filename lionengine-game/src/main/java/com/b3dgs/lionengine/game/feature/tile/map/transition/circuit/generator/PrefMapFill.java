@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 /**
  * Describe with which tile map must be filled.
  */
-public class PrefMapFill extends PrefBase
+public class PrefMapFill extends PrefAbstract
 {
     /** The sheet value. */
     private final Integer sheet;
