@@ -34,6 +34,30 @@ import com.b3dgs.lionengine.io.awt.Keyboard;
  */
 public final class KeyboardAwt implements Keyboard, KeyListener
 {
+    /** Enter key. */
+    public static final Integer ENTER = Integer.valueOf(KeyEvent.VK_ENTER);
+    /** Tab key. */
+    public static final Integer TAB = Integer.valueOf(KeyEvent.VK_TAB);
+    /** Back Space key. */
+    public static final Integer BACK_SPACE = Integer.valueOf(KeyEvent.VK_BACK_SPACE);
+    /** Space key. */
+    public static final Integer SPACE = Integer.valueOf(KeyEvent.VK_SPACE);
+    /** Escape key. */
+    public static final Integer ESCAPE = Integer.valueOf(KeyEvent.VK_ESCAPE);
+    /** ALT key. */
+    public static final Integer ALT = Integer.valueOf(KeyEvent.VK_ALT);
+    /** CTRL key. */
+    public static final Integer CONTROL = Integer.valueOf(KeyEvent.VK_CONTROL);
+    /** Arrow left key. */
+    public static final Integer LEFT = Integer.valueOf(KeyEvent.VK_LEFT);
+    /** Arrow right key. */
+    public static final Integer RIGHT = Integer.valueOf(KeyEvent.VK_RIGHT);
+    /** Arrow down key. */
+    public static final Integer DOWN = Integer.valueOf(KeyEvent.VK_DOWN);
+    /** Arrow up key. */
+    public static final Integer UP = Integer.valueOf(KeyEvent.VK_UP);
+    /** No key code value. */
+    public static final Integer NO_KEY_CODE = Integer.valueOf(-1);
     /** Empty key name. */
     private static final char EMPTY_KEY_NAME = ' ';
 

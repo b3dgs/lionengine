@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.awt.MouseAwt;
 import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -123,7 +124,7 @@ class Scene extends Sequence
         selector.addFeature(new LayerableModel(4, 4));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
-        selector.setClickSelection(Mouse.LEFT);
+        selector.setClickSelection(MouseAwt.LEFT);
         selector.getFeature(Collidable.class).addAccept(2);
 
         final Featurable peon = factory.create(Medias.create("Peon.xml"));
@@ -152,7 +153,7 @@ class Scene extends Sequence
                 Assert.assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
                 mouse.doSetMouse((int) camera.getViewpointX(transformable.getX() - 16) * 2,
                                  (int) camera.getViewpointY(transformable.getY() - 16) * 2);
-                mouse.doClick(Mouse.LEFT);
+                mouse.doClick(MouseAwt.LEFT);
                 click = 1;
                 break;
             case 1: // Selection done
@@ -169,7 +170,7 @@ class Scene extends Sequence
                 Assert.assertTrue(handler.get(Selectable.class).iterator().next().isSelected());
                 break;
             case 4: // Click build button
-                mouse.doClickAt(Mouse.LEFT, 16 * 2, 170 * 2);
+                mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 170 * 2);
                 click = 5;
                 break;
             case 5:
@@ -177,7 +178,7 @@ class Scene extends Sequence
                 Assert.assertEquals(6, handler.size());
                 break;
             case 6: // Click cancel button
-                mouse.doClickAt(Mouse.LEFT, 45 * 2, 150 * 2);
+                mouse.doClickAt(MouseAwt.LEFT, 45 * 2, 150 * 2);
                 click = 7;
                 break;
             case 7:
@@ -185,17 +186,17 @@ class Scene extends Sequence
                 Assert.assertEquals(6, handler.size());
                 break;
             case 8: // Click move button
-                mouse.doClickAt(Mouse.LEFT, 16 * 2, 125 * 2);
+                mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 125 * 2);
                 click = 9;
                 break;
             case 9: // Assign destination
-                mouse.doClickAt(Mouse.LEFT,
+                mouse.doClickAt(MouseAwt.LEFT,
                                 (int) camera.getViewpointX(transformable.getX() + 64) * 2,
                                 (int) camera.getViewpointY(transformable.getY() + 64) * 2);
                 click = 10;
                 break;
             case 10: // Unselect
-                mouse.doClickAt(Mouse.LEFT, 100 * 2, 100 * 2);
+                mouse.doClickAt(MouseAwt.LEFT, 100 * 2, 100 * 2);
                 click = 11;
                 break;
             case 11:
@@ -203,7 +204,7 @@ class Scene extends Sequence
                 Assert.assertEquals(6, handler.size());
                 break;
             case 12:
-                mouse.doClick(Mouse.LEFT);
+                mouse.doClick(MouseAwt.LEFT);
                 click = 13;
                 break;
             case 13:

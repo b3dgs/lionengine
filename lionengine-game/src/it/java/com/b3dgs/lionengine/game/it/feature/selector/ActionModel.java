@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.it.feature.selector;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.core.awt.MouseAwt;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Actionable;
@@ -36,7 +37,6 @@ import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * Move action.
@@ -74,12 +74,12 @@ public class ActionModel extends FeaturableModel
         addFeature(new LayerableModel(4, 6));
 
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
-        actionable.setClickAction(Mouse.LEFT);
+        actionable.setClickAction(MouseAwt.LEFT);
 
         state = new AtomicReference<>(actionable);
 
         assignable = addFeatureAndGet(new AssignableModel(services));
-        assignable.setClickAssign(Mouse.LEFT);
+        assignable.setClickAssign(MouseAwt.LEFT);
 
         actionable.setAction(() ->
         {

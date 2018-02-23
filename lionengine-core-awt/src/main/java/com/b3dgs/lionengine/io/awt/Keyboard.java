@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.io.awt;
 
-import java.awt.event.KeyEvent;
-
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
@@ -26,31 +24,6 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
  */
 public interface Keyboard extends InputDeviceDirectional
 {
-    /** Enter key. */
-    Integer ENTER = Integer.valueOf(KeyEvent.VK_ENTER);
-    /** Tab key. */
-    Integer TAB = Integer.valueOf(KeyEvent.VK_TAB);
-    /** Back Space key. */
-    Integer BACK_SPACE = Integer.valueOf(KeyEvent.VK_BACK_SPACE);
-    /** Space key. */
-    Integer SPACE = Integer.valueOf(KeyEvent.VK_SPACE);
-    /** Escape key. */
-    Integer ESCAPE = Integer.valueOf(KeyEvent.VK_ESCAPE);
-    /** ALT key. */
-    Integer ALT = Integer.valueOf(KeyEvent.VK_ALT);
-    /** CTRL key. */
-    Integer CONTROL = Integer.valueOf(KeyEvent.VK_CONTROL);
-    /** Arrow left key. */
-    Integer LEFT = Integer.valueOf(KeyEvent.VK_LEFT);
-    /** Arrow right key. */
-    Integer RIGHT = Integer.valueOf(KeyEvent.VK_RIGHT);
-    /** Arrow down key. */
-    Integer DOWN = Integer.valueOf(KeyEvent.VK_DOWN);
-    /** Arrow up key. */
-    Integer UP = Integer.valueOf(KeyEvent.VK_UP);
-    /** No key code value. */
-    Integer NO_KEY_CODE = Integer.valueOf(-1);
-
     /**
      * Add an action that will be triggered on pressed state.
      * <p>
@@ -112,7 +85,7 @@ public interface Keyboard extends InputDeviceDirectional
     /**
      * Get the current pressed key code.
      * 
-     * @return The pressed key code (<code>{@link Keyboard#NO_KEY_CODE}</code> if key never pressed).
+     * @return The pressed key code (-1 if key never pressed).
      */
     Integer getKeyCode();
 

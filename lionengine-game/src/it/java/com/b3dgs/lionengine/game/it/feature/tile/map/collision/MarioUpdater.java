@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.core.awt.KeyboardAwt;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -83,15 +84,15 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     {
         movement.setDirection(2, 0);
         jump.setDirection(0.0, 8.0);
-        if (keyboard.isPressed(Keyboard.LEFT))
+        if (keyboard.isPressed(KeyboardAwt.LEFT))
         {
             movement.setDirection(-2, 0);
         }
-        if (keyboard.isPressed(Keyboard.RIGHT))
+        if (keyboard.isPressed(KeyboardAwt.RIGHT))
         {
             movement.setDirection(2, 0);
         }
-        if (keyboard.isPressedOnce(Keyboard.UP))
+        if (keyboard.isPressedOnce(KeyboardAwt.UP))
         {
             jump.setDirection(0.0, 8.0);
         }

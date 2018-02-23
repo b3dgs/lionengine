@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.event.MouseEvent;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Verbose;
@@ -30,6 +31,12 @@ import com.b3dgs.lionengine.io.awt.Mouse;
  */
 public final class MouseAwt implements Mouse
 {
+    /** Left click. */
+    public static final int LEFT = MouseEvent.BUTTON1;
+    /** Middle click. */
+    public static final int MIDDLE = MouseEvent.BUTTON2;
+    /** Right click. */
+    public static final int RIGHT = MouseEvent.BUTTON3;
     /** Robot error. */
     private static final String ERROR_ROBOT = "No mouse robot available !";
 

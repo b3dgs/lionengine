@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.InputDeviceKeyListener;
-import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Test the key listener.
@@ -54,9 +53,9 @@ public class KeyboardAwtListenerTest
             }
         });
 
-        listener.keyTyped(KeyboardAwtTest.createEvent(Keyboard.UP));
-        listener.keyPressed(KeyboardAwtTest.createEvent(Keyboard.UP));
-        listener.keyReleased(KeyboardAwtTest.createEvent(Keyboard.UP));
+        listener.keyTyped(KeyboardAwtTest.createEvent(KeyboardAwt.UP));
+        listener.keyPressed(KeyboardAwtTest.createEvent(KeyboardAwt.UP));
+        listener.keyReleased(KeyboardAwtTest.createEvent(KeyboardAwt.UP));
 
         Assert.assertTrue(reachedPressed.get());
         Assert.assertTrue(reachedReleased.get());

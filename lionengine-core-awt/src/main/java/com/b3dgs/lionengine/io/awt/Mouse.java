@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.io.awt;
 
-import java.awt.event.MouseEvent;
-
 import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
@@ -26,13 +24,6 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
  */
 public interface Mouse extends InputDevicePointer
 {
-    /** Left click. */
-    int LEFT = MouseEvent.BUTTON1;
-    /** Middle click. */
-    int MIDDLE = MouseEvent.BUTTON2;
-    /** Right click. */
-    int RIGHT = MouseEvent.BUTTON3;
-
     /**
      * Add an action that will be triggered on pressed state.
      * <p>
