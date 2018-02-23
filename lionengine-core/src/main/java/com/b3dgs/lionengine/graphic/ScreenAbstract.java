@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Timing;
 /**
  * Screen base implementation.
  */
-public abstract class ScreenBase implements Screen
+public abstract class ScreenAbstract implements Screen
 {
     /** Error screen ready. */
     private static final String ERROR_SCREEN_READY = "Unable to get screen ready !";
@@ -56,7 +56,7 @@ public abstract class ScreenBase implements Screen
      * @param readyTimeout The time out before considering screen never ready.
      * @throws LionEngineException If <code>null</code> config.
      */
-    protected ScreenBase(Config config, long readyTimeout)
+    protected ScreenAbstract(Config config, long readyTimeout)
     {
         Check.notNull(config);
 

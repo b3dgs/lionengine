@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.graphic.ScreenBase;
+import com.b3dgs.lionengine.graphic.ScreenAbstract;
 import com.b3dgs.lionengine.graphic.ScreenListener;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.io.awt.Mouse;
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenAwt extends ScreenBase implements FocusListener
+abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
 {
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
@@ -73,13 +73,13 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
      * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    protected ScreenAwt(Config config)
+    protected ScreenAwtAbstract(Config config)
     {
         super(config, READY_TIMEOUT);
 
         if (GraphicsEnvironment.isHeadless())
         {
-            throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
+            throw new LionEngineException(ScreenAwtAbstract.ERROR_DISPLAY);
         }
     }
 
@@ -197,13 +197,13 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
     @Override
     public void hideCursor()
     {
-        componentForCursor.setCursor(ScreenAwt.CURSOR_HIDDEN);
+        componentForCursor.setCursor(ScreenAwtAbstract.CURSOR_HIDDEN);
     }
 
     @Override
     public void showCursor()
     {
-        componentForCursor.setCursor(ScreenAwt.CURSOR_DEFAULT);
+        componentForCursor.setCursor(ScreenAwtAbstract.CURSOR_DEFAULT);
     }
 
     @Override

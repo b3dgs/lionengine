@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.io.awt.Mouse;
  * @see Keyboard
  * @see Mouse
  */
-class ScreenBaseAwt extends ScreenAwt
+class ScreenBaseAwt extends ScreenAwtAbstract
 {
     /** Graphics device reference. */
     protected final GraphicsDevice dev;

@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Applet screen implementation.
  */
-final class ScreenAppletAwt extends ScreenAwt
+final class ScreenAppletAwt extends ScreenAwtAbstract
 {
     /** Applet reference. */
     private final AppletAwt applet;

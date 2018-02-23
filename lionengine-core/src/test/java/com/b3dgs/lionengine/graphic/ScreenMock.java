@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Resolution;
 /**
  * Screen mock.
  */
-public class ScreenMock extends ScreenBase
+public class ScreenMock extends ScreenAbstract
 {
     /** Max ready time in millisecond. */
     public static final long READY_TIMEOUT = 100L;
