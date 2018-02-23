@@ -21,6 +21,7 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -99,7 +100,7 @@ public class CircuitConfigTest
         map3.create(1, 1, 3, 3);
 
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
-        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(map, map3);
+        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(Arrays.asList(map, map3));
 
         final Media media = Medias.create("circuit_tmp.xml");
         try

@@ -25,6 +25,8 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TREE;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
 
+import java.util.Arrays;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -63,7 +65,8 @@ public class UtilMapTransition
         map4.setTile(map4.createTile(SHEET, TILE_GROUND, 2, 2));
 
         final Media config = Medias.create("transitives.xml");
-        TransitionsConfig.exports(config, new TransitionsExtractorImpl().getTransitions(map1, map2, map3, map4));
+        TransitionsConfig.exports(config,
+                                  new TransitionsExtractorImpl().getTransitions(Arrays.asList(map1, map2, map3, map4)));
 
         return config;
     }

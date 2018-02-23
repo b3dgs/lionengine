@@ -47,5 +47,5 @@ public interface TransitionsExtractor
      * @param maps The maps reference.
      * @return The transitions found with their associated tiles.
      */
-    Map<Transition, Collection<TileRef>> getTransitions(MapTile... maps);
+    Map<Transition, Collection<TileRef>> getTransitions(Collection<MapTile> maps);
 }

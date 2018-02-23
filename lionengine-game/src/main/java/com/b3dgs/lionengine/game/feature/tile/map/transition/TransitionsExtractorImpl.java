@@ -127,12 +127,11 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
             map.addFeature(mapGroup);
             mapsSet.add(map);
         }
-        final MapTile[] maps = mapsSet.toArray(new MapTile[mapsSet.size()]);
-        return getTransitions(maps);
+        return getTransitions(mapsSet);
     }
 
     @Override
-    public Map<Transition, Collection<TileRef>> getTransitions(MapTile... maps)
+    public Map<Transition, Collection<TileRef>> getTransitions(Collection<MapTile> maps)
     {
         final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
         for (final MapTile map : maps)

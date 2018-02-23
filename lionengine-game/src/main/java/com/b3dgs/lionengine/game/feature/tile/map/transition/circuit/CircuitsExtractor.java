@@ -45,5 +45,5 @@ public interface CircuitsExtractor
      * @param maps The maps reference.
      * @return The circuits found with their associated tiles.
      */
-    Map<Circuit, Collection<TileRef>> getCircuits(MapTile... maps);
+    Map<Circuit, Collection<TileRef>> getCircuits(Collection<MapTile> maps);
 }

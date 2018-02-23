@@ -24,6 +24,7 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.WATER;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -98,7 +99,9 @@ public class TransitionsExtractorTest
         final MapTile map3 = createMap(3);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
-        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(map, map2, map3);
+        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(Arrays.asList(map,
+                                                                                                        map2,
+                                                                                                        map3));
 
         has(transitions, TransitionType.UP_LEFT, WATER, GROUND, TILE_TRANSITION);
         has(transitions, TransitionType.UP_LEFT, GROUND, WATER, TILE_TRANSITION);

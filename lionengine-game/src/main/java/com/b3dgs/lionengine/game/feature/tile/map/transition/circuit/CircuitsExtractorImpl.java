@@ -161,12 +161,11 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
 
             mapsSet.add(map);
         }
-        final MapTile[] maps = mapsSet.toArray(new MapTile[mapsSet.size()]);
-        return getCircuits(maps);
+        return getCircuits(mapsSet);
     }
 
     @Override
-    public Map<Circuit, Collection<TileRef>> getCircuits(MapTile... maps)
+    public Map<Circuit, Collection<TileRef>> getCircuits(Collection<MapTile> maps)
     {
         final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>();
         for (final MapTile map : maps)

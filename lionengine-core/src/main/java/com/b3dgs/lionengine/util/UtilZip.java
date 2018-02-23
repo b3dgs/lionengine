@@ -26,7 +26,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Tools related to ZIP handling.
@@ -52,15 +51,9 @@ public final class UtilZip
     {
         try
         {
-            ZipFile zip = null;
-            try
+            try (ZipFile zip = new ZipFile(jar))
             {
-                zip = new ZipFile(jar);
                 return checkEntries(zip, path, extension);
-            }
-            finally
-            {
-                closeZip(zip);
             }
         }
         catch (final IOException exception)
@@ -91,26 +84,6 @@ public final class UtilZip
             }
         }
         return entries;
-    }
-
-    /**
-     * Close ZIP file.
-     * 
-     * @param zip The ZIP to close.
-     */
-    private static void closeZip(ZipFile zip)
-    {
-        try
-        {
-            if (zip != null)
-            {
-                zip.close();
-            }
-        }
-        catch (final IOException exception)
-        {
-            Verbose.exception(exception);
-        }
     }
 
     /**

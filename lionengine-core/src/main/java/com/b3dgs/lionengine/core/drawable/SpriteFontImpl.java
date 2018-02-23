@@ -169,15 +169,13 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void draw(Graphic g, int x, int y, Align align, String... texts)
+    public void draw(Graphic g, int x, int y, Align align, String text)
     {
         int lx = 0;
         int ly = 0;
 
-        // Render each character
-        for (final String word : texts)
+        for (final String word : text.split(NL_STR))
         {
-            // Get char width
             final int width = getCharWidth(word, align);
             final int length = word.length();
             for (int j = 0; j < length; j++)
@@ -192,12 +190,6 @@ final class SpriteFontImpl implements SpriteFont
             lx = 0;
             ly += lineHeight;
         }
-    }
-
-    @Override
-    public void draw(Graphic g, int x, int y, Align align, String text)
-    {
-        draw(g, x, y, align, text.split(NL_STR));
     }
 
     @Override

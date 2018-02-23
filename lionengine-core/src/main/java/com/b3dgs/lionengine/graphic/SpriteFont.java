@@ -34,9 +34,7 @@ import com.b3dgs.lionengine.Align;
  * </p>
  * <ul>
  * <li>{@link #draw(Graphic, int, int, Align, String)} can be used to render a single text (which can contains
- * {@link com.b3dgs.lionengine.Constant#PERCENT} characters).</li>
- * <li>{@link #draw(Graphic, int, int, Align, String...)} can be used to render many texts, where each of them is
- * separated by a new line automatically.</li>
+ * {@link com.b3dgs.lionengine.Constant#PERCENT} characters).</li>s
  * </ul>
  * <p>
  * As the SpriteFont is a sprite, is supports all sprite operations.
@@ -55,17 +53,6 @@ public interface SpriteFont extends Sprite
      * @param text The input text.
      */
     void draw(Graphic g, int x, int y, Align align, String text);
-
-    /**
-     * Draw a multiple text at specified location.
-     * 
-     * @param g The graphics output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param align The alignment.
-     * @param text The input text.
-     */
-    void draw(Graphic g, int x, int y, Align align, String... text);
 
     /**
      * Set text to render.

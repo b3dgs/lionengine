@@ -22,6 +22,7 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -96,7 +97,9 @@ public class TransitionConfigTest
         map3.create(1, 1, 3, 3);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
-        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(map, map2, map3);
+        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(Arrays.asList(map,
+                                                                                                        map2,
+                                                                                                        map3));
 
         final Media media = Medias.create("transition_tmp.xml");
         try

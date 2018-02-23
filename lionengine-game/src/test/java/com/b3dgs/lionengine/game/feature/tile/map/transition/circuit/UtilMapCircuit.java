@@ -21,6 +21,8 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
 
+import java.util.Arrays;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -91,7 +93,7 @@ public class UtilMapCircuit
         map3.setTile(map3.createTile(SHEET, TILE_ROAD, 6, 9));
 
         final Media config = Medias.create("circuits.xml");
-        CircuitsConfig.exports(config, new CircuitsExtractorImpl().getCircuits(map1, map2, map3));
+        CircuitsConfig.exports(config, new CircuitsExtractorImpl().getCircuits(Arrays.asList(map1, map2, map3)));
 
         return config;
     }
