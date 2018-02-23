@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Queue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -49,8 +48,6 @@ public final class UtilReflection
     private static final String ERROR_FIELD = "Unable to access to the following field: ";
     /** Method error. */
     private static final String ERROR_METHOD = "Unable to access to the following method: ";
-    /** Accessibility. */
-    private static final AtomicBoolean ACCESSIBLE = new AtomicBoolean(true);
 
     /**
      * Create a class instance with its parameters.
@@ -127,14 +124,8 @@ public final class UtilReflection
         Check.notNull(constructor);
         try
         {
-            final boolean accessible = constructor.isAccessible();
-            setAccessible(constructor, ACCESSIBLE.get());
-            final T object = constructor.newInstance(params);
-            if (constructor.isAccessible() != accessible)
-            {
-                setAccessible(constructor, accessible);
-            }
-            return object;
+            setAccessible(constructor, true);
+            return constructor.newInstance(params);
         }
         catch (final IllegalArgumentException exception)
         {
@@ -249,17 +240,9 @@ public final class UtilReflection
         {
             final Class<?> clazz = getClass(object);
             final Method method = clazz.getDeclaredMethod(name, getParamTypes(params));
-            final boolean accessible = method.isAccessible();
-            if (!accessible)
-            {
-                setAccessible(method, ACCESSIBLE.get());
-            }
+            setAccessible(method, true);
             @SuppressWarnings("unchecked")
             final T value = (T) method.invoke(object, params);
-            if (method.isAccessible() != accessible)
-            {
-                setAccessible(method, accessible);
-            }
             return value;
         }
         catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
@@ -285,17 +268,9 @@ public final class UtilReflection
         {
             final Class<?> clazz = getClass(object);
             final Field field = getDeclaredFieldSuper(clazz, name);
-            final boolean accessible = field.isAccessible();
-            if (!accessible)
-            {
-                setAccessible(field, ACCESSIBLE.get());
-            }
+            setAccessible(field, true);
             @SuppressWarnings("unchecked")
             final T value = (T) field.get(object);
-            if (field.isAccessible() != accessible)
-            {
-                setAccessible(field, accessible);
-            }
             return value;
         }
         catch (final NoSuchFieldException | IllegalAccessException exception)
