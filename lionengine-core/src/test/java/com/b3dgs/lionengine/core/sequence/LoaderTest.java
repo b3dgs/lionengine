@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -146,6 +147,42 @@ public class LoaderTest
             ScreenMock.setScreenWait(true);
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             Loader.start(CONFIG, SequenceSingleMock.class).await();
+        }
+        finally
+        {
+            Verbose.info("****************************************************************************************");
+            ScreenMock.setScreenWait(false);
+        }
+    }
+
+    /**
+     * Test the loader with unready screen on rendering.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(timeout = 1000)
+    public void testSequenceRenderScreenUnready() throws Throwable
+    {
+        final CountDownLatch waitUpdate = new CountDownLatch(1);
+        final CountDownLatch waitScreenUnready = new CountDownLatch(1);
+        try
+        {
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+            final TaskFuture task = Loader.start(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
+
+            waitUpdate.await();
+            ScreenMock.setScreenWait(true);
+            waitScreenUnready.countDown();
+
+            final AtomicReference<Throwable> throwable = new AtomicReference<>();
+            final Thread thread = new Thread(() -> task.await());
+            thread.setUncaughtExceptionHandler((e, t) -> throwable.set(t));
+            thread.start();
+            thread.join(250);
+            if (throwable.get() != null)
+            {
+                throw throwable.get();
+            }
         }
         finally
         {

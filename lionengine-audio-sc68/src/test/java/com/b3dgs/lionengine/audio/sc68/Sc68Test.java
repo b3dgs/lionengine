@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -193,6 +195,31 @@ public class Sc68Test
     }
 
     /**
+     * Test play sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(timeout = 10000)
+    public void testPlayTwice() throws InterruptedException
+    {
+        final Sc68 sc68 = createSc68();
+        try
+        {
+            sc68.play();
+
+            UtilTests.pause(Constant.HUNDRED);
+
+            sc68.play();
+
+            UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            sc68.stop();
+        }
+    }
+
+    /**
      * Test start sequence.
      * 
      * @throws InterruptedException If error.
@@ -305,6 +332,88 @@ public class Sc68Test
             sc68.setConfig(true, true);
 
             UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            sc68.stop();
+        }
+    }
+
+    /**
+     * Test with missing media.
+     * 
+     * @throws IOException If error.
+     */
+    @Test(timeout = 10000, expected = LionEngineException.class)
+    public void testMissingMedia() throws IOException
+    {
+        final Media media = new Media()
+        {
+            @Override
+            public String getPath()
+            {
+                return "void.sc68";
+            }
+
+            @Override
+            public String getParentPath()
+            {
+                return null;
+            }
+
+            @Override
+            public OutputStream getOutputStream()
+            {
+                return null;
+            }
+
+            @Override
+            public String getName()
+            {
+                return null;
+            }
+
+            @Override
+            public Collection<Media> getMedias()
+            {
+                return null;
+            }
+
+            @Override
+            public InputStream getInputStream()
+            {
+                return new InputStream()
+                {
+                    @Override
+                    public int read() throws IOException
+                    {
+                        return -1;
+                    }
+
+                    @Override
+                    public void close() throws IOException
+                    {
+                        throw new IOException();
+                    }
+                };
+            }
+
+            @Override
+            public File getFile()
+            {
+                return new File(getPath());
+            }
+
+            @Override
+            public boolean exists()
+            {
+                return false;
+            }
+        };
+        final Audio sc68 = AudioFactory.loadAudio(media);
+        try
+        {
+            sc68.play();
         }
         finally
         {

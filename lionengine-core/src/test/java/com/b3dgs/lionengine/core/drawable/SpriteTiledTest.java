@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
 
 /**
@@ -127,5 +128,19 @@ public class SpriteTiledTest
         Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(media, tileWidth, tileHeight)));
 
         spriteA.dispose();
+
+        // Equals
+        final ImageBuffer surface = new ImageBufferMock(10, 20);
+        final SpriteTiled impl = new SpriteTiledImpl(surface, 1, 2);
+
+        Assert.assertEquals(impl, new SpriteTiledImpl(surface, 1, 2));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(surface, 2, 2));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 20), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 20), 1, 1));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 20), 3, 3));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(20, 20), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 10), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(30, 30), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(30, 30), 3, 3));
     }
 }

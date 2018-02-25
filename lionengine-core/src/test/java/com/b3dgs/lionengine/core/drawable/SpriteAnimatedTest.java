@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
@@ -169,5 +170,20 @@ public class SpriteAnimatedTest
         Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(media, framesH, framesV)));
 
         spriteA.dispose();
+
+        // Equals
+        final ImageBuffer surface = new ImageBufferMock(10, 20);
+        final SpriteAnimatedImpl impl = new SpriteAnimatedImpl(surface, 1, 2);
+
+        Assert.assertEquals(impl, new SpriteAnimatedImpl(surface, 1, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(surface, 2, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 2, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 1, 1));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 3, 3));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(20, 20), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 10), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(30, 30), 1, 2));
+        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(30, 30), 3, 3));
     }
 }

@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.audio.adlmidi;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -214,6 +216,33 @@ public class AdlMidiTest
     }
 
     /**
+     * Test play sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test(timeout = 10000)
+    public void testPlayTwice() throws InterruptedException
+    {
+        final AdlMidi adlmidi = createAdlMidi();
+        try
+        {
+            adlmidi.play();
+
+            UtilTests.pause(Constant.HUNDRED);
+
+            adlmidi.play();
+
+            UtilTests.pause(Constant.HUNDRED);
+
+            Assert.assertTrue(String.valueOf(adlmidi.getTicks()), adlmidi.getTicks() > -1L);
+        }
+        finally
+        {
+            adlmidi.stop();
+        }
+    }
+
+    /**
      * Test pause sequence.
      * 
      * @throws InterruptedException If error.
@@ -234,6 +263,88 @@ public class AdlMidiTest
             adlmidi.resume();
 
             UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            adlmidi.stop();
+        }
+    }
+
+    /**
+     * Test AdlMidi with missing media.
+     * 
+     * @throws IOException If error.
+     */
+    @Test(timeout = 10000, expected = LionEngineException.class)
+    public void testMissingMedia() throws IOException
+    {
+        final Media media = new Media()
+        {
+            @Override
+            public String getPath()
+            {
+                return "void.xmi";
+            }
+
+            @Override
+            public String getParentPath()
+            {
+                return null;
+            }
+
+            @Override
+            public OutputStream getOutputStream()
+            {
+                return null;
+            }
+
+            @Override
+            public String getName()
+            {
+                return null;
+            }
+
+            @Override
+            public Collection<Media> getMedias()
+            {
+                return null;
+            }
+
+            @Override
+            public InputStream getInputStream()
+            {
+                return new InputStream()
+                {
+                    @Override
+                    public int read() throws IOException
+                    {
+                        return -1;
+                    }
+
+                    @Override
+                    public void close() throws IOException
+                    {
+                        throw new IOException();
+                    }
+                };
+            }
+
+            @Override
+            public File getFile()
+            {
+                return new File(getPath());
+            }
+
+            @Override
+            public boolean exists()
+            {
+                return false;
+            }
+        };
+        final Audio adlmidi = AudioFactory.loadAudio(media);
+        try
+        {
+            adlmidi.play();
         }
         finally
         {
