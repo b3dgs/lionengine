@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.it.feature.tile.map.pathfinding;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.sequence.Sequence;
@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.ComponentRefreshable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -55,7 +56,11 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
-    private final Timing timing = new Timing();
+    private final Factory factory = services.create(Factory.class);
+    private final Tick tick = new Tick();
+    private final Context context;
+    private Featurable peon2;
+    private boolean changed;
 
     /**
      * Constructor.
@@ -66,6 +71,7 @@ class Scene extends Sequence
     {
         super(context, NATIVE);
 
+        this.context = services.add(context);
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
 
@@ -87,18 +93,23 @@ class Scene extends Sequence
         camera.setLimits(map);
         handler.add(map);
 
-        final Factory factory = services.create(Factory.class);
+        final Featurable peon1 = factory.create(Peon.MEDIA);
+        peon1.getFeature(Pathfindable.class).setLocation(20, 16);
+        peon1.getFeature(Pathfindable.class).setDestination(23, 12);
+        handler.add(peon1);
 
-        Featurable peon = factory.create(Peon.MEDIA);
-        peon.getFeature(Pathfindable.class).setLocation(20, 16);
-        peon.getFeature(Pathfindable.class).setDestination(20, 12);
-        handler.add(peon);
+        peon2 = factory.create(Peon.MEDIA);
+        peon2.getFeature(Pathfindable.class).setLocation(22, 8);
+        handler.add(peon2);
 
-        peon = factory.create(Peon.MEDIA);
-        peon.getFeature(Pathfindable.class).setLocation(22, 14);
-        handler.add(peon);
+        final Featurable peon3 = factory.create(Peon.MEDIA);
+        peon3.getFeature(Pathfindable.class).setLocation(25, 10);
+        peon3.getFeature(Pathfindable.class).setDestination(23, 12);
+        handler.add(peon3);
 
-        timing.start();
+        peon2.getFeature(Pathfindable.class).setIgnoreId(peon3.getFeature(Identifiable.class).getId(), true);
+
+        tick.start();
     }
 
     @Override
@@ -107,7 +118,13 @@ class Scene extends Sequence
         mouse.update(extrp);
         handler.update(extrp);
         text.update(camera);
-        if (timing.elapsed(1000L))
+        tick.update(extrp);
+        if (!changed && tick.elapsedTime(context, 200L))
+        {
+            peon2.getFeature(Pathfindable.class).setDestination(23, 14);
+            changed = true;
+        }
+        if (tick.elapsedTime(context, 600L))
         {
             end();
         }

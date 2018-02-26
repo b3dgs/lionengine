@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.it.feature.tile.map.pathfinding;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
@@ -55,7 +54,7 @@ class Peon extends FeaturableModel
 
         addFeature(new LayerableModel(1));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(208, 224);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
@@ -66,18 +65,11 @@ class Peon extends FeaturableModel
         pathfindable.setSpeed(6.0, 6.0);
 
         final Viewer viewer = services.get(Viewer.class);
-        final Timing timing = new Timing();
 
         addFeature(new RefreshableModel(extrp ->
         {
             pathfindable.update(extrp);
             surface.setLocation(viewer, transformable);
-
-            if (timing.elapsed(500L))
-            {
-                pathfindable.setDestination(18, 14);
-                timing.stop();
-            }
         }));
 
         addFeature(new DisplayableModel(g ->
@@ -85,7 +77,5 @@ class Peon extends FeaturableModel
             pathfindable.render(g);
             surface.render(g);
         }));
-
-        timing.start();
     }
 }
