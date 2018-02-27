@@ -48,6 +48,23 @@ public class CheckTest
     }
 
     /**
+     * Test the null error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNullErrorMessage()
+    {
+        try
+        {
+            Check.notNull(null);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_NULL, exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
      * Test the check with a null object.
      */
     @Test(expected = LionEngineException.class)
@@ -70,6 +87,23 @@ public class CheckTest
         Check.superiorOrEqual(Integer.MIN_VALUE, Integer.MIN_VALUE);
         Check.superiorOrEqual(Integer.MAX_VALUE, Integer.MIN_VALUE);
         Check.superiorOrEqual(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the superior or equal error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSuperiorOrEqualErrorMessage()
+    {
+        try
+        {
+            Check.superiorOrEqual(0, 1);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "0" + Check.ERROR_SUPERIOR + "1", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -107,12 +141,28 @@ public class CheckTest
             final double value = i * factor;
 
             Check.superiorOrEqual(value, value);
-
             Check.superiorOrEqual(value + Double.MIN_VALUE, value);
         }
         Check.superiorOrEqual(Double.MIN_VALUE, Double.MIN_VALUE);
         Check.superiorOrEqual(Double.MAX_VALUE, Double.MIN_VALUE);
         Check.superiorOrEqual(Double.MAX_VALUE, Double.MAX_VALUE);
+    }
+
+    /**
+     * Test the superior or equal error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSuperiorOrEqualDoubleErrorMessage()
+    {
+        try
+        {
+            Check.superiorOrEqual(0.0, 1.0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "0.0" + Check.ERROR_SUPERIOR + "1.0", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -128,6 +178,8 @@ public class CheckTest
             try
             {
                 Check.superiorOrEqual(value, value + Double.MIN_VALUE);
+
+                Assert.fail();
             }
             catch (final LionEngineException exception)
             {
@@ -149,6 +201,23 @@ public class CheckTest
             Check.superiorStrict(i + 1, i);
         }
         Check.superiorStrict(Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+
+    /**
+     * Test the superior error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSuperiorErrorMessage()
+    {
+        try
+        {
+            Check.superiorStrict(0, 1);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "0" + Check.ERROR_SUPERIOR_STRICT + "1", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -191,6 +260,24 @@ public class CheckTest
     }
 
     /**
+     * Test the superior error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSuperiorDoubleErrorMessage()
+    {
+        try
+        {
+            Check.superiorStrict(0.0, 1.0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "0.0" + Check.ERROR_SUPERIOR_STRICT + "1.0",
+                                exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
      * Test the check superior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
@@ -203,6 +290,8 @@ public class CheckTest
             try
             {
                 Check.superiorStrict(value, value + Double.MIN_VALUE);
+
+                Assert.fail();
             }
             catch (final LionEngineException exception)
             {
@@ -227,6 +316,23 @@ public class CheckTest
         Check.inferiorOrEqual(Integer.MIN_VALUE, Integer.MIN_VALUE);
         Check.inferiorOrEqual(Integer.MIN_VALUE, Integer.MAX_VALUE);
         Check.inferiorOrEqual(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the inferior or equal error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testInferiorOrEqualErrorMessage()
+    {
+        try
+        {
+            Check.inferiorOrEqual(1, 0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "1" + Check.ERROR_INFERIOR + "0", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -264,12 +370,28 @@ public class CheckTest
             final double value = i * factor;
 
             Check.inferiorOrEqual(value, value);
-
             Check.inferiorOrEqual(value, value + Double.MIN_VALUE);
         }
         Check.inferiorOrEqual(Double.MAX_VALUE, Double.MAX_VALUE);
         Check.inferiorOrEqual(Double.MIN_VALUE, Double.MAX_VALUE);
         Check.inferiorOrEqual(Double.MIN_VALUE, Double.MIN_VALUE);
+    }
+
+    /**
+     * Test the inferior or equal error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testInferiorOrEqualDoubleErrorMessage()
+    {
+        try
+        {
+            Check.inferiorOrEqual(1.0, 0.0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "1.0" + Check.ERROR_INFERIOR + "0.0", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -285,6 +407,8 @@ public class CheckTest
             try
             {
                 Check.inferiorOrEqual(value + Double.MIN_VALUE, value);
+
+                Assert.fail();
             }
             catch (final LionEngineException exception)
             {
@@ -306,6 +430,23 @@ public class CheckTest
             Check.inferiorStrict(i, i + 1);
         }
         Check.inferiorStrict(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the inferior strict error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testInferiorStrictErrorMessage()
+    {
+        try
+        {
+            Check.inferiorStrict(1, 0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "1" + Check.ERROR_INFERIOR_STRICT + "0", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -348,25 +489,29 @@ public class CheckTest
     }
 
     /**
+     * Test the inferior or equal error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testInferiorStrictDoubleErrorMessage()
+    {
+        try
+        {
+            Check.inferiorStrict(1.0, 0.0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "1.0" + Check.ERROR_INFERIOR_STRICT + "0.0",
+                                exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
      * Test the check inferior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorStrictDoubleFail()
     {
-        final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
-        {
-            final double value = i * factor;
-            try
-            {
-                Check.inferiorStrict(value, value + Double.MIN_VALUE);
-            }
-            catch (final LionEngineException exception)
-            {
-                // Success
-                Assert.assertNotNull(exception);
-            }
-        }
         Check.inferiorStrict(Double.MAX_VALUE, Double.MIN_VALUE);
     }
 
@@ -389,9 +534,26 @@ public class CheckTest
     }
 
     /**
+     * Test the different error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testDifferentErrorMessage()
+    {
+        try
+        {
+            Check.different(0, 0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "0" + Check.ERROR_DIFFERENT + "0", exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
      * Test the check different invalid cases.
      */
-    @Test
+    @Test(expected = LionEngineException.class)
     public void testDifferentFail()
     {
         for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
@@ -408,6 +570,7 @@ public class CheckTest
                 Assert.assertNotNull(exception);
             }
         }
+        Check.different(Integer.MIN_VALUE, Integer.MIN_VALUE);
     }
 
     /**
@@ -419,6 +582,23 @@ public class CheckTest
         Check.equality(Integer.MIN_VALUE, Integer.MIN_VALUE);
         Check.equality(0, 0);
         Check.equality(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the equality error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testEqualityErrorMessage()
+    {
+        try
+        {
+            Check.equality(1, 0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "1" + Check.ERROR_EQUALS + "0", exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
