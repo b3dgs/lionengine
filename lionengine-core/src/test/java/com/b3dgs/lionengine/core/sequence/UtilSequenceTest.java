@@ -176,9 +176,12 @@ public class UtilSequenceTest
     public void testPause()
     {
         final Timing timing = new Timing();
+
+        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() == 0);
+
         timing.start();
 
-        UtilSequence.pause(Constant.DECADE);
+        UtilSequence.pause(Constant.HUNDRED);
 
         Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() > 0);
     }
