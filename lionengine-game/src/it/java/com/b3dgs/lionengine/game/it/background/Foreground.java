@@ -267,7 +267,7 @@ class Foreground extends BackgroundAbstract
             back.prepare();
             data = new BackgroundElement(0, (int) Math.floor(water.getNominal() * scaleV), back);
 
-            animation = new Animation(null, 1, 7, 0.25, false, true);
+            animation = new Animation(Animation.DEFAULT_NAME, 1, 7, 0.25, false, true);
             anim = Drawable.loadSpriteAnimated(Medias.create("anim.png"), 7, 1);
             anim.load();
             anim.play(animation);

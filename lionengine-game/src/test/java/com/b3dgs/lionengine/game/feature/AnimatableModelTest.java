@@ -52,7 +52,7 @@ public class AnimatableModelTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = new Animation(null, first, last, 1.0, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
         final Animatable animatable = new AnimatableModel(new AnimatorMock());
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
@@ -81,7 +81,7 @@ public class AnimatableModelTest
         final int first = 2;
         final int last = 5;
         final double speed = 2.0;
-        final Animation animation = new Animation(null, first, last, speed, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, speed, false, false);
         final Animatable animatable = new AnimatableModel(new AnimatorMock());
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 

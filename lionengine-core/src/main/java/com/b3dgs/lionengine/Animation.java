@@ -50,15 +50,13 @@ package com.b3dgs.lionengine;
  * @see Animator
  * @see AnimState
  */
-public class Animation implements Nameable
+public class Animation extends NameableAbstract
 {
     /** Animation default name. */
     public static final String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
     public static final int MINIMUM_FRAME = 1;
 
-    /** Animation name. */
-    private final String name;
     /** First animation frame. */
     private final int firstFrame;
     /** Last animation frame. */
@@ -84,11 +82,12 @@ public class Animation implements Nameable
      */
     public Animation(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
+        super(name);
+
         Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);
         Check.superiorOrEqual(speed, 0.0);
 
-        this.name = name;
         this.firstFrame = firstFrame;
         this.lastFrame = lastFrame;
         this.speed = speed;
@@ -144,43 +143,5 @@ public class Animation implements Nameable
     public boolean hasRepeat()
     {
         return repeat;
-    }
-
-    /*
-     * Nameable
-     */
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final Animation other = (Animation) object;
-        return getName().equals(other.getName());
     }
 }

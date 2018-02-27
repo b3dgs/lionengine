@@ -84,7 +84,7 @@ public class SpriteAnimatedTest
         Assert.assertNotNull(spriteA.getSurface());
 
         final Animator animator = new AnimatorImpl();
-        final Animation animation = new Animation(null, 1, 6, 1.0, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 6, 1.0, false, false);
 
         // Load from file
         final int framesH = 4;

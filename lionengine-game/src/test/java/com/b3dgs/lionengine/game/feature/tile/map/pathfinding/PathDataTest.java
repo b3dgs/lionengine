@@ -58,15 +58,11 @@ public class PathDataTest
         Assert.assertNotEquals(c, new Object().hashCode());
         Assert.assertNotEquals(c,
                                new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertNotEquals(c,
-                               new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertNotEquals(c,
-                               new PathData("c",
-                                            1.0,
-                                            false,
-                                            EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertNotEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)).hashCode());
-        Assert.assertNotEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)).hashCode());
+        Assert.assertEquals(c, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
+        Assert.assertEquals(c,
+                            new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
+        Assert.assertEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)).hashCode());
+        Assert.assertEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)).hashCode());
     }
 
     /**
@@ -84,9 +80,9 @@ public class PathDataTest
         Assert.assertNotEquals(data, null);
         Assert.assertNotEquals(data, new Object());
         Assert.assertNotEquals(data, new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertNotEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertNotEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertNotEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
-        Assert.assertNotEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
+        Assert.assertEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        Assert.assertEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        Assert.assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
+        Assert.assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
     }
 }

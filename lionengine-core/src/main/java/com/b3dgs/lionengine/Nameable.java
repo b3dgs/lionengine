@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine;
 
 /**
- * Represents something that can be designated by a name.
+ * Represents something that can be designated by a unique name.
  */
 public interface Nameable
 {

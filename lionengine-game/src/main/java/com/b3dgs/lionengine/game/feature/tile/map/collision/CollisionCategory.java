@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.NameableAbstract;
 
 /**
  * Collision category, representing a collision point at a specified offset relative to the owner position. Computation
@@ -56,13 +56,11 @@ import com.b3dgs.lionengine.Nameable;
  * @see CollisionCategoryConfig
  * @see CollisionFormula
  */
-public class CollisionCategory implements Nameable
+public class CollisionCategory extends NameableAbstract
 {
     /** Minimum to string characters. */
     private static final int MINIMUM_LENGTH = 64;
 
-    /** Category name. */
-    private final String name;
     /** Working for this axis. */
     private final Axis axis;
     /** Horizontal offset relative to collision owner. */
@@ -88,7 +86,8 @@ public class CollisionCategory implements Nameable
      */
     public CollisionCategory(String name, Axis axis, int x, int y, Collection<CollisionGroup> groups)
     {
-        this.name = name;
+        super(name);
+
         this.axis = axis;
         this.x = x;
         this.y = y;
@@ -151,49 +150,15 @@ public class CollisionCategory implements Nameable
     }
 
     /*
-     * Nameable
-     */
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    /*
      * Object
      */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollisionCategory other = (CollisionCategory) object;
-        return getName().equals(other.getName());
-    }
 
     @Override
     public String toString()
     {
         return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
                                                 .append(" (name=")
-                                                .append(name)
+                                                .append(getName())
                                                 .append(", axis=")
                                                 .append(axis)
                                                 .append(", x=")

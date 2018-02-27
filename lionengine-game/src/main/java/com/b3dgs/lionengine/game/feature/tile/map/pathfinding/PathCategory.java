@@ -21,15 +21,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.NameableAbstract;
 
 /**
  * Represents a pathfinding category, with its group list.
  */
-public class PathCategory implements Nameable
+public class PathCategory extends NameableAbstract
 {
-    /** Category name. */
-    private final String name;
     /** Associated groups. */
     private final Collection<String> groups;
 
@@ -38,10 +37,12 @@ public class PathCategory implements Nameable
      * 
      * @param name The category name.
      * @param groups The associated groups.
+     * @throws LionEngineException If invalid arguments.
      */
     public PathCategory(String name, Collection<String> groups)
     {
-        this.name = name;
+        super(name);
+
         this.groups = new ArrayList<>(groups);
     }
 
@@ -53,15 +54,5 @@ public class PathCategory implements Nameable
     public Collection<String> getGroups()
     {
         return Collections.unmodifiableCollection(groups);
-    }
-
-    /*
-     * Nameable
-     */
-
-    @Override
-    public String getName()
-    {
-        return name;
     }
 }

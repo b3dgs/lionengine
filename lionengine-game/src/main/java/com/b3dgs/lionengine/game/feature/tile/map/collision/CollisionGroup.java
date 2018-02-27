@@ -22,7 +22,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.NameableAbstract;
 
 /**
  * Represents the collision group, which can be applied to a {@link com.b3dgs.lionengine.game.feature.tile.Tile}.
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.Nameable;
  * @see CollisionGroupConfig
  * @see CollisionFormula
  */
-public class CollisionGroup implements Nameable
+public class CollisionGroup extends NameableAbstract
 {
     /** Minimum to string characters. */
     private static final int MINIMUM_LENGTH = 32;
@@ -73,8 +74,6 @@ public class CollisionGroup implements Nameable
         return result;
     }
 
-    /** The group name. */
-    private final String name;
     /** The collision formulas used. */
     private final Collection<CollisionFormula> formulas;
 
@@ -83,10 +82,12 @@ public class CollisionGroup implements Nameable
      * 
      * @param name The group name.
      * @param formulas The collision formulas reference.
+     * @throws LionEngineException If invalid arguments.
      */
     public CollisionGroup(String name, Collection<CollisionFormula> formulas)
     {
-        this.name = name;
+        super(name);
+
         this.formulas = new ArrayList<>(formulas);
     }
 
@@ -101,49 +102,15 @@ public class CollisionGroup implements Nameable
     }
 
     /*
-     * Nameable
-     */
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    /*
      * Object
      */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollisionGroup other = (CollisionGroup) object;
-        return getName().equals(other.getName());
-    }
 
     @Override
     public String toString()
     {
         return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
                                                 .append(" (name=")
-                                                .append(name)
+                                                .append(getName())
                                                 .append(")")
                                                 .append(Constant.NEW_LINE)
                                                 .append(Constant.TAB)

@@ -17,21 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.NameableAbstract;
 
 /**
  * Represents the data associated to a path.
  */
-public class PathData implements Nameable
+public class PathData extends NameableAbstract
 {
-    /** Category name. */
-    private final String category;
     /** Path cost. */
     private final double cost;
     /** Blocking flag. */
@@ -46,13 +44,14 @@ public class PathData implements Nameable
      * @param cost The cost value.
      * @param blocking The blocking flag.
      * @param movements The allowed movements.
+     * @throws LionEngineException If invalid arguments.
      */
     public PathData(String category, double cost, boolean blocking, Collection<MovementTile> movements)
     {
-        Check.notNull(category);
+        super(category);
+
         Check.notNull(movements);
 
-        this.category = category;
         this.cost = cost;
         this.blocking = blocking;
         if (movements.isEmpty())
@@ -104,50 +103,5 @@ public class PathData implements Nameable
     public Collection<MovementTile> getAllowedMovements()
     {
         return Collections.unmodifiableCollection(movements);
-    }
-
-    /*
-     * Nameable
-     */
-
-    @Override
-    public String getName()
-    {
-        return category;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (blocking ? 1231 : 1237);
-        result = prime * result + category.hashCode();
-        final long temp = Double.doubleToLongBits(cost);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        result = prime * result + movements.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final PathData other = (PathData) object;
-        return getName().equals(other.getName())
-               && Double.compare(cost, other.getCost()) == 0
-               && blocking == other.isBlocking()
-               && Arrays.deepEquals(movements.toArray(), other.getAllowedMovements().toArray());
     }
 }

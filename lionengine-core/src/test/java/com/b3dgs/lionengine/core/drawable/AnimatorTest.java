@@ -53,7 +53,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = new Animation(null, first, last, 1.0, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
         final Animator animator = new AnimatorImpl();
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
@@ -81,7 +81,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = new Animation(null, first, last, 1.0, true, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, true, false);
         final Animator animator = new AnimatorImpl();
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
@@ -112,7 +112,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 3;
-        final Animation animation = new Animation(null, first, last, 1.0, false, true);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, true);
         final Animator animator = new AnimatorImpl();
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
@@ -138,7 +138,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 3;
-        final Animation animation = new Animation(null, first, last, 1.0, true, true);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, true, true);
         final Animator animator = new AnimatorImpl();
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
@@ -167,7 +167,7 @@ public class AnimatorTest
         final int first = 2;
         final int last = 5;
         final double speed = 2.0;
-        final Animation animation = new Animation(null, first, last, speed, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, speed, false, false);
         final Animator animator = new AnimatorImpl();
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 

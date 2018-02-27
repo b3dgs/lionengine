@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.NameableAbstract;
 
 /**
  * Collision formula representation. It define the way of collision is computed, and its constraints compared to
@@ -58,13 +58,11 @@ import com.b3dgs.lionengine.Nameable;
  * @see CollisionFunction
  * @see CollisionConstraint
  */
-public class CollisionFormula implements Nameable
+public class CollisionFormula extends NameableAbstract
 {
     /** Minimum to string characters. */
     private static final int MINIMUM_LENGTH = 64;
 
-    /** Formula name. */
-    private final String name;
     /** Range representation. */
     private final CollisionRange range;
     /** Function used. */
@@ -85,7 +83,8 @@ public class CollisionFormula implements Nameable
                             CollisionFunction function,
                             CollisionConstraint constraint)
     {
-        this.name = name;
+        super(name);
+
         this.range = range;
         this.function = function;
         this.constraint = constraint;
@@ -122,45 +121,15 @@ public class CollisionFormula implements Nameable
     }
 
     /*
-     * Nameable
+     * Object
      */
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final CollisionFormula other = (CollisionFormula) object;
-        return getName().equals(other.getName());
-    }
 
     @Override
     public String toString()
     {
         return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
                                                 .append(" (name=")
-                                                .append(name)
+                                                .append(getName())
                                                 .append(")")
                                                 .append(Constant.NEW_LINE)
                                                 .append(Constant.TAB)

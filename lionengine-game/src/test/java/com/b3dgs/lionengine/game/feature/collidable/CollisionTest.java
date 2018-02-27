@@ -64,11 +64,11 @@ public class CollisionTest
 
         Assert.assertNotEquals(collision, new Object().hashCode());
         Assert.assertNotEquals(collision, new Collision("", 1, 2, 3, 4, true).hashCode());
-        Assert.assertNotEquals(collision, new Collision("void", 0, 2, 3, 4, true).hashCode());
-        Assert.assertNotEquals(collision, new Collision("void", 1, 0, 3, 4, true).hashCode());
-        Assert.assertNotEquals(collision, new Collision("void", 1, 2, 0, 4, true).hashCode());
-        Assert.assertNotEquals(collision, new Collision("void", 1, 2, 3, 0, true).hashCode());
-        Assert.assertNotEquals(collision, new Collision("void", 1, 2, 3, 4, false).hashCode());
+        Assert.assertEquals(collision, new Collision("void", 0, 2, 3, 4, true).hashCode());
+        Assert.assertEquals(collision, new Collision("void", 1, 0, 3, 4, true).hashCode());
+        Assert.assertEquals(collision, new Collision("void", 1, 2, 0, 4, true).hashCode());
+        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 0, true).hashCode());
+        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 4, false).hashCode());
     }
 
     /**
@@ -85,10 +85,10 @@ public class CollisionTest
         Assert.assertNotEquals(collision, null);
         Assert.assertNotEquals(collision, new Object());
         Assert.assertNotEquals(collision, new Collision("", 1, 2, 3, 4, true));
-        Assert.assertNotEquals(collision, new Collision("void", 0, 2, 3, 4, true));
-        Assert.assertNotEquals(collision, new Collision("void", 1, 0, 3, 4, true));
-        Assert.assertNotEquals(collision, new Collision("void", 1, 2, 0, 4, true));
-        Assert.assertNotEquals(collision, new Collision("void", 1, 2, 3, 0, true));
-        Assert.assertNotEquals(collision, new Collision("void", 1, 2, 3, 4, false));
+        Assert.assertEquals(collision, new Collision("void", 0, 2, 3, 4, true));
+        Assert.assertEquals(collision, new Collision("void", 1, 0, 3, 4, true));
+        Assert.assertEquals(collision, new Collision("void", 1, 2, 0, 4, true));
+        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 0, true));
+        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 4, false));
     }
 }

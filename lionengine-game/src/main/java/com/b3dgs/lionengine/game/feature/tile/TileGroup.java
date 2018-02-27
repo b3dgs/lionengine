@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.NameableAbstract;
 
 /**
  * Represents the tile group, which can be applied to a {@link TileRef}.
@@ -42,10 +43,8 @@ import com.b3dgs.lionengine.Nameable;
  * 
  * @see com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig
  */
-public class TileGroup implements Nameable
+public class TileGroup extends NameableAbstract
 {
-    /** The group name. */
-    private final String name;
     /** The group type. */
     private final TileGroupType type;
     /** Elements inside group. */
@@ -57,10 +56,12 @@ public class TileGroup implements Nameable
      * @param name The group name.
      * @param type The group type.
      * @param tiles The tiles inside the group.
+     * @throws LionEngineException If invalid arguments.
      */
     public TileGroup(String name, TileGroupType type, Collection<TileRef> tiles)
     {
-        this.name = name;
+        super(name);
+
         this.type = type;
         this.tiles = new ArrayList<>(tiles);
     }
@@ -113,43 +114,5 @@ public class TileGroup implements Nameable
     public Collection<TileRef> getTiles()
     {
         return Collections.unmodifiableCollection(tiles);
-    }
-
-    /*
-     * Nameable
-     */
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    /*
-     * Object
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final TileGroup other = (TileGroup) object;
-        return name.equals(other.name);
     }
 }
