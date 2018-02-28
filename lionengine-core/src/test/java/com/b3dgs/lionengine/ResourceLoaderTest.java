@@ -100,7 +100,15 @@ public class ResourceLoaderTest
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
-        resourceLoader.start();
+        try
+        {
+            resourceLoader.start();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(ResourceLoader.ERROR_STARTED, exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -110,7 +118,15 @@ public class ResourceLoaderTest
     public void testResourceLoaderFailNotStartedGet()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
-        Assert.assertNull(resourceLoader.get());
+        try
+        {
+            Assert.assertNull(resourceLoader.get());
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(ResourceLoader.ERROR_NOT_FINISHED, exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -120,7 +136,15 @@ public class ResourceLoaderTest
     public void testResourceLoaderFailNotStartedAwait()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
-        resourceLoader.await();
+        try
+        {
+            resourceLoader.await();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(ResourceLoader.ERROR_NOT_STARTED, exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -131,7 +155,15 @@ public class ResourceLoaderTest
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
-        resourceLoader.add(null, null);
+        try
+        {
+            resourceLoader.add(null, null);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(ResourceLoader.ERROR_STARTED, exception.getMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -139,7 +171,7 @@ public class ResourceLoaderTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(expected = LionEngineException.class, timeout = 500)
+    @Test(expected = LionEngineException.class, timeout = 1000)
     public void testResourceLoaderSkip() throws InterruptedException
     {
         final CountDownLatch startedLatch = new CountDownLatch(1);
@@ -173,6 +205,8 @@ public class ResourceLoaderTest
         thread.interrupt();
         exceptionLatch.await();
 
+        Assert.assertEquals(ResourceLoader.ERROR_SKIPPED, exception.get().getMessage());
+
         throw exception.get();
     }
 
@@ -184,7 +218,7 @@ public class ResourceLoaderTest
         /**
          * Create resource.
          */
-        SlowResource()
+        private SlowResource()
         {
             super();
         }

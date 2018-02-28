@@ -47,6 +47,76 @@ final class VerboseFormatter extends Formatter
     }
 
     /**
+     * Append date.
+     * 
+     * @param message The message builder.
+     */
+    private static void appendDate(StringBuilder message)
+    {
+        final String date = LocalDateTime.now().format(DATE_TIME_FORMAT);
+        message.append(date);
+        for (int i = date.length(); i < DATE_LENGTH; i++)
+        {
+            message.append(Constant.SPACE);
+        }
+        message.append(Constant.SPACE);
+    }
+
+    /**
+     * Append log level.
+     * 
+     * @param message The message builder.
+     * @param event The log record.
+     */
+    private static void appendLevel(StringBuilder message, LogRecord event)
+    {
+        final String logLevel = event.getLevel().getName();
+        for (int i = logLevel.length(); i < LOG_LEVEL_LENGTH; i++)
+        {
+            message.append(Constant.SPACE);
+        }
+        message.append(logLevel).append(Constant.DOUBLE_DOT);
+    }
+
+    /**
+     * Append function location.
+     * 
+     * @param message The message builder.
+     * @param event The log record.
+     */
+    private static void appendFunction(StringBuilder message, LogRecord event)
+    {
+        final String clazz = event.getSourceClassName();
+        if (clazz != null)
+        {
+            message.append(IN).append(clazz);
+        }
+
+        final String function = event.getSourceMethodName();
+        if (function != null)
+        {
+            message.append(AT).append(function).append(Constant.DOUBLE_DOT);
+        }
+    }
+
+    /**
+     * Append thrown exception trace.
+     * 
+     * @param message The message builder.
+     * @param event The log record.
+     */
+    private static void appendThrown(StringBuilder message, LogRecord event)
+    {
+        final Throwable thrown = event.getThrown();
+        if (thrown != null)
+        {
+            final StringWriter sw = new StringWriter();
+            thrown.printStackTrace(new PrintWriter(sw));
+            message.append(sw);
+        }
+    }
+
+    /**
      * Internal constructor.
      */
     VerboseFormatter()
@@ -61,41 +131,12 @@ final class VerboseFormatter extends Formatter
     @Override
     public String format(LogRecord event)
     {
-        final String clazz = event.getSourceClassName();
-        final String function = event.getSourceMethodName();
-        final Throwable thrown = event.getThrown();
         final StringBuilder message = new StringBuilder(Constant.HUNDRED);
-
-        final String date = LocalDateTime.now().format(DATE_TIME_FORMAT);
-        message.append(date);
-        for (int i = date.length(); i < DATE_LENGTH; i++)
-        {
-            message.append(Constant.SPACE);
-        }
-        message.append(Constant.SPACE);
-
-        final String logLevel = event.getLevel().getName();
-        for (int i = logLevel.length(); i < LOG_LEVEL_LENGTH; i++)
-        {
-            message.append(Constant.SPACE);
-        }
-        message.append(logLevel).append(Constant.DOUBLE_DOT);
-
-        if (clazz != null)
-        {
-            message.append(IN).append(clazz);
-        }
-        if (function != null)
-        {
-            message.append(AT).append(function).append(Constant.DOUBLE_DOT);
-        }
+        appendDate(message);
+        appendLevel(message, event);
+        appendFunction(message, event);
         message.append(event.getMessage()).append(Constant.NEW_LINE);
-        if (thrown != null)
-        {
-            final StringWriter sw = new StringWriter();
-            thrown.printStackTrace(new PrintWriter(sw));
-            message.append(sw);
-        }
+        appendThrown(message, event);
 
         return message.toString();
     }

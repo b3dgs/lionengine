@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine;
 
 /**
- * Animation data container for animation routine.
+ * Animation data.
  * <p>
- * It contains the <code>first</code> and <code>last</code> animation frame number, the animation <code>speed</code>, a
+ * Defines the <code>first</code> and <code>last</code> animation frame number, the animation <code>speed</code>, a
  * <code>reverse</code> flag (for reversed animation), and a <code>repeat</code> flag (for looped animation).
  * </p>
  * <ul>
@@ -32,30 +32,26 @@ package com.b3dgs.lionengine;
  * </ul>
  * <p>
  * Note: <code>reverse</code> and <code>repeat</code> can also be combined to play in loop an animation in reverse:
- * 1 -&gt; 2 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 2 -&gt; 3....
- * </p>
- * <p>
- * Example:
  * </p>
  * 
  * <pre>
- * final Animation animation = new Animation(4, 6, 0.125, false, true);
- * print(animation.getFirst()); // 4
- * print(animation.getLast()); // 6
- * print(animation.getSpeed()); // 0.125
- * print(animation.getReverse()); // false
- * print(animation.getRepeat()); // true
+ * <code>1 -&gt; 2 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 2 -&gt; 3....</code>
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see Animator
  * @see AnimState
  */
-public class Animation extends NameableAbstract
+public final class Animation extends NameableAbstract
 {
     /** Animation default name. */
     public static final String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
     public static final int MINIMUM_FRAME = 1;
+    /** The minimum animation speed. */
+    public static final double MINIMUM_SPEED = 0.0;
 
     /** First animation frame. */
     private final int firstFrame;
@@ -71,22 +67,21 @@ public class Animation extends NameableAbstract
     /**
      * Create an animation, which can be played by an {@link Animator}.
      * 
-     * @param name The animation name.
-     * @param firstFrame The first frame (included) index to play (superior or equal to {@link Animation#MINIMUM_FRAME}
-     *            ).
-     * @param lastFrame The last frame (included) index to play (superior or equal to firstFrame).
-     * @param speed The animation playing speed (superior or equal to 0.0).
+     * @param name The animation name (must not be <code>null</code>).
+     * @param firstFrame The first frame (included) to play (superior or equal to {@value #MINIMUM_FRAME}).
+     * @param lastFrame The last frame (included) to play (superior or equal to firstFrame).
+     * @param speed The animation playing speed (superior or equal to #MINIMUM_SPEED).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
-     * @throws LionEngineException If invalid animation.
+     * @throws LionEngineException If invalid parameters.
      */
     public Animation(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
         super(name);
 
-        Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
+        Check.superiorOrEqual(firstFrame, MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);
-        Check.superiorOrEqual(speed, 0.0);
+        Check.superiorOrEqual(speed, MINIMUM_SPEED);
 
         this.firstFrame = firstFrame;
         this.lastFrame = lastFrame;
@@ -96,7 +91,7 @@ public class Animation extends NameableAbstract
     }
 
     /**
-     * Get the first frame of the animation.
+     * Get the first frame.
      * 
      * @return The first frame.
      */
@@ -106,7 +101,7 @@ public class Animation extends NameableAbstract
     }
 
     /**
-     * Get the last frame if the animation.
+     * Get the last frame.
      * 
      * @return The last frame.
      */

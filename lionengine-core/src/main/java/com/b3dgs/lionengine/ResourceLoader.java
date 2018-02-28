@@ -36,13 +36,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ResourceLoader<T extends Enum<T>>
 {
     /** Error started. */
-    private static final String ERROR_STARTED = "Resource loader already started !";
+    static final String ERROR_STARTED = "Resource loader already started !";
     /** Error not started. */
-    private static final String ERROR_NOT_STARTED = "Resource loader not started !";
+    static final String ERROR_NOT_STARTED = "Resource loader not started !";
     /** Error load not finished. */
-    private static final String ERROR_NOT_FINISHED = "Resource loader has not finished !";
+    static final String ERROR_NOT_FINISHED = "Resource loader has not finished !";
     /** Error load skipped. */
-    private static final String ERROR_SKIPPED = "Resource loader interrupted !";
+    static final String ERROR_SKIPPED = "Resource loader interrupted !";
 
     /** Handled resources. */
     private final Map<T, Resource> resources = new HashMap<>();
@@ -51,14 +51,14 @@ public class ResourceLoader<T extends Enum<T>>
     /** Started. */
     private final AtomicBoolean started = new AtomicBoolean(false);
     /** Thread used. */
-    private final ResourceLoaderThread thread;
+    private final ResourceLoaderThread thread = new ResourceLoaderThread();
 
     /**
      * Create the resource loader.
      */
     public ResourceLoader()
     {
-        thread = new ResourceLoaderThread();
+        super();
     }
 
     /**
@@ -93,7 +93,7 @@ public class ResourceLoader<T extends Enum<T>>
     }
 
     /**
-     * Wait for load to finish. Can be called only if {@link #start()} where performed somewhere before.
+     * Wait for load to finish. Can be called only if {@link #start()} were performed somewhere before.
      * 
      * @throws LionEngineException If loading skipped or loader has not been started.
      */
@@ -149,7 +149,7 @@ public class ResourceLoader<T extends Enum<T>>
          */
         ResourceLoaderThread()
         {
-            super("Resource loader");
+            super(ResourceLoader.class.getName());
         }
 
         /*

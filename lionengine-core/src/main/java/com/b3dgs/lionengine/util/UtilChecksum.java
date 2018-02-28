@@ -27,21 +27,8 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * SHA-256 based checksum manipulation.
  * <p>
- * Example:
+ * This class is Thread-Safe.
  * </p>
- * 
- * <pre>
- * final Checksum checksum = Checksum.createSha256();
- * final int integer = 489464795;
- * final String value = &quot;keyToBeEncoded&quot;;
- * final String other = &quot;anotherKey&quot;;
- * final String signature = checksum.getSha256(value);
- * final String test = checksum.getSha256(integer);
- * 
- * Assert.assertTrue(checksum.check(value, signature));
- * Assert.assertFalse(checksum.check(other, signature));
- * Assert.assertTrue(checksum.check(integer, test));
- * </pre>
  */
 public final class UtilChecksum
 {
@@ -49,6 +36,8 @@ public final class UtilChecksum
     private static final String ERROR_ALGORITHM = "Unable to create algorithm: ";
     /** Message digest instance. */
     private static final MessageDigest SHA256 = create("SHA-256");
+    /** Maximum length. */
+    private static final int MAX_LENGTH = 87;
 
     /**
      * Compare a checksum with its supposed original value.
@@ -85,7 +74,7 @@ public final class UtilChecksum
     public static String getSha256(byte[] bytes)
     {
         final byte[] v = SHA256.digest(bytes);
-        final StringBuilder builder = new StringBuilder(84);
+        final StringBuilder builder = new StringBuilder(MAX_LENGTH);
         for (final byte b : v)
         {
             builder.append(0xFF & b);
@@ -107,7 +96,7 @@ public final class UtilChecksum
     /**
      * Get the SHA-256 signature of the input string.
      * 
-     * @param str The input integer.
+     * @param str The input string.
      * @return The string signature.
      */
     public static String getSha256(String str)

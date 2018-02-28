@@ -28,14 +28,6 @@ package com.b3dgs.lionengine;
  * fullscreen)</li>
  * <li>applet : Can be used to set the applet reference in case of applet mode</li>
  * </ul>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Resolution output = new Resolution(640, 480, 60);
- * final Config config = new Config(output, 16, true);
- * </pre>
  * 
  * @see Resolution
  * @see Ratio
@@ -73,20 +65,20 @@ public final class Config
     private final int depth;
     /** Windowed mode. */
     private final boolean windowed;
-    /** Icon media. */
+    /** Icon media (<code>null</code> if none). */
     private final Media icon;
     /** Source resolution reference. */
     private volatile Resolution source;
-    /** Applet reference. */
+    /** Applet reference (<code>null</code> if none). */
     private Applet<?> applet;
 
     /**
-     * Create a configuration.
+     * Create a configuration without icon.
      * 
-     * @param output The output resolution (used on rendering).
-     * @param depth The screen color depth in bits (usually 16 or 32).
+     * @param output The output resolution used on rendering (must not be <code>null</code>).
+     * @param depth The screen color depth in bits, usually 16 or 32 (strictly positive).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
-     * @throws LionEngineException If arguments are <code>null</code> or invalid.
+     * @throws LionEngineException If invalid arguments.
      */
     public Config(Resolution output, int depth, boolean windowed)
     {
@@ -96,11 +88,11 @@ public final class Config
     /**
      * Create a configuration.
      * 
-     * @param output The output resolution (used on rendering).
-     * @param depth The screen color depth in bits (usually 16 or 32).
+     * @param output The output resolution used on rendering (must not be <code>null</code>).
+     * @param depth The screen color depth in bits, usually 16 or 32 (strictly positive).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
-     * @param icon The icon media (can be <code>null</code> if none).
-     * @throws LionEngineException If arguments are <code>null</code> or invalid.
+     * @param icon The icon media (<code>null</code> if none).
+     * @throws LionEngineException If invalid arguments.
      */
     public Config(Resolution output, int depth, boolean windowed, Media icon)
     {
@@ -116,7 +108,7 @@ public final class Config
     /**
      * Set applet reference, and enable applet mode.
      * 
-     * @param applet The applet reference.
+     * @param applet The applet reference (<code>null</code> to disable).
      */
     public void setApplet(Applet<?> applet)
     {
@@ -126,7 +118,7 @@ public final class Config
     /**
      * Set the resolution source.
      * 
-     * @param source The source resolution (native).
+     * @param source The native source resolution (must not be <code>null</code>).
      * @throws LionEngineException If source is <code>null</code>.
      */
     public void setSource(Resolution source)
@@ -139,7 +131,7 @@ public final class Config
     /**
      * Get the resolution source.
      * 
-     * @return The source resolution.
+     * @return The resolution source, <code>null</code> if none defined.
      */
     public Resolution getSource()
     {
@@ -149,7 +141,7 @@ public final class Config
     /**
      * Get the resolution output.
      * 
-     * @return The output resolution.
+     * @return The resolution output.
      */
     public Resolution getOutput()
     {
@@ -157,11 +149,11 @@ public final class Config
     }
 
     /**
-     * Get applet reference.
+     * Get the applet reference.
      * 
      * @param <A> The applet type used.
      * @param appletClass The applet class.
-     * @return The applet reference.
+     * @return The applet reference, <code>null</code> if none.
      */
     public <A extends Applet<A>> A getApplet(Class<A> appletClass)
     {
@@ -176,7 +168,7 @@ public final class Config
     /**
      * Get the application icon.
      * 
-     * @return The application icon.
+     * @return The application icon, <code>null</code> if none.
      */
     public Media getIcon()
     {
@@ -196,7 +188,7 @@ public final class Config
     /**
      * Get the windowed mode.
      * 
-     * @return <code>true</code> if is windowed, <code>false</code> else.
+     * @return <code>true</code> if windowed, <code>false</code> fullscreen.
      */
     public boolean isWindowed()
     {

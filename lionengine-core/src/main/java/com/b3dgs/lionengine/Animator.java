@@ -20,25 +20,12 @@ package com.b3dgs.lionengine;
 /**
  * Animator can play an {@link Animation}.
  * <p>
- * To play correctly an animation, it just needs the following steps:
+ * To play correctly an animation, it needs the following steps:
  * </p>
  * <ul>
  * <li>Call only one time {@link #play(Animation)}</li>
  * <li>Call {@link #update(double)} in your main loop</li>
  * </ul>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Animator animator = new AnimatorMock();
- * final Animation animation = new Animation(4, 6, 0.125, false, true);
- * animator.play(animation);
- * 
- * // ... (loop)
- * animator.update(extrp);
- * // (loop) ...
- * </pre>
  * 
  * @see Animation
  * @see AnimState
@@ -46,7 +33,8 @@ package com.b3dgs.lionengine;
 public interface Animator extends Updatable
 {
     /**
-     * Play the animation. Should be called only one time, as {@link #update(double)} does the animation update.
+     * Play the animation. Should be called only one time to start, as {@link #update(double)} does the animation
+     * update.
      * 
      * @param animation The animation to play (must not be <code>null</code>).
      * @throws LionEngineException If the animation is <code>null</code>.
@@ -61,10 +49,10 @@ public interface Animator extends Updatable
     /**
      * Set the current animation speed. This function allows to change the current playing animation speed.
      * <p>
-     * Can be used to synchronize the player movement speed to the walking animation speed.
+     * Can be used to synchronize the movement speed to the walking animation speed for example.
      * </p>
      * 
-     * @param speed The new animation speed (positive).
+     * @param speed The new animation speed (superior or equal to {@link Animation#MINIMUM_SPEED}).
      * @throws LionEngineException If speed is negative.
      */
     void setAnimSpeed(double speed);
@@ -72,13 +60,14 @@ public interface Animator extends Updatable
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
      * 
-     * @param frame The frame to set (superior or equal to {@link Animation#MINIMUM_FRAME}).
+     * @param frame The frame to set (superior or equal to {@link Animation#MINIMUM_FRAME} and inferior or equal to last
+     *            frame).
      * @throws LionEngineException If frame is out of range.
      */
     void setFrame(int frame);
 
     /**
-     * Get the playing frame number.
+     * Get the current playing frame number.
      * 
      * @return The playing frame number.
      */

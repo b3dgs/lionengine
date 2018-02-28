@@ -23,22 +23,22 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 /**
- * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
- * location, such as <code>HDD</code>, <code>JAR</code>... It could point to a file or a directory.
+ * Represents a path to a resource located outside. This abstraction allows to load a resource from any kind of
+ * location, such as external storage, <code>JAR</code>... Can point to a file or a directory.
  */
 public interface Media extends Nameable
 {
     /**
-     * Get the media path.
+     * Get the relative media path.
      * 
-     * @return The media path.
+     * @return The relative media path.
      */
     String getPath();
 
     /**
-     * Get the media parent path.
+     * Get the relative media parent path.
      * 
-     * @return The media parent path.
+     * @return The relative media parent path.
      */
     String getParentPath();
 
