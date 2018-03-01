@@ -175,10 +175,10 @@ public class TickTest
     }
 
     /**
-     * Test the unpause case.
+     * Test the resume case.
      */
     @Test
-    public void testUnpause()
+    public void testResume()
     {
         tick.start();
         tick.pause();
@@ -188,7 +188,7 @@ public class TickTest
         Assert.assertFalse(tick.elapsed(1));
         Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
-        tick.unpause();
+        tick.resume();
 
         Assert.assertEquals(0, tick.elapsed());
         Assert.assertFalse(tick.elapsed(1));

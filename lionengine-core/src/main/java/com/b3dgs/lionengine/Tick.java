@@ -111,7 +111,7 @@ public final class Tick implements Updatable
     /**
      * Continue tick from last pause.
      */
-    public void unpause()
+    public void resume()
     {
         updater = updating;
     }
