@@ -25,18 +25,6 @@ final class RawScale2x
     /** Scale factor. */
     public static final int SCALE = 2;
 
-    /**
-     * Check the difference.
-     * 
-     * @param a The color a.
-     * @param b The color b.
-     * @return <code>true</code> if different, <code>false</code> else.
-     */
-    private static boolean different(int a, int b)
-    {
-        return a != b;
-    }
-
     /** Width. */
     private final int width;
     /** Height. */
@@ -60,7 +48,7 @@ final class RawScale2x
      * @param srcImage The image source.
      * @return The data array.
      */
-    public int[] getScaledData(int[] srcImage)
+    int[] getScaledData(int[] srcImage)
     {
         final int[] dstImage = new int[srcImage.length * SCALE * SCALE];
 
@@ -125,12 +113,12 @@ final class RawScale2x
         int e1 = e;
         int e2 = e;
         int e3 = e;
-        if (different(b, h) && different(d, f))
+        if (b != h && d != f)
         {
-            e0 = !different(d, b) ? d : e;
-            e1 = !different(b, f) ? f : e;
-            e2 = !different(d, h) ? d : e;
-            e3 = !different(h, f) ? f : e;
+            e0 = d == b ? d : e;
+            e1 = b == f ? f : e;
+            e2 = d == h ? d : e;
+            e3 = h == f ? f : e;
         }
 
         setDestPixel(dstImage, x * SCALE, y * SCALE, e0);

@@ -35,7 +35,7 @@ final class RawScale3x
      */
     private static int computeE0(int b, int d, int e)
     {
-        if (!RawScale3x.different(d, b))
+        if (d != b)
         {
             return d;
         }
@@ -55,8 +55,7 @@ final class RawScale3x
      */
     private static int computeE1(int a, int b, int c, int d, int e, int f)
     {
-        if (!RawScale3x.different(d, b) && RawScale3x.different(e, c)
-            || !RawScale3x.different(b, f) && RawScale3x.different(e, a))
+        if (d == b && e != c || b == f && e != a)
         {
             return b;
         }
@@ -73,7 +72,7 @@ final class RawScale3x
      */
     private static int computeE2(int b, int e, int f)
     {
-        if (!RawScale3x.different(b, f))
+        if (b == f)
         {
             return f;
         }
@@ -93,8 +92,7 @@ final class RawScale3x
      */
     private static int computeE3(int a, int b, int d, int e, int g, int h)
     {
-        if (!RawScale3x.different(d, b) && RawScale3x.different(e, g)
-            || !RawScale3x.different(d, h) && RawScale3x.different(e, a))
+        if (d == b && e != g || d == h && e != a)
         {
             return d;
         }
@@ -114,8 +112,7 @@ final class RawScale3x
      */
     private static int computeE5(int b, int c, int e, int f, int h, int i)
     {
-        if (!RawScale3x.different(b, f) && RawScale3x.different(e, i)
-            || !RawScale3x.different(h, f) && RawScale3x.different(e, c))
+        if (b == f && e != i || h == f && e != c)
         {
             return f;
         }
@@ -132,7 +129,7 @@ final class RawScale3x
      */
     private static int computeE6(int d, int e, int h)
     {
-        if (!RawScale3x.different(d, h))
+        if (d == h)
         {
             return d;
         }
@@ -152,8 +149,7 @@ final class RawScale3x
      */
     private static int computeE7(int d, int e, int f, int g, int h, int i)
     {
-        if (!RawScale3x.different(d, h) && RawScale3x.different(e, i)
-            || !RawScale3x.different(h, f) && RawScale3x.different(e, g))
+        if (d == h && e != i || h == f && e != g)
         {
             return h;
         }
@@ -170,7 +166,7 @@ final class RawScale3x
      */
     private static int computeE8(int e, int f, int h)
     {
-        if (!RawScale3x.different(h, f))
+        if (h == f)
         {
             return f;
         }
@@ -195,24 +191,12 @@ final class RawScale3x
     }
 
     /**
-     * Check the difference.
-     * 
-     * @param a The color a.
-     * @param b The color b.
-     * @return <code>true</code> if different, <code>false</code> else.
-     */
-    private static boolean different(int a, int b)
-    {
-        return a != b;
-    }
-
-    /**
      * Get the scaled data.
      * 
      * @param srcImage The image source
      * @return The data array.
      */
-    public int[] getScaledData(int[] srcImage)
+    int[] getScaledData(int[] srcImage)
     {
         final int[] dstImage = new int[srcImage.length * SCALE * SCALE];
 
@@ -287,17 +271,17 @@ final class RawScale3x
         int e7 = e;
         int e8 = e;
 
-        if (RawScale3x.different(b, h) && RawScale3x.different(d, f))
+        if (b != h && d != f)
         {
-            e0 = RawScale3x.computeE0(b, d, e);
-            e1 = RawScale3x.computeE1(a, b, c, d, e, f);
-            e2 = RawScale3x.computeE2(b, e, f);
-            e3 = RawScale3x.computeE3(a, b, d, e, g, h);
+            e0 = computeE0(b, d, e);
+            e1 = computeE1(a, b, c, d, e, f);
+            e2 = computeE2(b, e, f);
+            e3 = computeE3(a, b, d, e, g, h);
             e4 = e;
-            e5 = RawScale3x.computeE5(b, c, e, f, h, i);
-            e6 = RawScale3x.computeE6(d, e, h);
-            e7 = RawScale3x.computeE7(d, e, f, g, h, i);
-            e8 = RawScale3x.computeE8(e, f, h);
+            e5 = computeE5(b, c, e, f, h, i);
+            e6 = computeE6(d, e, h);
+            e7 = computeE7(d, e, f, g, h, i);
+            e8 = computeE8(e, f, h);
         }
 
         setDestPixel(dstImage, x * SCALE, y * SCALE, e0);

@@ -30,6 +30,103 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class FilterBilinear implements Filter
 {
     /**
+     * Compute bilinear filtering.
+     * 
+     * @param in The source pixels.
+     * @param out The destination pixels.
+     * @param width The image width.
+     * @param height The image height.
+     * @param radius The radius used.
+     */
+    private static void compute(int[] in, int[] out, int width, int height, int radius)
+    {
+        final int widthMinus1 = width - 1;
+        final int tableSize = 2 * radius + 1;
+        final int[] divide = new int[Constant.UNSIGNED_BYTE * tableSize];
+
+        for (int i = 0; i < Constant.UNSIGNED_BYTE * tableSize; i++)
+        {
+            divide[i] = i / tableSize;
+        }
+
+        int inIndex = 0;
+        for (int y = 0; y < height; y++)
+        {
+            compute(in, out, y, inIndex, divide, width, widthMinus1, height, radius);
+            inIndex += width;
+        }
+    }
+
+    /**
+     * Compute bilinear filtering.
+     * 
+     * @param in The source pixels.
+     * @param out The destination pixels.
+     * @param y The current vertical line.
+     * @param inIndex The width index.
+     * @param divide The divide table.
+     * @param width The image width.
+     * @param widthMinus1 The width less 1.
+     * @param height The image height.
+     * @param radius The radius used.
+     */
+    private static void compute(int[] in,
+                                int[] out,
+                                int y,
+                                int inIndex,
+                                int[] divide,
+                                int width,
+                                int widthMinus1,
+                                int height,
+                                int radius)
+    {
+        int outIndex = y;
+        int ta = 0;
+        int tr = 0;
+        int tg = 0;
+        int tb = 0;
+
+        for (int i = -radius; i <= radius; i++)
+        {
+            final int rgb = in[inIndex + UtilMath.clamp(i, 0, width - 1)];
+            ta += rgb >> Constant.BYTE_4 & 0xff;
+            tr += rgb >> Constant.BYTE_3 & 0xff;
+            tg += rgb >> Constant.BYTE_2 & 0xff;
+            tb += rgb & 0xff;
+        }
+
+        for (int x = 0; x < width; x++)
+        {
+            out[outIndex] = divide[ta] << Constant.BYTE_4
+                            | divide[tr] << Constant.BYTE_3
+                            | divide[tg] << Constant.BYTE_2
+                            | divide[tb];
+
+            int i1 = x + radius + 1;
+            if (i1 > widthMinus1)
+            {
+                i1 = widthMinus1;
+            }
+            int i2 = x - radius;
+            if (i2 < 0)
+            {
+                i2 = 0;
+            }
+            final int rgb1 = in[inIndex + i1];
+            final int rgb2 = in[inIndex + i2];
+            final int red = 0xff0000;
+            final int green = 0xff00;
+            final int blue = 0xff;
+
+            ta += (rgb1 >> Constant.BYTE_4 & 0xff) - (rgb2 >> Constant.BYTE_4 & 0xff);
+            tr += (rgb1 & red) - (rgb2 & red) >> Constant.BYTE_3;
+            tg += (rgb1 & green) - (rgb2 & green) >> Constant.BYTE_2;
+            tb += (rgb1 & blue) - (rgb2 & blue);
+            outIndex += height;
+        }
+    }
+
+    /**
      * Create the filter.
      */
     public FilterBilinear()
@@ -65,76 +162,5 @@ public class FilterBilinear implements Filter
         final Transform transform = Graphics.createTransform();
         transform.scale(scaleX, scaleY);
         return transform;
-    }
-
-    /**
-     * Compute bilinear filtering.
-     * 
-     * @param in The source pixels.
-     * @param out The destination pixels.
-     * @param width The image width.
-     * @param height The image height.
-     * @param radius The radius used.
-     */
-    private static void compute(int[] in, int[] out, int width, int height, int radius)
-    {
-        final int widthMinus1 = width - 1;
-        final int tableSize = 2 * radius + 1;
-        final int[] divide = new int[Constant.UNSIGNED_BYTE * tableSize];
-
-        for (int i = 0; i < Constant.UNSIGNED_BYTE * tableSize; i++)
-        {
-            divide[i] = i / tableSize;
-        }
-
-        int inIndex = 0;
-        for (int y = 0; y < height; y++)
-        {
-            int outIndex = y;
-            int ta = 0;
-            int tr = 0;
-            int tg = 0;
-            int tb = 0;
-
-            for (int i = -radius; i <= radius; i++)
-            {
-                final int rgb = in[inIndex + UtilMath.clamp(i, 0, width - 1)];
-                ta += rgb >> Constant.BYTE_4 & 0xff;
-                tr += rgb >> Constant.BYTE_3 & 0xff;
-                tg += rgb >> Constant.BYTE_2 & 0xff;
-                tb += rgb & 0xff;
-            }
-
-            for (int x = 0; x < width; x++)
-            {
-                out[outIndex] = divide[ta] << Constant.BYTE_4
-                                | divide[tr] << Constant.BYTE_3
-                                | divide[tg] << Constant.BYTE_2
-                                | divide[tb];
-
-                int i1 = x + radius + 1;
-                if (i1 > widthMinus1)
-                {
-                    i1 = widthMinus1;
-                }
-                int i2 = x - radius;
-                if (i2 < 0)
-                {
-                    i2 = 0;
-                }
-                final int rgb1 = in[inIndex + i1];
-                final int rgb2 = in[inIndex + i2];
-                final int red = 0xff0000;
-                final int green = 0xff00;
-                final int blue = 0xff;
-
-                ta += (rgb1 >> Constant.BYTE_4 & 0xff) - (rgb2 >> Constant.BYTE_4 & 0xff);
-                tr += (rgb1 & red) - (rgb2 & red) >> Constant.BYTE_3;
-                tg += (rgb1 & green) - (rgb2 & green) >> Constant.BYTE_2;
-                tb += (rgb1 & blue) - (rgb2 & blue);
-                outIndex += height;
-            }
-            inIndex += width;
-        }
     }
 }
