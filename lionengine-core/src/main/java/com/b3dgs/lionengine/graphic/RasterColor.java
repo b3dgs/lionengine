@@ -17,8 +17,14 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Represents the raster color.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class RasterColor
 {
@@ -32,14 +38,17 @@ public final class RasterColor
     /**
      * Load all rasters data.
      * 
-     * @param data The raster data.
+     * @param data The raster data (must not be <code>null</code>).
      * @param m The raster smooth.
      * @param i The raster id.
      * @param smooth <code>true</code> to smooth raster, <code>false</code> else.
      * @return The color transition.
+     * @throws LionEngineException If invalid argument.
      */
     public static RasterColor load(RasterData data, int m, int i, boolean smooth)
     {
+        Check.notNull(data);
+
         final int start;
         final int end;
         if (smooth)

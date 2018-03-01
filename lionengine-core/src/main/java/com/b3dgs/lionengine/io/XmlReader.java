@@ -66,8 +66,8 @@ public class XmlReader
     /**
      * Create node from media.
      * 
-     * @param media The XML media path.
-     * @throws LionEngineException If error when loading media.
+     * @param media The XML media path (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument or error when loading media.
      */
     public XmlReader(Media media)
     {
@@ -88,11 +88,12 @@ public class XmlReader
      * Create node.
      * 
      * @param name The node name.
-     * @throws LionEngineException If error when creating the node.
+     * @throws LionEngineException If invalid argument or error when creating the node.
      */
     public XmlReader(String name)
     {
         Check.notNull(name);
+
         try
         {
             document = DocumentFactory.createDocument();
@@ -109,60 +110,21 @@ public class XmlReader
      * 
      * @param document The document reference.
      * @param root The root reference.
+     * @throws LionEngineException If invalid argument.
      */
     XmlReader(Document document, Element root)
     {
+        Check.notNull(document);
+        Check.notNull(root);
+
         this.document = document;
         this.root = root;
     }
 
     /**
-     * Get the original element.
-     * 
-     * @return The jdom element.
-     */
-    Element getElement()
-    {
-        return root;
-    }
-
-    /**
-     * Get the attribute value.
-     * 
-     * @param attribute The attribute name.
-     * @return The attribute value.
-     * @throws LionEngineException If attribute is not valid or does not exist.
-     */
-    private String getValue(String attribute)
-    {
-        if (root.hasAttribute(attribute))
-        {
-            return root.getAttribute(attribute);
-        }
-        throw new LionEngineException(ERROR_ATTRIBUTE + attribute);
-    }
-
-    /**
-     * Get the attribute value.
-     * 
-     * @param defaultValue The value returned if attribute does not exist.
-     * @param attribute The attribute name.
-     * @return The attribute value.
-     * @throws LionEngineException If attribute is not valid or does not exist.
-     */
-    private String getValue(String defaultValue, String attribute)
-    {
-        if (root.hasAttribute(attribute))
-        {
-            return root.getAttribute(attribute);
-        }
-        return defaultValue;
-    }
-
-    /**
      * Read a boolean.
      * 
-     * @param attribute The boolean name.
+     * @param attribute The boolean name (must not be <code>null</code>).
      * @return The boolean value.
      * @throws LionEngineException If error when reading.
      */
@@ -175,7 +137,7 @@ public class XmlReader
      * Read a boolean.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The boolean name.
+     * @param attribute The boolean name (must not be <code>null</code>).
      * @return The boolean value.
      */
     public boolean readBoolean(boolean defaultValue, String attribute)
@@ -186,7 +148,7 @@ public class XmlReader
     /**
      * Read a byte.
      * 
-     * @param attribute The integer name.
+     * @param attribute The integer name (must not be <code>null</code>).
      * @return The byte value.
      * @throws LionEngineException If error when reading.
      */
@@ -199,7 +161,7 @@ public class XmlReader
      * Read a byte.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name.
+     * @param attribute The integer name (must not be <code>null</code>).
      * @return The byte value.
      */
     public byte readByte(byte defaultValue, String attribute)
@@ -210,7 +172,7 @@ public class XmlReader
     /**
      * Read a short.
      * 
-     * @param attribute The integer name.
+     * @param attribute The integer name (must not be <code>null</code>).
      * @return The short value.
      * @throws LionEngineException If error when reading.
      */
@@ -223,7 +185,7 @@ public class XmlReader
      * Read a short.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name.
+     * @param attribute The integer name (must not be <code>null</code>).
      * @return The short value.
      */
     public short readShort(short defaultValue, String attribute)
@@ -234,7 +196,7 @@ public class XmlReader
     /**
      * Read an integer.
      * 
-     * @param attribute The integer name.
+     * @param attribute The integer name (must not be <code>null</code>).
      * @return The integer value.
      * @throws LionEngineException If error when reading.
      */
@@ -247,8 +209,9 @@ public class XmlReader
      * Read an integer.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name.
+     * @param attribute The integer name (must not be <code>null</code>).
      * @return The integer value.
+     * @throws LionEngineException If invalid argument.
      */
     public int readInteger(int defaultValue, String attribute)
     {
@@ -258,7 +221,7 @@ public class XmlReader
     /**
      * Read a long.
      * 
-     * @param attribute The float name.
+     * @param attribute The float name (must not be <code>null</code>).
      * @return The long value.
      * @throws LionEngineException If error when reading.
      */
@@ -271,7 +234,7 @@ public class XmlReader
      * Read a long.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The float name.
+     * @param attribute The float name (must not be <code>null</code>).
      * @return The long value.
      */
     public long readLong(long defaultValue, String attribute)
@@ -282,7 +245,7 @@ public class XmlReader
     /**
      * Read a float.
      * 
-     * @param attribute The float name.
+     * @param attribute The float name (must not be <code>null</code>).
      * @return The float value.
      * @throws LionEngineException If error when reading.
      */
@@ -295,8 +258,9 @@ public class XmlReader
      * Read a float.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The float name.
+     * @param attribute The float name (must not be <code>null</code>).
      * @return The float value.
+     * @throws LionEngineException If invalid argument.
      */
     public float readFloat(float defaultValue, String attribute)
     {
@@ -306,7 +270,7 @@ public class XmlReader
     /**
      * Read a double.
      * 
-     * @param attribute The double name.
+     * @param attribute The double name (must not be <code>null</code>).
      * @return The double value.
      * @throws LionEngineException If error when reading.
      */
@@ -319,7 +283,7 @@ public class XmlReader
      * Read a double.
      * 
      * @param defaultValue The value returned if attribute not found.
-     * @param attribute The double name.
+     * @param attribute The double name (must not be <code>null</code>).
      * @return The double value.
      */
     public double readDouble(double defaultValue, String attribute)
@@ -330,7 +294,7 @@ public class XmlReader
     /**
      * Read a string. If the read string is equal to {@link #NULL}, <code>null</code> will be returned instead.
      * 
-     * @param attribute The string name.
+     * @param attribute The string name (must not be <code>null</code>).
      * @return The string value.
      * @throws LionEngineException If error when reading.
      */
@@ -347,9 +311,10 @@ public class XmlReader
     /**
      * Read a string. If the read string is equal to {@link #NULL}, <code>null</code> will be returned instead.
      * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The string name.
+     * @param defaultValue The value returned if attribute not found (must not be <code>null</code>).
+     * @param attribute The string name (must not be <code>null</code>).
      * @return The string value.
+     * @throws LionEngineException If invalid arguments.
      */
     public String readString(String defaultValue, String attribute)
     {
@@ -402,18 +367,21 @@ public class XmlReader
     /**
      * Check if node has the following attribute.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @return <code>true</code> if attribute exists, <code>false</code> else.
+     * @throws LionEngineException If invalid argument.
      */
     public boolean hasAttribute(String attribute)
     {
+        Check.notNull(attribute);
+
         return root.hasAttribute(attribute);
     }
 
     /**
      * Check if node has the following child.
      * 
-     * @param child The child name.
+     * @param child The child name (can be <code>null</code>).
      * @return <code>true</code> if child exists, <code>false</code> else.
      */
     public boolean hasChild(String child)
@@ -428,5 +396,50 @@ public class XmlReader
             }
         }
         return false;
+    }
+
+    /**
+     * Get the original element.
+     * 
+     * @return The jdom element.
+     */
+    Element getElement()
+    {
+        return root;
+    }
+
+    /**
+     * Get the attribute value.
+     * 
+     * @param attribute The attribute name (must not be <code>null</code>).
+     * @return The attribute value.
+     * @throws LionEngineException If attribute is not valid or does not exist.
+     */
+    private String getValue(String attribute)
+    {
+        Check.notNull(attribute);
+
+        if (root.hasAttribute(attribute))
+        {
+            return root.getAttribute(attribute);
+        }
+        throw new LionEngineException(ERROR_ATTRIBUTE + attribute);
+    }
+
+    /**
+     * Get the attribute value.
+     * 
+     * @param defaultValue The value returned if attribute does not exist.
+     * @param attribute The attribute name.
+     * @return The attribute value.
+     * @throws LionEngineException If attribute is not valid or does not exist.
+     */
+    private String getValue(String defaultValue, String attribute)
+    {
+        if (root.hasAttribute(attribute))
+        {
+            return root.getAttribute(attribute);
+        }
+        return defaultValue;
     }
 }

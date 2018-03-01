@@ -33,7 +33,7 @@ final class AnimatorImpl implements Animator
     private static final double HALF_FRAME = 0.5;
 
     /** First frame. */
-    private int first;
+    private int first = Animation.MINIMUM_FRAME;
     /** Last frame. */
     private int last;
     /** Animation speed. */
@@ -43,20 +43,16 @@ final class AnimatorImpl implements Animator
     /** Repeat flag. */
     private boolean repeat;
     /** Current playing frame. */
-    private double current;
+    private double current = first;
     /** Animation state. */
-    private AnimState state;
+    private AnimState state = AnimState.STOPPED;
 
     /**
      * Internal constructor.
      */
     AnimatorImpl()
     {
-        first = Animation.MINIMUM_FRAME;
-        state = AnimState.STOPPED;
-        current = first;
-        repeat = false;
-        reverse = false;
+        super();
     }
 
     /**
@@ -69,7 +65,7 @@ final class AnimatorImpl implements Animator
         current += speed * extrp;
 
         // Last frame reached
-        if (current >= last + FRAME)
+        if (Double.compare(current, last + FRAME) >= 0)
         {
             // If not reversed, done, else, reverse
             current = last + HALF_FRAME;
@@ -110,7 +106,7 @@ final class AnimatorImpl implements Animator
         current -= speed * extrp;
 
         // First frame reached, done
-        if (current <= first)
+        if (Double.compare(current, first) <= 0)
         {
             current = first;
 

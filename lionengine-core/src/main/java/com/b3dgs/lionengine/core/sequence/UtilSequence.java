@@ -34,9 +34,9 @@ public final class UtilSequence
     /**
      * Create a sequence from its class.
      * 
-     * @param nextSequence The next sequence class.
-     * @param context The context reference.
-     * @param arguments The arguments list.
+     * @param nextSequence The next sequence class (must not be <code>null</code>).
+     * @param context The context reference (must not be <code>null</code>).
+     * @param arguments The arguments list (must not be <code>null</code>).
      * @return The sequence instance.
      * @throws LionEngineException If not able to create the sequence for any reason.
      */
@@ -44,6 +44,7 @@ public final class UtilSequence
     {
         Check.notNull(nextSequence);
         Check.notNull(context);
+        Check.notNull(arguments);
 
         try
         {

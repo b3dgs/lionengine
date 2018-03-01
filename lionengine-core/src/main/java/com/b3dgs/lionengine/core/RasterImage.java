@@ -108,6 +108,8 @@ public class RasterImage
      */
     public void loadRasters(int imageHeight, boolean save, String prefix)
     {
+        Check.notNull(prefix);
+
         final Raster raster = Raster.load(rasterFile);
         final int max = UtilConversion.boolToInt(rasterSmooth) + 1;
 

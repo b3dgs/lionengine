@@ -17,8 +17,14 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Image header model base.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public class ImageHeaderModel implements ImageHeader
 {
@@ -34,10 +40,13 @@ public class ImageHeaderModel implements ImageHeader
      * 
      * @param width The image width.
      * @param height The image height.
-     * @param format The image format.
+     * @param format The image format (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public ImageHeaderModel(int width, int height, ImageFormat format)
     {
+        Check.notNull(format);
+
         this.width = width;
         this.height = height;
         this.format = format;

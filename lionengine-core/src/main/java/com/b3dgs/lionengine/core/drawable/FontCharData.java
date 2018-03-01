@@ -17,8 +17,13 @@
  */
 package com.b3dgs.lionengine.core.drawable;
 
+import com.b3dgs.lionengine.Check;
+
 /**
  * Character data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class FontCharData
 {
@@ -32,12 +37,16 @@ final class FontCharData
     /**
      * Internal constructor.
      * 
-     * @param id The character id.
-     * @param width The character width.
-     * @param height The character height.
+     * @param id The character id (must be superior or equal to 0).
+     * @param width The character width (must be strictly positive).
+     * @param height The character height (must be strictly positive).
      */
     FontCharData(int id, int width, int height)
     {
+        Check.superiorOrEqual(id, 0);
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
+
         this.id = id;
         this.width = width;
         this.height = height;
@@ -56,7 +65,7 @@ final class FontCharData
     /**
      * Get the character width.
      * 
-     * @return THe character width.
+     * @return The character width.
      */
     public int getWidth()
     {
@@ -66,7 +75,7 @@ final class FontCharData
     /**
      * Get the character height.
      * 
-     * @return THe character height.
+     * @return The character height.
      */
     public int getHeight()
     {

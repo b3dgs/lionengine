@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.util;
 
 import java.util.Random;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 
@@ -66,9 +67,12 @@ public final class UtilRandom
      * 
      * @param range The range reference.
      * @return A value between min inclusive and max inclusive.
+     * @throws LionEngineException If invalid argument.
      */
     public static int getRandomInteger(Range range)
     {
+        Check.notNull(range);
+
         return getRandomInteger(range.getMin(), range.getMax());
     }
 

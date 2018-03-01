@@ -35,6 +35,9 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Utility class related to java reflection.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class UtilReflection
 {
@@ -53,16 +56,18 @@ public final class UtilReflection
      * Create a class instance with its parameters.
      * 
      * @param <T> The element type used.
-     * @param type The class type to instantiate.
-     * @param paramTypes The class base type for each parameter.
-     * @param params The constructor parameters.
+     * @param type The class type to instantiate (must not be <code>null</code>).
+     * @param paramTypes The class base type for each parameter (must not be <code>null</code>).
+     * @param params The constructor parameters (must not be <code>null</code>).
      * @return The class instance.
      * @throws NoSuchMethodException If no constructor found.
-     * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
+     * @throws LionEngineException If invalid parameters or unable to create the instance.
      */
     public static <T> T create(Class<T> type, Class<?>[] paramTypes, Object... params) throws NoSuchMethodException
     {
         Check.notNull(type);
+        Check.notNull(paramTypes);
+        Check.notNull(params);
 
         final Constructor<T> constructor = getCompatibleConstructor(type, paramTypes);
         return create(type, constructor, params);
@@ -73,14 +78,18 @@ public final class UtilReflection
      * parameter types array as a queue until empty in order to find a constructor.
      * 
      * @param <T> The element type used.
-     * @param type The class type.
-     * @param params The maximum parameters in sequential order.
+     * @param type The class type (must not be <code>null</code>).
+     * @param params The maximum parameters in sequential order (must not be <code>null</code>).
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
+     * @throws LionEngineException If invalid parameters.
      */
     @SuppressWarnings("unchecked")
     public static <T> T createReduce(Class<T> type, Object... params) throws NoSuchMethodException
     {
+        Check.notNull(type);
+        Check.notNull(params);
+
         final Class<?>[] paramTypes = getParamTypes(params);
         final Queue<Class<?>> typesQueue = new ArrayDeque<>(Arrays.asList(paramTypes));
         final Queue<Object> paramsQueue = new ArrayDeque<>(Arrays.asList(params));
@@ -110,47 +119,16 @@ public final class UtilReflection
     }
 
     /**
-     * Create a class instance with its parameters.
-     * 
-     * @param <T> The element type used.
-     * @param type The class type to instantiate.
-     * @param constructor The constructor to use.
-     * @param params The constructor parameters.
-     * @return The class instance.
-     * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
-     */
-    private static <T> T create(Class<T> type, Constructor<T> constructor, Object... params)
-    {
-        Check.notNull(constructor);
-        try
-        {
-            setAccessible(constructor, true);
-            return constructor.newInstance(params);
-        }
-        catch (final IllegalArgumentException exception)
-        {
-            throw new LionEngineException(exception,
-                                          ERROR_CONSTRUCTOR
-                                                     + type
-                                                     + " "
-                                                     + Arrays.asList(constructor.getParameterTypes())
-                                                     + " with "
-                                                     + Arrays.asList(params));
-        }
-        catch (final InstantiationException | IllegalAccessException | InvocationTargetException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
-        }
-    }
-
-    /**
      * Get the parameter types as array.
      * 
-     * @param arguments The arguments list.
+     * @param arguments The arguments list (must not be <code>null</code>).
      * @return The arguments type array.
+     * @throws LionEngineException If invalid parameters.
      */
     public static Class<?>[] getParamTypes(Object... arguments)
     {
+        Check.notNull(arguments);
+
         final Collection<Object> types = new ArrayList<>();
         for (final Object argument : arguments)
         {
@@ -171,15 +149,19 @@ public final class UtilReflection
      * Get a compatible constructor with the following parameters.
      * 
      * @param <T> The element type used.
-     * @param type The class type.
-     * @param paramTypes The parameters types.
+     * @param type The class type (must not be <code>null</code>).
+     * @param paramTypes The parameters types (must not be <code>null</code>).
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
+     * @throws LionEngineException If invalid parameters.
      */
     @SuppressWarnings("unchecked")
     public static <T> Constructor<T> getCompatibleConstructor(Class<T> type, Class<?>[] paramTypes)
             throws NoSuchMethodException
     {
+        Check.notNull(type);
+        Check.notNull(paramTypes);
+
         for (final Constructor<?> current : type.getDeclaredConstructors())
         {
             final Class<?>[] constructorTypes = current.getParameterTypes();
@@ -199,15 +181,19 @@ public final class UtilReflection
      * Get a compatible constructor with the following parameters considering parent side.
      * 
      * @param <T> The element type.
-     * @param type The class type.
-     * @param paramTypes The parameters types.
+     * @param type The class type (must not be <code>null</code>).
+     * @param paramTypes The parameters types (must not be <code>null</code>).
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
+     * @throws LionEngineException If invalid parameters.
      */
     @SuppressWarnings("unchecked")
     public static <T> Constructor<T> getCompatibleConstructorParent(Class<T> type, Class<?>[] paramTypes)
             throws NoSuchMethodException
     {
+        Check.notNull(type);
+        Check.notNull(paramTypes);
+
         for (final Constructor<?> current : type.getDeclaredConstructors())
         {
             final Class<?>[] constructorTypes = current.getParameterTypes();
@@ -227,15 +213,18 @@ public final class UtilReflection
      * Get method and call its return value with parameters.
      * 
      * @param <T> The object type.
-     * @param object The object caller.
-     * @param name The method name.
-     * @param params The method parameters.
+     * @param object The object caller (must not be <code>null</code>).
+     * @param name The method name (must not be <code>null</code>).
+     * @param params The method parameters (must not be <code>null</code>).
      * @return The value returned.
+     * @throws LionEngineException If invalid parameters.
      */
     public static <T> T getMethod(Object object, String name, Object... params)
     {
         Check.notNull(object);
         Check.notNull(name);
+        Check.notNull(params);
+
         try
         {
             final Class<?> clazz = getClass(object);
@@ -255,15 +244,16 @@ public final class UtilReflection
      * Get the field by reflection.
      * 
      * @param <T> The field type.
-     * @param object The object to use.
-     * @param name The field name.
+     * @param object The object to use (must not be <code>null</code>).
+     * @param name The field name (must not be <code>null</code>).
      * @return The field found.
-     * @throws LionEngineException If field not found.
+     * @throws LionEngineException If invalid parameters or field not found.
      */
     public static <T> T getField(Object object, String name)
     {
         Check.notNull(object);
         Check.notNull(name);
+
         try
         {
             final Class<?> clazz = getClass(object);
@@ -276,6 +266,94 @@ public final class UtilReflection
         catch (final NoSuchFieldException | IllegalAccessException exception)
         {
             throw new LionEngineException(exception, ERROR_FIELD + name);
+        }
+    }
+
+    /**
+     * Set the object accessibility with an access controller.
+     * 
+     * @param object The accessible object (must not be <code>null</code>).
+     * @param accessible <code>true</code> if accessible, <code>false</code> else.
+     * @throws LionEngineException If invalid parameters or field not found.
+     */
+    public static void setAccessible(AccessibleObject object, boolean accessible)
+    {
+        Check.notNull(object);
+
+        java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () ->
+        {
+            object.setAccessible(accessible);
+            return null;
+        });
+    }
+
+    /**
+     * Get all declared interfaces from object.
+     * 
+     * @param object The object reference (must not be <code>null</code>).
+     * @param base The minimum base interface (must not be <code>null</code>).
+     * @return The declared interfaces.
+     * @throws LionEngineException If invalid parameters.
+     */
+    public static Collection<Class<?>> getInterfaces(Class<?> object, Class<?> base)
+    {
+        Check.notNull(object);
+        Check.notNull(base);
+
+        final Collection<Class<?>> interfaces = new ArrayList<>();
+        Class<?> current = object;
+        while (current != null)
+        {
+            final Deque<Class<?>> currents = new ArrayDeque<>(filterInterfaces(current, base));
+            final Deque<Class<?>> nexts = new ArrayDeque<>();
+            while (!currents.isEmpty())
+            {
+                nexts.clear();
+                interfaces.addAll(currents);
+                checkInterfaces(base, currents, nexts);
+                currents.clear();
+                currents.addAll(nexts);
+                nexts.clear();
+            }
+            current = current.getSuperclass();
+        }
+        return interfaces;
+    }
+
+    /**
+     * Create a class instance with its parameters.
+     * 
+     * @param <T> The element type used.
+     * @param type The class type to instantiate (must not be <code>null</code>).
+     * @param constructor The constructor to use (must not be <code>null</code>).
+     * @param params The constructor parameters (must not be <code>null</code>).
+     * @return The class instance.
+     * @throws LionEngineException If invalid parameters or unable to create the instance.
+     */
+    private static <T> T create(Class<T> type, Constructor<T> constructor, Object... params)
+    {
+        Check.notNull(type);
+        Check.notNull(constructor);
+        Check.notNull(params);
+
+        try
+        {
+            setAccessible(constructor, true);
+            return constructor.newInstance(params);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception,
+                                          ERROR_CONSTRUCTOR
+                                                     + type
+                                                     + " "
+                                                     + Arrays.asList(constructor.getParameterTypes())
+                                                     + " with "
+                                                     + Arrays.asList(params));
+        }
+        catch (final InstantiationException | IllegalAccessException | InvocationTargetException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
         }
     }
 
@@ -301,50 +379,6 @@ public final class UtilReflection
             }
             return getDeclaredFieldSuper(clazz.getSuperclass(), name);
         }
-    }
-
-    /**
-     * Set the object accessibility with an access controller.
-     * 
-     * @param object The accessible object.
-     * @param accessible <code>true</code> if accessible, <code>false</code> else.
-     */
-    public static void setAccessible(final AccessibleObject object, final boolean accessible)
-    {
-        java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () ->
-        {
-            object.setAccessible(accessible);
-            return null;
-        });
-    }
-
-    /**
-     * Get all declared interfaces from object.
-     * 
-     * @param object The object reference.
-     * @param base The minimum base interface.
-     * @return The declared interfaces.
-     */
-    public static Collection<Class<?>> getInterfaces(Class<?> object, Class<?> base)
-    {
-        final Collection<Class<?>> interfaces = new ArrayList<>();
-        Class<?> current = object;
-        while (current != null)
-        {
-            final Deque<Class<?>> currents = new ArrayDeque<>(filterInterfaces(current, base));
-            final Deque<Class<?>> nexts = new ArrayDeque<>();
-            while (!currents.isEmpty())
-            {
-                nexts.clear();
-                interfaces.addAll(currents);
-                checkInterfaces(base, currents, nexts);
-                currents.clear();
-                currents.addAll(nexts);
-                nexts.clear();
-            }
-            current = current.getSuperclass();
-        }
-        return interfaces;
     }
 
     /**

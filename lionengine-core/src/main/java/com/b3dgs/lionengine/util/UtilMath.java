@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.util;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 
@@ -33,7 +34,7 @@ public final class UtilMath
      * 
      * @param speed The speed value.
      * @param value The value to round.
-     * @return The rounded value.
+     * @return The floor value if negative speed, ceil if positive speed.
      */
     public static double getRound(double speed, double value)
     {
@@ -127,11 +128,14 @@ public final class UtilMath
      * 
      * @param value The value.
      * @param dest The value to reach.
-     * @param speed The effect speed.
+     * @param speed The effect speed (must not be equal to 0).
      * @return The modified value.
+     * @throws LionEngineException If invalid argument.
      */
     public static double curveValue(double value, double dest, double speed)
     {
+        Check.different(speed, 0.0);
+
         final double reciprocal = 1.0 / speed;
         final double invReciprocal = 1.0 - reciprocal;
 
@@ -158,12 +162,16 @@ public final class UtilMath
     /**
      * Get distance of two points.
      * 
-     * @param a The first localizable.
-     * @param b The second localizable.
+     * @param a The first localizable (must not be <code>null</code>).
+     * @param b The second localizable (must not be <code>null</code>).
      * @return The distance between them.
+     * @throws LionEngineException If invalid argument.
      */
     public static double getDistance(Localizable a, Localizable b)
     {
+        Check.notNull(a);
+        Check.notNull(b);
+
         final double x = b.getX() - a.getX();
         final double y = b.getY() - a.getY();
 
@@ -187,9 +195,9 @@ public final class UtilMath
         final double maxY = y2 + h2;
 
         double min = getDistance(x1, y1, x2, y2);
-        for (double x = x2; x <= maxX; x++)
+        for (double x = x2; Double.compare(x, maxX) <= 0; x++)
         {
-            for (double y = y2; y <= maxY; y++)
+            for (double y = y2; Double.compare(y, maxY) <= 0; y++)
             {
                 final double dist = getDistance(x1, y1, x, y);
                 if (dist < min)
@@ -220,9 +228,9 @@ public final class UtilMath
         final double maxY = y2 + h2;
 
         double min = getDistance(x1, y1, x2, y2);
-        for (double x = x2; x <= maxX; x++)
+        for (double x = x2; Double.compare(x, maxX) <= 0; x++)
         {
-            for (double y = y2; y <= maxY; y++)
+            for (double y = y2; Double.compare(y, maxY) <= 0; y++)
             {
                 final double dist = getDistance(x, y, x1, y1, w1, h1);
                 if (dist < min)
@@ -247,9 +255,9 @@ public final class UtilMath
         double newValue = value;
         final double step = max - min;
 
-        if (newValue >= max)
+        if (Double.compare(newValue, max) >= 0)
         {
-            while (newValue >= max)
+            while (Double.compare(newValue, max) >= 0)
             {
                 newValue -= step;
             }
@@ -268,11 +276,14 @@ public final class UtilMath
      * Get the rounded value.
      * 
      * @param value The value.
-     * @param round The round factor.
+     * @param round The round factor (must not be equal to 0).
      * @return The rounded value.
+     * @throws LionEngineException If invalid argument.
      */
     public static int getRounded(double value, int round)
     {
+        Check.different(round, 0);
+
         return (int) Math.floor(value / round) * round;
     }
 
@@ -280,11 +291,14 @@ public final class UtilMath
      * Get the rounded value with ceil.
      * 
      * @param value The value.
-     * @param round The round factor.
+     * @param round The round factor (must not be equal to 0).
      * @return The rounded value.
+     * @throws LionEngineException If invalid argument.
      */
     public static int getRoundedC(double value, int round)
     {
+        Check.different(round, 0);
+
         return (int) Math.ceil(value / round) * round;
     }
 
@@ -337,7 +351,7 @@ public final class UtilMath
     /**
      * Get the current time in millisecond.
      * 
-     * @return The current time in millisecond.
+     * @return The current time (clock relative) in millisecond.
      */
     public static long time()
     {
@@ -347,7 +361,7 @@ public final class UtilMath
     /**
      * Get the current time in nano second.
      * 
-     * @return The current time in nano second.
+     * @return The current time (absolute time) in nano second.
      */
     public static long nano()
     {

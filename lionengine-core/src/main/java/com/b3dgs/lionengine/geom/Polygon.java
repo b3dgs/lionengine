@@ -122,23 +122,23 @@ public class Polygon
     /**
      * Check if the rectangle intersects the other.
      * 
-     * @param rectangle The rectangle to test with.
+     * @param rectangle The rectangle to test with (can be <code>null</code>).
      * @return <code>true</code> if intersect, <code>false</code> else.
      */
     public boolean intersects(Rectangle rectangle)
     {
-        return rectangle.intersects(bounds);
+        return rectangle != null && rectangle.intersects(bounds);
     }
 
     /**
      * Check if the rectangle contains the other.
      * 
-     * @param rectangle The rectangle to test with.
+     * @param rectangle The rectangle to test with (can be <code>null</code>).
      * @return <code>true</code> if contains, <code>false</code> else.
      */
     public boolean contains(Rectangle rectangle)
     {
-        return rectangle.contains(bounds);
+        return rectangle != null && rectangle.contains(bounds);
     }
 
     /**

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.geom;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 
@@ -28,12 +29,16 @@ public final class Geom
     /**
      * Get the intersection point of two lines.
      * 
-     * @param l1 The first line.
-     * @param l2 The second line.
+     * @param l1 The first line (must not be <code>null</code>).
+     * @param l2 The second line (must not be <code>null</code>).
      * @return The intersection point.
+     * @throws LionEngineException If invalid arguments.
      */
     public static Coord intersection(Line l1, Line l2)
     {
+        Check.notNull(l1);
+        Check.notNull(l2);
+
         final int x1 = (int) l1.getX1();
         final int x2 = (int) l1.getX2();
         final int y1 = (int) l1.getY1();
@@ -63,7 +68,7 @@ public final class Geom
      * @param y The vertical location.
      * @return The localizable.
      */
-    public static Localizable createLocalizable(final double x, final double y)
+    public static Localizable createLocalizable(double x, double y)
     {
         return new Localizable()
         {

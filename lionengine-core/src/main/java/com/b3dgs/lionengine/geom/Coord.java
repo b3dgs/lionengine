@@ -140,7 +140,6 @@ public class Coord implements Localizable
             return false;
         }
         final Coord other = (Coord) object;
-        return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
-               && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+        return Double.compare(x, other.x) == 0 && Double.compare(y, other.y) == 0;
     }
 }

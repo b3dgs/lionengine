@@ -49,9 +49,9 @@ public final class UtilFile
      * Using <code>"image.png"</code> as argument returns <code>"image"</code>.
      * </p>
      * 
-     * @param file The file name.
+     * @param file The file name (must not be <code>null</code>).
      * @return The file name without its extension.
-     * @throws LionEngineException If <code>null</code> argument.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String removeExtension(String file)
     {
@@ -68,10 +68,10 @@ public final class UtilFile
     /**
      * Normalize the file extension by ensuring it has the required one.
      * 
-     * @param file The original file name.
-     * @param extension The desired extension (will replace the other one if has).
+     * @param file The original file name (must not be <code>null</code>).
+     * @param extension The desired extension, will replace the other one if has (must not be <code>null</code>).
      * @return The normalized file with its extension.
-     * @throws LionEngineException If <code>null</code> arguments.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String normalizeExtension(String file, String extension)
     {
@@ -93,13 +93,14 @@ public final class UtilFile
     /**
      * Get extension from a string (search first dot).
      * 
-     * @param file The filename.
+     * @param file The filename (must not be <code>null</code>).
      * @return The extension without dot.
-     * @throws LionEngineException If <code>null</code> argument.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String getExtension(String file)
     {
         Check.notNull(file);
+
         String ext = Constant.EMPTY_STRING;
         final int i = file.lastIndexOf(Constant.DOT);
         if (i >= 0 && i < file.length() - 1)
@@ -112,25 +113,28 @@ public final class UtilFile
     /**
      * Get a file extension.
      * 
-     * @param file The file.
+     * @param file The file (must not be <code>null</code>).
      * @return The extension without dot.
-     * @throws LionEngineException If <code>null</code> argument.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String getExtension(File file)
     {
         Check.notNull(file);
+
         return getExtension(file.getName());
     }
 
     /**
      * Get the files list from directory.
      * 
-     * @param directory The directory reference.
+     * @param directory The directory reference (must not be <code>null</code>).
      * @return The directory content.
-     * @throws LionEngineException If not a directory.
+     * @throws LionEngineException If invalid argument or not a directory.
      */
     public static List<File> getFiles(File directory)
     {
+        Check.notNull(directory);
+
         if (directory.isDirectory())
         {
             final File[] files = directory.listFiles();
@@ -145,12 +149,16 @@ public final class UtilFile
     /**
      * Get all files existing in the path considering the extension.
      * 
-     * @param path The path to check.
-     * @param extension The extension (without dot; eg: png).
+     * @param path The path to check (must not be <code>null</code>).
+     * @param extension The extension without dot; eg: png (must not be <code>null</code>).
      * @return The files list.
+     * @throws LionEngineException If invalid arguments.
      */
     public static List<File> getFilesByExtension(File path, String extension)
     {
+        Check.notNull(path);
+        Check.notNull(extension);
+
         final List<File> filesList = new ArrayList<>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
@@ -159,12 +167,16 @@ public final class UtilFile
     /**
      * Get all files existing in the path with the specified name.
      * 
-     * @param path The path to check.
-     * @param name The file name.
+     * @param path The path to check (must not be <code>null</code>).
+     * @param name The file name (must not be <code>null</code>).
      * @return The files list (empty array if none).
+     * @throws LionEngineException If invalid arguments.
      */
     public static List<File> getFilesByName(File path, String name)
     {
+        Check.notNull(path);
+        Check.notNull(name);
+
         final List<File> filesList = new ArrayList<>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
@@ -173,8 +185,8 @@ public final class UtilFile
     /**
      * Delete a file.
      * 
-     * @param file The file to delete.
-     * @throws LionEngineException If unable to remove file.
+     * @param file The file to delete (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument or unable to remove file.
      */
     public static void deleteFile(File file)
     {
@@ -193,7 +205,7 @@ public final class UtilFile
     /**
      * Check if the path exists.
      * 
-     * @param path The path to check.
+     * @param path The path to check (can be <code>null</code>).
      * @return <code>true</code> if exists, <code>false</code> else.
      */
     public static boolean exists(String path)
@@ -208,7 +220,7 @@ public final class UtilFile
     /**
      * Check if the path is a file.
      * 
-     * @param path The path to check.
+     * @param path The path to check (can be <code>null</code>).
      * @return <code>true</code> if it is a file, <code>false</code> else.
      */
     public static boolean isFile(String path)
@@ -223,12 +235,16 @@ public final class UtilFile
     /**
      * Check if the following type is the expected type.
      * 
-     * @param file The file to check.
-     * @param extension The expected extension.
+     * @param file The file to check (must not be <code>null</code>).
+     * @param extension The expected extension (must not be <code>null</code>).
      * @return <code>true</code> if correct, <code>false</code> else.
+     * @throws LionEngineException If invalid arguments.
      */
     public static boolean isType(File file, String extension)
     {
+        Check.notNull(file);
+        Check.notNull(extension);
+
         if (file.isFile())
         {
             final String current = getExtension(file);

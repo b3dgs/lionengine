@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.util.UtilConversion;
@@ -24,6 +25,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Color utility class.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class UtilColor
 {
@@ -93,15 +97,20 @@ public final class UtilColor
     /**
      * Return the delta between two colors.
      * 
-     * @param a The first color.
-     * @param b The second color.
+     * @param a The first color (must not be <code>null</code>).
+     * @param b The second color (must not be <code>null</code>).
      * @return The delta between the two colors.
+     * @throws LionEngineException If invalid arguments.
      */
     public static double getDelta(ColorRgba a, ColorRgba b)
     {
-        final double dr = a.getRed() - (double) b.getRed();
-        final double dg = a.getGreen() - (double) b.getGreen();
-        final double db = a.getBlue() - (double) b.getBlue();
+        Check.notNull(a);
+        Check.notNull(b);
+
+        final int dr = a.getRed() - b.getRed();
+        final int dg = a.getGreen() - b.getGreen();
+        final int db = a.getBlue() - b.getBlue();
+
         return Math.sqrt(dr * dr + dg * dg + db * db);
     }
 
@@ -109,12 +118,16 @@ public final class UtilColor
      * Get raster color.
      * 
      * @param i The color offset.
-     * @param data The raster data.
-     * @param max The max offset.
+     * @param data The raster data (must not be <code>null</code>).
+     * @param max The max offset (must not be equal to 0).
      * @return The rastered color.
+     * @throws LionEngineException If invalid arguments.
      */
     public static int getRasterColor(int i, RasterData data, int max)
     {
+        Check.notNull(data);
+        Check.different(max, 0);
+
         final int start = data.getStart();
         final int step = data.getStep();
         final int force = data.getForce();
@@ -131,7 +144,7 @@ public final class UtilColor
     /**
      * Get the weighted color of an area.
      * 
-     * @param surface The surface reference.
+     * @param surface The surface reference (must not be <code>null</code>).
      * @param sx The starting horizontal location.
      * @param sy The starting vertical location.
      * @param width The area width.
@@ -140,6 +153,8 @@ public final class UtilColor
      */
     public static ColorRgba getWeightedColor(ImageBuffer surface, int sx, int sy, int width, int height)
     {
+        Check.notNull(surface);
+
         int r = 0;
         int g = 0;
         int b = 0;
@@ -171,12 +186,16 @@ public final class UtilColor
      * Check if colors transparency type are exclusive (one is {@link ColorRgba#OPAQUE} and the other
      * {@link ColorRgba#TRANSPARENT}).
      * 
-     * @param colorA The first color.
-     * @param colorB The second color.
+     * @param colorA The first color (must not be <code>null</code>).
+     * @param colorB The second color (must not be <code>null</code>).
      * @return <code>true</code> if exclusive, <code>false</code> else.
+     * @throws LionEngineException If invalid arguments.
      */
     public static boolean isOpaqueTransparentExclusive(ColorRgba colorA, ColorRgba colorB)
     {
+        Check.notNull(colorA);
+        Check.notNull(colorB);
+
         return isOpaqueTransparentExclusive(colorA.getRgba(), colorB.getRgba());
     }
 

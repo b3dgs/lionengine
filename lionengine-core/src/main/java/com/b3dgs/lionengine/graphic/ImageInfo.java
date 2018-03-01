@@ -30,17 +30,6 @@ import com.b3dgs.lionengine.Media;
 /**
  * Get quick information from an image without reading all data.
  * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final ImageInfo info = ImageInfo.get(Medias.create(&quot;dot.png&quot;));
- * Assert.assertEquals(64, info.getWidth());
- * Assert.assertEquals(32, info.getHeight());
- * Assert.assertEquals(&quot;png&quot;, info.getFormat());
- * </pre>
- * 
- * <p>
  * This class is Thread-Safe.
  * </p>
  */
@@ -54,7 +43,7 @@ public final class ImageInfo
     /**
      * Get the image info of the specified image media.
      * 
-     * @param media The media.
+     * @param media The media (must not be <code>null</code>).
      * @return The image info instance.
      * @throws LionEngineException If media is <code>null</code> or cannot be read.
      */
@@ -75,15 +64,14 @@ public final class ImageInfo
     /**
      * Check if the media is a valid image.
      * 
-     * @param media The media reference.
+     * @param media The media reference (can be <code>null</code>).
      * @return <code>true</code> if is supported image, <code>false</code> else.
      */
     public static boolean isImage(Media media)
     {
         try
         {
-            get(media);
-            return true;
+            return media != null && get(media) != null;
         }
         catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
@@ -108,14 +96,16 @@ public final class ImageInfo
     /**
      * Read image header.
      * 
-     * @param media The media to read.
-     * @param reader The header reader.
+     * @param media The media to read (must not be <code>null</code>).
+     * @param reader The header reader (must not be <code>null</code>).
      * @return The header read.
-     * @throws LionEngineException If media is <code>null</code> or cannot be read.
+     * @throws LionEngineException If invalid arguments or cannot be read.
      */
     private static ImageHeader read(Media media, ImageHeaderReader reader)
     {
         Check.notNull(media);
+        Check.notNull(reader);
+
         try (InputStream input = media.getInputStream())
         {
             return reader.readHeader(input);

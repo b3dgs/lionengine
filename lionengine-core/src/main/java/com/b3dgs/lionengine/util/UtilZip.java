@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -41,20 +42,21 @@ public final class UtilZip
     /**
      * Get all entries existing in the path considering the extension.
      * 
-     * @param jar The JAR to check.
-     * @param path The path to check.
-     * @param extension The extension (without dot; eg: xml).
+     * @param jar The JAR to check (must not be <code>null</code>).
+     * @param path The path to check (must not be <code>null</code>).
+     * @param extension The extension without dot; eg: xml (must not be <code>null</code>).
      * @return The entries list.
-     * @throws LionEngineException If unable to open ZIP.
+     * @throws LionEngineException If invalid arguments or unable to open ZIP.
      */
     public static Collection<ZipEntry> getEntriesByExtension(File jar, String path, String extension)
     {
-        try
+        Check.notNull(jar);
+        Check.notNull(path);
+        Check.notNull(extension);
+
+        try (ZipFile zip = new ZipFile(jar))
         {
-            try (ZipFile zip = new ZipFile(jar))
-            {
-                return checkEntries(zip, path, extension);
-            }
+            return checkEntries(zip, path, extension);
         }
         catch (final IOException exception)
         {

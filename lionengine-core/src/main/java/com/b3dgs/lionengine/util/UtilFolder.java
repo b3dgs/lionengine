@@ -43,13 +43,16 @@ public final class UtilFolder
     /**
      * Get all directories existing in the path.
      * 
-     * @param path The path to check.
+     * @param path The path to check (must not be <code>null</code>).
      * @return The directories list.
+     * @throws LionEngineException If invalid parameter.
      */
     public static List<File> getDirectories(File path)
     {
-        final File[] files = path.listFiles();
+        Check.notNull(path);
+
         final List<File> directories = new ArrayList<>();
+        final File[] files = path.listFiles();
         if (files != null)
         {
             for (final File current : files)
@@ -67,8 +70,9 @@ public final class UtilFolder
      * Construct a usable path using a list of string, automatically separated by the portable separator. The
      * constructed path will use local system file separator.
      * 
-     * @param path The list of directories (if has) and file.
+     * @param path The list of directories, if has, and file (must not be <code>null</code>).
      * @return The full media path.
+     * @throws LionEngineException If invalid parameters.
      */
     public static String getPath(String... path)
     {
@@ -78,12 +82,16 @@ public final class UtilFolder
     /**
      * Construct a usable path using a list of string, automatically separated by the portable separator.
      * 
-     * @param separator The separator to use.
-     * @param path The list of directories (if has) and file.
+     * @param separator The separator to use (must not be <code>null</code>).
+     * @param path The list of directories, if has, and file (must not be <code>null</code>).
      * @return The full media path.
+     * @throws LionEngineException If invalid parameters.
      */
     public static String getPathSeparator(String separator, String... path)
     {
+        Check.notNull(separator);
+        Check.notNull(path);
+
         final StringBuilder fullPath = new StringBuilder(path.length);
         for (int i = 0; i < path.length; i++)
         {
@@ -104,9 +112,10 @@ public final class UtilFolder
     }
 
     /**
-     * Delete a directory and all of its content (be careful, it will erase all children, including child directory).
+     * Delete a directory and all of its content (be careful, it will erase all children including child directory).
      * 
-     * @param element The directory to delete with all of its content.
+     * @param element The directory to delete with all of its content (must not be <code>null</code>).
+     * @throws LionEngineException If invalid parameter.
      */
     public static void deleteDirectory(File element)
     {
@@ -147,7 +156,7 @@ public final class UtilFolder
     /**
      * Check if the path is a directory.
      * 
-     * @param path The path to check.
+     * @param path The path to check (can be <code>null</code>).
      * @return <code>true</code> if it is a directory, <code>false</code> else.
      */
     public static boolean isDirectory(String path)

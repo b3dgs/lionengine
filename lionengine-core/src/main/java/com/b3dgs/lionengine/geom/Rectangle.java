@@ -63,7 +63,7 @@ public class Rectangle implements Shape
     /**
      * Check if the rectangle intersects the other.
      * 
-     * @param rectangle The rectangle to test with.
+     * @param rectangle The rectangle to test with (can be <code>null</code>).
      * @return <code>true</code> if intersect, <code>false</code> else.
      */
     public boolean intersects(Rectangle rectangle)
@@ -81,7 +81,7 @@ public class Rectangle implements Shape
     /**
      * Check if the rectangle contains the other.
      * 
-     * @param rectangle The rectangle to test with.
+     * @param rectangle The rectangle to test with (can be <code>null</code>).
      * @return <code>true</code> if contains, <code>false</code> else.
      */
     public boolean contains(Rectangle rectangle)
@@ -303,10 +303,8 @@ public class Rectangle implements Shape
             return false;
         }
         final Rectangle other = (Rectangle) obj;
-        final boolean sameSize = Double.doubleToLongBits(height) == Double.doubleToLongBits(other.height)
-                                 && Double.doubleToLongBits(width) == Double.doubleToLongBits(other.width);
-        final boolean sameCoord = Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
-                                  && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+        final boolean sameSize = Double.compare(height, other.height) == 0 && Double.compare(width, other.width) == 0;
+        final boolean sameCoord = Double.compare(x, other.x) == 0 && Double.compare(y, other.y) == 0;
         return sameSize && sameCoord;
     }
 

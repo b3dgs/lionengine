@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -47,12 +48,15 @@ public enum DpiType
     /**
      * Get the DPI type from resolution difference.
      * 
-     * @param baseline The baseline resolution.
-     * @param target The target resolution.
+     * @param baseline The baseline resolution (must not be <code>null</code>).
+     * @param target The target resolution (must not be <code>null</code>).
      * @return The computed DPI type.
      */
     public static DpiType from(Resolution baseline, Resolution target)
     {
+        Check.notNull(baseline);
+        Check.notNull(target);
+
         final double x = target.getWidth() / (double) baseline.getWidth();
         final double y = target.getHeight() / (double) baseline.getHeight();
         final double factor = Math.min(x, y);

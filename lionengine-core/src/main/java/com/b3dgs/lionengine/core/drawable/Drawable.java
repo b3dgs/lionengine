@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.drawable;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -71,11 +72,15 @@ public final class Drawable
      * <b>Must be set after engine started, before resource loading.</b>
      * </p>
      * 
-     * @param baseline The baseline resolution.
-     * @param config The configuration used.
+     * @param baseline The baseline resolution (must not be <code>null</code>).
+     * @param config The configuration used (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public static void setDpi(Resolution baseline, Config config)
     {
+        Check.notNull(baseline);
+        Check.notNull(config);
+
         setDpi(DpiType.from(baseline, config.getOutput()));
     }
 
@@ -98,7 +103,7 @@ public final class Drawable
      * <b>Must be set after engine started, before resource loading.</b>
      * </p>
      * 
-     * @param dpi The DPI to use.
+     * @param dpi The DPI to use (can be <code>null</code>).
      */
     public static void setDpi(DpiType dpi)
     {
@@ -111,9 +116,9 @@ public final class Drawable
      * Once created, image must call {@link Image#load()} before any other operations.
      * </p>
      * 
-     * @param media The image media.
+     * @param media The image media (must not be <code>null</code>).
      * @return The loaded image.
-     * @throws LionEngineException If an error occurred when reading the image.
+     * @throws LionEngineException If invalid argument or an error occurred when reading the image.
      */
     public static Image loadImage(Media media)
     {
@@ -126,9 +131,9 @@ public final class Drawable
      * {@link Image#load()} must not be called as surface has already been loaded.
      * </p>
      * 
-     * @param surface The surface reference.
+     * @param surface The surface reference (must not be <code>null</code>).
      * @return The loaded image.
-     * @throws LionEngineException If the surface is <code>null</code>.
+     * @throws LionEngineException If invalid argument.
      */
     public static Image loadImage(ImageBuffer surface)
     {
@@ -141,7 +146,7 @@ public final class Drawable
      * Once created, sprite must call {@link Sprite#load()} before any other operations.
      * </p>
      * 
-     * @param media The sprite media.
+     * @param media The sprite media (must not be <code>null</code>).
      * @return The loaded sprite.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
@@ -156,9 +161,9 @@ public final class Drawable
      * {@link Sprite#load()} must not be called as surface has already been loaded.
      * </p>
      * 
-     * @param surface The surface reference.
+     * @param surface The surface reference (must not be <code>null</code>).
      * @return The loaded sprite.
-     * @throws LionEngineException If surface is <code>null</code>.
+     * @throws LionEngineException If invalid argument.
      */
     public static Sprite loadSprite(ImageBuffer surface)
     {
@@ -171,9 +176,9 @@ public final class Drawable
      * Once created, sprite must call {@link SpriteAnimated#load()} before any other operations.
      * </p>
      * 
-     * @param media The sprite media.
-     * @param horizontalFrames The number of horizontal frames.
-     * @param verticalFrames The number of vertical frames.
+     * @param media The sprite media (must not be <code>null</code>).
+     * @param horizontalFrames The number of horizontal frames (must be strictly positive).
+     * @param verticalFrames The number of vertical frames (must be strictly positive).
      * @return The loaded animated sprite.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
@@ -189,9 +194,9 @@ public final class Drawable
      * {@link SpriteAnimated#load()} must not be called as surface has already been loaded.
      * </p>
      * 
-     * @param surface The surface reference.
-     * @param horizontalFrames The number of horizontal frames.
-     * @param verticalFrames The number of vertical frames.
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param horizontalFrames The number of horizontal frames (must be strictly positive).
+     * @param verticalFrames The number of vertical frames (must be strictly positive).
      * @return The loaded animated sprite.
      * @throws LionEngineException If arguments are invalid.
      */
@@ -206,9 +211,9 @@ public final class Drawable
      * Once created, sprite must call {@link SpriteTiled#load()} before any other operations.
      * </p>
      * 
-     * @param media The sprite media.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
+     * @param media The sprite media (must not be <code>null</code>).
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
      * @return The loaded tiled sprite.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
@@ -224,9 +229,9 @@ public final class Drawable
      * {@link SpriteTiled#load()} must not be called as surface has already been loaded.
      * </p>
      * 
-     * @param surface The surface reference.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
      * @return The loaded tiled sprite.
      * @throws LionEngineException If arguments are invalid.
      */
@@ -241,7 +246,7 @@ public final class Drawable
      * Once created, sprite must call {@link SpriteParallaxed#load(boolean)} before any other operations.
      * </p>
      * 
-     * @param media The sprite media.
+     * @param media The sprite media (must not be <code>null</code>).
      * @param linesNumber The number of parallax lines.
      * @param startWidth The starting width percent (100 is default, 50 is twice smaller, 200 is twice larger).
      * @param startHeight The starting height percent (100 is default, 50 is twice smaller, 200 is twice larger).
@@ -259,10 +264,10 @@ public final class Drawable
      * Once created, sprite must call {@link SpriteFont#load()} before any other operations.
      * </p>
      * 
-     * @param media The font sprite media.
-     * @param data The font data media.
-     * @param letterWidth The font image letter width.
-     * @param letterHeight The font image letter height.
+     * @param media The font sprite media (must not be <code>null</code>).
+     * @param data The font data media (must not be <code>null</code>).
+     * @param letterWidth The font image letter width (must be strictly positive).
+     * @param letterHeight The font image letter height (must be strictly positive).
      * @return The created font sprite.
      * @throws LionEngineException If an error occurred when creating the font.
      */
@@ -274,11 +279,14 @@ public final class Drawable
     /**
      * Get the associated DPI media.
      * 
-     * @param media The original media.
+     * @param media The original media (must not be <code>null</code>).
      * @return The DPI media, or the original media if no associated DPI found.
+     * @throws LionEngineException If invalid argument.
      */
     private static Media getMediaDpi(Media media)
     {
+        Check.notNull(media);
+
         if (dpi == null || dpi == DpiType.MDPI)
         {
             return media;

@@ -34,6 +34,10 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class Loader
 {
+    /** Start sequence. */
+    private static final String SEQUENCE_START = "Starting sequence: ";
+    /** End sequence. */
+    private static final String SEQUENCE_END = "Ending sequence: ";
     /** Error task stopped. */
     private static final String ERROR_TASK_STOPPED = "Task stopped before ended !";
 
@@ -46,9 +50,7 @@ public final class Loader
      * @return The asynchronous task executed.
      * @throws LionEngineException If sequence is invalid or wrong arguments.
      */
-    public static TaskFuture start(final Config config,
-                                   final Class<? extends Sequencable> sequenceClass,
-                                   final Object... arguments)
+    public static TaskFuture start(Config config, Class<? extends Sequencable> sequenceClass, Object... arguments)
     {
         Check.notNull(config);
         Check.notNull(sequenceClass);
@@ -71,17 +73,16 @@ public final class Loader
     /**
      * Handle the sequence with its screen until no more sequence to run.
      * 
-     * @param config The configuration used (must not be <code>null</code>).
-     * @param sequenceClass The the next sequence to start (must not be <code>null</code>).
+     * @param config The configuration used.
+     * @param sequenceClass The the next sequence to start.
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If an exception occurred.
      */
     private static void handle(Config config, Class<? extends Sequencable> sequenceClass, Object... arguments)
     {
-        Screen screen = null;
+        final Screen screen = Graphics.createScreen(config);
         try
         {
-            screen = Graphics.createScreen(config);
             screen.start();
             screen.awaitReady();
 
@@ -91,10 +92,10 @@ public final class Loader
                 final Sequencable sequence = nextSequence;
                 final String sequenceName = sequence.getClass().getName();
 
-                Verbose.info("Starting sequence: ", sequenceName);
+                Verbose.info(SEQUENCE_START, sequenceName);
                 sequence.start(screen);
 
-                Verbose.info("Ending sequence: ", sequenceName);
+                Verbose.info(SEQUENCE_END, sequenceName);
 
                 nextSequence = sequence.getNextSequence();
                 sequence.onTerminated(nextSequence != null);
@@ -102,10 +103,7 @@ public final class Loader
         }
         finally
         {
-            if (screen != null)
-            {
-                screen.dispose();
-            }
+            screen.dispose();
         }
     }
 

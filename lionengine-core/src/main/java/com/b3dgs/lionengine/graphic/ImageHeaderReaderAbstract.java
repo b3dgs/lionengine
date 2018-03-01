@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 
@@ -142,6 +143,8 @@ abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
     @Override
     public boolean is(Media media)
     {
+        Check.notNull(media);
+
         for (final HeaderProvider provider : providers)
         {
             try (InputStream input = media.getInputStream())
@@ -154,7 +157,6 @@ abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
             catch (final IOException exception)
             {
                 Verbose.exception(exception);
-                return false;
             }
         }
         return false;
