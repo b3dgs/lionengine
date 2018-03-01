@@ -46,9 +46,9 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     /**
      * Internal constructor.
      * 
-     * @param media The sprite media.
-     * @param horizontalFrames The number of horizontal frames.
-     * @param verticalFrames The number of vertical frames.
+     * @param media The sprite media (must not be <code>null</code>).
+     * @param horizontalFrames The number of horizontal frames (must be strictly positive).
+     * @param verticalFrames The number of vertical frames (must be strictly positive).
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames)
@@ -67,9 +67,9 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     /**
      * Internal constructor.
      * 
-     * @param surface The surface reference.
-     * @param horizontalFrames The number of horizontal frames.
-     * @param verticalFrames The number of vertical frames.
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param horizontalFrames The number of horizontal frames (must be strictly positive).
+     * @param verticalFrames The number of vertical frames (must be strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
     SpriteAnimatedImpl(ImageBuffer surface, int horizontalFrames, int verticalFrames)

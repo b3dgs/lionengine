@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.io;
 
 import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents a directional device, supporting multiple axis.
@@ -27,28 +28,32 @@ public interface InputDeviceDirectional extends InputDevice
     /**
      * Set the horizontal positive control code.
      * 
-     * @param code The horizontal positive control code.
+     * @param code The horizontal positive control code (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setHorizontalControlPositive(Integer code);
 
     /**
      * Set the horizontal negative control code.
      * 
-     * @param code The horizontal negative control code.
+     * @param code The horizontal negative control code (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setHorizontalControlNegative(Integer code);
 
     /**
      * Set the vertical positive control code.
      * 
-     * @param code The vertical positive control code.
+     * @param code The vertical positive control code (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setVerticalControlPositive(Integer code);
 
     /**
      * Set the vertical negative control code.
      * 
-     * @param code The vertical negative control code.
+     * @param code The vertical negative control code (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setVerticalControlNegative(Integer code);
 

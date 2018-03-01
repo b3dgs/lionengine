@@ -47,21 +47,21 @@ public abstract class ScreenAbstract implements Screen
     /** Active graphic buffer reference. */
     protected final Graphic graphics;
     /** Ready timeout. */
-    private final long readyTimeout;
+    private final long readyTimeoutMilli;
 
     /**
      * Create the screen.
      * 
      * @param config The config reference.
-     * @param readyTimeout The time out before considering screen never ready.
+     * @param readyTimeoutMilli The time out in milliseconds before considering screen never ready.
      * @throws LionEngineException If <code>null</code> config.
      */
-    protected ScreenAbstract(Config config, long readyTimeout)
+    protected ScreenAbstract(Config config, long readyTimeoutMilli)
     {
         Check.notNull(config);
 
         this.config = config;
-        this.readyTimeout = readyTimeout;
+        this.readyTimeoutMilli = readyTimeoutMilli;
         devices = new HashMap<>(1);
         graphics = Graphics.createGraphic();
     }
@@ -140,6 +140,6 @@ public abstract class ScreenAbstract implements Screen
     @Override
     public final long getReadyTimeOut()
     {
-        return readyTimeout;
+        return readyTimeoutMilli;
     }
 }

@@ -28,28 +28,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Describe a file writer, which performs file exploration.
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Media file = Medias.create(&quot;test.txt&quot;);
- * try (FileWriting writing = new FileWriting(file))
- * {
- *     writing.writeBoolean(true);
- *     writing.writeByte((byte) 1);
- *     writing.writeChar('c');
- *     writing.writeShort((short) 2);
- *     writing.writeInteger(1);
- *     writing.writeFloat(5.1f);
- *     writing.writeLong(6L);
- *     writing.writeDouble(7.1);
- * }
- * catch (final IOException exception)
- * {
- *     Assert.fail(exception.getMessage());
- * }
- * </pre>
  */
 public final class FileWriting implements Closeable
 {
@@ -59,7 +37,7 @@ public final class FileWriting implements Closeable
     /**
      * Internal constructor.
      * 
-     * @param media The media path.
+     * @param media The media path (must not be <code>null</code>).
      * @throws LionEngineException If error when opening the media.
      */
     public FileWriting(Media media)

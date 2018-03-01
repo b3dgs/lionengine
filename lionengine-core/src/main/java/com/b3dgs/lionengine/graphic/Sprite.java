@@ -40,19 +40,6 @@ import com.b3dgs.lionengine.Mirror;
  * A non loaded sprite can be displayed (nothing will be displayed), but the sprite information are available (size).
  * However, sprite manipulation will throw an exception as the surface is not available.
  * </p>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * // Load
- * final Sprite sprite = Drawable.loadSprite(Medias.create(&quot;sprite.png&quot;));
- * sprite.load(false);
- * sprite.setPosition(64, 280);
- * 
- * // Render
- * sprite.render(g);
- * </pre>
  */
 public interface Sprite extends Image
 {

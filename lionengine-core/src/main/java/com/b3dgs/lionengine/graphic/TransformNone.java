@@ -19,10 +19,15 @@ package com.b3dgs.lionengine.graphic;
 
 /**
  * No transform implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class TransformNone implements Transform
 {
+    /** Horizontal scaling. */
     private final double scaleX;
+    /** Vertical scaling. */
     private final double scaleY;
 
     /**

@@ -29,8 +29,9 @@ public interface FactoryGraphic
     /**
      * Create a screen.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The screen instance.
+     * @throws LionEngineException If invalid argument.
      */
     Screen createScreen(Config config);
 
@@ -51,36 +52,39 @@ public interface FactoryGraphic
     /**
      * Crate a text.
      * 
-     * @param fontName The font name.
-     * @param size The font size (in pixel).
-     * @param style The font style.
+     * @param fontName The font name (must not be <code>null</code>).
+     * @param size The font size in pixel (must be strictly positive).
+     * @param style The font style (must not be <code>null</code>).
      * @return The created text.
+     * @throws LionEngineException If invalid arguments.
      */
     Text createText(String fontName, int size, TextStyle style);
 
     /**
      * Create an image buffer.
      * 
-     * @param width The image width.
-     * @param height The image height.
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
      * @return The image buffer.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer createImageBuffer(int width, int height);
 
     /**
      * Create an image buffer.
      * 
-     * @param width The image width.
-     * @param height The image height.
-     * @param transparency The color transparency.
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
+     * @param transparency The color transparency pixel (must be strictly positive).
      * @return The image buffer.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency);
 
     /**
      * Get an image buffer from an image file.
      * 
-     * @param media The image media.
+     * @param media The image media (must not be <code>null</code>).
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
@@ -89,70 +93,77 @@ public interface FactoryGraphic
     /**
      * Get an image buffer from an image buffer.
      * 
-     * @param imageBuffer The image buffer.
+     * @param imageBuffer The image buffer (must not be <code>null</code>).
      * @return The created image buffer from file.
+     * @throws LionEngineException If invalid argument.
      */
     ImageBuffer getImageBuffer(ImageBuffer imageBuffer);
 
     /**
      * Apply color mask to the image.
      * 
-     * @param imageBuffer The image reference.
-     * @param maskColor The color mask.
+     * @param imageBuffer The image reference (must not be <code>null</code>).
+     * @param maskColor The color mask (must not be <code>null</code>).
      * @return The masked image buffer.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor);
 
     /**
      * Split an image into an array of sub image.
      * 
-     * @param image The image to split.
-     * @param h The number of horizontal divisions (strictly positive).
-     * @param v The number of vertical divisions (strictly positive).
+     * @param image The image to split (must not be <code>null</code>).
+     * @param h The number of horizontal divisions (must be strictly positive).
+     * @param v The number of vertical divisions (must be strictly positive).
      * @return The splited images array (can not be empty).
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer[] splitImage(ImageBuffer image, int h, int v);
 
     /**
      * Rotate input image buffer.
      * 
-     * @param image The input image buffer.
+     * @param image The input image buffer (must not be <code>null</code>).
      * @param angle The angle to apply in degree (0-359)
      * @return The new image buffer with angle applied.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer rotate(ImageBuffer image, int angle);
 
     /**
      * Resize input image buffer.
      * 
-     * @param image The input image buffer.
-     * @param width The new width.
-     * @param height The new height.
+     * @param image The input image buffer (must not be <code>null</code>).
+     * @param width The new width (must be strictly positive).
+     * @param height The new height (must be strictly positive).
      * @return The new image buffer with new size.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer resize(ImageBuffer image, int width, int height);
 
     /**
      * Apply an horizontal flip to the input image.
      * 
-     * @param image The input image buffer.
+     * @param image The input image buffer (must not be <code>null</code>).
      * @return The flipped image buffer as a new instance.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer flipHorizontal(ImageBuffer image);
 
     /**
      * Apply a vertical flip to the input image.
      * 
-     * @param image The input image buffer.
+     * @param image The input image buffer (must not be <code>null</code>).
      * @return The flipped image buffer as a new instance.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer flipVertical(ImageBuffer image);
 
     /**
      * Save an image into a file.
      * 
-     * @param image The image to save.
-     * @param media The output media.
+     * @param image The image to save (must not be <code>null</code>).
+     * @param media The output media (must not be <code>null</code>).
      * @throws LionEngineException If an error occurred when saving the image.
      */
     void saveImage(ImageBuffer image, Media media);
@@ -160,7 +171,7 @@ public interface FactoryGraphic
     /**
      * Get raster buffer from data.
      * 
-     * @param image The image buffer.
+     * @param image The image buffer (must not be <code>null</code>).
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
@@ -169,6 +180,7 @@ public interface FactoryGraphic
      * @param eb The end blue.
      * @param refSize The reference size.
      * @return The rastered image.
+     * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize);
 }

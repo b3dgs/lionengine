@@ -24,6 +24,9 @@ import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represent the raster for all colors.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class Raster
 {
@@ -37,7 +40,7 @@ public final class Raster
     /**
      * Load raster from media.
      * 
-     * @param media The raster media.
+     * @param media The raster media (must not be <code>null</code>).
      * @return The raster channels data.
      * @throws LionEngineException If <code>null</code> argument or unable to read data.
      */
@@ -70,6 +73,7 @@ public final class Raster
     Raster(RasterData red, RasterData green, RasterData blue)
     {
         super();
+
         this.red = red;
         this.green = green;
         this.blue = blue;

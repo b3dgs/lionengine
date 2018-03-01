@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine;
 
 /**
- * Special engine exception implementation which limit the trace to the user side.
+ * Engine exception implementation.
  */
 public final class LionEngineException extends RuntimeException
 {
@@ -34,30 +34,36 @@ public final class LionEngineException extends RuntimeException
     /**
      * Get formatted message with media.
      * 
-     * @param media The media reference.
+     * @param media The media reference (must not be <code>null</code>).
      * @return The formatted message.
+     * @throws LionEngineException If invalid argument.
      */
     private static String getMessage(Media media)
     {
+        Check.notNull(media);
+
         return new StringBuilder(Constant.BYTE_4).append('[').append(media.getPath()).append("] ").toString();
     }
 
     /**
      * Get formatted message with media.
      * 
-     * @param media The media reference.
-     * @param message The message to concatenate.
+     * @param media The media reference (must not be <code>null</code>).
+     * @param message The message to concatenate (must not be <code>null</code>).
      * @return The formatted message.
+     * @throws LionEngineException If invalid arguments.
      */
     private static String getMessage(Media media, String message)
     {
+        Check.notNull(message);
+
         return new StringBuilder(getMessage(media)).append(message).toString();
     }
 
     /**
      * Get the enum name.
      * 
-     * @param type The enum type.
+     * @param type The enum type (can be <code>null</code>).
      * @return The enum name, {@link #NULL_ENUM} if type is <code>null</code>.
      */
     private static String getEnumName(Enum<?> type)
@@ -82,7 +88,7 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception with media.
      * 
-     * @param media The media reference.
+     * @param media The media reference (must not be <code>null</code>).
      */
     public LionEngineException(Media media)
     {
@@ -92,8 +98,8 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception related to a media and messages.
      * 
-     * @param media The media error source.
-     * @param message The exception message.
+     * @param media The media error source (must not be <code>null</code>).
+     * @param message The exception message (must not be <code>null</code>).
      */
     public LionEngineException(Media media, String message)
     {
@@ -103,7 +109,7 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception related to an unknown enum type.
      * 
-     * @param type The unknown enum type.
+     * @param type The unknown enum type (can be <code>null</code>).
      */
     public LionEngineException(Enum<?> type)
     {
@@ -113,7 +119,7 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception related to another exception.
      * 
-     * @param exception The exception reference.
+     * @param exception The exception cause (<code>null</code> if none).
      */
     public LionEngineException(Throwable exception)
     {
@@ -123,8 +129,8 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception related to another exception and message.
      * 
-     * @param exception The exception reference.
-     * @param message The exception message.
+     * @param exception The exception reference (<code>null</code> if none).
+     * @param message The exception message (can be <code>null</code>).
      */
     public LionEngineException(Throwable exception, String message)
     {
@@ -134,8 +140,8 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception related to an existing exception and a media.
      * 
-     * @param exception The exception reference.
-     * @param media The media error source.
+     * @param exception The exception cause (<code>null</code> if none).
+     * @param media The media error source (must not be <code>null</code>).
      */
     public LionEngineException(Throwable exception, Media media)
     {
@@ -145,9 +151,9 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception related to an existing exception and a media, plus additional message.
      * 
-     * @param exception The exception reference.
-     * @param media The media error source.
-     * @param message The exception message.
+     * @param exception The exception cause (<code>null</code> if none).
+     * @param media The media error source (must not be <code>null</code>).
+     * @param message The exception message (must not be <code>null</code>).
      */
     public LionEngineException(Throwable exception, Media media, String message)
     {

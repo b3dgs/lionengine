@@ -39,34 +39,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 
 /**
  * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
- * any XML file. XmlNode can be save in a file, using an XmlParser.
+ * any XML file.
  * <p>
- * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link Xml#NULL}. When
- * read, the {@link Xml#NULL} string is return if the stored string was <code>null</code>.
+ * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link #NULL}. When
+ * read, the {@link #NULL} string is return if the stored string was <code>null</code>.
  * </p>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final XmlNode node = XmlFactory.createXmlNode(&quot;node&quot;);
- * node.writeBoolean(&quot;value&quot;, true);
- * </pre>
  */
 public class Xml extends XmlReader
 {
     /** Error when writing into file. */
     private static final String ERROR_WRITING = "An error occured while writing";
-    /** Header attribute. */
-    private static final String HEADER_ATTRIBUTE = "xmlns:lionengine";
-    /** Header value. */
-    private static final String HEADER_VALUE = "http://lionengine.b3dgs.com";
     /** Property indent. */
     private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
     /** Normalize. */
@@ -82,7 +71,7 @@ public class Xml extends XmlReader
      * Create node from media.
      * 
      * @param media The XML media path.
-     * @throws LionEngineException If error when loading media.
+     * @throws LionEngineException If invalid argument or error when loading media.
      */
     public Xml(Media media)
     {
@@ -93,7 +82,7 @@ public class Xml extends XmlReader
      * Create node.
      * 
      * @param name The node name.
-     * @throws LionEngineException If error when creating the node.
+     * @throws LionEngineException If invalid argument or error when creating the node.
      */
     public Xml(String name)
     {
@@ -105,6 +94,7 @@ public class Xml extends XmlReader
      * 
      * @param document The document reference.
      * @param root The root reference.
+     * @throws LionEngineException If invalid arguments.
      */
     Xml(Document document, Element root)
     {
@@ -168,7 +158,7 @@ public class Xml extends XmlReader
         {
             final Transformer transformer = DocumentFactory.createTransformer();
             normalize(NORMALIZE);
-            writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
+            writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
             final DOMSource source = new DOMSource(root);
             final StreamResult result = new StreamResult(output);
             final String yes = "yes";

@@ -59,10 +59,10 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the Hq2x filter
+     * Test the blur filter
      */
     @Test
-    public void testHq2x()
+    public void testBlur()
     {
         final ImageBuffer image = Graphics.getImageBuffer(media);
         int i = 0;
@@ -104,7 +104,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the Hq2x filter with no pixel.
+     * Test the filter with no pixel.
      */
     @Test
     public void testNoPixel()
@@ -119,7 +119,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the Hq2x filter with single pixel.
+     * Test the filter with single pixel.
      */
     @Test
     public void testSinglePixel()
@@ -132,7 +132,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the Hq2x filter with low width.
+     * Test the filter with low width.
      */
     @Test
     public void testLowWidth()
@@ -145,7 +145,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the Hq2x filter with low height.
+     * Test the filter with low height.
      */
     @Test
     public void testLowHeight()

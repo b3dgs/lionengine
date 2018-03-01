@@ -58,14 +58,15 @@ final class DocumentFactory
     /**
      * Create a document from an input stream.
      * 
-     * @param input The input stream.
+     * @param input The input stream (must not be <code>null</code>).
      * @return The created document.
      * @throws IOException If malformed document.
-     * @throws LionEngineException If unable to create document.
+     * @throws LionEngineException If invalid argument or unable to create document.
      */
     public static Document createDocument(InputStream input) throws IOException
     {
         Check.notNull(input);
+
         try
         {
             return getDocumentFactory().parse(input);

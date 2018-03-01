@@ -55,10 +55,10 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
     /**
      * Internal constructor.
      * 
-     * @param media The sprite media.
-     * @param linesNumber The number of line.
-     * @param sx The parallax width.
-     * @param sy The parallax height.
+     * @param media The sprite media (must not be <code>null</code>).
+     * @param linesNumber The number of line (must be strictly positive).
+     * @param sx The parallax width (must be strictly positive).
+     * @param sy The parallax height (must be strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
     SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
@@ -74,7 +74,6 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
         this.sy = sy;
         factorH = 1.0;
         factorV = 1.0;
-        lines = null;
     }
 
     /*

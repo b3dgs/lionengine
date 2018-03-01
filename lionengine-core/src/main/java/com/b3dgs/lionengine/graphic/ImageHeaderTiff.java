@@ -22,6 +22,9 @@ import java.io.InputStream;
 
 /**
  * Read TIFF image info.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class ImageHeaderTiff extends ImageHeaderReaderAbstract
 {

@@ -22,20 +22,6 @@ import com.b3dgs.lionengine.SurfaceTile;
 /**
  * Tiled sprite are mainly used for tile based levels. It works by loading an image and render only a part of it
  * (virtually splited). The first tile is 0.
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * // Load
- * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Medias.create(&quot;tilesheet.png&quot;), 16, 16);
- * tilesheet.load(false);
- * tilesheet.setPosition(300, 300);
- * tilesheet.setTile(1);
- * 
- * // Render
- * tilesheet.render(g);
- * </pre>
  */
 public interface SpriteTiled extends Sprite, SurfaceTile
 {

@@ -33,24 +33,6 @@ import com.b3dgs.lionengine.SurfaceTile;
  * <p>
  * The first frame number is {@link com.b3dgs.lionengine.Animation#MINIMUM_FRAME}.
  * </p>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * // Load
- * final SpriteAnimated animation = Drawable.loadSpriteAnimated(Medias.create(&quot;animation.png&quot;), 7, 1);
- * animation.load(false);
- * final Animation anim = new Animation(4, 6, 0.125, false, true);
- * animation.play(anim);
- * animation.setPosition(160, 300);
- * 
- * // Update
- * animation.update(extrp);
- * 
- * // Render
- * animation.render(g);
- * </pre>
  * 
  * @see Animator
  * @see com.b3dgs.lionengine.Animation

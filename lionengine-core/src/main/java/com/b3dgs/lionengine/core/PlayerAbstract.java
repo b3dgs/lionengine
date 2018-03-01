@@ -67,8 +67,8 @@ public abstract class PlayerAbstract implements Audio
     /**
      * Internal constructor.
      * 
-     * @param media The media to play.
-     * @throws LionEngineException If arguments are <code>null</code>
+     * @param media The media to play (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     protected PlayerAbstract(Media media)
     {

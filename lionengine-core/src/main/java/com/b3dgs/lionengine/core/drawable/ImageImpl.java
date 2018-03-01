@@ -60,23 +60,21 @@ class ImageImpl implements Image
     /**
      * Internal constructor.
      * 
-     * @param media The image media.
+     * @param media The image media (must not be <code>null</code>).
      * @throws LionEngineException If the media is <code>null</code>.
      */
     ImageImpl(Media media)
     {
-        Check.notNull(media);
-        this.media = media;
-
         final ImageHeader info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
+        this.media = media;
     }
 
     /**
      * Internal constructor.
      * 
-     * @param surface The surface to share.
+     * @param surface The surface to share (must not be <code>null</code>).
      * @throws LionEngineException If the surface is <code>null</code>.
      */
     ImageImpl(ImageBuffer surface)

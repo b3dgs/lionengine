@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.graphic;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
 /**
@@ -30,17 +31,19 @@ interface ImageHeaderReader
     /**
      * Check if image is format.
      * 
-     * @param media The image to check.
+     * @param media The image to check (must not be <code>null</code>).
      * @return <code>true</code> if format, <code>false</code> else.
+     * @throws LionEngineException If invalid argument.
      */
     boolean is(Media media);
 
     /**
      * Read image header.
      * 
-     * @param input The input to read.
+     * @param input The input to read (must not be <code>null</code>).
      * @return The header read.
      * @throws IOException If header cannot be read.
+     * @throws LionEngineException If invalid argument.
      */
     ImageHeader readHeader(InputStream input) throws IOException;
 }

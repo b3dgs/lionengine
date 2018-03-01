@@ -33,14 +33,16 @@ public interface Sequencable extends Updatable, Renderable
     /**
      * Start sequence.
      * 
-     * @param screen The screen used for the sequence.
+     * @param screen The screen used for the sequence (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void start(Screen screen);
 
     /**
      * Add a key listener.
      * 
-     * @param listener The listener to add.
+     * @param listener The listener to add (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addKeyListener(InputDeviceKeyListener listener);
 
@@ -69,9 +71,9 @@ public interface Sequencable extends Updatable, Renderable
      * Get the input device instance from its type.
      * 
      * @param <T> The input device.
-     * @param type The input device type.
+     * @param type The input device type (must not be <code>null</code>).
      * @return The input instance reference.
-     * @throws LionEngineException If device not found.
+     * @throws LionEngineException If invalid argument or device not found.
      */
     <T extends InputDevice> T getInputDevice(Class<T> type);
 

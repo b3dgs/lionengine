@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * List of supported filters.
  * <p>
@@ -28,8 +30,9 @@ public interface Filter
     /**
      * Apply a filter to the image source.
      * 
-     * @param source The image source.
+     * @param source The image source (must not be <code>null</code>).
      * @return The filtered image.
+     * @throws LionEngineException If invalid argument.
      */
     ImageBuffer filter(ImageBuffer source);
 

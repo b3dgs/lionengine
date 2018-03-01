@@ -56,23 +56,6 @@ import com.b3dgs.lionengine.Align;
  * </ul>
  * </li>
  * </ul>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * // Create the text
- * final Text text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
- * 
- * // Rendering type 1
- * text.setText(&quot;Hello&quot;);
- * text.setLocation(0, 0);
- * text.setAlign(Align.CENTER);
- * text.render(g);
- * 
- * // Rendering type 2
- * text.draw(g, 0, 0, &quot;World&quot;);
- * </pre>
  */
 public interface Text extends Renderable
 {

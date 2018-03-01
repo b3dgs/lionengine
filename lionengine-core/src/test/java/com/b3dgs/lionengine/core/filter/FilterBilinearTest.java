@@ -59,10 +59,10 @@ public class FilterBilinearTest
     }
 
     /**
-     * Test the Hq2x filter
+     * Test the bilinear filter
      */
     @Test
-    public void testHq2x()
+    public void testBilinear()
     {
         final ImageBuffer image = Graphics.getImageBuffer(media);
         int i = 0;

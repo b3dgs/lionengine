@@ -22,6 +22,9 @@ import java.io.InputStream;
 
 /**
  * Read JPG image info.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class ImageHeaderJpg extends ImageHeaderReaderAbstract
 {

@@ -45,8 +45,9 @@ public final class Graphics
     /**
      * Create a screen.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The screen instance.
+     * @throws LionEngineException If invalid argument.
      */
     public static Screen createScreen(Config config)
     {
@@ -76,10 +77,11 @@ public final class Graphics
     /**
      * Crate a text.
      * 
-     * @param fontName The font name.
-     * @param size The font size (in pixel).
-     * @param style The font style.
+     * @param fontName The font name (must not be <code>null</code>).
+     * @param size The font size in pixel (must be strictly positive).
+     * @param style The font style (must not be <code>null</code>).
      * @return The created text.
+     * @throws LionEngineException If invalid arguments.
      */
     public static Text createText(String fontName, int size, TextStyle style)
     {
@@ -89,9 +91,10 @@ public final class Graphics
     /**
      * Create an image buffer.
      * 
-     * @param width The image width.
-     * @param height The image height.
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
      * @return The image buffer.
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer createImageBuffer(int width, int height)
     {
@@ -101,10 +104,11 @@ public final class Graphics
     /**
      * Create an image buffer.
      * 
-     * @param width The image width.
-     * @param height The image height.
-     * @param transparency The color transparency.
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
+     * @param transparency The color transparency (must not be <code>null</code>).
      * @return The image buffer.
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
     {
@@ -114,7 +118,7 @@ public final class Graphics
     /**
      * Get an image buffer from an image file.
      * 
-     * @param media The image media.
+     * @param media The image media (must not be <code>null</code>).
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
@@ -126,8 +130,9 @@ public final class Graphics
     /**
      * Get an image buffer from an image buffer.
      * 
-     * @param imageBuffer The image buffer.
+     * @param imageBuffer The image buffer (must not be <code>null</code>).
      * @return The created image buffer from file.
+     * @throws LionEngineException If invalid argument.
      */
     public static ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
@@ -137,9 +142,10 @@ public final class Graphics
     /**
      * Apply color mask to the image.
      * 
-     * @param imageBuffer The image reference.
-     * @param maskColor The color mask.
+     * @param imageBuffer The image reference (must not be <code>null</code>).
+     * @param maskColor The color mask (must not be <code>null</code>).
      * @return The masked image buffer.
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
@@ -149,10 +155,11 @@ public final class Graphics
     /**
      * Split an image into an array of sub image.
      * 
-     * @param image The image to split.
-     * @param h The number of horizontal divisions (strictly positive).
-     * @param v The number of vertical divisions (strictly positive).
+     * @param image The image to split (must not be <code>null</code>).
+     * @param h The number of horizontal divisions (must be strictly positive).
+     * @param v The number of vertical divisions (must be strictly positive).
      * @return The splited images array (can not be empty).
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
@@ -162,9 +169,10 @@ public final class Graphics
     /**
      * Rotate input image buffer.
      * 
-     * @param image The input image buffer.
+     * @param image The input image buffer (must not be <code>null</code>).
      * @param angle The angle to apply in degree (0-359)
      * @return The new image buffer with angle applied.
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer rotate(ImageBuffer image, int angle)
     {
@@ -174,10 +182,11 @@ public final class Graphics
     /**
      * Resize input image buffer.
      * 
-     * @param image The input image buffer.
-     * @param width The new width.
-     * @param height The new height.
+     * @param image The input image buffer (must not be <code>null</code>).
+     * @param width The new width (must be strictly positive).
+     * @param height The new height (must be strictly positive).
      * @return The new image buffer with new size.
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
@@ -187,8 +196,9 @@ public final class Graphics
     /**
      * Apply an horizontal flip to the input image.
      * 
-     * @param image The input image buffer.
+     * @param image The input image buffer (must not be <code>null</code>).
      * @return The flipped image buffer as a new instance.
+     * @throws LionEngineException If invalid argument.
      */
     public static ImageBuffer flipHorizontal(ImageBuffer image)
     {
@@ -198,8 +208,9 @@ public final class Graphics
     /**
      * Apply a vertical flip to the input image.
      * 
-     * @param image The input image buffer.
+     * @param image The input image buffer (must not be <code>null</code>).
      * @return The flipped image buffer as a new instance.
+     * @throws LionEngineException If invalid argument.
      */
     public static ImageBuffer flipVertical(ImageBuffer image)
     {
@@ -209,8 +220,8 @@ public final class Graphics
     /**
      * Save an image into a file.
      * 
-     * @param image The image to save.
-     * @param media The output media.
+     * @param image The image to save (must not be <code>null</code>).
+     * @param media The output media (must not be <code>null</code>).
      * @throws LionEngineException If an error occurred when saving the image.
      */
     public static void saveImage(ImageBuffer image, Media media)
@@ -221,7 +232,7 @@ public final class Graphics
     /**
      * Get raster buffer from data.
      * 
-     * @param img The image buffer.
+     * @param img The image buffer (must not be <code>null</code>).
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
@@ -230,6 +241,7 @@ public final class Graphics
      * @param eb The end blue.
      * @param size The reference size.
      * @return The rastered image.
+     * @throws LionEngineException If invalid arguments.
      */
     public static ImageBuffer getRasterBuffer(ImageBuffer img, int fr, int fg, int fb, int er, int eg, int eb, int size)
     {

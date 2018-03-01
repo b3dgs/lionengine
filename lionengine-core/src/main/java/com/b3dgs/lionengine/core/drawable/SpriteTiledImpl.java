@@ -39,14 +39,15 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     /**
      * Internal constructor.
      * 
-     * @param media The sprite media.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
+     * @param media The sprite media (must not be <code>null</code>).
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     SpriteTiledImpl(Media media, int tileWidth, int tileHeight)
     {
         super(media);
+
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 
@@ -57,14 +58,15 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     /**
      * Internal constructor.
      * 
-     * @param surface The surface reference.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
     SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight)
     {
         super(surface);
+
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 

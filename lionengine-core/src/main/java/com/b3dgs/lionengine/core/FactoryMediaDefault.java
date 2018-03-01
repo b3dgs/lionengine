@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.util.UtilFolder;
 public class FactoryMediaDefault implements FactoryMedia
 {
     /**
-     * Internal constructor.
+     * Create factory.
      */
     public FactoryMediaDefault()
     {

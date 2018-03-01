@@ -62,9 +62,9 @@ public interface Viewer extends Shape
     /**
      * Check if the localizable is inside the view area, and so, can be seen.
      * 
-     * @param shape The shape to check.
-     * @param marginX The horizontal margin.
-     * @param marginY The vertical margin.
+     * @param shape The shape to check (must not be <code>null</code>).
+     * @param marginX The horizontal margin (should be positive).
+     * @param marginY The vertical margin (should be positive).
      * @return <code>true</code> if viewable, <code>false</code> else.
      */
     boolean isViewable(Localizable shape, int marginX, int marginY);
@@ -72,9 +72,9 @@ public interface Viewer extends Shape
     /**
      * Check if the shape is inside the view area, and so, can be seen.
      * 
-     * @param shape The shape to check.
-     * @param marginX The horizontal margin.
-     * @param marginY The vertical margin.
+     * @param shape The shape to check (must not be <code>null</code>).
+     * @param marginX The horizontal margin (should be positive).
+     * @param marginY The vertical margin (should be positive).
      * @return <code>true</code> if viewable, <code>false</code> else.
      */
     boolean isViewable(Shape shape, int marginX, int marginY);

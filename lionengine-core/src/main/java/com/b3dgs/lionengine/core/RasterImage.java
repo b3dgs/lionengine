@@ -53,8 +53,8 @@ public class RasterImage
     /**
      * Create a rastered image.
      * 
-     * @param media The image media.
-     * @param rasterFile The raster media.
+     * @param media The image media (must not be <code>null</code>).
+     * @param rasterFile The raster media (must not be <code>null</code>).
      * @param rasterHeight The height used by the raster (must be strictly superior to 0).
      * @param smooth <code>true</code> for smoothed raster, <code>false</code> else.
      * @throws LionEngineException If invalid media or raster file or height.
@@ -67,8 +67,8 @@ public class RasterImage
     /**
      * Create a rastered image.
      * 
-     * @param surface The surface reference.
-     * @param rasterFile The raster media.
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param rasterFile The raster media (must not be <code>null</code>).
      * @param rasterHeight The height used by the raster (must be strictly superior to 0).
      * @param smooth <code>true</code> for smoothed raster, <code>false</code> else.
      * @throws LionEngineException If invalid media or raster file or height.
@@ -103,7 +103,7 @@ public class RasterImage
      * 
      * @param imageHeight The local image height.
      * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
-     * @param prefix The folder prefix (if save is <code>true</code>).
+     * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
      * @throws LionEngineException If the raster data from the media are invalid.
      */
     public void loadRasters(int imageHeight, boolean save, String prefix)
@@ -179,7 +179,7 @@ public class RasterImage
     /**
      * Create raster from data or load from cache.
      * 
-     * @param rasterMedia The raster media?
+     * @param rasterMedia The raster media.
      * @param raster The raster data.
      * @param m The smooth index.
      * @param i The raster index.

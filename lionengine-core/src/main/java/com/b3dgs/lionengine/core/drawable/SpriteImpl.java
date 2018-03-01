@@ -67,7 +67,7 @@ class SpriteImpl implements Sprite
     private int rx;
     /** Render vertical position. */
     private int ry;
-    /** Sprite raw data (used for alpha). */
+    /** Sprite raw data (used for alpha, can be <code>null</code>). */
     private int[][] rgb;
     /** First alpha. */
     private boolean firstAlpha;
@@ -75,26 +75,24 @@ class SpriteImpl implements Sprite
     /**
      * Internal constructor.
      * 
-     * @param media The sprite media.
+     * @param media The sprite media (must not be <code>null</code>).
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
     SpriteImpl(Media media)
     {
-        Check.notNull(media);
-
-        this.media = media;
+        super();
 
         final ImageHeader info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
-
         rgb = null;
+        this.media = media;
     }
 
     /**
      * Internal constructor.
      * 
-     * @param surface The surface to share.
+     * @param surface The surface to share (must not be <code>null</code>).
      * @throws LionEngineException If surface is <code>null</code>.
      */
     SpriteImpl(ImageBuffer surface)
@@ -102,11 +100,9 @@ class SpriteImpl implements Sprite
         Check.notNull(surface);
 
         this.surface = surface;
-        media = null;
-
         width = surface.getWidth();
         height = surface.getHeight();
-
+        media = null;
         rgb = null;
     }
 

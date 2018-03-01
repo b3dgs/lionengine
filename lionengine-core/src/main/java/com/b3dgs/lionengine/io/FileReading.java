@@ -28,28 +28,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Describe a file reader, which performs file exploration.
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Media file = Medias.create(&quot;test.txt&quot;);
- * try (FileReading reading = new FileReading(file))
- * {
- *     reading.readBoolean();
- *     reading.readByte();
- *     reading.readChar();
- *     reading.readShort();
- *     reading.readInteger();
- *     reading.readFloat();
- *     reading.readLong();
- *     reading.readDouble();
- * }
- * catch (final IOException exception)
- * {
- *     Assert.fail(exception.getMessage());
- * }
- * </pre>
  */
 public final class FileReading implements Closeable
 {
@@ -59,7 +37,7 @@ public final class FileReading implements Closeable
     /**
      * Internal constructor.
      * 
-     * @param media The media path.
+     * @param media The media path (must not be <code>null</code>).
      * @throws LionEngineException If error when opening the media.
      */
     public FileReading(Media media)

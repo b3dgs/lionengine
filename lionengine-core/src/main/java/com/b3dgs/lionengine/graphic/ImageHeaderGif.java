@@ -22,6 +22,9 @@ import java.io.InputStream;
 
 /**
  * Read GIF image info.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class ImageHeaderGif extends ImageHeaderReaderAbstract
 {

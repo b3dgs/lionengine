@@ -48,10 +48,10 @@ public final class Resolution
     /**
      * Create a resolution.
      * 
-     * @param width The resolution width (in pixel) (strictly positive).
-     * @param height The resolution height (in pixel) (strictly positive).
-     * @param rate The refresh rate (usually 50 or 60) (positive).
-     * @throws LionEngineException If arguments are invalid.
+     * @param width The resolution width in pixel (strictly superior to 0).
+     * @param height The resolution height in pixel (strictly superior to 0).
+     * @param rate The refresh rate, usually 50 or 60 (superior or equal to 0).
+     * @throws LionEngineException If invalid arguments.
      */
     public Resolution(int width, int height, int rate)
     {
@@ -87,10 +87,10 @@ public final class Resolution
     /**
      * Get scaled resolution.
      * 
-     * @param factorX The horizontal scale factor.
-     * @param factorY The vertical scale factor.
+     * @param factorX The horizontal scale factor (strictly superior to 0).
+     * @param factorY The vertical scale factor (strictly superior to 0).
      * @return The scaled resolution.
-     * @throws LionEngineException If factor is not strictly superior to 0.
+     * @throws LionEngineException If invalid arguments.
      */
     public Resolution getScaled(double factorX, double factorY)
     {

@@ -46,10 +46,10 @@ public final class UtilStream
     /**
      * Copy a stream onto another.
      * 
-     * @param source The source stream.
-     * @param destination The destination stream.
+     * @param source The source stream (must not be <code>null</code>).
+     * @param destination The destination stream (must not be <code>null</code>).
      * @throws IOException If error.
-     * @throws LionEngineException If <code>null</code> arguments.
+     * @throws LionEngineException If invalid arguments.
      */
     public static void copy(InputStream source, OutputStream destination) throws IOException
     {
@@ -74,7 +74,7 @@ public final class UtilStream
      * @param name The file name reference (to have a similar temporary file name).
      * @param input The input stream reference.
      * @return The temporary file created with copied content from stream.
-     * @throws LionEngineException If <code>null</code> arguments or invalid stream.
+     * @throws LionEngineException If invalid arguments or invalid stream.
      */
     public static File getCopy(String name, InputStream input)
     {

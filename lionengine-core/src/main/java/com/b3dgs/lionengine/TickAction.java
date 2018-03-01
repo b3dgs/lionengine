@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents a tick action, trigged once timing elapsed.
+ * 
+ * @see Tick
  */
 public interface TickAction
 {

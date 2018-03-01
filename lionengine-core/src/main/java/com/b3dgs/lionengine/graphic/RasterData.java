@@ -21,6 +21,9 @@ import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the raster data for color modification.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class RasterData
 {
@@ -83,6 +86,7 @@ public final class RasterData
     RasterData(int start, int step, int force, int amplitude, int offset, int type)
     {
         super();
+
         this.start = start;
         this.step = step;
         this.force = force;

@@ -22,6 +22,9 @@ import java.io.InputStream;
 
 /**
  * Read BMP image info.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class ImageHeaderBmp extends ImageHeaderReaderAbstract
 {

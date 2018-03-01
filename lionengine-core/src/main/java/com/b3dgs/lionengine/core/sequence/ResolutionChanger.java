@@ -28,7 +28,7 @@ public interface ResolutionChanger
     /**
      * Set the new resolution.
      * 
-     * @param resolution The new resolution used.
+     * @param resolution The new resolution used (must not be <code>null</code>).
      * @throws LionEngineException If the resolution is <code>null</code>.
      */
     void setResolution(Resolution resolution);
