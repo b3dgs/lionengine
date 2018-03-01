@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -203,6 +204,8 @@ final class ScreenFullAwt extends ScreenBaseAwt
     @Override
     protected void setResolution(Resolution output)
     {
+        Check.notNull(output);
+
         initFullscreen(output, config.getDepth());
         super.setResolution(output);
     }

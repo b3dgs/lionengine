@@ -25,6 +25,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferStrategy;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
@@ -70,7 +71,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     /**
      * Constructor base.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
     protected ScreenAwtAbstract(Config config)
@@ -86,11 +87,13 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     /**
      * Set the screen config. Initialize the display.
      * 
-     * @param output The output resolution
+     * @param output The output resolution (must not be <code>null</code>).
      * @throws LionEngineException If resolution is not supported.
      */
     protected void setResolution(Resolution output)
     {
+        Check.notNull(output);
+
         width = output.getWidth();
         height = output.getHeight();
     }

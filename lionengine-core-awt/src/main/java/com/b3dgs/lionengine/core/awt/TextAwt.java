@@ -24,6 +24,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -38,8 +39,9 @@ final class TextAwt implements Text
     /**
      * Get the style equivalence.
      * 
-     * @param style The font style.
+     * @param style The font style (must not be <code>null</code>).
      * @return The equivalence.
+     * @throws LionEngineException If invalid argument.
      */
     private static int getStyle(TextStyle style)
     {
@@ -78,25 +80,27 @@ final class TextAwt implements Text
     /** String to render. */
     private String txt;
     /** Text alignment. */
-    private Align align;
+    private Align align = Align.LEFT;
     /** Text color. */
-    private ColorRgba color;
+    private ColorRgba color = ColorRgba.WHITE;
     /** Changed flag. */
     private boolean txtChanged;
 
     /**
      * Internal constructor.
      * 
-     * @param fontName The font name.
-     * @param size The font size (in pixel).
+     * @param fontName The font name (must not be <code>null</code>).
+     * @param size The font size in pixel.
      * @param style The font style.
+     * @throws LionEngineException If invalid arguments.
      */
     TextAwt(String fontName, int size, TextStyle style)
     {
+        Check.notNull(fontName);
+        Check.notNull(style);
+
         this.size = size;
         font = new Font(fontName, TextAwt.getStyle(style), size);
-        align = Align.LEFT;
-        color = ColorRgba.WHITE;
     }
 
     /*

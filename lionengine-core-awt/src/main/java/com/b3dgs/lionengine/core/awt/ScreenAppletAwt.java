@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.IllegalComponentStateException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -40,11 +42,13 @@ final class ScreenAppletAwt extends ScreenAwtAbstract
     /**
      * Internal constructor.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     ScreenAppletAwt(Config config)
     {
         super(config);
+
         applet = config.getApplet(AppletAwt.class);
     }
 
@@ -137,6 +141,8 @@ final class ScreenAppletAwt extends ScreenAwtAbstract
     @Override
     protected void setResolution(Resolution output)
     {
+        Check.notNull(output);
+
         initApplet(output);
         super.setResolution(output);
     }

@@ -61,11 +61,14 @@ public final class ToolsAwt
     /**
      * Get the image transparency equivalence.
      * 
-     * @param transparency The transparency type.
+     * @param transparency The transparency type (must not be <code>null</code>).
      * @return The transparency value.
+     * @throws LionEngineException If invalid argument.
      */
     public static int getTransparency(Transparency transparency)
     {
+        Check.notNull(transparency);
+
         final int value;
         if (Transparency.OPAQUE == transparency)
         {
@@ -89,16 +92,17 @@ public final class ToolsAwt
     /**
      * Create an image.
      * 
-     * @param width The image width.
-     * @param height The image height.
+     * @param width The image width (must be strictly positive).
+     * @param height The image height (must be strictly positive).
      * @param transparency The image transparency.
      * @return The image instance.
-     * @throws LionEngineException If negative size.
+     * @throws LionEngineException If invalid parameters.
      */
     public static BufferedImage createImage(int width, int height, int transparency)
     {
-        Check.superiorOrEqual(width, 0);
-        Check.superiorOrEqual(height, 0);
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
+
         return CONFIG.createCompatibleImage(width, height, transparency);
     }
 

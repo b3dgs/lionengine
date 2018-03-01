@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -37,10 +39,15 @@ final class ImageBufferAwt implements ImageBuffer
     /**
      * Internal constructor.
      * 
-     * @param bufferedImage The buffered image.
+     * @param bufferedImage The buffered image (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     ImageBufferAwt(BufferedImage bufferedImage)
     {
+        super();
+
+        Check.notNull(bufferedImage);
+
         this.bufferedImage = bufferedImage;
     }
 

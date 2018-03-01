@@ -60,6 +60,8 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public Screen createScreen(Config config)
     {
+        Check.notNull(config);
+
         final Screen screen;
         if (config.getApplet(AppletAwt.class) != null)
         {
@@ -111,6 +113,8 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer createImageBuffer(int width, int height, ColorRgba transparency)
     {
+        Check.notNull(transparency);
+
         final BufferedImage image = ToolsAwt.createImage(width, height, java.awt.Transparency.BITMASK);
         final ImageBuffer buffer = new ImageBufferAwt(image);
 
@@ -126,6 +130,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     public ImageBuffer getImageBuffer(Media media)
     {
         Check.notNull(media);
+
         try (InputStream input = media.getInputStream())
         {
             return new ImageBufferAwt(ToolsAwt.getImage(input));
@@ -139,6 +144,8 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer image)
     {
+        Check.notNull(image);
+
         final BufferedImage surface = image.getSurface();
         return new ImageBufferAwt(ToolsAwt.copyImage(surface));
     }
@@ -146,6 +153,9 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
+        Check.notNull(image);
+        Check.notNull(maskColor);
+
         final BufferedImage surface = image.getSurface();
         return new ImageBufferAwt(ToolsAwt.applyMask(surface, maskColor.getRgba()));
     }
@@ -153,6 +163,8 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
+        Check.notNull(image);
+
         final BufferedImage surface = image.getSurface();
         final BufferedImage[] images = ToolsAwt.splitImage(surface, h, v);
         final ImageBuffer[] imageBuffers = new ImageBuffer[h * v];
@@ -195,6 +207,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     public void saveImage(ImageBuffer image, Media media)
     {
         Check.notNull(media);
+
         final BufferedImage surface = image.getSurface();
         try (OutputStream output = media.getOutputStream())
         {
@@ -209,6 +222,8 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
+        Check.notNull(image);
+
         final BufferedImage surface = image.getSurface();
         return new ImageBufferAwt(ToolsAwt.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, ref));
     }

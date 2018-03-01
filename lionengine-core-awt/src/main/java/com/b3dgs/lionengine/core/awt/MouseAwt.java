@@ -21,7 +21,9 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.MouseEvent;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.io.awt.EventAction;
 import com.b3dgs.lionengine.io.awt.Mouse;
@@ -62,7 +64,7 @@ public final class MouseAwt implements Mouse
     private final MouseClickAwt clicker = new MouseClickAwt();
     /** Mouse move. */
     private final MouseMoveAwt mover = new MouseMoveAwt();
-    /** Robot instance reference. */
+    /** Robot instance reference (can be <code>null</code>). */
     private final Robot robot = createRobot();
     /** Screen horizontal ratio. */
     private double xRatio;
@@ -84,10 +86,13 @@ public final class MouseAwt implements Mouse
     /**
      * Set the config.
      * 
-     * @param config The config.
+     * @param config The config (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void setConfig(Config config)
     {
+        Check.notNull(config);
+
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
     }

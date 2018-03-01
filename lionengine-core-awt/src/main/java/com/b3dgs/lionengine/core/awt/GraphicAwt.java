@@ -52,6 +52,8 @@ final class GraphicAwt implements Graphic
      */
     GraphicAwt()
     {
+        super();
+
         g = null;
     }
 
@@ -62,6 +64,8 @@ final class GraphicAwt implements Graphic
      */
     GraphicAwt(Graphics2D g)
     {
+        super();
+
         this.g = g;
     }
 

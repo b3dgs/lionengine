@@ -67,10 +67,12 @@ final class MouseClickAwt implements MouseListener
     private int lastClick;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     MouseClickAwt()
     {
+        super();
+
         final int mouseButtons = getButtonsNumber();
         clicks = new boolean[mouseButtons];
         clicked = new boolean[mouseButtons];

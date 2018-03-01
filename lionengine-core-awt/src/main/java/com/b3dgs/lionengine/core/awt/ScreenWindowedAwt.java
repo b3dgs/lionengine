@@ -21,6 +21,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
@@ -83,6 +84,8 @@ final class ScreenWindowedAwt extends ScreenBaseAwt
     @Override
     protected void setResolution(Resolution output)
     {
+        Check.notNull(output);
+
         initWindowed(output);
         super.setResolution(output);
     }

@@ -75,19 +75,17 @@ final class MouseMoveAwt implements MouseMotionListener
     private boolean moved;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     MouseMoveAwt()
     {
+        super();
+
         final Point point = getCursorLocation();
         x = point.getX();
         y = point.getY();
         centerX = x;
         centerY = y;
-        wx = 0;
-        wy = 0;
-        mx = 0;
-        my = 0;
         oldX = x;
         oldY = y;
     }

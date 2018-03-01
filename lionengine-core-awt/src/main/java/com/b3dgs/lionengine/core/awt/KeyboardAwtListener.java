@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.core.awt;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Keyboard listener implementation.
@@ -33,10 +35,15 @@ public final class KeyboardAwtListener implements KeyListener
     /**
      * Internal constructor.
      * 
-     * @param listener The original listener.
+     * @param listener The original listener (must no be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public KeyboardAwtListener(InputDeviceKeyListener listener)
     {
+        super();
+
+        Check.notNull(listener);
+
         this.listener = listener;
     }
 

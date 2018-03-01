@@ -87,8 +87,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
      */
     public KeyboardAwt()
     {
-        lastKeyName = ' ';
-        lastCode = Integer.valueOf(-1);
+        super();
     }
 
     /*
