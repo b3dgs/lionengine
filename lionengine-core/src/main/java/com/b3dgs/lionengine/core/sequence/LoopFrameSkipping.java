@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Resolution;
@@ -34,10 +35,32 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class LoopFrameSkipping implements Loop
 {
+    /** Nano to milli. */
+    static final long NANO_TO_MILLI = 1_000_000L;
     /** Maximum frame time in nano. */
-    static final double MAX_FRAME_TIME_NANO = 250.0 * Constant.NANO_TO_MILLI;
+    static final long MAX_FRAME_TIME_NANO = 250 * NANO_TO_MILLI;
     /** Maximum expected frame rate. */
     private static final int MAX_FRAME_RATE = 1000;
+
+    /**
+     * Get the expected frame rate.
+     * 
+     * @param source The resolution source.
+     * @return The expected frame rate.
+     */
+    private static int getExpectedRate(Resolution source)
+    {
+        final int expectedRate;
+        if (source.getRate() == 0)
+        {
+            expectedRate = MAX_FRAME_RATE;
+        }
+        else
+        {
+            expectedRate = source.getRate();
+        }
+        return expectedRate;
+    }
 
     /** Running flag. */
     private boolean isRunning;
@@ -57,30 +80,25 @@ public final class LoopFrameSkipping implements Loop
     @Override
     public void start(Screen screen, Frame frame)
     {
+        Check.notNull(screen);
+        Check.notNull(frame);
+
         final Config config = screen.getConfig();
         final Resolution source = config.getSource();
         final Resolution output = config.getOutput();
-        final double expectedRate;
-        if (source.getRate() == 0)
-        {
-            expectedRate = MAX_FRAME_RATE;
-        }
-        else
-        {
-            expectedRate = source.getRate();
-        }
+        final double expectedRate = getExpectedRate(source);
         final double maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
         final boolean sync = config.isWindowed() && output.getRate() > 0;
 
-        double currentTime = System.nanoTime();
+        long currentTime = System.nanoTime();
         double acc = 0.0;
         isRunning = true;
         while (isRunning)
         {
             if (screen.isReady())
             {
-                final double firstTime = System.nanoTime();
-                double frameTime = firstTime - currentTime;
+                final long firstTime = System.nanoTime();
+                long frameTime = firstTime - currentTime;
                 if (frameTime > MAX_FRAME_TIME_NANO)
                 {
                     frameTime = MAX_FRAME_TIME_NANO;
@@ -104,7 +122,7 @@ public final class LoopFrameSkipping implements Loop
                     Thread.yield();
                 }
 
-                frame.computeFrameRate(firstTime, Math.max(firstTime + 1, System.nanoTime()));
+                frame.computeFrameRate(firstTime, Math.max(firstTime + 1L, System.nanoTime()));
             }
             else
             {

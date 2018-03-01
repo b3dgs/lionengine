@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core.sequence;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -62,7 +61,7 @@ public class LoopUnlockedTest
     }
 
     private final AtomicLong rendered = new AtomicLong();
-    private final AtomicReference<Double> computed = new AtomicReference<>();
+    private final AtomicLong computed = new AtomicLong(-1);
     private final AtomicLong tick = new AtomicLong();
     private final AtomicLong maxTick = new AtomicLong(5);
     private final Loop loop = new LoopUnlocked();
@@ -94,10 +93,10 @@ public class LoopUnlockedTest
             }
 
             @Override
-            public void computeFrameRate(double lastTime, double currentTime)
+            public void computeFrameRate(long lastTime, long currentTime)
             {
-                final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
-                computed.set(Double.valueOf(fps));
+                final long fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
+                computed.set(fps);
             }
         }));
     }
@@ -121,8 +120,7 @@ public class LoopUnlockedTest
 
         Assert.assertEquals(maxTick.get(), tick.get());
         Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertTrue(String.valueOf(computed.get()),
-                          computed.get().doubleValue() >= screen.getConfig().getOutput().getRate());
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get() >= screen.getConfig().getOutput().getRate());
     }
 
     /**
@@ -148,7 +146,7 @@ public class LoopUnlockedTest
 
         Assert.assertEquals(0, rendered.get());
         Assert.assertEquals(0, tick.get());
-        Assert.assertNull(computed.get());
+        Assert.assertEquals(-1, computed.get());
     }
 
     /**
@@ -177,6 +175,6 @@ public class LoopUnlockedTest
         thread.join();
 
         Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > 0);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > 0);
     }
 }

@@ -41,7 +41,7 @@ public interface Frame extends Updatable
      * Compute the frame rate depending of the game loop speed.
      * 
      * @param lastTime The last time value before game loop in nano.
-     * @param currentTime The current time after game loop in nano.
+     * @param currentTime The current time after game loop in nano (must be superior or equal to lastTime).
      */
-    void computeFrameRate(double lastTime, double currentTime);
+    void computeFrameRate(long lastTime, long currentTime);
 }

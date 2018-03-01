@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.Screen;
 
 /**
@@ -27,8 +28,9 @@ public interface Loop
     /**
      * Start the loop.
      * 
-     * @param screen The screen reference.
-     * @param frame The frame to loop reference.
+     * @param screen The screen reference (must not be <code>null</code>).
+     * @param frame The frame to loop reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     void start(Screen screen, Frame frame);
 

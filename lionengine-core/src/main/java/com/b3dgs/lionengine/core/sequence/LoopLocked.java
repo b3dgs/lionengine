@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Resolution;
@@ -31,6 +32,26 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class LoopLocked implements Loop
 {
+    /**
+     * Get the maximum frame time in nano seconds.
+     * 
+     * @param output The output resolution.
+     * @return The maximum frame time in nano.
+     */
+    private static double getMaxFrameTime(Resolution output)
+    {
+        final double maxFrameTimeNano;
+        if (output.getRate() == 0)
+        {
+            maxFrameTimeNano = 0;
+        }
+        else
+        {
+            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) output.getRate() * Constant.NANO_TO_MILLI;
+        }
+        return maxFrameTimeNano;
+    }
+
     /** Running flag. */
     private boolean isRunning;
 
@@ -49,18 +70,14 @@ public final class LoopLocked implements Loop
     @Override
     public void start(Screen screen, Frame frame)
     {
-        final double maxFrameTimeNano;
+        Check.notNull(screen);
+        Check.notNull(frame);
+
         final Config config = screen.getConfig();
         final Resolution output = config.getOutput();
-        if (output.getRate() == 0)
-        {
-            maxFrameTimeNano = 0.0;
-        }
-        else
-        {
-            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) output.getRate() * Constant.NANO_TO_MILLI;
-        }
         final boolean sync = config.isWindowed() && output.getRate() > 0;
+        final double maxFrameTimeNano = getMaxFrameTime(output);
+
         isRunning = true;
         while (isRunning)
         {
@@ -78,8 +95,7 @@ public final class LoopLocked implements Loop
                     Thread.yield();
                 }
 
-                final long currentTime = Math.max(lastTime + 1, System.nanoTime());
-                frame.computeFrameRate(lastTime, currentTime);
+                frame.computeFrameRate(lastTime, Math.max(lastTime + 1L, System.nanoTime()));
             }
             else
             {

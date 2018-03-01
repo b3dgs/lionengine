@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -47,6 +48,9 @@ public final class LoopUnlocked implements Loop
     @Override
     public void start(Screen screen, Frame frame)
     {
+        Check.notNull(screen);
+        Check.notNull(frame);
+
         isRunning = true;
         while (isRunning)
         {
@@ -59,8 +63,7 @@ public final class LoopUnlocked implements Loop
                 frame.render();
                 screen.update();
 
-                final long currentTime = Math.max(lastTime + 1, System.nanoTime());
-                frame.computeFrameRate(lastTime, currentTime);
+                frame.computeFrameRate(lastTime, Math.max(lastTime + 1, System.nanoTime()));
             }
             else
             {

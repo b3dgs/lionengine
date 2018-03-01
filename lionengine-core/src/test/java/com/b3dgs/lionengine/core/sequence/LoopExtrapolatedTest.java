@@ -63,7 +63,7 @@ public class LoopExtrapolatedTest
 
     private final AtomicReference<Double> extrapolation = new AtomicReference<>();
     private final AtomicLong rendered = new AtomicLong();
-    private final AtomicReference<Double> computed = new AtomicReference<>();
+    private final AtomicLong computed = new AtomicLong(-1);
     private final AtomicLong tick = new AtomicLong();
     private final AtomicLong maxTick = new AtomicLong(5);
     private final Loop loop = new LoopExtrapolated();
@@ -98,10 +98,10 @@ public class LoopExtrapolatedTest
                 }
 
                 @Override
-                public void computeFrameRate(double lastTime, double currentTime)
+                public void computeFrameRate(long lastTime, long currentTime)
                 {
-                    final double fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
-                    computed.set(Double.valueOf(fps));
+                    final long fps = Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime);
+                    computed.set(fps);
                 }
             });
         });
@@ -130,8 +130,7 @@ public class LoopExtrapolatedTest
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()),
-                          Double.compare(computed.get().doubleValue(), expectedRate) <= 0);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get() <= expectedRate);
     }
 
     /**
@@ -157,7 +156,7 @@ public class LoopExtrapolatedTest
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > expectedRate);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > expectedRate);
     }
 
     /**
@@ -183,7 +182,7 @@ public class LoopExtrapolatedTest
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get().doubleValue() > expectedRate);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > expectedRate);
     }
 
     /**
@@ -210,7 +209,7 @@ public class LoopExtrapolatedTest
         Assert.assertEquals(0, tick.get());
         Assert.assertEquals(0, rendered.get());
         Assert.assertNull(extrapolation.get());
-        Assert.assertNull(computed.get());
+        Assert.assertEquals(-1, computed.get());
     }
 
     /**
@@ -243,7 +242,6 @@ public class LoopExtrapolatedTest
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()),
-                          Double.compare(computed.get().doubleValue(), expectedRate) <= 0);
+        Assert.assertTrue(String.valueOf(computed.get()), computed.get() <= expectedRate);
     }
 }

@@ -49,7 +49,7 @@ public class FrameTest
             }
 
             @Override
-            public void computeFrameRate(double lastTime, double currentTime)
+            public void computeFrameRate(long lastTime, long currentTime)
             {
                 result.set(true);
             }

@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.graphic.Filter;
@@ -38,41 +39,6 @@ import com.b3dgs.lionengine.graphic.Transform;
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
  * screen used, the current configuration, input references ({@link #getInputDevice(Class)}), and it includes
  * a standard game loop ({@link #update(double)} and {@link #render(Graphic)}), synchronized to a specified frame rate.
- * <p>
- * Here a blank sequence implementation:
- * </p>
- * 
- * <pre>
- * public class MySequence extends Sequence
- * {
- *     private static final Resolution NATIVE = new Resolution(320, 240, 60);
- * 
- *     public MySequence(Context context)
- *     {
- *         super(context, MySequence.NATIVE);
- *         // Initialize variables here
- *     }
- * 
- *     &#064;Override
- *     public void load()
- *     {
- *         // Load resources here
- *     }
- * 
- *     &#064;Override
- *     public void update(double extrp)
- *     {
- *         // Update routine
- *     }
- * 
- *     &#064;Override
- *     public void render(Graphic g)
- *     {
- *         // Render routine
- *     }
- * }
- * </pre>
- * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -113,7 +79,8 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Constructor base. Resolution will be based on {@link Config#getOutput()}.
      * 
-     * @param context The context reference.
+     * @param context The context reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public Sequence(Context context)
     {
@@ -123,11 +90,15 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Constructor base.
      * 
-     * @param context The context reference.
-     * @param resolution The resolution source reference.
+     * @param context The context reference (must not be <code>null</code>).
+     * @param resolution The resolution source reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public Sequence(Context context, Resolution resolution)
     {
+        Check.notNull(context);
+        Check.notNull(resolution);
+
         this.context = context;
         this.resolution = resolution;
         config = context.getConfig();
@@ -143,7 +114,8 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Set the loop mode used.
      * 
-     * @param loop The loop used.
+     * @param loop The loop used (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public final void setLoop(Loop loop)
     {
@@ -236,7 +208,8 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Initialize resolution.
      * 
-     * @param source The resolution source.
+     * @param source The resolution source (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     private void initResolution(Resolution source)
     {
@@ -310,15 +283,15 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Compute the frame rate depending of the game loop speed.
      * 
-     * @param updateFpsTimer The update timing.
+     * @param updateFpsTimer The update timing
      * @param lastTime The last time value before game loop in nano.
-     * @param currentTime The current time after game loop in nano.
+     * @param currentTime The current time after game loop in nano (must be superior or equal to lastTime).
      */
-    private void computeFrameRate(Timing updateFpsTimer, double lastTime, double currentTime)
+    private void computeFrameRate(Timing updateFpsTimer, long lastTime, long currentTime)
     {
         if (updateFpsTimer.elapsed(Constant.ONE_SECOND_IN_MILLI))
         {
-            currentFrameRate = (int) Math.round(Constant.ONE_SECOND_IN_NANO / (currentTime - lastTime));
+            currentFrameRate = (int) Math.round(Constant.ONE_SECOND_IN_NANO / (double) (currentTime - lastTime));
             updateFpsTimer.restart();
         }
     }
@@ -365,7 +338,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
             }
 
             @Override
-            public void computeFrameRate(double lastTime, double currentTime)
+            public void computeFrameRate(long lastTime, long currentTime)
             {
                 Sequence.this.computeFrameRate(updateFpsTimer, lastTime, currentTime);
             }
