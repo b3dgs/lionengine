@@ -20,15 +20,22 @@ package com.b3dgs.lionengine.audio;
 /**
  * Void audio implementation.
  */
-public class AudioVoid implements Audio
+public final class AudioVoid implements Audio
 {
+    /** Single audio instance. */
+    public static final AudioVoid INSTANCE = new AudioVoid();
+
     /**
      * Create void audio.
      */
-    public AudioVoid()
+    private AudioVoid()
     {
         super();
     }
+
+    /*
+     * Audio
+     */
 
     @Override
     public void play()

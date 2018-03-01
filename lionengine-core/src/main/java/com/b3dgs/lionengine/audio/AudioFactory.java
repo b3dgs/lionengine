@@ -58,14 +58,15 @@ public final class AudioFactory
      * Load an audio file and prepare it to be played.
      * 
      * @param <A> The audio type.
-     * @param media The audio media.
-     * @param type The expected audio type.
+     * @param media The audio media (must not be <code>null</code>).
+     * @param type The expected audio type (must not be <code>null</code>).
      * @return The loaded audio.
-     * @throws LionEngineException If media is <code>null</code> or invalid audio or no audio player is available.
+     * @throws LionEngineException If invalid arguments or invalid audio or no audio player is available.
      */
     public static <A extends Audio> A loadAudio(Media media, Class<A> type)
     {
         Check.notNull(media);
+        Check.notNull(type);
 
         final String extension = UtilFile.getExtension(media.getPath());
         if (FACTORIES.containsKey(extension))
@@ -85,10 +86,13 @@ public final class AudioFactory
     /**
      * Add a supported audio format.
      * 
-     * @param format The supported format.
+     * @param format The supported format (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public static void addFormat(AudioFormat format)
     {
+        Check.notNull(format);
+
         for (final String current : format.getFormats())
         {
             FACTORIES.put(current, format);

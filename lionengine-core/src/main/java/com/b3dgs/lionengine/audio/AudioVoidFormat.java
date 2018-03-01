@@ -20,12 +20,14 @@ package com.b3dgs.lionengine.audio;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
 /**
  * Void audio format.
  */
-public class AudioVoidFormat implements AudioFormat
+public final class AudioVoidFormat implements AudioFormat
 {
     /** Formats list. */
     private final Collection<String> formats;
@@ -33,17 +35,24 @@ public class AudioVoidFormat implements AudioFormat
     /**
      * Create void audio format.
      * 
-     * @param formats Associated files type.
+     * @param formats Associated files type (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public AudioVoidFormat(Collection<String> formats)
     {
+        Check.notNull(formats);
+
         this.formats = Collections.unmodifiableCollection(formats);
     }
+
+    /*
+     * AudioFormat
+     */
 
     @Override
     public AudioVoid loadAudio(Media media)
     {
-        return new AudioVoid();
+        return AudioVoid.INSTANCE;
     }
 
     @Override
