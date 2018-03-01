@@ -2,6 +2,6 @@
 <letters>
   <letter char="a" width="7" height="6" />
   <letter char="z" width="7" height="6" />
-  <letter char="%" width="7" height="0" />
+  <letter char="%" width="7" height="1" />
 </letters>
 
