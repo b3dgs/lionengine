@@ -38,7 +38,7 @@ public final class Tick implements Updatable
     /** Actions executed. */
     private final Collection<TickActionDelayed> toRemove = new ArrayList<>();
     /** Current tick. */
-    private int currentTicks;
+    private long currentTicks;
     /** Update. */
     private final Updatable updating = extrp -> currentTicks++;
     /** Update loop. */
@@ -57,11 +57,14 @@ public final class Tick implements Updatable
     /**
      * Add an action to execute once tick delay elapsed.
      * 
-     * @param action The action to execute.
+     * @param action The action to execute (must not be <code>null</code>).
      * @param tickDelay The tick delay used as trigger.
+     * @throws LionEngineException If invalid arguments.
      */
-    public void addAction(TickAction action, int tickDelay)
+    public void addAction(TickAction action, long tickDelay)
     {
+        Check.notNull(action);
+
         actions.add(new TickActionDelayed(action, tickDelay));
     }
 
@@ -70,8 +73,11 @@ public final class Tick implements Updatable
      */
     public void start()
     {
-        started = true;
-        updater = updating;
+        if (!started)
+        {
+            started = true;
+            updater = updating;
+        }
     }
 
     /**
@@ -79,7 +85,7 @@ public final class Tick implements Updatable
      */
     public void stop()
     {
-        currentTicks = 0;
+        currentTicks = 0L;
         started = false;
         updater = PAUSE;
     }
@@ -89,7 +95,7 @@ public final class Tick implements Updatable
      */
     public void restart()
     {
-        currentTicks = 0;
+        currentTicks = 0L;
         started = true;
         updater = updating;
     }
@@ -116,7 +122,7 @@ public final class Tick implements Updatable
      * @param tick The ticks to check.
      * @return <code>true</code> if ticks elapsed, <code>false</code> else.
      */
-    public boolean elapsed(int tick)
+    public boolean elapsed(long tick)
     {
         if (started)
         {
@@ -147,7 +153,7 @@ public final class Tick implements Updatable
      * 
      * @return The number of ticks elapsed since start call.
      */
-    public int elapsed()
+    public long elapsed()
     {
         return currentTicks;
     }
@@ -157,7 +163,7 @@ public final class Tick implements Updatable
      * 
      * @param value The tick to set.
      */
-    public void set(int value)
+    public void set(long value)
     {
         currentTicks = value;
     }
@@ -183,7 +189,7 @@ public final class Tick implements Updatable
 
         for (final TickActionDelayed action : actions)
         {
-            if (elapsed(action.getTickDelay()))
+            if (elapsed(action.getDelay()))
             {
                 action.getAction().execute();
                 toRemove.add(action);
@@ -199,23 +205,23 @@ public final class Tick implements Updatable
     /**
      * Delayed tick action data.
      */
-    private static class TickActionDelayed
+    private static final class TickActionDelayed
     {
         /** Action reference. */
         private final TickAction action;
         /** Tick delay trigger. */
-        private final int tickDelay;
+        private final long delay;
 
         /**
          * Create delayed action data.
          * 
          * @param action The action reference.
-         * @param tickDelay The tick delay.
+         * @param delay The tick delay.
          */
-        TickActionDelayed(TickAction action, int tickDelay)
+        private TickActionDelayed(TickAction action, long delay)
         {
             this.action = action;
-            this.tickDelay = tickDelay;
+            this.delay = delay;
         }
 
         /**
@@ -233,9 +239,9 @@ public final class Tick implements Updatable
          * 
          * @return The tick delay.
          */
-        public int getTickDelay()
+        public long getDelay()
         {
-            return tickDelay;
+            return delay;
         }
     }
 }
