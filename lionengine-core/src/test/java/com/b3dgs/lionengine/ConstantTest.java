@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine;
 
+import java.nio.charset.Charset;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.util.UtilTests;
@@ -35,5 +38,95 @@ public class ConstantTest
     public void testConstructor() throws Exception
     {
         UtilTests.testPrivateConstructor(Constant.class);
+    }
+
+    /**
+     * Test all constants.
+     */
+    @Test
+    public void testConstants()
+    {
+        Assert.assertEquals("LionEngine", Constant.ENGINE_NAME);
+        Assert.assertEquals("Pierre-Alexandre", Constant.ENGINE_AUTHOR);
+        Assert.assertEquals("http://lionengine.b3dgs.com", Constant.ENGINE_WEBSITE);
+        Assert.assertEquals(Version.create(9, 0, 0), Constant.ENGINE_VERSION);
+        Assert.assertEquals("xmlns:lionengine", Constant.XML_HEADER);
+        Assert.assertEquals("lionengine:", Constant.XML_PREFIX);
+        Assert.assertEquals(Charset.forName("UTF-8"), Constant.UTF_8);
+        Assert.assertEquals("", Constant.EMPTY_STRING);
+        Assert.assertEquals(System.getProperty("line.separator"), Constant.NEW_LINE);
+        Assert.assertEquals("\t", Constant.TAB);
+        Assert.assertEquals("\"", Constant.QUOTE);
+        Assert.assertEquals("/", Constant.SLASH);
+        Assert.assertEquals(".", Constant.DOT);
+        Assert.assertEquals(": ", Constant.DOUBLE_DOT);
+        Assert.assertEquals(" ", Constant.SPACE);
+        Assert.assertEquals("_", Constant.UNDERSCORE);
+        Assert.assertEquals("*", Constant.STAR);
+        Assert.assertEquals("@", Constant.AT);
+        Assert.assertEquals("%", Constant.PERCENT);
+        Assert.assertEquals("Hz", Constant.UNIT_RATE);
+        Assert.assertEquals(".jar", Constant.TYPE_JAR);
+        Assert.assertEquals(1_048_576, Constant.MEGA_BYTE);
+        Assert.assertEquals(65_535, Constant.MAX_PORT);
+        Assert.assertEquals(360, Constant.MAX_DEGREE);
+        Assert.assertEquals(1000, Constant.THOUSAND);
+        Assert.assertEquals(100, Constant.HUNDRED);
+        Assert.assertEquals(10, Constant.DECADE);
+        Assert.assertEquals(256, Constant.UNSIGNED_BYTE);
+        Assert.assertEquals(24, Constant.BYTE_4);
+        Assert.assertEquals(16, Constant.BYTE_3);
+        Assert.assertEquals(8, Constant.BYTE_2);
+        Assert.assertEquals(0, Constant.BYTE_1);
+        Assert.assertEquals(1.0, Constant.EXTRP, UtilTests.PRECISION);
+        Assert.assertEquals(0.5, Constant.HALF, UtilTests.PRECISION);
+        Assert.assertEquals(1_000L, Constant.ONE_SECOND_IN_MILLI);
+        Assert.assertEquals(1_000_000_000L, Constant.ONE_SECOND_IN_NANO);
+        Assert.assertEquals(1_000_000.0, Constant.NANO_TO_MILLI, UtilTests.PRECISION);
+        Assert.assertEquals(9.80665, Constant.GRAVITY_EARTH, UtilTests.PRECISION);
+        Assert.assertEquals(3.71, Constant.GRAVITY_MARS, UtilTests.PRECISION);
+        Assert.assertEquals(1.624, Constant.GRAVITY_MOON, UtilTests.PRECISION);
+        Assert.assertEquals("SansSerif", Constant.FONT_SANS_SERIF);
+        Assert.assertEquals("Serif", Constant.FONT_SERIF);
+        Assert.assertEquals("Dialog", Constant.FONT_DIALOG);
+
+    }
+
+    /**
+     * Test the system property with default value.
+     */
+    @Test
+    public void testSystemPropertyDefault()
+    {
+        Assert.assertEquals("default", Constant.getSystemProperty("null", "default"));
+    }
+
+    /**
+     * Test the system property with existing value.
+     */
+    @Test
+    public void testSystemPropertyExists()
+    {
+        Assert.assertNotEquals("default", Constant.getSystemProperty("java.io.tmpdir", "default"));
+    }
+
+    /**
+     * Test the system property with security not allowing it.
+     */
+    @Test
+    public void testSystemPropertySecurityException()
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        System.setSecurityManager(new SecurityManagerMock(false));
+        try
+        {
+            Assert.assertEquals("default", Constant.getSystemProperty("security", "default"));
+        }
+        finally
+        {
+            System.setSecurityManager(null);
+        }
+        Verbose.info("****************************************************************************************");
+
     }
 }

@@ -21,10 +21,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.SecurityManagerMock;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -45,7 +42,6 @@ public class EngineTest
         {
             Engine.terminate();
         }
-        System.setSecurityManager(null);
     }
 
     /**
@@ -118,19 +114,5 @@ public class EngineTest
         Assert.assertEquals(NAME, Engine.getProgramName());
         Assert.assertEquals("1.2.3", Engine.getProgramVersion().toString());
         Engine.terminate();
-    }
-
-    /**
-     * Test the engine system property.
-     */
-    @Test
-    public void testSystemProperty()
-    {
-        Assert.assertEquals(null, Constant.getSystemProperty("null", null));
-        System.setSecurityManager(new SecurityManagerMock(false));
-
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        Assert.assertNull(Constant.EMPTY_STRING, Constant.getSystemProperty("security", null));
-        Verbose.info("****************************************************************************************");
     }
 }

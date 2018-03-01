@@ -50,7 +50,7 @@ public final class Constant
     public static final String SLASH = "/";
     /** Dot. */
     public static final String DOT = ".";
-    /** Double dot. */
+    /** Double dot with space after. */
     public static final String DOUBLE_DOT = ": ";
     /** Space string. */
     public static final String SPACE = " ";
@@ -119,23 +119,23 @@ public final class Constant
      * 
      * @param property The system property.
      * @param def The default value used if property is not available.
-     * @return The system property value (<code>null</code> if there is not any corresponding property).
+     * @return The system property value.
      */
     public static String getSystemProperty(String property, String def)
     {
         try
         {
-            return System.getProperty(property);
+            return System.getProperty(property, def);
         }
         catch (final SecurityException exception)
         {
-            final StringBuilder builder = new StringBuilder(Constant.HUNDRED);
-            builder.append(ERROR_PROPERTY)
-                   .append(property)
-                   .append(" (")
-                   .append(exception.getClass().getName())
-                   .append(')');
-            Verbose.exception(exception, builder.toString());
+            Verbose.exception(exception,
+                              new StringBuilder(Constant.HUNDRED).append(ERROR_PROPERTY)
+                                                                 .append(property)
+                                                                 .append(" (")
+                                                                 .append(exception.getClass().getName())
+                                                                 .append(')')
+                                                                 .toString());
             return def;
         }
     }
