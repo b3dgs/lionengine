@@ -534,6 +534,24 @@ public class CheckTest
     }
 
     /**
+     * Test the check different valid cases.
+     */
+    @Test
+    public void testDifferentDouble()
+    {
+        for (double i = -Constant.THOUSAND; Double.compare(i, Constant.THOUSAND) < 0; i += 0.9)
+        {
+            for (double j = -Constant.THOUSAND; Double.compare(j, Constant.THOUSAND) < 0; j += 0.9)
+            {
+                if (Double.compare(i, j) != 0)
+                {
+                    Check.different(i, j);
+                }
+            }
+        }
+    }
+
+    /**
      * Test the different error message.
      */
     @Test(expected = LionEngineException.class)
@@ -546,6 +564,23 @@ public class CheckTest
         catch (final LionEngineException exception)
         {
             Assert.assertEquals(Check.ERROR_ARGUMENT + "0" + Check.ERROR_DIFFERENT + "0", exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
+     * Test the different error message.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testDifferentDoubleErrorMessage()
+    {
+        try
+        {
+            Check.different(0.0, 0.0);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_ARGUMENT + "0.0" + Check.ERROR_DIFFERENT + "0.0", exception.getMessage());
             throw exception;
         }
     }
@@ -571,6 +606,29 @@ public class CheckTest
             }
         }
         Check.different(Integer.MIN_VALUE, Integer.MIN_VALUE);
+    }
+
+    /**
+     * Test the check different invalid cases.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testDifferentDoubleFail()
+    {
+        for (double i = -Constant.THOUSAND; Double.compare(i, Constant.THOUSAND) < 0; i += 0.9)
+        {
+            try
+            {
+                Check.different(i, i);
+
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+                Assert.assertNotNull(exception);
+            }
+        }
+        Check.different(Double.MIN_VALUE, Double.MIN_VALUE);
     }
 
     /**

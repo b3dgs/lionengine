@@ -191,6 +191,21 @@ public final class Check
     }
 
     /**
+     * Check if <code>a</code> is different to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void different(double a, double b)
+    {
+        if (Double.compare(a, b) == 0)
+        {
+            throw new LionEngineException(ERROR_ARGUMENT + String.valueOf(a) + ERROR_DIFFERENT + String.valueOf(b));
+        }
+    }
+
+    /**
      * Check if <code>a</code> is equal to <code>b</code>.
      * 
      * @param a The parameter to test.
