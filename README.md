@@ -97,6 +97,9 @@ In its current version, the engine greatly simplifies the development of __Platf
 * #### __lionengine-audio-adplug__
 >  * Support for Loudness Sound music (AdPlug wrapper)
 
+* #### __lionengine-audio-adlmidi__
+>  * Support for Midi music
+
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)
