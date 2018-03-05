@@ -38,6 +38,8 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     private final int horizontalFrames;
     /** Number of vertical frames. */
     private final int verticalFrames;
+    /** Total frames number. */
+    private final int framesNumber;
     /** Frame offsets x. */
     private int frameOffsetX;
     /** Frame offsets y. */
@@ -60,6 +62,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
+        framesNumber = horizontalFrames * verticalFrames;
         frameOffsetX = 0;
         frameOffsetY = 0;
     }
@@ -81,6 +84,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
+        framesNumber = horizontalFrames * verticalFrames;
     }
 
     /*
@@ -126,6 +130,8 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     @Override
     public void setFrame(int frame)
     {
+        Check.inferiorOrEqual(frame, framesNumber);
+
         animator.setFrame(frame);
     }
 
@@ -193,8 +199,8 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     @Override
     protected void stretch(int newWidth, int newHeight)
     {
-        final int w = (int) Math.round(newWidth / (double) getFramesHorizontal()) * getFramesHorizontal();
-        final int h = (int) Math.round(newHeight / (double) getFramesVertical()) * getFramesVertical();
+        final int w = (int) Math.round(newWidth / (double) horizontalFrames) * horizontalFrames;
+        final int h = (int) Math.round(newHeight / (double) verticalFrames) * verticalFrames;
         super.stretch(w, h);
     }
 
