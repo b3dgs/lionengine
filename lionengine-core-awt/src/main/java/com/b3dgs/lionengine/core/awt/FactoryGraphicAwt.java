@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.graphic.Transform;
 /**
  * Graphic factory implementation.
  */
+// CHECKSTYLE IGNORE LINE: ClassDataAbstractionCoupling
 public final class FactoryGraphicAwt implements FactoryGraphic
 {
     /** Reading image message. */

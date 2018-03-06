@@ -37,9 +37,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.mobilepetroleum.radialencapsulation</groupId>
+                <groupId>com.b3dgs.radialencapsulation</groupId>
                 <artifactId>radial-encapsulation-maven-plugin</artifactId>
-                <version>1.0.0</version>
                 <configuration>
                     <maxViolations>100</maxViolations>
                 </configuration>

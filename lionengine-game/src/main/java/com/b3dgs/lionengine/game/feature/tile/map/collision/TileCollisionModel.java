@@ -89,6 +89,7 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
                 final int current = getInputValue(Axis.X, x, y);
                 final int previous = getInputValue(Axis.X, ox, oy);
                 final double result = formula.getFunction().compute(previous);
+                // CHECKSTYLE IGNORE LINE: NestedIfDepth
                 if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
                 {
                     return getCollisionX(ox, x, result, offsetX);
@@ -142,6 +143,7 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
             if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
             {
                 final int current = getInputValue(Axis.Y, x, y);
+                // CHECKSTYLE IGNORE LINE: NestedIfDepth
                 if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
                 {
                     final double result = formula.getFunction().compute(value);

@@ -82,6 +82,7 @@ public class TransformableModel extends FeatureModel implements Transformable, R
      */
     private void notifyTransformed(boolean teleport)
     {
+        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
         if (teleport
             || Double.compare(getX(), getOldX()) != 0
             || Double.compare(getY(), getOldY()) != 0

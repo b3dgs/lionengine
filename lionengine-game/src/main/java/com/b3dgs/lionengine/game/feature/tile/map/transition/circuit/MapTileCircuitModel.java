@@ -245,7 +245,7 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
                 final int size = transitive.size();
                 if (size < min)
                 {
-                    if (transitive.isEmpty())
+                    if (transitive.isEmpty()) // CHECKSTYLE IGNORE LINE: TrailingComment|NestedIfDepth
                     {
                         groupOut = group2;
                     }

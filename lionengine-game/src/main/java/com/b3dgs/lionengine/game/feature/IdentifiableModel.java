@@ -57,7 +57,7 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
             throw new LionEngineException(ERROR_FREE_ID);
         }
         Integer id;
-        while (IDS.contains(id = Integer.valueOf(lastId)))
+        while (IDS.contains(id = Integer.valueOf(lastId))) // CHECKSTYLE IGNORE LINE: TrailingComment|InnerAssignment
         {
             lastId++;
         }

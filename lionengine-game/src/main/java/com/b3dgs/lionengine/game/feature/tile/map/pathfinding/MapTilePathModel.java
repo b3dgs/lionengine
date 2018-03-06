@@ -218,7 +218,7 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         return map.getTile(tiled.getInTileX(), tiled.getInTileY());
     }
 
-    @Override
+    @Override // CHECKSTYLE IGNORE LINE: TrailingComment|ReturnCount
     public boolean isBlocked(Pathfindable mover, int tx, int ty, boolean ignoreObjectsId)
     {
         // Blocked if outside map range
@@ -231,12 +231,12 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
                 int ignoredCount = 0;
                 for (final Integer id : ids)
                 {
-                    if (mover.isIgnoredId(id))
+                    if (mover.isIgnoredId(id)) // CHECKSTYLE IGNORE LINE: TrailingComment|NestedIfDepth
                     {
                         ignoredCount++;
                     }
                 }
-                if (ignoredCount < ids.size())
+                if (ignoredCount < ids.size()) // CHECKSTYLE IGNORE LINE: TrailingComment|NestedIfDepth
                 {
                     return true;
                 }

@@ -223,6 +223,7 @@ public class FeaturableModel implements Featurable
             if (field.get(object) == null)
             {
                 final Class<? extends Feature> clazz;
+                // CHECKSTYLE IGNORE LINE: InnerAssignment
                 if (Feature.class.isAssignableFrom(type) && hasFeature(clazz = type.asSubclass(Feature.class)))
                 {
                     field.set(object, getFeature(clazz));

@@ -73,10 +73,10 @@ public class Parallax implements BackgroundComponent
         this.parallaxsNumber = parallaxsNumber;
         surface = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
         surface.load(false);
-        mainY = decY + 64;
+        mainY = decY + 64; // CHECKSTYLE IGNORE LINE: TrailingComment|MagicNumber
         this.decX = surface.getWidth() + decX;
         offsetX = surface.getWidth();
-        factH = sx / 100.0 / 0.6;
+        factH = sx / 100.0 / 0.6; // CHECKSTYLE IGNORE LINE: TrailingComment|MagicNumber
 
         // Create data arrays
         x = new double[this.parallaxsNumber];
@@ -142,11 +142,14 @@ public class Parallax implements BackgroundComponent
         // Move each line, depending of its id and size
         for (int lineNum = 0; lineNum < parallaxsNumber; lineNum++)
         {
+            // CHECKSTYLE IGNORE LINE: MagicNumber
             this.x[lineNum] += 0.2 * lineNum * wrapedSpeed * 0.042;
+            // CHECKSTYLE IGNORE LINE: MagicNumber
             x2[lineNum] += wrapedSpeed * 0.25;
 
             // When line has arrived to its border
             final double secondLine = this.x[1];
+            // CHECKSTYLE IGNORE LINE: MagicNumber
             if (secondLine >= 2.56 * factH || secondLine <= -2.56 * factH)
             {
                 for (int j = 0; j < parallaxsNumber; j++)

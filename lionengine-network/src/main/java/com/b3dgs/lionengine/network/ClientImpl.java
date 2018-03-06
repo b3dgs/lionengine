@@ -498,7 +498,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         messagesOut.clear();
     }
 
-    @Override
+    @Override // CHECKSTYLE IGNORE LINE: TrailingComment|ReturnCount
     public void receiveMessages()
     {
         if (!connected)

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.0.7</version>
+        <version>1.0.8</version>
     </parent>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
@@ -25,232 +25,80 @@
         <url>https://travis-ci.org/b3dgs/lionengine</url>
     </ciManagement>
     <properties>
-        <buildtools-project>lionengine-buildtools</buildtools-project>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-9.0.0</sonar-branch>
-        <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
     </properties>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.version}</version>
-                    <executions>
-                        <execution>
-                            <id>jacoco-initialize</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
-                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
-                                <append>true</append>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>jacoco-site</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.basedir}/../target/jacoco-ut.exec</destFile>
-                                <dataFile>${project.basedir}/../target/jacoco-ut.exec</dataFile>
-                                <append>true</append>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <modules>
+        <module>../lionengine-core</module>
+        <module>../lionengine-core-awt</module>
+        <module>../lionengine-game</module>
+        <module>../lionengine-network</module>
+        <module>../lionengine-audio-wav</module>
+        <module>../lionengine-audio-adlmidi</module>
+        <module>../lionengine-audio-adplug</module>
+        <module>../lionengine-audio-sc68</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
     <profiles>
         <profile>
-            <id>core</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../lionengine-core</module>
-                <module>../lionengine-core-awt</module>
-                <module>../lionengine-game</module>
-                <module>../lionengine-network</module>
-                <module>../lionengine-audio-wav</module>
-                <module>../lionengine-audio-adlmidi</module>
-                <module>../lionengine-audio-adplug</module>
-                <module>../lionengine-audio-sc68</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>run-its</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../lionengine-core</module>
-                <module>../lionengine-core-awt</module>
-                <module>../lionengine-game</module>
-            </modules>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surfire.version}</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${maven-failsafe.version}</version>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
-                        <executions>
-                            <execution>
-                                <id>pre-integration-test</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                                <configuration>
-                                    <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
-                                    <dataFile>${project.basedir}/../target/jacoco-it.exec</dataFile>
-                                    <append>true</append>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>post-integration-test</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
-                                    <dataFile>${project.basedir}/../target/jacoco-it.exec</dataFile>
-                                    <append>true</append>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>sonar</id>
-            <modules>
-                <module>../lionengine-core</module>
-                <module>../lionengine-core-awt</module>
-                <module>../lionengine-game</module>
-                <module>../lionengine-audio-sc68</module>
-                <module>../lionengine-audio-adplug</module>
-                <module>../lionengine-audio-adlmidi</module>
-            </modules>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonarsource.scanner.maven</groupId>
-                        <artifactId>sonar-maven-plugin</artifactId>
-                        <version>${sonar-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sonar-runner</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sonar</goal>
-                                </goals>
-                                <configuration>
-                                    <sonar.branch>${sonar-branch}</sonar.branch>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
             <id>travis</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../lionengine-core</module>
-                <module>../lionengine-core-awt</module>
-                <module>../lionengine-game</module>
-                <module>../lionengine-network</module>
-                <module>../lionengine-audio-wav</module>
-                <module>../lionengine-audio-adlmidi</module>
-                <module>../lionengine-audio-adplug</module>
-                <module>../lionengine-audio-sc68</module>
-            </modules>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.b3dgs.radialencapsulation</groupId>
+                        <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surfire.version}</version>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${maven-failsafe.version}</version>
                     </plugin>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
-                        <executions>
-                            <execution>
-                                <id>pre-integration-test</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                                <configuration>
-                                    <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
-                                    <dataFile>${project.basedir}/../target/jacoco-it.exec</dataFile>
-                                    <append>true</append>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>post-integration-test</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
-                                    <dataFile>${project.basedir}/../target/jacoco-it.exec</dataFile>
-                                    <append>true</append>
-                                </configuration>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.sonarsource.scanner.maven</groupId>
                         <artifactId>sonar-maven-plugin</artifactId>
-                        <version>${sonar-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sonar-runner</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sonar</goal>
-                                </goals>
-                                <configuration>
-                                    <sonar.branch>${sonar-branch}</sonar.branch>
-                                </configuration>
-                            </execution>
-                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.b3dgs.radialencapsulation</groupId>
+                        <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>

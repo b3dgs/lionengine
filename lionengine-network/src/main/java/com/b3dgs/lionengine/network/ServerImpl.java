@@ -38,8 +38,12 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 /**
  * Server implementation.
  */
+// CHECKSTYLE IGNORE LINE: ClassDataAbstractionCoupling
 final class ServerImpl extends NetworkModel<ClientListener> implements Server
 {
+    /** Server name log. */
+    private static final String SERVER = "Server: ";
+
     /**
      * Send the id and the name to the client.
      * 
@@ -172,7 +176,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             client.terminate();
             clientsNumber--;
             willRemove = true;
-            Verbose.info("Server: ", client.getName(), " disconnected");
+            Verbose.info(SERVER, client.getName(), " disconnected");
         }
     }
 
@@ -251,7 +255,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         if (ServerImpl.checkValidity(client, from, expected))
         {
             // Terminate last connection step and accept it
-            Verbose.info("Server: ", client.getName(), " connected");
+            Verbose.info(SERVER, client.getName(), " connected");
             for (final ClientListener listener : listeners)
             {
                 listener.notifyClientConnected(Byte.valueOf(client.getId()), client.getName());
@@ -326,7 +330,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 throw new IOException("Unable to read client name on rename !");
             }
             final String newName = new String(name, NetworkMessage.CHARSET);
-            Verbose.info("Server: ", client.getName(), " rennamed to ", newName);
+            Verbose.info(SERVER, client.getName(), " rennamed to ", newName);
             client.setName(newName);
 
             for (final ClientListener listener : listeners)
@@ -364,7 +368,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             if (size > 0)
             {
                 final byte[] clientData = new byte[size];
-                if (buffer.read(clientData) != -1)
+                if (buffer.read(clientData) != -1) // CHECKSTYLE IGNORE LINE: TrailingComment|NestedIfDepth
                 {
                     final DataInputStream clientBuffer = new DataInputStream(new ByteArrayInputStream(clientData));
                     decodeMessage(type, from, dest, clientBuffer);

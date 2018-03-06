@@ -44,7 +44,6 @@
                         <Bundle-SymbolicName>${project.groupId}.audio.sc68</Bundle-SymbolicName>
                         <Import-Package>
                             *,
-                            com.sun.jna,
                             org.junit;resolution:=optional,
                             com.b3dgs.lionengine.test.util;resolution:=optional
                         </Import-Package>

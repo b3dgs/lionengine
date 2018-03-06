@@ -250,6 +250,7 @@ final class RawScale3x
      * @param x The location x.
      * @param y The location y.
      */
+    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
     private void process(int[] srcImage, int[] dstImage, int x, int y)
     {
         final int a = getSourcePixel(srcImage, x - 1, y - 1);

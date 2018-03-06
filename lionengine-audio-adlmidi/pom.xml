@@ -44,8 +44,11 @@
                         <Bundle-SymbolicName>${project.groupId}.audio.adlmidi</Bundle-SymbolicName>
                         <Import-Package>
                             *,
+                            org.junit;resolution:=optional,
                             com.b3dgs.lionengine.test.util;resolution:=optional
                         </Import-Package>
+                        <Export-Package>com.b3dgs.lionengine.audio.adlmidi;com.sun.jna</Export-Package>
+                        <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>

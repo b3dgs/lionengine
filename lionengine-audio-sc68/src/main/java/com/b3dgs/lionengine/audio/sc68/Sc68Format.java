@@ -35,17 +35,19 @@ public final class Sc68Format implements AudioFormat
 {
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
+    /** Sc68 format. */
+    private static final String SC68 = "sc68";
     /** Standard library name. */
     private static final String LIBRARY_NAME;
     /** Audio extensions as read only. */
-    private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("sc68"));
+    private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList(SC68));
 
     /**
      * Specific case to not inline for test purpose.
      */
     static
     {
-        LIBRARY_NAME = "sc68";
+        LIBRARY_NAME = SC68;
     }
 
     /**

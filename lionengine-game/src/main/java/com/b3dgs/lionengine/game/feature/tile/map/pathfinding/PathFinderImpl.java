@@ -315,7 +315,7 @@ final class PathFinderImpl implements PathFinder
      * PathFinder
      */
 
-    @Override
+    @Override // CHECKSTYLE IGNORE LINE: TrailingComment|ReturnCount
     public Path findPath(Pathfindable mover, int dtx, int dty, boolean ignoreRef)
     {
         final int stx = mover.getInTileX();
