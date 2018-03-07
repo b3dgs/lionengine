@@ -28,13 +28,73 @@ import com.b3dgs.lionengine.util.UtilTests;
 public class RectangleTest
 {
     /**
+     * Test the default constructor.
+     */
+    @Test
+    public void testConstructorDefault()
+    {
+        final Rectangle rectangle = new Rectangle();
+
+        Assert.assertEquals(0.0, rectangle.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, rectangle.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(0, rectangle.getWidth());
+        Assert.assertEquals(0, rectangle.getHeight());
+        Assert.assertEquals(0.0, rectangle.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, rectangle.getHeightReal(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, rectangle.getMinX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, rectangle.getMinY(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, rectangle.getMaxX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, rectangle.getMaxY(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the constructor with parameters.
+     */
+    @Test
+    public void testConstructorParameters()
+    {
+        final Rectangle rectangle = new Rectangle(1.0, 2.0, 3.6, 4.6);
+
+        Assert.assertEquals(1.0, rectangle.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, rectangle.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(3, rectangle.getWidth());
+        Assert.assertEquals(4, rectangle.getHeight());
+        Assert.assertEquals(3.6, rectangle.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(4.6, rectangle.getHeightReal(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, rectangle.getMinX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, rectangle.getMinY(), UtilTests.PRECISION);
+        Assert.assertEquals(4.6, rectangle.getMaxX(), UtilTests.PRECISION);
+        Assert.assertEquals(6.6, rectangle.getMaxY(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the set.
+     */
+    @Test
+    public void testSet()
+    {
+        final Rectangle rectangle = new Rectangle();
+        rectangle.set(1.0, 2.0, 3.6, 4.6);
+
+        Assert.assertEquals(1.0, rectangle.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, rectangle.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(3, rectangle.getWidth());
+        Assert.assertEquals(4, rectangle.getHeight());
+        Assert.assertEquals(3.6, rectangle.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(4.6, rectangle.getHeightReal(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, rectangle.getMinX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, rectangle.getMinY(), UtilTests.PRECISION);
+        Assert.assertEquals(4.6, rectangle.getMaxX(), UtilTests.PRECISION);
+        Assert.assertEquals(6.6, rectangle.getMaxY(), UtilTests.PRECISION);
+    }
+
+    /**
      * Test the rectangle intersects.
      */
     @Test
     public void testIntersects()
     {
-        final Rectangle rectangle1 = new Rectangle();
-        rectangle1.set(0.0, 0.0, 10.0, 10.0);
+        final Rectangle rectangle1 = new Rectangle(0.0, 0.0, 10.0, 10.0);
         final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
         final Rectangle rectangle3 = new Rectangle(4.0, 1.0, 5.0, 5.0);
         final Rectangle rectangle4 = new Rectangle(1.0, 4.0, 5.0, 5.0);
@@ -64,8 +124,7 @@ public class RectangleTest
     @Test
     public void testContains()
     {
-        final Rectangle rectangle1 = new Rectangle();
-        rectangle1.set(0.0, 0.0, 10.0, 10.0);
+        final Rectangle rectangle1 = new Rectangle(0.0, 0.0, 10.0, 10.0);
         final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
         final Rectangle rectangle3 = new Rectangle(4.0, 1.0, 5.0, 5.0);
         final Rectangle rectangle4 = new Rectangle(1.0, 4.0, 5.0, 5.0);
@@ -106,26 +165,6 @@ public class RectangleTest
         Assert.assertEquals(rectangle, rectangle.rotate(0));
         Assert.assertEquals(new Rectangle(-1.5, 4.5, 10.0, 5.0), rectangle.rotate(90));
         Assert.assertEquals(rectangle, rectangle.rotate(360));
-    }
-
-    /**
-     * Test the rectangle getters.
-     */
-    @Test
-    public void testGetter()
-    {
-        final Rectangle rectangle = new Rectangle(1.0, 1.0, 4.25, 5.25);
-
-        Assert.assertEquals(1.0, rectangle.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, rectangle.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, rectangle.getMinX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, rectangle.getMinY(), UtilTests.PRECISION);
-        Assert.assertEquals(5.25, rectangle.getMaxX(), UtilTests.PRECISION);
-        Assert.assertEquals(6.25, rectangle.getMaxY(), UtilTests.PRECISION);
-        Assert.assertEquals(4.25, rectangle.getWidthReal(), UtilTests.PRECISION);
-        Assert.assertEquals(5.25, rectangle.getHeightReal(), UtilTests.PRECISION);
-        Assert.assertEquals(4, rectangle.getWidth());
-        Assert.assertEquals(5, rectangle.getHeight());
     }
 
     /**
@@ -186,8 +225,8 @@ public class RectangleTest
         Assert.assertEquals(rectangle, rectangle);
         Assert.assertEquals(rectangle, new Rectangle(0, 1, 2, 3));
 
-        Assert.assertNotEquals(rectangle, new Object());
         Assert.assertNotEquals(rectangle, null);
+        Assert.assertNotEquals(rectangle, new Object());
         Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 2, 0));
         Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 3));
         Assert.assertNotEquals(rectangle, new Rectangle(0, 1, 0, 0));
@@ -211,6 +250,7 @@ public class RectangleTest
     @Test
     public void testToString()
     {
+        Assert.assertEquals("Rectangle [x=0.0, y=0.0, width=0.0, height=0.0]", new Rectangle().toString());
         Assert.assertEquals("Rectangle [x=0.0, y=1.0, width=2.0, height=3.0]", new Rectangle(0, 1, 2, 3).toString());
     }
 }

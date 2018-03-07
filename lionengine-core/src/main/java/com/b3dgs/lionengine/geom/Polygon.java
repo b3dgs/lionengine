@@ -111,10 +111,14 @@ public class Polygon
     /**
      * Get the polygon rectangle bounds.
      * 
-     * @return The polygon rectangle bounds.
+     * @return The polygon rectangle bounds, <code>null</code> if no points.
      */
     public Rectangle getRectangle()
     {
+        if (npoints == 0)
+        {
+            return null;
+        }
         bounds = calculateBounds(xpoints, ypoints, npoints);
         return bounds;
     }
@@ -127,18 +131,23 @@ public class Polygon
      */
     public boolean intersects(Rectangle rectangle)
     {
-        return rectangle != null && rectangle.intersects(bounds);
+        return rectangle != null && rectangle.intersects(getRectangle());
     }
 
     /**
-     * Check if the rectangle contains the other.
+     * Check if the polygon contains the rectangle.
      * 
      * @param rectangle The rectangle to test with (can be <code>null</code>).
      * @return <code>true</code> if contains, <code>false</code> else.
      */
     public boolean contains(Rectangle rectangle)
     {
-        return rectangle != null && rectangle.contains(bounds);
+        final Rectangle current = getRectangle();
+        if (rectangle == null || current == null)
+        {
+            return false;
+        }
+        return current.contains(rectangle);
     }
 
     /**
@@ -184,5 +193,20 @@ public class Polygon
             nh = Math.max(bounds.getHeightReal(), y - bounds.getY());
         }
         bounds.set(x, y, nw, nh);
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder().append(getClass().getSimpleName()).append(" [");
+        for (int i = 0; i < npoints; i++)
+        {
+            builder.append(" p=").append(i + 1).append(" x=").append(xpoints[i]).append(", y=").append(ypoints[i]);
+        }
+        return builder.append("]").toString();
     }
 }

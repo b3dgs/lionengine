@@ -26,66 +26,121 @@ import org.junit.Test;
 public class PointTest
 {
     /**
-     * Test the coordinate.
+     * Test the default constructor.
      */
     @Test
-    public void testPoint()
+    public void testConstructorDefault()
     {
         final Point point = new Point();
+
         Assert.assertEquals(0, point.getX());
         Assert.assertEquals(0, point.getY());
-
-        point.setX(4);
-        point.setY(5);
-        Assert.assertEquals(4, point.getX());
-        Assert.assertEquals(5, point.getY());
-
-        final Point point2 = new Point(1, 2);
-        Assert.assertEquals(1, point2.getX());
-        Assert.assertEquals(2, point2.getY());
-
-        point2.translate(-2, -1);
-        Assert.assertEquals(-1, point2.getX());
-        Assert.assertEquals(1, point2.getY());
-
-        point2.set(0, 0);
-        Assert.assertEquals(0, point2.getX());
-        Assert.assertEquals(0, point2.getY());
-
-        Assert.assertNotEquals(point, point2);
-        Assert.assertNotEquals(point.hashCode(), point2.hashCode());
     }
 
     /**
-     * Test the coordinate.
+     * Test the constructor with parameters.
      */
     @Test
-    public void testHashEquals()
+    public void testConstructorParameters()
     {
-        final Point point1 = new Point(1, 2);
-        final Point point2 = new Point(1, 2);
+        final Point point = new Point(1, 2);
 
-        Assert.assertEquals(point1, point1);
-        Assert.assertEquals(point1, point2);
-        Assert.assertEquals(point1.hashCode(), point2.hashCode());
+        Assert.assertEquals(1, point.getX());
+        Assert.assertEquals(2, point.getY());
     }
 
     /**
-     * Test the not equals.
+     * Test the translation.
      */
     @Test
-    public void testNotEquals()
+    public void testTranslate()
     {
-        final Point point1 = new Point(1, 2);
-        final Point point2 = new Point(2, 1);
-        final Point point3 = new Point(3, 3);
-        final Point point4 = new Point(1, 3);
+        final Point point = new Point(1, 2);
+        point.translate(10, 20);
 
-        Assert.assertNotEquals(point1, null);
-        Assert.assertNotEquals(point1, new Object());
-        Assert.assertNotEquals(point1, point2);
-        Assert.assertNotEquals(point1, point3);
-        Assert.assertNotEquals(point2, point3);
-        Assert.assertNotEquals(point1, point4);
+        Assert.assertEquals(11, point.getX());
+        Assert.assertEquals(22, point.getY());
+    }
+
+    /**
+     * Test the set.
+     */
+    @Test
+    public void testSet()
+    {
+        final Point point = new Point();
+        point.set(10, 20);
+
+        Assert.assertEquals(10, point.getX());
+        Assert.assertEquals(20, point.getY());
+    }
+
+    /**
+     * Test the set X.
+     */
+    @Test
+    public void testSetX()
+    {
+        final Point point = new Point(1, 2);
+        point.setX(10);
+
+        Assert.assertEquals(10, point.getX());
+        Assert.assertEquals(2, point.getY());
+    }
+
+    /**
+     * Test the set Y.
+     */
+    @Test
+    public void testSetY()
+    {
+        final Point point = new Point(1, 2);
+        point.setY(20);
+
+        Assert.assertEquals(1, point.getX());
+        Assert.assertEquals(20, point.getY());
+    }
+
+    /**
+     * Test the equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Point point = new Point();
+
+        Assert.assertEquals(point, point);
+
+        Assert.assertEquals(new Point(), new Point());
+        Assert.assertEquals(new Point(1, 2), new Point(1, 2));
+
+        Assert.assertNotEquals(new Point(), null);
+        Assert.assertNotEquals(new Point(), new Object());
+        Assert.assertNotEquals(new Point(1, 0), new Point(1, 1));
+        Assert.assertNotEquals(new Point(0, 1), new Point(1, 0));
+        Assert.assertNotEquals(new Point(), new Point(1, 1));
+    }
+
+    /**
+     * Test the equals.
+     */
+    @Test
+    public void testHash()
+    {
+        Assert.assertEquals(new Point(1, 2).hashCode(), new Point(1, 2).hashCode());
+
+        Assert.assertNotEquals(new Point().hashCode(), new Object().hashCode());
+        Assert.assertNotEquals(new Point(1, 0).hashCode(), new Point(1, 1).hashCode());
+        Assert.assertNotEquals(new Point(0, 1).hashCode(), new Point(1, 0).hashCode());
+        Assert.assertNotEquals(new Point().hashCode(), new Point(1, 1).hashCode());
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        Assert.assertEquals("Point [x=1, y=2]", new Point(1, 2).toString());
     }
 }

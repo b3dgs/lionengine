@@ -35,35 +35,63 @@ public class GeomTest
      * @throws Exception If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testGeomClass() throws Exception
+    public void testClass() throws Exception
     {
         UtilTests.testPrivateConstructor(Geom.class);
     }
 
     /**
-     * Test the coord intersection function.
+     * Test the intersection function without contact.
      */
     @Test
-    public void testCoordIntersection()
+    public void testNoIntersection()
     {
-        final Coord coordZero = Geom.intersection(new Line(), new Line());
-        Assert.assertEquals(new Coord(0.0, 0.0), coordZero);
-
-        final Line line1 = new Line(1, 2, 3, 4);
-        final Line line2 = new Line(-1, 2, -3, 4);
-        final Coord coord = Geom.intersection(line1, line2);
-        Assert.assertNotNull(coord);
+        Assert.assertNull(Geom.intersection(new Line(), new Line()));
+        Assert.assertNull(Geom.intersection(new Line(0.0, 0.0, 2.0, 2.0), new Line(2.0, 2.0, 4.0, 4.0)));
+        Assert.assertNull(Geom.intersection(new Line(1.0, 2.0, 3.0, 4.0), new Line(-1.0, -2.0, -3.0, -4.0)));
+        Assert.assertNull(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 1.99, 4.0, 1.99)));
+        Assert.assertNull(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 2.01, 4.0, 2.01)));
     }
 
     /**
-     * Test geom create localizable.
+     * Test the intersection function.
      */
     @Test
-    public void testGeomCreateLocalizable()
+    public void testIntersection()
     {
-        final Localizable localizable = Geom.createLocalizable(1.0, 2.0);
+        Assert.assertEquals(new Coord(1.0, 2.0),
+                            Geom.intersection(new Line(0.0, 2.0, 2.0, 2.0), new Line(1.0, 0.0, 1.0, 4.0)));
+        Assert.assertEquals(new Coord(1.0, 2.0),
+                            Geom.intersection(new Line(0.0, 4.0, 2.0, 0.0), new Line(0.0, 0.0, 2.0, 4.0)));
+    }
 
-        Assert.assertEquals(1.0, localizable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, localizable.getY(), UtilTests.PRECISION);
+    /**
+     * Test the intersection function with null argument 1.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testIntersectionNullArgument1()
+    {
+        Assert.assertNull(Geom.intersection(null, new Line()));
+    }
+
+    /**
+     * Test the intersection function with null argument 2.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testIntersectionNullArgument2()
+    {
+        Assert.assertNull(Geom.intersection(new Line(), null));
+    }
+
+    /**
+     * Test create localizable.
+     */
+    @Test
+    public void testCreateLocalizable()
+    {
+        final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
+
+        Assert.assertEquals(1.5, localizable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, localizable.getY(), UtilTests.PRECISION);
     }
 }

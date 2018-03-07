@@ -26,36 +26,132 @@ import org.junit.Test;
 public class PolygonTest
 {
     /**
-     * Test the polygon class.
+     * Test the constructor default.
      */
     @Test
-    public void testPolygon()
+    public void testConstructorDefault()
     {
         final Polygon polygon = new Polygon();
-        polygon.addPoint(0, 0);
-        polygon.addPoint(0, 10);
-        polygon.addPoint(10, 0);
-        Assert.assertFalse(polygon.getRectangle().contains(-1, -1));
-        polygon.addPoint(10, 10);
-        polygon.addPoint(-10, -10);
 
-        for (final Line line : polygon.getPoints())
-        {
-            Assert.assertNotNull(line);
-        }
+        Assert.assertTrue(polygon.getPoints().isEmpty());
+        Assert.assertNull(polygon.getRectangle());
+    }
 
-        final Rectangle rectangle1 = new Rectangle();
-        rectangle1.set(0.0, 0.0, 10.0, 10.0);
-        final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
-        Assert.assertTrue(polygon.getRectangle().contains(rectangle2));
-        Assert.assertTrue(polygon.intersects(rectangle2));
+    /**
+     * Test the add point.
+     */
+    @Test
+    public void testAddPoint()
+    {
+        final Polygon polygon = new Polygon();
+
+        Assert.assertTrue(polygon.getPoints().isEmpty());
+
+        polygon.addPoint(1.0, 2.0);
+
+        Assert.assertTrue(polygon.getPoints().isEmpty());
+        Assert.assertEquals(new Rectangle(1.0, 2.0, 0.0, 0.0), polygon.getRectangle());
+
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertEquals(new Line(1.0, 2.0, 3.0, 4.0), polygon.getPoints().iterator().next());
+        Assert.assertEquals(new Rectangle(1.0, 2.0, 2.0, 2.0), polygon.getRectangle());
+    }
+
+    /**
+     * Test the add point with required an internal array resize.
+     */
+    @Test
+    public void testAddPointResize()
+    {
+        final Polygon polygon = new Polygon();
+
+        Assert.assertNull(polygon.getRectangle());
+
+        polygon.addPoint(0.0, 0.0);
+
+        Assert.assertNotNull(polygon.getRectangle());
+
+        polygon.addPoint(-1.0, -2.0);
+        polygon.addPoint(-3.0, -4.0);
+        polygon.addPoint(1.0, 2.0);
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertNotNull(polygon.getRectangle());
+        Assert.assertEquals(2, polygon.getPoints().size());
+    }
+
+    /**
+     * Test the reset.
+     */
+    @Test
+    public void testReset()
+    {
+        final Polygon polygon = new Polygon();
+        polygon.addPoint(1.0, 2.0);
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertFalse(polygon.getPoints().isEmpty());
+        Assert.assertNotNull(polygon.getRectangle());
+
         polygon.reset();
-        Assert.assertFalse(polygon.contains(rectangle2));
-        Assert.assertFalse(polygon.intersects(rectangle2));
 
-        for (final Line line : polygon.getPoints())
-        {
-            Assert.assertNotNull(line);
-        }
+        Assert.assertTrue(polygon.getPoints().isEmpty());
+        Assert.assertNull(polygon.getRectangle());
+    }
+
+    /**
+     * Test the intersect.
+     */
+    @Test
+    public void testIntersect()
+    {
+        final Polygon polygon = new Polygon();
+
+        Assert.assertFalse(polygon.intersects(null));
+        Assert.assertFalse(polygon.intersects(new Rectangle(1.0, 2.0, 2.0, 2.0)));
+
+        polygon.addPoint(1.0, 2.0);
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertFalse(polygon.intersects(null));
+        Assert.assertTrue(polygon.getRectangle().toString(), polygon.intersects(new Rectangle(1.5, 1.5, 1.0, 1.0)));
+    }
+
+    /**
+     * Test the contains.
+     */
+    @Test
+    public void testContains()
+    {
+        final Polygon polygon = new Polygon();
+
+        Assert.assertFalse(polygon.contains(null));
+        Assert.assertFalse(polygon.contains(new Rectangle(1.0, 2.0, 2.0, 2.0)));
+
+        polygon.addPoint(1.0, 2.0);
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertFalse(polygon.contains(null));
+        Assert.assertTrue(polygon.getRectangle().toString(), polygon.contains(new Rectangle(1.25, 2.25, 0.5, 0.5)));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final Polygon polygon = new Polygon();
+
+        Assert.assertEquals("Polygon []", polygon.toString());
+
+        polygon.addPoint(1.0, 2.0);
+
+        Assert.assertEquals("Polygon [ p=1 x=1.0, y=2.0]", polygon.toString());
+
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertEquals("Polygon [ p=1 x=1.0, y=2.0 p=2 x=3.0, y=4.0]", polygon.toString());
     }
 }

@@ -141,4 +141,16 @@ public class Point
         final Point other = (Point) object;
         return x == other.x && y == other.y;
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [x=")
+                                  .append(x)
+                                  .append(", y=")
+                                  .append(y)
+                                  .append("]")
+                                  .toString();
+    }
 }

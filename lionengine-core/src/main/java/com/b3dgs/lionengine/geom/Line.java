@@ -112,4 +112,59 @@ public class Line
     {
         return y2;
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(x1);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(y1);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(x2);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(y2);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final Line other = (Line) object;
+        return Double.compare(x1, other.x1) == 0
+               && Double.compare(y1, other.y1) == 0
+               && Double.compare(x2, other.x2) == 0
+               && Double.compare(y2, other.y2) == 0;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [x1=")
+                                  .append(x1)
+                                  .append(", y1=")
+                                  .append(y1)
+                                  .append(", x2=")
+                                  .append(x2)
+                                  .append(", y2=")
+                                  .append(y2)
+                                  .append("]")
+                                  .toString();
+    }
 }

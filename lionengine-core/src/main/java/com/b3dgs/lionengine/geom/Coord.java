@@ -142,4 +142,16 @@ public class Coord implements Localizable
         final Coord other = (Coord) object;
         return Double.compare(x, other.x) == 0 && Double.compare(y, other.y) == 0;
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" [x=")
+                                  .append(x)
+                                  .append(", y=")
+                                  .append(y)
+                                  .append("]")
+                                  .toString();
+    }
 }

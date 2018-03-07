@@ -20,25 +20,99 @@ package com.b3dgs.lionengine.geom;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.util.UtilTests;
+
 /**
  * Test the line class.
  */
 public class LineTest
 {
     /**
-     * Test the line class.
+     * Test the default constructor.
      */
     @Test
-    public void testLine()
+    public void testConstructorDefault()
     {
-        final Line line1 = new Line();
-        line1.set(1.0, -1.0, 1.0, 1.0);
+        final Line line = new Line();
 
-        final Line line2 = new Line(0.0, 0.0, 2.0, 0.0);
-        final Coord point = new Coord(1.0, 0.0);
-        final Coord intersect = Geom.intersection(line1, line2);
+        Assert.assertEquals(0.0, line.getX1(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, line.getY1(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, line.getX2(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, line.getY2(), UtilTests.PRECISION);
+    }
 
-        Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
-        Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
+    /**
+     * Test the constructor with parameters.
+     */
+    @Test
+    public void testConstructorParameters()
+    {
+        final Line line = new Line(1.5, 2.5, 3.5, 4.5);
+
+        Assert.assertEquals(1.5, line.getX1(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, line.getY1(), UtilTests.PRECISION);
+        Assert.assertEquals(3.5, line.getX2(), UtilTests.PRECISION);
+        Assert.assertEquals(4.5, line.getY2(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the set.
+     */
+    @Test
+    public void testSet()
+    {
+        final Line line = new Line();
+        line.set(1.5, 2.5, 3.5, 4.5);
+
+        Assert.assertEquals(1.5, line.getX1(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, line.getY1(), UtilTests.PRECISION);
+        Assert.assertEquals(3.5, line.getX2(), UtilTests.PRECISION);
+        Assert.assertEquals(4.5, line.getY2(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Line coord = new Line();
+
+        Assert.assertEquals(coord, coord);
+
+        Assert.assertEquals(new Line(), new Line());
+        Assert.assertEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 4.5));
+
+        Assert.assertNotEquals(new Line(), null);
+        Assert.assertNotEquals(new Line(), new Object());
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(2.5, 2.5, 3.5, 4.5));
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 1.5, 3.5, 4.5));
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 2.5, 4.5));
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 1.5));
+    }
+
+    /**
+     * Test the hash code.
+     */
+    @Test
+    public void testHash()
+    {
+        Assert.assertEquals(new Line().hashCode(), new Line().hashCode());
+        Assert.assertEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 3.5, 4.5).hashCode());
+
+        Assert.assertNotEquals(new Line().hashCode(), new Object().hashCode());
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(2.5, 2.5, 3.5, 4.5).hashCode());
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 1.5, 3.5, 4.5).hashCode());
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 2.5, 4.5).hashCode());
+        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 3.5, 1.5).hashCode());
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        Assert.assertEquals("Line [x1=1.5, y1=2.5, x2=3.5, y2=4.5]", new Line(1.5, 2.5, 3.5, 4.5).toString());
     }
 }
