@@ -25,7 +25,10 @@ import com.b3dgs.lionengine.Version;
 
 /**
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
- * library used (as it is done for AWT, SWT and Android engine implementation).
+ * library used (as it is done for AWT, SWT and Android implementation).
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @version 9.0.0
  * @since 13 June 2010
@@ -46,16 +49,18 @@ public abstract class Engine
     /** Started engine flag. */
     private static volatile boolean started;
     /** Last engine used. */
-    private static volatile Engine engine;
+    private static Engine engine;
 
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
      * 
-     * @param engine The engine implementation used.
-     * @throws LionEngineException If the engine has already been started.
+     * @param engine The engine implementation used (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument or the engine has already been started.
      */
     public static final synchronized void start(Engine engine)
     {
+        Check.notNull(engine);
+
         if (started)
         {
             throw new LionEngineException(ERROR_STARTED_ALREADY);
@@ -91,7 +96,7 @@ public abstract class Engine
      * @return The program name.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static final String getProgramName()
+    public static final synchronized String getProgramName()
     {
         if (!started)
         {
@@ -106,7 +111,7 @@ public abstract class Engine
      * @return The program version.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static final Version getProgramVersion()
+    public static final synchronized Version getProgramVersion()
     {
         if (!started)
         {
@@ -120,7 +125,7 @@ public abstract class Engine
      * 
      * @return <code>true</code> if started, <code>false</code> else.
      */
-    public static final synchronized boolean isStarted()
+    public static final boolean isStarted()
     {
         return started;
     }
