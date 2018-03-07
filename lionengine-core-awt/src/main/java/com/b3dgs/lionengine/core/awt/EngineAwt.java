@@ -50,7 +50,7 @@ public class EngineAwt extends Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param resourcesDir The main resources directory (can be <code>null</code>).
+     * @param resourcesDir The main resources directory (must not be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
     public static void start(String name, Version version, String resourcesDir)
@@ -71,9 +71,9 @@ public class EngineAwt extends Engine
         Engine.start(new EngineAwt(name, version, classResource));
     }
 
-    /** String resources directory. */
+    /** String resources directory (can be <code>null</code>). */
     private final String resourcesDir;
-    /** Class resource. */
+    /** Class resource (can be <code>null</code>). */
     private final Class<?> classResource;
 
     /**
@@ -81,7 +81,7 @@ public class EngineAwt extends Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param resourcesDir The main resources directory (can be <code>null</code>).
+     * @param resourcesDir The main resources directory (must not be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
     public EngineAwt(String name, Version version, String resourcesDir)
