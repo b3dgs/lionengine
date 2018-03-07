@@ -28,7 +28,7 @@ The engine is as a library, in Jar format (_including its javadoc_), which can b
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
 Using Java 8 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
-Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Lds_).
+Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_, _AdPlug_ and _AdlMidi_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
@@ -91,14 +91,14 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 
 * #### __lionengine-audio-sc68__
->  * Support for Sc68 Atari music
+>  * Support for Sc68 Atari music (Sc68 wrapper)
 
 
 * #### __lionengine-audio-adplug__
 >  * Support for Loudness Sound music (AdPlug wrapper)
 
 * #### __lionengine-audio-adlmidi__
->  * Support for Midi music
+>  * Support for Midi music (AdlMidi wrapper)
 
 ## Download
 
