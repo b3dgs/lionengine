@@ -14,6 +14,16 @@
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
+    <modules>
+        <module>../lionengine-core</module>
+        <module>../lionengine-core-awt</module>
+        <module>../lionengine-game</module>
+        <module>../lionengine-network</module>
+        <module>../lionengine-audio-wav</module>
+        <module>../lionengine-audio-adlmidi</module>
+        <module>../lionengine-audio-adplug</module>
+        <module>../lionengine-audio-sc68</module>
+    </modules>
     <scm>
         <url>https://github.com/b3dgs/lionengine</url>
         <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
@@ -28,16 +38,6 @@
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-9.0.0</sonar-branch>
     </properties>
-    <modules>
-        <module>../lionengine-core</module>
-        <module>../lionengine-core-awt</module>
-        <module>../lionengine-game</module>
-        <module>../lionengine-network</module>
-        <module>../lionengine-audio-wav</module>
-        <module>../lionengine-audio-adlmidi</module>
-        <module>../lionengine-audio-adplug</module>
-        <module>../lionengine-audio-sc68</module>
-    </modules>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
