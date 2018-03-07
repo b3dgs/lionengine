@@ -184,7 +184,7 @@ public class Sc68Test
             sc68.setVolume(30);
             sc68.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            UtilTests.pause(Constant.THOUSAND);
 
             Assert.assertTrue(String.valueOf(sc68.getTicks()), sc68.getTicks() > -1L);
         }
