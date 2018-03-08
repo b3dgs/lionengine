@@ -31,164 +31,35 @@ import com.b3dgs.lionengine.LionEngineException;
 public class AnimatorTest
 {
     /**
-     * Check the animator state.
-     * 
-     * @param animator The animator.
-     * @param first The first frame.
-     * @param expectedFrame The expected frame.
-     * @param expectedState The expected state.
+     * Test the constructor default.
      */
-    private static void testAnimatorState(Animator animator, int first, int expectedFrame, AnimState expectedState)
+    @Test
+    public void testConstructor()
     {
-        Assert.assertEquals(expectedState, animator.getAnimState());
-        Assert.assertEquals(expectedFrame, animator.getFrame());
-        Assert.assertEquals(expectedFrame - first + 1, animator.getFrameAnim());
+        final Animator animator = new AnimatorImpl();
+
+        Assert.assertEquals(AnimState.STOPPED, animator.getAnimState());
+        Assert.assertEquals(Animation.MINIMUM_FRAME, animator.getFrame());
+        Assert.assertEquals(Animation.MINIMUM_FRAME, animator.getFrameAnim());
     }
 
     /**
-     * Test the play case.
+     * Test the play.
      */
     @Test
     public void testPlay()
     {
-        final int first = 2;
-        final int last = 4;
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
         final Animator animator = new AnimatorImpl();
-        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
-
         animator.play(animation);
-        testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, last, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, last, AnimState.FINISHED);
-
-        animator.stop();
-        testAnimatorState(animator, first, last, AnimState.STOPPED);
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
     }
 
     /**
-     * Test the play in reverse case.
-     */
-    @Test
-    public void testPlayReverse()
-    {
-        final int first = 2;
-        final int last = 4;
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, true, false);
-        final Animator animator = new AnimatorImpl();
-        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
-
-        animator.play(animation);
-        testAnimatorState(animator, first, first, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 2, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.REVERSING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first, AnimState.REVERSING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first, AnimState.FINISHED);
-    }
-
-    /**
-     * Test the play in repeat case.
-     */
-    @Test
-    public void testPlayRepeat()
-    {
-        final int first = 2;
-        final int last = 3;
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, true);
-        final Animator animator = new AnimatorImpl();
-        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
-
-        animator.play(animation);
-
-        testAnimatorState(animator, first, first, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-    }
-
-    /**
-     * Test the play in reverse repeat case.
-     */
-    @Test
-    public void testPlayReverseRepeat()
-    {
-        final int first = 2;
-        final int last = 3;
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, true, true);
-        final Animator animator = new AnimatorImpl();
-        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
-
-        animator.play(animation);
-        testAnimatorState(animator, first, first, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first, AnimState.REVERSING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first, AnimState.REVERSING);
-    }
-
-    /**
-     * Test the manipulations.
-     */
-    @Test
-    public void testManipulation()
-    {
-        final int first = 2;
-        final int last = 5;
-        final double speed = 2.0;
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, speed, false, false);
-        final Animator animator = new AnimatorImpl();
-        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
-
-        animator.play(animation);
-        testAnimatorState(animator, first, first, AnimState.PLAYING);
-        animator.setAnimSpeed(speed - 1.0);
-
-        animator.update(1.0);
-        testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
-
-        animator.update(1.0);
-        animator.setFrame(1);
-
-        testAnimatorState(animator, first, 1, AnimState.PLAYING);
-
-        animator.stop();
-        testAnimatorState(animator, first, 1, AnimState.STOPPED);
-    }
-
-    /**
-     * Test the animator with null argument.
+     * Test the play with null argument.
      */
     @Test(expected = LionEngineException.class)
     public void testPlayNull()
@@ -198,24 +69,242 @@ public class AnimatorTest
     }
 
     /**
-     * Test the invalid speed setter.
+     * Test the stop.
      */
-    @Test(expected = LionEngineException.class)
-    public void testNegativeSpeed()
+    @Test
+    public void testStop()
     {
         final Animator animator = new AnimatorImpl();
-        animator.setAnimSpeed(-1.0);
-        Assert.fail();
+        animator.stop();
+
+        Assert.assertEquals(AnimState.STOPPED, animator.getAnimState());
     }
 
     /**
-     * Test the invalid frame setter.
+     * Test the update without loop nor reverse.
+     */
+    @Test
+    public void testUpdateNoLoopNoReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.0, false, false);
+        final Animator animator = new AnimatorImpl();
+        animator.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.FINISHED, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.FINISHED, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+    }
+
+    /**
+     * Test the update with loop but no reverse.
+     */
+    @Test
+    public void testUpdateLoopNoReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, true);
+        final Animator animator = new AnimatorImpl();
+        animator.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(3, animator.getFrame());
+        Assert.assertEquals(3, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+    }
+
+    /**
+     * Test the update without loop but reverse.
+     */
+    @Test
+    public void testUpdateNoLoopReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, false);
+        final Animator animator = new AnimatorImpl();
+        animator.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(3, animator.getFrame());
+        Assert.assertEquals(3, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.FINISHED, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+    }
+
+    /**
+     * Test the update with loop and reverse.
+     */
+    @Test
+    public void testUpdateLoopReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, true);
+        final Animator animator = new AnimatorImpl();
+        animator.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(3, animator.getFrame());
+        Assert.assertEquals(3, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
+        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(1, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(3, animator.getFrame());
+        Assert.assertEquals(3, animator.getFrameAnim());
+
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
+        Assert.assertEquals(2, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrameAnim());
+    }
+
+    /**
+     * Test the set speed.
+     */
+    @Test
+    public void testSetSpeed()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
+        final Animator animator = new AnimatorImpl();
+        animator.play(animation);
+        animator.setAnimSpeed(2.0);
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(3, animator.getFrame());
+        Assert.assertEquals(3, animator.getFrameAnim());
+    }
+
+    /**
+     * Test the invalid speed setter.
      */
     @Test(expected = LionEngineException.class)
-    public void testInvalidFrame()
+    public void testSetSpeedNegative()
+    {
+        final Animator animator = new AnimatorImpl();
+        animator.setAnimSpeed(-1.0);
+    }
+
+    /**
+     * Test the set frame.
+     */
+    @Test
+    public void testSetFrame()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
+        final Animator animator = new AnimatorImpl();
+        animator.play(animation);
+        animator.setFrame(2);
+        animator.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
+        Assert.assertEquals(3, animator.getFrame());
+        Assert.assertEquals(3, animator.getFrameAnim());
+    }
+
+    /**
+     * Test the set frame invalid.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFrameInvalid()
     {
         final Animator animator = new AnimatorImpl();
         animator.setFrame(0);
-        Assert.fail();
     }
 }
