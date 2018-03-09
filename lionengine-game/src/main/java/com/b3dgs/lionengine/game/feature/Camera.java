@@ -264,9 +264,23 @@ public class Camera extends FeaturableModel implements Viewer
     {
         Check.notNull(surface);
 
-        limitRight = Math.max(0, surface.getWidth() - UtilMath.getRounded(width, gridH));
+        if (gridH == 0)
+        {
+            limitRight = 0;
+        }
+        else
+        {
+            limitRight = Math.max(0, surface.getWidth() - UtilMath.getRounded(width, gridH));
+        }
+        if (gridV == 0)
+        {
+            limitTop = 0;
+        }
+        else
+        {
+            limitTop = Math.max(0, surface.getHeight() - UtilMath.getRounded(height, gridV));
+        }
         limitLeft = 0;
-        limitTop = Math.max(0, surface.getHeight() - UtilMath.getRounded(height, gridV));
         limitBottom = 0;
 
         moveLocation(1.0, 0.0, 0.0);
