@@ -38,14 +38,14 @@ final class FontCharData
      * Internal constructor.
      * 
      * @param id The character id (must be superior or equal to 0).
-     * @param width The character width (must be strictly positive).
-     * @param height The character height (must be strictly positive).
+     * @param width The character width (must be positive).
+     * @param height The character height (must be positive).
      */
     FontCharData(int id, int width, int height)
     {
         Check.superiorOrEqual(id, 0);
-        Check.superiorStrict(width, 0);
-        Check.superiorStrict(height, 0);
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
 
         this.id = id;
         this.width = width;
