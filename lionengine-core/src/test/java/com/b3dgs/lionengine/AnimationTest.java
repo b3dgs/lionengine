@@ -29,6 +29,33 @@ public class AnimationTest
     private static final int MIN = Animation.MINIMUM_FRAME;
 
     /**
+     * Test the animation failure minimum frame.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureMinimumFrame()
+    {
+        Assert.assertNotNull(new Animation(Animation.DEFAULT_NAME, MIN - 1, 0, 0.0, false, false));
+    }
+
+    /**
+     * Test the animation failure maximum frame.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureMaximumFrame()
+    {
+        Assert.assertNotNull(new Animation(Animation.DEFAULT_NAME, MIN, MIN - 1, 0.0, false, false));
+    }
+
+    /**
+     * Test the animation failure speed.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureSpeed()
+    {
+        Assert.assertNotNull(new Animation(Animation.DEFAULT_NAME, MIN, MIN + 1, -1.0, false, false));
+    }
+
+    /**
      * Test the animation getter.
      */
     @Test
@@ -48,25 +75,6 @@ public class AnimationTest
         Assert.assertEquals(speed, animation.getSpeed(), 0.01);
         Assert.assertTrue(reverse == animation.hasReverse());
         Assert.assertTrue(repeat == animation.hasRepeat());
-    }
-
-    /**
-     * Test the animation hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final int animation = new Animation("test", 1, 2, 3, false, true).hashCode();
-
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 10, 12, 3, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 12, 3, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 13, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, true, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, false).hashCode());
-
-        Assert.assertNotEquals(animation, new Object().hashCode());
-        Assert.assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true).hashCode());
     }
 
     /**
@@ -91,29 +99,21 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation failure minimum frame.
+     * Test the animation hash code.
      */
-    @Test(expected = LionEngineException.class)
-    public void testFailureMinimumFrame()
+    @Test
+    public void testHashcode()
     {
-        Assert.assertNotNull(new Animation(null, MIN - 1, 0, 0.0, false, false));
-    }
-
-    /**
-     * Test the animation failure maximum frame.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureMaximumFrame()
-    {
-        Assert.assertNotNull(new Animation(null, MIN, MIN - 1, 0.0, false, false));
-    }
-
-    /**
-     * Test the animation failure speed.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureSpeed()
-    {
-        Assert.assertNotNull(new Animation(null, MIN, MIN + 1, -1.0, false, false));
+        final int animation = new Animation("test", 1, 2, 3, false, true).hashCode();
+    
+        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, true).hashCode());
+        Assert.assertEquals(animation, new Animation("test", 10, 12, 3, false, true).hashCode());
+        Assert.assertEquals(animation, new Animation("test", 1, 12, 3, false, true).hashCode());
+        Assert.assertEquals(animation, new Animation("test", 1, 2, 13, false, true).hashCode());
+        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, true, true).hashCode());
+        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, false).hashCode());
+    
+        Assert.assertNotEquals(animation, new Object().hashCode());
+        Assert.assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true).hashCode());
     }
 }
