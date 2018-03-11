@@ -136,7 +136,7 @@ public class EngineAwt extends Engine
     @Override
     protected void close()
     {
-        Medias.setResourcesDirectory(null);
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
         AudioFactory.clearFormats();

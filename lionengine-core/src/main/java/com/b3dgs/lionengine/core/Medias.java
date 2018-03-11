@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.util.UtilFile;
-import com.b3dgs.lionengine.util.UtilFolder;
 import com.b3dgs.lionengine.util.UtilZip;
 
 /**
@@ -39,23 +38,21 @@ import com.b3dgs.lionengine.util.UtilZip;
  */
 public final class Medias
 {
-    /** Unable to create media. */
-    private static final String ERROR_CREATE = "Unable to create media from path: ";
     /** Not in JAR resources. */
     private static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
     /** Factory media implementation. */
-    private static volatile FactoryMedia factoryMedia = new FactoryMediaDefault();
+    private static FactoryMedia factoryMedia = new FactoryMediaDefault();
     /** Path separator. */
     private static volatile String separator = File.separator;
     /** Resources directory. */
     private static volatile String resourcesDir = Constant.EMPTY_STRING;
-    /** Class loader. */
+    /** Class loader (may be <code>null</code>). */
     private static volatile Class<?> loader;
 
     /**
      * Create a media.
      * 
-     * @param path The media path.
+     * @param path The media path (must not be <code>null</code>).
      * @return The media instance.
      * @throws LionEngineException If path is <code>null</code>.
      */
@@ -65,22 +62,64 @@ public final class Medias
         {
             return factoryMedia.create(separator, loader, path);
         }
-        else if (resourcesDir != null)
+        return factoryMedia.create(separator, resourcesDir, path);
+    }
+
+    /**
+     * Set the media factory used (must not be <code>null</code>).
+     * 
+     * @param factoryMedia The media factory used.
+     * @throws LionEngineException If invalid parameter.
+     */
+    public static synchronized void setFactoryMedia(FactoryMedia factoryMedia)
+    {
+        Check.notNull(factoryMedia);
+
+        Medias.factoryMedia = factoryMedia;
+    }
+
+    /**
+     * Define resources directory. Root for all medias. Disable the load from JAR.
+     * 
+     * @param directory The main resources directory (must not be <code>null</code>).
+     * @throws LionEngineException If invalid parameter.
+     */
+    public static synchronized void setResourcesDirectory(String directory)
+    {
+        Check.notNull(directory);
+
+        resourcesDir = directory + getSeparator();
+        loader = null;
+    }
+
+    /**
+     * Activate or no the resources loading from *.jar. A <code>null</code> value will disable load from jar.
+     * 
+     * @param clazz The class loader reference resources entry point (may be <code>null</code>).
+     */
+    public static synchronized void setLoadFromJar(Class<?> clazz)
+    {
+        loader = clazz;
+        if (loader != null)
         {
-            return factoryMedia.create(separator, resourcesDir, path);
+            setSeparator(Constant.SLASH);
         }
-        throw new LionEngineException(ERROR_CREATE + UtilFolder.getPath(path));
+        else
+        {
+            setSeparator(File.separator);
+        }
     }
 
     /**
      * Get a media from an existing file descriptor. {@link #setResourcesDirectory(String)} must be activated.
      * 
-     * @param file The file descriptor.
+     * @param file The file descriptor (must not be <code>null</code>).
      * @return The media instance.
+     * @throws LionEngineException If invalid parameter.
      */
     public static synchronized Media get(File file)
     {
-        Check.notNull(resourcesDir);
+        Check.notNull(file);
 
         final String filename = file.getPath();
         final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
@@ -91,12 +130,16 @@ public final class Medias
     /**
      * Get all media by extension found in the direct path (does not search in sub folders).
      * 
-     * @param extension The extension (without dot; eg: png).
-     * @param folder The folder to search in.
+     * @param extension The extension without dot; eg: png (must not be <code>null</code>).
+     * @param folder The folder to search in (must not be <code>null</code>).
      * @return The medias found.
+     * @throws LionEngineException If invalid parameters.
      */
     public static synchronized List<Media> getByExtension(String extension, Media folder)
     {
+        Check.notNull(extension);
+        Check.notNull(folder);
+
         try
         {
             final File jar = getJarResources();
@@ -114,11 +157,12 @@ public final class Medias
     /**
      * Get all media by extension found in the direct JAR path (does not search in sub folders).
      * 
-     * @param jar The JAR file.
-     * @param fullPath The full path in JAR.
-     * @param prefixLength The prefix length in JAR.
-     * @param extension The extension (without dot; eg: png).
+     * @param jar The JAR file (must not be <code>null</code>).
+     * @param fullPath The full path in JAR (must not be <code>null</code>).
+     * @param prefixLength The prefix length in JAR (must not be <code>null</code>).
+     * @param extension The extension without dot; eg: png (must not be <code>null</code>).
      * @return The medias found.
+     * @throws LionEngineException If invalid parameters.
      */
     public static synchronized List<Media> getByExtension(File jar, String fullPath, int prefixLength, String extension)
     {
@@ -130,6 +174,113 @@ public final class Medias
             medias.add(media);
         }
         return medias;
+    }
+
+    /**
+     * Get the media with an additional suffix, just before the dot of the extension if has.
+     * 
+     * @param media The current media reference (must not be <code>null</code>)
+     * @param suffix The suffix to add (must not be <code>null</code>)
+     * @return The new media with suffix added.
+     * @throws LionEngineException If invalid parameters.
+     */
+    public static synchronized Media getWithSuffix(Media media, String suffix)
+    {
+        Check.notNull(media);
+        Check.notNull(suffix);
+
+        final String path = media.getPath();
+        final int dotIndex = path.lastIndexOf(Constant.DOT);
+        if (dotIndex > -1)
+        {
+            return Medias.create(path.substring(0, dotIndex) + Constant.UNDERSCORE + suffix + path.substring(dotIndex));
+        }
+        return Medias.create(path + Constant.UNDERSCORE + suffix);
+    }
+
+    /**
+     * Get the resources directory.
+     * 
+     * @return The resources directory.
+     */
+    public static String getResourcesDirectory()
+    {
+        return resourcesDir;
+    }
+
+    /**
+     * Get the resources loader.
+     * 
+     * @return The resources loader, <code>null</code> if none.
+     */
+    public static Class<?> getResourcesLoader()
+    {
+        return loader;
+    }
+
+    /**
+     * Get the running JAR resources. Load from JAR must be enabled.
+     * 
+     * @return The JAR file.
+     * @throws LionEngineException If JAR not available.
+     */
+    public static synchronized File getJarResources()
+    {
+        if (loader == null)
+        {
+            throw new LionEngineException(JAR_LOADER_ERROR);
+        }
+
+        final Media media = Medias.create(Constant.EMPTY_STRING);
+        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
+        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final int jarSeparatorIndex = path.indexOf(prefix);
+        final String jar = path.substring(0, jarSeparatorIndex);
+
+        return new File(jar);
+    }
+
+    /**
+     * Get the running JAR resources prefix folder. Load from JAR must be enabled.
+     * 
+     * @return The resources prefix folder.
+     * @throws LionEngineException If JAR not available.
+     */
+    public static synchronized String getJarResourcesPrefix()
+    {
+        if (loader == null)
+        {
+            throw new LionEngineException(JAR_LOADER_ERROR);
+        }
+        final Media media = Medias.create(Constant.EMPTY_STRING);
+        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
+        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final int jarSeparatorIndex = path.indexOf(prefix);
+
+        return path.substring(jarSeparatorIndex).replace(File.separator, Constant.SLASH);
+    }
+
+    /**
+     * Set the path separator.
+     * 
+     * @param separator The path separator (must not be <code>null</code>).
+     * @throws LionEngineException If invalid parameter.
+     */
+    public static void setSeparator(String separator)
+    {
+        Check.notNull(separator);
+
+        Medias.separator = separator;
+    }
+
+    /**
+     * Get the path separator.
+     * 
+     * @return The path separator.
+     */
+    public static String getSeparator()
+    {
+        return separator;
     }
 
     /**
@@ -162,152 +313,6 @@ public final class Medias
                 filesList.add(content);
             }
         }
-    }
-
-    /**
-     * Set the media factory used.
-     * 
-     * @param factoryMedia The media factory used.
-     */
-    public static synchronized void setFactoryMedia(FactoryMedia factoryMedia)
-    {
-        Medias.factoryMedia = factoryMedia;
-    }
-
-    /**
-     * Define resources directory. Root for all medias. Disable the load from JAR.
-     * 
-     * @param directory The main resources directory (may be <code>null</code>).
-     */
-    public static synchronized void setResourcesDirectory(String directory)
-    {
-        if (directory == null)
-        {
-            resourcesDir = null;
-        }
-        else
-        {
-            resourcesDir = directory + getSeparator();
-        }
-        loader = null;
-    }
-
-    /**
-     * Activate or no the resources loading from *.jar. A <code>null</code> value will disable load from jar.
-     * 
-     * @param clazz The class loader reference (resources entry point).
-     */
-    public static synchronized void setLoadFromJar(Class<?> clazz)
-    {
-        loader = clazz;
-        if (loader != null)
-        {
-            setSeparator(Constant.SLASH);
-        }
-        else
-        {
-            setSeparator(File.separator);
-        }
-    }
-
-    /**
-     * Get the media with an additional suffix, just before the dot of the extension if has.
-     * 
-     * @param media The current media reference.
-     * @param suffix The suffix to add.
-     * @return The new media with suffix added.
-     */
-    public static synchronized Media getWithSuffix(Media media, String suffix)
-    {
-        final String path = media.getPath();
-        final int dotIndex = path.lastIndexOf(Constant.DOT);
-        if (dotIndex > -1)
-        {
-            return Medias.create(path.substring(0, dotIndex) + Constant.UNDERSCORE + suffix + path.substring(dotIndex));
-        }
-        return Medias.create(path + Constant.UNDERSCORE + suffix);
-    }
-
-    /**
-     * Get the resources directory.
-     * 
-     * @return The resources directory.
-     */
-    public static synchronized String getResourcesDirectory()
-    {
-        return resourcesDir;
-    }
-
-    /**
-     * Get the resources loader.
-     * 
-     * @return The resources loader, <code>null</code> if none.
-     */
-    public static synchronized Class<?> getResourcesLoader()
-    {
-        return loader;
-    }
-
-    /**
-     * Get the running JAR resources. Load from JAR must be enabled.
-     * 
-     * @return The JAR file.
-     * @throws LionEngineException If JAR not available.
-     */
-    public static File getJarResources()
-    {
-        if (loader == null)
-        {
-            throw new LionEngineException(JAR_LOADER_ERROR);
-        }
-
-        final Media media = Medias.create(Constant.EMPTY_STRING);
-        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
-        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
-        final int jarSeparatorIndex = path.indexOf(prefix);
-        final String jar = path.substring(0, jarSeparatorIndex);
-
-        return new File(jar);
-    }
-
-    /**
-     * Get the running JAR resources prefix folder. Load from JAR must be enabled.
-     * 
-     * @return The resources prefix folder.
-     * @throws LionEngineException If JAR not available.
-     */
-    public static String getJarResourcesPrefix()
-    {
-        if (loader == null)
-        {
-            throw new LionEngineException(JAR_LOADER_ERROR);
-        }
-        final Media media = Medias.create(Constant.EMPTY_STRING);
-        final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
-        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
-        final int jarSeparatorIndex = path.indexOf(prefix);
-
-        return path.substring(jarSeparatorIndex).replace(File.separator, Constant.SLASH);
-    }
-
-    /**
-     * Set the path separator.
-     * 
-     * @param separator The path separator.
-     */
-    public static synchronized void setSeparator(String separator)
-    {
-        Medias.separator = separator;
-    }
-
-    /**
-     * Get the path separator.
-     * 
-     * @return The path separator.
-     */
-    public static synchronized String getSeparator()
-    {
-        return separator;
     }
 
     /**

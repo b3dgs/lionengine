@@ -123,18 +123,6 @@ public class MediasTest
     }
 
     /**
-     * Test the create media from resources directory.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testCreateMediaError()
-    {
-        Medias.setResourcesDirectory(null);
-        Medias.setLoadFromJar(null);
-
-        Assert.assertNull(Medias.create("test.txt"));
-    }
-
-    /**
      * Test the get with suffix.
      */
     @Test
@@ -159,17 +147,6 @@ public class MediasTest
         final Media media = Medias.get(file);
         Assert.assertEquals(file, media.getFile());
         Assert.assertEquals("test.txt", media.getPath());
-    }
-
-    /**
-     * Test the get file no resources.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetFileNoResources()
-    {
-        Medias.setResourcesDirectory(null);
-        final File file = new File("test.txt");
-        Assert.assertNull(Medias.get(file));
     }
 
     /**

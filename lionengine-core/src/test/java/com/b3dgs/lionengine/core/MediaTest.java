@@ -106,7 +106,6 @@ public class MediaTest
     @Test
     public void testInputStream() throws IOException
     {
-        Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create("image.png");
 
