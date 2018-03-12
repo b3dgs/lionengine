@@ -27,11 +27,13 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the image class.
@@ -40,8 +42,6 @@ public class ImageTest
 {
     /** Image media. */
     private static Media media;
-    /** Graphic test output. */
-    private static Graphic g;
 
     /**
      * Prepare test.
@@ -49,11 +49,10 @@ public class ImageTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(ImageTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setLoadFromJar(ImageTest.class);
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -62,129 +61,210 @@ public class ImageTest
     @AfterClass
     public static void cleanUp()
     {
-        g.dispose();
-
-        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+        Medias.setLoadFromJar(null);
     }
 
     /**
-     * Test function around the image failure.
+     * Test the constructor with media.
      */
     @Test
-    public void testImageFailure()
+    public void testConstructorMedia()
     {
+        final Image image = new ImageImpl(media);
+
+        Assert.assertFalse(image.isLoaded());
+        Assert.assertNull(image.getSurface());
+        Assert.assertEquals(64, image.getWidth());
+        Assert.assertEquals(32, image.getHeight());
+    }
+
+    /**
+     * Test the constructor with surface.
+     */
+    @Test
+    public void testConstructorSurface()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final Image image = new ImageImpl(surface);
+
+        Assert.assertTrue(image.isLoaded());
+        Assert.assertEquals(surface, image.getSurface());
+        Assert.assertEquals(64, image.getWidth());
+        Assert.assertEquals(32, image.getHeight());
+    }
+
+    /**
+     * Test the load with media.
+     */
+    @Test
+    public void testLoadMedia()
+    {
+        final Image image = new ImageImpl(media);
+        image.load();
+
+        Assert.assertNotNull(image.getSurface());
+
+        image.prepare();
+        image.dispose();
+    }
+
+    /**
+     * Test the load with media already loaded.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadMediaAlready()
+    {
+        final Image image = new ImageImpl(media);
+        image.load();
+        image.load();
+    }
+
+    /**
+     * Test the load with surface.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadSurface()
+    {
+        final Image image = new ImageImpl(Graphics.createImageBuffer(64, 32));
+        image.load();
+    }
+
+    /**
+     * Test the set location.
+     */
+    @Test
+    public void testSetLocation()
+    {
+        final ImageImpl image = new ImageImpl(Graphics.createImageBuffer(64, 32));
+
+        Assert.assertEquals(0.0, image.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, image.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(0, image.getRenderX());
+        Assert.assertEquals(0, image.getRenderY());
+
+        image.setLocation(1.5, 2.5);
+
+        Assert.assertEquals(1.5, image.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, image.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1, image.getRenderX());
+        Assert.assertEquals(2, image.getRenderY());
+    }
+
+    /**
+     * Test the set location with viewer.
+     */
+    @Test
+    public void testSetLocationViewer()
+    {
+        final ImageImpl image = new ImageImpl(Graphics.createImageBuffer(64, 32));
+        final ViewerMock viewer = new ViewerMock();
+        image.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
+
+        Assert.assertEquals(1.5, image.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(237.5, image.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1, image.getRenderX());
+        Assert.assertEquals(237, image.getRenderY());
+
+        viewer.set(10, 20);
+        image.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
+
+        Assert.assertEquals(-8.5, image.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(257.5, image.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-9, image.getRenderX());
+        Assert.assertEquals(257, image.getRenderY());
+    }
+
+    /**
+     * Test the origin <code>null</code>.
+     */
+    @Test
+    public void testRenderingPoint()
+    {
+        final ImageImpl image = new ImageImpl(Graphics.createImageBuffer(10, 20));
+        image.setLocation(5.0, 10.0);
+        image.setOrigin(Origin.TOP_LEFT);
+
+        Assert.assertEquals(5, image.getRenderX());
+        Assert.assertEquals(10, image.getRenderY());
+
+        image.setOrigin(Origin.MIDDLE);
+
+        Assert.assertEquals(0, image.getRenderX());
+        Assert.assertEquals(0, image.getRenderY());
+    }
+
+    /**
+     * Test the origin <code>null</code>.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetOriginNull()
+    {
+        final Image image = new ImageImpl(Graphics.createImageBuffer(64, 32));
+        image.setOrigin(null);
+    }
+
+    /**
+     * Test the render.
+     */
+    @Test
+    public void testRender()
+    {
+        final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         try
         {
-            Graphics.createImageBuffer(-16, 16);
-            Assert.fail();
+            final Image image = new ImageImpl(Graphics.createImageBuffer(64, 32));
+            image.render(g);
         }
-        catch (final LionEngineException exception)
+        finally
         {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            Graphics.createImageBuffer(16, -16);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        // Load unexisting image
-        try
-        {
-            Drawable.loadImage(Medias.create("void"));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            Drawable.loadImage(Graphics.createImageBuffer(1, 1)).load();
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            final Image image = Drawable.loadImage(media);
-            image.load();
-            image.load();
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
+            g.dispose();
         }
     }
 
     /**
-     * Test function around the image.
+     * Test the equals.
      */
     @Test
-    public void testImage()
+    public void testEquals()
     {
-        final int width = 16;
-        final int height = 16;
-        final ImageBuffer surface = Graphics.createImageBuffer(width, height);
-        final Image imageA = Drawable.loadImage(surface);
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final Image image = new ImageImpl(surface);
+        final Image imageMedia = new ImageImpl(media);
+        imageMedia.load();
 
-        final Image check = Drawable.loadImage(Medias.create("image.png"));
-        check.load();
-        check.prepare();
-        check.dispose();
-        Assert.assertNotEquals(check.hashCode(), Drawable.loadImage(check.getSurface()).hashCode());
+        Assert.assertEquals(image, image);
+        Assert.assertEquals(image, new ImageImpl(surface));
+        Assert.assertEquals(imageMedia, imageMedia);
 
-        Assert.assertNotNull(imageA);
-        Assert.assertEquals(width, imageA.getWidth());
-        Assert.assertEquals(height, imageA.getHeight());
-        Assert.assertEquals(surface, imageA.getSurface());
+        Assert.assertNotEquals(image, null);
+        Assert.assertNotEquals(image, new Object());
+        Assert.assertNotEquals(image, new ImageImpl(media));
+        Assert.assertNotEquals(imageMedia, new ImageImpl(media));
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(64, 32)));
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(32, 32)));
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(64, 64)));
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(32, 64)));
+    }
 
-        imageA.setLocation(1.0, 2.0);
-        imageA.setOrigin(Origin.TOP_LEFT);
-        Assert.assertEquals(1.0, imageA.getX(), 0.001);
-        Assert.assertEquals(2.0, imageA.getY(), 0.001);
+    /**
+     * Test the hash.
+     */
+    @Test
+    public void testHash()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final int image = new ImageImpl(surface).hashCode();
+        final Image imageMedia = new ImageImpl(media);
+        imageMedia.load();
 
-        imageA.setLocation(new ViewerMock(), imageA);
-        Assert.assertEquals(1.0, imageA.getX(), 0.001);
-        Assert.assertEquals(2.0, imageA.getY(), 0.001);
+        Assert.assertEquals(image, new ImageImpl(surface).hashCode());
 
-        // Share correctly the surface
-        final Image imageB = Drawable.loadImage(imageA.getSurface());
-        Assert.assertEquals(imageA, imageB);
-        Assert.assertEquals(imageB, Drawable.loadImage(imageB.getSurface()));
-
-        // Load from file
-        final Image imageC = Drawable.loadImage(media);
-        imageC.load();
-        imageC.prepare();
-        DrawableTestTool.assertImageInfoCorrect(media, imageC);
-        Assert.assertNotNull(imageC.getSurface());
-        DrawableTestTool.testImageRender(g, imageC);
-        Assert.assertFalse(imageC.equals(Drawable.loadImage(media)));
-
-        // Equals
-        final ImageBuffer surfaceA = Graphics.createImageBuffer(16, 16);
-        final Image imageD = Drawable.loadImage(surfaceA);
-        final ImageBuffer surfaceB = Graphics.createImageBuffer(16, 20);
-        final Image imageE = Drawable.loadImage(surfaceB);
-        final ImageBuffer surfaceC = Graphics.createImageBuffer(20, 16);
-        final Image imageF = Drawable.loadImage(surfaceC);
-
-        Assert.assertTrue(imageD.equals(imageD));
-        Assert.assertFalse(imageD.equals(null));
-        Assert.assertFalse(imageD.equals(imageE));
-        Assert.assertFalse(imageD.equals(imageF));
+        Assert.assertNotEquals(image, new Object().hashCode());
+        Assert.assertNotEquals(imageMedia.hashCode(), new ImageImpl(media).hashCode());
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(64, 32)).hashCode());
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(32, 32)).hashCode());
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(64, 64)).hashCode());
+        Assert.assertNotEquals(image, new ImageImpl(Graphics.createImageBuffer(32, 64)).hashCode());
     }
 }

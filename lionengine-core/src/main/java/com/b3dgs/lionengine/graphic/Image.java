@@ -68,7 +68,8 @@ public interface Image extends Resource, Shape, Renderable
      * Set the origin location type, related to surface area. The type will affect the defined location and the
      * rendering point.
      * 
-     * @param origin The origin type
+     * @param origin The origin type (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setOrigin(Origin origin);
 

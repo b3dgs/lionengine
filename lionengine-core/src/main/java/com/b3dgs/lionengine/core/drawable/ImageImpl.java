@@ -87,6 +87,38 @@ class ImageImpl implements Image
         media = null;
     }
 
+    /**
+     * Compute the rendering point.
+     * 
+     * @param width The width to use.
+     * @param height The height to use.
+     */
+    protected void computeRenderingPoint(int width, int height)
+    {
+        rx = (int) Math.floor(origin.getX(x, width));
+        ry = (int) Math.floor(origin.getY(y, height));
+    }
+
+    /**
+     * Get the horizontal rendering point.
+     * 
+     * @return The horizontal rendering point.
+     */
+    protected int getRenderX()
+    {
+        return rx;
+    }
+
+    /**
+     * Get the vertical rendering point.
+     * 
+     * @return The vertical rendering point.
+     */
+    protected int getRenderY()
+    {
+        return ry;
+    }
+
     /*
      * Image
      */
@@ -126,7 +158,10 @@ class ImageImpl implements Image
     @Override
     public void setOrigin(Origin origin)
     {
+        Check.notNull(origin);
+
         this.origin = origin;
+        computeRenderingPoint(width, height);
     }
 
     @Override
@@ -134,8 +169,7 @@ class ImageImpl implements Image
     {
         this.x = x;
         this.y = y;
-        rx = (int) origin.getX(x, width);
-        ry = (int) origin.getY(y, height);
+        computeRenderingPoint(width, height);
     }
 
     @Override
@@ -209,16 +243,16 @@ class ImageImpl implements Image
     {
         final int prime = 31;
         int result = 1;
-        final int code;
+        if (surface != null)
+        {
+            result = prime * result + surface.hashCode();
+        }
         if (media != null)
         {
-            code = media.hashCode();
+            result = prime * result + media.hashCode();
         }
-        else
-        {
-            code = surface.hashCode();
-        }
-        result = prime * result + code;
+        result = prime * result + width;
+        result = prime * result + height;
         return result;
     }
 }
