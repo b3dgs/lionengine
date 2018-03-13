@@ -78,13 +78,13 @@ public class ViewerMock implements Viewer
     @Override
     public double getViewpointX(double x)
     {
-        return x;
+        return x - getX();
     }
 
     @Override
     public double getViewpointY(double y)
     {
-        return y;
+        return getY() + getHeight() - y - getViewY();
     }
 
     @Override
