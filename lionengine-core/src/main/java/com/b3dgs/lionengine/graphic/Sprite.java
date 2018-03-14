@@ -63,7 +63,7 @@ public interface Sprite extends Image
     /**
      * Apply a filter to the sprite.
      * 
-     * @param filter The filter to use.
+     * @param filter The filter to use (must not be <code>null</code>).
      * @throws LionEngineException If the filter is not supported.
      */
     void filter(Filter filter);
@@ -71,7 +71,7 @@ public interface Sprite extends Image
     /**
      * Set transparency color mask.
      * 
-     * @param mask The color mask.
+     * @param mask The color mask (must not be <code>null</code>).
      */
     void setTransparency(ColorRgba mask);
 

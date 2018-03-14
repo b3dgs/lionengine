@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core.drawable;
 
-import java.util.Arrays;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -42,8 +40,8 @@ import com.b3dgs.lionengine.graphic.UtilColor;
  */
 class SpriteImpl implements Sprite
 {
-    /** Surface already loaded error. */
-    private static final String ERROR_LOADED = "Surface has already been loaded !";
+    /** Error already loaded. */
+    private static final String ERROR_ALREADY_LOADED = "Surface has already been loaded: ";
 
     /** Sprite file name. */
     private final Media media;
@@ -199,7 +197,11 @@ class SpriteImpl implements Sprite
     {
         if (surface != null)
         {
-            throw new LionEngineException(ERROR_LOADED);
+            if (media != null)
+            {
+                throw new LionEngineException(media, ERROR_ALREADY_LOADED);
+            }
+            throw new LionEngineException(ERROR_ALREADY_LOADED);
         }
         surface = Graphics.getImageBuffer(media);
     }
@@ -243,6 +245,8 @@ class SpriteImpl implements Sprite
     @Override
     public final void filter(Filter filter)
     {
+        Check.notNull(filter);
+
         lazySurfaceBackup();
         surface = filter.filter(surfaceOriginal);
         width = surface.getWidth();
@@ -258,7 +262,10 @@ class SpriteImpl implements Sprite
     @Override
     public void setOrigin(Origin origin)
     {
+        Check.notNull(origin);
+
         this.origin = origin;
+        computeRenderingPoint(width, height);
     }
 
     @Override
@@ -320,6 +327,8 @@ class SpriteImpl implements Sprite
     @Override
     public final void setMirror(Mirror mirror)
     {
+        Check.notNull(mirror);
+
         this.mirror = mirror;
     }
 
@@ -394,18 +403,16 @@ class SpriteImpl implements Sprite
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + width;
-        result = prime * result + height;
-        if (media != null)
-        {
-            result = prime * result + media.hashCode();
-        }
-        result = prime * result + Arrays.hashCode(rgb);
         if (surface != null)
         {
             result = prime * result + surface.hashCode();
         }
-        result = prime * result + mirror.hashCode();
+        if (media != null)
+        {
+            result = prime * result + media.hashCode();
+        }
+        result = prime * result + width;
+        result = prime * result + height;
         return result;
     }
 }
