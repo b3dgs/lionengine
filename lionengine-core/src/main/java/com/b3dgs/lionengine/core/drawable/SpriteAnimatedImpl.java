@@ -34,6 +34,8 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 {
     /** Animator reference. */
     private final Animator animator = new AnimatorImpl();
+    /** Media reference (<code>null</code> if none). */
+    private final Media media;
     /** Number of horizontal frames. */
     private final int horizontalFrames;
     /** Number of vertical frames. */
@@ -60,6 +62,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         Check.superiorStrict(horizontalFrames, 0);
         Check.superiorStrict(verticalFrames, 0);
 
+        this.media = media;
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
         framesNumber = horizontalFrames * verticalFrames;
@@ -82,6 +85,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         Check.superiorStrict(horizontalFrames, 0);
         Check.superiorStrict(verticalFrames, 0);
 
+        media = null;
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
         framesNumber = horizontalFrames * verticalFrames;
@@ -227,24 +231,28 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         }
         final SpriteAnimated sprite = (SpriteAnimated) object;
 
-        final boolean sameSprite = super.equals(object);
-        final boolean sameFrameWidth = sprite.getTileWidth() == getTileWidth();
-        final boolean sameFrameHeight = sprite.getTileHeight() == getTileHeight();
-        final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
-        final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
-
-        final boolean sameSize = sameFrameWidth && sameFrameHeight;
-        final boolean sameFrames = sameHorizontalFrames && sameVerticalFrames;
-
-        return sameSize && sameFrames && sameSprite;
+        final boolean sameSurface = sprite.getSurface() == getSurface();
+        final boolean sameSize = sprite.getWidth() == getWidth() && sprite.getHeight() == getHeight();
+        final boolean sameFrames = horizontalFrames == sprite.getFramesHorizontal()
+                                   && verticalFrames == sprite.getFramesVertical();
+        return sameSize && sameSurface && sameFrames;
     }
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + animator.hashCode();
+        int result = 1;
+        if (getSurface() != null)
+        {
+            result = prime * result + getSurface().hashCode();
+        }
+        if (media != null)
+        {
+            result = prime * result + media.hashCode();
+        }
+        result = prime * result + getWidth();
+        result = prime * result + getHeight();
         result = prime * result + horizontalFrames;
         result = prime * result + verticalFrames;
         return result;

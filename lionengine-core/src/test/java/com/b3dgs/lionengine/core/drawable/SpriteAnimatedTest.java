@@ -24,28 +24,30 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.filter.FilterBilinear;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.ImageBufferMock;
-import com.b3dgs.lionengine.graphic.ImageHeader;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the animated sprite class.
+ * Test the sprite class.
  */
 public class SpriteAnimatedTest
 {
     /** Image media. */
     private static Media media;
-    /** Graphic test output. */
-    private static Graphic g;
 
     /**
      * Prepare test.
@@ -53,11 +55,10 @@ public class SpriteAnimatedTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(SpriteAnimatedTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setLoadFromJar(SpriteAnimatedTest.class);
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -66,124 +67,667 @@ public class SpriteAnimatedTest
     @AfterClass
     public static void cleanUp()
     {
-        g.dispose();
-
-        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+        Medias.setLoadFromJar(null);
     }
 
     /**
-     * Test function around animated sprite and animation.
+     * Test the constructor with media.
      */
     @Test
-    public void testSpriteAnimated()
+    public void testConstructorMedia()
     {
-        final ImageBuffer buffer = Graphics.createImageBuffer(16, 16);
-        final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(buffer, 1, 1);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(media, 16, 8);
 
-        Assert.assertNotNull(spriteA.getSurface());
+        Assert.assertFalse(sprite.isLoaded());
+        Assert.assertNull(sprite.getSurface());
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(4, sprite.getTileWidth());
+        Assert.assertEquals(4, sprite.getTileHeight());
+        Assert.assertEquals(16, sprite.getFramesHorizontal());
+        Assert.assertEquals(8, sprite.getFramesVertical());
+    }
 
-        final Animator animator = new AnimatorImpl();
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 6, 1.0, false, false);
+    /**
+     * Test the constructor with surface.
+     */
+    @Test
+    public void testConstructorSurface()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(surface, 16, 8);
 
-        // Load from file
-        final int framesH = 4;
-        final int framesV = 2;
-        final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(media, framesH, framesV);
-        final ImageHeader info = DrawableTestTool.assertImageInfoCorrect(media, spriteC);
+        Assert.assertTrue(sprite.isLoaded());
+        Assert.assertEquals(surface, sprite.getSurface());
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(4, sprite.getTileWidth());
+        Assert.assertEquals(4, sprite.getTileHeight());
+        Assert.assertEquals(16, sprite.getFramesHorizontal());
+        Assert.assertEquals(8, sprite.getFramesVertical());
+    }
 
-        Assert.assertEquals(info.getWidth() / framesH, spriteC.getTileWidth());
-        Assert.assertEquals(info.getHeight() / framesV, spriteC.getTileHeight());
-        Assert.assertEquals(0, spriteC.getFrameOffsetX());
-        Assert.assertEquals(0, spriteC.getFrameOffsetY());
+    /**
+     * Test the load with media.
+     */
+    @Test
+    public void testLoadMedia()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(media, 16, 8);
+        sprite.load();
 
-        spriteC.setFrameOffsets(1, 2);
+        Assert.assertNotNull(sprite.getSurface());
 
-        Assert.assertEquals(1, spriteC.getFrameOffsetX());
-        Assert.assertEquals(2, spriteC.getFrameOffsetY());
+        sprite.prepare();
+        sprite.dispose();
+    }
 
-        DrawableTestTool.testSpriteLoading(spriteC);
-        DrawableTestTool.testSpriteModification(2, spriteA);
+    /**
+     * Test the load with media already loaded.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadMediaAlready()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(media, 16, 8);
+        sprite.load();
+        sprite.load();
+    }
 
-        // Equals
-        final SpriteAnimated spriteD = Drawable.loadSpriteAnimated(media, framesH, framesV);
-        final SpriteAnimated spriteE = Drawable.loadSpriteAnimated(media, framesH + 2, framesV + 1);
-        spriteD.load();
-        spriteD.prepare();
-        spriteE.load();
-        spriteE.prepare();
-        Assert.assertFalse(spriteD.equals(spriteE));
-        spriteE.stretch(110, 100);
-        spriteD.setMirror(Mirror.HORIZONTAL);
-        final int hash = spriteD.hashCode();
-        Assert.assertFalse(spriteD.equals(spriteE));
-        spriteE.stretch(100, 110);
-        spriteD.setMirror(Mirror.NONE);
-        Assert.assertFalse(spriteD.equals(spriteE));
-        spriteE.stretch(110, 110);
-        Assert.assertTrue(hash != spriteD.hashCode());
-        spriteD.setMirror(Mirror.VERTICAL);
-        Assert.assertTrue(hash != spriteD.hashCode());
-        Assert.assertFalse(spriteD.equals(null));
-        Assert.assertFalse(spriteD.equals(spriteE));
-        final SpriteAnimated spriteF = Drawable.loadSpriteAnimated(spriteD.getSurface(), framesH, framesV);
-        Assert.assertTrue(spriteD.equals(spriteF));
+    /**
+     * Test the load with surface.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadSurface()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.load();
+    }
 
+    /**
+     * Test the stretch sprite.
+     */
+    @Test
+    public void testStretch()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stretch(100.0, 100.0);
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(4, sprite.getTileWidth());
+        Assert.assertEquals(4, sprite.getTileHeight());
+
+        sprite.stretch(200.0, 100.0);
+
+        Assert.assertEquals(128, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(8, sprite.getTileWidth());
+        Assert.assertEquals(4, sprite.getTileHeight());
+
+        sprite.stretch(100.0, 200.0);
+
+        Assert.assertEquals(128, sprite.getWidth());
+        Assert.assertEquals(64, sprite.getHeight());
+        Assert.assertEquals(8, sprite.getTileWidth());
+        Assert.assertEquals(8, sprite.getTileHeight());
+
+        sprite.stretch(200.0, 200.0);
+
+        Assert.assertEquals(256, sprite.getWidth());
+        Assert.assertEquals(128, sprite.getHeight());
+        Assert.assertEquals(16, sprite.getTileWidth());
+        Assert.assertEquals(16, sprite.getTileHeight());
+    }
+
+    /**
+     * Test the stretch sprite with invalid width.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testStretchInvalidWidth()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stretch(0.0, 100.0);
+    }
+
+    /**
+     * Test the stretch sprite with invalid height.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testStretchInvalidHeight()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stretch(100, 0.0);
+    }
+
+    /**
+     * Test the rotate sprite.
+     */
+    @Test
+    public void testRotate()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        for (int angle = -720; angle < 720; angle++)
+        {
+            sprite.rotate(angle);
+            Assert.assertTrue(angle + Constant.SPACE + sprite.getWidth(), sprite.getWidth() >= 64);
+            Assert.assertTrue(angle + Constant.SPACE + sprite.getHeight(), sprite.getHeight() >= 32);
+        }
+    }
+
+    /**
+     * Test the set location.
+     */
+    @Test
+    public void testSetLocation()
+    {
+        final SpriteAnimatedImpl sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+
+        Assert.assertEquals(0.0, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(0, sprite.getRenderX());
+        Assert.assertEquals(0, sprite.getRenderY());
+
+        sprite.setLocation(1.5, 2.5);
+
+        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1, sprite.getRenderX());
+        Assert.assertEquals(2, sprite.getRenderY());
+    }
+
+    /**
+     * Test the set location with viewer.
+     */
+    @Test
+    public void testSetLocationViewer()
+    {
+        final SpriteAnimatedImpl sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        final ViewerMock viewer = new ViewerMock();
+        sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
+
+        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(237.5, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1, sprite.getRenderX());
+        Assert.assertEquals(237, sprite.getRenderY());
+
+        viewer.set(10, 20);
+        sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
+
+        Assert.assertEquals(-8.5, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(257.5, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-9, sprite.getRenderX());
+        Assert.assertEquals(257, sprite.getRenderY());
+    }
+
+    /**
+     * Test the set alpha.
+     */
+    @Test
+    public void testSetAlpha()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        for (int alpha = 0; alpha < 256; alpha++)
+        {
+            sprite.setAlpha(alpha);
+
+            Assert.assertEquals(64, sprite.getWidth());
+            Assert.assertEquals(32, sprite.getHeight());
+        }
+    }
+
+    /**
+     * Test the set alpha too low.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetAlphaLow()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setAlpha(-1);
+    }
+
+    /**
+     * Test the set alpha too high.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetAlphaHigh()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setAlpha(256);
+    }
+
+    /**
+     * Test the set transparency.
+     */
+    @Test
+    public void testSetTransparency()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setTransparency(ColorRgba.BLACK);
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test the set fade.
+     */
+    @Test
+    public void testSetFade()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setFade(128, 128);
+        sprite.setFade(128, 128);
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test the filter bilinear.
+     */
+    @Test
+    public void testFilter()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.filter(new FilterBilinear());
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test the filter.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFilterNull()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.filter(null);
+    }
+
+    /**
+     * Test the mirror.
+     */
+    @Test
+    public void testMirror()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+
+        Assert.assertEquals(Mirror.NONE, sprite.getMirror());
+
+        sprite.setMirror(Mirror.HORIZONTAL);
+
+        Assert.assertEquals(Mirror.HORIZONTAL, sprite.getMirror());
+    }
+
+    /**
+     * Test the mirror <code>null</code>.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testMirrorNull()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setMirror(null);
+    }
+
+    /**
+     * Test the origin <code>null</code>.
+     */
+    @Test
+    public void testRenderingPoint()
+    {
+        final SpriteAnimatedImpl sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(10, 20), 10, 20);
+        sprite.setLocation(5.0, 10.0);
+        sprite.setOrigin(Origin.TOP_LEFT);
+
+        Assert.assertEquals(5, sprite.getRenderX());
+        Assert.assertEquals(10, sprite.getRenderY());
+
+        sprite.setOrigin(Origin.MIDDLE);
+
+        Assert.assertEquals(4, sprite.getRenderX());
+        Assert.assertEquals(9, sprite.getRenderY());
+    }
+
+    /**
+     * Test the origin <code>null</code>.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetOriginNull()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setOrigin(null);
+    }
+
+    /**
+     * Set the set frame with invalid value.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetTileInvalid()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setFrame(-1);
+    }
+
+    /**
+     * Test the set frame offset.
+     */
+    @Test
+    public void testSetFrameOffset()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setFrameOffsets(1, -1);
+
+        Assert.assertEquals(1, sprite.getFrameOffsetX());
+        Assert.assertEquals(-1, sprite.getFrameOffsetY());
+    }
+
+    /**
+     * Test the set speed.
+     */
+    @Test
+    public void testSetSpeed()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+        sprite.setAnimSpeed(2.0);
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(3, sprite.getFrame());
+        Assert.assertEquals(3, sprite.getFrameAnim());
+    }
+
+    /**
+     * Test the invalid speed setter.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetSpeedNegative()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setAnimSpeed(-1.0);
+    }
+
+    /**
+     * Test the play.
+     */
+    @Test
+    public void testPlay()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+    }
+
+    /**
+     * Test the stop.
+     */
+    @Test
+    public void testStop()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stop();
+
+        Assert.assertEquals(AnimState.STOPPED, sprite.getAnimState());
+    }
+
+    /**
+     * Test the update without loop nor reverse.
+     */
+    @Test
+    public void testUpdateNoLoopNoReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.0, false, false);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.FINISHED, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.FINISHED, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+    }
+
+    /**
+     * Test the update with loop but no reverse.
+     */
+    @Test
+    public void testUpdateLoopNoReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, true);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(3, sprite.getFrame());
+        Assert.assertEquals(3, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+    }
+
+    /**
+     * Test the update without loop but reverse.
+     */
+    @Test
+    public void testUpdateNoLoopReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, false);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(3, sprite.getFrame());
+        Assert.assertEquals(3, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.FINISHED, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+    }
+
+    /**
+     * Test the update with loop and reverse.
+     */
+    @Test
+    public void testUpdateLoopReverse()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, true);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(3, sprite.getFrame());
+        Assert.assertEquals(3, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        Assert.assertEquals(1, sprite.getFrame());
+        Assert.assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        Assert.assertEquals(3, sprite.getFrame());
+        Assert.assertEquals(3, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        Assert.assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        Assert.assertEquals(2, sprite.getFrame());
+        Assert.assertEquals(2, sprite.getFrameAnim());
+    }
+
+    /**
+     * Test the render.
+     */
+    @Test
+    public void testRender()
+    {
+        final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         try
         {
-            animator.play(null);
-            animator.update(1.0);
-            Assert.fail();
+            final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+            sprite.render(g);
+            sprite.setFrame(1);
+
+            sprite.setMirror(Mirror.HORIZONTAL);
+            sprite.render(g);
+
+            sprite.setMirror(Mirror.VERTICAL);
+            sprite.render(g);
         }
-        catch (final LionEngineException exception)
+        finally
         {
-            // Success
-            Assert.assertNotNull(exception);
+            g.dispose();
         }
+    }
 
-        animator.play(animation);
-        animator.update(1.0);
+    /**
+     * Test the equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(surface, 16, 8);
+        final SpriteAnimated spriteMedia = new SpriteAnimatedImpl(media, 16, 8);
+        spriteMedia.load();
 
-        // Test render
-        DrawableTestTool.testImageRender(g, spriteC);
-        spriteC.setMirror(Mirror.HORIZONTAL);
-        spriteC.setLocation(1.0, 2.0);
-        spriteC.render(g);
-        spriteC.setMirror(Mirror.VERTICAL);
-        spriteC.render(g);
+        Assert.assertEquals(sprite, sprite);
+        Assert.assertEquals(sprite, new SpriteAnimatedImpl(surface, 16, 8));
+        Assert.assertEquals(spriteMedia, spriteMedia);
 
-        // Error
-        DrawableTestTool.testSpriteAnimatedLoadError(0, 0);
-        DrawableTestTool.testSpriteAnimatedLoadError(0, 1);
-        DrawableTestTool.testSpriteAnimatedLoadError(1, 0);
+        Assert.assertNotEquals(sprite, null);
+        Assert.assertNotEquals(sprite, new Object());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(media, 16, 8));
+        Assert.assertNotEquals(spriteMedia, new SpriteAnimatedImpl(media, 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(surface, 16, 16));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(32, 32), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 64), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(32, 64), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 8, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 16));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(32, 32), 8, 8));
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 64), 16, 16));
+    }
 
-        // Animations
-        spriteA.play(animation);
-        spriteA.setAnimSpeed(1.0);
-        spriteA.update(1.0);
-        spriteA.stop();
-        spriteA.setFrame(1);
-        Assert.assertEquals(1, spriteA.getFrame());
-        Assert.assertEquals(1, spriteA.getFrameAnim());
-        Assert.assertEquals(AnimState.STOPPED, spriteA.getAnimState());
+    /**
+     * Test the hash.
+     */
+    @Test
+    public void testHash()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final int sprite = new SpriteAnimatedImpl(surface, 16, 8).hashCode();
+        final SpriteAnimated spriteMedia = new SpriteAnimatedImpl(media, 16, 8);
+        spriteMedia.load();
 
-        Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(media, framesH, framesV)));
+        Assert.assertEquals(sprite, new SpriteAnimatedImpl(surface, 16, 8).hashCode());
 
-        spriteA.dispose();
-
-        // Equals
-        final ImageBuffer surface = new ImageBufferMock(10, 20);
-        final SpriteAnimatedImpl impl = new SpriteAnimatedImpl(surface, 1, 2);
-
-        Assert.assertEquals(impl, new SpriteAnimatedImpl(surface, 1, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(surface, 2, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 2, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 1, 1));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 20), 3, 3));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(20, 20), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(10, 10), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(30, 30), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteAnimatedImpl(new ImageBufferMock(30, 30), 3, 3));
+        Assert.assertNotEquals(sprite, new Object().hashCode());
+        Assert.assertNotEquals(spriteMedia.hashCode(), new SpriteAnimatedImpl(media, 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(32, 32), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 64), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(32, 64), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 8, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 16).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(32, 32), 8, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 64), 16, 16).hashCode());
     }
 }
