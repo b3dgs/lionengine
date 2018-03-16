@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.graphic.SpriteTiled;
  */
 final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
 {
+    /** Media reference (<code>null</code> if none). */
+    private final Media media;
     /** Number of horizontal tiles. */
     private final int horizontalTiles;
     /** Number of vertical tiles. */
@@ -51,6 +53,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 
+        this.media = media;
         horizontalTiles = getWidth() / tileWidth;
         verticalTiles = getHeight() / tileHeight;
     }
@@ -70,6 +73,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 
+        media = null;
         horizontalTiles = getWidth() / tileWidth;
         verticalTiles = getHeight() / tileHeight;
     }
@@ -89,6 +93,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     @Override
     public void setTile(int tile)
     {
+        Check.superiorOrEqual(tile, 0);
+
         this.tile = tile;
     }
 
@@ -148,22 +154,27 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         final SpriteTiled sprite = (SpriteTiled) object;
 
         final boolean sameSurface = sprite.getSurface() == getSurface();
-        final boolean sameTileWidth = sprite.getTileWidth() == getTileWidth();
-        final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
-        final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
-        final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
-
-        final boolean sameSize = sameTileWidth && sameTileHeight;
-        final boolean sameTiles = sameHorizontalTiles && sameVerticalTiles;
-
-        return sameSize && sameTiles && sameSurface;
+        final boolean sameSize = sprite.getWidth() == getWidth() && sprite.getHeight() == getHeight();
+        final boolean sameTiles = horizontalTiles == sprite.getTilesHorizontal()
+                                  && verticalTiles == sprite.getTilesVertical();
+        return sameSize && sameSurface && sameTiles;
     }
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
-        int result = super.hashCode();
+        int result = 1;
+        if (getSurface() != null)
+        {
+            result = prime * result + getSurface().hashCode();
+        }
+        if (media != null)
+        {
+            result = prime * result + media.hashCode();
+        }
+        result = prime * result + getWidth();
+        result = prime * result + getHeight();
         result = prime * result + horizontalTiles;
         result = prime * result + verticalTiles;
         return result;

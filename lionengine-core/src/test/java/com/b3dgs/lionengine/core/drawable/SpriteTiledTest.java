@@ -22,24 +22,30 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.filter.FilterBilinear;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the sprite tiled class.
+ * Test the sprite class.
  */
 public class SpriteTiledTest
 {
     /** Image media. */
     private static Media media;
-    /** Graphic test output. */
-    private static Graphic g;
 
     /**
      * Prepare test.
@@ -47,11 +53,10 @@ public class SpriteTiledTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(SpriteTiledTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setLoadFromJar(SpriteTiledTest.class);
 
         media = Medias.create("image.png");
-        g = Graphics.createImageBuffer(100, 100).createGraphic();
     }
 
     /**
@@ -60,87 +65,426 @@ public class SpriteTiledTest
     @AfterClass
     public static void cleanUp()
     {
-        g.dispose();
-
-        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+        Medias.setLoadFromJar(null);
     }
 
     /**
-     * Test function around tiled sprite.
+     * Test the constructor with media.
      */
     @Test
-    public void testSpriteTiled()
+    public void testConstructorMedia()
     {
-        final int width = 16;
-        final int height = 16;
-        final int tileSize = 1;
-        final ImageBuffer buffer = Graphics.createImageBuffer(width, height);
-        final SpriteTiled spriteA = Drawable.loadSpriteTiled(buffer, tileSize, tileSize);
+        final SpriteTiled sprite = new SpriteTiledImpl(media, 16, 8);
 
-        Assert.assertNotNull(spriteA.getSurface());
-        Assert.assertEquals(tileSize, spriteA.getTileWidth());
-        Assert.assertEquals(tileSize, spriteA.getTileHeight());
-        Assert.assertEquals(width, spriteA.getTilesHorizontal());
-        Assert.assertEquals(height, spriteA.getTilesVertical());
+        Assert.assertFalse(sprite.isLoaded());
+        Assert.assertNull(sprite.getSurface());
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(16, sprite.getTileWidth());
+        Assert.assertEquals(8, sprite.getTileHeight());
+        Assert.assertEquals(4, sprite.getTilesHorizontal());
+        Assert.assertEquals(4, sprite.getTilesVertical());
+    }
 
-        // Load from file
-        final int tileWidth = 16;
-        final int tileHeight = 8;
-        final SpriteTiled spriteB = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-        DrawableTestTool.assertImageInfoCorrect(media, spriteB);
+    /**
+     * Test the constructor with surface.
+     */
+    @Test
+    public void testConstructorSurface()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final SpriteTiled sprite = new SpriteTiledImpl(surface, 16, 8);
 
-        Assert.assertEquals(tileWidth, spriteB.getTileWidth());
-        Assert.assertEquals(tileHeight, spriteB.getTileHeight());
+        Assert.assertTrue(sprite.isLoaded());
+        Assert.assertEquals(surface, sprite.getSurface());
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(16, sprite.getTileWidth());
+        Assert.assertEquals(8, sprite.getTileHeight());
+        Assert.assertEquals(4, sprite.getTilesHorizontal());
+        Assert.assertEquals(4, sprite.getTilesVertical());
+    }
 
-        DrawableTestTool.testSpriteLoading(spriteB);
+    /**
+     * Test the load with media.
+     */
+    @Test
+    public void testLoadMedia()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(media, 16, 8);
+        sprite.load();
 
-        DrawableTestTool.testSpriteModification(2, spriteB);
-        DrawableTestTool.testImageRender(g, spriteB);
-        spriteB.render(g);
+        Assert.assertNotNull(sprite.getSurface());
 
-        Assert.assertFalse(spriteA.equals(spriteB));
+        sprite.prepare();
+        sprite.dispose();
+    }
 
-        // Equals
-        final SpriteTiled spriteD = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-        final SpriteTiled spriteE = Drawable.loadSpriteTiled(media, tileWidth + 2, tileHeight + 1);
-        spriteD.load();
-        spriteD.prepare();
-        spriteE.load();
-        spriteE.prepare();
-        Assert.assertFalse(spriteD.equals(spriteE));
-        spriteE.stretch(110, 100);
-        Assert.assertFalse(spriteD.equals(spriteE));
-        spriteE.stretch(100, 110);
-        Assert.assertFalse(spriteD.equals(spriteE));
-        spriteE.stretch(110, 110);
-        Assert.assertFalse(spriteD.equals(null));
-        Assert.assertFalse(spriteD.equals(spriteE));
-        final SpriteTiled spriteF = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight);
-        Assert.assertTrue(spriteD.equals(spriteF));
-        final SpriteTiled spriteG = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight * 2);
-        Assert.assertFalse(spriteD.equals(spriteG));
+    /**
+     * Test the load with media already loaded.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadMediaAlready()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(media, 16, 8);
+        sprite.load();
+        sprite.load();
+    }
 
-        // Error
-        DrawableTestTool.testSpriteTiledLoadError(0, 0);
-        DrawableTestTool.testSpriteTiledLoadError(0, 1);
-        DrawableTestTool.testSpriteTiledLoadError(1, 0);
-        Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(media, tileWidth, tileHeight)));
+    /**
+     * Test the load with surface.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadSurface()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.load();
+    }
 
-        spriteA.dispose();
+    /**
+     * Test the stretch sprite.
+     */
+    @Test
+    public void testStretch()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stretch(100.0, 100.0);
 
-        // Equals
-        final ImageBuffer surface = new ImageBufferMock(10, 20);
-        final SpriteTiled impl = new SpriteTiledImpl(surface, 1, 2);
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(16, sprite.getTileWidth());
+        Assert.assertEquals(8, sprite.getTileHeight());
 
-        Assert.assertEquals(impl, new SpriteTiledImpl(surface, 1, 2));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(surface, 2, 2));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 20), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 20), 1, 1));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 20), 3, 3));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(20, 20), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(10, 10), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(30, 30), 1, 2));
-        Assert.assertNotEquals(impl, new SpriteTiledImpl(new ImageBufferMock(30, 30), 3, 3));
+        sprite.stretch(200.0, 100.0);
+
+        Assert.assertEquals(128, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+        Assert.assertEquals(32, sprite.getTileWidth());
+        Assert.assertEquals(8, sprite.getTileHeight());
+
+        sprite.stretch(100.0, 200.0);
+
+        Assert.assertEquals(128, sprite.getWidth());
+        Assert.assertEquals(64, sprite.getHeight());
+        Assert.assertEquals(32, sprite.getTileWidth());
+        Assert.assertEquals(16, sprite.getTileHeight());
+
+        sprite.stretch(200.0, 200.0);
+
+        Assert.assertEquals(256, sprite.getWidth());
+        Assert.assertEquals(128, sprite.getHeight());
+        Assert.assertEquals(64, sprite.getTileWidth());
+        Assert.assertEquals(32, sprite.getTileHeight());
+    }
+
+    /**
+     * Test the stretch sprite with invalid width.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testStretchInvalidWidth()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stretch(0.0, 100.0);
+    }
+
+    /**
+     * Test the stretch sprite with invalid height.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testStretchInvalidHeight()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.stretch(100, 0.0);
+    }
+
+    /**
+     * Test the rotate sprite.
+     */
+    @Test
+    public void testRotate()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        for (int angle = -720; angle < 720; angle++)
+        {
+            sprite.rotate(angle);
+            Assert.assertTrue(angle + Constant.SPACE + sprite.getWidth(), sprite.getWidth() >= 64);
+            Assert.assertTrue(angle + Constant.SPACE + sprite.getHeight(), sprite.getHeight() >= 32);
+        }
+    }
+
+    /**
+     * Test the set location.
+     */
+    @Test
+    public void testSetLocation()
+    {
+        final SpriteTiledImpl sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+
+        Assert.assertEquals(0.0, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(0, sprite.getRenderX());
+        Assert.assertEquals(0, sprite.getRenderY());
+
+        sprite.setLocation(1.5, 2.5);
+
+        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1, sprite.getRenderX());
+        Assert.assertEquals(2, sprite.getRenderY());
+    }
+
+    /**
+     * Test the set location with viewer.
+     */
+    @Test
+    public void testSetLocationViewer()
+    {
+        final SpriteTiledImpl sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        final ViewerMock viewer = new ViewerMock();
+        sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
+
+        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(237.5, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1, sprite.getRenderX());
+        Assert.assertEquals(237, sprite.getRenderY());
+
+        viewer.set(10, 20);
+        sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
+
+        Assert.assertEquals(-8.5, sprite.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(257.5, sprite.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-9, sprite.getRenderX());
+        Assert.assertEquals(257, sprite.getRenderY());
+    }
+
+    /**
+     * Test the set alpha.
+     */
+    @Test
+    public void testSetAlpha()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        for (int alpha = 0; alpha < 256; alpha++)
+        {
+            sprite.setAlpha(alpha);
+
+            Assert.assertEquals(64, sprite.getWidth());
+            Assert.assertEquals(32, sprite.getHeight());
+        }
+    }
+
+    /**
+     * Test the set alpha too low.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetAlphaLow()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setAlpha(-1);
+    }
+
+    /**
+     * Test the set alpha too high.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetAlphaHigh()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setAlpha(256);
+    }
+
+    /**
+     * Test the set transparency.
+     */
+    @Test
+    public void testSetTransparency()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setTransparency(ColorRgba.BLACK);
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test the set fade.
+     */
+    @Test
+    public void testSetFade()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setFade(128, 128);
+        sprite.setFade(128, 128);
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test the filter bilinear.
+     */
+    @Test
+    public void testFilter()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.filter(new FilterBilinear());
+
+        Assert.assertEquals(64, sprite.getWidth());
+        Assert.assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test the filter.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFilterNull()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.filter(null);
+    }
+
+    /**
+     * Test the mirror.
+     */
+    @Test
+    public void testMirror()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+
+        Assert.assertEquals(Mirror.NONE, sprite.getMirror());
+
+        sprite.setMirror(Mirror.HORIZONTAL);
+
+        Assert.assertEquals(Mirror.HORIZONTAL, sprite.getMirror());
+    }
+
+    /**
+     * Test the mirror <code>null</code>.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testMirrorNull()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setMirror(null);
+    }
+
+    /**
+     * Test the origin <code>null</code>.
+     */
+    @Test
+    public void testRenderingPoint()
+    {
+        final SpriteTiledImpl sprite = new SpriteTiledImpl(Graphics.createImageBuffer(10, 20), 10, 20);
+        sprite.setLocation(5.0, 10.0);
+        sprite.setOrigin(Origin.TOP_LEFT);
+
+        Assert.assertEquals(5, sprite.getRenderX());
+        Assert.assertEquals(10, sprite.getRenderY());
+
+        sprite.setOrigin(Origin.MIDDLE);
+
+        Assert.assertEquals(0, sprite.getRenderX());
+        Assert.assertEquals(0, sprite.getRenderY());
+    }
+
+    /**
+     * Test the origin <code>null</code>.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetOriginNull()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setOrigin(null);
+    }
+
+    /**
+     * Set the set tile with invalid value.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSetTileInvalid()
+    {
+        final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setTile(-1);
+    }
+
+    /**
+     * Test the render.
+     */
+    @Test
+    public void testRender()
+    {
+        final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
+        try
+        {
+            final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+            sprite.render(g);
+            sprite.setTile(0);
+
+            sprite.setMirror(Mirror.HORIZONTAL);
+            sprite.render(g);
+
+            sprite.setMirror(Mirror.VERTICAL);
+            sprite.render(g);
+        }
+        finally
+        {
+            g.dispose();
+        }
+    }
+
+    /**
+     * Test the equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final SpriteTiled sprite = new SpriteTiledImpl(surface, 16, 8);
+        final SpriteTiled spriteMedia = new SpriteTiledImpl(media, 16, 8);
+        spriteMedia.load();
+
+        Assert.assertEquals(sprite, sprite);
+        Assert.assertEquals(sprite, new SpriteTiledImpl(surface, 16, 8));
+        Assert.assertEquals(spriteMedia, spriteMedia);
+
+        Assert.assertNotEquals(sprite, null);
+        Assert.assertNotEquals(sprite, new Object());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(media, 16, 8));
+        Assert.assertNotEquals(spriteMedia, new SpriteTiledImpl(media, 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(surface, 16, 16));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 32), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 64), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 64), 16, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 8, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 16));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 32), 8, 8));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 64), 16, 16));
+    }
+
+    /**
+     * Test the hash.
+     */
+    @Test
+    public void testHash()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
+        final int sprite = new SpriteTiledImpl(surface, 16, 8).hashCode();
+        final SpriteTiled spriteMedia = new SpriteTiledImpl(media, 16, 8);
+        spriteMedia.load();
+
+        Assert.assertEquals(sprite, new SpriteTiledImpl(surface, 16, 8).hashCode());
+
+        Assert.assertNotEquals(sprite, new Object().hashCode());
+        Assert.assertNotEquals(spriteMedia.hashCode(), new SpriteTiledImpl(media, 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 32), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 64), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 64), 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 8, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 16).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 32), 8, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 64), 16, 16).hashCode());
     }
 }
