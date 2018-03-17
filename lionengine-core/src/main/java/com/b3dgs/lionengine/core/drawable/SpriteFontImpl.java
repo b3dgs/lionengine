@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
@@ -70,10 +71,12 @@ final class SpriteFontImpl implements SpriteFont
         return width;
     }
 
+    /** Font data. */
+    private final Map<Character, FontCharData> fontData = new TreeMap<>();
+    /** Media reference (<code>null</code> if none). */
+    private final Media media;
     /** Font surface. */
     private final SpriteTiled surface;
-    /** Font data. */
-    private final Map<Character, FontCharData> fontData;
     /** Text. */
     private String text = Constant.EMPTY_STRING;
     /** Alignment. */
@@ -88,16 +91,20 @@ final class SpriteFontImpl implements SpriteFont
     /**
      * Internal constructor.
      * 
-     * @param media The font image media.
-     * @param mediaData The font data media.
-     * @param tw The horizontal character number.
-     * @param th The vertical character number.
-     * @throws LionEngineException If an error occurred when creating the font.
+     * @param media The font image media (must not be <code>null</code>).
+     * @param mediaData The font data media (must not be <code>null</code>).
+     * @param tw The horizontal character number (must be strictly positive).
+     * @param th The vertical character number (must be strictly positive).
+     * @throws LionEngineException If invalid arguments or an error occurred when creating the font.
      */
     SpriteFontImpl(Media media, Media mediaData, int tw, int th)
     {
+        super();
+
+        Check.notNull(mediaData);
+
+        this.media = media;
         surface = new SpriteTiledImpl(media, tw, th);
-        fontData = new TreeMap<>();
         lineHeight = surface.getTileHeight();
 
         // Load data for each characters
@@ -107,8 +114,11 @@ final class SpriteFontImpl implements SpriteFont
 
         for (final Xml node : children)
         {
-            final FontCharData data = new FontCharData(id, node.readInteger("width"), node.readInteger("height"));
-            fontData.put(Character.valueOf(node.readString("char").charAt(0)), data);
+            final int width = node.readInteger("width");
+            final int height = node.readInteger("height");
+            final FontCharData data = new FontCharData(id, width, height);
+            final String c = node.readString("char");
+            fontData.put(Character.valueOf(c.charAt(0)), data);
             id++;
         }
 
@@ -343,13 +353,9 @@ final class SpriteFontImpl implements SpriteFont
         {
             return false;
         }
-        final SpriteFont sprite = (SpriteFont) object;
+        final SpriteFontImpl sprite = (SpriteFontImpl) object;
 
-        final boolean sameSurface = sprite.getSurface() == getSurface();
-        final boolean sameWidth = sprite.getWidth() == getWidth();
-        final boolean sameHeight = sprite.getHeight() == getHeight();
-
-        return sameWidth && sameHeight && sameSurface;
+        return fontData.equals(sprite.fontData);
     }
 
     @Override
@@ -357,9 +363,16 @@ final class SpriteFontImpl implements SpriteFont
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + fontData.hashCode();
-        result = prime * result + lineHeight;
-        result = prime * result + surface.hashCode();
+        if (getSurface() != null)
+        {
+            result = prime * result + getSurface().hashCode();
+        }
+        else
+        {
+            result = prime * result + media.hashCode();
+        }
+        result = prime * result + getWidth();
+        result = prime * result + getHeight();
         return result;
     }
 }
