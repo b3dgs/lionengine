@@ -55,7 +55,7 @@ public class FontCharDataTest
     @Test(expected = LionEngineException.class)
     public void testConstructorInvalidWidth()
     {
-        Assert.assertNull(new FontCharData(0, 0, 2));
+        Assert.assertNull(new FontCharData(0, -1, 2));
     }
 
     /**
@@ -64,6 +64,6 @@ public class FontCharDataTest
     @Test(expected = LionEngineException.class)
     public void testConstructorInvalidheight()
     {
-        Assert.assertNull(new FontCharData(0, 1, 0));
+        Assert.assertNull(new FontCharData(0, 1, -1));
     }
 }
