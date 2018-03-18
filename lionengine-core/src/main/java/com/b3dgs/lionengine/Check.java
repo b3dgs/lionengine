@@ -19,7 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Utility class check.
- * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -67,7 +66,7 @@ public final class Check
      */
     public static void superiorOrEqual(double a, double b)
     {
-        if (Double.compare(a, b) < 0)
+        if (a < b)
         {
             throw new LionEngineException(ERROR_ARGUMENT + String.valueOf(a) + ERROR_SUPERIOR + String.valueOf(b));
         }
@@ -133,7 +132,7 @@ public final class Check
      */
     public static void inferiorOrEqual(double a, double b)
     {
-        if (Double.compare(a, b) > 0)
+        if (a > b)
         {
             throw new LionEngineException(ERROR_ARGUMENT + String.valueOf(a) + ERROR_INFERIOR + String.valueOf(b));
         }
@@ -166,7 +165,7 @@ public final class Check
      */
     public static void inferiorStrict(double a, double b)
     {
-        if (Double.compare(a, b) > 0)
+        if (a > b)
         {
             throw new LionEngineException(ERROR_ARGUMENT
                                           + String.valueOf(a)
