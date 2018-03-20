@@ -320,7 +320,7 @@ public class XmlReader
     /**
      * Read a string. If the read string is equal to {@link #NULL}, <code>null</code> will be returned instead.
      * 
-     * @param defaultValue The value returned if attribute not found (must not be <code>null</code>).
+     * @param defaultValue The value returned if attribute not found (can be <code>null</code>).
      * @param attribute The string name (must not be <code>null</code>).
      * @return The string value.
      * @throws LionEngineException If invalid arguments.
@@ -439,14 +439,13 @@ public class XmlReader
     /**
      * Get the attribute value.
      * 
-     * @param defaultValue The value returned if attribute does not exist (must not be <code>null</code>).
+     * @param defaultValue The value returned if attribute does not exist (can be <code>null</code>).
      * @param attribute The attribute name (must not be <code>null</code>).
      * @return The attribute value.
      * @throws LionEngineException If attribute is not valid or does not exist.
      */
     private String getValue(String defaultValue, String attribute)
     {
-        Check.notNull(defaultValue);
         Check.notNull(attribute);
 
         if (root.hasAttribute(attribute))
