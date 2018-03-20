@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.graphic.Screen;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Frame skipping loop, prioritizing update over render in order to respect the expected frame rate.
@@ -43,6 +44,20 @@ public final class LoopFrameSkipping implements Loop
     private static final int MAX_FRAME_RATE = 1000;
 
     /**
+     * Get the maximum frame time in nano seconds.
+     * 
+     * @param screen The screen reference.
+     * @return The maximum frame time in nano seconds.
+     */
+    private static double getMaxFrameTimeNano(Screen screen)
+    {
+        final Config config = screen.getConfig();
+        final Resolution source = config.getSource();
+        final double expectedRate = getExpectedRate(source);
+        return Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
+    }
+
+    /**
      * Get the expected frame rate.
      * 
      * @param source The resolution source.
@@ -60,6 +75,19 @@ public final class LoopFrameSkipping implements Loop
             expectedRate = source.getRate();
         }
         return expectedRate;
+    }
+
+    /**
+     * Check if screen has sync locked.
+     * 
+     * @param screen The screen reference.
+     * @return <code>true</code> if sync enabled, <code>false</code> else.
+     */
+    private static boolean hasSync(Screen screen)
+    {
+        final Config config = screen.getConfig();
+        final Resolution output = config.getOutput();
+        return config.isWindowed() && output.getRate() > 0;
     }
 
     /** Running flag. */
@@ -83,28 +111,20 @@ public final class LoopFrameSkipping implements Loop
         Check.notNull(screen);
         Check.notNull(frame);
 
-        final Config config = screen.getConfig();
-        final Resolution source = config.getSource();
-        final Resolution output = config.getOutput();
-        final double expectedRate = getExpectedRate(source);
-        final double maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
-        final boolean sync = config.isWindowed() && output.getRate() > 0;
-
-        long currentTime = System.nanoTime();
+        final double maxFrameTimeNano = getMaxFrameTimeNano(screen);
+        final boolean sync = hasSync(screen);
+        long currentTimeNano = System.nanoTime();
         double acc = 0.0;
         isRunning = true;
+
         while (isRunning)
         {
             if (screen.isReady())
             {
-                final long firstTime = System.nanoTime();
-                long frameTime = firstTime - currentTime;
-                if (frameTime > MAX_FRAME_TIME_NANO)
-                {
-                    frameTime = MAX_FRAME_TIME_NANO;
-                }
-                currentTime = firstTime;
-                acc += frameTime;
+                final long firstTimeNano = System.nanoTime();
+                final long frameTimeNano = UtilMath.clamp(firstTimeNano - currentTimeNano, 0L, MAX_FRAME_TIME_NANO);
+                currentTimeNano = firstTimeNano;
+                acc += frameTimeNano;
 
                 do
                 {
@@ -117,12 +137,12 @@ public final class LoopFrameSkipping implements Loop
                 frame.render();
                 screen.update();
 
-                while (sync && System.nanoTime() - firstTime < maxFrameTimeNano)
+                while (sync && System.nanoTime() - firstTimeNano < maxFrameTimeNano)
                 {
                     Thread.yield();
                 }
 
-                frame.computeFrameRate(firstTime, Math.max(firstTime + 1L, System.nanoTime()));
+                frame.computeFrameRate(firstTimeNano, Math.max(firstTimeNano + 1L, System.nanoTime()));
             }
             else
             {

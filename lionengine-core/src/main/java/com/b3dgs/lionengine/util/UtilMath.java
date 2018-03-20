@@ -105,6 +105,32 @@ public final class UtilMath
      * @param max The maximum value.
      * @return The fixed value.
      */
+    public static long clamp(long value, long min, long max)
+    {
+        final long fixed;
+        if (value < min)
+        {
+            fixed = min;
+        }
+        else if (value > max)
+        {
+            fixed = max;
+        }
+        else
+        {
+            fixed = value;
+        }
+        return fixed;
+    }
+
+    /**
+     * Fix a value between an interval.
+     * 
+     * @param value The value to fix.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return The fixed value.
+     */
     public static double clamp(double value, double min, double max)
     {
         final double fixed;
