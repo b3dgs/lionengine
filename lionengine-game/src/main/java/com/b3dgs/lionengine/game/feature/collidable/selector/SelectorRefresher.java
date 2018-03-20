@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -36,95 +36,32 @@ import com.b3dgs.lionengine.util.UtilMath;
  */
 public class SelectorRefresher extends FeatureModel implements Refreshable
 {
-    /** List of listeners. */
-    private final Collection<SelectorListener> listeners = new HashSet<>(1);
-    /** Selection check action. */
-    private final Updatable actionCheck = new Updatable()
+    /**
+     * Create check action.
+     * 
+     * @param cursor The cursor reference.
+     * @param model The selector model.
+     * @param start The start action.
+     * @return The check action.
+     */
+    private static StateUpdater createCheck(Cursor cursor, SelectorModel model, AtomicReference<StateUpdater> start)
     {
-        @Override
-        public void update(double extrp)
+        return (extrp, current) ->
         {
             if (model.isEnabled() && cursor.getClick() == 0)
             {
-                action = actionStart;
+                return start.get();
             }
-        }
-    };
-    /** Selection check action. */
-    private final Updatable actionStart = new Updatable()
-    {
-        @Override
-        public void update(double extrp)
-        {
-            if (!model.isEnabled())
-            {
-                action = actionCheck;
-            }
-            else if (model.getSelectionClick() == cursor.getClick())
-            {
-                checkBeginSelection();
-                if (model.isSelecting())
-                {
-                    action = actionSelection;
-                }
-            }
-        }
-    };
-    /** Selection action. */
-    private final Updatable actionSelection = new Updatable()
-    {
-        @Override
-        public void update(double extrp)
-        {
-            computeSelection();
-            if (model.getSelectionClick() != cursor.getClick())
-            {
-                action = actionDone;
-                action.update(extrp);
-            }
-        }
-    };
-    /** Selection done action. */
-    private final Updatable actionDone = new Updatable()
-    {
-        @Override
-        public void update(double extrp)
-        {
-            collidable.setEnabled(true);
-            final Rectangle selectionArea = model.getSelectionArea();
-            final Rectangle done = new Rectangle(selectionArea.getX(),
-                                                 selectionArea.getY(),
-                                                 selectionArea.getWidthReal(),
-                                                 selectionArea.getHeightReal());
-            for (final SelectorListener listener : listeners)
-            {
-                listener.notifySelectionDone(done);
-            }
-            selectionArea.set(-1, -1, 0, 0);
-            model.setSelecting(false);
-            action = actionReset;
-        }
-    };
-    /** Selection reset action. */
-    private final Updatable actionReset = new Updatable()
-    {
-        @Override
-        public void update(double extrp)
-        {
-            collidable.setEnabled(false);
-            action = actionCheck;
-        }
-    };
-    /** Selector model reference. */
-    private final SelectorModel model;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Cursor reference. */
-    private final Cursor cursor;
+            return current;
+        };
+    }
+
+    /** List of listeners. */
+    private final Collection<SelectorListener> listeners = new HashSet<>(1);
     /** Collidable reference. */
     private Collidable collidable;
     /** Current update action. */
-    private Updatable action = actionCheck;
+    private StateUpdater action;
     /** Mouse location x when started click selection. */
     private double startX;
     /** Mouse location y when started click selection. */
@@ -147,10 +84,16 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     {
         super();
 
-        this.model = model;
+        final Viewer viewer = services.get(Viewer.class);
+        final Cursor cursor = services.get(Cursor.class);
 
-        viewer = services.get(Viewer.class);
-        cursor = services.get(Cursor.class);
+        final AtomicReference<StateUpdater> actionStart = new AtomicReference<>();
+        final StateUpdater check = createCheck(cursor, model, actionStart);
+        final StateUpdater reset = createReset(check);
+        final StateUpdater select = createSelection(viewer, cursor, model, reset);
+        actionStart.set(createStart(cursor, model, check, select));
+
+        action = check;
     }
 
     /**
@@ -174,9 +117,42 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     }
 
     /**
-     * Check if can begin selection. Notify listeners if started.
+     * Create start action.
+     * 
+     * @param cursor The cursor reference.
+     * @param model The selector model.
+     * @param check The check action.
+     * @param select The selection action.
+     * @return The start action.
      */
-    private void checkBeginSelection()
+    private StateUpdater createStart(Cursor cursor, SelectorModel model, StateUpdater check, StateUpdater select)
+    {
+        return (extrp, current) ->
+        {
+            StateUpdater next = current;
+            if (!model.isEnabled())
+            {
+                next = check;
+            }
+            else if (model.getSelectionClick() == cursor.getClick())
+            {
+                checkBeginSelection(cursor, model);
+                if (model.isSelecting())
+                {
+                    next = select;
+                }
+            }
+            return next;
+        };
+    }
+
+    /**
+     * Check if can begin selection. Notify listeners if started.
+     * 
+     * @param cursor The cursor reference.
+     * @param model The selector model.
+     */
+    private void checkBeginSelection(Cursor cursor, SelectorModel model)
     {
         final boolean canClick = !model.getClickableArea().contains(cursor.getScreenX(), cursor.getScreenY());
         if (!model.isSelecting() && !canClick)
@@ -193,9 +169,46 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     }
 
     /**
-     * Compute the selection from cursor location.
+     * Create selection action.
+     * 
+     * @param viewer The viewer reference.
+     * @param cursor The cursor reference.
+     * @param model The selector model.
+     * @param reset The reset action.
+     * @return The selection action.
      */
-    private void computeSelection()
+    private StateUpdater createSelection(Viewer viewer, Cursor cursor, SelectorModel model, StateUpdater reset)
+    {
+        return (extrp, current) ->
+        {
+            computeSelection(viewer, cursor, model);
+
+            if (model.getSelectionClick() != cursor.getClick())
+            {
+                collidable.setEnabled(true);
+                final Rectangle sel = model.getSelectionArea();
+                final Rectangle done = new Rectangle(sel.getX(), sel.getY(), sel.getWidthReal(), sel.getHeightReal());
+                for (final SelectorListener listener : listeners)
+                {
+                    listener.notifySelectionDone(done);
+                }
+                sel.set(-1, -1, 0, 0);
+                model.setSelecting(false);
+
+                return reset;
+            }
+            return current;
+        };
+    }
+
+    /**
+     * Compute the selection from cursor location.
+     * 
+     * @param viewer The viewer reference.
+     * @param cursor The cursor reference.
+     * @param model The selector model.
+     */
+    private void computeSelection(Viewer viewer, Cursor cursor, SelectorModel model)
     {
         final double viewX = viewer.getX() + viewer.getViewX();
         final double viewY = viewer.getY() - viewer.getViewY();
@@ -225,6 +238,21 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
         model.getSelectionArea().set(selectX, selectY, selectW, selectH);
     }
 
+    /**
+     * Create selection action.
+     * 
+     * @param check The check action.
+     * @return The selection action.
+     */
+    private StateUpdater createReset(StateUpdater check)
+    {
+        return (extrp, current) ->
+        {
+            collidable.setEnabled(false);
+            return check;
+        };
+    }
+
     /*
      * Refreshable
      */
@@ -240,6 +268,22 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     @Override
     public void update(double extrp)
     {
-        action.update(extrp);
+        action = action.update(extrp, action);
+    }
+
+    /**
+     * State updater implementation.
+     */
+    @FunctionalInterface
+    private interface StateUpdater
+    {
+        /**
+         * Update the state.
+         * 
+         * @param extrp The extrapolation value.
+         * @param current The current state.
+         * @return The next state or same if unchanged.
+         */
+        StateUpdater update(double extrp, StateUpdater current);
     }
 }

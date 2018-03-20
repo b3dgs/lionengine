@@ -26,15 +26,15 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.core.sequence.Loader;
 
 /**
- * Integration test for pathfinding package.
+ * Integration test for selector package.
  */
 public class SelectorIT
 {
     /**
-     * Test the pathfinding.
+     * Test the selector.
      */
     @Test
-    public void testPathfinding()
+    public void testSelector()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 400, 60);
