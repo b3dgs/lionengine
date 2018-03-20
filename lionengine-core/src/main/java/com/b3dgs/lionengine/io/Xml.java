@@ -70,7 +70,7 @@ public class Xml extends XmlReader
     /**
      * Create node from media.
      * 
-     * @param media The XML media path.
+     * @param media The XML media path (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument or error when loading media.
      */
     public Xml(Media media)
@@ -81,7 +81,7 @@ public class Xml extends XmlReader
     /**
      * Create node.
      * 
-     * @param name The node name.
+     * @param name The node name (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument or error when creating the node.
      */
     public Xml(String name)
@@ -92,8 +92,8 @@ public class Xml extends XmlReader
     /**
      * Internal constructor.
      * 
-     * @param document The document reference.
-     * @param root The root reference.
+     * @param document The document reference (must not be <code>null</code>).
+     * @param root The root reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
     Xml(Document document, Element root)
@@ -104,7 +104,7 @@ public class Xml extends XmlReader
     /**
      * Normalize document.
      * 
-     * @param expression The expression to evaluate.
+     * @param expression The expression to evaluate (must not be <code>null</code>).
      */
     void normalize(String expression)
     {
@@ -127,12 +127,15 @@ public class Xml extends XmlReader
     /**
      * Write a data to the root.
      * 
-     * @param attribute The attribute name.
-     * @param content The content value.
+     * @param attribute The attribute name (must not be <code>null</code>).
+     * @param content The content value (must not be <code>null</code>).
      * @throws LionEngineException If error when setting the attribute.
      */
     private void write(String attribute, String content)
     {
+        Check.notNull(attribute);
+        Check.notNull(content);
+
         try
         {
             root.setAttribute(attribute, content);
@@ -146,12 +149,11 @@ public class Xml extends XmlReader
     /**
      * Save an XML tree to a file.
      * 
-     * @param media The output media path.
+     * @param media The output media path (must not be <code>null</code>).
      * @throws LionEngineException If error when saving media.
      */
     public void save(Media media)
     {
-        Check.notNull(root);
         Check.notNull(media);
 
         try (OutputStream output = media.getOutputStream())
@@ -176,11 +178,13 @@ public class Xml extends XmlReader
     /**
      * Create a child node.
      * 
-     * @param child The child name.
+     * @param child The child name@throws LionEngineException If invalid argument.
      * @return The child node.
      */
     public Xml createChild(String child)
     {
+        Check.notNull(child);
+
         final Element element = document.createElement(child);
         root.appendChild(element);
         return new Xml(document, element);
@@ -189,11 +193,13 @@ public class Xml extends XmlReader
     /**
      * Add a child node.
      * 
-     * @param node The child node.
+     * @param node The child node@throws LionEngineException If invalid argument.
      * @throws LionEngineException If error when adding the node.
      */
     public void add(XmlReader node)
     {
+        Check.notNull(node);
+
         final Element element = node.getElement();
         document.adoptNode(element);
         root.appendChild(element);
@@ -202,18 +208,20 @@ public class Xml extends XmlReader
     /**
      * Set the text inside the node.
      * 
-     * @param text The text content.
+     * @param text The text content (must not be <code>null</code>).
      * @throws LionEngineException If error when setting the node text.
      */
     public void setText(String text)
     {
+        Check.notNull(text);
+
         root.setTextContent(text);
     }
 
     /**
      * Write a boolean.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The boolean value.
      * @throws LionEngineException If error when writing.
      */
@@ -225,7 +233,7 @@ public class Xml extends XmlReader
     /**
      * Write a byte.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The byte value.
      * @throws LionEngineException If error when writing.
      */
@@ -237,7 +245,7 @@ public class Xml extends XmlReader
     /**
      * Write a short.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The short value.
      * @throws LionEngineException If error when writing.
      */
@@ -249,7 +257,7 @@ public class Xml extends XmlReader
     /**
      * Write an integer.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The integer value.
      * @throws LionEngineException If error when writing.
      */
@@ -261,7 +269,7 @@ public class Xml extends XmlReader
     /**
      * Write a long.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The long value.
      * @throws LionEngineException If error when writing.
      */
@@ -273,7 +281,7 @@ public class Xml extends XmlReader
     /**
      * Write a float.
      * 
-     * @param attribute The float name.
+     * @param attribute The float name (must not be <code>null</code>).
      * @param content The float value.
      * @throws LionEngineException If error when writing.
      */
@@ -285,7 +293,7 @@ public class Xml extends XmlReader
     /**
      * Write a double.
      * 
-     * @param attribute The attribute name.
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The double value.
      * @throws LionEngineException If error when writing.
      */
@@ -297,8 +305,8 @@ public class Xml extends XmlReader
     /**
      * Write a string. If the content is equal to <code>null</code>, {@link #NULL} is wrote instead.
      * 
-     * @param attribute The attribute name.
-     * @param content The string value.
+     * @param attribute The attribute name (must not be <code>null</code>).
+     * @param content The string value (can be <code>null</code>).
      * @throws LionEngineException If error when writing.
      */
     public void writeString(String attribute, String content)
@@ -316,17 +324,20 @@ public class Xml extends XmlReader
     /**
      * Remove attribute.
      * 
-     * @param attribute The attribute to remove.
+     * @param attribute The attribute to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void removeAttribute(String attribute)
     {
+        Check.notNull(attribute);
+
         root.removeAttribute(attribute);
     }
 
     /**
      * Remove child.
      * 
-     * @param child The child to remove.
+     * @param child The child to remove (must not be <code>null</code>).
      * @throws LionEngineException If no node is found at this child name.
      */
     public void removeChild(String child)
@@ -338,17 +349,21 @@ public class Xml extends XmlReader
     /**
      * Remove child.
      * 
-     * @param child The child to remove.
+     * @param child The child to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void removeChild(Xml child)
     {
+        Check.notNull(child);
+
         root.removeChild(child.getElement());
     }
 
     /**
      * Remove all children.
      * 
-     * @param children The children to remove.
+     * @param children The children to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void removeChildren(String children)
     {
@@ -361,12 +376,14 @@ public class Xml extends XmlReader
     /**
      * Get a child node from its name.
      * 
-     * @param name The child name.
+     * @param name The child name (must not be <code>null</code>).
      * @return The child node reference.
      * @throws LionEngineException If no node is found at this child name.
      */
     public Xml getChild(String name)
     {
+        Check.notNull(name);
+
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
@@ -382,11 +399,14 @@ public class Xml extends XmlReader
     /**
      * Get the list of all children with this name.
      * 
-     * @param name The children name.
+     * @param name The children name (must not be <code>null</code>).
      * @return The children list.
+     * @throws LionEngineException If invalid argument.
      */
     public Collection<Xml> getChildren(String name)
     {
+        Check.notNull(name);
+
         final Collection<Xml> nodes = new ArrayList<>(1);
         final NodeList list = root.getElementsByTagName(name);
         for (int i = 0; i < list.getLength(); i++)

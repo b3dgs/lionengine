@@ -59,9 +59,9 @@ public class Polygon
     }
 
     /** The array of coordinates X. */
-    private double[] xpoints;
+    private double[] xpoints = new double[MIN];
     /** The array of coordinates Y. */
-    private double[] ypoints;
+    private double[] ypoints = new double[MIN];
     /** The total number of points. */
     private int npoints;
     /** The bounds. */
@@ -72,8 +72,7 @@ public class Polygon
      */
     public Polygon()
     {
-        xpoints = new double[MIN];
-        ypoints = new double[MIN];
+        super();
     }
 
     /**

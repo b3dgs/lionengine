@@ -59,6 +59,8 @@ public final class Version
      */
     private Version(int major, int minor, int micro)
     {
+        super();
+
         this.major = major;
         this.minor = minor;
         this.micro = micro;
@@ -121,13 +123,13 @@ public final class Version
             return false;
         }
         final Version other = (Version) object;
-        return getMajor() == other.getMajor() && getMinor() == other.getMinor() && getMicro() == other.getMicro();
+        return major == other.major && minor == other.minor && micro == other.micro;
     }
 
     @Override
     public String toString()
     {
-        return new StringBuilder(LENGTH).append(String.valueOf(major))
+        return new StringBuilder(LENGTH).append(major)
                                         .append(Constant.DOT)
                                         .append(minor)
                                         .append(Constant.DOT)

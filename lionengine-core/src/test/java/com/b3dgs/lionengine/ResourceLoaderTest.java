@@ -161,7 +161,7 @@ public class ResourceLoaderTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.assertEquals(ResourceLoader.ERROR_STARTED, exception.getMessage());
+            Assert.assertEquals(Check.ERROR_NULL, exception.getMessage());
             throw exception;
         }
     }

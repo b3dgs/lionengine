@@ -59,12 +59,10 @@ public final class Tick implements Updatable
      * 
      * @param action The action to execute (must not be <code>null</code>).
      * @param tickDelay The tick delay used as trigger.
-     * @throws LionEngineException If invalid arguments.
+     * @throws LionEngineException If invalid argument.
      */
     public void addAction(TickAction action, long tickDelay)
     {
-        Check.notNull(action);
-
         actions.add(new TickActionDelayed(action, tickDelay));
     }
 
@@ -134,12 +132,15 @@ public final class Tick implements Updatable
     /**
      * Check if specific time has been elapsed (in tick referential).
      * 
-     * @param context The context reference.
+     * @param context The context reference (must not be <code>null</code>).
      * @param milli The milliseconds to check (based on frame time).
      * @return <code>true</code> if time elapsed, <code>false</code> else.
+     * @throws LionEngineException If invalid argument.
      */
     public boolean elapsedTime(Context context, long milli)
     {
+        Check.notNull(context);
+
         if (started)
         {
             final double frameTime = ONE_SECOND_IN_MILLI / context.getConfig().getSource().getRate();
@@ -215,11 +216,14 @@ public final class Tick implements Updatable
         /**
          * Create delayed action data.
          * 
-         * @param action The action reference.
+         * @param action The action reference (must not be <code>null</code>).
          * @param delay The tick delay.
+         * @throws LionEngineException If invalid argument.
          */
         private TickActionDelayed(TickAction action, long delay)
         {
+            Check.notNull(action);
+
             this.action = action;
             this.delay = delay;
         }

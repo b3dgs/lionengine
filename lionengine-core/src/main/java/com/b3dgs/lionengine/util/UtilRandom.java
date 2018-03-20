@@ -65,7 +65,7 @@ public final class UtilRandom
     /**
      * Get a random value from range.
      * 
-     * @param range The range reference.
+     * @param range The range reference (must not be <code>null</code>).
      * @return A value between min inclusive and max inclusive.
      * @throws LionEngineException If invalid argument.
      */
@@ -79,12 +79,14 @@ public final class UtilRandom
     /**
      * Get a random value from an interval.
      * 
-     * @param min The minimum value (positive).
+     * @param min The minimum value.
      * @param max The maximum value (positive and superior or equal to min).
      * @return A value between min inclusive and max inclusive.
      */
     public static int getRandomInteger(int min, int max)
     {
+        Check.inferiorOrEqual(min, max);
+
         return min + RANDOM.nextInt(max + 1 - min);
     }
 

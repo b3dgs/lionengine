@@ -38,7 +38,7 @@ public final class AudioFactory
     /**
      * Load an audio file and prepare it to be played.
      * 
-     * @param media The audio media.
+     * @param media The audio media (must not be <code>null</code>).
      * @return The loaded audio.
      * @throws LionEngineException If media is <code>null</code> or invalid audio or no audio player is available.
      */

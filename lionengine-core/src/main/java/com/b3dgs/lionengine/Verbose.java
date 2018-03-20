@@ -77,11 +77,14 @@ public enum Verbose
     /**
      * Display an informative verbose message to standard output.
      * 
-     * @param message The list of messages.
+     * @param message The list of messages (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      * @see Verbose#INFORMATION
      */
     public static synchronized void info(String... message)
     {
+        Check.notNull(message);
+
         if (LEVELS.contains(INFORMATION))
         {
             LOGGER.logp(Level.INFO, null, null, getMessage(message));
@@ -91,11 +94,13 @@ public enum Verbose
     /**
      * Display a check verbose message to error output.
      * 
-     * @param message The list of messages.
+     * @param message The list of messages (must not be <code>null</code>).
      * @see Verbose#WARNING
      */
     public static synchronized void warning(String... message)
     {
+        Check.notNull(message);
+
         if (LEVELS.contains(WARNING))
         {
             LOGGER.logp(Level.WARNING, null, null, getMessage(message));
@@ -105,13 +110,17 @@ public enum Verbose
     /**
      * Display a check verbose message to error output.
      * 
-     * @param clazz The current class name.
-     * @param function The current function name.
-     * @param message The list of messages.
+     * @param clazz The current class name (must not be <code>null</code>).
+     * @param function The current function name (must not be <code>null</code>).
+     * @param message The list of messages (must not be <code>null</code>).
      * @see Verbose#WARNING
      */
     public static synchronized void warning(Class<?> clazz, String function, String... message)
     {
+        Check.notNull(clazz);
+        Check.notNull(function);
+        Check.notNull(message);
+
         if (LEVELS.contains(WARNING))
         {
             LOGGER.logp(Level.WARNING, clazz.getName(), function, getMessage(message));
@@ -121,13 +130,17 @@ public enum Verbose
     /**
      * Display a critical verbose message to error output.
      * 
-     * @param clazz The current class name.
-     * @param function The current function name.
-     * @param message The list of messages.
+     * @param clazz The current class name (must not be <code>null</code>).
+     * @param function The current function name (must not be <code>null</code>).
+     * @param message The list of messages (must not be <code>null</code>).
      * @see Verbose#CRITICAL
      */
     public static synchronized void critical(Class<?> clazz, String function, String... message)
     {
+        Check.notNull(clazz);
+        Check.notNull(function);
+        Check.notNull(message);
+
         if (LEVELS.contains(CRITICAL))
         {
             LOGGER.logp(Level.SEVERE, clazz.getName(), function, getMessage(message));
@@ -137,12 +150,15 @@ public enum Verbose
     /**
      * Display a critical verbose message to error output.
      * 
-     * @param exception The thrown exception.
-     * @param message The list of messages.
+     * @param exception The thrown exception (must not be <code>null</code>).
+     * @param message The list of messages (must not be <code>null</code>).
      * @see Verbose#CRITICAL
      */
     public static synchronized void exception(Throwable exception, String... message)
     {
+        Check.notNull(exception);
+        Check.notNull(message);
+
         if (LEVELS.contains(CRITICAL))
         {
             LOGGER.logp(Level.SEVERE, null, null, getMessage(message), exception);
@@ -152,10 +168,12 @@ public enum Verbose
     /**
      * Set the verbosity level.
      * 
-     * @param verboses Verbosity levels.
+     * @param verboses Verbosity levels (must not be <code>null</code>).
      */
     public static synchronized void set(Verbose... verboses)
     {
+        Check.notNull(verboses);
+
         LEVELS.clear();
         for (final Verbose verbose : verboses)
         {

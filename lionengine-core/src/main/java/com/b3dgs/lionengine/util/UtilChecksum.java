@@ -21,6 +21,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
@@ -42,13 +43,16 @@ public final class UtilChecksum
     /**
      * Compare a checksum with its supposed original value.
      * 
-     * @param value The original value.
-     * @param signature The checksum value.
+     * @param value The original value (must not be <code>null</code>).
+     * @param signature The checksum value (must not be <code>null</code>).
      * @return <code>true</code> if corresponding (checksum of value is equal to its signature), <code>false</code>
      *         else.
+     * @throws LionEngineException If invalid arguments.
      */
     public static boolean checkSha256(String value, String signature)
     {
+        Check.notNull(signature);
+
         return Arrays.equals(getSha256(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
     }
 
@@ -56,23 +60,29 @@ public final class UtilChecksum
      * Compare a checksum with its supposed original value.
      * 
      * @param value The original value.
-     * @param signature The checksum value.
+     * @param signature The checksum value (must not be <code>null</code>).
      * @return <code>true</code> if corresponding (checksum of value is equal to its signature), <code>false</code>
      *         else.
+     * @throws LionEngineException If invalid arguments.
      */
     public static boolean checkSha256(int value, String signature)
     {
+        Check.notNull(signature);
+
         return Arrays.equals(getSha256(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
     }
 
     /**
      * Get the SHA-256 signature of the input bytes.
      * 
-     * @param bytes The input bytes.
+     * @param bytes The input bytes (must not be <code>null</code>).
      * @return The bytes signature.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String getSha256(byte[] bytes)
     {
+        Check.notNull(bytes);
+
         final byte[] v = SHA256.digest(bytes);
         final StringBuilder builder = new StringBuilder(MAX_LENGTH);
         for (final byte b : v)
@@ -96,11 +106,14 @@ public final class UtilChecksum
     /**
      * Get the SHA-256 signature of the input string.
      * 
-     * @param str The input string.
+     * @param str The input string (must not be <code>null</code>).
      * @return The string signature.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String getSha256(String str)
     {
+        Check.notNull(str);
+
         return getSha256(str.getBytes(Constant.UTF_8));
     }
 

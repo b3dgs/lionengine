@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Character data.
@@ -38,8 +39,9 @@ final class FontCharData
      * Internal constructor.
      * 
      * @param id The character id (must be superior or equal to 0).
-     * @param width The character width (must be positive).
-     * @param height The character height (must be positive).
+     * @param width The character width (must be superior or equal to 0).
+     * @param height The character height (must be superior or equal to 0).
+     * @throws LionEngineException If invalid arguments.
      */
     FontCharData(int id, int width, int height)
     {

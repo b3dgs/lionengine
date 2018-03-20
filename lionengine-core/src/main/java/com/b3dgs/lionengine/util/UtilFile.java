@@ -235,17 +235,16 @@ public final class UtilFile
     /**
      * Check if the following type is the expected type.
      * 
-     * @param file The file to check (must not be <code>null</code>).
+     * @param file The file to check (can be <code>null</code>).
      * @param extension The expected extension (must not be <code>null</code>).
      * @return <code>true</code> if correct, <code>false</code> else.
-     * @throws LionEngineException If invalid arguments.
+     * @throws LionEngineException If invalid argument.
      */
     public static boolean isType(File file, String extension)
     {
-        Check.notNull(file);
         Check.notNull(extension);
 
-        if (file.isFile())
+        if (file != null && file.isFile())
         {
             final String current = getExtension(file);
             return current.equals(extension.replace(Constant.DOT, Constant.EMPTY_STRING));

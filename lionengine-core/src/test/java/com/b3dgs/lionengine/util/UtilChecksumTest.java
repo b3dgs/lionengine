@@ -67,23 +67,19 @@ public class UtilChecksumTest
     /**
      * Test checksum encoding null string.
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = LionEngineException.class)
     public void testEncodingEmptyNullString()
     {
-        final String signature = UtilChecksum.getSha256((String) null);
-
-        Assert.assertNull(signature);
+        Assert.assertNull(UtilChecksum.getSha256((String) null));
     }
 
     /**
      * Test checksum encoding bytes.
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = LionEngineException.class)
     public void testEncodingEmptyNullBytes()
     {
-        final String signature = UtilChecksum.getSha256((byte[]) null);
-
-        Assert.assertNull(signature);
+        Assert.assertNull(UtilChecksum.getSha256((byte[]) null));
     }
 
     /**

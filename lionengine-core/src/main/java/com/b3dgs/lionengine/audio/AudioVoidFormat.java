@@ -40,6 +40,8 @@ public final class AudioVoidFormat implements AudioFormat
      */
     public AudioVoidFormat(Collection<String> formats)
     {
+        super();
+
         Check.notNull(formats);
 
         this.formats = Collections.unmodifiableCollection(formats);

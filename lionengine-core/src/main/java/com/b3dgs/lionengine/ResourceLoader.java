@@ -64,12 +64,15 @@ public class ResourceLoader<T extends Enum<T>>
     /**
      * Add a resource to load. Must be called before {@link #start()}.
      * 
-     * @param key The associated key.
-     * @param resource The resource to load.
-     * @throws LionEngineException If loader has already been started.
+     * @param key The associated key (must not be <code>null</code>).
+     * @param resource The resource to load (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments or loader has already been started.
      */
     public synchronized void add(T key, Resource resource)
     {
+        Check.notNull(key);
+        Check.notNull(resource);
+
         if (started.get())
         {
             throw new LionEngineException(ERROR_STARTED);

@@ -133,7 +133,7 @@ public abstract class Engine
     /**
      * Get the starting message for the specified engine.
      * 
-     * @param engine The starting engine.
+     * @param engine The starting engine (must not be <code>null</code>).
      * @return The starting message.
      */
     private static String getStartingMessage(Engine engine)

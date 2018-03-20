@@ -207,16 +207,6 @@ public class UtilMathTest
     }
 
     /**
-     * Test the time functions.
-     */
-    @Test
-    public void testTime()
-    {
-        Assert.assertTrue(UtilMath.time() > 0);
-        Assert.assertTrue(UtilMath.nano() > 0);
-    }
-
-    /**
      * Test the sign function.
      */
     @Test

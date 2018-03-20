@@ -71,6 +71,8 @@ public class XmlReader
      */
     public XmlReader(Media media)
     {
+        super();
+
         Check.notNull(media);
 
         try (InputStream input = media.getInputStream())
@@ -87,11 +89,13 @@ public class XmlReader
     /**
      * Create node.
      * 
-     * @param name The node name.
+     * @param name The node name (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument or error when creating the node.
      */
     public XmlReader(String name)
     {
+        super();
+
         Check.notNull(name);
 
         try
@@ -108,12 +112,14 @@ public class XmlReader
     /**
      * Internal constructor.
      * 
-     * @param document The document reference.
-     * @param root The root reference.
+     * @param document The document reference (must not be <code>null</code>).
+     * @param root The root reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
     XmlReader(Document document, Element root)
     {
+        super();
+
         Check.notNull(document);
         Check.notNull(root);
 
@@ -187,6 +193,7 @@ public class XmlReader
      * @param defaultValue The value returned if attribute not found.
      * @param attribute The integer name (must not be <code>null</code>).
      * @return The short value.
+     * @throws LionEngineException If invalid argument.
      */
     public short readShort(short defaultValue, String attribute)
     {
@@ -236,6 +243,7 @@ public class XmlReader
      * @param defaultValue The value returned if attribute not found.
      * @param attribute The float name (must not be <code>null</code>).
      * @return The long value.
+     * @throws LionEngineException If invalid argument.
      */
     public long readLong(long defaultValue, String attribute)
     {
@@ -285,6 +293,7 @@ public class XmlReader
      * @param defaultValue The value returned if attribute not found.
      * @param attribute The double name (must not be <code>null</code>).
      * @return The double value.
+     * @throws LionEngineException If invalid argument.
      */
     public double readDouble(double defaultValue, String attribute)
     {
@@ -367,14 +376,15 @@ public class XmlReader
     /**
      * Check if node has the following attribute.
      * 
-     * @param attribute The attribute name (must not be <code>null</code>).
+     * @param attribute The attribute name (can be <code>null</code>).
      * @return <code>true</code> if attribute exists, <code>false</code> else.
-     * @throws LionEngineException If invalid argument.
      */
     public boolean hasAttribute(String attribute)
     {
-        Check.notNull(attribute);
-
+        if (attribute == null)
+        {
+            return false;
+        }
         return root.hasAttribute(attribute);
     }
 
@@ -429,13 +439,16 @@ public class XmlReader
     /**
      * Get the attribute value.
      * 
-     * @param defaultValue The value returned if attribute does not exist.
-     * @param attribute The attribute name.
+     * @param defaultValue The value returned if attribute does not exist (must not be <code>null</code>).
+     * @param attribute The attribute name (must not be <code>null</code>).
      * @return The attribute value.
      * @throws LionEngineException If attribute is not valid or does not exist.
      */
     private String getValue(String defaultValue, String attribute)
     {
+        Check.notNull(defaultValue);
+        Check.notNull(attribute);
+
         if (root.hasAttribute(attribute))
         {
             return root.getAttribute(attribute);

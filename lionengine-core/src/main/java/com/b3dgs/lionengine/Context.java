@@ -47,7 +47,7 @@ public interface Context
      * Get the input device instance from its type.
      * 
      * @param <T> The input device.
-     * @param type The input device type.
+     * @param type The input device type (must not be <code>null</code>).
      * @return The input instance reference.
      * @throws LionEngineException If device not found.
      */

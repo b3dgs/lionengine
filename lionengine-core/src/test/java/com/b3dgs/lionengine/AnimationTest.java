@@ -105,14 +105,14 @@ public class AnimationTest
     public void testHashcode()
     {
         final int animation = new Animation("test", 1, 2, 3, false, true).hashCode();
-    
+
         Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, true).hashCode());
         Assert.assertEquals(animation, new Animation("test", 10, 12, 3, false, true).hashCode());
         Assert.assertEquals(animation, new Animation("test", 1, 12, 3, false, true).hashCode());
         Assert.assertEquals(animation, new Animation("test", 1, 2, 13, false, true).hashCode());
         Assert.assertEquals(animation, new Animation("test", 1, 2, 3, true, true).hashCode());
         Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, false).hashCode());
-    
+
         Assert.assertNotEquals(animation, new Object().hashCode());
         Assert.assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true).hashCode());
     }

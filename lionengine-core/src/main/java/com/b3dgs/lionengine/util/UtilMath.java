@@ -128,7 +128,7 @@ public final class UtilMath
      * 
      * @param value The value.
      * @param dest The value to reach.
-     * @param speed The effect speed (must not be equal to 0).
+     * @param speed The effect speed (must not be equal to 0.0).
      * @return The modified value.
      * @throws LionEngineException If invalid argument.
      */
@@ -346,26 +346,6 @@ public final class UtilMath
             sign = 0;
         }
         return sign;
-    }
-
-    /**
-     * Get the current time in millisecond.
-     * 
-     * @return The current time (clock relative) in millisecond.
-     */
-    public static long time()
-    {
-        return System.currentTimeMillis();
-    }
-
-    /**
-     * Get the current time in nano second.
-     * 
-     * @return The current time (absolute time) in nano second.
-     */
-    public static long nano()
-    {
-        return System.nanoTime();
     }
 
     /**

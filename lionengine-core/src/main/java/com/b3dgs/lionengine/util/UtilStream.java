@@ -71,8 +71,8 @@ public final class UtilStream
     /**
      * Get of full copy of the input stream stored in a temporary file.
      * 
-     * @param name The file name reference (to have a similar temporary file name).
-     * @param input The input stream reference.
+     * @param name The file name reference, to have a similar temporary file name (must not be <code>null</code>).
+     * @param input The input stream reference (must not be <code>null</code>).
      * @return The temporary file created with copied content from stream.
      * @throws LionEngineException If invalid arguments or invalid stream.
      */

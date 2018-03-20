@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.util;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
@@ -49,11 +50,14 @@ public final class UtilConversion
     /**
      * Convert a byte array to an integer.
      * 
-     * @param bytes The byte array.
+     * @param bytes The byte array (must not be <code>null</code>).
      * @return The integer value.
+     * @throws LionEngineException If invalid arguments.
      */
     public static int byteArrayToInt(byte[] bytes)
     {
+        Check.notNull(bytes);
+
         return ByteBuffer.wrap(bytes).getInt();
     }
 
@@ -74,11 +78,14 @@ public final class UtilConversion
     /**
      * Convert a byte array to an integer.
      * 
-     * @param bytes The byte array.
+     * @param bytes The byte array (must not be <code>null</code>).
      * @return The integer value.
+     * @throws LionEngineException If invalid arguments.
      */
     public static short byteArrayToShort(byte[] bytes)
     {
+        Check.notNull(bytes);
+
         return ByteBuffer.wrap(bytes).getShort();
     }
 
@@ -172,11 +179,14 @@ public final class UtilConversion
     /**
      * Convert binary array to number representation.
      * 
-     * @param binary The binary to convert.
+     * @param binary The binary to convert (must not be <code>null</code>).
      * @return The number representation.
+     * @throws LionEngineException If invalid arguments.
      */
     public static int fromBinary(boolean[] binary)
     {
+        Check.notNull(binary);
+
         int number = 0;
         for (final boolean current : binary)
         {
@@ -188,11 +198,14 @@ public final class UtilConversion
     /**
      * Invert binary array (apply a negation to each value).
      * 
-     * @param binary The binary array.
+     * @param binary The binary array (must not be <code>null</code>).
      * @return The inverted binary array representation.
+     * @throws LionEngineException If invalid arguments.
      */
     public static boolean[] invert(boolean[] binary)
     {
+        Check.notNull(binary);
+
         final boolean[] inverted = new boolean[binary.length];
         for (int i = 0; i < inverted.length; i++)
         {
@@ -204,13 +217,17 @@ public final class UtilConversion
     /**
      * Convert a string to title case.
      * 
-     * @param string The string to convert.
+     * @param string The string to convert (must not be <code>null</code>).
      * @return The string in title case.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String toTitleCase(String string)
     {
-        final StringBuilder result = new StringBuilder();
-        for (int i = 0; i < string.length(); i++)
+        Check.notNull(string);
+
+        final int length = string.length();
+        final StringBuilder result = new StringBuilder(length);
+        for (int i = 0; i < length; i++)
         {
             final String next = string.substring(i, i + 1);
             if (i == 0)
@@ -228,13 +245,16 @@ public final class UtilConversion
     /**
      * Convert a string to a pure title case for each word, replacing special characters by space.
      * 
-     * @param string The string to convert.
+     * @param string The string to convert (must not be <code>null</code>).
      * @return The string in title case.
+     * @throws LionEngineException If invalid arguments.
      */
     public static String toTitleCaseWord(String string)
     {
+        Check.notNull(string);
+
         final String[] words = string.replaceAll("\\W|_", Constant.SPACE).split(Constant.SPACE);
-        final StringBuilder title = new StringBuilder();
+        final StringBuilder title = new StringBuilder(string.length());
         for (int i = 0; i < words.length; i++)
         {
             title.append(toTitleCase(words[i]));
