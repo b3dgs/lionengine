@@ -90,10 +90,10 @@ public class Rectangle implements Shape
         {
             return false;
         }
-        return rectangle.getX() >= x
-               && rectangle.getY() >= y
-               && rectangle.getX() + rectangle.getWidthReal() <= x + width
-               && rectangle.getY() + rectangle.getHeightReal() <= y + height;
+        return Double.compare(rectangle.getX(), x) >= 0
+               && Double.compare(rectangle.getY(), y) >= 0
+               && Double.compare(rectangle.getX() + rectangle.getWidthReal(), x + width) <= 0
+               && Double.compare(rectangle.getY() + rectangle.getHeightReal(), y + height) <= 0;
     }
 
     /**
@@ -105,7 +105,10 @@ public class Rectangle implements Shape
      */
     public boolean contains(double x, double y)
     {
-        return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
+        return Double.compare(x, this.x) >= 0
+               && Double.compare(y, this.y) >= 0
+               && Double.compare(x, this.x + width) <= 0
+               && Double.compare(y, this.y + height) <= 0;
     }
 
     /**
