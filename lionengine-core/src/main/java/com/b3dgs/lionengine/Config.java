@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.Optional;
+
 /**
  * Describe the engine screen configuration. It allows to define different parameters:
  * <ul>
@@ -65,12 +67,12 @@ public final class Config
     private final int depth;
     /** Windowed mode. */
     private final boolean windowed;
-    /** Icon media (<code>null</code> if none). */
-    private final Media icon;
+    /** Icon media. */
+    private final Optional<Media> icon;
     /** Source resolution reference. */
     private volatile Resolution source;
-    /** Applet reference (<code>null</code> if none). */
-    private Applet<?> applet;
+    /** Applet reference. */
+    private Optional<Applet<?>> applet;
 
     /**
      * Create a configuration without icon.
@@ -91,28 +93,31 @@ public final class Config
      * @param output The output resolution used on rendering (must not be <code>null</code>).
      * @param depth The screen color depth in bits, usually 16 or 32 (strictly positive).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
-     * @param icon The icon media (<code>null</code> if none).
+     * @param icon The icon media (can be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
     public Config(Resolution output, int depth, boolean windowed, Media icon)
     {
+        super();
+
         Check.notNull(output);
         Check.superiorStrict(depth, 0);
 
         this.output = output;
         this.depth = depth;
         this.windowed = windowed;
-        this.icon = icon;
+        this.icon = Optional.ofNullable(icon);
     }
 
     /**
      * Set applet reference, and enable applet mode.
      * 
-     * @param applet The applet reference (<code>null</code> to disable).
+     * @param applet The applet reference (can be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void setApplet(Applet<?> applet)
     {
-        this.applet = applet;
+        this.applet = Optional.ofNullable(applet);
     }
 
     /**
@@ -152,25 +157,26 @@ public final class Config
      * Get the applet reference.
      * 
      * @param <A> The applet type used.
-     * @param appletClass The applet class.
-     * @return The applet reference, <code>null</code> if none.
+     * @param appletClass The applet class (must not be <code>null</code>).
+     * @return The applet reference.
      */
-    public <A extends Applet<A>> A getApplet(Class<A> appletClass)
+    public <A extends Applet<A>> Optional<A> getApplet(Class<A> appletClass)
     {
-        A cast = null;
-        if (appletClass != null && applet != null)
+        Check.notNull(appletClass);
+
+        if (applet.isPresent())
         {
-            cast = appletClass.cast(applet.getApplet());
+            return Optional.of(appletClass.cast(applet.get().getApplet()));
         }
-        return cast;
+        return Optional.empty();
     }
 
     /**
      * Get the application icon.
      * 
-     * @return The application icon, <code>null</code> if none.
+     * @return The application icon.
      */
-    public Media getIcon()
+    public Optional<Media> getIcon()
     {
         return icon;
     }
@@ -202,6 +208,6 @@ public final class Config
      */
     public boolean hasApplet()
     {
-        return applet != null;
+        return applet.isPresent();
     }
 }

@@ -76,19 +76,26 @@ public class ConfigTest
     }
 
     /**
+     * Test the get applet with <code>null</code> argument.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetAppletNullArgument()
+    {
+        Assert.assertNull(CONFIG.getApplet((Class<AppletMock>) null));
+    }
+
+    /**
      * Test the config applet.
      */
     @Test
     public void testApplet()
     {
         CONFIG.setApplet(null);
-        Assert.assertNull(CONFIG.getApplet((Class<AppletMock>) null));
-        Assert.assertNull(CONFIG.getApplet(AppletMock.class));
+        Assert.assertFalse(CONFIG.getApplet(AppletMock.class).isPresent());
         Assert.assertFalse(CONFIG.hasApplet());
 
         CONFIG.setApplet(new AppletMock());
-        Assert.assertNull(CONFIG.getApplet((Class<AppletMock>) null));
-        Assert.assertNotNull(CONFIG.getApplet(AppletMock.class));
+        Assert.assertTrue(CONFIG.getApplet(AppletMock.class).isPresent());
         Assert.assertTrue(CONFIG.hasApplet());
     }
 
@@ -98,10 +105,10 @@ public class ConfigTest
     @Test
     public void testIcon()
     {
-        Assert.assertEquals(null, CONFIG.getIcon());
+        Assert.assertFalse(CONFIG.getIcon().isPresent());
         final Media icon = Medias.create(ICON);
         final Config config = new Config(CONFIG.getOutput(), CONFIG.getDepth(), CONFIG.isWindowed(), icon);
-        Assert.assertEquals(icon, config.getIcon());
+        Assert.assertEquals(icon, config.getIcon().get());
     }
 
     /**

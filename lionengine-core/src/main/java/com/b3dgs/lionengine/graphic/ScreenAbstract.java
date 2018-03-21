@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 
 /**
@@ -41,18 +40,18 @@ public abstract class ScreenAbstract implements Screen
     /** Screen listeners. */
     protected final Collection<ScreenListener> listeners = new ConcurrentLinkedQueue<>();
     /** Input devices. */
-    protected final Map<Class<? extends InputDevice>, InputDevice> devices;
+    protected final Map<Class<? extends InputDevice>, InputDevice> devices = new HashMap<>(1);
+    /** Active graphic buffer reference. */
+    protected final Graphic graphics = Graphics.createGraphic();
     /** Configuration reference. */
     protected final Config config;
-    /** Active graphic buffer reference. */
-    protected final Graphic graphics;
     /** Ready timeout. */
     private final long readyTimeoutMilli;
 
     /**
      * Create the screen.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @param readyTimeoutMilli The time out in milliseconds before considering screen never ready.
      * @throws LionEngineException If <code>null</code> config.
      */
@@ -62,8 +61,6 @@ public abstract class ScreenAbstract implements Screen
 
         this.config = config;
         this.readyTimeoutMilli = readyTimeoutMilli;
-        devices = new HashMap<>(1);
-        graphics = Graphics.createGraphic();
     }
 
     /*
@@ -77,11 +74,10 @@ public abstract class ScreenAbstract implements Screen
     @Override
     public void start()
     {
-        final Media icon = config.getIcon();
-        if (icon != null && icon.getFile().exists())
-        {
-            setIcon(icon.getFile().getPath());
-        }
+        config.getIcon()
+              .map(icon -> icon.getFile())
+              .filter(file -> file.exists())
+              .ifPresent(file -> setIcon(file.getPath()));
     }
 
     @Override

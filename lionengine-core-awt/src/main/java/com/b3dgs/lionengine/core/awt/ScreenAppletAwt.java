@@ -49,7 +49,7 @@ final class ScreenAppletAwt extends ScreenAwtAbstract
     {
         super(config);
 
-        applet = config.getApplet(AppletAwt.class);
+        applet = config.getApplet(AppletAwt.class).get();
     }
 
     /**
