@@ -39,11 +39,9 @@ public class AppletAwtTest
         final Resolution resolution = new Resolution(320, 240, 60);
         final Config config = new Config(resolution, 32, true);
         config.setApplet(null);
-        Assert.assertNull(config.getApplet((Class<AppletAwt>) null));
-        Assert.assertNull(config.getApplet(AppletAwt.class));
+        Assert.assertFalse(config.getApplet(AppletAwt.class).isPresent());
 
         config.setApplet(applet);
-        Assert.assertNull(config.getApplet((Class<AppletAwt>) null));
-        Assert.assertNotNull(config.getApplet(AppletAwt.class));
+        Assert.assertTrue(config.getApplet(AppletAwt.class).isPresent());
     }
 }

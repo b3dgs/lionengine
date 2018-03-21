@@ -72,7 +72,7 @@ public final class Config
     /** Source resolution reference. */
     private volatile Resolution source;
     /** Applet reference. */
-    private Optional<Applet<?>> applet;
+    private Optional<Applet<?>> applet = Optional.empty();
 
     /**
      * Create a configuration without icon.
