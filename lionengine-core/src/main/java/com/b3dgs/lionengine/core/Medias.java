@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 
 import com.b3dgs.lionengine.Check;
@@ -46,8 +47,8 @@ public final class Medias
     private static volatile String separator = File.separator;
     /** Resources directory. */
     private static volatile String resourcesDir = Constant.EMPTY_STRING;
-    /** Class loader (may be <code>null</code>). */
-    private static volatile Class<?> loader;
+    /** Class loader. */
+    private static volatile Optional<Class<?>> loader = Optional.empty();
 
     /**
      * Create a media.
@@ -58,9 +59,9 @@ public final class Medias
      */
     public static synchronized Media create(String... path)
     {
-        if (loader != null)
+        if (loader.isPresent())
         {
-            return factoryMedia.create(separator, loader, path);
+            return factoryMedia.create(separator, loader.get(), path);
         }
         return factoryMedia.create(separator, resourcesDir, path);
     }
@@ -89,7 +90,7 @@ public final class Medias
         Check.notNull(directory);
 
         resourcesDir = directory + getSeparator();
-        loader = null;
+        loader = Optional.empty();
     }
 
     /**
@@ -99,8 +100,8 @@ public final class Medias
      */
     public static synchronized void setLoadFromJar(Class<?> clazz)
     {
-        loader = clazz;
-        if (loader != null)
+        loader = Optional.ofNullable(clazz);
+        if (loader.isPresent())
         {
             setSeparator(Constant.SLASH);
         }
@@ -211,9 +212,9 @@ public final class Medias
     /**
      * Get the resources loader.
      * 
-     * @return The resources loader, <code>null</code> if none.
+     * @return The resources loader.
      */
-    public static Class<?> getResourcesLoader()
+    public static Optional<Class<?>> getResourcesLoader()
     {
         return loader;
     }
@@ -226,14 +227,14 @@ public final class Medias
      */
     public static synchronized File getJarResources()
     {
-        if (loader == null)
+        if (!loader.isPresent())
         {
             throw new LionEngineException(JAR_LOADER_ERROR);
         }
 
         final Media media = Medias.create(Constant.EMPTY_STRING);
         final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
-        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final String prefix = loader.get().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
         final int jarSeparatorIndex = path.indexOf(prefix);
         final String jar = path.substring(0, jarSeparatorIndex);
 
@@ -248,13 +249,13 @@ public final class Medias
      */
     public static synchronized String getJarResourcesPrefix()
     {
-        if (loader == null)
+        if (!loader.isPresent())
         {
             throw new LionEngineException(JAR_LOADER_ERROR);
         }
         final Media media = Medias.create(Constant.EMPTY_STRING);
         final String path = media.getFile().getPath().replace(File.separator, Constant.SLASH);
-        final String prefix = loader.getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final String prefix = loader.get().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
         final int jarSeparatorIndex = path.indexOf(prefix);
 
         return path.substring(jarSeparatorIndex).replace(File.separator, Constant.SLASH);

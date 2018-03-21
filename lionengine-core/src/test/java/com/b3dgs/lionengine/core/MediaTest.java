@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -42,7 +43,7 @@ public class MediaTest
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
-    private Class<?> oldLoader;
+    private Optional<Class<?>> oldLoader;
 
     /**
      * Prepare test.
@@ -61,7 +62,7 @@ public class MediaTest
     public void cleanTest()
     {
         Medias.setResourcesDirectory(oldDir);
-        Medias.setLoadFromJar(oldLoader);
+        Medias.setLoadFromJar(oldLoader.orElse(null));
     }
 
     /**

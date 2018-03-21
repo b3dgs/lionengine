@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -75,7 +76,7 @@ final class MediaDefault implements Media
     /** Resources directory. */
     private final String resourcesDir;
     /** Class loader. */
-    private final Class<?> loader;
+    private final Optional<Class<?>> loader;
     /** Media path. */
     private final String path;
     /** Media parent path. */
@@ -86,10 +87,10 @@ final class MediaDefault implements Media
     /**
      * Internal constructor.
      * 
-     * @param separator The separator used.
-     * @param resourcesDir The resources directory path.
-     * @param path The media path.
-     * @throws LionEngineException If path in <code>null</code>.
+     * @param separator The separator used (must not be <code>null</code>).
+     * @param resourcesDir The resources directory path (can be <code>null</code>).
+     * @param path The media path (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     MediaDefault(String separator, String resourcesDir, String path)
     {
@@ -99,10 +100,10 @@ final class MediaDefault implements Media
     /**
      * Internal constructor.
      * 
-     * @param separator The separator used.
+     * @param separator The separator used (must not be <code>null</code>).
      * @param loader The class loader used (can be <code>null</code> if not used).
-     * @param path The media path.
-     * @throws LionEngineException If path in <code>null</code>.
+     * @param path The media path (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     MediaDefault(String separator, Class<?> loader, String path)
     {
@@ -112,19 +113,22 @@ final class MediaDefault implements Media
     /**
      * Internal constructor.
      * 
-     * @param separator The separator used.
+     * @param separator The separator used (must not be <code>null</code>).
      * @param resourcesDir The resources directory path (can be <code>null</code> if not used).
      * @param loader The class loader used (can be <code>null</code> if not used).
-     * @param path The media path.
-     * @throws LionEngineException If path in <code>null</code>.
+     * @param path The media path (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     private MediaDefault(String separator, String resourcesDir, Class<?> loader, String path)
     {
+        super();
+
+        Check.notNull(separator);
         Check.notNull(path);
 
         this.separator = separator;
-        this.resourcesDir = resourcesDir;
-        this.loader = loader;
+        this.resourcesDir = resourcesDir != null ? resourcesDir : Constant.EMPTY_STRING;
+        this.loader = Optional.ofNullable(loader);
         this.path = path;
         final int index = path.lastIndexOf(separator);
         if (index > -1)
@@ -146,9 +150,9 @@ final class MediaDefault implements Media
     private String getPrefix()
     {
         final String prefix;
-        if (loader != null)
+        if (loader.isPresent())
         {
-            prefix = loader.getPackage().getName().replace(Constant.DOT, File.separator);
+            prefix = loader.get().getPackage().getName().replace(Constant.DOT, File.separator);
         }
         else
         {
@@ -172,9 +176,9 @@ final class MediaDefault implements Media
                                                .replace(File.separator, Constant.SLASH)
                                                .split(Constant.SLASH);
         final Media media;
-        if (loader != null)
+        if (loader.isPresent())
         {
-            media = new MediaDefault(separator, loader, UtilFolder.getPathSeparator(separator, systemPath));
+            media = new MediaDefault(separator, loader.get(), UtilFolder.getPathSeparator(separator, systemPath));
         }
         else
         {
@@ -191,7 +195,7 @@ final class MediaDefault implements Media
      */
     private InputStream getInputFromJarOrTemp() throws FileNotFoundException
     {
-        final InputStream input = loader.getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
+        final InputStream input = loader.get().getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
         if (input == null)
         {
             return new FileInputStream(getPathTemp());
@@ -216,7 +220,9 @@ final class MediaDefault implements Media
      */
     private String getPathTemp()
     {
-        return UtilFolder.getPathSeparator(File.separator, getTempDir(loader), path.replace(separator, File.separator));
+        return UtilFolder.getPathSeparator(File.separator,
+                                           getTempDir(loader.get()),
+                                           path.replace(separator, File.separator));
     }
 
     /*
@@ -245,9 +251,9 @@ final class MediaDefault implements Media
     public File getFile()
     {
         final File file;
-        if (loader != null)
+        if (loader.isPresent())
         {
-            final URL url = loader.getResource(path);
+            final URL url = loader.get().getResource(path);
             if (url == null)
             {
                 file = new File(getPathTemp());
@@ -290,7 +296,7 @@ final class MediaDefault implements Media
     {
         try
         {
-            if (loader != null)
+            if (loader.isPresent())
             {
                 return getInputFromJarOrTemp();
             }
@@ -307,7 +313,7 @@ final class MediaDefault implements Media
     {
         try
         {
-            if (loader != null)
+            if (loader.isPresent())
             {
                 final String outputPath = getPathTemp();
                 if (new File(outputPath).getParentFile().mkdirs())
@@ -327,10 +333,10 @@ final class MediaDefault implements Media
     @Override
     public boolean exists()
     {
-        if (loader != null)
+        if (loader.isPresent())
         {
             final String jarPath = UtilFolder.getPathSeparator(separator, getPath());
-            return loader.getResource(jarPath) != null || UtilFile.exists(getPathTemp());
+            return loader.get().getResource(jarPath) != null || UtilFile.exists(getPathTemp());
         }
         return getFile().exists();
     }

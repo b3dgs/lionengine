@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -38,7 +39,7 @@ public class MediasTest
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
-    private Class<?> oldLoader;
+    private Optional<Class<?>> oldLoader;
 
     /**
      * Prepare test.
@@ -58,7 +59,7 @@ public class MediasTest
     public void cleanUp()
     {
         Medias.setResourcesDirectory(oldDir);
-        Medias.setLoadFromJar(oldLoader);
+        Medias.setLoadFromJar(oldLoader.orElse(null));
     }
 
     /**
@@ -109,7 +110,7 @@ public class MediasTest
     public void testCreateMediaLoader()
     {
         Medias.setLoadFromJar(MediasTest.class);
-        Assert.assertEquals(MediasTest.class, Medias.getResourcesLoader());
+        Assert.assertEquals(MediasTest.class, Medias.getResourcesLoader().get());
 
         final Media media = Medias.create("test.txt");
         Assert.assertEquals("", media.getParentPath());
@@ -158,7 +159,8 @@ public class MediasTest
         Medias.setLoadFromJar(MediasTest.class);
 
         final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-        final String prefix = Medias.getResourcesLoader().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final String prefix = Medias.getResourcesLoader().get().getPackage().getName().replace(Constant.DOT,
+                                                                                               Constant.SLASH);
         final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
         final int jarSeparatorIndex = jarPath.indexOf(prefix);
         final File jar = Medias.getJarResources();
@@ -186,7 +188,8 @@ public class MediasTest
         Medias.setLoadFromJar(MediasTest.class);
 
         final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-        final String prefix = Medias.getResourcesLoader().getPackage().getName().replace(Constant.DOT, Constant.SLASH);
+        final String prefix = Medias.getResourcesLoader().get().getPackage().getName().replace(Constant.DOT,
+                                                                                               Constant.SLASH);
         final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
         final int jarSeparatorIndex = jarPath.indexOf(prefix);
         final String resourcesPrefix = Medias.getJarResourcesPrefix();
