@@ -104,7 +104,7 @@ public abstract class PlayerAbstract implements Audio
     public void play()
     {
         final String name = media.getPath();
-        if (Medias.getResourcesLoader() != null)
+        if (Medias.getResourcesLoader().isPresent())
         {
             if (cache == null)
             {
