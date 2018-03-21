@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 
 /**
@@ -74,10 +76,7 @@ public abstract class ScreenAbstract implements Screen
     @Override
     public void start()
     {
-        config.getIcon()
-              .map(icon -> icon.getFile())
-              .filter(file -> file.exists())
-              .ifPresent(file -> setIcon(file.getPath()));
+        config.getIcon().map(Media::getFile).filter(File::exists).ifPresent(file -> setIcon(file.getPath()));
     }
 
     @Override
