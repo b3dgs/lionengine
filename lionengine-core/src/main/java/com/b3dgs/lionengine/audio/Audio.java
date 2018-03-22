@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.audio;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Describe a audio interface, dedicated to long audio stream, playable in loop with a specified volume.
+ * Describe an audio interface, dedicated to long audio stream, playable with a specified volume.
  */
 public interface Audio
 {

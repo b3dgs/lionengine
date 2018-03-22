@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Media;
  */
 public final class AudioVoidFormat implements AudioFormat
 {
-    /** Formats list. */
+    /** Formats list as read only. */
     private final Collection<String> formats;
 
     /**

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.audio;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -53,6 +54,15 @@ public class AudioFactoryTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
+    }
+
+    /**
+     * Reset formats.
+     */
+    @After
+    public void clean()
+    {
+        AudioFactory.clearFormats();
     }
 
     /**

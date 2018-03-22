@@ -32,14 +32,14 @@ public interface AudioFormat
      * 
      * @param media The audio media (must not be <code>null</code>).
      * @return The loaded audio.
-     * @throws LionEngineException If media is <code>null</code> or invalid audio or no audio player is available.
+     * @throws LionEngineException If invalid audio.
      */
     Audio loadAudio(Media media);
 
     /**
-     * Get the music audio formats as read only.
+     * Get the audio formats as read only.
      * 
-     * @return The audio music formats.
+     * @return The audio formats.
      */
     Collection<String> getFormats();
 

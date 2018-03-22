@@ -26,13 +26,15 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.util.UtilFile;
 
 /**
- * Audio factory. Allows to create audio player depending of format.
+ * Allows to create audio player depending on format.
  */
 public final class AudioFactory
 {
     /** Unknown audio format. */
     public static final String ERROR_FORMAT = "Unsupported audio format: ";
-    /** Supported audio formats. */
+    /** Format already exists. */
+    public static final String ERROR_EXISTS = "Format already exists: ";
+    /** Factories by audio format. */
     private static final Map<String, AudioFormat> FACTORIES = new HashMap<>();
 
     /**
@@ -40,7 +42,7 @@ public final class AudioFactory
      * 
      * @param media The audio media (must not be <code>null</code>).
      * @return The loaded audio.
-     * @throws LionEngineException If media is <code>null</code> or invalid audio or no audio player is available.
+     * @throws LionEngineException If invalid audio.
      */
     public static Audio loadAudio(Media media)
     {
@@ -61,7 +63,7 @@ public final class AudioFactory
      * @param media The audio media (must not be <code>null</code>).
      * @param type The expected audio type (must not be <code>null</code>).
      * @return The loaded audio.
-     * @throws LionEngineException If invalid arguments or invalid audio or no audio player is available.
+     * @throws LionEngineException If invalid arguments or invalid audio.
      */
     public static <A extends Audio> A loadAudio(Media media, Class<A> type)
     {
@@ -87,7 +89,7 @@ public final class AudioFactory
      * Add a supported audio format.
      * 
      * @param format The supported format (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @throws LionEngineException If invalid argument or format already exists.
      */
     public static void addFormat(AudioFormat format)
     {
@@ -95,7 +97,10 @@ public final class AudioFactory
 
         for (final String current : format.getFormats())
         {
-            FACTORIES.put(current, format);
+            if (FACTORIES.put(current, format) != null)
+            {
+                throw new LionEngineException(ERROR_EXISTS + current);
+            }
         }
     }
 
