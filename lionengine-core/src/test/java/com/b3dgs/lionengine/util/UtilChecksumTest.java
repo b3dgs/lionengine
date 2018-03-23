@@ -45,10 +45,10 @@ public class UtilChecksumTest
     public void testEncodingString()
     {
         final String keyToBeEncoded = "keyToBeEncoded";
-        final String signature = UtilChecksum.getSha256(keyToBeEncoded);
+        final String signature = UtilChecksum.getSha(keyToBeEncoded);
 
-        Assert.assertTrue(UtilChecksum.checkSha256(keyToBeEncoded, signature));
-        Assert.assertFalse(UtilChecksum.checkSha256("anotherKey", signature));
+        Assert.assertTrue(UtilChecksum.checkSha(keyToBeEncoded, signature));
+        Assert.assertFalse(UtilChecksum.checkSha("anotherKey", signature));
     }
 
     /**
@@ -58,10 +58,10 @@ public class UtilChecksumTest
     public void testEncodingInt()
     {
         final int value = 489464795;
-        final String signature = UtilChecksum.getSha256(value);
+        final String signature = UtilChecksum.getSha(value);
 
-        Assert.assertTrue(UtilChecksum.checkSha256(value, signature));
-        Assert.assertFalse(UtilChecksum.checkSha256(2456135, signature));
+        Assert.assertTrue(UtilChecksum.checkSha(value, signature));
+        Assert.assertFalse(UtilChecksum.checkSha(2456135, signature));
     }
 
     /**
@@ -70,7 +70,7 @@ public class UtilChecksumTest
     @Test(expected = LionEngineException.class)
     public void testEncodingEmptyNullString()
     {
-        Assert.assertNull(UtilChecksum.getSha256((String) null));
+        Assert.assertNull(UtilChecksum.getSha((String) null));
     }
 
     /**
@@ -79,7 +79,7 @@ public class UtilChecksumTest
     @Test(expected = LionEngineException.class)
     public void testEncodingEmptyNullBytes()
     {
-        Assert.assertNull(UtilChecksum.getSha256((byte[]) null));
+        Assert.assertNull(UtilChecksum.getSha((byte[]) null));
     }
 
     /**

@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * SHA-256 based checksum manipulation.
+ * SHA-512 based checksum manipulation.
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -36,9 +36,9 @@ public final class UtilChecksum
     /** Instance error message. */
     private static final String ERROR_ALGORITHM = "Unable to create algorithm: ";
     /** Message digest instance. */
-    private static final MessageDigest SHA256 = create("SHA-256");
+    private static final MessageDigest SHA256 = create("SHA-512");
     /** Maximum length. */
-    private static final int MAX_LENGTH = 87;
+    private static final int MAX_LENGTH = 178;
 
     /**
      * Compare a checksum with its supposed original value.
@@ -49,11 +49,11 @@ public final class UtilChecksum
      *         else.
      * @throws LionEngineException If invalid arguments.
      */
-    public static boolean checkSha256(String value, String signature)
+    public static boolean checkSha(String value, String signature)
     {
         Check.notNull(signature);
 
-        return Arrays.equals(getSha256(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
+        return Arrays.equals(getSha(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
     }
 
     /**
@@ -65,11 +65,11 @@ public final class UtilChecksum
      *         else.
      * @throws LionEngineException If invalid arguments.
      */
-    public static boolean checkSha256(int value, String signature)
+    public static boolean checkSha(int value, String signature)
     {
         Check.notNull(signature);
 
-        return Arrays.equals(getSha256(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
+        return Arrays.equals(getSha(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
     }
 
     /**
@@ -79,13 +79,12 @@ public final class UtilChecksum
      * @return The bytes signature.
      * @throws LionEngineException If invalid arguments.
      */
-    public static String getSha256(byte[] bytes)
+    public static String getSha(byte[] bytes)
     {
         Check.notNull(bytes);
 
-        final byte[] v = SHA256.digest(bytes);
         final StringBuilder builder = new StringBuilder(MAX_LENGTH);
-        for (final byte b : v)
+        for (final byte b : SHA256.digest(bytes))
         {
             builder.append(0xFF & b);
         }
@@ -98,9 +97,9 @@ public final class UtilChecksum
      * @param i The input integer.
      * @return The integer signature.
      */
-    public static String getSha256(int i)
+    public static String getSha(int i)
     {
-        return getSha256(UtilConversion.intToByteArray(i));
+        return getSha(UtilConversion.intToByteArray(i));
     }
 
     /**
@@ -110,11 +109,11 @@ public final class UtilChecksum
      * @return The string signature.
      * @throws LionEngineException If invalid arguments.
      */
-    public static String getSha256(String str)
+    public static String getSha(String str)
     {
         Check.notNull(str);
 
-        return getSha256(str.getBytes(Constant.UTF_8));
+        return getSha(str.getBytes(Constant.UTF_8));
     }
 
     /**
