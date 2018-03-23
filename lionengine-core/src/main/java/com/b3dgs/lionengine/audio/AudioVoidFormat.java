@@ -35,7 +35,7 @@ public final class AudioVoidFormat implements AudioFormat
     /**
      * Create void audio format.
      * 
-     * @param formats Associated files type (must not be <code>null</code>).
+     * @param formats The associated files type (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
     public AudioVoidFormat(Collection<String> formats)

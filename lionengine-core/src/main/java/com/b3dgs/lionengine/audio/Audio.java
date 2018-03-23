@@ -30,12 +30,12 @@ public interface Audio
      * The audio will be played from the beginning until the end.
      * </p>
      * 
-     * @throws LionEngineException If unable to play sound.
+     * @throws LionEngineException If unable to play audio.
      */
     void play();
 
     /**
-     * Set the midi volume.
+     * Set the audio volume.
      * 
      * @param volume The volume in percent between included range <code>[0 - 100]</code>.
      * @throws LionEngineException If invalid argument.

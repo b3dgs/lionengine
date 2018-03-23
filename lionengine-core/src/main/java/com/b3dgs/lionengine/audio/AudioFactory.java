@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -49,11 +50,9 @@ public final class AudioFactory
         Check.notNull(media);
 
         final String extension = UtilFile.getExtension(media.getPath());
-        if (FACTORIES.containsKey(extension))
-        {
-            return FACTORIES.get(extension).loadAudio(media);
-        }
-        throw new LionEngineException(media, ERROR_FORMAT);
+        return Optional.ofNullable(FACTORIES.get(extension))
+                       .orElseThrow(() -> new LionEngineException(media, ERROR_FORMAT))
+                       .loadAudio(media);
     }
 
     /**
@@ -71,18 +70,16 @@ public final class AudioFactory
         Check.notNull(type);
 
         final String extension = UtilFile.getExtension(media.getPath());
-        if (FACTORIES.containsKey(extension))
+        try
         {
-            try
-            {
-                return type.cast(FACTORIES.get(extension).loadAudio(media));
-            }
-            catch (final ClassCastException exception)
-            {
-                throw new LionEngineException(exception, media, ERROR_FORMAT);
-            }
+            return type.cast(Optional.ofNullable(FACTORIES.get(extension))
+                                     .orElseThrow(() -> new LionEngineException(media, ERROR_FORMAT))
+                                     .loadAudio(media));
         }
-        throw new LionEngineException(media, ERROR_FORMAT);
+        catch (final ClassCastException exception)
+        {
+            throw new LionEngineException(exception, media, ERROR_FORMAT);
+        }
     }
 
     /**
@@ -109,10 +106,7 @@ public final class AudioFactory
      */
     public static void clearFormats()
     {
-        for (final AudioFormat format : FACTORIES.values())
-        {
-            format.close();
-        }
+        FACTORIES.forEach((extension, format) -> format.close());
         FACTORIES.clear();
     }
 
