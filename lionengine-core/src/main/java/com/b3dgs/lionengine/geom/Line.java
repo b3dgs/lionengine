@@ -22,6 +22,9 @@ package com.b3dgs.lionengine.geom;
  */
 public class Line
 {
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 38;
+
     /** The X coordinate of the start point of the line segment. */
     private double x1;
     /** The Y coordinate of the start point of the line segment. */
@@ -155,16 +158,16 @@ public class Line
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [x1=")
-                                  .append(x1)
-                                  .append(", y1=")
-                                  .append(y1)
-                                  .append(", x2=")
-                                  .append(x2)
-                                  .append(", y2=")
-                                  .append(y2)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [x1=")
+                                            .append(x1)
+                                            .append(", y1=")
+                                            .append(y1)
+                                            .append(", x2=")
+                                            .append(x2)
+                                            .append(", y2=")
+                                            .append(y2)
+                                            .append("]")
+                                            .toString();
     }
 }

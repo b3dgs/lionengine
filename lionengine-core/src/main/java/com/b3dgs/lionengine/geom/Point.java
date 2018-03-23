@@ -22,6 +22,9 @@ package com.b3dgs.lionengine.geom;
  */
 public class Point
 {
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 17;
+
     /** Point horizontal. */
     private int x;
     /** Point vertical. */
@@ -50,10 +53,10 @@ public class Point
     }
 
     /**
-     * Translate int using specified values.
+     * Translate using specified vector.
      * 
-     * @param vx The horizontal force.
-     * @param vy The vertical force.
+     * @param vx The horizontal vector.
+     * @param vy The vertical vector.
      */
     public void translate(int vx, int vy)
     {
@@ -145,12 +148,12 @@ public class Point
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [x=")
-                                  .append(x)
-                                  .append(", y=")
-                                  .append(y)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [x=")
+                                            .append(x)
+                                            .append(", y=")
+                                            .append(y)
+                                            .append("]")
+                                            .toString();
     }
 }

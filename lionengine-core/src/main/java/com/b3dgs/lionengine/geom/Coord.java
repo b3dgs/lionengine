@@ -24,6 +24,9 @@ import com.b3dgs.lionengine.Localizable;
  */
 public class Coord implements Localizable
 {
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 21;
+
     /** Coordinate horizontal. */
     private double x;
     /** Coordinate vertical. */
@@ -52,10 +55,10 @@ public class Coord implements Localizable
     }
 
     /**
-     * Translate coordinate using specified values.
+     * Translate coordinate using specified vector.
      * 
-     * @param vx The horizontal force.
-     * @param vy The vertical force.
+     * @param vx The horizontal vector.
+     * @param vy The vertical vector.
      */
     public void translate(double vx, double vy)
     {
@@ -146,12 +149,12 @@ public class Coord implements Localizable
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [x=")
-                                  .append(x)
-                                  .append(", y=")
-                                  .append(y)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [x=")
+                                            .append(x)
+                                            .append(", y=")
+                                            .append(y)
+                                            .append("]")
+                                            .toString();
     }
 }

@@ -21,17 +21,20 @@ import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
- * Rectangle interface.
+ * Rectangle representation.
  */
 public class Rectangle implements Shape
 {
-    /** The coordinate X. */
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 48;
+
+    /** Horizontal coordinate. */
     private double x;
-    /** The coordinate Y. */
+    /** Vertical coordinate. */
     private double y;
-    /** The width . */
+    /** Width. */
     private double width;
-    /** The height. */
+    /** Height. */
     private double height;
 
     /**
@@ -186,9 +189,9 @@ public class Rectangle implements Shape
     }
 
     /**
-     * Get the min x location.
+     * Get the min horizontal location.
      * 
-     * @return The min x location.
+     * @return The min horizontal location.
      */
     public double getMinX()
     {
@@ -196,9 +199,9 @@ public class Rectangle implements Shape
     }
 
     /**
-     * Get the min y location.
+     * Get the min vertical location.
      * 
-     * @return The min y location.
+     * @return The min vertical location.
      */
     public double getMinY()
     {
@@ -206,9 +209,9 @@ public class Rectangle implements Shape
     }
 
     /**
-     * Get the max x location.
+     * Get the max horizontal location.
      * 
-     * @return The max x location.
+     * @return The max horizontal location.
      */
     public double getMaxX()
     {
@@ -216,9 +219,9 @@ public class Rectangle implements Shape
     }
 
     /**
-     * Get the max y location.
+     * Get the max vertical location.
      * 
-     * @return The max y location.
+     * @return The max vertical location.
      */
     public double getMaxY()
     {
@@ -314,15 +317,16 @@ public class Rectangle implements Shape
     @Override
     public String toString()
     {
-        return new StringBuilder().append("Rectangle [x=")
-                                  .append(x)
-                                  .append(", y=")
-                                  .append(y)
-                                  .append(", width=")
-                                  .append(width)
-                                  .append(", height=")
-                                  .append(height)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [x=")
+                                            .append(x)
+                                            .append(", y=")
+                                            .append(y)
+                                            .append(", width=")
+                                            .append(width)
+                                            .append(", height=")
+                                            .append(height)
+                                            .append("]")
+                                            .toString();
     }
 }
