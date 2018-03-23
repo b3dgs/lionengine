@@ -222,7 +222,7 @@ public final class ToolsAwt
         final BufferedImage rotated = createImage(r.getWidth(), r.getHeight(), transparency);
         final Graphics2D g = rotated.createGraphics();
 
-        optimizeGraphics(g);
+        optimizeGraphicsSpeed(g);
         g.rotate(Math.toRadians(angle), r.getWidth() / 2.0, r.getHeight() / 2.0);
 
         final double ox = r.getWidth() - (double) width;
@@ -252,7 +252,7 @@ public final class ToolsAwt
         final BufferedImage resized = createImage(width, height, transparency);
         final Graphics2D g = resized.createGraphics();
 
-        optimizeGraphics(g);
+        optimizeGraphicsSpeed(g);
         g.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
         g.dispose();
 
@@ -272,7 +272,7 @@ public final class ToolsAwt
         final BufferedImage flipped = createImage(width, height, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        optimizeGraphics(g);
+        optimizeGraphicsSpeed(g);
         g.drawImage(image, 0, 0, width, height, width, 0, 0, height, null);
         g.dispose();
 
@@ -292,7 +292,7 @@ public final class ToolsAwt
         final BufferedImage flipped = createImage(width, height, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        optimizeGraphics(g);
+        optimizeGraphicsSpeed(g);
         g.drawImage(image, 0, 0, width, height, 0, height, width, 0, null);
         g.dispose();
 
@@ -321,7 +321,7 @@ public final class ToolsAwt
             {
                 images[frame] = createImage(width, height, transparency);
                 final Graphics2D g = images[frame].createGraphics();
-                optimizeGraphics(g);
+                optimizeGraphicsSpeed(g);
                 g.drawImage(image, 0, 0, width, height, x * width, y * height, (x + 1) * width, (y + 1) * height, null);
                 g.dispose();
                 frame++;
@@ -464,16 +464,6 @@ public final class ToolsAwt
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-    }
-
-    /**
-     * Optimize graphic to performance mode.
-     * 
-     * @param g The graphic context.
-     */
-    static void optimizeGraphics(Graphics2D g)
-    {
-        optimizeGraphicsSpeed(g);
     }
 
     /**

@@ -41,6 +41,8 @@ final class ScreenFullAwt extends ScreenBaseAwt
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
     /** Unable to switch to full screen. */
     private static final String ERROR_SWITCH = "Unable to switch to full screen mode !";
+    /** Minimum length. */
+    private static final int MIN_LENGTH = 18;
 
     /**
      * Format resolution to string.
@@ -51,16 +53,16 @@ final class ScreenFullAwt extends ScreenBaseAwt
      */
     private static String formatResolution(Resolution resolution, int depth)
     {
-        return new StringBuilder().append(String.valueOf(resolution.getWidth()))
-                                  .append(Constant.STAR)
-                                  .append(String.valueOf(resolution.getHeight()))
-                                  .append(Constant.STAR)
-                                  .append(depth)
-                                  .append(Constant.SPACE)
-                                  .append(Constant.AT)
-                                  .append(String.valueOf(resolution.getRate()))
-                                  .append(Constant.UNIT_RATE)
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(String.valueOf(resolution.getWidth()))
+                                            .append(Constant.STAR)
+                                            .append(String.valueOf(resolution.getHeight()))
+                                            .append(Constant.STAR)
+                                            .append(depth)
+                                            .append(Constant.SPACE)
+                                            .append(Constant.AT)
+                                            .append(String.valueOf(resolution.getRate()))
+                                            .append(Constant.UNIT_RATE)
+                                            .toString();
     }
 
     /**
