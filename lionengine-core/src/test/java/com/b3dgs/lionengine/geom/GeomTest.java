@@ -46,11 +46,12 @@ public class GeomTest
     @Test
     public void testNoIntersection()
     {
-        Assert.assertNull(Geom.intersection(new Line(), new Line()));
-        Assert.assertNull(Geom.intersection(new Line(0.0, 0.0, 2.0, 2.0), new Line(2.0, 2.0, 4.0, 4.0)));
-        Assert.assertNull(Geom.intersection(new Line(1.0, 2.0, 3.0, 4.0), new Line(-1.0, -2.0, -3.0, -4.0)));
-        Assert.assertNull(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 1.99, 4.0, 1.99)));
-        Assert.assertNull(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 2.01, 4.0, 2.01)));
+        Assert.assertFalse(Geom.intersection(new Line(), new Line()).isPresent());
+        Assert.assertFalse(Geom.intersection(new Line(0.0, 0.0, 2.0, 2.0), new Line(2.0, 2.0, 4.0, 4.0)).isPresent());
+        Assert.assertFalse(Geom.intersection(new Line(1.0, 2.0, 3.0, 4.0), new Line(-1.0, -2.0, -3.0, -4.0))
+                               .isPresent());
+        Assert.assertFalse(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 1.99, 4.0, 1.99)).isPresent());
+        Assert.assertFalse(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 2.01, 4.0, 2.01)).isPresent());
     }
 
     /**
@@ -60,9 +61,9 @@ public class GeomTest
     public void testIntersection()
     {
         Assert.assertEquals(new Coord(1.0, 2.0),
-                            Geom.intersection(new Line(0.0, 2.0, 2.0, 2.0), new Line(1.0, 0.0, 1.0, 4.0)));
+                            Geom.intersection(new Line(0.0, 2.0, 2.0, 2.0), new Line(1.0, 0.0, 1.0, 4.0)).get());
         Assert.assertEquals(new Coord(1.0, 2.0),
-                            Geom.intersection(new Line(0.0, 4.0, 2.0, 0.0), new Line(0.0, 0.0, 2.0, 4.0)));
+                            Geom.intersection(new Line(0.0, 4.0, 2.0, 0.0), new Line(0.0, 0.0, 2.0, 4.0)).get());
     }
 
     /**
@@ -71,7 +72,7 @@ public class GeomTest
     @Test(expected = LionEngineException.class)
     public void testIntersectionNullArgument1()
     {
-        Assert.assertNull(Geom.intersection(null, new Line()));
+        Assert.assertFalse(Geom.intersection(null, new Line()).isPresent());
     }
 
     /**
@@ -80,7 +81,7 @@ public class GeomTest
     @Test(expected = LionEngineException.class)
     public void testIntersectionNullArgument2()
     {
-        Assert.assertNull(Geom.intersection(new Line(), null));
+        Assert.assertFalse(Geom.intersection(new Line(), null).isPresent());
     }
 
     /**
@@ -93,5 +94,48 @@ public class GeomTest
 
         Assert.assertEquals(1.5, localizable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(2.5, localizable.getY(), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test if localizable are same.
+     */
+    @Test
+    public void testSameLocalizable()
+    {
+        final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
+
+        Assert.assertTrue(Geom.same(localizable, localizable));
+        Assert.assertTrue(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertTrue(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
+        Assert.assertTrue(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
+
+        final Coord coord = new Coord(1.5, 2.5);
+
+        Assert.assertTrue(Geom.same(coord, coord));
+        Assert.assertTrue(Geom.same(coord, localizable));
+        Assert.assertTrue(Geom.same(coord, new Coord(1.5, 2.5)));
+        Assert.assertTrue(Geom.same(new Coord(1.5, 2.5), coord));
+        Assert.assertTrue(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
+    }
+
+    /**
+     * Test if localizable are not same.
+     */
+    @Test
+    public void testNotSameLocalizable()
+    {
+        final Localizable localizable = Geom.createLocalizable(2.5, 3.5);
+
+        Assert.assertFalse(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(2.5, 3.5)));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 1.5), Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(3.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
+
+        final Coord coord = new Coord(2.5, 3.5);
+
+        Assert.assertFalse(Geom.same(coord, new Coord(1.5, 2.5)));
+        Assert.assertFalse(Geom.same(new Coord(1.5, 2.5), coord));
+        Assert.assertFalse(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
     }
 }

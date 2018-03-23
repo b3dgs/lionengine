@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.geom;
 
+import java.util.Optional;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
@@ -34,7 +36,7 @@ public final class Geom
      * @return The intersection point, <code>null</code> if none.
      * @throws LionEngineException If invalid arguments.
      */
-    public static Coord intersection(Line l1, Line l2)
+    public static Optional<Coord> intersection(Line l1, Line l2)
     {
         Check.notNull(l1);
         Check.notNull(l2);
@@ -52,13 +54,13 @@ public final class Geom
         final double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         if (Double.compare(d, 0) == 0)
         {
-            return null;
+            return Optional.empty();
         }
 
         final double xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
         final double yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
 
-        return new Coord(xi, yi);
+        return Optional.of(new Coord(xi, yi));
     }
 
     /**
@@ -70,20 +72,19 @@ public final class Geom
      */
     public static Localizable createLocalizable(double x, double y)
     {
-        return new Localizable()
-        {
-            @Override
-            public double getX()
-            {
-                return x;
-            }
+        return new LocalizableImpl(x, y);
+    }
 
-            @Override
-            public double getY()
-            {
-                return y;
-            }
-        };
+    /**
+     * Check if two localizable are at the same location.
+     * 
+     * @param a The first localizable.
+     * @param b The second localizable.
+     * @return <code>true</code> if same location, <code>false</code> else.
+     */
+    public static boolean same(Localizable a, Localizable b)
+    {
+        return Double.compare(a.getX(), b.getX()) == 0 && Double.compare(a.getY(), b.getY()) == 0;
     }
 
     /**

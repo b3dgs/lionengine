@@ -20,14 +20,17 @@ package com.b3dgs.lionengine.geom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
+
+import com.b3dgs.lionengine.Constant;
 
 /**
- * Polygon interface.
+ * Polygon representation.
  */
 public class Polygon
 {
     /** Minimum number of points. */
-    private static final int MIN = 4;
+    private static final int MIN_POINTS = 4;
 
     /**
      * Calculate and create the bounds.
@@ -37,8 +40,12 @@ public class Polygon
      * @param npoints The points number.
      * @return The calculated bounds.
      */
-    private static Rectangle calculateBounds(double[] xpoints, double[] ypoints, int npoints)
+    private static Optional<Rectangle> calculateBounds(double[] xpoints, double[] ypoints, int npoints)
     {
+        if (npoints < MIN_POINTS)
+        {
+            return Optional.empty();
+        }
         double boundsMinX = Double.MAX_VALUE;
         double boundsMinY = Double.MAX_VALUE;
         double boundsMaxX = -Double.MAX_VALUE;
@@ -55,17 +62,48 @@ public class Polygon
             boundsMaxY = Math.max(boundsMaxY, y);
         }
 
-        return new Rectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
+        return Optional.of(new Rectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY));
     }
 
-    /** The array of coordinates X. */
-    private double[] xpoints = new double[MIN];
-    /** The array of coordinates Y. */
-    private double[] ypoints = new double[MIN];
-    /** The total number of points. */
+    /**
+     * Update the polygon bounds.
+     * 
+     * @param rectangle The bounds to update.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    private static void updateBounds(Rectangle rectangle, double x, double y)
+    {
+        final double nw;
+        final double nh;
+        if (x < rectangle.getX())
+        {
+            nw = rectangle.getWidthReal() + (rectangle.getX() - x);
+        }
+        else
+        {
+            nw = Math.max(rectangle.getWidthReal(), x - rectangle.getX());
+        }
+
+        if (y < rectangle.getY())
+        {
+            nh = rectangle.getHeightReal() + (rectangle.getY() - y);
+        }
+        else
+        {
+            nh = Math.max(rectangle.getHeightReal(), y - rectangle.getY());
+        }
+        rectangle.set(x, y, nw, nh);
+    }
+
+    /** Horizontal coordinates. */
+    private double[] xpoints = new double[MIN_POINTS];
+    /** Vertical coordinates. */
+    private double[] ypoints = new double[MIN_POINTS];
+    /** Total number of points. */
     private int npoints;
-    /** The bounds. */
-    private Rectangle bounds;
+    /** Last computed bounds. */
+    private Optional<Rectangle> bounds = Optional.empty();
 
     /**
      * Create a blank polygon.
@@ -92,9 +130,9 @@ public class Polygon
         xpoints[npoints] = x;
         ypoints[npoints] = y;
         npoints++;
-        if (bounds != null)
+        if (bounds.isPresent())
         {
-            updateBounds(x, y);
+            updateBounds(bounds.get(), x, y);
         }
     }
 
@@ -103,8 +141,10 @@ public class Polygon
      */
     public void reset()
     {
+        xpoints = new double[MIN_POINTS];
+        ypoints = new double[MIN_POINTS];
         npoints = 0;
-        bounds = null;
+        bounds = Optional.empty();
     }
 
     /**
@@ -112,12 +152,8 @@ public class Polygon
      * 
      * @return The polygon rectangle bounds, <code>null</code> if no points.
      */
-    public Rectangle getRectangle()
+    public Optional<Rectangle> getRectangle()
     {
-        if (npoints == 0)
-        {
-            return null;
-        }
         bounds = calculateBounds(xpoints, ypoints, npoints);
         return bounds;
     }
@@ -130,7 +166,8 @@ public class Polygon
      */
     public boolean intersects(Rectangle rectangle)
     {
-        return rectangle != null && rectangle.intersects(getRectangle());
+        final Optional<Rectangle> current = getRectangle();
+        return rectangle != null && current.isPresent() && rectangle.intersects(current.get());
     }
 
     /**
@@ -141,12 +178,8 @@ public class Polygon
      */
     public boolean contains(Rectangle rectangle)
     {
-        final Rectangle current = getRectangle();
-        if (rectangle == null || current == null)
-        {
-            return false;
-        }
-        return current.contains(rectangle);
+        final Optional<Rectangle> current = getRectangle();
+        return rectangle != null && current.isPresent() && current.get().contains(rectangle);
     }
 
     /**
@@ -164,36 +197,6 @@ public class Polygon
         return list;
     }
 
-    /**
-     * Update the polygon bounds.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    private void updateBounds(double x, double y)
-    {
-        final double nw;
-        final double nh;
-        if (x < bounds.getX())
-        {
-            nw = bounds.getWidthReal() + (bounds.getX() - x);
-        }
-        else
-        {
-            nw = Math.max(bounds.getWidthReal(), x - bounds.getX());
-        }
-
-        if (y < bounds.getY())
-        {
-            nh = bounds.getHeightReal() + (bounds.getY() - y);
-        }
-        else
-        {
-            nh = Math.max(bounds.getHeightReal(), y - bounds.getY());
-        }
-        bounds.set(x, y, nw, nh);
-    }
-
     /*
      * Object
      */
@@ -201,7 +204,8 @@ public class Polygon
     @Override
     public String toString()
     {
-        final StringBuilder builder = new StringBuilder().append(getClass().getSimpleName()).append(" [");
+        final StringBuilder builder = new StringBuilder(Constant.HUNDRED).append(getClass().getSimpleName())
+                                                                         .append(" [");
         for (int i = 0; i < npoints; i++)
         {
             builder.append(" p=").append(i + 1).append(" x=").append(xpoints[i]).append(", y=").append(ypoints[i]);

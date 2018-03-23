@@ -34,7 +34,7 @@ public class PolygonTest
         final Polygon polygon = new Polygon();
 
         Assert.assertTrue(polygon.getPoints().isEmpty());
-        Assert.assertNull(polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
     }
 
     /**
@@ -50,12 +50,21 @@ public class PolygonTest
         polygon.addPoint(1.0, 2.0);
 
         Assert.assertTrue(polygon.getPoints().isEmpty());
-        Assert.assertEquals(new Rectangle(1.0, 2.0, 0.0, 0.0), polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
 
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertEquals(new Line(1.0, 2.0, 3.0, 4.0), polygon.getPoints().iterator().next());
-        Assert.assertEquals(new Rectangle(1.0, 2.0, 2.0, 2.0), polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
+
+        polygon.addPoint(-1.0, -2.0);
+
+        Assert.assertEquals(new Line(1.0, 2.0, 3.0, 4.0), polygon.getPoints().iterator().next());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
+
+        polygon.addPoint(-3.0, -4.0);
+
+        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getRectangle().get());
     }
 
     /**
@@ -66,19 +75,42 @@ public class PolygonTest
     {
         final Polygon polygon = new Polygon();
 
-        Assert.assertNull(polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
 
         polygon.addPoint(0.0, 0.0);
 
-        Assert.assertNotNull(polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
 
         polygon.addPoint(-1.0, -2.0);
         polygon.addPoint(-3.0, -4.0);
         polygon.addPoint(1.0, 2.0);
         polygon.addPoint(3.0, 4.0);
 
-        Assert.assertNotNull(polygon.getRectangle());
+        Assert.assertTrue(polygon.getRectangle().isPresent());
         Assert.assertEquals(2, polygon.getPoints().size());
+    }
+
+    /**
+     * Test the update bound when adding point.
+     */
+    @Test
+    public void testAddPointUpdateBounds()
+    {
+        final Polygon polygon = new Polygon();
+        polygon.addPoint(-1.0, -2.0);
+        polygon.addPoint(-3.0, -4.0);
+        polygon.addPoint(1.0, 2.0);
+        polygon.addPoint(3.0, 4.0);
+
+        Assert.assertTrue(polygon.getRectangle().isPresent());
+
+        polygon.addPoint(0.0, 0.0);
+
+        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getRectangle().get());
+
+        polygon.addPoint(-4.0, -5.0);
+
+        Assert.assertEquals(new Rectangle(-4.0, -5.0, 7.0, 9.0), polygon.getRectangle().get());
     }
 
     /**
@@ -92,12 +124,12 @@ public class PolygonTest
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertFalse(polygon.getPoints().isEmpty());
-        Assert.assertNotNull(polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
 
         polygon.reset();
 
         Assert.assertTrue(polygon.getPoints().isEmpty());
-        Assert.assertNull(polygon.getRectangle());
+        Assert.assertFalse(polygon.getRectangle().isPresent());
     }
 
     /**
@@ -111,11 +143,16 @@ public class PolygonTest
         Assert.assertFalse(polygon.intersects(null));
         Assert.assertFalse(polygon.intersects(new Rectangle(1.0, 2.0, 2.0, 2.0)));
 
+        polygon.addPoint(-1.0, -2.0);
+        polygon.addPoint(-3.0, -4.0);
         polygon.addPoint(1.0, 2.0);
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertFalse(polygon.intersects(null));
-        Assert.assertTrue(polygon.getRectangle().toString(), polygon.intersects(new Rectangle(1.5, 1.5, 1.0, 1.0)));
+        Assert.assertFalse(polygon.getRectangle().get().toString(),
+                           polygon.intersects(new Rectangle(-10.5, -10.5, 1.0, 1.0)));
+        Assert.assertTrue(polygon.getRectangle().get().toString(),
+                          polygon.intersects(new Rectangle(1.5, 1.5, 1.0, 1.0)));
     }
 
     /**
@@ -129,11 +166,16 @@ public class PolygonTest
         Assert.assertFalse(polygon.contains(null));
         Assert.assertFalse(polygon.contains(new Rectangle(1.0, 2.0, 2.0, 2.0)));
 
+        polygon.addPoint(-1.0, -2.0);
+        polygon.addPoint(-3.0, -4.0);
         polygon.addPoint(1.0, 2.0);
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertFalse(polygon.contains(null));
-        Assert.assertTrue(polygon.getRectangle().toString(), polygon.contains(new Rectangle(1.25, 2.25, 0.5, 0.5)));
+        Assert.assertFalse(polygon.getRectangle().get().toString(),
+                           polygon.contains(new Rectangle(10.25, 20.25, 0.5, 0.5)));
+        Assert.assertTrue(polygon.getRectangle().get().toString(),
+                          polygon.contains(new Rectangle(1.25, 2.25, 0.5, 0.5)));
     }
 
     /**
