@@ -32,7 +32,6 @@ import java.util.Optional;
  * </ul>
  * 
  * @see Resolution
- * @see Ratio
  */
 public final class Config
 {
