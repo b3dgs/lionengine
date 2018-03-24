@@ -20,7 +20,7 @@ package com.b3dgs.lionengine;
 /**
  * Viewer mock.
  */
-public class ViewerMock implements Viewer
+public final class ViewerMock implements Viewer
 {
     /** Viewer X. */
     private int x;

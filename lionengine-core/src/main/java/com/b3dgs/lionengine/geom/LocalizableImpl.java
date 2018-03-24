@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Localizable;
 /**
  * Represents a localizable using double precision.
  */
-class LocalizableImpl implements Localizable
+final class LocalizableImpl implements Localizable
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 31;
@@ -51,13 +51,13 @@ class LocalizableImpl implements Localizable
      */
 
     @Override
-    public final double getX()
+    public double getX()
     {
         return x;
     }
 
     @Override
-    public final double getY()
+    public double getY()
     {
         return y;
     }

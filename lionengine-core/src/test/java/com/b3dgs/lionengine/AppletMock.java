@@ -20,7 +20,7 @@ package com.b3dgs.lionengine;
 /**
  * Applet mock.
  */
-public class AppletMock implements Applet<AppletMock>
+final class AppletMock implements Applet<AppletMock>
 {
     /**
      * Create mock.

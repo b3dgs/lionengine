@@ -24,7 +24,7 @@ import java.security.Permission;
 /**
  * Security manager mock with no access.
  */
-public class SecurityManagerMock extends SecurityManager
+final class SecurityManagerMock extends SecurityManager
 {
     /** Allow state. */
     private final boolean allow;
