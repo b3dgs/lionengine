@@ -161,11 +161,7 @@ public final class UtilFolder
      */
     public static boolean isDirectory(String path)
     {
-        if (path == null)
-        {
-            return false;
-        }
-        return new File(path).isDirectory();
+        return path != null && new File(path).isDirectory();
     }
 
     /**

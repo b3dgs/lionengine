@@ -129,7 +129,7 @@ public final class UtilReflection
     {
         Check.notNull(arguments);
 
-        final Collection<Object> types = new ArrayList<>();
+        final Collection<Object> types = new ArrayList<>(arguments.length);
         for (final Object argument : arguments)
         {
             if (argument.getClass() == Class.class)

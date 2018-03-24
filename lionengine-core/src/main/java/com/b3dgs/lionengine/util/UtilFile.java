@@ -78,7 +78,8 @@ public final class UtilFile
         Check.notNull(file);
         Check.notNull(extension);
 
-        final StringBuilder builder = new StringBuilder(removeExtension(file)).append(Constant.DOT);
+        final int length = file.length() + Constant.DOT.length() + extension.length();
+        final StringBuilder builder = new StringBuilder(length).append(removeExtension(file)).append(Constant.DOT);
         if (extension.startsWith(Constant.DOT))
         {
             builder.append(getExtension(extension));
@@ -210,11 +211,7 @@ public final class UtilFile
      */
     public static boolean exists(String path)
     {
-        if (path == null)
-        {
-            return false;
-        }
-        return new File(path).exists();
+        return path != null && new File(path).exists();
     }
 
     /**
@@ -225,11 +222,7 @@ public final class UtilFile
      */
     public static boolean isFile(String path)
     {
-        if (path == null)
-        {
-            return false;
-        }
-        return new File(path).isFile();
+        return path != null && new File(path).isFile();
     }
 
     /**

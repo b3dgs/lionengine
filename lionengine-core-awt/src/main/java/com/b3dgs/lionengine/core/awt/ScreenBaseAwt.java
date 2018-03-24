@@ -67,17 +67,6 @@ class ScreenBaseAwt extends ScreenAwtAbstract
     }
 
     /**
-     * Called when screen is disposed.
-     */
-    void onDisposed()
-    {
-        for (final ScreenListener listener : listeners)
-        {
-            listener.notifyClosed();
-        }
-    }
-
-    /**
      * Initialize the main frame.
      * 
      * @return The created main frame.
@@ -96,7 +85,10 @@ class ScreenBaseAwt extends ScreenAwtAbstract
             @Override
             public void windowClosing(WindowEvent event)
             {
-                onDisposed();
+                for (final ScreenListener listener : listeners)
+                {
+                    listener.notifyClosed();
+                }
             }
         });
         jframe.setResizable(false);
