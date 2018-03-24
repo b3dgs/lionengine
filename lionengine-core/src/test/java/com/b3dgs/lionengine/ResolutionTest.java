@@ -21,34 +21,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the resolution class.
+ * Test {@link Resolution}.
  */
-public class ResolutionTest
+public final class ResolutionTest
 {
     /**
-     * Test the display creation function.
-     * 
-     * @param width The width.
-     * @param height The height.
-     * @param rate The rate.
-     */
-    private static void testResolutionCreation(int width, int height, int rate)
-    {
-        try
-        {
-            final Resolution resolution = new Resolution(width, height, rate);
-            Assert.assertNotNull(resolution);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-    }
-
-    /**
-     * Test resolution getters.
+     * Test getters.
      */
     @Test
     public void testGetters()
@@ -61,7 +39,7 @@ public class ResolutionTest
     }
 
     /**
-     * Test the non strict positive width.
+     * Test non strict positive width.
      */
     @Test(expected = LionEngineException.class)
     public void testNonStrictPositiveWidth()
@@ -70,7 +48,7 @@ public class ResolutionTest
     }
 
     /**
-     * Test the non strict positive height.
+     * Test non strict positive height.
      */
     @Test(expected = LionEngineException.class)
     public void testNonStrictPositiveHeight()
@@ -79,29 +57,12 @@ public class ResolutionTest
     }
 
     /**
-     * Test the negative rate.
+     * Test negative rate.
      */
     @Test(expected = LionEngineException.class)
     public void testNegativeRate()
     {
         Assert.assertNull(new Resolution(320, 240, -1));
-    }
-
-    /**
-     * Test the resolution failure.
-     */
-    @Test
-    public void testFailures()
-    {
-        testResolutionCreation(0, 0, -1);
-        testResolutionCreation(0, 1, -1);
-        testResolutionCreation(0, 0, -1);
-        testResolutionCreation(0, 0, 1);
-        testResolutionCreation(0, 1, 1);
-        testResolutionCreation(0, 0, 1);
-        testResolutionCreation(1, 0, -1);
-        testResolutionCreation(1, 1, -1);
-        testResolutionCreation(1, 1, -1);
     }
 
     /**

@@ -31,9 +31,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the exception.
+ * Test {@link LionEngineException}.
  */
-public class LionEngineExceptionTest
+public final class LionEngineExceptionTest
 {
     /** Output result. */
     private static PrintStream stream;
@@ -71,7 +71,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception.
+     * Test exception with check.
      */
     @Test
     public void testLionEngineExceptionWithCheck()
@@ -89,7 +89,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a message as argument.
+     * Test exception with a message as argument.
      */
     @Test
     public void testLionEngineExceptionWithCheckMessage()
@@ -108,7 +108,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a media as argument with null path.
+     * Test exception with a media as argument with null path.
      */
     @Test
     public void testLionEngineExceptionWithMediaNullPath()
@@ -127,7 +127,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a media as argument.
+     * Test exception with a media as argument.
      */
     @Test
     public void testLionEngineExceptionWithMedia()
@@ -145,7 +145,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a media as argument.
+     * Test exception with a media as argument.
      */
     @Test
     public void testLionEngineExceptionWithMediaMessage()
@@ -164,7 +164,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a media as argument.
+     * Test exception with a media as argument.
      */
     @Test
     public void testLionEngineExceptionWithMediaException()
@@ -182,7 +182,25 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a null enum as argument.
+     * Test exception with a media as argument plus exception and message.
+     */
+    @Test
+    public void testLionEngineExceptionWithMediaExceptionMessage()
+    {
+        stream.println("testLionEngineExceptionWithMediaException");
+        try
+        {
+            throw new LionEngineException(new RuntimeException(), Medias.create("media"), "message");
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace(stream);
+        }
+        stream.println();
+    }
+
+    /**
+     * Test exception with a null enum as argument.
      */
     @Test
     public void testLionEngineExceptionWithEnumNull()
@@ -200,7 +218,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with an enum as argument.
+     * Test exception with an enum as argument.
      */
     @Test
     public void testLionEngineExceptionWithEnum()
@@ -218,7 +236,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a throwable as argument.
+     * Test exception with a throwable as argument.
      * 
      * @throws FileNotFoundException If error.
      */
@@ -256,7 +274,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a <code>null</code> reason.
+     * Test exception with a <code>null</code> reason.
      * 
      * @throws FileNotFoundException If error.
      */
@@ -276,7 +294,7 @@ public class LionEngineExceptionTest
     }
 
     /**
-     * Test the exception with a throwable as argument without message.
+     * Test exception with a throwable as argument without message.
      */
     @Test
     public void testLionEngineExceptionWithThrowableNoMessage()
@@ -285,6 +303,24 @@ public class LionEngineExceptionTest
         try
         {
             throw new LionEngineException(new IOException());
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace(stream);
+        }
+        stream.println();
+    }
+
+    /**
+     * Test exception with a throwable as argument and message.
+     */
+    @Test
+    public void testLionEngineExceptionWithThrowableMessage()
+    {
+        stream.println("testLionEngineExceptionWithThrowableNoMessage");
+        try
+        {
+            throw new LionEngineException(new IOException(), "message");
         }
         catch (final LionEngineException exception)
         {

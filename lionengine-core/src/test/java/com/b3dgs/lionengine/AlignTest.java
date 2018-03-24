@@ -22,9 +22,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the align class.
+ * Test {@link Align}.
  */
-public class AlignTest
+public final class AlignTest
 {
     /**
      * Test the enum.

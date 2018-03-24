@@ -23,115 +23,134 @@ import org.junit.Test;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the config class.
+ * Test {@link Config}.
  */
-public class ConfigTest
+public final class ConfigTest
 {
-    /** Resolution. */
-    private static final Resolution OUTPUT = new Resolution(320, 240, 60);
-    /** Config. */
-    private static final Config CONFIG = new Config(OUTPUT, 32, true);
     /** Icon test. */
     private final String ICON = "image.png";
 
     /**
-     * Test the config failure resolution.
+     * Test <code>null</code> resolution.
      */
     @Test(expected = LionEngineException.class)
-    public void testFailureResolution()
+    public void testResolutionNull()
     {
         Assert.assertNotNull(new Config(null, 1, true));
     }
 
     /**
-     * Test the config failure depth.
+     * Test failure depth.
      */
     @Test(expected = LionEngineException.class)
-    public void testFailureDepth()
+    public void testDepthInvalid()
     {
-        Assert.assertNotNull(new Config(OUTPUT, 0, true));
+        Assert.assertNotNull(new Config(new Resolution(320, 240, 60), 0, true));
     }
 
     /**
-     * Test the config getter.
+     * Test getter.
      */
     @Test
     public void testGetter()
     {
-        Assert.assertEquals(32, CONFIG.getDepth());
-        Assert.assertTrue(CONFIG.isWindowed());
-        Assert.assertEquals(OUTPUT, CONFIG.getOutput());
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = new Config(output, 32, true);
+
+        Assert.assertEquals(32, config.getDepth());
+        Assert.assertTrue(config.isWindowed());
+        Assert.assertEquals(output, config.getOutput());
     }
 
     /**
-     * Test the config source.
+     * Test source.
      */
     @Test
     public void testSource()
     {
-        CONFIG.setSource(OUTPUT);
-        Assert.assertEquals(OUTPUT.getWidth(), CONFIG.getSource().getWidth());
-        Assert.assertEquals(OUTPUT.getHeight(), CONFIG.getSource().getHeight());
-        Assert.assertEquals(OUTPUT.getRate(), CONFIG.getSource().getRate());
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = new Config(output, 32, true);
+        config.setSource(output);
+
+        Assert.assertEquals(output.getWidth(), config.getSource().getWidth());
+        Assert.assertEquals(output.getHeight(), config.getSource().getHeight());
+        Assert.assertEquals(output.getRate(), config.getSource().getRate());
     }
 
     /**
-     * Test the get applet with <code>null</code> argument.
+     * Test <code>null</code> source.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSourceNull()
+    {
+        new Config(new Resolution(320, 240, 60), 32, true).setSource(null);
+    }
+
+    /**
+     * Test get applet with <code>null</code> argument.
      */
     @Test(expected = LionEngineException.class)
     public void testGetAppletNullArgument()
     {
-        Assert.assertNull(CONFIG.getApplet((Class<AppletMock>) null));
+        Assert.assertNull(Config.windowed(new Resolution(320, 240, 60)).getApplet((Class<AppletMock>) null));
     }
 
     /**
-     * Test the config applet.
+     * Test applet.
      */
     @Test
     public void testApplet()
     {
-        CONFIG.setApplet(null);
-        Assert.assertFalse(CONFIG.getApplet(AppletMock.class).isPresent());
-        Assert.assertFalse(CONFIG.hasApplet());
+        final Config config = new Config(new Resolution(320, 240, 60), 32, true);
+        config.setApplet(null);
 
-        CONFIG.setApplet(new AppletMock());
-        Assert.assertTrue(CONFIG.getApplet(AppletMock.class).isPresent());
-        Assert.assertTrue(CONFIG.hasApplet());
+        Assert.assertFalse(config.getApplet(AppletMock.class).isPresent());
+        Assert.assertFalse(config.hasApplet());
+
+        config.setApplet(new AppletMock());
+
+        Assert.assertTrue(config.getApplet(AppletMock.class).isPresent());
+        Assert.assertTrue(config.hasApplet());
     }
 
     /**
-     * Test the config icon.
+     * Test icon.
      */
     @Test
     public void testIcon()
     {
-        Assert.assertFalse(CONFIG.getIcon().isPresent());
+        Assert.assertFalse(Config.windowed(new Resolution(320, 240, 60)).getIcon().isPresent());
+
         final Media icon = Medias.create(ICON);
-        final Config config = new Config(CONFIG.getOutput(), CONFIG.getDepth(), CONFIG.isWindowed(), icon);
-        Assert.assertEquals(icon, config.getIcon().get());
+
+        Assert.assertEquals(icon, new Config(new Resolution(320, 240, 60), 32, true, icon).getIcon().get());
     }
 
     /**
-     * Test the default windowed config.
+     * Test default windowed config.
      */
     @Test
     public void testDefaultWindowed()
     {
-        final Config config = Config.windowed(OUTPUT);
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = Config.windowed(output);
+
         Assert.assertTrue(config.isWindowed());
-        Assert.assertEquals(OUTPUT, config.getOutput());
+        Assert.assertEquals(output, config.getOutput());
         Assert.assertEquals(32, config.getDepth());
     }
 
     /**
-     * Test the default windowed config.
+     * Test default fullscreen config.
      */
     @Test
     public void testDefaultFullscreen()
     {
-        final Config config = Config.fullscreen(OUTPUT);
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = Config.fullscreen(output);
+
         Assert.assertFalse(config.isWindowed());
-        Assert.assertEquals(OUTPUT, config.getOutput());
+        Assert.assertEquals(output, config.getOutput());
         Assert.assertEquals(32, config.getDepth());
     }
 }

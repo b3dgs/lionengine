@@ -23,12 +23,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Test utility conversion class.
+ * Test {@link UtilConversion}.
  */
 public class UtilConversionTest
 {
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -39,7 +39,7 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility conversion short.
+     * Test short.
      */
     @Test
     public void testShort()
@@ -50,7 +50,7 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility conversion int.
+     * Test int.
      */
     @Test
     public void testInt()
@@ -60,7 +60,7 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility conversion byte.
+     * Test byte.
      */
     @Test
     public void testByte()
@@ -70,30 +70,48 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility conversion string.
+     * Test mask.
      */
     @Test
-    public void testString()
+    public void testMask()
+    {
+        Assert.assertEquals(255, UtilConversion.mask(255));
+        Assert.assertEquals(0, UtilConversion.mask(256));
+        Assert.assertEquals(1, UtilConversion.mask(257));
+    }
+
+    /**
+     * Test to title case.
+     */
+    @Test
+    public void testToTitleCase()
     {
         final String title = UtilConversion.toTitleCase("title");
         Assert.assertEquals("Title", title);
+    }
 
+    /**
+     * Test to title case word.
+     */
+    @Test
+    public void testToTitleCaseWord()
+    {
         final String word = UtilConversion.toTitleCaseWord("title toto");
         Assert.assertEquals("Title Toto", word);
     }
 
     /**
-     * Test the utility conversion boolean.
+     * Test boolean to int.
      */
     @Test
-    public void testBool()
+    public void testBoolToInt()
     {
         Assert.assertEquals(0, UtilConversion.boolToInt(false));
         Assert.assertEquals(1, UtilConversion.boolToInt(true));
     }
 
     /**
-     * Test the utility conversion from binary.
+     * Test from binary.
      */
     @Test
     public void testFromBinary()
@@ -118,7 +136,7 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility conversion to binary.
+     * Test to binary.
      */
     @Test
     public void testToBinary()
@@ -136,7 +154,7 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility invert binary.
+     * Test invert binary.
      */
     @Test
     public void testInvert()

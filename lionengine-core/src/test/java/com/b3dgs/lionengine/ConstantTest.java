@@ -25,9 +25,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the constants.
+ * Test {@link Constant}.
  */
-public class ConstantTest
+public final class ConstantTest
 {
     /**
      * Test the constructor.
@@ -93,7 +93,7 @@ public class ConstantTest
     }
 
     /**
-     * Test the system property with default value.
+     * Test system property with default value.
      */
     @Test
     public void testSystemPropertyDefault()
@@ -102,7 +102,7 @@ public class ConstantTest
     }
 
     /**
-     * Test the system property with existing value.
+     * Test system property with existing value.
      */
     @Test
     public void testSystemPropertyExists()
@@ -111,7 +111,7 @@ public class ConstantTest
     }
 
     /**
-     * Test the system property with security not allowing it.
+     * Test system property with security not allowing it.
      */
     @Test
     public void testSystemPropertySecurityException()
@@ -127,6 +127,5 @@ public class ConstantTest
             System.setSecurityManager(null);
         }
         Verbose.info("****************************************************************************************");
-
     }
 }

@@ -23,9 +23,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the line class.
+ * Test {@link Line}.
  */
-public class LineTest
+public final class LineTest
 {
     /**
      * Test the default constructor.
@@ -42,7 +42,7 @@ public class LineTest
     }
 
     /**
-     * Test the constructor with parameters.
+     * Test constructor with parameters.
      */
     @Test
     public void testConstructorParameters()
@@ -56,7 +56,7 @@ public class LineTest
     }
 
     /**
-     * Test the set.
+     * Test set.
      */
     @Test
     public void testSet()
@@ -71,7 +71,7 @@ public class LineTest
     }
 
     /**
-     * Test the equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -92,10 +92,10 @@ public class LineTest
     }
 
     /**
-     * Test the hash code.
+     * Test hash code.
      */
     @Test
-    public void testHash()
+    public void testHashCode()
     {
         Assert.assertEquals(new Line().hashCode(), new Line().hashCode());
         Assert.assertEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 3.5, 4.5).hashCode());
@@ -108,7 +108,7 @@ public class LineTest
     }
 
     /**
-     * Test the to string.
+     * Test to string.
      */
     @Test
     public void testToString()

@@ -21,12 +21,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the polygon class.
+ * Test {@link Polygon}.
  */
-public class PolygonTest
+public final class PolygonTest
 {
     /**
-     * Test the constructor default.
+     * Test constructor default.
      */
     @Test
     public void testConstructorDefault()
@@ -38,7 +38,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the add point.
+     * Test add point.
      */
     @Test
     public void testAddPoint()
@@ -68,7 +68,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the add point with required an internal array resize.
+     * Test add point with required an internal array resize.
      */
     @Test
     public void testAddPointResize()
@@ -91,7 +91,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the update bound when adding point.
+     * Test update bound when adding point.
      */
     @Test
     public void testAddPointUpdateBounds()
@@ -114,7 +114,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the reset.
+     * Test reset.
      */
     @Test
     public void testReset()
@@ -133,7 +133,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the intersect.
+     * Test intersect.
      */
     @Test
     public void testIntersect()
@@ -156,7 +156,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the contains.
+     * Test contains.
      */
     @Test
     public void testContains()
@@ -179,7 +179,7 @@ public class PolygonTest
     }
 
     /**
-     * Test the to string.
+     * Test to string.
      */
     @Test
     public void testToString()

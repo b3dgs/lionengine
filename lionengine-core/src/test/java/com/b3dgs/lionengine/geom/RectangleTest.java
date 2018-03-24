@@ -23,12 +23,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the rectangle class.
+ * Test {@link Rectangle}.
  */
-public class RectangleTest
+public final class RectangleTest
 {
     /**
-     * Test the default constructor.
+     * Test default constructor.
      */
     @Test
     public void testConstructorDefault()
@@ -48,7 +48,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the constructor with parameters.
+     * Test constructor with parameters.
      */
     @Test
     public void testConstructorParameters()
@@ -68,7 +68,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the set.
+     * Test set.
      */
     @Test
     public void testSet()
@@ -89,7 +89,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the rectangle intersects.
+     * Test intersects.
      */
     @Test
     public void testIntersects()
@@ -119,7 +119,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the rectangle contains.
+     * Test contains.
      */
     @Test
     public void testContains()
@@ -155,7 +155,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the rectangle rotation.
+     * Test rotation.
      */
     @Test
     public void testRotate()
@@ -168,7 +168,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the rectangle translate.
+     * Test translate.
      */
     @Test
     public void testTranslate()
@@ -187,10 +187,10 @@ public class RectangleTest
     }
 
     /**
-     * Test the rectangle hash code.
+     * Test hash code.
      */
     @Test
-    public void testHashcode()
+    public void testHashCode()
     {
         final int rectangle = new Rectangle(0, 1, 2, 3).hashCode();
 
@@ -215,7 +215,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the rectangle equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -245,7 +245,7 @@ public class RectangleTest
     }
 
     /**
-     * Test the to string.
+     * Test to string.
      */
     @Test
     public void testToString()

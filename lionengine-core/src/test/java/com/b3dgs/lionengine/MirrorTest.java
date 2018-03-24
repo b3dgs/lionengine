@@ -22,9 +22,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the mirror class.
+ * Test {@link Mirror}.
  */
-public class MirrorTest
+public final class MirrorTest
 {
     /**
      * Test the enum.

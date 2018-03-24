@@ -23,12 +23,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the coordinate class.
+ * Test {@link Coord}.
  */
-public class CoordTest
+public final class CoordTest
 {
     /**
-     * Test the default constructor.
+     * Test default constructor.
      */
     @Test
     public void testConstructorDefault()
@@ -40,7 +40,7 @@ public class CoordTest
     }
 
     /**
-     * Test the constructor with parameters.
+     * Test constructor with parameters.
      */
     @Test
     public void testConstructorParameters()
@@ -52,7 +52,7 @@ public class CoordTest
     }
 
     /**
-     * Test the translation.
+     * Test translate.
      */
     @Test
     public void testTranslate()
@@ -65,7 +65,7 @@ public class CoordTest
     }
 
     /**
-     * Test the set.
+     * Test set.
      */
     @Test
     public void testSet()
@@ -78,7 +78,7 @@ public class CoordTest
     }
 
     /**
-     * Test the set X.
+     * Test set X.
      */
     @Test
     public void testSetX()
@@ -91,7 +91,7 @@ public class CoordTest
     }
 
     /**
-     * Test the set Y.
+     * Test set Y.
      */
     @Test
     public void testSetY()
@@ -104,7 +104,7 @@ public class CoordTest
     }
 
     /**
-     * Test the equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -124,10 +124,10 @@ public class CoordTest
     }
 
     /**
-     * Test the hash code.
+     * Test hash code.
      */
     @Test
-    public void testHash()
+    public void testHashCode()
     {
         Assert.assertEquals(new Coord().hashCode(), new Coord().hashCode());
         Assert.assertEquals(new Coord(1.5, 2.5).hashCode(), new Coord(1.5, 2.5).hashCode());

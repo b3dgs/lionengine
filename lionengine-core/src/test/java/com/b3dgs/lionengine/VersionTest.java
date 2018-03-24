@@ -21,17 +21,18 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test version class.
+ * Test {@link Version}.
  */
-public class VersionTest
+public final class VersionTest
 {
     /**
-     * Test the version class.
+     * Test version.
      */
     @Test
     public void testVersion()
     {
         final Version version = Version.create(3, 2, 1);
+
         Assert.assertEquals(3, version.getMajor());
         Assert.assertEquals(2, version.getMinor());
         Assert.assertEquals(1, version.getMicro());
@@ -39,12 +40,13 @@ public class VersionTest
         Assert.assertEquals("3.2.1", version.toString());
 
         final Version version2 = Version.create(1, 3, 2);
+
         Assert.assertFalse(version.equals(version2));
         Assert.assertNotEquals("3.2.1", version2.toString());
     }
 
     /**
-     * Test the version hash code.
+     * Test hash code.
      */
     @Test
     public void testHashCode()
@@ -63,7 +65,7 @@ public class VersionTest
     }
 
     /**
-     * Test the version equality.
+     * Test equality.
      */
     @Test
     public void testEquals()

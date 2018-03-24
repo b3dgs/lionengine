@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.graphic.GraphicTest;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the audio factory.
+ * Test {@link AudioFactory}.
  */
-public class AudioFactoryTest
+public final class AudioFactoryTest
 {
     /**
      * Prepare test.
@@ -66,7 +66,7 @@ public class AudioFactoryTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -77,7 +77,7 @@ public class AudioFactoryTest
     }
 
     /**
-     * Test the load audio.
+     * Test load audio.
      */
     @Test
     public void testLoadAudio()
@@ -87,28 +87,37 @@ public class AudioFactoryTest
         Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png")));
         Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png"), Audio.class));
         Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png"), AudioVoid.class));
+    }
+
+    /**
+     * Test load audio invalid cast.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadAudioInvalidCast()
+    {
+        AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
         try
         {
             Assert.assertNull(AudioFactory.loadAudio(Medias.create("image.png"), MyAudio.class));
-            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
             Assert.assertEquals(ClassCastException.class, exception.getCause().getClass());
-        }
-        try
-        {
-            Assert.assertNull(AudioFactory.loadAudio(Medias.create("image.wav"), MyAudio.class));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertNotNull(exception);
+            throw exception;
         }
     }
 
     /**
-     * Test the clear formats.
+     * Test load audio invalid type.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadAudioInvalidType()
+    {
+        Assert.assertNull(AudioFactory.loadAudio(Medias.create("image.wav"), MyAudio.class));
+    }
+
+    /**
+     * Test clear formats.
      */
     @Test
     public void testClearFormats()
@@ -121,7 +130,7 @@ public class AudioFactoryTest
 
         try
         {
-            Assert.assertNotNull(AudioFactory.loadAudio(Medias.create("image.png")));
+            Assert.assertNull(AudioFactory.loadAudio(Medias.create("image.png")));
             Assert.fail();
         }
         catch (final LionEngineException exception)

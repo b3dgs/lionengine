@@ -22,9 +22,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the anim state.
+ * Test {@link AnimState}.
  */
-public class AnimStateTest
+public final class AnimStateTest
 {
     /**
      * Test the enum.

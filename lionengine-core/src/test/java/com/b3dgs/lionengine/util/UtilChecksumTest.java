@@ -23,12 +23,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Test the checksum class.
+ * Test {@link UtilChecksum}.
  */
-public class UtilChecksumTest
+public final class UtilChecksumTest
 {
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -39,7 +39,7 @@ public class UtilChecksumTest
     }
 
     /**
-     * Test checksum encoding.
+     * Test encoding string.
      */
     @Test
     public void testEncodingString()
@@ -52,7 +52,7 @@ public class UtilChecksumTest
     }
 
     /**
-     * Test checksum encoding integer.
+     * Test encoding integer.
      */
     @Test
     public void testEncodingInt()
@@ -65,7 +65,7 @@ public class UtilChecksumTest
     }
 
     /**
-     * Test checksum encoding null string.
+     * Test encoding <code>null</code> string.
      */
     @Test(expected = LionEngineException.class)
     public void testEncodingEmptyNullString()
@@ -74,7 +74,7 @@ public class UtilChecksumTest
     }
 
     /**
-     * Test checksum encoding bytes.
+     * Test encoding bytes.
      */
     @Test(expected = LionEngineException.class)
     public void testEncodingEmptyNullBytes()
@@ -83,7 +83,7 @@ public class UtilChecksumTest
     }
 
     /**
-     * Test checksum encoding integer.
+     * Test unknown algorithm.
      */
     @Test(expected = LionEngineException.class)
     public void testUnknownAlgorithm()

@@ -21,12 +21,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the point class.
+ * Test {@link Point}.
  */
-public class PointTest
+public final class PointTest
 {
     /**
-     * Test the default constructor.
+     * Test default constructor.
      */
     @Test
     public void testConstructorDefault()
@@ -38,7 +38,7 @@ public class PointTest
     }
 
     /**
-     * Test the constructor with parameters.
+     * Test constructor with parameters.
      */
     @Test
     public void testConstructorParameters()
@@ -50,7 +50,7 @@ public class PointTest
     }
 
     /**
-     * Test the translation.
+     * Test translate.
      */
     @Test
     public void testTranslate()
@@ -63,7 +63,7 @@ public class PointTest
     }
 
     /**
-     * Test the set.
+     * Test set.
      */
     @Test
     public void testSet()
@@ -76,7 +76,7 @@ public class PointTest
     }
 
     /**
-     * Test the set X.
+     * Test set X.
      */
     @Test
     public void testSetX()
@@ -89,7 +89,7 @@ public class PointTest
     }
 
     /**
-     * Test the set Y.
+     * Test set Y.
      */
     @Test
     public void testSetY()
@@ -102,7 +102,7 @@ public class PointTest
     }
 
     /**
-     * Test the equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -122,10 +122,10 @@ public class PointTest
     }
 
     /**
-     * Test the equals.
+     * Test hash code.
      */
     @Test
-    public void testHash()
+    public void testHashCode()
     {
         Assert.assertEquals(new Point(1, 2).hashCode(), new Point(1, 2).hashCode());
 
@@ -136,7 +136,7 @@ public class PointTest
     }
 
     /**
-     * Test the to string.
+     * Test to string.
      */
     @Test
     public void testToString()

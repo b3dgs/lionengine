@@ -21,24 +21,24 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test range class.
+ * Test {@link Range}.
  */
-public class RangeTest
+public final class RangeTest
 {
     /**
-     * Test range constructor.
+     * Test constructor with invalid argument.
      */
     @Test(expected = LionEngineException.class)
-    public void testRangeWrongArguments()
+    public void testConstructorWrongArguments()
     {
         Assert.assertNotNull(new Range(1, 0));
     }
 
     /**
-     * Test range constructor.
+     * Test constructor.
      */
     @Test
-    public void testRange()
+    public void testConstructor()
     {
         final Range range = new Range();
         Assert.assertTrue(range.getMin() == 0);
@@ -50,12 +50,13 @@ public class RangeTest
     }
 
     /**
-     * Test range inclusion.
+     * Test inclusion.
      */
     @Test
-    public void testRangeIncludes()
+    public void testIncludes()
     {
         final Range range = new Range(-1, 1);
+
         Assert.assertTrue(range.includes(0));
         Assert.assertTrue(range.includes(0.0));
         Assert.assertTrue(range.includes(Double.MIN_NORMAL));

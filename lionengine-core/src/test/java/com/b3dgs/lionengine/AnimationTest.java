@@ -21,15 +21,15 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the animation class.
+ * Test {@link Animation}.
  */
-public class AnimationTest
+public final class AnimationTest
 {
     /** Minimum frame value. */
     private static final int MIN = Animation.MINIMUM_FRAME;
 
     /**
-     * Test the animation failure minimum frame.
+     * Test the failure minimum frame.
      */
     @Test(expected = LionEngineException.class)
     public void testFailureMinimumFrame()
@@ -38,7 +38,7 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation failure maximum frame.
+     * Test the failure maximum frame.
      */
     @Test(expected = LionEngineException.class)
     public void testFailureMaximumFrame()
@@ -47,7 +47,7 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation failure speed.
+     * Test the failure speed.
      */
     @Test(expected = LionEngineException.class)
     public void testFailureSpeed()
@@ -56,7 +56,7 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation getter.
+     * Test the getter.
      */
     @Test
     public void testGetter()
@@ -78,7 +78,7 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation equality.
+     * Test the equality.
      */
     @Test
     public void testEquals()
@@ -99,10 +99,10 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation hash code.
+     * Test the hash code.
      */
     @Test
-    public void testHashcode()
+    public void testHashCode()
     {
         final int animation = new Animation("test", 1, 2, 3, false, true).hashCode();
 

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the utility file class.
+ * Test {@link UtilFile}.
  */
 public class UtilFileTest
 {
@@ -62,7 +62,7 @@ public class UtilFileTest
     @Rule public final TemporaryFolder TEMP = new TemporaryFolder();
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -73,7 +73,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the remove extension.
+     * Test remove extension.
      */
     @Test
     public void testRemoveExtension()
@@ -84,7 +84,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the remove extension.
+     * Test remove extension <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testRemoveExtensionNull()
@@ -93,7 +93,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the remove extension.
+     * Test normalize extension.
      */
     @Test
     public void testNormalizeExtension()
@@ -106,7 +106,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the normalized extension with <code>null</code> file.
+     * Test normalized extension with <code>null</code> file.
      */
     @Test(expected = LionEngineException.class)
     public void testNormalizeExtensionNullFile()
@@ -115,7 +115,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the normalized extension with <code>null</code> extension.
+     * Test normalized extension with <code>null</code> extension.
      */
     @Test(expected = LionEngineException.class)
     public void testNormalizeExtensionNullExtension()
@@ -124,7 +124,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get extension.
+     * Test get extension.
      */
     @Test
     public void testGetExtension()
@@ -138,7 +138,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get extension null.
+     * Test get extension <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testGetExtensionNull()
@@ -147,7 +147,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get extension on file.
+     * Test get extension on file.
      */
     @Test
     public void testGetExtensionFile()
@@ -159,7 +159,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get extension file null.
+     * Test get extension file <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testGetExtensionFileNull()
@@ -168,7 +168,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get files.
+     * Test get files.
      * 
      * @throws IOException If error.
      */
@@ -193,7 +193,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get files with wrong path.
+     * Test get files with wrong path.
      * 
      * @throws IOException If error.
      */
@@ -204,7 +204,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get files with <code>null</code> returned.
+     * Test get files with <code>null</code> returned.
      * 
      * @throws IOException If error.
      */
@@ -230,7 +230,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get files by extension.
+     * Test get files by extension.
      * 
      * @throws IOException If error.
      */
@@ -262,7 +262,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get files by name.
+     * Test get files by name.
      * 
      * @throws IOException If error.
      */
@@ -289,7 +289,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the delete file.
+     * Test delete file.
      * 
      * @throws IOException If error.
      */
@@ -303,7 +303,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the delete file error.
+     * Test delete file error.
      * 
      * @throws IOException If error.
      */
@@ -314,7 +314,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the exists path.
+     * Test exists path.
      * 
      * @throws IOException If error.
      */
@@ -338,7 +338,7 @@ public class UtilFileTest
     }
 
     /**
-     * Test the is file.
+     * Test is file.
      * 
      * @throws IOException If error.
      */
@@ -355,12 +355,14 @@ public class UtilFileTest
     }
 
     /**
-     * Test the is type.
+     * Test is type.
      */
     @Test
     public void testIsType()
     {
+        Assert.assertFalse(UtilFile.isType(null, Constant.EMPTY_STRING));
         Assert.assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));
+        Assert.assertFalse(UtilFile.isType(new File(System.getProperty("java.io.tmpdir")), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(Medias.create("file").getFile(), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(Medias.create("file1.txt").getFile(), "txt"));
     }

@@ -23,9 +23,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the check class.
+ * Test {@link Check}.
  */
-public class CheckTest
+public final class CheckTest
 {
     /**
      * Test the constructor.
@@ -39,7 +39,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check with non null object.
+     * Test with non <code>null</code> object.
      */
     @Test
     public void testNotNull()
@@ -48,7 +48,7 @@ public class CheckTest
     }
 
     /**
-     * Test the null error message.
+     * Test the <code>null</code> error message.
      */
     @Test(expected = LionEngineException.class)
     public void testNullErrorMessage()
@@ -65,7 +65,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check with a null object.
+     * Test with a <code>null</code> object.
      */
     @Test(expected = LionEngineException.class)
     public void testNotNullFail()
@@ -74,7 +74,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior or equal valid cases.
+     * Test superior or equal valid cases.
      */
     @Test
     public void testSuperiorOrEqual()
@@ -90,7 +90,7 @@ public class CheckTest
     }
 
     /**
-     * Test the superior or equal error message.
+     * Test superior or equal error message.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorOrEqualErrorMessage()
@@ -107,7 +107,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior invalid cases.
+     * Test superior invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorOrEqualFail()
@@ -130,7 +130,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior or equal with double valid cases.
+     * Test tsuperior or equal with double valid cases.
      */
     @Test
     public void testSuperiorOrEqualDouble()
@@ -149,7 +149,7 @@ public class CheckTest
     }
 
     /**
-     * Test the superior or equal error message.
+     * Test superior or equal error message.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorOrEqualDoubleErrorMessage()
@@ -166,7 +166,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior invalid cases.
+     * Test superior invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorOrEqualDoubleFail()
@@ -191,7 +191,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior strict valid cases.
+     * Test superior strict valid cases.
      */
     @Test
     public void testSuperiorStrict()
@@ -204,7 +204,7 @@ public class CheckTest
     }
 
     /**
-     * Test the superior error message.
+     * Test superior error message.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorErrorMessage()
@@ -221,7 +221,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior strict invalid cases.
+     * Test superior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorStrictFail()
@@ -244,7 +244,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior strict with double valid cases.
+     * Test superior strict with double valid cases.
      */
     @Test
     public void testSuperiorStrictDouble()
@@ -260,7 +260,7 @@ public class CheckTest
     }
 
     /**
-     * Test the superior error message.
+     * Test superior error message.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorDoubleErrorMessage()
@@ -278,7 +278,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior strict invalid cases.
+     * Test superior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testSuperiorStrictDoubleFail()
@@ -303,7 +303,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior or equal valid cases.
+     * Test inferior or equal valid cases.
      */
     @Test
     public void testInferiorOrEqual()
@@ -319,7 +319,7 @@ public class CheckTest
     }
 
     /**
-     * Test the inferior or equal error message.
+     * Test inferior or equal error message.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorOrEqualErrorMessage()
@@ -336,7 +336,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior invalid cases.
+     * Test inferior invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorOrEqualFail()
@@ -359,7 +359,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior or equal with double valid cases.
+     * Test inferior or equal with double valid cases.
      */
     @Test
     public void testInferiorOrEqualDouble()
@@ -378,7 +378,7 @@ public class CheckTest
     }
 
     /**
-     * Test the inferior or equal error message.
+     * Test inferior or equal error message.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorOrEqualDoubleErrorMessage()
@@ -395,7 +395,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior invalid cases.
+     * Test inferior invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorOrEqualDoubleFail()
@@ -420,7 +420,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior strict valid cases.
+     * Test inferior strict valid cases.
      */
     @Test
     public void testInferiorStrict()
@@ -433,7 +433,7 @@ public class CheckTest
     }
 
     /**
-     * Test the inferior strict error message.
+     * Test strict error message.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorStrictErrorMessage()
@@ -450,7 +450,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior strict invalid cases.
+     * Test inferior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorStrictFail()
@@ -473,7 +473,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior strict with double valid cases.
+     * Test inferior strict with double valid cases.
      */
     @Test
     public void testInferiorStrictDouble()
@@ -489,7 +489,7 @@ public class CheckTest
     }
 
     /**
-     * Test the inferior or equal error message.
+     * Test inferior or equal error message.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorStrictDoubleErrorMessage()
@@ -507,7 +507,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check inferior strict invalid cases.
+     * Test inferior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testInferiorStrictDoubleFail()
@@ -516,7 +516,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check different valid cases.
+     * Test different valid cases.
      */
     @Test
     public void testDifferent()
@@ -534,7 +534,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check different valid cases.
+     * Test different valid cases.
      */
     @Test
     public void testDifferentDouble()
@@ -552,7 +552,7 @@ public class CheckTest
     }
 
     /**
-     * Test the different error message.
+     * Test different error message.
      */
     @Test(expected = LionEngineException.class)
     public void testDifferentErrorMessage()
@@ -569,7 +569,7 @@ public class CheckTest
     }
 
     /**
-     * Test the different error message.
+     * Test different error message.
      */
     @Test(expected = LionEngineException.class)
     public void testDifferentDoubleErrorMessage()
@@ -586,7 +586,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check different invalid cases.
+     * Test different invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testDifferentFail()
@@ -609,7 +609,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check different invalid cases.
+     * Test different invalid cases.
      */
     @Test(expected = LionEngineException.class)
     public void testDifferentDoubleFail()
@@ -632,7 +632,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check equality.
+     * Test equality.
      */
     @Test
     public void testEquality()
@@ -643,7 +643,7 @@ public class CheckTest
     }
 
     /**
-     * Test the equality error message.
+     * Test equality error message.
      */
     @Test(expected = LionEngineException.class)
     public void testEqualityErrorMessage()
@@ -660,7 +660,7 @@ public class CheckTest
     }
 
     /**
-     * Test the check equality fail.
+     * Test equality fail.
      */
     @Test(expected = LionEngineException.class)
     public void testEqualityFail()

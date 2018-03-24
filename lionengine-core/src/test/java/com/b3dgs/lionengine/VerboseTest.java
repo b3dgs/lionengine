@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the verbose class.
+ * Test {@link Verbose}.
  */
-public class VerboseTest
+public final class VerboseTest
 {
     /**
      * Test the verbose level.
@@ -47,13 +47,11 @@ public class VerboseTest
         Verbose.warning("warning");
         Verbose.warning(VerboseTest.class, "testVerbose", "warning");
         Verbose.critical(VerboseTest.class, "testVerbose", "critical");
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Verbose.exception(new LionEngineException("exception"), "exception");
-        Verbose.info("****************************************************************************************");
     }
 
     /**
-     * Test the enum.
+     * Test enum.
      * 
      * @throws Exception If error.
      */
@@ -64,7 +62,7 @@ public class VerboseTest
     }
 
     /**
-     * Test the verbose class.
+     * Test verbose.
      */
     @Test
     public void testVerbose()
@@ -78,19 +76,64 @@ public class VerboseTest
     }
 
     /**
-     * Test the add file handler limit.
+     * Test <code>null</code> class warning.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNullClassWarning()
+    {
+        Verbose.warning((Class<?>) null, "test", "test");
+    }
+
+    /**
+     * Test <code>null</code> function warning.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNullFunctionWarning()
+    {
+        Verbose.warning(Object.class, (String) null, "test");
+    }
+
+    /**
+     * Test <code>null</code> class warning.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNullClassCritical()
+    {
+        Verbose.critical(null, "test", "test");
+    }
+
+    /**
+     * Test <code>null</code> function warning.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNullFunctionCritical()
+    {
+        Verbose.critical(Object.class, null, "test");
+    }
+
+    /**
+     * Test <code>null</code> exception.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNullException()
+    {
+        Verbose.exception(null, "test");
+    }
+
+    /**
+     * Test add file handler limit.
      * 
      * @throws Exception If error.
      */
     @Test
     public void testAddFileHandler() throws Exception
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Method method = Verbose.class.getDeclaredMethod("addFileHandler", Logger.class);
         UtilReflection.setAccessible(method, true);
         final Logger logger = Logger.getAnonymousLogger();
         try
         {
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             for (int i = 0; i < 101; i++)
             {
                 method.invoke(Verbose.class, logger);
@@ -98,18 +141,18 @@ public class VerboseTest
         }
         finally
         {
+            Verbose.info("****************************************************************************************");
             final Handler[] handlers = logger.getHandlers();
             for (final Handler handler : handlers)
             {
                 logger.removeHandler(handler);
             }
             UtilReflection.setAccessible(method, false);
-            Verbose.info("****************************************************************************************");
         }
     }
 
     /**
-     * Test the set formatter without right.
+     * Test set formatter without right.
      * 
      * @throws Exception If error.
      */

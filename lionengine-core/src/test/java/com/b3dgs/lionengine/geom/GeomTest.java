@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the geom class.
+ * Test {@link Geom}.
  */
-public class GeomTest
+public final class GeomTest
 {
     /**
      * Test geom class.
@@ -41,7 +41,7 @@ public class GeomTest
     }
 
     /**
-     * Test the intersection function without contact.
+     * Test intersection function without contact.
      */
     @Test
     public void testNoIntersection()
@@ -55,7 +55,7 @@ public class GeomTest
     }
 
     /**
-     * Test the intersection function.
+     * Test intersection function.
      */
     @Test
     public void testIntersection()
@@ -67,7 +67,7 @@ public class GeomTest
     }
 
     /**
-     * Test the intersection function with null argument 1.
+     * Test intersection function with null argument 1.
      */
     @Test(expected = LionEngineException.class)
     public void testIntersectionNullArgument1()
@@ -76,7 +76,7 @@ public class GeomTest
     }
 
     /**
-     * Test the intersection function with null argument 2.
+     * Test intersection function with null argument 2.
      */
     @Test(expected = LionEngineException.class)
     public void testIntersectionNullArgument2()
@@ -116,6 +116,49 @@ public class GeomTest
         Assert.assertTrue(Geom.same(coord, new Coord(1.5, 2.5)));
         Assert.assertTrue(Geom.same(new Coord(1.5, 2.5), coord));
         Assert.assertTrue(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
+    }
+
+    /**
+     * Test localizable equals.
+     */
+    @Test
+    public void testEqualsLocalizable()
+    {
+        final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
+
+        Assert.assertNotEquals(localizable, null);
+        Assert.assertNotEquals(localizable, new Object());
+        Assert.assertNotEquals(localizable, Geom.createLocalizable(2.5, 2.5));
+        Assert.assertNotEquals(localizable, Geom.createLocalizable(1.5, 1.5));
+
+        Assert.assertEquals(localizable, localizable);
+        Assert.assertEquals(localizable, Geom.createLocalizable(1.5, 2.5));
+        Assert.assertEquals(Geom.createLocalizable(1.5, 2.5), localizable);
+        Assert.assertEquals(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(1.5, 2.5));
+    }
+
+    /**
+     * Test localizable hash code.
+     */
+    @Test
+    public void testHashCodeLocalizable()
+    {
+        final int localizable = Geom.createLocalizable(1.5, 2.5).hashCode();
+
+        Assert.assertNotEquals(localizable, new Object().hashCode());
+        Assert.assertNotEquals(localizable, Geom.createLocalizable(2.5, 2.5).hashCode());
+        Assert.assertNotEquals(localizable, Geom.createLocalizable(1.5, 1.5).hashCode());
+
+        Assert.assertEquals(localizable, Geom.createLocalizable(1.5, 2.5).hashCode());
+    }
+
+    /**
+     * Test localizable to string.
+     */
+    @Test
+    public void testToStringLocalizable()
+    {
+        Assert.assertEquals("LocalizableImpl [x=1.5, y=2.5]", Geom.createLocalizable(1.5, 2.5).toString());
     }
 
     /**

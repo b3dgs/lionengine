@@ -33,19 +33,10 @@ import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the resource loader class.
+ * Test {@link ResourceLoader}.
  */
-public class ResourceLoaderTest
+public final class ResourceLoaderTest
 {
-    /**
-     * Test type.
-     */
-    private static enum Type
-    {
-        /** Test type. */
-        TEST;
-    }
-
     /**
      * Prepare test.
      */
@@ -67,7 +58,7 @@ public class ResourceLoaderTest
     }
 
     /**
-     * Test the resource loader.
+     * Test resource loader.
      */
     @Test
     public void testResourceLoader()
@@ -84,19 +75,17 @@ public class ResourceLoaderTest
         resourceLoader.start();
         resourceLoader.await();
 
-        Assert.assertTrue(resourceLoader.isFinished());
-
-        resource.prepare();
         Assert.assertTrue(resource.isLoaded());
         Assert.assertNotNull(resource.getSurface());
+        Assert.assertTrue(resourceLoader.isFinished());
         Assert.assertEquals(resourceLoader.get().get(Type.TEST), resource);
     }
 
     /**
-     * Test the resource loader already started.
+     * Test already started.
      */
     @Test(expected = LionEngineException.class)
-    public void testResourceLoaderFailStart()
+    public void testAlreadyStarted()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
@@ -112,10 +101,10 @@ public class ResourceLoaderTest
     }
 
     /**
-     * Test the resource loader not started get.
+     * Test not started get.
      */
     @Test(expected = LionEngineException.class)
-    public void testResourceLoaderFailNotStartedGet()
+    public void testNotStartedGet()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         try
@@ -130,10 +119,10 @@ public class ResourceLoaderTest
     }
 
     /**
-     * Test the resource loader not started await.
+     * Test not started await.
      */
     @Test(expected = LionEngineException.class)
-    public void testResourceLoaderFailNotStartedAwait()
+    public void testNotStartedAwait()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         try
@@ -148,16 +137,35 @@ public class ResourceLoaderTest
     }
 
     /**
-     * Test the resource loader already started add.
+     * Test add already started.
      */
     @Test(expected = LionEngineException.class)
-    public void testResourceLoaderFailStartedAdd()
+    public void testAddAlreadyStarted()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
         try
         {
-            resourceLoader.add(null, null);
+            resourceLoader.add(Type.TEST, new SlowResource());
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(ResourceLoader.ERROR_STARTED, exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
+     * Test add <code>null</code> key.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAddNullKey()
+    {
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
+        resourceLoader.start();
+        try
+        {
+            resourceLoader.add(null, new SlowResource());
         }
         catch (final LionEngineException exception)
         {
@@ -167,11 +175,30 @@ public class ResourceLoaderTest
     }
 
     /**
-     * Test the resource loader skip.
+     * Test add <code>null</code> resource.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAddNullResource()
+    {
+        final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
+        resourceLoader.start();
+        try
+        {
+            resourceLoader.add(Type.TEST, null);
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(Check.ERROR_NULL, exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
+     * Test skip.
      * 
      * @throws InterruptedException If error.
      */
-    @Test(expected = LionEngineException.class, timeout = 1000)
+    @Test(expected = LionEngineException.class, timeout = 1000L)
     public void testResourceLoaderSkip() throws InterruptedException
     {
         final CountDownLatch startedLatch = new CountDownLatch(1);
@@ -211,9 +238,18 @@ public class ResourceLoaderTest
     }
 
     /**
+     * Test type.
+     */
+    private static enum Type
+    {
+        /** Test type. */
+        TEST;
+    }
+
+    /**
      * Slow resource test case.
      */
-    private static class SlowResource implements Resource
+    private static final class SlowResource implements Resource
     {
         /**
          * Create resource.
