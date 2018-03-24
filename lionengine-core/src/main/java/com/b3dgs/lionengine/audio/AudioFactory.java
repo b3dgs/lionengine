@@ -34,7 +34,7 @@ public final class AudioFactory
     /** Unknown audio format. */
     public static final String ERROR_FORMAT = "Unsupported audio format: ";
     /** Format already exists. */
-    public static final String ERROR_EXISTS = "Format already exists: ";
+    static final String ERROR_EXISTS = "Format already exists: ";
     /** Factories by audio format. */
     private static final Map<String, AudioFormat> FACTORIES = new HashMap<>();
 

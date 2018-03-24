@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the utility folder class.
+ * Test {@link UtilFolder}.
  */
 public class UtilFolderTest
 {

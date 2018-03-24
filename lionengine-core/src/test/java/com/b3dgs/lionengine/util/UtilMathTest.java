@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.geom.Geom;
 
 /**
- * Test the utility math class.
+ * Test {@link UtilMath}.
  */
 public class UtilMathTest
 {
@@ -74,6 +74,11 @@ public class UtilMathTest
         Assert.assertEquals(10, UtilMath.clamp(50, 0, 10));
         Assert.assertEquals(10, UtilMath.clamp(10, 0, 10));
         Assert.assertEquals(0, UtilMath.clamp(0, 0, 10));
+
+        Assert.assertEquals(0L, UtilMath.clamp(-10L, 0L, 10L));
+        Assert.assertEquals(10L, UtilMath.clamp(50L, 0L, 10L));
+        Assert.assertEquals(10L, UtilMath.clamp(10L, 0L, 10L));
+        Assert.assertEquals(0L, UtilMath.clamp(0L, 0L, 10L));
 
         Assert.assertEquals(0.0, UtilMath.clamp(-10.0, 0.0, 10.0), UtilTests.PRECISION);
         Assert.assertEquals(10.0, UtilMath.clamp(50.0, 0.0, 10.0), UtilTests.PRECISION);

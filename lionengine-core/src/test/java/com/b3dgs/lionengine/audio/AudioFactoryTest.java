@@ -117,6 +117,24 @@ public final class AudioFactoryTest
     }
 
     /**
+     * Test add format already exists.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAddFormatExists()
+    {
+        AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
+        try
+        {
+            AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(AudioFactory.ERROR_EXISTS + "png", exception.getMessage());
+            throw exception;
+        }
+    }
+
+    /**
      * Test clear formats.
      */
     @Test

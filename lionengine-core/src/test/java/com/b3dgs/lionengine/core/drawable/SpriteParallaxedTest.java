@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.SpriteParallaxed;
 
 /**
- * Test the parallaxed sprite class.
+ * Test {@link SpriteParallaxed}.
  */
 public class SpriteParallaxedTest
 {
@@ -91,10 +91,17 @@ public class SpriteParallaxedTest
 
         // Resize
         final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
-        spriteB.stretch(200, 200);
+        spriteB.stretch(200, 100);
         spriteB.load(true);
         Assert.assertFalse(spriteB.equals(spriteA));
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
+        Assert.assertFalse(spriteA.equals(media));
+
+        final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
+        spriteC.stretch(100, 200);
+        spriteC.load(true);
+        Assert.assertFalse(spriteC.equals(spriteA));
+        Assert.assertTrue(spriteA.hashCode() != spriteC.hashCode());
         Assert.assertFalse(spriteA.equals(media));
     }
 

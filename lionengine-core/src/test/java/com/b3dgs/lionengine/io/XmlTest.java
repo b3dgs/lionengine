@@ -419,6 +419,7 @@ public class XmlTest
 
         Assert.assertTrue(node.hasAttribute("attribute"));
         Assert.assertTrue(node.hasChild("child"));
+        Assert.assertFalse(node.hasAttribute(null));
         Assert.assertFalse(node.hasAttribute("test"));
         Assert.assertFalse(node.hasChild("attribute"));
     }

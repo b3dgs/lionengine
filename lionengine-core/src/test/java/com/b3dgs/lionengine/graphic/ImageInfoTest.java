@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the image info class.
+ * Test {@link ImageInfo}.
  */
 public class ImageInfoTest
 {
@@ -59,7 +59,7 @@ public class ImageInfoTest
     }
 
     /**
-     * Test the image failure
+     * Test image failure
      * 
      * @param media The image media.
      */
@@ -78,7 +78,7 @@ public class ImageInfoTest
     }
 
     /**
-     * Test the image info from its type.
+     * Test image info from its type.
      * 
      * @param type The expected image type.
      * @param number The number of different files.
@@ -102,12 +102,13 @@ public class ImageInfoTest
             Assert.assertEquals(64, info.getWidth());
             Assert.assertEquals(32, info.getHeight());
             Assert.assertEquals(type, info.getFormat());
+            Assert.assertFalse(ImageInfo.isImage(null));
             Assert.assertTrue(ImageInfo.isImage(media));
         }
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -118,7 +119,7 @@ public class ImageInfoTest
     }
 
     /**
-     * Test image failure cases.
+     * Test failure cases.
      */
     @Test
     public void testImageFailure()
@@ -142,13 +143,14 @@ public class ImageInfoTest
         testImageInfoFailure(Medias.create("image_error5.tiff"));
         testImageInfoFailure(Medias.create("image_error6.tiff"));
         testImageInfoFailure(Medias.create("image_error7.tiff"));
+
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertFalse(ImageInfo.isImage(Medias.create("image_error7.tiff")));
         Verbose.info("****************************************************************************************");
     }
 
     /**
-     * Test image info functions.
+     * Test info functions.
      */
     @Test
     public void testImageInfo()
@@ -160,6 +162,7 @@ public class ImageInfoTest
         testImageInfo(ImageFormat.TIFF, 2);
 
         final ImageHeader info = ImageInfo.get(Medias.create("image.tif"));
+
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals(ImageFormat.TIFF, info.getFormat());
@@ -172,6 +175,8 @@ public class ImageInfoTest
         {
             Assert.assertNotNull(exception);
         }
+
+        Assert.assertFalse(ImageInfo.isImage(Medias.create("raster.xml")));
     }
 
     /**

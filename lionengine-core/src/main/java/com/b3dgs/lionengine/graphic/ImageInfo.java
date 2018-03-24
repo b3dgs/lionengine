@@ -67,11 +67,19 @@ public final class ImageInfo
      * @param media The media reference (can be <code>null</code>).
      * @return <code>true</code> if is supported image, <code>false</code> else.
      */
+    // CHECKSTYLE IGNORE LINE: ReturnCount
     public static boolean isImage(Media media)
     {
         try
         {
-            return media != null && get(media) != null;
+            for (final ImageHeaderReader reader : FORMATS)
+            {
+                if (reader.is(media))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         catch (@SuppressWarnings("unused") final LionEngineException exception)
         {
