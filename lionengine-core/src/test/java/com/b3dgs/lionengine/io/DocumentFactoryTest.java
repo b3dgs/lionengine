@@ -35,12 +35,12 @@ import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the document factory.
+ * Test {@link DocumentFactory}.
  */
-public class DocumentFactoryTest
+public final class DocumentFactoryTest
 {
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -51,7 +51,7 @@ public class DocumentFactoryTest
     }
 
     /**
-     * Test the create document.
+     * Test create document.
      * 
      * @throws IOException If error.
      */
@@ -67,7 +67,7 @@ public class DocumentFactoryTest
     }
 
     /**
-     * Test the create document malformed.
+     * Test create document malformed.
      * 
      * @throws IOException If error.
      */
@@ -83,7 +83,7 @@ public class DocumentFactoryTest
     }
 
     /**
-     * Test the create document with <code>null</code> stream.
+     * Test create document with <code>null</code> stream.
      * 
      * @throws IOException If error.
      */
@@ -94,7 +94,7 @@ public class DocumentFactoryTest
     }
 
     /**
-     * Test the create transformer.
+     * Test create transformer.
      * 
      * @throws TransformerConfigurationException If error.
      */

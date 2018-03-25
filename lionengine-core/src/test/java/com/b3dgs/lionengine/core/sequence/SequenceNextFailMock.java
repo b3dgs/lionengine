@@ -24,14 +24,14 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Mock sequence.
  */
-public class SequenceNextFailMock extends Sequence
+final class SequenceNextFailMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    public SequenceNextFailMock(Context context)
+    SequenceNextFailMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }

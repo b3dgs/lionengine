@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Engine mock.
  */
-public class EngineMock extends Engine
+public final class EngineMock extends Engine
 {
     /**
      * Constructor.

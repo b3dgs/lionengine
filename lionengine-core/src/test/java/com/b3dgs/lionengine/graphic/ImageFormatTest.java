@@ -25,12 +25,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the image format enum.
+ * Test {@link ImageFormat}.
  */
-public class ImageFormatTest
+public final class ImageFormatTest
 {
     /**
-     * Test the enum.
+     * Test enum.
      * 
      * @throws Exception If error.
      */

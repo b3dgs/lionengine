@@ -26,12 +26,12 @@ import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Test the animator.
+ * Test {@link Animator}.
  */
-public class AnimatorTest
+public final class AnimatorTest
 {
     /**
-     * Test the constructor default.
+     * Test constructor default.
      */
     @Test
     public void testConstructor()
@@ -44,7 +44,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the play.
+     * Test play.
      */
     @Test
     public void testPlay()
@@ -59,7 +59,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the play with null argument.
+     * Test play with <code>null</code> argument.
      */
     @Test(expected = LionEngineException.class)
     public void testPlayNull()
@@ -69,7 +69,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the stop.
+     * Test stop.
      */
     @Test
     public void testStop()
@@ -81,7 +81,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the update without loop nor reverse.
+     * Test update without loop nor reverse.
      */
     @Test
     public void testUpdateNoLoopNoReverse()
@@ -114,7 +114,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the update with loop but no reverse.
+     * Test update with loop but no reverse.
      */
     @Test
     public void testUpdateLoopNoReverse()
@@ -153,7 +153,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the update without loop but reverse.
+     * Test update without loop but reverse.
      */
     @Test
     public void testUpdateNoLoopReverse()
@@ -198,7 +198,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the update with loop and reverse.
+     * Test update with loop and reverse.
      */
     @Test
     public void testUpdateLoopReverse()
@@ -255,7 +255,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the set speed.
+     * Test set speed.
      */
     @Test
     public void testSetSpeed()
@@ -272,7 +272,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the invalid speed setter.
+     * Test invalid speed setter.
      */
     @Test(expected = LionEngineException.class)
     public void testSetSpeedNegative()
@@ -282,7 +282,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the set frame.
+     * Test set frame.
      */
     @Test
     public void testSetFrame()
@@ -299,7 +299,7 @@ public class AnimatorTest
     }
 
     /**
-     * Test the set frame invalid.
+     * Test set frame invalid.
      */
     @Test(expected = LionEngineException.class)
     public void testFrameInvalid()

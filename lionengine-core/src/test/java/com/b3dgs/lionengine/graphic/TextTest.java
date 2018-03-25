@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
 
 /**
- * Test the text class.
+ * Test {@link Text}.
  */
-public class TextTest
+public final class TextTest
 {
     /** Text value. */
     private static final String VALUE = "test";
@@ -66,7 +66,7 @@ public class TextTest
     }
 
     /**
-     * Test the text normal.
+     * Test normal.
      */
     @Test
     public void testNormal()
@@ -95,7 +95,7 @@ public class TextTest
     }
 
     /**
-     * Test the text bold.
+     * Test bold.
      */
     @Test
     public void testBold()
@@ -105,7 +105,7 @@ public class TextTest
     }
 
     /**
-     * Test the text italic.
+     * Test italic.
      */
     @Test
     public void testItalic()

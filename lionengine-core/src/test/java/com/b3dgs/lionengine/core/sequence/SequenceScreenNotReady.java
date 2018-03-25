@@ -24,9 +24,9 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Sequence with unready screen on rendering.
+ * Sequence with screen not ready on rendering.
  */
-public class SequenceScreenNotReady extends Sequence
+final class SequenceScreenNotReady extends Sequence
 {
     private final CountDownLatch waitUpdate;
     private final CountDownLatch waitScreenUnready;

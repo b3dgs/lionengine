@@ -33,9 +33,9 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
- * Test the raster
+ * Test {@link RasterImage}.
  */
-public class RasterImageTest
+public final class RasterImageTest
 {
     /** Raster. */
     private static Media mediaRaster;
@@ -64,10 +64,10 @@ public class RasterImageTest
     }
 
     /**
-     * Test raster no smooth default.
+     * Test no smooth default.
      */
     @Test
-    public void testLoadRastersNoSmoothDefault()
+    public void testNoSmoothDefault()
     {
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100, false);
         raster.loadRasters(50);
@@ -81,10 +81,10 @@ public class RasterImageTest
     }
 
     /**
-     * Test raster smooth default.
+     * Test smooth default.
      */
     @Test
-    public void testLoadRastersSmoothDefault()
+    public void testSmoothDefault()
     {
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100, true);
         raster.loadRasters(50);
@@ -98,10 +98,10 @@ public class RasterImageTest
     }
 
     /**
-     * Test raster no smooth save.
+     * Test no smooth save.
      */
     @Test
-    public void testLoadRastersNoSmoothSave()
+    public void testNoSmoothSave()
     {
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100, false);
         raster.loadRasters(50, true, "prefix");
@@ -114,12 +114,15 @@ public class RasterImageTest
         Assert.assertEquals(200, raster.getRaster(0).getHeight());
 
         final Media folder = Medias.create("prefix_raster");
+
         Assert.assertTrue(folder.getFile().getAbsolutePath(), folder.exists());
+
         try
         {
             for (int i = 1; i <= 15; i++)
             {
                 final Media file = Medias.create("prefix_raster", i + Constant.DOT + ImageFormat.PNG);
+
                 Assert.assertTrue(file.getFile().getAbsolutePath(), file.exists());
             }
         }
@@ -130,10 +133,10 @@ public class RasterImageTest
     }
 
     /**
-     * Test raster no smooth cache.
+     * Test no smooth cache.
      */
     @Test
-    public void testLoadRastersNoSmoothCache()
+    public void testNoSmoothCache()
     {
         final RasterImage raster = new RasterImage(Medias.create("image.png"), mediaRaster, 100, false);
         raster.loadRasters(50, true, "cache");
@@ -146,12 +149,15 @@ public class RasterImageTest
         Assert.assertEquals(32, raster.getRaster(0).getHeight());
 
         final Media folder = Medias.create("cache_raster");
+
         Assert.assertTrue(folder.getFile().getAbsolutePath(), folder.exists());
+
         try
         {
             for (int i = 1; i <= 15; i++)
             {
                 final Media file = Medias.create("cache_raster", i + Constant.DOT + ImageFormat.PNG);
+
                 Assert.assertTrue(file.getFile().getAbsolutePath(), file.exists());
             }
 

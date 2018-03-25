@@ -21,12 +21,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the gradient color class.
+ * Test {@link ColorGradient}.
  */
-public class ColorGradientTest
+public final class ColorGradientTest
 {
     /**
-     * Test the gradient color.
+     * Test gradient color.
      */
     @Test
     public void testColorGradient()
@@ -50,10 +50,10 @@ public class ColorGradientTest
     }
 
     /**
-     * Test the color gradient equals.
+     * Test hash code.
      */
     @Test
-    public void testColorHashcode()
+    public void testHashCode()
     {
         final int color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE).hashCode();
 
@@ -69,10 +69,10 @@ public class ColorGradientTest
     }
 
     /**
-     * Test the color gradient equals.
+     * Test equals.
      */
     @Test
-    public void testColorEquals()
+    public void testEquals()
     {
         final ColorGradient color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE);
 

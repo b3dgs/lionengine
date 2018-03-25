@@ -23,7 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Test the transform class.
+ * Test {@link Transform}.
  */
 public class TransformTest
 {
@@ -46,7 +46,7 @@ public class TransformTest
     }
 
     /**
-     * Test the transformations.
+     * Test transformations.
      */
     @Test
     public void testTransform()

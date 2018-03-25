@@ -24,14 +24,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Single sequence mock.
  */
-public class SequenceEngineTerminateMock extends Sequence
+final class SequenceEngineTerminateMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    public SequenceEngineTerminateMock(Context context)
+    SequenceEngineTerminateMock(Context context)
     {
         super(context);
     }

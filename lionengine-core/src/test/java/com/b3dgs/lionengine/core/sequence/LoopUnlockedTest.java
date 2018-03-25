@@ -36,9 +36,9 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenMock;
 
 /**
- * Test the unlocked loop.
+ * Test {@link LoopUnlocked}.
  */
-public class LoopUnlockedTest
+public final class LoopUnlockedTest
 {
     /**
      * Prepare test.
@@ -102,7 +102,7 @@ public class LoopUnlockedTest
     }
 
     /**
-     * Test the loop.
+     * Test loop.
      * 
      * @throws InterruptedException If error.
      */
@@ -124,12 +124,12 @@ public class LoopUnlockedTest
     }
 
     /**
-     * Test the loop with not ready screen.
+     * Test with not ready screen.
      * 
      * @throws InterruptedException If error.
      */
     @Test(timeout = 1000L)
-    public void testLoopUnready() throws InterruptedException
+    public void testUnready() throws InterruptedException
     {
         ScreenMock.setScreenWait(true);
 
@@ -150,12 +150,12 @@ public class LoopUnlockedTest
     }
 
     /**
-     * Test the loop with not started engine.
+     * Test with not started engine.
      * 
      * @throws InterruptedException If error.
      */
     @Test(timeout = 1000L)
-    public void testLoopEngineNotStarted() throws InterruptedException
+    public void testEngineNotStarted() throws InterruptedException
     {
         ScreenMock.setScreenWait(false);
 

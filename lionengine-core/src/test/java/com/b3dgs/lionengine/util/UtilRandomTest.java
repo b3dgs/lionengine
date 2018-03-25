@@ -24,9 +24,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 
 /**
- * Test utility random class.
+ * Test {@link UtilRandom}.
  */
-public class UtilRandomTest
+public final class UtilRandomTest
 {
     /**
      * Test the constructor.
@@ -40,7 +40,7 @@ public class UtilRandomTest
     }
 
     /**
-     * Test utility random.
+     * Test random.
      */
     @Test
     public void testRandom()

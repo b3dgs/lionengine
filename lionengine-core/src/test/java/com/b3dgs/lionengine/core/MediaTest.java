@@ -36,9 +36,9 @@ import com.b3dgs.lionengine.util.UtilFolder;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the media class.
+ * Test {@link Media}.
  */
-public class MediaTest
+public final class MediaTest
 {
     /** Old resources directory. */
     private String oldDir;
@@ -66,7 +66,7 @@ public class MediaTest
     }
 
     /**
-     * Test the path getter.
+     * Test path getter.
      */
     @Test
     public void testPath()
@@ -77,7 +77,7 @@ public class MediaTest
     }
 
     /**
-     * Test the file path getter.
+     * Test file path getter.
      */
     @Test
     public void testFile()
@@ -89,7 +89,7 @@ public class MediaTest
     }
 
     /**
-     * Test the parent path getter.
+     * Test parent path getter.
      */
     @Test
     public void testParentPath()
@@ -100,7 +100,7 @@ public class MediaTest
     }
 
     /**
-     * Test the input stream.
+     * Test input stream.
      * 
      * @throws IOException If error.
      */
@@ -119,7 +119,7 @@ public class MediaTest
     }
 
     /**
-     * Test the input stream with no existing file.
+     * Test input stream with no existing file.
      * 
      * @throws IOException If error.
      */
@@ -138,7 +138,7 @@ public class MediaTest
     }
 
     /**
-     * Test the input stream with no existing in JAR.
+     * Test input stream with no existing in JAR.
      * 
      * @throws IOException If error.
      */
@@ -160,12 +160,13 @@ public class MediaTest
         {
             Assert.assertTrue(file.delete());
             Assert.assertTrue(file2.delete());
+
             UtilFolder.deleteDirectory(dir);
         }
     }
 
     /**
-     * Test the output stream.
+     * Test output stream.
      * 
      * @throws IOException If error.
      */
@@ -196,6 +197,7 @@ public class MediaTest
     public void testExists() throws IOException
     {
         Medias.setLoadFromJar(MediasTest.class);
+
         Assert.assertFalse(Medias.create("void").exists());
         Assert.assertTrue(Medias.create("image.png").exists());
 
@@ -222,6 +224,7 @@ public class MediaTest
         final String tempFolder = UtilReflection.getField(MediaDefault.class, "TEMP");
         final File folder = new File(tempFolder, MediasTest.class.getClass().getSimpleName());
         folder.mkdirs();
+
         Assert.assertTrue(folder.delete());
         Assert.assertTrue(folder.createNewFile());
 
@@ -229,7 +232,9 @@ public class MediaTest
         {
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             final String path = UtilReflection.getMethod(MediaDefault.class, "getTempDir", MediasTest.class.getClass());
+
             Assert.assertEquals(folder.getPath(), path);
+
             Verbose.info("****************************************************************************************");
         }
         finally
@@ -239,10 +244,10 @@ public class MediaTest
     }
 
     /**
-     * Test the hash code.
+     * Test hash code.
      */
     @Test
-    public void testHashcode()
+    public void testHashCode()
     {
         final Media media = Medias.create("media");
         final Media media1 = Medias.create("media");
@@ -255,7 +260,7 @@ public class MediaTest
     }
 
     /**
-     * Test the equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -272,7 +277,7 @@ public class MediaTest
     }
 
     /**
-     * Test the get name.
+     * Test get name.
      */
     @Test
     public void testGetName()

@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.ViewerMock;
 
 /**
- * Test the graphic class.
+ * Test {@link Graphic}.
  */
 public class GraphicTest
 {
@@ -49,7 +49,7 @@ public class GraphicTest
     }
 
     /**
-     * Test the empty graphic.
+     * Test empty graphic.
      */
     @Test
     public void testEmptyGraphic()
@@ -59,7 +59,7 @@ public class GraphicTest
     }
 
     /**
-     * Test the graphic.
+     * Test graphic.
      */
     @Test
     public void testGraphic()

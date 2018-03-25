@@ -36,9 +36,9 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenMock;
 
 /**
- * Test the locked loop.
+ * Test {@link LoopLocked}.
  */
-public class LoopLockedTest
+public final class LoopLockedTest
 {
     /**
      * Prepare test.
@@ -102,7 +102,7 @@ public class LoopLockedTest
     }
 
     /**
-     * Test the loop.
+     * Test loop.
      * 
      * @throws InterruptedException If error.
      */
@@ -127,12 +127,12 @@ public class LoopLockedTest
     }
 
     /**
-     * Test the loop without sync
+     * Test without sync
      * 
      * @throws InterruptedException If error.
      */
     @Test(timeout = 1000L)
-    public void testLoopNoSync() throws InterruptedException
+    public void testNoSync() throws InterruptedException
     {
         ScreenMock.setScreenWait(false);
 
@@ -152,12 +152,12 @@ public class LoopLockedTest
     }
 
     /**
-     * Test the loop without sync
+     * Test without sync
      * 
      * @throws InterruptedException If error.
      */
     @Test(timeout = 1000L)
-    public void testLoopNoSyncFullscreen() throws InterruptedException
+    public void testNoSyncFullscreen() throws InterruptedException
     {
         ScreenMock.setScreenWait(false);
 
@@ -177,12 +177,12 @@ public class LoopLockedTest
     }
 
     /**
-     * Test the loop with not ready screen.
+     * Test with not ready screen.
      * 
      * @throws InterruptedException If error.
      */
     @Test(timeout = 1000L)
-    public void testLoopUnready() throws InterruptedException
+    public void testUnready() throws InterruptedException
     {
         ScreenMock.setScreenWait(true);
 
@@ -203,12 +203,12 @@ public class LoopLockedTest
     }
 
     /**
-     * Test the loop with not started engine.
+     * Test with not started engine.
      * 
      * @throws InterruptedException If error.
      */
     @Test(timeout = 1000L)
-    public void testLoopEngineNotStarted() throws InterruptedException
+    public void testEngineNotStarted() throws InterruptedException
     {
         ScreenMock.setScreenWait(false);
 

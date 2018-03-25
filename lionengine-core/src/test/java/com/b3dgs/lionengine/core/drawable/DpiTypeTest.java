@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.graphic.DpiType;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the DPI type.
+ * Test {@link DpiType}.
  */
-public class DpiTypeTest
+public final class DpiTypeTest
 {
     /**
      * Get a factor resolution.

@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the utility ZIP class.
+ * Test {@link UtilZip}.
  */
-public class UtilZipTest
+public final class UtilZipTest
 {
     /**
      * Prepare test.
@@ -54,7 +54,7 @@ public class UtilZipTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -65,7 +65,7 @@ public class UtilZipTest
     }
 
     /**
-     * Test the ZIP get entries by extension.
+     * Test get entries by extension.
      */
     @Test
     public void testEntriesByExtension()
@@ -78,7 +78,7 @@ public class UtilZipTest
     }
 
     /**
-     * Test the ZIP get entries by extension with wrong JAR.
+     * Test get entries by extension with wrong JAR.
      */
     @Test(expected = LionEngineException.class)
     public void testEntriesByExtensionWrongJar()

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Loop sequence mock.
  */
-public class SequenceLoopMock extends Sequence
+final class SequenceLoopMock extends Sequence
 {
     /** Pause time. */
     private static final int PAUSE_MILLI = 10;
@@ -40,7 +40,7 @@ public class SequenceLoopMock extends Sequence
      * 
      * @param context The context reference.
      */
-    public SequenceLoopMock(Context context)
+    SequenceLoopMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }

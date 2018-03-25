@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
- * Test the Bilinear filter.
+ * Test {@link FilterBilinear}.
  */
-public class FilterBilinearTest
+public final class FilterBilinearTest
 {
     /** Image media. */
     private static Media media;
@@ -59,7 +59,7 @@ public class FilterBilinearTest
     }
 
     /**
-     * Test the bilinear filter
+     * Test bilinear filter
      */
     @Test
     public void testBilinear()

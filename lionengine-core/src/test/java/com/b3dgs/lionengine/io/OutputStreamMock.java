@@ -23,7 +23,7 @@ import java.io.OutputStream;
 /**
  * Mock input stream.
  */
-public class OutputStreamMock extends OutputStream
+public final class OutputStreamMock extends OutputStream
 {
     /**
      * Create mock.

@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the file writing and reading.
+ * Test {@link FileWriting} and {@link FileReading}.
  */
-public class FileWritingReadingTest
+public final class FileWritingReadingTest
 {
     private static final float FLOAT_PRECISION = 0.0001f;
     private static final double DOUBLE_PRECISION = 0.000000000000001;
@@ -47,7 +47,7 @@ public class FileWritingReadingTest
     private Media fileData;
 
     /**
-     * Test the writer and reader
+     * Test writer and reader
      * 
      * @throws IOException If error.
      */

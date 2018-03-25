@@ -22,9 +22,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the text style class.
+ * Test {@link TextStyle}.
  */
-public class TextStyleTest
+public final class TextStyleTest
 {
     /**
      * Test the enum.

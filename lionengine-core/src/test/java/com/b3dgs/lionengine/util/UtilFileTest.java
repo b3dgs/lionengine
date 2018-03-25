@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.core.Medias;
 /**
  * Test {@link UtilFile}.
  */
-public class UtilFileTest
+public final class UtilFileTest
 {
     /**
      * Prepare test.

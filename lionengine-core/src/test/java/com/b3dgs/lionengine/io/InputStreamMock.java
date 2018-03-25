@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Constant;
 /**
  * Mock input stream.
  */
-public class InputStreamMock extends InputStream
+public final class InputStreamMock extends InputStream
 {
     /** Available bytes. */
     private int available;

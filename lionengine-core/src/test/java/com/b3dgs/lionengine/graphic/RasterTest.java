@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the raster
+ * Test {@link Raster}.
  */
-public class RasterTest
+public final class RasterTest
 {
     /** Raster. */
     private static Media mediaRaster;
@@ -61,10 +61,10 @@ public class RasterTest
     }
 
     /**
-     * Test raster field.
+     * Test field.
      */
     @Test
-    public void testRasterField()
+    public void testField()
     {
         final RasterData red = new RasterData(0, 0, 0, 0, 0, 0);
         final RasterData green = new RasterData(0, 0, 0, 0, 0, 0);
@@ -77,10 +77,10 @@ public class RasterTest
     }
 
     /**
-     * Test raster color.
+     * Test color.
      */
     @Test
-    public void testRasterColor()
+    public void testColor()
     {
         final RasterData raster = new RasterData(0, 0, 0, 0, 0, 0);
         final RasterColor color = RasterColor.load(raster, 0, 0, false);
@@ -96,10 +96,10 @@ public class RasterTest
     }
 
     /**
-     * Test raster color smoothed.
+     * Test color smoothed.
      */
     @Test
-    public void testRasterColorSmooth()
+    public void testColorSmooth()
     {
         final RasterData raster = new RasterData(200, 10, 10, 100, 10, 0);
         final RasterColor color = RasterColor.load(raster, 0, 90, true);
@@ -115,19 +115,19 @@ public class RasterTest
     }
 
     /**
-     * Test load raster.
+     * Test load.
      */
     @Test
-    public void testLoadRaster()
+    public void testLoad()
     {
         Assert.assertNotNull(Raster.load(mediaRaster));
     }
 
     /**
-     * Test load raster failure.
+     * Test load failure.
      */
     @Test(expected = LionEngineException.class)
-    public void testLoadRasterFailure()
+    public void testLoadFailure()
     {
         Assert.assertNotNull(Raster.load(mediaRasterError));
     }

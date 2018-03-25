@@ -26,14 +26,14 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Single sequence mock.
  */
-public class SequenceSlowMock extends Sequence
+final class SequenceSlowMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    public SequenceSlowMock(Context context)
+    SequenceSlowMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }

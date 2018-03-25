@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Interrupt sequence mock.
  */
-public class SequenceInterruptMock extends Sequence
+final class SequenceInterruptMock extends Sequence
 {
     /** Pause time. */
     public static final long PAUSE_MILLI = 250L;
@@ -34,7 +34,7 @@ public class SequenceInterruptMock extends Sequence
      * 
      * @param context The context reference.
      */
-    public SequenceInterruptMock(Context context)
+    SequenceInterruptMock(Context context)
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }

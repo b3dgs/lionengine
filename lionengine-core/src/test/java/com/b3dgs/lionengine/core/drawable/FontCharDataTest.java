@@ -23,12 +23,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Test the font char data class.
+ * Test {@link FontCharData}.
  */
-public class FontCharDataTest
+public final class FontCharDataTest
 {
     /**
-     * Test the constructor.
+     * Test constructor.
      */
     @Test
     public void testConstructor()
@@ -41,7 +41,7 @@ public class FontCharDataTest
     }
 
     /**
-     * Test the constructor with invalid id.
+     * Test constructor with invalid id.
      */
     @Test(expected = LionEngineException.class)
     public void testConstructorInvalidId()
@@ -50,7 +50,7 @@ public class FontCharDataTest
     }
 
     /**
-     * Test the constructor with invalid with.
+     * Test constructor with invalid with.
      */
     @Test(expected = LionEngineException.class)
     public void testConstructorInvalidWidth()
@@ -59,7 +59,7 @@ public class FontCharDataTest
     }
 
     /**
-     * Test the constructor with invalid height.
+     * Test constructor with invalid height.
      */
     @Test(expected = LionEngineException.class)
     public void testConstructorInvalidheight()

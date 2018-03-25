@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the color class.
+ * Test {@link UtilColor}.
  */
-public class UtilColorTest
+public final class UtilColorTest
 {
     /**
      * Prepare test.
@@ -55,7 +55,7 @@ public class UtilColorTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -66,10 +66,10 @@ public class UtilColorTest
     }
 
     /**
-     * Test the delta between two colors.
+     * Test delta between two colors.
      */
     @Test
-    public void testColorDelta()
+    public void testDelta()
     {
         Assert.assertEquals(Math.sqrt(255 * 255 + 255 * 255 + 255 * 255),
                             UtilColor.getDelta(ColorRgba.BLACK, ColorRgba.WHITE),
@@ -78,10 +78,10 @@ public class UtilColorTest
     }
 
     /**
-     * Test the color rgb increment.
+     * Test rgb increment.
      */
     @Test
-    public void testColorRgbInc()
+    public void testRgbInc()
     {
         final int step = 5;
         for (int r = 0; r < Constant.UNSIGNED_BYTE; r += step)
@@ -113,10 +113,10 @@ public class UtilColorTest
     }
 
     /**
-     * Test the color raster.
+     * Test raster.
      */
     @Test
-    public void testColorRaster()
+    public void testRaster()
     {
         final Media media = Medias.create("raster.xml");
         final Raster raster = Raster.load(media);
@@ -133,10 +133,10 @@ public class UtilColorTest
     }
 
     /**
-     * Test the color opaque and transparent exclusive.
+     * Test opaque and transparent exclusive.
      */
     @Test
-    public void testColorOpaqueTransparentExclusive()
+    public void testOpaqueTransparentExclusive()
     {
         Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLACK, ColorRgba.WHITE));
         Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLUE.getRgba(), ColorRgba.RED.getRgba()));
@@ -151,10 +151,10 @@ public class UtilColorTest
     }
 
     /**
-     * Test the color filter rgb.
+     * Test filter rgb.
      */
     @Test
-    public void testColorFilterRgb()
+    public void testFilterRgb()
     {
         Assert.assertTrue(UtilColor.filterRgb(-16711423, 0, 0, 0) < 0);
         Assert.assertTrue(UtilColor.filterRgb(0, 0, 0, 0) == 0);
@@ -175,10 +175,10 @@ public class UtilColorTest
     }
 
     /**
-     * Test the weighted color of a surface.
+     * Test weighted color of a surface.
      */
     @Test
-    public void testColorWeighted()
+    public void testWeighted()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(2, 2, ColorRgba.TRANSPARENT);
 

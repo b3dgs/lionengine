@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
- * Test the Hq3x filter.
+ * Test {@link FilterHq3x}.
  */
-public class FilterHq3xTest
+public final class FilterHq3xTest
 {
     /** Image media. */
     private static Media media;
@@ -59,7 +59,7 @@ public class FilterHq3xTest
     }
 
     /**
-     * Test the Hq3x filter
+     * Test filter.
      */
     @Test
     public void testHq3x()

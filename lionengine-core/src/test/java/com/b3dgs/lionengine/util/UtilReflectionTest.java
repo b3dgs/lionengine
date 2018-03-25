@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,12 +35,12 @@ import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.core.Engine;
 
 /**
- * Test the utility reflection class.
+ * Test {@link UtilReflection}.
  */
-public class UtilReflectionTest
+public final class UtilReflectionTest
 {
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -50,7 +51,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create with missing method.
+     * Create create with missing method.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -61,7 +62,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create with invalid arguments.
+     * Create create with invalid arguments.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -72,7 +73,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create with constructor error.
+     * Create create with constructor error.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -83,7 +84,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create with constructor error.
+     * Create create with constructor error.
      * 
      * @throws NoSuchMethodException If error.
      * @throws NoSuchFieldException If error.
@@ -107,7 +108,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create with abstract class.
+     * Create create with abstract class.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -121,7 +122,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create reduce.
+     * Create create reduce.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -133,7 +134,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create reduce with no constructor found.
+     * Create create reduce with no constructor found.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -144,7 +145,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Create the create reduce with no constructor found.
+     * Create create reduce with no constructor found.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -156,7 +157,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get parameters types.
+     * Test get parameters types.
      */
     @Test
     public void testGetParamTypes()
@@ -175,7 +176,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get method.
+     * Test get method.
      */
     @Test
     public void testGetMethod()
@@ -185,7 +186,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get method.
+     * Test get method not accessible.
      */
     @Test(expected = LionEngineException.class)
     public void testGetMethodNotAccessible()
@@ -203,7 +204,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get not existing method.
+     * Test get not existing method.
      */
     @Test(expected = LionEngineException.class)
     public void testGetMethodNotExists()
@@ -212,7 +213,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get method with call error.
+     * Test get method with call error.
      */
     @Test(expected = LionEngineException.class)
     public void testGetMethodCallError()
@@ -221,7 +222,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get method with invalid parameter.
+     * Test get method with invalid parameter.
      */
     @Test(expected = LionEngineException.class)
     public void testGetMethodInvalidParameter()
@@ -230,7 +231,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get field.
+     * Test get field.
      */
     @Test
     public void testGetField()
@@ -239,7 +240,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get field accessible.
+     * Test get field accessible.
      */
     @Test
     public void testGetFieldAccessible()
@@ -248,7 +249,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get field not accessible.
+     * Test get field not accessible.
      */
     @Test(expected = LionEngineException.class)
     public void testGetFieldNotAccessible()
@@ -276,7 +277,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get field unknown.
+     * Test get field unknown.
      */
     @Test(expected = LionEngineException.class)
     public void testGetFieldUnknown()
@@ -285,7 +286,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get compatible constructor not found.
+     * Test get compatible constructor not found.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -297,7 +298,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get compatible constructor parent.
+     * Test get compatible constructor parent.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -309,7 +310,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get compatible constructor parent none.
+     * Test get compatible constructor parent none.
      * 
      * @throws NoSuchMethodException If error.
      */
@@ -321,7 +322,7 @@ public class UtilReflectionTest
     }
 
     /**
-     * Test the get interfaces.
+     * Test get interfaces.
      */
     @Test
     public void testGetInterfaces()
@@ -345,9 +346,57 @@ public class UtilReflectionTest
     }
 
     /**
+     * Interface mock
+     */
+    interface Interface0
+    {
+        // Mock
+    }
+
+    /**
+     * Interface mock
+     */
+    interface Interface1 extends Interface0
+    {
+        // Mock
+    }
+
+    /**
+     * Interface mock
+     */
+    interface Interface2 extends Interface0
+    {
+        // Mock
+    }
+
+    /**
+     * Interface mock
+     */
+    interface Interface3 extends Interface2
+    {
+        // Mock
+    }
+
+    /**
+     * Object mock.
+     */
+    class ObjectTest1 implements Interface1, Serializable
+    {
+        private static final long serialVersionUID = 1L;
+    }
+
+    /**
+     * Object mock.
+     */
+    final class ObjectTest2 extends ObjectTest1 implements Interface3
+    {
+        private static final long serialVersionUID = 1L;
+    }
+
+    /**
      * Reduce class test.
      */
-    static class Reduce
+    static final class Reduce
     {
         /**
          * Create.
@@ -383,7 +432,7 @@ public class UtilReflectionTest
     /**
      * Test field class without field
      */
-    class FieldTest2 extends FieldTest
+    final class FieldTest2 extends FieldTest
     {
         // No field
     }

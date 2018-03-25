@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Align;
 /**
  * Mock text.
  */
-public class TextMock implements Text
+final class TextMock implements Text
 {
     /** Text size. */
     private final int size;

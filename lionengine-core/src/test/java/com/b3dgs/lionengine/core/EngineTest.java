@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
 /**
- * Test the engine core class.
+ * Test {@link Engine}.
  */
-public class EngineTest
+public final class EngineTest
 {
     /** Test name. */
     private static final String NAME = EngineTest.class.getName();
@@ -45,7 +45,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine mock.
+     * Test mock.
      */
     @Test
     public void testMock()
@@ -54,7 +54,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine not started on get program name.
+     * Test not started on get program name.
      */
     @Test(expected = LionEngineException.class)
     public void testNotStartedGetProgramName()
@@ -63,7 +63,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine not started on get program version.
+     * Test not started on get program version.
      */
     @Test(expected = LionEngineException.class)
     public void testNotStartedGetProgramVersion()
@@ -72,7 +72,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine already started.
+     * Test already started.
      */
     @Test(expected = LionEngineException.class)
     public void testAlreadyStarted()
@@ -82,7 +82,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine terminate.
+     * Test terminate.
      */
     @Test
     public void testTerminate()
@@ -92,7 +92,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine started flag.
+     * Test started flag.
      */
     @Test
     public void testStarted()
@@ -105,7 +105,7 @@ public class EngineTest
     }
 
     /**
-     * Test the engine getter.
+     * Test getter.
      */
     @Test
     public void testGetter()

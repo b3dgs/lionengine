@@ -22,12 +22,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the transparency class.
+ * Test {@link Transparency}.
  */
-public class TransparencyTest
+public final class TransparencyTest
 {
     /**
-     * Test the enum.
+     * Test enum.
      * 
      * @throws Exception If error.
      */

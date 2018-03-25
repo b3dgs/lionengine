@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Test {@link ImageInfo}.
  */
-public class ImageInfoTest
+public final class ImageInfoTest
 {
     /**
      * Prepare test.

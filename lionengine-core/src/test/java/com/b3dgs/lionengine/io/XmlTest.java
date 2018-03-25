@@ -44,9 +44,9 @@ import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the XML parser.
+ * Test {@link Xml}.
  */
-public class XmlTest
+public final class XmlTest
 {
     /** Float precision. */
     private static final float FLOAT_PRECISION = 0.00000001f;
@@ -120,12 +120,12 @@ public class XmlTest
     }
 
     /**
-     * Test the write and read in XML with parser.
+     * Test write and read in XML with parser.
      * 
      * @throws IOException If error.
      */
     @Test
-    public void testXmlWriteRead() throws IOException
+    public void testWriteRead() throws IOException
     {
         Medias.setLoadFromJar(null);
         final File file = File.createTempFile("test", "xml");
@@ -141,7 +141,7 @@ public class XmlTest
     }
 
     /**
-     * Test the transformer error.
+     * Test transformer error.
      * 
      * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
@@ -244,7 +244,7 @@ public class XmlTest
      * Test children in xml node.
      */
     @Test
-    public void testXmlnode()
+    public void testNode()
     {
         final Xml root = new Xml("root");
         final Xml child1 = root.createChild("child1");
@@ -278,10 +278,10 @@ public class XmlTest
     }
 
     /**
-     * Test the remove element function on node.
+     * Test remove element function on node.
      */
     @Test
-    public void testXmlNodeRemove()
+    public void testNodeRemove()
     {
         final Xml root = new Xml("root");
         final Xml child1 = root.createChild("child1");
@@ -298,10 +298,10 @@ public class XmlTest
     }
 
     /**
-     * Test the write read to xml node.
+     * Test write read to xml node.
      */
     @Test
-    public void testXmlNodeWriteRead()
+    public void testNodeWriteRead()
     {
         final Xml node = new Xml("node");
         node.add(new Xml("test"));
@@ -338,40 +338,40 @@ public class XmlTest
     }
 
     /**
-     * Test the node name error.
+     * Test node name error.
      */
     @Test(expected = LionEngineException.class)
-    public void testXmlNodeNameError()
+    public void testNodeNameError()
     {
         final Xml node = new Xml("%éàç-èyrd");
         Assert.assertNull(node);
     }
 
     /**
-     * Test the node write error.
+     * Test node write error.
      */
     @Test(expected = LionEngineException.class)
-    public void testXmlNodeWriteError()
+    public void testNodeWriteError()
     {
         final Xml node = new Xml("test");
         node.writeString("%éàç-èyrd", "error");
     }
 
     /**
-     * Test the node read error.
+     * Test node read error.
      */
     @Test(expected = LionEngineException.class)
-    public void testXmlNodeReadError()
+    public void testNodeReadError()
     {
         final Xml node = new Xml("test");
         node.readString("%éàç-èyrd");
     }
 
     /**
-     * Test the node read with default value.
+     * Test node read with default value.
      */
     @Test
-    public void testXmlNodeReadDefault()
+    public void testNodeReadDefault()
     {
         final Xml node = new Xml("test");
 
@@ -407,10 +407,10 @@ public class XmlTest
     }
 
     /**
-     * Test the node has element.
+     * Test node has element.
      */
     @Test
-    public void testXmlNodeHas()
+    public void testNodeHas()
     {
         final Xml node = new Xml("test");
         final Xml child = new Xml("child");

@@ -34,9 +34,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the utility sequence class.
+ * Test {@link UtilSequence}.
  */
-public class UtilSequenceTest
+public final class UtilSequenceTest
 {
     /**
      * Prepare the test.
@@ -57,7 +57,7 @@ public class UtilSequenceTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -68,7 +68,7 @@ public class UtilSequenceTest
     }
 
     /**
-     * Test the sequence creation.
+     * Test sequence creation.
      */
     @Test
     public void testCreateSequence()
@@ -102,7 +102,7 @@ public class UtilSequenceTest
     }
 
     /**
-     * Test the sequence creation with argument.
+     * Test sequence creation with argument.
      */
     @Test
     public void testCreateSequenceArgument()
@@ -136,7 +136,7 @@ public class UtilSequenceTest
     }
 
     /**
-     * Test the sequence creation with invalid argument.
+     * Test sequence creation with invalid argument.
      */
     @Test(expected = LionEngineException.class)
     public void testCreateSequenceArgumentFail()

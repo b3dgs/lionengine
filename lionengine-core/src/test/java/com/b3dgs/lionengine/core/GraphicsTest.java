@@ -40,9 +40,9 @@ import com.b3dgs.lionengine.util.UtilFile;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the graphic factory class.
+ * Test {@link Graphics}.
  */
-public class GraphicsTest
+public final class GraphicsTest
 {
     /** Config. */
     private static final Config CONFIG = new Config(new Resolution(320, 240, 60), 32, true);
@@ -80,7 +80,7 @@ public class GraphicsTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */

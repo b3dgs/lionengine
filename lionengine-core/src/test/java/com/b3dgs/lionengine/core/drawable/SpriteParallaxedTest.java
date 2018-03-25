@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.graphic.SpriteParallaxed;
 /**
  * Test {@link SpriteParallaxed}.
  */
-public class SpriteParallaxedTest
+public final class SpriteParallaxedTest
 {
     /** Lines number. */
     private static final int LINES = 8;

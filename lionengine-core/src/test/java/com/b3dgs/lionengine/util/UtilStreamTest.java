@@ -37,9 +37,9 @@ import com.b3dgs.lionengine.io.InputStreamMock;
 import com.b3dgs.lionengine.io.OutputStreamMock;
 
 /**
- * Test the utility stream class.
+ * Test {@link UtilStream}.
  */
-public class UtilStreamTest
+public final class UtilStreamTest
 {
     /**
      * Prepare test.
@@ -63,7 +63,7 @@ public class UtilStreamTest
     @Rule public final TemporaryFolder TEMP = new TemporaryFolder();
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -74,7 +74,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the stream copy.
+     * Test copy.
      * 
      * @throws IOException If error.
      */
@@ -99,7 +99,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the stream copy with null input.
+     * Test copy with <code>null</code> input.
      * 
      * @throws IOException If error.
      */
@@ -113,7 +113,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the stream copy with null output.
+     * Test copy with <code>null</code> output.
      * 
      * @throws IOException If error.
      */
@@ -127,7 +127,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the input stream copy.
+     * Test input stream copy.
      * 
      * @throws IOException If error.
      */
@@ -143,7 +143,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the input stream copy with null name.
+     * Test input stream copy with <code>null</code> name.
      * 
      * @throws IOException If error.
      */
@@ -157,7 +157,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the input stream copy with null name.
+     * Test input stream copy with <code>null</code> name.
      * 
      * @throws IOException If error.
      */
@@ -168,7 +168,7 @@ public class UtilStreamTest
     }
 
     /**
-     * Test the get copy error.
+     * Test get copy error.
      */
     @Test(expected = LionEngineException.class)
     public void testGetCopyError()

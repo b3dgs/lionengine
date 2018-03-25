@@ -33,9 +33,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the drawable package.
+ * Test {@link Drawable}.
  */
-public class DrawableTest
+public final class DrawableTest
 {
     /** Surface. */
     private static Media media;
@@ -239,7 +239,7 @@ public class DrawableTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -250,10 +250,10 @@ public class DrawableTest
     }
 
     /**
-     * Test the drawable failures creation.
+     * Test failures creation.
      */
     @Test
-    public void testDrawableFail()
+    public void testFail()
     {
         testSprite(true);
 
@@ -279,10 +279,10 @@ public class DrawableTest
     }
 
     /**
-     * Test success cases.
+     * Test success.
      */
     @Test
-    public void testDrawableSuccess()
+    public void testSuccess()
     {
         testImage(false);
         testSprite(false);
@@ -296,7 +296,7 @@ public class DrawableTest
      * Test success cases with custom DPI.
      */
     @Test
-    public void testDrawableSuccessDpi()
+    public void testSuccessDpi()
     {
         try
         {
@@ -322,7 +322,7 @@ public class DrawableTest
      * Test success cases with missing DPI.
      */
     @Test
-    public void testDrawableMissingDpi()
+    public void testMissingDpi()
     {
         Drawable.setDpi(new Resolution(320, 240, 60), new Config(new Resolution(1920, 1200, 16), 60, false));
 
@@ -342,7 +342,7 @@ public class DrawableTest
     }
 
     /**
-     * Test the DPI with 0 ordinal.
+     * Test DPI with 0 ordinal.
      */
     @Test(expected = LionEngineException.class)
     public void testDpiOrdinal()

@@ -36,9 +36,9 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the image class.
+ * Test {@link Image}.
  */
-public class ImageTest
+public final class ImageTest
 {
     /** Image media. */
     private static Media media;
@@ -66,7 +66,7 @@ public class ImageTest
     }
 
     /**
-     * Test the constructor with media.
+     * Test constructor with media.
      */
     @Test
     public void testConstructorMedia()
@@ -80,7 +80,7 @@ public class ImageTest
     }
 
     /**
-     * Test the constructor with surface.
+     * Test constructor with surface.
      */
     @Test
     public void testConstructorSurface()
@@ -95,7 +95,7 @@ public class ImageTest
     }
 
     /**
-     * Test the load with media.
+     * Test load with media.
      */
     @Test
     public void testLoadMedia()
@@ -110,7 +110,7 @@ public class ImageTest
     }
 
     /**
-     * Test the load with media already loaded.
+     * Test load with media already loaded.
      */
     @Test(expected = LionEngineException.class)
     public void testLoadMediaAlready()
@@ -121,7 +121,7 @@ public class ImageTest
     }
 
     /**
-     * Test the load with surface.
+     * Test load with surface.
      */
     @Test(expected = LionEngineException.class)
     public void testLoadSurface()
@@ -131,7 +131,7 @@ public class ImageTest
     }
 
     /**
-     * Test the set location.
+     * Test set location.
      */
     @Test
     public void testSetLocation()
@@ -152,7 +152,7 @@ public class ImageTest
     }
 
     /**
-     * Test the set location with viewer.
+     * Test set location with viewer.
      */
     @Test
     public void testSetLocationViewer()
@@ -176,7 +176,7 @@ public class ImageTest
     }
 
     /**
-     * Test the origin <code>null</code>.
+     * Test rendering point.
      */
     @Test
     public void testRenderingPoint()
@@ -195,7 +195,7 @@ public class ImageTest
     }
 
     /**
-     * Test the origin <code>null</code>.
+     * Test origin <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testSetOriginNull()
@@ -223,7 +223,7 @@ public class ImageTest
     }
 
     /**
-     * Test the equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -248,10 +248,10 @@ public class ImageTest
     }
 
     /**
-     * Test the hash.
+     * Test hash code.
      */
     @Test
-    public void testHash()
+    public void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final int image = new ImageImpl(surface).hashCode();

@@ -42,9 +42,9 @@ import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the sprite class.
+ * Test {@link SpriteAnimated}.
  */
-public class SpriteAnimatedTest
+public final class SpriteAnimatedTest
 {
     /** Image media. */
     private static Media media;
@@ -72,7 +72,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the constructor with media.
+     * Test constructor with media.
      */
     @Test
     public void testConstructorMedia()
@@ -90,7 +90,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the constructor with surface.
+     * Test constructor with surface.
      */
     @Test
     public void testConstructorSurface()
@@ -109,7 +109,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the load with media.
+     * Test load with media.
      */
     @Test
     public void testLoadMedia()
@@ -124,7 +124,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the load with media already loaded.
+     * Test load with media already loaded.
      */
     @Test(expected = LionEngineException.class)
     public void testLoadMediaAlready()
@@ -135,7 +135,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the load with surface.
+     * Test load with surface.
      */
     @Test(expected = LionEngineException.class)
     public void testLoadSurface()
@@ -145,7 +145,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the stretch sprite.
+     * Test stretch sprite.
      */
     @Test
     public void testStretch()
@@ -181,7 +181,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the stretch sprite with invalid width.
+     * Test stretch sprite with invalid width.
      */
     @Test(expected = LionEngineException.class)
     public void testStretchInvalidWidth()
@@ -191,7 +191,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the stretch sprite with invalid height.
+     * Test stretch sprite with invalid height.
      */
     @Test(expected = LionEngineException.class)
     public void testStretchInvalidHeight()
@@ -201,7 +201,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the rotate sprite.
+     * Test rotate sprite.
      */
     @Test
     public void testRotate()
@@ -216,7 +216,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set location.
+     * Test set location.
      */
     @Test
     public void testSetLocation()
@@ -237,7 +237,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set location with viewer.
+     * Test set location with viewer.
      */
     @Test
     public void testSetLocationViewer()
@@ -261,7 +261,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set alpha.
+     * Test set alpha.
      */
     @Test
     public void testSetAlpha()
@@ -277,7 +277,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set alpha too low.
+     * Test set alpha too low.
      */
     @Test(expected = LionEngineException.class)
     public void testSetAlphaLow()
@@ -287,7 +287,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set alpha too high.
+     * Test set alpha too high.
      */
     @Test(expected = LionEngineException.class)
     public void testSetAlphaHigh()
@@ -297,7 +297,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set transparency.
+     * Test set transparency.
      */
     @Test
     public void testSetTransparency()
@@ -310,7 +310,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set fade.
+     * Test set fade.
      */
     @Test
     public void testSetFade()
@@ -324,10 +324,10 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the filter bilinear.
+     * Test filter bilinear.
      */
     @Test
-    public void testFilter()
+    public void testFilterBilinear()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.filter(new FilterBilinear());
@@ -337,7 +337,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the filter.
+     * Test filter <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testFilterNull()
@@ -347,7 +347,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the mirror.
+     * Test mirror.
      */
     @Test
     public void testMirror()
@@ -362,7 +362,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the mirror <code>null</code>.
+     * Test mirror <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testMirrorNull()
@@ -372,7 +372,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the origin <code>null</code>.
+     * Test rendering point.
      */
     @Test
     public void testRenderingPoint()
@@ -391,7 +391,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the origin <code>null</code>.
+     * Test origin <code>null</code>.
      */
     @Test(expected = LionEngineException.class)
     public void testSetOriginNull()
@@ -401,7 +401,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Set the set frame with invalid value.
+     * Set set frame with invalid value.
      */
     @Test(expected = LionEngineException.class)
     public void testSetTileInvalid()
@@ -411,7 +411,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set frame offset.
+     * Test set frame offset.
      */
     @Test
     public void testSetFrameOffset()
@@ -424,7 +424,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the set speed.
+     * Test set speed.
      */
     @Test
     public void testSetSpeed()
@@ -441,7 +441,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the invalid speed setter.
+     * Test invalid speed setter.
      */
     @Test(expected = LionEngineException.class)
     public void testSetSpeedNegative()
@@ -451,7 +451,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the play.
+     * Test play.
      */
     @Test
     public void testPlay()
@@ -466,7 +466,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the stop.
+     * Test stop.
      */
     @Test
     public void testStop()
@@ -478,7 +478,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the update without loop nor reverse.
+     * Test update without loop nor reverse.
      */
     @Test
     public void testUpdateNoLoopNoReverse()
@@ -511,7 +511,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the update with loop but no reverse.
+     * Test update with loop but no reverse.
      */
     @Test
     public void testUpdateLoopNoReverse()
@@ -550,7 +550,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the update without loop but reverse.
+     * Test update without loop but reverse.
      */
     @Test
     public void testUpdateNoLoopReverse()
@@ -595,7 +595,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the update with loop and reverse.
+     * Test update with loop and reverse.
      */
     @Test
     public void testUpdateLoopReverse()
@@ -652,7 +652,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the render.
+     * Test render.
      */
     @Test
     public void testRender()
@@ -677,7 +677,7 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the equals.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -707,10 +707,10 @@ public class SpriteAnimatedTest
     }
 
     /**
-     * Test the hash.
+     * Test hash code.
      */
     @Test
-    public void testHash()
+    public void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final int sprite = new SpriteAnimatedImpl(surface, 16, 8).hashCode();

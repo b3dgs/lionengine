@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Test {@link UtilConversion}.
  */
-public class UtilConversionTest
+public final class UtilConversionTest
 {
     /**
      * Test constructor.

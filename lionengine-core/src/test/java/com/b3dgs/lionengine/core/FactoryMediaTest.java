@@ -23,15 +23,15 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Media;
 
 /**
- * Test the factory media provider class.
+ * Test {@link FactoryMedia}.
  */
-public class FactoryMediaTest
+public final class FactoryMediaTest
 {
     /** Factory. */
     private static final FactoryMedia FACTORY = new FactoryMediaDefault();
 
     /**
-     * Test the create media from resources directory.
+     * Test create media from resources directory.
      */
     @Test
     public void testCreateMediaResources()
@@ -43,7 +43,7 @@ public class FactoryMediaTest
     }
 
     /**
-     * Test the create media from loader.
+     * Test create media from loader.
      */
     @Test
     public void testCreateMediaLoader()

@@ -23,22 +23,25 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the filter.
+ * Test {@link Filter}.
  */
-public class FilterTest
+public final class FilterTest
 {
     /**
-     * Test the default filter.
+     * Test default filter.
      */
     @Test
     public void testFilter()
     {
         final Transform transform = FilterNone.INSTANCE.getTransform(1.0, 1.0);
+
         Assert.assertEquals(1.0, transform.getScaleX(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, transform.getScaleY(), UtilTests.PRECISION);
         Assert.assertEquals(0, transform.getInterpolation());
+
         transform.setInterpolation(true);
         transform.scale(0.0, 0.0);
+
         Assert.assertEquals(0, transform.getInterpolation());
     }
 }

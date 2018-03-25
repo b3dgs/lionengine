@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
- * Test the Blur filter.
+ * Test {@link FilterBlur}.
  */
-public class FilterBlurTest
+public final class FilterBlurTest
 {
     /** Image media. */
     private static Media media;
@@ -59,7 +59,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the blur filter
+     * Test blur filter
      */
     @Test
     public void testBlur()
@@ -104,7 +104,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the filter with no pixel.
+     * Test without pixel.
      */
     @Test
     public void testNoPixel()
@@ -119,7 +119,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the filter with single pixel.
+     * Test with single pixel.
      */
     @Test
     public void testSinglePixel()
@@ -132,7 +132,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the filter with low width.
+     * Test with low width.
      */
     @Test
     public void testLowWidth()
@@ -145,7 +145,7 @@ public class FilterBlurTest
     }
 
     /**
-     * Test the filter with low height.
+     * Test with low height.
      */
     @Test
     public void testLowHeight()

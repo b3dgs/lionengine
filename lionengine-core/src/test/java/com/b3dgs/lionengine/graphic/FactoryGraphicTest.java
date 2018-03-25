@@ -32,13 +32,12 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the factory graphic provider class.
+ * Test {@link FactoryGraphic}.
  */
 public class FactoryGraphicTest
 {
     /** Config. */
     private static final Config CONFIG = new Config(UtilTests.RESOLUTION_320_240, 32, true);
-
     /** Image. */
     protected static ImageBuffer image;
     /** Image. */
@@ -338,7 +337,7 @@ public class FactoryGraphicTest
     }
 
     /**
-     * Test save image.
+     * Test get raster buffer.
      */
     @Test
     public void testGetRasterBuffer()

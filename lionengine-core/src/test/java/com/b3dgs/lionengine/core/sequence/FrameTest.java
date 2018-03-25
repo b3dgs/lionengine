@@ -23,12 +23,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the frame.
+ * Test {@link Frame}.
  */
-public class FrameTest
+public final class FrameTest
 {
     /**
-     * Test the frame default function.
+     * Test default function.
      */
     @Test
     public void testFrame()

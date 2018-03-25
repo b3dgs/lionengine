@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.geom.Geom;
 /**
  * Test {@link UtilMath}.
  */
-public class UtilMathTest
+public final class UtilMathTest
 {
     /**
      * Test the constructor.

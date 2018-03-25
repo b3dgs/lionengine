@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.util.UtilConversion;
 /**
  * Mock transform.
  */
-public class TransformMock implements Transform
+final class TransformMock implements Transform
 {
     /** Horizontal scale. */
     private double sx;
@@ -34,7 +34,7 @@ public class TransformMock implements Transform
     /**
      * Create mock.
      */
-    public TransformMock()
+    TransformMock()
     {
         super();
     }

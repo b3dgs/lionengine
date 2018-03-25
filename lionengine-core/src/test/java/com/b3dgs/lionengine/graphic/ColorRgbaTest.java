@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the color class.
+ * Test {@link ColorRgba}.
  */
-public class ColorRgbaTest
+public final class ColorRgbaTest
 {
     /**
      * Prepare test.
@@ -75,10 +75,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color negative value.
+     * Test negative value.
      */
     @Test
-    public void testColorRgbaNegative()
+    public void testNegative()
     {
         testColorFailure(-1, 0, 0, 0);
         testColorFailure(0, -1, 0, 0);
@@ -87,10 +87,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color out of range value.
+     * Test out of range value.
      */
     @Test
-    public void testColorRgbaOutOfRange()
+    public void testOutOfRange()
     {
         testColorFailure(Constant.UNSIGNED_BYTE, 0, 0, 0);
         testColorFailure(0, Constant.UNSIGNED_BYTE, 0, 0);
@@ -99,10 +99,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color rgba value constructor with color value.
+     * Test rgba value constructor with color value.
      */
     @Test
-    public void testColorRgbaValueConstructorValue()
+    public void testConstructorValue()
     {
         final int step = 51;
         for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE; i += step)
@@ -118,10 +118,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color rgba value constructor with rgb.
+     * Test constructor with rgb.
      */
     @Test
-    public void testColorRgbaValueConstructorRgb()
+    public void testConstructorRgb()
     {
         for (int r = 0; r < Constant.UNSIGNED_BYTE; r++)
         {
@@ -141,10 +141,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color rgba value constructor with rgb and alpha.
+     * Test constructor with rgb and alpha.
      */
     @Test
-    public void testColorRgbaValueConstructorRgbAlpha()
+    public void testConstructorRgbAlpha()
     {
         final int step = 5;
         for (int r = 0; r < Constant.UNSIGNED_BYTE; r += step)
@@ -168,10 +168,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color equality.
+     * Test hash code.
      */
     @Test
-    public void testColorHashCode()
+    public void testHashCode()
     {
         Assert.assertEquals(ColorRgba.BLACK.hashCode(), ColorRgba.BLACK.hashCode());
         Assert.assertNotEquals(ColorRgba.WHITE.hashCode(), ColorRgba.BLACK.hashCode());
@@ -179,10 +179,10 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color equality.
+     * Test equals.
      */
     @Test
-    public void testColorEquals()
+    public void testEquals()
     {
         final int step = 654321;
         for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE - step; i += step)
@@ -203,7 +203,7 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the to string.
+     * Test to string.
      */
     @Test
     public void testToString()

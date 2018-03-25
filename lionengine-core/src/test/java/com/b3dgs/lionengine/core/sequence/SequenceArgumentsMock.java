@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Mock sequence.
  */
-public class SequenceArgumentsMock extends Sequence
+final class SequenceArgumentsMock extends Sequence
 {
     /** Argument. */
     private final Object argument;
@@ -43,7 +43,7 @@ public class SequenceArgumentsMock extends Sequence
      * @param context The context reference.
      * @param argument The argument reference.
      */
-    public SequenceArgumentsMock(Context context, Object argument)
+    SequenceArgumentsMock(Context context, Object argument)
     {
         super(context, UtilTests.RESOLUTION_320_240);
         this.argument = argument;

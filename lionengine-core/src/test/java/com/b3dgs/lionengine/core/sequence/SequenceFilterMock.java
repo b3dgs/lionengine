@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Filter sequence mock.
  */
-public class SequenceFilterMock extends Sequence
+final class SequenceFilterMock extends Sequence
 {
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class SequenceFilterMock extends Sequence
      * @param context The context reference.
      * @param filter The filter used.
      */
-    public SequenceFilterMock(Context context, Filter filter)
+    SequenceFilterMock(Context context, Filter filter)
     {
         super(context, UtilTests.RESOLUTION_320_240);
         setFilter(filter);

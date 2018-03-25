@@ -25,9 +25,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Verbose;
 
 /**
- * Test the image info BMP class.
+ * Test {@link ImageHeaderBmp}.
  */
-public class ImageInfoBmpTest
+public final class ImageInfoBmpTest
 {
     /**
      * Test constructor.

@@ -48,9 +48,9 @@ import com.b3dgs.lionengine.graphic.ScreenMock;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the loader class.
+ * Test {@link Loader}.
  */
-public class LoaderTest
+public final class LoaderTest
 {
     /** Output. */
     static final Resolution OUTPUT = new Resolution(640, 480, 60);
@@ -99,7 +99,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -110,7 +110,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with no config.
+     * Test with no config.
      */
     @Test(expected = LionEngineException.class)
     public void testNullConfig()
@@ -119,7 +119,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a single sequence.
+     * Test with a single sequence.
      */
     @Test
     public void testSequenceSingle()
@@ -128,7 +128,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a sequence that have arguments.
+     * Test with a sequence that have arguments.
      */
     @Test
     public void testSequenceArgument()
@@ -137,7 +137,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with timed out screen.
+     * Test with timed out screen.
      */
     @Test(expected = LionEngineException.class)
     public void testSequenceTimeout()
@@ -156,11 +156,11 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with unready screen on rendering.
+     * Test with screen not ready on rendering.
      * 
      * @throws Throwable If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = 1000L)
     public void testSequenceRenderScreenUnready() throws Throwable
     {
         final CountDownLatch waitUpdate = new CountDownLatch(1);
@@ -192,7 +192,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with no sequence.
+     * Test with no sequence.
      */
     @Test(expected = LionEngineException.class)
     public void testSequenceNull()
@@ -201,7 +201,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with fail sequence.
+     * Test with fail sequence.
      */
     @Test(expected = LionEngineException.class)
     public void testSequenceFail()
@@ -218,7 +218,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with fail next sequence.
+     * Test with fail next sequence.
      */
     @Test(expected = LionEngineException.class)
     public void testSequenceFailNext()
@@ -235,7 +235,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with malformed sequence.
+     * Test with malformed sequence.
      */
     @Test(expected = LionEngineException.class)
     public void testSequenceMalformed()
@@ -252,7 +252,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader interrupted.
+     * Test interrupted.
      * 
      * @throws Throwable If error.
      */
@@ -284,7 +284,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader interrupted unchecked exception.
+     * Test interrupted unchecked exception.
      * 
      * @throws InterruptedException If error.
      */
@@ -331,7 +331,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader already started.
+     * Test already started.
      */
     @Test
     public void testStarted()
@@ -348,7 +348,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader engine started.
+     * Test engine started.
      */
     @Test
     public void testEngineStarted()
@@ -358,7 +358,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with no icon in windowed mode.
+     * Test with no icon in windowed mode.
      */
     @Test
     public void testNoIconWindowed()
@@ -368,7 +368,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with an icon in windowed mode.
+     * Test with an icon in windowed mode.
      */
     @Test
     public void testIconWindowed()
@@ -378,7 +378,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with an icon in full screen mode.
+     * Test with an icon in full screen mode.
      */
     @Test
     public void testIconFullScreen()
@@ -388,7 +388,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with slow sequence.
+     * Test with slow sequence.
      */
     @Test
     public void testSlowSequence()
@@ -397,7 +397,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader interrupted.
+     * Test interrupted.
      * 
      * @throws Throwable If error.
      */
@@ -437,7 +437,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with screen direct.
+     * Test with screen direct.
      */
     @Test
     public void testDirect()
@@ -448,7 +448,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with sequence terminate engine.
+     * Test with sequence terminate engine.
      */
     @Test
     public void testEngineTerminate()
@@ -459,7 +459,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with screen scaled.
+     * Test with screen scaled.
      */
     @Test
     public void testScaled()
@@ -470,7 +470,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with bilinear filter.
+     * Test with bilinear filter.
      */
     @Test
     public void testBilinear()
@@ -481,7 +481,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with blur filter.
+     * Test with blur filter.
      */
     @Test
     public void testBlur()
@@ -506,7 +506,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a hq2x filter.
+     * Test with a hq2x filter.
      */
     @Test
     public void testFilterHq2x()
@@ -517,7 +517,7 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a hq3x filter.
+     * Test with a hq3x filter.
      */
     @Test
     public void testFilterHq3x()
