@@ -174,7 +174,7 @@ public final class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testPlay() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -199,7 +199,7 @@ public final class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testPlayTwice() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -224,7 +224,7 @@ public final class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testStart() throws InterruptedException
     {
         Sc68 sc68 = createSc68();
@@ -260,7 +260,7 @@ public final class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testLoop() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -283,7 +283,7 @@ public final class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testPause() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -309,7 +309,7 @@ public final class Sc68Test
     /**
      * Test the set configuration.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testConfig()
     {
         final Sc68 sc68 = createSc68();
@@ -344,7 +344,7 @@ public final class Sc68Test
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000, expected = LionEngineException.class)
+    @Test(timeout = 10000L, expected = LionEngineException.class)
     public void testMissingMedia() throws IOException
     {
         final Media media = new Media()
@@ -426,7 +426,7 @@ public final class Sc68Test
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.sc68");

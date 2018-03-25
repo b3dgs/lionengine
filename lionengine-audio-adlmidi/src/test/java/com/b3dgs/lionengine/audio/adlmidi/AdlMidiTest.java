@@ -176,7 +176,7 @@ public final class AdlMidiTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testPlay() throws InterruptedException
     {
         AdlMidi adlmidi = createAdlMidi();
@@ -220,7 +220,7 @@ public final class AdlMidiTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testPlayTwice() throws InterruptedException
     {
         final AdlMidi adlmidi = createAdlMidi();
@@ -247,7 +247,7 @@ public final class AdlMidiTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testPause() throws InterruptedException
     {
         final AdlMidi adlmidi = createAdlMidi();
@@ -357,7 +357,7 @@ public final class AdlMidiTest
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000)
+    @Test(timeout = 10000L)
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.xmi");
