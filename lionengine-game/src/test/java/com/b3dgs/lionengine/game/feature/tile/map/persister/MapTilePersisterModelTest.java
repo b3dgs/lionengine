@@ -28,7 +28,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -49,7 +48,7 @@ public class MapTilePersisterModelTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
     }
 
     /** Temp folder. */

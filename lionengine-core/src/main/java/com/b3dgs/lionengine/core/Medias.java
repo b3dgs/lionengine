@@ -82,14 +82,18 @@ public final class Medias
     /**
      * Define resources directory. Root for all medias. Disable the load from JAR.
      * 
-     * @param directory The main resources directory (must not be <code>null</code>).
-     * @throws LionEngineException If invalid parameter.
+     * @param directory The main resources directory (can be <code>null</code>).
      */
     public static synchronized void setResourcesDirectory(String directory)
     {
-        Check.notNull(directory);
-
-        resourcesDir = directory + getSeparator();
+        if (directory == null)
+        {
+            resourcesDir = Constant.EMPTY_STRING + getSeparator();
+        }
+        else
+        {
+            resourcesDir = directory + getSeparator();
+        }
         loader = Optional.empty();
     }
 

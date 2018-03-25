@@ -457,7 +457,7 @@ public final class Sc68Test
         }
         finally
         {
-            Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+            Medias.setResourcesDirectory(null);
         }
     }
 }

@@ -388,7 +388,7 @@ public final class AdlMidiTest
         }
         finally
         {
-            Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+            Medias.setResourcesDirectory(null);
         }
     }
 }

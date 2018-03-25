@@ -26,7 +26,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -52,7 +51,7 @@ public class TileGroupsConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
     }
 
     /**

@@ -61,7 +61,7 @@ public class MapTileGroupModelTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
     }
 
     private final MapTileGroup mapGroup = new MapTileGroupModel();

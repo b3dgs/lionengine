@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
@@ -71,7 +70,7 @@ public class CollidableModelTest
     {
         Assert.assertTrue(config.getFile().delete());
         Graphics.setFactoryGraphic(null);
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
     }
 
     private final Services services = new Services();

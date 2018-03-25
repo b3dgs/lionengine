@@ -126,7 +126,7 @@ public final class MediaTest
     @Test(expected = LionEngineException.class)
     public void testInputStreamNotExists() throws IOException
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
         final Media media = Medias.create("void");
 
         Assert.assertFalse(media.exists());

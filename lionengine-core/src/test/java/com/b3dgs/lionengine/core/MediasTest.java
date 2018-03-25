@@ -260,7 +260,7 @@ public final class MediasTest
     @Test
     public void testGetMedias()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
 
         Assert.assertFalse(Medias.create("").getMedias().isEmpty());
     }

@@ -29,7 +29,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -68,7 +67,7 @@ public class MapTileCircuitModelTest
     {
         Assert.assertTrue(configTransitions.getFile().delete());
         Assert.assertTrue(configCircuits.getFile().delete());
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
     }
 
     /**

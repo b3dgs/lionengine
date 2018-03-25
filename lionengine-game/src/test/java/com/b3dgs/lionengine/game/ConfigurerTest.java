@@ -58,7 +58,7 @@ public class ConfigurerTest
     public static void cleanUp()
     {
         Assert.assertTrue(config.getFile().delete());
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
         Configurer.clearCache();
     }
 

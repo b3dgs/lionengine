@@ -59,7 +59,7 @@ public class CollisionCategoryConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        Medias.setResourcesDirectory(null);
     }
 
     /** Formula test. */
