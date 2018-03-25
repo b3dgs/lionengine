@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
- * Test the image buffer class.
+ * Test {@link ImageBufferAwt}.
  */
-public class ImageBufferAwtTest
+public final class ImageBufferAwtTest
 {
     /**
      * Prepare test.
@@ -56,7 +56,7 @@ public class ImageBufferAwtTest
     }
 
     /**
-     * Test the image.
+     * Test image.
      */
     @Test
     public void testImage()
@@ -83,7 +83,7 @@ public class ImageBufferAwtTest
     }
 
     /**
-     * Test the image transparency
+     * Test image transparency
      */
     @Test
     public void testImageTransparency()

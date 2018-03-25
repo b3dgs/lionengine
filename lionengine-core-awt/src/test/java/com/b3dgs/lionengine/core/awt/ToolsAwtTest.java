@@ -41,9 +41,9 @@ import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the tools class.
+ * Test {@link ToolsAwt}.
  */
-public class ToolsAwtTest
+public final class ToolsAwtTest
 {
     /**
      * Prepare test.
@@ -64,7 +64,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -75,7 +75,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the utility.
+     * Test utility.
      * 
      * @throws IOException If error.
      */
@@ -83,6 +83,7 @@ public class ToolsAwtTest
     public void testUtility() throws IOException
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.OPAQUE);
+
         Assert.assertNotNull(image);
         Assert.assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(ToolsAwt.flipHorizontal(image));
@@ -128,7 +129,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the copy.
+     * Test copy.
      */
     @Test
     public void testCopy()
@@ -139,7 +140,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the save.
+     * Test save.
      * 
      * @throws IOException If error.
      */
@@ -164,7 +165,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the get fail.
+     * Test get fail.
      * 
      * @throws IOException If error.
      */
@@ -181,7 +182,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the get fail IO.
+     * Test get fail IO.
      * 
      * @throws IOException If error.
      */
@@ -198,7 +199,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the buffer strategy creation failure.
+     * Test buffer strategy creation failure.
      */
     @Test
     public void testCreateBufferStrategyFailCanvas()
@@ -226,7 +227,7 @@ public class ToolsAwtTest
     }
 
     /**
-     * Test the buffer strategy creation failure.
+     * Test buffer strategy creation failure.
      */
     @Test
     public void testCreateBufferStrategyFailWindow()

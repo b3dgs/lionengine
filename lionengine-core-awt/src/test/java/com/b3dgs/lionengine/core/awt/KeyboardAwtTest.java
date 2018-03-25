@@ -25,9 +25,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the keyboard class.
+ * Test {@link KeyboardAwt}.
  */
-public class KeyboardAwtTest
+public final class KeyboardAwtTest
 {
     /**
      * Create a key event.
@@ -41,7 +41,7 @@ public class KeyboardAwtTest
     }
 
     /**
-     * Test the keyboard not pressed state.
+     * Test not pressed state.
      */
     @Test
     public void testNotPressed()
@@ -63,7 +63,7 @@ public class KeyboardAwtTest
     }
 
     /**
-     * Test the keyboard pressed.
+     * Test pressed.
      */
     @Test
     public void testPressed()
@@ -86,7 +86,7 @@ public class KeyboardAwtTest
     }
 
     /**
-     * Test the keyboard directions.
+     * Test directions.
      */
     @Test
     public void testDirections()
@@ -116,7 +116,7 @@ public class KeyboardAwtTest
     }
 
     /**
-     * Test the keyboard events.
+     * Test events.
      */
     @Test
     public void testEvents()

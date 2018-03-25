@@ -26,15 +26,15 @@ import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 
 /**
- * Test the engine class.
+ * Test {@link EngineAwt}.
  */
-public class EngineAwtTest
+public final class EngineAwtTest
 {
     /**
-     * Test the engine start without resources.
+     * Test start without resources.
      */
     @Test(expected = LionEngineException.class)
-    public void testEngineNullResources()
+    public void testNullResources()
     {
         EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null);
         try
@@ -49,10 +49,10 @@ public class EngineAwtTest
     }
 
     /**
-     * Test the engine start with resources.
+     * Test start with resources.
      */
     @Test(expected = LionEngineException.class)
-    public void testEngineResources()
+    public void testResources()
     {
         EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
         try
@@ -67,10 +67,10 @@ public class EngineAwtTest
     }
 
     /**
-     * Test the engine start with class.
+     * Test start with class.
      */
     @Test(expected = LionEngineException.class)
-    public void testEngineClass()
+    public void testClass()
     {
         EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class);
         try

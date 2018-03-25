@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.graphic.GraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the graphic class.
+ * Test {@link GraphicAwt}.
  */
-public class GraphicAwtTest extends GraphicTest
+public final class GraphicAwtTest extends GraphicTest
 {
     /**
      * Prepare test.

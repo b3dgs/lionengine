@@ -42,9 +42,9 @@ import com.b3dgs.lionengine.util.UtilReflection;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the screen class.
+ * Test {@link ScreenAwtAbstract}, {@link ScreenWindowedAwt} and {@link ScreenFullAwt}.
  */
-public class ScreenAwtTest
+public final class ScreenAwtTest
 {
     /** Test timeout in milliseconds. */
     private static final long TIMEOUT = 10000L;
@@ -70,7 +70,7 @@ public class ScreenAwtTest
     }
 
     /**
-     * Test the windowed screen.
+     * Test windowed screen.
      * 
      * @throws Exception If error.
      */
@@ -87,7 +87,7 @@ public class ScreenAwtTest
     }
 
     /**
-     * Test the applet screen.
+     * Test applet screen.
      * 
      * @throws Exception If error.
      */
@@ -108,7 +108,7 @@ public class ScreenAwtTest
     }
 
     /**
-     * Test the full screen.
+     * Test full screen.
      * 
      * @throws Exception If error.
      */
@@ -131,7 +131,7 @@ public class ScreenAwtTest
     }
 
     /**
-     * Test the full screen.
+     * Test full screen fail.
      * 
      * @throws Exception If error.
      */
@@ -146,7 +146,7 @@ public class ScreenAwtTest
     }
 
     /**
-     * Test the screen.
+     * Test screen.
      * 
      * @param config The config to test with.
      */
@@ -190,7 +190,9 @@ public class ScreenAwtTest
                 closed.set(true);
             }
         };
+
         Assert.assertFalse(screen.isReady());
+
         screen.addListener(screenListener);
         screen.start();
         screen.awaitReady();
@@ -201,12 +203,14 @@ public class ScreenAwtTest
         screen.hideCursor();
         screen.requestFocus();
         screen.onSourceChanged(UtilTests.RESOLUTION_320_240);
+
         Assert.assertNotNull(screen.getConfig());
         Assert.assertNotNull(screen.getGraphic());
         Assert.assertTrue(screen.getReadyTimeOut() > -1L);
         Assert.assertTrue(screen.getX() > -1);
         Assert.assertTrue(screen.getY() > -1);
         Assert.assertTrue(screen.isReady());
+
         while (config.isWindowed() && !gained.get())
         {
             continue;

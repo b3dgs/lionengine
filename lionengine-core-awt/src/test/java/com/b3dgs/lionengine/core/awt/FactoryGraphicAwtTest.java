@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
- * Test the factory graphic provider class.
+ * Test {@link FactoryGraphicAwt}.
  */
-public class FactoryGraphicAwtTest extends FactoryGraphicTest
+public final class FactoryGraphicAwtTest extends FactoryGraphicTest
 {
     /**
      * Prepare test.

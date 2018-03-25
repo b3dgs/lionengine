@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 
 /**
- * Test the applet class.
+ * Test {@link AppletAwt}.
  */
-public class AppletAwtTest
+public final class AppletAwtTest
 {
     /**
-     * Test the applet.
+     * Test applet.
      */
     @Test
     public void testApplet()

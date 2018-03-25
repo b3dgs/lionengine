@@ -34,9 +34,9 @@ import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.util.UtilEnum;
 
 /**
- * Test the text class.
+ * Test {@link TextAwt}.
  */
-public class TextAwtTest
+public final class TextAwtTest
 {
     /** Text value. */
     private static final String VALUE = "test";
@@ -66,7 +66,7 @@ public class TextAwtTest
     }
 
     /**
-     * Test the text normal.
+     * Test normal.
      */
     @Test
     public void testNormal()
@@ -96,7 +96,7 @@ public class TextAwtTest
     }
 
     /**
-     * Test the text bold.
+     * Test bold.
      */
     @Test
     public void testBold()
@@ -106,7 +106,7 @@ public class TextAwtTest
     }
 
     /**
-     * Test the text italic.
+     * Test italic.
      */
     @Test
     public void testItalic()
@@ -116,7 +116,7 @@ public class TextAwtTest
     }
 
     /**
-     * Test text style error.
+     * Test style error.
      */
     @Test
     public void testStyleUnknown()
@@ -132,7 +132,7 @@ public class TextAwtTest
     }
 
     /**
-     * Test text align unknown.
+     * Test align unknown.
      */
     @Test
     public void testAlignUnknown()

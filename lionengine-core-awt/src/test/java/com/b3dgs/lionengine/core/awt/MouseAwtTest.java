@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the mouse class.
+ * Test {@link MouseAwt}.
  */
-public class MouseAwtTest
+public final class MouseAwtTest
 {
     /**
      * Create a mouse and configure for test.
@@ -67,7 +67,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test the mouse clicked state.
+     * Test clicked state.
      */
     @Test
     public void testClicked()
@@ -95,7 +95,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test the mouse click.
+     * Test click.
      */
     @Test
     public void testClick()
@@ -110,7 +110,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test the mouse on screen.
+     * Test location.
      */
     @Test
     public void testLocation()
@@ -128,7 +128,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test the mouse do click robot.
+     * Test do click robot.
      */
     @Test
     public void testDoClick()
@@ -171,7 +171,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test the mouse move.
+     * Test move.
      */
     @Test
     public void testMouse()
@@ -194,7 +194,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test the mouse event.
+     * Test event.
      */
     @Test
     public void testEvent()
@@ -218,7 +218,7 @@ public class MouseAwtTest
     }
 
     /**
-     * Test mouse in headless case.
+     * Test headless case.
      * 
      * @throws Exception If error.
      */
