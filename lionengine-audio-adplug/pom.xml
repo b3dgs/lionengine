@@ -45,9 +45,9 @@
                         <Import-Package>
                             *,
                             org.junit;resolution:=optional,
-                            com.b3dgs.lionengine.test.util;resolution:=optional
+                            com.b3dgs.lionengine.util;resolution:=optional
                         </Import-Package>
-                        <Export-Package>com.b3dgs.lionengine.audio.adplug;com.sun.jna</Export-Package>
+                        <Export-Package>com.b3dgs.lionengine.audio.adplug</Export-Package>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>

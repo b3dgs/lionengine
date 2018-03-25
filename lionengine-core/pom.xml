@@ -22,9 +22,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core</Bundle-SymbolicName>
                         <Export-Package>
-                            com.b3dgs.lionengine.*,
-                            com.b3dgs.lionengine.mock,
-                            com.b3dgs.lionengine.test
+                            com.b3dgs.lionengine.*
                         </Export-Package>
                         <Import-Package>
                             javax.xml.namespace,

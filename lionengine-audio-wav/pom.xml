@@ -38,7 +38,7 @@
                         <Bundle-SymbolicName>${project.groupId}.audio.wav</Bundle-SymbolicName>
                         <Import-Package>
                             *,
-                            com.b3dgs.lionengine.test.util;resolution:=optional
+                            com.b3dgs.lionengine.util;resolution:=optional
                         </Import-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>

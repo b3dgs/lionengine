@@ -42,11 +42,10 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.game</Bundle-SymbolicName>
-                        <Import-Package>
-                            *,
-                            com.b3dgs.lionengine.test;resolution:=optional
-                        </Import-Package>
-                        <Export-Package>com.b3dgs.lionengine.*</Export-Package>
+                        <Import-Package>*</Import-Package>
+                        <Export-Package>
+                            com.b3dgs.lionengine.game.*
+                        </Export-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>
