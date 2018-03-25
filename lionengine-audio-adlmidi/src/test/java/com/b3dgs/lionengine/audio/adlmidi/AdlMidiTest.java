@@ -45,9 +45,9 @@ import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the AdlMidi player.
+ * Test {@link AdlMidiFormat} and {@link AdlMidiPlayer}.
  */
-public class AdlMidiTest
+public final class AdlMidiTest
 {
     /**
      * Create player.
@@ -271,7 +271,7 @@ public class AdlMidiTest
     }
 
     /**
-     * Test AdlMidi with missing media.
+     * Test with missing media.
      * 
      * @throws IOException If error.
      */
@@ -353,7 +353,7 @@ public class AdlMidiTest
     }
 
     /**
-     * Test AdlMidi with outside media.
+     * Test with outside media.
      * 
      * @throws IOException If error.
      */

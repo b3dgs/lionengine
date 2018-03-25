@@ -31,9 +31,9 @@ import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test wav player.
+ * Test {@link WavFormat} and {@link WavImpl}.
  */
-public class WavTest
+public final class WavTest
 {
     /** Media sound. */
     private static Media mediaSound;
@@ -109,7 +109,7 @@ public class WavTest
     }
 
     /**
-     * Test wav functions.
+     * Test functions.
      * 
      * @throws InterruptedException If error.
      */

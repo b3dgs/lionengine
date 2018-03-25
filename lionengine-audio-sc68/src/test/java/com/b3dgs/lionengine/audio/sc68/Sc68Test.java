@@ -45,9 +45,9 @@ import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the sc68 player.
+ * Test {@link Sc68Format} and {@link Sc68Player}.
  */
-public class Sc68Test
+public final class Sc68Test
 {
     /**
      * Create sc68 player.
@@ -422,7 +422,7 @@ public class Sc68Test
     }
 
     /**
-     * Test Sc68 with outside media.
+     * Test with outside media.
      * 
      * @throws IOException If error.
      */

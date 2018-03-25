@@ -45,9 +45,9 @@ import com.b3dgs.lionengine.util.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the AdPlug player.
+ * Test {@link AdPlugFormat} and {@link AdPlugPlayer}.
  */
-public class AdPlugTest
+public final class AdPlugTest
 {
     /**
      * Create player.
@@ -348,7 +348,7 @@ public class AdPlugTest
     }
 
     /**
-     * Test AdPlug with outside media.
+     * Test with outside media.
      * 
      * @throws IOException If error.
      */
