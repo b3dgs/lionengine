@@ -98,16 +98,16 @@ public class CollisionGroupTest
     public void testToString()
     {
         Assert.assertEquals("CollisionGroup (name=group)"
-                            + Constant.NEW_LINE
+                            + System.lineSeparator()
                             + Constant.TAB
                             + "[CollisionFormula (name=formula)"
-                            + Constant.NEW_LINE
+                            + System.lineSeparator()
                             + Constant.TAB
                             + "CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)"
-                            + Constant.NEW_LINE
+                            + System.lineSeparator()
                             + Constant.TAB
                             + "CollisionFunctionLinear (a=1.0, b=2.0)"
-                            + Constant.NEW_LINE
+                            + System.lineSeparator()
                             + Constant.TAB
                             + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], SOUTH=[], "
                             + "SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}]",

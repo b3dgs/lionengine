@@ -122,11 +122,11 @@ public class LauncherConfigTest
         final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable, launchable));
 
         Assert.assertEquals("LauncherConfig [level=0, rate=1, launchables="
-                            + Constant.NEW_LINE
+                            + System.lineSeparator()
                             + Constant.TAB
                             + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
                             + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]"
-                            + Constant.NEW_LINE
+                            + System.lineSeparator()
                             + Constant.TAB
                             + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
                             + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]]",
