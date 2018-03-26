@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the collision group data from a configurer.
+ * Represents the collision group data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CollisionGroup
  */
@@ -48,7 +52,7 @@ public final class CollisionGroupConfig
      * Create the collision group data from node (should only be used to display names, as real content is
      * <code>null</code>, mainly UI specific to not have dependency on {@link MapTileCollision}).
      * 
-     * @param config The tile collision groups descriptor.
+     * @param config The tile collision groups descriptor (must not be <code>null</code>).
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
@@ -57,59 +61,73 @@ public final class CollisionGroupConfig
         final Xml root = new Xml(config);
         final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
+
         for (final Xml node : childrenCollision)
         {
             final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
             final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
+
             for (final Xml formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
                 formulas.add(new CollisionFormula(formulaName, null, null, null));
             }
+
             final String groupName = node.readString(GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
+
         return new CollisionGroupConfig(groups);
     }
 
     /**
      * Create the collision group data from node.
      * 
-     * @param root The node root reference.
-     * @param map The map reference.
+     * @param root The node root reference (must not be <code>null</code>).
+     * @param map The map reference (must not be <code>null</code>).
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
     public static CollisionGroupConfig imports(Xml root, MapTileCollision map)
     {
+        Check.notNull(root);
+        Check.notNull(map);
+
         final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
+
         for (final Xml node : childrenCollision)
         {
             final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
             final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
+
             for (final Xml formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
                 formulas.add(map.getCollisionFormula(formulaName));
             }
+
             final String groupName = node.readString(GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
+
         return new CollisionGroupConfig(groups);
     }
 
     /**
      * Export the collision group data as a node.
      * 
-     * @param root The node root.
-     * @param group The collision group to export.
+     * @param root The node root (must not be <code>null</code>).
+     * @param group The collision group to export (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, CollisionGroup group)
     {
+        Check.notNull(root);
+        Check.notNull(group);
+
         final Xml node = root.createChild(COLLISION);
         node.writeString(GROUP, group.getName());
 
@@ -123,11 +141,15 @@ public final class CollisionGroupConfig
     /**
      * Remove the group node.
      * 
-     * @param root The root node.
-     * @param group The group name to remove.
+     * @param root The root node (must not be <code>null</code>).
+     * @param group The group name to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public static void remove(Xml root, String group)
     {
+        Check.notNull(root);
+        Check.notNull(group);
+
         for (final Xml node : root.getChildren(COLLISION))
         {
             if (node.readString(GROUP).equals(group))
@@ -140,12 +162,16 @@ public final class CollisionGroupConfig
     /**
      * Check if node has group node.
      * 
-     * @param root The root node.
-     * @param group The group name to check.
+     * @param root The root node (must not be <code>null</code>).
+     * @param group The group name to check (must not be <code>null</code>).
      * @return <code>true</code> if has group, <code>false</code> else.
+     * @throws LionEngineException If invalid argument.
      */
     public static boolean has(Xml root, String group)
     {
+        Check.notNull(root);
+        Check.notNull(group);
+
         for (final Xml node : root.getChildren(COLLISION))
         {
             if (node.readString(GROUP).equals(group))
@@ -162,34 +188,40 @@ public final class CollisionGroupConfig
     /**
      * Create a collision groups config map.
      * 
-     * @param groups The collisions groups mapping.
+     * @param groups The collisions groups mapping (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    private CollisionGroupConfig(Map<String, CollisionGroup> groups)
+    public CollisionGroupConfig(Map<String, CollisionGroup> groups)
     {
-        this.groups = groups;
+        Check.notNull(groups);
+
+        this.groups = new HashMap<>(groups);
     }
 
     /**
      * Get a collision formula data from its name.
      * 
-     * @param name The formula name.
+     * @param name The formula name (must not be <code>null</code>).
      * @return The formula reference.
      * @throws LionEngineException If the formula with the specified name is not found.
      */
     public CollisionGroup getGroup(String name)
     {
+        Check.notNull(name);
+
         final CollisionGroup group = groups.get(name);
         Check.notNull(group);
+
         return group;
     }
 
     /**
-     * Get all groups.
+     * Get all groups as read only.
      * 
      * @return The groups map, where key is the group name.
      */
     public Map<String, CollisionGroup> getGroups()
     {
-        return groups;
+        return Collections.unmodifiableMap(groups);
     }
 }

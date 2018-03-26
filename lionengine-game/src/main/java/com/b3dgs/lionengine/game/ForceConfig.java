@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the force data from a configurer.
+ * Represents the force data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see Force
  */
@@ -42,24 +46,28 @@ public final class ForceConfig
     /**
      * Create the force data from setup.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
     public static Force imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Create the force data from node.
      * 
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
     public static Force imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml node = root.getChild(NODE_FORCE);
 
         final Force force = new Force(node.readDouble(ATT_VX), node.readDouble(ATT_VY));
@@ -72,12 +80,14 @@ public final class ForceConfig
     /**
      * Export the force node from data.
      * 
-     * @param force The force reference.
+     * @param force The force reference (must not be <code>null</code>).
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
     public static Xml exports(Force force)
     {
+        Check.notNull(force);
+
         final Xml node = new Xml(NODE_FORCE);
         node.writeDouble(ATT_VX, force.getDirectionHorizontal());
         node.writeDouble(ATT_VY, force.getDirectionVertical());

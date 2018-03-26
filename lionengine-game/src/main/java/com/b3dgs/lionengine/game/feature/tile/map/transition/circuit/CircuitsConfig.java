@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -31,7 +32,12 @@ import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Find all tiles circuits and extract them to an XML file.
+ * <p>
  * It will check from an existing map all circuits.
+ * </p>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CircuitType
  */
@@ -53,16 +59,17 @@ public final class CircuitsConfig
     /**
      * Import all circuits from configuration.
      * 
-     * @param circuitsConfig The circuits configuration.
+     * @param circuitsConfig The circuits configuration (must not be <code>null</code>).
      * @return The circuits imported.
      * @throws LionEngineException If unable to read data.
      */
     public static Map<Circuit, Collection<TileRef>> imports(Media circuitsConfig)
     {
+        Check.notNull(circuitsConfig);
+
         final Xml root = new Xml(circuitsConfig);
         final Collection<Xml> nodesCircuit = root.getChildren(NODE_CIRCUIT);
-        final Map<Circuit, Collection<TileRef>> circuits;
-        circuits = new HashMap<>(nodesCircuit.size());
+        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>(nodesCircuit.size());
 
         for (final Xml nodeCircuit : nodesCircuit)
         {
@@ -77,20 +84,26 @@ public final class CircuitsConfig
 
             circuits.put(circuit, tilesRef);
         }
+
         return circuits;
     }
 
     /**
      * Export all circuits to an XML file.
      *
-     * @param media The export output.
-     * @param levels The level rips used.
-     * @param sheetsConfig The sheets media.
-     * @param groupsConfig The groups media.
+     * @param media The export output (must not be <code>null</code>).
+     * @param levels The level rips used (must not be <code>null</code>).
+     * @param sheetsConfig The sheets media (must not be <code>null</code>).
+     * @param groupsConfig The groups media (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
     public static void exports(Media media, Collection<Media> levels, Media sheetsConfig, Media groupsConfig)
     {
+        Check.notNull(media);
+        Check.notNull(levels);
+        Check.notNull(sheetsConfig);
+        Check.notNull(groupsConfig);
+
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
         final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels, sheetsConfig, groupsConfig);
         exports(media, circuits);
@@ -99,12 +112,15 @@ public final class CircuitsConfig
     /**
      * Export all circuits to an XML file.
      * 
-     * @param media The export output.
-     * @param circuits The circuits reference.
+     * @param media The export output (must not be <code>null</code>).
+     * @param circuits The circuits reference (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
     public static void exports(Media media, Map<Circuit, Collection<TileRef>> circuits)
     {
+        Check.notNull(media);
+        Check.notNull(circuits);
+
         final Xml nodeCircuits = new Xml(NODE_CIRCUITS);
 
         for (final Map.Entry<Circuit, Collection<TileRef>> entry : circuits.entrySet())
@@ -124,7 +140,7 @@ public final class CircuitsConfig
     /**
      * Import all tiles from their nodes.
      * 
-     * @param nodesTileRef The tiles nodes.
+     * @param nodesTileRef The tiles nodes (must not be <code>null</code>).
      * @return The imported tiles ref.
      */
     private static Collection<TileRef> importTiles(Collection<Xml> nodesTileRef)
@@ -141,7 +157,7 @@ public final class CircuitsConfig
     /**
      * Export all tiles for the circuit.
      * 
-     * @param nodeCircuit The circuit node.
+     * @param nodeCircuit The circuit node (must not be <code>null</code>).
      * @param tilesRef The circuit tiles ref.
      */
     private static void exportTiles(Xml nodeCircuit, Collection<TileRef> tilesRef)

@@ -23,13 +23,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the launcher data from a configurer node.
+ * Represents the launcher data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class LauncherConfig
 {
@@ -39,54 +43,67 @@ public final class LauncherConfig
     public static final String ATT_LEVEL = "level";
     /** Rate attribute name. */
     public static final String ATT_RATE = "rate";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 48;
 
     /**
      * Import the launcher data from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
     public static List<LauncherConfig> imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         final Collection<Xml> children = configurer.getRoot().getChildren(NODE_LAUNCHER);
         final List<LauncherConfig> launchers = new ArrayList<>(children.size());
+
         for (final Xml launcher : children)
         {
             launchers.add(imports(launcher));
         }
+
         return launchers;
     }
 
     /**
      * Import the launcher data from node.
      * 
-     * @param node The node reference.
+     * @param node The node reference (must not be <code>null</code>).
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
     public static LauncherConfig imports(Xml node)
     {
+        Check.notNull(node);
+
         final Collection<Xml> children = node.getChildren(LaunchableConfig.NODE_LAUNCHABLE);
         final Collection<LaunchableConfig> launchables = new ArrayList<>(children.size());
+
         for (final Xml launchable : children)
         {
             launchables.add(LaunchableConfig.imports(launchable));
         }
+
         final int level = node.readInteger(0, ATT_RATE);
         final int rate = node.readInteger(ATT_RATE);
+
         return new LauncherConfig(level, rate, launchables);
     }
 
     /**
      * Export the launcher node from config.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
     public static Xml exports(LauncherConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_LAUNCHER);
         node.writeInteger(ATT_RATE, config.getRate());
 
@@ -110,10 +127,13 @@ public final class LauncherConfig
      * 
      * @param level The associated level.
      * @param rate The rate value.
-     * @param launchables The launchables reference.
+     * @param launchables The launchables reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public LauncherConfig(int level, int rate, Collection<LaunchableConfig> launchables)
     {
+        super();
+
         this.level = level;
         this.rate = rate;
         this.launchables = new ArrayList<>(launchables);
@@ -140,7 +160,7 @@ public final class LauncherConfig
     }
 
     /**
-     * Get the launchables configuration.
+     * Get the launchables configuration as read only.
      * 
      * @return The launchables configuration.
      */
@@ -196,16 +216,16 @@ public final class LauncherConfig
                 launchablesToString.append(System.lineSeparator()).append(Constant.TAB);
             }
         }
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [level=")
-                                  .append(level)
-                                  .append(", rate=")
-                                  .append(rate)
-                                  .append(", launchables=")
-                                  .append(System.lineSeparator())
-                                  .append(Constant.TAB)
-                                  .append(launchablesToString.toString())
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [level=")
+                                            .append(level)
+                                            .append(", rate=")
+                                            .append(rate)
+                                            .append(", launchables=")
+                                            .append(System.lineSeparator())
+                                            .append(Constant.TAB)
+                                            .append(launchablesToString.toString())
+                                            .append("]")
+                                            .toString();
     }
 }

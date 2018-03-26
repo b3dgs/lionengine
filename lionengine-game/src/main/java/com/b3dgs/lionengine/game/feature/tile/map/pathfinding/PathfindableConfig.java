@@ -23,13 +23,17 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the pathfindable data from a configurer.
+ * Represents the pathfindable data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class PathfindableConfig
 {
@@ -49,53 +53,63 @@ public final class PathfindableConfig
     /**
      * Import the pathfindable data from node.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The pathfindable data.
      * @throws LionEngineException If unable to read node.
      */
     public static Map<String, PathData> imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         final Xml root = configurer.getRoot();
         if (!root.hasChild(PATHFINDABLE))
         {
             return Collections.emptyMap();
         }
+
         final Map<String, PathData> categories = new HashMap<>(0);
         final Xml nodePathfindable = root.getChild(PATHFINDABLE);
+
         for (final Xml nodePath : nodePathfindable.getChildren(PATH))
         {
             final PathData data = importPathData(nodePath);
             categories.put(data.getName(), data);
         }
+
         return categories;
     }
 
     /**
      * Export the pathfindable data to node.
      * 
-     * @param pathData The pathfindable data.
+     * @param pathData The pathfindable data (must not be <code>null</code>).
      * @return The path data node.
      * @throws LionEngineException If unable to read node.
      */
     public static Xml exports(Map<String, PathData> pathData)
     {
+        Check.notNull(pathData);
+
         final Xml node = new Xml(PATHFINDABLE);
         for (final PathData data : pathData.values())
         {
             node.add(exportPathData(data));
         }
+
         return node;
     }
 
     /**
      * Create a path data from its node.
      * 
-     * @param node The pathfinding node.
+     * @param node The pathfinding node (must not be <code>null</code>).
      * @return The path data instance.
      * @throws LionEngineException If error when reading path data.
      */
     public static PathData importPathData(Xml node)
     {
+        Check.notNull(node);
+
         final String category = node.readString(CATEGORY);
         final double cost = node.readDouble(0.0, COST);
         final boolean blocking = node.readBoolean(BLOCK);
@@ -107,11 +121,13 @@ public final class PathfindableConfig
     /**
      * Create a path data from its node.
      * 
-     * @param data The path data.
+     * @param data The path data (must not be <code>null</code>).
      * @return The path data node.
      */
     public static Xml exportPathData(PathData data)
     {
+        Check.notNull(data);
+
         final Xml node = new Xml(PATH);
         node.writeString(CATEGORY, data.getName());
         node.writeDouble(COST, data.getCost());
@@ -124,7 +140,7 @@ public final class PathfindableConfig
     /**
      * Import the allowed movements.
      * 
-     * @param node The root node.
+     * @param node The root node (must not be <code>null</code>).
      * @return The allowed movements.
      * @throws LionEngineException If malformed movement name.
      */
@@ -134,7 +150,9 @@ public final class PathfindableConfig
         {
             return Collections.emptySet();
         }
+
         final Collection<MovementTile> movements = EnumSet.noneOf(MovementTile.class);
+
         for (final Xml movementNode : node.getChildren(MOVEMENT))
         {
             try
@@ -146,14 +164,15 @@ public final class PathfindableConfig
                 throw new LionEngineException(exception);
             }
         }
+
         return movements;
     }
 
     /**
      * Export the allowed movements.
      * 
-     * @param root The root node.
-     * @param movements The movements node.
+     * @param root The root node (must not be <code>null</code>).
+     * @param movements The movements node (must not be <code>null</code>).
      */
     private static void exportAllowedMovements(Xml root, Collection<MovementTile> movements)
     {

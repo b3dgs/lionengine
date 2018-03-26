@@ -28,7 +28,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the tile sheets data from a configurer.
+ * Represents the tile sheets data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class TileSheetsConfig
 {
@@ -48,7 +51,7 @@ public final class TileSheetsConfig
     /**
      * Import the sheets data from configuration.
      * 
-     * @param configSheets The file that define the sheets configuration.
+     * @param configSheets The file that define the sheets configuration (must not be <code>null</code>).
      * @return The tile sheet configuration.
      * @throws LionEngineException If unable to read data.
      */
@@ -68,14 +71,17 @@ public final class TileSheetsConfig
     /**
      * Export the sheets configuration.
      * 
-     * @param configSheets The export media.
+     * @param configSheets The export media (must not be <code>null</code>).
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
-     * @param sheets The sheets filename.
+     * @param sheets The sheets filename (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Media configSheets, int tileWidth, int tileHeight, Collection<String> sheets)
     {
+        Check.notNull(configSheets);
+        Check.notNull(sheets);
+
         final Xml nodeSheets = new Xml(NODE_TILE_SHEETS);
         nodeSheets.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
 
@@ -91,26 +97,28 @@ public final class TileSheetsConfig
     /**
      * Import the defined sheets.
      * 
-     * @param nodeSheets The sheets node.
+     * @param nodeSheets The sheets node (must not be <code>null</code>).
      * @return The sheets filename.
      */
     private static Collection<String> importSheets(Xml nodeSheets)
     {
         final Collection<Xml> children = nodeSheets.getChildren(NODE_TILE_SHEET);
         final Collection<String> sheets = new ArrayList<>(children.size());
+
         for (final Xml nodeSheet : children)
         {
             final String sheetFilename = nodeSheet.getText();
             sheets.add(sheetFilename);
         }
+
         return sheets;
     }
 
     /**
      * Export the defined sheets.
      * 
-     * @param nodeSheets Sheets node.
-     * @param sheets Sheets defined.
+     * @param nodeSheets Sheets node (must not be <code>null</code>).
+     * @param sheets Sheets defined (must not be <code>null</code>).
      */
     private static void exportSheets(Xml nodeSheets, Collection<String> sheets)
     {
@@ -133,11 +141,13 @@ public final class TileSheetsConfig
      * 
      * @param tileWidth The tile width (strictly positive).
      * @param tileHeight The tile height (strictly positive).
-     * @param sheets The defined sheets.
+     * @param sheets The defined sheets (must not be <code>null</code>).
      * @throws LionEngineException If invalid size or sheets is <code>null</code>.
      */
     public TileSheetsConfig(int tileWidth, int tileHeight, Collection<String> sheets)
     {
+        super();
+
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
         Check.notNull(sheets);

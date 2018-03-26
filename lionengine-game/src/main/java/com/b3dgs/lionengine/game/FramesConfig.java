@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the frames data from a configurer node.
+ * Represents the frames data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class FramesConfig
 {
@@ -36,28 +40,34 @@ public final class FramesConfig
     public static final String ATT_OFFSET_X = "offsetX";
     /** Frames offset vertical attribute name. */
     public static final String ATT_OFFSET_Y = "offsetY";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 73;
 
     /**
      * Imports the frames config from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The frames data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static FramesConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Imports the frames config from node.
      * 
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The frames data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static FramesConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml node = root.getChild(NODE_FRAMES);
         final int horizontals = node.readInteger(ATT_HORIZONTAL);
         final int verticals = node.readInteger(ATT_VERTICAL);
@@ -70,12 +80,14 @@ public final class FramesConfig
     /**
      * Exports the frames node from config.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The frames node.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static Xml exports(FramesConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_FRAMES);
         node.writeInteger(ATT_HORIZONTAL, config.getHorizontal());
         node.writeInteger(ATT_VERTICAL, config.getVertical());
@@ -189,16 +201,16 @@ public final class FramesConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [horizontalFrames=")
-                                  .append(horizontalFrames)
-                                  .append(", verticalFrames=")
-                                  .append(verticalFrames)
-                                  .append(", offsetX=")
-                                  .append(offsetX)
-                                  .append(", offsetY=")
-                                  .append(offsetY)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [horizontalFrames=")
+                                            .append(horizontalFrames)
+                                            .append(", verticalFrames=")
+                                            .append(verticalFrames)
+                                            .append(", offsetX=")
+                                            .append(offsetX)
+                                            .append(", offsetY=")
+                                            .append(offsetY)
+                                            .append("]")
+                                            .toString();
     }
 }

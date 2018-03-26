@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
@@ -25,6 +26,9 @@ import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the producible data from a configurer compatible with {@link SizeConfig}.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class ProducibleConfig
 {
@@ -32,28 +36,34 @@ public final class ProducibleConfig
     public static final String NODE_PRODUCIBLE = Constant.XML_PREFIX + "producible";
     /** Production steps attribute name. */
     public static final String ATT_STEPS = "steps";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 45;
 
     /**
      * Create the producible data from configurer.
      *
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The producible data.
      * @throws LionEngineException If unable to read node.
      */
     public static ProducibleConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Create the producible data from node.
      *
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The producible data.
      * @throws LionEngineException If unable to read node.
      */
     public static ProducibleConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml node = root.getChild(NODE_PRODUCIBLE);
         final SizeConfig size = SizeConfig.imports(root);
         final int time = node.readInteger(ATT_STEPS);
@@ -64,12 +74,14 @@ public final class ProducibleConfig
     /**
      * Export the producible node from config.
      *
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The producible node.
      * @throws LionEngineException If unable to write node.
      */
     public static Xml exports(ProducibleConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_PRODUCIBLE);
         node.writeInteger(ATT_STEPS, config.getSteps());
 
@@ -92,6 +104,8 @@ public final class ProducibleConfig
      */
     public ProducibleConfig(int steps, int width, int height)
     {
+        super();
+
         this.steps = steps;
         this.width = width;
         this.height = height;
@@ -160,14 +174,14 @@ public final class ProducibleConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [steps=")
-                                  .append(steps)
-                                  .append(", width=")
-                                  .append(width)
-                                  .append(", height=")
-                                  .append(height)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [steps=")
+                                            .append(steps)
+                                            .append(", width=")
+                                            .append(width)
+                                            .append(", height=")
+                                            .append(height)
+                                            .append("]")
+                                            .toString();
     }
 }

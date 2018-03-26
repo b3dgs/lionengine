@@ -25,6 +25,9 @@ import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the featurable configuration data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class FeaturableConfig
 {
@@ -40,28 +43,34 @@ public final class FeaturableConfig
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
     /** Default class name. */
     private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 35;
 
     /**
      * Import the featurable data from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The featurable data.
      * @throws LionEngineException If unable to read node.
      */
     public static FeaturableConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Import the featurable data from node.
      * 
-     * @param root The root node reference.
+     * @param root The root node reference (must not be <code>null</code>).
      * @return The featurable data.
      * @throws LionEngineException If unable to read node.
      */
     public static FeaturableConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final String clazz;
         if (root.hasChild(ATT_CLASS))
         {
@@ -88,28 +97,34 @@ public final class FeaturableConfig
     /**
      * Export the featurable node from class data.
      * 
-     * @param clazz The class name.
+     * @param clazz The class name (must not be <code>null</code>).
      * @return The class node.
      * @throws LionEngineException If unable to export node.
      */
     public static Xml exportClass(String clazz)
     {
+        Check.notNull(clazz);
+
         final Xml node = new Xml(ATT_CLASS);
         node.setText(clazz);
+
         return node;
     }
 
     /**
      * Export the featurable node from setup data.
      * 
-     * @param setup The setup name.
+     * @param setup The setup name (must not be <code>null</code>).
      * @return The setup node.
      * @throws LionEngineException If unable to export node.
      */
     public static Xml exportSetup(String setup)
     {
+        Check.notNull(setup);
+
         final Xml node = new Xml(ATT_SETUP);
         node.setText(setup);
+
         return node;
     }
 
@@ -121,8 +136,9 @@ public final class FeaturableConfig
     /**
      * Create an featurable configuration.
      * 
-     * @param clazz The featurable class name.
-     * @param setup The setup class name (empty if undefined).
+     * @param clazz The featurable class name (must not be <code>null</code>).
+     * @param setup The setup class name, {@link Constant#EMPTY_STRING} if undefined (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public FeaturableConfig(String clazz, String setup)
     {
@@ -146,7 +162,7 @@ public final class FeaturableConfig
     /**
      * Get the setup class name node value.
      * 
-     * @return The setup class name node value (empty if undefined).
+     * @return The setup class name node value, {@link Constant#EMPTY_STRING} if undefined.
      */
     public String getSetupName()
     {
@@ -185,12 +201,12 @@ public final class FeaturableConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [clazz=")
-                                  .append(clazz)
-                                  .append(", setup=")
-                                  .append(setup)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [clazz=")
+                                            .append(clazz)
+                                            .append(", setup=")
+                                            .append(setup)
+                                            .append("]")
+                                            .toString();
     }
 }

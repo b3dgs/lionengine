@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.io.XmlReader;
 
 /**
- * Represents the collision range from a configurer node.
+ * Represents the collision range.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CollisionRange
  */
@@ -47,12 +51,14 @@ public final class CollisionRangeConfig
     /**
      * Create the collision range data from a node.
      * 
-     * @param node The node reference.
+     * @param node The node reference (must not be <code>null</code>).
      * @return The collision range data.
      * @throws LionEngineException If error when reading node.
      */
     public static CollisionRange imports(XmlReader node)
     {
+        Check.notNull(node);
+
         final String axisName = node.readString(AXIS);
         try
         {
@@ -73,12 +79,15 @@ public final class CollisionRangeConfig
     /**
      * Export the collision range as a node.
      * 
-     * @param root The node root.
-     * @param range The collision range to export.
+     * @param root The node root (must not be <code>null</code>).
+     * @param range The collision range to export (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, CollisionRange range)
     {
+        Check.notNull(root);
+        Check.notNull(range);
+
         final Xml node = root.createChild(RANGE);
         node.writeString(AXIS, range.getOutput().name());
         node.writeInteger(MIN_X, range.getMinX());

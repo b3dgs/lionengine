@@ -18,9 +18,11 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
@@ -28,7 +30,10 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.io.XmlReader;
 
 /**
- * Represents the collisions data from a configurer.
+ * Represents the collisions data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see Collision
  */
@@ -54,31 +59,37 @@ public final class CollisionConfig
     /**
      * Create the collision data from node.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
     public static CollisionConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         final Map<String, Collision> collisions = new HashMap<>(0);
+
         for (final Xml node : configurer.getRoot().getChildren(COLLISION))
         {
             final String coll = node.readString(COLLISION_NAME);
             final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
+
         return new CollisionConfig(collisions);
     }
 
     /**
      * Create an collision from its node.
      * 
-     * @param node The collision node.
+     * @param node The collision node (must not be <code>null</code>).
      * @return The collision instance.
      * @throws LionEngineException If error when reading collision data.
      */
     public static Collision createCollision(XmlReader node)
     {
+        Check.notNull(node);
+
         final String name = node.readString(COLLISION_NAME);
         final int offsetX = node.readInteger(COLLISION_OFFSETX);
         final int offsetY = node.readInteger(COLLISION_OFFSETY);
@@ -92,11 +103,14 @@ public final class CollisionConfig
     /**
      * Create an XML node from a collision.
      * 
-     * @param root The node root.
-     * @param collision The collision reference.
+     * @param root The node root (must not be <code>null</code>).
+     * @param collision The collision reference (must not be <code>null</code>).
      */
     public static void exports(Xml root, Collision collision)
     {
+        Check.notNull(root);
+        Check.notNull(collision);
+
         final Xml node = root.createChild(COLLISION);
         node.writeString(COLLISION_NAME, collision.getName());
         node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
@@ -110,29 +124,16 @@ public final class CollisionConfig
     private final Map<String, Collision> collisions;
 
     /**
-     * Disabled constructor.
-     */
-    private CollisionConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Load collisions from configuration media.
      * 
-     * @param collisions The collisions mapping.
+     * @param collisions The collisions mapping (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     private CollisionConfig(Map<String, Collision> collisions)
     {
-        this.collisions = collisions;
-    }
+        Check.notNull(collisions);
 
-    /**
-     * Clear the collisions data.
-     */
-    public void clear()
-    {
-        collisions.clear();
+        this.collisions = new HashMap<>(collisions);
     }
 
     /**
@@ -152,12 +153,12 @@ public final class CollisionConfig
     }
 
     /**
-     * Get all collisions.
+     * Get all collisions as read only.
      * 
      * @return The collisions list.
      */
     public Collection<Collision> getCollisions()
     {
-        return collisions.values();
+        return Collections.unmodifiableCollection(collisions.values());
     }
 }

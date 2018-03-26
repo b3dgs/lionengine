@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -32,6 +33,9 @@ import com.b3dgs.lionengine.io.Xml;
 /**
  * Find all tiles transitions and extract them to an XML file.
  * It will check from an existing map all transitions combination.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see TransitionType
  */
@@ -53,7 +57,7 @@ public final class TransitionsConfig
     /**
      * Import all transitions from configuration.
      * 
-     * @param config The transitions media.
+     * @param config The transitions media (must not be <code>null</code>).
      * @return The transitions imported.
      * @throws LionEngineException If unable to read data.
      */
@@ -77,20 +81,26 @@ public final class TransitionsConfig
 
             transitions.put(transition, tilesRef);
         }
+
         return transitions;
     }
 
     /**
      * Export all transitions to an XML file.
      *
-     * @param media The export output.
-     * @param levels The level rips used.
-     * @param sheetsMedia The sheets media.
-     * @param groupsMedia The groups media.
+     * @param media The export output (must not be <code>null</code>).
+     * @param levels The level rips used (must not be <code>null</code>).
+     * @param sheetsMedia The sheets media (must not be <code>null</code>).
+     * @param groupsMedia The groups media (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
     public static void exports(Media media, Collection<Media> levels, Media sheetsMedia, Media groupsMedia)
     {
+        Check.notNull(media);
+        Check.notNull(levels);
+        Check.notNull(sheetsMedia);
+        Check.notNull(groupsMedia);
+
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
         final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(levels,
                                                                                           sheetsMedia,
@@ -101,12 +111,15 @@ public final class TransitionsConfig
     /**
      * Export all transitions to an XML file.
      * 
-     * @param media The export output.
-     * @param transitions The transitions reference.
+     * @param media The export output (must not be <code>null</code>).
+     * @param transitions The transitions reference (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
     public static void exports(Media media, Map<Transition, Collection<TileRef>> transitions)
     {
+        Check.notNull(media);
+        Check.notNull(transitions);
+
         final Xml nodeTransitions = new Xml(NODE_TRANSITIONS);
 
         for (final Map.Entry<Transition, Collection<TileRef>> entry : transitions.entrySet())
@@ -126,25 +139,27 @@ public final class TransitionsConfig
     /**
      * Import all tiles from their nodes.
      * 
-     * @param nodesTileRef The tiles nodes.
+     * @param nodesTileRef The tiles nodes (must not be <code>null</code>).
      * @return The imported tiles ref.
      */
     private static Collection<TileRef> importTiles(Collection<Xml> nodesTileRef)
     {
         final Collection<TileRef> tilesRef = new HashSet<>(nodesTileRef.size());
+
         for (final Xml nodeTileRef : nodesTileRef)
         {
             final TileRef tileRef = TileConfig.create(nodeTileRef);
             tilesRef.add(tileRef);
         }
+
         return tilesRef;
     }
 
     /**
      * Export all tiles for the transition.
      * 
-     * @param nodeTransition The transition node.
-     * @param tilesRef The transition tiles ref.
+     * @param nodeTransition The transition node (must not be <code>null</code>).
+     * @param tilesRef The transition tiles ref (must not be <code>null</code>).
      */
     private static void exportTiles(Xml nodeTransition, Collection<TileRef> tilesRef)
     {

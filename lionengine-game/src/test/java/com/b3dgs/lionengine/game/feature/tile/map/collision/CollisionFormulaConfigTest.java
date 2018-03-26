@@ -74,9 +74,6 @@ public class CollisionFormulaConfigTest
         Assert.assertEquals("formula", imported.getFormulas().keySet().iterator().next());
         Assert.assertEquals(formula, imported.getFormula("formula"));
 
-        imported.clear();
-
-        Assert.assertTrue(imported.getFormulas().isEmpty());
         Assert.assertTrue(config.getFile().delete());
     }
 

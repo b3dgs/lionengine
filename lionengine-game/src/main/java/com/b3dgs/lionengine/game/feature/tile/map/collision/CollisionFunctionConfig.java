@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the collision function from a configurer.
+ * Represents the collision function.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CollisionFunction
  */
@@ -42,12 +46,14 @@ public final class CollisionFunctionConfig
     /**
      * Create the collision function from node.
      * 
-     * @param parent The parent reference.
+     * @param parent The parent reference (must not be <code>null</code>).
      * @return The collision function data.
      * @throws LionEngineException If error when reading node.
      */
     public static CollisionFunction imports(Xml parent)
     {
+        Check.notNull(parent);
+
         final Xml node = parent.getChild(FUNCTION);
         final String name = node.readString(TYPE);
         try
@@ -70,12 +76,15 @@ public final class CollisionFunctionConfig
     /**
      * Export the collision function data as a node.
      * 
-     * @param root The node root.
-     * @param function The collision function to export.
+     * @param root The node root (must not be <code>null</code>).
+     * @param function The collision function to export (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, CollisionFunction function)
     {
+        Check.notNull(root);
+        Check.notNull(function);
+
         final Xml node = root.createChild(FUNCTION);
         if (function instanceof CollisionFunctionLinear)
         {

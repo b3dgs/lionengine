@@ -23,7 +23,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the tile reference from a configurer.
+ * Represents the tile configuration.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see TileRef
  */
@@ -39,7 +42,7 @@ public final class TileConfig
     /**
      * Create the tile data from node.
      * 
-     * @param nodeTile The node reference.
+     * @param nodeTile The node reference (must not be <code>null</code>).
      * @return The tile data.
      * @throws LionEngineException If <code>null</code> argument or error when reading.
      */
@@ -49,13 +52,14 @@ public final class TileConfig
 
         final int sheet = nodeTile.readInteger(ATT_TILE_SHEET);
         final int number = nodeTile.readInteger(ATT_TILE_NUMBER);
+
         return new TileRef(sheet, number);
     }
 
     /**
      * Export the tile as a node.
      * 
-     * @param tileRef The tile to export.
+     * @param tileRef The tile to export (must not be <code>null</code>).
      * @return The exported node.
      * @throws LionEngineException If <code>null</code> argument or error on writing.
      */

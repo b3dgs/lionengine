@@ -20,13 +20,17 @@ package com.b3dgs.lionengine.game.feature.tile;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the tile groups data from a configurer.
+ * Represents the tile groups data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see TileGroup
  */
@@ -48,16 +52,19 @@ public final class TileGroupsConfig
     /**
      * Import the group data from configuration.
      * 
-     * @param groupsConfig The groups descriptor.
+     * @param groupsConfig The groups descriptor (must not be <code>null</code>).
      * @return The groups data.
      * @throws LionEngineException If unable to read data.
      */
     public static Collection<TileGroup> imports(Media groupsConfig)
     {
+        Check.notNull(groupsConfig);
+
         final Xml nodeGroups = new Xml(groupsConfig);
 
         final Collection<Xml> children = nodeGroups.getChildren(NODE_GROUP);
         final Collection<TileGroup> groups = new ArrayList<>(children.size());
+
         for (final Xml nodeGroup : children)
         {
             final TileGroup group = importGroup(nodeGroup);
@@ -70,12 +77,15 @@ public final class TileGroupsConfig
     /**
      * Export groups to configuration file.
      * 
-     * @param groupsConfig The export media.
-     * @param groups The groups to export.
+     * @param groupsConfig The export media (must not be <code>null</code>).
+     * @param groups The groups to export (must not be <code>null</code>).
      * @throws LionEngineException If unable to write to media.
      */
     public static void exports(Media groupsConfig, Iterable<TileGroup> groups)
     {
+        Check.notNull(groupsConfig);
+        Check.notNull(groups);
+
         final Xml nodeGroups = new Xml(NODE_GROUPS);
         nodeGroups.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
 
@@ -90,13 +100,14 @@ public final class TileGroupsConfig
     /**
      * Import the group from its node.
      * 
-     * @param nodeGroup The group node.
+     * @param nodeGroup The group node (must not be <code>null</code>).
      * @return The imported group.
      */
     private static TileGroup importGroup(Xml nodeGroup)
     {
         final Collection<Xml> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
         final Collection<TileRef> tiles = new ArrayList<>(children.size());
+
         for (final Xml nodeTileRef : children)
         {
             final TileRef tileRef = TileConfig.create(nodeTileRef);
@@ -112,8 +123,8 @@ public final class TileGroupsConfig
     /**
      * Export the group data as a node.
      * 
-     * @param nodeGroups The root node.
-     * @param group The group to export.
+     * @param nodeGroups The root node (must not be <code>null</code>).
+     * @param group The group to export (must not be <code>null</code>).
      */
     private static void exportGroup(Xml nodeGroups, TileGroup group)
     {

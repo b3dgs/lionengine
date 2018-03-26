@@ -23,7 +23,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the action data from a configurer.
+ * Represents the action data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class ActionConfig
 {
@@ -41,28 +44,34 @@ public final class ActionConfig
     public static final String ATT_WIDTH = "width";
     /** Action attribute height. */
     public static final String ATT_HEIGHT = "height";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 65;
 
     /**
      * Import the action data from setup.
      *
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
     public static ActionConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Import the action data from node.
      *
-     * @param root The root node reference.
+     * @param root The root node reference (must not be <code>null</code>).
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
     public static ActionConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml nodeAction = root.getChild(NODE_ACTION);
         final String name = nodeAction.readString(ATT_NAME);
         final String description = nodeAction.readString(ATT_DESCRIPTION);
@@ -77,12 +86,14 @@ public final class ActionConfig
     /**
      * Export the action node from data.
      *
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The action node.
      * @throws LionEngineException If unable to save.
      */
     public static Xml exports(ActionConfig config)
     {
+        Check.notNull(config);
+
         final Xml nodeAction = new Xml(NODE_ACTION);
         nodeAction.writeString(ATT_NAME, config.getName());
         nodeAction.writeString(ATT_DESCRIPTION, config.getDescription());
@@ -110,8 +121,8 @@ public final class ActionConfig
     /**
      * Create action from configuration media.
      *
-     * @param name The action name.
-     * @param description The action description.
+     * @param name The action name (must not be <code>null</code>).
+     * @param description The action description (must not be <code>null</code>).
      * @param x The horizontal location on screen.
      * @param y The vertical location on screen.
      * @param width The button width.
@@ -120,6 +131,8 @@ public final class ActionConfig
      */
     public ActionConfig(String name, String description, int x, int y, int width, int height)
     {
+        super();
+
         Check.notNull(name);
         Check.notNull(description);
 
@@ -232,20 +245,20 @@ public final class ActionConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [name=")
-                                  .append(name)
-                                  .append(", description=")
-                                  .append(description)
-                                  .append(", x=")
-                                  .append(x)
-                                  .append(", y=")
-                                  .append(y)
-                                  .append(", width=")
-                                  .append(width)
-                                  .append(", height=")
-                                  .append(height)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [name=")
+                                            .append(name)
+                                            .append(", description=")
+                                            .append(description)
+                                            .append(", x=")
+                                            .append(x)
+                                            .append(", y=")
+                                            .append(y)
+                                            .append(", width=")
+                                            .append(width)
+                                            .append(", height=")
+                                            .append(height)
+                                            .append("]")
+                                            .toString();
     }
 }

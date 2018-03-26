@@ -22,12 +22,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the collision configuration class.
@@ -58,17 +56,6 @@ public class CollisionConfigTest
     }
 
     /**
-     * Test the constructor.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
-    {
-        UtilTests.testPrivateConstructor(CollisionConfig.class);
-    }
-
-    /**
      * Test the configuration.
      */
     @Test
@@ -90,20 +77,6 @@ public class CollisionConfigTest
         Assert.assertTrue(imported.hasMirror());
 
         Assert.assertFalse(config.getCollisions().isEmpty());
-
-        config.clear();
-
-        Assert.assertTrue(config.getCollisions().isEmpty());
-
-        try
-        {
-            Assert.assertNull(config.getCollision("test"));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        Assert.assertEquals(collision, config.getCollision("test"));
     }
 }

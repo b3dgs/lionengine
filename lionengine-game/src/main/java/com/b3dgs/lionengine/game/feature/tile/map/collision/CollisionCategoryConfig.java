@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
@@ -27,7 +28,10 @@ import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the collision category configuration from a configurer.
+ * Represents the collision category configuration.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CollisionCategory
  */
@@ -50,18 +54,22 @@ public final class CollisionCategoryConfig
      * Create the collision category data from node (should only be used to display names, as real content is
      * <code>null</code>, mainly UI specific to not have dependency on {@link MapTileCollision}).
      * 
-     * @param root The node root reference.
+     * @param root The node root reference (must not be <code>null</code>).
      * @return The collisions category data.
      * @throws LionEngineException If unable to read node.
      */
     public static Collection<CollisionCategory> imports(Xml root)
     {
+        Check.notNull(root);
+
         final Collection<Xml> childrenCategory = root.getChildren(CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(childrenCategory.size());
+
         for (final Xml node : childrenCategory)
         {
             final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
             final Collection<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
+
             for (final Xml group : childrenGroup)
             {
                 final String name = group.getText();
@@ -76,41 +84,51 @@ public final class CollisionCategoryConfig
             final CollisionCategory category = new CollisionCategory(name, axis, x, y, groups);
             categories.add(category);
         }
+
         return categories;
     }
 
     /**
      * Create the categories data from nodes.
      * 
-     * @param configurer The configurer reference.
-     * @param map The map reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param map The map reference (must not be <code>null</code>).
      * @return The category collisions data.
      * @throws LionEngineException If unable to read node.
      */
     public static Collection<CollisionCategory> imports(Configurer configurer, MapTileCollision map)
     {
+        Check.notNull(configurer);
+        Check.notNull(map);
+
         final Collection<Xml> children = configurer.getRoot().getChildren(CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(children.size());
+
         for (final Xml node : children)
         {
             final CollisionCategory category = imports(node, map);
             categories.add(category);
         }
+
         return categories;
     }
 
     /**
      * Create the category data from node.
      * 
-     * @param root The root reference.
-     * @param map The map reference.
+     * @param root The root reference (must not be <code>null</code>).
+     * @param map The map reference (must not be <code>null</code>).
      * @return The category node instance.
      * @throws LionEngineException If unable to read node.
      */
     public static CollisionCategory imports(Xml root, MapTileCollision map)
     {
+        Check.notNull(root);
+        Check.notNull(map);
+
         final Collection<Xml> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
         final Collection<CollisionGroup> groups = new ArrayList<>(children.size());
+
         for (final Xml groupNode : children)
         {
             final String groupName = groupNode.getText();
@@ -128,22 +146,26 @@ public final class CollisionCategoryConfig
         {
             throw new LionEngineException(exception, ERROR_AXIS + axisName);
         }
+
         final int x = root.readInteger(X);
         final int y = root.readInteger(Y);
-
         final String name = root.readString(NAME);
+
         return new CollisionCategory(name, axis, x, y, groups);
     }
 
     /**
      * Export the collision category data as a node.
      * 
-     * @param root The node root.
-     * @param category The collision category to export.
+     * @param root The node root (must not be <code>null</code>).
+     * @param category The collision category to export (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, CollisionCategory category)
     {
+        Check.notNull(root);
+        Check.notNull(category);
+
         final Xml node = root.createChild(CATEGORY);
         node.writeString(NAME, category.getName());
         node.writeString(AXIS, category.getAxis().name());

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the collisions formula from a configurer.
+ * Represents the collisions formula.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CollisionFormula
  */
@@ -45,7 +49,7 @@ public final class CollisionFormulaConfig
     /**
      * Create the formula data from node.
      * 
-     * @param config The collision formulas descriptor.
+     * @param config The collision formulas descriptor (must not be <code>null</code>).
      * @return The collision formula data.
      * @throws LionEngineException If error when reading data.
      */
@@ -53,24 +57,29 @@ public final class CollisionFormulaConfig
     {
         final Xml root = new Xml(config);
         final Map<String, CollisionFormula> collisions = new HashMap<>(0);
+
         for (final Xml node : root.getChildren(NODE_FORMULA))
         {
             final String name = node.readString(ATT_NAME);
             final CollisionFormula collision = createCollision(node);
             collisions.put(name, collision);
         }
+
         return new CollisionFormulaConfig(collisions);
     }
 
     /**
      * Export the current formula data to the formula node.
      * 
-     * @param root The root node.
-     * @param formula The formula reference.
+     * @param root The root node (must not be <code>null</code>).
+     * @param formula The formula reference (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, CollisionFormula formula)
     {
+        Check.notNull(root);
+        Check.notNull(formula);
+
         final Xml node = root.createChild(NODE_FORMULA);
         node.writeString(ATT_NAME, formula.getName());
 
@@ -82,12 +91,14 @@ public final class CollisionFormulaConfig
     /**
      * Create a collision formula from its node.
      * 
-     * @param node The collision formula node.
+     * @param node The collision formula node (must not be <code>null</code>).
      * @return The tile collision formula instance.
      * @throws LionEngineException If error when reading data.
      */
     public static CollisionFormula createCollision(Xml node)
     {
+        Check.notNull(node);
+
         final String name = node.readString(ATT_NAME);
         final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.RANGE));
         final CollisionFunction function = CollisionFunctionConfig.imports(node);
@@ -99,11 +110,15 @@ public final class CollisionFormulaConfig
     /**
      * Remove the formula node.
      * 
-     * @param root The root node.
-     * @param formula The formula name to remove.
+     * @param root The root node (must not be <code>null</code>).
+     * @param formula The formula name to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public static void remove(Xml root, String formula)
     {
+        Check.notNull(root);
+        Check.notNull(formula);
+
         for (final Xml node : root.getChildren(NODE_FORMULA))
         {
             if (node.readString(ATT_NAME).equals(formula))
@@ -116,12 +131,16 @@ public final class CollisionFormulaConfig
     /**
      * Check if node has formula node.
      * 
-     * @param root The root node.
-     * @param formula The formula name to check.
+     * @param root The root node (must not be <code>null</code>).
+     * @param formula The formula name to check (must not be <code>null</code>).
      * @return <code>true</code> if has formula, <code>false</code> else.
+     * @throws LionEngineException If invalid argument.
      */
     public static boolean has(Xml root, String formula)
     {
+        Check.notNull(root);
+        Check.notNull(formula);
+
         for (final Xml node : root.getChildren(NODE_FORMULA))
         {
             if (node.readString(ATT_NAME).equals(formula))
@@ -138,42 +157,40 @@ public final class CollisionFormulaConfig
     /**
      * Create a collision formula config map.
      * 
-     * @param formulas The collisions formula mapping.
+     * @param formulas The collisions formula mapping (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
     {
-        this.formulas = formulas;
-    }
+        Check.notNull(formulas);
 
-    /**
-     * Clear the formulas data.
-     */
-    public void clear()
-    {
-        formulas.clear();
+        this.formulas = new HashMap<>(formulas);
     }
 
     /**
      * Get a collision formula data from its name.
      * 
-     * @param name The formula name.
+     * @param name The formula name (must not be <code>null</code>).
      * @return The formula reference.
      * @throws LionEngineException If the formula with the specified name is not found.
      */
     public CollisionFormula getFormula(String name)
     {
+        Check.notNull(name);
+
         final CollisionFormula collision = formulas.get(name);
         Check.notNull(collision);
+
         return collision;
     }
 
     /**
-     * Get all formulas.
+     * Get all formulas as read only.
      * 
      * @return The formulas map, where key is the formula name.
      */
     public Map<String, CollisionFormula> getFormulas()
     {
-        return formulas;
+        return Collections.unmodifiableMap(formulas);
     }
 }

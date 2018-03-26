@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the {@link Layerable} data from a configurer node.
+ * Represents the {@link Layerable} data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class LayerableConfig
 {
@@ -33,28 +37,34 @@ public final class LayerableConfig
     public static final String ATT_REFRESH = "layerRefresh";
     /** Display layer node name. */
     public static final String ATT_DISPLAY = "layerDisplay";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 48;
 
     /**
      * Imports the layerable config from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The frames data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static LayerableConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Imports the layerable config from node.
      * 
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The layerable data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static LayerableConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml node = root.getChild(NODE_LAYERABLE);
         final int layerRefresh = node.readInteger(ATT_REFRESH);
         final int layerDisplay = node.readInteger(ATT_DISPLAY);
@@ -65,12 +75,14 @@ public final class LayerableConfig
     /**
      * Exports the layerable node from config.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The layerable node.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
     public static Xml exports(LayerableConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_LAYERABLE);
         node.writeInteger(ATT_REFRESH, config.getLayerRefresh());
         node.writeInteger(ATT_DISPLAY, config.getLayerDisplay());
@@ -91,6 +103,8 @@ public final class LayerableConfig
      */
     public LayerableConfig(int layerRefresh, int layerDisplay)
     {
+        super();
+
         this.layerRefresh = layerRefresh;
         this.layerDisplay = layerDisplay;
     }
@@ -147,12 +161,12 @@ public final class LayerableConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [layerRefresh=")
-                                  .append(layerRefresh)
-                                  .append(", layerDisplay=")
-                                  .append(layerDisplay)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [layerRefresh=")
+                                            .append(layerRefresh)
+                                            .append(", layerDisplay=")
+                                            .append(layerDisplay)
+                                            .append("]")
+                                            .toString();
     }
 }

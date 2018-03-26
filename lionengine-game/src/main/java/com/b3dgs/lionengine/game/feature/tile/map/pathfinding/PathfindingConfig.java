@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -27,9 +28,12 @@ import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the pathfinding data from a configurer.
+ * Represents the pathfinding data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
- * @see com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath
+ * @see MapTilePath
  */
 public final class PathfindingConfig
 {
@@ -45,27 +49,33 @@ public final class PathfindingConfig
     /**
      * Import the category data from configuration.
      * 
-     * @param configPathfinding The pathfinding descriptor.
+     * @param configPathfinding The pathfinding descriptor (must not be <code>null</code>).
      * @return The categories data.
      * @throws LionEngineException If unable to read data.
      */
     public static Collection<PathCategory> imports(Media configPathfinding)
     {
+        Check.notNull(configPathfinding);
+
         final Xml nodeCategories = new Xml(configPathfinding);
         final Collection<Xml> childrenTile = nodeCategories.getChildren(TILE_PATH);
         final Collection<PathCategory> categories = new HashSet<>(childrenTile.size());
+
         for (final Xml node : childrenTile)
         {
             final String name = node.readString(CATEGORY);
             final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
             final Collection<String> groups = new HashSet<>(childrenGroup.size());
+
             for (final Xml groupNode : childrenGroup)
             {
                 groups.add(groupNode.getText());
             }
+
             final PathCategory category = new PathCategory(name, groups);
             categories.add(category);
         }
+
         return categories;
     }
 

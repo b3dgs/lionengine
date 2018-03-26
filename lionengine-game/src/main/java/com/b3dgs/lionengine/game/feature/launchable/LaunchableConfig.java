@@ -25,7 +25,10 @@ import com.b3dgs.lionengine.game.ForceConfig;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the launchable data from a configurer.
+ * Represents the launchable data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class LaunchableConfig
 {
@@ -39,32 +42,39 @@ public final class LaunchableConfig
     public static final String ATT_OFFSET_X = "ox";
     /** Vertical offset attribute. */
     public static final String ATT_OFFSET_Y = "oy";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 57;
 
     /**
      * Import the launchable data from node.
      * 
-     * @param node The node reference.
+     * @param node The node reference (must not be <code>null</code>).
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
     public static LaunchableConfig imports(Xml node)
     {
+        Check.notNull(node);
+
         final String media = node.readString(ATT_MEDIA);
         final int delay = node.readInteger(ATT_DELAY);
         final int ox = node.readInteger(0, ATT_OFFSET_X);
         final int oy = node.readInteger(0, ATT_OFFSET_Y);
+
         return new LaunchableConfig(media, delay, ox, oy, ForceConfig.imports(node));
     }
 
     /**
      * Export the launchable node from data.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The node data.
      * @throws LionEngineException If unable to write node.
      */
     public static Xml exports(LaunchableConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_LAUNCHABLE);
         node.writeString(ATT_MEDIA, config.getMedia());
         node.writeInteger(ATT_DELAY, config.getDelay());
@@ -89,15 +99,17 @@ public final class LaunchableConfig
     /**
      * Constructor.
      * 
-     * @param media The media value.
+     * @param media The media value (must not be <code>null</code>).
      * @param delay The delay value.
      * @param ox The horizontal offset.
      * @param oy The vertical offset.
-     * @param vector The vector force.
+     * @param vector The vector force (must not be <code>null</code>).
      * @throws LionEngineException If <code>null</code> arguments.
      */
     public LaunchableConfig(String media, int delay, int ox, int oy, Force vector)
     {
+        super();
+
         Check.notNull(media);
         Check.notNull(vector);
 
@@ -197,18 +209,18 @@ public final class LaunchableConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [media=")
-                                  .append(media)
-                                  .append(", delay=")
-                                  .append(delay)
-                                  .append(", ox=")
-                                  .append(ox)
-                                  .append(", oy=")
-                                  .append(oy)
-                                  .append(", vector=")
-                                  .append(vector)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [media=")
+                                            .append(media)
+                                            .append(", delay=")
+                                            .append(delay)
+                                            .append(", ox=")
+                                            .append(ox)
+                                            .append(", oy=")
+                                            .append(oy)
+                                            .append(", vector=")
+                                            .append(vector)
+                                            .append("]")
+                                            .toString();
     }
 }

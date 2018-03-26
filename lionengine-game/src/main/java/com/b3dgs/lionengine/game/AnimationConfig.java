@@ -18,17 +18,22 @@
 package com.b3dgs.lionengine.game;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.io.XmlReader;
 
 /**
- * Represents the animations data from a configurer node.
+ * Represents the animations data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see Animation
  */
@@ -52,49 +57,51 @@ public final class AnimationConfig
     /**
      * Create the animation data from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
     public static AnimationConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Create the animation data from configurer.
      * 
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
     public static AnimationConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Map<String, Animation> animations = new HashMap<>(0);
+
         for (final Xml node : root.getChildren(ANIMATION))
         {
             final String anim = node.readString(ANIMATION_NAME);
             final Animation animation = createAnimation(node);
             animations.put(anim, animation);
         }
+
         return new AnimationConfig(animations);
     }
 
     /**
      * Create animation data from node.
-     * Example:
      * 
-     * <pre>
-     * {@code<lionengine:animation name="walk" start="1" end="2" step="1" speed="0.25" reversed="false"
-     * repeat="true"/>}
-     * </pre>
-     * 
-     * @param node The animation node.
+     * @param node The animation node (must not be <code>null</code>).
      * @return The animation instance.
      * @throws LionEngineException If error when reading animation data.
      */
     public static Animation createAnimation(XmlReader node)
     {
+        Check.notNull(node);
+
         final String name = node.readString(ANIMATION_NAME);
         final int start = node.readInteger(ANIMATION_START);
         final int end = node.readInteger(ANIMATION_END);
@@ -108,12 +115,15 @@ public final class AnimationConfig
     /**
      * Create an XML node from an animation.
      * 
-     * @param root The node root.
-     * @param animation The animation reference.
+     * @param root The node root (must not be <code>null</code>).
+     * @param animation The animation reference (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, Animation animation)
     {
+        Check.notNull(root);
+        Check.notNull(animation);
+
         final Xml node = root.createChild(ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());
         node.writeInteger(ANIMATION_START, animation.getFirst());
@@ -127,29 +137,16 @@ public final class AnimationConfig
     private final Map<String, Animation> animations;
 
     /**
-     * Disabled constructor.
-     */
-    private AnimationConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
-     * Load animations from configuration media.
+     * Create configuration.
      * 
-     * @param animations The animations mapping.
+     * @param animations The animations mapping (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    private AnimationConfig(Map<String, Animation> animations)
+    public AnimationConfig(Map<String, Animation> animations)
     {
-        this.animations = animations;
-    }
+        Check.notNull(animations);
 
-    /**
-     * Clear the animations data.
-     */
-    public void clear()
-    {
-        animations.clear();
+        this.animations = new HashMap<>(animations);
     }
 
     /**
@@ -181,12 +178,12 @@ public final class AnimationConfig
     }
 
     /**
-     * Get all animations.
+     * Get all animations as read only.
      * 
      * @return The animations list.
      */
     public Collection<Animation> getAnimations()
     {
-        return animations.values();
+        return Collections.unmodifiableCollection(animations.values());
     }
 }

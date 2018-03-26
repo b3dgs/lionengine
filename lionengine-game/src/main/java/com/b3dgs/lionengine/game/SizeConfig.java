@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the size data from a configurer.
+ * Represents the size data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class SizeConfig
 {
@@ -32,31 +36,37 @@ public final class SizeConfig
     public static final String ATT_WIDTH = "width";
     /** Size height node. */
     public static final String ATT_HEIGHT = "height";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 30;
 
     /**
      * Import the size data from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
     public static SizeConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Import the size data from configurer.
      * 
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
     public static SizeConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml node = root.getChild(NODE_SIZE);
-        final int width = node.readInteger(SizeConfig.ATT_WIDTH);
-        final int height = node.readInteger(SizeConfig.ATT_HEIGHT);
+        final int width = node.readInteger(ATT_WIDTH);
+        final int height = node.readInteger(ATT_HEIGHT);
 
         return new SizeConfig(width, height);
     }
@@ -64,12 +74,14 @@ public final class SizeConfig
     /**
      * Export the size node from data.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The size node.
      * @throws LionEngineException If unable to read node.
      */
     public static Xml exports(SizeConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_SIZE);
         node.writeInteger(ATT_WIDTH, config.getWidth());
         node.writeInteger(ATT_HEIGHT, config.getHeight());
@@ -90,6 +102,8 @@ public final class SizeConfig
      */
     public SizeConfig(int width, int height)
     {
+        super();
+
         this.width = width;
         this.height = height;
     }
@@ -146,12 +160,12 @@ public final class SizeConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [width=")
-                                  .append(width)
-                                  .append(", height=")
-                                  .append(height)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [width=")
+                                            .append(width)
+                                            .append(", height=")
+                                            .append(height)
+                                            .append("]")
+                                            .toString();
     }
 }

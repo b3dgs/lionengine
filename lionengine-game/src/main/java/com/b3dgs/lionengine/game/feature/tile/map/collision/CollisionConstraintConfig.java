@@ -20,13 +20,17 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the collisions constraint from a configurer.
+ * Represents the collisions constraint.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see CollisionConstraint
  */
@@ -42,13 +46,16 @@ public final class CollisionConstraintConfig
     /**
      * Create the collision constraint data from node.
      * 
-     * @param node The node reference.
+     * @param node The node reference (must not be <code>null</code>).
      * @return The collision constraint data.
      * @throws LionEngineException If error when reading node.
      */
     public static CollisionConstraint imports(Xml node)
     {
+        Check.notNull(node);
+
         final CollisionConstraint constraint = new CollisionConstraint();
+
         if (node.hasChild(CONSTRAINT))
         {
             for (final Xml current : node.getChildren(CONSTRAINT))
@@ -58,21 +65,26 @@ public final class CollisionConstraintConfig
                 constraint.add(orientation, group);
             }
         }
+
         return constraint;
     }
 
     /**
      * Export the collision constraint as a node.
      * 
-     * @param root The node root.
-     * @param constraint The collision constraint to export.
+     * @param root The node root (must not be <code>null</code>).
+     * @param constraint The collision constraint to export (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Xml root, CollisionConstraint constraint)
     {
+        Check.notNull(root);
+        Check.notNull(constraint);
+
         for (final Entry<Orientation, Collection<String>> entry : constraint.getConstraints().entrySet())
         {
             final Orientation orientation = entry.getKey();
+
             for (final String group : entry.getValue())
             {
                 final Xml current = root.createChild(CONSTRAINT);

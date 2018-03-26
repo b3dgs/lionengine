@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the animation configuration class.
@@ -61,17 +60,6 @@ public class AnimationConfigTest
     }
 
     /**
-     * Test the constructor.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
-    {
-        UtilTests.testPrivateConstructor(AnimationConfig.class);
-    }
-
-    /**
      * Test the export and import.
      */
     @Test
@@ -93,10 +81,6 @@ public class AnimationConfigTest
         Assert.assertFalse(imported.hasAnimation("anim"));
         Assert.assertTrue(imported.hasAnimation("anim1"));
         Assert.assertTrue(imported.hasAnimation("anim2"));
-
-        imported.clear();
-
-        Assert.assertFalse(imported.getAnimations().containsAll(Arrays.asList(animation1, animation2)));
 
         try
         {

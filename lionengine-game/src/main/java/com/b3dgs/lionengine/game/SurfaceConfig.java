@@ -23,7 +23,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the surface data from a configurer.
+ * Represents the surface data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class SurfaceConfig
 {
@@ -33,28 +36,34 @@ public final class SurfaceConfig
     public static final String ATT_IMAGE = "image";
     /** Surface icon node. */
     public static final String ATT_ICON = "icon";
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 31;
 
     /**
      * Create the surface data from configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
     public static SurfaceConfig imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         return imports(configurer.getRoot());
     }
 
     /**
      * Create the surface data from node.
      * 
-     * @param root The root reference.
+     * @param root The root reference (must not be <code>null</code>).
      * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
     public static SurfaceConfig imports(Xml root)
     {
+        Check.notNull(root);
+
         final Xml node = root.getChild(NODE_SURFACE);
         final String surface = node.readString(ATT_IMAGE);
         final String icon = node.readString(null, ATT_ICON);
@@ -65,14 +74,17 @@ public final class SurfaceConfig
     /**
      * Create the surface data from node.
      * 
-     * @param config The config reference.
+     * @param config The config reference (must not be <code>null</code>).
      * @return The node data.
      * @throws LionEngineException If unable to write node.
      */
     public static Xml exports(SurfaceConfig config)
     {
+        Check.notNull(config);
+
         final Xml node = new Xml(NODE_SURFACE);
         node.writeString(ATT_IMAGE, config.getImage());
+
         if (config.getIcon() != null)
         {
             node.writeString(ATT_ICON, config.getIcon());
@@ -91,9 +103,12 @@ public final class SurfaceConfig
      * 
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public SurfaceConfig(String image, String icon)
     {
+        super();
+
         Check.notNull(image);
 
         this.image = image;
@@ -160,12 +175,12 @@ public final class SurfaceConfig
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [image=")
-                                  .append(image)
-                                  .append(", icon=")
-                                  .append(icon)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [image=")
+                                            .append(image)
+                                            .append(", icon=")
+                                            .append(icon)
+                                            .append("]")
+                                            .toString();
     }
 }

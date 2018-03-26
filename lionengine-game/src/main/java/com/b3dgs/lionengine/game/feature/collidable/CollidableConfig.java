@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Represents the collidable data from a configurer.
+ * Represents the collidable data.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @see Collidable
  */
@@ -38,12 +42,14 @@ public final class CollidableConfig
     /**
      * Create the collidable data from node.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The associated group, {@link #DEFAULT_GROUP} if not defined.
      * @throws LionEngineException If unable to read node.
      */
     public static Integer imports(Configurer configurer)
     {
+        Check.notNull(configurer);
+
         if (configurer.hasNode(NODE_GROUP))
         {
             final String group = configurer.getText(NODE_GROUP);
@@ -56,23 +62,28 @@ public final class CollidableConfig
                 throw new LionEngineException(exception, ERROR_INVALID_GROUP + group);
             }
         }
+
         return DEFAULT_GROUP;
     }
 
     /**
      * Create an XML node from a collidable.
      * 
-     * @param root The node root.
-     * @param collidable The collidable reference.
+     * @param root The node root (must not be <code>null</code>).
+     * @param collidable The collidable reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public static void exports(Xml root, Collidable collidable)
     {
+        Check.notNull(root);
+        Check.notNull(collidable);
+
         final Xml node = root.createChild(NODE_GROUP);
         node.setText(collidable.getGroup().toString());
     }
 
     /**
-     * Private.
+     * Private constructor.
      */
     private CollidableConfig()
     {

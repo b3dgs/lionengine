@@ -33,8 +33,11 @@ import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the minimap configuration.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
- * @see com.b3dgs.lionengine.game.feature.tile.map.Minimap
+ * @see Minimap
  */
 public final class MinimapConfig
 {
@@ -54,7 +57,7 @@ public final class MinimapConfig
     /**
      * Create the minimap data from node.
      * 
-     * @param configMinimap The minimap configuration media.
+     * @param configMinimap The minimap configuration media (must not be <code>null</code>).
      * @return The minimap data.
      * @throws LionEngineException If unable to read data.
      */
@@ -84,13 +87,14 @@ public final class MinimapConfig
     /**
      * Export tiles colors data to configuration media.
      * 
-     * @param configMinimap The configuration media output.
-     * @param tiles The tiles data.
+     * @param configMinimap The configuration media output (must not be <code>null</code>).
+     * @param tiles The tiles data (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Media configMinimap, Map<TileRef, ColorRgba> tiles)
     {
         Check.notNull(configMinimap);
+        Check.notNull(tiles);
 
         final Map<ColorRgba, Collection<TileRef>> colors = convertToColorKey(tiles);
         final Xml nodeMinimap = new Xml(NODE_MINIMAP);
@@ -116,25 +120,27 @@ public final class MinimapConfig
     /**
      * Convert map associating color per tile to tiles per color.
      * 
-     * @param tiles The tiles data.
+     * @param tiles The tiles data (must not be <code>null</code>).
      * @return The map with color as key.
      */
     private static Map<ColorRgba, Collection<TileRef>> convertToColorKey(Map<TileRef, ColorRgba> tiles)
     {
         final Map<ColorRgba, Collection<TileRef>> colors = new HashMap<>();
+
         for (final Map.Entry<TileRef, ColorRgba> entry : tiles.entrySet())
         {
             final Collection<TileRef> tilesRef = getTiles(colors, entry.getValue());
             tilesRef.add(entry.getKey());
         }
+
         return colors;
     }
 
     /**
      * Get the tiles corresponding to the color. Create empty list if new color.
      * 
-     * @param colors The colors data.
-     * @param color The color to check.
+     * @param colors The colors data (must not be <code>null</code>).
+     * @param color The color to check (must not be <code>null</code>).
      * @return The associated tiles.
      */
     private static Collection<TileRef> getTiles(Map<ColorRgba, Collection<TileRef>> colors, ColorRgba color)
