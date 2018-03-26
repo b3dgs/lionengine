@@ -23,12 +23,14 @@ package com.b3dgs.lionengine;
  * This class is Thread-Safe.
  * </p>
  */
-public class Range
+public final class Range
 {
     /** Positive integer numbers including 0. */
     public static final Range INT_POSITIVE = new Range(0, Integer.MAX_VALUE);
     /** Positive integer numbers excluding 0. */
     public static final Range INT_POSITIVE_STRICT = new Range(1, Integer.MAX_VALUE);
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 10;
 
     /** Minimum value. */
     private final int min;
@@ -99,5 +101,46 @@ public class Range
     public boolean includes(double value)
     {
         return Double.compare(value, min) >= 0 && Double.compare(value, max) <= 0;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + min;
+        result = prime * result + max;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final Range other = (Range) object;
+        return min == other.min && max == other.max;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [min=")
+                                            .append(min)
+                                            .append(", max=")
+                                            .append(max)
+                                            .append("]")
+                                            .toString();
     }
 }

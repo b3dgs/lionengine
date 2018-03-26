@@ -35,18 +35,27 @@ public final class RangeTest
     }
 
     /**
-     * Test constructor.
+     * Test default constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorDefault()
     {
         final Range range = new Range();
-        Assert.assertTrue(range.getMin() == 0);
-        Assert.assertTrue(range.getMax() == 0);
 
-        final Range rangeA = new Range(1, 3);
-        Assert.assertTrue(rangeA.getMin() == 1);
-        Assert.assertTrue(rangeA.getMax() == 3);
+        Assert.assertEquals(0, range.getMin());
+        Assert.assertEquals(0, range.getMax());
+    }
+
+    /**
+     * Test constructor with parameters.
+     */
+    @Test
+    public void testConstructorParameters()
+    {
+        final Range range = new Range(1, 2);
+
+        Assert.assertEquals(1, range.getMin());
+        Assert.assertEquals(2, range.getMax());
     }
 
     /**
@@ -65,6 +74,7 @@ public final class RangeTest
         Assert.assertTrue(range.includes(range.getMax()));
         Assert.assertTrue(range.includes(range.getMin() + 1));
         Assert.assertTrue(range.includes(range.getMax() - 1));
+
         Assert.assertFalse(range.includes(range.getMax() + 1));
         Assert.assertFalse(range.includes(range.getMin() - 1));
 
@@ -72,7 +82,49 @@ public final class RangeTest
         Assert.assertTrue(range.includes((double) range.getMax()));
         Assert.assertTrue(range.includes(range.getMin() + 0.000000000000001));
         Assert.assertTrue(range.includes(range.getMax() - 0.000000000000001));
+
         Assert.assertFalse(range.includes(range.getMax() + 0.000000000000001));
         Assert.assertFalse(range.includes(range.getMin() - 0.000000000000001));
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Range range = new Range(1, 2);
+
+        Assert.assertEquals(range, range);
+        Assert.assertEquals(range, new Range(1, 2));
+
+        Assert.assertNotEquals(range, null);
+        Assert.assertNotEquals(range, new Object());
+        Assert.assertNotEquals(range, new Range(2, 2));
+        Assert.assertNotEquals(range, new Range(1, 1));
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int range = new Range(1, 2).hashCode();
+
+        Assert.assertEquals(range, new Range(1, 2).hashCode());
+
+        Assert.assertNotEquals(range, new Object().hashCode());
+        Assert.assertNotEquals(range, new Range(2, 2).hashCode());
+        Assert.assertNotEquals(range, new Range(1, 1).hashCode());
+    }
+
+    /**
+     * Test to string.
+     */
+    @Test
+    public void testToString()
+    {
+        Assert.assertEquals("Range [min=1, max=2]", new Range(1, 2).toString());
     }
 }
