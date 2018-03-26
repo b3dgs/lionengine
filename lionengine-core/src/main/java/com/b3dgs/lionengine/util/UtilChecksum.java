@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -53,7 +53,8 @@ public final class UtilChecksum
     {
         Check.notNull(signature);
 
-        return Arrays.equals(getSha(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
+        return Arrays.equals(getSha(value).getBytes(StandardCharsets.UTF_8),
+                             signature.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -69,7 +70,8 @@ public final class UtilChecksum
     {
         Check.notNull(signature);
 
-        return Arrays.equals(getSha(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
+        return Arrays.equals(getSha(value).getBytes(StandardCharsets.UTF_8),
+                             signature.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -113,7 +115,7 @@ public final class UtilChecksum
     {
         Check.notNull(str);
 
-        return getSha(str.getBytes(Constant.UTF_8));
+        return getSha(str.getBytes(StandardCharsets.UTF_8));
     }
 
     /**

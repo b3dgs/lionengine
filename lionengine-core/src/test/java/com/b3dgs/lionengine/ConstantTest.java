@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.nio.charset.Charset;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,9 +50,7 @@ public final class ConstantTest
         Assert.assertEquals(Version.create(9, 0, 0), Constant.ENGINE_VERSION);
         Assert.assertEquals("xmlns:lionengine", Constant.XML_HEADER);
         Assert.assertEquals("lionengine:", Constant.XML_PREFIX);
-        Assert.assertEquals(Charset.forName("UTF-8"), Constant.UTF_8);
         Assert.assertEquals("", Constant.EMPTY_STRING);
-        Assert.assertEquals(System.getProperty("line.separator"), Constant.NEW_LINE);
         Assert.assertEquals("\t", Constant.TAB);
         Assert.assertEquals("\"", Constant.QUOTE);
         Assert.assertEquals("/", Constant.SLASH);

@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine;
 
-import java.nio.charset.Charset;
-
 /**
  * List of common constants.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class Constant
 {
@@ -36,12 +37,8 @@ public final class Constant
     public static final String XML_HEADER = "xmlns:lionengine";
     /** Prefix XML node. */
     public static final String XML_PREFIX = "lionengine:";
-    /** Charset UTF-8. */
-    public static final Charset UTF_8 = Charset.forName("UTF-8");
     /** Empty string. */
     public static final String EMPTY_STRING = "";
-    /** New line. */
-    public static final String NEW_LINE = System.getProperty("line.separator");
     /** Tabulation. */
     public static final String TAB = "\t";
     /** Quote. */

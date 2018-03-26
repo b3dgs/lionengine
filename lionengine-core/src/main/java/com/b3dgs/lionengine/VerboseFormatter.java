@@ -135,7 +135,7 @@ final class VerboseFormatter extends Formatter
         appendDate(message);
         appendLevel(message, event);
         appendFunction(message, event);
-        message.append(event.getMessage()).append(Constant.NEW_LINE);
+        message.append(event.getMessage()).append(System.lineSeparator());
         appendThrown(message, event);
 
         return message.toString();

@@ -141,7 +141,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
             final int height = display.getHeight();
             if (height < Constant.THOUSAND)
             {
-                heightSpace.append(Constant.NEW_LINE);
+                heightSpace.append(System.lineSeparator());
             }
             final StringBuilder freqSpace = new StringBuilder();
             final int freq = display.getRefreshRate();
@@ -150,7 +150,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
                 freqSpace.append(Constant.SPACE);
             }
             builder.append("Supported display mode:")
-                   .append(Constant.NEW_LINE)
+                   .append(System.lineSeparator())
                    .append('[')
                    .append(widthSpace)
                    .append(width)
@@ -170,7 +170,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
             final int linesPerDisplay = 5;
             if (i % linesPerDisplay == 0)
             {
-                builder.append(Constant.NEW_LINE);
+                builder.append(System.lineSeparator());
             }
         }
         return builder.toString();
