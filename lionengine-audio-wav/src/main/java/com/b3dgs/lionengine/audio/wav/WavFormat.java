@@ -41,8 +41,8 @@ public final class WavFormat implements AudioFormat
     /** Custom mixer, <code>null</code> for default. */
     static volatile Mixer.Info mixer;
 
-    /*
-     * Init
+    /**
+     * Init.
      */
     static
     {

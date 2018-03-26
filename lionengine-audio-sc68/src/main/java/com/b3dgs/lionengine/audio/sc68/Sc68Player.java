@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.PlayerAbstract;
 import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
- * SC68 player implementation.
+ * Sc68 player implementation.
  */
 final class Sc68Player extends PlayerAbstract implements Sc68
 {

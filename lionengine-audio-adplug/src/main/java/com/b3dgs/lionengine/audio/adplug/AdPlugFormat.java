@@ -49,9 +49,9 @@ public final class AdPlugFormat implements AudioFormat
     }
 
     /**
-     * Get the AdPlug library, or void format if not found.
+     * Get the library, or void format if not found.
      * 
-     * @return The AdPlug audio format.
+     * @return The audio format.
      */
     public static AudioFormat getFailsafe()
     {

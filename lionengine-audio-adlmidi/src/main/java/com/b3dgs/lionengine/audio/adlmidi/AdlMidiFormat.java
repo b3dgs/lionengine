@@ -54,9 +54,9 @@ public final class AdlMidiFormat implements AudioFormat
     }
 
     /**
-     * Get the AdlMidi library, or void format if not found.
+     * Get the library, or void format if not found.
      * 
-     * @return The AdlMidi audio format.
+     * @return The audio format.
      */
     public static AudioFormat getFailsafe()
     {

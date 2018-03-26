@@ -25,7 +25,7 @@ import com.sun.jna.Library;
 interface Sc68Binding extends Library
 {
     /**
-     * Play sc68.
+     * Play track.
      * 
      * @param name The track name.
      */

@@ -25,7 +25,7 @@ import com.sun.jna.Library;
 interface AdPlugBinding extends Library
 {
     /**
-     * Play music.
+     * Play track.
      * 
      * @param name The track name.
      */

@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.audio.Audio;
 
 /**
- * Allows to play SonicArranger musics (original Amiga player).
+ * Allows to play Sc68 musics (AtariST musics).
  */
 public interface Sc68 extends Audio
 {
