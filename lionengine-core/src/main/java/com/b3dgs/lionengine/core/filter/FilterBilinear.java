@@ -26,6 +26,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Bilinear filter implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public class FilterBilinear implements Filter
 {

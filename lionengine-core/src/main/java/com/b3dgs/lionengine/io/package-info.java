@@ -17,6 +17,6 @@
  */
 
 /**
- * Input interface package.
+ * Input output interface package.
  */
 package com.b3dgs.lionengine.io;

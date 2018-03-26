@@ -38,6 +38,9 @@ import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Media implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class MediaDefault implements Media
 {

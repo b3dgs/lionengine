@@ -22,6 +22,9 @@ import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Default media factory implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public class FactoryMediaDefault implements FactoryMedia
 {

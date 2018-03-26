@@ -22,6 +22,9 @@ import com.b3dgs.lionengine.Resolution;
 
 /**
  * Represents the type of DPI.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public enum DpiType
 {

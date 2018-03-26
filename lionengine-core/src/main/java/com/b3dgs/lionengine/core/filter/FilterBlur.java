@@ -221,20 +221,18 @@ public class FilterBlur implements Filter
     }
 
     /** Current radius. */
-    private volatile float radius;
+    private volatile float radius = RADIUS_DEFAULT;
     /** Alpha flag. */
-    private volatile boolean alpha;
+    private volatile boolean alpha = true;
     /** Edge mode. */
-    private volatile int edge;
+    private volatile int edge = CLAMP_EDGES;
 
     /**
      * Create the filter.
      */
     public FilterBlur()
     {
-        radius = RADIUS_DEFAULT;
-        alpha = true;
-        edge = CLAMP_EDGES;
+        super();
     }
 
     /**

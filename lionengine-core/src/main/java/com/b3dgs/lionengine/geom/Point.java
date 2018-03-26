@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.geom;
 /**
  * Represents a point using int precision.
  */
-public class Point
+public final class Point
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 17;

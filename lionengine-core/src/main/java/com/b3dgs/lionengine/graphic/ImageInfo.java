@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.graphic;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -36,7 +35,11 @@ import com.b3dgs.lionengine.Media;
 public final class ImageInfo
 {
     /** Available formats. */
-    private static final Collection<ImageHeaderReader> FORMATS = getFormats();
+    private static final Collection<ImageHeaderReader> FORMATS = Arrays.asList(new ImageHeaderPng(),
+                                                                               new ImageHeaderBmp(),
+                                                                               new ImageHeaderGif(),
+                                                                               new ImageHeaderTiff(),
+                                                                               new ImageHeaderJpg());
     /** Read error. */
     private static final String ERROR_READ = "Cannot read image information";
 
@@ -85,20 +88,6 @@ public final class ImageInfo
         {
             return false;
         }
-    }
-
-    /**
-     * Get all available image formats.
-     * 
-     * @return The image formats.
-     */
-    private static Collection<ImageHeaderReader> getFormats()
-    {
-        return new ArrayList<>(Arrays.asList(new ImageHeaderPng(),
-                                             new ImageHeaderBmp(),
-                                             new ImageHeaderGif(),
-                                             new ImageHeaderTiff(),
-                                             new ImageHeaderJpg()));
     }
 
     /**

@@ -48,6 +48,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Misc tools for AWT.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class ToolsAwt
 {

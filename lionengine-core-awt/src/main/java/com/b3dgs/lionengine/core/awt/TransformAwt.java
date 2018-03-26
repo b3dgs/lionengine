@@ -27,20 +27,18 @@ import com.b3dgs.lionengine.graphic.Transform;
 final class TransformAwt implements Transform
 {
     /** Scale x. */
-    private double sx;
+    private double sx = 1.0;
     /** Scale y. */
-    private double sy;
+    private double sy = 1.0;
     /** Interpolation. */
-    private int interpolation;
+    private int interpolation = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
 
     /**
      * Internal constructor.
      */
     TransformAwt()
     {
-        interpolation = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
-        sx = 1.0;
-        sy = 1.0;
+        super();
     }
 
     /*

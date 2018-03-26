@@ -96,6 +96,8 @@ final class TextAwt implements Text
      */
     TextAwt(String fontName, int size, TextStyle style)
     {
+        super();
+
         Check.notNull(fontName);
         Check.notNull(style);
 

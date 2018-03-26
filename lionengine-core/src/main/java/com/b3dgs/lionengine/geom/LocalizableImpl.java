@@ -21,6 +21,9 @@ import com.b3dgs.lionengine.Localizable;
 
 /**
  * Represents a localizable using double precision.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class LocalizableImpl implements Localizable
 {

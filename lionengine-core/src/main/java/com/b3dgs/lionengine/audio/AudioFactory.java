@@ -28,6 +28,9 @@ import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Allows to create audio player depending on format.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class AudioFactory
 {
@@ -45,7 +48,7 @@ public final class AudioFactory
      * @return The loaded audio.
      * @throws LionEngineException If invalid audio.
      */
-    public static Audio loadAudio(Media media)
+    public static synchronized Audio loadAudio(Media media)
     {
         Check.notNull(media);
 
@@ -64,7 +67,7 @@ public final class AudioFactory
      * @return The loaded audio.
      * @throws LionEngineException If invalid arguments or invalid audio.
      */
-    public static <A extends Audio> A loadAudio(Media media, Class<A> type)
+    public static synchronized <A extends Audio> A loadAudio(Media media, Class<A> type)
     {
         Check.notNull(media);
         Check.notNull(type);
@@ -88,7 +91,7 @@ public final class AudioFactory
      * @param format The supported format (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument or format already exists.
      */
-    public static void addFormat(AudioFormat format)
+    public static synchronized void addFormat(AudioFormat format)
     {
         Check.notNull(format);
 
@@ -104,7 +107,7 @@ public final class AudioFactory
     /**
      * Clear all supported audio formats.
      */
-    public static void clearFormats()
+    public static synchronized void clearFormats()
     {
         FACTORIES.forEach((extension, format) -> format.close());
         FACTORIES.clear();

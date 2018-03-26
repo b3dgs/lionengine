@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Constant;
 /**
  * Polygon representation.
  */
-public class Polygon
+public final class Polygon
 {
     /** Minimum number of points. */
     private static final int MIN_POINTS = 4;

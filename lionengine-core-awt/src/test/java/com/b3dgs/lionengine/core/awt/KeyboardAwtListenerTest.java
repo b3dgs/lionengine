@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 
 /**
- * Test {@link KeyboardAwtListener}
+ * Test {@link KeyboardAwtListener}.
  */
 public final class KeyboardAwtListenerTest
 {

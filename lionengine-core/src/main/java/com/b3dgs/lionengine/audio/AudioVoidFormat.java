@@ -26,6 +26,9 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Void audio format.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class AudioVoidFormat implements AudioFormat
 {

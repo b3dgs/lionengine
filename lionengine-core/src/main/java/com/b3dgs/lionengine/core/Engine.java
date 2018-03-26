@@ -45,6 +45,8 @@ public abstract class Engine
     private static final String ERROR_STARTED_NOT = "The engine has not been started !";
     /** Error message engine already started. */
     private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
+    /** Minimum start message length. */
+    private static final int MIN_LENGTH = 30;
 
     /** Started engine flag. */
     private static volatile boolean started;
@@ -65,7 +67,16 @@ public abstract class Engine
         {
             throw new LionEngineException(ERROR_STARTED_ALREADY);
         }
-        Verbose.info(getStartingMessage(engine));
+        Verbose.info(new StringBuilder(MIN_LENGTH).append(ENGINE_STARTING)
+                                                  .append(Constant.ENGINE_VERSION)
+                                                  .append(Constant.QUOTE)
+                                                  .append(FOR)
+                                                  .append(Constant.QUOTE)
+                                                  .append(engine.getName())
+                                                  .append(Constant.SPACE)
+                                                  .append(engine.getVersion())
+                                                  .append(Constant.QUOTE)
+                                                  .toString());
 
         Medias.setFactoryMedia(new FactoryMediaDefault());
 
@@ -128,26 +139,6 @@ public abstract class Engine
     public static final boolean isStarted()
     {
         return started;
-    }
-
-    /**
-     * Get the starting message for the specified engine.
-     * 
-     * @param engine The starting engine (must not be <code>null</code>).
-     * @return The starting message.
-     */
-    private static String getStartingMessage(Engine engine)
-    {
-        return new StringBuilder().append(ENGINE_STARTING)
-                                  .append(Constant.ENGINE_VERSION)
-                                  .append(Constant.QUOTE)
-                                  .append(FOR)
-                                  .append(Constant.QUOTE)
-                                  .append(engine.getName())
-                                  .append(Constant.SPACE)
-                                  .append(engine.getVersion())
-                                  .append(Constant.QUOTE)
-                                  .toString();
     }
 
     /** User program name. */

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.geom;
 /**
  * Line interface.
  */
-public class Line
+public final class Line
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 38;

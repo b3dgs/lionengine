@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Rectangle representation.
  */
-public class Rectangle implements Shape
+public final class Rectangle implements Shape
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 48;

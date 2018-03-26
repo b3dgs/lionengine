@@ -19,6 +19,9 @@ package com.b3dgs.lionengine.graphic;
 
 /**
  * No filter implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class FilterNone implements Filter
 {

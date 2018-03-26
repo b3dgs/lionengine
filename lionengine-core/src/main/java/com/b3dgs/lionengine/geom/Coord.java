@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Localizable;
 /**
  * Represents a coordinate using double precision.
  */
-public class Coord implements Localizable
+public final class Coord implements Localizable
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 21;

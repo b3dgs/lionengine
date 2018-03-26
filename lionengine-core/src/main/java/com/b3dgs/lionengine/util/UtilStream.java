@@ -41,7 +41,7 @@ public final class UtilStream
     /** Temporary file prefix. */
     private static final String PREFIX_TEMP = "temp";
     /** Copy buffer. */
-    private static final int BUFFER_COPY = 65535;
+    private static final int BUFFER_COPY = 65_535;
 
     /**
      * Copy a stream onto another.

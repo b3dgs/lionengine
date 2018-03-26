@@ -21,9 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * List of supported filters.
- * <p>
- * This class is Thread-Safe.
- * </p>
  */
 public interface Filter
 {

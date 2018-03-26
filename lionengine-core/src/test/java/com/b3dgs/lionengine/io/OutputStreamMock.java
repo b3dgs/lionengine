@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Mock input stream.
+ * Mock output stream.
  */
 public final class OutputStreamMock extends OutputStream
 {

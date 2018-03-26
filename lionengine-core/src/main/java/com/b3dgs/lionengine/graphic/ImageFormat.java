@@ -21,6 +21,9 @@ import java.util.Locale;
 
 /**
  * Represents the image format type.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public enum ImageFormat
 {

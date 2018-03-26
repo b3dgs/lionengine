@@ -36,6 +36,9 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Document factory implementation for DOM.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class DocumentFactory
 {

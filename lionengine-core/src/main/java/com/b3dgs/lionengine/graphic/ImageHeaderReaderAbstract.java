@@ -28,6 +28,9 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Image header reader interface.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 abstract class ImageHeaderReaderAbstract implements ImageHeaderReader
 {

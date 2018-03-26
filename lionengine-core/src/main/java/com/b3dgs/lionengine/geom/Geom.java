@@ -25,6 +25,9 @@ import com.b3dgs.lionengine.Localizable;
 
 /**
  * Geometry factory.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class Geom
 {

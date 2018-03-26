@@ -31,6 +31,9 @@ import com.b3dgs.lionengine.graphic.Screen;
 /**
  * Routine starter, need to be called only one time with the first {@link Sequence} to start, by using
  * {@link #start(Config, Class, Object...)}.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public final class Loader
 {
