@@ -193,7 +193,7 @@ public final class LauncherConfig
             i++;
             if (i < n)
             {
-                launchablesToString.append(Constant.NEW_LINE).append(Constant.TAB);
+                launchablesToString.append(System.lineSeparator()).append(Constant.TAB);
             }
         }
         return new StringBuilder().append(getClass().getSimpleName())
@@ -202,7 +202,7 @@ public final class LauncherConfig
                                   .append(", rate=")
                                   .append(rate)
                                   .append(", launchables=")
-                                  .append(Constant.NEW_LINE)
+                                  .append(System.lineSeparator())
                                   .append(Constant.TAB)
                                   .append(launchablesToString.toString())
                                   .append("]")

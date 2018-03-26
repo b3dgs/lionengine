@@ -166,7 +166,7 @@ public class CollisionCategory extends NameableAbstract
                                                 .append(", y=")
                                                 .append(y)
                                                 .append(")")
-                                                .append(Constant.NEW_LINE)
+                                                .append(System.lineSeparator())
                                                 .append(Constant.TAB)
                                                 .append(groups)
                                                 .toString();

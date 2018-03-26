@@ -112,7 +112,7 @@ public class CollisionGroup extends NameableAbstract
                                                 .append(" (name=")
                                                 .append(getName())
                                                 .append(")")
-                                                .append(Constant.NEW_LINE)
+                                                .append(System.lineSeparator())
                                                 .append(Constant.TAB)
                                                 .append(formulas)
                                                 .toString();
