@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -55,7 +56,7 @@ public class ActionRef
 
         this.path = path;
         this.cancel = cancel;
-        this.refs = Collections.unmodifiableCollection(refs);
+        this.refs = new ArrayList<>(refs);
     }
 
     /**
@@ -85,7 +86,7 @@ public class ActionRef
      */
     public Collection<ActionRef> getRefs()
     {
-        return refs;
+        return Collections.unmodifiableCollection(refs);
     }
 
     /*
