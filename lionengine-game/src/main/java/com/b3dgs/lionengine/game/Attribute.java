@@ -19,16 +19,6 @@ package com.b3dgs.lionengine.game;
 
 /**
  * Can describe an attribute (vitality, agility...).
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Attribute vitality = new Attribute();
- * vitality.set(1);
- * vitality.increase(2);
- * print(vitality.get()); // print 3
- * </pre>
  */
 public class Attribute
 {

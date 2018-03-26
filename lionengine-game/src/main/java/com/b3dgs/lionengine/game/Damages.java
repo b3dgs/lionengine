@@ -50,7 +50,6 @@ public class Damages
     {
         this.min = min;
         this.max = max;
-        last = 0;
     }
 
     /**

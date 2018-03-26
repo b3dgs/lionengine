@@ -28,15 +28,17 @@ import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
 
 /**
- * Class representing a timed message handler. This allows to prepare a set of timed message that will disappear at the
- * end of their timer.
+ * Class representing a timed message handler.
+ * <p>
+ * This allows to prepare a set of timed message that will disappear at the end of their timer.
+ * </p>
  */
 public final class TimedMessage implements Updatable, Renderable
 {
     /** List of active messages. */
-    private final Collection<MessageData> messages;
+    private final Collection<MessageData> messages = new HashSet<>(1);
     /** List of messages to delete. */
-    private final Collection<MessageData> delete;
+    private final Collection<MessageData> delete = new ArrayList<>(1);
     /** Text reference. */
     private final Text text;
     /** Has to delete something. */
@@ -51,10 +53,9 @@ public final class TimedMessage implements Updatable, Renderable
      */
     public TimedMessage(Text text)
     {
+        super();
+
         this.text = text;
-        messages = new HashSet<>(1);
-        delete = new ArrayList<>(1);
-        deleted = false;
     }
 
     /**
@@ -122,6 +123,9 @@ public final class TimedMessage implements Updatable, Renderable
 
     /**
      * Message data class.
+     * <p>
+     * This class is Thread-Safe.
+     * </p>
      */
     private static final class MessageData
     {
@@ -132,7 +136,7 @@ public final class TimedMessage implements Updatable, Renderable
         /** The vertical location. */
         private final int y;
         /** The timer. */
-        private final Timing timer;
+        private final Timing timer = new Timing();
         /** Max time. */
         private final int time;
 
@@ -146,11 +150,12 @@ public final class TimedMessage implements Updatable, Renderable
          */
         private MessageData(String message, int x, int y, int time)
         {
+            super();
+
             this.message = message;
             this.x = x;
             this.y = y;
             this.time = time;
-            timer = new Timing();
             timer.start();
         }
 

@@ -26,6 +26,9 @@ import com.b3dgs.lionengine.util.UtilMath;
  */
 public class Force implements Direction, Updatable
 {
+    /** Min to string length. */
+    private static final int MIN_LENGTH = 45;
+
     /**
      * Create a force from a vector movement.
      * 
@@ -75,6 +78,7 @@ public class Force implements Direction, Updatable
 
         final Force force = new Force(sx, sy);
         force.setVelocity(norm);
+
         return force;
     }
 
@@ -123,8 +127,11 @@ public class Force implements Direction, Updatable
      */
     public Force(double fh, double fv)
     {
+        super();
+
         this.fh = fh;
         this.fv = fv;
+
         fixForce();
     }
 
@@ -138,10 +145,13 @@ public class Force implements Direction, Updatable
      */
     public Force(double fh, double fv, double velocity, double sensibility)
     {
+        super();
+
         this.fh = fh;
         this.fv = fv;
         this.velocity = velocity;
         this.sensibility = sensibility;
+
         fixForce();
     }
 
@@ -493,16 +503,16 @@ public class Force implements Direction, Updatable
     @Override
     public String toString()
     {
-        return new StringBuilder().append(getClass().getSimpleName())
-                                  .append(" [fh=")
-                                  .append(fh)
-                                  .append(", fv=")
-                                  .append(fv)
-                                  .append(", velocity=")
-                                  .append(velocity)
-                                  .append(", sensibility=")
-                                  .append(sensibility)
-                                  .append("]")
-                                  .toString();
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [fh=")
+                                            .append(fh)
+                                            .append(", fv=")
+                                            .append(fv)
+                                            .append(", velocity=")
+                                            .append(velocity)
+                                            .append(", sensibility=")
+                                            .append(sensibility)
+                                            .append("]")
+                                            .toString();
     }
 }

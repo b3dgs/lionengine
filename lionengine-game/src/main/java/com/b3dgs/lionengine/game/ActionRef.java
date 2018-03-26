@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -26,6 +25,9 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Action reference structure.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public class ActionRef
 {
@@ -53,7 +55,7 @@ public class ActionRef
 
         this.path = path;
         this.cancel = cancel;
-        this.refs = new ArrayList<>(refs);
+        this.refs = Collections.unmodifiableCollection(refs);
     }
 
     /**
@@ -83,7 +85,7 @@ public class ActionRef
      */
     public Collection<ActionRef> getRefs()
     {
-        return Collections.unmodifiableCollection(refs);
+        return refs;
     }
 
     /*

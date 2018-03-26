@@ -20,22 +20,6 @@ package com.b3dgs.lionengine.game;
 /**
  * Represents a value which can change between 0 and a maximum. It is mainly used in complement with an Attribute, to
  * represent life, mana...
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Alterable life = new Alterable(100);
- * life.decrease(25); // life = 75
- * life.fill(); // life = 100
- * life.isFull(); // returns true
- * life.getNeeded(150); // returns 50
- * life.setMax(150);
- * life.fill(); // life = 150
- * life.increase(25); // life = 150
- * life.set(0); // life = 0
- * life.isEmpty(); // returns true
- * </pre>
  * 
  * @see Attribute
  */
