@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -27,7 +24,6 @@ import com.b3dgs.lionengine.Resource;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -68,11 +64,8 @@ import com.b3dgs.lionengine.util.UtilMath;
  */
 public class Cursor implements Resource, Shape, Updatable, Renderable
 {
-    /** Surface ID not found error. */
-    private static final String ERROR_SURFACE_ID = "Undefined surface id:";
-
-    /** Surface reference. */
-    private final Map<Integer, Image> surfaces = new HashMap<>();
+    /** Cursor renderer. */
+    private final CursorRenderer renderer = new CursorRenderer();
     /** Pointer reference. */
     private InputDevicePointer pointer;
     /** Viewer reference. */
@@ -103,22 +96,10 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     private int maxX = Integer.MAX_VALUE;
     /** Maximum location y. */
     private int maxY = Integer.MAX_VALUE;
-    /** Surface id. */
-    private Integer surfaceId;
-    /** Current surface. */
-    private Image surface;
-    /** Next surface. */
-    private Image nextSurface;
-    /** Rendering horizontal offset. */
-    private int offsetX;
-    /** Rendering vertical offset. */
-    private int offsetY;
     /** Location offset x. */
     private int offX;
     /** Location offset y. */
     private int offY;
-    /** Visibility flag. */
-    private boolean visible = true;
 
     /**
      * Create a cursor.
@@ -137,12 +118,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public void addImage(int id, Media media)
     {
-        final Integer key = Integer.valueOf(id);
-        surfaces.put(key, Drawable.loadImage(media));
-        if (surfaceId == null)
-        {
-            surfaceId = key;
-        }
+        renderer.addImage(id, media);
     }
 
     /**
@@ -211,16 +187,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public void setSurfaceId(int surfaceId)
     {
-        Check.superiorOrEqual(surfaceId, 0);
-        this.surfaceId = Integer.valueOf(surfaceId);
-        if (surfaces.containsKey(this.surfaceId))
-        {
-            nextSurface = surfaces.get(this.surfaceId);
-        }
-        else
-        {
-            throw new LionEngineException(ERROR_SURFACE_ID + surfaceId);
-        }
+        renderer.setSurfaceId(surfaceId);
     }
 
     /**
@@ -231,8 +198,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public void setRenderingOffset(int ox, int oy)
     {
-        offsetX = ox;
-        offsetY = oy;
+        renderer.setRenderingOffset(ox, oy);
     }
 
     /**
@@ -273,7 +239,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public void setVisible(boolean visible)
     {
-        this.visible = visible;
+        renderer.setVisible(visible);
     }
 
     /**
@@ -315,7 +281,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public Integer getSurfaceId()
     {
-        return surfaceId;
+        return renderer.getSurfaceId();
     }
 
     /**
@@ -375,38 +341,19 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     @Override
     public void load()
     {
-        for (final Image current : surfaces.values())
-        {
-            current.load();
-            current.prepare();
-            if (surface == null)
-            {
-                surface = current;
-            }
-        }
+        renderer.load();
     }
 
     @Override
     public boolean isLoaded()
     {
-        for (final Image current : surfaces.values())
-        {
-            if (current.isLoaded())
-            {
-                return false;
-            }
-        }
-        return true;
+        return renderer.isLoaded();
     }
 
     @Override
     public void dispose()
     {
-        for (final Image current : surfaces.values())
-        {
-            current.dispose();
-        }
-        surfaces.clear();
+        renderer.dispose();
     }
 
     /*
@@ -446,15 +393,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         {
             y = screenY + offY;
         }
-        for (final Image current : surfaces.values())
-        {
-            current.setLocation(screenX + offsetX, screenY + offsetY);
-        }
-        if (nextSurface != null)
-        {
-            surface = nextSurface;
-            nextSurface = null;
-        }
+        renderer.update(screenX, screenY);
     }
 
     /*
@@ -464,10 +403,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     @Override
     public void render(Graphic g)
     {
-        if (visible)
-        {
-            surface.render(g);
-        }
+        renderer.render(g);
     }
 
     /*
