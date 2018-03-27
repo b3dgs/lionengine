@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Range;
+import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
@@ -37,51 +38,54 @@ public class Damages
      */
     public Damages()
     {
-        super();
+        this(0, 0);
     }
 
     /**
-     * Create a damages handler with initial range.
+     * Create a damages handler with initial range. Max set to min value if over.
      * 
-     * @param min The minimum damages value.
-     * @param max The maximum damages value.
+     * @param min The minimum damages value (must be positive).
+     * @param max The maximum damages value (must be positive and superior or equal to min).
      */
     public Damages(int min, int max)
     {
-        this.min = min;
-        this.max = max;
+        super();
+
+        this.min = UtilMath.clamp(min, 0, Integer.MAX_VALUE);
+        this.max = UtilMath.clamp(max, this.min, Integer.MAX_VALUE);
     }
 
     /**
-     * Set the minimum damage value.
+     * Set the minimum damage value. Max set to min value if over.
      * 
-     * @param min The minimum damage value.
+     * @param min The minimum damage value (must be positive).
      */
     public void setMin(int min)
     {
-        this.min = min;
+        this.min = UtilMath.clamp(min, 0, Integer.MAX_VALUE);
+        max = UtilMath.clamp(max, this.min, Integer.MAX_VALUE);
     }
 
     /**
      * Set the maximum damage value.
      * 
-     * @param max The maximum damage value.
+     * @param max The maximum damage value (must be positive and superior or equal to min).
      */
     public void setMax(int max)
     {
-        this.max = max;
+        this.max = UtilMath.clamp(max, min, Integer.MAX_VALUE);
     }
 
     /**
-     * Set the maximum damage value.
+     * Set the maximum damage value. Max set to min value if over.
      * 
-     * @param min The minimum damage value.
-     * @param max The maximum damage value.
+     * @param min The minimum damages value (must be positive).
+     * @param max The maximum damages value (must be positive and superior or equal to min).
      */
     public void setDamages(int min, int max)
     {
-        this.min = min;
-        this.max = max;
+        this.min = UtilMath.clamp(min, 0, Integer.MAX_VALUE);
+        this.max = UtilMath.clamp(max, this.min, Integer.MAX_VALUE);
     }
 
     /**

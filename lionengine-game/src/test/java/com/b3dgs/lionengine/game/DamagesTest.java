@@ -21,38 +21,166 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Range;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
- * Test damages class.
+ * Test {@link Damages}.
  */
-public class DamagesTest
+public final class DamagesTest
 {
     /**
-     * Test coordinate tile functions.
+     * Test constructor.
      */
     @Test
-    public void testDamages()
+    public void testConstructor()
     {
         final Damages damages = new Damages();
-        Assert.assertTrue(damages.getMin() == 0);
-        Assert.assertTrue(damages.getMax() == 0);
-        Assert.assertTrue(damages.getLast() == 0);
-        Assert.assertTrue(damages.getRandom() == 0);
 
-        final Damages damagesA = new Damages(1, 3);
-        Assert.assertTrue(damagesA.getMin() == 1);
-        Assert.assertTrue(damagesA.getMax() == 3);
+        Assert.assertEquals(0, damages.getMin());
+        Assert.assertEquals(0, damages.getMax());
+        Assert.assertEquals(0, damages.getLast());
 
-        damagesA.setMin(0);
-        damagesA.setMax(4);
-        Assert.assertTrue(damagesA.getMin() == 0);
-        Assert.assertTrue(damagesA.getMax() == 4);
+        final Range range = damages.getDamages();
 
-        final Range range = damagesA.getDamages();
-        Assert.assertTrue(range.getMin() == damagesA.getMin());
-        Assert.assertTrue(range.getMax() == damagesA.getMax());
+        Assert.assertEquals(0, range.getMin());
+        Assert.assertEquals(0, range.getMax());
 
-        final int last = damagesA.getRandom();
-        Assert.assertTrue(damagesA.getLast() == last);
+        for (int i = 0; i < 100; i++)
+        {
+            Assert.assertEquals(0, damages.getRandom());
+        }
+    }
+
+    /**
+     * Test constructor with parameters.
+     */
+    @Test
+    public void testConstructorParam()
+    {
+        final Damages damages = new Damages(1, 2);
+
+        Assert.assertEquals(1, damages.getMin());
+        Assert.assertEquals(2, damages.getMax());
+        Assert.assertEquals(0, damages.getLast());
+
+        final Range range = damages.getDamages();
+
+        Assert.assertEquals(1, range.getMin());
+        Assert.assertEquals(2, range.getMax());
+
+        for (int i = 0; i < 100; i++)
+        {
+            final int damage = damages.getRandom();
+
+            Assert.assertTrue(UtilMath.isBetween(damage, 1, 2));
+        }
+    }
+
+    /**
+     * Test constructor with negative values.
+     */
+    @Test
+    public void testConstructorNegative()
+    {
+        final Damages damages = new Damages(-1, -2);
+
+        Assert.assertEquals(0, damages.getMin());
+        Assert.assertEquals(0, damages.getMax());
+        Assert.assertEquals(0, damages.getLast());
+    }
+
+    /**
+     * Test set min.
+     */
+    @Test
+    public void testSetMin()
+    {
+        final Damages damages = new Damages(1, 5);
+
+        Assert.assertEquals(1, damages.getMin());
+        Assert.assertEquals(5, damages.getMax());
+
+        damages.setMin(2);
+
+        Assert.assertEquals(2, damages.getMin());
+        Assert.assertEquals(5, damages.getMax());
+
+        damages.setMin(6);
+
+        Assert.assertEquals(6, damages.getMin());
+        Assert.assertEquals(6, damages.getMax());
+    }
+
+    /**
+     * Test set max.
+     */
+    @Test
+    public void testSetMax()
+    {
+        final Damages damages = new Damages(1, 5);
+
+        Assert.assertEquals(1, damages.getMin());
+        Assert.assertEquals(5, damages.getMax());
+
+        damages.setMax(6);
+
+        Assert.assertEquals(1, damages.getMin());
+        Assert.assertEquals(6, damages.getMax());
+
+        damages.setMax(0);
+
+        Assert.assertEquals(1, damages.getMin());
+        Assert.assertEquals(1, damages.getMax());
+    }
+
+    /**
+     * Test set damages.
+     */
+    @Test
+    public void testSetDamages()
+    {
+        final Damages damages = new Damages();
+        damages.setDamages(1, 5);
+
+        Assert.assertEquals(1, damages.getMin());
+        Assert.assertEquals(5, damages.getMax());
+    }
+
+    /**
+     * Test set damages min over max.
+     */
+    @Test
+    public void testSetDamagesMinOverMax()
+    {
+        final Damages damages = new Damages();
+        damages.setDamages(5, 1);
+
+        Assert.assertEquals(5, damages.getMin());
+        Assert.assertEquals(5, damages.getMax());
+    }
+
+    /**
+     * Test set damages with negative values.
+     */
+    @Test
+    public void testSetDamagesNegative()
+    {
+        final Damages damages = new Damages();
+        damages.setDamages(-1, -2);
+
+        Assert.assertEquals(0, damages.getMin());
+        Assert.assertEquals(0, damages.getMax());
+    }
+
+    /**
+     * Test get last.
+     */
+    @Test
+    public void testGetLast()
+    {
+        final Damages damages = new Damages(1, 1);
+
+        Assert.assertEquals(1, damages.getRandom());
+        Assert.assertEquals(1, damages.getLast());
     }
 }
