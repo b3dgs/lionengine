@@ -42,11 +42,11 @@ public final class CollisionGroupConfig
     /** Configuration file name. */
     public static final String FILENAME = "collisions.xml";
     /** Collision group root node. */
-    public static final String COLLISIONS = Constant.XML_PREFIX + "collisions";
+    public static final String NODE_COLLISIONS = Constant.XML_PREFIX + "collisions";
     /** Collision group node. */
-    public static final String COLLISION = Constant.XML_PREFIX + "collision";
+    public static final String NODE_COLLISION = Constant.XML_PREFIX + "collision";
     /** Group name attribute. */
-    public static final String GROUP = "group";
+    public static final String ATT_GROUP = "group";
 
     /**
      * Create the collision group data from node (should only be used to display names, as real content is
@@ -59,7 +59,7 @@ public final class CollisionGroupConfig
     public static CollisionGroupConfig imports(Media config)
     {
         final Xml root = new Xml(config);
-        final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
+        final Collection<Xml> childrenCollision = root.getChildren(NODE_COLLISION);
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
 
         for (final Xml node : childrenCollision)
@@ -73,7 +73,7 @@ public final class CollisionGroupConfig
                 formulas.add(new CollisionFormula(formulaName, null, null, null));
             }
 
-            final String groupName = node.readString(GROUP);
+            final String groupName = node.readString(ATT_GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
@@ -94,7 +94,7 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(map);
 
-        final Collection<Xml> childrenCollision = root.getChildren(COLLISION);
+        final Collection<Xml> childrenCollision = root.getChildren(NODE_COLLISION);
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
 
         for (final Xml node : childrenCollision)
@@ -108,7 +108,7 @@ public final class CollisionGroupConfig
                 formulas.add(map.getCollisionFormula(formulaName));
             }
 
-            final String groupName = node.readString(GROUP);
+            final String groupName = node.readString(ATT_GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
@@ -128,8 +128,8 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(group);
 
-        final Xml node = root.createChild(COLLISION);
-        node.writeString(GROUP, group.getName());
+        final Xml node = root.createChild(NODE_COLLISION);
+        node.writeString(ATT_GROUP, group.getName());
 
         for (final CollisionFormula formula : group.getFormulas())
         {
@@ -150,9 +150,9 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(group);
 
-        for (final Xml node : root.getChildren(COLLISION))
+        for (final Xml node : root.getChildren(NODE_COLLISION))
         {
-            if (node.readString(GROUP).equals(group))
+            if (node.readString(ATT_GROUP).equals(group))
             {
                 root.removeChild(node);
             }
@@ -172,9 +172,9 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(group);
 
-        for (final Xml node : root.getChildren(COLLISION))
+        for (final Xml node : root.getChildren(NODE_COLLISION))
         {
-            if (node.readString(GROUP).equals(group))
+            if (node.readString(ATT_GROUP).equals(group))
             {
                 return true;
             }

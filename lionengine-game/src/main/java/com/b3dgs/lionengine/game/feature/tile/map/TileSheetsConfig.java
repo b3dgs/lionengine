@@ -42,9 +42,9 @@ public final class TileSheetsConfig
     /** Tile size node. */
     public static final String NODE_TILE_SIZE = Constant.XML_PREFIX + "tileSize";
     /** Tile width attribute. */
-    public static final String ATTRIBUTE_TILE_WIDTH = "width";
+    public static final String ATT_TILE_WIDTH = "width";
     /** Tile height attribute. */
-    public static final String ATTRIBUTE_TILE_HEIGHT = "height";
+    public static final String ATT_TILE_HEIGHT = "height";
     /** Tile sheet node. */
     public static final String NODE_TILE_SHEET = Constant.XML_PREFIX + "sheet";
 
@@ -60,8 +60,8 @@ public final class TileSheetsConfig
         final Xml nodeSheets = new Xml(configSheets);
 
         final Xml nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
-        final int tileWidth = nodeTileSize.readInteger(ATTRIBUTE_TILE_WIDTH);
-        final int tileHeight = nodeTileSize.readInteger(ATTRIBUTE_TILE_HEIGHT);
+        final int tileWidth = nodeTileSize.readInteger(ATT_TILE_WIDTH);
+        final int tileHeight = nodeTileSize.readInteger(ATT_TILE_HEIGHT);
 
         final Collection<String> sheets = importSheets(nodeSheets);
 
@@ -86,8 +86,8 @@ public final class TileSheetsConfig
         nodeSheets.writeString(Constant.XML_HEADER, Constant.ENGINE_WEBSITE);
 
         final Xml tileSize = nodeSheets.createChild(NODE_TILE_SIZE);
-        tileSize.writeString(ATTRIBUTE_TILE_WIDTH, String.valueOf(tileWidth));
-        tileSize.writeString(ATTRIBUTE_TILE_HEIGHT, String.valueOf(tileHeight));
+        tileSize.writeString(ATT_TILE_WIDTH, String.valueOf(tileWidth));
+        tileSize.writeString(ATT_TILE_HEIGHT, String.valueOf(tileHeight));
 
         exportSheets(nodeSheets, sheets);
 

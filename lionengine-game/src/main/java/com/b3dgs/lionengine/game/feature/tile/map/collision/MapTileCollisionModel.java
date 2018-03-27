@@ -429,7 +429,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         }
         if (groupsConfig != null)
         {
-            final Xml groupsNode = new Xml(CollisionGroupConfig.COLLISIONS);
+            final Xml groupsNode = new Xml(CollisionGroupConfig.NODE_COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
                 CollisionGroupConfig.exports(groupsNode, group);

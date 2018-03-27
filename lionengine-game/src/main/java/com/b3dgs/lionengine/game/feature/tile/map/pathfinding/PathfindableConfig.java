@@ -38,17 +38,17 @@ import com.b3dgs.lionengine.io.Xml;
 public final class PathfindableConfig
 {
     /** Pathfindable node name. */
-    public static final String PATHFINDABLE = Constant.XML_PREFIX + "pathfindable";
+    public static final String NODE_PATHFINDABLE = Constant.XML_PREFIX + "pathfindable";
     /** Path data node name. */
-    public static final String PATH = Constant.XML_PREFIX + "path";
+    public static final String NODE_PATH = Constant.XML_PREFIX + "path";
     /** Category attribute. */
-    public static final String CATEGORY = "category";
+    public static final String ATT_CATEGORY = "category";
     /** Cost attribute. */
-    public static final String COST = "cost";
+    public static final String ATT_COST = "cost";
     /** Block attribute. */
-    public static final String BLOCK = "block";
+    public static final String ATT_BLOCK = "block";
     /** Allowed movements node. */
-    public static final String MOVEMENT = Constant.XML_PREFIX + "movement";
+    public static final String NODE_MOVEMENT = Constant.XML_PREFIX + "movement";
 
     /**
      * Import the pathfindable data from node.
@@ -62,15 +62,15 @@ public final class PathfindableConfig
         Check.notNull(configurer);
 
         final Xml root = configurer.getRoot();
-        if (!root.hasChild(PATHFINDABLE))
+        if (!root.hasChild(NODE_PATHFINDABLE))
         {
             return Collections.emptyMap();
         }
 
         final Map<String, PathData> categories = new HashMap<>(0);
-        final Xml nodePathfindable = root.getChild(PATHFINDABLE);
+        final Xml nodePathfindable = root.getChild(NODE_PATHFINDABLE);
 
-        for (final Xml nodePath : nodePathfindable.getChildren(PATH))
+        for (final Xml nodePath : nodePathfindable.getChildren(NODE_PATH))
         {
             final PathData data = importPathData(nodePath);
             categories.put(data.getName(), data);
@@ -90,7 +90,7 @@ public final class PathfindableConfig
     {
         Check.notNull(pathData);
 
-        final Xml node = new Xml(PATHFINDABLE);
+        final Xml node = new Xml(NODE_PATHFINDABLE);
         for (final PathData data : pathData.values())
         {
             node.add(exportPathData(data));
@@ -110,9 +110,9 @@ public final class PathfindableConfig
     {
         Check.notNull(node);
 
-        final String category = node.readString(CATEGORY);
-        final double cost = node.readDouble(0.0, COST);
-        final boolean blocking = node.readBoolean(BLOCK);
+        final String category = node.readString(ATT_CATEGORY);
+        final double cost = node.readDouble(0.0, ATT_COST);
+        final boolean blocking = node.readBoolean(ATT_BLOCK);
         final Collection<MovementTile> movements = importAllowedMovements(node);
 
         return new PathData(category, cost, blocking, movements);
@@ -128,10 +128,10 @@ public final class PathfindableConfig
     {
         Check.notNull(data);
 
-        final Xml node = new Xml(PATH);
-        node.writeString(CATEGORY, data.getName());
-        node.writeDouble(COST, data.getCost());
-        node.writeBoolean(BLOCK, data.isBlocking());
+        final Xml node = new Xml(NODE_PATH);
+        node.writeString(ATT_CATEGORY, data.getName());
+        node.writeDouble(ATT_COST, data.getCost());
+        node.writeBoolean(ATT_BLOCK, data.isBlocking());
         exportAllowedMovements(node, data.getAllowedMovements());
 
         return node;
@@ -146,14 +146,14 @@ public final class PathfindableConfig
      */
     private static Collection<MovementTile> importAllowedMovements(Xml node)
     {
-        if (!node.hasChild(MOVEMENT))
+        if (!node.hasChild(NODE_MOVEMENT))
         {
             return Collections.emptySet();
         }
 
         final Collection<MovementTile> movements = EnumSet.noneOf(MovementTile.class);
 
-        for (final Xml movementNode : node.getChildren(MOVEMENT))
+        for (final Xml movementNode : node.getChildren(NODE_MOVEMENT))
         {
             try
             {
@@ -178,7 +178,7 @@ public final class PathfindableConfig
     {
         for (final MovementTile movement : movements)
         {
-            final Xml node = root.createChild(MOVEMENT);
+            final Xml node = root.createChild(NODE_MOVEMENT);
             node.setText(movement.name());
         }
     }

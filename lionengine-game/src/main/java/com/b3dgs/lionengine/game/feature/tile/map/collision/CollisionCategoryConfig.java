@@ -38,15 +38,15 @@ import com.b3dgs.lionengine.io.Xml;
 public final class CollisionCategoryConfig
 {
     /** Category node name. */
-    public static final String CATEGORY = Constant.XML_PREFIX + "category";
+    public static final String NODE_CATEGORY = Constant.XML_PREFIX + "category";
     /** Category attribute name. */
-    public static final String NAME = "name";
+    public static final String ATT_NAME = "name";
     /** Category attribute axis. */
-    public static final String AXIS = "axis";
+    public static final String ATT_AXIS = "axis";
     /** Category attribute horizontal offset. */
-    public static final String X = "x";
+    public static final String ATT_X = "x";
     /** Category attribute vertical offset. */
-    public static final String Y = "y";
+    public static final String ATT_Y = "y";
     /** Unknown axis error. */
     private static final String ERROR_AXIS = "Unknown axis: ";
 
@@ -62,7 +62,7 @@ public final class CollisionCategoryConfig
     {
         Check.notNull(root);
 
-        final Collection<Xml> childrenCategory = root.getChildren(CATEGORY);
+        final Collection<Xml> childrenCategory = root.getChildren(NODE_CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(childrenCategory.size());
 
         for (final Xml node : childrenCategory)
@@ -76,10 +76,10 @@ public final class CollisionCategoryConfig
                 groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
             }
 
-            final String name = node.readString(NAME);
-            final Axis axis = Axis.valueOf(node.readString(AXIS));
-            final int x = node.readInteger(X);
-            final int y = node.readInteger(Y);
+            final String name = node.readString(ATT_NAME);
+            final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
+            final int x = node.readInteger(ATT_X);
+            final int y = node.readInteger(ATT_Y);
 
             final CollisionCategory category = new CollisionCategory(name, axis, x, y, groups);
             categories.add(category);
@@ -101,7 +101,7 @@ public final class CollisionCategoryConfig
         Check.notNull(configurer);
         Check.notNull(map);
 
-        final Collection<Xml> children = configurer.getRoot().getChildren(CATEGORY);
+        final Collection<Xml> children = configurer.getRoot().getChildren(NODE_CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(children.size());
 
         for (final Xml node : children)
@@ -136,7 +136,7 @@ public final class CollisionCategoryConfig
             groups.add(group);
         }
 
-        final String axisName = root.readString(AXIS);
+        final String axisName = root.readString(ATT_AXIS);
         final Axis axis;
         try
         {
@@ -147,9 +147,9 @@ public final class CollisionCategoryConfig
             throw new LionEngineException(exception, ERROR_AXIS + axisName);
         }
 
-        final int x = root.readInteger(X);
-        final int y = root.readInteger(Y);
-        final String name = root.readString(NAME);
+        final int x = root.readInteger(ATT_X);
+        final int y = root.readInteger(ATT_Y);
+        final String name = root.readString(ATT_NAME);
 
         return new CollisionCategory(name, axis, x, y, groups);
     }
@@ -166,11 +166,11 @@ public final class CollisionCategoryConfig
         Check.notNull(root);
         Check.notNull(category);
 
-        final Xml node = root.createChild(CATEGORY);
-        node.writeString(NAME, category.getName());
-        node.writeString(AXIS, category.getAxis().name());
-        node.writeInteger(X, category.getOffsetX());
-        node.writeInteger(Y, category.getOffsetY());
+        final Xml node = root.createChild(NODE_CATEGORY);
+        node.writeString(ATT_NAME, category.getName());
+        node.writeString(ATT_AXIS, category.getAxis().name());
+        node.writeInteger(ATT_X, category.getOffsetX());
+        node.writeInteger(ATT_Y, category.getOffsetY());
 
         for (final CollisionGroup group : category.getGroups())
         {

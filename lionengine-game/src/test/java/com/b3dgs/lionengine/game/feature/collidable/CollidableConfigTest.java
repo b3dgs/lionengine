@@ -33,9 +33,9 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the collidable configuration.
+ * Test {@link CollidableConfig}.
  */
-public class CollidableConfigTest
+public final class CollidableConfigTest
 {
     /**
      * Prepare test.
@@ -56,7 +56,7 @@ public class CollidableConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -67,105 +67,76 @@ public class CollidableConfigTest
     }
 
     /**
-     * Test the configuration import.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
         final String group = "1";
-
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            final Xml node = root.createChild("group");
-            node.setText(group);
-            root.save(media);
+        final Xml root = new Xml("test");
+        final Xml node = root.createChild("group");
+        node.setText(group);
+        root.save(media);
 
-            final Integer id = CollidableConfig.imports(new Configurer(media));
+        Assert.assertEquals(Integer.valueOf(group), CollidableConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(Integer.valueOf(group), id);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration with invalid group.
+     * Test with invalid group.
      */
     @Test(expected = LionEngineException.class)
-    public void testConfigInvalidGroup()
+    public void testInvalidGroup()
     {
-        final String group = "a";
-
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            final Xml node = root.createChild("group");
-            node.setText(group);
-            root.save(media);
+        final Xml root = new Xml("test");
+        final Xml node = root.createChild("group");
+        node.setText("a");
+        root.save(media);
 
-            Assert.assertNotNull(CollidableConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertNotNull(CollidableConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration reader with default group.
+     * Test with default group.
      */
     @Test
-    public void testConfigDefaultGroup()
+    public void testDefaultGroup()
     {
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.save(media);
 
-            final Integer id = CollidableConfig.imports(new Configurer(media));
+        Assert.assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(CollidableConfig.DEFAULT_GROUP, id);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration export.
+     * Test export.
      */
     @Test
     public void testExport()
     {
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.save(media);
 
-            final Services services = new Services();
-            services.add(new ViewerMock());
+        final Services services = new Services();
+        services.add(new ViewerMock());
 
-            final Collidable collidable = new CollidableModel(services, new Setup(media));
-            collidable.setGroup(1);
-            CollidableConfig.exports(root, collidable);
+        final Collidable collidable = new CollidableModel(services, new Setup(media));
+        collidable.setGroup(1);
+        CollidableConfig.exports(root, collidable);
 
-            root.save(media);
+        root.save(media);
 
-            final Integer id = CollidableConfig.imports(new Configurer(media));
+        Assert.assertEquals(Integer.valueOf(1), CollidableConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(Integer.valueOf(1), id);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 }

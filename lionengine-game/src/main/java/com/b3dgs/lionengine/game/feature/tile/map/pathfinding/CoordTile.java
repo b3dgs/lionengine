@@ -35,6 +35,8 @@ public class CoordTile
      */
     public CoordTile(int tx, int ty)
     {
+        super();
+
         this.tx = tx;
         this.ty = ty;
     }

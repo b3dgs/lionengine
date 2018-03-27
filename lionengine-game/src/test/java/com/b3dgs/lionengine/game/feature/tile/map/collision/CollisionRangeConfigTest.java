@@ -25,15 +25,12 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the collision range configuration class.
+ * Test {@link CollisionRangeConfig}.
  */
-public class CollisionRangeConfigTest
+public final class CollisionRangeConfigTest
 {
-    /** Range test. */
-    private final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
-
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -44,30 +41,29 @@ public class CollisionRangeConfigTest
     }
 
     /**
-     * Test the import export.
+     * Test exports imports.
      */
     @Test
-    public void testRange()
+    public void testExportsImports()
     {
         final Xml root = new Xml("ranges");
+        final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
         CollisionRangeConfig.exports(root, range);
-        final CollisionRange imported = CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.RANGE));
 
-        Assert.assertEquals(range, imported);
+        Assert.assertEquals(range, CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)));
     }
 
     /**
-     * Test the import with invalid axis.
+     * Test with invalid axis.
      */
     @Test(expected = LionEngineException.class)
     public void testInvalidAxis()
     {
         final Xml root = new Xml("ranges");
+        final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
         CollisionRangeConfig.exports(root, range);
-        root.getChild(CollisionRangeConfig.RANGE).writeString(CollisionRangeConfig.AXIS, "void");
-        final CollisionRange imported = CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.RANGE));
 
-        Assert.assertNull(imported);
-        Assert.fail();
+        root.getChild(CollisionRangeConfig.NODE_RANGE).writeString(CollisionRangeConfig.ATT_AXIS, "void");
+        Assert.assertNull(CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)));
     }
 }

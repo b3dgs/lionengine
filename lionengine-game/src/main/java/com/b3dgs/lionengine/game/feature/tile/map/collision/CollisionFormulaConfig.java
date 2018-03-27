@@ -100,7 +100,7 @@ public final class CollisionFormulaConfig
         Check.notNull(node);
 
         final String name = node.readString(ATT_NAME);
-        final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.RANGE));
+        final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.NODE_RANGE));
         final CollisionFunction function = CollisionFunctionConfig.imports(node);
         final CollisionConstraint constraint = CollisionConstraintConfig.imports(node);
 

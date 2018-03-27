@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,9 +38,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the transitions configuration class.
+ * Test {@link TransitionsConfig}.
  */
-public class TransitionConfigTest
+public final class TransitionConfigTest // TODO rename to TransitionsConfig
 {
     /**
      * Prepare test.
@@ -65,7 +61,7 @@ public class TransitionConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -76,20 +72,20 @@ public class TransitionConfigTest
     }
 
     /**
-     * Test the transitions configuration.
+     * Test exports and imports.
      * 
      * @throws IOException If error.
      */
     @Test
-    public void testExtraction() throws IOException
+    public void testExportsImports() throws IOException
     {
         final MapTile map = UtilMap.createMap(7);
-        UtilMap.fill(map, TILE_WATER);
-        UtilMap.fill(map, TILE_WATER, TILE_TRANSITION, 3);
+        UtilMap.fill(map, UtilMap.TILE_WATER);
+        UtilMap.fill(map, UtilMap.TILE_WATER, UtilMap.TILE_TRANSITION, 3);
 
         final MapTile map2 = UtilMap.createMap(7);
-        UtilMap.fill(map, TILE_WATER);
-        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, UtilMap.TILE_WATER);
+        UtilMap.fill(map, UtilMap.TILE_GROUND, UtilMap.TILE_TRANSITION, 3);
 
         final MapTile map3 = new MapTileGame();
         map3.addFeature(new MapTileGroupModel());
@@ -100,18 +96,11 @@ public class TransitionConfigTest
                                                                                                         map2,
                                                                                                         map3));
 
-        final Media media = Medias.create("transition_tmp.xml");
-        try
-        {
-            TransitionsConfig.exports(media, transitions);
+        final Media media = Medias.create("transition.xml");
+        TransitionsConfig.exports(media, transitions);
 
-            final Map<Transition, Collection<TileRef>> imported = TransitionsConfig.imports(media);
+        Assert.assertEquals(transitions, TransitionsConfig.imports(media));
 
-            Assert.assertEquals(transitions, imported);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 }

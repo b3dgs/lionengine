@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the tile configuration class.
+ * Test {@link TileConfig}.
  */
-public class TileConfigTest
+public final class TileConfigTest
 {
     /**
      * Test the constructor.
@@ -41,27 +41,27 @@ public class TileConfigTest
     }
 
     /**
-     * Test the create tile from node.
+     * Test imports.
      */
     @Test
-    public void testCreate()
+    public void testImports()
     {
         final Xml nodeTile = new Xml(TileConfig.NODE_TILE);
         nodeTile.writeInteger(TileConfig.ATT_TILE_SHEET, 0);
         nodeTile.writeInteger(TileConfig.ATT_TILE_NUMBER, 1);
 
-        Assert.assertEquals(new TileRef(0, 1), TileConfig.create(nodeTile));
+        Assert.assertEquals(new TileRef(0, 1), TileConfig.imports(nodeTile));
     }
 
     /**
-     * Test the create tile from node.
+     * Test exports.
      */
     @Test
-    public void testExport()
+    public void testExports()
     {
         final int sheet = 0;
         final int number = 1;
-        final Xml nodeTile = TileConfig.export(new TileRef(sheet, number));
+        final Xml nodeTile = TileConfig.exports(new TileRef(sheet, number));
 
         Assert.assertEquals(sheet, nodeTile.readInteger(TileConfig.ATT_TILE_SHEET));
         Assert.assertEquals(number, nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER));

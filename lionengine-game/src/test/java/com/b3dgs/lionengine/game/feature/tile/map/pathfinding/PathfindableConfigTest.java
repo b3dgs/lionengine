@@ -35,9 +35,9 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the pathfindable configuration.
+ * Test {@link PathfindableConfig}.
  */
-public class PathfindableConfigTest
+public final class PathfindableConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public class PathfindableConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -69,103 +69,85 @@ public class PathfindableConfigTest
     }
 
     /**
-     * Test the configuration reader.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
+        final Map<String, PathData> map = new HashMap<>();
+        final PathData data = new PathData("category", 1.0, true, Arrays.asList(MovementTile.UP));
+        map.put(data.getName(), data);
+
+        final Xml root = new Xml("test");
+        root.add(PathfindableConfig.exports(map));
+
         final Media media = Medias.create("pathfindable.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            final PathData data = new PathData("category", 1.0, true, Arrays.asList(MovementTile.UP));
+        root.save(media);
 
-            final Map<String, PathData> map = new HashMap<>();
-            map.put(data.getName(), data);
-            root.add(PathfindableConfig.exports(map));
-            root.save(media);
+        Assert.assertEquals(map, PathfindableConfig.imports(new Configurer(media)));
 
-            final Map<String, PathData> loaded = PathfindableConfig.imports(new Configurer(media));
-
-            Assert.assertEquals(map, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration reader without node.
+     * Test without node.
      */
     @Test
-    public void testConfigNoNode()
+    public void testNoNode()
     {
+        final Xml root = new Xml("test");
         final Media media = Medias.create("pathfindable.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.save(media);
+        root.save(media);
 
-            Assert.assertTrue(PathfindableConfig.imports(new Configurer(media)).isEmpty());
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(PathfindableConfig.imports(new Configurer(media)).isEmpty());
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration reader without movements.
+     * Test without movements.
      */
     @Test
-    public void testConfigNoMovements()
+    public void testNoMovements()
     {
+        final Map<String, PathData> map = new HashMap<>();
+        final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
+        map.put(data.getName(), data);
+
+        final Xml root = new Xml("test");
+        root.add(PathfindableConfig.exports(map));
+
         final Media media = Medias.create("pathfindable.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
+        root.save(media);
 
-            final Map<String, PathData> map = new HashMap<>();
-            map.put(data.getName(), data);
-            root.add(PathfindableConfig.exports(map));
-            root.save(media);
+        final Map<String, PathData> imported = PathfindableConfig.imports(new Configurer(media));
 
-            final Map<String, PathData> loaded = PathfindableConfig.imports(new Configurer(media));
+        Assert.assertTrue(imported.get(data.getName()).getAllowedMovements().isEmpty());
+        Assert.assertEquals(map, imported);
 
-            Assert.assertTrue(loaded.get(data.getName()).getAllowedMovements().isEmpty());
-            Assert.assertEquals(map, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration reader with wrong movement.
+     * Test with wrong movement.
      */
     @Test(expected = LionEngineException.class)
-    public void testConfigWrongMovement()
+    public void testWrongMovement()
     {
-        final Media media = Medias.create("pathfindable.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
-            final Xml node = root.createChild(PathfindableConfig.PATHFINDABLE);
-            final Xml path = PathfindableConfig.exportPathData(data);
-            final Xml movement = path.createChild(PathfindableConfig.MOVEMENT);
-            movement.setText("VOID");
-            node.add(path);
-            root.save(media);
+        final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
+        final Xml path = PathfindableConfig.exportPathData(data);
+        final Xml movement = path.createChild(PathfindableConfig.NODE_MOVEMENT);
+        movement.setText("VOID");
 
-            Assert.assertNull(PathfindableConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        final Xml root = new Xml("test");
+        final Xml node = root.createChild(PathfindableConfig.NODE_PATHFINDABLE);
+        node.add(path);
+
+        final Media media = Medias.create("pathfindable.xml");
+        root.save(media);
+
+        Assert.assertNull(PathfindableConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 }

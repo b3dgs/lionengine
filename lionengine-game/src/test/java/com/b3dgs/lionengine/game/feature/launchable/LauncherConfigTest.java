@@ -28,13 +28,14 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the launcher config class.
+ * Test {@link LauncherConfig}.
  */
-public class LauncherConfigTest
+public final class LauncherConfigTest
 {
     /**
      * Prepare test.
@@ -55,32 +56,46 @@ public class LauncherConfigTest
     }
 
     /**
-     * Test the launchable configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final Media media = Medias.create("launcher.xml");
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(10, 10, Arrays.asList(launchable));
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(LauncherConfig.exports(launcher));
-            root.save(media);
 
-            final LauncherConfig loaded = LauncherConfig.imports(new Xml(media).getChild(LauncherConfig.NODE_LAUNCHER));
+        final Xml root = new Xml("test");
+        root.add(LauncherConfig.exports(launcher));
 
-            Assert.assertEquals(launcher, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        final Media media = Medias.create("launcher.xml");
+        root.save(media);
+
+        Assert.assertEquals(launcher, LauncherConfig.imports(new Xml(media).getChild(LauncherConfig.NODE_LAUNCHER)));
+        Assert.assertEquals(Arrays.asList(launcher), LauncherConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the launcher hash code.
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
+
+        Assert.assertEquals(launcher, launcher);
+
+        Assert.assertNotEquals(launcher, null);
+        Assert.assertNotEquals(launcher, new Object());
+        Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
+        Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
+        Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
+    }
+
+    /**
+     * Test hash code.
      */
     @Test
     public void testHashCode()
@@ -90,30 +105,14 @@ public class LauncherConfigTest
 
         Assert.assertEquals(launcher, launcher);
         Assert.assertEquals(launcher, new LauncherConfig(0, 1, Arrays.asList(launchable)).hashCode());
+
         Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)).hashCode());
         Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()).hashCode());
         Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)).hashCode());
     }
 
     /**
-     * Test the launcher equality.
-     */
-    @Test
-    public void testEquals()
-    {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
-
-        Assert.assertEquals(launcher, launcher);
-        Assert.assertNotEquals(launcher, null);
-        Assert.assertNotEquals(launcher, new Object());
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
-        Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
-    }
-
-    /**
-     * Test the to string.
+     * Test to string.
      */
     @Test
     public void testToString()

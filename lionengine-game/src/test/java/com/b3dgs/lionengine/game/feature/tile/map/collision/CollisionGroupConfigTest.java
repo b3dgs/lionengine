@@ -35,9 +35,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the collision group configuration class.
+ * Test {@link CollisionGroupConfig}.
  */
-public class CollisionGroupConfigTest
+public final class CollisionGroupConfigTest
 {
     /**
      * Prepare test.
@@ -83,27 +83,30 @@ public class CollisionGroupConfigTest
     }
 
     /**
-     * Test the group import export.
+     * Test exports imports.
      */
     @Test
-    public void testGroup()
+    public void testExportsImports()
     {
         final Xml root = new Xml("groups");
         CollisionGroupConfig.exports(root, group);
+
         final Media config = Medias.create("groups.xml");
         root.save(config);
-        final CollisionGroupConfig groups = CollisionGroupConfig.imports(config);
 
-        Assert.assertEquals(group, groups.getGroups().values().iterator().next());
-        Assert.assertEquals(group, groups.getGroup("group"));
+        final CollisionGroupConfig imported = CollisionGroupConfig.imports(config);
+
+        Assert.assertEquals(group, imported.getGroups().values().iterator().next());
+        Assert.assertEquals(group, imported.getGroup("group"));
+
         Assert.assertTrue(config.getFile().delete());
     }
 
     /**
-     * Test the group import export with map.
+     * Test with map.
      */
     @Test
-    public void testMap()
+    public void testExportsImportsMap()
     {
         final Xml root = new Xml("groups");
         CollisionGroupConfig.exports(root, group);
@@ -112,17 +115,19 @@ public class CollisionGroupConfigTest
         root.save(groupsConfig);
 
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
+
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
         final CollisionGroupConfig groups = CollisionGroupConfig.imports(groupsConfig);
 
         Assert.assertEquals(group, groups.getGroups().values().iterator().next());
+
         Assert.assertTrue(groupsConfig.getFile().delete());
         Assert.assertTrue(formulasConfig.getFile().delete());
     }
 
     /**
-     * Test the has and remove functions.
+     * Test has and remove functions.
      */
     @Test
     public void testHasRemove()

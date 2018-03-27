@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the frames configuration.
+ * Test {@link FramesConfig}.
  */
-public class FramesConfigTest
+public final class FramesConfigTest
 {
     /**
      * Prepare test.
@@ -51,48 +51,28 @@ public class FramesConfigTest
     }
 
     /**
-     * Test the configuration import.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
+        final Xml root = new Xml("test");
+        root.add(FramesConfig.exports(config));
+
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(FramesConfig.exports(config));
-            root.save(media);
+        root.save(media);
 
-            final FramesConfig loaded = FramesConfig.imports(new Xml(media));
-            Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, FramesConfig.imports(new Setup(media)));
-            Assert.assertEquals(config, FramesConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertEquals(config, FramesConfig.imports(new Xml(media)));
+        Assert.assertEquals(config, FramesConfig.imports(new Setup(media)));
+        Assert.assertEquals(config, FramesConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int hash = new FramesConfig(1, 2, 3, 4).hashCode();
-
-        Assert.assertEquals(hash, new FramesConfig(1, 2, 3, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(0, 2, 3, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 0, 3, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 0, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 3, 0).hashCode());
-    }
-
-    /**
-     * Test the equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -100,9 +80,10 @@ public class FramesConfigTest
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
         Assert.assertEquals(config, config);
+        Assert.assertEquals(config, new FramesConfig(1, 2, 3, 4));
+
         Assert.assertNotEquals(config, null);
         Assert.assertNotEquals(config, new Object());
-        Assert.assertEquals(config, new FramesConfig(1, 2, 3, 4));
         Assert.assertNotEquals(config, new FramesConfig(0, 2, 3, 4));
         Assert.assertNotEquals(config, new FramesConfig(1, 0, 3, 4));
         Assert.assertNotEquals(config, new FramesConfig(1, 2, 0, 4));
@@ -110,7 +91,23 @@ public class FramesConfigTest
     }
 
     /**
-     * Test the to string.
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new FramesConfig(1, 2, 3, 4).hashCode();
+
+        Assert.assertEquals(hash, new FramesConfig(1, 2, 3, 4).hashCode());
+
+        Assert.assertNotEquals(hash, new FramesConfig(0, 2, 3, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(1, 0, 3, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 0, 4).hashCode());
+        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 3, 0).hashCode());
+    }
+
+    /**
+     * Test to string.
      */
     @Test
     public void testToString()

@@ -33,9 +33,9 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the minimap config class.
+ * Test {@link MinimapConfig}.
  */
-public class MinimapConfigTest
+public final class MinimapConfigTest
 {
     /**
      * Prepare test.
@@ -56,7 +56,7 @@ public class MinimapConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -67,21 +67,21 @@ public class MinimapConfigTest
     }
 
     /**
-     * Test the configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final Media config = Medias.create("minimap.xml");
         final Map<TileRef, ColorRgba> tiles = new HashMap<>();
         tiles.put(new TileRef(0, 0), ColorRgba.RED);
         tiles.put(new TileRef(0, 1), ColorRgba.BLUE);
         tiles.put(new TileRef(1, 0), ColorRgba.GREEN);
 
+        final Media config = Medias.create("minimap.xml");
         MinimapConfig.exports(config, tiles);
 
-        final Map<TileRef, ColorRgba> imported = MinimapConfig.imports(config);
+        Assert.assertEquals(tiles, MinimapConfig.imports(config));
 
-        Assert.assertEquals(tiles, imported);
+        Assert.assertTrue(config.getFile().delete());
     }
 }

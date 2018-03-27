@@ -43,9 +43,9 @@ public final class TileGroupsConfig
     /** Group node. */
     public static final String NODE_GROUP = Constant.XML_PREFIX + "group";
     /** Group name attribute. */
-    public static final String ATTRIBUTE_GROUP_NAME = "name";
+    public static final String ATT_GROUP_NAME = "name";
     /** Group type attribute. */
-    public static final String ATTRIBUTE_GROUP_TYPE = "type";
+    public static final String ATT_GROUP_TYPE = "type";
     /** Remove group. */
     public static final String REMOVE_GROUP_NAME = Constant.EMPTY_STRING;
 
@@ -110,13 +110,13 @@ public final class TileGroupsConfig
 
         for (final Xml nodeTileRef : children)
         {
-            final TileRef tileRef = TileConfig.create(nodeTileRef);
+            final TileRef tileRef = TileConfig.imports(nodeTileRef);
             tiles.add(tileRef);
         }
 
-        final String groupName = nodeGroup.readString(ATTRIBUTE_GROUP_NAME);
+        final String groupName = nodeGroup.readString(ATT_GROUP_NAME);
         final TileGroupType groupType = TileGroupType.from(nodeGroup.readString(TileGroupType.NONE.name(),
-                                                                                ATTRIBUTE_GROUP_TYPE));
+                                                                                ATT_GROUP_TYPE));
         return new TileGroup(groupName, groupType, tiles);
     }
 
@@ -129,12 +129,12 @@ public final class TileGroupsConfig
     private static void exportGroup(Xml nodeGroups, TileGroup group)
     {
         final Xml nodeGroup = nodeGroups.createChild(NODE_GROUP);
-        nodeGroup.writeString(ATTRIBUTE_GROUP_NAME, group.getName());
-        nodeGroup.writeString(ATTRIBUTE_GROUP_TYPE, group.getType().name());
+        nodeGroup.writeString(ATT_GROUP_NAME, group.getName());
+        nodeGroup.writeString(ATT_GROUP_TYPE, group.getType().name());
 
         for (final TileRef tileRef : group.getTiles())
         {
-            final Xml nodeTileRef = TileConfig.export(tileRef);
+            final Xml nodeTileRef = TileConfig.exports(tileRef);
             nodeGroup.add(nodeTileRef);
         }
     }

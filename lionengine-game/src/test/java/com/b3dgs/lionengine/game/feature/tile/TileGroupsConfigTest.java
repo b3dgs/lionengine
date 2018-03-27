@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the tile group configuration class.
+ * Test {@link TileGroupsConfig}.
  */
-public class TileGroupsConfigTest
+public final class TileGroupsConfigTest
 {
     /**
      * Prepare test.
@@ -66,10 +66,10 @@ public class TileGroupsConfigTest
     }
 
     /**
-     * Test the configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfiguration()
+    public void testExportsImports()
     {
         final Collection<TileGroup> groups = new ArrayList<>();
         groups.add(new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
@@ -78,6 +78,7 @@ public class TileGroupsConfigTest
         TileGroupsConfig.exports(config, groups);
 
         Assert.assertEquals(groups, TileGroupsConfig.imports(config));
+
         Assert.assertTrue(config.getFile().delete());
     }
 }

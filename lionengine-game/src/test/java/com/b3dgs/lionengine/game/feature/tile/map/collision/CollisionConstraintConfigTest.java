@@ -26,15 +26,12 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the collision constraint configuration class.
+ * Test {@link CollisionConstraintConfig}.
  */
-public class CollisionConstraintConfigTest
+public final class CollisionConstraintConfigTest
 {
-    /** Constraint test. */
-    private final CollisionConstraint constraint = new CollisionConstraint();
-
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -45,29 +42,33 @@ public class CollisionConstraintConfigTest
     }
 
     /**
-     * Test the import export with empty constraint.
+     * Test exports imports.
      */
     @Test
-    public void testEmpty()
+    public void testExportsImports()
     {
         final Xml root = new Xml("constraint");
+
+        final CollisionConstraint constraint = new CollisionConstraint();
+        constraint.add(Orientation.EAST, "group");
         CollisionConstraintConfig.exports(root, constraint);
+
         final CollisionConstraint imported = CollisionConstraintConfig.imports(root);
 
         Assert.assertEquals(constraint, imported);
     }
 
     /**
-     * Test the import export.
+     * Test with empty constraint.
      */
     @Test
-    public void testConstraint()
+    public void testExportsImportsEmptyConstraints()
     {
         final Xml root = new Xml("constraint");
-        constraint.add(Orientation.EAST, "group");
-        CollisionConstraintConfig.exports(root, constraint);
-        final CollisionConstraint imported = CollisionConstraintConfig.imports(root);
 
-        Assert.assertEquals(constraint, imported);
+        final CollisionConstraint constraint = new CollisionConstraint();
+        CollisionConstraintConfig.exports(root, constraint);
+
+        Assert.assertEquals(constraint, CollisionConstraintConfig.imports(root));
     }
 }

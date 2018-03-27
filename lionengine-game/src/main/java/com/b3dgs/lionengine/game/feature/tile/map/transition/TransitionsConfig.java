@@ -58,15 +58,14 @@ public final class TransitionsConfig
      * Import all transitions from configuration.
      * 
      * @param config The transitions media (must not be <code>null</code>).
-     * @return The transitions imported.
+     * @return The transitions imported with associated tiles.
      * @throws LionEngineException If unable to read data.
      */
     public static Map<Transition, Collection<TileRef>> imports(Media config)
     {
         final Xml root = new Xml(config);
         final Collection<Xml> nodesTransition = root.getChildren(NODE_TRANSITION);
-        final Map<Transition, Collection<TileRef>> transitions;
-        transitions = new HashMap<>(nodesTransition.size());
+        final Map<Transition, Collection<TileRef>> transitions = new HashMap<>(nodesTransition.size());
 
         for (final Xml nodeTransition : nodesTransition)
         {
@@ -86,9 +85,9 @@ public final class TransitionsConfig
     }
 
     /**
-     * Export all transitions to an XML file.
+     * Export all transitions to media.
      *
-     * @param media The export output (must not be <code>null</code>).
+     * @param media The export media output (must not be <code>null</code>).
      * @param levels The level rips used (must not be <code>null</code>).
      * @param sheetsMedia The sheets media (must not be <code>null</code>).
      * @param groupsMedia The groups media (must not be <code>null</code>).
@@ -109,9 +108,9 @@ public final class TransitionsConfig
     }
 
     /**
-     * Export all transitions to an XML file.
+     * Export all transitions to media.
      * 
-     * @param media The export output (must not be <code>null</code>).
+     * @param media The export media output (must not be <code>null</code>).
      * @param transitions The transitions reference (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
@@ -125,6 +124,7 @@ public final class TransitionsConfig
         for (final Map.Entry<Transition, Collection<TileRef>> entry : transitions.entrySet())
         {
             final Transition transition = entry.getKey();
+
             final Xml nodeTransition = nodeTransitions.createChild(NODE_TRANSITION);
             nodeTransition.writeString(ATTRIBUTE_TRANSITION_TYPE, transition.getType().name());
             nodeTransition.writeString(ATTRIBUTE_GROUP_IN, transition.getIn());
@@ -148,7 +148,7 @@ public final class TransitionsConfig
 
         for (final Xml nodeTileRef : nodesTileRef)
         {
-            final TileRef tileRef = TileConfig.create(nodeTileRef);
+            final TileRef tileRef = TileConfig.imports(nodeTileRef);
             tilesRef.add(tileRef);
         }
 
@@ -165,7 +165,7 @@ public final class TransitionsConfig
     {
         for (final TileRef tileRef : tilesRef)
         {
-            final Xml nodeTileRef = TileConfig.export(tileRef);
+            final Xml nodeTileRef = TileConfig.exports(tileRef);
             nodeTransition.add(nodeTileRef);
         }
     }

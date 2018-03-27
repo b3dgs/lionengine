@@ -23,18 +23,19 @@ import org.junit.Test;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 
 /**
- * Test coordinate tile class.
+ * Test {@link CoordTile}.
  */
-public class CoordTileTest
+public final class CoordTileTest
 {
     /**
-     * Test coordinate tile functions.
+     * Test constructor.
      */
     @Test
-    public void testCoordTile()
+    public void testConstructor()
     {
-        final CoordTile coord = new CoordTile(1, 5);
-        Assert.assertTrue(coord.getX() == 1);
-        Assert.assertTrue(coord.getY() == 5);
+        final CoordTile coord = new CoordTile(1, 2);
+
+        Assert.assertEquals(1, coord.getX());
+        Assert.assertEquals(2, coord.getY());
     }
 }

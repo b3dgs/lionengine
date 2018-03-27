@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the featurable configuration.
+ * Test {@link FeaturableConfig}.
  */
-public class FeaturableConfigTest
+public final class FeaturableConfigTest
 {
     /**
      * Prepare test.
@@ -52,112 +52,81 @@ public class FeaturableConfigTest
     }
 
     /**
-     * Test the configuration import.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
         final String clazz = "class";
         final String setup = "setup";
         final FeaturableConfig config = new FeaturableConfig(clazz, setup);
 
+        final Xml root = new Xml("test");
+        root.add(FeaturableConfig.exportClass(clazz));
+        root.add(FeaturableConfig.exportSetup(setup));
+
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(FeaturableConfig.exportClass(clazz));
-            root.add(FeaturableConfig.exportSetup(setup));
-            root.save(media);
+        root.save(media);
 
-            final FeaturableConfig loaded = FeaturableConfig.imports(new Xml(media));
+        Assert.assertEquals(config, FeaturableConfig.imports(new Xml(media)));
+        Assert.assertEquals(config, FeaturableConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, FeaturableConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration reader with default class.
+     * Test with default class.
      */
     @Test
-    public void testConfigDefaultClass()
+    public void testDefaultClass()
     {
-        final FeaturableConfig config = new FeaturableConfig(FeaturableModel.class.getName(), "");
+        final Xml root = new Xml("test");
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.save(media);
+        root.save(media);
 
-            final FeaturableConfig loaded = FeaturableConfig.imports(new Xml(media));
-            Assert.assertEquals(config, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertEquals(new FeaturableConfig(FeaturableModel.class.getName(), ""),
+                            FeaturableConfig.imports(new Xml(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration reader with default setup.
+     * Test with default setup.
      */
     @Test
-    public void testConfigDefaultSetup()
+    public void testDefaultSetup()
     {
-        final FeaturableConfig config = new FeaturableConfig("clazz", "");
-        final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(FeaturableConfig.exportClass("clazz"));
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.add(FeaturableConfig.exportClass("clazz"));
 
-            final FeaturableConfig loaded = FeaturableConfig.imports(new Xml(media));
-            Assert.assertEquals(config, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        final Media media = Medias.create("object.xml");
+        root.save(media);
+
+        Assert.assertEquals(new FeaturableConfig("clazz", ""), FeaturableConfig.imports(new Xml(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration with <code>null</code> class.
+     * Test with <code>null</code> class.
      */
     @Test(expected = LionEngineException.class)
-    public void testConfigNullClass()
+    public void testNullClass()
     {
         Assert.assertNotNull(new FeaturableConfig(null, "setup"));
     }
 
     /**
-     * Test the configuration with <code>null</code> setup.
+     * Test with <code>null</code> setup.
      */
     @Test(expected = LionEngineException.class)
-    public void testConfigNullSetup()
+    public void testNullSetup()
     {
         Assert.assertNotNull(new FeaturableConfig("class", null));
     }
 
     /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int hash = new FeaturableConfig("class", "setup").hashCode();
-
-        Assert.assertEquals(hash, new FeaturableConfig("class", "setup").hashCode());
-        Assert.assertNotEquals(hash, new FeaturableConfig("", "setup").hashCode());
-        Assert.assertNotEquals(hash, new FeaturableConfig("class", "").hashCode());
-    }
-
-    /**
-     * Test the equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -165,15 +134,30 @@ public class FeaturableConfigTest
         final FeaturableConfig config = new FeaturableConfig("class", "setup");
 
         Assert.assertEquals(config, config);
+        Assert.assertEquals(config, new FeaturableConfig("class", "setup"));
+
         Assert.assertNotEquals(config, null);
         Assert.assertNotEquals(config, new Object());
-        Assert.assertEquals(config, new FeaturableConfig("class", "setup"));
         Assert.assertNotEquals(config, new FeaturableConfig("", "setup"));
         Assert.assertNotEquals(config, new FeaturableConfig("class", ""));
     }
 
     /**
-     * Test the to string.
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new FeaturableConfig("class", "setup").hashCode();
+
+        Assert.assertEquals(hash, new FeaturableConfig("class", "setup").hashCode());
+
+        Assert.assertNotEquals(hash, new FeaturableConfig("", "setup").hashCode());
+        Assert.assertNotEquals(hash, new FeaturableConfig("class", "").hashCode());
+    }
+
+    /**
+     * Test to string.
      */
     @Test
     public void testToString()

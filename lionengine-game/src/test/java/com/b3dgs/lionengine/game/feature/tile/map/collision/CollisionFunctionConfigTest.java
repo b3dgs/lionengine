@@ -25,15 +25,12 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the collision function configuration class.
+ * Test {@link CollisionFunctionConfig}.
  */
-public class CollisionFunctionConfigTest
+public final class CollisionFunctionConfigTest
 {
-    /** Function test. */
-    private final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);
-
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -44,22 +41,24 @@ public class CollisionFunctionConfigTest
     }
 
     /**
-     * Test the import export.
+     * Test exports imports.
      */
     @Test
     public void testFunction()
     {
         final Xml root = new Xml("function");
+        final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);
         CollisionFunctionConfig.exports(root, function);
+
         final CollisionFunction imported = CollisionFunctionConfig.imports(root);
 
         Assert.assertEquals(function, imported);
     }
 
     /**
-     * Test the export with unknown function.
+     * Test export with unknown function.
      */
-    @Test
+    @Test(expected = LionEngineException.class)
     public void testExportFunctionUnknown()
     {
         final Xml root = new Xml("function");
@@ -77,20 +76,21 @@ public class CollisionFunctionConfigTest
                 return 0;
             }
         });
+
+        Assert.assertNull(CollisionFunctionConfig.imports(root));
     }
 
     /**
-     * Test the import with invalid function.
+     * Test import with invalid function.
      */
     @Test(expected = LionEngineException.class)
     public void testImportFunctionInvalid()
     {
         final Xml root = new Xml("function");
+        final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);
         CollisionFunctionConfig.exports(root, function);
-        root.getChild(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE, "void");
-        final CollisionFunction imported = CollisionFunctionConfig.imports(root);
 
-        Assert.assertNull(imported);
-        Assert.fail();
+        root.getChild(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE, "void");
+        Assert.assertNull(CollisionFunctionConfig.imports(root));
     }
 }

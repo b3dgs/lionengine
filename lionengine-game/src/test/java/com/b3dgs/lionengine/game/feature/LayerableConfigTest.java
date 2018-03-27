@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the layerable configuration.
+ * Test {@link LayerableConfig}.
  */
-public class LayerableConfigTest
+public final class LayerableConfigTest
 {
     /**
      * Prepare test.
@@ -51,48 +51,26 @@ public class LayerableConfigTest
     }
 
     /**
-     * Test the configuration reader.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final int layerRefresh = 0;
-        final int layerDisplay = 1;
-        final LayerableConfig config = new LayerableConfig(layerRefresh, layerDisplay);
+        final Xml root = new Xml("test");
+        final LayerableConfig config = new LayerableConfig(0, 1);
+        root.add(LayerableConfig.exports(config));
 
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(LayerableConfig.exports(config));
-            root.save(media);
+        root.save(media);
 
-            final LayerableConfig loaded = LayerableConfig.imports(new Xml(media));
+        Assert.assertEquals(config, LayerableConfig.imports(new Xml(media)));
+        Assert.assertEquals(config, LayerableConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, LayerableConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int hash = new LayerableConfig(0, 1).hashCode();
-
-        Assert.assertEquals(hash, new LayerableConfig(0, 1).hashCode());
-        Assert.assertNotEquals(hash, new LayerableConfig(1, 1).hashCode());
-        Assert.assertNotEquals(hash, new LayerableConfig(1, 0).hashCode());
-    }
-
-    /**
-     * Test the equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -100,15 +78,32 @@ public class LayerableConfigTest
         final LayerableConfig config = new LayerableConfig(0, 1);
 
         Assert.assertEquals(config, config);
+        Assert.assertEquals(config, new LayerableConfig(0, 1));
+
         Assert.assertNotEquals(config, null);
         Assert.assertNotEquals(config, new Object());
-        Assert.assertEquals(config, new LayerableConfig(0, 1));
         Assert.assertNotEquals(config, new LayerableConfig(1, 1));
+        Assert.assertNotEquals(config, new LayerableConfig(0, 0));
         Assert.assertNotEquals(config, new LayerableConfig(1, 0));
     }
 
     /**
-     * Test the to string.
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new LayerableConfig(0, 1).hashCode();
+
+        Assert.assertEquals(hash, new LayerableConfig(0, 1).hashCode());
+
+        Assert.assertNotEquals(hash, new LayerableConfig(1, 1).hashCode());
+        Assert.assertNotEquals(hash, new LayerableConfig(0, 0).hashCode());
+        Assert.assertNotEquals(hash, new LayerableConfig(1, 0).hashCode());
+    }
+
+    /**
+     * Test to string.
      */
     @Test
     public void testToString()

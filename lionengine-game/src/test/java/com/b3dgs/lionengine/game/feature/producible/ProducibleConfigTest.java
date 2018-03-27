@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the producible config class.
+ * Test {@link ProducibleConfig}.
  */
-public class ProducibleConfigTest
+public final class ProducibleConfigTest
 {
     /**
      * Prepare test.
@@ -53,44 +53,25 @@ public class ProducibleConfigTest
     }
 
     /**
-     * Test the producible configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final Media media = Medias.create("producible.xml");
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(SizeConfig.exports(new SizeConfig(producible.getWidth(), producible.getHeight())));
-            root.add(ProducibleConfig.exports(producible));
-            root.save(media);
 
-            final ProducibleConfig loaded = ProducibleConfig.imports(new Xml(media));
-            Assert.assertEquals(producible, loaded);
-            Assert.assertEquals(producible, ProducibleConfig.imports(new Setup(media)));
-            Assert.assertEquals(producible, ProducibleConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
-    }
+        final Xml root = new Xml("test");
+        root.add(SizeConfig.exports(new SizeConfig(producible.getWidth(), producible.getHeight())));
+        root.add(ProducibleConfig.exports(producible));
 
-    /**
-     * Test the producible hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int producible = new ProducibleConfig(1, 2, 3).hashCode();
+        final Media media = Medias.create("producible.xml");
+        root.save(media);
 
-        Assert.assertEquals(producible, producible);
-        Assert.assertEquals(producible, new ProducibleConfig(1, 2, 3).hashCode());
-        Assert.assertNotEquals(producible, new ProducibleConfig(0, 2, 3).hashCode());
-        Assert.assertNotEquals(producible, new ProducibleConfig(1, 0, 3).hashCode());
-        Assert.assertNotEquals(producible, new ProducibleConfig(1, 2, 0).hashCode());
+        Assert.assertEquals(producible, ProducibleConfig.imports(new Xml(media)));
+        Assert.assertEquals(producible, ProducibleConfig.imports(new Setup(media)));
+        Assert.assertEquals(producible, ProducibleConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -102,11 +83,27 @@ public class ProducibleConfigTest
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
         Assert.assertEquals(producible, producible);
+
         Assert.assertNotEquals(producible, null);
         Assert.assertNotEquals(producible, new Object());
         Assert.assertNotEquals(producible, new ProducibleConfig(0, 2, 3));
         Assert.assertNotEquals(producible, new ProducibleConfig(1, 0, 3));
         Assert.assertNotEquals(producible, new ProducibleConfig(1, 2, 0));
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new ProducibleConfig(1, 2, 3).hashCode();
+
+        Assert.assertEquals(hash, new ProducibleConfig(1, 2, 3).hashCode());
+
+        Assert.assertNotEquals(hash, new ProducibleConfig(0, 2, 3).hashCode());
+        Assert.assertNotEquals(hash, new ProducibleConfig(1, 0, 3).hashCode());
+        Assert.assertNotEquals(hash, new ProducibleConfig(1, 2, 0).hashCode());
     }
 
     /**

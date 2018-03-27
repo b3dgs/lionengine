@@ -23,9 +23,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test orientation class.
+ * Test {@link Orientation}.
  */
-public class OrientationTest
+public final class OrientationTest
 {
     /**
      * Test the enum.

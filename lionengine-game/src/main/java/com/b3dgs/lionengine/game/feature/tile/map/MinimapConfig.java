@@ -48,11 +48,11 @@ public final class MinimapConfig
     /** Color node. */
     public static final String NODE_COLOR = Constant.XML_PREFIX + "color";
     /** Red name attribute. */
-    public static final String ATTRIBUTE_COLOR_RED = "r";
+    public static final String ATT_COLOR_RED = "r";
     /** Green name attribute. */
-    public static final String ATTRIBUTE_COLOR_GREEN = "g";
+    public static final String ATT_COLOR_GREEN = "g";
     /** Blue name attribute. */
-    public static final String ATTRIBUTE_COLOR_BLUE = "b";
+    public static final String ATT_COLOR_BLUE = "b";
 
     /**
      * Create the minimap data from node.
@@ -70,13 +70,13 @@ public final class MinimapConfig
 
         for (final Xml nodeColor : nodeMinimap.getChildren(NODE_COLOR))
         {
-            final ColorRgba color = new ColorRgba(nodeColor.readInteger(ATTRIBUTE_COLOR_RED),
-                                                  nodeColor.readInteger(ATTRIBUTE_COLOR_GREEN),
-                                                  nodeColor.readInteger(ATTRIBUTE_COLOR_BLUE));
+            final ColorRgba color = new ColorRgba(nodeColor.readInteger(ATT_COLOR_RED),
+                                                  nodeColor.readInteger(ATT_COLOR_GREEN),
+                                                  nodeColor.readInteger(ATT_COLOR_BLUE));
 
             for (final Xml nodeTileRef : nodeColor.getChildren(TileConfig.NODE_TILE))
             {
-                final TileRef tileRef = TileConfig.create(nodeTileRef);
+                final TileRef tileRef = TileConfig.imports(nodeTileRef);
                 colors.put(tileRef, color);
             }
         }
@@ -103,13 +103,13 @@ public final class MinimapConfig
         {
             final ColorRgba color = entry.getKey();
             final Xml nodeColor = nodeMinimap.createChild(NODE_COLOR);
-            nodeColor.writeInteger(ATTRIBUTE_COLOR_RED, color.getRed());
-            nodeColor.writeInteger(ATTRIBUTE_COLOR_GREEN, color.getGreen());
-            nodeColor.writeInteger(ATTRIBUTE_COLOR_BLUE, color.getBlue());
+            nodeColor.writeInteger(ATT_COLOR_RED, color.getRed());
+            nodeColor.writeInteger(ATT_COLOR_GREEN, color.getGreen());
+            nodeColor.writeInteger(ATT_COLOR_BLUE, color.getBlue());
 
             for (final TileRef tileRef : entry.getValue())
             {
-                final Xml nodeTileRef = TileConfig.export(tileRef);
+                final Xml nodeTileRef = TileConfig.exports(tileRef);
                 nodeColor.add(nodeTileRef);
             }
         }

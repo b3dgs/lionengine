@@ -27,13 +27,10 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the action config class.
+ * Test {@link ActionConfig}.
  */
-public class ActionConfigTest
+public final class ActionConfigTest
 {
-    /** Temp file name. */
-    private static final String ACTION_XML = "action.xml";
-
     /**
      * Prepare test.
      */
@@ -53,47 +50,26 @@ public class ActionConfigTest
     }
 
     /**
-     * Test the action configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final Media media = Medias.create(ACTION_XML);
         final ActionConfig action = new ActionConfig("name", "description", 0, 1, 16, 32);
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(ActionConfig.exports(action));
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.add(ActionConfig.exports(action));
 
-            final ActionConfig loaded = ActionConfig.imports(new Xml(media));
+        final Media media = Medias.create("action.xml");
+        root.save(media);
 
-            Assert.assertEquals(action, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertEquals(action, ActionConfig.imports(new Xml(media)));
+        Assert.assertEquals(action, ActionConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the actionnable hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int action = new ActionConfig("a", "b", 0, 1, 2, 3).hashCode();
-
-        Assert.assertNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "", 0, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", -1, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1).hashCode());
-    }
-
-    /**
-     * Test the actionnable equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -101,6 +77,7 @@ public class ActionConfigTest
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
         Assert.assertEquals(action, action);
+
         Assert.assertNotEquals(action, null);
         Assert.assertNotEquals(action, new Object());
         Assert.assertNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3));
@@ -109,6 +86,24 @@ public class ActionConfigTest
         Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3));
         Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3));
         Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1));
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int action = new ActionConfig("a", "b", 0, 1, 2, 3).hashCode();
+
+        Assert.assertEquals(action, new ActionConfig("a", "b", 0, 1, 2, 3).hashCode());
+
+        Assert.assertNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3).hashCode());
+        Assert.assertNotEquals(action, new ActionConfig("a", "", 0, 1, 2, 3).hashCode());
+        Assert.assertNotEquals(action, new ActionConfig("a", "b", -1, 1, 2, 3).hashCode());
+        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3).hashCode());
+        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3).hashCode());
+        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1).hashCode());
     }
 
     /**

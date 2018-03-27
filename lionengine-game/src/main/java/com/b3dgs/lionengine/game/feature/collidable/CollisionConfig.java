@@ -40,21 +40,21 @@ import com.b3dgs.lionengine.io.XmlReader;
 public final class CollisionConfig
 {
     /** Collision node name. */
-    public static final String COLLISION = Constant.XML_PREFIX + "collision";
+    public static final String NODE_COLLISION = Constant.XML_PREFIX + "collision";
     /** Collision attribute name. */
-    public static final String COLLISION_NAME = "name";
+    public static final String ATT_NAME = "name";
     /** Collision attribute offset x. */
-    public static final String COLLISION_OFFSETX = "offsetX";
+    public static final String ATT_OFFSETX = "offsetX";
     /** Collision attribute offset y. */
-    public static final String COLLISION_OFFSETY = "offsetY";
+    public static final String ATT_OFFSETY = "offsetY";
     /** Collision attribute width. */
-    public static final String COLLISION_WIDTH = "width";
+    public static final String ATT_WIDTH = "width";
     /** Collision attribute height. */
-    public static final String COLLISION_HEIGHT = "height";
+    public static final String ATT_HEIGHT = "height";
     /** Collision attribute mirror. */
-    public static final String COLLISION_MIRROR = "mirror";
+    public static final String ATT_MIRROR = "mirror";
     /** Error collision not found. */
-    private static final String ERROR_COLLISION_NOT_FOUND = "Collision not found: ";
+    static final String ERROR_COLLISION_NOT_FOUND = "Collision not found: ";
 
     /**
      * Create the collision data from node.
@@ -69,9 +69,9 @@ public final class CollisionConfig
 
         final Map<String, Collision> collisions = new HashMap<>(0);
 
-        for (final Xml node : configurer.getRoot().getChildren(COLLISION))
+        for (final Xml node : configurer.getRoot().getChildren(NODE_COLLISION))
         {
-            final String coll = node.readString(COLLISION_NAME);
+            final String coll = node.readString(ATT_NAME);
             final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
@@ -90,12 +90,12 @@ public final class CollisionConfig
     {
         Check.notNull(node);
 
-        final String name = node.readString(COLLISION_NAME);
-        final int offsetX = node.readInteger(COLLISION_OFFSETX);
-        final int offsetY = node.readInteger(COLLISION_OFFSETY);
-        final int width = node.readInteger(COLLISION_WIDTH);
-        final int height = node.readInteger(COLLISION_HEIGHT);
-        final boolean mirror = node.readBoolean(COLLISION_MIRROR);
+        final String name = node.readString(ATT_NAME);
+        final int offsetX = node.readInteger(ATT_OFFSETX);
+        final int offsetY = node.readInteger(ATT_OFFSETY);
+        final int width = node.readInteger(ATT_WIDTH);
+        final int height = node.readInteger(ATT_HEIGHT);
+        final boolean mirror = node.readBoolean(ATT_MIRROR);
 
         return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
@@ -111,13 +111,13 @@ public final class CollisionConfig
         Check.notNull(root);
         Check.notNull(collision);
 
-        final Xml node = root.createChild(COLLISION);
-        node.writeString(COLLISION_NAME, collision.getName());
-        node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
-        node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
-        node.writeInteger(COLLISION_WIDTH, collision.getWidth());
-        node.writeInteger(COLLISION_HEIGHT, collision.getHeight());
-        node.writeBoolean(COLLISION_MIRROR, collision.hasMirror());
+        final Xml node = root.createChild(NODE_COLLISION);
+        node.writeString(ATT_NAME, collision.getName());
+        node.writeInteger(ATT_OFFSETX, collision.getOffsetX());
+        node.writeInteger(ATT_OFFSETY, collision.getOffsetY());
+        node.writeInteger(ATT_WIDTH, collision.getWidth());
+        node.writeInteger(ATT_HEIGHT, collision.getHeight());
+        node.writeBoolean(ATT_MIRROR, collision.hasMirror());
     }
 
     /** Collisions map. */
@@ -129,7 +129,7 @@ public final class CollisionConfig
      * @param collisions The collisions mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    private CollisionConfig(Map<String, Collision> collisions)
+    public CollisionConfig(Map<String, Collision> collisions)
     {
         Check.notNull(collisions);
 

@@ -154,7 +154,7 @@ public final class SizeConfig
             return false;
         }
         final SizeConfig other = (SizeConfig) object;
-        return other.getWidth() == getWidth() && other.getHeight() == getHeight();
+        return other.width == width && other.height == height;
     }
 
     @Override

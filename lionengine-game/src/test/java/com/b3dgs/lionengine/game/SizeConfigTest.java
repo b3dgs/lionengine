@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the size configuration.
+ * Test {@link SizeConfig}.
  */
-public class SizeConfigTest
+public final class SizeConfigTest
 {
     /**
      * Prepare test.
@@ -50,46 +50,27 @@ public class SizeConfigTest
     }
 
     /**
-     * Test the configuration reader.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
         final SizeConfig config = new SizeConfig(16, 32);
 
+        final Xml root = new Xml("test");
+        root.add(SizeConfig.exports(config));
+
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(SizeConfig.exports(config));
-            root.save(media);
+        root.save(media);
 
-            final SizeConfig loaded = SizeConfig.imports(new Xml(media));
+        Assert.assertEquals(config, SizeConfig.imports(new Xml(media)));
+        Assert.assertEquals(config, SizeConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, SizeConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int hash = new SizeConfig(16, 32).hashCode();
-
-        Assert.assertEquals(hash, new SizeConfig(16, 32).hashCode());
-        Assert.assertNotEquals(hash, new SizeConfig(0, 32).hashCode());
-        Assert.assertNotEquals(hash, new SizeConfig(16, 0).hashCode());
-    }
-
-    /**
-     * Test the equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -97,15 +78,30 @@ public class SizeConfigTest
         final SizeConfig config = new SizeConfig(16, 32);
 
         Assert.assertEquals(config, config);
+        Assert.assertEquals(config, new SizeConfig(16, 32));
+
         Assert.assertNotEquals(config, null);
         Assert.assertNotEquals(config, new Object());
-        Assert.assertEquals(config, new SizeConfig(16, 32));
         Assert.assertNotEquals(config, new SizeConfig(0, 32));
         Assert.assertNotEquals(config, new SizeConfig(16, 0));
     }
 
     /**
-     * Test the to string.
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new SizeConfig(16, 32).hashCode();
+
+        Assert.assertEquals(hash, new SizeConfig(16, 32).hashCode());
+
+        Assert.assertNotEquals(hash, new SizeConfig(0, 32).hashCode());
+        Assert.assertNotEquals(hash, new SizeConfig(16, 0).hashCode());
+    }
+
+    /**
+     * Test to string.
      */
     @Test
     public void testToString()

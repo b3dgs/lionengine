@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,13 +40,10 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the circuits configuration class.
+ * Test {@link CircuitsConfig}.
  */
-public class CircuitConfigTest
+public final class CircuitConfigTest // TODO rename to CircuitsConfig
 {
-    /** Test configuration. */
-    private static Media config;
-
     /**
      * Prepare test.
      */
@@ -57,7 +51,6 @@ public class CircuitConfigTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilMapTransition.createTransitions();
     }
 
     /**
@@ -66,12 +59,11 @@ public class CircuitConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Assert.assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -82,17 +74,19 @@ public class CircuitConfigTest
     }
 
     /**
-     * Test the circuits configuration.
+     * Test exports imports.
      * 
      * @throws IOException If error.
      */
     @Test
-    public void testExtraction() throws IOException
+    public void testExportsImports() throws IOException
     {
+        final Media config = UtilMapTransition.createTransitions();
+
         final MapTile map = UtilMap.createMap(7);
         map.getFeature(MapTileTransition.class).loadTransitions(config);
-        UtilMap.fill(map, TILE_GROUND);
-        UtilMap.fill(map, TILE_ROAD, TILE_ROAD, 3);
+        UtilMap.fill(map, UtilMap.TILE_GROUND);
+        UtilMap.fill(map, UtilMap.TILE_ROAD, UtilMap.TILE_ROAD, 3);
 
         final MapTile map3 = new MapTileGame();
         map3.addFeature(new MapTileGroupModel());
@@ -101,18 +95,14 @@ public class CircuitConfigTest
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
         final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(Arrays.asList(map, map3));
 
-        final Media media = Medias.create("circuit_tmp.xml");
-        try
-        {
-            CircuitsConfig.exports(media, circuits);
+        final Media media = Medias.create("circuit.xml");
 
-            final Map<Circuit, Collection<TileRef>> imported = CircuitsConfig.imports(media);
+        CircuitsConfig.exports(media, circuits);
+        final Map<Circuit, Collection<TileRef>> imported = CircuitsConfig.imports(media);
 
-            Assert.assertEquals(circuits, imported);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertEquals(circuits, imported);
+
+        Assert.assertTrue(media.getFile().delete());
+        Assert.assertTrue(config.getFile().delete());
     }
 }

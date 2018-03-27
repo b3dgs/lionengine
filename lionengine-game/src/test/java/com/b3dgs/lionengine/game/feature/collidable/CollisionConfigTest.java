@@ -17,24 +17,24 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import java.util.HashMap;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the collision configuration class.
+ * Test {@link CollisionConfig}.
  */
-public class CollisionConfigTest
+public final class CollisionConfigTest
 {
-    /** Test configuration. */
-    private static Media media;
-
     /**
      * Prepare test.
      */
@@ -42,7 +42,6 @@ public class CollisionConfigTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        media = Medias.create("collision.xml");
     }
 
     /**
@@ -51,19 +50,20 @@ public class CollisionConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Assert.assertTrue(media.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     /**
-     * Test the configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfiguration()
+    public void testExportsImports()
     {
         final Xml root = new Xml("collision");
         final Collision collision = new Collision("test", 0, 1, 2, 3, true);
         CollisionConfig.exports(root, collision);
+
+        final Media media = Medias.create("collision.xml");
         root.save(media);
 
         final CollisionConfig config = CollisionConfig.imports(new Configurer(media));
@@ -78,5 +78,25 @@ public class CollisionConfigTest
 
         Assert.assertFalse(config.getCollisions().isEmpty());
         Assert.assertEquals(collision, config.getCollision("test"));
+
+        Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test get unknown collision.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetUnknownCollision()
+    {
+        final CollisionConfig config = new CollisionConfig(new HashMap<>());
+        try
+        {
+            Assert.assertNull(config.getCollision("void"));
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals(CollisionConfig.ERROR_COLLISION_NOT_FOUND + "void", exception.getMessage());
+            throw exception;
+        }
     }
 }

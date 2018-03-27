@@ -40,9 +40,9 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the collision category configuration class.
+ * Test {@link CollisionCategoryConfig}.
  */
-public class CollisionCategoryConfigTest
+public final class CollisionCategoryConfigTest
 {
     /**
      * Prepare test.
@@ -90,7 +90,7 @@ public class CollisionCategoryConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -101,7 +101,33 @@ public class CollisionCategoryConfigTest
     }
 
     /**
-     * Test the import export.
+     * Test exports imports.
+     */
+    @Test
+    public void testExportsImports()
+    {
+        final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
+        final Media groupsConfig = UtilConfig.createGroupsConfig(group);
+        mapCollision.loadCollisions(formulasConfig, groupsConfig);
+
+        final Xml root = new Xml("categories");
+        CollisionCategoryConfig.exports(root, category);
+
+        final Media media = Medias.create("object.xml");
+        root.save(media);
+
+        final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(new Configurer(media),
+                                                                                       mapCollision);
+
+        Assert.assertEquals(category, imported.iterator().next());
+
+        Assert.assertTrue(formulasConfig.getFile().delete());
+        Assert.assertTrue(groupsConfig.getFile().delete());
+        Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test category.
      */
     @Test
     public void testCategory()
@@ -111,40 +137,19 @@ public class CollisionCategoryConfigTest
         CollisionCategoryConfig.exports(root, new CollisionCategory("name2", Axis.X, 1, 2, Arrays.asList(group)));
 
         final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(root);
+
         Assert.assertEquals(category, imported.iterator().next());
     }
 
     /**
-     * Test the import from configurer.
-     */
-    @Test
-    public void testConfigurer()
-    {
-        final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
-        final Media groupsConfig = UtilConfig.createGroupsConfig(group);
-        mapCollision.loadCollisions(formulasConfig, groupsConfig);
-
-        final Xml root = new Xml("categories");
-        CollisionCategoryConfig.exports(root, category);
-        final Media media = Medias.create("object.xml");
-        root.save(media);
-        final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(new Configurer(media),
-                                                                                       mapCollision);
-
-        Assert.assertEquals(category, imported.iterator().next());
-        Assert.assertTrue(formulasConfig.getFile().delete());
-        Assert.assertTrue(groupsConfig.getFile().delete());
-        Assert.assertTrue(media.getFile().delete());
-    }
-
-    /**
-     * Test the import from map.
+     * Test from map.
      */
     @Test
     public void testMap()
     {
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
         final Media groupsConfig = UtilConfig.createGroupsConfig(group);
+
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
         final Xml root = new Xml("categories");
@@ -154,30 +159,30 @@ public class CollisionCategoryConfigTest
                                                                            mapCollision);
 
         Assert.assertEquals(category, imported);
+
         Assert.assertTrue(formulasConfig.getFile().delete());
         Assert.assertTrue(groupsConfig.getFile().delete());
     }
 
     /**
-     * Test the import from map with invalid axis.
+     * Test with invalid axis.
      */
     @Test(expected = LionEngineException.class)
     public void testMapInvalidAxis()
     {
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
         final Media groupsConfig = UtilConfig.createGroupsConfig(group);
+
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
-        root.getChild(Constant.XML_PREFIX + "category").writeString(CollisionCategoryConfig.AXIS, "void");
-        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX
-                                                                                         + "category"),
-                                                                           mapCollision);
+
+        root.getChild(Constant.XML_PREFIX + "category").writeString(CollisionCategoryConfig.ATT_AXIS, "void");
+        Assert.assertNull(CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX + "category"),
+                                                          mapCollision));
 
         Assert.assertTrue(formulasConfig.getFile().delete());
         Assert.assertTrue(groupsConfig.getFile().delete());
-        Assert.assertNull(imported);
-        Assert.fail();
     }
 }

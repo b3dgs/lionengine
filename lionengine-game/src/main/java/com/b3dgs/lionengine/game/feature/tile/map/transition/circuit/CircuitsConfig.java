@@ -50,11 +50,11 @@ public final class CircuitsConfig
     /** Circuit node. */
     public static final String NODE_CIRCUIT = Constant.XML_PREFIX + "circuit";
     /** Attribute circuit type. */
-    public static final String ATTRIBUTE_CIRCUIT_TYPE = "type";
+    public static final String ATT_CIRCUIT_TYPE = "type";
     /** Attribute group in. */
-    public static final String ATTRIBUTE_GROUP_IN = "in";
+    public static final String ATT_GROUP_IN = "in";
     /** Attribute group out. */
-    public static final String ATTRIBUTE_GROUP_OUT = "out";
+    public static final String ATT_GROUP_OUT = "out";
 
     /**
      * Import all circuits from configuration.
@@ -73,9 +73,9 @@ public final class CircuitsConfig
 
         for (final Xml nodeCircuit : nodesCircuit)
         {
-            final String groupIn = nodeCircuit.readString(ATTRIBUTE_GROUP_IN);
-            final String groupOut = nodeCircuit.readString(ATTRIBUTE_GROUP_OUT);
-            final String circuitType = nodeCircuit.readString(ATTRIBUTE_CIRCUIT_TYPE);
+            final String groupIn = nodeCircuit.readString(ATT_GROUP_IN);
+            final String groupOut = nodeCircuit.readString(ATT_GROUP_OUT);
+            final String circuitType = nodeCircuit.readString(ATT_CIRCUIT_TYPE);
             final CircuitType type = CircuitType.from(circuitType);
             final Circuit circuit = new Circuit(type, groupIn, groupOut);
 
@@ -127,9 +127,9 @@ public final class CircuitsConfig
         {
             final Circuit circuit = entry.getKey();
             final Xml nodeCircuit = nodeCircuits.createChild(NODE_CIRCUIT);
-            nodeCircuit.writeString(ATTRIBUTE_CIRCUIT_TYPE, circuit.getType().name());
-            nodeCircuit.writeString(ATTRIBUTE_GROUP_IN, circuit.getIn());
-            nodeCircuit.writeString(ATTRIBUTE_GROUP_OUT, circuit.getOut());
+            nodeCircuit.writeString(ATT_CIRCUIT_TYPE, circuit.getType().name());
+            nodeCircuit.writeString(ATT_GROUP_IN, circuit.getIn());
+            nodeCircuit.writeString(ATT_GROUP_OUT, circuit.getOut());
 
             exportTiles(nodeCircuit, entry.getValue());
         }
@@ -148,7 +148,7 @@ public final class CircuitsConfig
         final Collection<TileRef> tilesRef = new HashSet<>(nodesTileRef.size());
         for (final Xml nodeTileRef : nodesTileRef)
         {
-            final TileRef tileRef = TileConfig.create(nodeTileRef);
+            final TileRef tileRef = TileConfig.imports(nodeTileRef);
             tilesRef.add(tileRef);
         }
         return tilesRef;
@@ -164,7 +164,7 @@ public final class CircuitsConfig
     {
         for (final TileRef tileRef : tilesRef)
         {
-            final Xml nodeTileRef = TileConfig.export(tileRef);
+            final Xml nodeTileRef = TileConfig.exports(tileRef);
             nodeCircuit.add(nodeTileRef);
         }
     }

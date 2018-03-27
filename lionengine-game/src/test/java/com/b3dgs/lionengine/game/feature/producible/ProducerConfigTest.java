@@ -36,9 +36,9 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the producer config class.
+ * Test {@link ActionsConfig}.
  */
-public class ProducerConfigTest
+public final class ProducerConfigTest // TODO rename to ActionsConfig
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public class ProducerConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -70,75 +70,60 @@ public class ProducerConfigTest
     }
 
     /**
-     * Test the producer configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final Media media = Medias.create("producer.xml");
         final ActionRef ref = new ActionRef("ref", false, new ArrayList<ActionRef>());
         final ActionRef ref2 = new ActionRef("ref", false, Arrays.asList(ref));
         final Collection<ActionRef> refs = Arrays.asList(new ActionRef("test", true, Arrays.asList(ref2)));
 
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(ActionsConfig.exports(refs));
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.add(ActionsConfig.exports(refs));
 
-            final Collection<ActionRef> loaded = ActionsConfig.imports(new Xml(media));
-            Assert.assertEquals(refs, loaded);
-            Assert.assertEquals(refs, ActionsConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        final Media media = Medias.create("producer.xml");
+        root.save(media);
+
+        Assert.assertEquals(refs, ActionsConfig.imports(new Xml(media)));
+        Assert.assertEquals(refs, ActionsConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the producer configuration failure because cancel flag is not used on child reference.
+     * Test cancel flag is not used on child reference.
      */
     @Test
-    public void testConfigCancelOnRef()
+    public void testCancelOnRef()
     {
-        final Media media = Medias.create("producer.xml");
         final ActionRef ref = new ActionRef("ref", true, new ArrayList<ActionRef>());
         final Collection<ActionRef> refs = Arrays.asList(new ActionRef("test", false, Arrays.asList(ref)));
 
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(ActionsConfig.exports(refs));
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.add(ActionsConfig.exports(refs));
 
-            final Collection<ActionRef> loaded = ActionsConfig.imports(new Xml(media));
-            Assert.assertNotEquals(refs, loaded);
-            Assert.assertNotEquals(refs, ActionsConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        final Media media = Medias.create("producer.xml");
+        root.save(media);
+
+        Assert.assertNotEquals(refs, ActionsConfig.imports(new Xml(media)));
+        Assert.assertNotEquals(refs, ActionsConfig.imports(new Configurer(media)));
+
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the producer import without node.
+     * Test import without node.
      */
     @Test
     public void testImportNoNode()
     {
         final Media media = Medias.create("producer.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.save(media);
+        final Xml root = new Xml("test");
+        root.save(media);
 
-            Assert.assertTrue(ActionsConfig.imports(new Xml(media)).isEmpty());
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(ActionsConfig.imports(new Xml(media)).isEmpty());
+
+        Assert.assertTrue(media.getFile().delete());
     }
 }

@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the force configuration class.
+ * Test {@link ForceConfig}.
  */
-public class ForceConfigTest
+public final class ForceConfigTest
 {
     /**
      * Prepare test.
@@ -52,7 +52,7 @@ public class ForceConfigTest
     }
 
     /**
-     * Test the constructor.
+     * Test constructor.
      * 
      * @throws Exception If error.
      */
@@ -63,56 +63,44 @@ public class ForceConfigTest
     }
 
     /**
-     * Test the configuration reader.
+     * Test exports imports
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
+        final Xml root = new Xml("test");
+        root.add(ForceConfig.exports(force));
+
         final Media media = Medias.create("force.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(ForceConfig.exports(force));
-            root.save(media);
+        root.save(media);
 
-            final Force loaded = ForceConfig.imports(new Xml(media));
+        Assert.assertEquals(force, ForceConfig.imports(new Xml(media)));
+        Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(force, loaded);
-            Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration with optional fields.
+     * Test with optional fields.
      */
     @Test
-    public void testConfigOptional()
+    public void testOptional()
     {
+        final Xml root = new Xml("test");
+        final Xml node = root.createChild(ForceConfig.NODE_FORCE);
+
         final Force force = new Force(1.0, 2.0, 0.0, 0.0);
+        node.writeDouble(ForceConfig.ATT_VX, force.getDirectionHorizontal());
+        node.writeDouble(ForceConfig.ATT_VY, force.getDirectionVertical());
 
         final Media media = Medias.create("force.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            final Xml node = root.createChild(ForceConfig.NODE_FORCE);
-            node.writeDouble(ForceConfig.ATT_VX, 1.0);
-            node.writeDouble(ForceConfig.ATT_VY, 2.0);
-            root.save(media);
+        root.save(media);
 
-            final Force loaded = ForceConfig.imports(new Xml(media));
+        Assert.assertEquals(force, ForceConfig.imports(new Xml(media)));
+        Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(force, loaded);
-            Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 }

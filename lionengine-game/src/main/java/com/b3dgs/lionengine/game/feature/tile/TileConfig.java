@@ -46,7 +46,7 @@ public final class TileConfig
      * @return The tile data.
      * @throws LionEngineException If <code>null</code> argument or error when reading.
      */
-    public static TileRef create(Xml nodeTile)
+    public static TileRef imports(Xml nodeTile)
     {
         Check.notNull(nodeTile);
 
@@ -63,7 +63,7 @@ public final class TileConfig
      * @return The exported node.
      * @throws LionEngineException If <code>null</code> argument or error on writing.
      */
-    public static Xml export(TileRef tileRef)
+    public static Xml exports(TileRef tileRef)
     {
         Check.notNull(tileRef);
 

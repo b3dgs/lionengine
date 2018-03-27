@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the collision formula configuration.
+ * Test {@link CollisionFormulaConfig}.
  */
-public class CollisionFormulaConfigTest
+public final class CollisionFormulaConfigTest
 {
     /**
      * Prepare test.
@@ -59,13 +59,14 @@ public class CollisionFormulaConfigTest
     private final CollisionFormula formula = new CollisionFormula("formula", range, function, constaint);
 
     /**
-     * Test the import export.
+     * Test exports imports.
      */
     @Test
-    public void testFormula()
+    public void testExportsImports()
     {
         final Xml root = new Xml("formula");
         CollisionFormulaConfig.exports(root, formula);
+
         final Media config = Medias.create("formulas.xml");
         root.save(config);
 
@@ -78,7 +79,7 @@ public class CollisionFormulaConfigTest
     }
 
     /**
-     * Test the has and remove functions.
+     * Test has and remove functions.
      */
     @Test
     public void testHasRemove()

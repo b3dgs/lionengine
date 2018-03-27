@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the surface configuration.
+ * Test {@link SurfaceConfig}.
  */
-public class SurfaceConfigTest
+public final class SurfaceConfigTest
 {
     /**
      * Prepare test.
@@ -51,94 +51,68 @@ public class SurfaceConfigTest
     }
 
     /**
-     * Test the configuration reader.
+     * Test exports imports with image and icon.
      */
     @Test
-    public void testConfig()
+    public void testExportsImports()
     {
-        final String image = "image";
-        final String icon = "icon";
-        final SurfaceConfig config = new SurfaceConfig(image, icon);
+        final Xml root = new Xml("test");
+
+        final SurfaceConfig config = new SurfaceConfig("image", "icon");
+        root.add(SurfaceConfig.exports(config));
 
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(SurfaceConfig.exports(config));
-            root.save(media);
+        root.save(media);
 
-            final SurfaceConfig loaded = SurfaceConfig.imports(new Xml(media));
+        Assert.assertEquals(config, SurfaceConfig.imports(new Xml(media)));
+        Assert.assertEquals(config, SurfaceConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, SurfaceConfig.imports(new Configurer(media)));
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration without icon.
+     * Test exports imports with image without icon.
      */
     @Test
-    public void testConfigNoIcon()
+    public void testExportsImportsNoIcon()
     {
-        final String image = "image";
-        final SurfaceConfig config = new SurfaceConfig(image, null);
+        final Xml root = new Xml("test");
+
+        final SurfaceConfig config = new SurfaceConfig("image", null);
+        root.add(SurfaceConfig.exports(config));
 
         final Media media = Medias.create("object.xml");
-        try
-        {
-            final Xml root = new Xml("test");
-            root.add(SurfaceConfig.exports(config));
-            root.save(media);
+        root.save(media);
 
-            final SurfaceConfig loaded = SurfaceConfig.imports(new Xml(media));
+        Assert.assertEquals(config, SurfaceConfig.imports(new Xml(media)));
+        Assert.assertEquals(config, SurfaceConfig.imports(new Configurer(media)));
 
-            Assert.assertEquals(config, loaded);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
-     * Test the configuration with <code>null</code> image.
+     * Test <code>null</code> image.
      */
     @Test(expected = LionEngineException.class)
-    public void testConfigNullImage()
+    public void testNullImage()
     {
         Assert.assertNotNull(new SurfaceConfig(null, "icon"));
     }
 
     /**
-     * Test the configuration with <code>null</code> icon.
+     * Test with <code>null</code> icon.
      */
     @Test
     public void testConfigNullIcon()
     {
-        Assert.assertNotNull(new SurfaceConfig("image", null));
+        final SurfaceConfig config = new SurfaceConfig("image", null);
+
+        Assert.assertEquals("image", config.getImage());
+        Assert.assertNull(config.getIcon());
     }
 
     /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int hash = new SurfaceConfig("image", "icon").hashCode();
-
-        Assert.assertEquals(hash, new SurfaceConfig("image", "icon").hashCode());
-        Assert.assertNotEquals(hash, new SurfaceConfig("", "icon").hashCode());
-        Assert.assertNotEquals(hash, new SurfaceConfig("image", "").hashCode());
-
-        Assert.assertEquals(new SurfaceConfig("image", null).hashCode(), new SurfaceConfig("image", null).hashCode());
-    }
-
-    /**
-     * Test the equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -146,19 +120,39 @@ public class SurfaceConfigTest
         final SurfaceConfig config = new SurfaceConfig("image", "icon");
 
         Assert.assertEquals(config, config);
+        Assert.assertEquals(config, new SurfaceConfig("image", "icon"));
+        Assert.assertEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", null));
+
         Assert.assertNotEquals(config, null);
         Assert.assertNotEquals(config, new Object());
-        Assert.assertEquals(config, new SurfaceConfig("image", "icon"));
         Assert.assertNotEquals(config, new SurfaceConfig("", "icon"));
         Assert.assertNotEquals(config, new SurfaceConfig("image", ""));
-
-        Assert.assertEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", null));
         Assert.assertNotEquals(new SurfaceConfig("image", "icon"), new SurfaceConfig("image", null));
         Assert.assertNotEquals(new SurfaceConfig("image", null), new SurfaceConfig("image", "icon"));
     }
 
     /**
-     * Test the to string.
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new SurfaceConfig("image", "icon").hashCode();
+
+        Assert.assertEquals(hash, new SurfaceConfig("image", "icon").hashCode());
+        Assert.assertEquals(new SurfaceConfig("image", null).hashCode(), new SurfaceConfig("image", null).hashCode());
+
+        Assert.assertNotEquals(hash, new Object().hashCode());
+        Assert.assertNotEquals(hash, new SurfaceConfig("", "icon").hashCode());
+        Assert.assertNotEquals(hash, new SurfaceConfig("image", "").hashCode());
+        Assert.assertNotEquals(new SurfaceConfig("image", "icon").hashCode(),
+                               new SurfaceConfig("image", null).hashCode());
+        Assert.assertNotEquals(new SurfaceConfig("image", null).hashCode(),
+                               new SurfaceConfig("image", "icon").hashCode());
+    }
+
+    /**
+     * Test to string.
      */
     @Test
     public void testToString()

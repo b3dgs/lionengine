@@ -53,6 +53,8 @@ public final class AnimationConfig
     public static final String ANIMATION_REVERSED = "reversed";
     /** Animation attribute repeat. */
     public static final String ANIMATION_REPEAT = "repeat";
+    /** Animation not found error. */
+    static final String ERROR_NOT_FOUND = "Animation not found: ";
 
     /**
      * Create the animation data from configurer.
@@ -161,7 +163,7 @@ public final class AnimationConfig
         final Animation animation = animations.get(name);
         if (animation == null)
         {
-            throw new LionEngineException("Animation not found: " + name);
+            throw new LionEngineException(ERROR_NOT_FOUND + name);
         }
         return animation;
     }

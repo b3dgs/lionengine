@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -32,13 +33,10 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
- * Test the animation configuration class.
+ * Test {@link AnimationConfig}.
  */
-public class AnimationConfigTest
+public final class AnimationConfigTest
 {
-    /** Test configuration. */
-    private static Media media;
-
     /**
      * Prepare test.
      */
@@ -46,7 +44,6 @@ public class AnimationConfigTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        media = Medias.create("animations.xml");
     }
 
     /**
@@ -55,12 +52,11 @@ public class AnimationConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Assert.assertTrue(media.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     /**
-     * Test the export and import.
+     * Test exports imports.
      */
     @Test
     public void testExportsImports()
@@ -70,6 +66,8 @@ public class AnimationConfigTest
         final Animation animation2 = new Animation("anim2", 4, 5, 6.0, true, false);
         AnimationConfig.exports(root, animation1);
         AnimationConfig.exports(root, animation2);
+
+        final Media media = Medias.create("animations.xml");
         root.save(media);
 
         final AnimationConfig imported = AnimationConfig.imports(new Setup(media));
@@ -82,14 +80,16 @@ public class AnimationConfigTest
         Assert.assertTrue(imported.hasAnimation("anim1"));
         Assert.assertTrue(imported.hasAnimation("anim2"));
 
-        try
-        {
-            Assert.assertNull(imported.getAnimation("void"));
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test get unknown animation.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetUnknownAnimation()
+    {
+        final AnimationConfig config = new AnimationConfig(new HashMap<>());
+        Assert.assertNull(config.getAnimation("void"));
     }
 }

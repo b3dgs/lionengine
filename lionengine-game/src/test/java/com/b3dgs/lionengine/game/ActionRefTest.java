@@ -19,21 +19,43 @@ package com.b3dgs.lionengine.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
- * Test the action ref class.
+ * Test {@link ActionRef}.
  */
-public class ActionRefTest
+public final class ActionRefTest
 {
     private final boolean cancel = true;
     private final ActionRef actionRef1 = new ActionRef("path", !cancel, new ArrayList<ActionRef>());
     private final ActionRef actionRef2 = new ActionRef("path2", cancel, Arrays.asList(actionRef1));
 
     /**
-     * Test the animation getter.
+     * Test constructor with <code>null</code> path.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructorNullPath()
+    {
+        Assert.assertNull(new ActionRef(null, false, Collections.emptyList()));
+    }
+
+    /**
+     * Test constructor with <code>null</code> refs.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructorNullRefs()
+    {
+        Assert.assertNull(new ActionRef(Constant.EMPTY_STRING, false, null));
+    }
+
+    /**
+     * Test getter.
      */
     @Test
     public void testGetter()
@@ -49,31 +71,7 @@ public class ActionRefTest
     }
 
     /**
-     * Test the animation hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final int hash = actionRef1.hashCode();
-
-        Assert.assertEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()).hashCode());
-
-        Assert.assertEquals(actionRef2.hashCode(), actionRef2.hashCode());
-        Assert.assertEquals(actionRef2.hashCode(),
-                            new ActionRef("path2", cancel, Arrays.asList(actionRef1)).hashCode());
-
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, actionRef2.hashCode());
-        Assert.assertNotEquals(actionRef2.hashCode(), hash);
-
-        Assert.assertNotEquals(hash, new ActionRef("", !cancel, new ArrayList<ActionRef>()).hashCode());
-        Assert.assertNotEquals(hash, new ActionRef("path", cancel, new ArrayList<ActionRef>()).hashCode());
-        Assert.assertNotEquals(hash, new ActionRef("path", cancel, Arrays.asList(actionRef1)).hashCode());
-        Assert.assertNotEquals(hash, new ActionRef("path", !cancel, Arrays.asList(actionRef1)).hashCode());
-    }
-
-    /**
-     * Test the animation equality.
+     * Test equals.
      */
     @Test
     public void testEquals()
@@ -96,7 +94,31 @@ public class ActionRefTest
     }
 
     /**
-     * Test the to string.
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = actionRef1.hashCode();
+
+        Assert.assertEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()).hashCode());
+
+        Assert.assertEquals(actionRef2.hashCode(), actionRef2.hashCode());
+        Assert.assertEquals(actionRef2.hashCode(),
+                            new ActionRef("path2", cancel, Arrays.asList(actionRef1)).hashCode());
+
+        Assert.assertNotEquals(hash, new Object().hashCode());
+        Assert.assertNotEquals(hash, actionRef2.hashCode());
+        Assert.assertNotEquals(actionRef2.hashCode(), hash);
+
+        Assert.assertNotEquals(hash, new ActionRef("", !cancel, new ArrayList<ActionRef>()).hashCode());
+        Assert.assertNotEquals(hash, new ActionRef("path", cancel, new ArrayList<ActionRef>()).hashCode());
+        Assert.assertNotEquals(hash, new ActionRef("path", cancel, Arrays.asList(actionRef1)).hashCode());
+        Assert.assertNotEquals(hash, new ActionRef("path", !cancel, Arrays.asList(actionRef1)).hashCode());
+    }
+
+    /**
+     * Test to string.
      */
     @Test
     public void testToString()

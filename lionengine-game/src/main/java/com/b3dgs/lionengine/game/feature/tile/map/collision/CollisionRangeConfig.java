@@ -34,17 +34,17 @@ import com.b3dgs.lionengine.io.XmlReader;
 public final class CollisionRangeConfig
 {
     /** The range node. */
-    public static final String RANGE = Constant.XML_PREFIX + "range";
+    public static final String NODE_RANGE = Constant.XML_PREFIX + "range";
     /** Output axis attribute. */
-    public static final String AXIS = "output";
+    public static final String ATT_AXIS = "output";
     /** Input min X attribute. */
-    public static final String MIN_X = "minX";
+    public static final String ATT_MIN_X = "minX";
     /** Input max X attribute. */
-    public static final String MAX_X = "maxX";
+    public static final String ATT_MAX_X = "maxX";
     /** Input min Y attribute. */
-    public static final String MIN_Y = "minY";
+    public static final String ATT_MIN_Y = "minY";
     /** Input max Y attribute. */
-    public static final String MAX_Y = "maxY";
+    public static final String ATT_MAX_Y = "maxY";
     /** Axis type error. */
     private static final String ERROR_TYPE = "Unknown axis: ";
 
@@ -59,14 +59,14 @@ public final class CollisionRangeConfig
     {
         Check.notNull(node);
 
-        final String axisName = node.readString(AXIS);
+        final String axisName = node.readString(ATT_AXIS);
         try
         {
             final Axis axis = Axis.valueOf(axisName);
-            final int minX = node.readInteger(MIN_X);
-            final int maxX = node.readInteger(MAX_X);
-            final int minY = node.readInteger(MIN_Y);
-            final int maxY = node.readInteger(MAX_Y);
+            final int minX = node.readInteger(ATT_MIN_X);
+            final int maxX = node.readInteger(ATT_MAX_X);
+            final int minY = node.readInteger(ATT_MIN_Y);
+            final int maxY = node.readInteger(ATT_MAX_Y);
 
             return new CollisionRange(axis, minX, maxX, minY, maxY);
         }
@@ -88,12 +88,12 @@ public final class CollisionRangeConfig
         Check.notNull(root);
         Check.notNull(range);
 
-        final Xml node = root.createChild(RANGE);
-        node.writeString(AXIS, range.getOutput().name());
-        node.writeInteger(MIN_X, range.getMinX());
-        node.writeInteger(MIN_Y, range.getMinY());
-        node.writeInteger(MAX_X, range.getMaxX());
-        node.writeInteger(MAX_Y, range.getMaxY());
+        final Xml node = root.createChild(NODE_RANGE);
+        node.writeString(ATT_AXIS, range.getOutput().name());
+        node.writeInteger(ATT_MIN_X, range.getMinX());
+        node.writeInteger(ATT_MIN_Y, range.getMinY());
+        node.writeInteger(ATT_MAX_X, range.getMaxX());
+        node.writeInteger(ATT_MAX_Y, range.getMaxY());
     }
 
     /**

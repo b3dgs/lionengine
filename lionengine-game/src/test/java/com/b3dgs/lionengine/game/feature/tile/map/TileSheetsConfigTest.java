@@ -28,13 +28,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
- * Test the tile sheets configuration class.
+ * Test {@link TileSheetsConfig}.
  */
-public class TileSheetsConfigTest
+public final class TileSheetsConfigTest
 {
-    /** Test configuration. */
-    private static Media media;
-
     /**
      * Prepare test.
      */
@@ -42,7 +39,6 @@ public class TileSheetsConfigTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        media = Medias.create("sheets.xml");
     }
 
     /**
@@ -51,21 +47,24 @@ public class TileSheetsConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Assert.assertTrue(media.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     /**
-     * Test the configuration.
+     * Test exports imports.
      */
     @Test
-    public void testConfiguration()
+    public void testExportsImport()
     {
+        final Media media = Medias.create("sheets.xml");
         TileSheetsConfig.exports(media, 16, 32, Arrays.asList("sheet"));
+
         final TileSheetsConfig config = TileSheetsConfig.imports(media);
 
         Assert.assertEquals(16, config.getTileWidth());
         Assert.assertEquals(32, config.getTileHeight());
         Assert.assertArrayEquals(Arrays.asList("sheet").toArray(), config.getSheets().toArray());
+
+        Assert.assertTrue(media.getFile().delete());
     }
 }

@@ -21,22 +21,42 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test attribute class.
+ * Test {@link Attribute}.
  */
-public class AttributeTest
+public final class AttributeTest
 {
     /**
-     * Test attributes functions.
+     * Test constructor.
      */
     @Test
-    public void testAttribute()
+    public void testConstructor()
     {
         final Attribute attribute = new Attribute();
+
         Assert.assertEquals(0, attribute.get());
-        final int step = 10;
-        attribute.increase(step);
-        Assert.assertEquals(step, attribute.get());
-        attribute.set(step - 1);
-        Assert.assertEquals(step - 1, attribute.get());
+    }
+
+    /**
+     * Test increase.
+     */
+    @Test
+    public void testIncrease()
+    {
+        final Attribute attribute = new Attribute();
+        attribute.increase(2);
+
+        Assert.assertEquals(2, attribute.get());
+    }
+
+    /**
+     * Test set.
+     */
+    @Test
+    public void testSet()
+    {
+        final Attribute attribute = new Attribute();
+        attribute.set(1);
+
+        Assert.assertEquals(1, attribute.get());
     }
 }

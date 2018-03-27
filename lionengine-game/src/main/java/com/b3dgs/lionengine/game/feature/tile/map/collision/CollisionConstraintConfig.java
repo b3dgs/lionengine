@@ -37,11 +37,11 @@ import com.b3dgs.lionengine.io.Xml;
 public final class CollisionConstraintConfig
 {
     /** Constraint node. */
-    public static final String CONSTRAINT = Constant.XML_PREFIX + "constraint";
+    public static final String NODE_CONSTRAINT = Constant.XML_PREFIX + "constraint";
     /** Orientation attribute. */
-    public static final String ORIENTATION = "orientation";
+    public static final String ATT_ORIENTATION = "orientation";
     /** Group name attribute. */
-    public static final String GROUP = "group";
+    public static final String ATT_GROUP = "group";
 
     /**
      * Create the collision constraint data from node.
@@ -56,12 +56,12 @@ public final class CollisionConstraintConfig
 
         final CollisionConstraint constraint = new CollisionConstraint();
 
-        if (node.hasChild(CONSTRAINT))
+        if (node.hasChild(NODE_CONSTRAINT))
         {
-            for (final Xml current : node.getChildren(CONSTRAINT))
+            for (final Xml current : node.getChildren(NODE_CONSTRAINT))
             {
-                final Orientation orientation = Orientation.valueOf(current.readString(ORIENTATION));
-                final String group = current.readString(GROUP);
+                final Orientation orientation = Orientation.valueOf(current.readString(ATT_ORIENTATION));
+                final String group = current.readString(ATT_GROUP);
                 constraint.add(orientation, group);
             }
         }
@@ -87,9 +87,9 @@ public final class CollisionConstraintConfig
 
             for (final String group : entry.getValue())
             {
-                final Xml current = root.createChild(CONSTRAINT);
-                current.writeString(ORIENTATION, orientation.name());
-                current.writeString(GROUP, group);
+                final Xml current = root.createChild(NODE_CONSTRAINT);
+                current.writeString(ATT_ORIENTATION, orientation.name());
+                current.writeString(ATT_GROUP, group);
             }
         }
     }
