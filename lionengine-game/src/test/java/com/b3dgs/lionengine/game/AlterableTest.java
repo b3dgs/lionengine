@@ -21,73 +21,166 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test alterable class.
+ * Test {@link Alterable}.
  */
-public class AlterableTest
+public final class AlterableTest
 {
     /**
-     * Test alterable functions.
+     * Test constructor.
      */
     @Test
-    public void testAlterable()
+    public void testConstructor()
     {
-        final Alterable alterableMax = new Alterable(-1);
-        Assert.assertTrue(alterableMax.getMax() == 0);
+        final Alterable alterable = new Alterable(-1);
 
-        final int max = 50;
-        final Alterable alterable = new Alterable(max);
-        Assert.assertEquals(max, alterable.getMax());
+        Assert.assertEquals(0, alterable.getCurrent());
+        Assert.assertEquals(0, alterable.getMax());
+        Assert.assertEquals(0, alterable.getPercent());
+    }
+
+    /**
+     * Test increase.
+     */
+    @Test
+    public void testIncrease()
+    {
+        final Alterable alterable = new Alterable(3);
+        alterable.increase(1);
+
+        Assert.assertEquals(1, alterable.getCurrent());
+
+        alterable.increase(2.0, 1);
+
+        Assert.assertEquals(3, alterable.getCurrent());
+
+        alterable.increase(1);
+
+        Assert.assertEquals(3, alterable.getCurrent());
+    }
+
+    /**
+     * Test decrease.
+     */
+    @Test
+    public void testDecrease()
+    {
+        final Alterable alterable = new Alterable(3);
         alterable.fill();
-        Assert.assertEquals(100, alterable.getPercent());
-        Assert.assertEquals(max, alterable.getCurrent());
-        Assert.assertTrue(alterable.isFull());
+        alterable.decrease(1);
+
+        Assert.assertEquals(2, alterable.getCurrent());
+
+        alterable.decrease(2.0, 1);
+
+        Assert.assertEquals(0, alterable.getCurrent());
+
+        alterable.decrease(1);
+
+        Assert.assertEquals(0, alterable.getCurrent());
+    }
+
+    /**
+     * Test fill.
+     */
+    @Test
+    public void testFill()
+    {
+        final Alterable alterable = new Alterable(4);
+
+        Assert.assertEquals(0, alterable.getCurrent());
+
+        alterable.fill();
+
+        Assert.assertEquals(4, alterable.getCurrent());
+    }
+
+    /**
+     * Test reset.
+     */
+    @Test
+    public void testReset()
+    {
+        final Alterable alterable = new Alterable(4);
+        alterable.set(2);
+
+        Assert.assertEquals(2, alterable.getCurrent());
+
         alterable.reset();
-        Assert.assertTrue(alterable.isEmpty());
-        alterable.set(max + 1);
-        Assert.assertTrue(alterable.getMax() == max);
-        alterable.set(max);
 
-        final int step = 10;
-        int increase = alterable.increase(step);
-        Assert.assertEquals(0, increase);
-        Assert.assertEquals(max, alterable.getCurrent());
+        Assert.assertEquals(0, alterable.getCurrent());
+    }
 
-        int decrease = alterable.decrease(step);
-        Assert.assertEquals(step, decrease);
-        Assert.assertEquals(max - step, alterable.getCurrent());
+    /**
+     * Test set max.
+     */
+    @Test
+    public void testSetMax()
+    {
+        final Alterable alterable = new Alterable(0);
+        alterable.set(1);
 
-        increase = alterable.increase(step);
-        Assert.assertEquals(step, increase);
-        Assert.assertEquals(max, alterable.getCurrent());
+        Assert.assertEquals(0, alterable.getCurrent());
 
-        Assert.assertEquals(50, alterable.decrease(max + step));
-        Assert.assertTrue(alterable.isEmpty());
-        Assert.assertEquals(max, alterable.increase(max + step));
+        alterable.setMax(2);
+        alterable.set(1);
 
-        Assert.assertTrue(alterable.isEnough(step));
-
-        decrease = alterable.decrease(step);
-        Assert.assertEquals(decrease, step);
-        Assert.assertEquals(step, alterable.getNeeded(max));
-
-        alterable.fill();
-        Assert.assertTrue(alterable.isFull());
-        alterable.setMax(max * 2);
-        Assert.assertFalse(alterable.isFull());
-        Assert.assertEquals(50, alterable.getPercent());
-        alterable.fill();
-        Assert.assertEquals(max * 2, alterable.getCurrent());
-
-        alterable.setMax(-1);
-        Assert.assertTrue(alterable.getMax() == 0);
+        Assert.assertEquals(1, alterable.getCurrent());
 
         alterable.setMax(0);
-        Assert.assertTrue(alterable.getPercent() == 0);
-        Assert.assertTrue(alterable.getNeeded(0) == 0);
-        alterable.reset();
+
+        Assert.assertEquals(0, alterable.getCurrent());
+
+        alterable.setMax(-1);
+
+        Assert.assertEquals(0, alterable.getCurrent());
+        Assert.assertEquals(0, alterable.getMax());
+    }
+
+    /**
+     * Test set max over.
+     */
+    @Test
+    public void testSetMaxOver()
+    {
+        final Alterable alterable = new Alterable(0, true);
+        alterable.set(1);
+
+        Assert.assertEquals(1, alterable.getCurrent());
+    }
+
+    /**
+     * Test getter.
+     */
+    @Test
+    public void testGetter()
+    {
+        final Alterable alterable = new Alterable(2);
+        alterable.set(1);
+
+        Assert.assertEquals(1, alterable.getCurrent());
+        Assert.assertEquals(2, alterable.getMax());
+        Assert.assertEquals(50, alterable.getPercent());
+        Assert.assertEquals(0, alterable.getNeeded(0));
+        Assert.assertEquals(0, alterable.getNeeded(1));
+        Assert.assertEquals(1, alterable.getNeeded(2));
+    }
+
+    /**
+     * Test is.
+     */
+    @Test
+    public void testIs()
+    {
+        final Alterable alterable = new Alterable(2);
+
         Assert.assertTrue(alterable.isEmpty());
-        alterable.setMax(10);
-        alterable.fill();
-        Assert.assertTrue(!alterable.isEmpty());
+        Assert.assertFalse(alterable.isFull());
+        Assert.assertFalse(alterable.isEnough(1));
+
+        alterable.set(2);
+
+        Assert.assertFalse(alterable.isEmpty());
+        Assert.assertTrue(alterable.isFull());
+        Assert.assertTrue(alterable.isEnough(1));
     }
 }

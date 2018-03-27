@@ -167,7 +167,8 @@ public class Alterable
     }
 
     /**
-     * Set maximum reachable value. The maximum value can not be lower than 0.
+     * Set maximum reachable value. The maximum value can not be lower than 0. Current value clamp between {@value #MIN}
+     * and max if over max set.
      * 
      * @param max The maximum reachable value.
      */
@@ -178,6 +179,7 @@ public class Alterable
         {
             this.max = Alterable.MIN;
         }
+        set(cur);
     }
 
     /**
