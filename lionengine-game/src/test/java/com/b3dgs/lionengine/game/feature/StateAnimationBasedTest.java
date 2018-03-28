@@ -85,7 +85,7 @@ public class StateAnimationBasedTest
     @Test(expected = LionEngineException.class)
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(StateAnimationBased.Util.class);
+        UtilTests.testPrivateConstructor(StateAnimationUtil.class);
     }
 
     /**
@@ -100,7 +100,7 @@ public class StateAnimationBasedTest
         handler.addInput(new InputPointerMock());
 
         final Featurable featurable = new FeaturableModel();
-        StateAnimationBased.Util.loadStates(StateType.values(), factory, featurable, new Setup(media));
+        StateAnimationUtil.loadStates(StateType.values(), factory, featurable, new Setup(media));
 
         handler.changeState(StateType.IDLE);
 
@@ -118,6 +118,6 @@ public class StateAnimationBasedTest
     public void testUtilError()
     {
         final Featurable featurable = new FeaturableModel();
-        StateAnimationBased.Util.loadStates(StateTypeError.values(), new StateFactory(), featurable, new Setup(media));
+        StateAnimationUtil.loadStates(StateTypeError.values(), new StateFactory(), featurable, new Setup(media));
     }
 }

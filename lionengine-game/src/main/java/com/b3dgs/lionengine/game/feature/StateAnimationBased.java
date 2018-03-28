@@ -18,11 +18,8 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Represents an animation based state, where the state enum is corresponding to an animation.
@@ -31,7 +28,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * ({@link FeatureProvider}, {@link Animation}).
  * </p>
  * 
- * @see Util#loadStates(StateAnimationBased[], StateFactory, FeatureProvider, Setup)
+ * @see StateAnimationUtil#loadStates(StateAnimationBased[], StateFactory, FeatureProvider, Setup)
  */
 public interface StateAnimationBased
 {
@@ -48,50 +45,4 @@ public interface StateAnimationBased
      * @return The animation name.
      */
     String getAnimationName();
-
-    /**
-     * Utility class to load automatically states from enum.
-     */
-    final class Util
-    {
-        /**
-         * Load all existing animations defined in the xml file.
-         * 
-         * @param states The states values.
-         * @param factory The factory reference.
-         * @param provider The featurable reference.
-         * @param setup The setup reference.
-         */
-        public static void loadStates(StateAnimationBased[] states,
-                                      StateFactory factory,
-                                      FeatureProvider provider,
-                                      Setup setup)
-        {
-            final AnimationConfig configAnimations = AnimationConfig.imports(setup);
-            for (final StateAnimationBased type : states)
-            {
-                try
-                {
-                    final Animation animation = configAnimations.getAnimation(type.getAnimationName());
-                    final State state = UtilReflection.create(type.getStateClass(),
-                                                              UtilReflection.getParamTypes(provider, animation),
-                                                              provider,
-                                                              animation);
-                    factory.addState(state);
-                }
-                catch (final NoSuchMethodException exception)
-                {
-                    throw new LionEngineException(exception);
-                }
-            }
-        }
-
-        /**
-         * Private constructor.
-         */
-        private Util()
-        {
-            throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-        }
-    }
 }
