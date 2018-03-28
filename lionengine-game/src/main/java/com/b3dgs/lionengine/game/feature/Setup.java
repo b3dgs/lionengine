@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.Optional;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -30,16 +32,22 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 public class Setup extends Configurer
 {
+    /** No surface file. */
+    private static final String ERROR_SURFACE_FILE = "No surface file found !";
+    /** No icon file. */
+    private static final String ERROR_ICON_FILE = "No icon file found !";
+    /** No surface. */
+    private static final String ERROR_SURFACE = "No surface found !";
     /** Class error. */
     private static final String ERROR_CLASS = "Class not found for: ";
 
     /** Surface reference. */
-    protected final ImageBuffer surface;
+    protected final Optional<ImageBuffer> surface;
     /** Surface file name. */
-    private final Media surfaceFile;
+    private final Optional<Media> surfaceFile;
     /** Icon file name. */
-    private final Media iconFile;
-    /** Class reference. */
+    private final Optional<Media> iconFile;
+    /** Class reference (can be <code>null</code>). */
     private Class<?> clazz;
 
     /**
@@ -57,15 +65,22 @@ public class Setup extends Configurer
             final String conf = config.getPath();
             final SurfaceConfig surfaceData = SurfaceConfig.imports(getRoot());
             final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
-            surfaceFile = Medias.create(prefix + surfaceData.getImage());
-            iconFile = Medias.create(prefix + surfaceData.getIcon());
-            surface = Graphics.getImageBuffer(surfaceFile);
+            surfaceFile = Optional.of(Medias.create(prefix + surfaceData.getImage()));
+            if (surfaceData.getIcon().isPresent())
+            {
+                iconFile = Optional.of(Medias.create(prefix + surfaceData.getIcon().get()));
+            }
+            else
+            {
+                iconFile = Optional.empty();
+            }
+            surface = Optional.of(Graphics.getImageBuffer(surfaceFile.get()));
         }
         else
         {
-            surfaceFile = null;
-            iconFile = null;
-            surface = null;
+            surfaceFile = Optional.empty();
+            iconFile = Optional.empty();
+            surface = Optional.empty();
         }
     }
 
@@ -98,30 +113,33 @@ public class Setup extends Configurer
     /**
      * Get the surface file.
      * 
-     * @return The surface file, <code>null</code> if not defined.
+     * @return The surface file.
+     * @throws LionEngineException If surface file not defined.
      */
     public final Media getSurfaceFile()
     {
-        return surfaceFile;
+        return surfaceFile.orElseThrow(() -> new LionEngineException(ERROR_SURFACE_FILE));
     }
 
     /**
      * Get the icon file.
      * 
-     * @return The surface file, <code>null</code> if not defined.
+     * @return The surface file.
+     * @throws LionEngineException If icon file not defined.
      */
     public final Media getIconFile()
     {
-        return iconFile;
+        return iconFile.orElseThrow(() -> new LionEngineException(ERROR_ICON_FILE));
     }
 
     /**
      * Get the surface representation.
      * 
-     * @return The surface buffer, <code>null</code> if not defined.
+     * @return The surface buffer.
+     * @throws LionEngineException If surface not defined.
      */
     public final ImageBuffer getSurface()
     {
-        return surface;
+        return surface.orElseThrow(() -> new LionEngineException(ERROR_SURFACE));
     }
 }
