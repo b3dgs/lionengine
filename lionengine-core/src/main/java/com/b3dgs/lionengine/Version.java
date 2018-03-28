@@ -28,7 +28,7 @@ public final class Version
     /** Create the default version (1.0.0). */
     public static final Version DEFAULT = create(1, 0, 0);
     /** Version string length. */
-    private static final int LENGTH = 5;
+    private static final int LENGTH = 15;
 
     /**
      * Create a new version descriptor.
@@ -129,11 +129,14 @@ public final class Version
     @Override
     public String toString()
     {
-        return new StringBuilder(LENGTH).append(major)
+        return new StringBuilder(LENGTH).append(getClass().getSimpleName())
+                                        .append(" [")
+                                        .append(major)
                                         .append(Constant.DOT)
                                         .append(minor)
                                         .append(Constant.DOT)
                                         .append(micro)
+                                        .append("]")
                                         .toString();
     }
 }

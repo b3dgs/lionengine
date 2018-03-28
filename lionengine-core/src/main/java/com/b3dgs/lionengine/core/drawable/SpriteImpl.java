@@ -379,26 +379,6 @@ class SpriteImpl implements Sprite
      */
 
     @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final Sprite sprite = (Sprite) object;
-
-        final boolean sameSurface = sprite.getSurface() == getSurface();
-        final boolean sameWidth = sprite.getWidth() == getWidth();
-        final boolean sameHeight = sprite.getHeight() == getHeight();
-
-        return sameWidth && sameHeight && sameSurface;
-    }
-
-    @Override
     public int hashCode()
     {
         final int prime = 31;
@@ -414,5 +394,20 @@ class SpriteImpl implements Sprite
         result = prime * result + width;
         result = prime * result + height;
         return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final SpriteImpl other = (SpriteImpl) object;
+        return surface == other.surface && width == other.width && height == other.height;
     }
 }

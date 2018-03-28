@@ -286,32 +286,33 @@ public final class Rectangle implements Shape
         final int prime = 31;
         int result = 1;
         long temp;
-        temp = Double.doubleToLongBits(height);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(width);
-        result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(x);
         result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(width);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(height);
         result = prime * result + (int) (temp ^ temp >>> 32);
         return result;
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (obj == null || obj.getClass() != getClass())
+        if (object == null || object.getClass() != getClass())
         {
             return false;
         }
-        final Rectangle other = (Rectangle) obj;
-        final boolean sameSize = Double.compare(height, other.height) == 0 && Double.compare(width, other.width) == 0;
-        final boolean sameCoord = Double.compare(x, other.x) == 0 && Double.compare(y, other.y) == 0;
-        return sameSize && sameCoord;
+        final Rectangle other = (Rectangle) object;
+        return Double.compare(x, other.x) == 0
+               && Double.compare(y, other.y) == 0
+               && Double.compare(width, other.width) == 0
+               && Double.compare(height, other.height) == 0;
     }
 
     @Override

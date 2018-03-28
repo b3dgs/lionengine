@@ -26,23 +26,37 @@ import org.junit.Test;
 public final class VersionTest
 {
     /**
-     * Test version.
+     * Test constructor.
      */
     @Test
-    public void testVersion()
+    public void testConstructor()
     {
         final Version version = Version.create(3, 2, 1);
 
         Assert.assertEquals(3, version.getMajor());
         Assert.assertEquals(2, version.getMinor());
         Assert.assertEquals(1, version.getMicro());
+    }
 
-        Assert.assertEquals("3.2.1", version.toString());
+    /**
+     * Test equality.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Version version = Version.create(3, 2, 1);
 
-        final Version version2 = Version.create(1, 3, 2);
+        Assert.assertEquals(version, version);
+        Assert.assertEquals(version, Version.create(3, 2, 1));
 
-        Assert.assertFalse(version.equals(version2));
-        Assert.assertNotEquals("3.2.1", version2.toString());
+        Assert.assertNotEquals(version, null);
+        Assert.assertNotEquals(version, new Object());
+        Assert.assertNotEquals(version, Version.create(3, 2, 0));
+        Assert.assertNotEquals(version, Version.create(3, 0, 1));
+        Assert.assertNotEquals(version, Version.create(0, 2, 1));
+        Assert.assertNotEquals(version, Version.create(3, 0, 0));
+        Assert.assertNotEquals(version, Version.create(0, 0, 1));
+        Assert.assertNotEquals(version, Version.create(0, 0, 0));
     }
 
     /**
@@ -65,23 +79,11 @@ public final class VersionTest
     }
 
     /**
-     * Test equality.
+     * Test to string.
      */
     @Test
-    public void testEquals()
+    public void testToString()
     {
-        final Version version = Version.create(3, 2, 1);
-
-        Assert.assertEquals(version, version);
-        Assert.assertEquals(version, Version.create(3, 2, 1));
-
-        Assert.assertNotEquals(version, null);
-        Assert.assertNotEquals(version, new Object());
-        Assert.assertNotEquals(version, Version.create(3, 2, 0));
-        Assert.assertNotEquals(version, Version.create(3, 0, 1));
-        Assert.assertNotEquals(version, Version.create(0, 2, 1));
-        Assert.assertNotEquals(version, Version.create(3, 0, 0));
-        Assert.assertNotEquals(version, Version.create(0, 0, 1));
-        Assert.assertNotEquals(version, Version.create(0, 0, 0));
+        Assert.assertEquals("Version [3.2.1]", Version.create(3, 2, 1).toString());
     }
 }

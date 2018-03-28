@@ -343,22 +343,6 @@ final class SpriteFontImpl implements SpriteFont
      */
 
     @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final SpriteFontImpl sprite = (SpriteFontImpl) object;
-
-        return fontData.equals(sprite.fontData);
-    }
-
-    @Override
     public int hashCode()
     {
         final int prime = 31;
@@ -374,5 +358,20 @@ final class SpriteFontImpl implements SpriteFont
         result = prime * result + getWidth();
         result = prime * result + getHeight();
         return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final SpriteFontImpl other = (SpriteFontImpl) object;
+        return fontData.equals(other.fontData);
     }
 }

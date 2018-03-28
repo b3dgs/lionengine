@@ -38,13 +38,13 @@ class ImageImpl implements Image
     /** Error already loaded. */
     private static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
 
-    /** Media file name. */
+    /** Media file name (can be <code>null</code>). */
     private final Media media;
     /** Sprite width. */
     private final int width;
     /** Sprite height. */
     private final int height;
-    /** Image surface. */
+    /** Image surface (can be <code>null</code>). */
     private volatile ImageBuffer surface;
     /** Origin point. */
     private Origin origin = Origin.TOP_LEFT;
@@ -219,26 +219,6 @@ class ImageImpl implements Image
      */
 
     @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final Image image = (Image) object;
-
-        final boolean sameSurface = image.getSurface() == getSurface();
-        final boolean sameWidth = image.getWidth() == getWidth();
-        final boolean sameHeight = image.getHeight() == getHeight();
-
-        return sameWidth && sameHeight && sameSurface;
-    }
-
-    @Override
     public int hashCode()
     {
         final int prime = 31;
@@ -254,5 +234,20 @@ class ImageImpl implements Image
         result = prime * result + width;
         result = prime * result + height;
         return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final ImageImpl other = (ImageImpl) object;
+        return surface == other.surface && width == other.width && height == other.height;
     }
 }

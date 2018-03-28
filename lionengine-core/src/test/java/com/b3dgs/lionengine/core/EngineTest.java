@@ -112,7 +112,7 @@ public final class EngineTest
     {
         Engine.start(new EngineMock(NAME, Version.create(1, 2, 3)));
         Assert.assertEquals(NAME, Engine.getProgramName());
-        Assert.assertEquals("1.2.3", Engine.getProgramVersion().toString());
+        Assert.assertEquals("Version [1.2.3]", Engine.getProgramVersion().toString());
         Engine.terminate();
     }
 }

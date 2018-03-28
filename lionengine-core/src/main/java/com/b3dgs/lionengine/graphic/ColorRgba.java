@@ -56,6 +56,8 @@ public final class ColorRgba
     public static final ColorRgba TRANSPARENT = new ColorRgba(0, 0, 0, 0);
     /** Opaque color. */
     public static final ColorRgba OPAQUE = new ColorRgba(0, 0, 0, 255);
+    /** Minimum to string length. */
+    private static final int MIN_LENGHT = 30;
 
     /** Color value. */
     private final int value;
@@ -187,10 +189,6 @@ public final class ColorRgba
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + valueAlpha;
-        result = prime * result + valueBlue;
-        result = prime * result + valueGreen;
-        result = prime * result + valueRed;
         result = prime * result + value;
         return result;
     }
@@ -213,14 +211,16 @@ public final class ColorRgba
     @Override
     public String toString()
     {
-        return new StringBuilder().append("red = ")
-                                  .append(valueRed)
-                                  .append(" | green = ")
-                                  .append(valueGreen)
-                                  .append(" | blue = ")
-                                  .append(valueBlue)
-                                  .append(" | alpha = ")
-                                  .append(valueAlpha)
-                                  .toString();
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [r=")
+                                            .append(valueRed)
+                                            .append(", g=")
+                                            .append(valueGreen)
+                                            .append(", b=")
+                                            .append(valueBlue)
+                                            .append(", a=")
+                                            .append(valueAlpha)
+                                            .append("]")
+                                            .toString();
     }
 }

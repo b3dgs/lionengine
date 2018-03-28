@@ -37,9 +37,9 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     /** Media reference (<code>null</code> if none). */
     private final Media media;
     /** Number of horizontal frames. */
-    private final int horizontalFrames;
+    private final int framesHorizontal;
     /** Number of vertical frames. */
-    private final int verticalFrames;
+    private final int framesVertical;
     /** Total frames number. */
     private final int framesNumber;
     /** Frame offsets x. */
@@ -51,21 +51,21 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
      * Internal constructor.
      * 
      * @param media The sprite media (must not be <code>null</code>).
-     * @param horizontalFrames The number of horizontal frames (must be strictly positive).
-     * @param verticalFrames The number of vertical frames (must be strictly positive).
+     * @param framesHorizontal The number of horizontal frames (must be strictly positive).
+     * @param framesVertical The number of vertical frames (must be strictly positive).
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames)
+    SpriteAnimatedImpl(Media media, int framesHorizontal, int framesVertical)
     {
         super(media);
 
-        Check.superiorStrict(horizontalFrames, 0);
-        Check.superiorStrict(verticalFrames, 0);
+        Check.superiorStrict(framesHorizontal, 0);
+        Check.superiorStrict(framesVertical, 0);
 
         this.media = media;
-        this.horizontalFrames = horizontalFrames;
-        this.verticalFrames = verticalFrames;
-        framesNumber = horizontalFrames * verticalFrames;
+        this.framesHorizontal = framesHorizontal;
+        this.framesVertical = framesVertical;
+        framesNumber = framesHorizontal * framesVertical;
         frameOffsetX = 0;
         frameOffsetY = 0;
     }
@@ -74,21 +74,21 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
      * Internal constructor.
      * 
      * @param surface The surface reference (must not be <code>null</code>).
-     * @param horizontalFrames The number of horizontal frames (must be strictly positive).
-     * @param verticalFrames The number of vertical frames (must be strictly positive).
+     * @param framesHorizontal The number of horizontal frames (must be strictly positive).
+     * @param framesVertical The number of vertical frames (must be strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
-    SpriteAnimatedImpl(ImageBuffer surface, int horizontalFrames, int verticalFrames)
+    SpriteAnimatedImpl(ImageBuffer surface, int framesHorizontal, int framesVertical)
     {
         super(surface);
 
-        Check.superiorStrict(horizontalFrames, 0);
-        Check.superiorStrict(verticalFrames, 0);
+        Check.superiorStrict(framesHorizontal, 0);
+        Check.superiorStrict(framesVertical, 0);
 
         media = null;
-        this.horizontalFrames = horizontalFrames;
-        this.verticalFrames = verticalFrames;
-        framesNumber = horizontalFrames * verticalFrames;
+        this.framesHorizontal = framesHorizontal;
+        this.framesVertical = framesVertical;
+        framesNumber = framesHorizontal * framesVertical;
     }
 
     /*
@@ -119,8 +119,8 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         final int frame = animator.getFrame() - 1;
         final int fx = getRenderX() - frameOffsetX;
         final int fy = getRenderY() + frameOffsetY;
-        final int ox = frame % horizontalFrames;
-        final int oy = (int) Math.floor(frame / (double) horizontalFrames);
+        final int ox = frame % framesHorizontal;
+        final int oy = (int) Math.floor(frame / (double) framesHorizontal);
 
         render(g, fx, fy, getTileWidth(), getTileHeight(), ox, oy);
     }
@@ -167,25 +167,25 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     @Override
     public int getFramesHorizontal()
     {
-        return horizontalFrames;
+        return framesHorizontal;
     }
 
     @Override
     public int getFramesVertical()
     {
-        return verticalFrames;
+        return framesVertical;
     }
 
     @Override
     public int getTileWidth()
     {
-        return getWidth() / horizontalFrames;
+        return getWidth() / framesHorizontal;
     }
 
     @Override
     public int getTileHeight()
     {
-        return getHeight() / verticalFrames;
+        return getHeight() / framesVertical;
     }
 
     @Override
@@ -203,40 +203,20 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     @Override
     protected void stretch(int newWidth, int newHeight)
     {
-        final int w = (int) Math.round(newWidth / (double) horizontalFrames) * horizontalFrames;
-        final int h = (int) Math.round(newHeight / (double) verticalFrames) * verticalFrames;
+        final int w = (int) Math.round(newWidth / (double) framesHorizontal) * framesHorizontal;
+        final int h = (int) Math.round(newHeight / (double) framesVertical) * framesVertical;
         super.stretch(w, h);
     }
 
     @Override
     protected void computeRenderingPoint(int width, int height)
     {
-        super.computeRenderingPoint(width / horizontalFrames, height / verticalFrames);
+        super.computeRenderingPoint(width / framesHorizontal, height / framesVertical);
     }
 
     /*
      * Object
      */
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final SpriteAnimated sprite = (SpriteAnimated) object;
-
-        final boolean sameSurface = sprite.getSurface() == getSurface();
-        final boolean sameSize = sprite.getWidth() == getWidth() && sprite.getHeight() == getHeight();
-        final boolean sameFrames = horizontalFrames == sprite.getFramesHorizontal()
-                                   && verticalFrames == sprite.getFramesVertical();
-        return sameSize && sameSurface && sameFrames;
-    }
 
     @Override
     public int hashCode()
@@ -253,8 +233,27 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         }
         result = prime * result + getWidth();
         result = prime * result + getHeight();
-        result = prime * result + horizontalFrames;
-        result = prime * result + verticalFrames;
+        result = prime * result + framesHorizontal;
+        result = prime * result + framesVertical;
         return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final SpriteAnimatedImpl other = (SpriteAnimatedImpl) object;
+        return getSurface() == other.getSurface()
+               && getWidth() == other.getWidth()
+               && getHeight() == other.getHeight()
+               && framesHorizontal == other.framesHorizontal
+               && framesVertical == other.framesVertical;
     }
 }

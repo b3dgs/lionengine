@@ -63,6 +63,8 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
      */
     SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
     {
+        super();
+
         Check.notNull(media);
         Check.superiorStrict(linesNumber, 0);
         Check.superiorStrict(sx, 0);

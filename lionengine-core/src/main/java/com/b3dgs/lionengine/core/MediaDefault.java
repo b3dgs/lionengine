@@ -344,6 +344,10 @@ final class MediaDefault implements Media
         return getFile().exists();
     }
 
+    /*
+     * Object
+     */
+
     @Override
     public int hashCode()
     {
@@ -364,8 +368,8 @@ final class MediaDefault implements Media
         {
             return false;
         }
-        final Media media = (Media) object;
-        return media.getPath().equals(path);
+        final MediaDefault media = (MediaDefault) object;
+        return path.equals(media.path);
     }
 
     @Override

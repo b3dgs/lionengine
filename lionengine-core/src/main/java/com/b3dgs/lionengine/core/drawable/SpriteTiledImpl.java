@@ -32,9 +32,9 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     /** Media reference (<code>null</code> if none). */
     private final Media media;
     /** Number of horizontal tiles. */
-    private final int horizontalTiles;
+    private final int tilesHorizontal;
     /** Number of vertical tiles. */
-    private final int verticalTiles;
+    private final int tilesVertical;
     /** Current tile. */
     private int tile;
 
@@ -54,8 +54,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         Check.superiorStrict(tileHeight, 0);
 
         this.media = media;
-        horizontalTiles = getWidth() / tileWidth;
-        verticalTiles = getHeight() / tileHeight;
+        tilesHorizontal = getWidth() / tileWidth;
+        tilesVertical = getHeight() / tileHeight;
     }
 
     /**
@@ -74,8 +74,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         Check.superiorStrict(tileHeight, 0);
 
         media = null;
-        horizontalTiles = getWidth() / tileWidth;
-        verticalTiles = getHeight() / tileHeight;
+        tilesHorizontal = getWidth() / tileWidth;
+        tilesVertical = getHeight() / tileHeight;
     }
 
     /*
@@ -85,8 +85,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     @Override
     public void render(Graphic g)
     {
-        final int ox = tile % horizontalTiles;
-        final int oy = (int) Math.floor(tile / (double) horizontalTiles);
+        final int ox = tile % tilesHorizontal;
+        final int oy = (int) Math.floor(tile / (double) tilesHorizontal);
         render(g, getRenderX(), getRenderY(), getTileWidth(), getTileHeight(), ox, oy);
     }
 
@@ -113,13 +113,13 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     @Override
     public int getTilesHorizontal()
     {
-        return horizontalTiles;
+        return tilesHorizontal;
     }
 
     @Override
     public int getTilesVertical()
     {
-        return verticalTiles;
+        return tilesVertical;
     }
 
     @Override
@@ -133,32 +133,12 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
     @Override
     protected void computeRenderingPoint(int width, int height)
     {
-        super.computeRenderingPoint(width / horizontalTiles, height / verticalTiles);
+        super.computeRenderingPoint(width / tilesHorizontal, height / tilesVertical);
     }
 
     /*
      * Object
      */
-
-    @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final SpriteTiled sprite = (SpriteTiled) object;
-
-        final boolean sameSurface = sprite.getSurface() == getSurface();
-        final boolean sameSize = sprite.getWidth() == getWidth() && sprite.getHeight() == getHeight();
-        final boolean sameTiles = horizontalTiles == sprite.getTilesHorizontal()
-                                  && verticalTiles == sprite.getTilesVertical();
-        return sameSize && sameSurface && sameTiles;
-    }
 
     @Override
     public int hashCode()
@@ -175,8 +155,27 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         }
         result = prime * result + getWidth();
         result = prime * result + getHeight();
-        result = prime * result + horizontalTiles;
-        result = prime * result + verticalTiles;
+        result = prime * result + tilesHorizontal;
+        result = prime * result + tilesVertical;
         return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final SpriteTiledImpl other = (SpriteTiledImpl) object;
+        return getSurface() == other.getSurface()
+               && getWidth() == other.getWidth()
+               && getHeight() == other.getHeight()
+               && tilesHorizontal == other.tilesHorizontal
+               && tilesVertical == other.tilesVertical;
     }
 }

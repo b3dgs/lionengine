@@ -135,10 +135,10 @@ public final class ColorGradient
         final int prime = 31;
         int result = 1;
         result = prime * result + color1.hashCode();
-        result = prime * result + color2.hashCode();
         result = prime * result + x1;
-        result = prime * result + x2;
         result = prime * result + y1;
+        result = prime * result + color2.hashCode();
+        result = prime * result + x2;
         result = prime * result + y2;
         return result;
     }

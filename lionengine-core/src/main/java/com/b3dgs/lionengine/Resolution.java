@@ -141,24 +141,24 @@ public final class Resolution
     {
         final int prime = 31;
         int result = 1;
+        result = prime * result + width;
         result = prime * result + height;
         result = prime * result + rate;
-        result = prime * result + width;
         return result;
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass())
+        if (object == null || getClass() != object.getClass())
         {
             return false;
         }
-        final Resolution other = (Resolution) obj;
+        final Resolution other = (Resolution) object;
         return width == other.width && height == other.height && rate == other.rate;
     }
 
