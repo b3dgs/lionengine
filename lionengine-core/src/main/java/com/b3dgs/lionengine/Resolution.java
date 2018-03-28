@@ -37,6 +37,8 @@ public final class Resolution
     private static final int FACTOR_2X = 2;
     /** Triple factor. */
     private static final int FACTOR_3X = 3;
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 43;
 
     /** Display rate. */
     private final int rate;
@@ -158,5 +160,19 @@ public final class Resolution
         }
         final Resolution other = (Resolution) obj;
         return width == other.width && height == other.height && rate == other.rate;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [width=")
+                                            .append(width)
+                                            .append(", height=")
+                                            .append(height)
+                                            .append(", rate=")
+                                            .append(rate)
+                                            .append("]")
+                                            .toString();
     }
 }

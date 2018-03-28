@@ -104,7 +104,25 @@ public final class ResolutionTest
     }
 
     /**
-     * Test the hash code.
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Resolution resolution = new Resolution(320, 240, 60);
+
+        Assert.assertEquals(resolution, resolution);
+        Assert.assertEquals(new Resolution(320, 240, 60), resolution);
+
+        Assert.assertNotEquals(resolution, null);
+        Assert.assertNotEquals(resolution, new Object());
+        Assert.assertNotEquals(resolution, new Resolution(100, 240, 60));
+        Assert.assertNotEquals(resolution, new Resolution(320, 100, 60));
+        Assert.assertNotEquals(resolution, new Resolution(320, 240, 30));
+    }
+
+    /**
+     * Test hash code.
      */
     @Test
     public void testHashCode()
@@ -120,20 +138,11 @@ public final class ResolutionTest
     }
 
     /**
-     * Test the equality.
+     * Test to string.
      */
     @Test
-    public void testEquals()
+    public void testToString()
     {
-        final Resolution resolution = new Resolution(320, 240, 60);
-
-        Assert.assertEquals(resolution, resolution);
-        Assert.assertEquals(new Resolution(320, 240, 60), resolution);
-
-        Assert.assertNotEquals(resolution, null);
-        Assert.assertNotEquals(resolution, new Object());
-        Assert.assertNotEquals(resolution, new Resolution(100, 240, 60));
-        Assert.assertNotEquals(resolution, new Resolution(320, 100, 60));
-        Assert.assertNotEquals(resolution, new Resolution(320, 240, 30));
+        Assert.assertEquals("Resolution [width=320, height=240, rate=60]", new Resolution(320, 240, 60).toString());
     }
 }
