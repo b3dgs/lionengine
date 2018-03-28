@@ -85,12 +85,12 @@ public class SetupSurfaceRastered extends Setup
 
         final int rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
         final boolean smooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
-        raster = new RasterImage(surface, rasterFile, rasterHeight, smooth);
+        raster = new RasterImage(getSurface(), rasterFile, rasterHeight, smooth);
 
         final FramesConfig framesData = FramesConfig.imports(getRoot());
         final int hf = framesData.getHorizontal();
         final int vf = framesData.getVertical();
-        final int frameHeight = surface.getHeight() / vf;
+        final int frameHeight = getSurface().getHeight() / vf;
         raster.loadRasters(frameHeight, true, UtilFile.removeExtension(config.getName()));
 
         for (final ImageBuffer buffer : raster.getRasters())

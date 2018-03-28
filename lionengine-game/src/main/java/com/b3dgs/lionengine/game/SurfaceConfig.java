@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.util.Optional;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -84,19 +86,15 @@ public final class SurfaceConfig
 
         final Xml node = new Xml(NODE_SURFACE);
         node.writeString(ATT_IMAGE, config.getImage());
-
-        if (config.getIcon() != null)
-        {
-            node.writeString(ATT_ICON, config.getIcon());
-        }
+        config.getIcon().ifPresent(icon -> node.writeString(ATT_ICON, icon));
 
         return node;
     }
 
     /** The image descriptor. */
     private final String image;
-    /** The icon descriptor (can be <code>null</code>). */
-    private final String icon;
+    /** The icon descriptor. */
+    private final Optional<String> icon;
 
     /**
      * Create the surface configuration.
@@ -112,7 +110,7 @@ public final class SurfaceConfig
         Check.notNull(image);
 
         this.image = image;
-        this.icon = icon;
+        this.icon = Optional.ofNullable(icon);
     }
 
     /**
@@ -128,9 +126,9 @@ public final class SurfaceConfig
     /**
      * Get the icon descriptor.
      * 
-     * @return The icon descriptor (<code>null</code> if none).
+     * @return The icon descriptor.
      */
-    public String getIcon()
+    public Optional<String> getIcon()
     {
         return icon;
     }
@@ -144,15 +142,9 @@ public final class SurfaceConfig
     {
         final int prime = 31;
         int result = 1;
-        if (icon == null)
-        {
-            result = prime * result;
-        }
-        else
-        {
-            result = prime * result + icon.hashCode();
-        }
-        return prime * result + image.hashCode();
+        result = prime * result + image.hashCode();
+        result = prime * result + icon.hashCode();
+        return result;
     }
 
     @Override
@@ -167,9 +159,7 @@ public final class SurfaceConfig
             return false;
         }
         final SurfaceConfig other = (SurfaceConfig) object;
-        final boolean sameIcon = other.getIcon() == null && getIcon() == null
-                                 || other.getIcon() != null && getIcon() != null && other.getIcon().equals(getIcon());
-        return sameIcon && other.getImage().equals(getImage());
+        return icon.equals(other.icon) && image.equals(other.image);
     }
 
     @Override
@@ -179,7 +169,7 @@ public final class SurfaceConfig
                                             .append(" [image=")
                                             .append(image)
                                             .append(", icon=")
-                                            .append(icon)
+                                            .append(icon.orElse(null))
                                             .append("]")
                                             .toString();
     }
