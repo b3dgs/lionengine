@@ -73,6 +73,31 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     }
 
     /**
+     * Check if area if used.
+     * 
+     * @param mover The object moving on map.
+     * @param ctx The horizontal tile index.
+     * @param cty The vertical tile index.
+     * @param ignoreObjectId The object ID to ignore.
+     * @return <code>true</code> if area is used, <code>false</code> else.
+     */
+    private boolean isTileNotAvailable(Pathfindable mover, int ctx, int cty, Integer ignoreObjectId)
+    {
+        final Collection<Integer> ids = getObjectsId(ctx, cty);
+        final Tile tile = map.getTile(ctx, cty);
+        if (tile != null)
+        {
+            final TilePath tilePath = tile.getFeature(TilePath.class);
+            if (mover.isBlocking(tilePath.getCategory())
+                || ignoreObjectId != null && !ids.isEmpty() && !ids.contains(ignoreObjectId))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
      * @param mover The object moving on map.
@@ -347,16 +372,9 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         {
             for (int ctx = tx; ctx < tx + tw; ctx++)
             {
-                final Collection<Integer> ids = getObjectsId(ctx, cty);
-                final Tile tile = map.getTile(ctx, cty);
-                if (tile != null)
+                if (isTileNotAvailable(mover, ctx, cty, ignoreObjectId))
                 {
-                    final TilePath tilePath = tile.getFeature(TilePath.class);
-                    if (mover.isBlocking(tilePath.getCategory())
-                        || ignoreObjectId != null && !ids.isEmpty() && !ids.contains(ignoreObjectId))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
