@@ -39,6 +39,57 @@ import com.b3dgs.lionengine.geom.Rectangle;
 final class CollidableUpdater implements IdentifiableListener
 {
     /**
+     * Check if other collides with collision and its rectangle area.
+     * 
+     * @param origin The origin used.
+     * @param provider The provider owner.
+     * @param transformable The transformable owner.
+     * @param other The other collidable to check.
+     * @param collision The collision to check with.
+     * @param rectangle The collision rectangle.
+     * @return The collision collides with other, <code>null</code> if none.
+     */
+    private static Collision collide(Origin origin,
+                                     FeatureProvider provider,
+                                     Transformable transformable,
+                                     Collidable other,
+                                     Collision collision,
+                                     Rectangle rectangle)
+    {
+        final Mirror mirror = getMirror(provider, collision);
+        final int offsetX = getOffsetX(collision, mirror);
+        final int offsetY = getOffsetY(collision, mirror);
+
+        final double sh = rectangle.getX();
+        final double sv = rectangle.getY();
+        final double dh = origin.getX(transformable.getX() + offsetX, rectangle.getWidthReal()) - sh;
+        final double dv = origin.getY(transformable.getY() + offsetY, rectangle.getHeightReal()) - sv;
+        final double norm = Math.sqrt(dh * dh + dv * dv);
+        final double sx;
+        final double sy;
+        if (Double.compare(norm, 0.0) == 0)
+        {
+            sx = 0;
+            sy = 0;
+        }
+        else
+        {
+            sx = dh / norm;
+            sy = dv / norm;
+        }
+
+        for (int count = 0; count <= norm; count++)
+        {
+            if (checkCollide(rectangle, other))
+            {
+                return collision;
+            }
+            rectangle.translate(sx, sy);
+        }
+        return null;
+    }
+
+    /**
      * Check if current rectangle collides other collidable rectangles.
      * 
      * @param rectangle The current rectangle.
@@ -127,57 +178,6 @@ final class CollidableUpdater implements IdentifiableListener
     CollidableUpdater()
     {
         super();
-    }
-
-    /**
-     * Check if other collides with collision and its rectangle area.
-     * 
-     * @param origin The origin used.
-     * @param provider The provider owner.
-     * @param transformable The transformable owner.
-     * @param other The other collidable to check.
-     * @param collision The collision to check with.
-     * @param rectangle The collision rectangle.
-     * @return The collision collides with other, <code>null</code> if none.
-     */
-    private Collision collide(Origin origin,
-                              FeatureProvider provider,
-                              Transformable transformable,
-                              Collidable other,
-                              Collision collision,
-                              Rectangle rectangle)
-    {
-        final Mirror mirror = getMirror(provider, collision);
-        final int offsetX = getOffsetX(collision, mirror);
-        final int offsetY = getOffsetY(collision, mirror);
-
-        final double sh = rectangle.getX();
-        final double sv = rectangle.getY();
-        final double dh = origin.getX(transformable.getX() + offsetX, rectangle.getWidthReal()) - sh;
-        final double dv = origin.getY(transformable.getY() + offsetY, rectangle.getHeightReal()) - sv;
-        final double norm = Math.sqrt(dh * dh + dv * dv);
-        final double sx;
-        final double sy;
-        if (Double.compare(norm, 0.0) == 0)
-        {
-            sx = 0;
-            sy = 0;
-        }
-        else
-        {
-            sx = dh / norm;
-            sy = dv / norm;
-        }
-
-        for (int count = 0; count <= norm; count++)
-        {
-            if (checkCollide(rectangle, other))
-            {
-                return collision;
-            }
-            rectangle.translate(sx, sy);
-        }
-        return null;
     }
 
     /**
