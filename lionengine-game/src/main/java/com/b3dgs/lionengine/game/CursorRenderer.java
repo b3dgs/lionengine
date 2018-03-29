@@ -171,7 +171,7 @@ final class CursorRenderer implements Resource, Renderable
     {
         for (final Image current : surfaces.values())
         {
-            if (current.isLoaded())
+            if (!current.isLoaded())
             {
                 return false;
             }
@@ -187,6 +187,7 @@ final class CursorRenderer implements Resource, Renderable
             current.dispose();
         }
         surfaces.clear();
+        surfaceId = null;
     }
 
     /*
