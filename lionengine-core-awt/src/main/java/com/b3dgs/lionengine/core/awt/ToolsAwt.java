@@ -196,7 +196,7 @@ public final class ToolsAwt
             for (int x = 0; x < width; x++)
             {
                 final int col = mask.getRGB(x, y);
-                final int flag = 0x00FF_FF_FF;
+                final int flag = 0x00_FF_FF_FF;
                 if (col == rgba)
                 {
                     mask.setRGB(x, y, col & flag);
