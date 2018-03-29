@@ -26,6 +26,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
@@ -57,6 +58,22 @@ final class CollidableUpdater implements IdentifiableListener
             }
         }
         return false;
+    }
+
+    /**
+     * Get the collision mirror.
+     * 
+     * @param provider The provider owner.
+     * @param collision The collision reference.
+     * @return The collision mirror, {@link Mirror#NONE} if undefined.
+     */
+    private static Mirror getMirror(FeatureProvider provider, Collision collision)
+    {
+        if (collision.hasMirror() && provider.hasFeature(Mirrorable.class))
+        {
+            return provider.getFeature(Mirrorable.class).getMirror();
+        }
+        return Mirror.NONE;
     }
 
     /**
@@ -161,22 +178,6 @@ final class CollidableUpdater implements IdentifiableListener
             rectangle.translate(sx, sy);
         }
         return null;
-    }
-
-    /**
-     * Get the collision mirror.
-     * 
-     * @param provider The provider owner.
-     * @param collision The collision reference.
-     * @return The collision mirror, {@link Mirror#NONE} if undefined.
-     */
-    private Mirror getMirror(FeatureProvider provider, Collision collision)
-    {
-        if (collision.hasMirror() && provider.hasFeature(Mirrorable.class))
-        {
-            return provider.getFeature(Mirrorable.class).getMirror();
-        }
-        return Mirror.NONE;
     }
 
     /**
@@ -300,7 +301,7 @@ final class CollidableUpdater implements IdentifiableListener
      */
     public void notifyTransformed(Origin origin,
                                   FeatureProvider provider,
-                                  Transformable transformable,
+                                  Shape transformable,
                                   List<Collision> collisions)
     {
         if (enabled)

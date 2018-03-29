@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.feature.collidable;
 import java.util.List;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -49,7 +49,7 @@ final class CollidableRenderer
      * @param transformable The transformable owner.
      * @param cacheColls The computed collisions.
      */
-    public void render(Graphic g, Viewer viewer, Origin origin, Transformable transformable, List<Collision> cacheColls)
+    public void render(Graphic g, Viewer viewer, Origin origin, Shape transformable, List<Collision> cacheColls)
     {
         if (showCollision)
         {

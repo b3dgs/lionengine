@@ -152,7 +152,7 @@ final class MapTileCollisionComputer
         CollisionResult found = null;
         for (int count = 0; count < norm; count++)
         {
-            final CollisionResult res = getResult(map, category, sx, sy, h, v);
+            final CollisionResult res = getResult(category, sx, sy, h, v);
             if (res != null)
             {
                 found = res;
@@ -174,7 +174,6 @@ final class MapTileCollisionComputer
     /**
      * Compute the collision from current location.
      * 
-     * @param map The map tile owner.
      * @param category The collision category.
      * @param ox The old horizontal location.
      * @param oy The old vertical location.
@@ -182,12 +181,7 @@ final class MapTileCollisionComputer
      * @param y The current vertical location.
      * @return The computed collision result, <code>null</code> if none.
      */
-    private CollisionResult computeCollision(MapTile map,
-                                             CollisionCategory category,
-                                             double ox,
-                                             double oy,
-                                             double x,
-                                             double y)
+    private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
         final Tile tile = map.getTile((int) Math.floor(x / map.getTileWidth()),
                                       (int) Math.floor(y / map.getTileHeight()));
@@ -207,7 +201,6 @@ final class MapTileCollisionComputer
     /**
      * Get the collision result from current sub location.
      * 
-     * @param map The map tile owner.
      * @param category The collision category.
      * @param sx The horizontal speed.
      * @param sy The vertical speed.
@@ -215,21 +208,16 @@ final class MapTileCollisionComputer
      * @param v The current vertical location.
      * @return The collision found, <code>null</code> if none.
      */
-    private CollisionResult getResult(MapTile map, CollisionCategory category, double sx, double sy, double h, double v)
+    private CollisionResult getResult(CollisionCategory category, double sx, double sy, double h, double v)
     {
         final double oh = UtilMath.getRound(sx, h);
         final double ov = UtilMath.getRound(sy, v);
 
         final CollisionResult result;
-        result = computeCollision(map, category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v));
+        result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v));
         if (result == null)
         {
-            return computeCollision(map,
-                                    category,
-                                    oh,
-                                    ov,
-                                    UtilMath.getRound(sx, h + sx),
-                                    UtilMath.getRound(sy, v + sy));
+            return computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v + sy));
         }
         return result;
     }
