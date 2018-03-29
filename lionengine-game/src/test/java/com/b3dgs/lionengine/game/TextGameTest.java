@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -33,9 +34,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
- * Test the text game.
+ * Test {@link TextGame}.
  */
-public class TextGameTest
+public final class TextGameTest
 {
     /**
      * Prepare test.
@@ -55,19 +56,18 @@ public class TextGameTest
         Graphics.setFactoryGraphic(null);
     }
 
-    private final Graphic g = new GraphicMock();
-    private final TextGame text = new TextGame("Arial", 10, TextStyle.NORMAL);
-    private final ViewerMock viewer = new ViewerMock();
-
     /**
-     * Test the text game location.
+     * Test location.
      */
     @Test
     public void testLocation()
     {
+        final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
+
         Assert.assertEquals(0, text.getLocationX());
         Assert.assertEquals(0, text.getLocationY());
 
+        final ViewerMock viewer = new ViewerMock();
         viewer.set(1, 2);
         text.update(viewer);
 
@@ -81,34 +81,44 @@ public class TextGameTest
     }
 
     /**
-     * Test the text game size.
+     * Test size.
      */
     @Test
     public void testSize()
     {
-        Assert.assertEquals(10, text.getSize());
+        final Graphic g = new GraphicMock();
+        final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
+
+        Assert.assertEquals(8, text.getSize());
 
         Assert.assertEquals(0, text.getWidth());
         Assert.assertEquals(0, text.getHeight());
 
         Assert.assertEquals(0, text.getStringWidth(g, "text"));
         Assert.assertEquals(0, text.getStringHeight(g, "text"));
+
+        g.dispose();
     }
 
     /**
-     * Test the text game draw.
+     * Test draw.
      */
     @Test
     public void testDraw()
     {
+        final Graphic g = new GraphicMock();
+        final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
+
         text.setText("text");
         text.setAlign(Align.CENTER);
         text.setColor(ColorRgba.WHITE);
+        text.render(g);
 
         text.draw(g, 0, 0, "toto");
         text.draw(g, 1, 2, Align.LEFT, "tata");
         text.draw(g, Geom.createLocalizable(3, 4), 1, 2, Align.RIGHT, "titi");
         text.drawRect(g, ColorRgba.BLACK, 0, 0, 10, 20);
-        text.render(g);
+
+        g.dispose();
     }
 }

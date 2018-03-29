@@ -26,15 +26,15 @@ import com.b3dgs.lionengine.game.state.StateType;
 import com.b3dgs.lionengine.game.state.StateWalk;
 
 /**
- * Test the state factory.
+ * Test {@link StateFactory}.
  */
-public class StateFactoryTest
+public final class StateFactoryTest
 {
     /**
-     * Test the state creation.
+     * Test add state.
      */
     @Test
-    public void testCreate()
+    public void testAddState()
     {
         final StateFactory factory = new StateFactory();
 
@@ -46,18 +46,27 @@ public class StateFactoryTest
 
         Assert.assertEquals(idle, factory.getState(StateType.IDLE));
         Assert.assertEquals(walk, factory.getState(StateType.WALK));
+    }
 
+    /**
+     * Test clear.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testClear()
+    {
+        final StateFactory factory = new StateFactory();
+        factory.addState(new StateIdle());
+        factory.addState(new StateWalk());
         factory.clear();
 
         try
         {
             Assert.assertNull(factory.getState(StateType.IDLE));
-            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
-            // Success
-            Assert.assertNotNull(exception);
+            Assert.assertEquals("Unknown enum: " + StateType.IDLE.toString(), exception.getMessage());
+            throw exception;
         }
     }
 }
