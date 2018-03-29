@@ -66,7 +66,7 @@ public final class TimedMessage implements Updatable, Renderable
      * @param y The vertical location.
      * @param time The remaining time.
      */
-    public void addMessage(String message, int x, int y, int time)
+    public void addMessage(String message, int x, int y, long time)
     {
         messages.add(new MessageData(message, x, y, time));
         hasMessage = true;
@@ -138,7 +138,7 @@ public final class TimedMessage implements Updatable, Renderable
         /** The timer. */
         private final Timing timer = new Timing();
         /** Max time. */
-        private final int time;
+        private final long time;
 
         /**
          * Internal constructor.
@@ -148,7 +148,7 @@ public final class TimedMessage implements Updatable, Renderable
          * @param y The vertical location.
          * @param time The remaining time.
          */
-        private MessageData(String message, int x, int y, int time)
+        private MessageData(String message, int x, int y, long time)
         {
             super();
 

@@ -17,40 +17,104 @@
  */
 package com.b3dgs.lionengine.game;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test timed message class.
+ * Test {@link TimedMessage}.
  */
-public class TimedMessageTest
+public final class TimedMessageTest
 {
     /**
-     * Test timed message functions.
-     * 
-     * @throws InterruptedException If error.
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Graphics.setFactoryGraphic(null);
+    }
+
+    /**
+     * Test add message.
      */
     @Test
-    public void testTimedMessage() throws InterruptedException
+    public void testAddMessage()
     {
-        final TimedMessage timedMessage = new TimedMessage(null);
+        final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
 
-        Assert.assertFalse(timedMessage.hasMessage());
+        Assert.assertFalse(message.hasMessage());
 
-        timedMessage.addMessage("test", 0, 0, 50);
-        timedMessage.addMessage("test", 0, 0, 100);
+        message.addMessage("test", 0, 0, 50L);
 
-        Assert.assertTrue(timedMessage.hasMessage());
+        Assert.assertTrue(message.hasMessage());
+    }
 
-        timedMessage.update(0.0);
-        UtilTests.pause(25);
-        timedMessage.update(0.0);
-        timedMessage.update(0.0);
-        UtilTests.pause(100);
-        timedMessage.update(0.0);
+    /**
+     * Test update.
+     */
+    @Test
+    public void testUpdate()
+    {
+        final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
+        message.update(1.0);
 
-        Assert.assertFalse(timedMessage.hasMessage());
+        Assert.assertFalse(message.hasMessage());
+
+        message.addMessage("test", 0, 0, 0L);
+        message.addMessage("test2", 0, 0, 100L);
+
+        Assert.assertTrue(message.hasMessage());
+
+        message.update(1.0); // First message consumed, one remain
+
+        Assert.assertTrue(message.hasMessage());
+
+        UtilTests.pause(25L);
+
+        message.update(1.0); // Message time still not elapsed
+
+        Assert.assertTrue(message.hasMessage());
+
+        UtilTests.pause(100L); // Message time elapsed
+
+        message.update(1.0);
+
+        Assert.assertFalse(message.hasMessage());
+    }
+
+    /**
+     * Test render.
+     */
+    @Test
+    public void testRender()
+    {
+        final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
+        message.addMessage("test", 0, 0, 0L);
+
+        final Graphic g = Graphics.createGraphic();
+        message.render(g);
+        message.update(1.0);
+        message.render(g);
+        g.dispose();
+
+        Assert.assertFalse(message.hasMessage());
     }
 }
