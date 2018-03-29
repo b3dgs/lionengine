@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.graphic;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilConversion;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
@@ -77,19 +76,19 @@ public final class UtilColor
      */
     public static int inc(int value, int r, int g, int b)
     {
-        final int alpha = UtilConversion.mask(value >> Constant.BYTE_4);
+        final int alpha = value >> Constant.BYTE_4 & 0xFF;
         if (alpha == 0)
         {
             return 0;
         }
-        final int red = UtilConversion.mask(value >> Constant.BYTE_3);
-        final int green = UtilConversion.mask(value >> Constant.BYTE_2);
-        final int blue = UtilConversion.mask(value >> Constant.BYTE_1);
+        final int red = value >> Constant.BYTE_3 & 0xFF;
+        final int green = value >> Constant.BYTE_2 & 0xFF;
+        final int blue = value >> Constant.BYTE_1 & 0xFF;
 
-        final int alphaMask = UtilConversion.mask(UtilMath.clamp(alpha, 0, 255)) << Constant.BYTE_4;
-        final int redMask = UtilConversion.mask(UtilMath.clamp(red + r, 0, 255)) << Constant.BYTE_3;
-        final int greenMask = UtilConversion.mask(UtilMath.clamp(green + g, 0, 255)) << Constant.BYTE_2;
-        final int blueMask = UtilConversion.mask(UtilMath.clamp(blue + b, 0, 255)) << Constant.BYTE_1;
+        final int alphaMask = (UtilMath.clamp(alpha, 0, 255) & 0xFF) << Constant.BYTE_4;
+        final int redMask = (UtilMath.clamp(red + r, 0, 255) & 0xFF) << Constant.BYTE_3;
+        final int greenMask = (UtilMath.clamp(green + g, 0, 255) & 0xFF) << Constant.BYTE_2;
+        final int blueMask = (UtilMath.clamp(blue + b, 0, 255) & 0xFF) << Constant.BYTE_1;
 
         return alphaMask | redMask | greenMask | blueMask;
     }

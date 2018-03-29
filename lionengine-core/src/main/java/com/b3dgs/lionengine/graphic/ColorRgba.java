@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.graphic;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * Represents a color with red, green, blue and alpha.
@@ -92,7 +91,7 @@ public final class ColorRgba
      * @param a The alpha value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b, int a)
+    public ColorRgba(int r, int g, int b, int a) // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity|TrailingComment
     {
         Check.superiorOrEqual(r, 0);
         Check.inferiorOrEqual(r, 255);
@@ -106,10 +105,10 @@ public final class ColorRgba
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        value = UtilConversion.mask(a) << Constant.BYTE_4
-                | UtilConversion.mask(r) << Constant.BYTE_3
-                | UtilConversion.mask(g) << Constant.BYTE_2
-                | UtilConversion.mask(b) << Constant.BYTE_1;
+        value = (a & 0xFF) << Constant.BYTE_4
+                | (r & 0xFF) << Constant.BYTE_3
+                | (g & 0xFF) << Constant.BYTE_2
+                | (b & 0xFF) << Constant.BYTE_1;
         valueAlpha = a;
         valueRed = r;
         valueGreen = g;
@@ -124,10 +123,10 @@ public final class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
-        valueAlpha = UtilConversion.mask(value >> Constant.BYTE_4);
-        valueRed = UtilConversion.mask(value >> Constant.BYTE_3);
-        valueGreen = UtilConversion.mask(value >> Constant.BYTE_2);
-        valueBlue = UtilConversion.mask(value >> Constant.BYTE_1);
+        valueAlpha = value >> Constant.BYTE_4 & 0xFF;
+        valueRed = value >> Constant.BYTE_3 & 0xFF;
+        valueGreen = value >> Constant.BYTE_2 & 0xFF;
+        valueBlue = value >> Constant.BYTE_1 & 0xFF;
     }
 
     /**
