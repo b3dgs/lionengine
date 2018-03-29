@@ -98,8 +98,7 @@ public class LauncherModel extends FeatureModel implements Launcher
      * </p>
      * <p>
      * If the {@link Featurable} is a {@link LauncherListener}, it will automatically
-     * {@link #addListener(LauncherListener)}
-     * on it.
+     * {@link #addListener(LauncherListener)} on it.
      * </p>
      * 
      * @param services The services reference.
@@ -319,7 +318,7 @@ public class LauncherModel extends FeatureModel implements Launcher
         {
             if (launch.isReady())
             {
-                launch(launch.config, launch.initial, launch.featurable, launch.launchable);
+                launch(launch.getConfig(), launch.getInitial(), launch.getFeaturable(), launch.getLaunchable());
                 launched.add(launch);
             }
         }
@@ -372,50 +371,5 @@ public class LauncherModel extends FeatureModel implements Launcher
     public long getRate()
     {
         return rate;
-    }
-
-    /**
-     * Represents a delayed launch.
-     */
-    private static class DelayedLaunch
-    {
-        /** Delay timing. */
-        private final Timing timing = new Timing();
-        /** Launchable configuration reference. */
-        private final LaunchableConfig config;
-        /** Initial direction for launch. */
-        private final Direction initial;
-        /** Featurable reference to launch. */
-        private final Featurable featurable;
-        /** Launchable reference to launch. */
-        private final Launchable launchable;
-
-        /**
-         * Create a delayed launch.
-         * 
-         * @param config The launch configuration.
-         * @param initial The launch initial direction.
-         * @param featurable The featurable to launch.
-         * @param launchable The launchable to launch.
-         */
-        DelayedLaunch(LaunchableConfig config, Direction initial, Featurable featurable, Launchable launchable)
-        {
-            super();
-            this.config = config;
-            this.initial = initial;
-            this.featurable = featurable;
-            this.launchable = launchable;
-            timing.start();
-        }
-
-        /**
-         * Check if launch can be performed.
-         * 
-         * @return <code>true</code> if delayed elapsed, <code>false</code> else.
-         */
-        public boolean isReady()
-        {
-            return timing.elapsed(config.getDelay());
-        }
     }
 }
