@@ -196,9 +196,9 @@ public final class LauncherConfig
             return false;
         }
         final LauncherConfig other = (LauncherConfig) object;
-        return other.getLevel() == getLevel()
-               && other.getRate() == getRate()
-               && Arrays.equals(other.launchables.toArray(), launchables.toArray());
+        return level == other.level
+               && rate == other.rate
+               && Arrays.equals(launchables.toArray(), other.launchables.toArray());
     }
 
     @Override

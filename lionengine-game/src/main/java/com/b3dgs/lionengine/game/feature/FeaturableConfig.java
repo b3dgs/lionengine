@@ -195,7 +195,7 @@ public final class FeaturableConfig
             return false;
         }
         final FeaturableConfig other = (FeaturableConfig) object;
-        return other.getClassName().equals(getClassName()) && other.getSetupName().equals(getSetupName());
+        return clazz.equals(other.clazz) && setup.equals(other.setup);
     }
 
     @Override

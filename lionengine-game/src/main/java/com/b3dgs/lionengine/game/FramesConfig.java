@@ -192,10 +192,10 @@ public final class FramesConfig
             return false;
         }
         final FramesConfig other = (FramesConfig) object;
-        return other.getHorizontal() == getHorizontal()
-               && other.getVertical() == getVertical()
-               && other.getOffsetX() == getOffsetX()
-               && other.getOffsetY() == getOffsetY();
+        return horizontalFrames == other.horizontalFrames
+               && verticalFrames == other.verticalFrames
+               && offsetX == other.offsetX
+               && offsetY == other.offsetY;
     }
 
     @Override

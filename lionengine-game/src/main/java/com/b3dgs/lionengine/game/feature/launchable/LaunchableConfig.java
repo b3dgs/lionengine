@@ -179,10 +179,10 @@ public final class LaunchableConfig
     {
         final int prime = 31;
         int result = 1;
+        result = prime * result + media.hashCode();
         result = prime * result + delay;
         result = prime * result + ox;
         result = prime * result + oy;
-        result = prime * result + media.hashCode();
         result = prime * result + vector.hashCode();
         return result;
     }
@@ -199,11 +199,11 @@ public final class LaunchableConfig
             return false;
         }
         final LaunchableConfig other = (LaunchableConfig) object;
-        final boolean sameOffset = other.getOffsetX() == getOffsetX() && other.getOffsetY() == getOffsetY();
-        return sameOffset
-               && other.getMedia().equals(getMedia())
-               && other.getVector().equals(getVector())
-               && other.getDelay() == getDelay();
+        return ox == other.ox
+               && oy == other.oy
+               && delay == other.delay
+               && media.equals(other.media)
+               && vector.equals(other.vector);
     }
 
     @Override

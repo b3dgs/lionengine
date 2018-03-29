@@ -155,7 +155,7 @@ public final class LayerableConfig
             return false;
         }
         final LayerableConfig other = (LayerableConfig) object;
-        return other.layerRefresh == layerRefresh && other.layerDisplay == layerDisplay;
+        return layerRefresh == other.layerRefresh && layerDisplay == other.layerDisplay;
     }
 
     @Override

@@ -213,12 +213,12 @@ public final class ActionConfig
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + description.hashCode();
-        result = prime * result + height;
-        result = prime * result + name.hashCode();
-        result = prime * result + width;
         result = prime * result + x;
         result = prime * result + y;
+        result = prime * result + width;
+        result = prime * result + height;
+        result = prime * result + name.hashCode();
+        result = prime * result + description.hashCode();
         return result;
     }
 
@@ -234,12 +234,12 @@ public final class ActionConfig
             return false;
         }
         final ActionConfig other = (ActionConfig) object;
-        final boolean sameSize = other.getWidth() == getWidth() && other.getHeight() == getHeight();
-        final boolean sameCoord = other.getX() == getX() && other.getY() == getY();
-        return sameSize
-               && sameCoord
-               && other.getDescription().equals(getDescription())
-               && other.getName().equals(getName());
+        return other.x == x
+               && other.y == y
+               && other.width == width
+               && other.height == height
+               && other.name.equals(name)
+               && other.description.equals(description);
     }
 
     @Override

@@ -150,9 +150,9 @@ public final class ProducibleConfig
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + height;
         result = prime * result + steps;
         result = prime * result + width;
+        result = prime * result + height;
         return result;
     }
 
@@ -168,7 +168,7 @@ public final class ProducibleConfig
             return false;
         }
         final ProducibleConfig other = (ProducibleConfig) object;
-        return other.getWidth() == getWidth() && other.getHeight() == getHeight() && other.getSteps() == getSteps();
+        return steps == other.steps && width == other.width && height == other.height;
     }
 
     @Override

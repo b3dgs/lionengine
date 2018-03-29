@@ -137,8 +137,8 @@ public final class SizeConfig
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + height;
         result = prime * result + width;
+        result = prime * result + height;
         return result;
     }
 
