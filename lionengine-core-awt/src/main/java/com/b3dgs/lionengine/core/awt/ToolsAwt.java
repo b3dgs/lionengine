@@ -196,7 +196,7 @@ public final class ToolsAwt
             for (int x = 0; x < width; x++)
             {
                 final int col = mask.getRGB(x, y);
-                final int flag = 0x00ffffff;
+                final int flag = 0x00FF_FF_FF;
                 if (col == rgba)
                 {
                     mask.setRGB(x, y, col & flag);
@@ -358,9 +358,9 @@ public final class ToolsAwt
     {
         final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
 
-        final int divisorRed = 0x010000;
-        final int divisorGreen = 0x000100;
-        final int divisorBlue = 0x000001;
+        final int divisorRed = 0x01_00_00;
+        final int divisorGreen = 0x00_01_00;
+        final int divisorBlue = 0x00_00_01;
 
         final double sr = -((er - fr) / (double) divisorRed) / size;
         final double sg = -((eg - fg) / (double) divisorGreen) / size;

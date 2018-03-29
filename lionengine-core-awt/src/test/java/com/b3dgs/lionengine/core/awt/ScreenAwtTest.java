@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 public final class ScreenAwtTest
 {
     /** Test timeout in milliseconds. */
-    private static final long TIMEOUT = 10000L;
+    private static final long TIMEOUT = 10_000L;
     /** Image media. */
     private static final String IMAGE = "image.png";
 

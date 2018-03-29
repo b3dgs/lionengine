@@ -57,11 +57,11 @@ public final class UtilChecksumTest
     @Test
     public void testEncodingInt()
     {
-        final int value = 489464795;
+        final int value = 489_464_795;
         final String signature = UtilChecksum.getSha(value);
 
         Assert.assertTrue(UtilChecksum.checkSha(value, signature));
-        Assert.assertFalse(UtilChecksum.checkSha(2456135, signature));
+        Assert.assertFalse(UtilChecksum.checkSha(2_456_135, signature));
     }
 
     /**

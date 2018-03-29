@@ -315,7 +315,7 @@ class SpriteImpl implements Sprite
                     lazySurfaceBackup();
                     rgb[cx][cy] = surfaceOriginal.getRgb(cx, cy);
                 }
-                final int alphaKey = 0x00ffffff;
+                final int alphaKey = 0x00_FF_FF_FF;
                 final int mc = Math.abs(alpha) << Constant.BYTE_4 | alphaKey;
                 final int color = fade + alpha;
                 surface.setRgb(cx, cy, UtilColor.inc(rgb[cx][cy], color, color, color) & mc);

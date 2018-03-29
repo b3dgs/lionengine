@@ -105,10 +105,10 @@ public class FilterBlur implements Filter
             {
                 final int ix = checkEdge(width, x, col, edge);
                 final int rgb = in[ioffset + ix];
-                a += f * (rgb >> Constant.BYTE_4 & 0xff);
-                r += f * (rgb >> Constant.BYTE_3 & 0xff);
-                g += f * (rgb >> Constant.BYTE_2 & 0xff);
-                b += f * (rgb & 0xff);
+                a += f * (rgb >> Constant.BYTE_4 & 0xFF);
+                r += f * (rgb >> Constant.BYTE_3 & 0xFF);
+                g += f * (rgb >> Constant.BYTE_2 & 0xFF);
+                b += f * (rgb & 0xFF);
             }
         }
         final int ia;
@@ -118,7 +118,7 @@ public class FilterBlur implements Filter
         }
         else
         {
-            ia = 0xff;
+            ia = 0xFF;
         }
         final int ir = clamp((int) (r + 0.5));
         final int ig = clamp((int) (g + 0.5));

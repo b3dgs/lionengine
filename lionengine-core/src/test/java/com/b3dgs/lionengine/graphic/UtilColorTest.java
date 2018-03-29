@@ -156,21 +156,21 @@ public final class UtilColorTest
     @Test
     public void testFilterRgb()
     {
-        Assert.assertTrue(UtilColor.filterRgb(-16711423, 0, 0, 0) < 0);
+        Assert.assertTrue(UtilColor.filterRgb(-16_711_423, 0, 0, 0) < 0);
         Assert.assertTrue(UtilColor.filterRgb(0, 0, 0, 0) == 0);
-        Assert.assertTrue(UtilColor.filterRgb(16711935, 0, 0, 0) > 0);
-        Assert.assertTrue(UtilColor.filterRgb(5000, 0, 0, 0) > 0);
-        Assert.assertFalse(UtilColor.filterRgb(0, 5000, 0, 0) > 0);
-        Assert.assertFalse(UtilColor.filterRgb(0, 0, 5000, 0) > 0);
-        Assert.assertFalse(UtilColor.filterRgb(0, 0, 0, 5000) > 0);
-        Assert.assertTrue(UtilColor.filterRgb(-10000, 0, -10000000, 0) < 0);
-        Assert.assertTrue(UtilColor.filterRgb(5000, -100, -100, -100) > 0);
-        Assert.assertTrue(UtilColor.filterRgb(500000, -100, -10000, -100) > 0);
+        Assert.assertTrue(UtilColor.filterRgb(16_711_935, 0, 0, 0) > 0);
+        Assert.assertTrue(UtilColor.filterRgb(5_000, 0, 0, 0) > 0);
+        Assert.assertFalse(UtilColor.filterRgb(0, 5_000, 0, 0) > 0);
+        Assert.assertFalse(UtilColor.filterRgb(0, 0, 5_000, 0) > 0);
+        Assert.assertFalse(UtilColor.filterRgb(0, 0, 0, 5_000) > 0);
+        Assert.assertTrue(UtilColor.filterRgb(-10_000, 0, -10_000_000, 0) < 0);
+        Assert.assertTrue(UtilColor.filterRgb(5_000, -100, -100, -100) > 0);
+        Assert.assertTrue(UtilColor.filterRgb(500_000, -100, -10_000, -100) > 0);
 
         final int filterRgb1 = UtilColor.filterRgb(0, -1, -1, -1);
         Assert.assertTrue(filterRgb1 >= 0);
 
-        final int filterRgb2 = UtilColor.filterRgb(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
+        final int filterRgb2 = UtilColor.filterRgb(65_535, 0xFF_FF_FF, 0xFF_FF_FF, 0xFF_FF_FF);
         Assert.assertTrue(filterRgb2 >= 0);
     }
 

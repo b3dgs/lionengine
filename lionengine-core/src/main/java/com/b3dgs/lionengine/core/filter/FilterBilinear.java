@@ -92,10 +92,10 @@ public class FilterBilinear implements Filter
         for (int i = -radius; i <= radius; i++)
         {
             final int rgb = in[inIndex + UtilMath.clamp(i, 0, width - 1)];
-            ta += rgb >> Constant.BYTE_4 & 0xff;
-            tr += rgb >> Constant.BYTE_3 & 0xff;
-            tg += rgb >> Constant.BYTE_2 & 0xff;
-            tb += rgb & 0xff;
+            ta += rgb >> Constant.BYTE_4 & 0xFF;
+            tr += rgb >> Constant.BYTE_3 & 0xFF;
+            tg += rgb >> Constant.BYTE_2 & 0xFF;
+            tb += rgb & 0xFF;
         }
 
         for (int x = 0; x < width; x++)
@@ -117,11 +117,11 @@ public class FilterBilinear implements Filter
             }
             final int rgb1 = in[inIndex + i1];
             final int rgb2 = in[inIndex + i2];
-            final int red = 0xff0000;
-            final int green = 0xff00;
-            final int blue = 0xff;
+            final int red = 0xFF_00_00;
+            final int green = 0xFF_00;
+            final int blue = 0xFF;
 
-            ta += (rgb1 >> Constant.BYTE_4 & 0xff) - (rgb2 >> Constant.BYTE_4 & 0xff);
+            ta += (rgb1 >> Constant.BYTE_4 & 0xFF) - (rgb2 >> Constant.BYTE_4 & 0xFF);
             tr += (rgb1 & red) - (rgb2 & red) >> Constant.BYTE_3;
             tg += (rgb1 & green) - (rgb2 & green) >> Constant.BYTE_2;
             tb += (rgb1 & blue) - (rgb2 & blue);

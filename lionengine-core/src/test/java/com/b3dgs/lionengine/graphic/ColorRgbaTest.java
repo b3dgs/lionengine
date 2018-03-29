@@ -184,7 +184,7 @@ public final class ColorRgbaTest
     @Test
     public void testEquals()
     {
-        final int step = 654321;
+        final int step = 654_321;
         for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE - step; i += step)
         {
             final ColorRgba color = new ColorRgba(i);

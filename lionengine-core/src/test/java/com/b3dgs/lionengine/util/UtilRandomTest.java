@@ -45,7 +45,7 @@ public final class UtilRandomTest
     @Test
     public void testRandom()
     {
-        UtilRandom.setSeed(4894516L);
+        UtilRandom.setSeed(4_894_516L);
 
         Assert.assertNotNull(Boolean.valueOf(UtilRandom.getRandomBoolean()));
         Assert.assertNotNull(Integer.valueOf(UtilRandom.getRandomInteger()));

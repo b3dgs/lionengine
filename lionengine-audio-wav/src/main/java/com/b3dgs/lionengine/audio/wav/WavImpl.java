@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 final class WavImpl implements Wav
 {
     /** Sound buffer size. */
-    private static final int BUFFER = 128000;
+    private static final int BUFFER = 128_000;
     /** Play sound error. */
     private static final String ERROR_PLAY_SOUND = "Error on playing sound: ";
 

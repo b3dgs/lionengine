@@ -32,15 +32,15 @@ import com.b3dgs.lionengine.util.UtilMath;
 public final class UtilColor
 {
     /** Minimum color value. */
-    private static final int MIN_COLOR = 0x000000;
+    private static final int MIN_COLOR = 0x00_00_00;
     /** Maximum alpha value. */
-    private static final int MAX_ALPHA = 0xFF000000;
+    private static final int MAX_ALPHA = 0xFF_00_00_00;
     /** Maximum red value. */
-    private static final int MAX_RED = 0xFF0000;
+    private static final int MAX_RED = 0xFF_00_00;
     /** Maximum green value. */
-    private static final int MAX_GREEN = 0x00FF00;
+    private static final int MAX_GREEN = 0x00_FF_00;
     /** Maximum blue value. */
-    private static final int MAX_BLUE = 0x0000FF;
+    private static final int MAX_BLUE = 0x00_00_FF;
 
     /**
      * Apply a filter rgb.

@@ -44,7 +44,7 @@ public final class UtilConversionTest
     @Test
     public void testShort()
     {
-        final short s = 12345;
+        final short s = 12_345;
         Assert.assertEquals(s, UtilConversion.byteArrayToShort(UtilConversion.shortToByteArray(s)));
         Assert.assertEquals(s, UtilConversion.fromUnsignedShort(UtilConversion.toUnsignedShort(s)));
     }
@@ -55,7 +55,7 @@ public final class UtilConversionTest
     @Test
     public void testInt()
     {
-        final int i = 123456789;
+        final int i = 123_456_789;
         Assert.assertEquals(i, UtilConversion.byteArrayToInt(UtilConversion.intToByteArray(i)));
     }
 
