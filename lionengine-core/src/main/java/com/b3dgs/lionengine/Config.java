@@ -41,8 +41,9 @@ public final class Config
     /**
      * Create a 32 bits color depth and windowed configuration using output resolution.
      * 
-     * @param output The output resolution (used on rendering).
+     * @param output The output resolution used on rendering (must not be <code>null</code>).
      * @return The created windowed configuration.
+     * @throws LionEngineException If invalid argument.
      */
     public static Config windowed(Resolution output)
     {
@@ -52,8 +53,9 @@ public final class Config
     /**
      * Create a 32 bits color depth and fullscreen configuration using output resolution.
      * 
-     * @param output The output resolution (used on rendering).
+     * @param output The output resolution used on rendering (must not be <code>null</code>).
      * @return The created fullscreen configuration.
+     * @throws LionEngineException If invalid argument.
      */
     public static Config fullscreen(Resolution output)
     {

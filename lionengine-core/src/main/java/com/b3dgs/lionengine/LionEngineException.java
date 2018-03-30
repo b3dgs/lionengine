@@ -78,7 +78,7 @@ public final class LionEngineException extends RuntimeException
     /**
      * Create an exception with message.
      * 
-     * @param message The exception message.
+     * @param message The exception message (can be <code>null</code>).
      */
     public LionEngineException(String message)
     {

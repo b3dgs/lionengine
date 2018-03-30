@@ -114,12 +114,14 @@ public final class Constant
      * Get the system property. If the property is not valid due to a {@link SecurityException}, an empty string is
      * returned.
      * 
-     * @param property The system property.
-     * @param def The default value used if property is not available.
+     * @param property The system property (must not be <code>null</code>).
+     * @param def The default value used if property is not available (can be <code>null</code>).
      * @return The system property value.
      */
     public static String getSystemProperty(String property, String def)
     {
+        Check.notNull(property);
+
         try
         {
             return System.getProperty(property, def);

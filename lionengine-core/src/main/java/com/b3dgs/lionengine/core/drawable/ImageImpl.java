@@ -65,6 +65,8 @@ final class ImageImpl implements Image
      */
     ImageImpl(Media media)
     {
+        super();
+
         Check.notNull(media);
 
         final ImageHeader info = ImageInfo.get(media);
@@ -81,6 +83,8 @@ final class ImageImpl implements Image
      */
     ImageImpl(ImageBuffer surface)
     {
+        super();
+
         Check.notNull(surface);
 
         this.surface = surface;
@@ -95,7 +99,7 @@ final class ImageImpl implements Image
      * @param width The width to use.
      * @param height The height to use.
      */
-    protected void computeRenderingPoint(int width, int height)
+    private void computeRenderingPoint(int width, int height)
     {
         rx = (int) Math.floor(origin.getX(x, width));
         ry = (int) Math.floor(origin.getY(y, height));
@@ -106,7 +110,7 @@ final class ImageImpl implements Image
      * 
      * @return The horizontal rendering point.
      */
-    protected int getRenderX()
+    int getRenderX()
     {
         return rx;
     }
@@ -116,7 +120,7 @@ final class ImageImpl implements Image
      * 
      * @return The vertical rendering point.
      */
-    protected int getRenderY()
+    int getRenderY()
     {
         return ry;
     }

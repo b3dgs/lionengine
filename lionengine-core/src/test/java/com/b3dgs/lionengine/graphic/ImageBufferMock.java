@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Check;
 /**
  * Mock image buffer.
  */
-public final class ImageBufferMock implements ImageBuffer
+public class ImageBufferMock implements ImageBuffer
 {
     /** Width. */
     private final int width;

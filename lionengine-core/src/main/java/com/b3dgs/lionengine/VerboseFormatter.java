@@ -28,6 +28,9 @@ import java.util.logging.LogRecord;
 
 /**
  * Verbose formatter.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 final class VerboseFormatter extends Formatter
 {
