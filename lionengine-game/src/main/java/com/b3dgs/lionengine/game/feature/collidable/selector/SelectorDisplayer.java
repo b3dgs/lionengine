@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -76,7 +76,7 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
     {
         if (model.isSelecting())
         {
-            final Rectangle selectionArea = model.getSelectionArea();
+            final Area selectionArea = model.getSelectionArea();
             final int x = (int) viewer.getViewpointX(selectionArea.getX());
             final int w = selectionArea.getWidth();
             int y = (int) viewer.getViewpointY(model.getSelectRawY());

@@ -36,7 +36,8 @@ import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorRefresher;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Test the selector refresher class.
@@ -47,8 +48,8 @@ public class SelectorRefresherTest
     private final Cursor cursor = services.create(Cursor.class);
     private final SelectorModel model = new SelectorModel();
     private final MouseMock mouse = new MouseMock();
-    private final AtomicReference<Rectangle> started = new AtomicReference<>();
-    private final AtomicReference<Rectangle> done = new AtomicReference<>();
+    private final AtomicReference<Area> started = new AtomicReference<>();
+    private final AtomicReference<Area> done = new AtomicReference<>();
     private SelectorRefresher refresher;
 
     /**
@@ -72,13 +73,13 @@ public class SelectorRefresherTest
         refresher.addListener(new SelectorListener()
         {
             @Override
-            public void notifySelectionStarted(Rectangle selection)
+            public void notifySelectionStarted(Area selection)
             {
                 started.set(selection);
             }
 
             @Override
-            public void notifySelectionDone(Rectangle selection)
+            public void notifySelectionDone(Area selection)
             {
                 done.set(selection);
             }
@@ -127,21 +128,21 @@ public class SelectorRefresherTest
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(new Rectangle(1.0, 1.0, 0.0, 0.0), started.get());
+        Assert.assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
         Assert.assertNull(done.get());
 
         mouse.move(10, 20);
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(new Rectangle(1.0, 1.0, 0.0, 0.0), started.get());
+        Assert.assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
         Assert.assertNull(done.get());
 
         mouse.setClick(0);
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(new Rectangle(1.0, 1.0, 0.0, 0.0), started.get());
-        Assert.assertEquals(new Rectangle(1.0, 1.0, 10.0, 20.0), done.get());
+        Assert.assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
+        Assert.assertEquals(Geom.createArea(1.0, 1.0, 10.0, 20.0), done.get());
     }
 }

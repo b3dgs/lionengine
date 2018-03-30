@@ -17,42 +17,35 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import com.b3dgs.lionengine.util.UtilMath;
-
 /**
- * Rectangle representation.
+ * Area representation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
-public final class Rectangle implements Area
+final class AreaImpl implements Area
 {
     /** Min to string size. */
     private static final int MIN_LENGHT = 48;
 
     /** Horizontal coordinate. */
-    private double x;
+    private final double x;
     /** Vertical coordinate. */
-    private double y;
+    private final double y;
     /** Width. */
-    private double width;
+    private final double width;
     /** Height. */
-    private double height;
+    private final double height;
 
     /**
-     * Create a blank rectangle.
-     */
-    public Rectangle()
-    {
-        this(0.0, 0.0, 0.0, 0.0);
-    }
-
-    /**
-     * Create a rectangle.
+     * Create a area.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
-     * @param width The rectangle width.
-     * @param height The rectangle height.
+     * @param width The area width.
+     * @param height The area height.
      */
-    public Rectangle(double x, double y, double width, double height)
+    AreaImpl(double x, double y, double width, double height)
     {
         super();
 
@@ -60,122 +53,6 @@ public final class Rectangle implements Area
         this.y = y;
         this.width = width;
         this.height = height;
-    }
-
-    /**
-     * Translate rectangle using specified vector.
-     * 
-     * @param vx The horizontal translation vector.
-     * @param vy The vertical translation vector.
-     */
-    public void translate(double vx, double vy)
-    {
-        x += vx;
-        y += vy;
-    }
-
-    /**
-     * Rotate rectangle with specific angle.
-     * 
-     * @param angle The angle in degree.
-     */
-    public void rotate(double angle)
-    {
-        final double x2 = x + width;
-        final double y2 = y;
-
-        final double x3 = x2;
-        final double y3 = y + height;
-
-        final double x4 = x;
-        final double y4 = y3;
-
-        final double cx = x + width / 2.0;
-        final double cy = y + height / 2.0;
-
-        final double a = UtilMath.wrapDouble(angle, 0, 360);
-        final double cos = UtilMath.cos(a);
-        final double sin = UtilMath.sin(a);
-
-        final double rx1 = cos * (x - cx) - sin * (y - cy) + cx;
-        final double ry1 = sin * (x - cx) + cos * (y - cy) + cy;
-
-        final double rx2 = cos * (x2 - cx) - sin * (y2 - cy) + cx;
-        final double ry2 = sin * (x2 - cx) + cos * (y2 - cy) + cy;
-
-        final double rx3 = cos * (x3 - cx) - sin * (y3 - cy) + cx;
-        final double ry3 = sin * (x3 - cx) + cos * (y3 - cy) + cy;
-
-        final double rx4 = cos * (x4 - cx) - sin * (y4 - cy) + cx;
-        final double ry4 = sin * (x4 - cx) + cos * (y4 - cy) + cy;
-
-        final double nx1 = Math.min(Math.min(Math.min(rx1, rx2), rx3), rx4);
-        final double ny1 = Math.max(Math.max(Math.max(ry1, ry2), ry3), ry4);
-
-        final double nx2 = Math.max(Math.max(Math.max(rx1, rx2), rx3), rx4);
-
-        final double ny3 = Math.min(Math.min(Math.min(ry1, ry2), ry3), ry4);
-
-        x = nx1;
-        y = ny3;
-        width = nx2 - nx1;
-        height = ny1 - ny3;
-    }
-
-    /**
-     * Sets the location and size.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param w The rectangle width.
-     * @param h The rectangle height.
-     */
-    public void set(double x, double y, double w, double h)
-    {
-        this.x = x;
-        this.y = y;
-        width = w;
-        height = h;
-    }
-
-    /**
-     * Get the min horizontal location.
-     * 
-     * @return The min horizontal location.
-     */
-    public double getMinX()
-    {
-        return x;
-    }
-
-    /**
-     * Get the min vertical location.
-     * 
-     * @return The min vertical location.
-     */
-    public double getMinY()
-    {
-        return y;
-    }
-
-    /**
-     * Get the max horizontal location.
-     * 
-     * @return The max horizontal location.
-     */
-    public double getMaxX()
-    {
-        return x + width;
-    }
-
-    /**
-     * Get the max vertical location.
-     * 
-     * @return The max vertical location.
-     */
-    public double getMaxY()
-    {
-        return y + height;
     }
 
     /*
@@ -228,10 +105,6 @@ public final class Rectangle implements Area
     {
         return height;
     }
-
-    /*
-     * Shape
-     */
 
     @Override
     public double getX()
@@ -289,7 +162,7 @@ public final class Rectangle implements Area
         {
             return false;
         }
-        final Rectangle other = (Rectangle) object;
+        final AreaImpl other = (AreaImpl) object;
         return Double.compare(x, other.x) == 0
                && Double.compare(y, other.y) == 0
                && Double.compare(width, other.width) == 0

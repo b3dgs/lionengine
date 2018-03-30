@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.geom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
 
 import com.b3dgs.lionengine.Constant;
 
@@ -32,78 +31,14 @@ public final class Polygon
     /** Minimum number of points. */
     private static final int MIN_POINTS = 4;
 
-    /**
-     * Calculate and create the bounds.
-     * 
-     * @param xpoints The horizontal points.
-     * @param ypoints The vertical points.
-     * @param npoints The points number.
-     * @return The calculated bounds.
-     */
-    private static Optional<Rectangle> calculateBounds(double[] xpoints, double[] ypoints, int npoints)
-    {
-        if (npoints < MIN_POINTS)
-        {
-            return Optional.empty();
-        }
-        double boundsMinX = Double.MAX_VALUE;
-        double boundsMinY = Double.MAX_VALUE;
-        double boundsMaxX = -Double.MAX_VALUE;
-        double boundsMaxY = -Double.MAX_VALUE;
-
-        for (int i = 0; i < npoints; i++)
-        {
-            final double x = xpoints[i];
-            boundsMinX = Math.min(boundsMinX, x);
-            boundsMaxX = Math.max(boundsMaxX, x);
-
-            final double y = ypoints[i];
-            boundsMinY = Math.min(boundsMinY, y);
-            boundsMaxY = Math.max(boundsMaxY, y);
-        }
-
-        return Optional.of(new Rectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY));
-    }
-
-    /**
-     * Update the polygon bounds.
-     * 
-     * @param rectangle The bounds to update.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    private static void updateBounds(Rectangle rectangle, double x, double y)
-    {
-        final double nw;
-        final double nh;
-        if (x < rectangle.getX())
-        {
-            nw = rectangle.getWidthReal() + (rectangle.getX() - x);
-        }
-        else
-        {
-            nw = Math.max(rectangle.getWidthReal(), x - rectangle.getX());
-        }
-
-        if (y < rectangle.getY())
-        {
-            nh = rectangle.getHeightReal() + (rectangle.getY() - y);
-        }
-        else
-        {
-            nh = Math.max(rectangle.getHeightReal(), y - rectangle.getY());
-        }
-        rectangle.set(x, y, nw, nh);
-    }
-
+    /** Last computed bounds. */
+    private final Rectangle bounds = new Rectangle();
     /** Horizontal coordinates. */
     private double[] xpoints = new double[MIN_POINTS];
     /** Vertical coordinates. */
     private double[] ypoints = new double[MIN_POINTS];
     /** Total number of points. */
     private int npoints;
-    /** Last computed bounds. */
-    private Optional<Rectangle> bounds = Optional.empty();
 
     /**
      * Create a blank polygon.
@@ -130,10 +65,7 @@ public final class Polygon
         xpoints[npoints] = x;
         ypoints[npoints] = y;
         npoints++;
-        if (bounds.isPresent())
-        {
-            updateBounds(bounds.get(), x, y);
-        }
+        updateBounds();
     }
 
     /**
@@ -144,42 +76,39 @@ public final class Polygon
         xpoints = new double[MIN_POINTS];
         ypoints = new double[MIN_POINTS];
         npoints = 0;
-        bounds = Optional.empty();
+        bounds.set(0.0, 0.0, 0.0, 0.0);
     }
 
     /**
-     * Get the polygon rectangle bounds.
+     * Get the polygon area bounds.
      * 
-     * @return The polygon rectangle bounds, <code>null</code> if no points.
+     * @return The polygon area bounds.
      */
-    public Optional<Rectangle> getRectangle()
+    public Area getArea()
     {
-        bounds = calculateBounds(xpoints, ypoints, npoints);
         return bounds;
     }
 
     /**
-     * Check if the rectangle intersects the other.
+     * Check if the area intersects the other.
      * 
-     * @param rectangle The rectangle to test with (can be <code>null</code>).
+     * @param area The area to test with (can be <code>null</code>).
      * @return <code>true</code> if intersect, <code>false</code> else.
      */
-    public boolean intersects(Rectangle rectangle)
+    public boolean intersects(Area area)
     {
-        final Optional<Rectangle> current = getRectangle();
-        return rectangle != null && current.isPresent() && rectangle.intersects(current.get());
+        return bounds.intersects(area);
     }
 
     /**
-     * Check if the polygon contains the rectangle.
+     * Check if the polygon contains the area.
      * 
-     * @param rectangle The rectangle to test with (can be <code>null</code>).
+     * @param area The area to test with (can be <code>null</code>).
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    public boolean contains(Rectangle rectangle)
+    public boolean contains(Area area)
     {
-        final Optional<Rectangle> current = getRectangle();
-        return rectangle != null && current.isPresent() && current.get().contains(rectangle);
+        return bounds.contains(area);
     }
 
     /**
@@ -195,6 +124,33 @@ public final class Polygon
             list.add(new Line(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));
         }
         return list;
+    }
+
+    /**
+     * Update the bounds.
+     */
+    private void updateBounds()
+    {
+        if (npoints >= MIN_POINTS)
+        {
+            double boundsMinX = Double.MAX_VALUE;
+            double boundsMinY = Double.MAX_VALUE;
+            double boundsMaxX = -Double.MAX_VALUE;
+            double boundsMaxY = -Double.MAX_VALUE;
+
+            for (int i = 0; i < npoints; i++)
+            {
+                final double x = xpoints[i];
+                boundsMinX = Math.min(boundsMinX, x);
+                boundsMaxX = Math.max(boundsMaxX, x);
+
+                final double y = ypoints[i];
+                boundsMinY = Math.min(boundsMinY, y);
+                boundsMaxY = Math.max(boundsMaxY, y);
+            }
+
+            bounds.set(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
+        }
     }
 
     /*

@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
 
@@ -122,13 +122,13 @@ public class Hud extends FeaturableModel
         selector.addListener(new SelectorListener()
         {
             @Override
-            public void notifySelectionStarted(Rectangle selection)
+            public void notifySelectionStarted(Area selection)
             {
                 clearMenus();
             }
 
             @Override
-            public void notifySelectionDone(Rectangle selection)
+            public void notifySelectionDone(Area selection)
             {
                 // Nothing to do
             }

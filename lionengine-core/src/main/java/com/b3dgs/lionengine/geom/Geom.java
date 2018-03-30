@@ -79,6 +79,20 @@ public final class Geom
     }
 
     /**
+     * Create an area.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param width The rectangle width.
+     * @param height The rectangle height.
+     * @return The created area.
+     */
+    public static Area createArea(double x, double y, double width, double height)
+    {
+        return new AreaImpl(x, y, width, height);
+    }
+
+    /**
      * Check if two localizable are at the same location.
      * 
      * @param a The first localizable.

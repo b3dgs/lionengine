@@ -220,16 +220,16 @@ public final class ToolsAwt
         final int transparency = image.getColorModel().getTransparency();
 
         final Rectangle rectangle = new Rectangle(0, 0, width, height);
-        final Rectangle r = rectangle.rotate(angle);
+        rectangle.rotate(angle);
 
-        final BufferedImage rotated = createImage(r.getWidth(), r.getHeight(), transparency);
+        final BufferedImage rotated = createImage(rectangle.getWidth(), rectangle.getHeight(), transparency);
         final Graphics2D g = rotated.createGraphics();
 
         optimizeGraphicsSpeed(g);
-        g.rotate(Math.toRadians(angle), r.getWidth() / 2.0, r.getHeight() / 2.0);
+        g.rotate(Math.toRadians(angle), rectangle.getWidth() / 2.0, rectangle.getHeight() / 2.0);
 
-        final double ox = r.getWidth() - (double) width;
-        final double oy = r.getHeight() - (double) height;
+        final double ox = rectangle.getWidth() - (double) width;
+        final double oy = rectangle.getHeight() - (double) height;
         final double cos = UtilMath.cos(angle);
         final double sin = UtilMath.sin(angle);
         final double angleOffsetX = sin * ox + cos * oy;

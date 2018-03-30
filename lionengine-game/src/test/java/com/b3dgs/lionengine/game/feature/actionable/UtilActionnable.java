@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.io.Xml;
 
 /**
@@ -43,19 +43,19 @@ public class UtilActionnable
      * Create a default action.
      * 
      * @param description The description.
-     * @param rectangle The button.
+     * @param area The button.
      * @return The temp media.
      */
-    public static Media createAction(String description, Rectangle rectangle)
+    public static Media createAction(String description, Area area)
     {
         final Media media = Medias.create("action.xml");
         final String name = "name";
         final ActionConfig action = new ActionConfig(name,
                                                      description,
-                                                     (int) rectangle.getX(),
-                                                     (int) rectangle.getY(),
-                                                     rectangle.getWidth(),
-                                                     rectangle.getHeight());
+                                                     (int) area.getX(),
+                                                     (int) area.getY(),
+                                                     area.getWidth(),
+                                                     area.getHeight());
         final Xml root = new Xml("test");
         root.add(ActionConfig.exports(action));
         root.save(media);

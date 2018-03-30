@@ -155,16 +155,39 @@ public final class RectangleTest
     }
 
     /**
-     * Test rotation.
+     * Test rotation 0.
      */
     @Test
-    public void testRotate()
+    public void testRotate0()
     {
         final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
+        rectangle.rotate(0);
 
-        Assert.assertEquals(rectangle, rectangle.rotate(0));
-        Assert.assertEquals(new Rectangle(-1.5, 4.5, 10.0, 5.0), rectangle.rotate(90));
-        Assert.assertEquals(rectangle, rectangle.rotate(360));
+        Assert.assertEquals(new Rectangle(1.0, 2.0, 5.0, 10.0), rectangle);
+    }
+
+    /**
+     * Test rotation 90.
+     */
+    @Test
+    public void testRotate90()
+    {
+        final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
+        rectangle.rotate(90);
+
+        Assert.assertEquals(new Rectangle(-1.5, 4.5, 10.0, 5.0), rectangle);
+    }
+
+    /**
+     * Test rotation 360.
+     */
+    @Test
+    public void testRotate360()
+    {
+        final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
+        rectangle.rotate(360);
+
+        Assert.assertEquals(new Rectangle(1.0, 2.0, 5.0, 10.0), rectangle);
     }
 
     /**

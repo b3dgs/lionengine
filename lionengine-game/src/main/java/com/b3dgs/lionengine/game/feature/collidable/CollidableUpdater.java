@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -90,20 +91,20 @@ final class CollidableUpdater implements IdentifiableListener
     }
 
     /**
-     * Check if current rectangle collides other collidable rectangles.
+     * Check if current area collides other collidable area.
      * 
-     * @param rectangle The current rectangle.
+     * @param area The current area.
      * @param other The other collidable.
      * @return <code>true</code> if collide, <code>false</code> else.
      */
-    private static boolean checkCollide(Rectangle rectangle, Collidable other)
+    private static boolean checkCollide(Area area, Collidable other)
     {
-        final List<Rectangle> others = other.getCollisionBounds();
+        final List<Area> others = other.getCollisionBounds();
         final int size = others.size();
         for (int i = 0; i < size; i++)
         {
-            final Rectangle current = others.get(i);
-            if (rectangle.intersects(current))
+            final Area current = others.get(i);
+            if (area.intersects(current))
             {
                 return true;
             }
@@ -256,7 +257,7 @@ final class CollidableUpdater implements IdentifiableListener
      * 
      * @return The collisions bounds.
      */
-    public List<Rectangle> getCollisionBounds()
+    public List<Area> getCollisionBounds()
     {
         return Collections.unmodifiableList(cacheRect);
     }

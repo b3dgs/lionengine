@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 
 /**
  * Allows to configure the selector.
@@ -38,7 +38,7 @@ public interface SelectorConfigurer
      * 
      * @param area The representation of the clickable area.
      */
-    void setClickableArea(Rectangle area);
+    void setClickableArea(Area area);
 
     /**
      * Set clickable area (where selection can be performed on screen).

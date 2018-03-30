@@ -20,7 +20,8 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Actionnable model implementation.
@@ -30,7 +31,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     /** Cursor reference. */
     private final Cursor cursor;
     /** Rectangle button area. */
-    private final Rectangle button;
+    private final Area button;
     /** Action description. */
     private final String description;
     /** Mouse click number to execute action. */
@@ -63,7 +64,7 @@ public class ActionableModel extends FeatureModel implements Actionable
         cursor = services.get(Cursor.class);
 
         final ActionConfig config = ActionConfig.imports(setup);
-        button = new Rectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
+        button = Geom.createArea(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
     }
 
@@ -104,7 +105,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     }
 
     @Override
-    public Rectangle getButton()
+    public Area getButton()
     {
         return button;
     }

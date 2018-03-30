@@ -34,7 +34,7 @@ public final class PolygonTest
         final Polygon polygon = new Polygon();
 
         Assert.assertTrue(polygon.getPoints().isEmpty());
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
     }
 
     /**
@@ -50,21 +50,21 @@ public final class PolygonTest
         polygon.addPoint(1.0, 2.0);
 
         Assert.assertTrue(polygon.getPoints().isEmpty());
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
 
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertEquals(new Line(1.0, 2.0, 3.0, 4.0), polygon.getPoints().iterator().next());
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
 
         polygon.addPoint(-1.0, -2.0);
 
         Assert.assertEquals(new Line(1.0, 2.0, 3.0, 4.0), polygon.getPoints().iterator().next());
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
 
         polygon.addPoint(-3.0, -4.0);
 
-        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getRectangle().get());
+        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getArea());
     }
 
     /**
@@ -75,18 +75,18 @@ public final class PolygonTest
     {
         final Polygon polygon = new Polygon();
 
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
 
         polygon.addPoint(0.0, 0.0);
 
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
 
         polygon.addPoint(-1.0, -2.0);
         polygon.addPoint(-3.0, -4.0);
         polygon.addPoint(1.0, 2.0);
         polygon.addPoint(3.0, 4.0);
 
-        Assert.assertTrue(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getArea());
         Assert.assertEquals(2, polygon.getPoints().size());
     }
 
@@ -102,15 +102,15 @@ public final class PolygonTest
         polygon.addPoint(1.0, 2.0);
         polygon.addPoint(3.0, 4.0);
 
-        Assert.assertTrue(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getArea());
 
         polygon.addPoint(0.0, 0.0);
 
-        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getRectangle().get());
+        Assert.assertEquals(new Rectangle(-3.0, -4.0, 6.0, 8.0), polygon.getArea());
 
         polygon.addPoint(-4.0, -5.0);
 
-        Assert.assertEquals(new Rectangle(-4.0, -5.0, 7.0, 9.0), polygon.getRectangle().get());
+        Assert.assertEquals(new Rectangle(-4.0, -5.0, 7.0, 9.0), polygon.getArea());
     }
 
     /**
@@ -124,12 +124,12 @@ public final class PolygonTest
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertFalse(polygon.getPoints().isEmpty());
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
 
         polygon.reset();
 
         Assert.assertTrue(polygon.getPoints().isEmpty());
-        Assert.assertFalse(polygon.getRectangle().isPresent());
+        Assert.assertEquals(new Rectangle(0.0, 0.0, 0.0, 0.0), polygon.getArea());
     }
 
     /**
@@ -141,7 +141,7 @@ public final class PolygonTest
         final Polygon polygon = new Polygon();
 
         Assert.assertFalse(polygon.intersects(null));
-        Assert.assertFalse(polygon.intersects(new Rectangle(1.0, 2.0, 2.0, 2.0)));
+        Assert.assertFalse(polygon.intersects(Geom.createArea(1.0, 2.0, 2.0, 2.0)));
 
         polygon.addPoint(-1.0, -2.0);
         polygon.addPoint(-3.0, -4.0);
@@ -149,10 +149,8 @@ public final class PolygonTest
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertFalse(polygon.intersects(null));
-        Assert.assertFalse(polygon.getRectangle().get().toString(),
-                           polygon.intersects(new Rectangle(-10.5, -10.5, 1.0, 1.0)));
-        Assert.assertTrue(polygon.getRectangle().get().toString(),
-                          polygon.intersects(new Rectangle(1.5, 1.5, 1.0, 1.0)));
+        Assert.assertFalse(polygon.getArea().toString(), polygon.intersects(Geom.createArea(-10.5, -10.5, 1.0, 1.0)));
+        Assert.assertTrue(polygon.getArea().toString(), polygon.intersects(Geom.createArea(1.5, 1.5, 1.0, 1.0)));
     }
 
     /**
@@ -164,7 +162,7 @@ public final class PolygonTest
         final Polygon polygon = new Polygon();
 
         Assert.assertFalse(polygon.contains(null));
-        Assert.assertFalse(polygon.contains(new Rectangle(1.0, 2.0, 2.0, 2.0)));
+        Assert.assertFalse(polygon.contains(Geom.createArea(1.0, 2.0, 2.0, 2.0)));
 
         polygon.addPoint(-1.0, -2.0);
         polygon.addPoint(-3.0, -4.0);
@@ -172,10 +170,8 @@ public final class PolygonTest
         polygon.addPoint(3.0, 4.0);
 
         Assert.assertFalse(polygon.contains(null));
-        Assert.assertFalse(polygon.getRectangle().get().toString(),
-                           polygon.contains(new Rectangle(10.25, 20.25, 0.5, 0.5)));
-        Assert.assertTrue(polygon.getRectangle().get().toString(),
-                          polygon.contains(new Rectangle(1.25, 2.25, 0.5, 0.5)));
+        Assert.assertFalse(polygon.getArea().toString(), polygon.contains(Geom.createArea(10.25, 20.25, 0.5, 0.5)));
+        Assert.assertTrue(polygon.getArea().toString(), polygon.contains(Geom.createArea(1.25, 2.25, 0.5, 0.5)));
     }
 
     /**

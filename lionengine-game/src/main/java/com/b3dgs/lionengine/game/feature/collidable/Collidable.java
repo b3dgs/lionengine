@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.Feature;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
@@ -106,7 +106,7 @@ public interface Collidable extends Feature, Renderable, CollidableListener
      * 
      * @return The collisions bounds.
      */
-    List<Rectangle> getCollisionBounds();
+    List<Area> getCollisionBounds();
 
     /**
      * Get the associated group.

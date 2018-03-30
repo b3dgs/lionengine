@@ -33,7 +33,8 @@ import com.b3dgs.lionengine.game.feature.ActionableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -59,8 +60,8 @@ public class ActionableModelTest
         Medias.setResourcesDirectory(null);
     }
 
-    private final Rectangle rectangle = new Rectangle(0, 1, 16, 32);
-    private final Media media = UtilActionnable.createAction("description", rectangle);
+    private final Area area = Geom.createArea(0, 1, 16, 32);
+    private final Media media = UtilActionnable.createAction("description", area);
     private final AtomicBoolean clicked = new AtomicBoolean();
     private final AtomicInteger clickNumber = new AtomicInteger();
     private final AtomicBoolean executed = new AtomicBoolean();
@@ -92,11 +93,11 @@ public class ActionableModelTest
     @Test
     public void testButton()
     {
-        final Rectangle boutton = actionable.getButton();
-        Assert.assertEquals(rectangle.getX(), boutton.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getY(), boutton.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getWidthReal(), boutton.getWidthReal(), UtilTests.PRECISION);
-        Assert.assertEquals(rectangle.getHeightReal(), boutton.getHeightReal(), UtilTests.PRECISION);
+        final Area boutton = actionable.getButton();
+        Assert.assertEquals(area.getX(), boutton.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(area.getY(), boutton.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(area.getWidthReal(), boutton.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(area.getHeightReal(), boutton.getHeightReal(), UtilTests.PRECISION);
     }
 
     /**

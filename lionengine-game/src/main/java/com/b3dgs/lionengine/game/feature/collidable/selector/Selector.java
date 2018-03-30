@@ -32,11 +32,11 @@ import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableListener;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
- * This class allows to perform a selection inside a dedicated area, and retrieve the {@link Rectangle} representing the
+ * This class allows to perform a selection inside a dedicated area, and retrieve the {@link Area} representing the
  * selection. Usage example:
  * <ul>
  * <li>{@link #setClickableArea(Viewer)} - Required to define the area where selection is allowed</li>
@@ -110,13 +110,13 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
         addListener(new SelectorListener()
         {
             @Override
-            public void notifySelectionStarted(Rectangle selection)
+            public void notifySelectionStarted(Area selection)
             {
                 unSelectAll();
             }
 
             @Override
-            public void notifySelectionDone(Rectangle selection)
+            public void notifySelectionDone(Area selection)
             {
                 transformable.transform(selection.getX(),
                                         selection.getY(),
@@ -211,7 +211,7 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     }
 
     @Override
-    public void setClickableArea(Rectangle area)
+    public void setClickableArea(Area area)
     {
         model.setClickableArea(area);
     }

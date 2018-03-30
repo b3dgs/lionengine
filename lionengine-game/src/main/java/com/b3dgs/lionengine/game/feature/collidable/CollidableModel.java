@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableListener;
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -225,7 +225,7 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public List<Rectangle> getCollisionBounds()
+    public List<Area> getCollisionBounds()
     {
         return updater.getCollisionBounds();
     }

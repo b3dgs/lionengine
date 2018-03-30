@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
-import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.geom.Area;
 
 /**
  * List of events linked to the {@link Selector}.
@@ -29,12 +29,12 @@ public interface SelectorListener
      * 
      * @param selection The selection.
      */
-    void notifySelectionStarted(Rectangle selection);
+    void notifySelectionStarted(Area selection);
 
     /**
      * Notify when selection is done.
      * 
      * @param selection The selection.
      */
-    void notifySelectionDone(Rectangle selection);
+    void notifySelectionDone(Area selection);
 }

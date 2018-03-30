@@ -119,6 +119,27 @@ public final class GeomTest
     }
 
     /**
+     * Test if localizable are not same.
+     */
+    @Test
+    public void testNotSameLocalizable()
+    {
+        final Localizable localizable = Geom.createLocalizable(2.5, 3.5);
+
+        Assert.assertFalse(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(2.5, 3.5)));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 1.5), Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertFalse(Geom.same(Geom.createLocalizable(3.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
+
+        final Coord coord = new Coord(2.5, 3.5);
+
+        Assert.assertFalse(Geom.same(coord, new Coord(1.5, 2.5)));
+        Assert.assertFalse(Geom.same(new Coord(1.5, 2.5), coord));
+        Assert.assertFalse(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
+    }
+
+    /**
      * Test localizable equals.
      */
     @Test
@@ -162,23 +183,134 @@ public final class GeomTest
     }
 
     /**
-     * Test if localizable are not same.
+     * Test create area.
      */
     @Test
-    public void testNotSameLocalizable()
+    public void testCreateArea()
     {
-        final Localizable localizable = Geom.createLocalizable(2.5, 3.5);
+        final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
-        Assert.assertFalse(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(2.5, 3.5)));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 1.5), Geom.createLocalizable(1.5, 2.5)));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(3.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertEquals(1.5, area.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, area.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(3.5, area.getWidthReal(), UtilTests.PRECISION);
+        Assert.assertEquals(4.5, area.getHeightReal(), UtilTests.PRECISION);
+        Assert.assertEquals(3, area.getWidth());
+        Assert.assertEquals(4, area.getHeight());
+    }
 
-        final Coord coord = new Coord(2.5, 3.5);
+    /**
+     * Test area intersects.
+     */
+    @Test
+    public void testAreaIntersects()
+    {
+        final Area area1 = Geom.createArea(0.0, 0.0, 10.0, 10.0);
+        final Area area2 = Geom.createArea(1.0, 1.0, 5.0, 5.0);
+        final Area area3 = Geom.createArea(4.0, 1.0, 5.0, 5.0);
+        final Area area4 = Geom.createArea(1.0, 4.0, 5.0, 5.0);
+        final Area area5 = Geom.createArea(6.0, 6.0, 5.0, 5.0);
 
-        Assert.assertFalse(Geom.same(coord, new Coord(1.5, 2.5)));
-        Assert.assertFalse(Geom.same(new Coord(1.5, 2.5), coord));
-        Assert.assertFalse(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
+        Assert.assertFalse(area1.intersects(null));
+
+        Assert.assertTrue(area2.intersects(area1));
+        Assert.assertTrue(area2.intersects(area3));
+        Assert.assertTrue(area2.intersects(area4));
+        Assert.assertFalse(area2.intersects(area5));
+
+        Assert.assertTrue(area3.intersects(area1));
+        Assert.assertTrue(area3.intersects(area2));
+        Assert.assertTrue(area3.intersects(area4));
+        Assert.assertFalse(area3.intersects(area5));
+
+        Assert.assertTrue(area5.intersects(area1));
+        Assert.assertFalse(area5.intersects(area2));
+        Assert.assertFalse(area5.intersects(area3));
+        Assert.assertFalse(area5.intersects(area4));
+    }
+
+    /**
+     * Test area contains.
+     */
+    @Test
+    public void testAreaContains()
+    {
+        final Area area1 = Geom.createArea(0.0, 0.0, 10.0, 10.0);
+        final Area area2 = Geom.createArea(1.0, 1.0, 5.0, 5.0);
+        final Area area3 = Geom.createArea(4.0, 1.0, 5.0, 5.0);
+        final Area area4 = Geom.createArea(1.0, 4.0, 5.0, 5.0);
+        final Area area5 = Geom.createArea(6.0, 6.0, 5.0, 5.0);
+
+        Assert.assertFalse(area1.contains(null));
+
+        Assert.assertTrue(area1.contains(area2));
+
+        Assert.assertFalse(area2.contains(area1));
+        Assert.assertFalse(area2.contains(area3));
+        Assert.assertFalse(area2.contains(area4));
+        Assert.assertFalse(area2.contains(area5));
+
+        Assert.assertFalse(area4.contains(area3));
+        Assert.assertFalse(area4.contains(area2));
+        Assert.assertTrue(area4.contains(area4));
+        Assert.assertFalse(area4.contains(area5));
+
+        Assert.assertTrue(area1.contains(2, 3));
+
+        Assert.assertFalse(area1.contains(-2, -3));
+        Assert.assertFalse(area1.contains(-1, 11));
+        Assert.assertFalse(area1.contains(0, 11));
+        Assert.assertFalse(area1.contains(-1, 10));
+        Assert.assertFalse(area1.contains(11, 12));
+        Assert.assertFalse(area1.contains(11, -3));
+    }
+
+    /**
+     * Test area equals.
+     */
+    @Test
+    public void testEqualsArea()
+    {
+        final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
+
+        Assert.assertEquals(area, area);
+        Assert.assertEquals(area, Geom.createArea(1.5, 2.5, 3.5, 4.5));
+        Assert.assertEquals(Geom.createArea(1.5, 2.5, 3.5, 4.5), area);
+        Assert.assertEquals(Geom.createArea(1.5, 2.5, 3.5, 4.5), Geom.createArea(1.5, 2.5, 3.5, 4.5));
+
+        Assert.assertNotEquals(area, null);
+        Assert.assertNotEquals(area, new Object());
+        Assert.assertNotEquals(area, Geom.createArea(2.5, 2.5, 3.5, 4.5));
+        Assert.assertNotEquals(area, Geom.createArea(1.5, 1.5, 3.5, 4.5));
+        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 4.5, 4.5));
+        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 3.5, 3.5));
+        Assert.assertNotEquals(area, Geom.createArea(2.5, 1.5, 4.5, 3.5));
+    }
+
+    /**
+     * Test area hash code.
+     */
+    @Test
+    public void testHashCodeArea()
+    {
+        final int area = Geom.createArea(1.5, 2.5, 3.5, 4.5).hashCode();
+
+        Assert.assertEquals(area, Geom.createArea(1.5, 2.5, 3.5, 4.5).hashCode());
+
+        Assert.assertNotEquals(area, new Object().hashCode());
+        Assert.assertNotEquals(area, Geom.createArea(2.5, 2.5, 3.5, 4.5).hashCode());
+        Assert.assertNotEquals(area, Geom.createArea(1.5, 1.5, 3.5, 4.5).hashCode());
+        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 4.5, 4.5).hashCode());
+        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 3.5, 3.5).hashCode());
+        Assert.assertNotEquals(area, Geom.createArea(2.5, 1.5, 4.5, 3.5).hashCode());
+    }
+
+    /**
+     * Test area to string.
+     */
+    @Test
+    public void testToStringArea()
+    {
+        Assert.assertEquals("AreaImpl [x=1.5, y=2.5, width=3.5, height=4.5]",
+                            Geom.createArea(1.5, 2.5, 3.5, 4.5).toString());
     }
 }

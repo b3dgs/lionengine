@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
+import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -163,7 +165,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
 
             for (final SelectorListener listener : listeners)
             {
-                listener.notifySelectionStarted(new Rectangle(startX, startY, 0, 0));
+                listener.notifySelectionStarted(Geom.createArea(startX, startY, 0, 0));
             }
         }
     }
@@ -187,7 +189,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
             {
                 collidable.setEnabled(true);
                 final Rectangle sel = model.getSelectionArea();
-                final Rectangle done = new Rectangle(sel.getX(), sel.getY(), sel.getWidthReal(), sel.getHeightReal());
+                final Area done = Geom.createArea(sel.getX(), sel.getY(), sel.getWidthReal(), sel.getHeightReal());
                 for (final SelectorListener listener : listeners)
                 {
                     listener.notifySelectionDone(done);

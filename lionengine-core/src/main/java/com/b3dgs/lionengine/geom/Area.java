@@ -15,50 +15,51 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature;
+package com.b3dgs.lionengine.geom;
 
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Action;
-import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.Shape;
 
 /**
- * Represents a clickable action, allows to perform an action on click.
+ * Area representation.
  */
-public interface Actionable extends Feature, Updatable
+public interface Area extends Shape
 {
     /**
-     * Set the executable action.
+     * Check if the area intersects the other.
      * 
-     * @param action The action to execute.
+     * @param area The area to test with (can be <code>null</code>).
+     * @return <code>true</code> if intersect, <code>false</code> else.
      */
-    void setAction(Action action);
+    boolean intersects(Area area);
 
     /**
-     * Set the mouse click selection value to {@link Action#execute()} the action.
+     * Check if the area contains the other.
      * 
-     * @param click The click number.
-     * @see com.b3dgs.lionengine.io.InputDevicePointer
+     * @param area The area to test with (can be <code>null</code>).
+     * @return <code>true</code> if contains, <code>false</code> else.
      */
-    void setClickAction(int click);
+    boolean contains(Area area);
 
     /**
-     * Get the button surface representation.
+     * Check if the area contains the point.
      * 
-     * @return The button surface representation.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return <code>true</code> if contains, <code>false</code> else.
      */
-    Area getButton();
+    boolean contains(double x, double y);
 
     /**
-     * Get the action description.
+     * Get the real width.
      * 
-     * @return The action description.
+     * @return The real width.
      */
-    String getDescription();
+    double getWidthReal();
 
     /**
-     * Check if cursor is over the action button.
+     * Get the real width.
      * 
-     * @return <code>true</code> if cursor is over, <code>false</code> else.
+     * @return The real width.
      */
-    boolean isOver();
+    double getHeightReal();
 }
