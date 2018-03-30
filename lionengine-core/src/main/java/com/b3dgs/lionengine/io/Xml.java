@@ -412,10 +412,7 @@ public class Xml extends XmlReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (root.equals(node.getParentNode()) && node instanceof Element)
-            {
-                nodes.add(new Xml(document, (Element) node));
-            }
+            nodes.add(new Xml(document, (Element) node));
         }
         return nodes;
     }
@@ -432,7 +429,7 @@ public class Xml extends XmlReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (root.equals(node.getParentNode()) && node instanceof Element)
+            if (node instanceof Element)
             {
                 nodes.add(new Xml(document, (Element) node));
             }

@@ -400,7 +400,7 @@ public class XmlReader
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (root.equals(node.getParentNode()) && node instanceof Element && node.getNodeName().equals(child))
+            if (node.getNodeName().equals(child))
             {
                 return true;
             }

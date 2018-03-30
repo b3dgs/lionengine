@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.core.sequence;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Mock sequence.
@@ -34,7 +34,7 @@ final class SequenceFailMock extends Sequence
      */
     SequenceFailMock(Context context)
     {
-        super(context, UtilTests.RESOLUTION_320_240);
+        super(context, new Resolution(320, 200, 60));
     }
 
     /*

@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Check;
 /**
  * Mock image buffer.
  */
-public class ImageBufferMock implements ImageBuffer
+public final class ImageBufferMock implements ImageBuffer
 {
     /** Width. */
     private final int width;
@@ -34,13 +34,16 @@ public class ImageBufferMock implements ImageBuffer
     /**
      * Constructor.
      * 
-     * @param width The buffer width.
-     * @param height The buffer height.
+     * @param width The buffer width (must be positive).
+     * @param height The buffer height (must be positive).
      */
     public ImageBufferMock(int width, int height)
     {
+        super();
+
         Check.superiorOrEqual(width, 0);
         Check.superiorOrEqual(height, 0);
+
         this.width = width;
         this.height = height;
         rgba = new int[width * height];
@@ -92,6 +95,7 @@ public class ImageBufferMock implements ImageBuffer
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
         System.arraycopy(rgba, 0, rgbArray, 0, w * h);
+
         return rgbArray;
     }
 
