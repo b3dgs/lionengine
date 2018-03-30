@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.graphic.SpriteTiled;
  */
 final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
 {
-    /** Media reference (<code>null</code> if none). */
+    /** Media reference (<code>null</code> created with existing surface). */
     private final Media media;
     /** Number of horizontal tiles. */
     private final int tilesHorizontal;
@@ -149,12 +149,10 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         {
             result = prime * result + getSurface().hashCode();
         }
-        if (media != null)
+        else
         {
             result = prime * result + media.hashCode();
         }
-        result = prime * result + getWidth();
-        result = prime * result + getHeight();
         result = prime * result + tilesHorizontal;
         result = prime * result + tilesVertical;
         return result;
@@ -173,8 +171,6 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         }
         final SpriteTiledImpl other = (SpriteTiledImpl) object;
         return getSurface() == other.getSurface()
-               && getWidth() == other.getWidth()
-               && getHeight() == other.getHeight()
                && tilesHorizontal == other.tilesHorizontal
                && tilesVertical == other.tilesVertical;
     }

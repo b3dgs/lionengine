@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageInfo;
 /**
  * Image implementation.
  */
-class ImageImpl implements Image
+final class ImageImpl implements Image
 {
     /** Error already loaded. */
     private static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
@@ -65,6 +65,8 @@ class ImageImpl implements Image
      */
     ImageImpl(Media media)
     {
+        Check.notNull(media);
+
         final ImageHeader info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
@@ -227,12 +229,10 @@ class ImageImpl implements Image
         {
             result = prime * result + surface.hashCode();
         }
-        if (media != null)
+        else
         {
             result = prime * result + media.hashCode();
         }
-        result = prime * result + width;
-        result = prime * result + height;
         return result;
     }
 
@@ -248,6 +248,6 @@ class ImageImpl implements Image
             return false;
         }
         final ImageImpl other = (ImageImpl) object;
-        return surface == other.surface && width == other.width && height == other.height;
+        return surface == other.surface;
     }
 }

@@ -43,11 +43,11 @@ class SpriteImpl implements Sprite
     /** Error already loaded. */
     private static final String ERROR_ALREADY_LOADED = "Surface has already been loaded: ";
 
-    /** Sprite file name. */
+    /** Sprite file name (can be <code>null</code> created with existing surface). */
     private final Media media;
-    /** Sprite current surface (<code>null</code> if not loaded). */
+    /** Sprite current surface (<code>null</code> if not loaded from existing media). */
     private volatile ImageBuffer surface;
-    /** Sprite original surface. */
+    /** Sprite original surface (<code>null</code> if surface unmodified). */
     private ImageBuffer surfaceOriginal;
     /** Origin point. */
     private Origin origin = Origin.TOP_LEFT;
@@ -80,11 +80,13 @@ class SpriteImpl implements Sprite
     {
         super();
 
+        Check.notNull(media);
+
+        this.media = media;
+
         final ImageHeader info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
-        rgb = null;
-        this.media = media;
     }
 
     /**
@@ -95,13 +97,14 @@ class SpriteImpl implements Sprite
      */
     SpriteImpl(ImageBuffer surface)
     {
+        super();
+
         Check.notNull(surface);
 
         this.surface = surface;
         width = surface.getWidth();
         height = surface.getHeight();
         media = null;
-        rgb = null;
     }
 
     /**
@@ -387,12 +390,10 @@ class SpriteImpl implements Sprite
         {
             result = prime * result + surface.hashCode();
         }
-        if (media != null)
+        else
         {
             result = prime * result + media.hashCode();
         }
-        result = prime * result + width;
-        result = prime * result + height;
         return result;
     }
 
@@ -408,6 +409,6 @@ class SpriteImpl implements Sprite
             return false;
         }
         final SpriteImpl other = (SpriteImpl) object;
-        return surface == other.surface && width == other.width && height == other.height;
+        return surface == other.surface;
     }
 }

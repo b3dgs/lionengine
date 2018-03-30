@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
@@ -73,7 +72,7 @@ final class SpriteFontImpl implements SpriteFont
 
     /** Font data. */
     private final Map<Character, FontCharData> fontData = new TreeMap<>();
-    /** Media reference (<code>null</code> if none). */
+    /** Media reference. */
     private final Media media;
     /** Font surface. */
     private final SpriteTiled surface;
@@ -100,8 +99,6 @@ final class SpriteFontImpl implements SpriteFont
     SpriteFontImpl(Media media, Media mediaData, int tw, int th)
     {
         super();
-
-        Check.notNull(mediaData);
 
         this.media = media;
         surface = new SpriteTiledImpl(media, tw, th);
@@ -355,23 +352,12 @@ final class SpriteFontImpl implements SpriteFont
         {
             result = prime * result + media.hashCode();
         }
-        result = prime * result + getWidth();
-        result = prime * result + getHeight();
         return result;
     }
 
     @Override
     public boolean equals(Object object)
     {
-        if (object == this)
-        {
-            return true;
-        }
-        if (object == null || object.getClass() != getClass())
-        {
-            return false;
-        }
-        final SpriteFontImpl other = (SpriteFontImpl) object;
-        return fontData.equals(other.fontData);
+        return object == this;
     }
 }

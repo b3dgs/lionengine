@@ -34,7 +34,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 {
     /** Animator reference. */
     private final Animator animator = new AnimatorImpl();
-    /** Media reference (<code>null</code> if none). */
+    /** Media reference (<code>null</code> created with existing surface). */
     private final Media media;
     /** Number of horizontal frames. */
     private final int framesHorizontal;
@@ -227,12 +227,10 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         {
             result = prime * result + getSurface().hashCode();
         }
-        if (media != null)
+        else
         {
             result = prime * result + media.hashCode();
         }
-        result = prime * result + getWidth();
-        result = prime * result + getHeight();
         result = prime * result + framesHorizontal;
         result = prime * result + framesVertical;
         return result;
@@ -251,8 +249,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         }
         final SpriteAnimatedImpl other = (SpriteAnimatedImpl) object;
         return getSurface() == other.getSurface()
-               && getWidth() == other.getWidth()
-               && getHeight() == other.getHeight()
                && framesHorizontal == other.framesHorizontal
                && framesVertical == other.framesVertical;
     }

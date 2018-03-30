@@ -453,6 +453,7 @@ public final class SpriteTiledTest
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(media, 16, 8));
         Assert.assertNotEquals(spriteMedia, new SpriteTiledImpl(media, 16, 8));
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(surface, 16, 16));
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(surface, 8, 16));
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8));
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 32), 16, 8));
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 64), 16, 8));
@@ -478,6 +479,8 @@ public final class SpriteTiledTest
 
         Assert.assertNotEquals(sprite, new Object().hashCode());
         Assert.assertNotEquals(spriteMedia.hashCode(), new SpriteTiledImpl(media, 16, 8).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(surface, 16, 16).hashCode());
+        Assert.assertNotEquals(sprite, new SpriteTiledImpl(surface, 8, 16).hashCode());
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8).hashCode());
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(32, 32), 16, 8).hashCode());
         Assert.assertNotEquals(sprite, new SpriteTiledImpl(Graphics.createImageBuffer(64, 64), 16, 8).hashCode());
