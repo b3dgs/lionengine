@@ -408,11 +408,14 @@ public class Xml extends XmlReader
         Check.notNull(name);
 
         final Collection<Xml> nodes = new ArrayList<>(1);
-        final NodeList list = root.getElementsByTagName(name);
+        final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            nodes.add(new Xml(document, (Element) node));
+            if (name.equals(node.getNodeName()))
+            {
+                nodes.add(new Xml(document, (Element) node));
+            }
         }
         return nodes;
     }
