@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,10 +31,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * Call {@link #await()} where resources must be loaded, and access to them with {@link #get()}.
  * </p>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @param <T> The resource enum type.
  */
-public class ResourceLoader<T extends Enum<T>>
+public final class ResourceLoader<T extends Enum<T>>
 {
     /** Error started. */
     static final String ERROR_STARTED = "Resource loader already started !";
@@ -51,7 +55,7 @@ public class ResourceLoader<T extends Enum<T>>
     /** Started. */
     private final AtomicBoolean started = new AtomicBoolean(false);
     /** Thread used. */
-    private final ResourceLoaderThread thread = new ResourceLoaderThread();
+    private final ResourceLoaderThread thread = new ResourceLoaderThread(resources);
 
     /**
      * Create the resource loader.
@@ -115,12 +119,16 @@ public class ResourceLoader<T extends Enum<T>>
             Thread.currentThread().interrupt();
             throw new LionEngineException(exception, ERROR_SKIPPED);
         }
+        finally
+        {
+            done.set(true);
+        }
     }
 
     /**
      * Get the loaded resources. Can be called safely after {@link #await()}. Else ensure all resources has been loaded.
      * 
-     * @return The loaded resources.
+     * @return The loaded resources as read only.
      * @throws LionEngineException If resources are not fully loaded.
      */
     public synchronized Map<T, Resource> get()
@@ -129,7 +137,7 @@ public class ResourceLoader<T extends Enum<T>>
         {
             throw new LionEngineException(ERROR_NOT_FINISHED);
         }
-        return resources;
+        return Collections.unmodifiableMap(resources);
     }
 
     /**
@@ -145,14 +153,21 @@ public class ResourceLoader<T extends Enum<T>>
     /**
      * Resource loader thread.
      */
-    private final class ResourceLoaderThread extends Thread
+    private static final class ResourceLoaderThread extends Thread
     {
+        /** Handled resources. */
+        private final Map<?, Resource> resources;
+
         /**
          * Create the resource loader.
+         * 
+         * @param resources The resources to load (must not be <code>null</code>).
          */
-        ResourceLoaderThread()
+        ResourceLoaderThread(Map<?, Resource> resources)
         {
-            super(ResourceLoader.class.getName());
+            super(ResourceLoaderThread.class.getName());
+
+            this.resources = resources;
         }
 
         /*
@@ -162,11 +177,7 @@ public class ResourceLoader<T extends Enum<T>>
         @Override
         public void run()
         {
-            for (final Resource resource : resources.values())
-            {
-                resource.load();
-            }
-            done.set(true);
+            resources.values().forEach(Resource::load);
         }
     }
 }
