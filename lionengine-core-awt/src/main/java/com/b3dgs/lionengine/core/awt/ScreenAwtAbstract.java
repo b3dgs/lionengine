@@ -262,18 +262,12 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     @Override
     public void focusGained(FocusEvent event)
     {
-        for (final ScreenListener listener : listeners)
-        {
-            listener.notifyFocusGained();
-        }
+        listeners.forEach(ScreenListener::notifyFocusGained);
     }
 
     @Override
     public void focusLost(FocusEvent event)
     {
-        for (final ScreenListener listener : listeners)
-        {
-            listener.notifyFocusLost();
-        }
+        listeners.forEach(ScreenListener::notifyFocusLost);
     }
 }

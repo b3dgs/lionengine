@@ -85,10 +85,7 @@ class ScreenBaseAwt extends ScreenAwtAbstract
             @Override
             public void windowClosing(WindowEvent event)
             {
-                for (final ScreenListener listener : listeners)
-                {
-                    listener.notifyClosed();
-                }
+                listeners.forEach(ScreenListener::notifyClosed);
             }
         });
         jframe.setResizable(false);
