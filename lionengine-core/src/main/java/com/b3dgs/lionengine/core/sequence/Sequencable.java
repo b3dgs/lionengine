@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import java.util.Optional;
+
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
@@ -80,9 +82,9 @@ public interface Sequencable extends Updatable, Renderable
     /**
      * Get the next sequence.
      * 
-     * @return The next sequence to be executed, <code>null</code> if none.
+     * @return The next sequence to be executed.
      */
-    Sequencable getNextSequence();
+    Optional<Sequencable> getNextSequence();
 
     /**
      * Called when sequence is closing.

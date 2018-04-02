@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import java.util.Optional;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
@@ -60,21 +62,21 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /** Filter reference. */
     private volatile Filter filter = FilterNone.INSTANCE;
     /** Next sequence pointer. */
-    private Sequencable nextSequence;
+    private Optional<Sequencable> nextSequence = Optional.empty();
     /** Loop mode. */
     private Loop loop = new LoopFrameSkipping();
     /** Current frame rate. */
     private int currentFrameRate;
-    /** Image buffer. */
+    /** Image buffer (can be <code>null</code>). */
     private ImageBuffer buf;
-    /** Filter used. */
+    /** Filter used (can be <code>null</code>). */
     private Transform transform;
     /** Direct rendering. */
     private boolean directRendering;
-    /** Current screen used. */
+    /** Current screen used (<code>null</code> if not started). */
     private Screen screen;
     /** Pending cursor visibility. */
-    private Boolean cursorVisibility;
+    private Boolean cursorVisibility = Boolean.TRUE;
 
     /**
      * Constructor base. Resolution will be based on {@link Config#getOutput()}.
@@ -82,7 +84,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
      * @param context The context reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public Sequence(Context context)
+    protected Sequence(Context context)
     {
         this(context, context.getConfig().getOutput());
     }
@@ -94,8 +96,10 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
      * @param resolution The resolution source reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public Sequence(Context context, Resolution resolution)
+    protected Sequence(Context context, Resolution resolution)
     {
+        super();
+
         Check.notNull(context);
         Check.notNull(resolution);
 
@@ -131,15 +135,8 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
      */
     public final void setFilter(Filter filter)
     {
-        if (filter == null)
-        {
-            this.filter = FilterNone.INSTANCE;
-        }
-        else
-        {
-            this.filter = filter;
-        }
-        transform = getTransform(this.filter);
+        this.filter = Optional.ofNullable(filter).orElse(FilterNone.INSTANCE);
+        transform = getTransform();
     }
 
     /**
@@ -236,7 +233,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
         else
         {
             buf = Graphics.createImageBuffer(width, height);
-            transform = getTransform(filter);
+            transform = getTransform();
             final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
             directRendering = false;
@@ -246,10 +243,9 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     /**
      * Get the transform associated to the filter keeping screen scale independent.
      * 
-     * @param filter The filter reference.
      * @return The associated transform instance.
      */
-    private Transform getTransform(Filter filter)
+    private Transform getTransform()
     {
         final Resolution source = config.getSource();
         final Resolution output = config.getOutput();
@@ -303,17 +299,12 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     @Override
     public void start(Screen screen)
     {
+        Check.notNull(screen);
+
         this.screen = screen;
         screen.addListener(this);
-        if (cursorVisibility != null)
-        {
-            setSystemCursorVisible(cursorVisibility.booleanValue());
-        }
-
-        nextSequence = null;
+        setSystemCursorVisible(cursorVisibility.booleanValue());
         initResolution(resolution);
-
-        // Prepare sequence to be started
         currentFrameRate = config.getOutput().getRate();
         screen.requestFocus();
 
@@ -357,7 +348,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     {
         Check.notNull(nextSequenceClass);
 
-        nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
+        nextSequence = Optional.of(UtilSequence.create(nextSequenceClass, context, arguments));
         loop.stop();
     }
 
@@ -371,7 +362,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     public final void setResolution(Resolution source)
     {
         initResolution(source);
-        onResolutionChanged(source.getWidth(), source.getHeight(), config.getSource().getRate());
+        onResolutionChanged(source.getWidth(), source.getHeight(), source.getRate());
     }
 
     @Override
@@ -413,7 +404,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     }
 
     @Override
-    public final Sequencable getNextSequence()
+    public final Optional<Sequencable> getNextSequence()
     {
         return nextSequence;
     }

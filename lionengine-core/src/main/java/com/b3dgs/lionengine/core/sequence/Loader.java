@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.sequence;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Check;
@@ -89,10 +90,10 @@ public final class Loader
             screen.start();
             screen.awaitReady();
 
-            Sequencable nextSequence = UtilSequence.create(sequenceClass, screen, arguments);
-            while (nextSequence != null)
+            Optional<Sequencable> nextSequence = Optional.of(UtilSequence.create(sequenceClass, screen, arguments));
+            while (nextSequence.isPresent())
             {
-                final Sequencable sequence = nextSequence;
+                final Sequencable sequence = nextSequence.get();
                 final String sequenceName = sequence.getClass().getName();
 
                 Verbose.info(SEQUENCE_START, sequenceName);
@@ -101,7 +102,7 @@ public final class Loader
                 Verbose.info(SEQUENCE_END, sequenceName);
 
                 nextSequence = sequence.getNextSequence();
-                sequence.onTerminated(nextSequence != null);
+                sequence.onTerminated(nextSequence.isPresent());
             }
         }
         finally
