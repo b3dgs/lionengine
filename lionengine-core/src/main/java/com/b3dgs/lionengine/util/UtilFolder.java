@@ -20,8 +20,11 @@ package com.b3dgs.lionengine.util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -51,19 +54,12 @@ public final class UtilFolder
     {
         Check.notNull(path);
 
-        final List<File> directories = new ArrayList<>();
-        final File[] files = path.listFiles();
-        if (files != null)
-        {
-            for (final File current : files)
-            {
-                if (current.isDirectory())
-                {
-                    directories.add(current);
-                }
-            }
-        }
-        return directories;
+        return Optional.ofNullable(path.listFiles())
+                       .map(files -> Arrays.asList(files)
+                                           .stream()
+                                           .filter(File::isDirectory)
+                                           .collect(Collectors.toList()))
+                       .orElseGet(Collections::emptyList);
     }
 
     /**
@@ -123,14 +119,9 @@ public final class UtilFolder
 
         if (element.isDirectory())
         {
-            final File[] files = element.listFiles();
-            if (files != null)
-            {
-                for (final File file : files)
-                {
-                    deleteDirectory(file);
-                }
-            }
+            Optional.ofNullable(element.listFiles())
+                    .map(files -> Arrays.asList(files))
+                    .ifPresent(files -> files.forEach(file -> deleteDirectory(file)));
             try
             {
                 Files.delete(element.toPath());

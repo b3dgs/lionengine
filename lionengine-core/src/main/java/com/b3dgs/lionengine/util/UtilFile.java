@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -254,21 +255,17 @@ public final class UtilFile
      */
     private static void getFilesByExtensionRecursive(Collection<File> filesList, File path, String extension)
     {
-        final File[] files = path.listFiles();
-        if (files != null)
+        Optional.ofNullable(path.listFiles()).ifPresent(files -> Arrays.asList(files).forEach(content ->
         {
-            for (final File content : files)
+            if (content.isDirectory())
             {
-                if (content.isDirectory())
-                {
-                    getFilesByExtensionRecursive(filesList, content, extension);
-                }
-                if (content.isFile() && extension.equals(getExtension(content)))
-                {
-                    filesList.add(content);
-                }
+                getFilesByExtensionRecursive(filesList, content, extension);
             }
-        }
+            if (content.isFile() && extension.equals(getExtension(content)))
+            {
+                filesList.add(content);
+            }
+        }));
     }
 
     /**
@@ -280,21 +277,17 @@ public final class UtilFile
      */
     private static void getFilesByNameRecursive(Collection<File> filesList, File path, String name)
     {
-        final File[] files = path.listFiles();
-        if (files != null)
+        Optional.ofNullable(path.listFiles()).ifPresent(files -> Arrays.asList(files).forEach(content ->
         {
-            for (final File file : files)
+            if (content.isFile() && content.getName().equals(name))
             {
-                if (file.isFile() && file.getName().equals(name))
-                {
-                    filesList.add(file);
-                }
-                else if (file.isDirectory())
-                {
-                    getFilesByNameRecursive(filesList, file, name);
-                }
+                filesList.add(content);
             }
-        }
+            else if (content.isDirectory())
+            {
+                getFilesByNameRecursive(filesList, content, name);
+            }
+        }));
     }
 
     /**

@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -390,16 +391,12 @@ public final class UtilReflection
      */
     private static void checkInterfaces(Class<?> base, Deque<Class<?>> currents, Deque<Class<?>> nexts)
     {
-        for (final Class<?> current : currents)
-        {
-            for (final Class<?> type : current.getInterfaces())
-            {
-                if (base.isAssignableFrom(type) && !type.equals(base))
-                {
-                    nexts.add(type);
-                }
-            }
-        }
+        currents.stream()
+                .map(Class::getInterfaces)
+                .forEach(types -> Arrays.asList(types)
+                                        .stream()
+                                        .filter(type -> base.isAssignableFrom(type) && !type.equals(base))
+                                        .forEach(type -> nexts.add(type)));
     }
 
     /**
@@ -411,15 +408,10 @@ public final class UtilReflection
      */
     private static Collection<Class<?>> filterInterfaces(Class<?> object, Class<?> base)
     {
-        final Collection<Class<?>> interfaces = new ArrayList<>();
-        for (final Class<?> current : object.getInterfaces())
-        {
-            if (base.isAssignableFrom(current) && !current.equals(base))
-            {
-                interfaces.add(current);
-            }
-        }
-        return interfaces;
+        return Arrays.asList(object.getInterfaces())
+                     .stream()
+                     .filter(current -> base.isAssignableFrom(current) && !current.equals(base))
+                     .collect(Collectors.toList());
     }
 
     /**
