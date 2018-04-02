@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppender;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
@@ -53,6 +55,7 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
+    private final MapTileAppender append = map.addFeatureAndGet(new MapTileAppenderModel(services));
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
     private final Timing timingGen = new Timing();
@@ -104,7 +107,7 @@ class Scene extends Sequence
                                                             Arrays.asList(Medias.create("forest.png")),
                                                             Medias.create("sheets.xml"),
                                                             Medias.create("groups.xml"));
-            map.append(generated, 0, 0);
+            append.append(generated, 0, 0);
             timingGen.restart();
         }
         if (timing.elapsed(1000L))

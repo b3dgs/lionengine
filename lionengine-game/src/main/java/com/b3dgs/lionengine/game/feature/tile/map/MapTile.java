@@ -132,28 +132,6 @@ public interface MapTile extends SurfaceTile, Featurable
     void loadSheets(Media sheetsConfig);
 
     /**
-     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
-     * A call to {@link #append(MapTile, int, int)} at ({@link #getInTileWidth()}, {@link #getInTileHeight()}) will add
-     * the new map at the top-right.
-     * 
-     * @param map The map to append.
-     * @param offsetX The horizontal offset in tile (positive).
-     * @param offsetY The vertical offset in tile (positive).
-     */
-    void append(MapTile map, int offsetX, int offsetY);
-
-    /**
-     * Append existing maps.
-     * 
-     * @param maps The maps to append.
-     * @param offsetX The horizontal offset factor in tile (positive).
-     * @param offsetY The vertical offset factor in tile (positive).
-     * @param randX The horizontal random offset in tile.
-     * @param randY The vertical random offset in tile.
-     */
-    void append(Collection<MapTile> maps, int offsetX, int offsetY, int randX, int randY);
-
-    /**
      * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
     void clear();
