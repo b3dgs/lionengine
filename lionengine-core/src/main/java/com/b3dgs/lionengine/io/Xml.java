@@ -367,10 +367,7 @@ public class Xml extends XmlReader
      */
     public void removeChildren(String children)
     {
-        for (final Xml child : getChildren(children))
-        {
-            root.removeChild(child.getElement());
-        }
+        getChildren(children).stream().map(Xml::getElement).forEach(root::removeChild);
     }
 
     /**
