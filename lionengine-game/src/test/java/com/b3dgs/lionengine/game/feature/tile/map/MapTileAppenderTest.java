@@ -20,9 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 import java.util.Arrays;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -33,9 +31,6 @@ import com.b3dgs.lionengine.game.feature.tile.TileGame;
  */
 public final class MapTileAppenderTest
 {
-    /** Temp folder. */
-    @Rule public final TemporaryFolder folder = new TemporaryFolder();
-
     private final Services services = new Services();
     private final MapTileGame map = services.add(new MapTileGame());
     private final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel(services));

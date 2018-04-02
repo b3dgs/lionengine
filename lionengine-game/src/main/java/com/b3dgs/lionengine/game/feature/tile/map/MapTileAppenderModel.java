@@ -124,25 +124,25 @@ public class MapTileAppenderModel extends FeatureModel implements MapTileAppende
         int i = 0;
         int tw = 0;
         int th = 0;
-        for (final MapTile map : maps)
+        for (final MapTile current : maps)
         {
             randsX[i] = UtilRandom.getRandomInteger(randX);
             randsY[i] = UtilRandom.getRandomInteger(randY);
 
-            newWidth += map.getInTileWidth() + randsX[i];
-            newHeight += map.getInTileHeight() + randsY[i];
+            newWidth += current.getInTileWidth() + randsX[i];
+            newHeight += current.getInTileHeight() + randsY[i];
 
             if (tw == 0)
             {
-                tw = map.getTileWidth();
-                th = map.getTileHeight();
+                tw = current.getTileWidth();
+                th = current.getTileHeight();
             }
-            else if (tw != map.getTileWidth() || th != map.getTileHeight())
+            else if (tw != current.getTileWidth() || th != current.getTileHeight())
             {
                 throw new LionEngineException(ERROR_APPEND_MAP_TILE_SIZE
-                                              + map.getTileWidth()
+                                              + current.getTileWidth()
                                               + Constant.SPACE
-                                              + map.getTileHeight());
+                                              + current.getTileHeight());
             }
 
             i++;
@@ -156,11 +156,11 @@ public class MapTileAppenderModel extends FeatureModel implements MapTileAppende
         int ox = 0;
         int oy = 0;
         i = 0;
-        for (final MapTile map : maps)
+        for (final MapTile current : maps)
         {
-            appendMap(map, ox, oy);
-            ox += map.getInTileWidth() * offsetX + randsX[i];
-            oy += map.getInTileHeight() * offsetY + randsY[i];
+            appendMap(current, ox, oy);
+            ox += current.getInTileWidth() * offsetX + randsX[i];
+            oy += current.getInTileHeight() * offsetY + randsY[i];
             i++;
         }
     }

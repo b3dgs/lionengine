@@ -396,7 +396,7 @@ public final class UtilReflection
                 .forEach(types -> Arrays.asList(types)
                                         .stream()
                                         .filter(type -> base.isAssignableFrom(type) && !type.equals(base))
-                                        .forEach(type -> nexts.add(type)));
+                                        .forEach(nexts::add));
     }
 
     /**

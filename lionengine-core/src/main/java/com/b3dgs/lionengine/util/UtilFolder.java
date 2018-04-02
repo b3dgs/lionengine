@@ -120,8 +120,8 @@ public final class UtilFolder
         if (element.isDirectory())
         {
             Optional.ofNullable(element.listFiles())
-                    .map(files -> Arrays.asList(files))
-                    .ifPresent(files -> files.forEach(file -> deleteDirectory(file)));
+                    .map(Arrays::asList)
+                    .ifPresent(files -> files.forEach(UtilFolder::deleteDirectory));
             try
             {
                 Files.delete(element.toPath());
