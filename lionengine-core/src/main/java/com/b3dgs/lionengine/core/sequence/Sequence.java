@@ -67,12 +67,10 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     private Loop loop = new LoopFrameSkipping();
     /** Current frame rate. */
     private int currentFrameRate;
-    /** Image buffer (can be <code>null</code>). */
+    /** Image buffer (can be <code>null</code> for direct rendering). */
     private ImageBuffer buf;
-    /** Filter used (can be <code>null</code>). */
+    /** Filter used (can be <code>null</code> for direct rendering). */
     private Transform transform;
-    /** Direct rendering. */
-    private boolean directRendering;
     /** Current screen used (<code>null</code> if not started). */
     private Screen screen;
     /** Pending cursor visibility. */
@@ -136,7 +134,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     public final void setFilter(Filter filter)
     {
         this.filter = Optional.ofNullable(filter).orElse(FilterNone.INSTANCE);
-        transform = getTransform();
+        transform = this.filter.getTransform(transform.getScaleX(), transform.getScaleY());
     }
 
     /**
@@ -227,7 +225,6 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
         {
             buf = null;
             transform = null;
-            directRendering = true;
         }
         // Scaled rendering
         else
@@ -236,7 +233,6 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
             transform = getTransform();
             final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
-            directRendering = false;
         }
     }
 
@@ -264,8 +260,9 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
         if (screen.isReady())
         {
             final Graphic g = screen.getGraphic();
-            if (directRendering)
+            if (buf == null || transform == null)
             {
+                // Direct rendering
                 render(g);
             }
             else
@@ -443,8 +440,12 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
         // Nothing by default
     }
 
+    /**
+     * {@inheritDoc}
+     * Call {@link #end()} by default.
+     */
     @Override
-    public final void notifyClosed()
+    public void notifyClosed()
     {
         end();
     }

@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.graphic.Screen;
 public interface Loop
 {
     /**
-     * Start the loop.
+     * Start the loop. Blocks until loop terminated. Can be initiated with {@link #stop()}.
      * 
      * @param screen The screen reference (must not be <code>null</code>).
      * @param frame The frame to loop reference (must not be <code>null</code>).
