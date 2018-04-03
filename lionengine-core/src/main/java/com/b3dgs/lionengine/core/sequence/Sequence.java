@@ -134,7 +134,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     public final void setFilter(Filter filter)
     {
         this.filter = Optional.ofNullable(filter).orElse(FilterNone.INSTANCE);
-        transform = this.filter.getTransform(transform.getScaleX(), transform.getScaleY());
+        transform = getTransform();
     }
 
     /**
