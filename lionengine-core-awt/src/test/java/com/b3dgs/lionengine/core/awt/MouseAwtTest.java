@@ -47,7 +47,7 @@ public final class MouseAwtTest
         config.setSource(resolution);
 
         final MouseAwt mouse = new MouseAwt();
-        mouse.setConfig(config);
+        mouse.setResolution(resolution, resolution);
         mouse.setCenter(160, 120);
 
         return mouse;

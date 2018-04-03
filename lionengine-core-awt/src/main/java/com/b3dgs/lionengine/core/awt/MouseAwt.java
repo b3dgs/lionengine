@@ -22,8 +22,8 @@ import java.awt.Robot;
 import java.awt.event.MouseEvent;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.io.awt.EventAction;
 import com.b3dgs.lionengine.io.awt.Mouse;
@@ -84,17 +84,19 @@ public final class MouseAwt implements Mouse
     }
 
     /**
-     * Set the config.
+     * Set the resolution used. This will compute mouse horizontal and vertical ratio.
      * 
-     * @param config The config (must not be <code>null</code>).
+     * @param output The resolution output (must not be <code>null</code>).
+     * @param source The resolution source (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public void setConfig(Config config)
+    public void setResolution(Resolution output, Resolution source)
     {
-        Check.notNull(config);
+        Check.notNull(output);
+        Check.notNull(source);
 
-        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+        xRatio = output.getWidth() / (double) source.getWidth();
+        yRatio = output.getHeight() / (double) source.getHeight();
     }
 
     /**

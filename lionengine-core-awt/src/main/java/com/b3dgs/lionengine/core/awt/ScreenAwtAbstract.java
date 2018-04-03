@@ -252,7 +252,7 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     @Override
     public void onSourceChanged(Resolution source)
     {
-        ((MouseAwt) getInputDevice(Mouse.class)).setConfig(config);
+        ((MouseAwt) getInputDevice(Mouse.class)).setResolution(config.getOutput(), source);
     }
 
     /*
