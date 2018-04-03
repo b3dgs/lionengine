@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
@@ -149,56 +148,5 @@ public final class Loader
     private Loader()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
-     * Wrap screen into context to avoid direct reference.
-     */
-    private static final class ContextWrapper implements Context
-    {
-        /** Screen reference. */
-        private final Screen screen;
-
-        /**
-         * Create wrapper.
-         * 
-         * @param screen The wrapper screen (must not be <code>null</code>).
-         */
-        private ContextWrapper(Screen screen)
-        {
-            super();
-
-            Check.notNull(screen);
-
-            this.screen = screen;
-        }
-
-        /*
-         * Context
-         */
-
-        @Override
-        public int getX()
-        {
-            return screen.getX();
-        }
-
-        @Override
-        public int getY()
-        {
-            return screen.getY();
-        }
-
-        @Override
-        public Config getConfig()
-        {
-            return screen.getConfig();
-        }
-
-        @Override
-        public <T extends InputDevice> T getInputDevice(Class<T> type)
-        {
-            return screen.getInputDevice(type);
-        }
     }
 }
