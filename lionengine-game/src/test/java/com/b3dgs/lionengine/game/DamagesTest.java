@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Range;
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Test {@link Damages}.

@@ -18,13 +18,12 @@
 package com.b3dgs.lionengine.game.it.feature.rasterable;
 
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.core.sequence.Sequence;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.ComponentDisplayable;
@@ -42,8 +41,9 @@ import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
 import com.b3dgs.lionengine.game.feature.rasterable.RasterableModel;
 import com.b3dgs.lionengine.game.feature.rasterable.SetupSurfaceRastered;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.engine.Sequence;
 
 /**
  * Integration test for rasterable model.

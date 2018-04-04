@@ -25,14 +25,14 @@ import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Damages;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Attacker model implementation.

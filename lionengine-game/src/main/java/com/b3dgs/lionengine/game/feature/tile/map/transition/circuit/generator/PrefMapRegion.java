@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
-import com.b3dgs.lionengine.util.UtilMath;
-import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
  * Describe a region, filled by a tile in a particular area for a specified amount of random.

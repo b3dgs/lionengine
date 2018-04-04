@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test the heuristic closest squared class.

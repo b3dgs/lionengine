@@ -23,14 +23,14 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.ImageHeader;
-import com.b3dgs.lionengine.graphic.ImageInfo;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.ImageHeader;
+import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * This class allows to extract unique tiles from a level rip.

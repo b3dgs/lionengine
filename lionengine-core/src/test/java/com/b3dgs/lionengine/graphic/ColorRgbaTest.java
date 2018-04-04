@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
 
 /**
  * Test {@link ColorRgba}.

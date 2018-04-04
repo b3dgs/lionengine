@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game.feature;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.Feature;
+
 /**
  * Test the feature model class.
  */

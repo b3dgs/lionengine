@@ -23,12 +23,12 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resource;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.io.InputDevicePointer;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Used to represent a pointer cursor, desynchronized from the system pointer or not. This way, it is possible to

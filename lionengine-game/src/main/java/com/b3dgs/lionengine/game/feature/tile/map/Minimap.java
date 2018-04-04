@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.Image;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
 import com.b3dgs.lionengine.graphic.UtilColor;
+import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.

@@ -25,10 +25,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the transformable.

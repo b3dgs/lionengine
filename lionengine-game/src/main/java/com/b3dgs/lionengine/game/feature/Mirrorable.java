@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents something that can be mirrored on different axis.

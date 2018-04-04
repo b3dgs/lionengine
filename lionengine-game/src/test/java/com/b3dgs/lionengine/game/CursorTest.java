@@ -23,12 +23,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.ViewerMock;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test {@link Cursor}.

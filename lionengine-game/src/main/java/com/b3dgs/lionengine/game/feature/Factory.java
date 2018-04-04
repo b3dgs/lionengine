@@ -27,8 +27,9 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Performs a list of {@link Setup} considering their corresponding {@link Media} pointing to an XML file. This way it

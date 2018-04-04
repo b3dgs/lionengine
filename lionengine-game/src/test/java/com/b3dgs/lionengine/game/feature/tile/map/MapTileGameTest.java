@@ -27,10 +27,10 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.geom.Geom;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Test {@link MapTileGame}.

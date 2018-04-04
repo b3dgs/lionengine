@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Features handler representation. Store features by type, allowing quick access from an interface.

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.audio.adlmidi;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.PlayerAbstract;
+import com.b3dgs.lionengine.audio.PlayerAbstract;
 
 /**
  * AdlMidi player implementation.

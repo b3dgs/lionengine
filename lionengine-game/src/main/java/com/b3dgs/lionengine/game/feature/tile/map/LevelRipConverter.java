@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Sprite;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.Sprite;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * This class allows to convert a map image to a map level format.

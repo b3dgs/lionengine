@@ -24,10 +24,9 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.util.UtilMath;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link UtilColor}.
@@ -110,26 +109,6 @@ public final class UtilColorTest
                 }
             }
         }
-    }
-
-    /**
-     * Test raster.
-     */
-    @Test
-    public void testRaster()
-    {
-        final Media media = Medias.create("raster.xml");
-        final Raster raster = Raster.load(media);
-        final RasterData rasterData = raster.getRed();
-        Assert.assertTrue(UtilColor.getRasterColor(0, rasterData, 2) > 0);
-
-        final RasterData data = new RasterData(rasterData.getStart(),
-                                               rasterData.getStep(),
-                                               rasterData.getForce(),
-                                               rasterData.getAmplitude(),
-                                               rasterData.getOffset(),
-                                               1);
-        Assert.assertTrue(UtilColor.getRasterColor(0, data, 2) < 0);
     }
 
     /**

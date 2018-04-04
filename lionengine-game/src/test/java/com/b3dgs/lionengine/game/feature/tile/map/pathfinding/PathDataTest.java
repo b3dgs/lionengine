@@ -22,7 +22,7 @@ import java.util.EnumSet;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test the path data class.

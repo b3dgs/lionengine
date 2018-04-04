@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Handlables implementation.

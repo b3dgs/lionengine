@@ -19,14 +19,14 @@ package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.sequence.ResolutionChanger;
-import com.b3dgs.lionengine.core.sequence.Sequencable;
-import com.b3dgs.lionengine.core.sequence.Sequence;
-import com.b3dgs.lionengine.core.sequence.Sequencer;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.engine.ResolutionChanger;
+import com.b3dgs.lionengine.graphic.engine.Sequencable;
+import com.b3dgs.lionengine.graphic.engine.Sequence;
+import com.b3dgs.lionengine.graphic.engine.Sequencer;
 
 /**
  * Sequence base dedicated to game module, supporting base tools by default.

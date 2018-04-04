@@ -22,7 +22,8 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents something designed to keep references on main types, such as:

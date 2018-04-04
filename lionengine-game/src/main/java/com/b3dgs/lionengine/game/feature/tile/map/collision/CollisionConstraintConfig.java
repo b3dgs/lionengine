@@ -23,8 +23,8 @@ import java.util.Map.Entry;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Represents the collisions constraint.

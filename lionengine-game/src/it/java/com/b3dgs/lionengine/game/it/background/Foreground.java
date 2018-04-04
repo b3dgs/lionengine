@@ -18,16 +18,16 @@
 package com.b3dgs.lionengine.game.it.background;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.background.BackgroundAbstract;
 import com.b3dgs.lionengine.game.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.background.BackgroundElement;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Sprite;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.Sprite;
+import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 
 /**
  * Water foreground implementation.

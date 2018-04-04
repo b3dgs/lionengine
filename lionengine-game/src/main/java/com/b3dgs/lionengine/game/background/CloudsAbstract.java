@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game.background;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * This class handle clouds effect.

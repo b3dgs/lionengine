@@ -27,9 +27,6 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilReflection;
-import com.b3dgs.lionengine.util.UtilTests;
-
 /**
  * Test {@link Verbose}.
  */

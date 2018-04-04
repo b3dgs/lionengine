@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import com.b3dgs.lionengine.util.UtilConversion;
+import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Mock transform.

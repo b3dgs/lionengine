@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Handle map tile resizing.

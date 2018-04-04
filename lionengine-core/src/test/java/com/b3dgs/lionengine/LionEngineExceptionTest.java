@@ -28,8 +28,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Medias;
-
 /**
  * Test {@link LionEngineException}.
  */

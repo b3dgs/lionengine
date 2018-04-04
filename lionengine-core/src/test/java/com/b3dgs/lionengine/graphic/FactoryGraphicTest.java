@@ -25,11 +25,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.FactoryMediaDefault;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link FactoryGraphic}.

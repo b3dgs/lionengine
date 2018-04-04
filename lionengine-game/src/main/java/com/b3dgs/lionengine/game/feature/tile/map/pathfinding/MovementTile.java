@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.util.UtilConversion;
+import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Represents the possible movement from a tile.

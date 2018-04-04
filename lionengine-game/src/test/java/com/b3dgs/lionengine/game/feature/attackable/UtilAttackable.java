@@ -22,12 +22,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
-import com.b3dgs.lionengine.core.drawable.AnimatorMock;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.graphic.drawable.AnimatorMock;
 
 /**
  * Utilities dedicated to attackable test.

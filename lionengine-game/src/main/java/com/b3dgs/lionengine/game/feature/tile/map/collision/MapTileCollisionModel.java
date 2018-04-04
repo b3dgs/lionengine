@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Map tile collision model implementation.

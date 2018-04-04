@@ -22,7 +22,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilConversion;
+import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Represents the list of supported borders for transition linking.

@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.ColorGradient;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Surface representing a bar designed to display a kind of progress bar (life...).

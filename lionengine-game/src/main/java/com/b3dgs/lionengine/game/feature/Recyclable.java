@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.game.Feature;
+
 /**
  * Recyclable feature marker.
  * <p>

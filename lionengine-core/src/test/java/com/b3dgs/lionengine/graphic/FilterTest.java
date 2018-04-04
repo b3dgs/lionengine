@@ -20,7 +20,8 @@ package com.b3dgs.lionengine.graphic;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.graphic.engine.FilterNone;
 
 /**
  * Test {@link Filter}.

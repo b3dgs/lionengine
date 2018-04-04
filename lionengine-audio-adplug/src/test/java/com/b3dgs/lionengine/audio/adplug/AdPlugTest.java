@@ -33,16 +33,16 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilEnum;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.UtilStream;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.AudioVoidFormat;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.util.UtilEnum;
-import com.b3dgs.lionengine.util.UtilFile;
-import com.b3dgs.lionengine.util.UtilReflection;
-import com.b3dgs.lionengine.util.UtilStream;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test {@link AdPlugFormat} and {@link AdPlugPlayer}.

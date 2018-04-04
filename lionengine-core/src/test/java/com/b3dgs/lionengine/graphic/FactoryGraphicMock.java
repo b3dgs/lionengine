@@ -23,8 +23,10 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.util.UtilStream;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilStream;
+import com.b3dgs.lionengine.graphic.drawable.ImageHeader;
+import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
 
 /**
  * Factory graphic mock.

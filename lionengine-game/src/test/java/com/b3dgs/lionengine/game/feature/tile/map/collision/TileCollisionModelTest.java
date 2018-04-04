@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import static com.b3dgs.lionengine.util.UtilTests.PRECISION;
+import static com.b3dgs.lionengine.UtilTests.PRECISION;
 
 import java.util.Arrays;
 

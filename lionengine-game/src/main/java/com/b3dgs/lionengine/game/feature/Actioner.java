@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import java.util.List;
 
 import com.b3dgs.lionengine.game.ActionRef;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents an ability of performing actions.

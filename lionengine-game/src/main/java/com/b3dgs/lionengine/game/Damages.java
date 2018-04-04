@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Range;
-import com.b3dgs.lionengine.util.UtilMath;
-import com.b3dgs.lionengine.util.UtilRandom;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.UtilRandom;
 
 /**
  * Represents a container designed to return a random value between a range.

@@ -28,8 +28,8 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Xml;
 
 /**
  * Allows to retrieve informations from an external XML configuration file.

@@ -21,6 +21,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.state.State;
+import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateIdle;
 import com.b3dgs.lionengine.game.state.StateType;
 import com.b3dgs.lionengine.game.state.StateWalk;

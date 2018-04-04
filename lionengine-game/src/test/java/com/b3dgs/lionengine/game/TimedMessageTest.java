@@ -23,11 +23,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.TextStyle;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test {@link TimedMessage}.

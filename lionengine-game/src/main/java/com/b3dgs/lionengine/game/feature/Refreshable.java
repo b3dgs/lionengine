@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Updatable feature wrapper.

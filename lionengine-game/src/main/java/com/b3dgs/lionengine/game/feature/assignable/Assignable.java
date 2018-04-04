@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.feature.assignable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents an assignable action, allows to assign an action by click.

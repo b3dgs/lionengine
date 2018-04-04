@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Map tile renderer default implementation.

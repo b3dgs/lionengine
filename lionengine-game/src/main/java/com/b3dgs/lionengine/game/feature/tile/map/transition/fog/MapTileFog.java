@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
@@ -31,8 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).

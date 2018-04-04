@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
 
 /**
  * Test {@link FileWriting} and {@link FileReading}.

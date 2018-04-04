@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Tile collision implementation.

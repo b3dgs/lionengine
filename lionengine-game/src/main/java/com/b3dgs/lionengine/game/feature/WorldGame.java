@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.io.FileWriting;
  * It contains the following configured fields:
  * </p>
  * <ul>
- * <li>{@link Config} : The configuration used by the {@link com.b3dgs.lionengine.core.sequence.Loader}</li>
+ * <li>{@link Config} : The configuration used by the {@link com.b3dgs.lionengine.graphic.engine.Loader}</li>
  * <li><code>width</code>: The source screen width, retrieve from the source screen {@link Resolution}</li>
  * <li><code>height</code>: The source screen height, retrieve from the source screen {@link Resolution}</li>
  * <li>{@link Services}: Pre-configured instance with the following added services:
@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.io.FileWriting;
  * </li>
  * </ul>
  * <p>
- * It has to be handled by a {@link com.b3dgs.lionengine.core.sequence.Sequence}. Here a standard world usage:
+ * It has to be handled by a {@link com.b3dgs.lionengine.graphic.engine.Sequence}. Here a standard world usage:
  * </p>
  * 
  * <pre>

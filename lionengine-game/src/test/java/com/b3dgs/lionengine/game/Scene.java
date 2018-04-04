@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.engine.Sequence;
 
 /**
  * Scene base.

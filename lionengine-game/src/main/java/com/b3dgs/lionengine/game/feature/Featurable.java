@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Represents something that can have a collection of {@link Feature}.

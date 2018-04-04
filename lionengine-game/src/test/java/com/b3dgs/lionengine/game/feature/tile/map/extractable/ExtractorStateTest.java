@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test the extractor state.

@@ -18,11 +18,10 @@
 package com.b3dgs.lionengine.game.it.feature.tile.map;
 
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.sequence.Sequence;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -32,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.engine.Sequence;
 
 /**
  * Game loop designed to handle our world.

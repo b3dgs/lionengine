@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.core.drawable.AnimatorMock;
+import com.b3dgs.lionengine.graphic.drawable.AnimatorMock;
 
 /**
  * Test the animatable model class.

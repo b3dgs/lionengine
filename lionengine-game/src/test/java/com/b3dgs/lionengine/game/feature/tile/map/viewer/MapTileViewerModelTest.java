@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ViewerMock;
-import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -33,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.GraphicMock;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
 
 /**
  * Test the map tile viewer class.

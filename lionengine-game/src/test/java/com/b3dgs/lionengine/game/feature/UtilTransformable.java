@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.SizeConfig;
-import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Utilities dedicated to transformable test.

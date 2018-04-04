@@ -21,7 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.Cursor;
@@ -32,7 +33,6 @@ import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.geom.Area;
-import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Utilities dedicated to actionnable test.

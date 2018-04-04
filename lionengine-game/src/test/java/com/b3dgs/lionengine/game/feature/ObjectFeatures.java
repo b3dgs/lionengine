@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * 

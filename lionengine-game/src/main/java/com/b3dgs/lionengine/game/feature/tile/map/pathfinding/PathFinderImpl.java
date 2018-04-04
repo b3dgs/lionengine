@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.

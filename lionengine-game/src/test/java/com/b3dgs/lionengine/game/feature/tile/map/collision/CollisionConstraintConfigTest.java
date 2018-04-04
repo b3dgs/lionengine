@@ -21,9 +21,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test {@link CollisionConstraintConfig}.

@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>LionEngine Core</name>
     <properties>
-        <radial.base-package>com.b3dgs.lionengine.core</radial.base-package>
+        <radial.base-package>com.b3dgs.lionengine</radial.base-package>
     </properties>
     <build>
         <plugins>

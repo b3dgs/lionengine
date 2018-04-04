@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
-import com.b3dgs.lionengine.io.Xml;
 
 /**
  * Find all tiles circuits and extract them to an XML file.

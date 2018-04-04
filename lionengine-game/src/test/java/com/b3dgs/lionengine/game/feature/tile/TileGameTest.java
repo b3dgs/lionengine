@@ -21,11 +21,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollision;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the tile game class.

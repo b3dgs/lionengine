@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;

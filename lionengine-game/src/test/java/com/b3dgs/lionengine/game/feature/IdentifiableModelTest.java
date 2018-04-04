@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilReflection;
+import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Test the identifiable class.

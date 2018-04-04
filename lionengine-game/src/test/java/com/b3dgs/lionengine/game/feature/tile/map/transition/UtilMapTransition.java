@@ -28,7 +28,7 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
 import java.util.Arrays;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 

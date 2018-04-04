@@ -23,7 +23,7 @@ import java.util.Optional;
  * Describe the engine screen configuration. It allows to define different parameters:
  * <ul>
  * <li>source : It is corresponding to the native screen resolution for what the program was designed for (the source is
- * defined by the {@link com.b3dgs.lionengine.core.sequence.Sequence})</li>
+ * defined by the {@link com.b3dgs.lionengine.graphic.engine.Sequence})</li>
  * <li>output : It is corresponding to the desired screen resolution output. If source and output are not equal, the
  * screen will be stretched</li>
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for

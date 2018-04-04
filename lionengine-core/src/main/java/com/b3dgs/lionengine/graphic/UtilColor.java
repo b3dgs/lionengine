@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.graphic;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Color utility class.
@@ -111,33 +111,6 @@ public final class UtilColor
         final int db = a.getBlue() - b.getBlue();
 
         return Math.sqrt(dr * dr + dg * dg + db * db);
-    }
-
-    /**
-     * Get raster color.
-     * 
-     * @param i The color offset.
-     * @param data The raster data (must not be <code>null</code>).
-     * @param max The max offset (must not be equal to 0).
-     * @return The rastered color.
-     * @throws LionEngineException If invalid arguments.
-     */
-    public static int getRasterColor(int i, RasterData data, int max)
-    {
-        Check.notNull(data);
-        Check.different(max, 0);
-
-        final int start = data.getStart();
-        final int step = data.getStep();
-        final int force = data.getForce();
-        final int amplitude = data.getAmplitude();
-        final int offset = data.getOffset();
-
-        if (0 == data.getType())
-        {
-            return start + step * (int) (force * UtilMath.sin(i * (amplitude / (double) max) - offset));
-        }
-        return start + step * (int) (force * UtilMath.cos(i * (amplitude / (double) max) - offset));
     }
 
     /**

@@ -24,7 +24,7 @@ import java.util.Optional;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.util.UtilFile;
+import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Allows to create audio player depending on format.

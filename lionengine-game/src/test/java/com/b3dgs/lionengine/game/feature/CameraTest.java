@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the camera class.

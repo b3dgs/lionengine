@@ -29,15 +29,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilEnum;
+import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.util.UtilEnum;
-import com.b3dgs.lionengine.util.UtilReflection;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the producer model.

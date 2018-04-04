@@ -20,8 +20,7 @@ package com.b3dgs.lionengine.game.it.feature.selector;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.core.awt.MouseAwt;
-import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.awt.MouseAwt;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
@@ -36,7 +35,8 @@ import com.b3dgs.lionengine.game.feature.assignable.Assignable;
 import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.SpriteTiled;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Move action.

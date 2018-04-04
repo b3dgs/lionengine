@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>LionEngine Core AWT</name>
     <properties>
-        <radial.base-package>com.b3dgs.lionengine.core</radial.base-package>
+        <radial.base-package>com.b3dgs.lionengine.awt</radial.base-package>
     </properties>
     <dependencies>
         <dependency>
@@ -35,10 +35,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core.awt</Bundle-SymbolicName>
-                        <Import-Package>
-                            *,
-                            com.b3dgs.lionengine.test;resolution:=optional
-                        </Import-Package>
+                        <Import-Package>*</Import-Package>
                         <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>

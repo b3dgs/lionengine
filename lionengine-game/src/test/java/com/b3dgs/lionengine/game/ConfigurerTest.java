@@ -28,10 +28,10 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.util.UtilReflection;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.Xml;
 
 /**
  * Test the configurer class.

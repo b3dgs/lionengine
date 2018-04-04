@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.core.awt.KeyboardAwt;
+import com.b3dgs.lionengine.awt.Keyboard;
+import com.b3dgs.lionengine.awt.KeyboardAwt;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -33,7 +34,6 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListener;
-import com.b3dgs.lionengine.io.awt.Keyboard;
 
 /**
  * Updating of our controllable entity.

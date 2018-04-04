@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Rectangle representation.

@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.io.XmlReader;
+import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the animations data.

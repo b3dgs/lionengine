@@ -24,14 +24,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.EngineMock;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.sequence.Loader;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.engine.Loader;
 
 /**
  * Test the loader class.

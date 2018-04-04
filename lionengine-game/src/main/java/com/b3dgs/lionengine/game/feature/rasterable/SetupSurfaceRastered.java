@@ -24,15 +24,15 @@ import java.util.List;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.RasterImage;
-import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.RasterColor;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.util.UtilFile;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.raster.RasterColor;
+import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.

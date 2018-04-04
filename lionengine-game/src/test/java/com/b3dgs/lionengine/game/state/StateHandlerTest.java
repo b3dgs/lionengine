@@ -21,8 +21,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
 
 /**
  * Test the state handler class.

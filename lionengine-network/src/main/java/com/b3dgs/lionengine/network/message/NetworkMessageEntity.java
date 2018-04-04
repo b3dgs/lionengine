@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.util.UtilConversion;
+import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Standard entity message.

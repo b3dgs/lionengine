@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.core.sequence.Sequencer;
+import com.b3dgs.lionengine.graphic.engine.Sequencer;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 

@@ -19,10 +19,10 @@
 /**
  * State object representation which allows to represent a gameplay as a finite state machine.
  * <p>
- * A {@link com.b3dgs.lionengine.game.State} is created by the
- * {@link com.b3dgs.lionengine.game.StateFactory}, and is handled by the
+ * A {@link com.b3dgs.lionengine.game.state.State} is created by the
+ * {@link com.b3dgs.lionengine.game.state.StateFactory}, and is handled by the
  * {@link com.b3dgs.lionengine.game.state.StateHandler}, which checks
- * {@link com.b3dgs.lionengine.game.StateTransition} depending of the
+ * {@link com.b3dgs.lionengine.game.state.StateTransition} depending of the
  * {@link com.b3dgs.lionengine.game.state.StateInputUpdater}.
  * </p>
  */

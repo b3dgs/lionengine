@@ -27,11 +27,11 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the minimap class.

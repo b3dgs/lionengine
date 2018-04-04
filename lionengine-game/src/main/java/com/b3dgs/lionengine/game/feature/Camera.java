@@ -23,11 +23,11 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.SurfaceTile;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Standard camera, able to handle movement, and both vertical/horizontal interval. Camera can be used to move
