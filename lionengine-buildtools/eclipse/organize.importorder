@@ -1,7 +1,0 @@
-#Organize Import Order
-#Sun Feb 11 21:03:48 CET 2018
-4=com
-3=org
-2=android
-1=javax
-0=java
