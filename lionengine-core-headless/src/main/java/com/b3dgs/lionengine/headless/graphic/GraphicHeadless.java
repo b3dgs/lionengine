@@ -176,8 +176,8 @@ final class GraphicHeadless implements Graphic
     @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
-        final double dx = x1 - x2;
-        final double dy = y1 - y2;
+        final double dx = x1 - (double) x2;
+        final double dy = y1 - (double) y2;
         final double norm = Math.sqrt(dx * dx + dy * dy);
         final double sx;
         final double sy;
