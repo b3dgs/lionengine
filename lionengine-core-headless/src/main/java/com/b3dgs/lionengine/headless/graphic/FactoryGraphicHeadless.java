@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
 /**
  * Graphic factory implementation.
  */
+// CHECKSTYLE IGNORE LINE: ClassDataAbstractionCoupling
 public final class FactoryGraphicHeadless implements FactoryGraphic
 {
     /** Save image message. */
@@ -244,6 +245,7 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     {
         Check.notNull(image);
 
-        return new ImageBufferHeadless((ImageBufferHeadless) image); // TODO
+        // TODO
+        return new ImageBufferHeadless((ImageBufferHeadless) image);
     }
 }

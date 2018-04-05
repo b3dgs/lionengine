@@ -36,13 +36,13 @@ public final class MouseEvent
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
-     * @param click The associated click (must be strictly inferior to 3).
+     * @param click The associated click (must be strictly inferior to {@link MouseHeadless#MAX_BUTTONS}).
      */
     public MouseEvent(int x, int y, int click)
     {
         super();
 
-        Check.inferiorStrict(click, 3);
+        Check.inferiorStrict(click, MouseHeadless.MAX_BUTTONS);
 
         this.x = x;
         this.y = y;

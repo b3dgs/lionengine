@@ -28,11 +28,13 @@ public final class MouseHeadless implements Mouse
     public static final int MIDDLE = 1;
     /** Right click. */
     public static final int RIGHT = 2;
+    /** Max buttons. */
+    public static final int MAX_BUTTONS = 3;
 
     /** Clicks flags. */
-    private final boolean[] clicks = new boolean[3];
+    private final boolean[] clicks = new boolean[MAX_BUTTONS];
     /** Clicked flags. */
-    private final boolean[] clicked = new boolean[3];
+    private final boolean[] clicked = new boolean[MAX_BUTTONS];
     /** Last click number. */
     private int lastClick;
     /** On screen monitor location x. */
