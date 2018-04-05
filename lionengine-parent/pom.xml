@@ -16,6 +16,7 @@
     <url>https://github.com/b3dgs/lionengine</url>
     <modules>
         <module>../lionengine-core</module>
+        <module>../lionengine-core-headless</module>
         <module>../lionengine-core-awt</module>
         <module>../lionengine-game</module>
         <module>../lionengine-network</module>
