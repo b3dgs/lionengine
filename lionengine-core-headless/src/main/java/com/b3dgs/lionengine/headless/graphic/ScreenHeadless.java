@@ -67,7 +67,7 @@ final class ScreenHeadless extends ScreenAbstract
      * @param output The output resolution (must not be <code>null</code>).
      * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output)
+    private void setResolution(Resolution output)
     {
         Check.notNull(output);
 
