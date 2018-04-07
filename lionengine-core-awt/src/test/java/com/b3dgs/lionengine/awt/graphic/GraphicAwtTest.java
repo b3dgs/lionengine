@@ -43,7 +43,7 @@ public final class GraphicAwtTest extends GraphicTest
      * Test set graphic.
      */
     @Test
-    public void setGraphic()
+    public void testSetGraphic()
     {
         final GraphicAwt g = new GraphicAwt();
         g.setGraphic(g);
