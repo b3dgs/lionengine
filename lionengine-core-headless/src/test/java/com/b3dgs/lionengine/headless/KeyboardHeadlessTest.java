@@ -76,6 +76,21 @@ public final class KeyboardHeadlessTest
     }
 
     /**
+     * Test pressed twice.
+     */
+    @Test
+    public void testPressedTwice()
+    {
+        final KeyboardHeadless keyboard = new KeyboardHeadless();
+
+        keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
+        Assert.assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
+
+        keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
+        Assert.assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
+    }
+
+    /**
      * Test directions.
      */
     @Test

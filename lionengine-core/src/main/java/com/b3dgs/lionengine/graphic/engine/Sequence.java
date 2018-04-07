@@ -259,7 +259,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
         if (screen.isReady())
         {
             final Graphic g = screen.getGraphic();
-            if (buf == null || transform == null)
+            if (buf == null)
             {
                 // Direct rendering
                 render(g);

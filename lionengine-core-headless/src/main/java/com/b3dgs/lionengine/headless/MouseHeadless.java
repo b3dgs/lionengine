@@ -68,10 +68,7 @@ public final class MouseHeadless implements Mouse
     public void mousePressed(MouseEvent event)
     {
         lastClick = event.getClick();
-        if (lastClick < clicks.length)
-        {
-            clicks[lastClick] = true;
-        }
+        clicks[lastClick] = true;
     }
 
     /**
@@ -84,11 +81,8 @@ public final class MouseHeadless implements Mouse
         lastClick = 0;
 
         final int button = event.getClick();
-        if (button < clicks.length)
-        {
-            clicks[button] = false;
-            clicked[button] = false;
-        }
+        clicks[button] = false;
+        clicked[button] = false;
     }
 
     /**
@@ -135,8 +129,11 @@ public final class MouseHeadless implements Mouse
     @Override
     public void doClick(int click)
     {
-        clicks[click] = true;
-        lastClick = click;
+        if (click < clicks.length)
+        {
+            clicks[click] = true;
+            lastClick = click;
+        }
     }
 
     @Override
@@ -212,13 +209,17 @@ public final class MouseHeadless implements Mouse
     @Override
     public boolean hasClicked(int click)
     {
-        return clicks[click];
+        if (click < clicks.length)
+        {
+            return clicks[click];
+        }
+        return false;
     }
 
     @Override
     public boolean hasClickedOnce(int click)
     {
-        if (clicks[click] && !clicked[click])
+        if (click < clicks.length && clicks[click] && !clicked[click])
         {
             clicked[click] = true;
             return true;

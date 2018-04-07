@@ -82,9 +82,10 @@ public final class ToolsAwtTest
     @Test
     public void testUtility() throws IOException
     {
-        final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.OPAQUE);
+        final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
 
         Assert.assertNotNull(image);
+        Assert.assertEquals(Transparency.TRANSLUCENT, ToolsAwt.getImageBuffer(image).getTransparency());
         Assert.assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(ToolsAwt.flipHorizontal(image));
         Assert.assertNotNull(ToolsAwt.flipVertical(image));

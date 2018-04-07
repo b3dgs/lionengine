@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.GraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Test {@link GraphicHeadless}.
@@ -34,5 +38,16 @@ public final class GraphicHeadlessTest extends GraphicTest
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
+    }
+
+    /**
+     * Test apply mask.
+     */
+    @Test
+    public void testApplyMask()
+    {
+        final ImageBuffer image = Graphics.createImageBuffer(10, 20);
+
+        Assert.assertEquals(ColorRgba.BLACK.getRgba(), Graphics.applyMask(image, ColorRgba.TRANSPARENT).getRgb(0, 0));
     }
 }

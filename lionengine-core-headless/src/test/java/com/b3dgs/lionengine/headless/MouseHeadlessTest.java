@@ -63,6 +63,10 @@ public final class MouseHeadlessTest
         Assert.assertTrue(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
         mouse.mouseReleased(createEvent(MouseHeadless.MIDDLE, 0, 0));
         Assert.assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+
+        mouse.mousePressed(createEvent(MouseHeadless.MIDDLE, 0, 0));
+        Assert.assertTrue(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+        Assert.assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
     }
 
     /**
@@ -133,6 +137,21 @@ public final class MouseHeadlessTest
         mouse.doMoveMouse(3, 4);
         Assert.assertEquals(3, mouse.getOnScreenX());
         Assert.assertEquals(4, mouse.getOnScreenY());
+    }
+
+    /**
+     * Test do click robot with out range click.
+     */
+    @Test
+    public void testDoClickOutRange()
+    {
+        final MouseHeadless mouse = new MouseHeadless();
+        mouse.doClick(Integer.MAX_VALUE);
+        mouse.update(1.0);
+        mouse.update(1.0);
+
+        Assert.assertFalse(mouse.hasClickedOnce(Integer.MAX_VALUE));
+        Assert.assertFalse(mouse.hasClicked(Integer.MAX_VALUE));
     }
 
     /**

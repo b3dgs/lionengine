@@ -86,6 +86,21 @@ public final class KeyboardAwtTest
     }
 
     /**
+     * Test pressed twice.
+     */
+    @Test
+    public void testPressedTwice()
+    {
+        final KeyboardAwt keyboard = new KeyboardAwt();
+
+        keyboard.keyPressed(createEvent(KeyboardAwt.ALT));
+        Assert.assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
+
+        keyboard.keyPressed(createEvent(KeyboardAwt.ALT));
+        Assert.assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
+    }
+
+    /**
      * Test directions.
      */
     @Test

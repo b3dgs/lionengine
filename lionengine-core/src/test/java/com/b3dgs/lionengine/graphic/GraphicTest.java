@@ -64,7 +64,7 @@ public class GraphicTest
     @Test
     public void testGraphic()
     {
-        final ImageBuffer image = Graphics.createImageBuffer(100, 100);
+        final ImageBuffer image = Graphics.createImageBuffer(320, 240);
         final Graphic g = image.createGraphic();
 
         Assert.assertNotNull(g.getGraphic());
@@ -98,7 +98,10 @@ public class GraphicTest
         g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
         g.drawGradient(0, 0, 100, 100);
 
-        g.drawLine(new ViewerMock(), 0, 0, 0, 0);
+        g.drawLine(new ViewerMock(), 1, 2, 3, 4);
+        g.drawLine(new ViewerMock(), 1, 3, 2, 4);
+        g.drawLine(new ViewerMock(), 1, 2, 2, 1);
+        g.drawLine(new ViewerMock(), 4, 3, 2, 3);
         g.drawOval(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, image.getWidth(), image.getHeight(), true);
         g.drawRect(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, image.getWidth(), image.getHeight(), true);
         g.drawGradient(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, 100, 100);

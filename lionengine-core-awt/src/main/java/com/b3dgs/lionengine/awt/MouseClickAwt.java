@@ -170,7 +170,11 @@ final class MouseClickAwt implements MouseListener
      */
     boolean hasClicked(int click)
     {
-        return clicks[click];
+        if (click < clicks.length)
+        {
+            return clicks[click];
+        }
+        return false;
     }
 
     /**
@@ -181,7 +185,7 @@ final class MouseClickAwt implements MouseListener
      */
     boolean hasClickedOnce(int click)
     {
-        if (clicks[click] && !clicked[click])
+        if (click < clicks.length && clicks[click] && !clicked[click])
         {
             clicked[click] = true;
             return true;
@@ -197,10 +201,7 @@ final class MouseClickAwt implements MouseListener
     public void mousePressed(MouseEvent event)
     {
         lastClick = event.getButton();
-        if (lastClick < clicks.length)
-        {
-            clicks[lastClick] = true;
-        }
+        clicks[lastClick] = true;
 
         final Integer key = Integer.valueOf(lastClick);
         if (actionsPressed.containsKey(key))
@@ -220,11 +221,8 @@ final class MouseClickAwt implements MouseListener
         lastClick = 0;
 
         final int button = event.getButton();
-        if (button < clicks.length)
-        {
-            clicks[button] = false;
-            clicked[button] = false;
-        }
+        clicks[button] = false;
+        clicked[button] = false;
 
         if (actionsReleased.containsKey(key))
         {

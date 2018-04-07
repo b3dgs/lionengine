@@ -133,11 +133,8 @@ final class ImageBufferAwt implements ImageBuffer
             case java.awt.Transparency.BITMASK:
                 value = Transparency.BITMASK;
                 break;
-            case java.awt.Transparency.TRANSLUCENT:
-                value = Transparency.TRANSLUCENT;
-                break;
             default:
-                value = Transparency.OPAQUE;
+                value = Transparency.TRANSLUCENT;
         }
         return value;
     }

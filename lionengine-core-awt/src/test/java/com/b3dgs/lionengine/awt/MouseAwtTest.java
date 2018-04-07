@@ -94,6 +94,10 @@ public final class MouseAwtTest
         Assert.assertTrue(mouse.hasClickedOnce(MouseAwt.MIDDLE));
         clicker.mouseReleased(createEvent(MouseAwt.MIDDLE, 0, 0));
         Assert.assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+
+        clicker.mousePressed(createEvent(MouseAwt.MIDDLE, 0, 0));
+        Assert.assertTrue(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+        Assert.assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
     }
 
     /**
@@ -170,6 +174,21 @@ public final class MouseAwtTest
 
         mouse.lock();
         mouse.lock(500, 500);
+    }
+
+    /**
+     * Test do click robot with out range click.
+     */
+    @Test
+    public void testDoClickOutRange()
+    {
+        final MouseAwt mouse = createMouse();
+        mouse.doClick(Integer.MAX_VALUE);
+        mouse.update(1.0);
+        mouse.update(1.0);
+
+        Assert.assertFalse(mouse.hasClickedOnce(Integer.MAX_VALUE));
+        Assert.assertFalse(mouse.hasClicked(Integer.MAX_VALUE));
     }
 
     /**
