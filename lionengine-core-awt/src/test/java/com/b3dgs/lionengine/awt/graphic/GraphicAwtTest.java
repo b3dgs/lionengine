@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.graphic.GraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
 
@@ -34,5 +37,17 @@ public final class GraphicAwtTest extends GraphicTest
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
+    }
+
+    /**
+     * Test set graphic.
+     */
+    @Test
+    public void setGraphic()
+    {
+        final GraphicAwt g = new GraphicAwt();
+        g.setGraphic(g);
+
+        Assert.assertEquals(UtilReflection.getField(g, "g"), g.getGraphic());
     }
 }
