@@ -167,11 +167,8 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         prepareFocusListener();
         addDeviceKeyboard();
         addDeviceMouse();
-        if (!config.hasApplet())
-        {
-            buf.show();
-            graphics.setGraphic(buf.getDrawGraphics());
-        }
+        buf.show();
+        graphics.setGraphic(buf.getDrawGraphics());
     }
 
     @Override

@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -80,26 +79,6 @@ public final class ScreenHeadlessTest
                                          Medias.create(IMAGE));
         config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
         testScreen(config);
-    }
-
-    /**
-     * Test applet screen.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(timeout = TIMEOUT)
-    public void testApplet() throws Exception
-    {
-        final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
-                                         32,
-                                         false,
-                                         Medias.create(IMAGE));
-        config.setApplet(new AppletHeadless());
-        config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
-
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        testScreen(config);
-        Verbose.info("****************************************************************************************");
     }
 
     /**

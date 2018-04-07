@@ -72,8 +72,6 @@ public final class Config
     private final Optional<Media> icon;
     /** Source resolution reference. */
     private volatile Resolution source;
-    /** Applet reference. */
-    private Optional<Applet<?>> applet = Optional.empty();
 
     /**
      * Create a configuration without icon.
@@ -111,17 +109,6 @@ public final class Config
     }
 
     /**
-     * Set applet reference, and enable applet mode.
-     * 
-     * @param applet The applet reference (can be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void setApplet(Applet<?> applet)
-    {
-        this.applet = Optional.ofNullable(applet);
-    }
-
-    /**
      * Set the resolution source.
      * 
      * @param source The native source resolution (must not be <code>null</code>).
@@ -155,24 +142,6 @@ public final class Config
     }
 
     /**
-     * Get the applet reference.
-     * 
-     * @param <A> The applet type used.
-     * @param appletClass The applet class (must not be <code>null</code>).
-     * @return The applet reference.
-     */
-    public <A extends Applet<A>> Optional<A> getApplet(Class<A> appletClass)
-    {
-        Check.notNull(appletClass);
-
-        if (applet.isPresent())
-        {
-            return Optional.of(appletClass.cast(applet.get().getApplet()));
-        }
-        return Optional.empty();
-    }
-
-    /**
      * Get the application icon.
      * 
      * @return The application icon.
@@ -200,15 +169,5 @@ public final class Config
     public boolean isWindowed()
     {
         return windowed;
-    }
-
-    /**
-     * Check if has applet.
-     * 
-     * @return <code>true</code> if has applet, <code>false</code> else.
-     */
-    public boolean hasApplet()
-    {
-        return applet.isPresent();
     }
 }

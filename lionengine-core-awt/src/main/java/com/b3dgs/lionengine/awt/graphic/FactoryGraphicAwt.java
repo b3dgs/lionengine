@@ -64,11 +64,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         Check.notNull(config);
 
         final Screen screen;
-        if (config.getApplet(AppletAwt.class).isPresent())
-        {
-            screen = new ScreenAppletAwt(config);
-        }
-        else if (config.isWindowed())
+        if (config.isWindowed())
         {
             screen = new ScreenWindowedAwt(config);
         }

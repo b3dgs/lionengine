@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -83,27 +82,6 @@ public final class ScreenAwtTest
                                          Medias.create(IMAGE));
         config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
         testScreen(config);
-        testHeadless(config);
-    }
-
-    /**
-     * Test applet screen.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(timeout = TIMEOUT)
-    public void testApplet() throws Exception
-    {
-        final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
-                                         32,
-                                         false,
-                                         Medias.create(IMAGE));
-        config.setApplet(new AppletAwt());
-        config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
-
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        testScreen(config);
-        Verbose.info("****************************************************************************************");
         testHeadless(config);
     }
 
@@ -217,15 +195,14 @@ public final class ScreenAwtTest
         }
         screen.setIcon("void");
         screen.setIcon("image.png");
-        if (!config.hasApplet())
+
+        final javax.swing.JFrame frame = (javax.swing.JFrame) UtilReflection.getField(screen, "frame");
+        frame.dispatchEvent(new java.awt.event.WindowEvent(frame, java.awt.event.WindowEvent.WINDOW_CLOSING));
+        while (config.isWindowed() && !gained.get())
         {
-            final javax.swing.JFrame frame = (javax.swing.JFrame) UtilReflection.getField(screen, "frame");
-            frame.dispatchEvent(new java.awt.event.WindowEvent(frame, java.awt.event.WindowEvent.WINDOW_CLOSING));
-            while (config.isWindowed() && !gained.get())
-            {
-                continue;
-            }
+            continue;
         }
+
         screen.dispose();
 
         Assert.assertEquals(0, screen.getX());

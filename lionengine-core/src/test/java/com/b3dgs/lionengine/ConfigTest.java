@@ -85,33 +85,6 @@ public final class ConfigTest
     }
 
     /**
-     * Test get applet with <code>null</code> argument.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetAppletNullArgument()
-    {
-        Assert.assertNull(Config.windowed(new Resolution(320, 240, 60)).getApplet((Class<AppletMock>) null));
-    }
-
-    /**
-     * Test applet.
-     */
-    @Test
-    public void testApplet()
-    {
-        final Config config = new Config(new Resolution(320, 240, 60), 32, true);
-        config.setApplet(null);
-
-        Assert.assertFalse(config.getApplet(AppletMock.class).isPresent());
-        Assert.assertFalse(config.hasApplet());
-
-        config.setApplet(new AppletMock());
-
-        Assert.assertTrue(config.getApplet(AppletMock.class).isPresent());
-        Assert.assertTrue(config.hasApplet());
-    }
-
-    /**
      * Test icon.
      */
     @Test
