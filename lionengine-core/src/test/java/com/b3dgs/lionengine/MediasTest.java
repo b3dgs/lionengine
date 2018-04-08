@@ -18,6 +18,9 @@
 package com.b3dgs.lionengine;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -221,6 +224,25 @@ public final class MediasTest
         final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
 
         Assert.assertEquals("image.png", medias.iterator().next().getPath());
+    }
+
+    /**
+     * Test get medias by extension.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testGetByExtensionFolder() throws IOException
+    {
+        final Path temp = Files.createTempDirectory(MediasTest.class.getSimpleName());
+        final Path file = Files.createTempFile(temp, "temp", ".png");
+        Files.createTempFile(temp, "temp", ".txt");
+        Medias.setResourcesDirectory(temp.toFile().getAbsolutePath());
+        final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
+
+        Assert.assertEquals(file.toFile().getName(), medias.iterator().next().getPath());
+
+        UtilFolder.deleteDirectory(temp.toFile());
     }
 
     /**

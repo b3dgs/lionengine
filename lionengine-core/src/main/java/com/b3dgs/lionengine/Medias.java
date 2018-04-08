@@ -139,6 +139,11 @@ public final class Medias
         Check.notNull(extension);
         Check.notNull(folder);
 
+        if (!loader.isPresent())
+        {
+            return getFilesByExtension(folder, extension);
+        }
+
         final File jar = getJarResources();
         final String prefix = getJarResourcesPrefix();
         final String fullPath = Medias.create(prefix, folder.getPath()).getPath();
@@ -281,6 +286,38 @@ public final class Medias
     public static String getSeparator()
     {
         return separator;
+    }
+
+    /**
+     * Get all files existing in the path considering the extension.
+     * 
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: png).
+     * @return The files list.
+     */
+    private static List<Media> getFilesByExtension(Media path, String extension)
+    {
+        final List<Media> filesList = new ArrayList<>(1);
+        getFilesByExtensionRecursive(filesList, path, extension);
+        return filesList;
+    }
+
+    /**
+     * Get all files existing in the path considering the extension.
+     * 
+     * @param filesList The files list.
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: png).
+     */
+    private static void getFilesByExtensionRecursive(Collection<Media> filesList, Media path, String extension)
+    {
+        for (final Media content : path.getMedias())
+        {
+            if (extension.equals(UtilFile.getExtension(content.getPath())))
+            {
+                filesList.add(content);
+            }
+        }
     }
 
     /**
