@@ -19,10 +19,8 @@ package com.b3dgs.lionengine;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Locale;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
@@ -34,20 +32,11 @@ import java.util.logging.LogRecord;
  */
 final class VerboseFormatter extends Formatter
 {
-    private static final int DATE_LENGTH = 23;
+    private static final int DATE_LENGTH = 14;
     private static final int LOG_LEVEL_LENGTH = 7;
-    private static final DateTimeFormatter DATE_TIME_FORMAT;
+    private static final DateFormat DATE_TIME_FORMAT = DateFormat.getInstance();
     private static final String IN = "in ";
     private static final String AT = " at ";
-
-    static
-    {
-        DATE_TIME_FORMAT = new DateTimeFormatterBuilder().parseCaseInsensitive()
-                                                         .append(DateTimeFormatter.ISO_LOCAL_DATE)
-                                                         .appendLiteral(Constant.SPACE)
-                                                         .append(DateTimeFormatter.ISO_LOCAL_TIME)
-                                                         .toFormatter(Locale.ENGLISH);
-    }
 
     /**
      * Append date.
@@ -56,7 +45,7 @@ final class VerboseFormatter extends Formatter
      */
     private static void appendDate(StringBuilder message)
     {
-        final String date = LocalDateTime.now().format(DATE_TIME_FORMAT);
+        final String date = DATE_TIME_FORMAT.format(Calendar.getInstance().getTime());
         message.append(date);
         for (int i = date.length(); i < DATE_LENGTH; i++)
         {
