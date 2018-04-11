@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Align}.

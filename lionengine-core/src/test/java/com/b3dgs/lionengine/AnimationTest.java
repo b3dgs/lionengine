@@ -17,8 +17,14 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Animation}.
@@ -29,73 +35,82 @@ public final class AnimationTest
     private static final int MIN = Animation.MINIMUM_FRAME;
 
     /**
-     * Test the failure minimum frame.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureMinimumFrame()
-    {
-        Assert.assertNotNull(new Animation(Animation.DEFAULT_NAME, MIN - 1, 0, 0.0, false, false));
-    }
-
-    /**
-     * Test the failure maximum frame.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureMaximumFrame()
-    {
-        Assert.assertNotNull(new Animation(Animation.DEFAULT_NAME, MIN, MIN - 1, 0.0, false, false));
-    }
-
-    /**
-     * Test the failure speed.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureSpeed()
-    {
-        Assert.assertNotNull(new Animation(Animation.DEFAULT_NAME, MIN, MIN + 1, -1.0, false, false));
-    }
-
-    /**
-     * Test the getter.
+     * Test <code>null</code> name argument.
      */
     @Test
-    public void testGetter()
+    public void testNameNull()
     {
-        final int first = 1;
-        final int last = first + 1;
-        final double speed = 1.5;
-        final boolean reverse = true;
-        final boolean repeat = false;
-
-        final Animation animation = new Animation("name", first, last, speed, reverse, repeat);
-
-        Assert.assertEquals("name", animation.getName());
-        Assert.assertEquals(first, animation.getFirst());
-        Assert.assertEquals(last, animation.getLast());
-        Assert.assertEquals(speed, animation.getSpeed(), 0.01);
-        Assert.assertTrue(reverse == animation.hasReverse());
-        Assert.assertTrue(repeat == animation.hasRepeat());
+        assertThrows(() -> new Animation(null, 1, 1, 0.0, false, false), Check.ERROR_NULL);
     }
 
     /**
-     * Test the equality.
+     * Test the failure minimum frame under minimum.
+     */
+    @Test
+    public void testFailureMinimumFrame()
+    {
+        final int underMin = MIN - 1;
+        assertThrows(() -> new Animation(Animation.DEFAULT_NAME, underMin, 0, 0.0, false, false),
+                     Check.ERROR_ARGUMENT + underMin + Check.ERROR_SUPERIOR + MIN);
+    }
+
+    /**
+     * Test the failure maximum frame under minimum frame.
+     */
+    @Test
+    public void testFailureMaximumFrame()
+    {
+        final int underMin = MIN - 1;
+        assertThrows(() -> new Animation(Animation.DEFAULT_NAME, MIN, underMin, 0.0, false, false),
+                     Check.ERROR_ARGUMENT + underMin + Check.ERROR_SUPERIOR + MIN);
+    }
+
+    /**
+     * Test the failure speed negative.
+     */
+    @Test
+    public void testFailureSpeed()
+    {
+        final double speed = -1.0;
+        assertThrows(() -> new Animation(Animation.DEFAULT_NAME, MIN, MIN + 1, -1.0, false, false),
+                     Check.ERROR_ARGUMENT + speed + Check.ERROR_SUPERIOR + 0.0);
+    }
+
+    /**
+     * Test the getters.
+     */
+    @Test
+    public void testGetters()
+    {
+        final Animation animation = new Animation("name", 1, 2, 3.5, true, false);
+
+        assertEquals("name", animation.getName());
+        assertEquals(1, animation.getFirst());
+        assertEquals(2, animation.getLast());
+        assertEquals(3.5, animation.getSpeed());
+        assertTrue(animation.hasReverse());
+        assertFalse(animation.hasRepeat());
+    }
+
+    /**
+     * Test the equals.
      */
     @Test
     public void testEquals()
     {
         final Animation animation = new Animation("test", 1, 2, 3, false, true);
 
-        Assert.assertEquals(animation, animation);
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, true));
-        Assert.assertEquals(animation, new Animation("test", 11, 12, 3, false, true));
-        Assert.assertEquals(animation, new Animation("test", 1, 12, 2, false, true));
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 13, false, true));
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, true, true));
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, false));
+        assertEquals(animation, animation);
+        assertEquals(animation, new Animation("test", 1, 2, 3, false, true));
+        assertEquals(animation, new Animation("test", 11, 12, 3, false, true));
+        assertEquals(animation, new Animation("test", 1, 12, 2, false, true));
+        assertEquals(animation, new Animation("test", 1, 2, 13, false, true));
+        assertEquals(animation, new Animation("test", 1, 2, 3, true, true));
+        assertEquals(animation, new Animation("test", 1, 2, 3, false, false));
 
-        Assert.assertNotEquals(animation, null);
-        Assert.assertNotEquals(animation, new Object());
-        Assert.assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));
+        assertNotEquals(animation, null);
+        assertNotEquals(animation, new Object());
+        assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));
     }
 
     /**
@@ -104,16 +119,16 @@ public final class AnimationTest
     @Test
     public void testHashCode()
     {
-        final int animation = new Animation("test", 1, 2, 3, false, true).hashCode();
+        final Animation animation = new Animation("test", 1, 2, 3, false, true);
 
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 10, 12, 3, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 12, 3, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 13, false, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, true, true).hashCode());
-        Assert.assertEquals(animation, new Animation("test", 1, 2, 3, false, false).hashCode());
+        assertHashEquals(animation, new Animation("test", 1, 2, 3, false, true));
+        assertHashEquals(animation, new Animation("test", 11, 12, 3, false, true));
+        assertHashEquals(animation, new Animation("test", 1, 12, 3, false, true));
+        assertHashEquals(animation, new Animation("test", 1, 2, 13, false, true));
+        assertHashEquals(animation, new Animation("test", 1, 2, 3, true, true));
+        assertHashEquals(animation, new Animation("test", 1, 2, 3, false, false));
 
-        Assert.assertNotEquals(animation, new Object().hashCode());
-        Assert.assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true).hashCode());
+        assertNotEquals(animation, new Object());
+        assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));
     }
 }

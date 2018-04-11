@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Set of utility function related to unit test.
@@ -53,8 +54,7 @@ public final class UtilTests
         try
         {
             UtilReflection.setAccessible(constructor, true);
-            final Object instance = constructor.newInstance(args);
-            Assert.assertNotNull(instance);
+            Assert.assertNull(constructor.newInstance(args));
         }
         catch (final InvocationTargetException exception)
         {
@@ -72,7 +72,7 @@ public final class UtilTests
                 UtilReflection.setAccessible(constructor, accessible);
             }
         }
-        Assert.fail();
+        Assertions.fail("Constructor is not private !");
     }
 
     /**
