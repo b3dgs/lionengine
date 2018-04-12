@@ -35,6 +35,17 @@
         <system>TravisCI</system>
         <url>https://travis-ci.org/b3dgs/lionengine</url>
     </ciManagement>
+    <repositories>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-9.0.0</sonar-branch>
