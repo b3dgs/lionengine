@@ -20,6 +20,7 @@ package com.b3dgs.lionengine;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
@@ -128,7 +129,7 @@ public final class AnimationTest
         assertHashEquals(animation, new Animation("test", 1, 2, 3, true, true));
         assertHashEquals(animation, new Animation("test", 1, 2, 3, false, false));
 
-        assertNotEquals(animation, new Object());
-        assertNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));
+        assertHashNotEquals(animation, new Object());
+        assertHashNotEquals(animation, new Animation("test1", 1, 2, 3, false, true));
     }
 }

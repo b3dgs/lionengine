@@ -17,33 +17,35 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Config}.
  */
 public final class ConfigTest
 {
-    /** Icon test. */
-    private final String ICON = "image.png";
-
     /**
      * Test <code>null</code> resolution.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testResolutionNull()
     {
-        Assert.assertNotNull(new Config(null, 1, true));
+        assertThrows(() -> new Config(null, 1, true), Check.ERROR_NULL);
     }
 
     /**
      * Test failure depth.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testDepthInvalid()
     {
-        Assert.assertNotNull(new Config(new Resolution(320, 240, 60), 0, true));
+        assertThrows(() -> new Config(new Resolution(320, 240, 60), 0, true),
+                     Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
     }
 
     /**
@@ -55,9 +57,9 @@ public final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 32, true);
 
-        Assert.assertEquals(32, config.getDepth());
-        Assert.assertTrue(config.isWindowed());
-        Assert.assertEquals(output, config.getOutput());
+        assertEquals(32, config.getDepth());
+        assertTrue(config.isWindowed());
+        assertEquals(output, config.getOutput());
     }
 
     /**
@@ -70,18 +72,18 @@ public final class ConfigTest
         final Config config = new Config(output, 32, true);
         config.setSource(output);
 
-        Assert.assertEquals(output.getWidth(), config.getSource().getWidth());
-        Assert.assertEquals(output.getHeight(), config.getSource().getHeight());
-        Assert.assertEquals(output.getRate(), config.getSource().getRate());
+        assertEquals(output.getWidth(), config.getSource().getWidth());
+        assertEquals(output.getHeight(), config.getSource().getHeight());
+        assertEquals(output.getRate(), config.getSource().getRate());
     }
 
     /**
      * Test <code>null</code> source.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSourceNull()
     {
-        new Config(new Resolution(320, 240, 60), 32, true).setSource(null);
+        assertThrows(() -> new Config(new Resolution(320, 240, 60), 32, true).setSource(null), Check.ERROR_NULL);
     }
 
     /**
@@ -90,11 +92,11 @@ public final class ConfigTest
     @Test
     public void testIcon()
     {
-        Assert.assertFalse(Config.windowed(new Resolution(320, 240, 60)).getIcon().isPresent());
+        assertFalse(Config.windowed(new Resolution(320, 240, 60)).getIcon().isPresent());
 
-        final Media icon = Medias.create(ICON);
+        final Media icon = Medias.create("image.png");
 
-        Assert.assertEquals(icon, new Config(new Resolution(320, 240, 60), 32, true, icon).getIcon().get());
+        assertEquals(icon, new Config(new Resolution(320, 240, 60), 32, true, icon).getIcon().get());
     }
 
     /**
@@ -106,9 +108,9 @@ public final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.windowed(output);
 
-        Assert.assertTrue(config.isWindowed());
-        Assert.assertEquals(output, config.getOutput());
-        Assert.assertEquals(32, config.getDepth());
+        assertTrue(config.isWindowed());
+        assertEquals(output, config.getOutput());
+        assertEquals(32, config.getDepth());
     }
 
     /**
@@ -120,8 +122,8 @@ public final class ConfigTest
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.fullscreen(output);
 
-        Assert.assertFalse(config.isWindowed());
-        Assert.assertEquals(output, config.getOutput());
-        Assert.assertEquals(32, config.getDepth());
+        assertFalse(config.isWindowed());
+        assertEquals(output, config.getOutput());
+        assertEquals(32, config.getDepth());
     }
 }

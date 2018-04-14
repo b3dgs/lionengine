@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Constant}.
@@ -30,10 +33,10 @@ public final class ConstantTest
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(Constant.class);
+        assertPrivateConstructor(Constant.class);
     }
 
     /**
@@ -42,47 +45,47 @@ public final class ConstantTest
     @Test
     public void testConstants()
     {
-        Assert.assertEquals("LionEngine", Constant.ENGINE_NAME);
-        Assert.assertEquals("Pierre-Alexandre", Constant.ENGINE_AUTHOR);
-        Assert.assertEquals("http://lionengine.b3dgs.com", Constant.ENGINE_WEBSITE);
-        Assert.assertEquals(Version.create(9, 0, 0), Constant.ENGINE_VERSION);
-        Assert.assertEquals("xmlns:lionengine", Constant.XML_HEADER);
-        Assert.assertEquals("lionengine:", Constant.XML_PREFIX);
-        Assert.assertEquals("", Constant.EMPTY_STRING);
-        Assert.assertEquals("\t", Constant.TAB);
-        Assert.assertEquals("\"", Constant.QUOTE);
-        Assert.assertEquals("/", Constant.SLASH);
-        Assert.assertEquals(".", Constant.DOT);
-        Assert.assertEquals(": ", Constant.DOUBLE_DOT);
-        Assert.assertEquals(" ", Constant.SPACE);
-        Assert.assertEquals("_", Constant.UNDERSCORE);
-        Assert.assertEquals("*", Constant.STAR);
-        Assert.assertEquals("@", Constant.AT);
-        Assert.assertEquals("%", Constant.PERCENT);
-        Assert.assertEquals("Hz", Constant.UNIT_RATE);
-        Assert.assertEquals(".jar", Constant.TYPE_JAR);
-        Assert.assertEquals(1_048_576, Constant.MEGA_BYTE);
-        Assert.assertEquals(65_535, Constant.MAX_PORT);
-        Assert.assertEquals(360, Constant.MAX_DEGREE);
-        Assert.assertEquals(1000, Constant.THOUSAND);
-        Assert.assertEquals(100, Constant.HUNDRED);
-        Assert.assertEquals(10, Constant.DECADE);
-        Assert.assertEquals(256, Constant.UNSIGNED_BYTE);
-        Assert.assertEquals(24, Constant.BYTE_4);
-        Assert.assertEquals(16, Constant.BYTE_3);
-        Assert.assertEquals(8, Constant.BYTE_2);
-        Assert.assertEquals(0, Constant.BYTE_1);
-        Assert.assertEquals(1.0, Constant.EXTRP, UtilTests.PRECISION);
-        Assert.assertEquals(0.5, Constant.HALF, UtilTests.PRECISION);
-        Assert.assertEquals(1_000L, Constant.ONE_SECOND_IN_MILLI);
-        Assert.assertEquals(1_000_000_000L, Constant.ONE_SECOND_IN_NANO);
-        Assert.assertEquals(1_000_000.0, Constant.NANO_TO_MILLI, UtilTests.PRECISION);
-        Assert.assertEquals(9.80665, Constant.GRAVITY_EARTH, UtilTests.PRECISION);
-        Assert.assertEquals(3.71, Constant.GRAVITY_MARS, UtilTests.PRECISION);
-        Assert.assertEquals(1.624, Constant.GRAVITY_MOON, UtilTests.PRECISION);
-        Assert.assertEquals("SansSerif", Constant.FONT_SANS_SERIF);
-        Assert.assertEquals("Serif", Constant.FONT_SERIF);
-        Assert.assertEquals("Dialog", Constant.FONT_DIALOG);
+        assertEquals("LionEngine", Constant.ENGINE_NAME);
+        assertEquals("Pierre-Alexandre", Constant.ENGINE_AUTHOR);
+        assertEquals("http://lionengine.b3dgs.com", Constant.ENGINE_WEBSITE);
+        assertEquals(Version.create(9, 0, 0), Constant.ENGINE_VERSION);
+        assertEquals("xmlns:lionengine", Constant.XML_HEADER);
+        assertEquals("lionengine:", Constant.XML_PREFIX);
+        assertEquals("", Constant.EMPTY_STRING);
+        assertEquals("\t", Constant.TAB);
+        assertEquals("\"", Constant.QUOTE);
+        assertEquals("/", Constant.SLASH);
+        assertEquals(".", Constant.DOT);
+        assertEquals(": ", Constant.DOUBLE_DOT);
+        assertEquals(" ", Constant.SPACE);
+        assertEquals("_", Constant.UNDERSCORE);
+        assertEquals("*", Constant.STAR);
+        assertEquals("@", Constant.AT);
+        assertEquals("%", Constant.PERCENT);
+        assertEquals("Hz", Constant.UNIT_RATE);
+        assertEquals(".jar", Constant.TYPE_JAR);
+        assertEquals(1_048_576, Constant.MEGA_BYTE);
+        assertEquals(65_535, Constant.MAX_PORT);
+        assertEquals(360, Constant.MAX_DEGREE);
+        assertEquals(1000, Constant.THOUSAND);
+        assertEquals(100, Constant.HUNDRED);
+        assertEquals(10, Constant.DECADE);
+        assertEquals(256, Constant.UNSIGNED_BYTE);
+        assertEquals(24, Constant.BYTE_4);
+        assertEquals(16, Constant.BYTE_3);
+        assertEquals(8, Constant.BYTE_2);
+        assertEquals(0, Constant.BYTE_1);
+        assertEquals(1.0, Constant.EXTRP);
+        assertEquals(0.5, Constant.HALF);
+        assertEquals(1_000L, Constant.ONE_SECOND_IN_MILLI);
+        assertEquals(1_000_000_000L, Constant.ONE_SECOND_IN_NANO);
+        assertEquals(1_000_000.0, Constant.NANO_TO_MILLI);
+        assertEquals(9.80665, Constant.GRAVITY_EARTH);
+        assertEquals(3.71, Constant.GRAVITY_MARS);
+        assertEquals(1.624, Constant.GRAVITY_MOON);
+        assertEquals("SansSerif", Constant.FONT_SANS_SERIF);
+        assertEquals("Serif", Constant.FONT_SERIF);
+        assertEquals("Dialog", Constant.FONT_DIALOG);
 
     }
 
@@ -92,7 +95,7 @@ public final class ConstantTest
     @Test
     public void testSystemPropertyDefault()
     {
-        Assert.assertEquals("default", Constant.getSystemProperty("null", "default"));
+        assertEquals("default", Constant.getSystemProperty("null", "default"));
     }
 
     /**
@@ -101,7 +104,7 @@ public final class ConstantTest
     @Test
     public void testSystemPropertyExists()
     {
-        Assert.assertNotEquals("default", Constant.getSystemProperty("java.io.tmpdir", "default"));
+        assertNotEquals("default", Constant.getSystemProperty("java.io.tmpdir", "default"));
     }
 
     /**
@@ -110,15 +113,16 @@ public final class ConstantTest
     @Test
     public void testSystemPropertySecurityException()
     {
+        final SecurityManager old = System.getSecurityManager();
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         System.setSecurityManager(new SecurityManagerMock(false));
         try
         {
-            Assert.assertEquals("default", Constant.getSystemProperty("security", "default"));
+            assertEquals("default", Constant.getSystemProperty("security", "default"));
         }
         finally
         {
-            System.setSecurityManager(null);
+            System.setSecurityManager(old);
         }
         Verbose.info("****************************************************************************************");
     }

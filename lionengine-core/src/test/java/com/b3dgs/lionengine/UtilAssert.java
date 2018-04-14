@@ -36,6 +36,18 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code executable} throws a {@link LionEngineException} with a specific <code>cause</code>.
+     * 
+     * @param executable The executable to test.
+     * @param cause The expected exception cause.
+     */
+    public static void assertCause(Executable executable, Class<?> cause)
+    {
+        Assertions.assertEquals(cause,
+                                Assertions.assertThrows(LionEngineException.class, executable).getCause().getClass());
+    }
+
+    /**
      * Asserts that {@code executable} throws a {@link LionEngineException}.
      * 
      * @param executable The executable to test.
@@ -44,6 +56,38 @@ public final class UtilAssert
     public static void assertThrows(Executable executable, String expected)
     {
         Assertions.assertEquals(expected, Assertions.assertThrows(LionEngineException.class, executable).getMessage());
+    }
+
+    /**
+     * Asserts that {@code object} is <code>null</code>.
+     * 
+     * @param object The object to test.
+     */
+    public static void assertNull(Object object)
+    {
+        Assertions.assertNull(object);
+    }
+
+    /**
+     * Asserts that {@code executable} throws a {@link java.io.IOException}.
+     * 
+     * @param executable The executable to test.
+     * @param startWith The start exception message.
+     */
+    public static void assertThrowsIo(Executable executable, String startWith)
+    {
+        final String message = Assertions.assertThrows(java.io.IOException.class, executable).getMessage();
+        Assertions.assertTrue(message.startsWith(message));
+    }
+
+    /**
+     * Asserts that {@code object} is not <code>null</code>.
+     * 
+     * @param object The object to test.
+     */
+    public static void assertNotNull(Object object)
+    {
+        Assertions.assertNotNull(object);
     }
 
     /**
