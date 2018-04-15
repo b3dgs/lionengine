@@ -234,6 +234,10 @@ public final class UtilReflection
         }
         catch (final NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
         {
+            if (exception.getCause() instanceof LionEngineException)
+            {
+                throw (LionEngineException) exception.getCause();
+            }
             throw new LionEngineException(exception, ERROR_METHOD + name);
         }
     }
