@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilConversion}.
@@ -26,14 +30,12 @@ import org.junit.Test;
 public final class UtilConversionTest
 {
     /**
-     * Test constructor.
-     * 
-     * @throws Exception If error.
+     * Test the constructor.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilConversion.class);
+        assertPrivateConstructor(UtilConversion.class);
     }
 
     /**
@@ -43,8 +45,9 @@ public final class UtilConversionTest
     public void testShort()
     {
         final short s = 12_345;
-        Assert.assertEquals(s, UtilConversion.byteArrayToShort(UtilConversion.shortToByteArray(s)));
-        Assert.assertEquals(s, UtilConversion.fromUnsignedShort(UtilConversion.toUnsignedShort(s)));
+
+        assertEquals(s, UtilConversion.byteArrayToShort(UtilConversion.shortToByteArray(s)));
+        assertEquals(s, UtilConversion.fromUnsignedShort(UtilConversion.toUnsignedShort(s)));
     }
 
     /**
@@ -54,7 +57,8 @@ public final class UtilConversionTest
     public void testInt()
     {
         final int i = 123_456_789;
-        Assert.assertEquals(i, UtilConversion.byteArrayToInt(UtilConversion.intToByteArray(i)));
+
+        assertEquals(i, UtilConversion.byteArrayToInt(UtilConversion.intToByteArray(i)));
     }
 
     /**
@@ -64,7 +68,8 @@ public final class UtilConversionTest
     public void testByte()
     {
         final byte b = 123;
-        Assert.assertEquals(b, UtilConversion.fromUnsignedByte(UtilConversion.toUnsignedByte(b)));
+
+        assertEquals(b, UtilConversion.fromUnsignedByte(UtilConversion.toUnsignedByte(b)));
     }
 
     /**
@@ -73,9 +78,9 @@ public final class UtilConversionTest
     @Test
     public void testMask()
     {
-        Assert.assertEquals(255, UtilConversion.mask(255));
-        Assert.assertEquals(0, UtilConversion.mask(256));
-        Assert.assertEquals(1, UtilConversion.mask(257));
+        assertEquals(255, UtilConversion.mask(255));
+        assertEquals(0, UtilConversion.mask(256));
+        assertEquals(1, UtilConversion.mask(257));
     }
 
     /**
@@ -85,7 +90,8 @@ public final class UtilConversionTest
     public void testToTitleCase()
     {
         final String title = UtilConversion.toTitleCase("title");
-        Assert.assertEquals("Title", title);
+
+        assertEquals("Title", title);
     }
 
     /**
@@ -95,7 +101,8 @@ public final class UtilConversionTest
     public void testToTitleCaseWord()
     {
         final String word = UtilConversion.toTitleCaseWord("title toto");
-        Assert.assertEquals("Title Toto", word);
+
+        assertEquals("Title Toto", word);
     }
 
     /**
@@ -104,8 +111,8 @@ public final class UtilConversionTest
     @Test
     public void testBoolToInt()
     {
-        Assert.assertEquals(0, UtilConversion.boolToInt(false));
-        Assert.assertEquals(1, UtilConversion.boolToInt(true));
+        assertEquals(0, UtilConversion.boolToInt(false));
+        assertEquals(1, UtilConversion.boolToInt(true));
     }
 
     /**
@@ -114,20 +121,20 @@ public final class UtilConversionTest
     @Test
     public void testFromBinary()
     {
-        Assert.assertEquals(0, UtilConversion.fromBinary(new boolean[1]));
-        Assert.assertEquals(1, UtilConversion.fromBinary(new boolean[]
+        assertEquals(0, UtilConversion.fromBinary(new boolean[1]));
+        assertEquals(1, UtilConversion.fromBinary(new boolean[]
         {
             true
         }));
-        Assert.assertEquals(2, UtilConversion.fromBinary(new boolean[]
+        assertEquals(2, UtilConversion.fromBinary(new boolean[]
         {
             true, false
         }));
-        Assert.assertEquals(3, UtilConversion.fromBinary(new boolean[]
+        assertEquals(3, UtilConversion.fromBinary(new boolean[]
         {
             true, true
         }));
-        Assert.assertEquals(4, UtilConversion.fromBinary(new boolean[]
+        assertEquals(4, UtilConversion.fromBinary(new boolean[]
         {
             true, false, false
         }));
@@ -139,13 +146,13 @@ public final class UtilConversionTest
     @Test
     public void testToBinary()
     {
-        Assert.assertArrayEquals(new boolean[1], UtilConversion.toBinary(0, 1));
-        Assert.assertArrayEquals(new boolean[4], UtilConversion.toBinary(0, 4));
-        Assert.assertArrayEquals(new boolean[]
+        assertArrayEquals(new boolean[1], UtilConversion.toBinary(0, 1));
+        assertArrayEquals(new boolean[4], UtilConversion.toBinary(0, 4));
+        assertArrayEquals(new boolean[]
         {
             true
         }, UtilConversion.toBinary(1, 1));
-        Assert.assertArrayEquals(new boolean[]
+        assertArrayEquals(new boolean[]
         {
             true, false
         }, UtilConversion.toBinary(2, 2));
@@ -157,7 +164,7 @@ public final class UtilConversionTest
     @Test
     public void testInvert()
     {
-        Assert.assertArrayEquals(new boolean[]
+        assertArrayEquals(new boolean[]
         {
             true, false, true
         }, UtilConversion.invert(new boolean[]
@@ -181,10 +188,11 @@ public final class UtilConversionTest
             }
             final boolean[] inverted = UtilConversion.invert(table);
 
-            Assert.assertEquals(table.length, inverted.length);
+            assertEquals(table.length, inverted.length);
+
             for (int j = 0; j < inverted.length; j++)
             {
-                Assert.assertTrue(inverted[j] == !table[j]);
+                assertTrue(inverted[j] == !table[j]);
             }
         }
     }

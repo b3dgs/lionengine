@@ -36,16 +36,16 @@ import java.util.Optional;
  */
 final class MediaDefault implements Media
 {
+    /** Invalid path directory. */
+    static final String ERROR_PATH_DIR = "Invalid directory: ";
+    /** Error open media. */
+    static final String ERROR_OPEN_MEDIA = "Cannot open the media";
     /** Temp folder property. */
     private static final String TEMP_DIR = "java.io.tmpdir";
     /** No parent. */
     private static final String NO_PARENT = Constant.EMPTY_STRING;
     /** Unable to create temp directory. */
     private static final String ERROR_CREATE_TEMP_DIR = "Unable to create temp dir ";
-    /** Error open media. */
-    private static final String ERROR_OPEN_MEDIA = "Cannot open the media";
-    /** Invalid path directory. */
-    private static final String ERROR_PATH_DIR = "Invalid directory: ";
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
 

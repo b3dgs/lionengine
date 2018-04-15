@@ -30,11 +30,9 @@ public final class ConstantTest
 {
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    public void testConstructor() throws Exception
+    public void testConstructor()
     {
         assertPrivateConstructor(Constant.class);
     }

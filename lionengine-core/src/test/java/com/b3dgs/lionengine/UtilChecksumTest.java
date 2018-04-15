@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilChecksum}.
@@ -26,14 +30,12 @@ import org.junit.Test;
 public final class UtilChecksumTest
 {
     /**
-     * Test constructor.
-     * 
-     * @throws Exception If error.
+     * Test the constructor.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilChecksum.class);
+        assertPrivateConstructor(UtilChecksum.class);
     }
 
     /**
@@ -45,8 +47,8 @@ public final class UtilChecksumTest
         final String keyToBeEncoded = "keyToBeEncoded";
         final String signature = UtilChecksum.getSha(keyToBeEncoded);
 
-        Assert.assertTrue(UtilChecksum.checkSha(keyToBeEncoded, signature));
-        Assert.assertFalse(UtilChecksum.checkSha("anotherKey", signature));
+        assertTrue(UtilChecksum.checkSha(keyToBeEncoded, signature));
+        assertFalse(UtilChecksum.checkSha("anotherKey", signature));
     }
 
     /**
@@ -58,34 +60,35 @@ public final class UtilChecksumTest
         final int value = 489_464_795;
         final String signature = UtilChecksum.getSha(value);
 
-        Assert.assertTrue(UtilChecksum.checkSha(value, signature));
-        Assert.assertFalse(UtilChecksum.checkSha(2_456_135, signature));
+        assertTrue(UtilChecksum.checkSha(value, signature));
+        assertFalse(UtilChecksum.checkSha(2_456_135, signature));
     }
 
     /**
      * Test encoding <code>null</code> string.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testEncodingEmptyNullString()
     {
-        Assert.assertNull(UtilChecksum.getSha((String) null));
+        assertThrows(() -> UtilChecksum.getSha((String) null), Check.ERROR_NULL);
     }
 
     /**
      * Test encoding bytes.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testEncodingEmptyNullBytes()
     {
-        Assert.assertNull(UtilChecksum.getSha((byte[]) null));
+        assertThrows(() -> UtilChecksum.getSha((byte[]) null), Check.ERROR_NULL);
     }
 
     /**
      * Test unknown algorithm.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testUnknownAlgorithm()
     {
-        Assert.assertNotNull(UtilReflection.getMethod(UtilChecksum.class, "create", "void"));
+        assertThrows(() -> UtilReflection.getMethod(UtilChecksum.class, "create", "void"),
+                     UtilChecksum.ERROR_ALGORITHM + "void");
     }
 }

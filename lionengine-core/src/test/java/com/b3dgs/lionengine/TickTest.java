@@ -17,11 +17,15 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Tick}.
@@ -61,7 +65,7 @@ public final class TickTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void prepare()
     {
         CONFIG.setSource(UtilTests.RESOLUTION_320_240);
@@ -79,28 +83,28 @@ public final class TickTest
         final AtomicBoolean action = new AtomicBoolean();
         tick.addAction(() -> action.set(true), 2L);
 
-        Assert.assertFalse(action.get());
+        assertFalse(action.get());
 
         tick.start();
 
-        Assert.assertFalse(action.get());
+        assertFalse(action.get());
 
         tick.update(1.0);
 
-        Assert.assertFalse(action.get());
+        assertFalse(action.get());
 
         tick.update(1.0);
 
-        Assert.assertTrue(action.get());
+        assertTrue(action.get());
     }
 
     /**
      * Test add <code>null</code> action.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testAddActionNull()
     {
-        tick.addAction(null, 0L);
+        assertThrows(() -> tick.addAction(null, 0L), Check.ERROR_NULL);
     }
 
     /**
@@ -109,24 +113,24 @@ public final class TickTest
     @Test
     public void testStart()
     {
-        Assert.assertFalse(tick.isStarted());
-        Assert.assertFalse(tick.elapsed(0L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 0L));
-        Assert.assertEquals(0L, tick.elapsed());
+        assertFalse(tick.isStarted());
+        assertFalse(tick.elapsed(0L));
+        assertFalse(tick.elapsedTime(CONTEXT, 0L));
+        assertEquals(0L, tick.elapsed());
 
         tick.start();
 
-        Assert.assertTrue(tick.isStarted());
-        Assert.assertTrue(tick.elapsed(0L));
-        Assert.assertTrue(tick.elapsedTime(CONTEXT, 0L));
-        Assert.assertEquals(0L, tick.elapsed());
+        assertTrue(tick.isStarted());
+        assertTrue(tick.elapsed(0L));
+        assertTrue(tick.elapsedTime(CONTEXT, 0L));
+        assertEquals(0L, tick.elapsed());
 
         tick.start();
 
-        Assert.assertTrue(tick.isStarted());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 1L));
-        Assert.assertEquals(0L, tick.elapsed());
+        assertTrue(tick.isStarted());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 1L));
+        assertEquals(0L, tick.elapsed());
     }
 
     /**
@@ -135,18 +139,18 @@ public final class TickTest
     @Test
     public void testStop()
     {
-        Assert.assertFalse(tick.isStarted());
+        assertFalse(tick.isStarted());
 
         tick.start();
 
-        Assert.assertTrue(tick.isStarted());
+        assertTrue(tick.isStarted());
 
         tick.stop();
 
-        Assert.assertFalse(tick.isStarted());
-        Assert.assertFalse(tick.elapsed(0L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 0L));
-        Assert.assertEquals(0L, tick.elapsed());
+        assertFalse(tick.isStarted());
+        assertFalse(tick.elapsed(0L));
+        assertFalse(tick.elapsedTime(CONTEXT, 0L));
+        assertEquals(0L, tick.elapsed());
     }
 
     /**
@@ -155,33 +159,33 @@ public final class TickTest
     @Test
     public void testPause()
     {
-        Assert.assertEquals(0L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
         tick.start();
 
-        Assert.assertEquals(0L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
         tick.update(1.0);
 
-        Assert.assertEquals(1L, tick.elapsed());
-        Assert.assertTrue(tick.elapsed(1L));
-        Assert.assertTrue(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(1L, tick.elapsed());
+        assertTrue(tick.elapsed(1L));
+        assertTrue(tick.elapsedTime(CONTEXT, 15L));
 
         tick.pause();
 
-        Assert.assertEquals(1L, tick.elapsed());
-        Assert.assertTrue(tick.elapsed(1L));
-        Assert.assertTrue(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(1L, tick.elapsed());
+        assertTrue(tick.elapsed(1L));
+        assertTrue(tick.elapsedTime(CONTEXT, 15L));
 
         tick.update(1.0);
 
-        Assert.assertEquals(1L, tick.elapsed());
-        Assert.assertTrue(tick.elapsed(1L));
-        Assert.assertTrue(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(1L, tick.elapsed());
+        assertTrue(tick.elapsed(1L));
+        assertTrue(tick.elapsedTime(CONTEXT, 15L));
     }
 
     /**
@@ -194,21 +198,21 @@ public final class TickTest
         tick.pause();
         tick.update(1.0);
 
-        Assert.assertEquals(0L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
         tick.resume();
 
-        Assert.assertEquals(0L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
         tick.update(1.0);
 
-        Assert.assertEquals(1L, tick.elapsed());
-        Assert.assertTrue(tick.elapsed(1L));
-        Assert.assertTrue(tick.elapsedTime(CONTEXT, 15L));
+        assertEquals(1L, tick.elapsed());
+        assertTrue(tick.elapsed(1L));
+        assertTrue(tick.elapsedTime(CONTEXT, 15L));
     }
 
     /**
@@ -217,14 +221,21 @@ public final class TickTest
     @Test
     public void testRestart()
     {
-        Assert.assertFalse(tick.isStarted());
+        assertFalse(tick.isStarted());
 
         tick.restart();
 
-        Assert.assertTrue(tick.isStarted());
-        Assert.assertEquals(0L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertTrue(tick.isStarted());
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
+
+        tick.restart();
+
+        assertTrue(tick.isStarted());
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
     }
 
     /**
@@ -233,32 +244,32 @@ public final class TickTest
     @Test
     public void testSet()
     {
-        Assert.assertFalse(tick.isStarted());
-        Assert.assertEquals(0L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertFalse(tick.isStarted());
+        assertEquals(0L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
         tick.set(1);
 
-        Assert.assertFalse(tick.isStarted());
-        Assert.assertEquals(1L, tick.elapsed());
-        Assert.assertFalse(tick.elapsed(1L));
-        Assert.assertFalse(tick.elapsedTime(CONTEXT, 15L));
+        assertFalse(tick.isStarted());
+        assertEquals(1L, tick.elapsed());
+        assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(CONTEXT, 15L));
 
         tick.start();
 
-        Assert.assertTrue(tick.isStarted());
-        Assert.assertEquals(1L, tick.elapsed());
-        Assert.assertTrue(tick.elapsed(1L));
-        Assert.assertTrue(tick.elapsedTime(CONTEXT, 15L));
+        assertTrue(tick.isStarted());
+        assertEquals(1L, tick.elapsed());
+        assertTrue(tick.elapsed(1L));
+        assertTrue(tick.elapsedTime(CONTEXT, 15L));
     }
 
     /**
      * Test elapsed with <code>null</code> context.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testElapsedNullContext()
     {
-        Assert.assertTrue(tick.elapsedTime(null, 0L));
+        assertThrows(() -> tick.elapsedTime(null, 0L), Check.ERROR_NULL);
     }
 }

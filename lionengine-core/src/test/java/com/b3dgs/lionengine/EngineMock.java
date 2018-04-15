@@ -35,8 +35,6 @@ public final class EngineMock extends Engine
     public EngineMock(String name, Version version)
     {
         super(name, version);
-        Check.notNull(name);
-        Check.notNull(version);
     }
 
     /*

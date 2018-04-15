@@ -34,7 +34,7 @@ import java.util.zip.ZipEntry;
 public final class Medias
 {
     /** Not in JAR resources. */
-    private static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
+    static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
     /** Factory media implementation. */
     private static FactoryMedia factoryMedia = new FactoryMediaDefault();
     /** Path separator. */

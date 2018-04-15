@@ -17,111 +17,30 @@
  */
 package com.b3dgs.lionengine;
 
-import java.io.File;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link LionEngineException}.
  */
 public final class LionEngineExceptionTest
 {
-    /** Output result. */
-    private static PrintStream stream;
-    /** Output result. */
-    private static PrintWriter writer;
-
     /**
-     * Prepare the test.
-     * 
-     * @throws IOException If error.
-     */
-    @BeforeClass
-    public static void prepareTest() throws IOException
-    {
-        final File file1 = File.createTempFile(LionEngineExceptionTest.class.getName(), ".log");
-        stream = new PrintStream(file1);
-
-        final File file2 = File.createTempFile(LionEngineExceptionTest.class.getName(), ".log");
-        writer = new PrintWriter(file2);
-
-        Verbose.info("Test results of ", LionEngineExceptionTest.class.getName(), " in ", file1.getAbsolutePath());
-        Verbose.info("Test results of ", LionEngineExceptionTest.class.getName(), " in ", file2.getAbsolutePath());
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        stream.flush();
-        stream.close();
-        writer.flush();
-        writer.close();
-    }
-
-    /**
-     * Test exception with check.
-     */
-    @Test
-    public void testLionEngineExceptionWithCheck()
-    {
-        stream.println("testLionEngineExceptionWithCheck");
-        try
-        {
-            Check.notNull(null);
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
-    }
-
-    /**
-     * Test exception with a message as argument.
-     */
-    @Test
-    public void testLionEngineExceptionWithCheckMessage()
-    {
-        stream.println("testLionEngineExceptionWithCheckMessage");
-        try
-        {
-            Check.notNull(null);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals("Unexpected null argument !", exception.getMessage());
-            exception.printStackTrace(stream);
-        }
-        stream.println();
-    }
-
-    /**
-     * Test exception with a media as argument with null path.
+     * Test exception with a media as argument with <code>null</code> path.
      */
     @Test
     public void testLionEngineExceptionWithMediaNullPath()
     {
-        stream.println("testLionEngineExceptionWithMediaNullPath");
-        final String message = "Exception test";
-        try
-        {
-            throw new LionEngineException(Medias.create((String) null), message);
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(new MediaMock(), "message");
+
+        assertEquals("[null] message", exception.getMessage());
+        assertNull(exception.getCause());
     }
 
     /**
@@ -130,35 +49,22 @@ public final class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithMedia()
     {
-        stream.println("testLionEngineExceptionWithMedia");
-        try
-        {
-            throw new LionEngineException(Medias.create("media"));
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(Medias.create("media"));
+
+        assertEquals("[media] ", exception.getMessage());
+        assertNull(exception.getCause());
     }
 
     /**
-     * Test exception with a media as argument.
+     * Test exception with a media and message as argument.
      */
     @Test
     public void testLionEngineExceptionWithMediaMessage()
     {
-        stream.println("testLionEngineExceptionWithMediaMessage");
-        final String message = "Exception test";
-        try
-        {
-            throw new LionEngineException(Medias.create("media"), message);
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(Medias.create("media"), "message");
+
+        assertEquals("[media] message", exception.getMessage());
+        assertNull(exception.getCause());
     }
 
     /**
@@ -167,16 +73,10 @@ public final class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithMediaException()
     {
-        stream.println("testLionEngineExceptionWithMediaException");
-        try
-        {
-            throw new LionEngineException(new RuntimeException(), Medias.create("media"));
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(new RuntimeException(), Medias.create("media"));
+
+        assertEquals("[media] ", exception.getMessage());
+        assertEquals(RuntimeException.class, exception.getCause().getClass());
     }
 
     /**
@@ -185,34 +85,24 @@ public final class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithMediaExceptionMessage()
     {
-        stream.println("testLionEngineExceptionWithMediaException");
-        try
-        {
-            throw new LionEngineException(new RuntimeException(), Medias.create("media"), "message");
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(new RuntimeException(),
+                                                                      Medias.create("media"),
+                                                                      "message");
+
+        assertEquals("[media] message", exception.getMessage());
+        assertEquals(RuntimeException.class, exception.getCause().getClass());
     }
 
     /**
-     * Test exception with a null enum as argument.
+     * Test exception with a <code>null</code> enum as argument.
      */
     @Test
     public void testLionEngineExceptionWithEnumNull()
     {
-        stream.println("testLionEngineExceptionWitEnumNull");
-        try
-        {
-            throw new LionEngineException((Enum<?>) null);
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException((Enum<?>) null);
+
+        assertEquals(LionEngineException.ERROR_UNKNOWN_ENUM + LionEngineException.NULL_ENUM, exception.getMessage());
+        assertNull(exception.getCause());
     }
 
     /**
@@ -221,54 +111,56 @@ public final class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithEnum()
     {
-        stream.println("testLionEngineExceptionWitEnum");
-        try
-        {
-            throw new LionEngineException(Origin.MIDDLE);
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(Origin.MIDDLE);
+
+        assertEquals(LionEngineException.ERROR_UNKNOWN_ENUM + Origin.MIDDLE, exception.getMessage());
+        assertNull(exception.getCause());
     }
 
     /**
-     * Test exception with a throwable as argument.
+     * Test exception with a exception as argument.
      * 
      * @throws FileNotFoundException If error.
      */
     @Test
-    public void testLionEngineExceptionWithThrowable() throws FileNotFoundException
+    public void testLionEngineExceptionWithException() throws FileNotFoundException
     {
-        stream.println("testLionEngineExceptionWithThrowable");
-        try
-        {
-            throw new LionEngineException(new IOException("error"));
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        try
-        {
-            throw new LionEngineException(new LionEngineException("reason"));
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
-        writer.println("testLionEngineExceptionWithThrowable");
-        try
-        {
-            throw new LionEngineException(new LionEngineException(new RuntimeException("sub")));
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(writer);
-        }
-        writer.println();
+        final LionEngineException exception = new LionEngineException(new IOException("error"));
+
+        assertEquals("java.io.IOException: error", exception.getMessage());
+        assertEquals(IOException.class, exception.getCause().getClass());
+    }
+
+    /**
+     * Test exception with a {@link LionEngineException} as argument.
+     * 
+     * @throws FileNotFoundException If error.
+     */
+    @Test
+    public void testLionEngineExceptionWithLionEngineException() throws FileNotFoundException
+    {
+        final LionEngineException exception = new LionEngineException(new LionEngineException("reason"));
+
+        assertEquals("com.b3dgs.lionengine.LionEngineException: reason", exception.getMessage());
+        assertEquals(LionEngineException.class, exception.getCause().getClass());
+        assertNotEquals(exception, exception.getCause());
+    }
+
+    /**
+     * Test exception with a runtime exception as argument.
+     * 
+     * @throws FileNotFoundException If error.
+     */
+    @Test
+    public void testLionEngineExceptionWithRuntimeException() throws FileNotFoundException
+    {
+        final LionEngineException exception = new LionEngineException(new LionEngineException(new RuntimeException("sub")));
+
+        assertEquals("com.b3dgs.lionengine.LionEngineException: java.lang.RuntimeException: sub",
+                     exception.getMessage());
+        assertEquals(LionEngineException.class, exception.getCause().getClass());
+        assertEquals(RuntimeException.class, exception.getCause().getCause().getClass());
+        assertNotEquals(exception, exception.getCause());
     }
 
     /**
@@ -279,51 +171,33 @@ public final class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithNullReason() throws FileNotFoundException
     {
-        writer.println("testLionEngineExceptionWithNullReason");
-        try
-        {
-            throw new LionEngineException((Throwable) null);
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(writer);
-        }
-        writer.println();
+        final LionEngineException exception = new LionEngineException((Throwable) null);
+
+        assertEquals(null, exception.getMessage());
+        assertNull(exception.getCause());
     }
 
     /**
-     * Test exception with a throwable as argument without message.
+     * Test exception with an exception as argument without message.
      */
     @Test
-    public void testLionEngineExceptionWithThrowableNoMessage()
+    public void testLionEngineExceptionWithExceptionNoMessage()
     {
-        stream.println("testLionEngineExceptionWithThrowableNoMessage");
-        try
-        {
-            throw new LionEngineException(new IOException());
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(new IOException());
+
+        assertEquals("java.io.IOException", exception.getMessage());
+        assertEquals(IOException.class, exception.getCause().getClass());
     }
 
     /**
-     * Test exception with a throwable as argument and message.
+     * Test exception with a exception as argument and message.
      */
     @Test
     public void testLionEngineExceptionWithThrowableMessage()
     {
-        stream.println("testLionEngineExceptionWithThrowableNoMessage");
-        try
-        {
-            throw new LionEngineException(new IOException(), "message");
-        }
-        catch (final LionEngineException exception)
-        {
-            exception.printStackTrace(stream);
-        }
-        stream.println();
+        final LionEngineException exception = new LionEngineException(new IOException(), "message");
+
+        assertEquals("message", exception.getMessage());
+        assertEquals(IOException.class, exception.getCause().getClass());
     }
 }

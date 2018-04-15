@@ -17,8 +17,13 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Resolution}.
@@ -33,36 +38,36 @@ public final class ResolutionTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
-        Assert.assertEquals(320, resolution.getWidth());
-        Assert.assertEquals(240, resolution.getHeight());
-        Assert.assertEquals(60, resolution.getRate());
+        assertEquals(320, resolution.getWidth());
+        assertEquals(240, resolution.getHeight());
+        assertEquals(60, resolution.getRate());
     }
 
     /**
      * Test non strict positive width.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNonStrictPositiveWidth()
     {
-        Assert.assertNull(new Resolution(0, 240, 0));
+        assertThrows(() -> new Resolution(0, 240, 0), Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
     }
 
     /**
      * Test non strict positive height.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNonStrictPositiveHeight()
     {
-        Assert.assertNull(new Resolution(320, 0, 0));
+        assertThrows(() -> new Resolution(320, 0, 0), Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
     }
 
     /**
      * Test negative rate.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNegativeRate()
     {
-        Assert.assertNull(new Resolution(320, 240, -1));
+        assertThrows(() -> new Resolution(320, 240, -1), Check.ERROR_ARGUMENT + -1 + Check.ERROR_SUPERIOR + 0);
     }
 
     /**
@@ -72,7 +77,8 @@ public final class ResolutionTest
     public void testScale2x()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
-        Assert.assertEquals(new Resolution(640, 480, 60), resolution.get2x());
+
+        assertEquals(new Resolution(640, 480, 60), resolution.get2x());
     }
 
     /**
@@ -82,25 +88,28 @@ public final class ResolutionTest
     public void testScale3x()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
-        Assert.assertEquals(new Resolution(960, 720, 60), resolution.get3x());
+
+        assertEquals(new Resolution(960, 720, 60), resolution.get3x());
     }
 
     /**
      * Test scale function with wrong factor X.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testScaleWrongFactorX()
     {
-        Assert.assertNull(new Resolution(320, 240, 60).getScaled(0, 1));
+        assertThrows(() -> new Resolution(320, 240, 60).getScaled(0, 1),
+                     Check.ERROR_ARGUMENT + 0.0 + Check.ERROR_SUPERIOR_STRICT + 0.0);
     }
 
     /**
      * Test scale function with wrong factor Y.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testScaleWrongFactorY()
     {
-        Assert.assertNull(new Resolution(320, 240, 60).getScaled(1, 0));
+        assertThrows(() -> new Resolution(320, 240, 60).getScaled(1, 0),
+                     Check.ERROR_ARGUMENT + 0.0 + Check.ERROR_SUPERIOR_STRICT + 0.0);
     }
 
     /**
@@ -111,14 +120,14 @@ public final class ResolutionTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
-        Assert.assertEquals(resolution, resolution);
-        Assert.assertEquals(new Resolution(320, 240, 60), resolution);
+        assertEquals(resolution, resolution);
+        assertEquals(new Resolution(320, 240, 60), resolution);
 
-        Assert.assertNotEquals(resolution, null);
-        Assert.assertNotEquals(resolution, new Object());
-        Assert.assertNotEquals(resolution, new Resolution(100, 240, 60));
-        Assert.assertNotEquals(resolution, new Resolution(320, 100, 60));
-        Assert.assertNotEquals(resolution, new Resolution(320, 240, 30));
+        assertNotEquals(resolution, null);
+        assertNotEquals(resolution, new Object());
+        assertNotEquals(resolution, new Resolution(100, 240, 60));
+        assertNotEquals(resolution, new Resolution(320, 100, 60));
+        assertNotEquals(resolution, new Resolution(320, 240, 30));
     }
 
     /**
@@ -127,14 +136,14 @@ public final class ResolutionTest
     @Test
     public void testHashCode()
     {
-        final int resolution = new Resolution(320, 240, 60).hashCode();
+        final Resolution resolution = new Resolution(320, 240, 60);
 
-        Assert.assertEquals(new Resolution(320, 240, 60).hashCode(), resolution);
+        assertHashEquals(new Resolution(320, 240, 60), resolution);
 
-        Assert.assertNotEquals(resolution, new Object().hashCode());
-        Assert.assertNotEquals(resolution, new Resolution(100, 240, 60).hashCode());
-        Assert.assertNotEquals(resolution, new Resolution(320, 100, 60).hashCode());
-        Assert.assertNotEquals(resolution, new Resolution(320, 240, 30).hashCode());
+        assertHashNotEquals(resolution, new Object());
+        assertHashNotEquals(resolution, new Resolution(100, 240, 60));
+        assertHashNotEquals(resolution, new Resolution(320, 100, 60));
+        assertHashNotEquals(resolution, new Resolution(320, 240, 30));
     }
 
     /**
@@ -143,6 +152,6 @@ public final class ResolutionTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("Resolution [width=320, height=240, rate=60]", new Resolution(320, 240, 60).toString());
+        assertEquals("Resolution [width=320, height=240, rate=60]", new Resolution(320, 240, 60).toString());
     }
 }

@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsIo;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -26,8 +32,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link DocumentFactory}.
@@ -35,14 +40,12 @@ import org.junit.Test;
 public final class DocumentFactoryTest
 {
     /**
-     * Test constructor.
-     * 
-     * @throws Exception If error.
+     * Test the constructor.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(DocumentFactory.class);
+        assertPrivateConstructor(DocumentFactory.class);
     }
 
     /**
@@ -53,11 +56,11 @@ public final class DocumentFactoryTest
     @Test
     public void testCreateDocument() throws IOException
     {
-        Assert.assertNotNull(DocumentFactory.createDocument());
+        assertNotNull(DocumentFactory.createDocument());
 
         try (InputStream input = DocumentFactoryTest.class.getResourceAsStream("type.xml"))
         {
-            Assert.assertNotNull(DocumentFactory.createDocument(input));
+            assertNotNull(DocumentFactory.createDocument(input));
         }
     }
 
@@ -66,14 +69,13 @@ public final class DocumentFactoryTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = IOException.class)
+    @Test
     public void testCreateDocumentMalformed() throws IOException
     {
-        Assert.assertNotNull(DocumentFactory.createDocument());
-
         try (InputStream input = DocumentFactoryTest.class.getResourceAsStream("malformed.xml"))
         {
-            Assert.assertNotNull(DocumentFactory.createDocument(input));
+            final String message = "org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 7; ";
+            assertThrowsIo(() -> DocumentFactory.createDocument(input), message);
         }
     }
 
@@ -82,10 +84,10 @@ public final class DocumentFactoryTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateDocumentNullStream() throws IOException
     {
-        Assert.assertNotNull(DocumentFactory.createDocument(null));
+        assertThrows(() -> DocumentFactory.createDocument(null), Check.ERROR_NULL);
     }
 
     /**
@@ -96,7 +98,8 @@ public final class DocumentFactoryTest
     @Test
     public void testCreateTransformer() throws TransformerConfigurationException
     {
-        Assert.assertNotNull(DocumentFactory.createTransformer());
+        assertNotNull(DocumentFactory.createTransformer());
+        assertNotNull(DocumentFactory.createTransformer()); // Get cached instance
     }
 
     /**
@@ -118,15 +121,7 @@ public final class DocumentFactoryTest
         try
         {
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            try
-            {
-                Assert.assertNull(DocumentFactory.createDocument());
-                Assert.fail();
-            }
-            catch (final LionEngineException exception)
-            {
-                Assert.assertTrue(exception.getCause() instanceof ParserConfigurationException);
-            }
+            assertCause(() -> DocumentFactory.createDocument(), ParserConfigurationException.class);
             Verbose.info("****************************************************************************************");
         }
         finally

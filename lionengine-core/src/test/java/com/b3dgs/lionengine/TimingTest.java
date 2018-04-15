@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Timing}.
@@ -37,31 +40,31 @@ public final class TimingTest
     @Test
     public void testStart()
     {
-        Assert.assertFalse(timing.isStarted());
-        Assert.assertEquals(0L, timing.elapsed());
-        Assert.assertFalse(timing.elapsed(-1L));
-        Assert.assertFalse(timing.elapsed(0L));
-        Assert.assertFalse(timing.elapsed(1L));
-        Assert.assertEquals(0L, timing.get());
+        assertFalse(timing.isStarted());
+        assertEquals(0L, timing.elapsed());
+        assertFalse(timing.elapsed(-1L));
+        assertFalse(timing.elapsed(0L));
+        assertFalse(timing.elapsed(1L));
+        assertEquals(0L, timing.get());
 
         timing.start();
         final long time = timing.get();
 
-        Assert.assertTrue(timing.isStarted());
+        assertTrue(timing.isStarted());
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertFalse(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE * Constant.HUNDRED));
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
-        Assert.assertEquals(time + " " + timing.elapsed(), time, timing.get());
+        assertFalse(timing.elapsed(PAUSE * Constant.HUNDRED), String.valueOf(timing.elapsed()));
+        assertTrue(timing.elapsed() >= PAUSE, String.valueOf(timing.elapsed()));
+        assertTrue(timing.elapsed(PAUSE), String.valueOf(timing.elapsed()));
+        assertEquals(time, timing.get(), time + " " + timing.elapsed());
 
         timing.start();
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
-        Assert.assertEquals(time + " " + timing.elapsed(), time, timing.get());
+        assertTrue(timing.elapsed() >= PAUSE, String.valueOf(timing.elapsed()));
+        assertTrue(timing.elapsed(PAUSE), String.valueOf(timing.elapsed()));
+        assertEquals(time, timing.get(), time + " " + timing.elapsed());
     }
 
     /**
@@ -74,9 +77,9 @@ public final class TimingTest
         UtilTests.pause(PAUSE);
         timing.stop();
 
-        Assert.assertFalse(timing.isStarted());
-        Assert.assertEquals(0L, timing.get());
-        Assert.assertFalse(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
+        assertFalse(timing.isStarted());
+        assertEquals(0L, timing.get());
+        assertFalse(timing.elapsed(PAUSE), String.valueOf(timing.elapsed()));
     }
 
     /**
@@ -94,8 +97,8 @@ public final class TimingTest
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertEquals(old + " " + timing.elapsed(), old, timing.get());
-        Assert.assertEquals(elapsed + " " + timing.elapsed(), elapsed, timing.elapsed());
+        assertEquals(old, timing.get(), old + " " + timing.elapsed());
+        assertEquals(elapsed, timing.elapsed(), elapsed + " " + timing.elapsed());
     }
 
     /**
@@ -113,9 +116,9 @@ public final class TimingTest
         timing.unpause();
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
-        Assert.assertTrue(timing + " " + timing.elapsed(), timing.get() > old);
-        Assert.assertTrue(timing + " " + timing.elapsed(), timing.elapsed() > elapsed);
+        assertTrue(timing.elapsed(PAUSE), String.valueOf(timing.elapsed()));
+        assertTrue(timing.get() > old, timing + " " + timing.elapsed());
+        assertTrue(timing.elapsed() > elapsed, timing + " " + timing.elapsed());
     }
 
     /**
@@ -128,13 +131,13 @@ public final class TimingTest
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
+        assertTrue(timing.elapsed() >= PAUSE, String.valueOf(timing.elapsed()));
 
         timing.restart();
 
         UtilTests.pause(PAUSE);
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() >= PAUSE);
+        assertTrue(timing.elapsed() >= PAUSE, String.valueOf(timing.elapsed()));
     }
 
     /**
@@ -145,7 +148,7 @@ public final class TimingTest
     {
         timing.set(PAUSE);
 
-        Assert.assertTrue(timing.isStarted());
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed(PAUSE));
+        assertTrue(timing.isStarted());
+        assertTrue(timing.elapsed(PAUSE), String.valueOf(timing.elapsed()));
     }
 }

@@ -31,7 +31,7 @@ import java.util.Arrays;
 public final class UtilChecksum
 {
     /** Instance error message. */
-    private static final String ERROR_ALGORITHM = "Unable to create algorithm: ";
+    static final String ERROR_ALGORITHM = "Unable to create algorithm: ";
     /** Message digest instance. */
     private static final MessageDigest SHA256 = create("SHA-512");
     /** Maximum length. */

@@ -29,16 +29,16 @@ package com.b3dgs.lionengine;
  */
 public abstract class Engine
 {
+    /** Error message engine not started. */
+    static final String ERROR_STARTED_NOT = "The engine has not been started !";
+    /** Error message engine already started. */
+    static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"" + Constant.ENGINE_NAME + " \"";
     /** Engine terminated. */
     private static final String ENGINE_TERMINATED = Constant.ENGINE_NAME + " terminated";
     /** For string. */
     private static final String FOR = " for ";
-    /** Error message engine not started. */
-    private static final String ERROR_STARTED_NOT = "The engine has not been started !";
-    /** Error message engine already started. */
-    private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
     /** Minimum start message length. */
     private static final int MIN_LENGTH = 30;
 

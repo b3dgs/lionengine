@@ -17,27 +17,28 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link FactoryMedia}.
  */
 public final class FactoryMediaTest
 {
-    /** Factory. */
-    private static final FactoryMedia FACTORY = new FactoryMediaDefault();
-
     /**
      * Test create media from resources directory.
      */
     @Test
     public void testCreateMediaResources()
     {
-        final Media media = FACTORY.create("/", "rsc", "test.txt");
-        Assert.assertEquals("", media.getParentPath());
-        Assert.assertEquals("test.txt", media.getPath());
-        Assert.assertEquals("rsc" + java.io.File.separator + "test.txt", media.getFile().getPath());
+        final FactoryMedia factory = new FactoryMediaDefault();
+        final Media media = factory.create(java.io.File.separator, "rsc", "test.txt");
+
+        assertEquals("", media.getParentPath());
+        assertEquals("test.txt", media.getPath());
+        assertEquals("rsc" + java.io.File.separator + "test.txt", media.getFile().getPath());
     }
 
     /**
@@ -46,9 +47,11 @@ public final class FactoryMediaTest
     @Test
     public void testCreateMediaLoader()
     {
-        final Media media = FACTORY.create("/", FactoryMediaTest.class, "test.txt");
-        Assert.assertEquals("", media.getParentPath());
-        Assert.assertEquals("test.txt", media.getPath());
-        Assert.assertTrue(media.getFile().getPath().endsWith("test.txt"));
+        final FactoryMedia factory = new FactoryMediaDefault();
+        final Media media = factory.create(java.io.File.separator, FactoryMediaTest.class, "test.txt");
+
+        assertEquals("", media.getParentPath());
+        assertEquals("test.txt", media.getPath());
+        assertTrue(media.getFile().getPath().endsWith("test.txt"));
     }
 }

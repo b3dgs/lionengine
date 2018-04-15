@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Origin}.
@@ -47,49 +49,49 @@ public final class OriginTest
             switch (origin)
             {
                 case TOP_LEFT:
-                    Assert.assertEquals(3.0, origin.getX(3.0, 2.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 2.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 2.0));
+                    assertEquals(3.0, origin.getY(3.0, 2.0));
 
-                    Assert.assertEquals(3.0, origin.getX(3.0, 0.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 0.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 0.0));
+                    assertEquals(3.0, origin.getY(3.0, 0.0));
                     break;
                 case BOTTOM_LEFT:
-                    Assert.assertEquals(3.0, origin.getX(3.0, 2.0), UtilTests.PRECISION);
-                    Assert.assertEquals(1.0, origin.getY(3.0, 2.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 2.0));
+                    assertEquals(1.0, origin.getY(3.0, 2.0));
 
-                    Assert.assertEquals(3.0, origin.getX(3.0, 0.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 0.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 0.0));
+                    assertEquals(3.0, origin.getY(3.0, 0.0));
                     break;
                 case BOTTOM_RIGHT:
-                    Assert.assertEquals(1.0, origin.getX(3.0, 2.0), UtilTests.PRECISION);
-                    Assert.assertEquals(1.0, origin.getY(3.0, 2.0), UtilTests.PRECISION);
+                    assertEquals(1.0, origin.getX(3.0, 2.0));
+                    assertEquals(1.0, origin.getY(3.0, 2.0));
 
-                    Assert.assertEquals(3.0, origin.getX(3.0, 0.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 0.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 0.0));
+                    assertEquals(3.0, origin.getY(3.0, 0.0));
                     break;
                 case CENTER_TOP:
-                    Assert.assertEquals(2.0, origin.getX(3.0, 2.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 2.0), UtilTests.PRECISION);
+                    assertEquals(2.0, origin.getX(3.0, 2.0));
+                    assertEquals(3.0, origin.getY(3.0, 2.0));
 
-                    Assert.assertEquals(3.0, origin.getX(3.0, 0.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 0.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 0.0));
+                    assertEquals(3.0, origin.getY(3.0, 0.0));
                     break;
                 case CENTER_BOTTOM:
-                    Assert.assertEquals(2.0, origin.getX(3.0, 2.0), UtilTests.PRECISION);
-                    Assert.assertEquals(1.0, origin.getY(3.0, 2.0), UtilTests.PRECISION);
+                    assertEquals(2.0, origin.getX(3.0, 2.0));
+                    assertEquals(1.0, origin.getY(3.0, 2.0));
 
-                    Assert.assertEquals(3.0, origin.getX(3.0, 0.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 0.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 0.0));
+                    assertEquals(3.0, origin.getY(3.0, 0.0));
                     break;
                 case MIDDLE:
-                    Assert.assertEquals(2.0, origin.getX(3.0, 2.0), UtilTests.PRECISION);
-                    Assert.assertEquals(2.0, origin.getY(3.0, 2.0), UtilTests.PRECISION);
+                    assertEquals(2.0, origin.getX(3.0, 2.0));
+                    assertEquals(2.0, origin.getY(3.0, 2.0));
 
-                    Assert.assertEquals(3.0, origin.getX(3.0, 0.0), UtilTests.PRECISION);
-                    Assert.assertEquals(3.0, origin.getY(3.0, 0.0), UtilTests.PRECISION);
+                    assertEquals(3.0, origin.getX(3.0, 0.0));
+                    assertEquals(3.0, origin.getY(3.0, 0.0));
                     break;
                 default:
-                    Assert.fail();
+                    throw new LionEngineException(origin);
             }
         }
     }
@@ -101,23 +103,8 @@ public final class OriginTest
     public void testEnumFail()
     {
         final Origin fail = UtilEnum.make(Origin.class, "FAIL");
-        try
-        {
-            Assert.assertEquals(-1.0, fail.getX(0.0, 0.0), UtilTests.PRECISION);
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            Assert.assertEquals(-1.0, fail.getY(0.0, 0.0), UtilTests.PRECISION);
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+
+        assertThrows(() -> assertEquals(-1.0, fail.getX(0.0, 0.0)), LionEngineException.ERROR_UNKNOWN_ENUM + fail);
+        assertThrows(() -> assertEquals(-1.0, fail.getY(0.0, 0.0)), LionEngineException.ERROR_UNKNOWN_ENUM + fail);
     }
 }

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 
@@ -59,16 +61,6 @@ public final class UtilAssert
     }
 
     /**
-     * Asserts that {@code object} is <code>null</code>.
-     * 
-     * @param object The object to test.
-     */
-    public static void assertNull(Object object)
-    {
-        Assertions.assertNull(object);
-    }
-
-    /**
      * Asserts that {@code executable} throws a {@link java.io.IOException}.
      * 
      * @param executable The executable to test.
@@ -78,6 +70,40 @@ public final class UtilAssert
     {
         final String message = Assertions.assertThrows(java.io.IOException.class, executable).getMessage();
         Assertions.assertTrue(message.startsWith(message));
+    }
+
+    /**
+     * Asserts that execution of the supplied {@code executable} completes before the given {@code timeout} is exceeded.
+     * 
+     * @param timeout The timeout in milliseconds.
+     * @param executable The executable to test.
+     */
+    public static void assertTimeout(long timeout, Executable executable)
+    {
+        Assertions.assertTimeout(Duration.ofMillis(timeout), executable);
+    }
+
+    /**
+     * Asserts that execution of the supplied {@code executable} throws a {@link LionEngineException} and completes
+     * before the given {@code timeout} is exceeded.
+     * 
+     * @param timeout The timeout in milliseconds.
+     * @param executable The executable to test.
+     * @param expected The expected exception message.
+     */
+    public static void assertThrowsTimeout(long timeout, Executable executable, String expected)
+    {
+        Assertions.assertTimeout(Duration.ofMillis(timeout), () -> assertThrows(executable, expected));
+    }
+
+    /**
+     * Asserts that {@code object} is <code>null</code>.
+     * 
+     * @param object The object to test.
+     */
+    public static void assertNull(Object object)
+    {
+        Assertions.assertNull(object);
     }
 
     /**
@@ -101,6 +127,17 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code condition} is <code>true</code>.
+     * 
+     * @param condition The excepted condition.
+     * @param message The failure message.
+     */
+    public static void assertTrue(boolean condition, String message)
+    {
+        Assertions.assertTrue(condition, message);
+    }
+
+    /**
      * Asserts that {@code condition} is <code>false</code>.
      * 
      * @param condition The excepted condition.
@@ -111,10 +148,21 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code condition} is <code>false</code>.
+     * 
+     * @param condition The excepted condition.
+     * @param message The failure message.
+     */
+    public static void assertFalse(boolean condition, String message)
+    {
+        Assertions.assertFalse(condition, message);
+    }
+
+    /**
      * Asserts that {@code expected} and {@code actual} are equal.
      * 
-     * @param expected The excepted object.
-     * @param actual The actual object.
+     * @param expected The excepted boolean.
+     * @param actual The actual boolean.
      */
     public static void assertEquals(boolean expected, boolean actual)
     {
@@ -122,14 +170,37 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code expected} and {@code actual} are equal.
+     * 
+     * @param expected The excepted integer.
+     * @param actual The actual integer.
+     */
+    public static void assertEquals(int expected, int actual)
+    {
+        Assertions.assertEquals(expected, actual);
+    }
+
+    /**
      * Asserts that {@code expected} and {@code actual} are equal using {@link UtilTests#PRECISION} as delta.
      * 
-     * @param expected The excepted object.
-     * @param actual The actual object.
+     * @param expected The excepted double.
+     * @param actual The actual double.
      */
     public static void assertEquals(double expected, double actual)
     {
         Assertions.assertEquals(expected, actual, UtilTests.PRECISION);
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} are equal.
+     * 
+     * @param expected The excepted long.
+     * @param actual The actual long.
+     * @param message The failure message.
+     */
+    public static void assertEquals(long expected, long actual, String message)
+    {
+        Assertions.assertEquals(expected, actual, message);
     }
 
     /**
@@ -141,6 +212,28 @@ public final class UtilAssert
     public static void assertEquals(Object expected, Object actual)
     {
         Assertions.assertEquals(expected, actual);
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} are not equal. Fails if both are <code>null</code>.
+     * 
+     * @param expected The excepted integer.
+     * @param actual The actual integer.
+     */
+    public static void assertNotEquals(int expected, int actual)
+    {
+        Assertions.assertNotEquals(Integer.valueOf(expected), Integer.valueOf(actual));
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} are not equal. Fails if both are <code>null</code>.
+     * 
+     * @param expected The excepted object.
+     * @param actual The actual object.
+     */
+    public static void assertNotEquals(Object expected, Object actual)
+    {
+        Assertions.assertNotEquals(expected, actual);
     }
 
     /**
@@ -170,25 +263,15 @@ public final class UtilAssert
     }
 
     /**
-     * Asserts that {@code expected} and {@code actual} are not equal. Fails if both are <code>null</code>.
+     * Asserts that {@code expected} and {@code actual} boolean arrays are equal. If both are <code>null</code>, they
+     * are considered equal.
      * 
-     * @param expected The excepted object.
-     * @param actual The actual object.
+     * @param expected The excepted boolean array.
+     * @param actual The actual boolean array.
      */
-    public static void assertNotEquals(Object expected, Object actual)
+    public static void assertArrayEquals(boolean[] expected, boolean[] actual)
     {
-        Assertions.assertNotEquals(expected, actual);
-    }
-
-    /**
-     * Asserts that {@code expected} and {@code actual} are not equal. Fails if both are <code>null</code>.
-     * 
-     * @param expected The excepted object.
-     * @param actual The actual object.
-     */
-    public static void assertNotEquals(int expected, int actual)
-    {
-        Assertions.assertNotEquals(Integer.valueOf(expected), Integer.valueOf(actual));
+        Assertions.assertArrayEquals(expected, actual);
     }
 
     /**

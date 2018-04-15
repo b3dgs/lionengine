@@ -17,22 +17,23 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Engine}.
  */
 public final class EngineTest
 {
-    /** Test name. */
-    private static final String NAME = EngineTest.class.getName();
-
     /**
      * Reestablish the engine start state.
      */
-    @After
+    @AfterEach
     public void afterTest()
     {
         if (Engine.isStarted())
@@ -42,40 +43,44 @@ public final class EngineTest
     }
 
     /**
-     * Test mock.
+     * Test start.
      */
     @Test
-    public void testMock()
+    public void testStart()
     {
-        Assert.assertNotNull(new EngineMock(NAME, Version.DEFAULT));
+        Engine.start(new EngineMock("name", Version.DEFAULT));
+
+        assertThrows(() -> Engine.start(new EngineMock(null, Version.DEFAULT)), Check.ERROR_NULL);
+        assertThrows(() -> Engine.start(new EngineMock("name", null)), Check.ERROR_NULL);
     }
 
     /**
      * Test not started on get program name.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNotStartedGetProgramName()
     {
-        Assert.assertNull(Engine.getProgramName());
+        assertThrows(() -> Engine.getProgramName(), Engine.ERROR_STARTED_NOT);
     }
 
     /**
      * Test not started on get program version.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNotStartedGetProgramVersion()
     {
-        Assert.assertNull(Engine.getProgramVersion());
+        assertThrows(() -> Engine.getProgramVersion(), Engine.ERROR_STARTED_NOT);
     }
 
     /**
      * Test already started.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testAlreadyStarted()
     {
-        Engine.start(new EngineMock(NAME, Version.DEFAULT));
-        Engine.start(new EngineMock(NAME, Version.DEFAULT));
+        Engine.start(new EngineMock("name", Version.DEFAULT));
+
+        assertThrows(() -> Engine.start(new EngineMock("name", Version.DEFAULT)), Engine.ERROR_STARTED_ALREADY);
     }
 
     /**
@@ -94,11 +99,15 @@ public final class EngineTest
     @Test
     public void testStarted()
     {
-        Assert.assertFalse(Engine.isStarted());
-        Engine.start(new EngineMock(NAME, Version.DEFAULT));
-        Assert.assertTrue(Engine.isStarted());
+        assertFalse(Engine.isStarted());
+
+        Engine.start(new EngineMock("name", Version.DEFAULT));
+
+        assertTrue(Engine.isStarted());
+
         Engine.terminate();
-        Assert.assertFalse(Engine.isStarted());
+
+        assertFalse(Engine.isStarted());
     }
 
     /**
@@ -107,9 +116,9 @@ public final class EngineTest
     @Test
     public void testGetter()
     {
-        Engine.start(new EngineMock(NAME, Version.create(1, 2, 3)));
-        Assert.assertEquals(NAME, Engine.getProgramName());
-        Assert.assertEquals("Version [1.2.3]", Engine.getProgramVersion().toString());
-        Engine.terminate();
+        Engine.start(new EngineMock("name", Version.create(1, 2, 3)));
+
+        assertEquals("name", Engine.getProgramName());
+        assertEquals(Version.create(1, 2, 3), Engine.getProgramVersion());
     }
 }

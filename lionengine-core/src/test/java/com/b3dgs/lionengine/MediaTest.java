@@ -17,16 +17,22 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Media}.
@@ -41,7 +47,7 @@ public final class MediaTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepareTest()
     {
         oldDir = Medias.getResourcesDirectory();
@@ -51,7 +57,7 @@ public final class MediaTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void cleanTest()
     {
         Medias.setResourcesDirectory(oldDir);
@@ -66,7 +72,7 @@ public final class MediaTest
     {
         final String path = "path";
 
-        Assert.assertEquals(path, Medias.create(path).getPath());
+        assertEquals(path, Medias.create(path).getPath());
     }
 
     /**
@@ -78,7 +84,7 @@ public final class MediaTest
         Medias.setLoadFromJar(MediaTest.class);
         final String path = "image.png";
 
-        Assert.assertEquals(new File(MediaTest.class.getResource(path).getFile()), Medias.create(path).getFile());
+        assertEquals(new File(MediaTest.class.getResource(path).getFile()), Medias.create(path).getFile());
     }
 
     /**
@@ -89,7 +95,7 @@ public final class MediaTest
     {
         final String path = "path";
 
-        Assert.assertEquals(Constant.EMPTY_STRING, Medias.create(path).getParentPath());
+        assertEquals(Constant.EMPTY_STRING, Medias.create(path).getParentPath());
     }
 
     /**
@@ -103,31 +109,25 @@ public final class MediaTest
         Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create("image.png");
 
-        Assert.assertTrue(media.exists());
+        assertTrue(media.exists());
 
         try (InputStream input = media.getInputStream())
         {
-            Assert.assertNotNull(input);
+            assertNotNull(input);
         }
     }
 
     /**
      * Test input stream with no existing file.
-     * 
-     * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testInputStreamNotExists() throws IOException
+    @Test
+    public void testInputStreamNotExists()
     {
         Medias.setResourcesDirectory(null);
         final Media media = Medias.create("void");
 
-        Assert.assertFalse(media.exists());
-
-        try (InputStream input = media.getInputStream())
-        {
-            Assert.assertNotNull(input);
-        }
+        assertFalse(media.exists());
+        assertThrows(() -> media.getInputStream(), "[void] " + MediaDefault.ERROR_OPEN_MEDIA);
     }
 
     /**
@@ -147,12 +147,12 @@ public final class MediaTest
 
         try (InputStream input = media.getInputStream())
         {
-            Assert.assertNotNull(input);
+            assertNotNull(input);
         }
         finally
         {
-            Assert.assertTrue(file.delete());
-            Assert.assertTrue(file2.delete());
+            assertTrue(file.delete());
+            assertTrue(file2.delete());
 
             UtilFolder.deleteDirectory(dir);
         }
@@ -171,13 +171,13 @@ public final class MediaTest
 
         try (OutputStream output = media.getOutputStream())
         {
-            Assert.assertNotNull(output);
+            assertNotNull(output);
         }
         finally
         {
-            Assert.assertTrue(media.getFile().exists());
-            Assert.assertTrue(media.getFile().delete());
-            Assert.assertFalse(media.getFile().exists());
+            assertTrue(media.getFile().exists());
+            assertTrue(media.getFile().delete());
+            assertFalse(media.getFile().exists());
         }
     }
 
@@ -191,19 +191,19 @@ public final class MediaTest
     {
         Medias.setLoadFromJar(MediasTest.class);
 
-        Assert.assertFalse(Medias.create("void").exists());
-        Assert.assertTrue(Medias.create("image.png").exists());
+        assertFalse(Medias.create("void").exists());
+        assertTrue(Medias.create("image.png").exists());
 
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
 
         final File file = File.createTempFile("test", ".txt", new File(Medias.getResourcesDirectory()));
         final Media media = Medias.get(file);
 
-        Assert.assertTrue(file.exists());
-        Assert.assertTrue(media.exists());
+        assertTrue(file.exists());
+        assertTrue(media.exists());
 
-        Assert.assertTrue(file.delete());
-        Assert.assertFalse(media.exists());
+        assertTrue(file.delete());
+        assertFalse(media.exists());
     }
 
     /**
@@ -218,21 +218,21 @@ public final class MediaTest
         final File folder = new File(tempFolder, MediasTest.class.getClass().getSimpleName());
         folder.mkdirs();
 
-        Assert.assertTrue(folder.delete());
-        Assert.assertTrue(folder.createNewFile());
+        assertTrue(folder.delete());
+        assertTrue(folder.createNewFile());
 
         try
         {
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             final String path = UtilReflection.getMethod(MediaDefault.class, "getTempDir", MediasTest.class.getClass());
 
-            Assert.assertEquals(folder.getPath(), path);
+            assertEquals(folder.getPath(), path);
 
             Verbose.info("****************************************************************************************");
         }
         finally
         {
-            Assert.assertTrue(folder.delete());
+            assertTrue(folder.delete());
         }
     }
 
@@ -246,10 +246,10 @@ public final class MediaTest
         final Media media1 = Medias.create("media");
         final Media media2 = Medias.create("media2");
 
-        Assert.assertEquals(media.hashCode(), media.hashCode());
-        Assert.assertEquals(media.hashCode(), media1.hashCode());
-        Assert.assertNotEquals(media.hashCode(), media2.hashCode());
-        Assert.assertNotEquals(media.hashCode(), new Object().hashCode());
+        assertEquals(media.hashCode(), media.hashCode());
+        assertEquals(media.hashCode(), media1.hashCode());
+        assertNotEquals(media.hashCode(), media2.hashCode());
+        assertNotEquals(media.hashCode(), new Object().hashCode());
     }
 
     /**
@@ -262,11 +262,11 @@ public final class MediaTest
         final Media media1 = Medias.create("media");
         final Media media2 = Medias.create("media2");
 
-        Assert.assertEquals(media, media);
-        Assert.assertEquals(media, media1);
-        Assert.assertNotEquals(media, media2);
-        Assert.assertNotEquals(media, null);
-        Assert.assertNotEquals(media, new Object());
+        assertEquals(media, media);
+        assertEquals(media, media1);
+        assertNotEquals(media, media2);
+        assertNotEquals(media, null);
+        assertNotEquals(media, new Object());
     }
 
     /**
@@ -277,6 +277,6 @@ public final class MediaTest
     {
         final Media media = Medias.create("test", "media.ext");
 
-        Assert.assertEquals("media.ext", media.getName());
+        assertEquals("media.ext", media.getName());
     }
 }

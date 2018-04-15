@@ -34,7 +34,7 @@ final class SecurityManagerMock extends SecurityManager
      * 
      * @param allow The allow state.
      */
-    public SecurityManagerMock(boolean allow)
+    SecurityManagerMock(boolean allow)
     {
         this.allow = allow;
     }

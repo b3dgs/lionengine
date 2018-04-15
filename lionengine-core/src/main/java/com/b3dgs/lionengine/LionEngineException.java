@@ -25,9 +25,9 @@ public final class LionEngineException extends RuntimeException
     /** Error private constructor. */
     public static final String ERROR_PRIVATE_CONSTRUCTOR = "Private constructor !";
     /** Error unknown enum type. */
-    private static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
+    static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
     /** Null enum. */
-    private static final String NULL_ENUM = "null";
+    static final String NULL_ENUM = "null";
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
 

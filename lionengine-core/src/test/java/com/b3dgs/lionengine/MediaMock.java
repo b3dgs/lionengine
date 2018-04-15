@@ -82,5 +82,4 @@ public final class MediaMock implements Media
     {
         return false;
     }
-
 }

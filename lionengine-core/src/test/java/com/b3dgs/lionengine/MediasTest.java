@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,10 +30,9 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Medias}.
@@ -42,7 +47,7 @@ public final class MediasTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         oldDir = Medias.getResourcesDirectory();
@@ -53,7 +58,7 @@ public final class MediasTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void cleanUp()
     {
         Medias.setResourcesDirectory(oldDir);
@@ -62,13 +67,11 @@ public final class MediasTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(Medias.class);
+        assertPrivateConstructor(Medias.class);
     }
 
     /**
@@ -79,7 +82,7 @@ public final class MediasTest
     {
         Medias.setResourcesDirectory("rsc");
 
-        Assert.assertEquals("null", Medias.create((String) null).getPath());
+        assertEquals("null", Medias.create((String) null).getPath());
     }
 
     /**
@@ -90,19 +93,19 @@ public final class MediasTest
     {
         Medias.setResourcesDirectory("rsc");
 
-        Assert.assertEquals("rsc" + Medias.getSeparator(), Medias.getResourcesDirectory());
+        assertEquals("rsc" + Medias.getSeparator(), Medias.getResourcesDirectory());
 
         final Media media = Medias.create("test.txt");
 
-        Assert.assertEquals("", media.getParentPath());
-        Assert.assertEquals("test.txt", media.getPath());
-        Assert.assertEquals("rsc" + File.separator + "test.txt", media.getFile().getPath());
+        assertEquals("", media.getParentPath());
+        assertEquals("test.txt", media.getPath());
+        assertEquals("rsc" + File.separator + "test.txt", media.getFile().getPath());
 
         final Media media2 = Medias.create("test", "toto.txt");
 
-        Assert.assertEquals("test", media2.getParentPath());
-        Assert.assertEquals("test" + File.separator + "toto.txt", media2.getPath());
-        Assert.assertEquals("rsc" + File.separator + "test" + File.separator + "toto.txt", media2.getFile().getPath());
+        assertEquals("test", media2.getParentPath());
+        assertEquals("test" + File.separator + "toto.txt", media2.getPath());
+        assertEquals("rsc" + File.separator + "test" + File.separator + "toto.txt", media2.getFile().getPath());
     }
 
     /**
@@ -113,19 +116,19 @@ public final class MediasTest
     {
         Medias.setLoadFromJar(MediasTest.class);
 
-        Assert.assertEquals(MediasTest.class, Medias.getResourcesLoader().get());
+        assertEquals(MediasTest.class, Medias.getResourcesLoader().get());
 
         final Media media = Medias.create("test.txt");
 
-        Assert.assertEquals("", media.getParentPath());
-        Assert.assertEquals("test.txt", media.getPath());
-        Assert.assertTrue(media.getFile().getPath().endsWith("test.txt"));
+        assertEquals("", media.getParentPath());
+        assertEquals("test.txt", media.getPath());
+        assertTrue(media.getFile().getPath().endsWith("test.txt"));
 
         final Media media2 = Medias.create("test", "toto.txt");
 
-        Assert.assertEquals("test", media2.getParentPath());
-        Assert.assertEquals("test/toto.txt", media2.getPath());
-        Assert.assertTrue(media2.getFile().getPath().endsWith("test" + File.separator + "toto.txt"));
+        assertEquals("test", media2.getParentPath());
+        assertEquals("test/toto.txt", media2.getPath());
+        assertTrue(media2.getFile().getPath().endsWith("test" + File.separator + "toto.txt"));
     }
 
     /**
@@ -138,8 +141,8 @@ public final class MediasTest
         final Media folder = Medias.create("folder", "foo");
         final Media file = Medias.create("folder", "file.txt");
 
-        Assert.assertEquals(Medias.create("folder", "foo_suffix"), Medias.getWithSuffix(folder, "suffix"));
-        Assert.assertEquals(Medias.create("folder", "file_suffix.txt"), Medias.getWithSuffix(file, "suffix"));
+        assertEquals(Medias.create("folder", "foo_suffix"), Medias.getWithSuffix(folder, "suffix"));
+        assertEquals(Medias.create("folder", "file_suffix.txt"), Medias.getWithSuffix(file, "suffix"));
     }
 
     /**
@@ -152,8 +155,8 @@ public final class MediasTest
         final File file = new File("rsc" + File.separator + "test.txt");
         final Media media = Medias.get(file);
 
-        Assert.assertEquals(file, media.getFile());
-        Assert.assertEquals("test.txt", media.getPath());
+        assertEquals(file, media.getFile());
+        assertEquals("test.txt", media.getPath());
     }
 
     /**
@@ -171,18 +174,18 @@ public final class MediasTest
         final int jarSeparatorIndex = jarPath.indexOf(prefix);
         final File jar = Medias.getJarResources();
 
-        Assert.assertEquals(new File(jarPath.substring(0, jarSeparatorIndex)), jar);
+        assertEquals(new File(jarPath.substring(0, jarSeparatorIndex)), jar);
     }
 
     /**
      * Test get JAR resources file without loader enabled.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetJarResourcesNoLoader()
     {
         Medias.setLoadFromJar(null);
 
-        Assert.assertNull(Medias.getJarResources());
+        assertThrows(() -> Medias.getJarResources(), Medias.JAR_LOADER_ERROR);
     }
 
     /**
@@ -200,18 +203,18 @@ public final class MediasTest
         final int jarSeparatorIndex = jarPath.indexOf(prefix);
         final String resourcesPrefix = Medias.getJarResourcesPrefix();
 
-        Assert.assertEquals(jarPath.substring(jarSeparatorIndex), resourcesPrefix);
+        assertEquals(jarPath.substring(jarSeparatorIndex), resourcesPrefix);
     }
 
     /**
      * Test get JAR resources prefix file without loader enabled.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetJarResourcesPrefixNoLoader()
     {
         Medias.setLoadFromJar(null);
 
-        Assert.assertNull(Medias.getJarResourcesPrefix());
+        assertThrows(() -> Medias.getJarResourcesPrefix(), Medias.JAR_LOADER_ERROR);
     }
 
     /**
@@ -223,7 +226,7 @@ public final class MediasTest
         Medias.setLoadFromJar(MediasTest.class);
         final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
 
-        Assert.assertEquals("image.png", medias.iterator().next().getPath());
+        assertEquals("image.png", medias.iterator().next().getPath());
     }
 
     /**
@@ -240,7 +243,7 @@ public final class MediasTest
         Medias.setResourcesDirectory(temp.toFile().getAbsolutePath());
         final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
 
-        Assert.assertEquals(file.toFile().getName(), medias.iterator().next().getPath());
+        assertEquals(file.toFile().getName(), medias.iterator().next().getPath());
 
         UtilFolder.deleteDirectory(temp.toFile());
     }
@@ -257,7 +260,7 @@ public final class MediasTest
                                                                21,
                                                                "png");
 
-        Assert.assertEquals("image.png", medias.iterator().next().getPath());
+        assertEquals("image.png", medias.iterator().next().getPath());
     }
 
     /**
@@ -268,7 +271,7 @@ public final class MediasTest
     {
         Medias.setLoadFromJar(MediasTest.class);
 
-        Assert.assertTrue(Medias.create("").getMedias().contains(Medias.create("image.png")));
+        assertTrue(Medias.create("").getMedias().contains(Medias.create("image.png")));
     }
 
     /**
@@ -279,16 +282,16 @@ public final class MediasTest
     {
         Medias.setResourcesDirectory(null);
 
-        Assert.assertFalse(Medias.create("").getMedias().isEmpty());
+        assertFalse(Medias.create("").getMedias().isEmpty());
     }
 
     /**
      * Test get medias on file
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetMediasOnFile()
     {
-        Assert.assertNull(Medias.create("image.png").getMedias());
+        assertThrows(() -> Medias.create("image.png").getMedias(), "[image.png] " + MediaDefault.ERROR_PATH_DIR);
     }
 
     /**
@@ -300,7 +303,7 @@ public final class MediasTest
         final String old = Medias.getSeparator();
         Medias.setSeparator("%");
 
-        Assert.assertEquals("%", Medias.getSeparator());
+        assertEquals("%", Medias.getSeparator());
 
         Medias.setSeparator(old);
     }
@@ -314,6 +317,6 @@ public final class MediasTest
         Medias.setResourcesDirectory("prefix");
         final Media media = Medias.create("path", "file.ext");
 
-        Assert.assertEquals("path" + Medias.getSeparator() + "file.ext", media.toString());
+        assertEquals("path" + Medias.getSeparator() + "file.ext", media.toString());
     }
 }

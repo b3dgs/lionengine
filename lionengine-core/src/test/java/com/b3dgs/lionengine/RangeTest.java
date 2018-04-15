@@ -17,8 +17,15 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Range}.
@@ -28,10 +35,10 @@ public final class RangeTest
     /**
      * Test constructor with invalid argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorWrongArguments()
     {
-        Assert.assertNotNull(new Range(1, 0));
+        assertThrows(() -> new Range(1, 0), Check.ERROR_ARGUMENT + 1 + Check.ERROR_INFERIOR + 0);
     }
 
     /**
@@ -42,8 +49,8 @@ public final class RangeTest
     {
         final Range range = new Range();
 
-        Assert.assertEquals(0, range.getMin());
-        Assert.assertEquals(0, range.getMax());
+        assertEquals(0, range.getMin());
+        assertEquals(0, range.getMax());
     }
 
     /**
@@ -54,8 +61,8 @@ public final class RangeTest
     {
         final Range range = new Range(1, 2);
 
-        Assert.assertEquals(1, range.getMin());
-        Assert.assertEquals(2, range.getMax());
+        assertEquals(1, range.getMin());
+        assertEquals(2, range.getMax());
     }
 
     /**
@@ -66,25 +73,25 @@ public final class RangeTest
     {
         final Range range = new Range(-1, 1);
 
-        Assert.assertTrue(range.includes(0));
-        Assert.assertTrue(range.includes(0.0));
-        Assert.assertTrue(range.includes(Double.MIN_NORMAL));
+        assertTrue(range.includes(0));
+        assertTrue(range.includes(0.0));
+        assertTrue(range.includes(Double.MIN_NORMAL));
 
-        Assert.assertTrue(range.includes(range.getMin()));
-        Assert.assertTrue(range.includes(range.getMax()));
-        Assert.assertTrue(range.includes(range.getMin() + 1));
-        Assert.assertTrue(range.includes(range.getMax() - 1));
+        assertTrue(range.includes(range.getMin()));
+        assertTrue(range.includes(range.getMax()));
+        assertTrue(range.includes(range.getMin() + 1));
+        assertTrue(range.includes(range.getMax() - 1));
 
-        Assert.assertFalse(range.includes(range.getMax() + 1));
-        Assert.assertFalse(range.includes(range.getMin() - 1));
+        assertFalse(range.includes(range.getMax() + 1));
+        assertFalse(range.includes(range.getMin() - 1));
 
-        Assert.assertTrue(range.includes((double) range.getMin()));
-        Assert.assertTrue(range.includes((double) range.getMax()));
-        Assert.assertTrue(range.includes(range.getMin() + 0.000000000000001));
-        Assert.assertTrue(range.includes(range.getMax() - 0.000000000000001));
+        assertTrue(range.includes((double) range.getMin()));
+        assertTrue(range.includes((double) range.getMax()));
+        assertTrue(range.includes(range.getMin() + 0.000000000000001));
+        assertTrue(range.includes(range.getMax() - 0.000000000000001));
 
-        Assert.assertFalse(range.includes(range.getMax() + 0.000000000000001));
-        Assert.assertFalse(range.includes(range.getMin() - 0.000000000000001));
+        assertFalse(range.includes(range.getMax() + 0.000000000000001));
+        assertFalse(range.includes(range.getMin() - 0.000000000000001));
     }
 
     /**
@@ -95,13 +102,13 @@ public final class RangeTest
     {
         final Range range = new Range(1, 2);
 
-        Assert.assertEquals(range, range);
-        Assert.assertEquals(range, new Range(1, 2));
+        assertEquals(range, range);
+        assertEquals(range, new Range(1, 2));
 
-        Assert.assertNotEquals(range, null);
-        Assert.assertNotEquals(range, new Object());
-        Assert.assertNotEquals(range, new Range(2, 2));
-        Assert.assertNotEquals(range, new Range(1, 1));
+        assertNotEquals(range, null);
+        assertNotEquals(range, new Object());
+        assertNotEquals(range, new Range(2, 2));
+        assertNotEquals(range, new Range(1, 1));
     }
 
     /**
@@ -110,13 +117,13 @@ public final class RangeTest
     @Test
     public void testHashCode()
     {
-        final int range = new Range(1, 2).hashCode();
+        final Range range = new Range(1, 2);
 
-        Assert.assertEquals(range, new Range(1, 2).hashCode());
+        assertHashEquals(range, new Range(1, 2));
 
-        Assert.assertNotEquals(range, new Object().hashCode());
-        Assert.assertNotEquals(range, new Range(2, 2).hashCode());
-        Assert.assertNotEquals(range, new Range(1, 1).hashCode());
+        assertHashNotEquals(range, new Object());
+        assertHashNotEquals(range, new Range(2, 2));
+        assertHashNotEquals(range, new Range(1, 1));
     }
 
     /**
@@ -125,6 +132,6 @@ public final class RangeTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("Range [min=1, max=2]", new Range(1, 2).toString());
+        assertEquals("Range [min=1, max=2]", new Range(1, 2).toString());
     }
 }
