@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Line}.
@@ -35,10 +37,10 @@ public final class LineTest
     {
         final Line line = new Line();
 
-        Assert.assertEquals(0.0, line.getX1(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, line.getY1(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, line.getX2(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, line.getY2(), UtilTests.PRECISION);
+        assertEquals(0.0, line.getX1());
+        assertEquals(0.0, line.getY1());
+        assertEquals(0.0, line.getX2());
+        assertEquals(0.0, line.getY2());
     }
 
     /**
@@ -49,10 +51,10 @@ public final class LineTest
     {
         final Line line = new Line(1.5, 2.5, 3.5, 4.5);
 
-        Assert.assertEquals(1.5, line.getX1(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, line.getY1(), UtilTests.PRECISION);
-        Assert.assertEquals(3.5, line.getX2(), UtilTests.PRECISION);
-        Assert.assertEquals(4.5, line.getY2(), UtilTests.PRECISION);
+        assertEquals(1.5, line.getX1());
+        assertEquals(2.5, line.getY1());
+        assertEquals(3.5, line.getX2());
+        assertEquals(4.5, line.getY2());
     }
 
     /**
@@ -64,10 +66,10 @@ public final class LineTest
         final Line line = new Line();
         line.set(1.5, 2.5, 3.5, 4.5);
 
-        Assert.assertEquals(1.5, line.getX1(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, line.getY1(), UtilTests.PRECISION);
-        Assert.assertEquals(3.5, line.getX2(), UtilTests.PRECISION);
-        Assert.assertEquals(4.5, line.getY2(), UtilTests.PRECISION);
+        assertEquals(1.5, line.getX1());
+        assertEquals(2.5, line.getY1());
+        assertEquals(3.5, line.getX2());
+        assertEquals(4.5, line.getY2());
     }
 
     /**
@@ -78,17 +80,17 @@ public final class LineTest
     {
         final Line coord = new Line();
 
-        Assert.assertEquals(coord, coord);
+        assertEquals(coord, coord);
 
-        Assert.assertEquals(new Line(), new Line());
-        Assert.assertEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 4.5));
+        assertEquals(new Line(), new Line());
+        assertEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 4.5));
 
-        Assert.assertNotEquals(new Line(), null);
-        Assert.assertNotEquals(new Line(), new Object());
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(2.5, 2.5, 3.5, 4.5));
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 1.5, 3.5, 4.5));
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 2.5, 4.5));
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 1.5));
+        assertNotEquals(new Line(), null);
+        assertNotEquals(new Line(), new Object());
+        assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(2.5, 2.5, 3.5, 4.5));
+        assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 1.5, 3.5, 4.5));
+        assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 2.5, 4.5));
+        assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 1.5));
     }
 
     /**
@@ -97,14 +99,14 @@ public final class LineTest
     @Test
     public void testHashCode()
     {
-        Assert.assertEquals(new Line().hashCode(), new Line().hashCode());
-        Assert.assertEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 3.5, 4.5).hashCode());
+        assertHashEquals(new Line(), new Line());
+        assertHashEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 4.5));
 
-        Assert.assertNotEquals(new Line().hashCode(), new Object().hashCode());
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(2.5, 2.5, 3.5, 4.5).hashCode());
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 1.5, 3.5, 4.5).hashCode());
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 2.5, 4.5).hashCode());
-        Assert.assertNotEquals(new Line(1.5, 2.5, 3.5, 4.5).hashCode(), new Line(1.5, 2.5, 3.5, 1.5).hashCode());
+        assertHashNotEquals(new Line(), new Object());
+        assertHashNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(2.5, 2.5, 3.5, 4.5));
+        assertHashNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 1.5, 3.5, 4.5));
+        assertHashNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 2.5, 4.5));
+        assertHashNotEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 1.5));
     }
 
     /**
@@ -113,6 +115,6 @@ public final class LineTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("Line [x1=1.5, y1=2.5, x2=3.5, y2=4.5]", new Line(1.5, 2.5, 3.5, 4.5).toString());
+        assertEquals("Line [x1=1.5, y1=2.5, x2=3.5, y2=4.5]", new Line(1.5, 2.5, 3.5, 4.5).toString());
     }
 }

@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Coord}.
@@ -35,8 +37,8 @@ public final class CoordTest
     {
         final Coord coord = new Coord();
 
-        Assert.assertEquals(0.0, coord.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, coord.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, coord.getX());
+        assertEquals(0.0, coord.getY());
     }
 
     /**
@@ -47,8 +49,8 @@ public final class CoordTest
     {
         final Coord coord = new Coord(1.5, 2.5);
 
-        Assert.assertEquals(1.5, coord.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, coord.getY(), UtilTests.PRECISION);
+        assertEquals(1.5, coord.getX());
+        assertEquals(2.5, coord.getY());
     }
 
     /**
@@ -60,8 +62,8 @@ public final class CoordTest
         final Coord coord = new Coord(1.5, 2.5);
         coord.translate(10.25, 20.25);
 
-        Assert.assertEquals(11.75, coord.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(22.75, coord.getY(), UtilTests.PRECISION);
+        assertEquals(11.75, coord.getX());
+        assertEquals(22.75, coord.getY());
     }
 
     /**
@@ -73,8 +75,8 @@ public final class CoordTest
         final Coord coord = new Coord();
         coord.set(10.25, 20.25);
 
-        Assert.assertEquals(10.25, coord.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(20.25, coord.getY(), UtilTests.PRECISION);
+        assertEquals(10.25, coord.getX());
+        assertEquals(20.25, coord.getY());
     }
 
     /**
@@ -86,8 +88,8 @@ public final class CoordTest
         final Coord coord = new Coord(1.5, 2.5);
         coord.setX(10.25);
 
-        Assert.assertEquals(10.25, coord.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, coord.getY(), UtilTests.PRECISION);
+        assertEquals(10.25, coord.getX());
+        assertEquals(2.5, coord.getY());
     }
 
     /**
@@ -99,8 +101,8 @@ public final class CoordTest
         final Coord coord = new Coord(1.5, 2.5);
         coord.setY(20.25);
 
-        Assert.assertEquals(1.5, coord.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(20.25, coord.getY(), UtilTests.PRECISION);
+        assertEquals(1.5, coord.getX());
+        assertEquals(20.25, coord.getY());
     }
 
     /**
@@ -111,16 +113,16 @@ public final class CoordTest
     {
         final Coord coord = new Coord();
 
-        Assert.assertEquals(coord, coord);
+        assertEquals(coord, coord);
 
-        Assert.assertEquals(new Coord(), new Coord());
-        Assert.assertEquals(new Coord(1.5, 2.5), new Coord(1.5, 2.5));
+        assertEquals(new Coord(), new Coord());
+        assertEquals(new Coord(1.5, 2.5), new Coord(1.5, 2.5));
 
-        Assert.assertNotEquals(new Coord(), null);
-        Assert.assertNotEquals(new Coord(), new Object());
-        Assert.assertNotEquals(new Coord(1.0, 0.0), new Coord(1.0, 1.0));
-        Assert.assertNotEquals(new Coord(0.0, 1.0), new Coord(1.0, 0.0));
-        Assert.assertNotEquals(new Coord(), new Coord(1.0, 1.0));
+        assertNotEquals(new Coord(), null);
+        assertNotEquals(new Coord(), new Object());
+        assertNotEquals(new Coord(1.0, 0.0), new Coord(1.0, 1.0));
+        assertNotEquals(new Coord(0.0, 1.0), new Coord(1.0, 0.0));
+        assertNotEquals(new Coord(), new Coord(1.0, 1.0));
     }
 
     /**
@@ -129,13 +131,13 @@ public final class CoordTest
     @Test
     public void testHashCode()
     {
-        Assert.assertEquals(new Coord().hashCode(), new Coord().hashCode());
-        Assert.assertEquals(new Coord(1.5, 2.5).hashCode(), new Coord(1.5, 2.5).hashCode());
+        assertHashEquals(new Coord(), new Coord());
+        assertHashEquals(new Coord(1.5, 2.5), new Coord(1.5, 2.5));
 
-        Assert.assertNotEquals(new Coord().hashCode(), new Object().hashCode());
-        Assert.assertNotEquals(new Coord(1.0, 0.0).hashCode(), new Coord(1.0, 1.0).hashCode());
-        Assert.assertNotEquals(new Coord(0.0, 1.0).hashCode(), new Coord(1.0, 0.0).hashCode());
-        Assert.assertNotEquals(new Coord().hashCode(), new Coord(1.0, 1.0).hashCode());
+        assertHashNotEquals(new Coord(), new Object());
+        assertHashNotEquals(new Coord(1.0, 0.0), new Coord(1.0, 1.0));
+        assertHashNotEquals(new Coord(0.0, 1.0), new Coord(1.0, 0.0));
+        assertHashNotEquals(new Coord(), new Coord(1.0, 1.0));
     }
 
     /**
@@ -144,6 +146,6 @@ public final class CoordTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("Coord [x=1.5, y=2.5]", new Coord(1.5, 2.5).toString());
+        assertEquals("Coord [x=1.5, y=2.5]", new Coord(1.5, 2.5).toString());
     }
 }

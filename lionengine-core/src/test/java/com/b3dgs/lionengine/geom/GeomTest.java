@@ -17,12 +17,18 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link Geom}.
@@ -31,13 +37,11 @@ public final class GeomTest
 {
     /**
      * Test geom class.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testClass() throws Exception
+    @Test
+    public void testClass()
     {
-        UtilTests.testPrivateConstructor(Geom.class);
+        assertPrivateConstructor(Geom.class);
     }
 
     /**
@@ -46,12 +50,11 @@ public final class GeomTest
     @Test
     public void testNoIntersection()
     {
-        Assert.assertFalse(Geom.intersection(new Line(), new Line()).isPresent());
-        Assert.assertFalse(Geom.intersection(new Line(0.0, 0.0, 2.0, 2.0), new Line(2.0, 2.0, 4.0, 4.0)).isPresent());
-        Assert.assertFalse(Geom.intersection(new Line(1.0, 2.0, 3.0, 4.0), new Line(-1.0, -2.0, -3.0, -4.0))
-                               .isPresent());
-        Assert.assertFalse(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 1.99, 4.0, 1.99)).isPresent());
-        Assert.assertFalse(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 2.01, 4.0, 2.01)).isPresent());
+        assertFalse(Geom.intersection(new Line(), new Line()).isPresent());
+        assertFalse(Geom.intersection(new Line(0.0, 0.0, 2.0, 2.0), new Line(2.0, 2.0, 4.0, 4.0)).isPresent());
+        assertFalse(Geom.intersection(new Line(1.0, 2.0, 3.0, 4.0), new Line(-1.0, -2.0, -3.0, -4.0)).isPresent());
+        assertFalse(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 1.99, 4.0, 1.99)).isPresent());
+        assertFalse(Geom.intersection(new Line(0.0, 2.0, 4.0, 2.0), new Line(0.0, 2.01, 4.0, 2.01)).isPresent());
     }
 
     /**
@@ -60,28 +63,28 @@ public final class GeomTest
     @Test
     public void testIntersection()
     {
-        Assert.assertEquals(new Coord(1.0, 2.0),
-                            Geom.intersection(new Line(0.0, 2.0, 2.0, 2.0), new Line(1.0, 0.0, 1.0, 4.0)).get());
-        Assert.assertEquals(new Coord(1.0, 2.0),
-                            Geom.intersection(new Line(0.0, 4.0, 2.0, 0.0), new Line(0.0, 0.0, 2.0, 4.0)).get());
+        assertEquals(new Coord(1.0, 2.0),
+                     Geom.intersection(new Line(0.0, 2.0, 2.0, 2.0), new Line(1.0, 0.0, 1.0, 4.0)).get());
+        assertEquals(new Coord(1.0, 2.0),
+                     Geom.intersection(new Line(0.0, 4.0, 2.0, 0.0), new Line(0.0, 0.0, 2.0, 4.0)).get());
     }
 
     /**
      * Test intersection function with null argument 1.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testIntersectionNullArgument1()
     {
-        Assert.assertFalse(Geom.intersection(null, new Line()).isPresent());
+        assertThrows(() -> Geom.intersection(null, new Line()).isPresent(), "Unexpected null argument !");
     }
 
     /**
      * Test intersection function with null argument 2.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testIntersectionNullArgument2()
     {
-        Assert.assertFalse(Geom.intersection(new Line(), null).isPresent());
+        assertThrows(() -> Geom.intersection(new Line(), null).isPresent(), "Unexpected null argument !");
     }
 
     /**
@@ -92,8 +95,8 @@ public final class GeomTest
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
-        Assert.assertEquals(1.5, localizable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, localizable.getY(), UtilTests.PRECISION);
+        assertEquals(1.5, localizable.getX());
+        assertEquals(2.5, localizable.getY());
     }
 
     /**
@@ -104,18 +107,18 @@ public final class GeomTest
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
-        Assert.assertTrue(Geom.same(localizable, localizable));
-        Assert.assertTrue(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
-        Assert.assertTrue(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
-        Assert.assertTrue(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
+        assertTrue(Geom.same(localizable, localizable));
+        assertTrue(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
+        assertTrue(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
+        assertTrue(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
 
         final Coord coord = new Coord(1.5, 2.5);
 
-        Assert.assertTrue(Geom.same(coord, coord));
-        Assert.assertTrue(Geom.same(coord, localizable));
-        Assert.assertTrue(Geom.same(coord, new Coord(1.5, 2.5)));
-        Assert.assertTrue(Geom.same(new Coord(1.5, 2.5), coord));
-        Assert.assertTrue(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
+        assertTrue(Geom.same(coord, coord));
+        assertTrue(Geom.same(coord, localizable));
+        assertTrue(Geom.same(coord, new Coord(1.5, 2.5)));
+        assertTrue(Geom.same(new Coord(1.5, 2.5), coord));
+        assertTrue(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
     }
 
     /**
@@ -126,17 +129,17 @@ public final class GeomTest
     {
         final Localizable localizable = Geom.createLocalizable(2.5, 3.5);
 
-        Assert.assertFalse(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(2.5, 3.5)));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(1.5, 1.5), Geom.createLocalizable(1.5, 2.5)));
-        Assert.assertFalse(Geom.same(Geom.createLocalizable(3.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
+        assertFalse(Geom.same(localizable, Geom.createLocalizable(1.5, 2.5)));
+        assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), localizable));
+        assertFalse(Geom.same(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(2.5, 3.5)));
+        assertFalse(Geom.same(Geom.createLocalizable(1.5, 1.5), Geom.createLocalizable(1.5, 2.5)));
+        assertFalse(Geom.same(Geom.createLocalizable(3.5, 2.5), Geom.createLocalizable(1.5, 2.5)));
 
         final Coord coord = new Coord(2.5, 3.5);
 
-        Assert.assertFalse(Geom.same(coord, new Coord(1.5, 2.5)));
-        Assert.assertFalse(Geom.same(new Coord(1.5, 2.5), coord));
-        Assert.assertFalse(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
+        assertFalse(Geom.same(coord, new Coord(1.5, 2.5)));
+        assertFalse(Geom.same(new Coord(1.5, 2.5), coord));
+        assertFalse(Geom.same(coord, Geom.createLocalizable(1.5, 2.5)));
     }
 
     /**
@@ -147,15 +150,15 @@ public final class GeomTest
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
-        Assert.assertNotEquals(localizable, null);
-        Assert.assertNotEquals(localizable, new Object());
-        Assert.assertNotEquals(localizable, Geom.createLocalizable(2.5, 2.5));
-        Assert.assertNotEquals(localizable, Geom.createLocalizable(1.5, 1.5));
+        assertNotEquals(localizable, null);
+        assertNotEquals(localizable, new Object());
+        assertNotEquals(localizable, Geom.createLocalizable(2.5, 2.5));
+        assertNotEquals(localizable, Geom.createLocalizable(1.5, 1.5));
 
-        Assert.assertEquals(localizable, localizable);
-        Assert.assertEquals(localizable, Geom.createLocalizable(1.5, 2.5));
-        Assert.assertEquals(Geom.createLocalizable(1.5, 2.5), localizable);
-        Assert.assertEquals(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(1.5, 2.5));
+        assertEquals(localizable, localizable);
+        assertEquals(localizable, Geom.createLocalizable(1.5, 2.5));
+        assertEquals(Geom.createLocalizable(1.5, 2.5), localizable);
+        assertEquals(Geom.createLocalizable(1.5, 2.5), Geom.createLocalizable(1.5, 2.5));
     }
 
     /**
@@ -164,13 +167,13 @@ public final class GeomTest
     @Test
     public void testHashCodeLocalizable()
     {
-        final int localizable = Geom.createLocalizable(1.5, 2.5).hashCode();
+        final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
-        Assert.assertNotEquals(localizable, new Object().hashCode());
-        Assert.assertNotEquals(localizable, Geom.createLocalizable(2.5, 2.5).hashCode());
-        Assert.assertNotEquals(localizable, Geom.createLocalizable(1.5, 1.5).hashCode());
+        assertHashNotEquals(localizable, new Object());
+        assertHashNotEquals(localizable, Geom.createLocalizable(2.5, 2.5));
+        assertHashNotEquals(localizable, Geom.createLocalizable(1.5, 1.5));
 
-        Assert.assertEquals(localizable, Geom.createLocalizable(1.5, 2.5).hashCode());
+        assertHashEquals(localizable, Geom.createLocalizable(1.5, 2.5));
     }
 
     /**
@@ -179,7 +182,7 @@ public final class GeomTest
     @Test
     public void testToStringLocalizable()
     {
-        Assert.assertEquals("LocalizableImpl [x=1.5, y=2.5]", Geom.createLocalizable(1.5, 2.5).toString());
+        assertEquals("LocalizableImpl [x=1.5, y=2.5]", Geom.createLocalizable(1.5, 2.5).toString());
     }
 
     /**
@@ -190,12 +193,12 @@ public final class GeomTest
     {
         final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
-        Assert.assertEquals(1.5, area.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, area.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(3.5, area.getWidthReal(), UtilTests.PRECISION);
-        Assert.assertEquals(4.5, area.getHeightReal(), UtilTests.PRECISION);
-        Assert.assertEquals(3, area.getWidth());
-        Assert.assertEquals(4, area.getHeight());
+        assertEquals(1.5, area.getX());
+        assertEquals(2.5, area.getY());
+        assertEquals(3.5, area.getWidthReal());
+        assertEquals(4.5, area.getHeightReal());
+        assertEquals(3, area.getWidth());
+        assertEquals(4, area.getHeight());
     }
 
     /**
@@ -210,22 +213,22 @@ public final class GeomTest
         final Area area4 = Geom.createArea(1.0, 4.0, 5.0, 5.0);
         final Area area5 = Geom.createArea(6.0, 6.0, 5.0, 5.0);
 
-        Assert.assertFalse(area1.intersects(null));
+        assertFalse(area1.intersects(null));
 
-        Assert.assertTrue(area2.intersects(area1));
-        Assert.assertTrue(area2.intersects(area3));
-        Assert.assertTrue(area2.intersects(area4));
-        Assert.assertFalse(area2.intersects(area5));
+        assertTrue(area2.intersects(area1));
+        assertTrue(area2.intersects(area3));
+        assertTrue(area2.intersects(area4));
+        assertFalse(area2.intersects(area5));
 
-        Assert.assertTrue(area3.intersects(area1));
-        Assert.assertTrue(area3.intersects(area2));
-        Assert.assertTrue(area3.intersects(area4));
-        Assert.assertFalse(area3.intersects(area5));
+        assertTrue(area3.intersects(area1));
+        assertTrue(area3.intersects(area2));
+        assertTrue(area3.intersects(area4));
+        assertFalse(area3.intersects(area5));
 
-        Assert.assertTrue(area5.intersects(area1));
-        Assert.assertFalse(area5.intersects(area2));
-        Assert.assertFalse(area5.intersects(area3));
-        Assert.assertFalse(area5.intersects(area4));
+        assertTrue(area5.intersects(area1));
+        assertFalse(area5.intersects(area2));
+        assertFalse(area5.intersects(area3));
+        assertFalse(area5.intersects(area4));
     }
 
     /**
@@ -240,28 +243,28 @@ public final class GeomTest
         final Area area4 = Geom.createArea(1.0, 4.0, 5.0, 5.0);
         final Area area5 = Geom.createArea(6.0, 6.0, 5.0, 5.0);
 
-        Assert.assertFalse(area1.contains(null));
+        assertFalse(area1.contains(null));
 
-        Assert.assertTrue(area1.contains(area2));
+        assertTrue(area1.contains(area2));
 
-        Assert.assertFalse(area2.contains(area1));
-        Assert.assertFalse(area2.contains(area3));
-        Assert.assertFalse(area2.contains(area4));
-        Assert.assertFalse(area2.contains(area5));
+        assertFalse(area2.contains(area1));
+        assertFalse(area2.contains(area3));
+        assertFalse(area2.contains(area4));
+        assertFalse(area2.contains(area5));
 
-        Assert.assertFalse(area4.contains(area3));
-        Assert.assertFalse(area4.contains(area2));
-        Assert.assertTrue(area4.contains(area4));
-        Assert.assertFalse(area4.contains(area5));
+        assertFalse(area4.contains(area3));
+        assertFalse(area4.contains(area2));
+        assertTrue(area4.contains(area4));
+        assertFalse(area4.contains(area5));
 
-        Assert.assertTrue(area1.contains(2, 3));
+        assertTrue(area1.contains(2, 3));
 
-        Assert.assertFalse(area1.contains(-2, -3));
-        Assert.assertFalse(area1.contains(-1, 11));
-        Assert.assertFalse(area1.contains(0, 11));
-        Assert.assertFalse(area1.contains(-1, 10));
-        Assert.assertFalse(area1.contains(11, 12));
-        Assert.assertFalse(area1.contains(11, -3));
+        assertFalse(area1.contains(-2, -3));
+        assertFalse(area1.contains(-1, 11));
+        assertFalse(area1.contains(0, 11));
+        assertFalse(area1.contains(-1, 10));
+        assertFalse(area1.contains(11, 12));
+        assertFalse(area1.contains(11, -3));
     }
 
     /**
@@ -272,18 +275,18 @@ public final class GeomTest
     {
         final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
-        Assert.assertEquals(area, area);
-        Assert.assertEquals(area, Geom.createArea(1.5, 2.5, 3.5, 4.5));
-        Assert.assertEquals(Geom.createArea(1.5, 2.5, 3.5, 4.5), area);
-        Assert.assertEquals(Geom.createArea(1.5, 2.5, 3.5, 4.5), Geom.createArea(1.5, 2.5, 3.5, 4.5));
+        assertEquals(area, area);
+        assertEquals(area, Geom.createArea(1.5, 2.5, 3.5, 4.5));
+        assertEquals(Geom.createArea(1.5, 2.5, 3.5, 4.5), area);
+        assertEquals(Geom.createArea(1.5, 2.5, 3.5, 4.5), Geom.createArea(1.5, 2.5, 3.5, 4.5));
 
-        Assert.assertNotEquals(area, null);
-        Assert.assertNotEquals(area, new Object());
-        Assert.assertNotEquals(area, Geom.createArea(2.5, 2.5, 3.5, 4.5));
-        Assert.assertNotEquals(area, Geom.createArea(1.5, 1.5, 3.5, 4.5));
-        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 4.5, 4.5));
-        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 3.5, 3.5));
-        Assert.assertNotEquals(area, Geom.createArea(2.5, 1.5, 4.5, 3.5));
+        assertNotEquals(area, null);
+        assertNotEquals(area, new Object());
+        assertNotEquals(area, Geom.createArea(2.5, 2.5, 3.5, 4.5));
+        assertNotEquals(area, Geom.createArea(1.5, 1.5, 3.5, 4.5));
+        assertNotEquals(area, Geom.createArea(1.5, 2.5, 4.5, 4.5));
+        assertNotEquals(area, Geom.createArea(1.5, 2.5, 3.5, 3.5));
+        assertNotEquals(area, Geom.createArea(2.5, 1.5, 4.5, 3.5));
     }
 
     /**
@@ -292,16 +295,16 @@ public final class GeomTest
     @Test
     public void testHashCodeArea()
     {
-        final int area = Geom.createArea(1.5, 2.5, 3.5, 4.5).hashCode();
+        final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
-        Assert.assertEquals(area, Geom.createArea(1.5, 2.5, 3.5, 4.5).hashCode());
+        assertHashEquals(area, Geom.createArea(1.5, 2.5, 3.5, 4.5));
 
-        Assert.assertNotEquals(area, new Object().hashCode());
-        Assert.assertNotEquals(area, Geom.createArea(2.5, 2.5, 3.5, 4.5).hashCode());
-        Assert.assertNotEquals(area, Geom.createArea(1.5, 1.5, 3.5, 4.5).hashCode());
-        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 4.5, 4.5).hashCode());
-        Assert.assertNotEquals(area, Geom.createArea(1.5, 2.5, 3.5, 3.5).hashCode());
-        Assert.assertNotEquals(area, Geom.createArea(2.5, 1.5, 4.5, 3.5).hashCode());
+        assertHashNotEquals(area, new Object());
+        assertHashNotEquals(area, Geom.createArea(2.5, 2.5, 3.5, 4.5));
+        assertHashNotEquals(area, Geom.createArea(1.5, 1.5, 3.5, 4.5));
+        assertHashNotEquals(area, Geom.createArea(1.5, 2.5, 4.5, 4.5));
+        assertHashNotEquals(area, Geom.createArea(1.5, 2.5, 3.5, 3.5));
+        assertHashNotEquals(area, Geom.createArea(2.5, 1.5, 4.5, 3.5));
     }
 
     /**
@@ -310,7 +313,6 @@ public final class GeomTest
     @Test
     public void testToStringArea()
     {
-        Assert.assertEquals("AreaImpl [x=1.5, y=2.5, width=3.5, height=4.5]",
-                            Geom.createArea(1.5, 2.5, 3.5, 4.5).toString());
+        assertEquals("AreaImpl [x=1.5, y=2.5, width=3.5, height=4.5]", Geom.createArea(1.5, 2.5, 3.5, 4.5).toString());
     }
 }

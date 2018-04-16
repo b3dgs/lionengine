@@ -61,6 +61,18 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code executable} throws a {@link LionEngineException}.
+     * 
+     * @param type The exception type.
+     * @param executable The executable to test.
+     * @param expected The expected exception message.
+     */
+    public static void assertThrows(Class<? extends Throwable> type, Executable executable, String expected)
+    {
+        Assertions.assertEquals(expected, Assertions.assertThrows(type, executable).getMessage());
+    }
+
+    /**
      * Asserts that {@code executable} throws a {@link java.io.IOException}.
      * 
      * @param executable The executable to test.
@@ -176,6 +188,17 @@ public final class UtilAssert
      * @param actual The actual integer.
      */
     public static void assertEquals(int expected, int actual)
+    {
+        Assertions.assertEquals(expected, actual);
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} are equal.
+     * 
+     * @param expected The excepted float.
+     * @param actual The actual float.
+     */
+    public static void assertEquals(float expected, float actual)
     {
         Assertions.assertEquals(expected, actual);
     }
