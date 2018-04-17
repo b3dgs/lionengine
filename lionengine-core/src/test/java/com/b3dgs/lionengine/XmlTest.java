@@ -28,6 +28,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
@@ -69,6 +70,7 @@ public final class XmlTest
     @BeforeAll
     public static void prepare()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(XmlTest.class);
     }
 
@@ -123,8 +125,7 @@ public final class XmlTest
     public void testWriteRead() throws IOException
     {
         Medias.setLoadFromJar(null);
-        final File file = File.createTempFile("test", "xml");
-        file.deleteOnExit();
+        final File file = Files.createTempFile("test", "xml").toFile();
         fileXml = Medias.create(file.getAbsolutePath());
 
         testWriteXml();
@@ -133,6 +134,8 @@ public final class XmlTest
         Medias.setLoadFromJar(XmlTest.class);
         testWrongReadXml();
         testWrongWriteXml();
+
+        UtilFile.deleteFile(file);
     }
 
     /**
@@ -464,10 +467,7 @@ public final class XmlTest
         assertThrows(() -> new Xml("child").save(Medias.create(Constant.EMPTY_STRING)),
                      "[] " + MediaDefault.ERROR_OPEN_MEDIA);
 
-        final File file = File.createTempFile("foo", null);
-        file.deleteOnExit();
-
-        file.mkdir();
+        final File file = Files.createTempDirectory("foo").toFile();
         assertThrows(() -> new Xml("child").save(Medias.create(file.getPath())),
                      "[" + file + "] " + MediaDefault.ERROR_OPEN_MEDIA);
 
