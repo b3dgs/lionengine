@@ -39,7 +39,7 @@ final class MediaDefault implements Media
     /** Invalid path directory. */
     static final String ERROR_PATH_DIR = "Invalid directory: ";
     /** Error open media. */
-    static final String ERROR_OPEN_MEDIA = "Cannot open the media";
+    static final String ERROR_OPEN_MEDIA = "Cannot open the media !";
     /** Temp folder property. */
     private static final String TEMP_DIR = "java.io.tmpdir";
     /** No parent. */

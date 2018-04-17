@@ -50,9 +50,9 @@ public class XmlReader
     /** Null string (represents a string stored as <code>null</code>). */
     public static final String NULL = "null";
     /** Error when reading the file. */
-    private static final String ERROR_READING = "An error occured while reading";
+    static final String ERROR_READING = "An error occured while reading";
     /** Attribute error. */
-    private static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
+    static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
 
     /** Document. */
     protected final Document document;

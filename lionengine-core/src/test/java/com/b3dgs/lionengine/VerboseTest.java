@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
 import java.lang.reflect.Method;
 import java.security.Permission;
 import java.util.logging.ConsoleHandler;
@@ -25,7 +27,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Verbose}.
@@ -75,46 +77,46 @@ public final class VerboseTest
     /**
      * Test <code>null</code> class warning.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullClassWarning()
     {
-        Verbose.warning((Class<?>) null, "test", "test");
+        assertThrows(() -> Verbose.warning((Class<?>) null, "test", "test"), Check.ERROR_NULL);
     }
 
     /**
      * Test <code>null</code> function warning.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullFunctionWarning()
     {
-        Verbose.warning(Object.class, (String) null, "test");
+        assertThrows(() -> Verbose.warning(Object.class, (String) null, "test"), Check.ERROR_NULL);
     }
 
     /**
      * Test <code>null</code> class warning.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullClassCritical()
     {
-        Verbose.critical(null, "test", "test");
+        assertThrows(() -> Verbose.critical(null, "test", "test"), Check.ERROR_NULL);
     }
 
     /**
      * Test <code>null</code> function warning.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullFunctionCritical()
     {
-        Verbose.critical(Object.class, null, "test");
+        assertThrows(() -> Verbose.critical(Object.class, null, "test"), Check.ERROR_NULL);
     }
 
     /**
      * Test <code>null</code> exception.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullException()
     {
-        Verbose.exception(null, "test");
+        assertThrows(() -> Verbose.exception(null, "test"), Check.ERROR_NULL);
     }
 
     /**

@@ -49,17 +49,17 @@ import org.w3c.dom.NodeList;
 public class Xml extends XmlReader
 {
     /** Error when writing into file. */
-    private static final String ERROR_WRITING = "An error occured while writing";
+    static final String ERROR_WRITING = "An error occured while writing";
+    /** Node error. */
+    static final String ERROR_NODE = "Node not found: ";
+    /** Attribute error. */
+    static final String ERROR_WRITE_ATTRIBUTE = "Error when setting the attribute:";
+    /** Attribute error. */
+    static final String ERROR_WRITE_CONTENT = " with the following content: ";
     /** Property indent. */
     private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
     /** Normalize. */
     private static final String NORMALIZE = "//text()[normalize-space()='']";
-    /** Node error. */
-    private static final String ERROR_NODE = "Node not found: ";
-    /** Attribute error. */
-    private static final String ERROR_WRITE_ATTRIBUTE = "Error when setting the attribute:";
-    /** Attribute error. */
-    private static final String ERROR_WRITE_CONTENT = " with the following content: ";
 
     /**
      * Create node from media.

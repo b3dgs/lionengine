@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilRandom}.
@@ -27,13 +31,11 @@ public final class UtilRandomTest
 {
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilRandom.class);
+        assertPrivateConstructor(UtilRandom.class);
     }
 
     /**
@@ -44,11 +46,20 @@ public final class UtilRandomTest
     {
         UtilRandom.setSeed(4_894_516L);
 
-        Assert.assertNotNull(Boolean.valueOf(UtilRandom.getRandomBoolean()));
-        Assert.assertNotNull(Integer.valueOf(UtilRandom.getRandomInteger()));
-        Assert.assertNotNull(Double.valueOf(UtilRandom.getRandomDouble()));
-        Assert.assertTrue(UtilRandom.getRandomInteger(100) <= 100);
-        Assert.assertTrue(UtilRandom.getRandomInteger(-100, 100) <= 100);
-        Assert.assertTrue(UtilRandom.getRandomInteger(Range.INT_POSITIVE_STRICT) >= 0);
+        assertNotNull(Boolean.valueOf(UtilRandom.getRandomBoolean()));
+        assertNotNull(Integer.valueOf(UtilRandom.getRandomInteger()));
+        assertNotNull(Double.valueOf(UtilRandom.getRandomDouble()));
+        assertTrue(UtilRandom.getRandomInteger(100) <= 100);
+        assertTrue(UtilRandom.getRandomInteger(-100, 100) <= 100);
+        assertTrue(UtilRandom.getRandomInteger(Range.INT_POSITIVE_STRICT) >= 0);
+    }
+
+    /**
+     * Test get random integer with <code>null</code> argument.
+     */
+    @Test
+    public void testGetRandomIntegerNullRange()
+    {
+        assertThrows(() -> UtilRandom.getRandomInteger(null), Check.ERROR_NULL);
     }
 }

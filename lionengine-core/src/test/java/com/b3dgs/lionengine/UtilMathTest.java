@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.geom.Geom;
 
@@ -29,13 +33,11 @@ public final class UtilMathTest
 {
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilMath.class);
+        assertPrivateConstructor(UtilMath.class);
     }
 
     /**
@@ -44,23 +46,23 @@ public final class UtilMathTest
     @Test
     public void testIsBetween()
     {
-        Assert.assertTrue(UtilMath.isBetween(0, 0, 2));
-        Assert.assertTrue(UtilMath.isBetween(1, 0, 2));
-        Assert.assertTrue(UtilMath.isBetween(2, 0, 2));
+        assertTrue(UtilMath.isBetween(0, 0, 2));
+        assertTrue(UtilMath.isBetween(1, 0, 2));
+        assertTrue(UtilMath.isBetween(2, 0, 2));
 
-        Assert.assertFalse(UtilMath.isBetween(3, 0, 2));
-        Assert.assertFalse(UtilMath.isBetween(-1, 0, 2));
+        assertFalse(UtilMath.isBetween(3, 0, 2));
+        assertFalse(UtilMath.isBetween(-1, 0, 2));
 
-        Assert.assertFalse(UtilMath.isBetween(1, 2, 1));
+        assertFalse(UtilMath.isBetween(1, 2, 1));
 
-        Assert.assertTrue(UtilMath.isBetween(0.0, 0.0, 0.2));
-        Assert.assertTrue(UtilMath.isBetween(0.1, 0.0, 0.2));
-        Assert.assertTrue(UtilMath.isBetween(0.2, 0.0, 0.2));
+        assertTrue(UtilMath.isBetween(0.0, 0.0, 0.2));
+        assertTrue(UtilMath.isBetween(0.1, 0.0, 0.2));
+        assertTrue(UtilMath.isBetween(0.2, 0.0, 0.2));
 
-        Assert.assertFalse(UtilMath.isBetween(0.3, 0.0, 0.2));
-        Assert.assertFalse(UtilMath.isBetween(-0.1, 0.0, 0.2));
+        assertFalse(UtilMath.isBetween(0.3, 0.0, 0.2));
+        assertFalse(UtilMath.isBetween(-0.1, 0.0, 0.2));
 
-        Assert.assertFalse(UtilMath.isBetween(0.1, 0.2, 0.1));
+        assertFalse(UtilMath.isBetween(0.1, 0.2, 0.1));
     }
 
     /**
@@ -69,20 +71,20 @@ public final class UtilMathTest
     @Test
     public void testClamp()
     {
-        Assert.assertEquals(0, UtilMath.clamp(-10, 0, 10));
-        Assert.assertEquals(10, UtilMath.clamp(50, 0, 10));
-        Assert.assertEquals(10, UtilMath.clamp(10, 0, 10));
-        Assert.assertEquals(0, UtilMath.clamp(0, 0, 10));
+        assertEquals(0, UtilMath.clamp(-10, 0, 10));
+        assertEquals(10, UtilMath.clamp(50, 0, 10));
+        assertEquals(10, UtilMath.clamp(10, 0, 10));
+        assertEquals(0, UtilMath.clamp(0, 0, 10));
 
-        Assert.assertEquals(0L, UtilMath.clamp(-10L, 0L, 10L));
-        Assert.assertEquals(10L, UtilMath.clamp(50L, 0L, 10L));
-        Assert.assertEquals(10L, UtilMath.clamp(10L, 0L, 10L));
-        Assert.assertEquals(0L, UtilMath.clamp(0L, 0L, 10L));
+        assertEquals(0L, UtilMath.clamp(-10L, 0L, 10L));
+        assertEquals(10L, UtilMath.clamp(50L, 0L, 10L));
+        assertEquals(10L, UtilMath.clamp(10L, 0L, 10L));
+        assertEquals(0L, UtilMath.clamp(0L, 0L, 10L));
 
-        Assert.assertEquals(0.0, UtilMath.clamp(-10.0, 0.0, 10.0), UtilTests.PRECISION);
-        Assert.assertEquals(10.0, UtilMath.clamp(50.0, 0.0, 10.0), UtilTests.PRECISION);
-        Assert.assertEquals(10.0, UtilMath.clamp(10.0, 0.0, 10.0), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.clamp(0.0, 0.0, 10.0), UtilTests.PRECISION);
+        assertEquals(0.0, UtilMath.clamp(-10.0, 0.0, 10.0));
+        assertEquals(10.0, UtilMath.clamp(50.0, 0.0, 10.0));
+        assertEquals(10.0, UtilMath.clamp(10.0, 0.0, 10.0));
+        assertEquals(0.0, UtilMath.clamp(0.0, 0.0, 10.0));
     }
 
     /**
@@ -91,7 +93,7 @@ public final class UtilMathTest
     @Test
     public void testRounded()
     {
-        Assert.assertEquals(100, UtilMath.getRounded(105, 100));
+        assertEquals(100, UtilMath.getRounded(105, 100));
     }
 
     /**
@@ -100,7 +102,7 @@ public final class UtilMathTest
     @Test
     public void testRoundedC()
     {
-        Assert.assertEquals(200, UtilMath.getRoundedC(105, 100));
+        assertEquals(200, UtilMath.getRoundedC(105, 100));
     }
 
     /**
@@ -109,8 +111,8 @@ public final class UtilMathTest
     @Test
     public void testCurveValue()
     {
-        Assert.assertTrue(UtilMath.curveValue(0.0, 1.0, 0.5) > 0.0);
-        Assert.assertTrue(UtilMath.curveValue(0.0, -1.0, 0.5) < 0.0);
+        assertTrue(UtilMath.curveValue(0.0, 1.0, 0.5) > 0.0);
+        assertTrue(UtilMath.curveValue(0.0, -1.0, 0.5) < 0.0);
     }
 
     /**
@@ -119,31 +121,15 @@ public final class UtilMathTest
     @Test
     public void testDistanceLocalizable()
     {
-        Assert.assertEquals(0.0,
-                            UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 0.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(1.0,
-                            UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(1.0, 0.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(1.0,
-                            UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 1.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(1.0,
-                            UtilMath.getDistance(Geom.createLocalizable(1.0, 0.0), Geom.createLocalizable(0.0, 0.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(1.0,
-                            UtilMath.getDistance(Geom.createLocalizable(0.0, 1.0), Geom.createLocalizable(0.0, 0.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(Math.sqrt(2),
-                            UtilMath.getDistance(Geom.createLocalizable(1.0, 1.0), Geom.createLocalizable(2.0, 2.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(2.0,
-                            UtilMath.getDistance(Geom.createLocalizable(4.0, 6.0), Geom.createLocalizable(6.0, 6.0)),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(2.0,
-                            UtilMath.getDistance(Geom.createLocalizable(-4.0, -6.0),
-                                                 Geom.createLocalizable(-6.0, -6.0)),
-                            UtilTests.PRECISION);
+        assertEquals(0.0, UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 0.0)));
+        assertEquals(1.0, UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(1.0, 0.0)));
+        assertEquals(1.0, UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 1.0)));
+        assertEquals(1.0, UtilMath.getDistance(Geom.createLocalizable(1.0, 0.0), Geom.createLocalizable(0.0, 0.0)));
+        assertEquals(1.0, UtilMath.getDistance(Geom.createLocalizable(0.0, 1.0), Geom.createLocalizable(0.0, 0.0)));
+        assertEquals(Math.sqrt(2),
+                     UtilMath.getDistance(Geom.createLocalizable(1.0, 1.0), Geom.createLocalizable(2.0, 2.0)));
+        assertEquals(2.0, UtilMath.getDistance(Geom.createLocalizable(4.0, 6.0), Geom.createLocalizable(6.0, 6.0)));
+        assertEquals(2.0, UtilMath.getDistance(Geom.createLocalizable(-4.0, -6.0), Geom.createLocalizable(-6.0, -6.0)));
     }
 
     /**
@@ -152,14 +138,14 @@ public final class UtilMathTest
     @Test
     public void testDistancePointPoint()
     {
-        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 1.0, 0.0), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 0.0, 1.0), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, UtilMath.getDistance(1.0, 0.0, 0.0, 0.0), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, UtilMath.getDistance(0.0, 1.0, 0.0, 0.0), UtilTests.PRECISION);
-        Assert.assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(-4.0, -6.0, -6.0, -6.0), UtilTests.PRECISION);
+        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0));
+        assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 1.0, 0.0));
+        assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 0.0, 1.0));
+        assertEquals(1.0, UtilMath.getDistance(1.0, 0.0, 0.0, 0.0));
+        assertEquals(1.0, UtilMath.getDistance(0.0, 1.0, 0.0, 0.0));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0));
+        assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0));
+        assertEquals(2.0, UtilMath.getDistance(-4.0, -6.0, -6.0, -6.0));
     }
 
     /**
@@ -168,11 +154,11 @@ public final class UtilMathTest
     @Test
     public void testDistancePointArea()
     {
-        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0, 0, 0), UtilTests.PRECISION);
-        Assert.assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 1), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0, 2, 2), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(-2.0, -6.0, -6.0, -6.0, 2, 2), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.getDistance(3.0, 3.0, 0.0, 0.0, 3, 3), UtilTests.PRECISION);
+        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0, 0, 0));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 1));
+        assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0, 2, 2));
+        assertEquals(2.0, UtilMath.getDistance(-2.0, -6.0, -6.0, -6.0, 2, 2));
+        assertEquals(0.0, UtilMath.getDistance(3.0, 3.0, 0.0, 0.0, 3, 3));
     }
 
     /**
@@ -181,12 +167,12 @@ public final class UtilMathTest
     @Test
     public void testDistanceAreaArea()
     {
-        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0, 0, 0.0, 0.0, 0, 0), UtilTests.PRECISION);
-        Assert.assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 0, 0, 2.0, 2.0, 0, 0), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 1, 1), UtilTests.PRECISION);
-        Assert.assertEquals(4.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 4.0, 12.0, 2, 2), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, 3.0, 3.0, 3, 3), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, -3.0, -3.0, 3, 3), UtilTests.PRECISION);
+        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0, 0, 0.0, 0.0, 0, 0));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 0, 0, 2.0, 2.0, 0, 0));
+        assertEquals(0.0, UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 1, 1));
+        assertEquals(4.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 4.0, 12.0, 2, 2));
+        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, 3.0, 3.0, 3, 3));
+        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, -3.0, -3.0, 3, 3));
     }
 
     /**
@@ -195,9 +181,9 @@ public final class UtilMathTest
     @Test
     public void testWrapDouble()
     {
-        Assert.assertEquals(0.0, UtilMath.wrapDouble(360.0, 0.0, 360.0), UtilTests.PRECISION);
-        Assert.assertEquals(359.0, UtilMath.wrapDouble(-1.0, 0.0, 360.0), UtilTests.PRECISION);
-        Assert.assertEquals(180.0, UtilMath.wrapDouble(180.0, 0.0, 360.0), UtilTests.PRECISION);
+        assertEquals(0.0, UtilMath.wrapDouble(360.0, 0.0, 360.0));
+        assertEquals(359.0, UtilMath.wrapDouble(-1.0, 0.0, 360.0));
+        assertEquals(180.0, UtilMath.wrapDouble(180.0, 0.0, 360.0));
     }
 
     /**
@@ -206,8 +192,8 @@ public final class UtilMathTest
     @Test
     public void testSinCos()
     {
-        Assert.assertEquals(-1.0, UtilMath.cos(180), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.sin(180), UtilTests.PRECISION);
+        assertEquals(-1.0, UtilMath.cos(180));
+        assertEquals(0.0, UtilMath.sin(180));
     }
 
     /**
@@ -216,9 +202,9 @@ public final class UtilMathTest
     @Test
     public void testSign()
     {
-        Assert.assertEquals(-1, UtilMath.getSign(-1.0));
-        Assert.assertEquals(1, UtilMath.getSign(1.0));
-        Assert.assertEquals(0, UtilMath.getSign(0));
+        assertEquals(-1, UtilMath.getSign(-1.0));
+        assertEquals(1, UtilMath.getSign(1.0));
+        assertEquals(0, UtilMath.getSign(0));
     }
 
     /**
@@ -227,7 +213,7 @@ public final class UtilMathTest
     @Test
     public void testGetRound()
     {
-        Assert.assertEquals(1.0, UtilMath.getRound(-1.0, 1.5), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getRound(1.0, 1.5), UtilTests.PRECISION);
+        assertEquals(1.0, UtilMath.getRound(-1.0, 1.5));
+        assertEquals(2.0, UtilMath.getRound(1.0, 1.5));
     }
 }

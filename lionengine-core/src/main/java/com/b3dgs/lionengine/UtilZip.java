@@ -34,7 +34,7 @@ import java.util.zip.ZipFile;
 public final class UtilZip
 {
     /** Error opening ZIP. */
-    private static final String ERROR_OPEN_ZIP = "Unable to open ZIP : ";
+    static final String ERROR_OPEN_ZIP = "Unable to open ZIP : ";
 
     /**
      * Get all entries existing in the path considering the extension.

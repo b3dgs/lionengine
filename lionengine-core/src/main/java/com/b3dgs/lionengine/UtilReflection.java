@@ -40,15 +40,15 @@ import java.util.stream.Collectors;
 public final class UtilReflection
 {
     /** Constructor error. */
-    private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
+    static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
     /** Constructor compatibility error. */
-    private static final String ERROR_NO_CONSTRUCTOR_COMPATIBLE = "No compatible constructor found for ";
+    static final String ERROR_NO_CONSTRUCTOR_COMPATIBLE = "No compatible constructor found for ";
     /** Constructor compatibility error. */
-    private static final String ERROR_WITH = " with: ";
+    static final String ERROR_WITH = " with: ";
     /** Field error. */
-    private static final String ERROR_FIELD = "Unable to access to the following field: ";
+    static final String ERROR_FIELD = "Unable to access to the following field: ";
     /** Method error. */
-    private static final String ERROR_METHOD = "Unable to access to the following method: ";
+    static final String ERROR_METHOD = "Unable to access to the following method: ";
 
     /**
      * Create a class instance with its parameters.
@@ -350,7 +350,7 @@ public final class UtilReflection
                                                      + type
                                                      + " "
                                                      + Arrays.asList(constructor.getParameterTypes())
-                                                     + " with "
+                                                     + ERROR_WITH
                                                      + Arrays.asList(params));
         }
         catch (final InstantiationException | IllegalAccessException | InvocationTargetException exception)

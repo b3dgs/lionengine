@@ -17,11 +17,12 @@
  */
 package com.b3dgs.lionengine.io;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -31,8 +32,6 @@ import com.b3dgs.lionengine.Medias;
  */
 public final class FileWritingReadingTest
 {
-    private static final float FLOAT_PRECISION = 0.0001f;
-    private static final double DOUBLE_PRECISION = 0.000000000000001;
     private static final boolean BOOL_VALUE = true;
     private static final byte BYTE_VALUE = 1;
     private static final char CHAR_VALUE = 2;
@@ -92,15 +91,15 @@ public final class FileWritingReadingTest
     {
         try (FileReading reading = new FileReading(fileData))
         {
-            Assert.assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(reading.readBoolean()));
-            Assert.assertEquals(BYTE_VALUE, reading.readByte());
-            Assert.assertEquals(CHAR_VALUE, reading.readChar());
-            Assert.assertEquals(SHORT_VALUE, reading.readShort());
-            Assert.assertEquals(INT_VALUE, reading.readInteger());
-            Assert.assertEquals(FLOAT_VALUE, reading.readFloat(), FLOAT_PRECISION);
-            Assert.assertEquals(LONG_VALUE, reading.readLong());
-            Assert.assertEquals(DOUBLE_VALUE, reading.readDouble(), DOUBLE_PRECISION);
-            Assert.assertEquals(STRING_VALUE, reading.readString());
+            assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(reading.readBoolean()));
+            assertEquals(BYTE_VALUE, reading.readByte());
+            assertEquals(CHAR_VALUE, reading.readChar());
+            assertEquals(SHORT_VALUE, reading.readShort());
+            assertEquals(INT_VALUE, reading.readInteger());
+            assertEquals(FLOAT_VALUE, reading.readFloat());
+            assertEquals(LONG_VALUE, reading.readLong());
+            assertEquals(DOUBLE_VALUE, reading.readDouble());
+            assertEquals(STRING_VALUE, reading.readString());
         }
     }
 }

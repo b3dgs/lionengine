@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Version}.
@@ -33,9 +37,9 @@ public final class VersionTest
     {
         final Version version = Version.create(3, 2, 1);
 
-        Assert.assertEquals(3, version.getMajor());
-        Assert.assertEquals(2, version.getMinor());
-        Assert.assertEquals(1, version.getMicro());
+        assertEquals(3, version.getMajor());
+        assertEquals(2, version.getMinor());
+        assertEquals(1, version.getMicro());
     }
 
     /**
@@ -46,17 +50,17 @@ public final class VersionTest
     {
         final Version version = Version.create(3, 2, 1);
 
-        Assert.assertEquals(version, version);
-        Assert.assertEquals(version, Version.create(3, 2, 1));
+        assertEquals(version, version);
+        assertEquals(version, Version.create(3, 2, 1));
 
-        Assert.assertNotEquals(version, null);
-        Assert.assertNotEquals(version, new Object());
-        Assert.assertNotEquals(version, Version.create(3, 2, 0));
-        Assert.assertNotEquals(version, Version.create(3, 0, 1));
-        Assert.assertNotEquals(version, Version.create(0, 2, 1));
-        Assert.assertNotEquals(version, Version.create(3, 0, 0));
-        Assert.assertNotEquals(version, Version.create(0, 0, 1));
-        Assert.assertNotEquals(version, Version.create(0, 0, 0));
+        assertNotEquals(version, null);
+        assertNotEquals(version, new Object());
+        assertNotEquals(version, Version.create(3, 2, 0));
+        assertNotEquals(version, Version.create(3, 0, 1));
+        assertNotEquals(version, Version.create(0, 2, 1));
+        assertNotEquals(version, Version.create(3, 0, 0));
+        assertNotEquals(version, Version.create(0, 0, 1));
+        assertNotEquals(version, Version.create(0, 0, 0));
     }
 
     /**
@@ -65,17 +69,17 @@ public final class VersionTest
     @Test
     public void testHashCode()
     {
-        final int version = Version.create(3, 2, 1).hashCode();
+        final Version version = Version.create(3, 2, 1);
 
-        Assert.assertEquals(version, Version.create(3, 2, 1).hashCode());
+        assertHashEquals(version, Version.create(3, 2, 1));
 
-        Assert.assertNotEquals(version, new Object().hashCode());
-        Assert.assertNotEquals(version, Version.create(3, 2, 0).hashCode());
-        Assert.assertNotEquals(version, Version.create(3, 0, 1).hashCode());
-        Assert.assertNotEquals(version, Version.create(0, 2, 1).hashCode());
-        Assert.assertNotEquals(version, Version.create(3, 0, 0).hashCode());
-        Assert.assertNotEquals(version, Version.create(0, 0, 1).hashCode());
-        Assert.assertNotEquals(version, Version.create(0, 0, 0).hashCode());
+        assertHashNotEquals(version, new Object());
+        assertHashNotEquals(version, Version.create(3, 2, 0));
+        assertHashNotEquals(version, Version.create(3, 0, 1));
+        assertHashNotEquals(version, Version.create(0, 2, 1));
+        assertHashNotEquals(version, Version.create(3, 0, 0));
+        assertHashNotEquals(version, Version.create(0, 0, 1));
+        assertHashNotEquals(version, Version.create(0, 0, 0));
     }
 
     /**
@@ -84,6 +88,6 @@ public final class VersionTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("Version [3.2.1]", Version.create(3, 2, 1).toString());
+        assertEquals("Version [3.2.1]", Version.create(3, 2, 1).toString());
     }
 }

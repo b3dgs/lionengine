@@ -17,6 +17,14 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -29,20 +37,15 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Xml}.
  */
 public final class XmlTest
 {
-    /** Float precision. */
-    private static final float FLOAT_PRECISION = 0.00000001f;
-    /** Double precision. */
-    private static final double DOUBLE_PRECISION = 0.000000000000001;
     /** Boolean value. */
     private static final boolean BOOL_VALUE = true;
     /** Byte value. */
@@ -63,7 +66,7 @@ public final class XmlTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void prepare()
     {
         Medias.setLoadFromJar(XmlTest.class);
@@ -72,7 +75,7 @@ public final class XmlTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -87,16 +90,16 @@ public final class XmlTest
     @Test
     public void testCreate()
     {
-        Assert.assertNotNull(new Xml("test"));
+        assertNotNull(new Xml("test"));
     }
 
     /**
      * Test create node with <code>null</code> parameter.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateNull()
     {
-        Assert.assertNull(new Xml((Media) null));
+        assertThrows(() -> new Xml((Media) null), Check.ERROR_NULL);
     }
 
     /**
@@ -107,7 +110,8 @@ public final class XmlTest
     {
         final Media output = Medias.create("out.xml");
         new Xml(Medias.create("normalize.xml")).save(output);
-        Assert.assertTrue(output.getFile().delete());
+
+        assertTrue(output.getFile().delete());
     }
 
     /**
@@ -138,7 +142,7 @@ public final class XmlTest
      * @throws IllegalAccessException If error.
      * @throws NoSuchFieldException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testTransformerError() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException
     {
         final Field field = DocumentFactory.class.getDeclaredField("transformerFactory");
@@ -222,8 +226,7 @@ public final class XmlTest
                 }
             });
             final Media output = Medias.create("out.xml");
-            new Xml(Medias.create("normalize.xml")).save(output);
-            Assert.assertTrue(output.getFile().delete());
+            assertThrows(() -> new Xml(Medias.create("normalize.xml")).save(output), "[out.xml] " + Xml.ERROR_WRITING);
         }
         finally
         {
@@ -246,26 +249,27 @@ public final class XmlTest
         root.add(child1);
         root.add(child2);
 
-        Assert.assertEquals("root", root.getNodeName());
-        Assert.assertNotNull(root.getChild("child1"));
-        Assert.assertNotNull(root.getChild("child2"));
+        assertEquals("root", root.getNodeName());
+        assertNotNull(root.getChild("child1"));
+        assertNotNull(root.getChild("child2"));
 
-        Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
+        assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
 
         for (final Xml child : root.getChildren())
         {
-            Assert.assertNotNull(child);
+            assertNotNull(child);
         }
         for (final Xml child : root.getChildren("child1"))
         {
-            Assert.assertNotNull(child);
+            assertNotNull(child);
         }
-        Assert.assertEquals("str", child1.getAttributes().get("str"));
-        Assert.assertEquals(Constant.EMPTY_STRING, child1.getText());
+        assertEquals("str", child1.getAttributes().get("str"));
+        assertEquals(Constant.EMPTY_STRING, child1.getText());
 
         final String text = "text";
         root.setText(text);
-        Assert.assertEquals(text, root.getText());
+
+        assertEquals(text, root.getText());
     }
 
     /**
@@ -296,16 +300,8 @@ public final class XmlTest
     {
         final Xml node = new Xml("node");
         node.add(new Xml("test"));
-        try
-        {
-            node.getChild("void");
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+
+        assertThrows(() -> node.getChild("void"), Xml.ERROR_NODE + "void");
 
         node.writeBoolean("boolean", BOOL_VALUE);
         node.writeByte("byte", BYTE_VALUE);
@@ -317,45 +313,47 @@ public final class XmlTest
         node.writeString("string", STRING_VALUE);
         node.writeString("null", null);
 
-        Assert.assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(node.readBoolean("boolean")));
-        Assert.assertEquals(BYTE_VALUE, node.readByte("byte"));
-        Assert.assertEquals(SHORT_VALUE, node.readShort("short"));
-        Assert.assertEquals(INT_VALUE, node.readInteger("integer"));
-        Assert.assertEquals(FLOAT_VALUE, node.readFloat("float"), FLOAT_PRECISION);
-        Assert.assertEquals(LONG_VALUE, node.readLong("long"));
-        Assert.assertEquals(DOUBLE_VALUE, node.readDouble("double"), DOUBLE_PRECISION);
-        Assert.assertEquals(STRING_VALUE, node.readString("string"));
-        Assert.assertEquals(null, node.readString("null"));
+        assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(node.readBoolean("boolean")));
+        assertEquals(BYTE_VALUE, node.readByte("byte"));
+        assertEquals(SHORT_VALUE, node.readShort("short"));
+        assertEquals(INT_VALUE, node.readInteger("integer"));
+        assertEquals(FLOAT_VALUE, node.readFloat("float"));
+        assertEquals(LONG_VALUE, node.readLong("long"));
+        assertEquals(DOUBLE_VALUE, node.readDouble("double"));
+        assertEquals(STRING_VALUE, node.readString("string"));
+        assertEquals(null, node.readString("null"));
     }
 
     /**
      * Test node name error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNodeNameError()
     {
-        final Xml node = new Xml("%éàç-èyrd");
-        Assert.assertNull(node);
+        assertCause(() -> new Xml("%éàç-èyrd"), org.w3c.dom.DOMException.class);
     }
 
     /**
      * Test node write error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNodeWriteError()
     {
         final Xml node = new Xml("test");
-        node.writeString("%éàç-èyrd", "error");
+
+        assertThrows(() -> node.writeString("%éàç-èyrd", "error"),
+                     Xml.ERROR_WRITE_ATTRIBUTE + "%éàç-èyrd" + Xml.ERROR_WRITE_CONTENT + "error");
     }
 
     /**
      * Test node read error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNodeReadError()
     {
         final Xml node = new Xml("test");
-        node.readString("%éàç-èyrd");
+
+        assertThrows(() -> node.readString("%éàç-èyrd"), XmlReader.ERROR_ATTRIBUTE + "%éàç-èyrd");
     }
 
     /**
@@ -366,15 +364,15 @@ public final class XmlTest
     {
         final Xml node = new Xml("test");
 
-        Assert.assertTrue(node.readBoolean(true, "void"));
-        Assert.assertEquals((byte) 1, node.readByte((byte) 1, "void"));
-        Assert.assertEquals((short) 1, node.readShort((short) 1, "void"));
-        Assert.assertEquals(1, node.readInteger(1, "void"));
-        Assert.assertEquals(1L, node.readLong(1L, "void"));
-        Assert.assertEquals(1.0f, node.readFloat(1.0f, "void"), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, node.readDouble(1.0, "void"), UtilTests.PRECISION);
-        Assert.assertEquals("default", node.readString("default", "void"));
-        Assert.assertNull(node.readString("null", "void"));
+        assertTrue(node.readBoolean(true, "void"));
+        assertEquals((byte) 1, node.readByte((byte) 1, "void"));
+        assertEquals((short) 1, node.readShort((short) 1, "void"));
+        assertEquals(1, node.readInteger(1, "void"));
+        assertEquals(1L, node.readLong(1L, "void"));
+        assertEquals(1.0f, node.readFloat(1.0f, "void"));
+        assertEquals(1.0, node.readDouble(1.0, "void"));
+        assertEquals("default", node.readString("default", "void"));
+        assertNull(node.readString("null", "void"));
 
         node.writeBoolean("boolean", BOOL_VALUE);
         node.writeByte("byte", BYTE_VALUE);
@@ -386,15 +384,15 @@ public final class XmlTest
         node.writeString("string", STRING_VALUE);
         node.writeString("null", null);
 
-        Assert.assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(node.readBoolean("boolean")));
-        Assert.assertEquals(BYTE_VALUE, node.readByte((byte) 1, "byte"));
-        Assert.assertEquals(SHORT_VALUE, node.readShort((short) 1, "short"));
-        Assert.assertEquals(INT_VALUE, node.readInteger(1, "integer"));
-        Assert.assertEquals(FLOAT_VALUE, node.readFloat(1.0f, "float"), FLOAT_PRECISION);
-        Assert.assertEquals(LONG_VALUE, node.readLong(1L, "long"));
-        Assert.assertEquals(DOUBLE_VALUE, node.readDouble(1.0, "double"), DOUBLE_PRECISION);
-        Assert.assertEquals(STRING_VALUE, node.readString("default", "string"));
-        Assert.assertEquals(null, node.readString("default", "null"));
+        assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(node.readBoolean("boolean")));
+        assertEquals(BYTE_VALUE, node.readByte((byte) 1, "byte"));
+        assertEquals(SHORT_VALUE, node.readShort((short) 1, "short"));
+        assertEquals(INT_VALUE, node.readInteger(1, "integer"));
+        assertEquals(FLOAT_VALUE, node.readFloat(1.0f, "float"));
+        assertEquals(LONG_VALUE, node.readLong(1L, "long"));
+        assertEquals(DOUBLE_VALUE, node.readDouble(1.0, "double"));
+        assertEquals(STRING_VALUE, node.readString("default", "string"));
+        assertEquals(null, node.readString("default", "null"));
     }
 
     /**
@@ -408,11 +406,11 @@ public final class XmlTest
         node.writeString("attribute", "none");
         node.add(child);
 
-        Assert.assertTrue(node.hasAttribute("attribute"));
-        Assert.assertTrue(node.hasChild("child"));
-        Assert.assertFalse(node.hasAttribute(null));
-        Assert.assertFalse(node.hasAttribute("test"));
-        Assert.assertFalse(node.hasChild("attribute"));
+        assertTrue(node.hasAttribute("attribute"));
+        assertTrue(node.hasChild("child"));
+        assertFalse(node.hasAttribute(null));
+        assertFalse(node.hasAttribute("test"));
+        assertFalse(node.hasChild("attribute"));
     }
 
     /**
@@ -463,36 +461,17 @@ public final class XmlTest
      */
     private void testWrongWriteXml() throws IOException
     {
-        try
-        {
-            new Xml("child").save(Medias.create(Constant.EMPTY_STRING));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> new Xml("child").save(Medias.create(Constant.EMPTY_STRING)),
+                     "[] " + MediaDefault.ERROR_OPEN_MEDIA);
 
         final File file = File.createTempFile("foo", null);
         file.deleteOnExit();
-        if (file.mkdir())
-        {
-            try
-            {
-                new Xml("child").save(Medias.create(file.getPath()));
-                Assert.fail();
-            }
-            catch (final LionEngineException exception)
-            {
-                // Success
-                Assert.assertNotNull(exception);
-            }
-            finally
-            {
-                UtilFolder.deleteDirectory(file);
-            }
-        }
+
+        file.mkdir();
+        assertThrows(() -> new Xml("child").save(Medias.create(file.getPath())),
+                     "[" + file + "] " + MediaDefault.ERROR_OPEN_MEDIA);
+
+        UtilFolder.deleteDirectory(file);
     }
 
     /**
@@ -505,15 +484,15 @@ public final class XmlTest
         final Xml root = new Xml(fileXml);
         final Xml child = root.getChild("child");
 
-        Assert.assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(child.readBoolean("boolean")));
-        Assert.assertEquals(BYTE_VALUE, child.readByte("byte"));
-        Assert.assertEquals(SHORT_VALUE, child.readShort("short"));
-        Assert.assertEquals(INT_VALUE, child.readInteger("integer"));
-        Assert.assertEquals(FLOAT_VALUE, child.readFloat("float"), FLOAT_PRECISION);
-        Assert.assertEquals(LONG_VALUE, child.readLong("long"));
-        Assert.assertEquals(DOUBLE_VALUE, child.readDouble("double"), DOUBLE_PRECISION);
-        Assert.assertEquals(STRING_VALUE, child.readString("string"));
-        Assert.assertEquals(null, child.readString("null"));
+        assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(child.readBoolean("boolean")));
+        assertEquals(BYTE_VALUE, child.readByte("byte"));
+        assertEquals(SHORT_VALUE, child.readShort("short"));
+        assertEquals(INT_VALUE, child.readInteger("integer"));
+        assertEquals(FLOAT_VALUE, child.readFloat("float"));
+        assertEquals(LONG_VALUE, child.readLong("long"));
+        assertEquals(DOUBLE_VALUE, child.readDouble("double"));
+        assertEquals(STRING_VALUE, child.readString("string"));
+        assertEquals(null, child.readString("null"));
     }
 
     /**
@@ -522,36 +501,9 @@ public final class XmlTest
     private void testWrongReadXml()
     {
         final Xml root = new Xml(fileXml);
-        try
-        {
-            root.getChild("none");
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            root.readInteger("wrong");
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
 
-        try
-        {
-            Assert.assertNotNull(new Xml(Medias.create("malformed.xml")));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> root.getChild("none"), Xml.ERROR_NODE + "none");
+        assertThrows(() -> root.readInteger("wrong"), XmlReader.ERROR_ATTRIBUTE + "wrong");
+        assertThrows(() -> new Xml(Medias.create("malformed.xml")), "[malformed.xml] " + XmlReader.ERROR_READING);
     }
 }

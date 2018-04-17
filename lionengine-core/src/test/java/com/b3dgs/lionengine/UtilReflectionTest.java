@@ -17,13 +17,19 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilReflection}.
@@ -32,84 +38,86 @@ public final class UtilReflectionTest
 {
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilReflection.class);
+        assertPrivateConstructor(UtilReflection.class);
+    }
+
+    /**
+     * Create create.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test
+    public void testCreate() throws NoSuchMethodException
+    {
+        assertEquals("1", UtilReflection.create(String.class, UtilReflection.getParamTypes(String.class), "1"));
     }
 
     /**
      * Create create with missing method.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = NoSuchMethodException.class)
-    public void testCreateNoMethod() throws NoSuchMethodException
+    @Test
+    public void testCreateNoMethod()
     {
-        Assert.assertNull(UtilReflection.create(Object.class, UtilReflection.getParamTypes(""), ""));
+        final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                + Object.class.getName()
+                                + UtilReflection.ERROR_WITH
+                                + Arrays.asList(String.class);
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.create(Object.class, UtilReflection.getParamTypes(""), ""),
+                     expected);
     }
 
     /**
      * Create create with invalid arguments.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testCreateIllegalArgument() throws NoSuchMethodException
+    @Test
+    public void testCreateIllegalArgument()
     {
-        Assert.assertNull(UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), "test", "test"));
+        final String expected = UtilReflection.ERROR_CONSTRUCTOR
+                                + String.class
+                                + " "
+                                + Arrays.asList(String.class)
+                                + UtilReflection.ERROR_WITH
+                                + Arrays.asList("test", "test");
+        assertThrows(() -> UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), "test", "test"),
+                     expected);
     }
 
     /**
      * Create create with constructor error.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testCreateConstructorError() throws NoSuchMethodException
+    @Test
+    public void testCreateConstructorError()
     {
-        Assert.assertNull(UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), (String) null));
+        assertThrows(() -> UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), (String) null),
+                     UtilReflection.ERROR_CONSTRUCTOR + String.class);
     }
 
     /**
      * Create create with constructor error.
-     * 
-     * @throws NoSuchMethodException If error.
-     * @throws NoSuchFieldException If error.
-     * @throws IllegalAccessException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testCreateConstructorNotAccessible() throws NoSuchMethodException,
-            NoSuchFieldException,
-            IllegalAccessException
+    @Test
+    public void testCreateConstructorNotAccessible()
     {
-        final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
-        try
-        {
-            accessible.set(false);
-            Assert.assertNotNull(UtilReflection.create(UtilMath.class, new Class[0]));
-        }
-        finally
-        {
-            accessible.set(true);
-        }
+        assertThrows(() -> UtilReflection.create(UtilMath.class, new Class[0]),
+                     UtilReflection.ERROR_CONSTRUCTOR + UtilMath.class);
     }
 
     /**
      * Create create with abstract class.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testCreateAbstractClass() throws NoSuchMethodException
+    @Test
+    public void testCreateAbstractClass()
     {
-        Assert.assertNull(UtilReflection.create(Engine.class,
-                                                UtilReflection.getParamTypes("", Version.DEFAULT),
-                                                "",
-                                                Version.DEFAULT));
+        assertThrows(() -> UtilReflection.create(Engine.class,
+                                                 UtilReflection.getParamTypes("", Version.DEFAULT),
+                                                 "",
+                                                 Version.DEFAULT),
+                     UtilReflection.ERROR_CONSTRUCTOR + Engine.class);
     }
 
     /**
@@ -120,19 +128,23 @@ public final class UtilReflectionTest
     @Test
     public void testCreateReduce() throws NoSuchMethodException
     {
-        Assert.assertEquals(ViewerMock.class,
-                            UtilReflection.createReduce(ViewerMock.class, Integer.valueOf(1), "void").getClass());
+        assertEquals(ViewerMock.class,
+                     UtilReflection.createReduce(ViewerMock.class, Integer.valueOf(1), "void").getClass());
     }
 
     /**
      * Create create reduce with no constructor found.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = NoSuchMethodException.class)
-    public void testCreateReduceNoConstructor() throws NoSuchMethodException
+    @Test
+    public void testCreateReduceNoConstructor()
     {
-        Assert.assertNull(UtilReflection.createReduce(Config.class, Integer.valueOf(1), "void"));
+        final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                + Config.class.getName()
+                                + UtilReflection.ERROR_WITH
+                                + Arrays.asList(Integer.class, String.class);
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.createReduce(Config.class, Integer.valueOf(1), "void"),
+                     expected);
     }
 
     /**
@@ -160,10 +172,10 @@ public final class UtilReflectionTest
         params.add(Float.class);
 
         final Class<?>[] types = UtilReflection.getParamTypes(params.toArray());
-        Assert.assertEquals(Integer.class, types[0]);
-        Assert.assertEquals(String.class, types[1]);
-        Assert.assertEquals(Double.class, types[2]);
-        Assert.assertEquals(Float.class, types[3]);
+        assertEquals(Integer.class, types[0]);
+        assertEquals(String.class, types[1]);
+        assertEquals(Double.class, types[2]);
+        assertEquals(Float.class, types[3]);
     }
 
     /**
@@ -172,53 +184,56 @@ public final class UtilReflectionTest
     @Test
     public void testGetMethod()
     {
-        Assert.assertNotNull(UtilReflection.getMethod(new Object(), "toString"));
-        Assert.assertNull(UtilReflection.getMethod(new Object(), "finalize"));
+        assertNotNull(UtilReflection.getMethod(new Object(), "toString"));
+        assertNull(UtilReflection.getMethod(new Object(), "finalize"));
     }
 
     /**
      * Test get method not accessible.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetMethodNotAccessible()
     {
-        final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
-        try
-        {
-            accessible.set(false);
-            Assert.assertNotNull(UtilReflection.getMethod(Verbose.class, "getMessage", "test"));
-        }
-        finally
-        {
-            accessible.set(true);
-        }
+        assertThrows(() -> UtilReflection.getMethod(Verbose.class, "getMessage", "test"),
+                     UtilReflection.ERROR_METHOD + "getMessage");
     }
 
     /**
      * Test get not existing method.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetMethodNotExists()
     {
-        Assert.assertNotNull(UtilReflection.getMethod(new Object(), "123"));
+        assertThrows(() -> UtilReflection.getMethod(new Object(), "123"), UtilReflection.ERROR_METHOD + "123");
     }
 
     /**
      * Test get method with call error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetMethodCallError()
     {
-        Assert.assertNotNull(UtilReflection.getMethod(Integer.class, "valueOf", ""));
+        assertThrows(() -> UtilReflection.getMethod(Integer.class, "valueOf", ""),
+                     UtilReflection.ERROR_METHOD + "valueOf");
+    }
+
+    /**
+     * Test get method with throws {@link LionEngineException}.
+     */
+    @Test
+    public void testGetMethodThrowsLionEngineException()
+    {
+        assertThrows(() -> UtilReflection.getMethod(Reduce.class, "throwsLion"), "Lion");
     }
 
     /**
      * Test get method with invalid parameter.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetMethodInvalidParameter()
     {
-        Assert.assertNotNull(UtilReflection.getMethod(Integer.class, "valueOf", ""));
+        assertThrows(() -> UtilReflection.getMethod(Integer.class, "valueOf", ""),
+                     UtilReflection.ERROR_METHOD + "valueOf");
     }
 
     /**
@@ -227,7 +242,7 @@ public final class UtilReflectionTest
     @Test
     public void testGetField()
     {
-        Assert.assertNotNull(UtilReflection.getField(new Config(new Resolution(320, 240, 32), 16, false), "output"));
+        assertNotNull(UtilReflection.getField(new Config(new Resolution(320, 240, 32), 16, false), "output"));
     }
 
     /**
@@ -236,25 +251,16 @@ public final class UtilReflectionTest
     @Test
     public void testGetFieldAccessible()
     {
-        Assert.assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_PRIVATE_CONSTRUCTOR"));
+        assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_PRIVATE_CONSTRUCTOR"));
     }
 
     /**
      * Test get field not accessible.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetFieldNotAccessible()
     {
-        final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
-        try
-        {
-            accessible.set(false);
-            Assert.assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_UNKNOWN_ENUM"));
-        }
-        finally
-        {
-            accessible.set(true);
-        }
+        assertNotNull(UtilReflection.getField(LionEngineException.class, "serialVersionUID"));
     }
 
     /**
@@ -264,28 +270,32 @@ public final class UtilReflectionTest
     public void testGetFieldSuperClass()
     {
         final String accessible = UtilReflection.getField(FieldTest2.class, "test");
-        Assert.assertNotNull(accessible);
+        assertNotNull(accessible);
     }
 
     /**
      * Test get field unknown.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetFieldUnknown()
     {
-        Assert.assertNotNull(UtilReflection.getField(new Object(), "0"));
+        assertThrows(() -> UtilReflection.getField(new Object(), "0"), UtilReflection.ERROR_FIELD + "0");
     }
 
     /**
      * Test get compatible constructor not found.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = NoSuchMethodException.class)
-    public void testGetCompatibleConstructorNone() throws NoSuchMethodException
+    @Test
+    public void testGetCompatibleConstructorNone()
     {
-        Assert.assertNotNull(UtilReflection.getCompatibleConstructor(String.class,
-                                                                     UtilReflection.getParamTypes(new Integer(1))));
+        final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                + String.class.getName()
+                                + UtilReflection.ERROR_WITH
+                                + Arrays.asList(Integer.class);
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.getCompatibleConstructor(String.class,
+                                                                   UtilReflection.getParamTypes(new Integer(1))),
+                     expected);
     }
 
     /**
@@ -296,20 +306,24 @@ public final class UtilReflectionTest
     @Test
     public void testGetCompatibleConstructorParent() throws NoSuchMethodException
     {
-        Assert.assertNotNull(UtilReflection.getCompatibleConstructorParent(String.class,
-                                                                           UtilReflection.getParamTypes(new Object())));
+        assertNotNull(UtilReflection.getCompatibleConstructorParent(String.class,
+                                                                    UtilReflection.getParamTypes(new Object())));
     }
 
     /**
      * Test get compatible constructor parent none.
-     * 
-     * @throws NoSuchMethodException If error.
      */
-    @Test(expected = NoSuchMethodException.class)
-    public void testGetCompatibleConstructorParentNone() throws NoSuchMethodException
+    @Test
+    public void testGetCompatibleConstructorParentNone()
     {
-        Assert.assertNotNull(UtilReflection.getCompatibleConstructorParent(String.class,
-                                                                           UtilReflection.getParamTypes(new Integer(1))));
+        final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
+                                + String.class.getName()
+                                + UtilReflection.ERROR_WITH
+                                + Arrays.asList(Integer.class);
+        assertThrows(NoSuchMethodException.class,
+                     () -> UtilReflection.getCompatibleConstructorParent(String.class,
+                                                                         UtilReflection.getParamTypes(new Integer(1))),
+                     expected);
     }
 
     /**
@@ -318,22 +332,22 @@ public final class UtilReflectionTest
     @Test
     public void testGetInterfaces()
     {
-        Assert.assertEquals(0, UtilReflection.getInterfaces(Interface0.class, Interface0.class).size());
-        Assert.assertEquals(0, UtilReflection.getInterfaces(Interface1.class, Interface0.class).size());
-        Assert.assertEquals(Interface2.class,
-                            UtilReflection.getInterfaces(Interface3.class, Interface0.class).iterator().next());
+        assertEquals(0, UtilReflection.getInterfaces(Interface0.class, Interface0.class).size());
+        assertEquals(0, UtilReflection.getInterfaces(Interface1.class, Interface0.class).size());
+        assertEquals(Interface2.class,
+                     UtilReflection.getInterfaces(Interface3.class, Interface0.class).iterator().next());
 
         final Collection<Class<?>> interfaces = new ArrayList<>();
         interfaces.add(Interface1.class);
 
-        Assert.assertEquals(1, UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).size());
-        Assert.assertTrue(UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).containsAll(interfaces));
+        assertEquals(1, UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).size());
+        assertTrue(UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).containsAll(interfaces));
 
         interfaces.add(Interface2.class);
         interfaces.add(Interface3.class);
 
-        Assert.assertEquals(3, UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).size());
-        Assert.assertTrue(UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).containsAll(interfaces));
+        assertEquals(3, UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).size());
+        assertTrue(UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).containsAll(interfaces));
     }
 
     /**
@@ -389,6 +403,14 @@ public final class UtilReflectionTest
      */
     static final class Reduce
     {
+        /**
+         * Throws Lion.
+         */
+        static void throwsLion()
+        {
+            throw new LionEngineException("Lion");
+        }
+
         /**
          * Create.
          * 

@@ -17,14 +17,17 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.zip.ZipEntry;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilZip}.
@@ -34,7 +37,7 @@ public final class UtilZipTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setLoadFromJar(UtilZipTest.class);
@@ -43,7 +46,7 @@ public final class UtilZipTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -54,10 +57,10 @@ public final class UtilZipTest
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(UtilZip.class);
+        assertPrivateConstructor(UtilZip.class);
     }
 
     /**
@@ -70,17 +73,18 @@ public final class UtilZipTest
         final String path = UtilZipTest.class.getPackage().getName().replace(Constant.DOT, Medias.getSeparator());
         final Collection<ZipEntry> entries = UtilZip.getEntriesByExtension(jar, path, "png");
 
-        Assert.assertEquals(path + Medias.getSeparator() + "image.png", entries.iterator().next().getName());
+        assertEquals(path + Medias.getSeparator() + "image.png", entries.iterator().next().getName());
     }
 
     /**
      * Test get entries by extension with wrong JAR.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testEntriesByExtensionWrongJar()
     {
-        Assert.assertNull(UtilZip.getEntriesByExtension(new File("void"),
-                                                        Constant.EMPTY_STRING,
-                                                        Constant.EMPTY_STRING));
+        assertThrows(() -> UtilZip.getEntriesByExtension(new File("void"),
+                                                         Constant.EMPTY_STRING,
+                                                         Constant.EMPTY_STRING),
+                     UtilZip.ERROR_OPEN_ZIP + new File("void").getAbsolutePath());
     }
 }
