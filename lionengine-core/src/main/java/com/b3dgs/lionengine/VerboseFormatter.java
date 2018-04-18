@@ -32,7 +32,6 @@ import java.util.logging.LogRecord;
  */
 final class VerboseFormatter extends Formatter
 {
-    private static final int DATE_LENGTH = 14;
     private static final int LOG_LEVEL_LENGTH = 7;
     private static final DateFormat DATE_TIME_FORMAT = DateFormat.getInstance();
     private static final String IN = "in ";
@@ -47,10 +46,6 @@ final class VerboseFormatter extends Formatter
     {
         final String date = DATE_TIME_FORMAT.format(Calendar.getInstance().getTime());
         message.append(date);
-        for (int i = date.length(); i < DATE_LENGTH; i++)
-        {
-            message.append(Constant.SPACE);
-        }
         message.append(Constant.SPACE);
     }
 
