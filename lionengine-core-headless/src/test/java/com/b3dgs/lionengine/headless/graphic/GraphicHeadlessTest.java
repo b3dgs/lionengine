@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.GraphicTest;
@@ -34,7 +35,7 @@ public final class GraphicHeadlessTest extends GraphicTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
@@ -48,6 +49,6 @@ public final class GraphicHeadlessTest extends GraphicTest
     {
         final ImageBuffer image = Graphics.createImageBuffer(10, 20);
 
-        Assert.assertEquals(ColorRgba.BLACK.getRgba(), Graphics.applyMask(image, ColorRgba.TRANSPARENT).getRgb(0, 0));
+        assertEquals(ColorRgba.BLACK.getRgba(), Graphics.applyMask(image, ColorRgba.TRANSPARENT).getRgb(0, 0));
     }
 }

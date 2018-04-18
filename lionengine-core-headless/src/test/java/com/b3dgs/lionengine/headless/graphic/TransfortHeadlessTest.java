@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.TransformTest;
@@ -30,7 +30,7 @@ public final class TransfortHeadlessTest extends TransformTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
