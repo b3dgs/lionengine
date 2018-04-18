@@ -17,15 +17,17 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.FactoryMediaDefault;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicTest;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -40,20 +42,21 @@ public final class FactoryGraphicAwtTest extends FactoryGraphicTest
      * 
      * @throws IOException If error.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws IOException
     {
-        prepare();
+        Medias.setFactoryMedia(new FactoryMediaDefault());
+        Medias.setLoadFromJar(FactoryGraphicTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
-        loadResources();
     }
 
     /**
      * Clean test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
+        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
 
@@ -61,43 +64,18 @@ public final class FactoryGraphicAwtTest extends FactoryGraphicTest
      * FactoryGraphicTest
      */
 
-    /**
-     * Test rotate.
-     */
     @Test
     @Override
     public void testRotate()
     {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer rotate = Graphics.rotate(image, 90);
 
-        Assert.assertNotEquals(image, rotate);
-        Assert.assertEquals(image.getWidth(), rotate.getHeight());
-        Assert.assertEquals(image.getHeight(), rotate.getWidth());
+        assertNotEquals(image, rotate);
+        assertEquals(image.getWidth(), rotate.getHeight());
+        assertEquals(image.getHeight(), rotate.getWidth());
 
         rotate.dispose();
-    }
-
-    @Override
-    public void testCreateScreen()
-    {
-        Assume.assumeFalse("Unable to perform this test", false);
-    }
-
-    /**
-     * Test get image with error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetImageError()
-    {
-        Assert.assertNull(Graphics.getImageBuffer(new MediaMock()));
-    }
-
-    /**
-     * Test save image with error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testSaveImageError()
-    {
-        Graphics.saveImage(image, new MediaMock());
+        image.dispose();
     }
 }

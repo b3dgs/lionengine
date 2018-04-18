@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 

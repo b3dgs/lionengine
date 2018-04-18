@@ -17,16 +17,19 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link UtilColor}.
@@ -36,7 +39,7 @@ public final class UtilColorTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setLoadFromJar(UtilColorTest.class);
@@ -46,7 +49,7 @@ public final class UtilColorTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -55,13 +58,11 @@ public final class UtilColorTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilColor.class);
+        assertPrivateConstructor(UtilColor.class);
     }
 
     /**
@@ -70,10 +71,10 @@ public final class UtilColorTest
     @Test
     public void testDelta()
     {
-        Assert.assertEquals(Math.sqrt(255 * 255 + 255 * 255 + 255 * 255),
-                            UtilColor.getDelta(ColorRgba.BLACK, ColorRgba.WHITE),
-                            UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilColor.getDelta(ColorRgba.GRAY, ColorRgba.GRAY), UtilTests.PRECISION);
+        assertEquals(Math.sqrt(255 * 255 + 255 * 255 + 255 * 255),
+                     UtilColor.getDelta(ColorRgba.BLACK, ColorRgba.WHITE));
+
+        assertEquals(0.0, UtilColor.getDelta(ColorRgba.GRAY, ColorRgba.GRAY));
     }
 
     /**
@@ -96,14 +97,14 @@ public final class UtilColorTest
 
                         if (r != 0 && g != 0 && b != 0 && r != 255 && g != 255 && b != 255)
                         {
-                            Assert.assertNotEquals(color.getRgba(), colorInc.getRgba());
+                            assertNotEquals(color.getRgba(), colorInc.getRgba());
                         }
                         if (!(a == 0 && (r > 0 || g > 0 || b > 0)))
                         {
-                            Assert.assertEquals(color.getAlpha(), colorInc.getAlpha());
-                            Assert.assertEquals(UtilMath.clamp(color.getRed() + r, 0, 255), colorInc.getRed());
-                            Assert.assertEquals(UtilMath.clamp(color.getGreen() + g, 0, 255), colorInc.getGreen());
-                            Assert.assertEquals(UtilMath.clamp(color.getBlue() + b, 0, 255), colorInc.getBlue());
+                            assertEquals(color.getAlpha(), colorInc.getAlpha());
+                            assertEquals(UtilMath.clamp(color.getRed() + r, 0, 255), colorInc.getRed());
+                            assertEquals(UtilMath.clamp(color.getGreen() + g, 0, 255), colorInc.getGreen());
+                            assertEquals(UtilMath.clamp(color.getBlue() + b, 0, 255), colorInc.getBlue());
                         }
                     }
                 }
@@ -117,16 +118,16 @@ public final class UtilColorTest
     @Test
     public void testOpaqueTransparentExclusive()
     {
-        Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLACK, ColorRgba.WHITE));
-        Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLUE.getRgba(), ColorRgba.RED.getRgba()));
+        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLACK, ColorRgba.WHITE));
+        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLUE.getRgba(), ColorRgba.RED.getRgba()));
 
-        Assert.assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.BLACK));
-        Assert.assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.OPAQUE));
-        Assert.assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.TRANSPARENT));
+        assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.BLACK));
+        assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.OPAQUE));
+        assertTrue(UtilColor.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.TRANSPARENT));
 
-        Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.BLACK));
-        Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.TRANSPARENT));
-        Assert.assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.OPAQUE));
+        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.BLACK));
+        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.TRANSPARENT));
+        assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.OPAQUE));
     }
 
     /**
@@ -135,22 +136,24 @@ public final class UtilColorTest
     @Test
     public void testFilterRgb()
     {
-        Assert.assertTrue(UtilColor.filterRgb(-16_711_423, 0, 0, 0) < 0);
-        Assert.assertTrue(UtilColor.filterRgb(0, 0, 0, 0) == 0);
-        Assert.assertTrue(UtilColor.filterRgb(16_711_935, 0, 0, 0) > 0);
-        Assert.assertTrue(UtilColor.filterRgb(5_000, 0, 0, 0) > 0);
-        Assert.assertFalse(UtilColor.filterRgb(0, 5_000, 0, 0) > 0);
-        Assert.assertFalse(UtilColor.filterRgb(0, 0, 5_000, 0) > 0);
-        Assert.assertFalse(UtilColor.filterRgb(0, 0, 0, 5_000) > 0);
-        Assert.assertTrue(UtilColor.filterRgb(-10_000, 0, -10_000_000, 0) < 0);
-        Assert.assertTrue(UtilColor.filterRgb(5_000, -100, -100, -100) > 0);
-        Assert.assertTrue(UtilColor.filterRgb(500_000, -100, -10_000, -100) > 0);
+        assertTrue(UtilColor.filterRgb(-16_711_423, 0, 0, 0) < 0);
+        assertTrue(UtilColor.filterRgb(0, 0, 0, 0) == 0);
+        assertTrue(UtilColor.filterRgb(16_711_935, 0, 0, 0) > 0);
+        assertTrue(UtilColor.filterRgb(5_000, 0, 0, 0) > 0);
+        assertFalse(UtilColor.filterRgb(0, 5_000, 0, 0) > 0);
+        assertFalse(UtilColor.filterRgb(0, 0, 5_000, 0) > 0);
+        assertFalse(UtilColor.filterRgb(0, 0, 0, 5_000) > 0);
+        assertTrue(UtilColor.filterRgb(-10_000, 0, -10_000_000, 0) < 0);
+        assertTrue(UtilColor.filterRgb(5_000, -100, -100, -100) > 0);
+        assertTrue(UtilColor.filterRgb(500_000, -100, -10_000, -100) > 0);
 
         final int filterRgb1 = UtilColor.filterRgb(0, -1, -1, -1);
-        Assert.assertTrue(filterRgb1 >= 0);
+
+        assertTrue(filterRgb1 >= 0);
 
         final int filterRgb2 = UtilColor.filterRgb(65_535, 0xFF_FF_FF, 0xFF_FF_FF, 0xFF_FF_FF);
-        Assert.assertTrue(filterRgb2 >= 0);
+
+        assertTrue(filterRgb2 >= 0);
     }
 
     /**
@@ -161,15 +164,15 @@ public final class UtilColorTest
     {
         final ImageBuffer surface = Graphics.createImageBuffer(2, 2, ColorRgba.TRANSPARENT);
 
-        Assert.assertEquals(ColorRgba.TRANSPARENT,
-                            UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
+        assertEquals(ColorRgba.TRANSPARENT,
+                     UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
 
         surface.setRgb(0, 0, ColorRgba.RED.getRgba());
         surface.setRgb(0, 1, ColorRgba.BLUE.getRgba());
         surface.setRgb(1, 0, ColorRgba.GREEN.getRgba());
         surface.setRgb(1, 1, ColorRgba.WHITE.getRgba());
 
-        Assert.assertEquals(new ColorRgba(127, 127, 127),
-                            UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
+        assertEquals(new ColorRgba(127, 127, 127),
+                     UtilColor.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
     }
 }

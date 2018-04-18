@@ -17,8 +17,13 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link ColorGradient}.
@@ -26,46 +31,38 @@ import org.junit.Test;
 public final class ColorGradientTest
 {
     /**
-     * Test gradient color.
+     * Test <code>null</code> first color.
      */
     @Test
-    public void testColorGradient()
+    public void testNullFirstColor()
     {
-        final ColorRgba color1 = ColorRgba.BLACK;
-        final ColorRgba color2 = ColorRgba.WHITE;
-
-        final int x1 = 1;
-        final int y1 = 2;
-        final int x2 = 3;
-        final int y2 = 4;
-        final ColorGradient color = new ColorGradient(x1, y1, color1, x2, y2, color2);
-
-        Assert.assertEquals(x1, color.getX1());
-        Assert.assertEquals(y1, color.getY1());
-        Assert.assertEquals(color1, color.getColor1());
-
-        Assert.assertEquals(x2, color.getX2());
-        Assert.assertEquals(y2, color.getY2());
-        Assert.assertEquals(color2, color.getColor2());
+        assertThrows(() -> new ColorGradient(0, 0, null, 0, 0, ColorRgba.BLACK), "Unexpected null argument !");
     }
 
     /**
-     * Test hash code.
+     * Test <code>null</code> last color.
      */
     @Test
-    public void testHashCode()
+    public void testNullLastColor()
     {
-        final int color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE).hashCode();
+        assertThrows(() -> new ColorGradient(0, 0, ColorRgba.BLACK, 0, 0, null), "Unexpected null argument !");
+    }
 
-        Assert.assertEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE).hashCode());
+    /**
+     * Test constructor.
+     */
+    @Test
+    public void testConstructor()
+    {
+        final ColorGradient color = new ColorGradient(1, 2, ColorRgba.BLACK, 3, 4, ColorRgba.WHITE);
 
-        Assert.assertNotEquals(color, new Object().hashCode());
-        Assert.assertNotEquals(color, new ColorGradient(1, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE).hashCode());
-        Assert.assertNotEquals(color, new ColorGradient(0, 0, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE).hashCode());
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.WHITE, 2, 3, ColorRgba.WHITE).hashCode());
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 0, 3, ColorRgba.WHITE).hashCode());
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 0, ColorRgba.WHITE).hashCode());
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.BLACK).hashCode());
+        assertEquals(1, color.getX1());
+        assertEquals(2, color.getY1());
+        assertEquals(ColorRgba.BLACK, color.getColor1());
+
+        assertEquals(3, color.getX2());
+        assertEquals(4, color.getY2());
+        assertEquals(ColorRgba.WHITE, color.getColor2());
     }
 
     /**
@@ -76,16 +73,35 @@ public final class ColorGradientTest
     {
         final ColorGradient color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE);
 
-        Assert.assertEquals(color, color);
-        Assert.assertEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
+        assertEquals(color, color);
+        assertEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
 
-        Assert.assertNotEquals(color, null);
-        Assert.assertNotEquals(color, new Object());
-        Assert.assertNotEquals(color, new ColorGradient(1, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
-        Assert.assertNotEquals(color, new ColorGradient(0, 0, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.WHITE, 2, 3, ColorRgba.WHITE));
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 0, 3, ColorRgba.WHITE));
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 0, ColorRgba.WHITE));
-        Assert.assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.BLACK));
+        assertNotEquals(color, null);
+        assertNotEquals(color, new Object());
+        assertNotEquals(color, new ColorGradient(1, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
+        assertNotEquals(color, new ColorGradient(0, 0, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
+        assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.WHITE, 2, 3, ColorRgba.WHITE));
+        assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 0, 3, ColorRgba.WHITE));
+        assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 0, ColorRgba.WHITE));
+        assertNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.BLACK));
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final ColorGradient color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE);
+
+        assertHashEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
+
+        assertHashNotEquals(color, new Object());
+        assertHashNotEquals(color, new ColorGradient(1, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
+        assertHashNotEquals(color, new ColorGradient(0, 0, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE));
+        assertHashNotEquals(color, new ColorGradient(0, 1, ColorRgba.WHITE, 2, 3, ColorRgba.WHITE));
+        assertHashNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 0, 3, ColorRgba.WHITE));
+        assertHashNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 0, ColorRgba.WHITE));
+        assertHashNotEquals(color, new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.BLACK));
     }
 }

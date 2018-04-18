@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Transform}.
@@ -30,7 +31,7 @@ public class TransformTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -39,7 +40,7 @@ public class TransformTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
@@ -55,12 +56,12 @@ public class TransformTest
         transform.scale(2.0, 3.0);
         transform.setInterpolation(true);
 
-        Assert.assertEquals(2.0, transform.getScaleX(), 0.1);
-        Assert.assertEquals(3.0, transform.getScaleY(), 0.1);
-        Assert.assertEquals(getInterpolation(transform.getInterpolation()), transform.getInterpolation());
+        assertEquals(2.0, transform.getScaleX());
+        assertEquals(3.0, transform.getScaleY());
+        assertEquals(getInterpolation(transform.getInterpolation()), transform.getInterpolation());
 
         transform.setInterpolation(false);
-        Assert.assertEquals(getInterpolation(transform.getInterpolation()), transform.getInterpolation());
+        assertEquals(getInterpolation(transform.getInterpolation()), transform.getInterpolation());
     }
 
     /**

@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
@@ -38,7 +40,7 @@ public final class TextTest
     /**
      * Setup test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -48,7 +50,7 @@ public final class TextTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         g.dispose();
@@ -81,17 +83,17 @@ public final class TextTest
         text.setLocation(1, 5);
         text.setText(VALUE);
 
-        Assert.assertEquals(12, text.getSize());
-        Assert.assertEquals(1, text.getLocationX());
-        Assert.assertEquals(5, text.getLocationY());
-        Assert.assertTrue(text.getWidth() == 0);
-        Assert.assertTrue(text.getHeight() == 0);
+        assertEquals(12, text.getSize());
+        assertEquals(1, text.getLocationX());
+        assertEquals(5, text.getLocationY());
+        assertTrue(text.getWidth() == 0);
+        assertTrue(text.getHeight() == 0);
 
         text.render(g);
         text.render(g);
 
-        Assert.assertTrue(text.getWidth() > 0);
-        Assert.assertTrue(text.getHeight() > 0);
+        assertTrue(text.getWidth() > 0);
+        assertTrue(text.getHeight() > 0);
     }
 
     /**

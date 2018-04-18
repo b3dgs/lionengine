@@ -74,7 +74,14 @@ public final class MediaMock implements Media
     @Override
     public OutputStream getOutputStream()
     {
-        return null;
+        return new OutputStream()
+        {
+            @Override
+            public void write(int b) throws IOException
+            {
+                throw new IOException("Unable to save image: ");
+            }
+        };
     }
 
     @Override

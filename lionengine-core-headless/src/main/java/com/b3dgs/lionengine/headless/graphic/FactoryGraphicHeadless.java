@@ -44,8 +44,10 @@ import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
 // CHECKSTYLE IGNORE LINE: ClassDataAbstractionCoupling
 public final class FactoryGraphicHeadless implements FactoryGraphic
 {
+    /** Reading image message. */
+    static final String ERROR_IMAGE_READING = "Error on reading image !";
     /** Save image message. */
-    private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
+    static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
 
     /**
      * Constructor.
@@ -118,8 +120,15 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     {
         Check.notNull(media);
 
-        final ImageHeader info = ImageInfo.get(media);
-        return new ImageBufferHeadless(info.getWidth(), info.getHeight(), Transparency.BITMASK);
+        try
+        {
+            final ImageHeader info = ImageInfo.get(media);
+            return new ImageBufferHeadless(info.getWidth(), info.getHeight(), Transparency.BITMASK);
+        }
+        catch (final LionEngineException exception)
+        {
+            throw new LionEngineException(exception, media, ERROR_IMAGE_READING);
+        }
     }
 
     @Override
@@ -236,7 +245,7 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+            throw new LionEngineException(exception, media, ERROR_IMAGE_SAVE);
         }
     }
 

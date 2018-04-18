@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
 import java.util.Locale;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 
@@ -48,7 +49,7 @@ public final class ImageFormatTest
     {
         for (final ImageFormat format : ImageFormat.values())
         {
-            Assert.assertEquals(format.name().toLowerCase(Locale.ENGLISH), format.toString());
+            assertEquals(format.name().toLowerCase(Locale.ENGLISH), format.toString());
         }
     }
 }

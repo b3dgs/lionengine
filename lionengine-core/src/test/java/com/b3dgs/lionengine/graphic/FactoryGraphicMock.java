@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.graphic;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
@@ -33,6 +34,9 @@ import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
  */
 public class FactoryGraphicMock implements FactoryGraphic
 {
+    /** Reading image message. */
+    static final String ERROR_IMAGE_READING = "Error on reading image !";
+
     /**
      * Create mock.
      */
@@ -84,8 +88,15 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public ImageBuffer getImageBuffer(Media media)
     {
-        final ImageHeader info = ImageInfo.get(media);
-        return new ImageBufferMock(info.getWidth(), info.getHeight());
+        try
+        {
+            final ImageHeader info = ImageInfo.get(media);
+            return new ImageBufferMock(info.getWidth(), info.getHeight());
+        }
+        catch (final LionEngineException exception)
+        {
+            throw new LionEngineException(exception, media, ERROR_IMAGE_READING);
+        }
     }
 
     @Override
@@ -138,14 +149,14 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public void saveImage(ImageBuffer image, Media media)
     {
-        media.getFile().getParentFile().mkdirs();
+        Optional.ofNullable(media.getFile()).ifPresent(folder -> folder.getParentFile().mkdirs());
         try (OutputStream output = media.getOutputStream())
         {
             UtilStream.copy(Medias.create("image.png").getInputStream(), output);
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception);
+            throw new LionEngineException(exception, media, "Unable to save image: ");
         }
     }
 

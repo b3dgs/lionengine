@@ -110,7 +110,7 @@ public final class FilterBlurTest
     public void testNoPixel()
     {
         final FilterBlur blur = new FilterBlur();
-        final ImageBuffer image = Graphics.createImageBuffer(0, 0);
+        final ImageBuffer image = Graphics.createImageBuffer(1, 1);
         final ImageBuffer filtered = blur.filter(image);
 
         Assert.assertNotNull(filtered);

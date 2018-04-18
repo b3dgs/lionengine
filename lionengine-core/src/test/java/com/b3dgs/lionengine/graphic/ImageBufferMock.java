@@ -34,15 +34,15 @@ public class ImageBufferMock implements ImageBuffer
     /**
      * Constructor.
      * 
-     * @param width The buffer width (must be positive).
-     * @param height The buffer height (must be positive).
+     * @param width The buffer width (must be strictly positive).
+     * @param height The buffer height (must be strictly positive).
      */
     public ImageBufferMock(int width, int height)
     {
         super();
 
-        Check.superiorOrEqual(width, 0);
-        Check.superiorOrEqual(height, 0);
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
 
         this.width = width;
         this.height = height;

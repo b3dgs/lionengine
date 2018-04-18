@@ -42,9 +42,9 @@ import com.b3dgs.lionengine.graphic.Transform;
 public final class FactoryGraphicAwt implements FactoryGraphic
 {
     /** Reading image message. */
-    private static final String ERROR_IMAGE_READING = "Error on reading image !";
+    static final String ERROR_IMAGE_READING = "Error on reading image !";
     /** Save image message. */
-    private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
+    static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
 
     /**
      * Constructor.
@@ -132,9 +132,9 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         {
             return new ImageBufferAwt(ToolsAwt.getImage(input));
         }
-        catch (final IOException exception)
+        catch (final LionEngineException | IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_IMAGE_READING);
+            throw new LionEngineException(exception, media, ERROR_IMAGE_READING);
         }
     }
 
@@ -212,7 +212,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+            throw new LionEngineException(exception, media, ERROR_IMAGE_SAVE);
         }
     }
 

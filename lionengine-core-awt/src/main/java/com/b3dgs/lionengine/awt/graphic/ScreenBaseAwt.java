@@ -74,10 +74,7 @@ class ScreenBaseAwt extends ScreenAwtAbstract
      */
     private JFrame initMainFrame()
     {
-        final String title = new StringBuilder().append(Engine.getProgramName())
-                                                .append(Constant.SPACE)
-                                                .append(Engine.getProgramVersion())
-                                                .toString();
+        final String title = getTitle();
         final JFrame jframe = new JFrame(title, conf);
         jframe.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jframe.addWindowListener(new WindowAdapter()
@@ -93,6 +90,25 @@ class ScreenBaseAwt extends ScreenAwtAbstract
         jframe.setIgnoreRepaint(true);
 
         return jframe;
+    }
+
+    /**
+     * Get screen title.
+     * 
+     * @return The screen title.
+     */
+    private static String getTitle()
+    {
+        final StringBuilder builder = new StringBuilder(Constant.BYTE_4);
+        if (Engine.isStarted())
+        {
+            builder.append(Engine.getProgramName()).append(Constant.SPACE).append(Engine.getProgramVersion());
+        }
+        else
+        {
+            builder.append(Constant.ENGINE_NAME).append(Constant.SPACE).append(Constant.ENGINE_VERSION);
+        }
+        return builder.toString();
     }
 
     /*

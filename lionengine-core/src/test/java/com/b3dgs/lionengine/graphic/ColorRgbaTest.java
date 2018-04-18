@@ -17,14 +17,15 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Medias;
 
 /**
  * Test {@link ColorRgba}.
@@ -32,58 +33,15 @@ import com.b3dgs.lionengine.Medias;
 public final class ColorRgbaTest
 {
     /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Medias.setLoadFromJar(ColorRgbaTest.class);
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Medias.setLoadFromJar(null);
-        Graphics.setFactoryGraphic(null);
-    }
-
-    /**
-     * Test the color failure cases.
-     * 
-     * @param r The red value.
-     * @param g The green value.
-     * @param b The blue value.
-     * @param a The alpha value.
-     */
-    private static void testColorFailure(int r, int g, int b, int a)
-    {
-        try
-        {
-            final ColorRgba color = new ColorRgba(r, g, b, a);
-            Assert.assertNotNull(color);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-    }
-
-    /**
      * Test negative value.
      */
     @Test
     public void testNegative()
     {
-        testColorFailure(-1, 0, 0, 0);
-        testColorFailure(0, -1, 0, 0);
-        testColorFailure(0, 0, -1, 0);
-        testColorFailure(0, 0, 0, -1);
+        assertThrows(() -> new ColorRgba(-1, 0, 0, 0), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new ColorRgba(0, -1, 0, 0), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new ColorRgba(0, 0, -1, 0), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new ColorRgba(0, 0, 0, -1), "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
@@ -92,14 +50,14 @@ public final class ColorRgbaTest
     @Test
     public void testOutOfRange()
     {
-        testColorFailure(Constant.UNSIGNED_BYTE, 0, 0, 0);
-        testColorFailure(0, Constant.UNSIGNED_BYTE, 0, 0);
-        testColorFailure(0, 0, Constant.UNSIGNED_BYTE, 0);
-        testColorFailure(0, 0, 0, Constant.UNSIGNED_BYTE);
+        assertThrows(() -> new ColorRgba(256, 0, 0, 0), "Invalid argument: 256 is not inferior or equal to 255");
+        assertThrows(() -> new ColorRgba(0, 256, 0, 0), "Invalid argument: 256 is not inferior or equal to 255");
+        assertThrows(() -> new ColorRgba(0, 0, 256, 0), "Invalid argument: 256 is not inferior or equal to 255");
+        assertThrows(() -> new ColorRgba(0, 0, 0, 256), "Invalid argument: 256 is not inferior or equal to 255");
     }
 
     /**
-     * Test rgba value constructor with color value.
+     * Test constructor with value.
      */
     @Test
     public void testConstructorValue()
@@ -109,11 +67,11 @@ public final class ColorRgbaTest
         {
             final ColorRgba color = new ColorRgba(i);
 
-            Assert.assertEquals(i, color.getRgba());
-            Assert.assertEquals(i >> Constant.BYTE_4 & 0xFF, color.getAlpha());
-            Assert.assertEquals(i >> Constant.BYTE_3 & 0xFF, color.getRed());
-            Assert.assertEquals(i >> Constant.BYTE_2 & 0xFF, color.getGreen());
-            Assert.assertEquals(i >> Constant.BYTE_1 & 0xFF, color.getBlue());
+            assertEquals(i, color.getRgba());
+            assertEquals(i >> Constant.BYTE_4 & 0xFF, color.getAlpha());
+            assertEquals(i >> Constant.BYTE_3 & 0xFF, color.getRed());
+            assertEquals(i >> Constant.BYTE_2 & 0xFF, color.getGreen());
+            assertEquals(i >> Constant.BYTE_1 & 0xFF, color.getBlue());
         }
     }
 
@@ -131,10 +89,10 @@ public final class ColorRgbaTest
                 {
                     final ColorRgba color = new ColorRgba(r, g, b);
 
-                    Assert.assertEquals(255, color.getAlpha());
-                    Assert.assertEquals(r, color.getRed());
-                    Assert.assertEquals(g, color.getGreen());
-                    Assert.assertEquals(b, color.getBlue());
+                    assertEquals(255, color.getAlpha());
+                    assertEquals(r, color.getRed());
+                    assertEquals(g, color.getGreen());
+                    assertEquals(b, color.getBlue());
                 }
             }
         }
@@ -157,25 +115,14 @@ public final class ColorRgbaTest
                     {
                         final ColorRgba color = new ColorRgba(r, g, b, a);
 
-                        Assert.assertEquals(a, color.getAlpha());
-                        Assert.assertEquals(r, color.getRed());
-                        Assert.assertEquals(g, color.getGreen());
-                        Assert.assertEquals(b, color.getBlue());
+                        assertEquals(a, color.getAlpha());
+                        assertEquals(r, color.getRed());
+                        assertEquals(g, color.getGreen());
+                        assertEquals(b, color.getBlue());
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Test hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        Assert.assertEquals(ColorRgba.BLACK.hashCode(), ColorRgba.BLACK.hashCode());
-        Assert.assertNotEquals(ColorRgba.WHITE.hashCode(), ColorRgba.BLACK.hashCode());
-        Assert.assertNotEquals(ColorRgba.WHITE.hashCode(), ColorRgba.class.hashCode());
     }
 
     /**
@@ -192,14 +139,28 @@ public final class ColorRgbaTest
             {
                 if (i != j)
                 {
-                    Assert.assertNotEquals(color, new ColorRgba(j));
+                    assertNotEquals(color, new ColorRgba(j));
                 }
             }
         }
-        Assert.assertEquals(ColorRgba.BLACK, ColorRgba.BLACK);
-        Assert.assertNotEquals(ColorRgba.WHITE, null);
-        Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
-        Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.class);
+
+        assertEquals(ColorRgba.BLACK, ColorRgba.BLACK);
+
+        assertNotEquals(ColorRgba.WHITE, null);
+        assertNotEquals(ColorRgba.WHITE, new Object());
+        assertNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        assertHashEquals(ColorRgba.BLACK, ColorRgba.BLACK);
+
+        assertHashNotEquals(ColorRgba.WHITE, new Object());
+        assertHashNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
     }
 
     /**
@@ -208,6 +169,6 @@ public final class ColorRgbaTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("ColorRgba [r=100, g=150, b=200, a=255]", new ColorRgba(100, 150, 200, 255).toString());
+        assertEquals("ColorRgba [r=100, g=150, b=200, a=255]", new ColorRgba(100, 150, 200, 255).toString());
     }
 }

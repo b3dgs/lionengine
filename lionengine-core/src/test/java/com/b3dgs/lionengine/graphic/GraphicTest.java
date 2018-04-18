@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.ViewerMock;
@@ -33,7 +36,7 @@ public class GraphicTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -42,7 +45,7 @@ public class GraphicTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
@@ -55,7 +58,8 @@ public class GraphicTest
     public void testEmptyGraphic()
     {
         final Graphic g = Graphics.createGraphic();
-        Assert.assertNull(g.getGraphic());
+
+        assertNull(g.getGraphic());
     }
 
     /**
@@ -67,7 +71,8 @@ public class GraphicTest
         final ImageBuffer image = Graphics.createImageBuffer(320, 240);
         final Graphic g = image.createGraphic();
 
-        Assert.assertNotNull(g.getGraphic());
+        assertNotNull(g.getGraphic());
+
         g.clear(0, 0, image.getWidth(), image.getHeight());
         g.copyArea(0, 0, image.getWidth(), image.getHeight(), 0, 0);
 
@@ -89,10 +94,12 @@ public class GraphicTest
         g.drawRect(0, 0, image.getWidth(), image.getHeight(), true);
         g.drawRect(0, 0, image.getWidth(), image.getHeight(), false);
 
-        Assert.assertEquals(ColorRgba.WHITE.getRgba(), g.getColor().getRgba());
+        assertEquals(ColorRgba.WHITE.getRgba(), g.getColor().getRgba());
+
         g.setColor(ColorRgba.BLUE);
         g.setColor(ColorRgba.BLUE);
-        Assert.assertEquals(ColorRgba.BLUE.getRgba(), g.getColor().getRgba());
+
+        assertEquals(ColorRgba.BLUE.getRgba(), g.getColor().getRgba());
 
         g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
         g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
@@ -109,7 +116,8 @@ public class GraphicTest
         g.dispose();
 
         g.setGraphic(null);
-        Assert.assertNull(g.getGraphic());
+
+        assertNull(g.getGraphic());
 
         image.dispose();
     }

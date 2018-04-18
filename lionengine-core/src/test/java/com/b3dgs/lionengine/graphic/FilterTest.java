@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.graphic.engine.FilterNone;
 
 /**
@@ -36,13 +36,13 @@ public final class FilterTest
     {
         final Transform transform = FilterNone.INSTANCE.getTransform(1.0, 1.0);
 
-        Assert.assertEquals(1.0, transform.getScaleX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transform.getScaleY(), UtilTests.PRECISION);
-        Assert.assertEquals(0, transform.getInterpolation());
+        assertEquals(1.0, transform.getScaleX());
+        assertEquals(1.0, transform.getScaleY());
+        assertEquals(0, transform.getInterpolation());
 
         transform.setInterpolation(true);
         transform.scale(0.0, 0.0);
 
-        Assert.assertEquals(0, transform.getInterpolation());
+        assertEquals(0, transform.getInterpolation());
     }
 }
