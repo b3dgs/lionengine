@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.graphic.GraphicTest;
@@ -33,7 +34,7 @@ public final class GraphicAwtTest extends GraphicTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
@@ -48,6 +49,6 @@ public final class GraphicAwtTest extends GraphicTest
         final GraphicAwt g = new GraphicAwt();
         g.setGraphic(g);
 
-        Assert.assertEquals(UtilReflection.getField(g, "g"), g.getGraphic());
+        assertEquals(UtilReflection.getField(g, "g"), g.getGraphic());
     }
 }

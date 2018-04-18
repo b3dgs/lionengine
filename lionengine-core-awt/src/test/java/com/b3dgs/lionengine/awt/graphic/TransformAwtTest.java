@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.awt.graphic;
 
 import java.awt.image.AffineTransformOp;
 
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -28,12 +28,12 @@ import com.b3dgs.lionengine.graphic.TransformTest;
 /**
  * Test {@link TransformAwt}.
  */
-public final class TransfortAwtTest extends TransformTest
+public final class TransformAwtTest extends TransformTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
