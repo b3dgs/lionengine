@@ -32,6 +32,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
@@ -50,7 +51,8 @@ public final class GraphicsTest
     @BeforeAll
     public static void setUp() throws IOException
     {
-        Medias.setLoadFromJar(GraphicTest.class);
+        Medias.setFactoryMedia(new FactoryMediaDefault());
+        Medias.setLoadFromJar(GraphicsTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
@@ -188,7 +190,7 @@ public final class GraphicsTest
     @Test
     public void testGetImageBufferFailureMedia()
     {
-        assertThrows(() -> Graphics.getImageBuffer(Medias.create("null")), "[null] Cannot open the media !");
+        assertThrows(() -> Graphics.getImageBuffer(Medias.create("null")), "[null] Error on reading image !");
     }
 
     /**
@@ -198,7 +200,7 @@ public final class GraphicsTest
     public void testGetImageBufferFailureWrongImage()
     {
         assertThrows(() -> Graphics.getImageBuffer(Medias.create("wrong_image.png")),
-                     "[wrong_image.png] Cannot open the media !");
+                     "[wrong_image.png] Error on reading image !");
     }
 
     /**
