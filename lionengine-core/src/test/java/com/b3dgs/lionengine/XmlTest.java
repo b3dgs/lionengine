@@ -467,11 +467,7 @@ public final class XmlTest
         assertThrows(() -> new Xml("child").save(Medias.create(Constant.EMPTY_STRING)),
                      "[] " + MediaDefault.ERROR_OPEN_MEDIA);
 
-        final File file = Files.createTempDirectory("foo").toFile();
-        assertThrows(() -> new Xml("child").save(Medias.create(file.getPath())),
-                     "[" + file + "] " + MediaDefault.ERROR_OPEN_MEDIA);
-
-        UtilFolder.deleteDirectory(file);
+        assertThrows(() -> new Xml("child").save(new MediaMock()), "[null] " + Xml.ERROR_WRITING);
     }
 
     /**
