@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.graphic.filter;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -33,25 +36,20 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 public final class FilterBlurTest
 {
-    /** Image media. */
-    private static Media media;
-
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setLoadFromJar(FilterBlurTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-
-        media = Medias.create("image.png");
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -64,6 +62,7 @@ public final class FilterBlurTest
     @Test
     public void testBlur()
     {
+        final Media media = Medias.create("image.png");
         final ImageBuffer image = Graphics.getImageBuffer(media);
         int i = 0;
         for (int y = 0; y < image.getHeight(); y++)
@@ -88,19 +87,22 @@ public final class FilterBlurTest
         final FilterBlur blur = new FilterBlur();
         final ImageBuffer filtered = blur.filter(image);
 
-        Assert.assertNotEquals(image, filtered);
-        Assert.assertNotNull(blur.getTransform(1.0, 1.0));
-        Assert.assertEquals(image.getWidth(), filtered.getWidth());
-        Assert.assertEquals(image.getHeight(), filtered.getHeight());
+        assertNotEquals(image, filtered);
+        assertNotNull(blur.getTransform(1.0, 1.0));
+        assertEquals(image.getWidth(), filtered.getWidth());
+        assertEquals(image.getHeight(), filtered.getHeight());
 
         blur.setAlpha(false);
-        Assert.assertNotNull(blur.filter(image));
+        assertNotNull(blur.filter(image));
 
         blur.setEdgeMode(FilterBlur.WRAP_EDGES);
-        Assert.assertNotNull(blur.filter(image));
+        assertNotNull(blur.filter(image));
 
         blur.setRadius(1.0f);
-        Assert.assertNotNull(blur.filter(image));
+        assertNotNull(blur.filter(image));
+
+        image.dispose();
+        filtered.dispose();
     }
 
     /**
@@ -113,9 +115,12 @@ public final class FilterBlurTest
         final ImageBuffer image = Graphics.createImageBuffer(1, 1);
         final ImageBuffer filtered = blur.filter(image);
 
-        Assert.assertNotNull(filtered);
-        Assert.assertEquals(image.getWidth(), filtered.getWidth());
-        Assert.assertEquals(image.getHeight(), filtered.getHeight());
+        assertNotNull(filtered);
+        assertEquals(image.getWidth(), filtered.getWidth());
+        assertEquals(image.getHeight(), filtered.getHeight());
+
+        image.dispose();
+        filtered.dispose();
     }
 
     /**
@@ -128,7 +133,10 @@ public final class FilterBlurTest
         final ImageBuffer image = Graphics.createImageBuffer(1, 1);
         final ImageBuffer filtered = blur.filter(image);
 
-        Assert.assertEquals(image, filtered);
+        assertEquals(image, filtered);
+
+        image.dispose();
+        filtered.dispose();
     }
 
     /**
@@ -141,7 +149,10 @@ public final class FilterBlurTest
         final ImageBuffer image = Graphics.createImageBuffer(1, 3);
         final ImageBuffer filtered = blur.filter(image);
 
-        Assert.assertEquals(image, filtered);
+        assertEquals(image, filtered);
+
+        image.dispose();
+        filtered.dispose();
     }
 
     /**
@@ -154,6 +165,9 @@ public final class FilterBlurTest
         final ImageBuffer image = Graphics.createImageBuffer(3, 1);
         final ImageBuffer filtered = blur.filter(image);
 
-        Assert.assertEquals(image, filtered);
+        assertEquals(image, filtered);
+
+        image.dispose();
+        filtered.dispose();
     }
 }

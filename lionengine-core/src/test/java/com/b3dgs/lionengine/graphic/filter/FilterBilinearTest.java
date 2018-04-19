@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.graphic.filter;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -33,25 +36,20 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 public final class FilterBilinearTest
 {
-    /** Image media. */
-    private static Media media;
-
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setLoadFromJar(FilterBilinearTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-
-        media = Medias.create("image.png");
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -64,6 +62,7 @@ public final class FilterBilinearTest
     @Test
     public void testBilinear()
     {
+        final Media media = Medias.create("image.png");
         final ImageBuffer image = Graphics.getImageBuffer(media);
         int i = 0;
         for (int y = 0; y < image.getHeight(); y++)
@@ -88,9 +87,12 @@ public final class FilterBilinearTest
         final FilterBilinear bilinear = new FilterBilinear();
         final ImageBuffer filtered = bilinear.filter(image);
 
-        Assert.assertNotEquals(image, filtered);
-        Assert.assertNotNull(bilinear.getTransform(1.0, 1.0));
-        Assert.assertEquals(image.getWidth(), filtered.getWidth());
-        Assert.assertEquals(image.getHeight(), filtered.getHeight());
+        assertNotEquals(image, filtered);
+        assertNotNull(bilinear.getTransform(1.0, 1.0));
+        assertEquals(image.getWidth(), filtered.getWidth());
+        assertEquals(image.getHeight(), filtered.getHeight());
+
+        image.dispose();
+        filtered.dispose();
     }
 }
