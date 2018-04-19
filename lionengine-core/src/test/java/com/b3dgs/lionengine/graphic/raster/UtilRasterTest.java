@@ -17,30 +17,31 @@
  */
 package com.b3dgs.lionengine.graphic.raster;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
- * Test {@link UtilColor}.
+ * Test {@link UtilRaster}.
  */
 public final class UtilRasterTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(UtilRasterTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -48,7 +49,7 @@ public final class UtilRasterTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -60,10 +61,10 @@ public final class UtilRasterTest
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(UtilRaster.class);
+        assertPrivateConstructor(UtilRaster.class);
     }
 
     /**
@@ -75,7 +76,8 @@ public final class UtilRasterTest
         final Media media = Medias.create("raster.xml");
         final Raster raster = Raster.load(media);
         final RasterData rasterData = raster.getRed();
-        Assert.assertTrue(UtilRaster.getRasterColor(0, rasterData, 2) > 0);
+
+        assertTrue(UtilRaster.getRasterColor(0, rasterData, 2) > 0);
 
         final RasterData data = new RasterData(rasterData.getStart(),
                                                rasterData.getStep(),
@@ -83,6 +85,7 @@ public final class UtilRasterTest
                                                rasterData.getAmplitude(),
                                                rasterData.getOffset(),
                                                1);
-        Assert.assertTrue(UtilRaster.getRasterColor(0, data, 2) < 0);
+
+        assertTrue(UtilRaster.getRasterColor(0, data, 2) < 0);
     }
 }

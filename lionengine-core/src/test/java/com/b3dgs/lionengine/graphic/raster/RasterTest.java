@@ -17,15 +17,17 @@
  */
 package com.b3dgs.lionengine.graphic.raster;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Medias;
 
 /**
@@ -33,28 +35,22 @@ import com.b3dgs.lionengine.Medias;
  */
 public final class RasterTest
 {
-    /** Raster. */
-    private static Media mediaRaster;
-    /** Raster error. */
-    private static Media mediaRasterError;
-
     /**
      * Prepare test.
      * 
      * @throws IOException If error.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws IOException
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(RasterTest.class);
-        mediaRaster = Medias.create("raster.xml");
-        mediaRasterError = Medias.create("raster_error.xml");
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -71,9 +67,9 @@ public final class RasterTest
         final RasterData blue = new RasterData(0, 0, 0, 0, 0, 0);
         final Raster raster = new Raster(red, green, blue);
 
-        Assert.assertEquals(red, raster.getRed());
-        Assert.assertEquals(green, raster.getGreen());
-        Assert.assertEquals(blue, raster.getBlue());
+        assertEquals(red, raster.getRed());
+        assertEquals(green, raster.getGreen());
+        assertEquals(blue, raster.getBlue());
     }
 
     /**
@@ -85,14 +81,14 @@ public final class RasterTest
         final RasterData raster = new RasterData(0, 0, 0, 0, 0, 0);
         final RasterColor color = RasterColor.load(raster, 0, 0, false);
 
-        Assert.assertEquals(0, color.getStart());
-        Assert.assertEquals(0, color.getEnd());
+        assertEquals(0, color.getStart());
+        assertEquals(0, color.getEnd());
 
         final RasterData raster2 = new RasterData(200, 10, 10, 100, 10, 0);
         final RasterColor color2 = RasterColor.load(raster2, 0, 90, false);
 
-        Assert.assertEquals(130, color2.getStart());
-        Assert.assertEquals(130, color2.getEnd());
+        assertEquals(130, color2.getStart());
+        assertEquals(130, color2.getEnd());
     }
 
     /**
@@ -104,14 +100,14 @@ public final class RasterTest
         final RasterData raster = new RasterData(200, 10, 10, 100, 10, 0);
         final RasterColor color = RasterColor.load(raster, 0, 90, true);
 
-        Assert.assertEquals(130, color.getStart());
-        Assert.assertEquals(120, color.getEnd());
+        assertEquals(130, color.getStart());
+        assertEquals(120, color.getEnd());
 
         final RasterData raster2 = new RasterData(200, 10, 10, 100, 10, 0);
         final RasterColor color2 = RasterColor.load(raster2, 1, 90, true);
 
-        Assert.assertEquals(160, color2.getStart());
-        Assert.assertEquals(170, color2.getEnd());
+        assertEquals(160, color2.getStart());
+        assertEquals(170, color2.getEnd());
     }
 
     /**
@@ -120,15 +116,15 @@ public final class RasterTest
     @Test
     public void testLoad()
     {
-        Assert.assertNotNull(Raster.load(mediaRaster));
+        assertNotNull(Raster.load(Medias.create("raster.xml")));
     }
 
     /**
      * Test load failure.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testLoadFailure()
     {
-        Assert.assertNotNull(Raster.load(mediaRasterError));
+        assertThrows(() -> Raster.load(Medias.create("raster_error.xml")), "Node not found: Red");
     }
 }
