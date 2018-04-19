@@ -238,6 +238,17 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code expected} and {@code actual} are equal. If both are {@code null}, they are considered equal.
+     * 
+     * @param expected The excepted iterable.
+     * @param actual The actual iterable.
+     */
+    public static void assertIterableEquals(Iterable<?> expected, Iterable<?> actual)
+    {
+        Assertions.assertIterableEquals(expected, actual);
+    }
+
+    /**
      * Asserts that {@code expected} and {@code actual} are not equal. Fails if both are <code>null</code>.
      * 
      * @param expected The excepted integer.

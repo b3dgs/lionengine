@@ -21,7 +21,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 
 /**
@@ -54,7 +53,7 @@ public final class UtilTests
         try
         {
             UtilReflection.setAccessible(constructor, true);
-            Assert.assertNull(constructor.newInstance(args));
+            Assertions.assertNull(constructor.newInstance(args));
         }
         catch (final InvocationTargetException exception)
         {
@@ -88,8 +87,8 @@ public final class UtilTests
         UtilReflection.setAccessible(method, true);
         for (final T value : type.getEnumConstants())
         {
-            Assert.assertNotNull(value);
-            Assert.assertEquals(value, method.invoke(type, value.name()));
+            Assertions.assertNotNull(value);
+            Assertions.assertEquals(value, method.invoke(type, value.name()));
         }
     }
 

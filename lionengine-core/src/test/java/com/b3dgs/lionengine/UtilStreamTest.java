@@ -17,19 +17,21 @@
  */
 package com.b3dgs.lionengine;
 
-import java.io.File;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.io.InputStreamMock;
 import com.b3dgs.lionengine.io.OutputStreamMock;
@@ -42,33 +44,31 @@ public final class UtilStreamTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(UtilStreamTest.class);
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
     }
-
-    /** Temp folder. */
-    @Rule public final TemporaryFolder TEMP = new TemporaryFolder();
 
     /**
      * Test constructor.
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(UtilStream.class);
+        assertPrivateConstructor(UtilStream.class);
     }
 
     /**
@@ -79,11 +79,11 @@ public final class UtilStreamTest
     @Test
     public void testCopy() throws IOException
     {
-        final File temp1 = File.createTempFile("temp", ".tmp");
-        final File temp2 = File.createTempFile("temp", ".tmp");
+        final Path temp1 = Files.createTempFile("temp", ".tmp");
+        final Path temp2 = Files.createTempFile("temp", ".tmp");
 
-        try (InputStream input = new FileInputStream(temp1);
-             OutputStream output = new FileOutputStream(temp2))
+        try (InputStream input = new FileInputStream(temp1.toFile());
+             OutputStream output = new FileOutputStream(temp2.toFile()))
         {
             output.write(1);
             output.flush();
@@ -91,8 +91,8 @@ public final class UtilStreamTest
         }
         finally
         {
-            Assert.assertTrue(temp1.delete());
-            Assert.assertTrue(temp2.delete());
+            Files.delete(temp1);
+            Files.delete(temp2);
         }
     }
 
@@ -101,12 +101,12 @@ public final class UtilStreamTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCopyNullInput() throws IOException
     {
         try (OutputStream output = new OutputStreamMock())
         {
-            UtilStream.copy(null, output);
+            assertThrows(() -> UtilStream.copy(null, output), Check.ERROR_NULL);
         }
     }
 
@@ -115,12 +115,12 @@ public final class UtilStreamTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCopyNullOutput() throws IOException
     {
         try (InputStream input = new InputStreamMock())
         {
-            UtilStream.copy(input, null);
+            assertThrows(() -> UtilStream.copy(input, null), Check.ERROR_NULL);
         }
     }
 
@@ -134,9 +134,9 @@ public final class UtilStreamTest
     {
         try (InputStream input = new InputStreamMock())
         {
-            Assert.assertTrue(UtilStream.getCopy("te", input).delete());
-            Assert.assertTrue(UtilStream.getCopy("temp", input).delete());
-            Assert.assertTrue(UtilStream.getCopy("temp.tmp", input).delete());
+            assertTrue(UtilStream.getCopy("te", input).delete());
+            assertTrue(UtilStream.getCopy("temp", input).delete());
+            assertTrue(UtilStream.getCopy("temp.tmp", input).delete());
         }
     }
 
@@ -145,12 +145,12 @@ public final class UtilStreamTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetCopyNullName() throws IOException
     {
         try (InputStream input = new InputStreamMock())
         {
-            Assert.assertNull(UtilStream.getCopy(null, input));
+            assertThrows(() -> UtilStream.getCopy(null, input), Check.ERROR_NULL);
         }
     }
 
@@ -159,25 +159,25 @@ public final class UtilStreamTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetCopyNullStream() throws IOException
     {
-        Assert.assertNull(UtilStream.getCopy("temp", null));
+        assertThrows(() -> UtilStream.getCopy("temp", null), Check.ERROR_NULL);
     }
 
     /**
      * Test get copy error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetCopyError()
     {
-        UtilStream.getCopy("copy", new InputStream()
+        assertThrows(() -> UtilStream.getCopy("copy", new InputStream()
         {
             @Override
             public int read() throws IOException
             {
                 throw new IOException();
             }
-        });
+        }), UtilStream.ERROR_TEMP_FILE + "copy");
     }
 }

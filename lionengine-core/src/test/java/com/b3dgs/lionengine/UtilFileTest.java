@@ -17,19 +17,25 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertIterableEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilFile}.
@@ -39,33 +45,31 @@ public final class UtilFileTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(UtilFileTest.class);
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
     }
-
-    /** Temp folder. */
-    @Rule public final TemporaryFolder TEMP = new TemporaryFolder();
 
     /**
      * Test constructor.
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(UtilFile.class);
+        assertPrivateConstructor(UtilFile.class);
     }
 
     /**
@@ -74,18 +78,18 @@ public final class UtilFileTest
     @Test
     public void testRemoveExtension()
     {
-        Assert.assertEquals("temp", UtilFile.removeExtension("temp.tmp"));
-        Assert.assertEquals("temp", UtilFile.removeExtension("temp."));
-        Assert.assertEquals("temp", UtilFile.removeExtension("temp"));
+        assertEquals("temp", UtilFile.removeExtension("temp.tmp"));
+        assertEquals("temp", UtilFile.removeExtension("temp."));
+        assertEquals("temp", UtilFile.removeExtension("temp"));
     }
 
     /**
      * Test remove extension <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testRemoveExtensionNull()
     {
-        Assert.assertNull(UtilFile.removeExtension(null));
+        assertThrows(() -> UtilFile.removeExtension(null), Check.ERROR_NULL);
     }
 
     /**
@@ -94,29 +98,29 @@ public final class UtilFileTest
     @Test
     public void testNormalizeExtension()
     {
-        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "tmp"));
-        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", ".tmp"));
-        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "..tmp"));
-        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp.tmp", ".tmp"));
-        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp.txt", ".tmp"));
+        assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "tmp"));
+        assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", ".tmp"));
+        assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "..tmp"));
+        assertEquals("temp.tmp", UtilFile.normalizeExtension("temp.tmp", ".tmp"));
+        assertEquals("temp.tmp", UtilFile.normalizeExtension("temp.txt", ".tmp"));
     }
 
     /**
      * Test normalized extension with <code>null</code> file.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNormalizeExtensionNullFile()
     {
-        Assert.assertNull(UtilFile.normalizeExtension(null, ""));
+        assertThrows(() -> UtilFile.normalizeExtension(null, ""), Check.ERROR_NULL);
     }
 
     /**
      * Test normalized extension with <code>null</code> extension.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNormalizeExtensionNullExtension()
     {
-        Assert.assertNull(UtilFile.normalizeExtension("", null));
+        assertThrows(() -> UtilFile.normalizeExtension("", null), Check.ERROR_NULL);
     }
 
     /**
@@ -125,21 +129,21 @@ public final class UtilFileTest
     @Test
     public void testGetExtension()
     {
-        Assert.assertEquals("", UtilFile.getExtension("tmp"));
-        Assert.assertEquals("tmp", UtilFile.getExtension(".tmp"));
-        Assert.assertEquals("tmp", UtilFile.getExtension("temp.tmp"));
-        Assert.assertEquals("t", UtilFile.getExtension("temp.t"));
-        Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("temp."));
-        Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("temp"));
+        assertEquals("", UtilFile.getExtension("tmp"));
+        assertEquals("tmp", UtilFile.getExtension(".tmp"));
+        assertEquals("tmp", UtilFile.getExtension("temp.tmp"));
+        assertEquals("t", UtilFile.getExtension("temp.t"));
+        assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("temp."));
+        assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("temp"));
     }
 
     /**
      * Test get extension <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetExtensionNull()
     {
-        Assert.assertNull(UtilFile.getExtension((String) null));
+        assertThrows(() -> UtilFile.getExtension((String) null), Check.ERROR_NULL);
     }
 
     /**
@@ -148,19 +152,19 @@ public final class UtilFileTest
     @Test
     public void testGetExtensionFile()
     {
-        Assert.assertEquals("tmp", UtilFile.getExtension(new File("temp.tmp")));
-        Assert.assertEquals("t", UtilFile.getExtension(new File("toto", "temp.t")));
-        Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension(new File("temp.")));
-        Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension(new File("temp")));
+        assertEquals("tmp", UtilFile.getExtension(new File("temp.tmp")));
+        assertEquals("t", UtilFile.getExtension(new File("toto", "temp.t")));
+        assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension(new File("temp.")));
+        assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension(new File("temp")));
     }
 
     /**
      * Test get extension file <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetExtensionFileNull()
     {
-        Assert.assertNull(UtilFile.getExtension((File) null));
+        assertThrows(() -> UtilFile.getExtension((File) null), Check.ERROR_NULL);
     }
 
     /**
@@ -171,21 +175,21 @@ public final class UtilFileTest
     @Test
     public void testGetFiles() throws IOException
     {
-        final File folder = TEMP.newFolder("temp");
-        final File file1 = File.createTempFile("temp", ".tmp", folder);
-        final File file2 = File.createTempFile("temp", ".tmp", folder);
-        final File dir = folder;
+        final Path folder = Files.createTempDirectory("temp");
+        final Path file1 = Files.createTempFile(folder, "temp", ".tmp");
+        final Path file2 = Files.createTempFile(folder, "temp", ".tmp");
+        final File dir = folder.toFile();
 
         final List<File> found = new ArrayList<>(UtilFile.getFiles(dir));
-        final List<File> expected = Arrays.asList(file1, file2);
+        final List<File> expected = Arrays.asList(file1.toFile(), file2.toFile());
         Collections.sort(found);
         Collections.sort(expected);
 
-        Assert.assertEquals(expected, found);
+        assertEquals(expected, found);
 
-        Assert.assertTrue(file1.delete());
-        Assert.assertTrue(file2.delete());
-        Assert.assertTrue(dir.delete());
+        Files.delete(file1);
+        Files.delete(file2);
+        Files.delete(folder);
     }
 
     /**
@@ -193,10 +197,10 @@ public final class UtilFileTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetFilesError() throws IOException
     {
-        Assert.assertNull(UtilFile.getFiles(new File("void")));
+        assertThrows(() -> UtilFile.getFiles(new File("void")), UtilFile.ERROR_DIRECTORY + "void");
     }
 
     /**
@@ -204,10 +208,10 @@ public final class UtilFileTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetFilesNull() throws IOException
     {
-        Assert.assertNull(UtilFile.getFiles(new File("void")
+        assertThrows(() -> UtilFile.getFiles(new File("void")
         {
             private static final long serialVersionUID = 1L;
 
@@ -222,7 +226,7 @@ public final class UtilFileTest
             {
                 return null;
             }
-        }));
+        }), UtilFile.ERROR_DIRECTORY + "void");
     }
 
     /**
@@ -233,28 +237,27 @@ public final class UtilFileTest
     @Test
     public void testGetFilesByExtension() throws IOException
     {
-        Assert.assertTrue(UtilFile.getFilesByExtension(new File("void"), "txt").isEmpty());
+        assertTrue(UtilFile.getFilesByExtension(new File("void"), "txt").isEmpty());
 
-        final File folder = TEMP.newFolder("temp");
-        final File file1 = File.createTempFile("temp", ".tmp", folder);
-        final File file2 = File.createTempFile("temp", ".txt", folder);
+        final Path folder = Files.createTempDirectory("temp");
+        final Path file1 = Files.createTempFile(folder, "temp", ".tmp");
+        final Path file2 = Files.createTempFile(folder, "temp", ".txt");
 
-        final TemporaryFolder tempFolder = new TemporaryFolder(folder);
-        tempFolder.create();
-        final File folder2 = tempFolder.newFolder("temp");
-        final File file3 = File.createTempFile("temp", ".txt", folder2);
+        final Path folder2 = Files.createTempDirectory(folder, "temp");
+        final Path file3 = Files.createTempFile(folder2, "temp", ".txt");
 
-        final List<File> expected = Arrays.asList(file2, file3);
-        final List<File> result = UtilFile.getFilesByExtension(folder, "txt");
+        final List<File> expected = Arrays.asList(file2.toFile(), file3.toFile());
+        final List<File> result = UtilFile.getFilesByExtension(folder.toFile(), "txt");
         Collections.sort(expected);
         Collections.sort(result);
 
-        Assert.assertEquals(expected, result);
+        assertIterableEquals(expected, result);
 
-        Assert.assertTrue(file1.delete());
-        Assert.assertTrue(file2.delete());
-        Assert.assertTrue(file3.delete());
-        Assert.assertTrue(folder2.delete());
+        Files.delete(file1);
+        Files.delete(file2);
+        Files.delete(file3);
+        Files.delete(folder2);
+        Files.delete(folder);
     }
 
     /**
@@ -265,23 +268,23 @@ public final class UtilFileTest
     @Test
     public void testGetFilesByName() throws IOException
     {
-        Assert.assertTrue(UtilFile.getFilesByName(new File("void"), "name").isEmpty());
+        assertTrue(UtilFile.getFilesByName(new File("void"), "name").isEmpty());
 
-        final File folder = TEMP.newFolder("temp");
-        final File file1 = File.createTempFile("temp", ".tmp", folder);
-        final File file2 = File.createTempFile("temp", ".tmp", folder);
+        final Path folder = Files.createTempDirectory("temp");
+        final Path file1 = Files.createTempFile(folder, "temp", ".tmp");
+        final Path file2 = Files.createTempFile(folder, "temp", ".txt");
 
-        final TemporaryFolder tempFolder = new TemporaryFolder(folder);
-        tempFolder.create();
-        final File folder2 = tempFolder.newFolder("temp");
-        final File file3 = File.createTempFile("temp", ".tmp", folder2);
+        final Path folder2 = Files.createTempDirectory("temp");
+        final Path file3 = Files.createTempFile(folder2, "temp", ".tmp");
 
-        Assert.assertEquals(Arrays.asList(file2), UtilFile.getFilesByName(folder, file2.getName()));
+        assertIterableEquals(Arrays.asList(file2.toFile()),
+                             UtilFile.getFilesByName(folder.toFile(), file2.toFile().getName()));
 
-        Assert.assertTrue(file1.delete());
-        Assert.assertTrue(file2.delete());
-        Assert.assertTrue(file3.delete());
-        Assert.assertTrue(folder2.delete());
+        Files.delete(file1);
+        Files.delete(file2);
+        Files.delete(file3);
+        Files.delete(folder);
+        Files.delete(folder2);
     }
 
     /**
@@ -292,10 +295,13 @@ public final class UtilFileTest
     @Test
     public void testDeleteFile() throws IOException
     {
-        final File file = File.createTempFile("temp", ".tmp");
-        Assert.assertTrue(file.exists());
+        final File file = Files.createTempFile("temp", ".tmp").toFile();
+
+        assertTrue(file.exists());
+
         UtilFile.deleteFile(file);
-        Assert.assertFalse(file.exists());
+
+        assertFalse(file.exists());
     }
 
     /**
@@ -303,10 +309,11 @@ public final class UtilFileTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testDeleteFileError() throws IOException
     {
-        UtilFile.deleteFile(new File("void"));
+        assertThrows(() -> UtilFile.deleteFile(new File("void")),
+                     UtilFile.ERROR_DELETE_FILE + new File("void").getAbsolutePath());
     }
 
     /**
@@ -317,20 +324,19 @@ public final class UtilFileTest
     @Test
     public void testExists() throws IOException
     {
-        Assert.assertFalse(UtilFile.exists(null));
+        assertFalse(UtilFile.exists(null));
 
-        final File folder = TEMP.newFolder("temp");
-        final File file = File.createTempFile("temp", ".tmp", folder);
-        final File dir = folder;
+        final Path folder = Files.createTempDirectory("temp");
+        final Path file = Files.createTempFile(folder, "temp", ".tmp");
 
-        Assert.assertTrue(UtilFile.exists(dir.getPath()));
-        Assert.assertTrue(UtilFile.exists(file.getPath()));
+        assertTrue(UtilFile.exists(folder.toFile().getPath()));
+        assertTrue(UtilFile.exists(file.toFile().getPath()));
 
-        Assert.assertTrue(file.delete());
-        Assert.assertTrue(dir.delete());
+        Files.delete(file);
+        Files.delete(folder);
 
-        Assert.assertFalse(UtilFile.exists(dir.getPath()));
-        Assert.assertFalse(UtilFile.exists(file.getPath()));
+        assertFalse(UtilFile.exists(folder.toFile().getPath()));
+        assertFalse(UtilFile.exists(file.toFile().getPath()));
     }
 
     /**
@@ -341,13 +347,13 @@ public final class UtilFileTest
     @Test
     public void testIsFile() throws IOException
     {
-        Assert.assertFalse(UtilFile.isFile(null));
+        assertFalse(UtilFile.isFile(null));
 
-        final File file = File.createTempFile("temp", ".tmp");
+        final File file = Files.createTempFile("temp", ".tmp").toFile();
 
-        Assert.assertTrue(UtilFile.isFile(file.getPath()));
-        Assert.assertTrue(file.delete());
-        Assert.assertFalse(UtilFile.isFile(file.getPath()));
+        assertTrue(UtilFile.isFile(file.getPath()));
+        assertTrue(file.delete());
+        assertFalse(UtilFile.isFile(file.getPath()));
     }
 
     /**
@@ -356,10 +362,10 @@ public final class UtilFileTest
     @Test
     public void testIsType()
     {
-        Assert.assertFalse(UtilFile.isType(null, Constant.EMPTY_STRING));
-        Assert.assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));
-        Assert.assertFalse(UtilFile.isType(new File(System.getProperty("java.io.tmpdir")), Constant.EMPTY_STRING));
-        Assert.assertTrue(UtilFile.isType(Medias.create("file").getFile(), Constant.EMPTY_STRING));
-        Assert.assertTrue(UtilFile.isType(Medias.create("file1.txt").getFile(), "txt"));
+        assertFalse(UtilFile.isType(null, Constant.EMPTY_STRING));
+        assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));
+        assertFalse(UtilFile.isType(new File(System.getProperty("java.io.tmpdir")), Constant.EMPTY_STRING));
+        assertTrue(UtilFile.isType(Medias.create("file").getFile(), Constant.EMPTY_STRING));
+        assertTrue(UtilFile.isType(Medias.create("file1.txt").getFile(), "txt"));
     }
 }

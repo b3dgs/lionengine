@@ -36,9 +36,9 @@ import java.util.Optional;
 public final class UtilFile
 {
     /** Error directory. */
-    private static final String ERROR_DIRECTORY = "Not a directory: ";
+    static final String ERROR_DIRECTORY = "Not a directory: ";
     /** Error delete file. */
-    private static final String ERROR_DELETE_FILE = "File not deleted: ";
+    static final String ERROR_DELETE_FILE = "File not deleted: ";
 
     /**
      * Get the file name without its extension.

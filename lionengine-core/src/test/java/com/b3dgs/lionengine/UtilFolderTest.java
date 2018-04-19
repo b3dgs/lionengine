@@ -17,18 +17,22 @@
  */
 package com.b3dgs.lionengine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link UtilFolder}.
@@ -38,33 +42,31 @@ public final class UtilFolderTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(UtilFolderTest.class);
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
     }
-
-    /** Temp folder. */
-    @Rule public final TemporaryFolder TEMP = new TemporaryFolder();
 
     /**
      * Test the constructor.
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(UtilFolder.class);
+        assertPrivateConstructor(UtilFolder.class);
     }
 
     /**
@@ -73,7 +75,7 @@ public final class UtilFolderTest
     @Test
     public void testGetPath()
     {
-        Assert.assertEquals("a" + File.separator + "b" + File.separator + "c", UtilFolder.getPath("a", "b", "c"));
+        assertEquals("a" + File.separator + "b" + File.separator + "c", UtilFolder.getPath("a", "b", "c"));
     }
 
     /**
@@ -82,9 +84,9 @@ public final class UtilFolderTest
     @Test
     public void testGetPathSeparator()
     {
-        Assert.assertEquals("this%path%next", UtilFolder.getPathSeparator("%", "this", "path", "next"));
-        Assert.assertEquals("this%path%next", UtilFolder.getPathSeparator("%", "this%", "path%", "next"));
-        Assert.assertEquals("this%path%", UtilFolder.getPathSeparator("%", "this%", "path%", null, ""));
+        assertEquals("this%path%next", UtilFolder.getPathSeparator("%", "this", "path", "next"));
+        assertEquals("this%path%next", UtilFolder.getPathSeparator("%", "this%", "path%", "next"));
+        assertEquals("this%path%", UtilFolder.getPathSeparator("%", "this%", "path%", null, ""));
     }
 
     /**
@@ -95,47 +97,37 @@ public final class UtilFolderTest
     @Test
     public void testGetDirectories() throws IOException
     {
-        final File dir = TEMP.newFolder("temp");
-        final File file = File.createTempFile("temp", ".tmp", dir);
+        final Path dir = Files.createTempDirectory("temp");
+        final Path file = Files.createTempFile(dir, "temp", ".tmp");
         final List<File> expected = new ArrayList<>();
         for (int i = 0; i < 5; i++)
         {
-            final TemporaryFolder folder = new TemporaryFolder(dir);
-            folder.create();
-            expected.add(folder.getRoot());
+            expected.add(Files.createTempDirectory(dir, "temp").toFile());
         }
         Collections.sort(expected);
 
-        final List<File> found = UtilFolder.getDirectories(dir);
+        final List<File> found = UtilFolder.getDirectories(dir.toFile());
         Collections.sort(found);
 
-        Assert.assertEquals(expected, found);
+        assertEquals(expected, found);
 
-        Assert.assertTrue(file.delete());
+        Files.delete(file);
+
         for (final File current : expected)
         {
-            Assert.assertTrue(current.delete());
+            assertTrue(current.delete());
         }
-        Assert.assertTrue(dir.delete());
+
+        Files.delete(dir);
     }
 
     /**
      * Test the get directories from wrong path.
-     * 
-     * @throws IOException If error.
      */
     @Test
-    public void testGetDirectoriesError() throws IOException
+    public void testGetDirectoriesError()
     {
-        final File dir = TEMP.newFolder("temp");
-        try
-        {
-            Assert.assertTrue(UtilFolder.getDirectories(new File("null")).isEmpty());
-        }
-        finally
-        {
-            Assert.assertTrue(dir.delete());
-        }
+        assertTrue(UtilFolder.getDirectories(new File("null")).isEmpty());
     }
 
     /**
@@ -146,19 +138,19 @@ public final class UtilFolderTest
     @Test
     public void testDeleteDirectory() throws IOException
     {
-        final File directory = TEMP.newFolder("temp");
-        final File file = File.createTempFile("temp", ".tmp", directory);
-        final File dir1 = File.createTempFile("temp", ".tmp", directory);
+        final Path directory = Files.createTempDirectory("temp");
+        final Path file = Files.createTempFile(directory, "temp", ".tmp");
+        final Path dir1 = Files.createTempFile(directory, "temp", ".tmp");
 
-        Assert.assertTrue(directory.exists());
-        Assert.assertTrue(file.exists());
-        Assert.assertTrue(dir1.exists());
+        assertTrue(Files.exists(directory));
+        assertTrue(Files.exists(file));
+        assertTrue(Files.exists(dir1));
 
-        UtilFolder.deleteDirectory(directory);
+        UtilFolder.deleteDirectory(directory.toFile());
 
-        Assert.assertFalse(directory.exists());
-        Assert.assertFalse(file.exists());
-        Assert.assertFalse(dir1.exists());
+        assertTrue(Files.notExists(directory));
+        assertTrue(Files.notExists(file));
+        assertTrue(Files.notExists(dir1));
     }
 
     /**
@@ -244,12 +236,14 @@ public final class UtilFolderTest
     @Test
     public void testIsDirectory() throws IOException
     {
-        Assert.assertFalse(UtilFolder.isDirectory(null));
+        assertFalse(UtilFolder.isDirectory(null));
 
-        final File dir = TEMP.newFolder("temp");
+        final Path dir = Files.createTempDirectory("temp");
 
-        Assert.assertTrue(UtilFolder.isDirectory(dir.getPath()));
-        Assert.assertTrue(dir.delete());
-        Assert.assertFalse(UtilFolder.isDirectory(dir.getPath()));
+        assertTrue(UtilFolder.isDirectory(dir.toFile().getPath()));
+
+        Files.delete(dir);
+
+        assertFalse(UtilFolder.isDirectory(dir.toFile().getPath()));
     }
 }

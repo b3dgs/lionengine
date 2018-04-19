@@ -33,7 +33,7 @@ import java.io.OutputStream;
 public final class UtilStream
 {
     /** Error temporary file. */
-    private static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
+    static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
     /** Temporary file prefix. */
     private static final String PREFIX_TEMP = "temp";
     /** Copy buffer. */
