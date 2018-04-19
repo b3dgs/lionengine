@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.headless.graphic;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,11 +37,9 @@ public final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
 {
     /**
      * Prepare test.
-     * 
-     * @throws IOException If error.
      */
     @BeforeAll
-    public static void setUp() throws IOException
+    public static void setUp()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(FactoryGraphicHeadlessTest.class);

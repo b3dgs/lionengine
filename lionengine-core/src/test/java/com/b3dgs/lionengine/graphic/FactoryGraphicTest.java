@@ -23,8 +23,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -45,11 +43,9 @@ public class FactoryGraphicTest
 {
     /**
      * Prepare test.
-     * 
-     * @throws IOException If error.
      */
     @BeforeAll
-    public static void setUp() throws IOException
+    public static void setUp()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -239,6 +235,7 @@ public class FactoryGraphicTest
     public void testApplyMask()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final ImageBuffer mask = Graphics.applyMask(image, ColorRgba.BLACK);
 
         assertNotEquals(image, mask);
@@ -273,6 +270,7 @@ public class FactoryGraphicTest
     public void testResize()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final ImageBuffer resized = Graphics.resize(image, 1, 2);
 
         assertNotEquals(image, resized);
@@ -290,6 +288,7 @@ public class FactoryGraphicTest
     public void testFlipHorizontal()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final ImageBuffer horizontal = Graphics.flipHorizontal(image);
 
         assertNotEquals(image, horizontal);
@@ -307,6 +306,7 @@ public class FactoryGraphicTest
     public void testFlipVertical()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final ImageBuffer vertical = Graphics.flipVertical(image);
 
         assertNotEquals(image, vertical);
@@ -324,6 +324,7 @@ public class FactoryGraphicTest
     public void testSplitImage()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final ImageBuffer[] split = Graphics.splitImage(image, 2, 2);
 
         for (final ImageBuffer img1 : split)
@@ -352,6 +353,7 @@ public class FactoryGraphicTest
     public void testSaveImage()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final Media mediaSave = Medias.create("image_save.png");
 
         Graphics.saveImage(image, mediaSave);
@@ -382,6 +384,7 @@ public class FactoryGraphicTest
     public void testGetRasterBuffer()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
         final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0, 255, 255, 255, 5);
 
         assertNotEquals(image, raster);
