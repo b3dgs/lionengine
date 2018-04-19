@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
@@ -44,7 +47,7 @@ public final class SpriteParallaxedTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setLoadFromJar(SpriteParallaxedTest.class);
@@ -57,7 +60,7 @@ public final class SpriteParallaxedTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         g.dispose();
@@ -77,11 +80,11 @@ public final class SpriteParallaxedTest
         final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
 
         spriteA.load(false);
-        Assert.assertTrue(spriteA.equals(spriteA));
-        Assert.assertEquals(info.getHeight() / LINES, spriteA.getHeight());
+        assertTrue(spriteA.equals(spriteA));
+        assertEquals(info.getHeight() / LINES, spriteA.getHeight());
 
-        Assert.assertEquals(38, spriteA.getWidth());
-        Assert.assertEquals(41, spriteA.getLineWidth(2));
+        assertEquals(38, spriteA.getWidth());
+        assertEquals(41, spriteA.getLineWidth(2));
 
         // Test render
         spriteA.render(g, 0, 0, 0);
@@ -90,16 +93,16 @@ public final class SpriteParallaxedTest
         final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
         spriteB.stretch(200, 100);
         spriteB.load(true);
-        Assert.assertFalse(spriteB.equals(spriteA));
-        Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
-        Assert.assertFalse(spriteA.equals(media));
+        assertFalse(spriteB.equals(spriteA));
+        assertTrue(spriteA.hashCode() != spriteB.hashCode());
+        assertFalse(spriteA.equals(media));
 
         final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
         spriteC.stretch(100, 200);
         spriteC.load(true);
-        Assert.assertFalse(spriteC.equals(spriteA));
-        Assert.assertTrue(spriteA.hashCode() != spriteC.hashCode());
-        Assert.assertFalse(spriteA.equals(media));
+        assertFalse(spriteC.equals(spriteA));
+        assertTrue(spriteA.hashCode() != spriteC.hashCode());
+        assertFalse(spriteA.equals(media));
     }
 
     /**
@@ -108,38 +111,11 @@ public final class SpriteParallaxedTest
     @Test
     public void testParallaxFailure()
     {
-        try
-        {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, 0, 60, 100);
-            Assert.assertNotNull(spriteC);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, LINES, 60, 0);
-            Assert.assertNotNull(spriteC);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        try
-        {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, LINES, 0, 60);
-            Assert.assertNotNull(spriteC);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> Drawable.loadSpriteParallaxed(media, 0, 60, 100),
+                     "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> Drawable.loadSpriteParallaxed(media, LINES, 60, 0),
+                     "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> Drawable.loadSpriteParallaxed(media, LINES, 0, 60),
+                     "Invalid argument: 0 is not strictly superior to 0");
     }
 }

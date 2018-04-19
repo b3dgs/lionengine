@@ -17,19 +17,26 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -51,11 +58,12 @@ public final class SpriteFontTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(SpriteFontTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
         font = Medias.create("fontdata.xml");
@@ -64,7 +72,7 @@ public final class SpriteFontTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
@@ -79,10 +87,12 @@ public final class SpriteFontTest
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
 
-        Assert.assertFalse(sprite.isLoaded());
-        Assert.assertNull(sprite.getSurface());
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertFalse(sprite.isLoaded());
+        assertNull(sprite.getSurface());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
+
+        sprite.dispose();
     }
 
     /**
@@ -94,7 +104,7 @@ public final class SpriteFontTest
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
 
-        Assert.assertNotNull(sprite.getSurface());
+        assertNotNull(sprite.getSurface());
 
         sprite.prepare();
         sprite.dispose();
@@ -103,12 +113,15 @@ public final class SpriteFontTest
     /**
      * Test load with media already loaded.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testLoadMediaAlready()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
-        sprite.load();
+
+        assertThrows(() -> sprite.load(), "[" + media + "] " + SpriteImpl.ERROR_ALREADY_LOADED);
+
+        sprite.dispose();
     }
 
     /**
@@ -121,43 +134,51 @@ public final class SpriteFontTest
         sprite.load();
         sprite.stretch(100.0, 100.0);
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
 
         sprite.stretch(200.0, 100.0);
 
-        Assert.assertEquals(130, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(130, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
 
         sprite.stretch(100.0, 200.0);
 
-        Assert.assertEquals(130, sprite.getWidth());
-        Assert.assertEquals(64, sprite.getHeight());
+        assertEquals(130, sprite.getWidth());
+        assertEquals(64, sprite.getHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        Assert.assertEquals(260, sprite.getWidth());
-        Assert.assertEquals(128, sprite.getHeight());
+        assertEquals(260, sprite.getWidth());
+        assertEquals(128, sprite.getHeight());
+
+        sprite.dispose();
     }
 
     /**
      * Test stretch sprite with invalid width.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testStretchInvalidWidth()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.stretch(0.0, 100.0);
+
+        assertThrows(() -> sprite.stretch(0.0, 100.0), "Invalid argument: 0.0 is not strictly superior to 0.0");
+
+        sprite.dispose();
     }
 
     /**
      * Test stretch sprite with invalid height.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testStretchInvalidHeight()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.stretch(100, 0.0);
+
+        assertThrows(() -> sprite.stretch(100, 0.0), "Invalid argument: 0.0 is not strictly superior to 0.0");
+
+        sprite.dispose();
     }
 
     /**
@@ -171,9 +192,11 @@ public final class SpriteFontTest
         for (int angle = -720; angle < 720; angle++)
         {
             sprite.rotate(angle);
-            Assert.assertTrue(angle + Constant.SPACE + sprite.getWidth(), sprite.getWidth() >= 64);
-            Assert.assertTrue(angle + Constant.SPACE + sprite.getHeight(), sprite.getHeight() >= 32);
+
+            assertTrue(sprite.getWidth() >= 64, angle + Constant.SPACE + sprite.getWidth());
+            assertTrue(sprite.getHeight() >= 32, angle + Constant.SPACE + sprite.getHeight());
         }
+        sprite.dispose();
     }
 
     /**
@@ -184,13 +207,15 @@ public final class SpriteFontTest
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
 
-        Assert.assertEquals(0.0, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, sprite.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, sprite.getX());
+        assertEquals(0.0, sprite.getY());
 
         sprite.setLocation(1.5, 2.5);
 
-        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, sprite.getY(), UtilTests.PRECISION);
+        assertEquals(1.5, sprite.getX());
+        assertEquals(2.5, sprite.getY());
+
+        sprite.dispose();
     }
 
     /**
@@ -204,14 +229,16 @@ public final class SpriteFontTest
         final ViewerMock viewer = new ViewerMock();
         sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
-        Assert.assertEquals(0.0, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, sprite.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, sprite.getX());
+        assertEquals(0.0, sprite.getY());
 
         viewer.set(10, 20);
         sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
-        Assert.assertEquals(0.0, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, sprite.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, sprite.getX());
+        assertEquals(0.0, sprite.getY());
+
+        sprite.dispose();
     }
 
     /**
@@ -226,29 +253,36 @@ public final class SpriteFontTest
         {
             sprite.setAlpha(alpha);
 
-            Assert.assertEquals(64, sprite.getWidth());
-            Assert.assertEquals(32, sprite.getHeight());
+            assertEquals(64, sprite.getWidth());
+            assertEquals(32, sprite.getHeight());
         }
+        sprite.dispose();
     }
 
     /**
      * Test set alpha too low.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetAlphaLow()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.setAlpha(-1);
+
+        assertThrows(() -> sprite.setAlpha(-1), "Invalid argument: -1 is not superior or equal to 0");
+
+        sprite.dispose();
     }
 
     /**
      * Test set alpha too high.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetAlphaHigh()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.setAlpha(256);
+
+        assertThrows(() -> sprite.setAlpha(256), "Invalid argument: 256 is not inferior or equal to 255");
+
+        sprite.dispose();
     }
 
     /**
@@ -261,8 +295,10 @@ public final class SpriteFontTest
         sprite.load();
         sprite.setTransparency(ColorRgba.BLACK);
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
+
+        sprite.dispose();
     }
 
     /**
@@ -276,8 +312,10 @@ public final class SpriteFontTest
         sprite.setFade(128, 128);
         sprite.setFade(128, 128);
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
+
+        sprite.dispose();
     }
 
     /**
@@ -290,18 +328,23 @@ public final class SpriteFontTest
         sprite.load();
         sprite.filter(new FilterBilinear());
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
+
+        sprite.dispose();
     }
 
     /**
      * Test filter <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFilterNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.filter(null);
+
+        assertThrows(() -> sprite.filter(null), "Unexpected null argument !");
+
+        sprite.dispose();
     }
 
     /**
@@ -312,21 +355,26 @@ public final class SpriteFontTest
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
 
-        Assert.assertEquals(Mirror.NONE, sprite.getMirror());
+        assertEquals(Mirror.NONE, sprite.getMirror());
 
         sprite.setMirror(Mirror.HORIZONTAL);
 
-        Assert.assertEquals(Mirror.HORIZONTAL, sprite.getMirror());
+        assertEquals(Mirror.HORIZONTAL, sprite.getMirror());
+
+        sprite.dispose();
     }
 
     /**
      * Test mirror <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testMirrorNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.setMirror(null);
+
+        assertThrows(() -> sprite.setMirror(null), "Unexpected null argument !");
+
+        sprite.dispose();
     }
 
     /**
@@ -338,18 +386,22 @@ public final class SpriteFontTest
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.setLocation(5.0, 10.0);
         sprite.setOrigin(Origin.TOP_LEFT);
-
         sprite.setOrigin(Origin.MIDDLE);
+
+        sprite.dispose();
     }
 
     /**
      * Test origin <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetOriginNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.setOrigin(null);
+
+        assertThrows(() -> sprite.setOrigin(null), "Unexpected null argument !");
+
+        sprite.dispose();
     }
 
     /**
@@ -359,25 +411,21 @@ public final class SpriteFontTest
     public void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
-        try
-        {
-            final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-            sprite.render(g);
+        final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.render(g);
 
-            sprite.setMirror(Mirror.HORIZONTAL);
-            sprite.setAlign(Align.RIGHT);
-            sprite.setText("az%");
-            sprite.setLocation(1.5, 2.5);
-            sprite.render(g);
+        sprite.setMirror(Mirror.HORIZONTAL);
+        sprite.setAlign(Align.RIGHT);
+        sprite.setText("az%");
+        sprite.setLocation(1.5, 2.5);
+        sprite.render(g);
 
-            sprite.setMirror(Mirror.VERTICAL);
-            sprite.setLineHeight(5);
-            sprite.render(g);
-        }
-        finally
-        {
-            g.dispose();
-        }
+        sprite.setMirror(Mirror.VERTICAL);
+        sprite.setLineHeight(5);
+        sprite.render(g);
+
+        g.dispose();
+        sprite.dispose();
     }
 
     /**
@@ -387,16 +435,12 @@ public final class SpriteFontTest
     public void testDraw()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
-        try
-        {
-            final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-            sprite.load();
-            sprite.draw(g, 1, 2, Align.CENTER, "az%");
-        }
-        finally
-        {
-            g.dispose();
-        }
+        final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.draw(g, 1, 2, Align.CENTER, "az%");
+
+        g.dispose();
+        sprite.dispose();
     }
 
     /**
@@ -408,8 +452,10 @@ public final class SpriteFontTest
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
 
-        Assert.assertEquals(8, sprite.getTextHeight("az"));
-        Assert.assertEquals(16, sprite.getTextHeight("az%az"));
+        assertEquals(8, sprite.getTextHeight("az"));
+        assertEquals(16, sprite.getTextHeight("az%az"));
+
+        sprite.dispose();
     }
 
     /**
@@ -421,14 +467,16 @@ public final class SpriteFontTest
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
 
-        Assert.assertEquals(sprite, sprite);
+        assertEquals(sprite, sprite);
 
-        Assert.assertNotEquals(sprite, new SpriteFontImpl(media, font, 6, 7));
-        Assert.assertNotEquals(sprite, null);
-        Assert.assertNotEquals(sprite, new Object());
-        Assert.assertNotEquals(sprite, new SpriteFontImpl(media, font, 1, 7));
-        Assert.assertNotEquals(sprite, new SpriteFontImpl(media, font, 6, 1));
-        Assert.assertNotEquals(sprite, new SpriteFontImpl(media, font, 1, 1));
+        assertNotEquals(sprite, new SpriteFontImpl(media, font, 6, 7));
+        assertNotEquals(sprite, null);
+        assertNotEquals(sprite, new Object());
+        assertNotEquals(sprite, new SpriteFontImpl(media, font, 1, 7));
+        assertNotEquals(sprite, new SpriteFontImpl(media, font, 6, 1));
+        assertNotEquals(sprite, new SpriteFontImpl(media, font, 1, 1));
+
+        sprite.dispose();
     }
 
     /**
@@ -439,13 +487,14 @@ public final class SpriteFontTest
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
-        final int code = sprite.hashCode();
 
-        Assert.assertNotEquals(code, new SpriteFontImpl(media, font, 6, 7).hashCode());
-        Assert.assertNotEquals(code, new Object().hashCode());
-        Assert.assertNotEquals(code, new SpriteFontImpl(media, Medias.create("fontdata2.xml"), 1, 7).hashCode());
-        Assert.assertNotEquals(code, new SpriteFontImpl(media, font, 1, 7).hashCode());
-        Assert.assertNotEquals(code, new SpriteFontImpl(media, font, 6, 1).hashCode());
-        Assert.assertNotEquals(code, new SpriteFontImpl(media, font, 1, 1).hashCode());
+        assertHashNotEquals(sprite, new SpriteFontImpl(media, font, 6, 7));
+        assertHashNotEquals(sprite, new Object());
+        assertHashNotEquals(sprite, new SpriteFontImpl(media, Medias.create("fontdata2.xml"), 1, 7));
+        assertHashNotEquals(sprite, new SpriteFontImpl(media, font, 1, 7));
+        assertHashNotEquals(sprite, new SpriteFontImpl(media, font, 6, 1));
+        assertHashNotEquals(sprite, new SpriteFontImpl(media, font, 1, 1));
+
+        sprite.dispose();
     }
 }

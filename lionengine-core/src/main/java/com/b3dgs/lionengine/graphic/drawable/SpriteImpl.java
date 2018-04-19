@@ -215,7 +215,10 @@ class SpriteImpl implements Sprite
     @Override
     public void dispose()
     {
-        surface.dispose();
+        if (surface != null)
+        {
+            surface.dispose();
+        }
     }
 
     @Override
