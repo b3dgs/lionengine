@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.MediaMock;
 import com.b3dgs.lionengine.Verbose;
@@ -32,15 +34,15 @@ public final class ImageInfoJpgTest
 {
     /**
      * Test constructor.
-     * 
-     * @throws IOException The expected exception.
      */
-    @Test(expected = IOException.class)
-    public void testJpg() throws IOException
+    @Test
+    public void testJpg()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        Assert.assertFalse(new ImageHeaderJpg().is(new MediaMock()));
-        Assert.assertNull(new ImageHeaderJpg().readHeader(new MediaMock().getInputStream()));
+
+        assertFalse(new ImageHeaderJpg().is(new MediaMock()));
+        assertThrows(IOException.class, () -> new ImageHeaderJpg().readHeader(new MediaMock().getInputStream()), null);
+
         Verbose.info("****************************************************************************************");
     }
 }

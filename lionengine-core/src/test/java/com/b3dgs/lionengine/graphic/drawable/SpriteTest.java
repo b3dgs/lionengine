@@ -17,18 +17,25 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -43,25 +50,20 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
  */
 public final class SpriteTest
 {
-    /** Image media. */
-    private static Media media;
-
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setLoadFromJar(SpriteTest.class);
-
-        media = Medias.create("image.png");
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
@@ -74,12 +76,12 @@ public final class SpriteTest
     @Test
     public void testConstructorMedia()
     {
-        final Sprite sprite = new SpriteImpl(media);
+        final Sprite sprite = new SpriteImpl(Medias.create("image.png"));
 
-        Assert.assertFalse(sprite.isLoaded());
-        Assert.assertNull(sprite.getSurface());
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertFalse(sprite.isLoaded());
+        assertNull(sprite.getSurface());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
     }
 
     /**
@@ -91,10 +93,10 @@ public final class SpriteTest
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Sprite sprite = new SpriteImpl(surface);
 
-        Assert.assertTrue(sprite.isLoaded());
-        Assert.assertEquals(surface, sprite.getSurface());
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertTrue(sprite.isLoaded());
+        assertEquals(surface, sprite.getSurface());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
     }
 
     /**
@@ -103,10 +105,10 @@ public final class SpriteTest
     @Test
     public void testLoadMedia()
     {
-        final Sprite sprite = new SpriteImpl(media);
+        final Sprite sprite = new SpriteImpl(Medias.create("image.png"));
         sprite.load();
 
-        Assert.assertNotNull(sprite.getSurface());
+        assertNotNull(sprite.getSurface());
 
         sprite.prepare();
         sprite.dispose();
@@ -115,22 +117,25 @@ public final class SpriteTest
     /**
      * Test load with media already loaded.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testLoadMediaAlready()
     {
+        final Media media = Medias.create("image.png");
         final Sprite sprite = new SpriteImpl(media);
         sprite.load();
-        sprite.load();
+
+        assertThrows(() -> sprite.load(), "[" + media + "] " + SpriteImpl.ERROR_ALREADY_LOADED);
     }
 
     /**
      * Test load with surface.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testLoadSurface()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.load();
+
+        assertThrows(() -> sprite.load(), SpriteImpl.ERROR_ALREADY_LOADED);
     }
 
     /**
@@ -142,43 +147,45 @@ public final class SpriteTest
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.stretch(100.0, 100.0);
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
 
         sprite.stretch(200.0, 100.0);
 
-        Assert.assertEquals(128, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(128, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
 
         sprite.stretch(100.0, 200.0);
 
-        Assert.assertEquals(128, sprite.getWidth());
-        Assert.assertEquals(64, sprite.getHeight());
+        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        Assert.assertEquals(256, sprite.getWidth());
-        Assert.assertEquals(128, sprite.getHeight());
+        assertEquals(256, sprite.getWidth());
+        assertEquals(128, sprite.getHeight());
     }
 
     /**
      * Test stretch sprite with invalid width.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testStretchInvalidWidth()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.stretch(0.0, 100.0);
+
+        assertThrows(() -> sprite.stretch(0.0, 100.0), "Invalid argument: 0.0 is not strictly superior to 0.0");
     }
 
     /**
      * Test stretch sprite with invalid height.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testStretchInvalidHeight()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.stretch(100, 0.0);
+
+        assertThrows(() -> sprite.stretch(100, 0.0), "Invalid argument: 0.0 is not strictly superior to 0.0");
     }
 
     /**
@@ -191,8 +198,9 @@ public final class SpriteTest
         for (int angle = -720; angle < 720; angle++)
         {
             sprite.rotate(angle);
-            Assert.assertTrue(angle + Constant.SPACE + sprite.getWidth(), sprite.getWidth() >= 64);
-            Assert.assertTrue(angle + Constant.SPACE + sprite.getHeight(), sprite.getHeight() >= 32);
+
+            assertTrue(sprite.getWidth() >= 64, angle + Constant.SPACE + sprite.getWidth());
+            assertTrue(sprite.getHeight() >= 32, angle + Constant.SPACE + sprite.getHeight());
         }
     }
 
@@ -204,17 +212,17 @@ public final class SpriteTest
     {
         final SpriteImpl sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
-        Assert.assertEquals(0.0, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, sprite.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(0, sprite.getRenderX());
-        Assert.assertEquals(0, sprite.getRenderY());
+        assertEquals(0.0, sprite.getX());
+        assertEquals(0.0, sprite.getY());
+        assertEquals(0, sprite.getRenderX());
+        assertEquals(0, sprite.getRenderY());
 
         sprite.setLocation(1.5, 2.5);
 
-        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.5, sprite.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1, sprite.getRenderX());
-        Assert.assertEquals(2, sprite.getRenderY());
+        assertEquals(1.5, sprite.getX());
+        assertEquals(2.5, sprite.getY());
+        assertEquals(1, sprite.getRenderX());
+        assertEquals(2, sprite.getRenderY());
     }
 
     /**
@@ -227,18 +235,18 @@ public final class SpriteTest
         final ViewerMock viewer = new ViewerMock();
         sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
-        Assert.assertEquals(1.5, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(237.5, sprite.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1, sprite.getRenderX());
-        Assert.assertEquals(237, sprite.getRenderY());
+        assertEquals(1.5, sprite.getX());
+        assertEquals(237.5, sprite.getY());
+        assertEquals(1, sprite.getRenderX());
+        assertEquals(237, sprite.getRenderY());
 
         viewer.set(10, 20);
         sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
-        Assert.assertEquals(-8.5, sprite.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(257.5, sprite.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(-9, sprite.getRenderX());
-        Assert.assertEquals(257, sprite.getRenderY());
+        assertEquals(-8.5, sprite.getX());
+        assertEquals(257.5, sprite.getY());
+        assertEquals(-9, sprite.getRenderX());
+        assertEquals(257, sprite.getRenderY());
     }
 
     /**
@@ -252,29 +260,31 @@ public final class SpriteTest
         {
             sprite.setAlpha(alpha);
 
-            Assert.assertEquals(64, sprite.getWidth());
-            Assert.assertEquals(32, sprite.getHeight());
+            assertEquals(64, sprite.getWidth());
+            assertEquals(32, sprite.getHeight());
         }
     }
 
     /**
      * Test set alpha too low.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetAlphaLow()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.setAlpha(-1);
+
+        assertThrows(() -> sprite.setAlpha(-1), "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
      * Test set alpha too high.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetAlphaHigh()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.setAlpha(256);
+
+        assertThrows(() -> sprite.setAlpha(256), "Invalid argument: 256 is not inferior or equal to 255");
     }
 
     /**
@@ -286,8 +296,8 @@ public final class SpriteTest
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.setTransparency(ColorRgba.BLACK);
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
     }
 
     /**
@@ -300,8 +310,8 @@ public final class SpriteTest
         sprite.setFade(128, 128);
         sprite.setFade(128, 128);
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
     }
 
     /**
@@ -313,18 +323,19 @@ public final class SpriteTest
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.filter(new FilterBilinear());
 
-        Assert.assertEquals(64, sprite.getWidth());
-        Assert.assertEquals(32, sprite.getHeight());
+        assertEquals(64, sprite.getWidth());
+        assertEquals(32, sprite.getHeight());
     }
 
     /**
      * Test filter <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFilterNull()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.filter(null);
+
+        assertThrows(() -> sprite.filter(null), "Unexpected null argument !");
     }
 
     /**
@@ -335,21 +346,22 @@ public final class SpriteTest
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
-        Assert.assertEquals(Mirror.NONE, sprite.getMirror());
+        assertEquals(Mirror.NONE, sprite.getMirror());
 
         sprite.setMirror(Mirror.HORIZONTAL);
 
-        Assert.assertEquals(Mirror.HORIZONTAL, sprite.getMirror());
+        assertEquals(Mirror.HORIZONTAL, sprite.getMirror());
     }
 
     /**
      * Test mirror <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testMirrorNull()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.setMirror(null);
+
+        assertThrows(() -> sprite.setMirror(null), "Unexpected null argument !");
     }
 
     /**
@@ -362,23 +374,24 @@ public final class SpriteTest
         sprite.setLocation(5.0, 10.0);
         sprite.setOrigin(Origin.TOP_LEFT);
 
-        Assert.assertEquals(5, sprite.getRenderX());
-        Assert.assertEquals(10, sprite.getRenderY());
+        assertEquals(5, sprite.getRenderX());
+        assertEquals(10, sprite.getRenderY());
 
         sprite.setOrigin(Origin.MIDDLE);
 
-        Assert.assertEquals(0, sprite.getRenderX());
-        Assert.assertEquals(0, sprite.getRenderY());
+        assertEquals(0, sprite.getRenderX());
+        assertEquals(0, sprite.getRenderY());
     }
 
     /**
      * Test origin <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetOriginNull()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-        sprite.setOrigin(null);
+
+        assertThrows(() -> sprite.setOrigin(null), "Unexpected null argument !");
     }
 
     /**
@@ -388,21 +401,16 @@ public final class SpriteTest
     public void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
-        try
-        {
-            final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
-            sprite.render(g);
+        final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
+        sprite.render(g);
 
-            sprite.setMirror(Mirror.HORIZONTAL);
-            sprite.render(g);
+        sprite.setMirror(Mirror.HORIZONTAL);
+        sprite.render(g);
 
-            sprite.setMirror(Mirror.VERTICAL);
-            sprite.render(g);
-        }
-        finally
-        {
-            g.dispose();
-        }
+        sprite.setMirror(Mirror.VERTICAL);
+        sprite.render(g);
+
+        g.dispose();
     }
 
     /**
@@ -413,21 +421,26 @@ public final class SpriteTest
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Sprite sprite = new SpriteImpl(surface);
+        final Media media = Medias.create("image.png");
         final Sprite spriteMedia = new SpriteImpl(media);
         spriteMedia.load();
 
-        Assert.assertEquals(sprite, sprite);
-        Assert.assertEquals(sprite, new SpriteImpl(surface));
-        Assert.assertEquals(spriteMedia, spriteMedia);
+        assertEquals(sprite, sprite);
+        assertEquals(sprite, new SpriteImpl(surface));
+        assertEquals(spriteMedia, spriteMedia);
 
-        Assert.assertNotEquals(sprite, null);
-        Assert.assertNotEquals(sprite, new Object());
-        Assert.assertNotEquals(sprite, new SpriteImpl(media));
-        Assert.assertNotEquals(spriteMedia, new SpriteImpl(media));
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 32)));
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 32)));
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 64)));
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 64)));
+        assertNotEquals(sprite, null);
+        assertNotEquals(sprite, new Object());
+        assertNotEquals(sprite, new SpriteImpl(media));
+        assertNotEquals(spriteMedia, new SpriteImpl(media));
+        assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 32)));
+        assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 32)));
+        assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 64)));
+        assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 64)));
+
+        sprite.dispose();
+        spriteMedia.dispose();
+        surface.dispose();
     }
 
     /**
@@ -437,17 +450,22 @@ public final class SpriteTest
     public void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
-        final int sprite = new SpriteImpl(surface).hashCode();
+        final Sprite sprite = new SpriteImpl(surface);
+        final Media media = Medias.create("image.png");
         final Sprite spriteMedia = new SpriteImpl(media);
         spriteMedia.load();
 
-        Assert.assertEquals(sprite, new SpriteImpl(surface).hashCode());
+        assertHashEquals(sprite, new SpriteImpl(surface));
 
-        Assert.assertNotEquals(sprite, new Object().hashCode());
-        Assert.assertNotEquals(spriteMedia.hashCode(), new SpriteImpl(media).hashCode());
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 32)).hashCode());
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 32)).hashCode());
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 64)).hashCode());
-        Assert.assertNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 64)).hashCode());
+        assertHashNotEquals(sprite, new Object());
+        assertHashNotEquals(spriteMedia, new SpriteImpl(media));
+        assertHashNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 32)));
+        assertHashNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 32)));
+        assertHashNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(64, 64)));
+        assertHashNotEquals(sprite, new SpriteImpl(Graphics.createImageBuffer(32, 64)));
+
+        sprite.dispose();
+        spriteMedia.dispose();
+        surface.dispose();
     }
 }

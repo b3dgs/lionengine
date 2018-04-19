@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 final class ImageImpl implements Image
 {
     /** Error already loaded. */
-    private static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
+    static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
 
     /** Media file name (can be <code>null</code>). */
     private final Media media;
@@ -149,7 +149,10 @@ final class ImageImpl implements Image
     @Override
     public void dispose()
     {
-        surface.dispose();
+        if (surface != null)
+        {
+            surface.dispose();
+        }
     }
 
     @Override

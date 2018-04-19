@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link FontCharData}.
@@ -35,35 +35,35 @@ public final class FontCharDataTest
     {
         final FontCharData data = new FontCharData(0, 1, 2);
 
-        Assert.assertEquals(0, data.getId());
-        Assert.assertEquals(1, data.getWidth());
-        Assert.assertEquals(2, data.getHeight());
+        assertEquals(0, data.getId());
+        assertEquals(1, data.getWidth());
+        assertEquals(2, data.getHeight());
     }
 
     /**
      * Test constructor with invalid id.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorInvalidId()
     {
-        Assert.assertNull(new FontCharData(-1, 1, 2));
+        assertThrows(() -> new FontCharData(-1, 1, 2), "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
      * Test constructor with invalid with.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorInvalidWidth()
     {
-        Assert.assertNull(new FontCharData(0, -1, 2));
+        assertThrows(() -> new FontCharData(0, -1, 2), "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
      * Test constructor with invalid height.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorInvalidheight()
     {
-        Assert.assertNull(new FontCharData(0, 1, -1));
+        assertThrows(() -> new FontCharData(0, 1, -1), "Invalid argument: -1 is not superior or equal to 0");
     }
 }

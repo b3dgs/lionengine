@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.UtilColor;
 class SpriteImpl implements Sprite
 {
     /** Error already loaded. */
-    private static final String ERROR_ALREADY_LOADED = "Surface has already been loaded: ";
+    static final String ERROR_ALREADY_LOADED = "Surface has already been loaded: ";
 
     /** Sprite file name (can be <code>null</code> created with existing surface). */
     private final Media media;

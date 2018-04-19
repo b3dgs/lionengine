@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Test {@link Animator}.
@@ -38,9 +39,9 @@ public final class AnimatorTest
     {
         final Animator animator = new AnimatorImpl();
 
-        Assert.assertEquals(AnimState.STOPPED, animator.getAnimState());
-        Assert.assertEquals(Animation.MINIMUM_FRAME, animator.getFrame());
-        Assert.assertEquals(Animation.MINIMUM_FRAME, animator.getFrameAnim());
+        assertEquals(AnimState.STOPPED, animator.getAnimState());
+        assertEquals(Animation.MINIMUM_FRAME, animator.getFrame());
+        assertEquals(Animation.MINIMUM_FRAME, animator.getFrameAnim());
     }
 
     /**
@@ -53,19 +54,20 @@ public final class AnimatorTest
         final Animator animator = new AnimatorImpl();
         animator.play(animation);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
     }
 
     /**
      * Test play with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testPlayNull()
     {
         final Animator animator = new AnimatorImpl();
-        animator.play(null);
+
+        assertThrows(() -> animator.play(null), "Unexpected null argument !");
     }
 
     /**
@@ -77,7 +79,7 @@ public final class AnimatorTest
         final Animator animator = new AnimatorImpl();
         animator.stop();
 
-        Assert.assertEquals(AnimState.STOPPED, animator.getAnimState());
+        assertEquals(AnimState.STOPPED, animator.getAnimState());
     }
 
     /**
@@ -90,27 +92,27 @@ public final class AnimatorTest
         final Animator animator = new AnimatorImpl();
         animator.play(animation);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.FINISHED, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.FINISHED, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.FINISHED, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.FINISHED, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
     }
 
     /**
@@ -123,33 +125,33 @@ public final class AnimatorTest
         final Animator animator = new AnimatorImpl();
         animator.play(animation);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(3, animator.getFrame());
-        Assert.assertEquals(3, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(3, animator.getFrame());
+        assertEquals(3, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
     }
 
     /**
@@ -162,39 +164,39 @@ public final class AnimatorTest
         final Animator animator = new AnimatorImpl();
         animator.play(animation);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(3, animator.getFrame());
-        Assert.assertEquals(3, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(3, animator.getFrame());
+        assertEquals(3, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.REVERSING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.REVERSING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.FINISHED, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.FINISHED, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
     }
 
     /**
@@ -207,51 +209,51 @@ public final class AnimatorTest
         final Animator animator = new AnimatorImpl();
         animator.play(animation);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(3, animator.getFrame());
-        Assert.assertEquals(3, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(3, animator.getFrame());
+        assertEquals(3, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.REVERSING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
-        Assert.assertEquals(1, animator.getFrame());
-        Assert.assertEquals(1, animator.getFrameAnim());
+        assertEquals(AnimState.REVERSING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+        assertEquals(1, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(3, animator.getFrame());
-        Assert.assertEquals(3, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(3, animator.getFrame());
+        assertEquals(3, animator.getFrameAnim());
 
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.REVERSING, animator.getAnimState());
-        Assert.assertEquals(2, animator.getFrame());
-        Assert.assertEquals(2, animator.getFrameAnim());
+        assertEquals(AnimState.REVERSING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
     }
 
     /**
@@ -266,19 +268,20 @@ public final class AnimatorTest
         animator.setAnimSpeed(2.0);
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(3, animator.getFrame());
-        Assert.assertEquals(3, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(3, animator.getFrame());
+        assertEquals(3, animator.getFrameAnim());
     }
 
     /**
      * Test invalid speed setter.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetSpeedNegative()
     {
         final Animator animator = new AnimatorImpl();
-        animator.setAnimSpeed(-1.0);
+
+        assertThrows(() -> animator.setAnimSpeed(-1.0), "Invalid argument: -1.0 is not superior or equal to 0.0");
     }
 
     /**
@@ -293,18 +296,19 @@ public final class AnimatorTest
         animator.setFrame(2);
         animator.update(1.0);
 
-        Assert.assertEquals(AnimState.PLAYING, animator.getAnimState());
-        Assert.assertEquals(3, animator.getFrame());
-        Assert.assertEquals(3, animator.getFrameAnim());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(3, animator.getFrame());
+        assertEquals(3, animator.getFrameAnim());
     }
 
     /**
      * Test set frame invalid.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFrameInvalid()
     {
         final Animator animator = new AnimatorImpl();
-        animator.setFrame(0);
+
+        assertThrows(() -> animator.setFrame(0), "Invalid argument: 0 is not superior or equal to 1");
     }
 }

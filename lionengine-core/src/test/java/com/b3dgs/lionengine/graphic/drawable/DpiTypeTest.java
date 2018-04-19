@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilTests;
@@ -60,38 +61,38 @@ public final class DpiTypeTest
     {
         final Resolution baseline = new Resolution(640, 480, 60);
 
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, get(baseline, 0.75)));
-        Assert.assertEquals(DpiType.MDPI, DpiType.from(baseline, get(baseline, 1.0)));
-        Assert.assertEquals(DpiType.HDPI, DpiType.from(baseline, get(baseline, 1.5)));
-        Assert.assertEquals(DpiType.XHDPI, DpiType.from(baseline, get(baseline, 2.0)));
-        Assert.assertEquals(DpiType.XXHDPI, DpiType.from(baseline, get(baseline, 3.0)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, get(baseline, 0.75)));
+        assertEquals(DpiType.MDPI, DpiType.from(baseline, get(baseline, 1.0)));
+        assertEquals(DpiType.HDPI, DpiType.from(baseline, get(baseline, 1.5)));
+        assertEquals(DpiType.XHDPI, DpiType.from(baseline, get(baseline, 2.0)));
+        assertEquals(DpiType.XXHDPI, DpiType.from(baseline, get(baseline, 3.0)));
 
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(320, 200, 60)));
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(320, 240, 60)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(320, 200, 60)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(320, 240, 60)));
 
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(200, 320, 60)));
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(240, 320, 60)));
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(400, 640, 60)));
-        Assert.assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(480, 640, 60)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(200, 320, 60)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(240, 320, 60)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(400, 640, 60)));
+        assertEquals(DpiType.LDPI, DpiType.from(baseline, new Resolution(480, 640, 60)));
 
-        Assert.assertEquals(DpiType.MDPI, DpiType.from(baseline, baseline));
-        Assert.assertEquals(DpiType.MDPI, DpiType.from(baseline, new Resolution(800, 600, 60)));
-        Assert.assertEquals(DpiType.MDPI, DpiType.from(baseline, new Resolution(720, 1280, 60)));
-        Assert.assertEquals(DpiType.MDPI, DpiType.from(baseline, new Resolution(800, 1280, 60)));
+        assertEquals(DpiType.MDPI, DpiType.from(baseline, baseline));
+        assertEquals(DpiType.MDPI, DpiType.from(baseline, new Resolution(800, 600, 60)));
+        assertEquals(DpiType.MDPI, DpiType.from(baseline, new Resolution(720, 1280, 60)));
+        assertEquals(DpiType.MDPI, DpiType.from(baseline, new Resolution(800, 1280, 60)));
 
-        Assert.assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1280, 720, 60)));
-        Assert.assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1280, 800, 60)));
-        Assert.assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(960, 1280, 60)));
-        Assert.assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1080, 1920, 60)));
-        Assert.assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1200, 1920, 60)));
+        assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1280, 720, 60)));
+        assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1280, 800, 60)));
+        assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(960, 1280, 60)));
+        assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1080, 1920, 60)));
+        assertEquals(DpiType.HDPI, DpiType.from(baseline, new Resolution(1200, 1920, 60)));
 
-        Assert.assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1280, 960, 60)));
-        Assert.assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1600, 2560, 60)));
-        Assert.assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1920, 1080, 60)));
-        Assert.assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1920, 1200, 60)));
+        assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1280, 960, 60)));
+        assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1600, 2560, 60)));
+        assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1920, 1080, 60)));
+        assertEquals(DpiType.XHDPI, DpiType.from(baseline, new Resolution(1920, 1200, 60)));
 
-        Assert.assertEquals(DpiType.XXHDPI, DpiType.from(baseline, new Resolution(2560, 1600, 60)));
-        Assert.assertEquals(DpiType.XXHDPI, DpiType.from(baseline, new Resolution(2560, 1920, 60)));
-        Assert.assertEquals(DpiType.XXHDPI, DpiType.from(baseline, new Resolution(1920, 2560, 60)));
+        assertEquals(DpiType.XXHDPI, DpiType.from(baseline, new Resolution(2560, 1600, 60)));
+        assertEquals(DpiType.XXHDPI, DpiType.from(baseline, new Resolution(2560, 1920, 60)));
+        assertEquals(DpiType.XXHDPI, DpiType.from(baseline, new Resolution(1920, 2560, 60)));
     }
 }
