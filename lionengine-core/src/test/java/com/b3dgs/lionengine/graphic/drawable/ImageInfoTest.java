@@ -17,22 +17,26 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsIo;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.ImageFormat;
 
@@ -44,38 +48,20 @@ public final class ImageInfoTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(ImageInfoTest.class);
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
-    }
-
-    /**
-     * Test image failure
-     * 
-     * @param media The image media.
-     */
-    private static void testImageInfoFailure(Media media)
-    {
-        try
-        {
-            ImageInfo.get(media);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
     }
 
     /**
@@ -100,11 +86,11 @@ public final class ImageInfoTest
             final Media media = Medias.create(name + "." + type.name().toLowerCase(Locale.ENGLISH));
             final ImageHeader info = ImageInfo.get(media);
 
-            Assert.assertEquals(64, info.getWidth());
-            Assert.assertEquals(32, info.getHeight());
-            Assert.assertEquals(type, info.getFormat());
-            Assert.assertFalse(ImageInfo.isImage(null));
-            Assert.assertTrue(ImageInfo.isImage(media));
+            assertEquals(64, info.getWidth());
+            assertEquals(32, info.getHeight());
+            assertEquals(type, info.getFormat());
+            assertFalse(ImageInfo.isImage(null));
+            assertTrue(ImageInfo.isImage(media));
         }
     }
 
@@ -113,10 +99,10 @@ public final class ImageInfoTest
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(ImageInfo.class);
+        assertPrivateConstructor(ImageInfo.class);
     }
 
     /**
@@ -125,28 +111,45 @@ public final class ImageInfoTest
     @Test
     public void testImageFailure()
     {
-        testImageInfoFailure(null);
-        testImageInfoFailure(Medias.create(Constant.EMPTY_STRING));
-        testImageInfoFailure(Medias.create("image_error"));
-        testImageInfoFailure(Medias.create("image.tga"));
-        testImageInfoFailure(Medias.create("image_error1.gif"));
-        testImageInfoFailure(Medias.create("image_error2.gif"));
-        testImageInfoFailure(Medias.create("image_error1.jpg"));
-        testImageInfoFailure(Medias.create("image_error2.jpg"));
-        testImageInfoFailure(Medias.create("image_error3.jpg"));
-        testImageInfoFailure(Medias.create("image_error1.png"));
-        testImageInfoFailure(Medias.create("image_error2.png"));
-        testImageInfoFailure(Medias.create("image_error1.bmp"));
-        testImageInfoFailure(Medias.create("image_error1.tiff"));
-        testImageInfoFailure(Medias.create("image_error2.tiff"));
-        testImageInfoFailure(Medias.create("image_error3.tiff"));
-        testImageInfoFailure(Medias.create("image_error4.tiff"));
-        testImageInfoFailure(Medias.create("image_error5.tiff"));
-        testImageInfoFailure(Medias.create("image_error6.tiff"));
-        testImageInfoFailure(Medias.create("image_error7.tiff"));
+        assertThrows(() -> ImageInfo.get(null), "Unexpected null argument !");
+        assertThrows(() -> ImageInfo.get(Medias.create(Constant.EMPTY_STRING)), "[] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error")), "[image_error] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image.tga")), "[image.tga] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error1.gif")),
+                     "[image_error1.gif] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error2.gif")),
+                     "[image_error2.gif] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error1.jpg")),
+                     "[image_error1.jpg] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error2.jpg")),
+                     "[image_error2.jpg] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error3.jpg")),
+                     "[image_error3.jpg] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error1.png")),
+                     "[image_error1.png] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error2.png")),
+                     "[image_error2.png] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error1.bmp")),
+                     "[image_error1.bmp] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error1.tiff")),
+                     "[image_error1.tiff] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error2.tiff")),
+                     "[image_error2.tiff] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error3.tiff")),
+                     "[image_error3.tiff] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error4.tiff")),
+                     "[image_error4.tiff] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error5.tiff")),
+                     "[image_error5.tiff] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error6.tiff")),
+                     "[image_error6.tiff] " + ImageInfo.ERROR_READ);
+        assertThrows(() -> ImageInfo.get(Medias.create("image_error7.tiff")),
+                     "[image_error7.tiff] " + ImageInfo.ERROR_READ);
 
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        Assert.assertFalse(ImageInfo.isImage(Medias.create("image_error7.tiff")));
+
+        assertFalse(ImageInfo.isImage(Medias.create("image_error7.tiff")));
+
         Verbose.info("****************************************************************************************");
     }
 
@@ -164,52 +167,43 @@ public final class ImageInfoTest
 
         final ImageHeader info = ImageInfo.get(Medias.create("image.tif"));
 
-        Assert.assertEquals(64, info.getWidth());
-        Assert.assertEquals(32, info.getHeight());
-        Assert.assertEquals(ImageFormat.TIFF, info.getFormat());
+        assertEquals(64, info.getWidth());
+        assertEquals(32, info.getHeight());
+        assertEquals(ImageFormat.TIFF, info.getFormat());
 
-        try
-        {
-            Assert.assertNull(ImageInfo.get(Medias.create("image2.tiff")));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertNotNull(exception);
-        }
-
-        Assert.assertFalse(ImageInfo.isImage(Medias.create("raster.xml")));
+        assertThrows(() -> ImageInfo.get(Medias.create("image2.tiff")), "[image2.tiff] " + ImageInfo.ERROR_READ);
+        assertFalse(ImageInfo.isImage(Medias.create("raster.xml")));
     }
 
     /**
      * Test skipped error tool.
      * 
-     * @throws IOException The expected exception.
-     * @throws Throwable If error.
+     * @throws ReflectiveOperationException If error.
      */
-    @Test(expected = IOException.class)
-    public void testSkippedError() throws IOException, Throwable
+    @Test
+    public void testSkippedError() throws ReflectiveOperationException
     {
         final Method method = ImageHeaderReaderAbstract.class.getDeclaredMethod("checkSkippedError",
                                                                                 Long.TYPE,
                                                                                 Integer.TYPE);
         final boolean back = method.isAccessible();
         UtilReflection.setAccessible(method, true);
-        try
+
+        assertThrowsIo(() ->
         {
-            method.invoke(ImageInfo.class, Long.valueOf(1), Integer.valueOf(0));
-        }
-        catch (final InvocationTargetException exception)
-        {
-            final Throwable cause = exception.getCause();
-            if (cause instanceof IOException)
+            try
             {
-                throw (IOException) cause;
+                method.invoke(ImageInfo.class, Long.valueOf(1), Integer.valueOf(0));
             }
-            throw exception;
-        }
-        finally
-        {
-            UtilReflection.setAccessible(method, back);
-        }
+            catch (final Exception exception)
+            {
+                if (exception.getCause() instanceof IOException)
+                {
+                    throw exception.getCause();
+                }
+            }
+        }, null);
+
+        UtilReflection.setAccessible(method, back);
     }
 }

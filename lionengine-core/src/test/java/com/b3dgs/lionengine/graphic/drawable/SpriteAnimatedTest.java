@@ -73,6 +73,44 @@ public final class SpriteAnimatedTest
     }
 
     /**
+     * Test constructor with <code>null</code> media.
+     */
+    @Test
+    public void testConstructorMediaNull()
+    {
+        assertThrows(() -> new SpriteAnimatedImpl((Media) null, 1, 1), "Unexpected null argument !");
+    }
+
+    /**
+     * Test constructor with invalid horizontal frames.
+     */
+    @Test
+    public void testConstructorInvalidHorizontalFrames()
+    {
+        assertThrows(() -> new SpriteAnimatedImpl(Medias.create("image.png"), 0, 1),
+                     "Invalid argument: 0 is not strictly superior to 0");
+    }
+
+    /**
+     * Test constructor with invalid vertical frames.
+     */
+    @Test
+    public void testConstructorInvalidVerticalFrames()
+    {
+        assertThrows(() -> new SpriteAnimatedImpl(Medias.create("image.png"), 1, 0),
+                     "Invalid argument: 0 is not strictly superior to 0");
+    }
+
+    /**
+     * Test constructor with <code>null</code> surface.
+     */
+    @Test
+    public void testConstructorSurfaceNull()
+    {
+        assertThrows(() -> new SpriteAnimatedImpl((ImageBuffer) null, 1, 1), "Unexpected null argument !");
+    }
+
+    /**
      * Test constructor with media.
      */
     @Test

@@ -34,14 +34,14 @@ import com.b3dgs.lionengine.Media;
  */
 public final class ImageInfo
 {
+    /** Read error. */
+    static final String ERROR_READ = "Cannot read image information";
     /** Available formats. */
     private static final Collection<ImageHeaderReader> FORMATS = Arrays.asList(new ImageHeaderPng(),
                                                                                new ImageHeaderBmp(),
                                                                                new ImageHeaderGif(),
                                                                                new ImageHeaderTiff(),
                                                                                new ImageHeaderJpg());
-    /** Read error. */
-    private static final String ERROR_READ = "Cannot read image information";
 
     /**
      * Get the image info of the specified image media.
@@ -109,7 +109,7 @@ public final class ImageInfo
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_READ);
+            throw new LionEngineException(exception, media, ERROR_READ);
         }
     }
 

@@ -71,6 +71,24 @@ public final class SpriteTest
     }
 
     /**
+     * Test constructor with <code>null</code> media.
+     */
+    @Test
+    public void testConstructorMediaNull()
+    {
+        assertThrows(() -> new SpriteImpl((Media) null), "Unexpected null argument !");
+    }
+
+    /**
+     * Test constructor with <code>null</code> surface.
+     */
+    @Test
+    public void testConstructorSurfaceNull()
+    {
+        assertThrows(() -> new SpriteImpl((ImageBuffer) null), "Unexpected null argument !");
+    }
+
+    /**
      * Test constructor with media.
      */
     @Test

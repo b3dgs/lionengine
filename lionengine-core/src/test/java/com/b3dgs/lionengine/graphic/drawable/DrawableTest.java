@@ -17,17 +17,19 @@
  */
 package com.b3dgs.lionengine.graphic.drawable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.graphic.DpiType;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -45,9 +47,10 @@ public final class DrawableTest
     /**
      * Setup test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
+        Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(DrawableTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
@@ -58,7 +61,7 @@ public final class DrawableTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -66,230 +69,37 @@ public final class DrawableTest
     }
 
     /**
-     * Test the sprite animated.
-     * 
-     * @param fail <code>true</code> if should fail, <code>false</code> else.
-     */
-    private static void testImage(boolean fail)
-    {
-        try
-        {
-            if (fail)
-            {
-                Assert.assertNotNull(Drawable.loadImage(Medias.create("void")));
-                Assert.fail();
-            }
-            else
-            {
-                Assert.assertNotNull(Drawable.loadImage(media));
-                Assert.assertNotNull(Drawable.loadImage(Graphics.getImageBuffer(media)));
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            if (!fail)
-            {
-                throw exception;
-            }
-        }
-    }
-
-    /**
-     * Test the sprite animated.
-     * 
-     * @param fail <code>true</code> if should fail, <code>false</code> else.
-     */
-    private static void testSprite(boolean fail)
-    {
-        try
-        {
-            if (fail)
-            {
-                Assert.assertNotNull(Drawable.loadSprite(Medias.create("void")));
-                Assert.fail();
-            }
-            else
-            {
-                Assert.assertNotNull(Drawable.loadSprite(media));
-                Assert.assertNotNull(Drawable.loadSprite(Graphics.getImageBuffer(media)));
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            if (!fail)
-            {
-                throw exception;
-            }
-        }
-    }
-
-    /**
-     * Test the sprite animated failure.
-     * 
-     * @param fail <code>true</code> if should fail, <code>false</code> else.
-     * @param width The width.
-     * @param height The height
-     */
-    private static void testSpriteAnimated(boolean fail, int width, int height)
-    {
-        try
-        {
-            if (fail)
-            {
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(media, width, height));
-                Assert.fail();
-            }
-            else
-            {
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(media, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(media), width, height));
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            if (!fail)
-            {
-                throw exception;
-            }
-        }
-    }
-
-    /**
-     * Test the sprite tiled failure.
-     * 
-     * @param fail <code>true</code> if should fail, <code>false</code> else.
-     * @param width The width.
-     * @param height The height
-     */
-    private static void testSpriteTiled(boolean fail, int width, int height)
-    {
-        try
-        {
-            if (fail)
-            {
-                Assert.assertNotNull(Drawable.loadSpriteTiled(media, width, height));
-                Assert.fail();
-            }
-            else
-            {
-                Assert.assertNotNull(Drawable.loadSpriteTiled(media, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteTiled(Graphics.getImageBuffer(media), width, height));
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            if (!fail)
-            {
-                throw exception;
-            }
-        }
-    }
-
-    /**
-     * Test the sprite font failure.
-     * 
-     * @param fail <code>true</code> if should fail, <code>false</code> else.
-     * @param width The width.
-     * @param height The height
-     */
-    private static void testSpriteFont(boolean fail, int width, int height)
-    {
-        try
-        {
-            Assert.assertNotNull(Drawable.loadSpriteFont(media, font, width, height));
-            if (fail)
-            {
-                Assert.fail();
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            if (!fail)
-            {
-                throw exception;
-            }
-        }
-    }
-
-    /**
-     * Test the sprite parallaxed failure.
-     * 
-     * @param fail <code>true</code> if should fail, <code>false</code> else.
-     * @param lines The lines.
-     * @param sx The width.
-     * @param sy The height
-     */
-    private static void testSpriteParallaxed(boolean fail, int lines, int sx, int sy)
-    {
-        try
-        {
-            Assert.assertNotNull(Drawable.loadSpriteParallaxed(media, lines, sx, sy));
-            if (fail)
-            {
-                Assert.fail();
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            if (!fail)
-            {
-                throw exception;
-            }
-        }
-    }
-
-    /**
      * Test constructor.
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(Drawable.class);
+        assertPrivateConstructor(Drawable.class);
     }
 
     /**
-     * Test failures creation.
+     * Test load sprites.
      */
     @Test
-    public void testFail()
+    public void testLoad()
     {
-        testSprite(true);
+        assertNotNull(Drawable.loadImage(Graphics.createImageBuffer(16, 32)));
+        assertNotNull(Drawable.loadImage(media));
 
-        testSpriteAnimated(true, 0, 0);
-        testSpriteAnimated(true, 0, 1);
-        testSpriteAnimated(true, 1, 0);
+        assertNotNull(Drawable.loadSprite(Graphics.createImageBuffer(16, 32)));
+        assertNotNull(Drawable.loadSprite(media));
 
-        testSpriteTiled(true, 0, 0);
-        testSpriteTiled(true, 0, 1);
-        testSpriteTiled(true, 1, 0);
+        assertNotNull(Drawable.loadSpriteAnimated(Graphics.createImageBuffer(16, 32), 1, 1));
+        assertNotNull(Drawable.loadSpriteAnimated(media, 1, 1));
 
-        testSpriteFont(true, 0, 0);
-        testSpriteFont(true, 1, 0);
-        testSpriteFont(true, 0, 1);
+        assertNotNull(Drawable.loadSpriteTiled(Graphics.createImageBuffer(16, 32), 1, 1));
+        assertNotNull(Drawable.loadSpriteTiled(media, 1, 1));
 
-        testSpriteParallaxed(true, 0, 0, 0);
-        testSpriteParallaxed(true, 0, 0, 1);
-        testSpriteParallaxed(true, 0, 1, 0);
-        testSpriteParallaxed(true, 0, 1, 1);
-        testSpriteParallaxed(true, 1, 0, 0);
-        testSpriteParallaxed(true, 1, 0, 1);
-        testSpriteParallaxed(true, 1, 1, 0);
-    }
+        assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
 
-    /**
-     * Test success.
-     */
-    @Test
-    public void testSuccess()
-    {
-        testImage(false);
-        testSprite(false);
-        testSpriteAnimated(false, 1, 1);
-        testSpriteTiled(false, 1, 1);
-        testSpriteFont(false, 1, 1);
-        testSpriteParallaxed(false, 1, 1, 1);
+        assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));
     }
 
     /**
@@ -298,24 +108,27 @@ public final class DrawableTest
     @Test
     public void testSuccessDpi()
     {
-        try
+        for (final DpiType dpi : DpiType.values())
         {
-            for (final DpiType dpi : DpiType.values())
-            {
-                Drawable.setDpi(dpi);
+            Drawable.setDpi(dpi);
 
-                testImage(false);
-                testSprite(false);
-                testSpriteAnimated(false, 1, 1);
-                testSpriteTiled(false, 1, 1);
-                testSpriteFont(false, 1, 1);
-                testSpriteParallaxed(false, 1, 1, 1);
-            }
+            assertNotNull(Drawable.loadImage(Graphics.createImageBuffer(16, 32)));
+            assertNotNull(Drawable.loadImage(media));
+
+            assertNotNull(Drawable.loadSprite(Graphics.createImageBuffer(16, 32)));
+            assertNotNull(Drawable.loadSprite(media));
+
+            assertNotNull(Drawable.loadSpriteAnimated(Graphics.createImageBuffer(16, 32), 1, 1));
+            assertNotNull(Drawable.loadSpriteAnimated(media, 1, 1));
+
+            assertNotNull(Drawable.loadSpriteTiled(Graphics.createImageBuffer(16, 32), 1, 1));
+            assertNotNull(Drawable.loadSpriteTiled(media, 1, 1));
+
+            assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
+
+            assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));
         }
-        finally
-        {
-            Drawable.setDpi(null);
-        }
+        Drawable.setDpi(null);
     }
 
     /**
@@ -326,36 +139,35 @@ public final class DrawableTest
     {
         Drawable.setDpi(new Resolution(320, 240, 60), new Config(new Resolution(1920, 1200, 16), 60, false));
 
-        try
-        {
-            testImage(false);
-            testSprite(false);
-            testSpriteAnimated(false, 1, 1);
-            testSpriteTiled(false, 1, 1);
-            testSpriteFont(false, 1, 1);
-            testSpriteParallaxed(false, 1, 1, 1);
-        }
-        finally
-        {
-            Drawable.setDpi(null);
-        }
+        assertNotNull(Drawable.loadImage(Graphics.createImageBuffer(16, 32)));
+        assertNotNull(Drawable.loadImage(media));
+
+        assertNotNull(Drawable.loadSprite(Graphics.createImageBuffer(16, 32)));
+        assertNotNull(Drawable.loadSprite(media));
+
+        assertNotNull(Drawable.loadSpriteAnimated(Graphics.createImageBuffer(16, 32), 1, 1));
+        assertNotNull(Drawable.loadSpriteAnimated(media, 1, 1));
+
+        assertNotNull(Drawable.loadSpriteTiled(Graphics.createImageBuffer(16, 32), 1, 1));
+        assertNotNull(Drawable.loadSpriteTiled(media, 1, 1));
+
+        assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
+
+        assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));
+
+        Drawable.setDpi(null);
     }
 
     /**
      * Test DPI with 0 ordinal.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testDpiOrdinal()
     {
         Drawable.setDpi(DpiType.values()[0]);
 
-        try
-        {
-            Assert.assertNotNull(Drawable.loadImage(Medias.create("void")));
-        }
-        finally
-        {
-            Drawable.setDpi(null);
-        }
+        assertThrows(() -> Drawable.loadImage(Medias.create("void")), "[void] Cannot open the media !");
+
+        Drawable.setDpi(null);
     }
 }

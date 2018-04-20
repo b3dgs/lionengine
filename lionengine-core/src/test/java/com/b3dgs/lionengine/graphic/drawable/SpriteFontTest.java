@@ -80,6 +80,42 @@ public final class SpriteFontTest
     }
 
     /**
+     * Test constructor with <code>null</code> media.
+     */
+    @Test
+    public void testConstructorMediaNull()
+    {
+        assertThrows(() -> new SpriteFontImpl((Media) null, font, 1, 1), "Unexpected null argument !");
+    }
+
+    /**
+     * Test constructor with <code>null</code> font.
+     */
+    @Test
+    public void testConstructorFontNull()
+    {
+        assertThrows(() -> new SpriteFontImpl(media, (Media) null, 1, 1), "Unexpected null argument !");
+    }
+
+    /**
+     * Test constructor with invalid letter width.
+     */
+    @Test
+    public void testConstructorInvalidLetterWidth()
+    {
+        assertThrows(() -> new SpriteFontImpl(media, font, 0, 1), "Invalid argument: 0 is not strictly superior to 0");
+    }
+
+    /**
+     * Test constructor with invalid letter height.
+     */
+    @Test
+    public void testConstructorInvalidLetterHeight()
+    {
+        assertThrows(() -> new SpriteFontImpl(media, font, 1, 0), "Invalid argument: 0 is not strictly superior to 0");
+    }
+
+    /**
      * Test constructor with media.
      */
     @Test

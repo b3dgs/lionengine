@@ -71,6 +71,26 @@ public final class SpriteTiledTest
     }
 
     /**
+     * Test constructor with invalid tile width.
+     */
+    @Test
+    public void testConstructorInvalidTileWidth()
+    {
+        assertThrows(() -> new SpriteTiledImpl(Medias.create("image.png"), 0, 1),
+                     "Invalid argument: 0 is not strictly superior to 0");
+    }
+
+    /**
+     * Test constructor with invalid tile height.
+     */
+    @Test
+    public void testConstructorInvalidTileHeight()
+    {
+        assertThrows(() -> new SpriteTiledImpl(Medias.create("image.png"), 1, 0),
+                     "Invalid argument: 0 is not strictly superior to 0");
+    }
+
+    /**
      * Test constructor with media.
      */
     @Test

@@ -72,6 +72,24 @@ public final class ImageTest
     }
 
     /**
+     * Test constructor with <code>null</code> media.
+     */
+    @Test
+    public void testConstructorMediaNull()
+    {
+        assertThrows(() -> new ImageImpl((Media) null), "Unexpected null argument !");
+    }
+
+    /**
+     * Test constructor with <code>null</code> surface.
+     */
+    @Test
+    public void testConstructorSurfaceNull()
+    {
+        assertThrows(() -> new ImageImpl((ImageBuffer) null), "Unexpected null argument !");
+    }
+
+    /**
      * Test constructor with media.
      */
     @Test
