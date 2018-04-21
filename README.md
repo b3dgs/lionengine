@@ -97,8 +97,10 @@ In its current version, the engine greatly simplifies the development of __Platf
 * #### __lionengine-audio-adplug__
 >  * Support for Loudness Sound music (AdPlug wrapper)
 
+
 * #### __lionengine-audio-adlmidi__
 >  * Support for Midi music (AdlMidi wrapper)
+
 
 ## Download
 
@@ -125,7 +127,7 @@ Steps to include the __LionEngine__ in your project:
 
 ## Getting Started
 
-Once you installed the __LionEngine__ in your project, you may would like to know how to prepare a quick sample as a first try:s
+Once you installed the __LionEngine__ in your project, you may would like to know how to prepare a quick sample as a first try:
 
 #### Main class
 
