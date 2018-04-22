@@ -99,7 +99,7 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 
 * #### __lionengine-audio-adlmidi__
->  * Support for Midi music (AdlMidi wrapper)
+>  * Support for Midi music (AdlMidi wrapper)
 
 
 ## Download
