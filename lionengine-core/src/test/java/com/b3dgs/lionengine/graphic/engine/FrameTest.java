@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Frame}.
@@ -56,6 +57,6 @@ public final class FrameTest
         };
         frame.check();
 
-        Assert.assertFalse(result.get());
+        assertFalse(result.get());
     }
 }
