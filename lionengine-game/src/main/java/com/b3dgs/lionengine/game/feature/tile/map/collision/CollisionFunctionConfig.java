@@ -67,7 +67,7 @@ public final class CollisionFunctionConfig
                     throw new LionEngineException(ERROR_TYPE + name);
             }
         }
-        catch (final IllegalArgumentException exception)
+        catch (final IllegalArgumentException | NullPointerException exception)
         {
             throw new LionEngineException(exception, ERROR_TYPE + name);
         }
@@ -92,6 +92,10 @@ public final class CollisionFunctionConfig
             node.writeString(TYPE, CollisionFunctionType.LINEAR.name());
             node.writeDouble(A, linear.getA());
             node.writeDouble(B, linear.getB());
+        }
+        else
+        {
+            node.writeString(TYPE, String.valueOf(function.getType()));
         }
     }
 

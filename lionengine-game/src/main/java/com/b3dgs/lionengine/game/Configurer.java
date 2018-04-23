@@ -40,8 +40,6 @@ public class Configurer
     private static final String ERROR_CLASS_INSTANCE = "Class instantiation error: ";
     /** Class constructor error. */
     private static final String ERROR_CLASS_CONSTRUCTOR = "Class constructor error: ";
-    /** Class accessibility error. */
-    private static final String ERROR_CLASS_ACCESSIBILITY = "Class not accessible: ";
     /** Class not found error. */
     private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
     /** Class cache. */
@@ -410,13 +408,9 @@ public class Configurer
         {
             throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
         }
-        catch (final NoSuchMethodException exception)
+        catch (final NoSuchMethodException | IllegalAccessException exception)
         {
             throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR + className);
-        }
-        catch (final IllegalAccessException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_ACCESSIBILITY + className);
         }
         catch (final ClassNotFoundException exception)
         {

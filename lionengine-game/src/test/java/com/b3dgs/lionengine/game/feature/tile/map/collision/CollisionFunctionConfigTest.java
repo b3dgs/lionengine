@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 
@@ -29,6 +33,29 @@ import com.b3dgs.lionengine.Xml;
  */
 public final class CollisionFunctionConfigTest
 {
+    /** Hack enum. */
+    private static final UtilEnum<CollisionFunctionType> HACK = new UtilEnum<>(CollisionFunctionType.class,
+                                                                               CollisionFunctionConfig.class);
+
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        HACK.addByValue(HACK.make("FAIL"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setResourcesDirectory(null);
+        HACK.restore();
+    }
+
     /**
      * Test constructor.
      * 
@@ -56,18 +83,44 @@ public final class CollisionFunctionConfigTest
     }
 
     /**
-     * Test export with unknown function.
+     * Test export with <code>null</code> function.
      */
     @Test(expected = LionEngineException.class)
-    public void testExportFunctionUnknown()
+    public void testExportFunctionNull()
     {
-        final Xml root = new Xml("function");
+
+        final Xml root = new Xml("null");
         CollisionFunctionConfig.exports(root, new CollisionFunction()
         {
             @Override
             public CollisionFunctionType getType()
             {
                 return null;
+            }
+
+            @Override
+            public double compute(double input)
+            {
+                return 0;
+            }
+        });
+
+        Assert.assertNull(CollisionFunctionConfig.imports(root));
+    }
+
+    /**
+     * Test export with unknown function.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testExportFunctionUnknown()
+    {
+        final Xml root = new Xml("FAIL");
+        CollisionFunctionConfig.exports(root, new CollisionFunction()
+        {
+            @Override
+            public CollisionFunctionType getType()
+            {
+                return CollisionFunctionType.values()[1];
             }
 
             @Override
