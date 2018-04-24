@@ -56,6 +56,21 @@ public final class LauncherConfigTest
     }
 
     /**
+     * Test data.
+     */
+    @Test
+    public void testData()
+    {
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+
+        Assert.assertEquals("media", launchable.getMedia());
+        Assert.assertEquals(10, launchable.getDelay());
+        Assert.assertEquals(1, launchable.getOffsetX());
+        Assert.assertEquals(2, launchable.getOffsetY());
+        Assert.assertEquals(new Force(1.0, 2.0), launchable.getVector());
+    }
+
+    /**
      * Test exports imports.
      */
     @Test
