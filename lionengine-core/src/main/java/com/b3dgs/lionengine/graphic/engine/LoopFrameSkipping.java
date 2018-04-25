@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.graphic.engine;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -148,11 +147,6 @@ public final class LoopFrameSkipping implements Loop
             {
                 frame.check();
                 UtilSequence.pause(Constant.DECADE);
-            }
-
-            if (!Engine.isStarted())
-            {
-                isRunning = false;
             }
         }
     }

@@ -17,19 +17,21 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
@@ -38,10 +40,37 @@ import com.b3dgs.lionengine.graphic.Graphics;
  */
 public final class UtilSequenceTest
 {
+    private static final Context CONTEXT = new Context()
+    {
+        @Override
+        public int getX()
+        {
+            return 0;
+        }
+
+        @Override
+        public int getY()
+        {
+            return 0;
+        }
+
+        @Override
+        public <T extends InputDevice> T getInputDevice(Class<T> type)
+        {
+            return null;
+        }
+
+        @Override
+        public Config getConfig()
+        {
+            return new Config(new Resolution(320, 240, 60), 32, true);
+        }
+    };
+
     /**
      * Prepare the test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void prepareTest()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -50,7 +79,7 @@ public final class UtilSequenceTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
@@ -58,13 +87,11 @@ public final class UtilSequenceTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(UtilSequence.class);
+        assertPrivateConstructor(UtilSequence.class);
     }
 
     /**
@@ -73,32 +100,7 @@ public final class UtilSequenceTest
     @Test
     public void testCreateSequence()
     {
-        Assert.assertNotNull(UtilSequence.create(SequenceSingleMock.class, new Context()
-        {
-            @Override
-            public int getX()
-            {
-                return 0;
-            }
-
-            @Override
-            public int getY()
-            {
-                return 0;
-            }
-
-            @Override
-            public <T extends InputDevice> T getInputDevice(Class<T> type)
-            {
-                return null;
-            }
-
-            @Override
-            public Config getConfig()
-            {
-                return new Config(new Resolution(320, 240, 60), 32, true);
-            }
-        }));
+        assertNotNull(UtilSequence.create(SequenceSingleMock.class, CONTEXT));
     }
 
     /**
@@ -107,66 +109,21 @@ public final class UtilSequenceTest
     @Test
     public void testCreateSequenceArgument()
     {
-        Assert.assertNotNull(UtilSequence.create(SequenceArgumentsMock.class, new Context()
-        {
-            @Override
-            public int getX()
-            {
-                return 0;
-            }
-
-            @Override
-            public int getY()
-            {
-                return 0;
-            }
-
-            @Override
-            public <T extends InputDevice> T getInputDevice(Class<T> type)
-            {
-                return null;
-            }
-
-            @Override
-            public Config getConfig()
-            {
-                return new Config(new Resolution(320, 240, 60), 32, true);
-            }
-        }, new Object()));
+        assertNotNull(UtilSequence.create(SequenceArgumentsMock.class, CONTEXT, new Object()));
     }
 
     /**
      * Test sequence creation with invalid argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateSequenceArgumentFail()
     {
-        Assert.assertNotNull(UtilSequence.create(SequenceSingleMock.class, new Context()
-        {
-            @Override
-            public int getX()
-            {
-                return 0;
-            }
-
-            @Override
-            public int getY()
-            {
-                return 0;
-            }
-
-            @Override
-            public <T extends InputDevice> T getInputDevice(Class<T> type)
-            {
-                return null;
-            }
-
-            @Override
-            public Config getConfig()
-            {
-                return new Config(new Resolution(320, 240, 60), 32, true);
-            }
-        }, new Object()));
+        final String message = NoSuchMethodException.class.getName()
+                               + ": No compatible constructor found for "
+                               + SequenceSingleMock.class.getName()
+                               + " with: [class com.b3dgs.lionengine.graphic.engine.UtilSequenceTest$1, "
+                               + "class java.lang.Object]";
+        assertThrows(() -> UtilSequence.create(SequenceSingleMock.class, CONTEXT, new Object()), message);
     }
 
     /**
@@ -177,13 +134,13 @@ public final class UtilSequenceTest
     {
         final Timing timing = new Timing();
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() == 0);
+        assertTrue(timing.elapsed() == 0, String.valueOf(timing.elapsed()));
 
         timing.start();
 
         UtilSequence.pause(Constant.HUNDRED);
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() > 0);
+        assertTrue(timing.elapsed() > 0, String.valueOf(timing.elapsed()));
     }
 
     /**
@@ -195,17 +152,10 @@ public final class UtilSequenceTest
         final Timing timing = new Timing();
         timing.start();
 
-        final Thread thread = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                UtilSequence.pause(Constant.THOUSAND);
-            }
-        };
+        final Thread thread = new Thread(() -> UtilSequence.pause(Constant.THOUSAND));
         thread.start();
         thread.interrupt();
 
-        Assert.assertTrue(String.valueOf(timing.elapsed()), timing.elapsed() < Constant.THOUSAND);
+        assertTrue(timing.elapsed() < Constant.THOUSAND, String.valueOf(timing.elapsed()));
     }
 }

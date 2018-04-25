@@ -17,21 +17,28 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
@@ -62,7 +69,7 @@ public final class LoaderTest
     /**
      * Prepare the test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void prepareTest()
     {
         Medias.setLoadFromJar(LoaderTest.class);
@@ -73,7 +80,7 @@ public final class LoaderTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -83,7 +90,7 @@ public final class LoaderTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void before()
     {
         Engine.start(new EngineMock("LoaderTest", Version.DEFAULT));
@@ -92,7 +99,7 @@ public final class LoaderTest
     /**
      * Terminate test.
      */
-    @After
+    @AfterEach
     public void after()
     {
         Engine.terminate();
@@ -100,22 +107,20 @@ public final class LoaderTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(Loader.class);
+        assertPrivateConstructor(Loader.class);
     }
 
     /**
      * Test with no config.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullConfig()
     {
-        Loader.start(null, SequenceSingleMock.class).await();
+        assertThrows(() -> Loader.start(null, SequenceSingleMock.class).await(), "Unexpected null argument !");
     }
 
     /**
@@ -139,14 +144,15 @@ public final class LoaderTest
     /**
      * Test with timed out screen.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSequenceTimeout()
     {
+        ScreenMock.setScreenWait(true);
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+
         try
         {
-            ScreenMock.setScreenWait(true);
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            Loader.start(CONFIG, SequenceSingleMock.class).await();
+            assertThrows(() -> Loader.start(CONFIG, SequenceSingleMock.class).await(), "Unable to get screen ready !");
         }
         finally
         {
@@ -157,36 +163,30 @@ public final class LoaderTest
 
     /**
      * Test with screen not ready on rendering.
-     * 
-     * @throws Throwable If error.
      */
-    @Test(timeout = 1000L)
-    public void testSequenceRenderScreenUnready() throws Throwable
+    @Test
+    public void testSequenceRenderScreenUnready()
     {
         final CountDownLatch waitUpdate = new CountDownLatch(1);
         final CountDownLatch waitScreenUnready = new CountDownLatch(1);
+        final TaskFuture task = Loader.start(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
+
+        assertTimeout(1000L, waitUpdate::await);
+        ScreenMock.setScreenWait(true);
+        waitScreenUnready.countDown();
+
+        final AtomicReference<Throwable> throwable = new AtomicReference<>();
+        final Thread thread = new Thread(() -> task.await());
+        thread.setUncaughtExceptionHandler((e, t) -> throwable.set(t));
+        thread.start();
+
         try
         {
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            final TaskFuture task = Loader.start(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
-
-            waitUpdate.await();
-            ScreenMock.setScreenWait(true);
-            waitScreenUnready.countDown();
-
-            final AtomicReference<Throwable> throwable = new AtomicReference<>();
-            final Thread thread = new Thread(() -> task.await());
-            thread.setUncaughtExceptionHandler((e, t) -> throwable.set(t));
-            thread.start();
-            thread.join(250);
-            if (throwable.get() != null)
-            {
-                throw throwable.get();
-            }
+            assertTimeout(1000L, () -> thread.join(250L));
+            assertNull(throwable.get());
         }
         finally
         {
-            Verbose.info("****************************************************************************************");
             ScreenMock.setScreenWait(false);
         }
     }
@@ -194,70 +194,61 @@ public final class LoaderTest
     /**
      * Test with no sequence.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSequenceNull()
     {
-        Loader.start(CONFIG, null).await();
+        assertThrows(() -> Loader.start(CONFIG, null).await(), "Unexpected null argument !");
     }
 
     /**
      * Test with fail sequence.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSequenceFail()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        try
-        {
-            Loader.start(CONFIG, SequenceFailMock.class).await();
-        }
-        finally
-        {
-            Verbose.info("****************************************************************************************");
-        }
+
+        assertThrows(() -> Loader.start(CONFIG, SequenceFailMock.class).await(), "expected failure");
+
+        Verbose.info("****************************************************************************************");
     }
 
     /**
      * Test with fail next sequence.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSequenceFailNext()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        try
-        {
-            Loader.start(CONFIG, SequenceNextFailMock.class).await();
-        }
-        finally
-        {
-            Verbose.info("****************************************************************************************");
-        }
+
+        assertThrows(() -> Loader.start(CONFIG, SequenceNextFailMock.class).await(), "expected failure");
+
+        Verbose.info("****************************************************************************************");
     }
 
     /**
      * Test with malformed sequence.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSequenceMalformed()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        try
-        {
-            Loader.start(CONFIG, SequenceMalformedMock.class).await();
-        }
-        finally
-        {
-            Verbose.info("****************************************************************************************");
-        }
+
+        final String message = NoSuchMethodException.class.getName()
+                               + ": No compatible constructor found for "
+                               + SequenceMalformedMock.class.getName()
+                               + " with: "
+                               + Arrays.asList(ContextWrapper.class);
+        assertThrows(() -> Loader.start(CONFIG, SequenceMalformedMock.class).await(), message);
+
+        Verbose.info("****************************************************************************************");
     }
 
     /**
      * Test interrupted.
-     * 
-     * @throws Throwable If error.
      */
-    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L, expected = LionEngineException.class)
-    public void testInterrupted() throws Throwable
+    @Test
+    public void testInterrupted()
     {
         final AtomicReference<Throwable> exception = new AtomicReference<>();
         final Semaphore semaphore = new Semaphore(0);
@@ -279,55 +270,51 @@ public final class LoaderTest
         thread.start();
         UtilTests.pause(SequenceInterruptMock.PAUSE_MILLI / 2L);
         thread.interrupt();
-        semaphore.acquire();
-        throw exception.get();
+
+        assertTimeout(SequenceInterruptMock.PAUSE_MILLI * 2L, semaphore::acquire);
+        assertEquals("com.b3dgs.lionengine.LionEngineException: Task stopped before ended !",
+                     exception.get().toString());
     }
 
     /**
      * Test interrupted unchecked exception.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L)
-    public void testInterruptedUnchecked() throws InterruptedException
+    @Test
+    public void testInterruptedUnchecked()
     {
-        try
+        Graphics.setFactoryGraphic(new FactoryGraphicMock()
         {
-            Graphics.setFactoryGraphic(new FactoryGraphicMock()
+            @Override
+            public Screen createScreen(Config config)
             {
-                @Override
-                public Screen createScreen(Config config)
-                {
-                    return null;
-                }
-            });
+                return null;
+            }
+        });
 
-            final AtomicReference<Throwable> exception = new AtomicReference<>();
-            final Semaphore semaphore = new Semaphore(0);
-            final Thread thread = new Thread()
-            {
-                @Override
-                public void run()
-                {
-                    final TaskFuture future = Loader.start(CONFIG, SequenceInterruptMock.class);
-                    future.await();
-                }
-            };
-            thread.setUncaughtExceptionHandler((t, throwable) ->
-            {
-                exception.set(throwable);
-                semaphore.release();
-            });
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            thread.start();
-            semaphore.acquire();
-            Assert.assertTrue(exception.get().getCause() instanceof NullPointerException);
-        }
-        finally
+        final AtomicReference<Throwable> exception = new AtomicReference<>();
+        final Semaphore semaphore = new Semaphore(0);
+        final Thread thread = new Thread()
         {
-            Verbose.info("****************************************************************************************");
-            Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        }
+            @Override
+            public void run()
+            {
+                final TaskFuture future = Loader.start(CONFIG, SequenceInterruptMock.class);
+                future.await();
+            }
+        };
+        thread.setUncaughtExceptionHandler((t, throwable) ->
+        {
+            exception.set(throwable);
+            semaphore.release();
+        });
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        thread.start();
+
+        assertTimeout(SequenceInterruptMock.PAUSE_MILLI * 2L, semaphore::acquire);
+        assertTrue(exception.get().getCause() instanceof NullPointerException);
+
+        Verbose.info("****************************************************************************************");
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -354,7 +341,8 @@ public final class LoaderTest
     public void testEngineStarted()
     {
         Loader.start(CONFIG, SequenceSingleMock.class).await();
-        Assert.assertTrue(Engine.isStarted());
+
+        assertTrue(Engine.isStarted());
     }
 
     /**
@@ -398,37 +386,37 @@ public final class LoaderTest
 
     /**
      * Test interrupted.
-     * 
-     * @throws Throwable If error.
      */
-    @Test(timeout = ScreenMock.READY_TIMEOUT * 2L, expected = LionEngineException.class)
-    public void testScreenInterrupted() throws Throwable
+    @Test
+    public void testScreenInterrupted()
     {
+        ScreenMock.setScreenWait(true);
+        final AtomicReference<Throwable> exception = new AtomicReference<>();
+        final Semaphore semaphore = new Semaphore(0);
+        final Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                final Screen screen = Graphics.createScreen(CONFIG);
+                screen.start();
+                screen.awaitReady();
+            }
+        };
+        thread.setUncaughtExceptionHandler((t, throwable) ->
+        {
+            exception.set(throwable);
+            semaphore.release();
+        });
+        thread.start();
+        UtilTests.pause(ScreenMock.READY_TIMEOUT / 2L);
+        thread.interrupt();
+
         try
         {
-            ScreenMock.setScreenWait(true);
-            final AtomicReference<Throwable> exception = new AtomicReference<>();
-            final Semaphore semaphore = new Semaphore(0);
-            final Thread thread = new Thread()
-            {
-                @Override
-                public void run()
-                {
-                    final Screen screen = Graphics.createScreen(CONFIG);
-                    screen.start();
-                    screen.awaitReady();
-                }
-            };
-            thread.setUncaughtExceptionHandler((t, throwable) ->
-            {
-                exception.set(throwable);
-                semaphore.release();
-            });
-            thread.start();
-            UtilTests.pause(ScreenMock.READY_TIMEOUT / 2L);
-            thread.interrupt();
-            semaphore.acquire();
-            throw exception.get();
+            assertTimeout(ScreenMock.READY_TIMEOUT * 2L, semaphore::acquire);
+            assertEquals("com.b3dgs.lionengine.LionEngineException: Unable to get screen ready !",
+                         exception.get().toString());
         }
         finally
         {
@@ -455,7 +443,17 @@ public final class LoaderTest
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 16, true);
-        Loader.start(config, SequenceEngineTerminateMock.class).await();
+
+        final Thread thread = new Thread(() -> Loader.start(config, SequenceEngineTerminateMock.class).await());
+        thread.start();
+
+        assertTimeout(1000L, () -> thread.join(500L));
+        assertTrue(thread.isAlive());
+
+        SequenceEngineTerminateMock.CLOSE.set(true);
+
+        assertTimeout(1000L, () -> thread.join(500L));
+        assertFalse(thread.isAlive());
     }
 
     /**

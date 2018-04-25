@@ -34,6 +34,7 @@ final class SequenceScreenNotReady extends Sequence
     private SequenceScreenNotReady(Context context, CountDownLatch waitUpdate, CountDownLatch waitScreenUnready)
     {
         super(context);
+
         this.waitUpdate = waitUpdate;
         this.waitScreenUnready = waitScreenUnready;
         setLoop(new LoopUnlocked());

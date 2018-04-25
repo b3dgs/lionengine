@@ -17,22 +17,23 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import java.io.IOException;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenMock;
 
@@ -43,22 +44,20 @@ public final class LoopFrameSkippingTest
 {
     /**
      * Prepare test.
-     * 
-     * @throws IOException If error.
      */
-    @Before
-    public void setUp() throws IOException
+    @BeforeAll
+    public static void setUp()
     {
-        Engine.start(new EngineMock(LoopFrameSkippingTest.class.getSimpleName(), Version.DEFAULT));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
      * Clean up test.
      */
-    @After
-    public void cleanUp()
+    @AfterAll
+    public static void cleanUp()
     {
-        Engine.terminate();
+        Graphics.setFactoryGraphic(null);
     }
 
     private final AtomicLong rendered = new AtomicLong();
@@ -110,11 +109,9 @@ public final class LoopFrameSkippingTest
 
     /**
      * Test loop.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
-    public void testLoop() throws InterruptedException
+    @Test
+    public void testLoop()
     {
         ScreenMock.setScreenWait(false);
 
@@ -123,24 +120,22 @@ public final class LoopFrameSkippingTest
 
         final Thread thread = getTask(screen);
         thread.start();
-        thread.join();
 
-        Assert.assertEquals(maxTick.get(), tick.get());
-        Assert.assertEquals(tick.get(), rendered.get());
+        assertTimeout(1000L, thread::join);
+        assertEquals(maxTick.get(), tick.get());
+        assertEquals(tick.get(), rendered.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() <= expectedRate);
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > 0);
+        assertTrue(computed.get() <= expectedRate, String.valueOf(computed.get()));
+        assertTrue(computed.get() > 0, String.valueOf(computed.get()));
     }
 
     /**
-     * Test with slow rendering
-     * 
-     * @throws InterruptedException If error.
+     * Test with slow rendering.
      */
-    @Test(timeout = 1000L)
-    public void testSlowRender() throws InterruptedException
+    @Test
+    public void testSlowRender()
     {
         ScreenMock.setScreenWait(false);
 
@@ -150,28 +145,26 @@ public final class LoopFrameSkippingTest
 
         final Thread thread = getTask(screen);
         thread.start();
-        thread.join();
 
-        Assert.assertTrue(String.valueOf(tick.get() + " " + maxTick.get()), tick.get() >= maxTick.get());
+        assertTimeout(1000L, thread::join);
+        assertTrue(tick.get() >= maxTick.get(), tick.get() + " " + maxTick.get());
 
         final boolean min = rendered.get() >= Math.round(Math.floor(tick.get() / 2.0));
         final boolean max = rendered.get() <= Math.round(Math.ceil(tick.get() / 2.0));
 
-        Assert.assertTrue(String.valueOf(tick.get() + " " + rendered.get()), min || max);
+        assertTrue(min || max, tick.get() + " " + rendered.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() < expectedRate / 2);
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > expectedRate / 2 - expectedRate);
+        assertTrue(computed.get() < expectedRate / 2, String.valueOf(computed.get()));
+        assertTrue(computed.get() > expectedRate / 2 - expectedRate, String.valueOf(computed.get()));
     }
 
     /**
      * Test with max rate.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
-    public void testMaxRate() throws InterruptedException
+    @Test
+    public void testMaxRate()
     {
         ScreenMock.setScreenWait(false);
 
@@ -180,21 +173,19 @@ public final class LoopFrameSkippingTest
 
         final Thread thread = getTask(screen);
         thread.start();
-        thread.join();
 
-        Assert.assertTrue(tick.get() + " " + maxTick.get(), tick.get() >= maxTick.get());
-        Assert.assertTrue(rendered.get() + " " + tick.get(), rendered.get() <= tick.get());
-        Assert.assertTrue(String.valueOf(rendered.get()), rendered.get() > 0);
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > 0);
+        assertTimeout(1000L, thread::join);
+        assertTrue(tick.get() >= maxTick.get(), tick.get() + " " + maxTick.get());
+        assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
+        assertTrue(rendered.get() > 0, String.valueOf(rendered.get()));
+        assertTrue(computed.get() > 0, String.valueOf(computed.get()));
     }
 
     /**
      * Test with spike of death.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 2000L)
-    public void testSpikeOfDeath() throws InterruptedException
+    @Test
+    public void testSpikeOfDeath()
     {
         ScreenMock.setScreenWait(false);
 
@@ -206,74 +197,71 @@ public final class LoopFrameSkippingTest
 
         final Thread thread = getTask(screen);
         thread.start();
-        thread.join();
+
+        assertTimeout(2000L, thread::join);
 
         final double frameTimeMilli = 1000.0 / screen.getConfig().getSource().getRate();
-        Assert.assertEquals(Math.round(Math.floor(maxFrameTime / frameTimeMilli)), tick.get());
-        Assert.assertEquals(2, rendered.get());
+        assertEquals(Math.round(Math.floor(maxFrameTime / frameTimeMilli)), tick.get());
+        assertEquals(2, rendered.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() < expectedRate);
+        assertTrue(computed.get() < expectedRate, String.valueOf(computed.get()));
     }
 
     /**
-     * Test without sync
-     * 
-     * @throws InterruptedException If error.
+     * Test without sync.
      */
-    @Test(timeout = 1000L)
-    public void testNoSync() throws InterruptedException
+    @Test
+    public void testNoSync()
     {
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, true));
         screen.getConfig().setSource(new Resolution(320, 240, 50));
+
         final Thread thread = getTask(screen);
-
         thread.start();
-        thread.join();
 
-        Assert.assertEquals(maxTick.get(), tick.get());
-        Assert.assertEquals(tick.get(), rendered.get());
+        assertTimeout(1000L, thread::join);
+
+        assertEquals(maxTick.get(), tick.get());
+        assertEquals(tick.get(), rendered.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > expectedRate);
+        assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }
 
     /**
      * Test without sync full screen.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
-    public void testNoSyncFullscreen() throws InterruptedException
+    @Test
+    public void testNoSyncFullscreen()
     {
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, false));
         screen.getConfig().setSource(new Resolution(320, 240, 50));
+
         final Thread thread = getTask(screen);
-
         thread.start();
-        thread.join();
 
-        Assert.assertEquals(maxTick.get(), tick.get());
-        Assert.assertEquals(tick.get(), rendered.get());
+        assertTimeout(1000L, thread::join);
+
+        assertEquals(maxTick.get(), tick.get());
+        assertEquals(tick.get(), rendered.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > expectedRate);
+        assertTrue(computed.get() > expectedRate, String.valueOf(computed.get()));
     }
 
     /**
      * Test with not ready screen.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
-    public void testUnready() throws InterruptedException
+    @Test
+    public void testUnready()
     {
         ScreenMock.setScreenWait(true);
 
@@ -283,45 +271,13 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        latch.await();
+        assertTimeout(1000L, latch::await);
 
         loop.stop();
-        thread.join();
 
-        Assert.assertEquals(0, tick.get());
-        Assert.assertEquals(0, rendered.get());
-        Assert.assertEquals(-1, computed.get());
-    }
-
-    /**
-     * Test with not started engine.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test(timeout = 1000L)
-    public void testEngineNotStarted() throws InterruptedException
-    {
-        ScreenMock.setScreenWait(false);
-
-        final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
-        maxTick.set(-1);
-
-        final Thread thread = getTask(screen);
-        thread.start();
-
-        while (tick.get() < 1)
-        {
-            // Continue
-        }
-
-        Engine.terminate();
-        thread.join();
-
-        Assert.assertEquals(tick.get(), rendered.get());
-
-        final int expectedRate = screen.getConfig().getOutput().getRate();
-
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() <= expectedRate);
+        assertTimeout(1000L, thread::join);
+        assertEquals(0, tick.get());
+        assertEquals(0, rendered.get());
+        assertEquals(-1, computed.get());
     }
 }

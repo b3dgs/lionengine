@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -26,6 +28,9 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 final class SequenceEngineTerminateMock extends Sequence
 {
+    /** Force termination. */
+    public static final AtomicBoolean CLOSE = new AtomicBoolean();
+
     /**
      * Constructor.
      * 
@@ -36,10 +41,6 @@ final class SequenceEngineTerminateMock extends Sequence
         super(context);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
     public void load()
     {
@@ -49,7 +50,10 @@ final class SequenceEngineTerminateMock extends Sequence
     @Override
     public void update(double extrp)
     {
-        // Mock
+        if (CLOSE.compareAndSet(true, false))
+        {
+            end();
+        }
     }
 
     @Override

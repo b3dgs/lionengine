@@ -92,7 +92,7 @@ public final class UtilAssert
      */
     public static void assertTimeout(long timeout, Executable executable)
     {
-        Assertions.assertTimeout(Duration.ofMillis(timeout), executable);
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(timeout), executable);
     }
 
     /**
@@ -105,7 +105,7 @@ public final class UtilAssert
      */
     public static void assertThrowsTimeout(long timeout, Executable executable, String expected)
     {
-        Assertions.assertTimeout(Duration.ofMillis(timeout), () -> assertThrows(executable, expected));
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(timeout), () -> assertThrows(executable, expected));
     }
 
     /**

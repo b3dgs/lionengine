@@ -37,10 +37,6 @@ final class SequenceFailMock extends Sequence
         super(context, new Resolution(320, 200, 60));
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
     public void load()
     {

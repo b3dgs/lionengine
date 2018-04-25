@@ -17,21 +17,22 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import java.io.IOException;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenMock;
 
@@ -42,22 +43,20 @@ public final class LoopUnlockedTest
 {
     /**
      * Prepare test.
-     * 
-     * @throws IOException If error.
      */
-    @Before
-    public void setUp() throws IOException
+    @BeforeAll
+    public static void setUp()
     {
-        Engine.start(new EngineMock(LoopUnlockedTest.class.getSimpleName(), Version.DEFAULT));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
      * Clean up test.
      */
-    @After
-    public void cleanUp()
+    @AfterAll
+    public static void cleanUp()
     {
-        Engine.terminate();
+        Graphics.setFactoryGraphic(null);
     }
 
     private final AtomicLong rendered = new AtomicLong();
@@ -103,11 +102,9 @@ public final class LoopUnlockedTest
 
     /**
      * Test loop.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
-    public void testLoop() throws InterruptedException
+    @Test
+    public void testLoop()
     {
         ScreenMock.setScreenWait(false);
 
@@ -116,20 +113,18 @@ public final class LoopUnlockedTest
 
         final Thread thread = getTask(screen);
         thread.start();
-        thread.join();
 
-        Assert.assertEquals(maxTick.get(), tick.get());
-        Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() >= screen.getConfig().getOutput().getRate());
+        assertTimeout(1000L, thread::join);
+        assertEquals(maxTick.get(), tick.get());
+        assertEquals(tick.get(), rendered.get());
+        assertTrue(computed.get() >= screen.getConfig().getOutput().getRate(), String.valueOf(computed.get()));
     }
 
     /**
      * Test with not ready screen.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
-    public void testUnready() throws InterruptedException
+    @Test
+    public void testUnready()
     {
         ScreenMock.setScreenWait(true);
 
@@ -139,42 +134,13 @@ public final class LoopUnlockedTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        latch.await();
+        assertTimeout(1000L, latch::await);
 
         loop.stop();
-        thread.join();
 
-        Assert.assertEquals(0, rendered.get());
-        Assert.assertEquals(0, tick.get());
-        Assert.assertEquals(-1, computed.get());
-    }
-
-    /**
-     * Test with not started engine.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test(timeout = 1000L)
-    public void testEngineNotStarted() throws InterruptedException
-    {
-        ScreenMock.setScreenWait(false);
-
-        final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
-        maxTick.set(-1);
-
-        final Thread thread = getTask(screen);
-        thread.start();
-
-        while (tick.get() < 1)
-        {
-            // Continue
-        }
-
-        Engine.terminate();
-        thread.join();
-
-        Assert.assertEquals(tick.get(), rendered.get());
-        Assert.assertTrue(String.valueOf(computed.get()), computed.get() > 0);
+        assertTimeout(1000L, thread::join);
+        assertEquals(0, rendered.get());
+        assertEquals(0, tick.get());
+        assertEquals(-1, computed.get());
     }
 }

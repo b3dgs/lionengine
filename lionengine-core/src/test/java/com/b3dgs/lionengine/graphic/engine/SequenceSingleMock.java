@@ -36,12 +36,9 @@ final class SequenceSingleMock extends Sequence
     SequenceSingleMock(Context context)
     {
         super(context);
+
         setLoop(new LoopUnlocked());
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     public void load()

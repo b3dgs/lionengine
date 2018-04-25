@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.graphic.Graphic;
 final class SequenceLoopMock extends Sequence
 {
     /** Pause time. */
-    private static final int PAUSE_MILLI = 10;
+    private static final long PAUSE_MILLI = 10L;
     /** Max update time. */
-    private static final int MAX_UPDATE_TIME_MILLI = 200;
+    private static final long MAX_UPDATE_TIME_MILLI = 200L;
 
     /** Timing. */
     private final Timing timing = new Timing();
@@ -44,10 +44,6 @@ final class SequenceLoopMock extends Sequence
     {
         super(context, UtilTests.RESOLUTION_320_240);
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     public void load()

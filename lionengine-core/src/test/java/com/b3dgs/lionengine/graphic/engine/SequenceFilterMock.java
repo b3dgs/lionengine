@@ -39,12 +39,9 @@ final class SequenceFilterMock extends Sequence
     SequenceFilterMock(Context context, Filter filter)
     {
         super(context, UtilTests.RESOLUTION_320_240);
+
         setFilter(filter);
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     public void load()

@@ -32,10 +32,6 @@ final class SequenceMalformedMock extends Sequence
         super(null, null);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
     public void load()
     {

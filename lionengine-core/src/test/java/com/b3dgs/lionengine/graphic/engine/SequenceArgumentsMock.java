@@ -46,13 +46,10 @@ final class SequenceArgumentsMock extends Sequence
     SequenceArgumentsMock(Context context, Object argument)
     {
         super(context, UtilTests.RESOLUTION_320_240);
+
         this.argument = argument;
         setSystemCursorVisible(true);
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     public void load()

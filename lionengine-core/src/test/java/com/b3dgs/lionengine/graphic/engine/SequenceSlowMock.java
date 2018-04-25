@@ -38,10 +38,6 @@ final class SequenceSlowMock extends Sequence
         super(context, UtilTests.RESOLUTION_320_240);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
     public void load()
     {
