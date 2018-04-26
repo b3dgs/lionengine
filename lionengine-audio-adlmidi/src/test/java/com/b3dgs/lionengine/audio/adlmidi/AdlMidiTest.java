@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine.audio.adlmidi;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +30,10 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -64,12 +69,16 @@ public final class AdlMidiTest
         catch (final LionEngineException exception)
         {
             final String message = exception.getMessage();
-            Assert.assertTrue(message,
-                              message.contains(AdlMidiFormat.ERROR_LOAD_LIBRARY)
-                                       || message.contains(AudioFactory.ERROR_FORMAT));
+
+            assertTrue(message.contains(AdlMidiFormat.ERROR_LOAD_LIBRARY)
+                       || message.contains(AudioFactory.ERROR_FORMAT),
+                       message);
+
             final boolean skip = message.contains(AdlMidiFormat.ERROR_LOAD_LIBRARY)
                                  || message.contains(AudioFactory.ERROR_FORMAT);
-            Assume.assumeFalse("AdlMidi not supported on test machine - Test skipped", skip);
+
+            Assumptions.assumeFalse(skip, "AdlMidi not supported on test machine - Test skipped");
+
             return null;
         }
     }
@@ -77,7 +86,7 @@ public final class AdlMidiTest
     /**
      * Prepare tests.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         AudioFactory.addFormat(AdlMidiFormat.getFailsafe());
@@ -87,7 +96,7 @@ public final class AdlMidiTest
     /**
      * Clean up tests.
      */
-    @After
+    @AfterEach
     public void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -97,10 +106,10 @@ public final class AdlMidiTest
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullArgument()
     {
-        Assert.assertNotNull(AudioFactory.loadAudio(null, AdlMidi.class));
+        assertThrows(() -> AudioFactory.loadAudio(null, AdlMidi.class), "Unexpected null argument !");
     }
 
     /**
@@ -117,7 +126,9 @@ public final class AdlMidiTest
         {
             UtilEnum.setStaticFinal(field, "void");
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            Assert.assertEquals(AudioVoidFormat.class, AdlMidiFormat.getFailsafe().getClass());
+
+            assertEquals(AudioVoidFormat.class, AdlMidiFormat.getFailsafe().getClass());
+
             Verbose.info("****************************************************************************************");
         }
         finally
@@ -129,14 +140,13 @@ public final class AdlMidiTest
     /**
      * Test with negative volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNegativeVolume()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
-            adlmidi.setVolume(-1);
-            Assert.fail();
+            assertThrows(() -> adlmidi.setVolume(-1), "Invalid argument: -1 is not superior or equal to 0");
         }
         finally
         {
@@ -147,14 +157,13 @@ public final class AdlMidiTest
     /**
      * Test with out of range volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testOutOfRangeVolume()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
-            adlmidi.setVolume(101);
-            Assert.fail();
+            assertThrows(() -> adlmidi.setVolume(101), "Invalid argument: 101 is not inferior or equal to 100");
         }
         finally
         {
@@ -168,16 +177,14 @@ public final class AdlMidiTest
     @Test
     public void testCreateFailsafe()
     {
-        Assert.assertNotNull(AdlMidiFormat.getFailsafe());
+        assertNotNull(AdlMidiFormat.getFailsafe());
     }
 
     /**
      * Test play sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPlay() throws InterruptedException
+    @Test
+    public void testPlay()
     {
         AdlMidi adlmidi = createAdlMidi();
         try
@@ -194,7 +201,7 @@ public final class AdlMidiTest
             adlmidi.resume();
             UtilTests.pause(Constant.HUNDRED);
 
-            Assert.assertTrue(String.valueOf(adlmidi.getTicks()), adlmidi.getTicks() > -1L);
+            assertTrue(adlmidi.getTicks() > -1L, String.valueOf(adlmidi.getTicks()));
         }
         finally
         {
@@ -202,39 +209,41 @@ public final class AdlMidiTest
         }
 
         adlmidi = createAdlMidi();
+        try
+        {
+            adlmidi.setVolume(30);
+            adlmidi.play();
 
-        adlmidi.setVolume(30);
-        adlmidi.play();
+            UtilTests.pause(Constant.HUNDRED);
 
-        UtilTests.pause(Constant.HUNDRED);
+            adlmidi.pause();
 
-        adlmidi.pause();
-
-        UtilTests.pause(Constant.HUNDRED);
-        adlmidi.resume();
-        UtilTests.pause(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
+            adlmidi.resume();
+            UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            adlmidi.stop();
+        }
     }
 
     /**
      * Test play sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPlayTwice() throws InterruptedException
+    @Test
+    public void testPlayTwice()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
             adlmidi.play();
-
             UtilTests.pause(Constant.HUNDRED);
 
             adlmidi.play();
-
             UtilTests.pause(Constant.HUNDRED);
 
-            Assert.assertTrue(String.valueOf(adlmidi.getTicks()), adlmidi.getTicks() > -1L);
+            assertTrue(adlmidi.getTicks() > -1L, String.valueOf(adlmidi.getTicks()));
         }
         finally
         {
@@ -244,24 +253,22 @@ public final class AdlMidiTest
 
     /**
      * Test pause sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPause() throws InterruptedException
+    @Test
+    public void testPause()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
             adlmidi.setVolume(30);
-            adlmidi.play();
 
+            adlmidi.play();
             UtilTests.pause(Constant.HUNDRED);
 
             adlmidi.pause();
             UtilTests.pause(Constant.BYTE_4);
-            adlmidi.resume();
 
+            adlmidi.resume();
             UtilTests.pause(Constant.HUNDRED);
         }
         finally
@@ -272,11 +279,9 @@ public final class AdlMidiTest
 
     /**
      * Test with missing media.
-     * 
-     * @throws IOException If error.
      */
-    @Test(timeout = 10000, expected = LionEngineException.class)
-    public void testMissingMedia() throws IOException
+    @Test
+    public void testMissingMedia()
     {
         final Media media = new Media()
         {
@@ -344,7 +349,7 @@ public final class AdlMidiTest
         final Audio adlmidi = AudioFactory.loadAudio(media);
         try
         {
-            adlmidi.play();
+            assertCause(() -> adlmidi.play(), IOException.class);
         }
         finally
         {
@@ -357,7 +362,7 @@ public final class AdlMidiTest
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000L)
+    @Test
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.xmi");
