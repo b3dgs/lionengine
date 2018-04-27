@@ -17,12 +17,14 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -31,56 +33,63 @@ import com.b3dgs.lionengine.Version;
 public final class EngineHeadlessTest
 {
     /**
+     * Clean test.
+     */
+    @AfterEach
+    public void cleanUp()
+    {
+        Engine.terminate();
+    }
+
+    /**
+     * Test start default already.
+     */
+    @Test
+    public void testDefaultAlready()
+    {
+        EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT);
+
+        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT),
+                     "The engine has already been started !");
+    }
+
+    /**
      * Test start without resources.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullResources()
     {
-        EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, (String) null);
-        try
-        {
-            Assert.assertTrue(Engine.isStarted());
-            EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, (String) null);
-        }
-        finally
-        {
-            Engine.terminate();
-        }
+        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, (String) null),
+                     "Unexpected null argument !");
     }
 
     /**
-     * Test start with resources.
+     * Test start with resources already started.
      */
-    @Test(expected = LionEngineException.class)
-    public void testResources()
+    @Test
+    public void testResourcesAlready()
     {
         EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
-        try
-        {
-            Assert.assertTrue(Engine.isStarted());
-            EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
-        }
-        finally
-        {
-            Engine.terminate();
-        }
+
+        assertTrue(Engine.isStarted());
+        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(),
+                                                Version.DEFAULT,
+                                                Constant.EMPTY_STRING),
+                     "The engine has already been started !");
     }
 
     /**
-     * Test start with class.
+     * Test start with class already started.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testClass()
     {
         EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, EngineHeadlessTest.class);
-        try
-        {
-            Assert.assertTrue(Engine.isStarted());
-            EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, EngineHeadlessTest.class);
-        }
-        finally
-        {
-            Engine.terminate();
-        }
+
+        assertTrue(Engine.isStarted());
+        assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(),
+                                                Version.DEFAULT,
+                                                EngineHeadlessTest.class),
+                     "The engine has already been started !");
     }
 }

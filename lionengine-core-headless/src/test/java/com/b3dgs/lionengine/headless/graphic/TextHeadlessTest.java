@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
@@ -42,10 +44,10 @@ public final class TextHeadlessTest
     private static Graphic g;
 
     /**
-     * Setup test.
+     * Setup tests.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
         final ImageBuffer buffer = Graphics.createImageBuffer(320, 240);
@@ -54,10 +56,10 @@ public final class TextHeadlessTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         g.dispose();
         Graphics.setFactoryGraphic(null);
@@ -80,17 +82,17 @@ public final class TextHeadlessTest
         text.setLocation(1, 5);
         text.setText(VALUE);
 
-        Assert.assertEquals(12, text.getSize());
-        Assert.assertEquals(1, text.getLocationX());
-        Assert.assertEquals(5, text.getLocationY());
-        Assert.assertTrue(text.getWidth() == 0);
-        Assert.assertTrue(text.getHeight() == 0);
+        assertEquals(12, text.getSize());
+        assertEquals(1, text.getLocationX());
+        assertEquals(5, text.getLocationY());
+        assertTrue(text.getWidth() == 0);
+        assertTrue(text.getHeight() == 0);
 
         text.render(g);
         text.render(g);
 
-        Assert.assertTrue(text.getWidth() > 0);
-        Assert.assertTrue(text.getHeight() > 0);
+        assertTrue(text.getWidth() > 0);
+        assertTrue(text.getHeight() > 0);
     }
 
     /**

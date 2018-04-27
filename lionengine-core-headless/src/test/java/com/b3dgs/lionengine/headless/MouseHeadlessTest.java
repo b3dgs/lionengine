@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine.headless;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link MouseHeadless}.
@@ -46,27 +50,27 @@ public final class MouseHeadlessTest
     {
         final MouseHeadless mouse = new MouseHeadless();
 
-        Assert.assertFalse(mouse.hasClicked(MouseHeadless.LEFT));
+        assertFalse(mouse.hasClicked(MouseHeadless.LEFT));
         mouse.mousePressed(createEvent(MouseHeadless.LEFT, 0, 0));
-        Assert.assertTrue(mouse.hasClicked(MouseHeadless.LEFT));
+        assertTrue(mouse.hasClicked(MouseHeadless.LEFT));
         mouse.mouseReleased(createEvent(MouseHeadless.LEFT, 0, 0));
-        Assert.assertFalse(mouse.hasClicked(MouseHeadless.LEFT));
+        assertFalse(mouse.hasClicked(MouseHeadless.LEFT));
 
-        Assert.assertFalse(mouse.hasClicked(MouseHeadless.RIGHT));
+        assertFalse(mouse.hasClicked(MouseHeadless.RIGHT));
         mouse.mousePressed(createEvent(MouseHeadless.RIGHT, 0, 0));
-        Assert.assertTrue(mouse.hasClicked(MouseHeadless.RIGHT));
+        assertTrue(mouse.hasClicked(MouseHeadless.RIGHT));
         mouse.mouseReleased(createEvent(MouseHeadless.RIGHT, 0, 0));
-        Assert.assertFalse(mouse.hasClicked(MouseHeadless.RIGHT));
+        assertFalse(mouse.hasClicked(MouseHeadless.RIGHT));
 
-        Assert.assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+        assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
         mouse.mousePressed(createEvent(MouseHeadless.MIDDLE, 0, 0));
-        Assert.assertTrue(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+        assertTrue(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
         mouse.mouseReleased(createEvent(MouseHeadless.MIDDLE, 0, 0));
-        Assert.assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+        assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
 
         mouse.mousePressed(createEvent(MouseHeadless.MIDDLE, 0, 0));
-        Assert.assertTrue(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
-        Assert.assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+        assertTrue(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
+        assertFalse(mouse.hasClickedOnce(MouseHeadless.MIDDLE));
     }
 
     /**
@@ -78,9 +82,12 @@ public final class MouseHeadlessTest
         final MouseHeadless mouse = new MouseHeadless();
 
         mouse.mousePressed(createEvent(MouseHeadless.MIDDLE, 0, 0));
-        Assert.assertEquals(MouseHeadless.MIDDLE, mouse.getClick());
+
+        assertEquals(MouseHeadless.MIDDLE, mouse.getClick());
+
         mouse.mouseReleased(createEvent(MouseHeadless.MIDDLE, 0, 0));
-        Assert.assertNotEquals(MouseHeadless.MIDDLE, mouse.getClick());
+
+        assertNotEquals(MouseHeadless.MIDDLE, mouse.getClick());
     }
 
     /**
@@ -90,14 +97,15 @@ public final class MouseHeadlessTest
     public void testLocation()
     {
         final MouseHeadless mouse = new MouseHeadless();
-
         mouse.mouseMoved(createEvent(MouseHeadless.LEFT, 0, 0));
-        Assert.assertEquals(0, mouse.getX());
-        Assert.assertEquals(0, mouse.getY());
+
+        assertEquals(0, mouse.getX());
+        assertEquals(0, mouse.getY());
 
         mouse.mouseMoved(createEvent(MouseHeadless.LEFT, 10, 20));
-        Assert.assertEquals(10, mouse.getX());
-        Assert.assertEquals(20, mouse.getY());
+
+        assertEquals(10, mouse.getX());
+        assertEquals(20, mouse.getY());
     }
 
     /**
@@ -108,35 +116,41 @@ public final class MouseHeadlessTest
     {
         final MouseHeadless mouse = new MouseHeadless();
 
-        Assert.assertFalse(mouse.hasClicked(MouseHeadless.RIGHT));
+        assertFalse(mouse.hasClicked(MouseHeadless.RIGHT));
+
         mouse.mouseMoved(createEvent(MouseHeadless.LEFT, 0, 0));
         mouse.doClickAt(MouseHeadless.RIGHT, 500, 500);
         mouse.update(1.0);
         try
         {
-            Assert.assertEquals(500, mouse.getOnScreenX());
-            Assert.assertEquals(500, mouse.getOnScreenY());
-            Assert.assertTrue(mouse.hasClicked(MouseHeadless.RIGHT));
+            assertEquals(500, mouse.getOnScreenX());
+            assertEquals(500, mouse.getOnScreenY());
+            assertTrue(mouse.hasClicked(MouseHeadless.RIGHT));
         }
         finally
         {
             mouse.doClickAt(MouseHeadless.LEFT, 499, 499);
         }
 
-        Assert.assertTrue(mouse.hasClicked(MouseHeadless.LEFT));
+        assertTrue(mouse.hasClicked(MouseHeadless.LEFT));
+
         mouse.doClick(MouseHeadless.LEFT);
-        Assert.assertTrue(mouse.hasClicked(MouseHeadless.LEFT));
+
+        assertTrue(mouse.hasClicked(MouseHeadless.LEFT));
+
         mouse.update(1.0);
         mouse.doClick(MouseHeadless.MIDDLE);
         mouse.update(1.0);
 
         mouse.doSetMouse(1, 2);
-        Assert.assertEquals(1, mouse.getOnScreenX());
-        Assert.assertEquals(2, mouse.getOnScreenY());
+
+        assertEquals(1, mouse.getOnScreenX());
+        assertEquals(2, mouse.getOnScreenY());
 
         mouse.doMoveMouse(3, 4);
-        Assert.assertEquals(3, mouse.getOnScreenX());
-        Assert.assertEquals(4, mouse.getOnScreenY());
+
+        assertEquals(3, mouse.getOnScreenX());
+        assertEquals(4, mouse.getOnScreenY());
     }
 
     /**
@@ -150,8 +164,8 @@ public final class MouseHeadlessTest
         mouse.update(1.0);
         mouse.update(1.0);
 
-        Assert.assertFalse(mouse.hasClickedOnce(Integer.MAX_VALUE));
-        Assert.assertFalse(mouse.hasClicked(Integer.MAX_VALUE));
+        assertFalse(mouse.hasClickedOnce(Integer.MAX_VALUE));
+        assertFalse(mouse.hasClicked(Integer.MAX_VALUE));
     }
 
     /**
@@ -161,13 +175,13 @@ public final class MouseHeadlessTest
     public void testMouse()
     {
         final MouseHeadless mouse = new MouseHeadless();
-
         mouse.mouseMoved(createEvent(MouseHeadless.LEFT, 0, 0));
         mouse.mouseDragged(createEvent(0, 0, 0));
         mouse.update(1.0);
-        Assert.assertEquals(0, mouse.getMoveX());
-        Assert.assertEquals(0, mouse.getMoveY());
-        Assert.assertTrue(mouse.hasMoved());
-        Assert.assertFalse(mouse.hasMoved());
+
+        assertEquals(0, mouse.getMoveX());
+        assertEquals(0, mouse.getMoveY());
+        assertTrue(mouse.hasMoved());
+        assertFalse(mouse.hasMoved());
     }
 }

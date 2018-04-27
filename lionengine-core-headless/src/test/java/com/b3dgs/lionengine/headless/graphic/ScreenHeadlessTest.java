@@ -17,14 +17,17 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
@@ -42,25 +45,23 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
  */
 public final class ScreenHeadlessTest
 {
-    /** Test timeout in milliseconds. */
-    private static final long TIMEOUT = 1_000L;
     /** Image media. */
     private static final String IMAGE = "image.png";
 
     /**
-     * Prepare test.
+     * Prepare tests.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         EngineHeadless.start(ScreenHeadlessTest.class.getName(), Version.DEFAULT);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Engine.terminate();
     }
@@ -70,7 +71,7 @@ public final class ScreenHeadlessTest
      * 
      * @throws Exception If error.
      */
-    @Test(timeout = TIMEOUT)
+    @Test
     public void testWindowed() throws Exception
     {
         final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
@@ -78,7 +79,8 @@ public final class ScreenHeadlessTest
                                          true,
                                          Medias.create(IMAGE));
         config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
-        testScreen(config);
+
+        assertTimeout(1000L, () -> testScreen(config));
     }
 
     /**
@@ -86,21 +88,14 @@ public final class ScreenHeadlessTest
      * 
      * @throws Exception If error.
      */
-    @Test(timeout = TIMEOUT)
+    @Test
     public void testFullscreen() throws Exception
     {
-        final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        if (gd.isFullScreenSupported())
-        {
-            final int width = gd.getDisplayMode().getWidth();
-            final int height = gd.getDisplayMode().getHeight();
+        final Resolution resolution = com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240;
+        final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
+        config.setSource(resolution);
 
-            final Resolution resolution = new Resolution(width, height, 60);
-            final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
-            config.setSource(resolution);
-
-            testScreen(config);
-        }
+        assertTimeout(1000L, () -> testScreen(config));
     }
 
     /**
@@ -149,7 +144,7 @@ public final class ScreenHeadlessTest
             }
         };
 
-        Assert.assertFalse(screen.isReady());
+        assertFalse(screen.isReady());
 
         screen.addListener(screenListener);
         screen.start();
@@ -162,12 +157,12 @@ public final class ScreenHeadlessTest
         screen.requestFocus();
         screen.onSourceChanged(UtilTests.RESOLUTION_320_240);
 
-        Assert.assertNotNull(screen.getConfig());
-        Assert.assertNotNull(screen.getGraphic());
-        Assert.assertTrue(screen.getReadyTimeOut() > -1L);
-        Assert.assertTrue(screen.getX() > -1);
-        Assert.assertTrue(screen.getY() > -1);
-        Assert.assertTrue(screen.isReady());
+        assertNotNull(screen.getConfig());
+        assertNotNull(screen.getGraphic());
+        assertTrue(screen.getReadyTimeOut() > -1L);
+        assertTrue(screen.getX() > -1);
+        assertTrue(screen.getY() > -1);
+        assertTrue(screen.isReady());
 
         while (config.isWindowed() && !gained.get())
         {
@@ -177,8 +172,8 @@ public final class ScreenHeadlessTest
         screen.setIcon("image.png");
         screen.dispose();
 
-        Assert.assertEquals(0, screen.getX());
-        Assert.assertEquals(0, screen.getY());
+        assertEquals(0, screen.getX());
+        assertEquals(0, screen.getY());
 
         screen.removeListener(screenListener);
     }

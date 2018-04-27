@@ -33,10 +33,10 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 public final class GraphicHeadlessTest extends GraphicTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
     }

@@ -17,13 +17,15 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
-import java.io.IOException;
+import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -36,21 +38,19 @@ import com.b3dgs.lionengine.graphic.Transparency;
 public final class ImageBufferHeadlessTest
 {
     /**
-     * Prepare test.
-     * 
-     * @throws IOException If error.
+     * Prepare tests.
      */
-    @BeforeClass
-    public static void setUp() throws IOException
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicHeadless());
     }
 
     /**
-     * Clean test.
+     * Clean tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }
@@ -63,19 +63,21 @@ public final class ImageBufferHeadlessTest
     {
         final ImageBuffer image = new ImageBufferHeadless(100, 100, Transparency.OPAQUE);
 
-        Assert.assertNotNull(image.createGraphic());
+        assertNotNull(image.createGraphic());
+
         image.prepare();
 
-        Assert.assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
-        Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
-        Assert.assertEquals(Transparency.OPAQUE, image.getTransparency());
-        Assert.assertEquals(Transparency.OPAQUE,
-                            new ImageBufferHeadless(100, 100, Transparency.OPAQUE).getTransparency());
-        Assert.assertEquals(100, image.getWidth());
-        Assert.assertEquals(100, image.getHeight());
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
+        assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
+        assertEquals(Transparency.OPAQUE, image.getTransparency());
+        assertEquals(Transparency.OPAQUE, new ImageBufferHeadless(100, 100, Transparency.OPAQUE).getTransparency());
+        assertEquals(100, image.getWidth());
+        assertEquals(100, image.getHeight());
 
         image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
-        Assert.assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
+
+        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
+
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
         image.dispose();
@@ -89,8 +91,8 @@ public final class ImageBufferHeadlessTest
     {
         final ImageBufferHeadless image = new ImageBufferHeadless(100, 200, new int[100 * 200]);
 
-        Assert.assertEquals(100, image.getWidth());
-        Assert.assertEquals(200, image.getHeight());
+        assertEquals(100, image.getWidth());
+        assertEquals(200, image.getHeight());
     }
 
     /**
@@ -103,23 +105,23 @@ public final class ImageBufferHeadlessTest
         final int[] array = new int[3 * 3];
         Arrays.fill(array, ColorRgba.BLUE.getRgba());
 
-        Assert.assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
-        Assert.assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(1, 1));
-        Assert.assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(2, 2));
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(1, 1));
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(2, 2));
 
         image.setRgb(1, 1, 1, 1, array, 0, 1);
 
-        Assert.assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
-        Assert.assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(1, 1));
-        Assert.assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(2, 2));
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
+        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(1, 1));
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(2, 2));
 
         Arrays.fill(array, ColorRgba.TRANSPARENT.getRgba());
         final int[] expected = new int[3 * 3];
         expected[0] = ColorRgba.BLUE.getRgba();
         image.getRgb(1, 1, 1, 1, array, 0, 9);
 
-        Assert.assertArrayEquals(expected, array);
-        Assert.assertArrayEquals(expected, image.getRgb(1, 1, 1, 1, null, 0, 9));
+        assertArrayEquals(expected, array);
+        assertArrayEquals(expected, image.getRgb(1, 1, 1, 1, null, 0, 9));
     }
 
     /**
@@ -130,7 +132,7 @@ public final class ImageBufferHeadlessTest
     {
         final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
 
-        Assert.assertEquals(Transparency.BITMASK, image.getTransparency());
-        Assert.assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
+        assertEquals(Transparency.BITMASK, image.getTransparency());
+        assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
     }
 }

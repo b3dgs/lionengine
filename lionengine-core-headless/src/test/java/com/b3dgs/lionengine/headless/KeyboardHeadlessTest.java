@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.headless;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link KeyboardHeadless}.
@@ -46,12 +47,12 @@ public final class KeyboardHeadlessTest
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
 
-        Assert.assertFalse(keyboard.isPressed(KeyboardHeadless.DOWN));
-        Assert.assertFalse(keyboard.isPressed(KeyboardHeadless.LEFT));
-        Assert.assertFalse(keyboard.isPressed(KeyboardHeadless.RIGHT));
-        Assert.assertFalse(keyboard.isPressed(KeyboardHeadless.SPACE));
-        Assert.assertFalse(keyboard.isPressed(KeyboardHeadless.UP));
-        Assert.assertFalse(keyboard.isPressedOnce(KeyboardHeadless.UP));
+        assertFalse(keyboard.isPressed(KeyboardHeadless.DOWN));
+        assertFalse(keyboard.isPressed(KeyboardHeadless.LEFT));
+        assertFalse(keyboard.isPressed(KeyboardHeadless.RIGHT));
+        assertFalse(keyboard.isPressed(KeyboardHeadless.SPACE));
+        assertFalse(keyboard.isPressed(KeyboardHeadless.UP));
+        assertFalse(keyboard.isPressedOnce(KeyboardHeadless.UP));
     }
 
     /**
@@ -61,18 +62,19 @@ public final class KeyboardHeadlessTest
     public void testPressed()
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
-
         keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
-        Assert.assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
-        Assert.assertTrue(keyboard.isPressedOnce(KeyboardHeadless.DOWN));
-        Assert.assertFalse(keyboard.isPressedOnce(KeyboardHeadless.DOWN));
-        Assert.assertEquals(KeyboardHeadless.DOWN, keyboard.getKeyCode());
-        Assert.assertEquals(' ', keyboard.getKeyName());
-        Assert.assertTrue(keyboard.used());
+
+        assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
+        assertTrue(keyboard.isPressedOnce(KeyboardHeadless.DOWN));
+        assertFalse(keyboard.isPressedOnce(KeyboardHeadless.DOWN));
+        assertEquals(KeyboardHeadless.DOWN, keyboard.getKeyCode());
+        assertEquals(' ', keyboard.getKeyName());
+        assertTrue(keyboard.used());
 
         keyboard.keyReleased(createEvent(KeyboardHeadless.DOWN));
-        Assert.assertFalse(keyboard.isPressed(KeyboardHeadless.DOWN));
-        Assert.assertFalse(keyboard.used());
+
+        assertFalse(keyboard.isPressed(KeyboardHeadless.DOWN));
+        assertFalse(keyboard.used());
     }
 
     /**
@@ -82,12 +84,13 @@ public final class KeyboardHeadlessTest
     public void testPressedTwice()
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
+        keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
+
+        assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
 
         keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
-        Assert.assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
 
-        keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
-        Assert.assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
+        assertTrue(keyboard.isPressed(KeyboardHeadless.DOWN));
     }
 
     /**
@@ -102,21 +105,30 @@ public final class KeyboardHeadlessTest
         keyboard.setVerticalControlNegative(KeyboardHeadless.DOWN);
         keyboard.setHorizontalControlPositive(KeyboardHeadless.RIGHT);
         keyboard.setVerticalControlPositive(KeyboardHeadless.UP);
-
         keyboard.keyPressed(createEvent(KeyboardHeadless.RIGHT));
-        Assert.assertEquals(1.0, keyboard.getHorizontalDirection(), UtilTests.PRECISION);
+
+        assertEquals(1.0, keyboard.getHorizontalDirection());
+
         keyboard.keyReleased(createEvent(KeyboardHeadless.RIGHT));
         keyboard.keyPressed(createEvent(KeyboardHeadless.LEFT));
-        Assert.assertEquals(-1.0, keyboard.getHorizontalDirection(), UtilTests.PRECISION);
+
+        assertEquals(-1.0, keyboard.getHorizontalDirection());
+
         keyboard.keyReleased(createEvent(KeyboardHeadless.LEFT));
-        Assert.assertEquals(0.0, keyboard.getHorizontalDirection(), UtilTests.PRECISION);
+
+        assertEquals(0.0, keyboard.getHorizontalDirection());
 
         keyboard.keyPressed(createEvent(KeyboardHeadless.UP));
-        Assert.assertEquals(1.0, keyboard.getVerticalDirection(), UtilTests.PRECISION);
+
+        assertEquals(1.0, keyboard.getVerticalDirection());
+
         keyboard.keyReleased(createEvent(KeyboardHeadless.UP));
         keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
-        Assert.assertEquals(-1.0, keyboard.getVerticalDirection(), UtilTests.PRECISION);
+
+        assertEquals(-1.0, keyboard.getVerticalDirection());
+
         keyboard.keyReleased(createEvent(KeyboardHeadless.DOWN));
-        Assert.assertEquals(0.0, keyboard.getVerticalDirection(), UtilTests.PRECISION);
+
+        assertEquals(0.0, keyboard.getVerticalDirection());
     }
 }

@@ -36,10 +36,10 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 public final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(FactoryGraphicHeadlessTest.class);
@@ -47,10 +47,10 @@ public final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
     }
 
     /**
-     * Clean test.
+     * Clean tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
