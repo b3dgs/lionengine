@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine.audio.adplug;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +30,10 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -64,31 +69,34 @@ public final class AdPlugTest
         catch (final LionEngineException exception)
         {
             final String message = exception.getMessage();
-            Assert.assertTrue(message,
-                              message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY)
-                                       || message.contains(AudioFactory.ERROR_FORMAT));
+
+            assertTrue(message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY) || message.contains(AudioFactory.ERROR_FORMAT),
+                       message);
+
             final boolean skip = message.contains(AdPlugFormat.ERROR_LOAD_LIBRARY)
                                  || message.contains(AudioFactory.ERROR_FORMAT);
-            Assume.assumeFalse("AdPlug not supported on test machine - Test skipped", skip);
+
+            Assumptions.assumeFalse(skip, "AdPlug not supported on test machine - Test skipped");
+
             return null;
         }
     }
 
     /**
-     * Prepare tests.
+     * Prepare test.
      */
-    @Before
-    public void prepare()
+    @BeforeEach
+    public void beforeTest()
     {
         AudioFactory.addFormat(AdPlugFormat.getFailsafe());
         Medias.setLoadFromJar(AdPlugTest.class);
     }
 
     /**
-     * Clean up tests.
+     * Clean up test.
      */
-    @After
-    public void cleanUp()
+    @AfterEach
+    public void afterTest()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();
@@ -97,10 +105,10 @@ public final class AdPlugTest
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullArgument()
     {
-        Assert.assertNotNull(AudioFactory.loadAudio(null, AdPlug.class));
+        assertThrows(() -> AudioFactory.loadAudio(null, AdPlug.class), "Unexpected null argument !");
     }
 
     /**
@@ -117,7 +125,9 @@ public final class AdPlugTest
         {
             UtilEnum.setStaticFinal(field, "void");
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            Assert.assertEquals(AudioVoidFormat.class, AdPlugFormat.getFailsafe().getClass());
+
+            assertEquals(AudioVoidFormat.class, AdPlugFormat.getFailsafe().getClass());
+
             Verbose.info("****************************************************************************************");
         }
         finally
@@ -129,14 +139,13 @@ public final class AdPlugTest
     /**
      * Test with negative volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNegativeVolume()
     {
         final AdPlug adplug = createAdPlug();
         try
         {
-            adplug.setVolume(-1);
-            Assert.fail();
+            assertThrows(() -> adplug.setVolume(-1), "Invalid argument: -1 is not superior or equal to 0");
         }
         finally
         {
@@ -147,14 +156,13 @@ public final class AdPlugTest
     /**
      * Test with out of range volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testOutOfRangeVolume()
     {
         final AdPlug adplug = createAdPlug();
         try
         {
-            adplug.setVolume(101);
-            Assert.fail();
+            assertThrows(() -> adplug.setVolume(101), "Invalid argument: 101 is not inferior or equal to 100");
         }
         finally
         {
@@ -168,16 +176,14 @@ public final class AdPlugTest
     @Test
     public void testCreateFailsafe()
     {
-        Assert.assertNotNull(AdPlugFormat.getFailsafe());
+        assertNotNull(AdPlugFormat.getFailsafe());
     }
 
     /**
      * Test play sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPlay() throws InterruptedException
+    @Test
+    public void testPlay()
     {
         AdPlug adplug = createAdPlug();
         try
@@ -199,26 +205,30 @@ public final class AdPlugTest
         }
 
         adplug = createAdPlug();
+        try
+        {
+            adplug.setVolume(30);
+            adplug.play();
 
-        adplug.setVolume(30);
-        adplug.play();
+            UtilTests.pause(Constant.HUNDRED);
 
-        UtilTests.pause(Constant.HUNDRED);
+            adplug.pause();
 
-        adplug.pause();
-
-        UtilTests.pause(Constant.HUNDRED);
-        adplug.resume();
-        UtilTests.pause(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
+            adplug.resume();
+            UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            adplug.stop();
+        }
     }
 
     /**
      * Test play sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPlayTwice() throws InterruptedException
+    @Test
+    public void testPlayTwice()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -239,11 +249,9 @@ public final class AdPlugTest
 
     /**
      * Test pause sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPause() throws InterruptedException
+    @Test
+    public void testPause()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -270,7 +278,7 @@ public final class AdPlugTest
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000, expected = LionEngineException.class)
+    @Test
     public void testMissingMedia() throws IOException
     {
         final Media media = new Media()
@@ -339,7 +347,7 @@ public final class AdPlugTest
         final Audio sc68 = AudioFactory.loadAudio(media);
         try
         {
-            sc68.play();
+            assertCause(() -> sc68.play(), IOException.class);
         }
         finally
         {
@@ -352,7 +360,7 @@ public final class AdPlugTest
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000L)
+    @Test
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.lds");
