@@ -84,20 +84,20 @@ public final class AdlMidiTest
     }
 
     /**
-     * Prepare tests.
+     * Prepare test.
      */
     @BeforeEach
-    public void prepare()
+    public void beforeTest()
     {
         AudioFactory.addFormat(AdlMidiFormat.getFailsafe());
         Medias.setLoadFromJar(AdlMidiTest.class);
     }
 
     /**
-     * Clean up tests.
+     * Clean up test.
      */
     @AfterEach
-    public void cleanUp()
+    public void afterTest()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();
