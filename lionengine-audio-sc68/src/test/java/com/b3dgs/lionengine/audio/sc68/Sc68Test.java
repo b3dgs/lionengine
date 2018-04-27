@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +30,10 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -63,30 +68,35 @@ public final class Sc68Test
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(exception);
             final String message = exception.getMessage();
-            Assert.assertTrue(message, message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
-            Assume.assumeFalse("Sc68 not supported on test machine - Test skipped",
-                               message.contains(Sc68Format.ERROR_LOAD_LIBRARY));
+
+            assertTrue(message.contains(Sc68Format.ERROR_LOAD_LIBRARY) || message.contains(AudioFactory.ERROR_FORMAT),
+                       message);
+
+            final boolean skip = message.contains(Sc68Format.ERROR_LOAD_LIBRARY)
+                                 || message.contains(AudioFactory.ERROR_FORMAT);
+
+            Assumptions.assumeFalse(skip, "Sc68 not supported on test machine - Test skipped");
+
             return null;
         }
     }
 
     /**
-     * Prepare tests.
+     * Prepare test.
      */
-    @Before
-    public void prepare()
+    @BeforeEach
+    public void beforeTest()
     {
         AudioFactory.addFormat(new Sc68Format());
         Medias.setLoadFromJar(Sc68Test.class);
     }
 
     /**
-     * Clean up tests.
+     * Clean up test.
      */
-    @After
-    public void cleanUp()
+    @AfterEach
+    public void afterTest()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();
@@ -95,10 +105,10 @@ public final class Sc68Test
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullArgument()
     {
-        Assert.assertNotNull(AudioFactory.loadAudio(null, Sc68.class));
+        assertThrows(() -> AudioFactory.loadAudio(null, Sc68.class), "Unexpected null argument !");
     }
 
     /**
@@ -115,7 +125,9 @@ public final class Sc68Test
         {
             UtilEnum.setStaticFinal(field, "void");
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            Assert.assertEquals(AudioVoidFormat.class, Sc68Format.getFailsafe().getClass());
+
+            assertEquals(AudioVoidFormat.class, Sc68Format.getFailsafe().getClass());
+
             Verbose.info("****************************************************************************************");
         }
         finally
@@ -127,14 +139,13 @@ public final class Sc68Test
     /**
      * Test with negative volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNegativeVolume()
     {
         final Sc68 sc68 = createSc68();
         try
         {
-            sc68.setVolume(-1);
-            Assert.fail();
+            assertThrows(() -> sc68.setVolume(-1), "Invalid argument: -1 is not superior or equal to 0");
         }
         finally
         {
@@ -145,14 +156,13 @@ public final class Sc68Test
     /**
      * Test with out of range volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testOutOfRangeVolume()
     {
         final Sc68 sc68 = createSc68();
         try
         {
-            sc68.setVolume(101);
-            Assert.fail();
+            assertThrows(() -> sc68.setVolume(101), "Invalid argument: 101 is not inferior or equal to 100");
         }
         finally
         {
@@ -166,27 +176,25 @@ public final class Sc68Test
     @Test
     public void testCreateFailsafe()
     {
-        Assert.assertNotNull(Sc68Format.getFailsafe());
+        assertNotNull(Sc68Format.getFailsafe());
     }
 
     /**
      * Test play sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPlay() throws InterruptedException
+    @Test
+    public void testPlay()
     {
         final Sc68 sc68 = createSc68();
         try
         {
-            Assert.assertTrue(String.valueOf(sc68.getTicks()), sc68.getTicks() >= -1);
+            assertTrue(sc68.getTicks() >= -1, String.valueOf(sc68.getTicks()));
             sc68.setVolume(30);
             sc68.play();
 
             UtilTests.pause(Constant.THOUSAND);
 
-            Assert.assertTrue(String.valueOf(sc68.getTicks()), sc68.getTicks() > -1L);
+            assertTrue(sc68.getTicks() > -1L, String.valueOf(sc68.getTicks()));
         }
         finally
         {
@@ -199,7 +207,7 @@ public final class Sc68Test
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
+    @Test
     public void testPlayTwice() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
@@ -221,11 +229,9 @@ public final class Sc68Test
 
     /**
      * Test start sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testStart() throws InterruptedException
+    @Test
+    public void testStart()
     {
         Sc68 sc68 = createSc68();
         try
@@ -242,26 +248,30 @@ public final class Sc68Test
         }
 
         sc68 = createSc68();
+        try
+        {
+            sc68.setVolume(30);
+            sc68.play();
 
-        sc68.setVolume(30);
-        sc68.play();
+            UtilTests.pause(Constant.HUNDRED);
 
-        UtilTests.pause(Constant.HUNDRED);
+            sc68.pause();
 
-        sc68.pause();
-
-        UtilTests.pause(Constant.HUNDRED);
-        sc68.resume();
-        UtilTests.pause(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
+            sc68.resume();
+            UtilTests.pause(Constant.HUNDRED);
+        }
+        finally
+        {
+            sc68.stop();
+        }
     }
 
     /**
      * Test loop sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testLoop() throws InterruptedException
+    @Test
+    public void testLoop()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -280,11 +290,9 @@ public final class Sc68Test
 
     /**
      * Test pause sequence.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(timeout = 10000L)
-    public void testPause() throws InterruptedException
+    @Test
+    public void testPause()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -309,7 +317,7 @@ public final class Sc68Test
     /**
      * Test the set configuration.
      */
-    @Test(timeout = 10000L)
+    @Test
     public void testConfig()
     {
         final Sc68 sc68 = createSc68();
@@ -344,7 +352,7 @@ public final class Sc68Test
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000L, expected = LionEngineException.class)
+    @Test
     public void testMissingMedia() throws IOException
     {
         final Media media = new Media()
@@ -413,7 +421,7 @@ public final class Sc68Test
         final Audio sc68 = AudioFactory.loadAudio(media);
         try
         {
-            sc68.play();
+            assertCause(() -> sc68.play(), IOException.class);
         }
         finally
         {
@@ -426,7 +434,7 @@ public final class Sc68Test
      * 
      * @throws IOException If error.
      */
-    @Test(timeout = 10000L)
+    @Test
     public void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.sc68");
