@@ -53,6 +53,19 @@ public final class UtilAssert
      * Asserts that {@code executable} throws a {@link LionEngineException}.
      * 
      * @param executable The executable to test.
+     * @param prefix The expected exception message prefix.
+     */
+    public static void assertThrowsPrefix(Executable executable, String prefix)
+    {
+        Assertions.assertTrue(Assertions.assertThrows(LionEngineException.class, executable)
+                                        .getMessage()
+                                        .startsWith(prefix));
+    }
+
+    /**
+     * Asserts that {@code executable} throws a {@link LionEngineException}.
+     * 
+     * @param executable The executable to test.
      * @param expected The expected exception message.
      */
     public static void assertThrows(Executable executable, String expected)
@@ -304,6 +317,18 @@ public final class UtilAssert
      * @param actual The actual boolean array.
      */
     public static void assertArrayEquals(boolean[] expected, boolean[] actual)
+    {
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} int arrays are equal. If both are <code>null</code>, they
+     * are considered equal.
+     * 
+     * @param expected The excepted int array.
+     * @param actual The actual int array.
+     */
+    public static void assertArrayEquals(int[] expected, int[] actual)
     {
         Assertions.assertArrayEquals(expected, actual);
     }
