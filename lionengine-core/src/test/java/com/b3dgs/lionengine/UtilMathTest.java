@@ -35,7 +35,7 @@ public final class UtilMathTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilMath.class);
     }

@@ -51,20 +51,20 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
 public final class SpriteTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setLoadFromJar(SpriteTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);

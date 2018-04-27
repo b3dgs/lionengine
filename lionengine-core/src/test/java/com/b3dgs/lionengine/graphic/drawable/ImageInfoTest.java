@@ -46,20 +46,20 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 public final class ImageInfoTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(ImageInfoTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }
@@ -96,11 +96,9 @@ public final class ImageInfoTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    public void testConstructor() throws Exception
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(ImageInfo.class);
     }

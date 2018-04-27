@@ -33,7 +33,7 @@ public final class UtilConversionTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilConversion.class);
     }

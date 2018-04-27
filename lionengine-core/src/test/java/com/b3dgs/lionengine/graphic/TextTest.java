@@ -38,20 +38,20 @@ public final class TextTest
     private static Graphic g;
 
     /**
-     * Setup test.
+     * Setup tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         prepare();
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         g.dispose();
         Graphics.setFactoryGraphic(null);

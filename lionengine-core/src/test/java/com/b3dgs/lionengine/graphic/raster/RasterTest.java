@@ -21,8 +21,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -36,22 +34,20 @@ import com.b3dgs.lionengine.Medias;
 public final class RasterTest
 {
     /**
-     * Prepare test.
-     * 
-     * @throws IOException If error.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp() throws IOException
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(RasterTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }

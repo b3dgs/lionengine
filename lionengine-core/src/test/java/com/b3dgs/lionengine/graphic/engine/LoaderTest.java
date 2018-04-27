@@ -67,10 +67,10 @@ public final class LoaderTest
     private static Media icon;
 
     /**
-     * Prepare the test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void prepareTest()
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(LoaderTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -78,10 +78,10 @@ public final class LoaderTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -91,7 +91,7 @@ public final class LoaderTest
      * Prepare test.
      */
     @BeforeEach
-    public void before()
+    public void beforeTest()
     {
         Engine.start(new EngineMock("LoaderTest", Version.DEFAULT));
     }
@@ -100,7 +100,7 @@ public final class LoaderTest
      * Terminate test.
      */
     @AfterEach
-    public void after()
+    public void afterTest()
     {
         Engine.terminate();
     }
@@ -109,7 +109,7 @@ public final class LoaderTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(Loader.class);
     }

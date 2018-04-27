@@ -39,7 +39,7 @@ public final class GeomTest
      * Test geom class.
      */
     @Test
-    public void testClass()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(Geom.class);
     }

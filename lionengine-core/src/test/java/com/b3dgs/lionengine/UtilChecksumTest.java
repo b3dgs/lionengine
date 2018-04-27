@@ -33,7 +33,7 @@ public final class UtilChecksumTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilChecksum.class);
     }

@@ -43,31 +43,29 @@ import org.junit.jupiter.api.Test;
 public final class UtilFileTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(UtilFileTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    public void testConstructor() throws Exception
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilFile.class);
     }

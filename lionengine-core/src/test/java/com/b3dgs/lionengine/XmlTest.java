@@ -65,20 +65,20 @@ public final class XmlTest
     private static final String STRING_VALUE = "string";
 
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void prepare()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(XmlTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }

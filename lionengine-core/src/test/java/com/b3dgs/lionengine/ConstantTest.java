@@ -32,7 +32,7 @@ public final class ConstantTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(Constant.class);
     }

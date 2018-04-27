@@ -44,12 +44,10 @@ import com.b3dgs.lionengine.UtilTests;
 public final class GraphicsTest
 {
     /**
-     * Prepare test.
-     * 
-     * @throws IOException If error.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp() throws IOException
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(GraphicsTest.class);
@@ -57,10 +55,10 @@ public final class GraphicsTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -70,7 +68,7 @@ public final class GraphicsTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(Graphics.class);
     }

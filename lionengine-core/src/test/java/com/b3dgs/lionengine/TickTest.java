@@ -63,10 +63,10 @@ public final class TickTest
     };
 
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void prepare()
+    public static void beforeTests()
     {
         CONFIG.setSource(UtilTests.RESOLUTION_320_240);
     }

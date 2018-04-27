@@ -41,10 +41,10 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 public final class RasterImageTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(RasterImageTest.class);
@@ -52,10 +52,10 @@ public final class RasterImageTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);

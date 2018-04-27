@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import org.junit.Assert;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
@@ -48,7 +48,8 @@ final class SequenceFilterMock extends Sequence
     {
         setSystemCursorVisible(true);
         setSystemCursorVisible(false);
-        Assert.assertNull(getInputDevice(InputDevice.class));
+
+        assertNull(getInputDevice(InputDevice.class));
     }
 
     @Override

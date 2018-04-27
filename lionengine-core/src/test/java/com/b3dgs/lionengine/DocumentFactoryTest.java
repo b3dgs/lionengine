@@ -43,7 +43,7 @@ public final class DocumentFactoryTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(DocumentFactory.class);
     }

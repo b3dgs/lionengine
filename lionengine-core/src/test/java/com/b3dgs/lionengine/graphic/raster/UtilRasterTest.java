@@ -36,10 +36,10 @@ import com.b3dgs.lionengine.graphic.Graphics;
 public final class UtilRasterTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(UtilRasterTest.class);
@@ -47,10 +47,10 @@ public final class UtilRasterTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -58,11 +58,9 @@ public final class UtilRasterTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    public void testConstructor() throws Exception
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilRaster.class);
     }

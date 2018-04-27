@@ -40,7 +40,7 @@ public final class UtilReflectionTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilReflection.class);
     }

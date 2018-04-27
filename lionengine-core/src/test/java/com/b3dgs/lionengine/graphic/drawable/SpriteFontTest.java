@@ -56,10 +56,10 @@ public final class SpriteFontTest
     private static Media font;
 
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(SpriteFontTest.class);
@@ -70,10 +70,10 @@ public final class SpriteFontTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);

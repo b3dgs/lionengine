@@ -37,20 +37,20 @@ import com.b3dgs.lionengine.UtilMath;
 public final class UtilColorTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(UtilColorTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -60,7 +60,7 @@ public final class UtilColorTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilColor.class);
     }

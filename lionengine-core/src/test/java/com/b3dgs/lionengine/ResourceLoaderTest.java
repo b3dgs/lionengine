@@ -43,20 +43,20 @@ import com.b3dgs.lionengine.graphic.drawable.Image;
 public final class ResourceLoaderTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(ResourceLoaderTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);

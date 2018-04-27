@@ -45,10 +45,10 @@ public final class DrawableTest
     private static Media font;
 
     /**
-     * Setup test.
+     * Setup tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(DrawableTest.class);
@@ -59,10 +59,10 @@ public final class DrawableTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -70,11 +70,9 @@ public final class DrawableTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
     @Test
-    public void testConstructor() throws Exception
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(Drawable.class);
     }

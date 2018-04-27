@@ -33,7 +33,7 @@ public final class UtilRandomTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilRandom.class);
     }

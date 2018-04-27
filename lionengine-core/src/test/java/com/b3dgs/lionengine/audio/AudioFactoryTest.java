@@ -21,7 +21,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterAll;
@@ -38,21 +37,19 @@ import com.b3dgs.lionengine.Medias;
 public final class AudioFactoryTest
 {
     /**
-     * Prepare test.
-     * 
-     * @throws IOException If error.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp() throws IOException
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(AudioFactoryTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }
@@ -70,7 +67,7 @@ public final class AudioFactoryTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    public void testConstructorPrivate()
     {
         assertPrivateConstructor(AudioFactory.class);
     }
