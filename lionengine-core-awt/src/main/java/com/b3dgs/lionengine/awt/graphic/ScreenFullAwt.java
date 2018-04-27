@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.awt.Mouse;
 final class ScreenFullAwt extends ScreenBaseAwt
 {
     /** Error message unsupported full screen. */
-    private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
+    static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
     /** Unable to switch to full screen. */
     private static final String ERROR_SWITCH = "Unable to switch to full screen mode !";
     /** Minimum length. */

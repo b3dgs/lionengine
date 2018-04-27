@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.awt;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.awt.Label;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link KeyboardAwt}.
@@ -48,18 +51,18 @@ public final class KeyboardAwtTest
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
 
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.ALT));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.BACK_SPACE));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.CONTROL));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.DOWN));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.ENTER));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.ESCAPE));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.LEFT));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.RIGHT));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.SPACE));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.TAB));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.UP));
-        Assert.assertFalse(keyboard.isPressedOnce(KeyboardAwt.UP));
+        assertFalse(keyboard.isPressed(KeyboardAwt.ALT));
+        assertFalse(keyboard.isPressed(KeyboardAwt.BACK_SPACE));
+        assertFalse(keyboard.isPressed(KeyboardAwt.CONTROL));
+        assertFalse(keyboard.isPressed(KeyboardAwt.DOWN));
+        assertFalse(keyboard.isPressed(KeyboardAwt.ENTER));
+        assertFalse(keyboard.isPressed(KeyboardAwt.ESCAPE));
+        assertFalse(keyboard.isPressed(KeyboardAwt.LEFT));
+        assertFalse(keyboard.isPressed(KeyboardAwt.RIGHT));
+        assertFalse(keyboard.isPressed(KeyboardAwt.SPACE));
+        assertFalse(keyboard.isPressed(KeyboardAwt.TAB));
+        assertFalse(keyboard.isPressed(KeyboardAwt.UP));
+        assertFalse(keyboard.isPressedOnce(KeyboardAwt.UP));
     }
 
     /**
@@ -69,20 +72,20 @@ public final class KeyboardAwtTest
     public void testPressed()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
-
         keyboard.keyTyped(createEvent(KeyboardAwt.ALT));
-
         keyboard.keyPressed(createEvent(KeyboardAwt.ALT));
-        Assert.assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
-        Assert.assertTrue(keyboard.isPressedOnce(KeyboardAwt.ALT));
-        Assert.assertFalse(keyboard.isPressedOnce(KeyboardAwt.ALT));
-        Assert.assertEquals(KeyboardAwt.ALT, keyboard.getKeyCode());
-        Assert.assertEquals(' ', keyboard.getKeyName());
-        Assert.assertTrue(keyboard.used());
+
+        assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
+        assertTrue(keyboard.isPressedOnce(KeyboardAwt.ALT));
+        assertFalse(keyboard.isPressedOnce(KeyboardAwt.ALT));
+        assertEquals(KeyboardAwt.ALT, keyboard.getKeyCode());
+        assertEquals(' ', keyboard.getKeyName());
+        assertTrue(keyboard.used());
 
         keyboard.keyReleased(createEvent(KeyboardAwt.ALT));
-        Assert.assertFalse(keyboard.isPressed(KeyboardAwt.ALT));
-        Assert.assertFalse(keyboard.used());
+
+        assertFalse(keyboard.isPressed(KeyboardAwt.ALT));
+        assertFalse(keyboard.used());
     }
 
     /**
@@ -94,10 +97,12 @@ public final class KeyboardAwtTest
         final KeyboardAwt keyboard = new KeyboardAwt();
 
         keyboard.keyPressed(createEvent(KeyboardAwt.ALT));
-        Assert.assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
+
+        assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
 
         keyboard.keyPressed(createEvent(KeyboardAwt.ALT));
-        Assert.assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
+
+        assertTrue(keyboard.isPressed(KeyboardAwt.ALT));
     }
 
     /**
@@ -114,20 +119,20 @@ public final class KeyboardAwtTest
         keyboard.setVerticalControlPositive(KeyboardAwt.UP);
 
         keyboard.keyPressed(createEvent(KeyboardAwt.RIGHT));
-        Assert.assertEquals(1.0, keyboard.getHorizontalDirection(), 0.0001);
+        assertEquals(1.0, keyboard.getHorizontalDirection());
         keyboard.keyReleased(createEvent(KeyboardAwt.RIGHT));
         keyboard.keyPressed(createEvent(KeyboardAwt.LEFT));
-        Assert.assertEquals(-1.0, keyboard.getHorizontalDirection(), 0.0001);
+        assertEquals(-1.0, keyboard.getHorizontalDirection());
         keyboard.keyReleased(createEvent(KeyboardAwt.LEFT));
-        Assert.assertEquals(0.0, keyboard.getHorizontalDirection(), 0.0001);
+        assertEquals(0.0, keyboard.getHorizontalDirection());
 
         keyboard.keyPressed(createEvent(KeyboardAwt.UP));
-        Assert.assertEquals(1.0, keyboard.getVerticalDirection(), 0.0001);
+        assertEquals(1.0, keyboard.getVerticalDirection());
         keyboard.keyReleased(createEvent(KeyboardAwt.UP));
         keyboard.keyPressed(createEvent(KeyboardAwt.DOWN));
-        Assert.assertEquals(-1.0, keyboard.getVerticalDirection(), 0.0001);
+        assertEquals(-1.0, keyboard.getVerticalDirection());
         keyboard.keyReleased(createEvent(KeyboardAwt.DOWN));
-        Assert.assertEquals(0.0, keyboard.getVerticalDirection(), 0.0001);
+        assertEquals(0.0, keyboard.getVerticalDirection());
     }
 
     /**
@@ -143,21 +148,26 @@ public final class KeyboardAwtTest
         keyboard.addActionPressed(KeyboardAwt.LEFT, () -> left.set(true));
         keyboard.addActionReleased(KeyboardAwt.LEFT, () -> left.set(false));
         keyboard.addActionReleased(KeyboardAwt.LEFT, () -> left.set(false));
-        Assert.assertFalse(left.get());
+
+        assertFalse(left.get());
 
         keyboard.keyPressed(createEvent(KeyboardAwt.LEFT));
-        Assert.assertTrue(left.get());
+
+        assertTrue(left.get());
 
         keyboard.keyReleased(createEvent(KeyboardAwt.LEFT));
-        Assert.assertFalse(left.get());
+
+        assertFalse(left.get());
 
         keyboard.removeActionsPressed();
         keyboard.removeActionsReleased();
 
         keyboard.keyPressed(createEvent(KeyboardAwt.LEFT));
-        Assert.assertFalse(left.get());
+
+        assertFalse(left.get());
 
         keyboard.keyReleased(createEvent(KeyboardAwt.LEFT));
-        Assert.assertFalse(left.get());
+
+        assertFalse(left.get());
     }
 }

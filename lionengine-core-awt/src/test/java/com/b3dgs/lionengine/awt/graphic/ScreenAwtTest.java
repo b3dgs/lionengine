@@ -17,24 +17,31 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsPrefix;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
@@ -45,53 +52,53 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
  */
 public final class ScreenAwtTest
 {
-    /** Test timeout in milliseconds. */
-    private static final long TIMEOUT = 10_000L;
     /** Image media. */
     private static final String IMAGE = "image.png";
 
     /**
-     * Prepare test.
+     * Prepare tests.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         EngineAwt.start(ScreenAwtTest.class.getName(), Version.DEFAULT);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Engine.terminate();
     }
 
     /**
      * Test windowed screen.
-     * 
-     * @throws Exception If error.
      */
-    @Test(timeout = TIMEOUT)
-    public void testWindowed() throws Exception
+    @Test
+    public void testWindowed()
     {
         final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
                                          32,
                                          true,
                                          Medias.create(IMAGE));
         config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
-        testScreen(config);
-        testHeadless(config);
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+
+        assertTimeout(1000L, () -> testScreen(config));
+
+        Verbose.info("****************************************************************************************");
+
+        assertTimeout(1000L, () -> testHeadless(config));
     }
 
     /**
      * Test full screen.
-     * 
-     * @throws Exception If error.
      */
-    @Test(timeout = TIMEOUT)
-    public void testFullscreen() throws Exception
+    @Test
+    public void testFullscreen()
     {
         final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         if (gd.isFullScreenSupported())
@@ -103,23 +110,29 @@ public final class ScreenAwtTest
             final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
             config.setSource(resolution);
 
-            testScreen(config);
-            testHeadless(config);
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+
+            assertTimeout(1000L, () -> testScreen(config));
+
+            Verbose.info("****************************************************************************************");
+
+            assertTimeout(1000L, () -> testHeadless(config));
         }
     }
 
     /**
      * Test full screen fail.
      * 
-     * @throws Exception If error.
+     * @throws ReflectiveOperationException If error.
      */
-    @Test(timeout = TIMEOUT, expected = LionEngineException.class)
-    public void testFullscreenFail() throws Exception
+    @Test
+    public void testFullscreenFail() throws ReflectiveOperationException
     {
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
         config.setSource(resolution);
-        testScreen(config);
+
+        assertThrowsPrefix(() -> testScreen(config), ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN);
         testHeadless(config);
     }
 
@@ -169,7 +182,7 @@ public final class ScreenAwtTest
             }
         };
 
-        Assert.assertFalse(screen.isReady());
+        assertFalse(screen.isReady());
 
         screen.addListener(screenListener);
         screen.start();
@@ -182,12 +195,12 @@ public final class ScreenAwtTest
         screen.requestFocus();
         screen.onSourceChanged(UtilTests.RESOLUTION_320_240);
 
-        Assert.assertNotNull(screen.getConfig());
-        Assert.assertNotNull(screen.getGraphic());
-        Assert.assertTrue(screen.getReadyTimeOut() > -1L);
-        Assert.assertTrue(screen.getX() > -1);
-        Assert.assertTrue(screen.getY() > -1);
-        Assert.assertTrue(screen.isReady());
+        assertNotNull(screen.getConfig());
+        assertNotNull(screen.getGraphic());
+        assertTrue(screen.getReadyTimeOut() > -1L);
+        assertTrue(screen.getX() > -1);
+        assertTrue(screen.getY() > -1);
+        assertTrue(screen.isReady());
 
         while (config.isWindowed() && !gained.get())
         {
@@ -205,8 +218,8 @@ public final class ScreenAwtTest
 
         screen.dispose();
 
-        Assert.assertEquals(0, screen.getX());
-        Assert.assertEquals(0, screen.getY());
+        assertEquals(0, screen.getX());
+        assertEquals(0, screen.getY());
 
         screen.removeListener(screenListener);
     }
@@ -215,9 +228,9 @@ public final class ScreenAwtTest
      * Test headless screen.
      * 
      * @param config The config reference.
-     * @throws Exception If error.
+     * @throws ReflectiveOperationException If error.
      */
-    private void testHeadless(Config config) throws Exception
+    private void testHeadless(Config config) throws ReflectiveOperationException
     {
         final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
         final Field field = GraphicsEnvironment.class.getDeclaredField("headless");
@@ -225,11 +238,7 @@ public final class ScreenAwtTest
         field.set(GraphicsEnvironment.class, Boolean.TRUE);
         try
         {
-            Assert.assertNull(Graphics.createScreen(config));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertTrue(exception.getMessage().equals("No available display !"));
+            assertThrows(() -> Graphics.createScreen(config), "No available display !");
         }
         finally
         {

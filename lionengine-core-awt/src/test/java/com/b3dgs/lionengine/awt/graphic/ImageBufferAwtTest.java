@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.awt.image.BufferedImage;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -36,21 +37,19 @@ import com.b3dgs.lionengine.graphic.Transparency;
 public final class ImageBufferAwtTest
 {
     /**
-     * Prepare test.
-     * 
-     * @throws IOException If error.
+     * Prepare tests.
      */
-    @BeforeClass
-    public static void setUp() throws IOException
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
     }
 
     /**
-     * Clean test.
+     * Clean tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }
@@ -64,21 +63,23 @@ public final class ImageBufferAwtTest
         final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         final ImageBuffer image = ToolsAwt.getImageBuffer(buffer);
 
-        Assert.assertNotNull(image.createGraphic());
-        image.prepare();
-        Assert.assertEquals(buffer, image.getSurface());
+        assertNotNull(image.createGraphic());
 
-        Assert.assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
-        Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
-        Assert.assertEquals(Transparency.OPAQUE, image.getTransparency());
-        Assert.assertEquals(Transparency.OPAQUE, ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer)).getTransparency());
-        Assert.assertEquals(buffer.getWidth(), image.getWidth());
-        Assert.assertEquals(buffer.getHeight(), image.getHeight());
+        image.prepare();
+
+        assertEquals(buffer, image.getSurface());
+        assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
+        assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
+        assertEquals(Transparency.OPAQUE, image.getTransparency());
+        assertEquals(Transparency.OPAQUE, ToolsAwt.getImageBuffer(ToolsAwt.copyImage(buffer)).getTransparency());
+        assertEquals(buffer.getWidth(), image.getWidth());
+        assertEquals(buffer.getHeight(), image.getHeight());
 
         image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
-        Assert.assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
-        image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
+        assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
+
+        image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
         image.dispose();
     }
 
@@ -90,7 +91,7 @@ public final class ImageBufferAwtTest
     {
         final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
 
-        Assert.assertEquals(Transparency.BITMASK, image.getTransparency());
-        Assert.assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
+        assertEquals(Transparency.BITMASK, image.getTransparency());
+        assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
     }
 }

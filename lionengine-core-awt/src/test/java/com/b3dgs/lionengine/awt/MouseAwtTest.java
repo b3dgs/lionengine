@@ -17,6 +17,11 @@
  */
 package com.b3dgs.lionengine.awt;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.awt.GraphicsEnvironment;
 import java.awt.Label;
 import java.awt.event.MouseEvent;
@@ -25,12 +30,12 @@ import java.awt.event.MouseMotionListener;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Test {@link MouseAwt}.
@@ -77,27 +82,27 @@ public final class MouseAwtTest
         final MouseAwt mouse = createMouse();
         final MouseListener clicker = mouse.getClicker();
 
-        Assert.assertFalse(mouse.hasClicked(MouseAwt.LEFT));
+        assertFalse(mouse.hasClicked(MouseAwt.LEFT));
         clicker.mousePressed(createEvent(MouseAwt.LEFT, 0, 0));
-        Assert.assertTrue(mouse.hasClicked(MouseAwt.LEFT));
+        assertTrue(mouse.hasClicked(MouseAwt.LEFT));
         clicker.mouseReleased(createEvent(MouseAwt.LEFT, 0, 0));
-        Assert.assertFalse(mouse.hasClicked(MouseAwt.LEFT));
+        assertFalse(mouse.hasClicked(MouseAwt.LEFT));
 
-        Assert.assertFalse(mouse.hasClicked(MouseAwt.RIGHT));
+        assertFalse(mouse.hasClicked(MouseAwt.RIGHT));
         clicker.mousePressed(createEvent(MouseAwt.RIGHT, 0, 0));
-        Assert.assertTrue(mouse.hasClicked(MouseAwt.RIGHT));
+        assertTrue(mouse.hasClicked(MouseAwt.RIGHT));
         clicker.mouseReleased(createEvent(MouseAwt.RIGHT, 0, 0));
-        Assert.assertFalse(mouse.hasClicked(MouseAwt.RIGHT));
+        assertFalse(mouse.hasClicked(MouseAwt.RIGHT));
 
-        Assert.assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+        assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
         clicker.mousePressed(createEvent(MouseAwt.MIDDLE, 0, 0));
-        Assert.assertTrue(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+        assertTrue(mouse.hasClickedOnce(MouseAwt.MIDDLE));
         clicker.mouseReleased(createEvent(MouseAwt.MIDDLE, 0, 0));
-        Assert.assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+        assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
 
         clicker.mousePressed(createEvent(MouseAwt.MIDDLE, 0, 0));
-        Assert.assertTrue(mouse.hasClickedOnce(MouseAwt.MIDDLE));
-        Assert.assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+        assertTrue(mouse.hasClickedOnce(MouseAwt.MIDDLE));
+        assertFalse(mouse.hasClickedOnce(MouseAwt.MIDDLE));
     }
 
     /**
@@ -110,9 +115,12 @@ public final class MouseAwtTest
         final MouseListener clicker = mouse.getClicker();
 
         clicker.mousePressed(createEvent(MouseAwt.MIDDLE, 0, 0));
-        Assert.assertEquals(MouseAwt.MIDDLE, mouse.getClick());
+
+        assertEquals(MouseAwt.MIDDLE, mouse.getClick());
+
         clicker.mouseReleased(createEvent(MouseAwt.MIDDLE, 0, 0));
-        Assert.assertNotEquals(MouseAwt.MIDDLE, mouse.getClick());
+
+        assertNotEquals(MouseAwt.MIDDLE, mouse.getClick());
     }
 
     /**
@@ -123,14 +131,15 @@ public final class MouseAwtTest
     {
         final MouseAwt mouse = createMouse();
         final MouseMotionListener mover = mouse.getMover();
-
         mover.mouseMoved(createEvent(MouseAwt.LEFT, 0, 0));
-        Assert.assertEquals(0, mouse.getX());
-        Assert.assertEquals(0, mouse.getY());
+
+        assertEquals(0, mouse.getX());
+        assertEquals(0, mouse.getY());
 
         mover.mouseMoved(createEvent(MouseAwt.LEFT, 10, 20));
-        Assert.assertEquals(10, mouse.getX());
-        Assert.assertEquals(20, mouse.getY());
+
+        assertEquals(10, mouse.getX());
+        assertEquals(20, mouse.getY());
     }
 
     /**
@@ -142,35 +151,40 @@ public final class MouseAwtTest
         final MouseAwt mouse = createMouse();
         final MouseMotionListener mover = mouse.getMover();
 
-        Assert.assertFalse(mouse.hasClicked(MouseAwt.RIGHT));
+        assertFalse(mouse.hasClicked(MouseAwt.RIGHT));
+
         mover.mouseMoved(createEvent(MouseAwt.LEFT, 0, 0));
         mouse.doClickAt(MouseAwt.RIGHT, 500, 500);
         mouse.update(1.0);
         try
         {
-            Assert.assertEquals(500, mouse.getOnScreenX());
-            Assert.assertEquals(500, mouse.getOnScreenY());
-            Assert.assertTrue(mouse.hasClicked(MouseAwt.RIGHT));
+            assertEquals(500, mouse.getOnScreenX());
+            assertEquals(500, mouse.getOnScreenY());
+            assertTrue(mouse.hasClicked(MouseAwt.RIGHT));
         }
         finally
         {
             mouse.doClickAt(MouseAwt.LEFT, 499, 499);
         }
 
-        Assert.assertTrue(mouse.hasClicked(MouseAwt.LEFT));
+        assertTrue(mouse.hasClicked(MouseAwt.LEFT));
+
         mouse.doClick(MouseAwt.LEFT);
-        Assert.assertTrue(mouse.hasClicked(MouseAwt.LEFT));
+
+        assertTrue(mouse.hasClicked(MouseAwt.LEFT));
+
         mouse.update(1.0);
         mouse.doClick(MouseAwt.MIDDLE);
         mouse.update(1.0);
-
         mouse.doSetMouse(1, 2);
-        Assert.assertEquals(1, mouse.getOnScreenX());
-        Assert.assertEquals(2, mouse.getOnScreenY());
+
+        assertEquals(1, mouse.getOnScreenX());
+        assertEquals(2, mouse.getOnScreenY());
 
         mouse.doMoveMouse(3, 4);
-        Assert.assertEquals(3, mouse.getOnScreenX());
-        Assert.assertEquals(4, mouse.getOnScreenY());
+
+        assertEquals(3, mouse.getOnScreenX());
+        assertEquals(4, mouse.getOnScreenY());
 
         mouse.lock();
         mouse.lock(500, 500);
@@ -187,8 +201,8 @@ public final class MouseAwtTest
         mouse.update(1.0);
         mouse.update(1.0);
 
-        Assert.assertFalse(mouse.hasClickedOnce(Integer.MAX_VALUE));
-        Assert.assertFalse(mouse.hasClicked(Integer.MAX_VALUE));
+        assertFalse(mouse.hasClickedOnce(Integer.MAX_VALUE));
+        assertFalse(mouse.hasClicked(Integer.MAX_VALUE));
     }
 
     /**
@@ -204,10 +218,11 @@ public final class MouseAwtTest
         mover.mouseMoved(createEvent(MouseAwt.LEFT, 0, 0));
         mover.mouseDragged(createEvent(0, 0, 0));
         mouse.update(1.0);
-        Assert.assertEquals(0, mouse.getMoveX());
-        Assert.assertEquals(0, mouse.getMoveY());
-        Assert.assertTrue(mouse.hasMoved());
-        Assert.assertFalse(mouse.hasMoved());
+
+        assertEquals(0, mouse.getMoveX());
+        assertEquals(0, mouse.getMoveY());
+        assertTrue(mouse.hasMoved());
+        assertFalse(mouse.hasMoved());
 
         clicker.mouseEntered(null);
         clicker.mouseExited(null);
@@ -227,15 +242,17 @@ public final class MouseAwtTest
         mouse.addActionPressed(MouseAwt.LEFT, () -> left.set(true));
         mouse.addActionReleased(MouseAwt.LEFT, () -> left.set(false));
         mouse.addActionReleased(MouseAwt.LEFT, () -> left.set(false));
-        Assert.assertFalse(left.get());
+
+        assertFalse(left.get());
 
         final MouseListener clicker = mouse.getClicker();
-
         clicker.mousePressed(createEvent(MouseAwt.LEFT, 0, 0));
-        Assert.assertTrue(left.get());
+
+        assertTrue(left.get());
 
         clicker.mouseReleased(createEvent(MouseAwt.LEFT, 0, 0));
-        Assert.assertFalse(left.get());
+
+        assertFalse(left.get());
     }
 
     /**
@@ -252,10 +269,13 @@ public final class MouseAwtTest
         field.set(GraphicsEnvironment.class, Boolean.TRUE);
         try
         {
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
             final MouseAwt mouse = MouseAwtTest.createMouse();
+            Verbose.info("****************************************************************************************");
             mouse.lock(1, 2);
-            Assert.assertEquals(1, mouse.getX());
-            Assert.assertEquals(2, mouse.getY());
+
+            assertEquals(1, mouse.getX());
+            assertEquals(2, mouse.getY());
         }
         finally
         {

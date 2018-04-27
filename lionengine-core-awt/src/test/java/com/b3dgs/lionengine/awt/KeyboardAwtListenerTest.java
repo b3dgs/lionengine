@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.awt;
 
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 
@@ -57,7 +58,7 @@ public final class KeyboardAwtListenerTest
         listener.keyPressed(KeyboardAwtTest.createEvent(KeyboardAwt.UP));
         listener.keyReleased(KeyboardAwtTest.createEvent(KeyboardAwt.UP));
 
-        Assert.assertTrue(reachedPressed.get());
-        Assert.assertTrue(reachedReleased.get());
+        assertTrue(reachedPressed.get());
+        assertTrue(reachedReleased.get());
     }
 }

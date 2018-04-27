@@ -17,12 +17,14 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -31,56 +33,59 @@ import com.b3dgs.lionengine.Version;
 public final class EngineAwtTest
 {
     /**
+     * Clean test.
+     */
+    @AfterEach
+    public void cleanUp()
+    {
+        Engine.terminate();
+    }
+
+    /**
+     * Test start default already.
+     */
+    @Test
+    public void testDefaultAlready()
+    {
+        EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT);
+
+        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT),
+                     "The engine has already been started !");
+    }
+
+    /**
      * Test start without resources.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullResources()
     {
-        EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null);
-        try
-        {
-            Assert.assertTrue(Engine.isStarted());
-            EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null);
-        }
-        finally
-        {
-            Engine.terminate();
-        }
+        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null),
+                     "Unexpected null argument !");
     }
 
     /**
-     * Test start with resources.
+     * Test start with resources already started.
      */
-    @Test(expected = LionEngineException.class)
-    public void testResources()
+    @Test
+    public void testResourcesAlready()
     {
         EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
-        try
-        {
-            Assert.assertTrue(Engine.isStarted());
-            EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
-        }
-        finally
-        {
-            Engine.terminate();
-        }
+
+        assertTrue(Engine.isStarted());
+        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING),
+                     "The engine has already been started !");
     }
 
     /**
-     * Test start with class.
+     * Test start with class already started.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testClass()
     {
         EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class);
-        try
-        {
-            Assert.assertTrue(Engine.isStarted());
-            EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class);
-        }
-        finally
-        {
-            Engine.terminate();
-        }
+
+        assertTrue(Engine.isStarted());
+        assertThrows(() -> EngineAwt.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class),
+                     "The engine has already been started !");
     }
 }

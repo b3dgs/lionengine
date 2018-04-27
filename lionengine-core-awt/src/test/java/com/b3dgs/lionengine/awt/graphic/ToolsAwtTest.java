@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.awt.BufferCapabilities;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -25,17 +31,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -46,32 +49,30 @@ import com.b3dgs.lionengine.graphic.Transparency;
 public final class ToolsAwtTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
-    @BeforeClass
-    public static void prepare()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(ToolsAwtTest.class);
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(ToolsAwt.class);
+        assertPrivateConstructor(ToolsAwt.class);
     }
 
     /**
@@ -84,28 +85,29 @@ public final class ToolsAwtTest
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
 
-        Assert.assertNotNull(image);
-        Assert.assertEquals(Transparency.TRANSLUCENT, ToolsAwt.getImageBuffer(image).getTransparency());
-        Assert.assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
-        Assert.assertNotNull(ToolsAwt.flipHorizontal(image));
-        Assert.assertNotNull(ToolsAwt.flipVertical(image));
-        Assert.assertNotNull(ToolsAwt.resize(image, 10, 10));
-        Assert.assertNotNull(ToolsAwt.rotate(image, 90));
-        Assert.assertNotNull(ToolsAwt.splitImage(image, 1, 1));
-        Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.BLACK.getRgba()));
-        Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.getRgba()));
+        assertNotNull(image);
+        assertEquals(Transparency.TRANSLUCENT, ToolsAwt.getImageBuffer(image).getTransparency());
+        assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
+        assertNotNull(ToolsAwt.flipHorizontal(image));
+        assertNotNull(ToolsAwt.flipVertical(image));
+        assertNotNull(ToolsAwt.resize(image, 10, 10));
+        assertNotNull(ToolsAwt.rotate(image, 90));
+        assertNotNull(ToolsAwt.splitImage(image, 1, 1));
+        assertNotNull(ToolsAwt.applyMask(image, ColorRgba.BLACK.getRgba()));
+        assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.getRgba()));
 
         final Media media = Medias.create("image.png");
-
         try (InputStream input = media.getInputStream())
         {
             final BufferedImage buffer = ToolsAwt.getImage(input);
-            Assert.assertNotNull(buffer);
-            Assert.assertNotNull(ToolsAwt.getImageData(image));
+
+            assertNotNull(buffer);
+            assertNotNull(ToolsAwt.getImageData(image));
+
             ToolsAwt.optimizeGraphicsQuality(buffer.createGraphics());
         }
 
-        Assert.assertNotNull(ToolsAwt.createHiddenCursor());
+        assertNotNull(ToolsAwt.createHiddenCursor());
     }
 
     /**
@@ -114,19 +116,10 @@ public final class ToolsAwtTest
     @Test
     public void testTransparency()
     {
-        try
-        {
-            Assert.assertNotEquals(0, ToolsAwt.getTransparency(UtilEnum.make(Transparency.class, "FAIL")));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertNotNull(exception);
-        }
-
-        Assert.assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
-        Assert.assertEquals(java.awt.Transparency.BITMASK, ToolsAwt.getTransparency(Transparency.BITMASK));
-        Assert.assertEquals(java.awt.Transparency.TRANSLUCENT, ToolsAwt.getTransparency(Transparency.TRANSLUCENT));
+        assertThrows(() -> ToolsAwt.getTransparency(UtilEnum.make(Transparency.class, "FAIL")), "Unknown enum: FAIL");
+        assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
+        assertEquals(java.awt.Transparency.BITMASK, ToolsAwt.getTransparency(Transparency.BITMASK));
+        assertEquals(java.awt.Transparency.TRANSLUCENT, ToolsAwt.getTransparency(Transparency.TRANSLUCENT));
     }
 
     /**
@@ -137,7 +130,8 @@ public final class ToolsAwtTest
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
         final BufferedImage copy = ToolsAwt.copyImage(image);
-        Assert.assertEquals(image.getWidth(), copy.getWidth());
+
+        assertEquals(image.getWidth(), copy.getWidth());
     }
 
     /**
@@ -149,36 +143,19 @@ public final class ToolsAwtTest
     public void testSave() throws IOException
     {
         final Media media = Medias.create("image.png");
-
         try (InputStream input = media.getInputStream())
         {
             final BufferedImage image = ToolsAwt.getImage(input);
-            Assert.assertNotNull(image);
+
+            assertNotNull(image);
 
             final Media save = media;
-
             try (OutputStream output = save.getOutputStream())
             {
                 ToolsAwt.saveImage(image, output);
             }
-            Assert.assertTrue(save.getFile().getAbsolutePath(), save.getFile().exists());
-        }
-    }
 
-    /**
-     * Test get fail.
-     * 
-     * @throws IOException If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetFail() throws IOException
-    {
-        final Media media = Medias.create("image.xml");
-
-        try (InputStream input = media.getInputStream())
-        {
-            final BufferedImage image = ToolsAwt.getImage(input);
-            Assert.assertNotNull(image);
+            assertTrue(save.getFile().exists(), save.getFile().getAbsolutePath());
         }
     }
 
@@ -187,15 +164,13 @@ public final class ToolsAwtTest
      * 
      * @throws IOException If error.
      */
-    @Test(expected = IOException.class)
+    @Test
     public void testGetIoFail() throws IOException
     {
         final Media media = Medias.create("raster.xml");
-
         try (InputStream input = media.getInputStream())
         {
-            final BufferedImage image = ToolsAwt.getImage(input);
-            Assert.assertNotNull(image);
+            assertThrows(IOException.class, () -> ToolsAwt.getImage(input), "Invalid image !");
         }
     }
 
@@ -224,7 +199,7 @@ public final class ToolsAwtTest
         }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
         Verbose.info("****************************************************************************************");
 
-        Assert.assertEquals(1, result.get().intValue());
+        assertEquals(1, result.get().intValue());
     }
 
     /**
@@ -252,6 +227,6 @@ public final class ToolsAwtTest
         }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
         Verbose.info("****************************************************************************************");
 
-        Assert.assertEquals(1, result.get().intValue());
+        assertEquals(1, result.get().intValue());
     }
 }

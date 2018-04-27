@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.graphic.TransformTest;
 public final class TransformAwtTest extends TransformTest
 {
     /**
-     * Prepare test.
+     * Prepare tests.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
     }

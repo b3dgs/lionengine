@@ -17,14 +17,16 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -44,10 +46,10 @@ public final class TextAwtTest
     private static Graphic g;
 
     /**
-     * Setup test.
+     * Setup tests.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicAwt());
         final ImageBuffer buffer = Graphics.createImageBuffer(320, 240);
@@ -56,10 +58,10 @@ public final class TextAwtTest
     }
 
     /**
-     * Clean up test.
+     * Clean up tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         g.dispose();
         Graphics.setFactoryGraphic(null);
@@ -72,7 +74,6 @@ public final class TextAwtTest
     public void testNormal()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.NORMAL);
-
         text.draw(g, 0, 0, VALUE);
         text.draw(g, 0, 0, Align.CENTER, VALUE);
         text.draw(g, 0, 0, Align.LEFT, VALUE);
@@ -82,17 +83,17 @@ public final class TextAwtTest
         text.setLocation(1, 5);
         text.setText(VALUE);
 
-        Assert.assertEquals(12, text.getSize());
-        Assert.assertEquals(1, text.getLocationX());
-        Assert.assertEquals(5, text.getLocationY());
-        Assert.assertTrue(text.getWidth() == 0);
-        Assert.assertTrue(text.getHeight() == 0);
+        assertEquals(12, text.getSize());
+        assertEquals(1, text.getLocationX());
+        assertEquals(5, text.getLocationY());
+        assertTrue(text.getWidth() == 0);
+        assertTrue(text.getHeight() == 0);
 
         text.render(g);
         text.render(g);
 
-        Assert.assertTrue(text.getWidth() > 0);
-        Assert.assertTrue(text.getHeight() > 0);
+        assertTrue(text.getWidth() > 0);
+        assertTrue(text.getHeight() > 0);
     }
 
     /**
@@ -121,14 +122,8 @@ public final class TextAwtTest
     @Test
     public void testStyleUnknown()
     {
-        try
-        {
-            Assert.assertNull(new TextAwt(Constant.EMPTY_STRING, 10, UtilEnum.make(TextStyle.class, "FAIL")));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> new TextAwt(Constant.EMPTY_STRING, 10, UtilEnum.make(TextStyle.class, "FAIL")),
+                     "Unknown enum: FAIL");
     }
 
     /**
@@ -138,16 +133,9 @@ public final class TextAwtTest
     public void testAlignUnknown()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.NORMAL);
-        try
-        {
-            final Graphic g = Graphics.createGraphic();
-            g.setGraphic(ToolsAwt.createImage(1, 1, java.awt.Transparency.OPAQUE).createGraphics());
-            text.draw(g, 0, 0, UtilEnum.make(Align.class, "FAIL"), Constant.EMPTY_STRING);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertNotNull(exception);
-        }
+        final Graphic g = Graphics.createGraphic();
+        g.setGraphic(ToolsAwt.createImage(1, 1, java.awt.Transparency.OPAQUE).createGraphics());
+        assertThrows(() -> text.draw(g, 0, 0, UtilEnum.make(Align.class, "FAIL"), Constant.EMPTY_STRING),
+                     "Unknown enum: FAIL");
     }
 }
