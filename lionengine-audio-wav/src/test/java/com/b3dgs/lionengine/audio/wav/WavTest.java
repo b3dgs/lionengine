@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.audio.wav;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
@@ -35,28 +35,21 @@ import com.b3dgs.lionengine.audio.AudioFactory;
  */
 public final class WavTest
 {
-    /** Media sound. */
-    private static Media mediaSound;
-    /** Wav sound. */
-    private static Wav sound;
-
     /**
      * Prepare the test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void prepareTest()
     {
         Medias.setLoadFromJar(WavTest.class);
         WavFormat.setMixer(null);
         AudioFactory.addFormat(new WavFormat());
-        mediaSound = Medias.create("sound.wav");
-        sound = AudioFactory.loadAudio(mediaSound, Wav.class);
     }
 
     /**
      * Clean up tests.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -66,11 +59,10 @@ public final class WavTest
     /**
      * Test with <code>null</code> argument.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullArgument()
     {
-        AudioFactory.loadAudio(null);
-        Assert.fail();
+        assertThrows(() -> AudioFactory.loadAudio(null), "Unexpected null argument !");
     }
 
     /**
@@ -83,29 +75,50 @@ public final class WavTest
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));
-        wav.play();
-        Thread.sleep(100);
+        try
+        {
+            wav.play();
+            Thread.sleep(Constant.HUNDRED);
+        }
+        finally
+        {
+            wav.stop();
+        }
         Verbose.info("****************************************************************************************");
     }
 
     /**
      * Test with negative volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNegativeVolume()
     {
-        sound.setVolume(-1);
-        Assert.fail();
+        final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
+        try
+        {
+            assertThrows(() -> wav.setVolume(-1), "Invalid argument: -1 is not superior or equal to 0");
+        }
+        finally
+        {
+            wav.stop();
+        }
     }
 
     /**
      * Test with out of range volume.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testOutOfRangeVolume()
     {
-        sound.setVolume(101);
-        Assert.fail();
+        final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
+        try
+        {
+            assertThrows(() -> wav.setVolume(101), "Invalid argument: 101 is not inferior or equal to 100");
+        }
+        finally
+        {
+            wav.stop();
+        }
     }
 
     /**
@@ -116,24 +129,35 @@ public final class WavTest
     @Test
     public void testWav() throws InterruptedException
     {
-        sound.setVolume(50);
+        final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
+        try
+        {
+            wav.setVolume(50);
+            wav.play();
+            Thread.sleep(Constant.HUNDRED);
 
-        sound.play();
-        Thread.sleep(150);
-        sound.play(Align.LEFT);
-        Thread.sleep(150);
-        sound.play(Align.CENTER);
-        Thread.sleep(150);
-        sound.play(Align.RIGHT);
-        Thread.sleep(150);
-        sound.play();
-        Thread.sleep(900);
+            wav.play(Align.LEFT);
+            Thread.sleep(Constant.HUNDRED);
 
-        sound.play();
-        Thread.sleep(10);
-        sound.play();
-        sound.play(Align.CENTER);
-        Thread.sleep(50);
-        sound.stop();
+            wav.play(Align.CENTER);
+            Thread.sleep(Constant.HUNDRED);
+
+            wav.play(Align.RIGHT);
+            Thread.sleep(Constant.HUNDRED);
+
+            wav.play();
+            Thread.sleep(Constant.THOUSAND);
+
+            wav.play();
+            Thread.sleep(Constant.DECADE);
+
+            wav.play();
+            wav.play(Align.CENTER);
+            Thread.sleep(Constant.HUNDRED);
+        }
+        finally
+        {
+            wav.stop();
+        }
     }
 }
