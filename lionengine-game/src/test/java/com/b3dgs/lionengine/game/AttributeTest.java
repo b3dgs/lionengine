@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Attribute}.
@@ -33,7 +34,7 @@ public final class AttributeTest
     {
         final Attribute attribute = new Attribute();
 
-        Assert.assertEquals(0, attribute.get());
+        assertEquals(0, attribute.get());
     }
 
     /**
@@ -45,7 +46,7 @@ public final class AttributeTest
         final Attribute attribute = new Attribute();
         attribute.increase(2);
 
-        Assert.assertEquals(2, attribute.get());
+        assertEquals(2, attribute.get());
     }
 
     /**
@@ -57,6 +58,6 @@ public final class AttributeTest
         final Attribute attribute = new Attribute();
         attribute.set(1);
 
-        Assert.assertEquals(1, attribute.get());
+        assertEquals(1, attribute.get());
     }
 }
