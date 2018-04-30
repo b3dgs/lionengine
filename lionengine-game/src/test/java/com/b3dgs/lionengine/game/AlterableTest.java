@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Alterable}.
@@ -33,9 +36,9 @@ public final class AlterableTest
     {
         final Alterable alterable = new Alterable(-1);
 
-        Assert.assertEquals(0, alterable.getCurrent());
-        Assert.assertEquals(0, alterable.getMax());
-        Assert.assertEquals(0, alterable.getPercent());
+        assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getMax());
+        assertEquals(0, alterable.getPercent());
     }
 
     /**
@@ -47,15 +50,15 @@ public final class AlterableTest
         final Alterable alterable = new Alterable(3);
         alterable.increase(1);
 
-        Assert.assertEquals(1, alterable.getCurrent());
+        assertEquals(1, alterable.getCurrent());
 
         alterable.increase(2.0, 1);
 
-        Assert.assertEquals(3, alterable.getCurrent());
+        assertEquals(3, alterable.getCurrent());
 
         alterable.increase(1);
 
-        Assert.assertEquals(3, alterable.getCurrent());
+        assertEquals(3, alterable.getCurrent());
     }
 
     /**
@@ -68,15 +71,15 @@ public final class AlterableTest
         alterable.fill();
         alterable.decrease(1);
 
-        Assert.assertEquals(2, alterable.getCurrent());
+        assertEquals(2, alterable.getCurrent());
 
         alterable.decrease(2.0, 1);
 
-        Assert.assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getCurrent());
 
         alterable.decrease(1);
 
-        Assert.assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getCurrent());
     }
 
     /**
@@ -87,11 +90,11 @@ public final class AlterableTest
     {
         final Alterable alterable = new Alterable(4);
 
-        Assert.assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getCurrent());
 
         alterable.fill();
 
-        Assert.assertEquals(4, alterable.getCurrent());
+        assertEquals(4, alterable.getCurrent());
     }
 
     /**
@@ -103,11 +106,11 @@ public final class AlterableTest
         final Alterable alterable = new Alterable(4);
         alterable.set(2);
 
-        Assert.assertEquals(2, alterable.getCurrent());
+        assertEquals(2, alterable.getCurrent());
 
         alterable.reset();
 
-        Assert.assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getCurrent());
     }
 
     /**
@@ -119,21 +122,21 @@ public final class AlterableTest
         final Alterable alterable = new Alterable(0);
         alterable.set(1);
 
-        Assert.assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getCurrent());
 
         alterable.setMax(2);
         alterable.set(1);
 
-        Assert.assertEquals(1, alterable.getCurrent());
+        assertEquals(1, alterable.getCurrent());
 
         alterable.setMax(0);
 
-        Assert.assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getCurrent());
 
         alterable.setMax(-1);
 
-        Assert.assertEquals(0, alterable.getCurrent());
-        Assert.assertEquals(0, alterable.getMax());
+        assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getMax());
     }
 
     /**
@@ -145,7 +148,7 @@ public final class AlterableTest
         final Alterable alterable = new Alterable(0, true);
         alterable.set(1);
 
-        Assert.assertEquals(1, alterable.getCurrent());
+        assertEquals(1, alterable.getCurrent());
     }
 
     /**
@@ -157,12 +160,12 @@ public final class AlterableTest
         final Alterable alterable = new Alterable(2);
         alterable.set(1);
 
-        Assert.assertEquals(1, alterable.getCurrent());
-        Assert.assertEquals(2, alterable.getMax());
-        Assert.assertEquals(50, alterable.getPercent());
-        Assert.assertEquals(0, alterable.getNeeded(0));
-        Assert.assertEquals(0, alterable.getNeeded(1));
-        Assert.assertEquals(1, alterable.getNeeded(2));
+        assertEquals(1, alterable.getCurrent());
+        assertEquals(2, alterable.getMax());
+        assertEquals(50, alterable.getPercent());
+        assertEquals(0, alterable.getNeeded(0));
+        assertEquals(0, alterable.getNeeded(1));
+        assertEquals(1, alterable.getNeeded(2));
     }
 
     /**
@@ -173,14 +176,14 @@ public final class AlterableTest
     {
         final Alterable alterable = new Alterable(2);
 
-        Assert.assertTrue(alterable.isEmpty());
-        Assert.assertFalse(alterable.isFull());
-        Assert.assertFalse(alterable.isEnough(1));
+        assertTrue(alterable.isEmpty());
+        assertFalse(alterable.isFull());
+        assertFalse(alterable.isEnough(1));
 
         alterable.set(2);
 
-        Assert.assertFalse(alterable.isEmpty());
-        Assert.assertTrue(alterable.isFull());
-        Assert.assertTrue(alterable.isEnough(1));
+        assertFalse(alterable.isEmpty());
+        assertTrue(alterable.isFull());
+        assertTrue(alterable.isEnough(1));
     }
 }
