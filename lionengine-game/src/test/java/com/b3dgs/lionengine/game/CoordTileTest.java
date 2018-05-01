@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 
@@ -35,7 +36,7 @@ public final class CoordTileTest
     {
         final CoordTile coord = new CoordTile(1, 2);
 
-        Assert.assertEquals(1, coord.getX());
-        Assert.assertEquals(2, coord.getY());
+        assertEquals(1, coord.getX());
+        assertEquals(2, coord.getY());
     }
 }
