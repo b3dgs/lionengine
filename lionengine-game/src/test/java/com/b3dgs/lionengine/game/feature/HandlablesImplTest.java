@@ -100,7 +100,9 @@ public final class HandlablesImplTest
 
         assertTrue(featurables.getIds().isEmpty());
         assertFalse(featurables.values().iterator().hasNext());
-        assertThrows(() -> featurables.get(object.getFeature(Identifiable.class).getId()), "Featurable not found: 2");
+
+        final Integer id = object.getFeature(Identifiable.class).getId();
+        assertThrows(() -> featurables.get(id), "Featurable not found: " + id);
     }
 
     /**
