@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.graphic.drawable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
@@ -42,6 +43,8 @@ final class SpriteFontImpl implements SpriteFont
 {
     /** New line separator character. */
     private static final String NL_STR = Constant.EMPTY_STRING + Constant.PERCENT;
+    /** Split with new line. */
+    private static final Pattern NL = Pattern.compile(NL_STR);
 
     /**
      * Get character width depending of alignment.
@@ -179,7 +182,7 @@ final class SpriteFontImpl implements SpriteFont
         int lx = 0;
         int ly = 0;
 
-        for (final String word : text.split(NL_STR))
+        for (final String word : NL.split(text))
         {
             final int width = getCharWidth(word, align);
             final int length = word.length();

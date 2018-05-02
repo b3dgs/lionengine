@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.ActionRef;
@@ -52,6 +53,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
  */
 public class Hud extends FeaturableModel
 {
+    /** Split with path. */
+    private static final Pattern PATH = Pattern.compile(File.pathSeparator);
+
     /**
      * Get all actions in common.
      * 
@@ -216,7 +220,7 @@ public class Hud extends FeaturableModel
      */
     private Featurable createMenu(ActionRef action)
     {
-        final Featurable menu = factory.create(Medias.create(action.getPath().split(File.pathSeparator)));
+        final Featurable menu = factory.create(Medias.create(PATH.split(action.getPath())));
         menus.add(menu);
         return menu;
     }

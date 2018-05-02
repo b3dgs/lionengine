@@ -19,6 +19,7 @@ package com.b3dgs.lionengine;
 
 import java.nio.ByteBuffer;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Conversion class utility.
@@ -28,6 +29,9 @@ import java.util.Locale;
  */
 public final class UtilConversion
 {
+    /** Split with space. */
+    private static final Pattern SPACE = Pattern.compile(Constant.SPACE);
+
     /**
      * Convert an integer to an array of byte.
      * 
@@ -249,7 +253,7 @@ public final class UtilConversion
     {
         Check.notNull(string);
 
-        final String[] words = string.replaceAll("\\W|_", Constant.SPACE).split(Constant.SPACE);
+        final String[] words = SPACE.split(string.replaceAll("\\W|_", Constant.SPACE));
         final StringBuilder title = new StringBuilder(string.length());
         for (int i = 0; i < words.length; i++)
         {

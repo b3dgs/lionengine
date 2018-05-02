@@ -254,7 +254,6 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     {
         Check.notNull(image);
 
-        // TODO
         return new ImageBufferHeadless((ImageBufferHeadless) image);
     }
 }

@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Media implementation.
@@ -48,6 +49,8 @@ final class MediaDefault implements Media
     private static final String ERROR_CREATE_TEMP_DIR = "Unable to create temp dir ";
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
+    /** Split regex. */
+    private static final Pattern SLASH = Pattern.compile(Constant.SLASH);
 
     /**
      * Create the temp directory relative to loader class name.
@@ -167,9 +170,8 @@ final class MediaDefault implements Media
     private Media create(String prefix, int prefixLength, File file)
     {
         final String currentPath = file.getPath();
-        final String[] systemPath = currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
-                                               .replace(File.separator, Constant.SLASH)
-                                               .split(Constant.SLASH);
+        final String[] systemPath = SLASH.split(currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
+                                                           .replace(File.separator, Constant.SLASH));
         final Media media;
         if (loader.isPresent())
         {

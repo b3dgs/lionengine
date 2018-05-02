@@ -87,11 +87,11 @@ public final class ScreenAwtTest
 
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
-        assertTimeout(1000L, () -> testScreen(config));
+        assertTimeout(10_000L, () -> testScreen(config));
 
         Verbose.info("****************************************************************************************");
 
-        assertTimeout(1000L, () -> testHeadless(config));
+        assertTimeout(10_000L, () -> testHeadless(config));
     }
 
     /**
@@ -112,11 +112,11 @@ public final class ScreenAwtTest
 
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
-            assertTimeout(1000L, () -> testScreen(config));
+            assertTimeout(10_000L, () -> testScreen(config));
 
             Verbose.info("****************************************************************************************");
 
-            assertTimeout(1000L, () -> testHeadless(config));
+            assertTimeout(10_000L, () -> testHeadless(config));
         }
     }
 
