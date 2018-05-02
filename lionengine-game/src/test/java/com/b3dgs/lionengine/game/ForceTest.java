@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Force}.
@@ -38,10 +42,10 @@ public final class ForceTest
      */
     private static void assertForce(double h, double v, double velocity, double sensibility, Force force)
     {
-        Assert.assertEquals(h, force.getDirectionHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(v, force.getDirectionVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(velocity, force.getVelocity(), UtilTests.PRECISION);
-        Assert.assertEquals(sensibility, force.getSensibility(), UtilTests.PRECISION);
+        assertEquals(h, force.getDirectionHorizontal());
+        assertEquals(v, force.getDirectionVertical());
+        assertEquals(velocity, force.getVelocity());
+        assertEquals(sensibility, force.getSensibility());
     }
 
     /**
@@ -84,8 +88,8 @@ public final class ForceTest
         force.setVelocity(1.0);
         force.setSensibility(2.0);
 
-        Assert.assertEquals(1.0, force.getVelocity(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, force.getSensibility(), UtilTests.PRECISION);
+        assertEquals(1.0, force.getVelocity());
+        assertEquals(2.0, force.getSensibility());
     }
 
     /**
@@ -140,26 +144,26 @@ public final class ForceTest
         force.setDestination(2.0, 3.0);
 
         assertForce(1.0, 2.0, 1.0, 0.0, force);
-        Assert.assertTrue(force.isIncreasingHorizontal());
-        Assert.assertFalse(force.isDecreasingHorizontal());
+        assertTrue(force.isIncreasingHorizontal());
+        assertFalse(force.isDecreasingHorizontal());
 
         force.update(1.0);
 
         assertForce(2.0, 3.0, 1.0, 0.0, force);
-        Assert.assertTrue(force.isIncreasingHorizontal());
-        Assert.assertFalse(force.isDecreasingHorizontal());
+        assertTrue(force.isIncreasingHorizontal());
+        assertFalse(force.isDecreasingHorizontal());
 
         force.setDestination(-1.0, -2.0);
 
         assertForce(2.0, 3.0, 1.0, 0.0, force);
-        Assert.assertTrue(force.isIncreasingHorizontal());
-        Assert.assertFalse(force.isDecreasingHorizontal());
+        assertTrue(force.isIncreasingHorizontal());
+        assertFalse(force.isDecreasingHorizontal());
 
         force.update(1.0);
 
         assertForce(1.0, 2.0, 1.0, 0.0, force);
-        Assert.assertFalse(force.isIncreasingHorizontal());
-        Assert.assertTrue(force.isDecreasingHorizontal());
+        assertFalse(force.isIncreasingHorizontal());
+        assertTrue(force.isDecreasingHorizontal());
 
         force.update(1.0);
 
@@ -254,7 +258,7 @@ public final class ForceTest
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
-        Assert.assertEquals(force, new Force(force));
+        assertEquals(force, new Force(force));
     }
 
     /**
@@ -265,24 +269,24 @@ public final class ForceTest
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
-        Assert.assertEquals(force, force);
-        Assert.assertEquals(force, new Force(1.0, 2.0, 3.0, 4.0));
+        assertEquals(force, force);
+        assertEquals(force, new Force(1.0, 2.0, 3.0, 4.0));
 
-        Assert.assertNotEquals(force, null);
-        Assert.assertNotEquals(force, new Object());
-        Assert.assertNotEquals(force, new Force(1.0, 2.0, 3.0, 1.0));
-        Assert.assertNotEquals(force, new Force(1.0, 2.0, 1.0, 4.0));
-        Assert.assertNotEquals(force, new Force(1.0, 2.0, 1.0, 1.0));
-        Assert.assertNotEquals(force, new Force(1.0, 1.0, 3.0, 4.0));
-        Assert.assertNotEquals(force, new Force(1.0, 1.0, 3.0, 1.0));
-        Assert.assertNotEquals(force, new Force(1.0, 1.0, 1.0, 4.0));
-        Assert.assertNotEquals(force, new Force(2.0, 2.0, 3.0, 4.0));
-        Assert.assertNotEquals(force, new Force(2.0, 2.0, 3.0, 1.0));
-        Assert.assertNotEquals(force, new Force(2.0, 2.0, 1.0, 4.0));
-        Assert.assertNotEquals(force, new Force(2.0, 2.0, 1.0, 1.0));
-        Assert.assertNotEquals(force, new Force(2.0, 1.0, 3.0, 4.0));
-        Assert.assertNotEquals(force, new Force(2.0, 1.0, 3.0, 1.0));
-        Assert.assertNotEquals(force, new Force(2.0, 1.0, 1.0, 4.0));
+        assertNotEquals(force, null);
+        assertNotEquals(force, new Object());
+        assertNotEquals(force, new Force(1.0, 2.0, 3.0, 1.0));
+        assertNotEquals(force, new Force(1.0, 2.0, 1.0, 4.0));
+        assertNotEquals(force, new Force(1.0, 2.0, 1.0, 1.0));
+        assertNotEquals(force, new Force(1.0, 1.0, 3.0, 4.0));
+        assertNotEquals(force, new Force(1.0, 1.0, 3.0, 1.0));
+        assertNotEquals(force, new Force(1.0, 1.0, 1.0, 4.0));
+        assertNotEquals(force, new Force(2.0, 2.0, 3.0, 4.0));
+        assertNotEquals(force, new Force(2.0, 2.0, 3.0, 1.0));
+        assertNotEquals(force, new Force(2.0, 2.0, 1.0, 4.0));
+        assertNotEquals(force, new Force(2.0, 2.0, 1.0, 1.0));
+        assertNotEquals(force, new Force(2.0, 1.0, 3.0, 4.0));
+        assertNotEquals(force, new Force(2.0, 1.0, 3.0, 1.0));
+        assertNotEquals(force, new Force(2.0, 1.0, 1.0, 4.0));
     }
 
     /**
@@ -291,24 +295,24 @@ public final class ForceTest
     @Test
     public void testHashCode()
     {
-        final int hash = new Force(1.0, 2.0, 3.0, 4.0).hashCode();
+        final Force hash = new Force(1.0, 2.0, 3.0, 4.0);
 
-        Assert.assertEquals(hash, new Force(1.0, 2.0, 3.0, 4.0).hashCode());
+        assertHashEquals(hash, new Force(1.0, 2.0, 3.0, 4.0));
 
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, new Force(1.0, 2.0, 3.0, 1.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(1.0, 2.0, 1.0, 4.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(1.0, 2.0, 1.0, 1.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(1.0, 1.0, 3.0, 4.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(1.0, 1.0, 3.0, 1.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(1.0, 1.0, 1.0, 4.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 2.0, 3.0, 4.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 2.0, 3.0, 1.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 2.0, 1.0, 4.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 2.0, 1.0, 1.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 1.0, 3.0, 4.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 1.0, 3.0, 1.0).hashCode());
-        Assert.assertNotEquals(hash, new Force(2.0, 1.0, 1.0, 4.0).hashCode());
+        assertHashNotEquals(hash, new Object());
+        assertHashNotEquals(hash, new Force(1.0, 2.0, 3.0, 1.0));
+        assertHashNotEquals(hash, new Force(1.0, 2.0, 1.0, 4.0));
+        assertHashNotEquals(hash, new Force(1.0, 2.0, 1.0, 1.0));
+        assertHashNotEquals(hash, new Force(1.0, 1.0, 3.0, 4.0));
+        assertHashNotEquals(hash, new Force(1.0, 1.0, 3.0, 1.0));
+        assertHashNotEquals(hash, new Force(1.0, 1.0, 1.0, 4.0));
+        assertHashNotEquals(hash, new Force(2.0, 2.0, 3.0, 4.0));
+        assertHashNotEquals(hash, new Force(2.0, 2.0, 3.0, 1.0));
+        assertHashNotEquals(hash, new Force(2.0, 2.0, 1.0, 4.0));
+        assertHashNotEquals(hash, new Force(2.0, 2.0, 1.0, 1.0));
+        assertHashNotEquals(hash, new Force(2.0, 1.0, 3.0, 4.0));
+        assertHashNotEquals(hash, new Force(2.0, 1.0, 3.0, 1.0));
+        assertHashNotEquals(hash, new Force(2.0, 1.0, 1.0, 4.0));
     }
 
     /**
@@ -319,6 +323,6 @@ public final class ForceTest
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
-        Assert.assertEquals("Force [fh=1.0, fv=2.0, velocity=3.0, sensibility=4.0]", force.toString());
+        assertEquals("Force [fh=1.0, fv=2.0, velocity=3.0, sensibility=4.0]", force.toString());
     }
 }

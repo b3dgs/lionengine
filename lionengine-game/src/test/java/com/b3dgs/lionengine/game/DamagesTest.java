@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilMath;
@@ -36,18 +38,18 @@ public final class DamagesTest
     {
         final Damages damages = new Damages();
 
-        Assert.assertEquals(0, damages.getMin());
-        Assert.assertEquals(0, damages.getMax());
-        Assert.assertEquals(0, damages.getLast());
+        assertEquals(0, damages.getMin());
+        assertEquals(0, damages.getMax());
+        assertEquals(0, damages.getLast());
 
         final Range range = damages.getDamages();
 
-        Assert.assertEquals(0, range.getMin());
-        Assert.assertEquals(0, range.getMax());
+        assertEquals(0, range.getMin());
+        assertEquals(0, range.getMax());
 
         for (int i = 0; i < 100; i++)
         {
-            Assert.assertEquals(0, damages.getRandom());
+            assertEquals(0, damages.getRandom());
         }
     }
 
@@ -59,20 +61,20 @@ public final class DamagesTest
     {
         final Damages damages = new Damages(1, 2);
 
-        Assert.assertEquals(1, damages.getMin());
-        Assert.assertEquals(2, damages.getMax());
-        Assert.assertEquals(0, damages.getLast());
+        assertEquals(1, damages.getMin());
+        assertEquals(2, damages.getMax());
+        assertEquals(0, damages.getLast());
 
         final Range range = damages.getDamages();
 
-        Assert.assertEquals(1, range.getMin());
-        Assert.assertEquals(2, range.getMax());
+        assertEquals(1, range.getMin());
+        assertEquals(2, range.getMax());
 
         for (int i = 0; i < 100; i++)
         {
             final int damage = damages.getRandom();
 
-            Assert.assertTrue(UtilMath.isBetween(damage, 1, 2));
+            assertTrue(UtilMath.isBetween(damage, 1, 2));
         }
     }
 
@@ -84,9 +86,9 @@ public final class DamagesTest
     {
         final Damages damages = new Damages(-1, -2);
 
-        Assert.assertEquals(0, damages.getMin());
-        Assert.assertEquals(0, damages.getMax());
-        Assert.assertEquals(0, damages.getLast());
+        assertEquals(0, damages.getMin());
+        assertEquals(0, damages.getMax());
+        assertEquals(0, damages.getLast());
     }
 
     /**
@@ -97,18 +99,18 @@ public final class DamagesTest
     {
         final Damages damages = new Damages(1, 5);
 
-        Assert.assertEquals(1, damages.getMin());
-        Assert.assertEquals(5, damages.getMax());
+        assertEquals(1, damages.getMin());
+        assertEquals(5, damages.getMax());
 
         damages.setMin(2);
 
-        Assert.assertEquals(2, damages.getMin());
-        Assert.assertEquals(5, damages.getMax());
+        assertEquals(2, damages.getMin());
+        assertEquals(5, damages.getMax());
 
         damages.setMin(6);
 
-        Assert.assertEquals(6, damages.getMin());
-        Assert.assertEquals(6, damages.getMax());
+        assertEquals(6, damages.getMin());
+        assertEquals(6, damages.getMax());
     }
 
     /**
@@ -119,18 +121,18 @@ public final class DamagesTest
     {
         final Damages damages = new Damages(1, 5);
 
-        Assert.assertEquals(1, damages.getMin());
-        Assert.assertEquals(5, damages.getMax());
+        assertEquals(1, damages.getMin());
+        assertEquals(5, damages.getMax());
 
         damages.setMax(6);
 
-        Assert.assertEquals(1, damages.getMin());
-        Assert.assertEquals(6, damages.getMax());
+        assertEquals(1, damages.getMin());
+        assertEquals(6, damages.getMax());
 
         damages.setMax(0);
 
-        Assert.assertEquals(1, damages.getMin());
-        Assert.assertEquals(1, damages.getMax());
+        assertEquals(1, damages.getMin());
+        assertEquals(1, damages.getMax());
     }
 
     /**
@@ -142,8 +144,8 @@ public final class DamagesTest
         final Damages damages = new Damages();
         damages.setDamages(1, 5);
 
-        Assert.assertEquals(1, damages.getMin());
-        Assert.assertEquals(5, damages.getMax());
+        assertEquals(1, damages.getMin());
+        assertEquals(5, damages.getMax());
     }
 
     /**
@@ -155,8 +157,8 @@ public final class DamagesTest
         final Damages damages = new Damages();
         damages.setDamages(5, 1);
 
-        Assert.assertEquals(5, damages.getMin());
-        Assert.assertEquals(5, damages.getMax());
+        assertEquals(5, damages.getMin());
+        assertEquals(5, damages.getMax());
     }
 
     /**
@@ -168,8 +170,8 @@ public final class DamagesTest
         final Damages damages = new Damages();
         damages.setDamages(-1, -2);
 
-        Assert.assertEquals(0, damages.getMin());
-        Assert.assertEquals(0, damages.getMax());
+        assertEquals(0, damages.getMin());
+        assertEquals(0, damages.getMax());
     }
 
     /**
@@ -180,7 +182,7 @@ public final class DamagesTest
     {
         final Damages damages = new Damages(1, 1);
 
-        Assert.assertEquals(1, damages.getRandom());
-        Assert.assertEquals(1, damages.getLast());
+        assertEquals(1, damages.getRandom());
+        assertEquals(1, damages.getLast());
     }
 }

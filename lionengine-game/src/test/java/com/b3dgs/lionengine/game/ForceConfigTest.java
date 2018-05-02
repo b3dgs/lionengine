@@ -17,15 +17,16 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 
 /**
@@ -36,8 +37,8 @@ public final class ForceConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -45,8 +46,8 @@ public final class ForceConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -56,10 +57,10 @@ public final class ForceConfigTest
      * 
      * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(ForceConfig.class);
+        assertPrivateConstructor(ForceConfig.class);
     }
 
     /**
@@ -76,10 +77,10 @@ public final class ForceConfigTest
         final Media media = Medias.create("force.xml");
         root.save(media);
 
-        Assert.assertEquals(force, ForceConfig.imports(new Xml(media)));
-        Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
+        assertEquals(force, ForceConfig.imports(new Xml(media)));
+        assertEquals(force, ForceConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -98,9 +99,9 @@ public final class ForceConfigTest
         final Media media = Medias.create("force.xml");
         root.save(media);
 
-        Assert.assertEquals(force, ForceConfig.imports(new Xml(media)));
-        Assert.assertEquals(force, ForceConfig.imports(new Configurer(media)));
+        assertEquals(force, ForceConfig.imports(new Xml(media)));
+        assertEquals(force, ForceConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 }

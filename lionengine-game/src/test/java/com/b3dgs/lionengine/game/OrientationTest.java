@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 
@@ -44,7 +45,7 @@ public final class OrientationTest
     @Test
     public void testNext()
     {
-        Assert.assertEquals(Orientation.NORTH_EAST, Orientation.next(Orientation.NORTH, 1));
-        Assert.assertEquals(Orientation.NORTH, Orientation.next(Orientation.NORTH, 8));
+        assertEquals(Orientation.NORTH_EAST, Orientation.next(Orientation.NORTH, 1));
+        assertEquals(Orientation.NORTH, Orientation.next(Orientation.NORTH, 8));
     }
 }

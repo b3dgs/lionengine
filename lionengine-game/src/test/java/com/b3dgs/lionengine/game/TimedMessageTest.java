@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilTests;
@@ -37,8 +39,8 @@ public final class TimedMessageTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -46,8 +48,8 @@ public final class TimedMessageTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }
@@ -60,11 +62,11 @@ public final class TimedMessageTest
     {
         final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
 
-        Assert.assertFalse(message.hasMessage());
+        assertFalse(message.hasMessage());
 
         message.addMessage("test", 0, 0, 50L);
 
-        Assert.assertTrue(message.hasMessage());
+        assertTrue(message.hasMessage());
     }
 
     /**
@@ -76,28 +78,28 @@ public final class TimedMessageTest
         final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
         message.update(1.0);
 
-        Assert.assertFalse(message.hasMessage());
+        assertFalse(message.hasMessage());
 
         message.addMessage("test", 0, 0, 0L);
         message.addMessage("test2", 0, 0, 100L);
 
-        Assert.assertTrue(message.hasMessage());
+        assertTrue(message.hasMessage());
 
         message.update(1.0); // First message consumed, one remain
 
-        Assert.assertTrue(message.hasMessage());
+        assertTrue(message.hasMessage());
 
         UtilTests.pause(25L);
 
         message.update(1.0); // Message time still not elapsed
 
-        Assert.assertTrue(message.hasMessage());
+        assertTrue(message.hasMessage());
 
         UtilTests.pause(100L); // Message time elapsed
 
         message.update(1.0);
 
-        Assert.assertFalse(message.hasMessage());
+        assertFalse(message.hasMessage());
     }
 
     /**
@@ -115,6 +117,6 @@ public final class TimedMessageTest
         message.render(g);
         g.dispose();
 
-        Assert.assertFalse(message.hasMessage());
+        assertFalse(message.hasMessage());
     }
 }

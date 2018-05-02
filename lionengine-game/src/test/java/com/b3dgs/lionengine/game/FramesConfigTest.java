@@ -17,10 +17,15 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -35,8 +40,8 @@ public final class FramesConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -44,8 +49,8 @@ public final class FramesConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -64,11 +69,11 @@ public final class FramesConfigTest
         final Media media = Medias.create("object.xml");
         root.save(media);
 
-        Assert.assertEquals(config, FramesConfig.imports(new Xml(media)));
-        Assert.assertEquals(config, FramesConfig.imports(new Setup(media)));
-        Assert.assertEquals(config, FramesConfig.imports(new Configurer(media)));
+        assertEquals(config, FramesConfig.imports(new Xml(media)));
+        assertEquals(config, FramesConfig.imports(new Setup(media)));
+        assertEquals(config, FramesConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -79,15 +84,15 @@ public final class FramesConfigTest
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
-        Assert.assertEquals(config, config);
-        Assert.assertEquals(config, new FramesConfig(1, 2, 3, 4));
+        assertEquals(config, config);
+        assertEquals(config, new FramesConfig(1, 2, 3, 4));
 
-        Assert.assertNotEquals(config, null);
-        Assert.assertNotEquals(config, new Object());
-        Assert.assertNotEquals(config, new FramesConfig(0, 2, 3, 4));
-        Assert.assertNotEquals(config, new FramesConfig(1, 0, 3, 4));
-        Assert.assertNotEquals(config, new FramesConfig(1, 2, 0, 4));
-        Assert.assertNotEquals(config, new FramesConfig(1, 2, 3, 0));
+        assertNotEquals(config, null);
+        assertNotEquals(config, new Object());
+        assertNotEquals(config, new FramesConfig(0, 2, 3, 4));
+        assertNotEquals(config, new FramesConfig(1, 0, 3, 4));
+        assertNotEquals(config, new FramesConfig(1, 2, 0, 4));
+        assertNotEquals(config, new FramesConfig(1, 2, 3, 0));
     }
 
     /**
@@ -96,14 +101,14 @@ public final class FramesConfigTest
     @Test
     public void testHashCode()
     {
-        final int hash = new FramesConfig(1, 2, 3, 4).hashCode();
+        final FramesConfig hash = new FramesConfig(1, 2, 3, 4);
 
-        Assert.assertEquals(hash, new FramesConfig(1, 2, 3, 4).hashCode());
+        assertHashEquals(hash, new FramesConfig(1, 2, 3, 4));
 
-        Assert.assertNotEquals(hash, new FramesConfig(0, 2, 3, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 0, 3, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 0, 4).hashCode());
-        Assert.assertNotEquals(hash, new FramesConfig(1, 2, 3, 0).hashCode());
+        assertHashNotEquals(hash, new FramesConfig(0, 2, 3, 4));
+        assertHashNotEquals(hash, new FramesConfig(1, 0, 3, 4));
+        assertHashNotEquals(hash, new FramesConfig(1, 2, 0, 4));
+        assertHashNotEquals(hash, new FramesConfig(1, 2, 3, 0));
     }
 
     /**
@@ -114,7 +119,6 @@ public final class FramesConfigTest
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
-        Assert.assertEquals("FramesConfig [horizontalFrames=1, verticalFrames=2, offsetX=3, offsetY=4]",
-                            config.toString());
+        assertEquals("FramesConfig [horizontalFrames=1, verticalFrames=2, offsetX=3, offsetY=4]", config.toString());
     }
 }

@@ -17,10 +17,15 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -34,8 +39,8 @@ public final class SizeConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -43,8 +48,8 @@ public final class SizeConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -63,10 +68,10 @@ public final class SizeConfigTest
         final Media media = Medias.create("object.xml");
         root.save(media);
 
-        Assert.assertEquals(config, SizeConfig.imports(new Xml(media)));
-        Assert.assertEquals(config, SizeConfig.imports(new Configurer(media)));
+        assertEquals(config, SizeConfig.imports(new Xml(media)));
+        assertEquals(config, SizeConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -77,13 +82,13 @@ public final class SizeConfigTest
     {
         final SizeConfig config = new SizeConfig(16, 32);
 
-        Assert.assertEquals(config, config);
-        Assert.assertEquals(config, new SizeConfig(16, 32));
+        assertEquals(config, config);
+        assertEquals(config, new SizeConfig(16, 32));
 
-        Assert.assertNotEquals(config, null);
-        Assert.assertNotEquals(config, new Object());
-        Assert.assertNotEquals(config, new SizeConfig(0, 32));
-        Assert.assertNotEquals(config, new SizeConfig(16, 0));
+        assertNotEquals(config, null);
+        assertNotEquals(config, new Object());
+        assertNotEquals(config, new SizeConfig(0, 32));
+        assertNotEquals(config, new SizeConfig(16, 0));
     }
 
     /**
@@ -92,12 +97,12 @@ public final class SizeConfigTest
     @Test
     public void testHashCode()
     {
-        final int hash = new SizeConfig(16, 32).hashCode();
+        final SizeConfig hash = new SizeConfig(16, 32);
 
-        Assert.assertEquals(hash, new SizeConfig(16, 32).hashCode());
+        assertHashEquals(hash, new SizeConfig(16, 32));
 
-        Assert.assertNotEquals(hash, new SizeConfig(0, 32).hashCode());
-        Assert.assertNotEquals(hash, new SizeConfig(16, 0).hashCode());
+        assertHashNotEquals(hash, new SizeConfig(0, 32));
+        assertHashNotEquals(hash, new SizeConfig(16, 0));
     }
 
     /**
@@ -108,6 +113,6 @@ public final class SizeConfigTest
     {
         final SizeConfig config = new SizeConfig(16, 32);
 
-        Assert.assertEquals("SizeConfig [width=16, height=32]", config.toString());
+        assertHashEquals("SizeConfig [width=16, height=32]", config.toString());
     }
 }

@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
@@ -41,8 +42,8 @@ public final class TextGameTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -50,8 +51,8 @@ public final class TextGameTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }
@@ -64,20 +65,20 @@ public final class TextGameTest
     {
         final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
 
-        Assert.assertEquals(0, text.getLocationX());
-        Assert.assertEquals(0, text.getLocationY());
+        assertEquals(0, text.getLocationX());
+        assertEquals(0, text.getLocationY());
 
         final ViewerMock viewer = new ViewerMock();
         viewer.set(1, 2);
         text.update(viewer);
 
-        Assert.assertEquals(0, text.getLocationX());
-        Assert.assertEquals(0, text.getLocationY());
+        assertEquals(0, text.getLocationX());
+        assertEquals(0, text.getLocationY());
 
         text.setLocation(3, 4);
 
-        Assert.assertEquals(3, text.getLocationX());
-        Assert.assertEquals(4, text.getLocationY());
+        assertEquals(3, text.getLocationX());
+        assertEquals(4, text.getLocationY());
     }
 
     /**
@@ -89,13 +90,13 @@ public final class TextGameTest
         final Graphic g = new GraphicMock();
         final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
 
-        Assert.assertEquals(8, text.getSize());
+        assertEquals(8, text.getSize());
 
-        Assert.assertEquals(0, text.getWidth());
-        Assert.assertEquals(0, text.getHeight());
+        assertEquals(0, text.getWidth());
+        assertEquals(0, text.getHeight());
 
-        Assert.assertEquals(0, text.getStringWidth(g, "text"));
-        Assert.assertEquals(0, text.getStringHeight(g, "text"));
+        assertEquals(0, text.getStringWidth(g, "text"));
+        assertEquals(0, text.getStringHeight(g, "text"));
 
         g.dispose();
     }

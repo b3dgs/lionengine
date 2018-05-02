@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.game.state.State;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateIdle;
@@ -46,14 +47,14 @@ public final class StateFactoryTest
         final State walk = new StateWalk();
         factory.addState(walk);
 
-        Assert.assertEquals(idle, factory.getState(StateType.IDLE));
-        Assert.assertEquals(walk, factory.getState(StateType.WALK));
+        assertEquals(idle, factory.getState(StateType.IDLE));
+        assertEquals(walk, factory.getState(StateType.WALK));
     }
 
     /**
      * Test clear.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testClear()
     {
         final StateFactory factory = new StateFactory();
@@ -61,14 +62,6 @@ public final class StateFactoryTest
         factory.addState(new StateWalk());
         factory.clear();
 
-        try
-        {
-            Assert.assertNull(factory.getState(StateType.IDLE));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals("Unknown enum: " + StateType.IDLE.toString(), exception.getMessage());
-            throw exception;
-        }
+        assertThrows(() -> factory.getState(StateType.IDLE), "Unknown enum: " + StateType.IDLE);
     }
 }
