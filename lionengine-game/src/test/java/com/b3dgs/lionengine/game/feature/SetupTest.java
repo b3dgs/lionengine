@@ -17,27 +17,29 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the setup class.
+ * Test {@link Setup}.
  */
-public class SetupTest
+public final class SetupTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(SetupTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -46,8 +48,8 @@ public class SetupTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -62,8 +64,8 @@ public class SetupTest
         final Media config = Medias.create("object.xml");
         final Setup setup = new Setup(config);
 
-        Assert.assertEquals(config, setup.getMedia());
-        Assert.assertNotNull(setup);
+        assertEquals(config, setup.getMedia());
+        assertNotNull(setup);
     }
 
     /**
@@ -75,8 +77,8 @@ public class SetupTest
         final Media config = Medias.create("object.xml");
         final Setup setup = new Setup(config);
 
-        Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
-        Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+        assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+        assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
     }
 
     /**
@@ -86,14 +88,8 @@ public class SetupTest
     public void testNoClass()
     {
         final Setup setup = new Setup(Medias.create("no_class.xml"));
-        try
-        {
-            Assert.assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(ClassNotFoundException.class, exception.getCause().getClass());
-        }
+
+        assertCause(() -> setup.getConfigClass(ClassLoader.getSystemClassLoader()), ClassNotFoundException.class);
     }
 
     /**
@@ -105,9 +101,9 @@ public class SetupTest
         final Media config = Medias.create("object.xml");
         final Setup setup = new Setup(config);
 
-        Assert.assertEquals(Medias.create("surface.png"), setup.getSurfaceFile());
-        Assert.assertEquals(Medias.create("icon.png"), setup.getIconFile());
-        Assert.assertEquals(7, setup.getSurface().getWidth());
-        Assert.assertEquals(11, setup.getSurface().getHeight());
+        assertEquals(Medias.create("surface.png"), setup.getSurfaceFile());
+        assertEquals(Medias.create("icon.png"), setup.getIconFile());
+        assertEquals(7, setup.getSurface().getWidth());
+        assertEquals(11, setup.getSurface().getHeight());
     }
 }

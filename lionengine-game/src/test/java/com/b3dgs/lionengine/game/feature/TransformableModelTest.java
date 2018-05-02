@@ -17,29 +17,30 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
- * Test the transformable.
+ * Test {@link TransformableModel}.
  */
-public class TransformableModelTest
+public final class TransformableModelTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -47,8 +48,8 @@ public class TransformableModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -62,8 +63,8 @@ public class TransformableModelTest
     /**
      * Prepare test.
      */
-    @Before
-    public void prepare()
+    @BeforeEach
+    public void before()
     {
         services.add(new MapTileGame());
         featurable.addFeature(new IdentifiableModel());
@@ -73,11 +74,12 @@ public class TransformableModelTest
     /**
      * Clean test.
      */
-    @After
-    public void clean()
+    @AfterEach
+    public void after()
     {
         featurable.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -88,8 +90,8 @@ public class TransformableModelTest
     {
         final Transformable transformable = new TransformableModel();
 
-        Assert.assertEquals(0, transformable.getWidth());
-        Assert.assertEquals(0, transformable.getHeight());
+        assertEquals(0, transformable.getWidth());
+        assertEquals(0, transformable.getHeight());
     }
 
     /**
@@ -98,31 +100,31 @@ public class TransformableModelTest
     @Test
     public void testTeleport()
     {
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
 
         transformable.teleport(1.0, -1.0);
 
-        Assert.assertEquals(1.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(-1.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-1.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(1.0, transformable.getOldX());
+        assertEquals(-1.0, transformable.getOldY());
+        assertEquals(1.0, transformable.getX());
+        assertEquals(-1.0, transformable.getY());
 
         transformable.teleportX(2.0);
 
-        Assert.assertEquals(2.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(-1.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-1.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(2.0, transformable.getOldX());
+        assertEquals(-1.0, transformable.getOldY());
+        assertEquals(2.0, transformable.getX());
+        assertEquals(-1.0, transformable.getY());
 
         transformable.teleportY(3.0);
 
-        Assert.assertEquals(2.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(2.0, transformable.getOldX());
+        assertEquals(3.0, transformable.getOldY());
+        assertEquals(2.0, transformable.getX());
+        assertEquals(3.0, transformable.getY());
     }
 
     /**
@@ -131,31 +133,31 @@ public class TransformableModelTest
     @Test
     public void testSetLocation()
     {
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
 
         transformable.setLocation(1.0, 1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(1.0, transformable.getX());
+        assertEquals(1.0, transformable.getY());
 
         transformable.setLocationX(2.0);
 
-        Assert.assertEquals(1.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(1.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(2.0, transformable.getX());
+        assertEquals(1.0, transformable.getY());
 
         transformable.setLocationY(3.0);
 
-        Assert.assertEquals(1.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(1.0, transformable.getOldX());
+        assertEquals(1.0, transformable.getOldY());
+        assertEquals(2.0, transformable.getX());
+        assertEquals(3.0, transformable.getY());
     }
 
     /**
@@ -164,17 +166,17 @@ public class TransformableModelTest
     @Test
     public void testSetSize()
     {
-        Assert.assertEquals(16, transformable.getOldWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(32, transformable.getOldHeight(), UtilTests.PRECISION);
-        Assert.assertEquals(16, transformable.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(32, transformable.getHeight(), UtilTests.PRECISION);
+        assertEquals(16, transformable.getOldWidth());
+        assertEquals(32, transformable.getOldHeight());
+        assertEquals(16, transformable.getWidth());
+        assertEquals(32, transformable.getHeight());
 
         transformable.setSize(64, 48);
 
-        Assert.assertEquals(16, transformable.getOldWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(32, transformable.getOldHeight(), UtilTests.PRECISION);
-        Assert.assertEquals(64, transformable.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(48, transformable.getHeight(), UtilTests.PRECISION);
+        assertEquals(16, transformable.getOldWidth());
+        assertEquals(32, transformable.getOldHeight());
+        assertEquals(64, transformable.getWidth());
+        assertEquals(48, transformable.getHeight());
     }
 
     /**
@@ -183,24 +185,24 @@ public class TransformableModelTest
     @Test
     public void testMoveLocation()
     {
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
 
         transformable.moveLocation(1.0, 1.0, 2.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(1.0, transformable.getX());
+        assertEquals(2.0, transformable.getY());
 
         transformable.moveLocation(1.0, new Force(-2.0, -3.0), new Force(-1.0, -2.0));
 
-        Assert.assertEquals(1.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(-2.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-3.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(1.0, transformable.getOldX());
+        assertEquals(2.0, transformable.getOldY());
+        assertEquals(-2.0, transformable.getX());
+        assertEquals(-3.0, transformable.getY());
     }
 
     /**
@@ -211,17 +213,17 @@ public class TransformableModelTest
     {
         transformable.moveLocationX(1.0, 1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(1.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
 
         transformable.moveLocationY(1.0, 1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(1.0, transformable.getX());
+        assertEquals(1.0, transformable.getY());
     }
 
     /**
@@ -232,14 +234,14 @@ public class TransformableModelTest
     {
         transformable.transform(1.0, 2.0, 3, 4);
 
-        Assert.assertEquals(1.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(1.0, transformable.getOldX());
+        assertEquals(2.0, transformable.getOldY());
+        assertEquals(1.0, transformable.getX());
+        assertEquals(2.0, transformable.getY());
 
-        Assert.assertEquals(16, transformable.getOldWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(32, transformable.getOldHeight(), UtilTests.PRECISION);
-        Assert.assertEquals(3, transformable.getWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(4, transformable.getHeight(), UtilTests.PRECISION);
+        assertEquals(16, transformable.getOldWidth());
+        assertEquals(32, transformable.getOldHeight());
+        assertEquals(3, transformable.getWidth());
+        assertEquals(4, transformable.getHeight());
     }
 }

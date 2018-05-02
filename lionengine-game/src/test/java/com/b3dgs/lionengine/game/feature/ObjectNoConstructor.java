@@ -22,7 +22,7 @@ import org.junit.Assert;
 /**
  * Object without constructor.
  */
-public class ObjectNoConstructor extends FeaturableModel
+public final class ObjectNoConstructor extends FeaturableModel
 {
     /**
      * Constructor.
@@ -32,6 +32,7 @@ public class ObjectNoConstructor extends FeaturableModel
     private ObjectNoConstructor(String object)
     {
         super();
+
         Assert.assertNotNull(object);
     }
 }

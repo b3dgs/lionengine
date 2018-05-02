@@ -17,29 +17,33 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the handler class.
+ * Test {@link Handler}.
  */
-public class HandlerTest
+public final class HandlerTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -47,8 +51,8 @@ public class HandlerTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
     }
@@ -63,21 +67,15 @@ public class HandlerTest
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
-        try
-        {
-            Assert.assertNotNull(handler.get(featurable.getFeature(Identifiable.class).getId()));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+
+        assertThrows(() -> handler.get(featurable.getFeature(Identifiable.class).getId()),
+                     HandlablesImpl.ERROR_FEATURABLE_NOT_FOUND + 5);
+
         handler.update(1.0);
-        Assert.assertEquals(1, handler.size());
-        Assert.assertNotNull(handler.get(featurable.getFeature(Identifiable.class).getId()));
-        Assert.assertTrue(handler.get(Featurable.class).iterator().hasNext());
-        Assert.assertTrue(handler.values().iterator().hasNext());
+        assertEquals(1, handler.size());
+        assertNotNull(handler.get(featurable.getFeature(Identifiable.class).getId()));
+        assertTrue(handler.get(Featurable.class).iterator().hasNext());
+        assertTrue(handler.values().iterator().hasNext());
 
         handler.removeAll();
         handler.update(1.0);
@@ -86,11 +84,12 @@ public class HandlerTest
     /**
      * Get not found featurable from id.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testObjectIdNotFound()
     {
         final Handler handler = new Handler(new Services());
-        Assert.assertNull(handler.get(Integer.valueOf(0)));
+
+        assertThrows(() -> handler.get(Integer.valueOf(0)), HandlablesImpl.ERROR_FEATURABLE_NOT_FOUND + 0);
     }
 
     /**
@@ -100,7 +99,8 @@ public class HandlerTest
     public void testObjectTypeNotFound()
     {
         final Handler handler = new Handler(new Services());
-        Assert.assertFalse(handler.get(Featurable.class).iterator().hasNext());
+
+        assertFalse(handler.get(Featurable.class).iterator().hasNext());
     }
 
     /**
@@ -110,32 +110,32 @@ public class HandlerTest
     public void testRemoveObject()
     {
         final Handler handler = new Handler(new Services());
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
 
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
 
         handler.update(1.0);
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         handler.remove(featurable);
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
 
         handler.add(featurable);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
         handler.update(1.0);
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         handler.removeAll();
 
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
         handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -149,15 +149,15 @@ public class HandlerTest
         featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
         handler.update(1.0);
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         featurable.getFeature(Identifiable.class).destroy();
 
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
         handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -188,19 +188,19 @@ public class HandlerTest
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
 
-        Assert.assertNull(added.get());
+        assertNull(added.get());
         handler.add(featurable);
-        Assert.assertNull(added.get());
+        assertNull(added.get());
 
         handler.update(1.0);
-        Assert.assertEquals(featurable, added.get());
+        assertEquals(featurable, added.get());
 
-        Assert.assertNull(removed.get());
+        assertNull(removed.get());
         handler.remove(featurable);
-        Assert.assertNull(removed.get());
+        assertNull(removed.get());
 
         handler.update(1.0);
-        Assert.assertEquals(featurable, removed.get());
+        assertEquals(featurable, removed.get());
 
         added.set(null);
         removed.set(null);
@@ -211,12 +211,12 @@ public class HandlerTest
         handler.remove(featurable);
         handler.update(1.0);
 
-        Assert.assertNull(added.get());
-        Assert.assertNull(removed.get());
+        assertNull(added.get());
+        assertNull(removed.get());
 
         handler.removeAll();
         handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -237,20 +237,20 @@ public class HandlerTest
             }
         });
 
-        Assert.assertNull(extrapolation.get());
-        Assert.assertNull(updated.get());
+        assertNull(extrapolation.get());
+        assertNull(updated.get());
 
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
         handler.update(1.0);
 
-        Assert.assertEquals(1.0, extrapolation.get().doubleValue(), UtilTests.PRECISION);
-        Assert.assertEquals(featurable, updated.get());
+        assertEquals(1.0, extrapolation.get().doubleValue());
+        assertEquals(featurable, updated.get());
 
         handler.removeAll();
         handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -264,7 +264,7 @@ public class HandlerTest
         handler.addComponent((ComponentRenderer) (g,
                                                   featurables) -> rendered.set(featurables.values().iterator().next()));
 
-        Assert.assertNull(rendered.get());
+        assertNull(rendered.get());
 
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new IdentifiableModel());
@@ -272,11 +272,11 @@ public class HandlerTest
         handler.update(1.0);
         handler.render(Graphics.createGraphic());
 
-        Assert.assertEquals(featurable, rendered.get());
+        assertEquals(featurable, rendered.get());
 
         handler.removeAll();
         handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -307,7 +307,7 @@ public class HandlerTest
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -325,32 +325,32 @@ public class HandlerTest
         final Featurable featurable = new FeaturableModel();
         handler.add(featurable);
 
-        Assert.assertFalse(add.get());
-        Assert.assertFalse(remove.get());
+        assertFalse(add.get());
+        assertFalse(remove.get());
 
         handler.update(1.0);
 
-        Assert.assertTrue(add.get());
-        Assert.assertFalse(remove.get());
+        assertTrue(add.get());
+        assertFalse(remove.get());
 
         add.set(false);
         handler.remove(featurable);
 
-        Assert.assertFalse(add.get());
-        Assert.assertFalse(remove.get());
+        assertFalse(add.get());
+        assertFalse(remove.get());
 
         handler.update(1.0);
 
-        Assert.assertFalse(add.get());
-        Assert.assertTrue(remove.get());
+        assertFalse(add.get());
+        assertTrue(remove.get());
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
      * Listener mock.
      */
-    private static class Listener extends ComponentUpdatable implements HandlerListener
+    private static final class Listener extends ComponentUpdatable implements HandlerListener
     {
         private final AtomicBoolean add;
         private final AtomicBoolean remove;

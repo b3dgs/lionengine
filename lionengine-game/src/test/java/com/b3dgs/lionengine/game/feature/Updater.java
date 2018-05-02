@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Updatable;
 /**
  * Updatable object mock.
  */
-class Updater extends FeaturableModel implements Updatable
+final class Updater extends FeaturableModel implements Updatable
 {
     /** Updated flag. */
     private boolean updated;
@@ -33,6 +33,7 @@ class Updater extends FeaturableModel implements Updatable
     public Updater()
     {
         super();
+
         addFeature(new IdentifiableModel());
     }
 

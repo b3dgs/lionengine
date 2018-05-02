@@ -17,12 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -36,7 +41,7 @@ public final class FeaturableConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -45,7 +50,7 @@ public final class FeaturableConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(null);
@@ -68,10 +73,10 @@ public final class FeaturableConfigTest
         final Media media = Medias.create("object.xml");
         root.save(media);
 
-        Assert.assertEquals(config, FeaturableConfig.imports(new Xml(media)));
-        Assert.assertEquals(config, FeaturableConfig.imports(new Configurer(media)));
+        assertEquals(config, FeaturableConfig.imports(new Xml(media)));
+        assertEquals(config, FeaturableConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -84,10 +89,10 @@ public final class FeaturableConfigTest
         final Media media = Medias.create("object.xml");
         root.save(media);
 
-        Assert.assertEquals(new FeaturableConfig(FeaturableModel.class.getName(), ""),
-                            FeaturableConfig.imports(new Xml(media)));
+        assertEquals(new FeaturableConfig(FeaturableModel.class.getName(), ""),
+                     FeaturableConfig.imports(new Xml(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -102,27 +107,27 @@ public final class FeaturableConfigTest
         final Media media = Medias.create("object.xml");
         root.save(media);
 
-        Assert.assertEquals(new FeaturableConfig("clazz", ""), FeaturableConfig.imports(new Xml(media)));
+        assertEquals(new FeaturableConfig("clazz", ""), FeaturableConfig.imports(new Xml(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Test with <code>null</code> class.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullClass()
     {
-        Assert.assertNotNull(new FeaturableConfig(null, "setup"));
+        assertThrows(() -> new FeaturableConfig(null, "setup"), "Unexpected null argument !");
     }
 
     /**
      * Test with <code>null</code> setup.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullSetup()
     {
-        Assert.assertNotNull(new FeaturableConfig("class", null));
+        assertThrows(() -> new FeaturableConfig("class", null), "Unexpected null argument !");
     }
 
     /**
@@ -133,13 +138,13 @@ public final class FeaturableConfigTest
     {
         final FeaturableConfig config = new FeaturableConfig("class", "setup");
 
-        Assert.assertEquals(config, config);
-        Assert.assertEquals(config, new FeaturableConfig("class", "setup"));
+        assertEquals(config, config);
+        assertEquals(config, new FeaturableConfig("class", "setup"));
 
-        Assert.assertNotEquals(config, null);
-        Assert.assertNotEquals(config, new Object());
-        Assert.assertNotEquals(config, new FeaturableConfig("", "setup"));
-        Assert.assertNotEquals(config, new FeaturableConfig("class", ""));
+        assertNotEquals(config, null);
+        assertNotEquals(config, new Object());
+        assertNotEquals(config, new FeaturableConfig("", "setup"));
+        assertNotEquals(config, new FeaturableConfig("class", ""));
     }
 
     /**
@@ -148,12 +153,12 @@ public final class FeaturableConfigTest
     @Test
     public void testHashCode()
     {
-        final int hash = new FeaturableConfig("class", "setup").hashCode();
+        final FeaturableConfig hash = new FeaturableConfig("class", "setup");
 
-        Assert.assertEquals(hash, new FeaturableConfig("class", "setup").hashCode());
+        assertHashEquals(hash, new FeaturableConfig("class", "setup"));
 
-        Assert.assertNotEquals(hash, new FeaturableConfig("", "setup").hashCode());
-        Assert.assertNotEquals(hash, new FeaturableConfig("class", "").hashCode());
+        assertHashNotEquals(hash, new FeaturableConfig("", "setup"));
+        assertHashNotEquals(hash, new FeaturableConfig("class", ""));
     }
 
     /**
@@ -164,6 +169,6 @@ public final class FeaturableConfigTest
     {
         final FeaturableConfig config = new FeaturableConfig("clazz", "setup");
 
-        Assert.assertEquals("FeaturableConfig [clazz=clazz, setup=setup]", config.toString());
+        assertEquals("FeaturableConfig [clazz=clazz, setup=setup]", config.toString());
     }
 }

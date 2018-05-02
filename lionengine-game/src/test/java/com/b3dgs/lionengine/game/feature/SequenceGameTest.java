@@ -17,26 +17,22 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.EngineMock;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.engine.Loader;
 
 /**
- * Test the loader class.
+ * Test {@link SequenceGame}.
  */
-public class SequenceGameTest
+public final class SequenceGameTest
 {
     /** Output. */
     private static final Resolution OUTPUT = new Resolution(640, 480, 60);
@@ -47,47 +43,27 @@ public class SequenceGameTest
      * 
      * Prepare the test.
      */
-    @BeforeClass
-    public static void prepareTest()
+    @BeforeAll
+    public static void beforeTests()
     {
-        Medias.setLoadFromJar(SequenceGameTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
-    }
-
-    /**
-     * Prepare test.
-     */
-    @Before
-    public void before()
-    {
-        Engine.start(new EngineMock("SequenceGameTest", Version.DEFAULT));
-    }
-
-    /**
-     * Terminate test.
-     */
-    @After
-    public void after()
-    {
-        Engine.terminate();
     }
 
     /**
      * Test the loader with game sequence.
      */
-    @Test(timeout = 1000L)
+    @Test
     public void testSequenceGame()
     {
-        Loader.start(CONFIG, SequenceGameMock.class).await();
+        assertTimeout(1000L, () -> Loader.start(CONFIG, SequenceGameMock.class).await());
     }
 }

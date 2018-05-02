@@ -17,18 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
@@ -37,14 +40,14 @@ import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
- * Test the featurable model class.
+ * Test {@link FeaturableModel}.
  */
-public class FeaturableModelTest
+public final class FeaturableModelTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -53,7 +56,7 @@ public class FeaturableModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(null);
@@ -70,22 +73,22 @@ public class FeaturableModelTest
         final MyFeatureInterface feature = new MyFeature();
         featurable.addFeature(feature);
 
-        Assert.assertTrue(featurable.hasFeature(MyFeatureInterface.class));
-        Assert.assertTrue(featurable.hasFeature(MyFeature.class));
+        assertTrue(featurable.hasFeature(MyFeatureInterface.class));
+        assertTrue(featurable.hasFeature(MyFeature.class));
 
-        Assert.assertEquals(feature, featurable.getFeature(MyFeature.class));
+        assertEquals(feature, featurable.getFeature(MyFeature.class));
         for (final Feature current : featurable.getFeatures())
         {
-            Assert.assertTrue(current.getClass().getName(),
-                              feature.getClass().equals(current.getClass())
-                                                            || Identifiable.class.isAssignableFrom(current.getClass()));
+            assertTrue(feature.getClass().equals(current.getClass())
+                       || Identifiable.class.isAssignableFrom(current.getClass()),
+                       current.getClass().getName());
         }
         for (final Class<? extends Feature> type : featurable.getFeaturesType())
         {
-            Assert.assertTrue(type.getName(),
-                              MyFeatureInterface.class.isAssignableFrom(type)
-                                              || Identifiable.class.isAssignableFrom(type)
-                                              || Recyclable.class.isAssignableFrom(type));
+            assertTrue(MyFeatureInterface.class.isAssignableFrom(type)
+                       || Identifiable.class.isAssignableFrom(type)
+                       || Recyclable.class.isAssignableFrom(type),
+                       type.getName());
         }
     }
 
@@ -99,21 +102,21 @@ public class FeaturableModelTest
         final MyFeatureNotCompatible feature = new MyFeatureNotCompatible();
         featurable.addFeature(feature);
 
-        Assert.assertTrue(featurable.hasFeature(MyFeatureNotCompatible.class));
+        assertTrue(featurable.hasFeature(MyFeatureNotCompatible.class));
 
-        Assert.assertEquals(feature, featurable.getFeature(MyFeatureNotCompatible.class));
+        assertEquals(feature, featurable.getFeature(MyFeatureNotCompatible.class));
         for (final Feature current : featurable.getFeatures())
         {
-            Assert.assertTrue(current.getClass().getName(),
-                              feature.getClass().equals(current.getClass())
-                                                            || Identifiable.class.isAssignableFrom(current.getClass()));
+            assertTrue(feature.getClass().equals(current.getClass())
+                       || Identifiable.class.isAssignableFrom(current.getClass()),
+                       current.getClass().getName());
         }
         for (final Class<? extends Feature> type : featurable.getFeaturesType())
         {
-            Assert.assertTrue(type.getName(),
-                              MyFeatureNotCompatible.class.isAssignableFrom(type)
-                                              || Identifiable.class.isAssignableFrom(type)
-                                              || Recyclable.class.isAssignableFrom(type));
+            assertTrue(MyFeatureNotCompatible.class.isAssignableFrom(type)
+                       || Identifiable.class.isAssignableFrom(type)
+                       || Recyclable.class.isAssignableFrom(type),
+                       type.getName());
         }
     }
 
@@ -142,7 +145,7 @@ public class FeaturableModelTest
         };
         featurable.addFeature(feature);
 
-        Assert.assertEquals(featureModel, filledFeature.get());
+        assertEquals(featureModel, filledFeature.get());
     }
 
     /**
@@ -170,19 +173,19 @@ public class FeaturableModelTest
         };
         featurable.addFeature(feature);
 
-        Assert.assertEquals(featureModel, filledFeature.get());
+        assertEquals(featureModel, filledFeature.get());
 
         filledFeature.set(null);
 
         featurable.addFeature(feature);
 
-        Assert.assertEquals(featureModel, filledFeature.get());
+        assertEquals(featureModel, filledFeature.get());
     }
 
     /**
      * Test the service with annotation and service not found.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testServiceAnnotationNotFound()
     {
         final Featurable featurable = new FeaturableModel();
@@ -198,7 +201,7 @@ public class FeaturableModelTest
                 unfilledType.set(type);
             }
         };
-        featurable.addFeature(feature);
+        assertThrows(() -> featurable.addFeature(feature), "Class not found: " + String.class);
     }
 
     /**
@@ -210,32 +213,30 @@ public class FeaturableModelTest
         final FeatureItself object = new FeatureItself();
         object.prepare(object);
 
-        Assert.assertFalse(object.hasFeature(FeatureItself.class));
+        assertFalse(object.hasFeature(FeatureItself.class));
     }
 
     /**
      * Test the set field not accessible
      * 
-     * @throws Throwable If error.
+     * @throws ReflectiveOperationException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testSetFieldNotAccessible() throws Throwable
+    @Test
+    public void testSetFieldNotAccessible() throws ReflectiveOperationException
     {
         final FeatureItself featurable = new FeatureItself();
-        try
-        {
-            final Method method = FeaturableModel.class.getDeclaredMethod("setField",
-                                                                          Field.class,
-                                                                          Object.class,
-                                                                          Class.class);
-            UtilReflection.setAccessible(method, true);
-            method.invoke(featurable, featurable.getClass().getDeclaredField("object"), featurable, Object.class);
-        }
-        catch (final InvocationTargetException exception)
-        {
-            Assert.assertTrue(exception.getCause().getCause() instanceof IllegalAccessException);
-            throw exception.getCause();
-        }
+        final Method method = FeaturableModel.class.getDeclaredMethod("setField",
+                                                                      Field.class,
+                                                                      Object.class,
+                                                                      Class.class);
+        UtilReflection.setAccessible(method, true);
+        assertThrows(InvocationTargetException.class,
+                     () -> method.invoke(featurable,
+                                         featurable.getClass().getDeclaredField("object"),
+                                         featurable,
+                                         Object.class),
+                     null);
+
     }
 
     /**
@@ -256,9 +257,8 @@ public class FeaturableModelTest
 
         for (final Feature next : featurable.getFeatures())
         {
-            Assert.assertTrue(next.getClass().getName(),
-                              MyFeature.class.equals(next.getClass())
-                                                         || Identifiable.class.isAssignableFrom(next.getClass()));
+            assertTrue(MyFeature.class.equals(next.getClass()) || Identifiable.class.isAssignableFrom(next.getClass()),
+                       next.getClass().getName());
         }
     }
 

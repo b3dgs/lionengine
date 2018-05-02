@@ -17,15 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Mirror;
 
 /**
- * Test the mirrorable.
+ * Test {@link MirrorableModel}.
  */
-public class MirrorableModelTest
+public final class MirrorableModelTest
 {
     /**
      * Test the mirror.
@@ -35,26 +36,26 @@ public class MirrorableModelTest
     {
         final Mirrorable mirrorable = new MirrorableModel();
 
-        Assert.assertEquals(Mirror.NONE, mirrorable.getMirror());
+        assertEquals(Mirror.NONE, mirrorable.getMirror());
 
         mirrorable.update(1.0);
 
-        Assert.assertEquals(Mirror.NONE, mirrorable.getMirror());
+        assertEquals(Mirror.NONE, mirrorable.getMirror());
 
         mirrorable.mirror(Mirror.HORIZONTAL);
 
-        Assert.assertEquals(Mirror.NONE, mirrorable.getMirror());
+        assertEquals(Mirror.NONE, mirrorable.getMirror());
 
         mirrorable.update(1.0);
 
-        Assert.assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
+        assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
 
         mirrorable.mirror(Mirror.VERTICAL);
 
-        Assert.assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
+        assertEquals(Mirror.HORIZONTAL, mirrorable.getMirror());
 
         mirrorable.update(1.0);
 
-        Assert.assertEquals(Mirror.VERTICAL, mirrorable.getMirror());
+        assertEquals(Mirror.VERTICAL, mirrorable.getMirror());
     }
 }

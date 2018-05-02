@@ -17,10 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -35,8 +40,8 @@ public final class LayerableConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -44,8 +49,8 @@ public final class LayerableConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -63,10 +68,10 @@ public final class LayerableConfigTest
         final Media media = Medias.create("object.xml");
         root.save(media);
 
-        Assert.assertEquals(config, LayerableConfig.imports(new Xml(media)));
-        Assert.assertEquals(config, LayerableConfig.imports(new Configurer(media)));
+        assertEquals(config, LayerableConfig.imports(new Xml(media)));
+        assertEquals(config, LayerableConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -77,14 +82,14 @@ public final class LayerableConfigTest
     {
         final LayerableConfig config = new LayerableConfig(0, 1);
 
-        Assert.assertEquals(config, config);
-        Assert.assertEquals(config, new LayerableConfig(0, 1));
+        assertEquals(config, config);
+        assertEquals(config, new LayerableConfig(0, 1));
 
-        Assert.assertNotEquals(config, null);
-        Assert.assertNotEquals(config, new Object());
-        Assert.assertNotEquals(config, new LayerableConfig(1, 1));
-        Assert.assertNotEquals(config, new LayerableConfig(0, 0));
-        Assert.assertNotEquals(config, new LayerableConfig(1, 0));
+        assertNotEquals(config, null);
+        assertNotEquals(config, new Object());
+        assertNotEquals(config, new LayerableConfig(1, 1));
+        assertNotEquals(config, new LayerableConfig(0, 0));
+        assertNotEquals(config, new LayerableConfig(1, 0));
     }
 
     /**
@@ -93,13 +98,13 @@ public final class LayerableConfigTest
     @Test
     public void testHashCode()
     {
-        final int hash = new LayerableConfig(0, 1).hashCode();
+        final LayerableConfig hash = new LayerableConfig(0, 1);
 
-        Assert.assertEquals(hash, new LayerableConfig(0, 1).hashCode());
+        assertHashEquals(hash, new LayerableConfig(0, 1));
 
-        Assert.assertNotEquals(hash, new LayerableConfig(1, 1).hashCode());
-        Assert.assertNotEquals(hash, new LayerableConfig(0, 0).hashCode());
-        Assert.assertNotEquals(hash, new LayerableConfig(1, 0).hashCode());
+        assertHashNotEquals(hash, new LayerableConfig(1, 1));
+        assertHashNotEquals(hash, new LayerableConfig(0, 0));
+        assertHashNotEquals(hash, new LayerableConfig(1, 0));
     }
 
     /**
@@ -110,6 +115,6 @@ public final class LayerableConfigTest
     {
         final LayerableConfig config = new LayerableConfig(0, 1);
 
-        Assert.assertEquals("LayerableConfig [layerRefresh=0, layerDisplay=1]", config.toString());
+        assertEquals("LayerableConfig [layerRefresh=0, layerDisplay=1]", config.toString());
     }
 }

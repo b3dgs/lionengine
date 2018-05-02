@@ -17,18 +17,20 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
- * Test the camera class.
+ * Test {@link Camera}.
  */
-public class CameraTest
+public final class CameraTest
 {
     private final Camera camera = new Camera();
     private final Surface surface = new Surface()
@@ -52,15 +54,15 @@ public class CameraTest
     @Test
     public void testCameraDefault()
     {
-        Assert.assertEquals(0, camera.getViewX());
-        Assert.assertEquals(0, camera.getViewY());
-        Assert.assertEquals(Integer.MAX_VALUE, camera.getWidth());
-        Assert.assertEquals(Integer.MAX_VALUE, camera.getHeight());
-        Assert.assertEquals(0, camera.getScreenHeight());
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getMovementVertical(), UtilTests.PRECISION);
+        assertEquals(0, camera.getViewX());
+        assertEquals(0, camera.getViewY());
+        assertEquals(Integer.MAX_VALUE, camera.getWidth());
+        assertEquals(Integer.MAX_VALUE, camera.getHeight());
+        assertEquals(0, camera.getScreenHeight());
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+        assertEquals(0.0, camera.getMovementHorizontal());
+        assertEquals(0.0, camera.getMovementVertical());
     }
 
     /**
@@ -72,10 +74,10 @@ public class CameraTest
         camera.setLimits(surface);
         camera.teleport(1.0, 2.0);
 
-        Assert.assertEquals(0.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getMovementVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getMovementHorizontal());
+        assertEquals(0.0, camera.getMovementVertical());
+        assertEquals(1.0, camera.getX());
+        assertEquals(2.0, camera.getY());
     }
 
     /**
@@ -86,10 +88,10 @@ public class CameraTest
     {
         camera.moveLocation(1.0, 2.0, 3.0);
 
-        Assert.assertEquals(2.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, camera.getMovementVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(2.0, camera.getMovementHorizontal());
+        assertEquals(3.0, camera.getMovementVertical());
+        assertEquals(2.0, camera.getX());
+        assertEquals(3.0, camera.getY());
     }
 
     /**
@@ -100,13 +102,13 @@ public class CameraTest
     {
         camera.setView(0, 0, 16, 32, 32);
 
-        Assert.assertEquals(0.0, camera.getViewpointX(0.0), UtilTests.PRECISION);
-        Assert.assertEquals(32.0, camera.getViewpointY(0.0), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getViewpointX(0.0));
+        assertEquals(32.0, camera.getViewpointY(0.0));
 
         camera.setLocation(1.0, 2.0);
 
-        Assert.assertEquals(-1.0, camera.getViewpointX(0.0), UtilTests.PRECISION);
-        Assert.assertEquals(34.0, camera.getViewpointY(0.0), UtilTests.PRECISION);
+        assertEquals(-1.0, camera.getViewpointX(0.0));
+        assertEquals(34.0, camera.getViewpointY(0.0));
     }
 
     /**
@@ -117,10 +119,10 @@ public class CameraTest
     {
         camera.setView(1, 2, 3, 4, 4);
 
-        Assert.assertEquals(1, camera.getViewX());
-        Assert.assertEquals(2, camera.getViewY());
-        Assert.assertEquals(3, camera.getWidth());
-        Assert.assertEquals(4, camera.getHeight());
+        assertEquals(1, camera.getViewX());
+        assertEquals(2, camera.getViewY());
+        assertEquals(3, camera.getWidth());
+        assertEquals(4, camera.getHeight());
     }
 
     /**
@@ -136,59 +138,59 @@ public class CameraTest
         cursor.setLocation(0, 0);
         cursor.update(1.0);
 
-        Assert.assertTrue(camera.isViewable((Localizable) cursor, 0, 0));
-        Assert.assertFalse(camera.isViewable((Localizable) cursor, 0, -1));
-        Assert.assertFalse(camera.isViewable((Localizable) cursor, -1, 0));
-        Assert.assertFalse(camera.isViewable((Localizable) cursor, -1, -1));
+        assertTrue(camera.isViewable((Localizable) cursor, 0, 0));
+        assertFalse(camera.isViewable((Localizable) cursor, 0, -1));
+        assertFalse(camera.isViewable((Localizable) cursor, -1, 0));
+        assertFalse(camera.isViewable((Localizable) cursor, -1, -1));
 
         cursor.setLocation(3, 3);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable((Localizable) cursor, 0, 0));
-        Assert.assertFalse(camera.isViewable((Localizable) cursor, 0, 1));
-        Assert.assertFalse(camera.isViewable((Localizable) cursor, 1, 0));
-        Assert.assertTrue(camera.isViewable((Localizable) cursor, 1, 1));
+        assertFalse(camera.isViewable((Localizable) cursor, 0, 0));
+        assertFalse(camera.isViewable((Localizable) cursor, 0, 1));
+        assertFalse(camera.isViewable((Localizable) cursor, 1, 0));
+        assertTrue(camera.isViewable((Localizable) cursor, 1, 1));
 
-        Assert.assertTrue(camera.isViewable(cursor, 0, 0));
-        Assert.assertTrue(camera.isViewable(cursor, 1, 3));
+        assertTrue(camera.isViewable(cursor, 0, 0));
+        assertTrue(camera.isViewable(cursor, 1, 3));
 
         cursor.setLocation(-2, -2);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
-        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
-        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
-        Assert.assertTrue(camera.isViewable(cursor, 1, 1));
+        assertFalse(camera.isViewable(cursor, 0, 0));
+        assertFalse(camera.isViewable(cursor, 0, -1));
+        assertFalse(camera.isViewable(cursor, -1, 0));
+        assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(0, -2);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
-        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
-        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
-        Assert.assertTrue(camera.isViewable(cursor, 1, 1));
+        assertFalse(camera.isViewable(cursor, 0, 0));
+        assertFalse(camera.isViewable(cursor, -1, 0));
+        assertFalse(camera.isViewable(cursor, 0, -1));
+        assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(-2, 0);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
-        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
-        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
-        Assert.assertTrue(camera.isViewable(cursor, 1, 1));
+        assertFalse(camera.isViewable(cursor, 0, 0));
+        assertFalse(camera.isViewable(cursor, 0, -1));
+        assertFalse(camera.isViewable(cursor, -1, 0));
+        assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(-2, 2);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
-        Assert.assertFalse(camera.isViewable(cursor, -1, 0));
-        Assert.assertFalse(camera.isViewable(cursor, 0, -1));
-        Assert.assertTrue(camera.isViewable(cursor, 1, 1));
+        assertFalse(camera.isViewable(cursor, 0, 0));
+        assertFalse(camera.isViewable(cursor, -1, 0));
+        assertFalse(camera.isViewable(cursor, 0, -1));
+        assertTrue(camera.isViewable(cursor, 1, 1));
 
         cursor.setLocation(2, -2);
         cursor.update(1.0);
 
-        Assert.assertFalse(camera.isViewable(cursor, 0, 0));
-        Assert.assertTrue(camera.isViewable(cursor, 1, 1));
+        assertFalse(camera.isViewable(cursor, 0, 0));
+        assertTrue(camera.isViewable(cursor, 1, 1));
     }
 
     /**
@@ -204,19 +206,19 @@ public class CameraTest
         camera.setLimits(surface);
         camera.resetInterval(transformable);
 
-        Assert.assertEquals(1.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(1.0, camera.getX());
+        assertEquals(2.0, camera.getY());
 
         camera.setIntervals(1, 1);
         camera.moveLocation(1.0, 3.0, 3.0);
 
-        Assert.assertEquals(4.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(4.0, camera.getX());
+        assertEquals(5.0, camera.getY());
 
         camera.moveLocation(1.0, -2.0, -2.0);
 
-        Assert.assertEquals(2.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(2.0, camera.getX());
+        assertEquals(3.0, camera.getY());
     }
 
     /**
@@ -231,46 +233,46 @@ public class CameraTest
         // Limit right
         camera.moveLocation(1.0, 5.0, 0.0);
 
-        Assert.assertEquals(5.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(5.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         camera.moveLocation(1.0, 20.0, 0.0);
 
-        Assert.assertEquals(10.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(10.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         // Limit left
         camera.moveLocation(1.0, -5.0, 0.0);
 
-        Assert.assertEquals(5.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(5.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         camera.moveLocation(1.0, -20.0, 0.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         // Limit top
         camera.moveLocation(1.0, 0.0, 5.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(5.0, camera.getY());
 
         camera.moveLocation(1.0, 0.0, 20.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(10.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(10.0, camera.getY());
 
         // Limit bottom
         camera.moveLocation(1.0, 0.0, -5.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(5.0, camera.getY());
 
         camera.moveLocation(1.0, 0.0, -20.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
     }
 
     /**
@@ -282,25 +284,25 @@ public class CameraTest
         // Limit right
         camera.moveLocation(1.0, 20.0, 0.0);
 
-        Assert.assertEquals(20.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(20.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         // Limit left
         camera.moveLocation(1.0, -20.0, 0.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         // Limit top
         camera.moveLocation(1.0, 0.0, 20.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(20.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(20.0, camera.getY());
 
         // Limit bottom
         camera.moveLocation(1.0, 0.0, -20.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
     }
 }

@@ -17,18 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.Serializable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Test the features class.
+ * Test {@link Features}.
  */
-public class FeaturesTest
+public final class FeaturesTest
 {
     /**
      * Test the features.
@@ -38,7 +41,7 @@ public class FeaturesTest
     {
         final Features features = new Features();
 
-        Assert.assertFalse(features.contains(Feature.class));
+        assertFalse(features.contains(Feature.class));
 
         final Feature feature = new FeatureModel()
         {
@@ -46,27 +49,28 @@ public class FeaturesTest
         };
         features.add(feature);
 
-        Assert.assertTrue(features.contains(Feature.class));
-        Assert.assertEquals(feature, features.get(Feature.class));
+        assertTrue(features.contains(Feature.class));
+        assertEquals(feature, features.get(Feature.class));
 
         for (final Feature current : features.getFeatures())
         {
-            Assert.assertEquals(feature, current);
+            assertEquals(feature, current);
         }
         for (final Class<? extends Feature> type : features.getFeaturesType())
         {
-            Assert.assertTrue(Feature.class.isAssignableFrom(type));
+            assertTrue(Feature.class.isAssignableFrom(type));
         }
     }
 
     /**
      * Test the feature not found.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFeatureNotFound()
     {
         final Features features = new Features();
-        Assert.assertNotNull(features.get(Feature.class));
+
+        assertThrows(() -> features.get(Feature.class), "Feature not found: " + Feature.class.getName());
     }
 
     /**
@@ -78,9 +82,9 @@ public class FeaturesTest
         final Features features = new Features();
         features.add(new FeatureNotCompatible());
 
-        Assert.assertTrue(features.contains(Feature.class));
-        Assert.assertTrue(features.contains(Refreshable.class));
-        Assert.assertFalse(features.contains(Displayable.class));
+        assertTrue(features.contains(Feature.class));
+        assertTrue(features.contains(Refreshable.class));
+        assertFalse(features.contains(Displayable.class));
     }
 
     /**
@@ -92,9 +96,9 @@ public class FeaturesTest
         final Features features = new Features();
         features.add(new FeatureLevel2());
 
-        Assert.assertTrue(features.contains(FeatureLevel1.class));
-        Assert.assertTrue(features.contains(FeatureLevel2.class));
-        Assert.assertTrue(features.contains(Refreshable.class));
+        assertTrue(features.contains(FeatureLevel1.class));
+        assertTrue(features.contains(FeatureLevel2.class));
+        assertTrue(features.contains(Refreshable.class));
     }
 
     /**
@@ -126,7 +130,7 @@ public class FeaturesTest
     /**
      * Mock feature.
      */
-    private static class FeatureLevel2 extends FeatureLevel1
+    private static final class FeatureLevel2 extends FeatureLevel1
     {
         // Mock
     }

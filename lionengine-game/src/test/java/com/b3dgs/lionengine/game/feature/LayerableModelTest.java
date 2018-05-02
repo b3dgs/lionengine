@@ -17,22 +17,24 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
- * Test the layerable model.
+ * Test {@link LayerableModel}.
  */
-public class LayerableModelTest
+public final class LayerableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -40,8 +42,8 @@ public class LayerableModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilSetup.createConfig();
@@ -50,10 +52,10 @@ public class LayerableModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -81,12 +83,12 @@ public class LayerableModelTest
         final Featurable featurable = new FeaturableModel();
         layerable.prepare(featurable);
 
-        Assert.assertEquals(0, layerable.getLayerRefresh().intValue());
-        Assert.assertEquals(0, layerable.getLayerDisplay().intValue());
+        assertEquals(0, layerable.getLayerRefresh().intValue());
+        assertEquals(0, layerable.getLayerDisplay().intValue());
 
         layerable.setLayer(1);
 
-        Assert.assertEquals(1, layerable.getLayerRefresh().intValue());
-        Assert.assertEquals(1, layerable.getLayerDisplay().intValue());
+        assertEquals(1, layerable.getLayerRefresh().intValue());
+        assertEquals(1, layerable.getLayerDisplay().intValue());
     }
 }

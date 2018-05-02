@@ -17,20 +17,23 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilReflection;
 
 /**
- * Test the identifiable class.
+ * Test {@link IdentifiableModel}.
  */
-public class IdentifiableModelTest
+public final class IdentifiableModelTest
 {
     /**
      * Test the id.
@@ -59,7 +62,7 @@ public class IdentifiableModelTest
             identifiable.prepare(featurable);
             identifiables.add(identifiable);
 
-            Assert.assertEquals(Integer.valueOf(i), identifiable.getId());
+            assertEquals(Integer.valueOf(i), identifiable.getId());
         }
 
         for (final Identifiable identifiable : identifiables)
@@ -67,21 +70,21 @@ public class IdentifiableModelTest
             identifiable.destroy();
             identifiable.notifyDestroyed();
 
-            Assert.assertNull(identifiable.getId());
+            assertNull(identifiable.getId());
         }
 
         final Identifiable identifiable = new IdentifiableModel();
         identifiable.prepare(new FeaturableModel());
-        Assert.assertEquals(Integer.valueOf(0), identifiable.getId());
+        assertEquals(Integer.valueOf(0), identifiable.getId());
 
         identifiable.destroy();
         identifiable.notifyDestroyed();
 
-        Assert.assertNull(identifiable.getId());
+        assertNull(identifiable.getId());
 
         identifiable.destroy();
 
-        Assert.assertNull(identifiable.getId());
+        assertNull(identifiable.getId());
     }
 
     /**
@@ -97,6 +100,6 @@ public class IdentifiableModelTest
         identifiable.removeListener(listener);
         identifiable.destroy();
 
-        Assert.assertFalse(destroyed.get());
+        assertFalse(destroyed.get());
     }
 }

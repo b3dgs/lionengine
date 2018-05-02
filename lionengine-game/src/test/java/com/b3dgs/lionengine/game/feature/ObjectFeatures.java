@@ -21,12 +21,9 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
- * 
- */
-/**
  * Object with features.
  */
-class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, LayerableListener
+final class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, LayerableListener
 {
     /**
      * Create object.
@@ -34,6 +31,7 @@ class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, 
     public ObjectFeatures()
     {
         super();
+
         addFeature(new LayerableModel());
     }
 

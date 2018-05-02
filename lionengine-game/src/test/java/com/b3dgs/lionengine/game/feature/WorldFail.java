@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 /**
  * Test world game fail class.
  */
-public class WorldFail extends WorldGame
+public final class WorldFail extends WorldGame
 {
     /**
      * Constructor.

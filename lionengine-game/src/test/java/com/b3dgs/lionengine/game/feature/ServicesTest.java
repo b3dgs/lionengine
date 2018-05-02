@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -28,9 +30,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
 /**
- * Test the services class.
+ * Test {@link Services}.
  */
-public class ServicesTest
+public final class ServicesTest
 {
     /**
      * Test the service creation.
@@ -44,11 +46,11 @@ public class ServicesTest
         final MapTile map = services.create(MapTileGame.class);
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
 
-        Assert.assertEquals(services, services.get(Services.class));
-        Assert.assertEquals(camera, services.get(Viewer.class));
-        Assert.assertEquals(factory, services.get(Factory.class));
-        Assert.assertEquals(map, services.get(MapTile.class));
-        Assert.assertEquals(mapGroup, map.getFeature(MapTileGroup.class));
+        assertEquals(services, services.get(Services.class));
+        assertEquals(camera, services.get(Viewer.class));
+        assertEquals(factory, services.get(Factory.class));
+        assertEquals(map, services.get(MapTile.class));
+        assertEquals(mapGroup, map.getFeature(MapTileGroup.class));
     }
 
     /**
@@ -59,7 +61,8 @@ public class ServicesTest
     {
         final Services services = new Services();
         final Camera camera = services.add(new Camera());
-        Assert.assertEquals(camera, services.get(Camera.class));
+
+        assertEquals(camera, services.get(Camera.class));
     }
 
     /**
@@ -69,14 +72,8 @@ public class ServicesTest
     public void testServiceNoConstructor()
     {
         final Services services = new Services();
-        try
-        {
-            services.create(NoConstructorService.class);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(IllegalAccessException.class, exception.getCause().getClass());
-        }
+
+        assertCause(() -> services.create(NoConstructorService.class), IllegalAccessException.class);
     }
 
     /**
@@ -86,40 +83,36 @@ public class ServicesTest
     public void testServiceInvalidConstructor()
     {
         final Services services = new Services();
-        try
-        {
-            services.create(InvalidConstructorService.class);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(InstantiationException.class, exception.getCause().getClass());
-        }
+
+        assertCause(() -> services.create(InvalidConstructorService.class), InstantiationException.class);
     }
 
     /**
      * Test the service not found.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNotFound()
     {
         final Services services = new Services();
-        Assert.assertNotNull(services.get(Camera.class));
+
+        assertThrows(() -> services.get(Camera.class), Services.ERROR_SERVICE_GET + Camera.class.getName());
     }
 
     /**
      * Test the service <code>null</code>.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNull()
     {
         final Services services = new Services();
-        Assert.assertNotNull(services.get(null));
+
+        assertThrows(() -> services.get(null), "Unexpected null argument !");
     }
 
     /**
      * Service without constructor.
      */
-    public static class NoConstructorService
+    public static final class NoConstructorService
     {
         /**
          * Private.

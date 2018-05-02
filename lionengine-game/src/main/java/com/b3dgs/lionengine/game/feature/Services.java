@@ -54,12 +54,12 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public class Services
 {
+    /** Service get error. */
+    static final String ERROR_SERVICE_GET = "Service not found: ";
     /** Service create error. */
     private static final String ERROR_SERVICE_CREATE = "Unable to create service: ";
     /** Service create error. */
     private static final String ERROR_SERVICE_NO_CONSTRUCTOR = "No recognized constructor found for: ";
-    /** Service get error. */
-    private static final String ERROR_SERVICE_GET = "Service not found: ";
 
     /** Services list. */
     private final Collection<Object> servicesSet = new HashSet<>();

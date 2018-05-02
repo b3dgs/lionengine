@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.SizeConfig;
 /**
  * Setup configuration utility.
  */
-public class UtilSetup
+public final class UtilSetup
 {
     /**
      * Create a test configuration.

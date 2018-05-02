@@ -22,7 +22,7 @@ import org.junit.Assert;
 /**
  * Object without constructor.
  */
-public class ObjectWithIdentifiable extends FeaturableModel
+public final class ObjectWithIdentifiable extends FeaturableModel
 {
     /**
      * Constructor.

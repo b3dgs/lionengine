@@ -17,15 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
@@ -33,15 +34,15 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the world class.
+ * Test {@link WorldGame}.
  */
-public class WorldTest
+public final class WorldTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(WorldTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -50,8 +51,8 @@ public class WorldTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -100,7 +101,7 @@ public class WorldTest
         }
         finally
         {
-            Assert.assertTrue(media.getFile().delete());
+            assertTrue(media.getFile().delete());
         }
 
         world.update(0);
@@ -143,53 +144,14 @@ public class WorldTest
             }
         });
 
-        try
-        {
-            world.saveToFile(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> world.saveToFile(null), "Unexpected null argument !");
 
         final Media media = Medias.create("test");
-        try
-        {
-            world.saveToFile(media);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-        finally
-        {
-            Assert.assertTrue(media.getFile().delete());
-        }
 
-        try
-        {
-            world.loadFromFile(Medias.create("type.xml"));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> world.saveToFile(media), "[test] Error on saving to file !");
+        assertTrue(media.getFile().delete());
 
-        try
-        {
-            world.loadFromFile(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
+        assertThrows(() -> world.loadFromFile(Medias.create("type.xml")), "[type.xml] Cannot open the media !");
+        assertThrows(() -> world.loadFromFile(null), "Unexpected null argument !");
     }
 }

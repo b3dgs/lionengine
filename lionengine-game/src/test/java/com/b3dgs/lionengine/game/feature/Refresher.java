@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Refreshable object mock.
  */
-class Refresher extends FeaturableModel implements Refreshable
+final class Refresher extends FeaturableModel implements Refreshable
 {
     /** Refreshed flag. */
     private boolean refreshed;
@@ -33,6 +33,7 @@ class Refresher extends FeaturableModel implements Refreshable
     public Refresher()
     {
         super();
+
         addFeature(new IdentifiableModel());
     }
 

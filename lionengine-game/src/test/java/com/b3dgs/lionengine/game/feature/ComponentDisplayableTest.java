@@ -17,19 +17,22 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilReflection;
 
 /**
- * Test the component displayable layer class.
+ * Test {@link ComponentDisplayable}.
  */
-public class ComponentDisplayableTest
+public final class ComponentDisplayableTest
 {
     /**
      * Create a test object.
@@ -82,12 +85,12 @@ public class ComponentDisplayableTest
 
         component.render(null, null);
 
-        Assert.assertEquals(4, object1.getLayerDisplay().intValue());
-        Assert.assertEquals(6, object2.getLayerDisplay().intValue());
-        Assert.assertEquals(5, object3.getLayerDisplay().intValue());
-        Assert.assertEquals(4, object4.getLayerDisplay().intValue());
+        assertEquals(4, object1.getLayerDisplay().intValue());
+        assertEquals(6, object2.getLayerDisplay().intValue());
+        assertEquals(5, object3.getLayerDisplay().intValue());
+        assertEquals(4, object4.getLayerDisplay().intValue());
 
-        Assert.assertEquals(object2.getFeature(Identifiable.class).getId().intValue(), last.get());
+        assertEquals(object2.getFeature(Identifiable.class).getId().intValue(), last.get());
 
         object2.getFeature(Identifiable.class).notifyDestroyed();
         object4.getFeature(Identifiable.class).notifyDestroyed();
@@ -95,7 +98,7 @@ public class ComponentDisplayableTest
         last.set(-1);
         component.render(null, null);
 
-        Assert.assertEquals(object3.getFeature(Identifiable.class).getId().intValue(), last.get());
+        assertEquals(object3.getFeature(Identifiable.class).getId().intValue(), last.get());
     }
 
     /**
@@ -115,7 +118,7 @@ public class ComponentDisplayableTest
         component.notifyHandlableAdded(featurable);
         component.render(null, null);
 
-        Assert.assertTrue(auto.get());
+        assertTrue(auto.get());
     }
 
     /**
@@ -133,12 +136,10 @@ public class ComponentDisplayableTest
         }));
         component.notifyHandlableAdded(featurable);
 
-        Assert.assertFalse(((HashSet<?>) UtilReflection.getMethod(component,
-                                                                  "getLayer",
-                                                                  Integer.valueOf(0))).isEmpty());
+        assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
-        Assert.assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
 }

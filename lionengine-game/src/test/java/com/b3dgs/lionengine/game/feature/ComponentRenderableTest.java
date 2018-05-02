@@ -17,25 +17,27 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Test the component renderable.
+ * Test {@link ComponentRenderable}.
  */
-public class ComponentRenderableTest
+public final class ComponentRenderableTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(HandlerTest.class);
     }
@@ -43,8 +45,8 @@ public class ComponentRenderableTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
     }
@@ -62,14 +64,14 @@ public class ComponentRenderableTest
         final Renderer object = new Renderer();
         handler.add(object);
 
-        Assert.assertFalse(object.isRendered());
+        assertFalse(object.isRendered());
         handler.update(1.0);
 
-        Assert.assertFalse(object.isRendered());
+        assertFalse(object.isRendered());
 
         handler.render(null);
 
-        Assert.assertTrue(object.isRendered());
+        assertTrue(object.isRendered());
 
         handler.removeAll();
         handler.update(1.0);
@@ -78,7 +80,7 @@ public class ComponentRenderableTest
     /**
      * Renderable object mock.
      */
-    private static class Renderer extends FeaturableModel implements Renderable
+    private static final class Renderer extends FeaturableModel implements Renderable
     {
         /** Rendered flag. */
         private boolean rendered;
@@ -89,6 +91,7 @@ public class ComponentRenderableTest
         public Renderer()
         {
             super();
+
             addFeature(new IdentifiableModel());
         }
 

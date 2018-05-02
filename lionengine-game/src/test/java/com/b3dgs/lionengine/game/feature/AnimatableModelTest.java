@@ -17,17 +17,18 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.graphic.drawable.AnimatorMock;
 
 /**
- * Test the animatable model class.
+ * Test {@link AnimatableModel}.
  */
-public class AnimatableModelTest
+public final class AnimatableModelTest
 {
     /**
      * Check the animator state.
@@ -39,9 +40,9 @@ public class AnimatableModelTest
      */
     private static void testAnimatorState(Animatable animatable, int first, int expectedFrame, AnimState expectedState)
     {
-        Assert.assertEquals(expectedState, animatable.getAnimState());
-        Assert.assertEquals(expectedFrame, animatable.getFrame());
-        Assert.assertEquals(expectedFrame - first + 1, animatable.getFrameAnim());
+        assertEquals(expectedState, animatable.getAnimState());
+        assertEquals(expectedFrame, animatable.getFrame());
+        assertEquals(expectedFrame - first + 1, animatable.getFrameAnim());
     }
 
     /**

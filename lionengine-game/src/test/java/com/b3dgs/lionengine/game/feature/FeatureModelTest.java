@@ -17,15 +17,18 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Test the feature model class.
+ * Test {@link FeatureModel}.
  */
-public class FeatureModelTest
+public final class FeatureModelTest
 {
     private final Feature feature = new FeatureModel();
 
@@ -40,31 +43,31 @@ public class FeatureModelTest
         featurable.addFeature(transformable);
         feature.prepare(featurable);
 
-        Assert.assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
-        Assert.assertEquals(transformable, feature.getFeature(Transformable.class));
+        assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
+        assertEquals(transformable, feature.getFeature(Transformable.class));
 
         final Feature feature = featurable.getFeatures().iterator().next();
-        Assert.assertTrue(feature.getClass().getName(),
-                          feature.equals(featurable.getFeature(Identifiable.class)) || feature.equals(transformable));
+        assertTrue(feature.equals(featurable.getFeature(Identifiable.class)) || feature.equals(transformable),
+                   feature.getClass().getName());
 
         for (final Class<? extends Feature> type : feature.getFeaturesType())
         {
-            Assert.assertTrue(type.getName(),
-                              type == Identifiable.class
-                                              || type == IdentifiableModel.class
-                                              || type == Transformable.class
-                                              || type == TransformableModel.class
-                                              || type == Recyclable.class);
+            assertTrue(type == Identifiable.class
+                       || type == IdentifiableModel.class
+                       || type == Transformable.class
+                       || type == TransformableModel.class
+                       || type == Recyclable.class,
+                       type.getName());
         }
-        Assert.assertTrue(feature.hasFeature(Transformable.class));
+        assertTrue(feature.hasFeature(Transformable.class));
     }
 
     /**
      * Test the feature not prepared.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNotPrepared()
     {
-        Assert.assertNotNull(feature.getFeatures());
+        assertThrows(NullPointerException.class, () -> feature.getFeatures(), null);
     }
 }

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.SizeConfig;
 /**
  * Utilities dedicated to transformable test.
  */
-public class UtilTransformable
+public final class UtilTransformable
 {
     /**
      * Create the object media.

@@ -17,27 +17,31 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the factory class.
+ * Test {@link Factory}.
  */
-public class FactoryTest
+public final class FactoryTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(FactoryTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -46,8 +50,8 @@ public class FactoryTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -67,8 +71,8 @@ public class FactoryTest
         final Featurable featurable1 = factory.create(Medias.create("object.xml"));
         final Featurable featurable2 = factory.create(Medias.create("object.xml"), FeaturableModel.class);
 
-        Assert.assertNotNull(featurable1);
-        Assert.assertNotNull(featurable2);
+        assertNotNull(featurable1);
+        assertNotNull(featurable2);
     }
 
     /**
@@ -81,26 +85,28 @@ public class FactoryTest
         final Featurable featurable2 = factory.create(Medias.create("object_identifiable.xml"),
                                                       ObjectWithIdentifiable.class);
 
-        Assert.assertNotNull(featurable1);
-        Assert.assertNotNull(featurable2);
+        assertNotNull(featurable1);
+        assertNotNull(featurable2);
     }
 
     /**
      * Test the object creation without constructor.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateNoConstructor()
     {
-        Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml")));
+        assertThrows(() -> factory.create(Medias.create("no_constructor.xml")),
+                     "[no_constructor.xml] Cannot open the media !");
     }
 
     /**
      * Test the object creation without constructor.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateNoConstructorClass()
     {
-        Assert.assertNotNull(factory.create(Medias.create("no_constructor.xml"), ObjectNoConstructor.class));
+        assertThrows(() -> factory.create(Medias.create("no_constructor.xml"), ObjectNoConstructor.class),
+                     "[no_constructor.xml] Cannot open the media !");
     }
 
     /**
@@ -109,15 +115,7 @@ public class FactoryTest
     @Test
     public void testCreateNoClass()
     {
-        try
-        {
-            Assert.assertNotNull(factory.create(Medias.create("no_class.xml")));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), ClassNotFoundException.class, exception.getCause().getClass());
-        }
+        assertCause(() -> factory.create(Medias.create("no_class.xml")), ClassNotFoundException.class);
     }
 
     /**
@@ -126,15 +124,7 @@ public class FactoryTest
     @Test
     public void testCreateNoSetupClass()
     {
-        try
-        {
-            Assert.assertNotNull(factory.create(Medias.create("no_setup.xml")));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), ClassNotFoundException.class, exception.getCause().getClass());
-        }
+        assertCause(() -> factory.create(Medias.create("no_setup.xml")), ClassNotFoundException.class);
     }
 
     /**
@@ -143,15 +133,7 @@ public class FactoryTest
     @Test
     public void testCreateNoSetupConstructor()
     {
-        try
-        {
-            Assert.assertNotNull(factory.create(Medias.create("no_setup_constructor.xml")));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), NoSuchMethodException.class, exception.getCause().getClass());
-        }
+        assertCause(() -> factory.create(Medias.create("no_setup_constructor.xml")), NoSuchMethodException.class);
     }
 
     /**
@@ -162,10 +144,10 @@ public class FactoryTest
     {
         final Setup setup = factory.getSetup(Medias.create("object.xml"));
 
-        Assert.assertEquals(Medias.create("object.xml"), setup.getMedia());
+        assertEquals(Medias.create("object.xml"), setup.getMedia());
 
-        Assert.assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
-        Assert.assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
+        assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
+        assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
     }
 
     /**
@@ -177,23 +159,23 @@ public class FactoryTest
         final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
         featurable.addFeature(new Recycler());
 
-        Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+        assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
 
         factory.notifyHandlableRemoved(featurable);
 
-        Assert.assertEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+        assertEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
 
         final Media media = UtilSetup.createMedia(ObjectWithIdentifiable.class);
         final Featurable featurable2 = factory.create(media);
 
         factory.notifyHandlableRemoved(featurable2);
 
-        Assert.assertNotEquals(featurable2, factory.create(media));
+        assertNotEquals(featurable2, factory.create(media));
 
         featurable2.addFeature(new Recycler());
         factory.notifyHandlableRemoved(featurable2);
 
-        Assert.assertEquals(featurable2, factory.create(media));
+        assertEquals(featurable2, factory.create(media));
     }
 
     /**
@@ -204,10 +186,10 @@ public class FactoryTest
     {
         final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
 
-        Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+        assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
 
         factory.notifyHandlableRemoved(featurable);
 
-        Assert.assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+        assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
     }
 }

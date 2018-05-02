@@ -17,22 +17,24 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
 
 /**
- * Test the component updatable.
+ * Test {@link ComponentUpdatable}.
  */
-public class ComponentUpdatableTest
+public final class ComponentUpdatableTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setLoadFromJar(ComponentUpdatableTest.class);
@@ -41,7 +43,7 @@ public class ComponentUpdatableTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
@@ -60,11 +62,11 @@ public class ComponentUpdatableTest
         final Updater object = new Updater();
         handler.add(object);
 
-        Assert.assertFalse(object.isUpdated());
+        assertFalse(object.isUpdated());
 
         handler.update(1.0);
 
-        Assert.assertTrue(object.isUpdated());
+        assertTrue(object.isUpdated());
 
         handler.removeAll();
         handler.update(1.0);

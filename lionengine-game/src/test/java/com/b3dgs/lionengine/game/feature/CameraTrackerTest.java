@@ -17,15 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the camera tracker class.
+ * Test {@link CameraTracker}.
  */
-public class CameraTrackerTest
+public final class CameraTrackerTest
 {
     /**
      * Test the tracker feature.
@@ -40,8 +39,8 @@ public class CameraTrackerTest
         final CameraTracker tracker = new CameraTracker(services);
         tracker.getFeature(Refreshable.class).update(1.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
 
         final Transformable transformable = new TransformableModel();
         transformable.teleport(1.0, 2.0);
@@ -49,8 +48,8 @@ public class CameraTrackerTest
         tracker.track(transformable);
         tracker.getFeature(Refreshable.class).update(1.0);
 
-        Assert.assertEquals(-7.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-14.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(-7.0, camera.getX());
+        assertEquals(-14.0, camera.getY());
 
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(transformable);
@@ -60,7 +59,7 @@ public class CameraTrackerTest
         tracker.track(featurable);
         tracker.getFeature(Refreshable.class).update(1.0);
 
-        Assert.assertEquals(-6.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-13.0, camera.getY(), UtilTests.PRECISION);
+        assertEquals(-6.0, camera.getX());
+        assertEquals(-13.0, camera.getY());
     }
 }
