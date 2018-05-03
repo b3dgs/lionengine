@@ -38,13 +38,13 @@ final class ObjectFeatures extends FeaturableModel implements Localizable, Layer
     @Override
     public double getX()
     {
-        return 0;
+        return 0.0;
     }
 
     @Override
     public double getY()
     {
-        return 0;
+        return 0.0;
     }
 
     @Override

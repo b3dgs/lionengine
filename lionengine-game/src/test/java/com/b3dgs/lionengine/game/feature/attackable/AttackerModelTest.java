@@ -17,18 +17,25 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -39,9 +46,9 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 
 /**
- * Test the attackable.
+ * Test {@link AttackerModel}.
  */
-public class AttackerModelTest
+public final class AttackerModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<AttackState> HACK = new UtilEnum<>(AttackState.class, AttackerModel.class);
@@ -49,8 +56,8 @@ public class AttackerModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         HACK.addByValue(HACK.make("FAIL"));
     }
@@ -58,8 +65,8 @@ public class AttackerModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         HACK.restore();
     }
@@ -73,7 +80,7 @@ public class AttackerModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         UtilAttackable.prepare(object);
@@ -84,7 +91,7 @@ public class AttackerModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
@@ -109,8 +116,8 @@ public class AttackerModelTest
         attacker.setAttackFrame(frame);
         attacker.setAttackTimer(time);
 
-        Assert.assertTrue(attacker.getAttackDamages() >= damageMin);
-        Assert.assertTrue(attacker.getAttackDamages() <= damageMax);
+        assertTrue(attacker.getAttackDamages() >= damageMin);
+        assertTrue(attacker.getAttackDamages() <= damageMax);
     }
 
     /**
@@ -121,7 +128,7 @@ public class AttackerModelTest
     {
         attacker.attack(target);
 
-        Assert.assertEquals(target, attacker.getTarget());
+        assertEquals(target, attacker.getTarget());
     }
 
     /**
@@ -136,8 +143,8 @@ public class AttackerModelTest
         attacker.update(1.0);
         attacker.update(1.0);
 
-        Assert.assertNotNull(attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertNotNull(attacker.getTarget());
+        assertFalse(attacker.isAttacking());
     }
 
     /**
@@ -149,25 +156,25 @@ public class AttackerModelTest
         canAttack.set(true);
         attacker.attack(target);
 
-        Assert.assertNotNull(attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertNotNull(attacker.getTarget());
+        assertFalse(attacker.isAttacking());
 
         attacker.update(1.0);
 
-        Assert.assertNotNull(attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertNotNull(attacker.getTarget());
+        assertFalse(attacker.isAttacking());
 
         attacker.attack(null);
 
-        Assert.assertNotNull(attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertNotNull(attacker.getTarget());
+        assertFalse(attacker.isAttacking());
 
         attacker.stopAttack();
         attacker.attack(null);
         attacker.update(1.0);
 
-        Assert.assertNull(attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertNull(attacker.getTarget());
+        assertFalse(attacker.isAttacking());
     }
 
     /**
@@ -181,26 +188,26 @@ public class AttackerModelTest
         final Transformable target1 = new TransformableModel();
         attacker.attack(target1);
 
-        Assert.assertEquals(target1, attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertEquals(target1, attacker.getTarget());
+        assertFalse(attacker.isAttacking());
 
         attacker.update(1.0);
         attacker.attack(target1);
 
-        Assert.assertEquals(target1, attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertEquals(target1, attacker.getTarget());
+        assertFalse(attacker.isAttacking());
 
         final Transformable target2 = new TransformableModel();
         attacker.stopAttack();
         attacker.attack(target2);
 
-        Assert.assertEquals(target2, attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertEquals(target2, attacker.getTarget());
+        assertFalse(attacker.isAttacking());
 
         attacker.update(1.0);
 
-        Assert.assertEquals(target2, attacker.getTarget());
-        Assert.assertFalse(attacker.isAttacking());
+        assertEquals(target2, attacker.getTarget());
+        assertFalse(attacker.isAttacking());
     }
 
     /**
@@ -217,15 +224,15 @@ public class AttackerModelTest
         attacker.update(1.0);
         attacker.update(1.0);
 
-        Assert.assertTrue(attacker.isAttacking());
+        assertTrue(attacker.isAttacking());
 
         attacker.stopAttack();
 
-        Assert.assertTrue(attacker.isAttacking());
+        assertTrue(attacker.isAttacking());
 
         attacker.update(1.0);
 
-        Assert.assertFalse(attacker.isAttacking());
+        assertFalse(attacker.isAttacking());
     }
 
     /**
@@ -243,7 +250,7 @@ public class AttackerModelTest
         attacker.attack(target);
         attacker.update(1.0);
 
-        Assert.assertTrue(object.flag.get());
+        assertTrue(object.flag.get());
     }
 
     /**
@@ -251,7 +258,7 @@ public class AttackerModelTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000L)
+    @Test
     public void testListener() throws InterruptedException
     {
         canAttack.set(true);
@@ -269,35 +276,37 @@ public class AttackerModelTest
         attacker.attack(target);
         attacker.update(1.0);
 
-        Assert.assertEquals(target, reaching.get());
-        Assert.assertFalse(preparing.get());
-        Assert.assertFalse(attacker.isAttacking());
+        assertEquals(target, reaching.get());
+        assertFalse(preparing.get());
+        assertFalse(attacker.isAttacking());
 
         attacker.setAttackTimer(10);
         target.teleport(0, 1);
         attacker.update(1.0);
 
-        Assert.assertTrue(attacker.isAttacking());
-        Assert.assertNotEquals(target, started.get());
-        Assert.assertNotEquals(target, ended.get());
+        assertTrue(attacker.isAttacking());
+        assertNotEquals(target, started.get());
+        assertNotEquals(target, ended.get());
 
         attacker.update(1.0);
 
-        Assert.assertTrue(preparing.get());
+        assertTrue(preparing.get());
 
-        while (!target.equals(started.get()))
+        assertTimeout(1000L, () ->
         {
-            attacker.update(1.0);
-        }
-
-        Assert.assertTrue(attacker.isAttacking());
-        Assert.assertEquals(target, started.get());
-        Assert.assertEquals(target, ended.get());
+            while (!target.equals(started.get()))
+            {
+                attacker.update(1.0);
+            }
+        });
+        assertTrue(attacker.isAttacking());
+        assertEquals(target, started.get());
+        assertEquals(target, ended.get());
 
         object.getFeature(Animatable.class).update(1.0);
         attacker.update(1.0);
 
-        Assert.assertTrue(anim.get());
+        assertTrue(anim.get());
     }
 
     /**
@@ -314,31 +323,22 @@ public class AttackerModelTest
         attacker.attack(target);
         attacker.update(1.0);
 
-        Assert.assertTrue(object.flag.get());
+        assertTrue(object.flag.get());
     }
 
     /**
      * Test with enum fail.
      * 
-     * @throws NoSuchFieldException If error.
-     * @throws IllegalArgumentException If error.
-     * @throws IllegalAccessException If error.
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    public void testEnumFail() throws ReflectiveOperationException
     {
         final AttackerModel attacker = new AttackerModel();
         final Field field = attacker.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(attacker, AttackState.values()[3]);
-        try
-        {
-            attacker.update(1.0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
-        }
+
+        assertThrows(() -> attacker.update(1.0), "Unknown enum: FAIL");
     }
 }

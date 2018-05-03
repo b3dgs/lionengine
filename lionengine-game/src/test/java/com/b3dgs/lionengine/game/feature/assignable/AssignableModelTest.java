@@ -17,21 +17,24 @@
  */
 package com.b3dgs.lionengine.game.feature.assignable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 
 /**
- * Test the assignable model.
+ * Test {@link AssignableModel}.
  */
-public class AssignableModelTest
+public final class AssignableModelTest
 {
     private final AtomicBoolean clicked = new AtomicBoolean();
     private final AtomicInteger clickNumber = new AtomicInteger();
@@ -42,7 +45,7 @@ public class AssignableModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
         assignable.getFeature(Identifiable.class).notifyDestroyed();
@@ -56,7 +59,7 @@ public class AssignableModelTest
     {
         assignable.update(1.0);
 
-        Assert.assertFalse(assigned.get());
+        assertFalse(assigned.get());
 
         assignable.setAssign(UtilAssignable.createAssign(assigned));
         assignable.setClickAssign(1);
@@ -65,8 +68,8 @@ public class AssignableModelTest
         clickNumber.set(1);
         assignable.update(1.0);
 
-        Assert.assertEquals(1, clickNumber.get());
-        Assert.assertTrue(assigned.get());
+        assertEquals(1, clickNumber.get());
+        assertTrue(assigned.get());
     }
 
     /**
@@ -80,8 +83,8 @@ public class AssignableModelTest
         clickNumber.set(0);
         assignable.update(1.0);
 
-        Assert.assertEquals(0, clickNumber.get());
-        Assert.assertFalse(assigned.get());
+        assertEquals(0, clickNumber.get());
+        assertFalse(assigned.get());
     }
 
     /**
@@ -96,12 +99,12 @@ public class AssignableModelTest
         assignable.setAssign(UtilAssignable.createAssign(assigned));
         assignable.update(1.0);
 
-        Assert.assertFalse(assigned.get());
+        assertFalse(assigned.get());
 
         services.get(Cursor.class).setLocation(1, 64);
         assignable.update(1.0);
 
-        Assert.assertFalse(assigned.get());
+        assertFalse(assigned.get());
     }
 
     /**
@@ -117,6 +120,6 @@ public class AssignableModelTest
         assignable.prepare(object);
         assignable.update(1.0);
 
-        Assert.assertTrue(assigned.get());
+        assertTrue(assigned.get());
     }
 }

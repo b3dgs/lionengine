@@ -17,14 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.HashMap;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -38,8 +41,8 @@ public final class CollisionConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -47,8 +50,8 @@ public final class CollisionConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -69,34 +72,27 @@ public final class CollisionConfigTest
         final CollisionConfig config = CollisionConfig.imports(new Configurer(media));
         final Collision imported = config.getCollision("test");
 
-        Assert.assertEquals("test", imported.getName());
-        Assert.assertEquals(0, imported.getOffsetX());
-        Assert.assertEquals(1, imported.getOffsetY());
-        Assert.assertEquals(2, imported.getWidth());
-        Assert.assertEquals(3, imported.getHeight());
-        Assert.assertTrue(imported.hasMirror());
+        assertEquals("test", imported.getName());
+        assertEquals(0, imported.getOffsetX());
+        assertEquals(1, imported.getOffsetY());
+        assertEquals(2, imported.getWidth());
+        assertEquals(3, imported.getHeight());
+        assertTrue(imported.hasMirror());
 
-        Assert.assertFalse(config.getCollisions().isEmpty());
-        Assert.assertEquals(collision, config.getCollision("test"));
+        assertFalse(config.getCollisions().isEmpty());
+        assertEquals(collision, config.getCollision("test"));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Test get unknown collision.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetUnknownCollision()
     {
         final CollisionConfig config = new CollisionConfig(new HashMap<>());
-        try
-        {
-            Assert.assertNull(config.getCollision("void"));
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(CollisionConfig.ERROR_COLLISION_NOT_FOUND + "void", exception.getMessage());
-            throw exception;
-        }
+
+        assertThrows(() -> config.getCollision("void"), CollisionConfig.ERROR_COLLISION_NOT_FOUND + "void");
     }
 }

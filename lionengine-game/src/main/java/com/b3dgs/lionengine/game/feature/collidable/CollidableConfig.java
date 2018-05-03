@@ -37,7 +37,7 @@ public final class CollidableConfig
     /** Default group. */
     public static final Integer DEFAULT_GROUP = Integer.valueOf(0);
     /** Error invalid group. */
-    private static final String ERROR_INVALID_GROUP = "Invalid group: ";
+    static final String ERROR_INVALID_GROUP = "Invalid group: ";
 
     /**
      * Create the collidable data from node.

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.geom.Area;
 /**
  * Utilities dedicated to actionnable test.
  */
-public class UtilActionnable
+final class UtilActionnable
 {
     /**
      * Create a default action.

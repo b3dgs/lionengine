@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import org.junit.Assert;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 
 /**
  * Object without constructor.
@@ -35,6 +35,7 @@ public final class ObjectWithIdentifiable extends FeaturableModel
         super(services, setup);
 
         addFeature(new IdentifiableModel());
-        Assert.assertNotNull(setup);
+
+        assertNotNull(setup);
     }
 }

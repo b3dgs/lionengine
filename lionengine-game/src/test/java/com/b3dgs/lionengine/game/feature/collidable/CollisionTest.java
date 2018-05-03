@@ -17,15 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test collision data class.
+ * Test {@link Collision}.
  */
-public class CollisionTest
+public final class CollisionTest
 {
     /**
      * Test collision data functions.
@@ -35,40 +39,21 @@ public class CollisionTest
     {
         final Collision collision = new Collision("void", 1, 2, 3, 4, true);
 
-        Assert.assertEquals("void", collision.getName());
-        Assert.assertTrue(collision.getOffsetX() == 1);
-        Assert.assertTrue(collision.getOffsetY() == 2);
-        Assert.assertTrue(collision.getWidth() == 3);
-        Assert.assertTrue(collision.getHeight() == 4);
-        Assert.assertTrue(collision.hasMirror());
+        assertEquals("void", collision.getName());
+        assertTrue(collision.getOffsetX() == 1);
+        assertTrue(collision.getOffsetY() == 2);
+        assertTrue(collision.getWidth() == 3);
+        assertTrue(collision.getHeight() == 4);
+        assertTrue(collision.hasMirror());
     }
 
     /**
      * Test collision with <code>null</code> name.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCollisionNullName()
     {
-        Assert.assertNull(new Collision(null, 1, 2, 3, 4, true));
-    }
-
-    /**
-     * Test the collision hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int collision = new Collision("void", 1, 2, 3, 4, true).hashCode();
-
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 4, true).hashCode());
-
-        Assert.assertNotEquals(collision, new Object().hashCode());
-        Assert.assertNotEquals(collision, new Collision("", 1, 2, 3, 4, true).hashCode());
-        Assert.assertEquals(collision, new Collision("void", 0, 2, 3, 4, true).hashCode());
-        Assert.assertEquals(collision, new Collision("void", 1, 0, 3, 4, true).hashCode());
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 0, 4, true).hashCode());
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 0, true).hashCode());
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 4, false).hashCode());
+        assertThrows(() -> new Collision(null, 1, 2, 3, 4, true), "Unexpected null argument !");
     }
 
     /**
@@ -79,16 +64,35 @@ public class CollisionTest
     {
         final Collision collision = new Collision("void", 1, 2, 3, 4, true);
 
-        Assert.assertEquals(collision, collision);
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 4, true));
+        assertEquals(collision, collision);
+        assertEquals(collision, new Collision("void", 1, 2, 3, 4, true));
 
-        Assert.assertNotEquals(collision, null);
-        Assert.assertNotEquals(collision, new Object());
-        Assert.assertNotEquals(collision, new Collision("", 1, 2, 3, 4, true));
-        Assert.assertEquals(collision, new Collision("void", 0, 2, 3, 4, true));
-        Assert.assertEquals(collision, new Collision("void", 1, 0, 3, 4, true));
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 0, 4, true));
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 0, true));
-        Assert.assertEquals(collision, new Collision("void", 1, 2, 3, 4, false));
+        assertNotEquals(collision, null);
+        assertNotEquals(collision, new Object());
+        assertNotEquals(collision, new Collision("", 1, 2, 3, 4, true));
+        assertEquals(collision, new Collision("void", 0, 2, 3, 4, true));
+        assertEquals(collision, new Collision("void", 1, 0, 3, 4, true));
+        assertEquals(collision, new Collision("void", 1, 2, 0, 4, true));
+        assertEquals(collision, new Collision("void", 1, 2, 3, 0, true));
+        assertEquals(collision, new Collision("void", 1, 2, 3, 4, false));
+    }
+
+    /**
+     * Test the collision hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final Collision collision = new Collision("void", 1, 2, 3, 4, true);
+
+        assertHashEquals(collision, new Collision("void", 1, 2, 3, 4, true));
+
+        assertHashNotEquals(collision, new Object());
+        assertHashNotEquals(collision, new Collision("", 1, 2, 3, 4, true));
+        assertHashEquals(collision, new Collision("void", 0, 2, 3, 4, true));
+        assertHashEquals(collision, new Collision("void", 1, 0, 3, 4, true));
+        assertHashEquals(collision, new Collision("void", 1, 2, 0, 4, true));
+        assertHashEquals(collision, new Collision("void", 1, 2, 3, 0, true));
+        assertHashEquals(collision, new Collision("void", 1, 2, 3, 4, false));
     }
 }

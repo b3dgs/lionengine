@@ -34,11 +34,11 @@ public final class UtilSetup
      */
     public static Media createConfig()
     {
-        final Media media = Medias.create("object.xml");
-
         final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass("class"));
         root.add(FeaturableConfig.exportSetup("setup"));
+
+        final Media media = Medias.create("object.xml");
         root.save(media);
 
         return media;
@@ -52,12 +52,14 @@ public final class UtilSetup
      */
     public static Media createMedia(Class<?> clazz)
     {
-        final Media media = Medias.create(clazz.getSimpleName() + ".xml");
         final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass(clazz.getName()));
         root.add(FeaturableConfig.exportSetup(Setup.class.getName()));
         root.add(SizeConfig.exports(new SizeConfig(16, 32)));
+
+        final Media media = Medias.create(clazz.getSimpleName() + ".xml");
         root.save(media);
+
         return media;
     }
 }

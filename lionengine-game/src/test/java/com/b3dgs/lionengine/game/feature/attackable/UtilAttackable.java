@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.drawable.AnimatorMock;
 /**
  * Utilities dedicated to attackable test.
  */
-public class UtilAttackable
+final class UtilAttackable
 {
     /**
      * Create the featurable.

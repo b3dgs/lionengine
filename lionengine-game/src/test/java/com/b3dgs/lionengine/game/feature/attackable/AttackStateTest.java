@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 
 /**
- * Test the attack state.
+ * Test {@link AttackState}.
  */
-public class AttackStateTest
+public final class AttackStateTest
 {
     /**
      * Test the enum.

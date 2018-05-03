@@ -17,15 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
@@ -40,8 +42,8 @@ public final class CollidableConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -49,21 +51,19 @@ public final class CollidableConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(CollidableConfig.class);
+        assertPrivateConstructor(CollidableConfig.class);
     }
 
     /**
@@ -79,15 +79,14 @@ public final class CollidableConfigTest
         node.setText(group);
         root.save(media);
 
-        Assert.assertEquals(Integer.valueOf(group), CollidableConfig.imports(new Configurer(media)));
-
-        Assert.assertTrue(media.getFile().delete());
+        assertEquals(Integer.valueOf(group), CollidableConfig.imports(new Configurer(media)));
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Test with invalid group.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testInvalidGroup()
     {
         final Media media = Medias.create("object.xml");
@@ -96,9 +95,8 @@ public final class CollidableConfigTest
         node.setText("a");
         root.save(media);
 
-        Assert.assertNotNull(CollidableConfig.imports(new Configurer(media)));
-
-        Assert.assertTrue(media.getFile().delete());
+        assertThrows(() -> CollidableConfig.imports(new Configurer(media)), CollidableConfig.ERROR_INVALID_GROUP + "a");
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -111,9 +109,8 @@ public final class CollidableConfigTest
         final Xml root = new Xml("test");
         root.save(media);
 
-        Assert.assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)));
-
-        Assert.assertTrue(media.getFile().delete());
+        assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)));
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -135,8 +132,7 @@ public final class CollidableConfigTest
 
         root.save(media);
 
-        Assert.assertEquals(Integer.valueOf(1), CollidableConfig.imports(new Configurer(media)));
-
-        Assert.assertTrue(media.getFile().delete());
+        assertEquals(Integer.valueOf(1), CollidableConfig.imports(new Configurer(media)));
+        assertTrue(media.getFile().delete());
     }
 }

@@ -17,13 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -40,9 +43,9 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the component collision model class.
+ * Test {@link ComponentCollision}.
  */
-public class ComponentCollisionTest
+public final class ComponentCollisionTest
 {
     /** Test configuration. */
     private static Media config;
@@ -50,8 +53,8 @@ public class ComponentCollisionTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -61,10 +64,10 @@ public class ComponentCollisionTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Graphics.setFactoryGraphic(null);
         Medias.setResourcesDirectory(null);
     }
@@ -73,7 +76,6 @@ public class ComponentCollisionTest
     private final Handler handler = new Handler(services);
     private final Setup setup = new Setup(config);
     private final AtomicReference<Collidable> collide = new AtomicReference<>();
-
     private final Featurable nonCollidable = new FeaturableModel();
 
     private ObjectSelf featurable1;
@@ -91,7 +93,7 @@ public class ComponentCollisionTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new Camera());
@@ -141,8 +143,8 @@ public class ComponentCollisionTest
 
         handler.update(1.0);
 
-        Assert.assertEquals(collidable1, collide.get());
-        Assert.assertEquals(collidable2, featurable1.called.get());
+        assertEquals(collidable1, collide.get());
+        assertEquals(collidable2, featurable1.called.get());
 
         collide.set(null);
         featurable1.called.set(null);
@@ -150,8 +152,8 @@ public class ComponentCollisionTest
 
         handler.update(1.0);
 
-        Assert.assertNull(collide.get());
-        Assert.assertNull(featurable1.called.get());
+        assertNull(collide.get());
+        assertNull(featurable1.called.get());
     }
 
     /**
@@ -189,8 +191,8 @@ public class ComponentCollisionTest
 
         handler.update(1.0);
 
-        Assert.assertEquals(collidable1, collide.get());
-        Assert.assertEquals(collidable2, featurable1.called.get());
+        assertEquals(collidable1, collide.get());
+        assertEquals(collidable2, featurable1.called.get());
     }
 
     /**
@@ -205,8 +207,8 @@ public class ComponentCollisionTest
 
         handler.update(1.0);
 
-        Assert.assertEquals(collidable1, collide.get());
-        Assert.assertEquals(collidable2, featurable1.called.get());
+        assertEquals(collidable1, collide.get());
+        assertEquals(collidable2, featurable1.called.get());
 
         collide.set(null);
         featurable1.called.set(null);
@@ -215,15 +217,15 @@ public class ComponentCollisionTest
 
         handler.update(1.0);
 
-        Assert.assertNull(collide.get());
-        Assert.assertNull(featurable1.called.get());
+        assertNull(collide.get());
+        assertNull(featurable1.called.get());
 
         transformable2.teleport(ComponentCollision.REDUCE_FACTOR, ComponentCollision.REDUCE_FACTOR);
 
         handler.update(1.0);
 
-        Assert.assertEquals(collidable1, collide.get());
-        Assert.assertEquals(collidable2, featurable1.called.get());
+        assertEquals(collidable1, collide.get());
+        assertEquals(collidable2, featurable1.called.get());
     }
 
     /**
@@ -236,22 +238,22 @@ public class ComponentCollisionTest
         transformable2.teleport(2.0, 3.0);
         handler.update(1.0);
 
-        Assert.assertEquals(collidable1, collide.get());
-        Assert.assertEquals(collidable2, featurable1.called.get());
+        assertEquals(collidable1, collide.get());
+        assertEquals(collidable2, featurable1.called.get());
 
         collide.set(null);
         featurable1.called.set(null);
         handler.remove(featurable1);
         handler.update(1.0);
 
-        Assert.assertNull(collide.get());
-        Assert.assertNull(featurable1.called.get());
+        assertNull(collide.get());
+        assertNull(featurable1.called.get());
 
         handler.remove(featurable2);
         handler.remove(nonCollidable);
         handler.update(1.0);
 
-        Assert.assertNull(collide.get());
-        Assert.assertNull(featurable1.called.get());
+        assertNull(collide.get());
+        assertNull(featurable1.called.get());
     }
 }

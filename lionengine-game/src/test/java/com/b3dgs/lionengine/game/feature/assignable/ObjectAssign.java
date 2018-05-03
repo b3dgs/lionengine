@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 /**
  * Object containing action.
  */
-public class ObjectAssign extends FeaturableModel implements Assign
+final class ObjectAssign extends FeaturableModel implements Assign
 {
     /** Action assigned flag. */
     private final AtomicBoolean assigned;
@@ -37,6 +37,7 @@ public class ObjectAssign extends FeaturableModel implements Assign
     public ObjectAssign(AtomicBoolean assigned)
     {
         super();
+
         this.assigned = assigned;
     }
 

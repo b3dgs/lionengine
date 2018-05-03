@@ -17,18 +17,20 @@
  */
 package com.b3dgs.lionengine.game.feature.actionable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -38,14 +40,14 @@ import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Geom;
 
 /**
- * Test the actionable model.
+ * Test {@link ActionableModel}.
  */
-public class ActionableModelTest
+public final class ActionableModelTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -54,7 +56,7 @@ public class ActionableModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(null);
@@ -71,11 +73,12 @@ public class ActionableModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
         actionable.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -84,7 +87,7 @@ public class ActionableModelTest
     @Test
     public void testDescription()
     {
-        Assert.assertEquals("description", actionable.getDescription());
+        assertEquals("description", actionable.getDescription());
     }
 
     /**
@@ -94,10 +97,11 @@ public class ActionableModelTest
     public void testButton()
     {
         final Area boutton = actionable.getButton();
-        Assert.assertEquals(area.getX(), boutton.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(area.getY(), boutton.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(area.getWidthReal(), boutton.getWidthReal(), UtilTests.PRECISION);
-        Assert.assertEquals(area.getHeightReal(), boutton.getHeightReal(), UtilTests.PRECISION);
+
+        assertEquals(area.getX(), boutton.getX());
+        assertEquals(area.getY(), boutton.getY());
+        assertEquals(area.getWidthReal(), boutton.getWidthReal());
+        assertEquals(area.getHeightReal(), boutton.getHeightReal());
     }
 
     /**
@@ -113,8 +117,8 @@ public class ActionableModelTest
         clickNumber.set(0);
         actionable.update(1.0);
 
-        Assert.assertEquals(0, clickNumber.get());
-        Assert.assertFalse(executed.get());
+        assertEquals(0, clickNumber.get());
+        assertFalse(executed.get());
     }
 
     /**
@@ -128,8 +132,8 @@ public class ActionableModelTest
         actionable.setClickAction(2);
         actionable.update(1.0);
 
-        Assert.assertEquals(2, clickNumber.get());
-        Assert.assertTrue(executed.get());
+        assertEquals(2, clickNumber.get());
+        assertTrue(executed.get());
     }
 
     /**
@@ -140,14 +144,14 @@ public class ActionableModelTest
     {
         actionable.update(1.0);
 
-        Assert.assertEquals(0, clickNumber.get());
+        assertEquals(0, clickNumber.get());
 
         actionable.setAction(UtilActionnable.createAction(executed));
         actionable.setClickAction(1);
         actionable.update(1.0);
 
-        Assert.assertEquals(1, clickNumber.get());
-        Assert.assertFalse(executed.get());
+        assertEquals(1, clickNumber.get());
+        assertFalse(executed.get());
     }
 
     /**
@@ -164,6 +168,6 @@ public class ActionableModelTest
         actionable.prepare(object);
         actionable.update(1.0);
 
-        Assert.assertTrue(executed.get());
+        assertTrue(executed.get());
     }
 }

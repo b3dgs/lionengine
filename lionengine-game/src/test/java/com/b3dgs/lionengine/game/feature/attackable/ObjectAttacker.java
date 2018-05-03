@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 /**
  * Attacker test.
  */
-class ObjectAttacker extends FeaturableModel implements AttackerChecker
+final class ObjectAttacker extends FeaturableModel implements AttackerChecker
 {
     /** Can attack flag. */
     private final AtomicBoolean canAttack;
@@ -37,6 +37,7 @@ class ObjectAttacker extends FeaturableModel implements AttackerChecker
     public ObjectAttacker(AtomicBoolean canAttack)
     {
         super();
+
         this.canAttack = canAttack;
     }
 

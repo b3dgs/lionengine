@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 /**
  * Object containing action.
  */
-class ObjectAction extends FeaturableModel implements Action
+final class ObjectAction extends FeaturableModel implements Action
 {
     /** Action executed flag. */
     private final AtomicBoolean executed;
@@ -38,6 +38,7 @@ class ObjectAction extends FeaturableModel implements Action
     public ObjectAction(AtomicBoolean executed)
     {
         super();
+
         this.executed = executed;
     }
 

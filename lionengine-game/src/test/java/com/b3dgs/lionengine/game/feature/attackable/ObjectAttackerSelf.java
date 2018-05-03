@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 /**
  * Attacker test.
  */
-class ObjectAttackerSelf extends FeaturableModel implements AttackerChecker, AttackerListener
+final class ObjectAttackerSelf extends FeaturableModel implements AttackerChecker, AttackerListener
 {
     /** Flag. */
     final AtomicBoolean flag = new AtomicBoolean();

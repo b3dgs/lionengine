@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 /**
  * Object self collision listener mock.
  */
-public class ObjectSelf extends FeaturableModel implements CollidableListener
+final class ObjectSelf extends FeaturableModel implements CollidableListener
 {
     /** Called flag. */
     final AtomicReference<Collidable> called = new AtomicReference<>();

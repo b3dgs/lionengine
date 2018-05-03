@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 /**
  * Utilities dedicated to assignable test.
  */
-public class UtilAssignable
+final class UtilAssignable
 {
     /**
      * Create the services.
