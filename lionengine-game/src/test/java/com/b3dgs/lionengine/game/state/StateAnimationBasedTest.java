@@ -17,16 +17,19 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.Arrays;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -34,9 +37,9 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
- * Test the animation based state.
+ * Test {@link StateAnimationBased}.
  */
-public class StateAnimationBasedTest
+public final class StateAnimationBasedTest
 {
     /** Test configuration. */
     private static Media media;
@@ -44,8 +47,8 @@ public class StateAnimationBasedTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         media = Medias.create("animations.xml");
@@ -67,22 +70,20 @@ public class StateAnimationBasedTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(StateAnimationUtil.class);
+        assertPrivateConstructor(StateAnimationUtil.class);
     }
 
     /**
@@ -101,20 +102,30 @@ public class StateAnimationBasedTest
 
         handler.changeState(StateType.IDLE);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(handler.isState(StateType.IDLE));
 
         handler.update(1.0);
 
-        Assert.assertTrue(handler.isState(StateType.WALK));
+        assertTrue(handler.isState(StateType.WALK));
     }
 
     /**
      * Test the utility function with wrong constructor.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testUtilError()
     {
         final Featurable featurable = new FeaturableModel();
-        StateAnimationUtil.loadStates(StateTypeError.values(), new StateFactory(), featurable, new Setup(media));
+        final String message = NoSuchMethodException.class.getName()
+                               + ": No compatible constructor found for "
+                               + StateJump.class.getName()
+                               + " with: "
+                               + Arrays.asList(FeaturableModel.class, Animation.class);
+
+        assertThrows(() -> StateAnimationUtil.loadStates(StateTypeError.values(),
+                                                         new StateFactory(),
+                                                         featurable,
+                                                         new Setup(media)),
+                     message);
     }
 }

@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
 /**
  * State walk test implementation.
  */
-public class StateWalk extends StateBase implements StateInputPointerUpdater
+final class StateWalk extends StateBase implements StateInputPointerUpdater
 {
     /**
      * Create the state.
      */
-    public StateWalk()
+    StateWalk()
     {
         this(null, null);
     }
@@ -43,6 +43,7 @@ public class StateWalk extends StateBase implements StateInputPointerUpdater
     public StateWalk(Featurable featurable, Animation animation)
     {
         super(StateType.WALK);
+
         addTransition(new TransitionWalkToIdle());
     }
 
@@ -55,12 +56,13 @@ public class StateWalk extends StateBase implements StateInputPointerUpdater
     /**
      * Transition from {@link StateWalk} to {@link StateIdle}.
      */
-    private final class TransitionWalkToIdle extends StateTransition implements StateTransitionInputPointerChecker
+    private static final class TransitionWalkToIdle extends StateTransition
+                                                    implements StateTransitionInputPointerChecker
     {
         /**
          * Create the transition.
          */
-        public TransitionWalkToIdle()
+        TransitionWalkToIdle()
         {
             super(StateType.IDLE);
         }

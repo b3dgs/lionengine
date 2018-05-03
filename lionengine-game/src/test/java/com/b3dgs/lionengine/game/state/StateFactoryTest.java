@@ -15,18 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.state;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
-
-import com.b3dgs.lionengine.game.state.State;
-import com.b3dgs.lionengine.game.state.StateFactory;
-import com.b3dgs.lionengine.game.state.StateIdle;
-import com.b3dgs.lionengine.game.state.StateType;
-import com.b3dgs.lionengine.game.state.StateWalk;
 
 /**
  * Test {@link StateFactory}.

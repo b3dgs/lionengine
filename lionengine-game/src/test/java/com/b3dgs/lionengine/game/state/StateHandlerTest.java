@@ -17,15 +17,16 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the state handler class.
+ * Test {@link StateHandler}.
  */
-public class StateHandlerTest
+public final class StateHandlerTest
 {
     private final StateFactory factory = new StateFactory();
     private final StateHandler handler = new StateHandler(factory);
@@ -44,43 +45,43 @@ public class StateHandlerTest
 
         handler.update(1.0);
 
-        Assert.assertFalse(handler.isState(StateType.IDLE));
-        Assert.assertFalse(handler.isState(StateType.WALK));
-        Assert.assertFalse(idle.isEntered());
-        Assert.assertFalse(walk.isEntered());
+        assertFalse(handler.isState(StateType.IDLE));
+        assertFalse(handler.isState(StateType.WALK));
+        assertFalse(idle.isEntered());
+        assertFalse(walk.isEntered());
 
         handler.changeState(StateType.IDLE);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
-        Assert.assertTrue(idle.isEntered());
-        Assert.assertFalse(idle.isUpdated());
+        assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(idle.isEntered());
+        assertFalse(idle.isUpdated());
 
         handler.update(1.0);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
-        Assert.assertTrue(idle.isEntered());
-        Assert.assertTrue(idle.isUpdated());
-        Assert.assertFalse(idle.isExited());
-        Assert.assertFalse(walk.isEntered());
-        Assert.assertFalse(walk.isUpdated());
+        assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(idle.isEntered());
+        assertTrue(idle.isUpdated());
+        assertFalse(idle.isExited());
+        assertFalse(walk.isEntered());
+        assertFalse(walk.isUpdated());
 
         handler.changeState(StateType.WALK);
 
-        Assert.assertTrue(handler.isState(StateType.WALK));
-        Assert.assertTrue(idle.isExited());
-        Assert.assertTrue(walk.isEntered());
-        Assert.assertFalse(walk.isUpdated());
+        assertTrue(handler.isState(StateType.WALK));
+        assertTrue(idle.isExited());
+        assertTrue(walk.isEntered());
+        assertFalse(walk.isUpdated());
 
         handler.update(1.0);
 
-        Assert.assertTrue(walk.isUpdated());
-        Assert.assertFalse(walk.isExited());
+        assertTrue(walk.isUpdated());
+        assertFalse(walk.isExited());
 
         handler.changeState(StateType.IDLE);
         handler.update(1.0);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
-        Assert.assertTrue(walk.isExited());
+        assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(walk.isExited());
     }
 
     /**
@@ -98,28 +99,28 @@ public class StateHandlerTest
 
         handler.changeState(StateType.IDLE);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(handler.isState(StateType.IDLE));
 
         handler.update(1.0);
 
-        Assert.assertTrue(handler.isState(StateType.WALK));
+        assertTrue(handler.isState(StateType.WALK));
 
         handler.update(1.0);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(handler.isState(StateType.IDLE));
 
         idle.clearTransitions();
         handler.update(1.0);
 
-        Assert.assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(handler.isState(StateType.IDLE));
     }
 
     /**
      * Test is state with invalid parameter.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullArgument()
     {
-        handler.changeState(null);
+        assertThrows(() -> handler.changeState(null), "Unexpected null argument !");
     }
 }

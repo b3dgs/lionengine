@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 /**
  * Input directional mock.
  */
-public class InputDirectionalMock implements InputDeviceDirectional
+final class InputDirectionalMock implements InputDeviceDirectional
 {
     @Override
     public void setHorizontalControlPositive(Integer code)
@@ -51,12 +51,12 @@ public class InputDirectionalMock implements InputDeviceDirectional
     @Override
     public double getHorizontalDirection()
     {
-        return 0;
+        return 0.0;
     }
 
     @Override
     public double getVerticalDirection()
     {
-        return 0;
+        return 0.0;
     }
 }

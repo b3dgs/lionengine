@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * State types test with error.
  */
-public enum StateTypeError implements StateAnimationBased
+enum StateTypeError implements StateAnimationBased
 {
     /** Idle state. */
     IDLE(StateIdle.class),

@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
 /**
  * Input pointer mock.
  */
-public class InputPointerMock implements InputDevicePointer
+final class InputPointerMock implements InputDevicePointer
 {
     @Override
     public void update(double extrp)

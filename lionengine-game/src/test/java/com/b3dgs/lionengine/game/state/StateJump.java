@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.state;
 /**
  * State jump test implementation.
  */
-public class StateJump extends StateBase
+final class StateJump extends StateBase
 {
     /**
      * Create the state.
      */
-    public StateJump()
+    StateJump()
     {
         super(StateTypeError.JUMP);
     }

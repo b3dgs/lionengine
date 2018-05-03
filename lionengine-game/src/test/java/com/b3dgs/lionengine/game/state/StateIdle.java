@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 /**
  * State idle test implementation.
  */
-public class StateIdle extends StateBase implements StateInputDirectionalUpdater
+final class StateIdle extends StateBase implements StateInputDirectionalUpdater
 {
     /**
      * Create the state.
      */
-    public StateIdle()
+    StateIdle()
     {
         this(null, null);
     }
@@ -40,9 +40,10 @@ public class StateIdle extends StateBase implements StateInputDirectionalUpdater
      * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    public StateIdle(Featurable featurable, Animation animation)
+    StateIdle(Featurable featurable, Animation animation)
     {
         super(StateType.IDLE);
+
         addTransition(new TransitionIdleToWalk());
     }
 
@@ -55,12 +56,13 @@ public class StateIdle extends StateBase implements StateInputDirectionalUpdater
     /**
      * Transition from {@link StateIdle} to {@link StateWalk}.
      */
-    private final class TransitionIdleToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
+    private static final class TransitionIdleToWalk extends StateTransition
+                                                    implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
          */
-        public TransitionIdleToWalk()
+        TransitionIdleToWalk()
         {
             super(StateType.WALK);
         }

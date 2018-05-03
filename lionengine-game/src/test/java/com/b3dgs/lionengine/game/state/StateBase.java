@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.state;
 /**
  * State base test implementation.
  */
-public class StateBase extends StateAbstract
+class StateBase extends StateAbstract
 {
     /** Entered flag. */
     private boolean entered;
@@ -34,7 +34,7 @@ public class StateBase extends StateAbstract
      * 
      * @param type The state type.
      */
-    public StateBase(Enum<?> type)
+    StateBase(Enum<?> type)
     {
         super(type);
     }
