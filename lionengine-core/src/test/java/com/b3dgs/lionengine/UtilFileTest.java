@@ -272,7 +272,7 @@ public final class UtilFileTest
         final Path file1 = Files.createTempFile(folder, "temp", ".tmp");
         final Path file2 = Files.createTempFile(folder, "temp", ".txt");
 
-        final Path folder2 = Files.createTempDirectory("temp");
+        final Path folder2 = Files.createTempDirectory(folder, "temp");
         final Path file3 = Files.createTempFile(folder2, "temp", ".tmp");
 
         assertIterableEquals(Arrays.asList(file2.toFile()),
@@ -281,8 +281,8 @@ public final class UtilFileTest
         Files.delete(file1);
         Files.delete(file2);
         Files.delete(file3);
-        Files.delete(folder);
         Files.delete(folder2);
+        Files.delete(folder);
     }
 
     /**
