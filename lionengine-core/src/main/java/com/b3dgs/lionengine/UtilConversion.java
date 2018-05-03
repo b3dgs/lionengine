@@ -31,6 +31,8 @@ public final class UtilConversion
 {
     /** Split with space. */
     private static final Pattern SPACE = Pattern.compile(Constant.SPACE);
+    /** Matcher replace. */
+    private static final Pattern REPLACER = Pattern.compile("\\W|_");
 
     /**
      * Convert an integer to an array of byte.
@@ -253,7 +255,7 @@ public final class UtilConversion
     {
         Check.notNull(string);
 
-        final String[] words = SPACE.split(string.replaceAll("\\W|_", Constant.SPACE));
+        final String[] words = SPACE.split(REPLACER.matcher(string).replaceAll(Constant.SPACE));
         final StringBuilder title = new StringBuilder(string.length());
         for (int i = 0; i < words.length; i++)
         {
