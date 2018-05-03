@@ -17,14 +17,17 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -38,8 +41,8 @@ public final class CursorTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setLoadFromJar(CursorTest.class);
@@ -48,8 +51,8 @@ public final class CursorTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);
@@ -63,15 +66,15 @@ public final class CursorTest
     {
         final Cursor cursor = new Cursor();
 
-        Assert.assertNull(cursor.getSurfaceId());
-        Assert.assertEquals(0.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1, cursor.getWidth());
-        Assert.assertEquals(1, cursor.getHeight());
-        Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, cursor.getSensibilityVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertNull(cursor.getSurfaceId());
+        assertEquals(0.0, cursor.getX());
+        assertEquals(0.0, cursor.getY());
+        assertEquals(1, cursor.getWidth());
+        assertEquals(1, cursor.getHeight());
+        assertEquals(1.0, cursor.getSensibilityHorizontal());
+        assertEquals(1.0, cursor.getSensibilityVertical());
+        assertEquals(0.0, cursor.getScreenX());
+        assertEquals(0.0, cursor.getScreenY());
     }
 
     /**
@@ -83,19 +86,19 @@ public final class CursorTest
         final Cursor cursor = new Cursor();
         cursor.setGrid(10, 20);
 
-        Assert.assertEquals(10, cursor.getWidth());
-        Assert.assertEquals(20, cursor.getHeight());
+        assertEquals(10, cursor.getWidth());
+        assertEquals(20, cursor.getHeight());
     }
 
     /**
      * Test no input.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNoInput()
     {
         final Cursor cursor = new Cursor();
 
-        Assert.assertEquals(-1, cursor.getClick());
+        assertThrows(NullPointerException.class, () -> cursor.getClick(), null);
     }
 
     /**
@@ -120,26 +123,27 @@ public final class CursorTest
         cursor.setSurfaceId(1);
         cursor.update(1.0);
 
-        Assert.assertEquals(Integer.valueOf(1), cursor.getSurfaceId());
-        Assert.assertFalse(cursor.isLoaded());
+        assertEquals(Integer.valueOf(1), cursor.getSurfaceId());
+        assertFalse(cursor.isLoaded());
 
         cursor.load();
 
-        Assert.assertTrue(cursor.isLoaded());
+        assertTrue(cursor.isLoaded());
 
         cursor.dispose();
 
-        Assert.assertNull(cursor.getSurfaceId());
+        assertNull(cursor.getSurfaceId());
     }
 
     /**
      * Test set surface unknown ID.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testSetSurfaceIdUnknown()
     {
         final Cursor cursor = new Cursor();
-        cursor.setSurfaceId(1);
+
+        assertThrows(() -> cursor.setSurfaceId(1), CursorRenderer.ERROR_SURFACE_ID + 1);
     }
 
     /**
@@ -152,15 +156,15 @@ public final class CursorTest
         cursor.addImage(1, Medias.create("cursor.png"));
         cursor.update(1.0);
 
-        Assert.assertFalse(cursor.isLoaded());
+        assertFalse(cursor.isLoaded());
 
         cursor.load();
 
-        Assert.assertTrue(cursor.isLoaded());
+        assertTrue(cursor.isLoaded());
 
         cursor.dispose();
 
-        Assert.assertNull(cursor.getSurfaceId());
+        assertNull(cursor.getSurfaceId());
     }
 
     /**
@@ -172,8 +176,8 @@ public final class CursorTest
         final Cursor cursor = new Cursor();
         cursor.setSensibility(1.0, 2.0);
 
-        Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getSensibilityVertical(), UtilTests.PRECISION);
+        assertEquals(1.0, cursor.getSensibilityHorizontal());
+        assertEquals(2.0, cursor.getSensibilityVertical());
     }
 
     /**
@@ -185,17 +189,17 @@ public final class CursorTest
         final Cursor cursor = new Cursor();
         cursor.setLocation(1, 2);
 
-        Assert.assertEquals(0.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(0.0, cursor.getX());
+        assertEquals(0.0, cursor.getY());
+        assertEquals(1.0, cursor.getScreenX());
+        assertEquals(2.0, cursor.getScreenY());
 
         cursor.update(1.0);
 
-        Assert.assertEquals(1.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(1.0, cursor.getX());
+        assertEquals(2.0, cursor.getY());
+        assertEquals(1.0, cursor.getScreenX());
+        assertEquals(2.0, cursor.getScreenY());
     }
 
     /**
@@ -210,25 +214,25 @@ public final class CursorTest
         final MouseMock mouse = new MouseMock();
         cursor.setInputDevice(mouse);
 
-        Assert.assertEquals(0.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, cursor.getScreenY(), UtilTests.PRECISION);
-        Assert.assertEquals(0, cursor.getClick());
-        Assert.assertFalse(cursor.hasClicked(1));
-        Assert.assertFalse(cursor.hasClickedOnce(1));
+        assertEquals(0.0, cursor.getX());
+        assertEquals(0.0, cursor.getY());
+        assertEquals(0.0, cursor.getScreenX());
+        assertEquals(0.0, cursor.getScreenY());
+        assertEquals(0, cursor.getClick());
+        assertFalse(cursor.hasClicked(1));
+        assertFalse(cursor.hasClickedOnce(1));
 
         mouse.setClick(1);
         mouse.move(2, 3);
         cursor.update(1.0);
 
-        Assert.assertEquals(2.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, cursor.getScreenY(), UtilTests.PRECISION);
-        Assert.assertEquals(1, cursor.getClick());
-        Assert.assertTrue(cursor.hasClicked(1));
-        Assert.assertTrue(cursor.hasClickedOnce(1));
+        assertEquals(2.0, cursor.getX());
+        assertEquals(3.0, cursor.getY());
+        assertEquals(2.0, cursor.getScreenX());
+        assertEquals(3.0, cursor.getScreenY());
+        assertEquals(1, cursor.getClick());
+        assertTrue(cursor.hasClicked(1));
+        assertTrue(cursor.hasClickedOnce(1));
     }
 
     /**
@@ -241,21 +245,21 @@ public final class CursorTest
         final MouseMock mouse = new MouseMock();
         cursor.setInputDevice(mouse);
 
-        Assert.assertTrue(cursor.isSynchronized());
+        assertTrue(cursor.isSynchronized());
 
         cursor.setSyncMode(false);
 
-        Assert.assertFalse(cursor.isSynchronized());
+        assertFalse(cursor.isSynchronized());
 
         cursor.setSensibility(0.5, 0.5);
 
         mouse.move(2, 4);
         cursor.update(1.0);
 
-        Assert.assertEquals(1.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(1.0, cursor.getX());
+        assertEquals(2.0, cursor.getY());
+        assertEquals(1.0, cursor.getScreenX());
+        assertEquals(2.0, cursor.getScreenY());
     }
 
     /**
@@ -270,18 +274,18 @@ public final class CursorTest
         cursor.setArea(5, 6, 10, 20);
         cursor.update(1.0);
 
-        Assert.assertEquals(5.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(6.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(5.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(6.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(5.0, cursor.getX());
+        assertEquals(6.0, cursor.getY());
+        assertEquals(5.0, cursor.getScreenX());
+        assertEquals(6.0, cursor.getScreenY());
 
         mouse.move(30, 40);
         cursor.update(1.0);
 
-        Assert.assertEquals(10.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(20.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(10.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(20.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(10.0, cursor.getX());
+        assertEquals(20.0, cursor.getY());
+        assertEquals(10.0, cursor.getScreenX());
+        assertEquals(20.0, cursor.getScreenY());
     }
 
     /**
@@ -298,10 +302,10 @@ public final class CursorTest
         mouse.move(1, 2);
         cursor.update(1.0);
 
-        Assert.assertEquals(1.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(1.0, cursor.getX());
+        assertEquals(2.0, cursor.getY());
+        assertEquals(1.0, cursor.getScreenX());
+        assertEquals(2.0, cursor.getScreenY());
     }
 
     /**
@@ -321,16 +325,16 @@ public final class CursorTest
 
         cursor.update(1.0);
 
-        Assert.assertEquals(101.0, cursor.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(438.0, cursor.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, cursor.getScreenX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, cursor.getScreenY(), UtilTests.PRECISION);
+        assertEquals(101.0, cursor.getX());
+        assertEquals(438.0, cursor.getY());
+        assertEquals(1.0, cursor.getScreenX());
+        assertEquals(2.0, cursor.getScreenY());
     }
 
     /**
      * Test render no surface
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testRenderNoSurface()
     {
         final Graphic g = Graphics.createGraphic();
@@ -339,7 +343,8 @@ public final class CursorTest
         cursor.render(g);
 
         cursor.setVisible(true);
-        cursor.render(g);
+
+        assertThrows(NullPointerException.class, () -> cursor.render(g), null);
     }
 
     /**

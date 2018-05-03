@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.graphic.drawable.Image;
 final class CursorRenderer implements Resource, Renderable
 {
     /** Surface ID not found error. */
-    private static final String ERROR_SURFACE_ID = "Undefined surface id:";
+    static final String ERROR_SURFACE_ID = "Undefined surface id:";
 
     /** Surface reference. */
     private final Map<Integer, Image> surfaces = new HashMap<>();

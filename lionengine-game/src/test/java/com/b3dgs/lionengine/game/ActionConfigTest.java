@@ -17,10 +17,15 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -34,8 +39,8 @@ public final class ActionConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -43,8 +48,8 @@ public final class ActionConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -62,10 +67,10 @@ public final class ActionConfigTest
         final Media media = Medias.create("action.xml");
         root.save(media);
 
-        Assert.assertEquals(action, ActionConfig.imports(new Xml(media)));
-        Assert.assertEquals(action, ActionConfig.imports(new Configurer(media)));
+        assertEquals(action, ActionConfig.imports(new Xml(media)));
+        assertEquals(action, ActionConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -76,16 +81,16 @@ public final class ActionConfigTest
     {
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
-        Assert.assertEquals(action, action);
+        assertEquals(action, action);
 
-        Assert.assertNotEquals(action, null);
-        Assert.assertNotEquals(action, new Object());
-        Assert.assertNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3));
-        Assert.assertNotEquals(action, new ActionConfig("a", "", 0, 1, 2, 3));
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", -1, 1, 2, 3));
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3));
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3));
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1));
+        assertNotEquals(action, null);
+        assertNotEquals(action, new Object());
+        assertNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3));
+        assertNotEquals(action, new ActionConfig("a", "", 0, 1, 2, 3));
+        assertNotEquals(action, new ActionConfig("a", "b", -1, 1, 2, 3));
+        assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3));
+        assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3));
+        assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1));
     }
 
     /**
@@ -94,16 +99,16 @@ public final class ActionConfigTest
     @Test
     public void testHashCode()
     {
-        final int action = new ActionConfig("a", "b", 0, 1, 2, 3).hashCode();
+        final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
-        Assert.assertEquals(action, new ActionConfig("a", "b", 0, 1, 2, 3).hashCode());
+        assertHashEquals(action, new ActionConfig("a", "b", 0, 1, 2, 3));
 
-        Assert.assertNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "", 0, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", -1, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3).hashCode());
-        Assert.assertNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1).hashCode());
+        assertHashNotEquals(action, new ActionConfig("", "b", 0, 1, 2, 3));
+        assertHashNotEquals(action, new ActionConfig("a", "", 0, 1, 2, 3));
+        assertHashNotEquals(action, new ActionConfig("a", "b", -1, 1, 2, 3));
+        assertHashNotEquals(action, new ActionConfig("a", "b", 0, -1, 2, 3));
+        assertHashNotEquals(action, new ActionConfig("a", "b", 0, 1, -1, 3));
+        assertHashNotEquals(action, new ActionConfig("a", "b", 0, 1, 2, -1));
     }
 
     /**
@@ -114,6 +119,6 @@ public final class ActionConfigTest
     {
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
-        Assert.assertEquals("ActionConfig [name=a, description=b, x=0, y=1, width=2, height=3]", action.toString());
+        assertEquals("ActionConfig [name=a, description=b, x=0, y=1, width=2, height=3]", action.toString());
     }
 }

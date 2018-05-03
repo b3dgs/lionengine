@@ -17,15 +17,22 @@
  */
 package com.b3dgs.lionengine.game;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Test {@link ActionRef}.
@@ -39,19 +46,19 @@ public final class ActionRefTest
     /**
      * Test constructor with <code>null</code> path.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorNullPath()
     {
-        Assert.assertNull(new ActionRef(null, false, Collections.emptyList()));
+        assertThrows(() -> new ActionRef(null, false, Collections.emptyList()), "Unexpected null argument !");
     }
 
     /**
      * Test constructor with <code>null</code> refs.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorNullRefs()
     {
-        Assert.assertNull(new ActionRef(Constant.EMPTY_STRING, false, null));
+        assertThrows(() -> assertNull(new ActionRef(Constant.EMPTY_STRING, false, null)), "Unexpected null argument !");
     }
 
     /**
@@ -60,14 +67,14 @@ public final class ActionRefTest
     @Test
     public void testGetter()
     {
-        Assert.assertEquals("path", actionRef1.getPath());
-        Assert.assertEquals("path2", actionRef2.getPath());
+        assertEquals("path", actionRef1.getPath());
+        assertEquals("path2", actionRef2.getPath());
 
-        Assert.assertFalse(actionRef1.hasCancel());
-        Assert.assertTrue(actionRef2.hasCancel());
+        assertFalse(actionRef1.hasCancel());
+        assertTrue(actionRef2.hasCancel());
 
-        Assert.assertTrue(actionRef1.getRefs().isEmpty());
-        Assert.assertEquals(actionRef1, actionRef2.getRefs().iterator().next());
+        assertTrue(actionRef1.getRefs().isEmpty());
+        assertEquals(actionRef1, actionRef2.getRefs().iterator().next());
     }
 
     /**
@@ -76,21 +83,21 @@ public final class ActionRefTest
     @Test
     public void testEquals()
     {
-        Assert.assertEquals(actionRef1, actionRef1);
-        Assert.assertEquals(actionRef1, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
+        assertEquals(actionRef1, actionRef1);
+        assertEquals(actionRef1, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
 
-        Assert.assertEquals(actionRef2, actionRef2);
-        Assert.assertEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1)));
+        assertEquals(actionRef2, actionRef2);
+        assertEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1)));
 
-        Assert.assertNotEquals(actionRef1, null);
-        Assert.assertNotEquals(actionRef1, new Object());
-        Assert.assertNotEquals(actionRef1, actionRef2);
-        Assert.assertNotEquals(actionRef2, actionRef1);
+        assertNotEquals(actionRef1, null);
+        assertNotEquals(actionRef1, new Object());
+        assertNotEquals(actionRef1, actionRef2);
+        assertNotEquals(actionRef2, actionRef1);
 
-        Assert.assertNotEquals(actionRef1, new ActionRef("", !cancel, new ArrayList<ActionRef>()));
-        Assert.assertNotEquals(actionRef1, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
-        Assert.assertNotEquals(actionRef1, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
-        Assert.assertNotEquals(actionRef1, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
+        assertNotEquals(actionRef1, new ActionRef("", !cancel, new ArrayList<ActionRef>()));
+        assertNotEquals(actionRef1, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
+        assertNotEquals(actionRef1, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
+        assertNotEquals(actionRef1, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
     }
 
     /**
@@ -99,22 +106,21 @@ public final class ActionRefTest
     @Test
     public void testHashCode()
     {
-        final int hash = actionRef1.hashCode();
+        final ActionRef hash = actionRef1;
 
-        Assert.assertEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()).hashCode());
+        assertHashEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
 
-        Assert.assertEquals(actionRef2.hashCode(), actionRef2.hashCode());
-        Assert.assertEquals(actionRef2.hashCode(),
-                            new ActionRef("path2", cancel, Arrays.asList(actionRef1)).hashCode());
+        assertHashEquals(actionRef2, actionRef2);
+        assertHashEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1)));
 
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, actionRef2.hashCode());
-        Assert.assertNotEquals(actionRef2.hashCode(), hash);
+        assertHashNotEquals(hash, new Object());
+        assertHashNotEquals(hash, actionRef2);
+        assertHashNotEquals(actionRef2, hash);
 
-        Assert.assertNotEquals(hash, new ActionRef("", !cancel, new ArrayList<ActionRef>()).hashCode());
-        Assert.assertNotEquals(hash, new ActionRef("path", cancel, new ArrayList<ActionRef>()).hashCode());
-        Assert.assertNotEquals(hash, new ActionRef("path", cancel, Arrays.asList(actionRef1)).hashCode());
-        Assert.assertNotEquals(hash, new ActionRef("path", !cancel, Arrays.asList(actionRef1)).hashCode());
+        assertHashNotEquals(hash, new ActionRef("", !cancel, new ArrayList<ActionRef>()));
+        assertHashNotEquals(hash, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
+        assertHashNotEquals(hash, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
+        assertHashNotEquals(hash, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
     }
 
     /**
@@ -123,7 +129,7 @@ public final class ActionRefTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("ActionRef [path=path2, cancel=true, refs=[ActionRef [path=path, cancel=false, refs=[]]]]",
-                            actionRef2.toString());
+        assertEquals("ActionRef [path=path2, cancel=true, refs=[ActionRef [path=path, cancel=false, refs=[]]]]",
+                     actionRef2.toString());
     }
 }

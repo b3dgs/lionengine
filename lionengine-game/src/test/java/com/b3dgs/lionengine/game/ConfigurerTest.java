@@ -17,26 +17,30 @@
  */
 package com.b3dgs.lionengine.game;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 
 /**
- * Test the configurer class.
+ * Test {@link Configurer}.
  */
-public class ConfigurerTest
+public final class ConfigurerTest
 {
     /** Test configuration. */
     private static Media config;
@@ -44,8 +48,8 @@ public class ConfigurerTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = createConfig("configurer.xml");
@@ -54,10 +58,10 @@ public class ConfigurerTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
         Configurer.clearCache();
     }
@@ -109,8 +113,9 @@ public class ConfigurerTest
     public void testGetRoot()
     {
         final Xml root = configurer.getRoot();
-        Assert.assertNotNull(root);
-        Assert.assertEquals("root", root.getNodeName());
+
+        assertNotNull(root);
+        assertEquals("root", root.getNodeName());
     }
 
     /**
@@ -119,7 +124,7 @@ public class ConfigurerTest
     @Test
     public void testGetPath()
     {
-        Assert.assertEquals(config.getFile().getParent(), configurer.getPath());
+        assertEquals(config.getFile().getParent(), configurer.getPath());
     }
 
     /**
@@ -128,7 +133,7 @@ public class ConfigurerTest
     @Test
     public void testGetMedia()
     {
-        Assert.assertEquals(config, configurer.getMedia());
+        assertEquals(config, configurer.getMedia());
     }
 
     /**
@@ -137,7 +142,7 @@ public class ConfigurerTest
     @Test
     public void testGetString()
     {
-        Assert.assertEquals("string", configurer.getString("attStr"));
+        assertEquals("string", configurer.getString("attStr"));
     }
 
     /**
@@ -146,9 +151,8 @@ public class ConfigurerTest
     @Test
     public void testGetStringDefault()
     {
-        Assert.assertEquals("string", configurer.getStringDefault("default", "attStr"));
-
-        Assert.assertEquals("default", configurer.getStringDefault("default", "void"));
+        assertEquals("string", configurer.getStringDefault("default", "attStr"));
+        assertEquals("default", configurer.getStringDefault("default", "void"));
     }
 
     /**
@@ -157,7 +161,7 @@ public class ConfigurerTest
     @Test
     public void testGetBoolean()
     {
-        Assert.assertFalse(configurer.getBoolean("attStr"));
+        assertFalse(configurer.getBoolean("attStr"));
     }
 
     /**
@@ -166,9 +170,8 @@ public class ConfigurerTest
     @Test
     public void testGetBooleanDefault()
     {
-        Assert.assertFalse(configurer.getBooleanDefault(true, "attStr"));
-
-        Assert.assertTrue(configurer.getBooleanDefault(true, "void"));
+        assertFalse(configurer.getBooleanDefault(true, "attStr"));
+        assertTrue(configurer.getBooleanDefault(true, "void"));
     }
 
     /**
@@ -177,7 +180,7 @@ public class ConfigurerTest
     @Test
     public void testGetInteger()
     {
-        Assert.assertEquals(1, configurer.getInteger("attInt"));
+        assertEquals(1, configurer.getInteger("attInt"));
     }
 
     /**
@@ -186,27 +189,26 @@ public class ConfigurerTest
     @Test
     public void testGetIntegerDefault()
     {
-        Assert.assertEquals(1, configurer.getIntegerDefault(2, "attInt"));
-
-        Assert.assertEquals(2, configurer.getIntegerDefault(2, "void"));
+        assertEquals(1, configurer.getIntegerDefault(2, "attInt"));
+        assertEquals(2, configurer.getIntegerDefault(2, "void"));
     }
 
     /**
      * Test the integer getter invalid value.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetIntegerInvalid()
     {
-        Assert.assertEquals(0, configurer.getInteger("attStr"));
+        assertThrows(() -> configurer.getInteger("attStr"), "[configurer.xml] ");
     }
 
     /**
      * Test the integer getter invalid value.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetIntegerDefaultInvalid()
     {
-        Assert.assertEquals(0, configurer.getIntegerDefault(1, "attStr"));
+        assertThrows(() -> configurer.getIntegerDefault(1, "attStr"), "[configurer.xml] ");
     }
 
     /**
@@ -215,7 +217,7 @@ public class ConfigurerTest
     @Test
     public void testGetDouble()
     {
-        Assert.assertEquals(1.0, configurer.getDouble("attInt"), UtilTests.PRECISION);
+        assertEquals(1.0, configurer.getDouble("attInt"));
     }
 
     /**
@@ -224,27 +226,27 @@ public class ConfigurerTest
     @Test
     public void testGetDoubleDefault()
     {
-        Assert.assertEquals(1.0, configurer.getDoubleDefault(2.0, "attInt"), UtilTests.PRECISION);
+        assertEquals(1.0, configurer.getDoubleDefault(2.0, "attInt"));
 
-        Assert.assertEquals(2.0, configurer.getDoubleDefault(2.0, "void"), UtilTests.PRECISION);
+        assertEquals(2.0, configurer.getDoubleDefault(2.0, "void"));
     }
 
     /**
      * Test the double getter invalid value.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetDoubleInvalid()
     {
-        Assert.assertEquals(0.0, configurer.getDouble("attStr"), UtilTests.PRECISION);
+        assertThrows(() -> configurer.getDouble("attStr"), "[configurer.xml] ");
     }
 
     /**
      * Test the double getter invalid value.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetDoubleDefaultInvalid()
     {
-        Assert.assertEquals(0.0, configurer.getDoubleDefault(1.0, "attStr"), UtilTests.PRECISION);
+        assertThrows(() -> configurer.getDoubleDefault(1.0, "attStr"), "[configurer.xml] ");
     }
 
     /**
@@ -253,7 +255,7 @@ public class ConfigurerTest
     @Test
     public void testGetText()
     {
-        Assert.assertEquals(Accessible.class.getName(), configurer.getText(Accessible.class.getSimpleName()));
+        assertEquals(Accessible.class.getName(), configurer.getText(Accessible.class.getSimpleName()));
     }
 
     /**
@@ -262,19 +264,19 @@ public class ConfigurerTest
     @Test
     public void testGetTextDefault()
     {
-        Assert.assertEquals(Accessible.class.getName(),
-                            configurer.getTextDefault("default", Accessible.class.getSimpleName()));
+        assertEquals(Accessible.class.getName(),
+                     configurer.getTextDefault("default", Accessible.class.getSimpleName()));
 
-        Assert.assertEquals("default", configurer.getTextDefault("default", "void"));
+        assertEquals("default", configurer.getTextDefault("default", "void"));
     }
 
     /**
      * Test get node not found.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNodeNotFound()
     {
-        Assert.assertNull(configurer.getText("void", "null"));
+        assertThrows(() -> configurer.getText("void", "null"), "[configurer.xml] ");
     }
 
     /**
@@ -284,7 +286,8 @@ public class ConfigurerTest
     public void testGetImplementationDefault()
     {
         final Accessible impl = configurer.getImplementation(Accessible.class, Accessible.class.getSimpleName());
-        Assert.assertTrue(impl.created);
+
+        assertTrue(impl.created);
     }
 
     /**
@@ -295,7 +298,7 @@ public class ConfigurerTest
     {
         final NotAccessible impl = configurer.getImplementation(NotAccessible.class,
                                                                 NotAccessible.class.getSimpleName());
-        Assert.assertTrue(impl.created);
+        assertTrue(impl.created);
     }
 
     /**
@@ -308,7 +311,7 @@ public class ConfigurerTest
                                                          Boolean.class,
                                                          Boolean.TRUE,
                                                          Custom.class.getSimpleName());
-        Assert.assertTrue(impl.created);
+        assertTrue(impl.created);
     }
 
     /**
@@ -317,20 +320,11 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationCustomInvalidArgument()
     {
-        try
-        {
-            Assert.assertNull(configurer.getImplementation(Custom.class,
-                                                           Boolean.class,
-                                                           Constant.EMPTY_STRING,
-                                                           Custom.class.getSimpleName()));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(),
-                                IllegalArgumentException.class,
-                                exception.getCause().getClass());
-        }
+        assertCause(() -> configurer.getImplementation(Custom.class,
+                                                       Boolean.class,
+                                                       Constant.EMPTY_STRING,
+                                                       Custom.class.getSimpleName()),
+                    IllegalArgumentException.class);
     }
 
     /**
@@ -339,18 +333,11 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationCustomAbstract()
     {
-        try
-        {
-            Assert.assertNull(configurer.getImplementation(Abstract.class,
-                                                           UtilReflection.getParamTypes(Boolean.TRUE),
-                                                           Arrays.asList(Boolean.TRUE),
-                                                           Abstract.class.getSimpleName()));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), InstantiationException.class, exception.getCause().getClass());
-        }
+        assertCause(() -> configurer.getImplementation(Abstract.class,
+                                                       UtilReflection.getParamTypes(Boolean.TRUE),
+                                                       Arrays.asList(Boolean.TRUE),
+                                                       Abstract.class.getSimpleName()),
+                    InstantiationException.class);
     }
 
     /**
@@ -359,15 +346,7 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationUnknown()
     {
-        try
-        {
-            Assert.assertNull(configurer.getImplementation(Object.class, "unknown"));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), ClassNotFoundException.class, exception.getCause().getClass());
-        }
+        assertCause(() -> configurer.getImplementation(Object.class, "unknown"), ClassNotFoundException.class);
     }
 
     /**
@@ -376,18 +355,11 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationNoCompatibleConstructor()
     {
-        try
-        {
-            Assert.assertNull(configurer.getImplementation(Accessible.class,
-                                                           UtilReflection.getParamTypes(Boolean.TRUE),
-                                                           Arrays.asList(Boolean.TRUE),
-                                                           Accessible.class.getSimpleName()));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), NoSuchMethodException.class, exception.getCause().getClass());
-        }
+        assertCause(() -> configurer.getImplementation(Accessible.class,
+                                                       UtilReflection.getParamTypes(Boolean.TRUE),
+                                                       Arrays.asList(Boolean.TRUE),
+                                                       Accessible.class.getSimpleName()),
+                    NoSuchMethodException.class);
     }
 
     /**
@@ -396,17 +368,8 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationConstructorThrows()
     {
-        try
-        {
-            Assert.assertNull(configurer.getImplementation(Throws.class, Throws.class.getSimpleName()));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(),
-                                InvocationTargetException.class,
-                                exception.getCause().getClass());
-        }
+        assertCause(() -> configurer.getImplementation(Throws.class, Throws.class.getSimpleName()),
+                    InvocationTargetException.class);
     }
 
     /**
@@ -415,8 +378,8 @@ public class ConfigurerTest
     @Test
     public void testHasNode()
     {
-        Assert.assertFalse(configurer.hasNode("void"));
-        Assert.assertTrue(configurer.hasNode("unknown"));
+        assertFalse(configurer.hasNode("void"));
+        assertTrue(configurer.hasNode("unknown"));
     }
 
     /**
@@ -431,14 +394,14 @@ public class ConfigurerTest
         root.setText("save");
         configurer.save();
 
-        Assert.assertEquals("save", new Configurer(media).getText());
-        Assert.assertTrue(media.getFile().delete());
+        assertEquals("save", new Configurer(media).getText());
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Mock class.
      */
-    static class Accessible
+    static final class Accessible
     {
         private final boolean created;
 
@@ -454,7 +417,7 @@ public class ConfigurerTest
     /**
      * Mock class.
      */
-    static class NotAccessible
+    static final class NotAccessible
     {
         private final boolean created;
 
@@ -467,7 +430,7 @@ public class ConfigurerTest
     /**
      * Mock class.
      */
-    static class Custom
+    static final class Custom
     {
         private final boolean created;
 
@@ -494,14 +457,14 @@ public class ConfigurerTest
          */
         public Abstract(Boolean value)
         {
-            Assert.assertNotNull(value);
+            assertNotNull(value);
         }
     }
 
     /**
      * Mock class.
      */
-    static class Throws
+    static final class Throws
     {
         /**
          * Create mock.

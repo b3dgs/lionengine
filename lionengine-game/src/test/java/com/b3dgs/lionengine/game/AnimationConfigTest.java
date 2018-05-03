@@ -17,16 +17,19 @@
  */
 package com.b3dgs.lionengine.game;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -40,8 +43,8 @@ public final class AnimationConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -49,8 +52,8 @@ public final class AnimationConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -72,24 +75,25 @@ public final class AnimationConfigTest
 
         final AnimationConfig imported = AnimationConfig.imports(new Setup(media));
 
-        Assert.assertEquals(animation1, imported.getAnimation("anim1"));
-        Assert.assertEquals(animation2, imported.getAnimation("anim2"));
-        Assert.assertTrue(imported.getAnimations().containsAll(Arrays.asList(animation1, animation2)));
+        assertEquals(animation1, imported.getAnimation("anim1"));
+        assertEquals(animation2, imported.getAnimation("anim2"));
+        assertTrue(imported.getAnimations().containsAll(Arrays.asList(animation1, animation2)));
 
-        Assert.assertFalse(imported.hasAnimation("anim"));
-        Assert.assertTrue(imported.hasAnimation("anim1"));
-        Assert.assertTrue(imported.hasAnimation("anim2"));
+        assertFalse(imported.hasAnimation("anim"));
+        assertTrue(imported.hasAnimation("anim1"));
+        assertTrue(imported.hasAnimation("anim2"));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Test get unknown animation.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetUnknownAnimation()
     {
         final AnimationConfig config = new AnimationConfig(new HashMap<>());
-        Assert.assertNull(config.getAnimation("void"));
+
+        assertThrows(() -> config.getAnimation("void"), AnimationConfig.ERROR_NOT_FOUND + "void");
     }
 }

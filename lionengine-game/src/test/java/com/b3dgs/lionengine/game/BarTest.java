@@ -17,17 +17,18 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.GraphicMock;
 
 /**
- * Test the bar class.
+ * Test {@link Bar}.
  */
-public class BarTest
+public final class BarTest
 {
     /**
      * Test the bar class.
@@ -46,19 +47,21 @@ public class BarTest
         bar.setHorizontalReferential(true);
         bar.setWidthPercent(100);
         bar.setHeightPercent(100);
-        Assert.assertEquals(10, bar.getWidthMax());
-        Assert.assertEquals(20, bar.getHeightMax());
-        Assert.assertEquals(100, bar.getWidthPercent());
-        Assert.assertEquals(100, bar.getHeightPercent());
-        Assert.assertEquals(10, bar.getWidth());
-        Assert.assertEquals(20, bar.getHeight());
+
+        assertEquals(10, bar.getWidthMax());
+        assertEquals(20, bar.getHeightMax());
+        assertEquals(100, bar.getWidthPercent());
+        assertEquals(100, bar.getHeightPercent());
+        assertEquals(10, bar.getWidth());
+        assertEquals(20, bar.getHeight());
 
         bar.setWidthPercent(50);
         bar.setHeightPercent(50);
-        Assert.assertEquals(50, bar.getWidthPercent());
-        Assert.assertEquals(50, bar.getHeightPercent());
-        Assert.assertEquals(5, bar.getWidth());
-        Assert.assertEquals(10, bar.getHeight());
+
+        assertEquals(50, bar.getWidthPercent());
+        assertEquals(50, bar.getHeightPercent());
+        assertEquals(5, bar.getWidth());
+        assertEquals(10, bar.getHeight());
 
         bar.render(g);
         bar.setColorBackground(null);
