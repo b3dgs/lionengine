@@ -17,11 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.selector;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.Cursor;
@@ -40,9 +44,9 @@ import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Geom;
 
 /**
- * Test the selector refresher class.
+ * Test {@link SelectorRefresher}.
  */
-public class SelectorRefresherTest
+public final class SelectorRefresherTest
 {
     private final Services services = new Services();
     private final Cursor cursor = services.create(Cursor.class);
@@ -55,7 +59,7 @@ public class SelectorRefresherTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         cursor.setInputDevice(mouse);
@@ -93,18 +97,18 @@ public class SelectorRefresherTest
     @Test
     public void testSelecting()
     {
-        Assert.assertFalse(model.isSelecting());
+        assertFalse(model.isSelecting());
 
         refresher.update(1.0);
         mouse.setClick(1);
         refresher.update(1.0);
 
-        Assert.assertFalse(model.isSelecting());
+        assertFalse(model.isSelecting());
 
         model.setClickSelection(1);
         refresher.update(1.0);
 
-        Assert.assertTrue(model.isSelecting());
+        assertTrue(model.isSelecting());
     }
 
     /**
@@ -113,8 +117,8 @@ public class SelectorRefresherTest
     @Test
     public void testSelection()
     {
-        Assert.assertNull(started.get());
-        Assert.assertNull(done.get());
+        assertNull(started.get());
+        assertNull(done.get());
 
         model.setClickSelection(1);
 
@@ -122,27 +126,27 @@ public class SelectorRefresherTest
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertNull(started.get());
+        assertNull(started.get());
 
         mouse.setClick(1);
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
-        Assert.assertNull(done.get());
+        assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
+        assertNull(done.get());
 
         mouse.move(10, 20);
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
-        Assert.assertNull(done.get());
+        assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
+        assertNull(done.get());
 
         mouse.setClick(0);
         cursor.update(1.0);
         refresher.update(1.0);
 
-        Assert.assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
-        Assert.assertEquals(Geom.createArea(1.0, 1.0, 10.0, 20.0), done.get());
+        assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
+        assertEquals(Geom.createArea(1.0, 1.0, 10.0, 20.0), done.get());
     }
 }
