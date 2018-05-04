@@ -53,12 +53,12 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  */
 public class Minimap implements Image
 {
+    /** Surface not loaded error. */
+    static final String ERROR_SURFACE = "Surface has not beed loaded !";
     /** No tile representation. */
     private static final ColorRgba NO_TILE = ColorRgba.TRANSPARENT;
     /** Default tile color. */
     private static final ColorRgba DEFAULT_COLOR = ColorRgba.WHITE;
-    /** Surface not loaded error. */
-    private static final String ERROR_SURFACE = "Surface has not beed loaded !";
 
     /** Pixel configuration. */
     private Map<TileRef, ColorRgba> pixels = new HashMap<>();

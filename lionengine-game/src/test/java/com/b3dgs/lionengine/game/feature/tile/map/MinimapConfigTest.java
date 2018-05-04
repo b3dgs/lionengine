@@ -17,18 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
@@ -40,7 +41,7 @@ public final class MinimapConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -49,7 +50,7 @@ public final class MinimapConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(null);
@@ -57,13 +58,11 @@ public final class MinimapConfigTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(MinimapConfig.class);
+        assertPrivateConstructor(MinimapConfig.class);
     }
 
     /**
@@ -80,8 +79,8 @@ public final class MinimapConfigTest
         final Media config = Medias.create("minimap.xml");
         MinimapConfig.exports(config, tiles);
 
-        Assert.assertEquals(tiles, MinimapConfig.imports(config));
+        assertEquals(tiles, MinimapConfig.imports(config));
 
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
     }
 }

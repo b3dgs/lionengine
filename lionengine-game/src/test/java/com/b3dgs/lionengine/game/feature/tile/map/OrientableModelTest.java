@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Orientation;
@@ -32,9 +33,9 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 
 /**
- * Test the orientable.
+ * Test {@link OrientableModel}.
  */
-public class OrientableModelTest
+public final class OrientableModelTest
 {
     private final Services services = new Services();
     private final Featurable featurable = new FeaturableModel();
@@ -43,7 +44,7 @@ public class OrientableModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new MapTileGame());
@@ -57,7 +58,7 @@ public class OrientableModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
         featurable.getFeature(Identifiable.class).notifyDestroyed();
@@ -80,38 +81,38 @@ public class OrientableModelTest
     @Test
     public void testOrientable()
     {
-        Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
+        assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.setOrientation(Orientation.SOUTH);
 
-        Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
         orientable.pointTo(0, 0);
-        Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
         orientable.pointTo(-1, 0);
-        Assert.assertEquals(Orientation.WEST, orientable.getOrientation());
+        assertEquals(Orientation.WEST, orientable.getOrientation());
 
         orientable.pointTo(1, 0);
-        Assert.assertEquals(Orientation.EAST, orientable.getOrientation());
+        assertEquals(Orientation.EAST, orientable.getOrientation());
 
         orientable.pointTo(0, 1);
-        Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
+        assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.pointTo(0, -1);
-        Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
         orientable.pointTo(-1, 1);
-        Assert.assertEquals(Orientation.NORTH_WEST, orientable.getOrientation());
+        assertEquals(Orientation.NORTH_WEST, orientable.getOrientation());
 
         orientable.pointTo(1, 1);
-        Assert.assertEquals(Orientation.NORTH_EAST, orientable.getOrientation());
+        assertEquals(Orientation.NORTH_EAST, orientable.getOrientation());
 
         orientable.pointTo(-1, -1);
-        Assert.assertEquals(Orientation.SOUTH_WEST, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH_WEST, orientable.getOrientation());
 
         orientable.pointTo(1, -1);
-        Assert.assertEquals(Orientation.SOUTH_EAST, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH_EAST, orientable.getOrientation());
     }
 
     /**
@@ -120,37 +121,37 @@ public class OrientableModelTest
     @Test
     public void testOrientableTiled()
     {
-        Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
+        assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.setOrientation(Orientation.SOUTH);
 
-        Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, 0, 0);
-        Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, -1, 0);
-        Assert.assertEquals(Orientation.WEST, orientable.getOrientation());
+        assertEquals(Orientation.WEST, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, 1, 0);
-        Assert.assertEquals(Orientation.EAST, orientable.getOrientation());
+        assertEquals(Orientation.EAST, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, 0, 1);
-        Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
+        assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, 0, -1);
-        Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, -1, 1);
-        Assert.assertEquals(Orientation.NORTH_WEST, orientable.getOrientation());
+        assertEquals(Orientation.NORTH_WEST, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, 1, 1);
-        Assert.assertEquals(Orientation.NORTH_EAST, orientable.getOrientation());
+        assertEquals(Orientation.NORTH_EAST, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, -1, -1);
-        Assert.assertEquals(Orientation.SOUTH_WEST, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH_WEST, orientable.getOrientation());
 
         UtilOrientable.pointToTiled(orientable, 1, -1);
-        Assert.assertEquals(Orientation.SOUTH_EAST, orientable.getOrientation());
+        assertEquals(Orientation.SOUTH_EAST, orientable.getOrientation());
     }
 }

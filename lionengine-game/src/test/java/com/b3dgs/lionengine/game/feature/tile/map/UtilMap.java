@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
-import org.junit.Assert;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCirc
 /**
  * Utility related to map manipulation.
  */
-public class UtilMap
+public final class UtilMap
 {
     /** Water group name. */
     public static final int TILE_WATER = 0;
@@ -112,7 +112,7 @@ public class UtilMap
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         mapGroup.loadGroups(config);
 
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
     }
 
     /**

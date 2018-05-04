@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test the level rip converter class.
@@ -29,12 +28,10 @@ public class LevelRipConverterTest
 {
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(LevelRipConverter.class);
+        assertPrivateConstructor(LevelRipConverter.class);
     }
 }

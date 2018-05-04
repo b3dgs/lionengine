@@ -17,17 +17,18 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
@@ -37,9 +38,6 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  */
 public final class MapTileGameTest
 {
-    /** Temp folder. */
-    @Rule public final TemporaryFolder folder = new TemporaryFolder();
-
     private final MapTileGame map = new MapTileGame();
 
     /**
@@ -48,75 +46,80 @@ public final class MapTileGameTest
     @Test
     public void testCreate()
     {
-        Assert.assertFalse(map.isCreated());
+        assertFalse(map.isCreated());
+
         map.create(16, 32, 2, 3);
-        Assert.assertTrue(map.isCreated());
+
+        assertTrue(map.isCreated());
 
         map.loadSheets(new ArrayList<SpriteTiled>());
-        Assert.assertEquals(16, map.getTileWidth());
-        Assert.assertEquals(32, map.getTileHeight());
-        Assert.assertEquals(2 * 16, map.getWidth());
-        Assert.assertEquals(3 * 32, map.getHeight());
-        Assert.assertEquals(2, map.getInTileWidth());
-        Assert.assertEquals(3, map.getInTileHeight());
-        Assert.assertEquals((int) Math.ceil(StrictMath.sqrt(2.0 * 2.0 + 3.0 * 3.0)), map.getInTileRadius());
+
+        assertEquals(16, map.getTileWidth());
+        assertEquals(32, map.getTileHeight());
+        assertEquals(2 * 16, map.getWidth());
+        assertEquals(3 * 32, map.getHeight());
+        assertEquals(2, map.getInTileWidth());
+        assertEquals(3, map.getInTileHeight());
+        assertEquals((int) Math.ceil(StrictMath.sqrt(2.0 * 2.0 + 3.0 * 3.0)), map.getInTileRadius());
 
         final Tile tile = map.createTile(Integer.valueOf(1), 2, 16.0, 32.0);
-        Assert.assertEquals(1, tile.getSheet().intValue());
-        Assert.assertEquals(2, tile.getNumber());
-        Assert.assertEquals(16.0, tile.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(32.0, tile.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(1, tile.getInTileX());
-        Assert.assertEquals(1, tile.getInTileY());
-        Assert.assertEquals(16, tile.getWidth());
-        Assert.assertEquals(32, tile.getHeight());
-        Assert.assertEquals(1, tile.getInTileWidth());
-        Assert.assertEquals(1, tile.getInTileHeight());
+
+        assertEquals(1, tile.getSheet().intValue());
+        assertEquals(2, tile.getNumber());
+        assertEquals(16.0, tile.getX());
+        assertEquals(32.0, tile.getY());
+        assertEquals(1, tile.getInTileX());
+        assertEquals(1, tile.getInTileY());
+        assertEquals(16, tile.getWidth());
+        assertEquals(32, tile.getHeight());
+        assertEquals(1, tile.getInTileWidth());
+        assertEquals(1, tile.getInTileHeight());
     }
 
     /**
      * Test map creation with a wrong tile width.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateWrongTileWidth()
     {
-        map.create(0, 1, 1, 1);
+        assertThrows(() -> map.create(0, 1, 1, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
      * Test map creation with a wrong tile height.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateWrongTileHeight()
     {
-        map.create(1, 0, 1, 1);
+        assertThrows(() -> map.create(1, 0, 1, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
      * Test map creation with a wrong width.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateWrongWidth()
     {
-        map.create(1, 1, 0, 1);
+        assertThrows(() -> map.create(1, 1, 0, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
      * Test map creation with a wrong height.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateWrongHeight()
     {
-        map.create(1, 1, 1, 0);
+        assertThrows(() -> map.create(1, 1, 1, 0), "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
      * Test map create tile not initialized.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testCreateTileError()
     {
-        Assert.assertNull(map.createTile(Integer.valueOf(0), 0, 0.0, 0.0));
+        assertThrows(() -> map.createTile(Integer.valueOf(0), 0, 0.0, 0.0),
+                     "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
@@ -129,20 +132,20 @@ public final class MapTileGameTest
         final Tile tile = map.createTile(Integer.valueOf(0), 0, 0, 0);
         map.setTile(tile);
 
-        Assert.assertEquals(tile, map.getTile(0, 0));
+        assertEquals(tile, map.getTile(0, 0));
 
         map.clear();
 
-        Assert.assertNull(map.getTile(0, 0));
+        assertNull(map.getTile(0, 0));
     }
 
     /**
      * Test unknown sheet get.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testGetUnknownSheet()
     {
-        map.getSheet(Integer.valueOf(1));
+        assertThrows(() -> map.getSheet(Integer.valueOf(1)), MapTileGame.ERROR_SHEET_MISSING + 1);
     }
 
     /**
@@ -154,18 +157,18 @@ public final class MapTileGameTest
         map.create(16, 16, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
 
-        Assert.assertEquals(0, map.getTilesNumber());
-        Assert.assertNull(map.getTile(0, 0));
-        Assert.assertNull(map.getTileAt(51.0, 68.0));
+        assertEquals(0, map.getTilesNumber());
+        assertNull(map.getTile(0, 0));
+        assertNull(map.getTileAt(51.0, 68.0));
 
         final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);
         map.setTile(tile);
 
-        Assert.assertEquals(1, map.getTilesNumber());
-        Assert.assertEquals(tile, map.getTile(0, 0));
-        Assert.assertEquals(tile, map.getTile(Geom.createLocalizable(0, 0), 0, 0));
-        Assert.assertEquals(tile, map.getTileAt(3.0, 6.0));
-        Assert.assertEquals(Arrays.asList(tile), map.getTilesHit(-1, -1, 1, 1));
+        assertEquals(1, map.getTilesNumber());
+        assertEquals(tile, map.getTile(0, 0));
+        assertEquals(tile, map.getTile(Geom.createLocalizable(0, 0), 0, 0));
+        assertEquals(tile, map.getTileAt(3.0, 6.0));
+        assertEquals(Arrays.asList(tile), map.getTilesHit(-1, -1, 1, 1));
     }
 
     /**
@@ -183,13 +186,13 @@ public final class MapTileGameTest
         final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);
         map.setTile(tile);
 
-        Assert.assertEquals(tile, set.get());
+        assertEquals(tile, set.get());
 
         set.set(null);
         map.removeListener(listener);
 
         map.setTile(tile);
 
-        Assert.assertNull(set.get());
+        assertNull(set.get());
     }
 }

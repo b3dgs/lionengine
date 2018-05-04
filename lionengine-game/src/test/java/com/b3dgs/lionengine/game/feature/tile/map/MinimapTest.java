@@ -17,32 +17,34 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
- * Test the minimap class.
+ * Test {@link Minimap}.
  */
-public class MinimapTest
+public final class MinimapTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -50,8 +52,8 @@ public class MinimapTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -74,19 +76,20 @@ public class MinimapTest
 
         minimap.setOrigin(Origin.BOTTOM_LEFT);
 
-        Assert.assertEquals(0.0, minimap.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, minimap.getY(), UtilTests.PRECISION);
-        Assert.assertNull(minimap.getSurface());
-        Assert.assertFalse(minimap.isLoaded());
+        assertEquals(0.0, minimap.getX());
+        assertEquals(0.0, minimap.getY());
+        assertNull(minimap.getSurface());
+        assertFalse(minimap.isLoaded());
     }
 
     /**
      * Test the minimap with wrong prepare.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullPrepare()
     {
         final Minimap minimap = new Minimap(new MapTileGame());
-        minimap.prepare();
+
+        assertThrows(() -> minimap.prepare(), Minimap.ERROR_SURFACE);
     }
 }

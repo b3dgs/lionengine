@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Utilities dedicated to orientable test.
  */
-public class UtilOrientable
+final class UtilOrientable
 {
     /**
      * Point to a tiled.

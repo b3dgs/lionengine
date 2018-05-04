@@ -62,7 +62,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public class MapTileGame extends FeaturableModel implements MapTile
 {
     /** Error sheet missing message. */
-    private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
+    static final String ERROR_SHEET_MISSING = "Sheet missing: ";
     /** Inconsistent tile size. */
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
 

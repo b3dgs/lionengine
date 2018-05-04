@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -35,8 +38,8 @@ public final class TileSheetsConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -44,8 +47,8 @@ public final class TileSheetsConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -61,10 +64,10 @@ public final class TileSheetsConfigTest
 
         final TileSheetsConfig config = TileSheetsConfig.imports(media);
 
-        Assert.assertEquals(16, config.getTileWidth());
-        Assert.assertEquals(32, config.getTileHeight());
-        Assert.assertArrayEquals(Arrays.asList("sheet").toArray(), config.getSheets().toArray());
+        assertEquals(16, config.getTileWidth());
+        assertEquals(32, config.getTileHeight());
+        assertArrayEquals(Arrays.asList("sheet").toArray(), config.getSheets().toArray());
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 }

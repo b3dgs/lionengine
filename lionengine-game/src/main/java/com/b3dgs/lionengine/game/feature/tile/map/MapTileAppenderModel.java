@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 public class MapTileAppenderModel extends FeatureModel implements MapTileAppender
 {
     /** Invalid map tile size. */
-    private static final String ERROR_APPEND_MAP_TILE_SIZE = "Appended map does not have the same tile size: ";
+    static final String ERROR_APPEND_MAP_TILE_SIZE = "Appended map does not have the same tile size: ";
 
     /** Map reference. */
     private final MapTileGame map;
