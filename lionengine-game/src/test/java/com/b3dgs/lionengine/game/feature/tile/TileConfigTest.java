@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Xml;
 
 /**
@@ -31,13 +31,11 @@ public final class TileConfigTest
 {
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(TileConfig.class);
+        assertPrivateConstructor(TileConfig.class);
     }
 
     /**
@@ -50,7 +48,7 @@ public final class TileConfigTest
         nodeTile.writeInteger(TileConfig.ATT_TILE_SHEET, 0);
         nodeTile.writeInteger(TileConfig.ATT_TILE_NUMBER, 1);
 
-        Assert.assertEquals(new TileRef(0, 1), TileConfig.imports(nodeTile));
+        assertEquals(new TileRef(0, 1), TileConfig.imports(nodeTile));
     }
 
     /**
@@ -63,7 +61,7 @@ public final class TileConfigTest
         final int number = 1;
         final Xml nodeTile = TileConfig.exports(new TileRef(sheet, number));
 
-        Assert.assertEquals(sheet, nodeTile.readInteger(TileConfig.ATT_TILE_SHEET));
-        Assert.assertEquals(number, nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER));
+        assertEquals(sheet, nodeTile.readInteger(TileConfig.ATT_TILE_SHEET));
+        assertEquals(number, nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER));
     }
 }

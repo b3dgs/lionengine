@@ -17,16 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.UtilTests;
 
 /**
- * Test the tile group type enum.
+ * Test {@link TileGroupType}.
  */
-public class TileGroupTypeTest
+public final class TileGroupTypeTest
 {
     /**
      * Test the enum.
@@ -47,16 +48,16 @@ public class TileGroupTypeTest
     {
         for (final TileGroupType type : TileGroupType.values())
         {
-            Assert.assertEquals(type, TileGroupType.from(type.name()));
+            assertEquals(type, TileGroupType.from(type.name()));
         }
     }
 
     /**
      * Test the enum creation from string.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFromStringInvalid()
     {
-        Assert.assertNull(TileGroupType.from("null"));
+        assertThrows(() -> TileGroupType.from("null"), TileGroupType.ERROR_TYPE_NAME + "null");
     }
 }

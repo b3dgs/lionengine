@@ -17,19 +17,20 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link TileGroupsConfig}.
@@ -39,8 +40,8 @@ public final class TileGroupsConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -56,13 +57,11 @@ public final class TileGroupsConfigTest
 
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(TileGroupsConfig.class);
+        assertPrivateConstructor(TileGroupsConfig.class);
     }
 
     /**
@@ -77,8 +76,8 @@ public final class TileGroupsConfigTest
         final Media config = Medias.create("tilegroups.xml");
         TileGroupsConfig.exports(config, groups);
 
-        Assert.assertEquals(groups, TileGroupsConfig.imports(config));
+        assertEquals(groups, TileGroupsConfig.imports(config));
 
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
     }
 }

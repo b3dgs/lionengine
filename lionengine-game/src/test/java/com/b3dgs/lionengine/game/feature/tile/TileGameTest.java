@@ -17,64 +17,73 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollision;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel;
 
 /**
- * Test the tile game class.
+ * Test {@link TileGame}.
  */
-public class TileGameTest
+public final class TileGameTest
 {
     /**
      * Test constructor with null sheet.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructoNullSheet()
     {
-        Assert.assertNull(new TileGame(null, 0, 0, 0, 1, 1));
+        assertThrows(() -> new TileGame(null, 0, 0, 0, 1, 1), "Unexpected null argument !");
     }
 
     /**
      * Test constructor with negative sheet.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorNegativeSheet()
     {
-        Assert.assertNull(new TileGame(Integer.valueOf(-1), 0, 0, 0, 1, 1));
+        assertThrows(() -> new TileGame(Integer.valueOf(-1), 0, 0, 0, 1, 1),
+                     "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
      * Test constructor with negative number.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorNegativeNumber()
     {
-        Assert.assertNull(new TileGame(Integer.valueOf(0), -1, 0, 0, 1, 1));
+        assertThrows(() -> new TileGame(Integer.valueOf(0), -1, 0, 0, 1, 1),
+                     "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
-     * Test constructor with negative width.
+     * Test constructor with invalid width.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConstructorNegativeWidth()
     {
-        Assert.assertNull(new TileGame(Integer.valueOf(0), 0, 0, 0, -1, 1));
+        assertThrows(() -> new TileGame(Integer.valueOf(0), 0, 0, 0, 0, 1),
+                     "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
-     * Test constructor with negative height.
+     * Test constructor with invalid height.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructorNegativeHeight()
+    @Test
+    public void testConstructorInvalidHeight()
     {
-        Assert.assertNull(new TileGame(Integer.valueOf(0), 0, 0, 0, 1, -1));
+        assertThrows(() -> new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 0),
+                     "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
@@ -87,41 +96,22 @@ public class TileGameTest
         final TileCollision feature = new TileCollisionModel(tile);
         tile.addFeature(feature);
 
-        Assert.assertEquals(Integer.valueOf(0), tile.getSheet());
-        Assert.assertEquals(1, tile.getNumber());
-        Assert.assertEquals(16, tile.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(25, tile.getY(), UtilTests.PRECISION);
-        Assert.assertEquals(4, tile.getInTileX());
-        Assert.assertEquals(5, tile.getInTileY());
-        Assert.assertEquals(4, tile.getWidth());
-        Assert.assertEquals(5, tile.getHeight());
-        Assert.assertEquals(1, tile.getInTileWidth());
-        Assert.assertEquals(1, tile.getInTileHeight());
-        Assert.assertTrue(tile.hasFeature(TileCollision.class));
-        Assert.assertFalse(tile.hasFeature(MockFeature.class));
+        assertEquals(Integer.valueOf(0), tile.getSheet());
+        assertEquals(1, tile.getNumber());
+        assertEquals(16, tile.getX());
+        assertEquals(25, tile.getY());
+        assertEquals(4, tile.getInTileX());
+        assertEquals(5, tile.getInTileY());
+        assertEquals(4, tile.getWidth());
+        assertEquals(5, tile.getHeight());
+        assertEquals(1, tile.getInTileWidth());
+        assertEquals(1, tile.getInTileHeight());
+        assertTrue(tile.hasFeature(TileCollision.class));
+        assertFalse(tile.hasFeature(MockFeature.class));
 
         final Class<?> next = tile.getFeature(Feature.class).getClass();
-        Assert.assertTrue(next.getName(), next.equals(feature.getClass()) || Identifiable.class.isAssignableFrom(next));
-    }
 
-    /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
-
-        Assert.assertEquals(tile.hashCode(), tile.hashCode());
-        Assert.assertEquals(tile.hashCode(), new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5).hashCode());
-
-        Assert.assertNotEquals(tile.hashCode(), new Object().hashCode());
-        Assert.assertNotEquals(tile.hashCode(), new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5).hashCode());
-        Assert.assertNotEquals(tile.hashCode(), new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5).hashCode());
-        Assert.assertNotEquals(tile.hashCode(), new TileGame(Integer.valueOf(0), 1, 0, 25, 4, 5).hashCode());
-        Assert.assertNotEquals(tile.hashCode(), new TileGame(Integer.valueOf(0), 1, 16, 0, 4, 5).hashCode());
-        Assert.assertNotEquals(tile.hashCode(), new TileGame(Integer.valueOf(0), 1, 16, 25, 10, 5).hashCode());
-        Assert.assertNotEquals(tile.hashCode(), new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 10).hashCode());
+        assertTrue(next.equals(feature.getClass()) || Identifiable.class.isAssignableFrom(next), next.getName());
     }
 
     /**
@@ -132,16 +122,36 @@ public class TileGameTest
     {
         final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
 
-        Assert.assertEquals(tile, tile);
-        Assert.assertEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5));
+        assertEquals(tile, tile);
+        assertEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5));
 
-        Assert.assertNotEquals(tile, new Object());
-        Assert.assertNotEquals(tile, new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5));
-        Assert.assertNotEquals(tile, new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5));
-        Assert.assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 0, 25, 4, 5));
-        Assert.assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 0, 4, 5));
-        Assert.assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 10, 5));
-        Assert.assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 10));
+        assertNotEquals(tile, new Object());
+        assertNotEquals(tile, new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5));
+        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5));
+        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 0, 25, 4, 5));
+        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 0, 4, 5));
+        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 10, 5));
+        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 10));
+    }
+
+    /**
+     * Test the hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
+
+        assertHashEquals(tile, tile);
+        assertHashEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5));
+
+        assertHashNotEquals(tile, new Object());
+        assertHashNotEquals(tile, new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5));
+        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5));
+        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 0, 25, 4, 5));
+        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 0, 4, 5));
+        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 10, 5));
+        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 10));
     }
 
     /**
@@ -150,8 +160,8 @@ public class TileGameTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("sheet = 0 | number = 1 | tx = 2 | ty = 3",
-                            new TileGame(Integer.valueOf(0), 1, 32, 48, 16, 16).toString());
+        assertEquals("sheet = 0 | number = 1 | tx = 2 | ty = 3",
+                     new TileGame(Integer.valueOf(0), 1, 32, 48, 16, 16).toString());
     }
 
     /**

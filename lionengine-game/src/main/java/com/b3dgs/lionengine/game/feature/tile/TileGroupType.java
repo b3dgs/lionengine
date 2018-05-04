@@ -34,7 +34,7 @@ public enum TileGroupType
     NONE;
 
     /** Error circuit name. */
-    private static final String ERROR_TYPE_NAME = "Unknown tile group type: ";
+    static final String ERROR_TYPE_NAME = "Unknown tile group type: ";
 
     /**
      * Convert circuit part name to its enum value.
