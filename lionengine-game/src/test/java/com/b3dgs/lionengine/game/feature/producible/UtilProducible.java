@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.UtilSetup;
 /**
  * Utilities dedicated to producible test.
  */
-public class UtilProducible
+final class UtilProducible
 {
     /**
      * Create listener.

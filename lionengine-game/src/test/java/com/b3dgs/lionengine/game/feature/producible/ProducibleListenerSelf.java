@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 /**
  * Producible self listener test.
  */
-class ProducibleListenerSelf extends FeaturableModel implements ProducibleListener
+final class ProducibleListenerSelf extends FeaturableModel implements ProducibleListener
 {
     /**
      * Constructor.
@@ -31,6 +31,7 @@ class ProducibleListenerSelf extends FeaturableModel implements ProducibleListen
     public ProducibleListenerSelf()
     {
         super();
+
         addFeature(new IdentifiableModel());
     }
 

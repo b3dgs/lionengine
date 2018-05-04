@@ -17,22 +17,26 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -40,9 +44,9 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 
 /**
- * Test the producer model.
+ * Test {@link ProducerModel}.
  */
-public class ProducerModelTest
+public final class ProducerModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<ProducerState> HACK = new UtilEnum<>(ProducerState.class, ProducerModel.class);
@@ -50,8 +54,8 @@ public class ProducerModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         HACK.addByValue(HACK.make("FAIL"));
@@ -60,8 +64,8 @@ public class ProducerModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
         HACK.restore();
@@ -74,7 +78,7 @@ public class ProducerModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new Handler(services));
@@ -86,7 +90,7 @@ public class ProducerModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
@@ -111,50 +115,50 @@ public class ProducerModelTest
 
         producer.update(1.0);
 
-        Assert.assertNull(producer.getProducingElement());
-        Assert.assertEquals(-1.0, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(-1, producer.getProgressPercent());
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertFalse(producer.isProducing());
+        assertNull(producer.getProducingElement());
+        assertEquals(-1.0, producer.getProgress());
+        assertEquals(-1, producer.getProgressPercent());
+        assertEquals(0, producer.getQueueLength());
+        assertFalse(producer.isProducing());
 
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);
 
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertNull(start.get());
-        Assert.assertFalse(producer.isProducing());
+        assertEquals(0, producer.getQueueLength());
+        assertNull(start.get());
+        assertFalse(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(0.0, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(0, producer.getProgressPercent());
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertEquals(featurable, start.get());
-        Assert.assertNull(current.get());
-        Assert.assertTrue(producer.isProducing());
-        Assert.assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
+        assertEquals(0.0, producer.getProgress());
+        assertEquals(0, producer.getProgressPercent());
+        assertEquals(0, producer.getQueueLength());
+        assertEquals(featurable, start.get());
+        assertNull(current.get());
+        assertTrue(producer.isProducing());
+        assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
 
         producer.update(1.0);
 
-        Assert.assertEquals(0.5, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(50, producer.getProgressPercent());
-        Assert.assertEquals(featurable, current.get());
-        Assert.assertNull(done.get());
-        Assert.assertTrue(producer.isProducing());
+        assertEquals(0.5, producer.getProgress());
+        assertEquals(50, producer.getProgressPercent());
+        assertEquals(featurable, current.get());
+        assertNull(done.get());
+        assertTrue(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(1.0, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(100, producer.getProgressPercent());
-        Assert.assertEquals(featurable, current.get());
-        Assert.assertNull(done.get());
-        Assert.assertFalse(producer.isProducing());
+        assertEquals(1.0, producer.getProgress());
+        assertEquals(100, producer.getProgressPercent());
+        assertEquals(featurable, current.get());
+        assertNull(done.get());
+        assertFalse(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(featurable, done.get());
-        Assert.assertNull(cant.get());
-        Assert.assertFalse(producer.isProducing());
+        assertEquals(featurable, done.get());
+        assertNull(cant.get());
+        assertFalse(producer.isProducing());
     }
 
     /**
@@ -174,50 +178,50 @@ public class ProducerModelTest
 
         producer.update(1.0);
 
-        Assert.assertNull(producer.getProducingElement());
-        Assert.assertEquals(-1.0, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(-1, producer.getProgressPercent());
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertFalse(producer.isProducing());
+        assertNull(producer.getProducingElement());
+        assertEquals(-1.0, producer.getProgress());
+        assertEquals(-1, producer.getProgressPercent());
+        assertEquals(0, producer.getQueueLength());
+        assertFalse(producer.isProducing());
 
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);
 
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertNull(start.get());
-        Assert.assertFalse(producer.isProducing());
+        assertEquals(0, producer.getQueueLength());
+        assertNull(start.get());
+        assertFalse(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(0.0, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(0, producer.getProgressPercent());
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertEquals(featurable, start.get());
-        Assert.assertNull(current.get());
-        Assert.assertTrue(producer.isProducing());
-        Assert.assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
+        assertEquals(0.0, producer.getProgress());
+        assertEquals(0, producer.getProgressPercent());
+        assertEquals(0, producer.getQueueLength());
+        assertEquals(featurable, start.get());
+        assertNull(current.get());
+        assertTrue(producer.isProducing());
+        assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
 
         producer.update(1.0);
 
-        Assert.assertEquals(0.5, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(50, producer.getProgressPercent());
-        Assert.assertEquals(featurable, current.get());
-        Assert.assertNull(done.get());
-        Assert.assertTrue(producer.isProducing());
+        assertEquals(0.5, producer.getProgress());
+        assertEquals(50, producer.getProgressPercent());
+        assertEquals(featurable, current.get());
+        assertNull(done.get());
+        assertTrue(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(1.0, producer.getProgress(), UtilTests.PRECISION);
-        Assert.assertEquals(100, producer.getProgressPercent());
-        Assert.assertEquals(featurable, current.get());
-        Assert.assertNull(done.get());
-        Assert.assertFalse(producer.isProducing());
+        assertEquals(1.0, producer.getProgress());
+        assertEquals(100, producer.getProgressPercent());
+        assertEquals(featurable, current.get());
+        assertNull(done.get());
+        assertFalse(producer.isProducing());
 
         producer.update(1.0);
 
-        Assert.assertEquals(featurable, done.get());
-        Assert.assertNull(cant.get());
-        Assert.assertFalse(producer.isProducing());
+        assertEquals(featurable, done.get());
+        assertNull(cant.get());
+        assertFalse(producer.isProducing());
     }
 
     /**
@@ -235,19 +239,19 @@ public class ProducerModelTest
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);
 
-        Assert.assertEquals(0, object.flag.get());
+        assertEquals(0, object.flag.get());
 
         producer.update(1.0);
 
-        Assert.assertEquals(1, object.flag.get());
+        assertEquals(1, object.flag.get());
 
         producer.update(1.0);
 
-        Assert.assertEquals(2, object.flag.get());
+        assertEquals(2, object.flag.get());
 
         producer.update(1.0);
 
-        Assert.assertEquals(3, object.flag.get());
+        assertEquals(3, object.flag.get());
 
         producer.update(1.0);
     }
@@ -268,14 +272,14 @@ public class ProducerModelTest
         producer.addToProductionQueue(featurable);
         producer.addToProductionQueue(featurable);
 
-        Assert.assertEquals(1, producer.getQueueLength());
-        Assert.assertNull(start.get());
+        assertEquals(1, producer.getQueueLength());
+        assertNull(start.get());
 
         producer.update(1.0);
 
-        Assert.assertTrue(producer.iterator().hasNext());
-        Assert.assertEquals(1, producer.getQueueLength());
-        Assert.assertNotNull(start.get());
+        assertTrue(producer.iterator().hasNext());
+        assertEquals(1, producer.getQueueLength());
+        assertNotNull(start.get());
 
         start.set(null);
         producer.update(1.0);
@@ -283,9 +287,9 @@ public class ProducerModelTest
         producer.update(1.0);
         producer.update(1.0);
 
-        Assert.assertEquals(0, producer.getQueueLength());
-        Assert.assertNotNull(start.get());
-        Assert.assertFalse(producer.iterator().hasNext());
+        assertEquals(0, producer.getQueueLength());
+        assertNotNull(start.get());
+        assertFalse(producer.iterator().hasNext());
     }
 
     /**
@@ -310,8 +314,8 @@ public class ProducerModelTest
         producer.update(1.0);
         producer.update(1.0);
 
-        Assert.assertEquals(1, producer.getQueueLength());
-        Assert.assertNotNull(start.get());
+        assertEquals(1, producer.getQueueLength());
+        assertNotNull(start.get());
     }
 
     /**
@@ -338,7 +342,7 @@ public class ProducerModelTest
         producer.update(1.0);
         producer.update(1.0);
 
-        Assert.assertNull(done.get());
+        assertNull(done.get());
     }
 
     /**
@@ -359,19 +363,19 @@ public class ProducerModelTest
 
         producer.update(1.0);
 
-        Assert.assertTrue(producer.isProducing());
+        assertTrue(producer.isProducing());
 
         producer.stopProduction();
 
-        Assert.assertFalse(producer.iterator().hasNext());
-        Assert.assertFalse(producer.isProducing());
+        assertFalse(producer.iterator().hasNext());
+        assertFalse(producer.isProducing());
 
         producer.update(1.0);
         producer.update(1.0);
         producer.update(1.0);
         producer.update(1.0);
 
-        Assert.assertNull(done.get());
+        assertNull(done.get());
     }
 
     /**
@@ -391,8 +395,8 @@ public class ProducerModelTest
         producer.addToProductionQueue(featurable);
         producer.update(1.0);
 
-        Assert.assertFalse(producer.isProducing());
-        Assert.assertEquals(featurable, cant.get());
+        assertFalse(producer.isProducing());
+        assertEquals(featurable, cant.get());
     }
 
     /**
@@ -412,24 +416,24 @@ public class ProducerModelTest
 
         producer.addToProductionQueue(featurable);
 
-        Assert.assertFalse(start.get());
-        Assert.assertFalse(progress.get());
-        Assert.assertFalse(end.get());
+        assertFalse(start.get());
+        assertFalse(progress.get());
+        assertFalse(end.get());
 
         producer.update(1.0);
 
-        Assert.assertTrue(start.get());
-        Assert.assertFalse(progress.get());
-        Assert.assertFalse(end.get());
+        assertTrue(start.get());
+        assertFalse(progress.get());
+        assertFalse(end.get());
 
         producer.update(1.0);
 
-        Assert.assertTrue(progress.get());
-        Assert.assertFalse(end.get());
+        assertTrue(progress.get());
+        assertFalse(end.get());
 
         producer.update(1.0);
 
-        Assert.assertTrue(end.get());
+        assertTrue(end.get());
     }
 
     /**
@@ -447,35 +451,26 @@ public class ProducerModelTest
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);
 
-        Assert.assertEquals(0, object.flag.get());
+        assertEquals(0, object.flag.get());
 
         producer.update(1.0);
 
-        Assert.assertEquals(1, object.flag.get());
+        assertEquals(1, object.flag.get());
     }
 
     /**
      * Test with enum fail.
      * 
-     * @throws NoSuchFieldException If error.
-     * @throws IllegalArgumentException If error.
-     * @throws IllegalAccessException If error.
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    public void testEnumFail() throws ReflectiveOperationException
     {
         final ProducerModel producer = new ProducerModel(services);
         final Field field = producer.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(producer, ProducerState.values()[5]);
-        try
-        {
-            producer.update(1.0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
-        }
+
+        assertThrows(() -> producer.update(1.0), "Unknown enum: FAIL");
     }
 }

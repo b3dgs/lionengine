@@ -17,10 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -37,8 +42,8 @@ public final class ProducibleConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -46,8 +51,8 @@ public final class ProducibleConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -67,11 +72,11 @@ public final class ProducibleConfigTest
         final Media media = Medias.create("producible.xml");
         root.save(media);
 
-        Assert.assertEquals(producible, ProducibleConfig.imports(new Xml(media)));
-        Assert.assertEquals(producible, ProducibleConfig.imports(new Setup(media)));
-        Assert.assertEquals(producible, ProducibleConfig.imports(new Configurer(media)));
+        assertEquals(producible, ProducibleConfig.imports(new Xml(media)));
+        assertEquals(producible, ProducibleConfig.imports(new Setup(media)));
+        assertEquals(producible, ProducibleConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -82,13 +87,13 @@ public final class ProducibleConfigTest
     {
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
-        Assert.assertEquals(producible, producible);
+        assertEquals(producible, producible);
 
-        Assert.assertNotEquals(producible, null);
-        Assert.assertNotEquals(producible, new Object());
-        Assert.assertNotEquals(producible, new ProducibleConfig(0, 2, 3));
-        Assert.assertNotEquals(producible, new ProducibleConfig(1, 0, 3));
-        Assert.assertNotEquals(producible, new ProducibleConfig(1, 2, 0));
+        assertNotEquals(producible, null);
+        assertNotEquals(producible, new Object());
+        assertNotEquals(producible, new ProducibleConfig(0, 2, 3));
+        assertNotEquals(producible, new ProducibleConfig(1, 0, 3));
+        assertNotEquals(producible, new ProducibleConfig(1, 2, 0));
     }
 
     /**
@@ -97,13 +102,13 @@ public final class ProducibleConfigTest
     @Test
     public void testHashCode()
     {
-        final int hash = new ProducibleConfig(1, 2, 3).hashCode();
+        final ProducibleConfig hash = new ProducibleConfig(1, 2, 3);
 
-        Assert.assertEquals(hash, new ProducibleConfig(1, 2, 3).hashCode());
+        assertHashEquals(hash, new ProducibleConfig(1, 2, 3));
 
-        Assert.assertNotEquals(hash, new ProducibleConfig(0, 2, 3).hashCode());
-        Assert.assertNotEquals(hash, new ProducibleConfig(1, 0, 3).hashCode());
-        Assert.assertNotEquals(hash, new ProducibleConfig(1, 2, 0).hashCode());
+        assertHashNotEquals(hash, new ProducibleConfig(0, 2, 3));
+        assertHashNotEquals(hash, new ProducibleConfig(1, 0, 3));
+        assertHashNotEquals(hash, new ProducibleConfig(1, 2, 0));
     }
 
     /**
@@ -114,6 +119,6 @@ public final class ProducibleConfigTest
     {
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
-        Assert.assertEquals("ProducibleConfig [steps=1, width=2, height=3]", producible.toString());
+        assertEquals("ProducibleConfig [steps=1, width=2, height=3]", producible.toString());
     }
 }

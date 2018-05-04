@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 /**
  * Object producer test.
  */
-class ProducerObject extends FeaturableModel implements ProducerChecker
+final class ProducerObject extends FeaturableModel implements ProducerChecker
 {
     /** Checker. */
     final AtomicBoolean check = new AtomicBoolean(true);
@@ -37,6 +37,7 @@ class ProducerObject extends FeaturableModel implements ProducerChecker
     public ProducerObject()
     {
         super();
+
         addFeature(new IdentifiableModel());
     }
 

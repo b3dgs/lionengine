@@ -17,19 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.ActionRef;
 import com.b3dgs.lionengine.game.ActionsConfig;
@@ -43,8 +45,8 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -52,21 +54,19 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(ActionsConfig.class);
+        assertPrivateConstructor(ActionsConfig.class);
     }
 
     /**
@@ -85,10 +85,10 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
         final Media media = Medias.create("producer.xml");
         root.save(media);
 
-        Assert.assertEquals(refs, ActionsConfig.imports(new Xml(media)));
-        Assert.assertEquals(refs, ActionsConfig.imports(new Configurer(media)));
+        assertEquals(refs, ActionsConfig.imports(new Xml(media)));
+        assertEquals(refs, ActionsConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -106,10 +106,10 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
         final Media media = Medias.create("producer.xml");
         root.save(media);
 
-        Assert.assertNotEquals(refs, ActionsConfig.imports(new Xml(media)));
-        Assert.assertNotEquals(refs, ActionsConfig.imports(new Configurer(media)));
+        assertNotEquals(refs, ActionsConfig.imports(new Xml(media)));
+        assertNotEquals(refs, ActionsConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -122,8 +122,8 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
         final Xml root = new Xml("test");
         root.save(media);
 
-        Assert.assertTrue(ActionsConfig.imports(new Xml(media)).isEmpty());
+        assertTrue(ActionsConfig.imports(new Xml(media)).isEmpty());
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 }

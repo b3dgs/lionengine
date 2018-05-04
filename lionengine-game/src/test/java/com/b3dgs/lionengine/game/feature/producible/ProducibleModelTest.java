@@ -17,14 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -32,15 +33,15 @@ import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
- * Test the producible model.
+ * Test {@link ProducibleModel}.
  */
-public class ProducibleModelTest
+public final class ProducibleModelTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -48,8 +49,8 @@ public class ProducibleModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -71,16 +72,16 @@ public class ProducibleModelTest
         producible.prepare(featurable);
         producible.addListener(listener);
 
-        Assert.assertEquals(media, producible.getMedia());
-        Assert.assertEquals(1, producible.getSteps());
-        Assert.assertEquals(2, producible.getWidth());
-        Assert.assertEquals(3, producible.getHeight());
-        Assert.assertEquals(1.0, producible.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, producible.getY(), UtilTests.PRECISION);
-        Assert.assertTrue(producible.getListeners().contains(listener));
+        assertEquals(media, producible.getMedia());
+        assertEquals(1, producible.getSteps());
+        assertEquals(2, producible.getWidth());
+        assertEquals(3, producible.getHeight());
+        assertEquals(1.0, producible.getX());
+        assertEquals(2.0, producible.getY());
+        assertTrue(producible.getListeners().contains(listener));
 
         producible.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -95,10 +96,11 @@ public class ProducibleModelTest
         final Producible producible = new ProducibleModel(setup);
         producible.prepare(object);
 
-        Assert.assertTrue(producible.getListeners().contains(object));
+        assertTrue(producible.getListeners().contains(object));
 
         producible.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -113,9 +115,10 @@ public class ProducibleModelTest
         final Producible producible = new ProducibleModel(setup);
         producible.checkListener(object);
 
-        Assert.assertTrue(producible.getListeners().contains(object));
+        assertTrue(producible.getListeners().contains(object));
 
         object.getFeature(Identifiable.class).notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+
+        assertTrue(media.getFile().delete());
     }
 }

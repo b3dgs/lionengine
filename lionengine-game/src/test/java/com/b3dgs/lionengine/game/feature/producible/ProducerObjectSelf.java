@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 /**
  * Object producer self listener test.
  */
-class ProducerObjectSelf extends FeaturableModel implements ProducerChecker, ProducerListener
+final class ProducerObjectSelf extends FeaturableModel implements ProducerChecker, ProducerListener
 {
     /** Flag. */
     final AtomicInteger flag = new AtomicInteger();

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 
