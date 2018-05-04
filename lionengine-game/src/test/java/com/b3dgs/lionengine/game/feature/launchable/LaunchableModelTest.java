@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -34,9 +37,9 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
- * Test the launchable model.
+ * Test {@link LaunchableModel}.
  */
-public class LaunchableModelTest
+public final class LaunchableModelTest
 {
     private final Services services = new Services();
     private final Featurable featurable = new FeaturableModel();
@@ -46,7 +49,7 @@ public class LaunchableModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new MapTileGame());
@@ -55,7 +58,7 @@ public class LaunchableModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
         featurable.getFeature(Identifiable.class).notifyDestroyed();
@@ -71,32 +74,32 @@ public class LaunchableModelTest
     {
         launchable.launch();
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
 
         launchable.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(1.0, transformable.getY());
 
         UtilTests.pause(11);
         launchable.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(1.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(2.0, transformable.getY());
 
         launchable.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(2.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(3.0, transformable.getY());
     }
 
     /**
@@ -111,18 +114,18 @@ public class LaunchableModelTest
         launchable.launch();
         launchable.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
 
         UtilTests.pause(11);
         launchable.update(1.0);
 
-        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(0.0, transformable.getOldX());
+        assertEquals(0.0, transformable.getOldY());
+        assertEquals(0.0, transformable.getX());
+        assertEquals(0.0, transformable.getY());
     }
 
     /**
@@ -134,11 +137,11 @@ public class LaunchableModelTest
         final AtomicBoolean fired = new AtomicBoolean();
         launchable.addListener(launchable -> fired.set(true));
 
-        Assert.assertFalse(fired.get());
+        assertFalse(fired.get());
 
         launchable.launch();
 
-        Assert.assertTrue(fired.get());
+        assertTrue(fired.get());
     }
 
     /**
@@ -152,13 +155,13 @@ public class LaunchableModelTest
         launchable.checkListener(self);
         launchable.launch();
 
-        Assert.assertTrue(self.fired.get());
+        assertTrue(self.fired.get());
     }
 
     /**
      * Self listener.
      */
-    private static class Self extends FeatureModel implements LaunchableListener
+    private static final class Self extends FeatureModel implements LaunchableListener
     {
         final AtomicBoolean fired = new AtomicBoolean();
 

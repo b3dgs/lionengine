@@ -17,13 +17,18 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
@@ -40,8 +45,8 @@ public final class LauncherConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -49,8 +54,8 @@ public final class LauncherConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -63,11 +68,11 @@ public final class LauncherConfigTest
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
-        Assert.assertEquals("media", launchable.getMedia());
-        Assert.assertEquals(10, launchable.getDelay());
-        Assert.assertEquals(1, launchable.getOffsetX());
-        Assert.assertEquals(2, launchable.getOffsetY());
-        Assert.assertEquals(new Force(1.0, 2.0), launchable.getVector());
+        assertEquals("media", launchable.getMedia());
+        assertEquals(10, launchable.getDelay());
+        assertEquals(1, launchable.getOffsetX());
+        assertEquals(2, launchable.getOffsetY());
+        assertEquals(new Force(1.0, 2.0), launchable.getVector());
     }
 
     /**
@@ -85,10 +90,10 @@ public final class LauncherConfigTest
         final Media media = Medias.create("launcher.xml");
         root.save(media);
 
-        Assert.assertEquals(launcher, LauncherConfig.imports(new Xml(media).getChild(LauncherConfig.NODE_LAUNCHER)));
-        Assert.assertEquals(Arrays.asList(launcher), LauncherConfig.imports(new Configurer(media)));
+        assertEquals(launcher, LauncherConfig.imports(new Xml(media).getChild(LauncherConfig.NODE_LAUNCHER)));
+        assertEquals(Arrays.asList(launcher), LauncherConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -100,13 +105,13 @@ public final class LauncherConfigTest
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
 
-        Assert.assertEquals(launcher, launcher);
+        assertEquals(launcher, launcher);
 
-        Assert.assertNotEquals(launcher, null);
-        Assert.assertNotEquals(launcher, new Object());
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
-        Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
+        assertNotEquals(launcher, null);
+        assertNotEquals(launcher, new Object());
+        assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
+        assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
+        assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
     }
 
     /**
@@ -116,14 +121,14 @@ public final class LauncherConfigTest
     public void testHashCode()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final int launcher = new LauncherConfig(0, 1, Arrays.asList(launchable)).hashCode();
+        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
 
-        Assert.assertEquals(launcher, launcher);
-        Assert.assertEquals(launcher, new LauncherConfig(0, 1, Arrays.asList(launchable)).hashCode());
+        assertHashEquals(launcher, launcher);
+        assertHashEquals(launcher, new LauncherConfig(0, 1, Arrays.asList(launchable)));
 
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)).hashCode());
-        Assert.assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()).hashCode());
-        Assert.assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)).hashCode());
+        assertHashNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
+        assertHashNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
     }
 
     /**
@@ -135,15 +140,15 @@ public final class LauncherConfigTest
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable, launchable));
 
-        Assert.assertEquals("LauncherConfig [level=0, rate=1, launchables="
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
-                            + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]"
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
-                            + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]]",
-                            launcher.toString());
+        assertEquals("LauncherConfig [level=0, rate=1, launchables="
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
+                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]"
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
+                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]]",
+                     launcher.toString());
     }
 }

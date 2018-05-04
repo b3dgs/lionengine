@@ -38,6 +38,7 @@ class LaunchableObjectSelf extends LaunchableObject implements LauncherListener,
     public LaunchableObjectSelf()
     {
         super();
+
         addFeature(new IdentifiableModel());
     }
 

@@ -334,6 +334,18 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code expected} and {@code actual} objects arrays are equal. If both are <code>null</code>, they
+     * are considered equal.
+     * 
+     * @param expected The excepted objects array.
+     * @param actual The actual objects array.
+     */
+    public static void assertArrayEquals(Object[] expected, Object[] actual)
+    {
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    /**
      * Private constructor.
      */
     private UtilAssert()

@@ -17,16 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -42,15 +47,15 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 
 /**
- * Test the launcher.
+ * Test {@link LauncherModel}.
  */
-public class LauncherModelTest
+public final class LauncherModelTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -58,8 +63,8 @@ public class LauncherModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -74,11 +79,11 @@ public class LauncherModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
-        Assert.assertTrue(launchableMedia.getFile().delete());
-        Assert.assertTrue(launcherMedia.getFile().delete());
+        assertTrue(launchableMedia.getFile().delete());
+        assertTrue(launcherMedia.getFile().delete());
     }
 
     /**
@@ -87,10 +92,10 @@ public class LauncherModelTest
     @Test
     public void testConfig()
     {
-        Assert.assertEquals(0, launcher.getLevel());
-        Assert.assertEquals(10, launcher.getRate());
-        Assert.assertEquals(1.0, launcher.getOffsetX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, launcher.getOffsetY(), UtilTests.PRECISION);
+        assertEquals(0, launcher.getLevel());
+        assertEquals(10, launcher.getRate());
+        assertEquals(1.0, launcher.getOffsetX());
+        assertEquals(2.0, launcher.getOffsetY());
     }
 
     /**
@@ -111,14 +116,14 @@ public class LauncherModelTest
             continue;
         }
 
-        Assert.assertTrue(fired.get());
-        Assert.assertNotNull(firedLaunchable.get());
+        assertTrue(fired.get());
+        assertNotNull(firedLaunchable.get());
         firedLaunchable.set(null);
 
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         final Transformable transformable = new TransformableModel();
         while (!launcher.fire(transformable))
@@ -126,12 +131,12 @@ public class LauncherModelTest
             continue;
         }
 
-        Assert.assertNotNull(firedLaunchable.get());
+        assertNotNull(firedLaunchable.get());
         firedLaunchable.set(null);
 
         handler.update(1.0);
 
-        Assert.assertEquals(2, handler.size());
+        assertEquals(2, handler.size());
 
         final Localizable localizable = UtilLaunchable.createLocalizable();
         while (!launcher.fire(localizable))
@@ -139,16 +144,16 @@ public class LauncherModelTest
             continue;
         }
 
-        Assert.assertNotNull(firedLaunchable.get());
+        assertNotNull(firedLaunchable.get());
 
         handler.update(1.0);
 
-        Assert.assertEquals(3, handler.size());
+        assertEquals(3, handler.size());
 
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -170,23 +175,23 @@ public class LauncherModelTest
             continue;
         }
 
-        Assert.assertTrue(fired.get());
-        Assert.assertNotNull(firedLaunchable.get());
+        assertTrue(fired.get());
+        assertNotNull(firedLaunchable.get());
 
         final Transformable transformable = firedLaunchable.get().getFeature(Transformable.class);
 
-        Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(4.0, transformable.getY(), UtilTests.PRECISION);
+        assertEquals(2.0, transformable.getX());
+        assertEquals(4.0, transformable.getY());
 
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -215,22 +220,22 @@ public class LauncherModelTest
         launcher.update(1.0);
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
-        Assert.assertTrue(fired.get());
-        Assert.assertNull(firedLaunchable.get());
+        assertEquals(0, handler.size());
+        assertTrue(fired.get());
+        assertNull(firedLaunchable.get());
 
         UtilTests.pause(50L);
         launcher.update(1.0);
         handler.update(1.0);
 
-        Assert.assertNotNull(firedLaunchable.get());
-        Assert.assertEquals(1, handler.size());
+        assertNotNull(firedLaunchable.get());
+        assertEquals(1, handler.size());
 
         firedLaunchable.set(null);
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -251,18 +256,18 @@ public class LauncherModelTest
             continue;
         }
 
-        Assert.assertTrue(fired.get());
-        Assert.assertNotNull(firedLaunchable.get());
+        assertTrue(fired.get());
+        assertNotNull(firedLaunchable.get());
         firedLaunchable.set(null);
 
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertEquals(1, handler.size());
+        assertEquals(1, handler.size());
 
         launcher.setLevel(1);
 
-        Assert.assertNull(firedLaunchable.get());
+        assertNull(firedLaunchable.get());
 
         while (!launcher.fire())
         {
@@ -273,16 +278,16 @@ public class LauncherModelTest
             continue;
         }
 
-        Assert.assertNotNull(firedLaunchable.get());
+        assertNotNull(firedLaunchable.get());
 
         handler.update(1.0);
 
-        Assert.assertEquals(3, handler.size());
+        assertEquals(3, handler.size());
 
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -298,8 +303,8 @@ public class LauncherModelTest
         launcher.addListener((LauncherListener) object);
         launcher.addListener((LaunchableListener) object);
 
-        Assert.assertFalse(object.fired.get());
-        Assert.assertNull(object.firedLaunchable.get());
+        assertFalse(object.fired.get());
+        assertNull(object.firedLaunchable.get());
 
         while (!launcher.fire())
         {
@@ -308,13 +313,13 @@ public class LauncherModelTest
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertTrue(object.fired.get());
-        Assert.assertNotNull(object.firedLaunchable.get());
+        assertTrue(object.fired.get());
+        assertNotNull(object.firedLaunchable.get());
 
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
@@ -329,8 +334,8 @@ public class LauncherModelTest
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
         launcher.checkListener(object);
 
-        Assert.assertFalse(object.fired.get());
-        Assert.assertNull(object.firedLaunchable.get());
+        assertFalse(object.fired.get());
+        assertNull(object.firedLaunchable.get());
 
         while (!launcher.fire())
         {
@@ -339,22 +344,20 @@ public class LauncherModelTest
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
-        Assert.assertTrue(object.fired.get());
-        Assert.assertNotNull(object.firedLaunchable.get());
+        assertTrue(object.fired.get());
+        assertNotNull(object.firedLaunchable.get());
 
         handler.removeAll();
         handler.update(1.0);
 
-        Assert.assertEquals(0, handler.size());
+        assertEquals(0, handler.size());
     }
 
     /**
      * Test the launcher failure.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testLauncherFailure() throws InterruptedException
+    @Test
+    public void testLauncherFailure()
     {
         final Media launchableMedia = UtilSetup.createMedia(Featurable.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
@@ -363,15 +366,13 @@ public class LauncherModelTest
 
         try
         {
-            while (!launcher.fire())
+            assertThrows(() ->
             {
-                continue;
-            }
-            while (!launcher.fire())
-            {
-                continue;
-            }
-            Assert.fail();
+                while (!launcher.fire())
+                {
+                    continue;
+                }
+            }, "No recognized constructor found for: Featurable.xml");
         }
         finally
         {
@@ -379,18 +380,16 @@ public class LauncherModelTest
             handler.removeAll();
             handler.update(1.0);
 
-            Assert.assertEquals(0, handler.size());
-            Assert.assertTrue(launchableMedia.getFile().delete());
+            assertEquals(0, handler.size());
+            assertTrue(launchableMedia.getFile().delete());
         }
     }
 
     /**
      * Test the launcher failure.
-     * 
-     * @throws InterruptedException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testLauncherException() throws InterruptedException
+    @Test
+    public void testLauncherException()
     {
         final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
@@ -399,11 +398,13 @@ public class LauncherModelTest
 
         try
         {
-            while (!launcher.fire())
+            assertThrows(() ->
             {
-                continue;
-            }
-            Assert.fail();
+                while (!launcher.fire())
+                {
+                    continue;
+                }
+            }, "Feature not found: " + Launchable.class.getName());
         }
         finally
         {
@@ -411,8 +412,8 @@ public class LauncherModelTest
             handler.removeAll();
             handler.update(1.0);
 
-            Assert.assertEquals(0, handler.size());
-            Assert.assertTrue(launchableMedia.getFile().delete());
+            assertEquals(0, handler.size());
+            assertTrue(launchableMedia.getFile().delete());
         }
     }
 }

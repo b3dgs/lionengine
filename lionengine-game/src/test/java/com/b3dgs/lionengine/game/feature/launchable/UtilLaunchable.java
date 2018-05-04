@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 /**
  * Utilities dedicated to launchable test.
  */
-public class UtilLaunchable
+final class UtilLaunchable
 {
     /**
      * Create launchable.
@@ -129,13 +129,13 @@ public class UtilLaunchable
             @Override
             public double getY()
             {
-                return 0;
+                return 0.0;
             }
 
             @Override
             public double getX()
             {
-                return 0;
+                return 0.0;
             }
         };
     }

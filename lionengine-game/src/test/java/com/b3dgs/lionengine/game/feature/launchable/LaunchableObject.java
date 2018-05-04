@@ -31,6 +31,7 @@ class LaunchableObject extends FeaturableModel
     public LaunchableObject()
     {
         super();
+
         addFeatureAndGet(new TransformableModel());
         addFeatureAndGet(new LaunchableModel());
     }

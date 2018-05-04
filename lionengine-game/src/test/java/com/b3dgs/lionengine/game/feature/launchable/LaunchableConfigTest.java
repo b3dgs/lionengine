@@ -17,12 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -36,8 +41,8 @@ public final class LaunchableConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -45,8 +50,8 @@ public final class LaunchableConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -65,28 +70,27 @@ public final class LaunchableConfigTest
         final Media media = Medias.create("launchable.xml");
         root.save(media);
 
-        Assert.assertEquals(launchable,
-                            LaunchableConfig.imports(new Xml(media).getChild(LaunchableConfig.NODE_LAUNCHABLE)));
+        assertEquals(launchable, LaunchableConfig.imports(new Xml(media).getChild(LaunchableConfig.NODE_LAUNCHABLE)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Test <code>null</code> media.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullMedia()
     {
-        Assert.assertNotNull(new LaunchableConfig(null, 0, 1, 2, new Force()));
+        assertThrows(() -> new LaunchableConfig(null, 0, 1, 2, new Force()), "Unexpected null argument !");
     }
 
     /**
      * Test <code>null</code> force.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testNullForce()
     {
-        Assert.assertNotNull(new LaunchableConfig("media", 0, 1, 2, null));
+        assertThrows(() -> new LaunchableConfig("media", 0, 1, 2, null), "Unexpected null argument !");
     }
 
     /**
@@ -97,15 +101,15 @@ public final class LaunchableConfigTest
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
-        Assert.assertEquals(launchable, launchable);
+        assertEquals(launchable, launchable);
 
-        Assert.assertNotEquals(launchable, null);
-        Assert.assertNotEquals(launchable, new Object());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)));
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)));
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)));
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)));
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, null);
+        assertNotEquals(launchable, new Object());
+        assertNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)));
     }
 
     /**
@@ -114,16 +118,16 @@ public final class LaunchableConfigTest
     @Test
     public void testHashCode()
     {
-        final int launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0)).hashCode();
+        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
-        Assert.assertEquals(launchable, launchable);
-        Assert.assertEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0)).hashCode());
+        assertHashEquals(launchable, launchable);
+        assertHashEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0)));
 
-        Assert.assertNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)).hashCode());
-        Assert.assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)).hashCode());
+        assertHashNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)));
     }
 
     /**
@@ -134,8 +138,8 @@ public final class LaunchableConfigTest
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
-        Assert.assertEquals("LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
-                            + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]",
-                            launchable.toString());
+        assertEquals("LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
+                     + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]",
+                     launchable.toString());
     }
 }
