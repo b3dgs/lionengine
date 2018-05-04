@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.rasterable;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFolder;
@@ -31,9 +34,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 
 /**
- * Test the setup surface rastered class.
+ * Test {@link SetupSurfaceRastered}.
  */
-public class SetupSurfaceRasteredTest
+public final class SetupSurfaceRasteredTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "object_raster.xml";
@@ -45,8 +48,8 @@ public class SetupSurfaceRasteredTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(SetupSurfaceRasteredTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
@@ -55,8 +58,8 @@ public class SetupSurfaceRasteredTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
@@ -71,13 +74,15 @@ public class SetupSurfaceRasteredTest
         final Media raster = Medias.create(RASTER_XML);
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
 
-        Assert.assertEquals(raster, setup.getFile());
-        Assert.assertFalse(setup.hasSmooth());
+        assertEquals(raster, setup.getFile());
+        assertFalse(setup.hasSmooth());
+
         for (final SpriteAnimated sprite : setup.getRasters())
         {
-            Assert.assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
-            Assert.assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
+            assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
+            assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
         }
+
         UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
     }
 
@@ -90,12 +95,12 @@ public class SetupSurfaceRasteredTest
         final Media raster = Medias.create(RASTER_XML);
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_SMOOTH_XML), raster);
 
-        Assert.assertEquals(raster, setup.getFile());
-        Assert.assertTrue(setup.hasSmooth());
+        assertEquals(raster, setup.getFile());
+        assertTrue(setup.hasSmooth());
         for (final SpriteAnimated sprite : setup.getRasters())
         {
-            Assert.assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
-            Assert.assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
+            assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
+            assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
         }
         UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
     }
@@ -103,9 +108,10 @@ public class SetupSurfaceRasteredTest
     /**
      * Test the setup surface rastered without raster.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testConfigNoRaster()
     {
-        Assert.assertNotNull(new SetupSurfaceRastered(Medias.create(OBJECT_XML), null));
+        assertThrows(() -> new SetupSurfaceRastered(Medias.create(OBJECT_XML), null),
+                     "The following attribute does not exist: file");
     }
 }
