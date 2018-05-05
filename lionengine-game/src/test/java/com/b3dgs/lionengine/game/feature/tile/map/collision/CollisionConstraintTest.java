@@ -17,18 +17,23 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.Orientation;
 
 /**
- * Test the collision constraint class.
+ * Test {@link CollisionConstraint}.
  */
-public class CollisionConstraintTest
+public final class CollisionConstraintTest
 {
     /** Constraint test. */
     private final CollisionConstraint constraint = new CollisionConstraint();
@@ -36,7 +41,7 @@ public class CollisionConstraintTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void before()
     {
         constraint.add(Orientation.EAST, "group");
@@ -49,36 +54,10 @@ public class CollisionConstraintTest
     public void testConstraint()
     {
         final CollisionConstraint empty = new CollisionConstraint();
-        Assert.assertTrue(empty.getConstraints().values().iterator().next().isEmpty());
 
-        Assert.assertEquals(Arrays.asList("group"), constraint.getConstraints(Orientation.EAST));
-        Assert.assertTrue(constraint.has(Orientation.EAST, "group"));
-    }
-
-    /**
-     * Test the constraint hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final int hash = constraint.hashCode();
-
-        final CollisionConstraint same = new CollisionConstraint();
-        same.add(Orientation.EAST, "group");
-
-        Assert.assertEquals(hash, same.hashCode());
-
-        Assert.assertNotEquals(hash, new Object().hashCode());
-
-        final CollisionConstraint other = new CollisionConstraint();
-        other.add(Orientation.NORTH, "group");
-
-        Assert.assertNotEquals(hash, other.hashCode());
-
-        final CollisionConstraint other2 = new CollisionConstraint();
-        other2.add(Orientation.EAST, "void");
-
-        Assert.assertNotEquals(hash, other2.hashCode());
+        assertTrue(empty.getConstraints().values().iterator().next().isEmpty());
+        assertEquals(Arrays.asList("group"), constraint.getConstraints(Orientation.EAST));
+        assertTrue(constraint.has(Orientation.EAST, "group"));
     }
 
     /**
@@ -87,25 +66,48 @@ public class CollisionConstraintTest
     @Test
     public void testEquals()
     {
-        Assert.assertEquals(constraint, constraint);
+        assertEquals(constraint, constraint);
 
         final CollisionConstraint same = new CollisionConstraint();
         same.add(Orientation.EAST, "group");
 
-        Assert.assertEquals(constraint, same);
+        assertEquals(constraint, same);
 
-        Assert.assertNotEquals(constraint, null);
-        Assert.assertNotEquals(constraint, new Object());
+        assertNotEquals(constraint, null);
+        assertNotEquals(constraint, new Object());
 
         final CollisionConstraint other = new CollisionConstraint();
         other.add(Orientation.NORTH, "group");
 
-        Assert.assertNotEquals(constraint, other);
+        assertNotEquals(constraint, other);
 
         final CollisionConstraint other2 = new CollisionConstraint();
         other2.add(Orientation.EAST, "void");
 
-        Assert.assertNotEquals(constraint, other2);
+        assertNotEquals(constraint, other2);
+    }
+
+    /**
+     * Test the constraint hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final CollisionConstraint same = new CollisionConstraint();
+        same.add(Orientation.EAST, "group");
+
+        assertHashEquals(constraint, same);
+        assertHashNotEquals(constraint, new Object());
+
+        final CollisionConstraint other = new CollisionConstraint();
+        other.add(Orientation.NORTH, "group");
+
+        assertHashNotEquals(constraint, other);
+
+        final CollisionConstraint other2 = new CollisionConstraint();
+        other2.add(Orientation.EAST, "void");
+
+        assertHashNotEquals(constraint, other2);
     }
 
     /**
@@ -114,8 +116,8 @@ public class CollisionConstraintTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[group], SOUTH_EAST=[], "
-                            + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}",
-                            constraint.toString());
+        assertEquals("CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[group], SOUTH_EAST=[], "
+                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}",
+                     constraint.toString());
     }
 }

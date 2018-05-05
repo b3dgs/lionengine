@@ -17,19 +17,20 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import static com.b3dgs.lionengine.UtilTests.PRECISION;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the tile collision model class.
+ * Test {@link TileCollisionModel}.
  */
 public class TileCollisionModelTest
 {
@@ -63,12 +64,12 @@ public class TileCollisionModelTest
         model.addCollisionFormula(formulaV);
         model.addCollisionFormula(formulaH);
 
-        Assert.assertTrue(model.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
+        assertTrue(model.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
 
-        Assert.assertNull(model.getCollisionX(categoryY, 0.0, 1.0, 0.0, 0.0));
-        Assert.assertNull(model.getCollisionX(categoryY, 0.0, -1.0, 0.0, 1.0));
-        Assert.assertNull(model.getCollisionY(categoryX, -1.0, 0.0, 0.0, 1.0));
-        Assert.assertNull(model.getCollisionY(categoryX, 1.0, 0.0, 0.0, 0.0));
+        assertNull(model.getCollisionX(categoryY, 0.0, 1.0, 0.0, 0.0));
+        assertNull(model.getCollisionX(categoryY, 0.0, -1.0, 0.0, 1.0));
+        assertNull(model.getCollisionY(categoryX, -1.0, 0.0, 0.0, 1.0));
+        assertNull(model.getCollisionY(categoryX, 1.0, 0.0, 0.0, 0.0));
     }
 
     /**
@@ -80,10 +81,10 @@ public class TileCollisionModelTest
         model.addCollisionFormula(formulaV);
         model.addCollisionFormula(formulaH);
 
-        Assert.assertEquals(1.0, model.getCollisionY(categoryY, 0.0, 1.0, 0.0, 0.0).doubleValue(), PRECISION);
-        Assert.assertEquals(-1.0, model.getCollisionY(categoryY, 0.0, -1.0, 0.0, 1.0).doubleValue(), PRECISION);
-        Assert.assertEquals(-1.0, model.getCollisionX(categoryX, -1.0, 0.0, 1.0, 0.0).doubleValue(), PRECISION);
-        Assert.assertEquals(1.0, model.getCollisionX(categoryX, 1.0, 0.0, 0.0, 0.0).doubleValue(), PRECISION);
+        assertEquals(1.0, model.getCollisionY(categoryY, 0.0, 1.0, 0.0, 0.0).doubleValue());
+        assertEquals(-1.0, model.getCollisionY(categoryY, 0.0, -1.0, 0.0, 1.0).doubleValue());
+        assertEquals(-1.0, model.getCollisionX(categoryX, -1.0, 0.0, 1.0, 0.0).doubleValue());
+        assertEquals(1.0, model.getCollisionX(categoryX, 1.0, 0.0, 0.0, 0.0).doubleValue());
     }
 
     /**
@@ -96,17 +97,17 @@ public class TileCollisionModelTest
         model.addCollisionFormula(formulaH);
         model.removeCollisionFormula(formulaV);
 
-        Assert.assertNull(model.getCollisionY(categoryY, 0.0, 1.0, 0.0, 0.0));
-        Assert.assertNull(model.getCollisionY(categoryY, 0.0, -1.0, 0.0, 1.0));
-        Assert.assertEquals(-1.0, model.getCollisionX(categoryX, -1.0, 0.0, 1.0, 0.0).doubleValue(), PRECISION);
-        Assert.assertEquals(1.0, model.getCollisionX(categoryX, 1.0, 0.0, 0.0, 0.0).doubleValue(), PRECISION);
+        assertNull(model.getCollisionY(categoryY, 0.0, 1.0, 0.0, 0.0));
+        assertNull(model.getCollisionY(categoryY, 0.0, -1.0, 0.0, 1.0));
+        assertEquals(-1.0, model.getCollisionX(categoryX, -1.0, 0.0, 1.0, 0.0).doubleValue());
+        assertEquals(1.0, model.getCollisionX(categoryX, 1.0, 0.0, 0.0, 0.0).doubleValue());
 
         model.removeCollisionFormulas();
 
-        Assert.assertNull(model.getCollisionY(categoryY, 0.0, 1.0, 0.0, 0.0));
-        Assert.assertNull(model.getCollisionY(categoryY, 0.0, -1.0, 0.0, 1.0));
-        Assert.assertNull(model.getCollisionX(categoryX, -1.0, 0.0, 1.0, 0.0));
-        Assert.assertNull(model.getCollisionX(categoryX, 1.0, 0.0, 0.0, 0.0));
+        assertNull(model.getCollisionY(categoryY, 0.0, 1.0, 0.0, 0.0));
+        assertNull(model.getCollisionY(categoryY, 0.0, -1.0, 0.0, 1.0));
+        assertNull(model.getCollisionX(categoryX, -1.0, 0.0, 1.0, 0.0));
+        assertNull(model.getCollisionX(categoryX, 1.0, 0.0, 0.0, 0.0));
     }
 
     /**
@@ -118,9 +119,9 @@ public class TileCollisionModelTest
         model.addCollisionFormula(formulaV);
         model.addCollisionFormula(formulaH);
 
-        Assert.assertNull(model.getCollisionY(categoryY, 2.0, 1.0, 2.0, 0.0));
-        Assert.assertNull(model.getCollisionY(categoryY, 2.0, -1.0, 2.0, 1.0));
-        Assert.assertNull(model.getCollisionX(categoryX, -1.0, 2.0, 1.0, 2.0));
-        Assert.assertNull(model.getCollisionX(categoryX, 1.0, 2.0, 0.0, 2.0));
+        assertNull(model.getCollisionY(categoryY, 2.0, 1.0, 2.0, 0.0));
+        assertNull(model.getCollisionY(categoryY, 2.0, -1.0, 2.0, 1.0));
+        assertNull(model.getCollisionX(categoryX, -1.0, 2.0, 1.0, 2.0));
+        assertNull(model.getCollisionX(categoryX, 1.0, 2.0, 0.0, 2.0));
     }
 }

@@ -38,12 +38,12 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
  */
 final class MapTileCollisionLoader
 {
+    /** Error formula not found. */
+    static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
     /** Info loading formulas. */
     private static final String INFO_LOAD_FORMULAS = "Loading collision formulas from: ";
     /** Info loading groups. */
     private static final String INFO_LOAD_GROUPS = "Loading collision groups from: ";
-    /** Error formula not found. */
-    private static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
 
     /** Collision formulas list. */
     private final Map<String, CollisionFormula> formulas = new HashMap<>();

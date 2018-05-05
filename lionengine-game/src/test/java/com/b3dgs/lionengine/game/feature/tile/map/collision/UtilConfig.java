@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Configuration utilities.
  */
-public class UtilConfig
+final class UtilConfig
 {
     /**
      * Create formula configuration.

@@ -17,16 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -42,9 +45,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the map tile collision model class.
+ * Test {@link MapTileCollisionModel}.
  */
-public class MapTileCollisionModelTest
+public final class MapTileCollisionModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -52,7 +55,7 @@ public class MapTileCollisionModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -62,10 +65,10 @@ public class MapTileCollisionModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -101,7 +104,7 @@ public class MapTileCollisionModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new Camera());
@@ -122,11 +125,11 @@ public class MapTileCollisionModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
-        Assert.assertTrue(formulasConfig.getFile().delete());
-        Assert.assertTrue(groupsConfig.getFile().delete());
+        assertTrue(formulasConfig.getFile().delete());
+        assertTrue(groupsConfig.getFile().delete());
     }
 
     /**
@@ -139,8 +142,8 @@ public class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 0.0, -5.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
-        Assert.assertNull(result.getX());
-        Assert.assertEquals(Double.valueOf(3.0), result.getY());
+        assertNull(result.getX());
+        assertEquals(Double.valueOf(3.0), result.getY());
     }
 
     /**
@@ -153,8 +156,8 @@ public class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 0.0, 5.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
-        Assert.assertNull(result.getX());
-        Assert.assertEquals(Double.valueOf(3.0), result.getY());
+        assertNull(result.getX());
+        assertEquals(Double.valueOf(3.0), result.getY());
     }
 
     /**
@@ -167,8 +170,8 @@ public class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 5.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        Assert.assertNull(result.getY());
-        Assert.assertEquals(Double.valueOf(1.0), result.getX());
+        assertNull(result.getY());
+        assertEquals(Double.valueOf(1.0), result.getX());
     }
 
     /**
@@ -181,8 +184,8 @@ public class MapTileCollisionModelTest
         transformable.moveLocation(1.0, -5.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        Assert.assertNull(result.getY());
-        Assert.assertEquals(Double.valueOf(2.0), result.getX());
+        assertNull(result.getY());
+        assertEquals(Double.valueOf(2.0), result.getX());
     }
 
     /**
@@ -195,7 +198,7 @@ public class MapTileCollisionModelTest
         transformable.moveLocation(1.0, 1.0, 1.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
-        Assert.assertNull(result);
+        assertNull(result);
     }
 
     /**
@@ -204,15 +207,15 @@ public class MapTileCollisionModelTest
     @Test
     public void testGetter()
     {
-        Assert.assertEquals(formulaV, mapCollision.getCollisionFormula("y"));
-        Assert.assertEquals(formulaH, mapCollision.getCollisionFormula("x"));
-        Assert.assertEquals(group, mapCollision.getCollisionGroup(UtilMap.GROUND));
+        assertEquals(formulaV, mapCollision.getCollisionFormula("y"));
+        assertEquals(formulaH, mapCollision.getCollisionFormula("x"));
+        assertEquals(group, mapCollision.getCollisionGroup(UtilMap.GROUND));
 
-        Assert.assertTrue(mapCollision.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
-        Assert.assertTrue(mapCollision.getCollisionGroups().containsAll(Arrays.asList(group)));
+        assertTrue(mapCollision.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
+        assertTrue(mapCollision.getCollisionGroups().containsAll(Arrays.asList(group)));
 
-        Assert.assertEquals(formulasConfig, mapCollision.getFormulasConfig());
-        Assert.assertEquals(groupsConfig, mapCollision.getCollisionsConfig());
+        assertEquals(formulasConfig, mapCollision.getFormulasConfig());
+        assertEquals(groupsConfig, mapCollision.getCollisionsConfig());
     }
 
     /**
@@ -224,8 +227,8 @@ public class MapTileCollisionModelTest
         mapCollision.saveCollisions();
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
-        Assert.assertTrue(mapCollision.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
-        Assert.assertTrue(mapCollision.getCollisionGroups().containsAll(Arrays.asList(group)));
+        assertTrue(mapCollision.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
+        assertTrue(mapCollision.getCollisionGroups().containsAll(Arrays.asList(group)));
     }
 
     /**
@@ -238,26 +241,26 @@ public class MapTileCollisionModelTest
         mapTileCollision.prepare(map);
         mapTileCollision.loadCollisions(Medias.create("void"), Medias.create("void2"));
 
-        Assert.assertTrue(mapTileCollision.getCollisionFormulas().isEmpty());
-        Assert.assertTrue(mapTileCollision.getCollisionGroups().isEmpty());
+        assertTrue(mapTileCollision.getCollisionFormulas().isEmpty());
+        assertTrue(mapTileCollision.getCollisionGroups().isEmpty());
     }
 
     /**
      * Test the map tile collision unknown formula.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testUnknownFormula()
     {
-        Assert.assertNull(mapCollision.getCollisionFormula("void"));
+        assertThrows(() -> mapCollision.getCollisionFormula("void"), MapTileCollisionLoader.ERROR_FORMULA + "void");
     }
 
     /**
      * Test the map tile collision unknown group.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testUnknownGroup()
     {
-        Assert.assertNull(mapCollision.getCollisionGroup("void"));
+        assertThrows(() -> mapCollision.getCollisionGroup("void"), MapTileCollisionLoader.ERROR_FORMULA + "void");
     }
 
     /**

@@ -46,7 +46,7 @@ public final class CollisionRangeConfig
     /** Input max Y attribute. */
     public static final String ATT_MAX_Y = "maxY";
     /** Axis type error. */
-    private static final String ERROR_TYPE = "Unknown axis: ";
+    static final String ERROR_TYPE = "Unknown axis: ";
 
     /**
      * Create the collision range data from a node.

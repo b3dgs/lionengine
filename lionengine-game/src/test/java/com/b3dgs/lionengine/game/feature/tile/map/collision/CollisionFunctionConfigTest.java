@@ -17,15 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 
 /**
@@ -40,8 +41,8 @@ public final class CollisionFunctionConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         HACK.addByValue(HACK.make("FAIL"));
     }
@@ -49,8 +50,8 @@ public final class CollisionFunctionConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
         HACK.restore();
@@ -58,13 +59,11 @@ public final class CollisionFunctionConfigTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(CollisionFunctionConfig.class);
+        assertPrivateConstructor(CollisionFunctionConfig.class);
     }
 
     /**
@@ -79,16 +78,15 @@ public final class CollisionFunctionConfigTest
 
         final CollisionFunction imported = CollisionFunctionConfig.imports(root);
 
-        Assert.assertEquals(function, imported);
+        assertEquals(function, imported);
     }
 
     /**
      * Test export with <code>null</code> function.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testExportFunctionNull()
     {
-
         final Xml root = new Xml("null");
         CollisionFunctionConfig.exports(root, new CollisionFunction()
         {
@@ -105,13 +103,13 @@ public final class CollisionFunctionConfigTest
             }
         });
 
-        Assert.assertNull(CollisionFunctionConfig.imports(root));
+        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "null");
     }
 
     /**
      * Test export with unknown function.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testExportFunctionUnknown()
     {
         final Xml root = new Xml("FAIL");
@@ -130,20 +128,20 @@ public final class CollisionFunctionConfigTest
             }
         });
 
-        Assert.assertNull(CollisionFunctionConfig.imports(root));
+        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "FAIL");
     }
 
     /**
      * Test import with invalid function.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testImportFunctionInvalid()
     {
         final Xml root = new Xml("function");
         final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);
         CollisionFunctionConfig.exports(root, function);
-
         root.getChild(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE, "void");
-        Assert.assertNull(CollisionFunctionConfig.imports(root));
+
+        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "void");
     }
 }

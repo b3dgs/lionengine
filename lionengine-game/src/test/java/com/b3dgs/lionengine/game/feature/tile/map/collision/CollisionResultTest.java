@@ -17,16 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 
 /**
- * Test the collision result class.
+ * Test {@link CollisionResult}.
  */
-public class CollisionResultTest
+public final class CollisionResultTest
 {
     /**
      * Test the collision result.
@@ -39,8 +40,8 @@ public class CollisionResultTest
         final Tile tile = new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1);
         final CollisionResult result = new CollisionResult(x, y, tile);
 
-        Assert.assertEquals(x, result.getX());
-        Assert.assertEquals(y, result.getY());
-        Assert.assertEquals(tile, result.getTile());
+        assertEquals(x, result.getX());
+        assertEquals(y, result.getY());
+        assertEquals(tile, result.getTile());
     }
 }

@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
 
@@ -32,13 +32,11 @@ public final class CollisionConstraintConfigTest
 {
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(CollisionConstraintConfig.class);
+        assertPrivateConstructor(CollisionConstraintConfig.class);
     }
 
     /**
@@ -55,7 +53,7 @@ public final class CollisionConstraintConfigTest
 
         final CollisionConstraint imported = CollisionConstraintConfig.imports(root);
 
-        Assert.assertEquals(constraint, imported);
+        assertEquals(constraint, imported);
     }
 
     /**
@@ -69,6 +67,6 @@ public final class CollisionConstraintConfigTest
         final CollisionConstraint constraint = new CollisionConstraint();
         CollisionConstraintConfig.exports(root, constraint);
 
-        Assert.assertEquals(constraint, CollisionConstraintConfig.imports(root));
+        assertEquals(constraint, CollisionConstraintConfig.imports(root));
     }
 }

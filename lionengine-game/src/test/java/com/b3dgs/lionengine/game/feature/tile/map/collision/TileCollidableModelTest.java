@@ -17,15 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -44,9 +48,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the tile collidable model class.
+ * Test {@link TileCollidableModel}.
  */
-public class TileCollidableModelTest
+public final class TileCollidableModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -54,8 +58,8 @@ public class TileCollidableModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilSetup.createConfig();
@@ -64,10 +68,10 @@ public class TileCollidableModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -103,7 +107,7 @@ public class TileCollidableModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new Camera());
@@ -122,11 +126,11 @@ public class TileCollidableModelTest
     /**
      * Clean test.
      */
-    @After
+    @AfterEach
     public void clean()
     {
-        Assert.assertTrue(formulasConfig.getFile().delete());
-        Assert.assertTrue(groupsConfig.getFile().delete());
+        assertTrue(formulasConfig.getFile().delete());
+        assertTrue(groupsConfig.getFile().delete());
     }
 
     /**
@@ -155,7 +159,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, 0.0, -2.0);
         collidable.update(1.0);
 
-        Assert.assertEquals(map.getTile(0, 2), collided.get());
+        assertEquals(map.getTile(0, 2), collided.get());
     }
 
     /**
@@ -173,7 +177,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, 0.0, 2.0);
         collidable.update(1.0);
 
-        Assert.assertEquals(map.getTile(0, 0), collided.get());
+        assertEquals(map.getTile(0, 0), collided.get());
     }
 
     /**
@@ -191,7 +195,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, 2.0, 0.0);
         collidable.update(1.0);
 
-        Assert.assertEquals(map.getTile(0, 0), collided.get());
+        assertEquals(map.getTile(0, 0), collided.get());
     }
 
     /**
@@ -209,7 +213,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, -2.0, 0.0);
         collidable.update(1.0);
 
-        Assert.assertEquals(map.getTile(1, 2), collided.get());
+        assertEquals(map.getTile(1, 2), collided.get());
     }
 
     /**
@@ -228,7 +232,7 @@ public class TileCollidableModelTest
         transformable.moveLocation(1.0, 0.0, -5.0);
         collidable.update(1.0);
 
-        Assert.assertNull(collided.get());
+        assertNull(collided.get());
     }
 
     /**
@@ -247,7 +251,7 @@ public class TileCollidableModelTest
         collidable.removeListener(listener);
         collidable.update(1.0);
 
-        Assert.assertNull(collided.get());
+        assertNull(collided.get());
     }
 
     /**
@@ -267,8 +271,8 @@ public class TileCollidableModelTest
         collidable.removeListener(listener);
         collidable.update(1.0);
 
-        Assert.assertNull(collided.get());
-        Assert.assertTrue(self.called.get());
+        assertNull(collided.get());
+        assertTrue(self.called.get());
     }
 
     /**
@@ -289,7 +293,7 @@ public class TileCollidableModelTest
         collidable = featurable.addFeatureAndGet(new TileCollidableModel(services, setup));
         collidable.setEnabled(true);
 
-        Assert.assertArrayEquals(Arrays.asList(categoryY, categoryX).toArray(), collidable.getCategories().toArray());
+        assertArrayEquals(Arrays.asList(categoryY, categoryX).toArray(), collidable.getCategories().toArray());
 
         return transformable;
     }

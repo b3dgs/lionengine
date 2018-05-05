@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the collision function linear class.
+ * Test {@link CollisionFunctionLinear}.
  */
-public class CollisionFunctionLinearTest
+public final class CollisionFunctionLinearTest
 {
     /** Function test. */
     private final CollisionFunctionLinear function = new CollisionFunctionLinear(2.0, 3.0);
@@ -36,25 +36,24 @@ public class CollisionFunctionLinearTest
     @Test
     public void testFunction()
     {
-        Assert.assertEquals(13.0, function.compute(5.0), UtilTests.PRECISION);
-        Assert.assertEquals(-7.0, function.compute(-5.0), UtilTests.PRECISION);
-        Assert.assertEquals(CollisionFunctionType.LINEAR, function.getType());
-        Assert.assertEquals(2.0, function.getA(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, function.getB(), UtilTests.PRECISION);
+        assertEquals(13.0, function.compute(5.0));
+        assertEquals(-7.0, function.compute(-5.0));
+        assertEquals(CollisionFunctionType.LINEAR, function.getType());
+        assertEquals(2.0, function.getA());
+        assertEquals(3.0, function.getB());
     }
 
     /**
      * Test the function hash code.
      */
     @Test
-    public void testHashcode()
+    public void testHashCode()
     {
-        final int hash = function.hashCode();
-        Assert.assertEquals(hash, new CollisionFunctionLinear(2.0, 3.0).hashCode());
+        assertEquals(function, new CollisionFunctionLinear(2.0, 3.0));
 
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, new CollisionFunctionLinear(1.5, 3.0).hashCode());
-        Assert.assertNotEquals(hash, new CollisionFunctionLinear(2.0, 3.5).hashCode());
+        assertNotEquals(function, new Object());
+        assertNotEquals(function, new CollisionFunctionLinear(1.5, 3.0));
+        assertNotEquals(function, new CollisionFunctionLinear(2.0, 3.5));
     }
 
     /**
@@ -63,13 +62,13 @@ public class CollisionFunctionLinearTest
     @Test
     public void testEquals()
     {
-        Assert.assertEquals(function, function);
-        Assert.assertEquals(function, new CollisionFunctionLinear(2.0, 3.0));
+        assertEquals(function, function);
+        assertEquals(function, new CollisionFunctionLinear(2.0, 3.0));
 
-        Assert.assertNotEquals(function, null);
-        Assert.assertNotEquals(function, new Object());
-        Assert.assertNotEquals(function, new CollisionFunctionLinear(1.5, 3.0));
-        Assert.assertNotEquals(function, new CollisionFunctionLinear(2.0, 3.5));
+        assertNotEquals(function, null);
+        assertNotEquals(function, new Object());
+        assertNotEquals(function, new CollisionFunctionLinear(1.5, 3.0));
+        assertNotEquals(function, new CollisionFunctionLinear(2.0, 3.5));
     }
 
     /**
@@ -78,6 +77,6 @@ public class CollisionFunctionLinearTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("CollisionFunctionLinear (a=2.0, b=3.0)", function.toString());
+        assertEquals("CollisionFunctionLinear (a=2.0, b=3.0)", function.toString());
     }
 }

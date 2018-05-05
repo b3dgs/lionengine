@@ -17,18 +17,22 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 
 /**
- * Test the collision category class.
+ * Test {@link CollisionCategory}.
  */
-public class CollisionCategoryTest
+public final class CollisionCategoryTest
 {
     /** Formula test. */
     private final CollisionFormula formula = new CollisionFormula("formula",
@@ -46,30 +50,12 @@ public class CollisionCategoryTest
     @Test
     public void testCategory()
     {
-        Assert.assertEquals("name", category.getName());
-        Assert.assertEquals(Axis.X, category.getAxis());
-        Assert.assertEquals(1, category.getOffsetX());
-        Assert.assertEquals(2, category.getOffsetY());
-        Assert.assertEquals(group, category.getGroups().iterator().next());
-        Assert.assertEquals(formula, category.getFormulas().iterator().next());
-    }
-
-    /**
-     * Test the category hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final int hash = category.hashCode();
-        Assert.assertEquals(hash, new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group)).hashCode());
-        Assert.assertEquals(hash, new CollisionCategory("name", Axis.Y, 1, 2, Arrays.asList(group)).hashCode());
-        Assert.assertEquals(hash, new CollisionCategory("name", Axis.X, 2, 2, Arrays.asList(group)).hashCode());
-        Assert.assertEquals(hash, new CollisionCategory("name", Axis.X, 1, 3, Arrays.asList(group)).hashCode());
-        Assert.assertEquals(hash,
-                            new CollisionCategory("name", Axis.X, 1, 2, new ArrayList<CollisionGroup>()).hashCode());
-
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, new CollisionCategory("void", Axis.X, 1, 2, Arrays.asList(group)).hashCode());
+        assertEquals("name", category.getName());
+        assertEquals(Axis.X, category.getAxis());
+        assertEquals(1, category.getOffsetX());
+        assertEquals(2, category.getOffsetY());
+        assertEquals(group, category.getGroups().iterator().next());
+        assertEquals(formula, category.getFormulas().iterator().next());
     }
 
     /**
@@ -78,16 +64,32 @@ public class CollisionCategoryTest
     @Test
     public void testEquals()
     {
-        Assert.assertEquals(category, category);
-        Assert.assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group)));
-        Assert.assertEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, Arrays.asList(group)));
-        Assert.assertEquals(category, new CollisionCategory("name", Axis.X, 2, 2, Arrays.asList(group)));
-        Assert.assertEquals(category, new CollisionCategory("name", Axis.X, 1, 3, Arrays.asList(group)));
-        Assert.assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, new ArrayList<CollisionGroup>()));
+        assertEquals(category, category);
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 2, 2, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 3, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, new ArrayList<CollisionGroup>()));
 
-        Assert.assertNotEquals(category, null);
-        Assert.assertNotEquals(category, new Object());
-        Assert.assertNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, Arrays.asList(group)));
+        assertNotEquals(category, null);
+        assertNotEquals(category, new Object());
+        assertNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, Arrays.asList(group)));
+    }
+
+    /**
+     * Test the category hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 2, 2, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 3, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, new ArrayList<CollisionGroup>()));
+
+        assertHashNotEquals(category, new Object());
+        assertHashNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, Arrays.asList(group)));
     }
 
     /**
@@ -96,23 +98,23 @@ public class CollisionCategoryTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("CollisionCategory (name=name, axis=X, x=1, y=2)"
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "[CollisionGroup (name=group)"
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "[CollisionFormula (name=formula)"
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)"
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "CollisionFunctionLinear (a=1.0, b=2.0)"
-                            + System.lineSeparator()
-                            + Constant.TAB
-                            + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], "
-                            + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}]]",
-                            category.toString());
+        assertEquals("CollisionCategory (name=name, axis=X, x=1, y=2)"
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "[CollisionGroup (name=group)"
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "[CollisionFormula (name=formula)"
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)"
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "CollisionFunctionLinear (a=1.0, b=2.0)"
+                     + System.lineSeparator()
+                     + Constant.TAB
+                     + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], "
+                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}]]",
+                     category.toString());
     }
 }

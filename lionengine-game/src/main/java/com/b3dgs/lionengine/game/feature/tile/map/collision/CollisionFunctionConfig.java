@@ -41,7 +41,7 @@ public final class CollisionFunctionConfig
     /** B attribute. */
     public static final String B = "b";
     /** Type error. */
-    private static final String ERROR_TYPE = "Unknown type: ";
+    static final String ERROR_TYPE = "Unknown type: ";
 
     /**
      * Create the collision function from node.

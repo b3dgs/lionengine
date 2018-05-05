@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 
 /**
- * Test the function type enumeration.
+ * Test {@link CollisionFunctionType}.
  */
-public class CollisionFunctionTypeTest
+public final class CollisionFunctionTypeTest
 {
     /**
      * Test the enum.

@@ -17,11 +17,12 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.Xml;
 
 /**
@@ -31,13 +32,11 @@ public final class CollisionRangeConfigTest
 {
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testEnum() throws Exception
+    @Test
+    public void testEnum()
     {
-        UtilTests.testPrivateConstructor(CollisionRangeConfig.class);
+        assertPrivateConstructor(CollisionRangeConfig.class);
     }
 
     /**
@@ -50,13 +49,13 @@ public final class CollisionRangeConfigTest
         final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
         CollisionRangeConfig.exports(root, range);
 
-        Assert.assertEquals(range, CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)));
+        assertEquals(range, CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)));
     }
 
     /**
      * Test with invalid axis.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testInvalidAxis()
     {
         final Xml root = new Xml("ranges");
@@ -64,6 +63,8 @@ public final class CollisionRangeConfigTest
         CollisionRangeConfig.exports(root, range);
 
         root.getChild(CollisionRangeConfig.NODE_RANGE).writeString(CollisionRangeConfig.ATT_AXIS, "void");
-        Assert.assertNull(CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)));
+
+        assertThrows(() -> CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)),
+                     CollisionRangeConfig.ERROR_TYPE + "void");
     }
 }

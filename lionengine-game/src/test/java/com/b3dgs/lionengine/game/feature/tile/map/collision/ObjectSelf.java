@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 /**
  * Object self collision listener mock.
  */
-public class ObjectSelf extends FeaturableModel implements TileCollidableListener
+final class ObjectSelf extends FeaturableModel implements TileCollidableListener
 {
     /** Called flag. */
     final AtomicBoolean called = new AtomicBoolean();

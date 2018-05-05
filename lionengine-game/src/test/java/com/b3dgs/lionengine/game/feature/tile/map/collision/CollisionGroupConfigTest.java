@@ -17,13 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -42,8 +45,8 @@ public final class CollisionGroupConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -51,8 +54,8 @@ public final class CollisionGroupConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -70,7 +73,7 @@ public final class CollisionGroupConfigTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         final Services services = new Services();
@@ -96,10 +99,10 @@ public final class CollisionGroupConfigTest
 
         final CollisionGroupConfig imported = CollisionGroupConfig.imports(config);
 
-        Assert.assertEquals(group, imported.getGroups().values().iterator().next());
-        Assert.assertEquals(group, imported.getGroup("group"));
+        assertEquals(group, imported.getGroups().values().iterator().next());
+        assertEquals(group, imported.getGroup("group"));
 
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
     }
 
     /**
@@ -120,10 +123,10 @@ public final class CollisionGroupConfigTest
 
         final CollisionGroupConfig groups = CollisionGroupConfig.imports(groupsConfig);
 
-        Assert.assertEquals(group, groups.getGroups().values().iterator().next());
+        assertEquals(group, groups.getGroups().values().iterator().next());
 
-        Assert.assertTrue(groupsConfig.getFile().delete());
-        Assert.assertTrue(formulasConfig.getFile().delete());
+        assertTrue(groupsConfig.getFile().delete());
+        assertTrue(formulasConfig.getFile().delete());
     }
 
     /**
@@ -135,12 +138,12 @@ public final class CollisionGroupConfigTest
         final Xml root = new Xml("groups");
         CollisionGroupConfig.exports(root, group);
 
-        Assert.assertFalse(CollisionGroupConfig.has(root, "void"));
-        Assert.assertTrue(CollisionGroupConfig.has(root, "group"));
+        assertFalse(CollisionGroupConfig.has(root, "void"));
+        assertTrue(CollisionGroupConfig.has(root, "group"));
 
         CollisionGroupConfig.remove(root, "void");
         CollisionGroupConfig.remove(root, "group");
 
-        Assert.assertFalse(CollisionGroupConfig.has(root, "group"));
+        assertFalse(CollisionGroupConfig.has(root, "group"));
     }
 }

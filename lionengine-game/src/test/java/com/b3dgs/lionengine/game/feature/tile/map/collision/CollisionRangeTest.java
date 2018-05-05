@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the collision range class.
+ * Test {@link CollisionRange}.
  */
-public class CollisionRangeTest
+public final class CollisionRangeTest
 {
     /** Range test. */
     private final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
@@ -34,28 +38,11 @@ public class CollisionRangeTest
     @Test
     public void testRange()
     {
-        Assert.assertEquals(Axis.X, range.getOutput());
-        Assert.assertEquals(0, range.getMinX());
-        Assert.assertEquals(1, range.getMaxX());
-        Assert.assertEquals(2, range.getMinY());
-        Assert.assertEquals(3, range.getMaxY());
-    }
-
-    /**
-     * Test the range hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final int hash = range.hashCode();
-        Assert.assertEquals(hash, new CollisionRange(Axis.X, 0, 1, 2, 3).hashCode());
-
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, new CollisionRange(Axis.Y, 0, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(hash, new CollisionRange(Axis.X, 1, 1, 2, 3).hashCode());
-        Assert.assertNotEquals(hash, new CollisionRange(Axis.X, 0, 2, 2, 3).hashCode());
-        Assert.assertNotEquals(hash, new CollisionRange(Axis.X, 0, 1, 3, 3).hashCode());
-        Assert.assertNotEquals(hash, new CollisionRange(Axis.X, 0, 1, 2, 4).hashCode());
+        assertEquals(Axis.X, range.getOutput());
+        assertEquals(0, range.getMinX());
+        assertEquals(1, range.getMaxX());
+        assertEquals(2, range.getMinY());
+        assertEquals(3, range.getMaxY());
     }
 
     /**
@@ -64,16 +51,32 @@ public class CollisionRangeTest
     @Test
     public void testEquals()
     {
-        Assert.assertEquals(range, range);
-        Assert.assertEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 3));
+        assertEquals(range, range);
+        assertEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 3));
 
-        Assert.assertNotEquals(range, null);
-        Assert.assertNotEquals(range, new Object());
-        Assert.assertNotEquals(range, new CollisionRange(Axis.Y, 0, 1, 2, 3));
-        Assert.assertNotEquals(range, new CollisionRange(Axis.X, 1, 1, 2, 3));
-        Assert.assertNotEquals(range, new CollisionRange(Axis.X, 0, 2, 2, 3));
-        Assert.assertNotEquals(range, new CollisionRange(Axis.X, 0, 1, 3, 3));
-        Assert.assertNotEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 4));
+        assertNotEquals(range, null);
+        assertNotEquals(range, new Object());
+        assertNotEquals(range, new CollisionRange(Axis.Y, 0, 1, 2, 3));
+        assertNotEquals(range, new CollisionRange(Axis.X, 1, 1, 2, 3));
+        assertNotEquals(range, new CollisionRange(Axis.X, 0, 2, 2, 3));
+        assertNotEquals(range, new CollisionRange(Axis.X, 0, 1, 3, 3));
+        assertNotEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 4));
+    }
+
+    /**
+     * Test the range hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        assertHashEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 3));
+
+        assertHashNotEquals(range, new Object());
+        assertHashNotEquals(range, new CollisionRange(Axis.Y, 0, 1, 2, 3));
+        assertHashNotEquals(range, new CollisionRange(Axis.X, 1, 1, 2, 3));
+        assertHashNotEquals(range, new CollisionRange(Axis.X, 0, 2, 2, 3));
+        assertHashNotEquals(range, new CollisionRange(Axis.X, 0, 1, 3, 3));
+        assertHashNotEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 4));
     }
 
     /**
@@ -82,6 +85,6 @@ public class CollisionRangeTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)", range.toString());
+        assertEquals("CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)", range.toString());
     }
 }

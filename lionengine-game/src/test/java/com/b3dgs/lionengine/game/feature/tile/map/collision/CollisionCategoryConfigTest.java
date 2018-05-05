@@ -17,20 +17,22 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -47,8 +49,8 @@ public final class CollisionCategoryConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -56,8 +58,8 @@ public final class CollisionCategoryConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -77,7 +79,7 @@ public final class CollisionCategoryConfigTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         final Services services = new Services();
@@ -91,13 +93,11 @@ public final class CollisionCategoryConfigTest
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(CollisionCategoryConfig.class);
+        assertPrivateConstructor(CollisionCategoryConfig.class);
     }
 
     /**
@@ -119,11 +119,11 @@ public final class CollisionCategoryConfigTest
         final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(new Configurer(media),
                                                                                        mapCollision);
 
-        Assert.assertEquals(category, imported.iterator().next());
+        assertEquals(category, imported.iterator().next());
 
-        Assert.assertTrue(formulasConfig.getFile().delete());
-        Assert.assertTrue(groupsConfig.getFile().delete());
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(formulasConfig.getFile().delete());
+        assertTrue(groupsConfig.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -138,7 +138,7 @@ public final class CollisionCategoryConfigTest
 
         final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(root);
 
-        Assert.assertEquals(category, imported.iterator().next());
+        assertEquals(category, imported.iterator().next());
     }
 
     /**
@@ -158,16 +158,16 @@ public final class CollisionCategoryConfigTest
                                                                                          + "category"),
                                                                            mapCollision);
 
-        Assert.assertEquals(category, imported);
+        assertEquals(category, imported);
 
-        Assert.assertTrue(formulasConfig.getFile().delete());
-        Assert.assertTrue(groupsConfig.getFile().delete());
+        assertTrue(formulasConfig.getFile().delete());
+        assertTrue(groupsConfig.getFile().delete());
     }
 
     /**
      * Test with invalid axis.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testMapInvalidAxis()
     {
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
@@ -179,10 +179,11 @@ public final class CollisionCategoryConfigTest
         CollisionCategoryConfig.exports(root, category);
 
         root.getChild(Constant.XML_PREFIX + "category").writeString(CollisionCategoryConfig.ATT_AXIS, "void");
-        Assert.assertNull(CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX + "category"),
-                                                          mapCollision));
+        assertThrows(() -> CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX + "category"),
+                                                           mapCollision),
+                     "Unknown axis: void");
 
-        Assert.assertTrue(formulasConfig.getFile().delete());
-        Assert.assertTrue(groupsConfig.getFile().delete());
+        assertTrue(formulasConfig.getFile().delete());
+        assertTrue(groupsConfig.getFile().delete());
     }
 }

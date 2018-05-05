@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -34,8 +37,8 @@ public final class CollisionFormulaConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -43,8 +46,8 @@ public final class CollisionFormulaConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -72,10 +75,10 @@ public final class CollisionFormulaConfigTest
 
         final CollisionFormulaConfig imported = CollisionFormulaConfig.imports(config);
 
-        Assert.assertEquals("formula", imported.getFormulas().keySet().iterator().next());
-        Assert.assertEquals(formula, imported.getFormula("formula"));
+        assertEquals("formula", imported.getFormulas().keySet().iterator().next());
+        assertEquals(formula, imported.getFormula("formula"));
 
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
     }
 
     /**
@@ -87,12 +90,12 @@ public final class CollisionFormulaConfigTest
         final Xml root = new Xml("formula");
         CollisionFormulaConfig.exports(root, formula);
 
-        Assert.assertFalse(CollisionFormulaConfig.has(root, "void"));
-        Assert.assertTrue(CollisionFormulaConfig.has(root, "formula"));
+        assertFalse(CollisionFormulaConfig.has(root, "void"));
+        assertTrue(CollisionFormulaConfig.has(root, "formula"));
 
         CollisionFormulaConfig.remove(root, "void");
         CollisionFormulaConfig.remove(root, "formula");
 
-        Assert.assertFalse(CollisionFormulaConfig.has(root, "formula"));
+        assertFalse(CollisionFormulaConfig.has(root, "formula"));
     }
 }
