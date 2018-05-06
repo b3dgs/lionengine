@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
- * Test the extractable.
+ * Test {@link ExtractableModel}.
  */
-public class ExtractableModelTest
+public final class ExtractableModelTest
 {
     /**
      * Test the extraction config.
@@ -42,13 +42,13 @@ public class ExtractableModelTest
     {
         final Extractable extractable = UtilExtractable.createExtractable();
 
-        Assert.assertEquals(10, extractable.getResourceQuantity());
-        Assert.assertEquals(ResourceType.WOOD, extractable.getResourceType());
+        assertEquals(10, extractable.getResourceQuantity());
+        assertEquals(ResourceType.WOOD, extractable.getResourceType());
 
-        Assert.assertEquals(0, extractable.getInTileX(), UtilTests.PRECISION);
-        Assert.assertEquals(0, extractable.getInTileY(), UtilTests.PRECISION);
-        Assert.assertEquals(0, extractable.getInTileWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(0, extractable.getInTileHeight(), UtilTests.PRECISION);
+        assertEquals(0, extractable.getInTileX());
+        assertEquals(0, extractable.getInTileY());
+        assertEquals(0, extractable.getInTileWidth());
+        assertEquals(0, extractable.getInTileHeight());
 
         extractable.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -70,11 +70,11 @@ public class ExtractableModelTest
         extractable.prepare(featurable);
         extractable.setResourcesQuantity(10);
 
-        Assert.assertEquals(10, extractable.getResourceQuantity());
+        assertEquals(10, extractable.getResourceQuantity());
 
         extractable.extractResource(5);
 
-        Assert.assertEquals(5, extractable.getResourceQuantity());
+        assertEquals(5, extractable.getResourceQuantity());
 
         extractable.getFeature(Identifiable.class).notifyDestroyed();
     }

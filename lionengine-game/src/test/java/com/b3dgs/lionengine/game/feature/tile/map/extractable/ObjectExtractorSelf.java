@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 /**
  * Extractor test with self listener.
  */
-class ObjectExtractorSelf extends FeaturableModel implements ExtractorChecker, ExtractorListener
+final class ObjectExtractorSelf extends FeaturableModel implements ExtractorChecker, ExtractorListener
 {
     /** Flag. */
     final AtomicInteger flag = new AtomicInteger();
@@ -37,6 +37,7 @@ class ObjectExtractorSelf extends FeaturableModel implements ExtractorChecker, E
     public ObjectExtractorSelf()
     {
         super();
+
         addFeature(new IdentifiableModel());
     }
 

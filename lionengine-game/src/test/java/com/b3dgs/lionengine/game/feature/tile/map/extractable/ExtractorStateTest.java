@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilTests;
 
 /**
- * Test the extractor state.
+ * Test {@link ExtractorState}.
  */
-public class ExtractorStateTest
+public final class ExtractorStateTest
 {
     /**
      * Test the enum.

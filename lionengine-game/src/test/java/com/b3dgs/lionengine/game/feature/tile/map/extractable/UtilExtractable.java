@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 /**
  * Utilities dedicated to extractable test.
  */
-public class UtilExtractable
+final class UtilExtractable
 {
     /**
      * Create extractable.

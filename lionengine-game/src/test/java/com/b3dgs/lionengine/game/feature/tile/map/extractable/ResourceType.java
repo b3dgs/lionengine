@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 /**
  * Resource type.
  */
-public enum ResourceType
+enum ResourceType
 {
     /** Resource wood. */
     WOOD;

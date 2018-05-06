@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 /**
  * Extractor test.
  */
-class ObjectExtractor extends FeaturableModel implements ExtractorChecker
+final class ObjectExtractor extends FeaturableModel implements ExtractorChecker
 {
     /** Extract flag. */
     private final boolean extract;
@@ -39,6 +39,7 @@ class ObjectExtractor extends FeaturableModel implements ExtractorChecker
     public ObjectExtractor(boolean extract, boolean carry)
     {
         super();
+
         this.extract = extract;
         this.carry = carry;
         addFeature(new IdentifiableModel());

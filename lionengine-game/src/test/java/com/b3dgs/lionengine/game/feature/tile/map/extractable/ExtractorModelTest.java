@@ -17,19 +17,24 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -37,9 +42,9 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
- * Test the extractor.
+ * Test {@link ExtractorModel}.
  */
-public class ExtractorModelTest
+public final class ExtractorModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<ExtractorState> HACK = new UtilEnum<>(ExtractorState.class, ExtractorModel.class);
@@ -47,8 +52,8 @@ public class ExtractorModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         HACK.addByValue(HACK.make("FAIL"));
     }
@@ -56,8 +61,8 @@ public class ExtractorModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         HACK.restore();
     }
@@ -67,7 +72,7 @@ public class ExtractorModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(Integer.valueOf(50));
@@ -89,9 +94,9 @@ public class ExtractorModelTest
         extractor.setDropOffPerSecond(2.0);
         extractor.prepare(object);
 
-        Assert.assertEquals(5, extractor.getExtractionCapacity());
-        Assert.assertEquals(1.0, extractor.getExtractionPerSecond(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, extractor.getDropOffPerSecond(), UtilTests.PRECISION);
+        assertEquals(5, extractor.getExtractionCapacity());
+        assertEquals(1.0, extractor.getExtractionPerSecond());
+        assertEquals(2.0, extractor.getDropOffPerSecond());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -120,56 +125,56 @@ public class ExtractorModelTest
         final AtomicReference<Enum<?>> endDrop = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, carry, startDrop, endDrop));
 
-        Assert.assertNull(extractor.getResourceLocation());
-        Assert.assertNull(extractor.getResourceType());
+        assertNull(extractor.getResourceLocation());
+        assertNull(extractor.getResourceType());
 
         extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
 
         final Tiled location = extractor.getResourceLocation();
-        Assert.assertEquals(1.0, location.getInTileX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, location.getInTileY(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, location.getInTileWidth(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, location.getInTileHeight(), UtilTests.PRECISION);
-        Assert.assertEquals(ResourceType.WOOD, extractor.getResourceType());
-        Assert.assertFalse(extractor.isExtracting());
+        assertEquals(1.0, location.getInTileX());
+        assertEquals(2.0, location.getInTileY());
+        assertEquals(1.0, location.getInTileWidth());
+        assertEquals(1.0, location.getInTileHeight());
+        assertEquals(ResourceType.WOOD, extractor.getResourceType());
+        assertFalse(extractor.isExtracting());
 
         extractor.startExtraction();
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, goTo.get());
+        assertFalse(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, goTo.get());
 
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, startExtract.get());
-        Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, startExtract.get());
+        assertNotEquals(ResourceType.WOOD, extracted.get());
 
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, extracted.get());
-
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, carry.get());
-        Assert.assertNotEquals(ResourceType.WOOD, startDrop.get());
-
-        extractor.update(1.0);
-
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, startDrop.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, extracted.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
         extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, endDrop.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, carry.get());
+        assertNotEquals(ResourceType.WOOD, startDrop.get());
+
+        extractor.update(1.0);
+
+        assertTrue(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, startDrop.get());
+
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+
+        assertFalse(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, endDrop.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -196,13 +201,13 @@ public class ExtractorModelTest
         extractor.startExtraction();
         extractor.update(1.0);
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertNotNull(goTo.get());
+        assertFalse(extractor.isExtracting());
+        assertNotNull(goTo.get());
 
         extractor.update(1.0);
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertNotNull(goTo.get());
+        assertFalse(extractor.isExtracting());
+        assertNotNull(goTo.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -229,13 +234,13 @@ public class ExtractorModelTest
         extractor.startExtraction();
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
+        assertTrue(extractor.isExtracting());
 
         extractor.update(1.0);
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertNull(drop.get());
+        assertTrue(extractor.isExtracting());
+        assertNull(drop.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -256,47 +261,29 @@ public class ExtractorModelTest
         extractor.prepare(object);
         extractor.addListener(object);
 
-        Assert.assertNull(extractor.getResourceLocation());
-        Assert.assertNull(extractor.getResourceType());
+        assertNull(extractor.getResourceLocation());
+        assertNull(extractor.getResourceType());
 
         final Extractable extractable = UtilExtractable.createExtractable();
         extractor.setResource(extractable);
 
-        Assert.assertFalse(extractor.isExtracting());
+        assertFalse(extractor.isExtracting());
 
         extractor.startExtraction();
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(1, object.flag.get());
+        assertFalse(extractor.isExtracting());
+        assertEquals(1, object.flag.get());
 
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(2, object.flag.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(2, object.flag.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(3, object.flag.get());
-
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-        extractor.update(1.0);
-
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(4, object.flag.get());
-
-        extractor.update(1.0);
-
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(5, object.flag.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(3, object.flag.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
@@ -306,9 +293,27 @@ public class ExtractorModelTest
         extractor.update(1.0);
         extractor.update(1.0);
         extractor.update(1.0);
+        extractor.update(1.0);
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(6, object.flag.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(4, object.flag.get());
+
+        extractor.update(1.0);
+
+        assertTrue(extractor.isExtracting());
+        assertEquals(5, object.flag.get());
+
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+        extractor.update(1.0);
+
+        assertFalse(extractor.isExtracting());
+        assertEquals(6, object.flag.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
         extractable.getFeature(Identifiable.class).notifyDestroyed();
@@ -330,29 +335,29 @@ public class ExtractorModelTest
         extractor.prepare(object);
         extractor.addListener(object);
 
-        Assert.assertNull(extractor.getResourceLocation());
-        Assert.assertNull(extractor.getResourceType());
+        assertNull(extractor.getResourceLocation());
+        assertNull(extractor.getResourceType());
 
         final Extractable extractable = UtilExtractable.createExtractable();
         extractable.setResourcesQuantity(0);
         extractor.setResource(extractable);
 
-        Assert.assertFalse(extractor.isExtracting());
+        assertFalse(extractor.isExtracting());
 
         extractor.startExtraction();
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(1, object.flag.get());
+        assertFalse(extractor.isExtracting());
+        assertEquals(1, object.flag.get());
 
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(2, object.flag.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(2, object.flag.get());
 
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(2, object.flag.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(2, object.flag.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
         extractable.getFeature(Identifiable.class).notifyDestroyed();
@@ -379,26 +384,26 @@ public class ExtractorModelTest
         final AtomicReference<Enum<?>> extracted = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, empty, empty, empty));
 
-        Assert.assertNull(extractor.getResourceLocation());
-        Assert.assertNull(extractor.getResourceType());
+        assertNull(extractor.getResourceLocation());
+        assertNull(extractor.getResourceType());
 
         extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, goTo.get());
+        assertFalse(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, goTo.get());
 
         extractor.update(1.0);
 
-        Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ResourceType.WOOD, startExtract.get());
-        Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
+        assertTrue(extractor.isExtracting());
+        assertEquals(ResourceType.WOOD, startExtract.get());
+        assertNotEquals(ResourceType.WOOD, extracted.get());
 
         extractor.stopExtraction();
         extractor.update(1.0);
 
-        Assert.assertFalse(extractor.isExtracting());
-        Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
+        assertFalse(extractor.isExtracting());
+        assertNotEquals(ResourceType.WOOD, extracted.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -419,7 +424,7 @@ public class ExtractorModelTest
         extractor.startExtraction();
         extractor.update(1.0);
 
-        Assert.assertEquals(2, object.flag.get());
+        assertEquals(2, object.flag.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -438,14 +443,7 @@ public class ExtractorModelTest
         final Field field = extractor.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(extractor, ExtractorState.values()[5]);
-        try
-        {
-            extractor.update(1.0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
-        }
+
+        assertThrows(() -> extractor.update(1.0), "Unknown enum: FAIL");
     }
 }
