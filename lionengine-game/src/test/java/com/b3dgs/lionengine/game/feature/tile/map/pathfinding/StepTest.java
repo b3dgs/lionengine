@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the step class.
+ * Test {@link Step}.
  */
-public class StepTest
+public final class StepTest
 {
     /**
      * Test the getters.
@@ -33,24 +37,8 @@ public class StepTest
     {
         final Step step = new Step(0, 1);
 
-        Assert.assertEquals(0, step.getX());
-        Assert.assertEquals(1, step.getY());
-    }
-
-    /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final int hash = new Step(0, 1).hashCode();
-
-        Assert.assertEquals(hash, new Step(0, 1).hashCode());
-        Assert.assertEquals(hash, new Step(0, 0).hashCode());
-        Assert.assertEquals(hash, new Step(1, 0).hashCode());
-
-        Assert.assertNotEquals(hash, new Object().hashCode());
-        Assert.assertNotEquals(hash, new Step(1, 1).hashCode());
+        assertEquals(0, step.getX());
+        assertEquals(1, step.getY());
     }
 
     /**
@@ -61,13 +49,29 @@ public class StepTest
     {
         final Step step = new Step(0, 1);
 
-        Assert.assertEquals(step, step);
-        Assert.assertEquals(step, new Step(0, 1));
+        assertEquals(step, step);
+        assertEquals(step, new Step(0, 1));
 
-        Assert.assertNotEquals(step, null);
-        Assert.assertNotEquals(step, new Object());
-        Assert.assertNotEquals(step, new Step(0, 0));
-        Assert.assertNotEquals(step, new Step(1, 1));
-        Assert.assertNotEquals(step, new Step(1, 0));
+        assertNotEquals(step, null);
+        assertNotEquals(step, new Object());
+        assertNotEquals(step, new Step(0, 0));
+        assertNotEquals(step, new Step(1, 1));
+        assertNotEquals(step, new Step(1, 0));
+    }
+
+    /**
+     * Test the hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final Step hash = new Step(0, 1);
+
+        assertHashEquals(hash, new Step(0, 1));
+        assertHashEquals(hash, new Step(0, 0));
+        assertHashEquals(hash, new Step(1, 0));
+
+        assertHashNotEquals(hash, new Object());
+        assertHashNotEquals(hash, new Step(1, 1));
     }
 }

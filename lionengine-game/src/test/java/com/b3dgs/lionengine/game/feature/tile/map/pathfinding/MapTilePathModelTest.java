@@ -17,11 +17,13 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -39,9 +41,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator.TileArea;
 
 /**
- * Test the map tile path model.
+ * Test {@link MapTilePathModel}.
  */
-public class MapTilePathModelTest
+public final class MapTilePathModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -49,8 +51,8 @@ public class MapTilePathModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setLoadFromJar(MapTilePathModelTest.class);
         config = UtilSetup.createConfig();
@@ -59,10 +61,10 @@ public class MapTilePathModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -76,7 +78,7 @@ public class MapTilePathModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new Camera());
@@ -101,13 +103,13 @@ public class MapTilePathModelTest
         final TileArea tile = new TileArea(1, 2, 1, 1);
         CoordTile coord = mapPath.getFreeTileAround(pathfindable, tile);
 
-        Assert.assertEquals(1, coord.getX());
-        Assert.assertEquals(2, coord.getY());
+        assertEquals(1, coord.getX());
+        assertEquals(2, coord.getY());
 
         coord = mapPath.getFreeTileAround(pathfindable, tile, 4);
 
-        Assert.assertEquals(1, coord.getX());
-        Assert.assertEquals(2, coord.getY());
+        assertEquals(1, coord.getX());
+        assertEquals(2, coord.getY());
     }
 
     /**
@@ -120,13 +122,13 @@ public class MapTilePathModelTest
         final TileArea tile = new TileArea(1, 2, 1, 1);
         CoordTile coord = mapPath.getClosestAvailableTile(pathfindable, tile, 6);
 
-        Assert.assertEquals(0, coord.getX());
-        Assert.assertEquals(1, coord.getY());
+        assertEquals(0, coord.getX());
+        assertEquals(1, coord.getY());
 
         coord = mapPath.getClosestAvailableTile(pathfindable, 1, 2, 2, 3, 6);
 
-        Assert.assertEquals(1, coord.getX());
-        Assert.assertEquals(2, coord.getY());
+        assertEquals(1, coord.getX());
+        assertEquals(2, coord.getY());
     }
 
     /**

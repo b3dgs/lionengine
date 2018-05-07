@@ -17,30 +17,29 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
 /**
- * Test the A Star class.
+ * Test {@link com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Astar}.
  */
-public class AstarTest
+public final class AstarTest
 {
     /**
      * Test the constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(Astar.class);
+        assertPrivateConstructor(Astar.class);
     }
 
     /**
@@ -53,7 +52,8 @@ public class AstarTest
         final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTilePathModel(services));
-        Assert.assertNotNull(Astar.createPathFinder(map, 1, new HeuristicClosest()));
+
+        assertNotNull(Astar.createPathFinder(map, 1, new HeuristicClosest()));
     }
 
     /**
@@ -62,7 +62,7 @@ public class AstarTest
     @Test
     public void testCreateHeuristicClosest()
     {
-        Assert.assertEquals(HeuristicClosest.class, Astar.createHeuristicClosest().getClass());
+        assertEquals(HeuristicClosest.class, Astar.createHeuristicClosest().getClass());
     }
 
     /**
@@ -71,7 +71,7 @@ public class AstarTest
     @Test
     public void testCreateHeuristicClosestSquared()
     {
-        Assert.assertEquals(HeuristicClosestSquared.class, Astar.createHeuristicClosestSquared().getClass());
+        assertEquals(HeuristicClosestSquared.class, Astar.createHeuristicClosestSquared().getClass());
     }
 
     /**
@@ -80,6 +80,6 @@ public class AstarTest
     @Test
     public void testCreateHeuristicManhattan()
     {
-        Assert.assertEquals(HeuristicManhattan.class, Astar.createHeuristicManhattan(1).getClass());
+        assertEquals(HeuristicManhattan.class, Astar.createHeuristicManhattan(1).getClass());
     }
 }

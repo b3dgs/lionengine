@@ -17,15 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the heuristic Manhattan class.
+ * Test {@link HeuristicManhattan}.
  */
-public class HeuristicManhattanTest
+public final class HeuristicManhattanTest
 {
     /**
      * Test the heuristic.
@@ -35,6 +34,6 @@ public class HeuristicManhattanTest
     {
         final Heuristic heuristic = new HeuristicManhattan(1);
 
-        Assert.assertEquals(4.0, heuristic.getCost(1, 2, 3, 4), UtilTests.PRECISION);
+        assertEquals(4.0, heuristic.getCost(1, 2, 3, 4));
     }
 }

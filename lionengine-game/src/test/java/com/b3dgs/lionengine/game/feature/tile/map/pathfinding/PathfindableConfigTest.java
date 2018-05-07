@@ -17,20 +17,22 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 
@@ -42,8 +44,8 @@ public final class PathfindableConfigTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -51,21 +53,19 @@ public final class PathfindableConfigTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(PathfindableConfig.class);
+        assertPrivateConstructor(PathfindableConfig.class);
     }
 
     /**
@@ -84,9 +84,9 @@ public final class PathfindableConfigTest
         final Media media = Medias.create("pathfindable.xml");
         root.save(media);
 
-        Assert.assertEquals(map, PathfindableConfig.imports(new Configurer(media)));
+        assertEquals(map, PathfindableConfig.imports(new Configurer(media)));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -99,9 +99,9 @@ public final class PathfindableConfigTest
         final Media media = Medias.create("pathfindable.xml");
         root.save(media);
 
-        Assert.assertTrue(PathfindableConfig.imports(new Configurer(media)).isEmpty());
+        assertTrue(PathfindableConfig.imports(new Configurer(media)).isEmpty());
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -122,16 +122,16 @@ public final class PathfindableConfigTest
 
         final Map<String, PathData> imported = PathfindableConfig.imports(new Configurer(media));
 
-        Assert.assertTrue(imported.get(data.getName()).getAllowedMovements().isEmpty());
-        Assert.assertEquals(map, imported);
+        assertTrue(imported.get(data.getName()).getAllowedMovements().isEmpty());
+        assertEquals(map, imported);
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 
     /**
      * Test with wrong movement.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testWrongMovement()
     {
         final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
@@ -146,8 +146,8 @@ public final class PathfindableConfigTest
         final Media media = Medias.create("pathfindable.xml");
         root.save(media);
 
-        Assert.assertNull(PathfindableConfig.imports(new Configurer(media)));
+        assertCause(() -> PathfindableConfig.imports(new Configurer(media)), IllegalArgumentException.class);
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 }

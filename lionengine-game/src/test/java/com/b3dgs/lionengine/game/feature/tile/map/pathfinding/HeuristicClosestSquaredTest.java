@@ -17,15 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the heuristic closest squared class.
+ * Test {@link HeuristicClosestSquared}.
  */
-public class HeuristicClosestSquaredTest
+public final class HeuristicClosestSquaredTest
 {
     /**
      * Test the heuristic.
@@ -35,6 +34,6 @@ public class HeuristicClosestSquaredTest
     {
         final Heuristic heuristic = new HeuristicClosestSquared();
 
-        Assert.assertEquals(8.0, heuristic.getCost(1, 2, 3, 4), UtilTests.PRECISION);
+        assertEquals(8.0, heuristic.getCost(1, 2, 3, 4));
     }
 }

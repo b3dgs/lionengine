@@ -17,17 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.EnumSet;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.b3dgs.lionengine.UtilTests;
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the path data class.
+ * Test {@link PathData}.
  */
-public class PathDataTest
+public final class PathDataTest
 {
     /**
      * Test the getter.
@@ -37,32 +41,11 @@ public class PathDataTest
     {
         final PathData data = new PathData("category", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
 
-        Assert.assertEquals("category", data.getName());
-        Assert.assertEquals(1.0, data.getCost(), UtilTests.PRECISION);
-        Assert.assertTrue(data.isBlocking());
-        Assert.assertArrayEquals(EnumSet.of(MovementTile.UP, MovementTile.DOWN).toArray(),
-                                 data.getAllowedMovements().toArray());
-    }
-
-    /**
-     * Test the hash code.
-     */
-    @Test
-    public void testHashCode()
-    {
-        final int c = new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode();
-
-        Assert.assertEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN, MovementTile.UP)).hashCode());
-
-        Assert.assertNotEquals(c, new Object().hashCode());
-        Assert.assertNotEquals(c,
-                               new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertEquals(c, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertEquals(c,
-                            new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)).hashCode());
-        Assert.assertEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)).hashCode());
-        Assert.assertEquals(c, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)).hashCode());
+        assertEquals("category", data.getName());
+        assertEquals(1.0, data.getCost());
+        assertTrue(data.isBlocking());
+        assertArrayEquals(EnumSet.of(MovementTile.UP, MovementTile.DOWN).toArray(),
+                          data.getAllowedMovements().toArray());
     }
 
     /**
@@ -73,16 +56,35 @@ public class PathDataTest
     {
         final PathData data = new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
 
-        Assert.assertEquals(data, data);
-        Assert.assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN, MovementTile.UP)));
+        assertEquals(data, data);
+        assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN, MovementTile.UP)));
 
-        Assert.assertNotEquals(data, null);
-        Assert.assertNotEquals(data, new Object());
-        Assert.assertNotEquals(data, new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
-        Assert.assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
-        Assert.assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
+        assertNotEquals(data, null);
+        assertNotEquals(data, new Object());
+        assertNotEquals(data, new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
+        assertEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
+    }
+
+    /**
+     * Test the hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final PathData data = new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
+
+        assertHashEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertHashEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN, MovementTile.UP)));
+
+        assertHashNotEquals(data, new Object());
+        assertHashNotEquals(data, new PathData("", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertHashEquals(data, new PathData("c", 0.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertHashEquals(data, new PathData("c", 1.0, false, EnumSet.of(MovementTile.UP, MovementTile.DOWN)));
+        assertHashEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP)));
+        assertHashEquals(data, new PathData("c", 1.0, true, EnumSet.of(MovementTile.DOWN)));
     }
 }
