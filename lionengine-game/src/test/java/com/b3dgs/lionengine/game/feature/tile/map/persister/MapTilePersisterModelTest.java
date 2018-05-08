@@ -17,20 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.persister;
 
-import java.io.File;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsIo;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -38,29 +39,26 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 
 /**
- * Test the map tile default implementation.
+ * Test {@link MapTilePersisterModel}.
  */
-public class MapTilePersisterModelTest
+public final class MapTilePersisterModelTest
 {
     /**
-     * Clean up test.
+     * Prepare tests.
      */
-    @AfterClass
-    public static void cleanUp()
+    @BeforeAll
+    public static void beforeTests()
     {
-        Medias.setResourcesDirectory(null);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
 
-    /** Temp folder. */
-    @Rule public final TemporaryFolder folder = new TemporaryFolder();
-
     /**
-     * Prepare test.
+     * Clean tests.
      */
-    @Before
-    public void prepare()
+    @AfterAll
+    public static void afterTests()
     {
-        Medias.setResourcesDirectory(folder.getRoot().getAbsolutePath());
+        Medias.setResourcesDirectory(null);
     }
 
     /**
@@ -71,21 +69,20 @@ public class MapTilePersisterModelTest
     @Test
     public void testSaveLoad() throws IOException
     {
-        final File file = folder.newFile();
         final MapTile map = UtilMapTilePersister.createMap();
 
-        Assert.assertEquals(map.getInTileWidth() * (map.getInTileHeight() - 1), map.getTilesNumber());
+        assertEquals(map.getInTileWidth() * (map.getInTileHeight() - 1), map.getTilesNumber());
 
-        final Media level = Medias.get(file);
+        final Media level = Medias.create("level");
         UtilMapTilePersister.saveMap(map, level);
         final MapTile mapLoaded = UtilMapTilePersister.loadMap(level);
 
-        Assert.assertEquals(map.getTileWidth(), mapLoaded.getTileWidth());
-        Assert.assertEquals(map.getTileHeight(), mapLoaded.getTileHeight());
-        Assert.assertEquals(map.getInTileWidth(), mapLoaded.getInTileWidth());
-        Assert.assertEquals(map.getInTileHeight(), mapLoaded.getInTileHeight());
-        Assert.assertEquals(map.getWidth(), mapLoaded.getWidth());
-        Assert.assertEquals(map.getHeight(), mapLoaded.getHeight());
+        assertEquals(map.getTileWidth(), mapLoaded.getTileWidth());
+        assertEquals(map.getTileHeight(), mapLoaded.getTileHeight());
+        assertEquals(map.getInTileWidth(), mapLoaded.getInTileWidth());
+        assertEquals(map.getInTileHeight(), mapLoaded.getInTileHeight());
+        assertEquals(map.getWidth(), mapLoaded.getWidth());
+        assertEquals(map.getHeight(), mapLoaded.getHeight());
         for (int x = 0; x < mapLoaded.getInTileWidth(); x++)
         {
             for (int y = 0; y < mapLoaded.getInTileHeight(); y++)
@@ -93,20 +90,20 @@ public class MapTilePersisterModelTest
                 final Tile tile = mapLoaded.getTile(x, y);
                 if (y == 0)
                 {
-                    Assert.assertNull(tile);
+                    assertNull(tile);
                 }
                 else
                 {
-                    Assert.assertNotNull(tile);
-                    Assert.assertEquals(0, tile.getSheet().intValue());
-                    Assert.assertEquals(x * y, tile.getNumber());
-                    Assert.assertEquals(x * mapLoaded.getTileWidth(), tile.getX(), UtilTests.PRECISION);
-                    Assert.assertEquals(y * mapLoaded.getTileHeight(), tile.getY(), UtilTests.PRECISION);
+                    assertNotNull(tile);
+                    assertEquals(0, tile.getSheet().intValue());
+                    assertEquals(x * y, tile.getNumber());
+                    assertEquals(x * mapLoaded.getTileWidth(), tile.getX());
+                    assertEquals(y * mapLoaded.getTileHeight(), tile.getY());
                 }
             }
         }
-        Assert.assertEquals(map.getTilesNumber(), mapLoaded.getTilesNumber());
-        Assert.assertTrue(file.delete());
+        assertEquals(map.getTilesNumber(), mapLoaded.getTilesNumber());
+        assertTrue(level.getFile().delete());
     }
 
     /**
@@ -117,9 +114,7 @@ public class MapTilePersisterModelTest
     @Test
     public void testSaveLoadWithConfig() throws IOException
     {
-        final File fileConfig = folder.newFile();
-        Medias.setResourcesDirectory(folder.getRoot().getAbsolutePath());
-        final Media config = Medias.get(fileConfig);
+        final Media config = Medias.create("config");
 
         TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
 
@@ -129,15 +124,13 @@ public class MapTilePersisterModelTest
         map.create(16, 32, 3, 3);
         map.loadSheets(config);
 
-        final File levelFile = folder.newFile();
-        final Media level = Medias.get(levelFile);
+        final Media level = Medias.create("level");
         UtilMapTilePersister.saveMap(map, level);
         final MapTile mapLoaded = UtilMapTilePersister.loadMap(level);
 
-        Assert.assertEquals(config, mapLoaded.getMedia());
-
-        Assert.assertTrue(fileConfig.delete());
-        Assert.assertTrue(levelFile.delete());
+        assertEquals(config, mapLoaded.getMedia());
+        assertTrue(config.getFile().delete());
+        assertTrue(level.getFile().delete());
     }
 
     /**
@@ -149,23 +142,12 @@ public class MapTilePersisterModelTest
     public void testInvalidSheet() throws IOException
     {
         final MapTile map = UtilMapTilePersister.createMap();
-        final File levelFile = folder.newFile();
-        final Media level = Medias.get(levelFile);
+        final Media level = Medias.create("level");
         map.setTile(map.createTile(Integer.valueOf(Integer.MAX_VALUE), 0, 0, 0));
         UtilMapTilePersister.saveMap(map, level);
 
-        try
-        {
-            final MapTile mapLoaded = UtilMapTilePersister.loadMap(level);
-            Assert.assertNull(mapLoaded);
-        }
-        catch (final IOException exception)
-        {
-            // Success
-            Assert.assertNotNull(exception);
-        }
-
-        Assert.assertTrue(levelFile.delete());
+        assertThrowsIo(() -> UtilMapTilePersister.loadMap(level), "");
+        assertTrue(level.getFile().delete());
     }
 
     /**
@@ -178,7 +160,8 @@ public class MapTilePersisterModelTest
         final MapTile map = services.create(MapTileGame.class);
         final MapTilePersister mapPersister = new MapTilePersisterModel(services);
 
-        Assert.assertNotNull(mapPersister);
+        assertNotNull(mapPersister);
+
         mapPersister.prepare(map);
     }
 }

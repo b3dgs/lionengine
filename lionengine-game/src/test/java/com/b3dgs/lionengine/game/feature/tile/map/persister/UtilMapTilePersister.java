@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 /**
  * Utilities related to map tile persister test.
  */
-public class UtilMapTilePersister
+final class UtilMapTilePersister
 {
     /**
      * Create a test map.
