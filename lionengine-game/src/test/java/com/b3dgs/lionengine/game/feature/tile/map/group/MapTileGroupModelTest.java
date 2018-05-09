@@ -17,15 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.group;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
@@ -42,15 +46,15 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
 /**
- * Test the map tile group class.
+ * Test {@link MapTileGroupModel}.
  */
-public class MapTileGroupModelTest
+public final class MapTileGroupModelTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -58,8 +62,8 @@ public class MapTileGroupModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -71,7 +75,7 @@ public class MapTileGroupModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         mapGroup.prepare(featurable);
@@ -83,15 +87,15 @@ public class MapTileGroupModelTest
     @Test
     public void testDefault()
     {
-        Assert.assertTrue(mapGroup.getGroup(Constant.EMPTY_STRING).isEmpty());
-        Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
-        Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(new TileRef(0, 0)));
-        Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0), 0));
-        Assert.assertTrue(mapGroup.getGroups().containsAll(Arrays.asList(MapTileGroupModel.NO_GROUP_NAME)));
-        Assert.assertNull(mapGroup.getGroupsConfig());
+        assertTrue(mapGroup.getGroup(Constant.EMPTY_STRING).isEmpty());
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(new TileRef(0, 0)));
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0), 0));
+        assertTrue(mapGroup.getGroups().containsAll(Arrays.asList(MapTileGroupModel.NO_GROUP_NAME)));
+        assertNull(mapGroup.getGroupsConfig());
 
-        Assert.assertEquals(TileGroupType.NONE, mapGroup.getType(Constant.EMPTY_STRING));
-        Assert.assertEquals(TileGroupType.NONE, mapGroup.getType(tile));
+        assertEquals(TileGroupType.NONE, mapGroup.getType(Constant.EMPTY_STRING));
+        assertEquals(TileGroupType.NONE, mapGroup.getType(tile));
     }
 
     /**
@@ -102,26 +106,26 @@ public class MapTileGroupModelTest
     {
         mapGroup.changeGroup(tile, "water");
 
-        Assert.assertEquals(new TileRef(tile), mapGroup.getGroup("water").iterator().next());
-        Assert.assertEquals("water", mapGroup.getGroup(tile));
-        Assert.assertEquals("water", mapGroup.getGroup(new TileRef(0, 0)));
-        Assert.assertEquals("water", mapGroup.getGroup(Integer.valueOf(0), 0));
-        Assert.assertTrue(mapGroup.getGroups().containsAll(Arrays.asList("water")));
+        assertEquals(new TileRef(tile), mapGroup.getGroup("water").iterator().next());
+        assertEquals("water", mapGroup.getGroup(tile));
+        assertEquals("water", mapGroup.getGroup(new TileRef(0, 0)));
+        assertEquals("water", mapGroup.getGroup(Integer.valueOf(0), 0));
+        assertTrue(mapGroup.getGroups().containsAll(Arrays.asList("water")));
 
         mapGroup.changeGroup(tile, "tree");
 
-        Assert.assertEquals(new TileRef(tile), mapGroup.getGroup("tree").iterator().next());
-        Assert.assertEquals("tree", mapGroup.getGroup(tile));
-        Assert.assertEquals("tree", mapGroup.getGroup(new TileRef(0, 0)));
-        Assert.assertEquals("tree", mapGroup.getGroup(Integer.valueOf(0), 0));
-        Assert.assertTrue(mapGroup.getGroups().containsAll(Arrays.asList("water", "tree")));
+        assertEquals(new TileRef(tile), mapGroup.getGroup("tree").iterator().next());
+        assertEquals("tree", mapGroup.getGroup(tile));
+        assertEquals("tree", mapGroup.getGroup(new TileRef(0, 0)));
+        assertEquals("tree", mapGroup.getGroup(Integer.valueOf(0), 0));
+        assertTrue(mapGroup.getGroups().containsAll(Arrays.asList("water", "tree")));
 
         mapGroup.changeGroup(tile, null);
 
-        Assert.assertFalse(mapGroup.getGroup(MapTileGroupModel.NO_GROUP_NAME).iterator().hasNext());
-        Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
-        Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(new TileRef(0, 0)));
-        Assert.assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0), 0));
+        assertFalse(mapGroup.getGroup(MapTileGroupModel.NO_GROUP_NAME).iterator().hasNext());
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(new TileRef(0, 0)));
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0), 0));
     }
 
     /**
@@ -137,12 +141,12 @@ public class MapTileGroupModelTest
 
         mapGroup.loadGroups(configGroups);
 
-        Assert.assertEquals(new TileRef(tile), mapGroup.getGroup("water").iterator().next());
-        Assert.assertEquals("water", mapGroup.getGroup(tile));
-        Assert.assertEquals("water", mapGroup.getGroup(new TileRef(0, 0)));
-        Assert.assertEquals("water", mapGroup.getGroup(Integer.valueOf(0), 0));
-        Assert.assertTrue(mapGroup.getGroups().containsAll(Arrays.asList("water")));
-        Assert.assertEquals(TileGroupType.PLAIN, mapGroup.getType("water"));
-        Assert.assertEquals(TileGroupType.PLAIN, mapGroup.getType(tile));
+        assertEquals(new TileRef(tile), mapGroup.getGroup("water").iterator().next());
+        assertEquals("water", mapGroup.getGroup(tile));
+        assertEquals("water", mapGroup.getGroup(new TileRef(0, 0)));
+        assertEquals("water", mapGroup.getGroup(Integer.valueOf(0), 0));
+        assertTrue(mapGroup.getGroups().containsAll(Arrays.asList("water")));
+        assertEquals(TileGroupType.PLAIN, mapGroup.getType("water"));
+        assertEquals(TileGroupType.PLAIN, mapGroup.getType(tile));
     }
 }
