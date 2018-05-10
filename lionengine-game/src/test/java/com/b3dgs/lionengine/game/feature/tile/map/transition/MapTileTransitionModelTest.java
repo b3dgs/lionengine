@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
@@ -27,10 +29,9 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TRANSITION2;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TREE;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.WATER;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -40,9 +41,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the map tile transition model class.
+ * Test {@link MapTileTransitionModel}.
  */
-public class MapTileTransitionModelTest
+public final class MapTileTransitionModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -50,8 +51,8 @@ public class MapTileTransitionModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilMapTransition.createTransitions();
@@ -60,11 +61,53 @@ public class MapTileTransitionModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
+    }
+
+    /**
+     * Test the map resolution.
+     * 
+     * @param tileNumber The initial tile number.
+     * @param groupOrigin The initial group.
+     * @param tileNew The new tile number.
+     * @param groupNew The new tile group.
+     * @param transition The transition between initial tile and new tile.
+     */
+    private static void testResolution(int tileNumber,
+                                       String groupOrigin,
+                                       int tileNew,
+                                       String groupNew,
+                                       String transition)
+    {
+        final MapTile map = UtilMap.createMap(12);
+        UtilMap.fill(map, tileNumber);
+        map.getFeature(MapTileTransition.class).loadTransitions(config);
+
+        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
+        final MapTileTransition mapTransition = map.getFeature(MapTileTransitionModel.class);
+
+        assertEquals(groupOrigin, mapGroup.getGroup(map.getTile(8, 8)));
+
+        final Tile tile = map.createTile(SHEET, tileNew, 8, 8);
+        map.setTile(tile);
+
+        assertEquals(groupNew, mapGroup.getGroup(map.getTile(8, 8)));
+
+        for (final Tile neighbor : map.getNeighbors(tile))
+        {
+            assertEquals(groupOrigin, mapGroup.getGroup(neighbor));
+        }
+
+        mapTransition.resolve(tile);
+
+        for (final Tile neighbor : map.getNeighbors(tile))
+        {
+            assertEquals(transition, mapGroup.getGroup(neighbor));
+        }
     }
 
     /**
@@ -81,43 +124,5 @@ public class MapTileTransitionModelTest
 
         testResolution(TILE_TREE, TREE, TILE_GROUND, GROUND, TRANSITION2);
         testResolution(TILE_TREE, TREE, TILE_WATER, WATER, TRANSITION);
-    }
-
-    /**
-     * Test the map resolution.
-     * 
-     * @param tileNumber The initial tile number.
-     * @param groupOrigin The initial group.
-     * @param tileNew The new tile number.
-     * @param groupNew The new tile group.
-     * @param transition The transition between initial tile and new tile.
-     */
-    private void testResolution(int tileNumber, String groupOrigin, int tileNew, String groupNew, String transition)
-    {
-        final MapTile map = UtilMap.createMap(12);
-        UtilMap.fill(map, tileNumber);
-        map.getFeature(MapTileTransition.class).loadTransitions(config);
-
-        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        final MapTileTransition mapTransition = map.getFeature(MapTileTransitionModel.class);
-
-        Assert.assertEquals(groupOrigin, mapGroup.getGroup(map.getTile(8, 8)));
-
-        final Tile tile = map.createTile(SHEET, tileNew, 8, 8);
-        map.setTile(tile);
-
-        Assert.assertEquals(groupNew, mapGroup.getGroup(map.getTile(8, 8)));
-
-        for (final Tile neighbor : map.getNeighbors(tile))
-        {
-            Assert.assertEquals(groupOrigin, mapGroup.getGroup(neighbor));
-        }
-
-        mapTransition.resolve(tile);
-
-        for (final Tile neighbor : map.getNeighbors(tile))
-        {
-            Assert.assertEquals(transition, mapGroup.getGroup(neighbor));
-        }
     }
 }

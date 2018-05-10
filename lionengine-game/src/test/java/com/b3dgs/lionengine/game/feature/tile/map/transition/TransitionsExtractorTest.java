@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
@@ -28,10 +29,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -40,9 +40,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the transitions extractor class.
+ * Test {@link TransitionsExtractor}.
  */
-public class TransitionsExtractorTest
+public final class TransitionsExtractorTest
 {
     /** Test configuration. */
     private static Media config;
@@ -50,7 +50,7 @@ public class TransitionsExtractorTest
     /**
      * Prepare test.
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -60,10 +60,10 @@ public class TransitionsExtractorTest
     /**
      * Clean up test.
      */
-    @AfterClass
+    @AfterAll
     public static void cleanUp()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -79,6 +79,27 @@ public class TransitionsExtractorTest
         map.getFeature(MapTileTransition.class).loadTransitions(config);
 
         return map;
+    }
+
+    /**
+     * Check the transition with tile.
+     * 
+     * @param transitions The transitions found.
+     * @param type The transition type.
+     * @param in The group in.
+     * @param out The group out.
+     * @param number The tile number.
+     */
+    private static void has(Map<Transition, Collection<TileRef>> transitions,
+                            TransitionType type,
+                            String in,
+                            String out,
+                            int number)
+    {
+        final Transition transition = new Transition(type, in, out);
+        final TileRef tile = new TileRef(SHEET, number);
+
+        assertTrue(transitions.get(transition).contains(tile));
     }
 
     /**
@@ -140,25 +161,5 @@ public class TransitionsExtractorTest
 
         has(transitions, TransitionType.CENTER, WATER, WATER, TILE_WATER);
         has(transitions, TransitionType.CENTER, GROUND, GROUND, TILE_GROUND);
-    }
-
-    /**
-     * Check the transition with tile.
-     * 
-     * @param transitions The transitions found.
-     * @param type The transition type.
-     * @param in The group in.
-     * @param out The group out.
-     * @param number The tile number.
-     */
-    private void has(Map<Transition, Collection<TileRef>> transitions,
-                     TransitionType type,
-                     String in,
-                     String out,
-                     int number)
-    {
-        final Transition transition = new Transition(type, in, out);
-        final TileRef tile = new TileRef(SHEET, number);
-        Assert.assertTrue(transitions.get(transition).contains(tile));
     }
 }

@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
+import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION2;
@@ -29,10 +32,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -43,15 +45,15 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the group transitive class.
+ * Test {@link TransitiveGroup}.
  */
-public class TransitiveGroupTest
+public final class TransitiveGroupTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -59,8 +61,8 @@ public class TransitiveGroupTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -81,30 +83,27 @@ public class TransitiveGroupTest
         final TransitiveGroup transitive = new TransitiveGroup(map);
         transitive.load();
 
-        Assert.assertEquals(Arrays.asList(new GroupTransition(WATER, GROUND), new GroupTransition(GROUND, TREE)),
-                            transitive.getTransitives(WATER, TREE));
+        assertEquals(Arrays.asList(new GroupTransition(WATER, GROUND), new GroupTransition(GROUND, TREE)),
+                     transitive.getTransitives(WATER, TREE));
 
-        Assert.assertEquals(WATER, mapGroup.getGroup(map.getTile(15, 15)));
+        assertEquals(WATER, mapGroup.getGroup(map.getTile(15, 15)));
 
         final Tile tile = map.createTile(SHEET, TILE_TREE, 15, 15);
         map.setTile(tile);
         transitive.checkTransitives(tile);
 
-        Assert.assertEquals(TREE, mapGroup.getGroup(map.getTile(15, 15)));
-        Assert.assertEquals(WATER, mapGroup.getGroup(map.getTile(14, 14)));
-        Assert.assertEquals(GROUND, mapGroup.getGroup(map.getTile(13, 13)));
+        assertEquals(TREE, mapGroup.getGroup(map.getTile(15, 15)));
+        assertEquals(WATER, mapGroup.getGroup(map.getTile(14, 14)));
+        assertEquals(GROUND, mapGroup.getGroup(map.getTile(13, 13)));
 
-        Assert.assertTrue(transitive.getTransitives("a", "b").isEmpty());
-        Assert.assertTrue(transitive.getDirectTransitiveTiles(new Transition(TransitionType.CENTER, "a", "a"))
-                                    .isEmpty());
+        assertTrue(transitive.getTransitives("a", "b").isEmpty());
+        assertTrue(transitive.getDirectTransitiveTiles(new Transition(TransitionType.CENTER, "a", "a")).isEmpty());
 
-        Assert.assertArrayEquals(Arrays.asList(new TileRef(SHEET, TILE_TRANSITION2)).toArray(),
-                                 transitive.getDirectTransitiveTiles(new Transition(TransitionType.UP_LEFT,
-                                                                                    WATER,
-                                                                                    TREE))
-                                           .toArray());
+        assertArrayEquals(Arrays.asList(new TileRef(SHEET, TILE_TRANSITION2)).toArray(),
+                          transitive.getDirectTransitiveTiles(new Transition(TransitionType.UP_LEFT, WATER, TREE))
+                                    .toArray());
 
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
     }
 
     /**
@@ -125,6 +124,6 @@ public class TransitiveGroupTest
 
         TransitiveGroup.reduceTransitive(transitive);
 
-        Assert.assertEquals(expected, transitive);
+        assertEquals(expected, transitive);
     }
 }

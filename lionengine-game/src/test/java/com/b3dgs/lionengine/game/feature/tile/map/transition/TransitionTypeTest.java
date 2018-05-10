@@ -17,16 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.UtilTests;
 
 /**
- * Test the transition type enum.
+ * Test {@link TransitionType}.
  */
-public class TransitionTypeTest
+public final class TransitionTypeTest
 {
     /**
      * Check the bits sequence.
@@ -49,11 +52,12 @@ public class TransitionTypeTest
             upLeft, upRight, downLeft, downRight
         });
         final TransitionType fromBits = TransitionType.from(downRight, downLeft, upRight, upLeft);
-        Assert.assertEquals(fromTable, fromBits);
-        Assert.assertFalse(expected.is(!downRight, downLeft, upRight, upLeft));
-        Assert.assertFalse(expected.is(downRight, !downLeft, upRight, upLeft));
-        Assert.assertFalse(expected.is(downRight, downLeft, !upRight, upLeft));
-        Assert.assertFalse(expected.is(downRight, downLeft, upRight, !upLeft));
+
+        assertEquals(fromTable, fromBits);
+        assertFalse(expected.is(!downRight, downLeft, upRight, upLeft));
+        assertFalse(expected.is(downRight, !downLeft, upRight, upLeft));
+        assertFalse(expected.is(downRight, downLeft, !upRight, upLeft));
+        assertFalse(expected.is(downRight, downLeft, upRight, !upLeft));
 
         return expected.is(downRight, downLeft, upRight, upLeft);
     }
@@ -77,17 +81,17 @@ public class TransitionTypeTest
     {
         for (final TransitionType type : TransitionType.values())
         {
-            Assert.assertEquals(type, TransitionType.from(type.name()));
+            assertEquals(type, TransitionType.from(type.name()));
         }
     }
 
     /**
      * Test the enum creation from string.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFromStringInvalid()
     {
-        Assert.assertNull(TransitionType.from("null"));
+        assertThrows(() -> TransitionType.from("null"), "Unknown transition name: null");
     }
 
     /**
@@ -96,22 +100,22 @@ public class TransitionTypeTest
     @Test
     public void testFromTable()
     {
-        Assert.assertTrue(check(TransitionType.CENTER, false, false, false, false));
-        Assert.assertFalse(check(TransitionType.CENTER, true, true, true, true));
-        Assert.assertTrue(check(TransitionType.UP_LEFT, false, false, false, true));
-        Assert.assertTrue(check(TransitionType.UP_RIGHT, false, false, true, false));
-        Assert.assertTrue(check(TransitionType.UP, false, false, true, true));
-        Assert.assertTrue(check(TransitionType.DOWN, true, true, false, false));
-        Assert.assertTrue(check(TransitionType.DOWN_LEFT, false, true, false, false));
-        Assert.assertTrue(check(TransitionType.DOWN_RIGHT, true, false, false, false));
-        Assert.assertTrue(check(TransitionType.LEFT, true, false, true, false));
-        Assert.assertTrue(check(TransitionType.RIGHT, false, true, false, true));
-        Assert.assertTrue(check(TransitionType.UP_LEFT_DOWN_RIGHT, true, false, false, true));
-        Assert.assertTrue(check(TransitionType.UP_RIGHT_DOWN_LEFT, false, true, true, false));
-        Assert.assertTrue(check(TransitionType.CORNER_UP_LEFT, true, true, true, false));
-        Assert.assertTrue(check(TransitionType.CORNER_UP_RIGHT, true, true, false, true));
-        Assert.assertTrue(check(TransitionType.CORNER_DOWN_LEFT, true, false, true, true));
-        Assert.assertTrue(check(TransitionType.CORNER_DOWN_RIGHT, false, true, true, true));
+        assertTrue(check(TransitionType.CENTER, false, false, false, false));
+        assertFalse(check(TransitionType.CENTER, true, true, true, true));
+        assertTrue(check(TransitionType.UP_LEFT, false, false, false, true));
+        assertTrue(check(TransitionType.UP_RIGHT, false, false, true, false));
+        assertTrue(check(TransitionType.UP, false, false, true, true));
+        assertTrue(check(TransitionType.DOWN, true, true, false, false));
+        assertTrue(check(TransitionType.DOWN_LEFT, false, true, false, false));
+        assertTrue(check(TransitionType.DOWN_RIGHT, true, false, false, false));
+        assertTrue(check(TransitionType.LEFT, true, false, true, false));
+        assertTrue(check(TransitionType.RIGHT, false, true, false, true));
+        assertTrue(check(TransitionType.UP_LEFT_DOWN_RIGHT, true, false, false, true));
+        assertTrue(check(TransitionType.UP_RIGHT_DOWN_LEFT, false, true, true, false));
+        assertTrue(check(TransitionType.CORNER_UP_LEFT, true, true, true, false));
+        assertTrue(check(TransitionType.CORNER_UP_RIGHT, true, true, false, true));
+        assertTrue(check(TransitionType.CORNER_DOWN_LEFT, true, false, true, true));
+        assertTrue(check(TransitionType.CORNER_DOWN_RIGHT, false, true, true, true));
     }
 
     /**
@@ -120,20 +124,20 @@ public class TransitionTypeTest
     @Test
     public void testSymmetric()
     {
-        Assert.assertEquals(TransitionType.CENTER, TransitionType.CENTER.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_UP_LEFT, TransitionType.UP_LEFT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_UP_RIGHT, TransitionType.UP_RIGHT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_DOWN_LEFT, TransitionType.DOWN_LEFT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_DOWN_RIGHT, TransitionType.DOWN_RIGHT.getSymetric());
-        Assert.assertEquals(TransitionType.UP, TransitionType.DOWN.getSymetric());
-        Assert.assertEquals(TransitionType.DOWN, TransitionType.UP.getSymetric());
-        Assert.assertEquals(TransitionType.LEFT, TransitionType.RIGHT.getSymetric());
-        Assert.assertEquals(TransitionType.RIGHT, TransitionType.LEFT.getSymetric());
-        Assert.assertEquals(TransitionType.UP_LEFT_DOWN_RIGHT, TransitionType.UP_RIGHT_DOWN_LEFT.getSymetric());
-        Assert.assertEquals(TransitionType.UP_RIGHT_DOWN_LEFT, TransitionType.UP_LEFT_DOWN_RIGHT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_UP_LEFT, TransitionType.UP_LEFT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_UP_RIGHT, TransitionType.UP_RIGHT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_DOWN_LEFT, TransitionType.DOWN_LEFT.getSymetric());
-        Assert.assertEquals(TransitionType.CORNER_DOWN_RIGHT, TransitionType.DOWN_RIGHT.getSymetric());
+        assertEquals(TransitionType.CENTER, TransitionType.CENTER.getSymetric());
+        assertEquals(TransitionType.CORNER_UP_LEFT, TransitionType.UP_LEFT.getSymetric());
+        assertEquals(TransitionType.CORNER_UP_RIGHT, TransitionType.UP_RIGHT.getSymetric());
+        assertEquals(TransitionType.CORNER_DOWN_LEFT, TransitionType.DOWN_LEFT.getSymetric());
+        assertEquals(TransitionType.CORNER_DOWN_RIGHT, TransitionType.DOWN_RIGHT.getSymetric());
+        assertEquals(TransitionType.UP, TransitionType.DOWN.getSymetric());
+        assertEquals(TransitionType.DOWN, TransitionType.UP.getSymetric());
+        assertEquals(TransitionType.LEFT, TransitionType.RIGHT.getSymetric());
+        assertEquals(TransitionType.RIGHT, TransitionType.LEFT.getSymetric());
+        assertEquals(TransitionType.UP_LEFT_DOWN_RIGHT, TransitionType.UP_RIGHT_DOWN_LEFT.getSymetric());
+        assertEquals(TransitionType.UP_RIGHT_DOWN_LEFT, TransitionType.UP_LEFT_DOWN_RIGHT.getSymetric());
+        assertEquals(TransitionType.CORNER_UP_LEFT, TransitionType.UP_LEFT.getSymetric());
+        assertEquals(TransitionType.CORNER_UP_RIGHT, TransitionType.UP_RIGHT.getSymetric());
+        assertEquals(TransitionType.CORNER_DOWN_LEFT, TransitionType.DOWN_LEFT.getSymetric());
+        assertEquals(TransitionType.CORNER_DOWN_RIGHT, TransitionType.DOWN_RIGHT.getSymetric());
     }
 }

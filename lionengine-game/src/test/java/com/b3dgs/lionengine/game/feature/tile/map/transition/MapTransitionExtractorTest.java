@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
@@ -25,25 +27,24 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TREE;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.WATER;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the transition extractor class.
+ * Test {@link MapTransitionExtractor}.
  */
-public class MapTransitionExtractorTest
+public final class MapTransitionExtractorTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -51,8 +52,8 @@ public class MapTransitionExtractorTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -84,17 +85,17 @@ public class MapTransitionExtractorTest
 
         for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {
-            Assert.assertEquals(transition, get(map, tx, 0));
-            Assert.assertEquals(transition, get(map, tx, map.getInTileHeight() - 1));
+            assertEquals(transition, get(map, tx, 0));
+            assertEquals(transition, get(map, tx, map.getInTileHeight() - 1));
         }
 
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
-            Assert.assertEquals(transition, get(map, 0, ty));
-            Assert.assertEquals(transition, get(map, map.getInTileWidth() - 1, ty));
+            assertEquals(transition, get(map, 0, ty));
+            assertEquals(transition, get(map, map.getInTileWidth() - 1, ty));
         }
 
-        Assert.assertNull(get(map, map.getInTileWidth() / 2, map.getInTileHeight() / 2));
+        assertNull(get(map, map.getInTileWidth() / 2, map.getInTileHeight() / 2));
     }
 
     /**
@@ -107,10 +108,10 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_WATER);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
-        Assert.assertEquals(new Transition(TransitionType.UP_LEFT, WATER, GROUND), get(map, 2, 4));
-        Assert.assertEquals(new Transition(TransitionType.UP_RIGHT, WATER, GROUND), get(map, 4, 4));
-        Assert.assertEquals(new Transition(TransitionType.DOWN_LEFT, WATER, GROUND), get(map, 2, 2));
-        Assert.assertEquals(new Transition(TransitionType.DOWN_RIGHT, WATER, GROUND), get(map, 4, 2));
+        assertEquals(new Transition(TransitionType.UP_LEFT, WATER, GROUND), get(map, 2, 4));
+        assertEquals(new Transition(TransitionType.UP_RIGHT, WATER, GROUND), get(map, 4, 4));
+        assertEquals(new Transition(TransitionType.DOWN_LEFT, WATER, GROUND), get(map, 2, 2));
+        assertEquals(new Transition(TransitionType.DOWN_RIGHT, WATER, GROUND), get(map, 4, 2));
     }
 
     /**
@@ -123,10 +124,10 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_GROUND);
         UtilMap.fill(map, TILE_WATER, TILE_TRANSITION, 3);
 
-        Assert.assertEquals(new Transition(TransitionType.CORNER_UP_LEFT, WATER, GROUND), get(map, 2, 4));
-        Assert.assertEquals(new Transition(TransitionType.CORNER_UP_RIGHT, WATER, GROUND), get(map, 4, 4));
-        Assert.assertEquals(new Transition(TransitionType.CORNER_DOWN_LEFT, WATER, GROUND), get(map, 2, 2));
-        Assert.assertEquals(new Transition(TransitionType.CORNER_DOWN_RIGHT, WATER, GROUND), get(map, 4, 2));
+        assertEquals(new Transition(TransitionType.CORNER_UP_LEFT, WATER, GROUND), get(map, 2, 4));
+        assertEquals(new Transition(TransitionType.CORNER_UP_RIGHT, WATER, GROUND), get(map, 4, 4));
+        assertEquals(new Transition(TransitionType.CORNER_DOWN_LEFT, WATER, GROUND), get(map, 2, 2));
+        assertEquals(new Transition(TransitionType.CORNER_DOWN_RIGHT, WATER, GROUND), get(map, 4, 2));
     }
 
     /**
@@ -139,8 +140,8 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_WATER);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
-        Assert.assertEquals(new Transition(TransitionType.RIGHT, WATER, GROUND), get(map, 2, 3));
-        Assert.assertEquals(new Transition(TransitionType.LEFT, WATER, GROUND), get(map, 4, 3));
+        assertEquals(new Transition(TransitionType.RIGHT, WATER, GROUND), get(map, 2, 3));
+        assertEquals(new Transition(TransitionType.LEFT, WATER, GROUND), get(map, 4, 3));
     }
 
     /**
@@ -153,8 +154,8 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_WATER);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
-        Assert.assertEquals(new Transition(TransitionType.UP, WATER, GROUND), get(map, 3, 4));
-        Assert.assertEquals(new Transition(TransitionType.DOWN, WATER, GROUND), get(map, 3, 2));
+        assertEquals(new Transition(TransitionType.UP, WATER, GROUND), get(map, 3, 4));
+        assertEquals(new Transition(TransitionType.DOWN, WATER, GROUND), get(map, 3, 2));
     }
 
     /**
@@ -168,7 +169,7 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 5);
 
-        Assert.assertEquals(new Transition(TransitionType.UP_RIGHT_DOWN_LEFT, WATER, GROUND), get(map, 4, 4));
+        assertEquals(new Transition(TransitionType.UP_RIGHT_DOWN_LEFT, WATER, GROUND), get(map, 4, 4));
     }
 
     /**
@@ -182,7 +183,7 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 5, 3);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3, 5);
 
-        Assert.assertEquals(new Transition(TransitionType.UP_LEFT_DOWN_RIGHT, WATER, GROUND), get(map, 4, 4));
+        assertEquals(new Transition(TransitionType.UP_LEFT_DOWN_RIGHT, WATER, GROUND), get(map, 4, 4));
     }
 
     /**
@@ -198,7 +199,7 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_WATER);
         map.setTile(map.createTile(SHEET, TILE_TRANSITION, 3, 3));
 
-        Assert.assertNull(get(map, 3, 3));
+        assertNull(get(map, 3, 3));
     }
 
     /**
@@ -215,7 +216,7 @@ public class MapTransitionExtractorTest
         map.setTile(map.createTile(SHEET, TILE_GROUND, 1, 1));
         map.setTile(map.createTile(SHEET, TILE_TREE, 3, 3));
 
-        Assert.assertNull(get(map, 2, 2));
+        assertNull(get(map, 2, 2));
     }
 
     /**
@@ -228,7 +229,7 @@ public class MapTransitionExtractorTest
         map.setTile(map.createTile(SHEET, TILE_WATER, 4, 2));
         map.setTile(map.createTile(SHEET, TILE_WATER, 3, 3));
 
-        Assert.assertEquals(new Transition(TransitionType.CENTER, WATER, WATER), get(map, 3, 3));
+        assertEquals(new Transition(TransitionType.CENTER, WATER, WATER), get(map, 3, 3));
     }
 
     /**
@@ -241,6 +242,6 @@ public class MapTransitionExtractorTest
         UtilMap.fill(map, TILE_WATER);
         map.setTile(map.createTile(Integer.valueOf(1), TILE_WATER, 3, 3));
 
-        Assert.assertNull(get(map, 3, 3));
+        assertNull(get(map, 3, 3));
     }
 }

@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the transition class.
+ * Test {@link Transition}.
  */
-public class TransitionTest
+public final class TransitionTest
 {
     /**
      * Test the getters.
@@ -33,40 +37,9 @@ public class TransitionTest
     {
         final Transition transition = new Transition(TransitionType.CENTER, "a", "b");
 
-        Assert.assertEquals(TransitionType.CENTER, transition.getType());
-        Assert.assertEquals("a", transition.getIn());
-        Assert.assertEquals("b", transition.getOut());
-    }
-
-    /**
-     * Test the group transition hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final TransitionType type = TransitionType.UP;
-        final Transition transition = new Transition(type, "a", "a");
-
-        Assert.assertEquals(transition, transition);
-        Assert.assertEquals(new Transition(type, "a", "a").hashCode(), new Transition(type, "a", "a").hashCode());
-        Assert.assertEquals(new Transition(type, "a", "b").hashCode(), new Transition(type, "a", "b").hashCode());
-
-        Assert.assertNotEquals(new Transition(TransitionType.CENTER, "a", "b").hashCode(),
-                               new Transition(TransitionType.CENTER.getSymetric(), "b", "a").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "b").hashCode(),
-                               new Transition(type.getSymetric(), "b", "a").hashCode());
-
-        Assert.assertNotEquals(new Transition(type, "a", "a").hashCode(), new Object().hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "b").hashCode(),
-                               new Transition(TransitionType.CENTER, "b", "a").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "b").hashCode(),
-                               new Transition(TransitionType.CENTER, "a", "b").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "b").hashCode(), new Transition(type, "a", "a").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "b").hashCode(), new Transition(type, "b", "b").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "a").hashCode(), new Transition(type, "b", "a").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "a").hashCode(), new Transition(type, "b", "b").hashCode());
-        Assert.assertNotEquals(new Transition(type, "a", "a").hashCode(),
-                               new Transition(type.getSymetric(), "b", "b").hashCode());
+        assertEquals(TransitionType.CENTER, transition.getType());
+        assertEquals("a", transition.getIn());
+        assertEquals("b", transition.getOut());
     }
 
     /**
@@ -78,21 +51,48 @@ public class TransitionTest
         final TransitionType type = TransitionType.UP;
         final Transition transition = new Transition(type, "a", "a");
 
-        Assert.assertEquals(transition, transition);
-        Assert.assertEquals(new Transition(type, "a", "a"), new Transition(type, "a", "a"));
-        Assert.assertEquals(new Transition(type, "a", "b"), new Transition(type, "a", "b"));
-        Assert.assertEquals(new Transition(TransitionType.CENTER, "a", "b"),
-                            new Transition(TransitionType.CENTER.getSymetric(), "b", "a"));
-        Assert.assertEquals(new Transition(type, "a", "b"), new Transition(type.getSymetric(), "b", "a"));
+        assertEquals(transition, transition);
+        assertEquals(new Transition(type, "a", "a"), new Transition(type, "a", "a"));
+        assertEquals(new Transition(type, "a", "b"), new Transition(type, "a", "b"));
+        assertEquals(new Transition(TransitionType.CENTER, "a", "b"),
+                     new Transition(TransitionType.CENTER.getSymetric(), "b", "a"));
+        assertEquals(new Transition(type, "a", "b"), new Transition(type.getSymetric(), "b", "a"));
 
-        Assert.assertNotEquals(new Transition(type, "a", "a"), new Object());
-        Assert.assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "b", "a"));
-        Assert.assertNotEquals(new Transition(type, "a", "b"), new Transition(TransitionType.CENTER, "a", "b"));
-        Assert.assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "a", "a"));
-        Assert.assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "b", "b"));
-        Assert.assertNotEquals(new Transition(type, "a", "a"), new Transition(type, "b", "a"));
-        Assert.assertNotEquals(new Transition(type, "a", "a"), new Transition(type, "b", "b"));
-        Assert.assertNotEquals(new Transition(type, "a", "a"), new Transition(type.getSymetric(), "b", "b"));
+        assertNotEquals(new Transition(type, "a", "a"), new Object());
+        assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "b", "a"));
+        assertNotEquals(new Transition(type, "a", "b"), new Transition(TransitionType.CENTER, "a", "b"));
+        assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "a", "a"));
+        assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "b", "b"));
+        assertNotEquals(new Transition(type, "a", "a"), new Transition(type, "b", "a"));
+        assertNotEquals(new Transition(type, "a", "a"), new Transition(type, "b", "b"));
+        assertNotEquals(new Transition(type, "a", "a"), new Transition(type.getSymetric(), "b", "b"));
+    }
+
+    /**
+     * Test the group transition hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final TransitionType type = TransitionType.UP;
+        final Transition transition = new Transition(type, "a", "a");
+
+        assertHashEquals(transition, transition);
+        assertHashEquals(new Transition(type, "a", "a"), new Transition(type, "a", "a"));
+        assertHashEquals(new Transition(type, "a", "b"), new Transition(type, "a", "b"));
+
+        assertHashNotEquals(new Transition(TransitionType.CENTER, "a", "b"),
+                            new Transition(TransitionType.CENTER.getSymetric(), "b", "a"));
+        assertHashNotEquals(new Transition(type, "a", "b"), new Transition(type.getSymetric(), "b", "a"));
+
+        assertHashNotEquals(new Transition(type, "a", "a"), new Object());
+        assertHashNotEquals(new Transition(type, "a", "b"), new Transition(TransitionType.CENTER, "b", "a"));
+        assertHashNotEquals(new Transition(type, "a", "b"), new Transition(TransitionType.CENTER, "a", "b"));
+        assertHashNotEquals(new Transition(type, "a", "b"), new Transition(type, "a", "a"));
+        assertHashNotEquals(new Transition(type, "a", "b"), new Transition(type, "b", "b"));
+        assertHashNotEquals(new Transition(type, "a", "a"), new Transition(type, "b", "a"));
+        assertHashNotEquals(new Transition(type, "a", "a"), new Transition(type, "b", "b"));
+        assertHashNotEquals(new Transition(type, "a", "a"), new Transition(type.getSymetric(), "b", "b"));
     }
 
     /**
@@ -101,7 +101,7 @@ public class TransitionTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals(TransitionType.CENTER.name() + " a -> b",
-                            new Transition(TransitionType.CENTER, "a", "b").toString());
+        assertEquals(TransitionType.CENTER.name() + " a -> b",
+                     new Transition(TransitionType.CENTER, "a", "b").toString());
     }
 }

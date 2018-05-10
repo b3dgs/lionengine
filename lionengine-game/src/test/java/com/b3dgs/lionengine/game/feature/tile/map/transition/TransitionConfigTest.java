@@ -17,20 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -45,8 +46,8 @@ public final class TransitionConfigTest // TODO rename to TransitionsConfig
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -54,21 +55,19 @@ public final class TransitionConfigTest // TODO rename to TransitionsConfig
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
 
     /**
      * Test constructor.
-     * 
-     * @throws Exception If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
+    @Test
+    public void testConstructor()
     {
-        UtilTests.testPrivateConstructor(TransitionsConfig.class);
+        assertPrivateConstructor(TransitionsConfig.class);
     }
 
     /**
@@ -99,8 +98,8 @@ public final class TransitionConfigTest // TODO rename to TransitionsConfig
         final Media media = Medias.create("transition.xml");
         TransitionsConfig.exports(media, transitions);
 
-        Assert.assertEquals(transitions, TransitionsConfig.imports(media));
+        assertEquals(transitions, TransitionsConfig.imports(media));
 
-        Assert.assertTrue(media.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 }

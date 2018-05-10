@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Utility related to map manipulation.
  */
-public class UtilMapTransition
+public final class UtilMapTransition
 {
     /**
      * Create map with transitive.

@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the group transition class.
+ * Test {@link GroupTransition}.
  */
-public class GroupTransitionTest
+public final class GroupTransitionTest
 {
     /**
      * Test the group getters.
@@ -32,25 +36,9 @@ public class GroupTransitionTest
     public void testGetters()
     {
         final GroupTransition transition = new GroupTransition("a", "b");
-        Assert.assertEquals("a", transition.getIn());
-        Assert.assertEquals("b", transition.getOut());
-    }
 
-    /**
-     * Test the group transition hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        Assert.assertEquals(new GroupTransition("a", "a").hashCode(), new GroupTransition("a", "a").hashCode());
-        Assert.assertEquals(new GroupTransition("a", "b").hashCode(), new GroupTransition("a", "b").hashCode());
-
-        Assert.assertNotEquals(new GroupTransition("a", "a").hashCode(), new Object().hashCode());
-        Assert.assertNotEquals(new GroupTransition("a", "b").hashCode(), new GroupTransition("b", "a").hashCode());
-        Assert.assertNotEquals(new GroupTransition("a", "b").hashCode(), new GroupTransition("a", "a").hashCode());
-        Assert.assertNotEquals(new GroupTransition("a", "b").hashCode(), new GroupTransition("b", "b").hashCode());
-        Assert.assertNotEquals(new GroupTransition("a", "a").hashCode(), new GroupTransition("b", "a").hashCode());
-        Assert.assertNotEquals(new GroupTransition("a", "a").hashCode(), new GroupTransition("b", "b").hashCode());
+        assertEquals("a", transition.getIn());
+        assertEquals("b", transition.getOut());
     }
 
     /**
@@ -61,16 +49,33 @@ public class GroupTransitionTest
     {
         final GroupTransition transition = new GroupTransition("a", "a");
 
-        Assert.assertEquals(transition, transition);
-        Assert.assertEquals(new GroupTransition("a", "a"), new GroupTransition("a", "a"));
-        Assert.assertEquals(new GroupTransition("a", "b"), new GroupTransition("a", "b"));
+        assertEquals(transition, transition);
+        assertEquals(new GroupTransition("a", "a"), new GroupTransition("a", "a"));
+        assertEquals(new GroupTransition("a", "b"), new GroupTransition("a", "b"));
 
-        Assert.assertNotEquals(new GroupTransition("a", "a"), new Object());
-        Assert.assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "a"));
-        Assert.assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("a", "a"));
-        Assert.assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "b"));
-        Assert.assertNotEquals(new GroupTransition("a", "a"), new GroupTransition("b", "a"));
-        Assert.assertNotEquals(new GroupTransition("a", "a"), new GroupTransition("b", "b"));
+        assertNotEquals(new GroupTransition("a", "a"), new Object());
+        assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "a"));
+        assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("a", "a"));
+        assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "b"));
+        assertNotEquals(new GroupTransition("a", "a"), new GroupTransition("b", "a"));
+        assertNotEquals(new GroupTransition("a", "a"), new GroupTransition("b", "b"));
+    }
+
+    /**
+     * Test the group transition hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        assertHashEquals(new GroupTransition("a", "a"), new GroupTransition("a", "a"));
+        assertHashEquals(new GroupTransition("a", "b"), new GroupTransition("a", "b"));
+
+        assertHashNotEquals(new GroupTransition("a", "a"), new Object());
+        assertHashNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "a"));
+        assertHashNotEquals(new GroupTransition("a", "b"), new GroupTransition("a", "a"));
+        assertHashNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "b"));
+        assertHashNotEquals(new GroupTransition("a", "a"), new GroupTransition("b", "a"));
+        assertHashNotEquals(new GroupTransition("a", "a"), new GroupTransition("b", "b"));
     }
 
     /**
@@ -79,6 +84,6 @@ public class GroupTransitionTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals("a -> b", new GroupTransition("a", "b").toString());
+        assertEquals("a -> b", new GroupTransition("a", "b").toString());
     }
 }
