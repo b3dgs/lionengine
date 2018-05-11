@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 /**
  * Utility related to circuit manipulation.
  */
-public class UtilMapCircuit
+final class UtilMapCircuit
 {
     /**
      * Create map with circuits.

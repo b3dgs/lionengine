@@ -17,17 +17,21 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import com.b3dgs.lionengine.LionEngineException;
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilTests;
 
 /**
- * Test the circuit type enum.
+ * Test {@link CircuitType}.
  */
-public class CircuitTypeTest
+public final class CircuitTypeTest
 {
     /**
      * Check the bits sequence.
@@ -46,11 +50,12 @@ public class CircuitTypeTest
             right, bottom, left, top
         });
         final CircuitType fromBits = CircuitType.from(top, left, bottom, right);
-        Assert.assertEquals(fromTable, fromBits);
-        Assert.assertFalse(expected.is(!top, left, bottom, right));
-        Assert.assertFalse(expected.is(top, !left, bottom, right));
-        Assert.assertFalse(expected.is(top, left, !bottom, right));
-        Assert.assertFalse(expected.is(top, left, bottom, !right));
+
+        assertEquals(fromTable, fromBits);
+        assertFalse(expected.is(!top, left, bottom, right));
+        assertFalse(expected.is(top, !left, bottom, right));
+        assertFalse(expected.is(top, left, !bottom, right));
+        assertFalse(expected.is(top, left, bottom, !right));
 
         return expected.is(top, left, bottom, right);
     }
@@ -74,17 +79,17 @@ public class CircuitTypeTest
     {
         for (final CircuitType type : CircuitType.values())
         {
-            Assert.assertEquals(type, CircuitType.from(type.name()));
+            assertEquals(type, CircuitType.from(type.name()));
         }
     }
 
     /**
      * Test the enum creation from string.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testFromStringInvalid()
     {
-        Assert.assertNull(CircuitType.from("null"));
+        assertThrows(() -> CircuitType.from("null"), "Unknown circuit part name: null");
     }
 
     /**
@@ -93,26 +98,26 @@ public class CircuitTypeTest
     @Test
     public void testFromTable()
     {
-        Assert.assertTrue(check(CircuitType.BLOCK, false, false, false, false));
-        Assert.assertTrue(check(CircuitType.MIDDLE, true, true, true, true));
-        Assert.assertTrue(check(CircuitType.TOP, false, false, true, false));
-        Assert.assertTrue(check(CircuitType.LEFT, false, false, false, true));
-        Assert.assertTrue(check(CircuitType.BOTTOM, true, false, false, false));
-        Assert.assertTrue(check(CircuitType.RIGHT, false, true, false, false));
-        Assert.assertTrue(check(CircuitType.HORIZONTAL, false, true, false, true));
-        Assert.assertTrue(check(CircuitType.VERTICAL, true, false, true, false));
-        Assert.assertTrue(check(CircuitType.ANGLE_TOP_LEFT, false, false, true, true));
-        Assert.assertTrue(check(CircuitType.ANGLE_TOP_RIGHT, false, true, true, false));
-        Assert.assertTrue(check(CircuitType.ANGLE_BOTTOM_LEFT, true, false, false, true));
-        Assert.assertTrue(check(CircuitType.ANGLE_BOTTOM_RIGHT, true, true, false, false));
-        Assert.assertTrue(check(CircuitType.T3J_TOP, false, true, true, true));
-        Assert.assertTrue(check(CircuitType.T3J_LEFT, true, false, true, true));
-        Assert.assertTrue(check(CircuitType.T3J_BOTTOM, true, true, false, true));
-        Assert.assertTrue(check(CircuitType.T3J_RIGHT, true, true, true, false));
+        assertTrue(check(CircuitType.BLOCK, false, false, false, false));
+        assertTrue(check(CircuitType.MIDDLE, true, true, true, true));
+        assertTrue(check(CircuitType.TOP, false, false, true, false));
+        assertTrue(check(CircuitType.LEFT, false, false, false, true));
+        assertTrue(check(CircuitType.BOTTOM, true, false, false, false));
+        assertTrue(check(CircuitType.RIGHT, false, true, false, false));
+        assertTrue(check(CircuitType.HORIZONTAL, false, true, false, true));
+        assertTrue(check(CircuitType.VERTICAL, true, false, true, false));
+        assertTrue(check(CircuitType.ANGLE_TOP_LEFT, false, false, true, true));
+        assertTrue(check(CircuitType.ANGLE_TOP_RIGHT, false, true, true, false));
+        assertTrue(check(CircuitType.ANGLE_BOTTOM_LEFT, true, false, false, true));
+        assertTrue(check(CircuitType.ANGLE_BOTTOM_RIGHT, true, true, false, false));
+        assertTrue(check(CircuitType.T3J_TOP, false, true, true, true));
+        assertTrue(check(CircuitType.T3J_LEFT, true, false, true, true));
+        assertTrue(check(CircuitType.T3J_BOTTOM, true, true, false, true));
+        assertTrue(check(CircuitType.T3J_RIGHT, true, true, true, false));
 
         for (int i = 0; i < CircuitType.BITS * CircuitType.BITS; i++)
         {
-            Assert.assertNotNull(CircuitType.from(UtilConversion.toBinary(i, CircuitType.BITS)));
+            assertNotNull(CircuitType.from(UtilConversion.toBinary(i, CircuitType.BITS)));
         }
     }
 }

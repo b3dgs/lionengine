@@ -17,16 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.ROAD;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -34,15 +35,15 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the circuit extractor class.
+ * Test {@link MapCircuitExtractor}.
  */
-public class MapCircuitExtractorTest
+public final class MapCircuitExtractorTest
 {
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -50,8 +51,8 @@ public class MapCircuitExtractorTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
     }
@@ -79,7 +80,7 @@ public class MapCircuitExtractorTest
         UtilMap.fill(map, TILE_GROUND);
         UtilMap.fill(map, TILE_ROAD, TILE_ROAD, 3);
 
-        Assert.assertEquals(new Circuit(CircuitType.MIDDLE, ROAD, ROAD), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.MIDDLE, ROAD, ROAD), get(map, 3, 3));
     }
 
     /**
@@ -93,10 +94,10 @@ public class MapCircuitExtractorTest
         UtilMap.fill(map, TILE_ROAD, TILE_ROAD, 3);
         map.setTile(map.createTile(SHEET, TILE_GROUND, 3, 3));
 
-        Assert.assertEquals(new Circuit(CircuitType.ANGLE_TOP_LEFT, ROAD, GROUND), get(map, 2, 4));
-        Assert.assertEquals(new Circuit(CircuitType.ANGLE_TOP_RIGHT, ROAD, GROUND), get(map, 4, 4));
-        Assert.assertEquals(new Circuit(CircuitType.ANGLE_BOTTOM_LEFT, ROAD, GROUND), get(map, 2, 2));
-        Assert.assertEquals(new Circuit(CircuitType.ANGLE_BOTTOM_RIGHT, ROAD, GROUND), get(map, 4, 2));
+        assertEquals(new Circuit(CircuitType.ANGLE_TOP_LEFT, ROAD, GROUND), get(map, 2, 4));
+        assertEquals(new Circuit(CircuitType.ANGLE_TOP_RIGHT, ROAD, GROUND), get(map, 4, 4));
+        assertEquals(new Circuit(CircuitType.ANGLE_BOTTOM_LEFT, ROAD, GROUND), get(map, 2, 2));
+        assertEquals(new Circuit(CircuitType.ANGLE_BOTTOM_RIGHT, ROAD, GROUND), get(map, 4, 2));
     }
 
     /**
@@ -111,9 +112,9 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 3));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 3));
 
-        Assert.assertEquals(new Circuit(CircuitType.LEFT, ROAD, GROUND), get(map, 2, 3));
-        Assert.assertEquals(new Circuit(CircuitType.HORIZONTAL, ROAD, GROUND), get(map, 3, 3));
-        Assert.assertEquals(new Circuit(CircuitType.RIGHT, ROAD, GROUND), get(map, 4, 3));
+        assertEquals(new Circuit(CircuitType.LEFT, ROAD, GROUND), get(map, 2, 3));
+        assertEquals(new Circuit(CircuitType.HORIZONTAL, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.RIGHT, ROAD, GROUND), get(map, 4, 3));
     }
 
     /**
@@ -128,9 +129,9 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 3));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 4));
 
-        Assert.assertEquals(new Circuit(CircuitType.TOP, ROAD, GROUND), get(map, 3, 4));
-        Assert.assertEquals(new Circuit(CircuitType.VERTICAL, ROAD, GROUND), get(map, 3, 3));
-        Assert.assertEquals(new Circuit(CircuitType.BOTTOM, ROAD, GROUND), get(map, 3, 2));
+        assertEquals(new Circuit(CircuitType.TOP, ROAD, GROUND), get(map, 3, 4));
+        assertEquals(new Circuit(CircuitType.VERTICAL, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.BOTTOM, ROAD, GROUND), get(map, 3, 2));
     }
 
     /**
@@ -146,7 +147,7 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 3));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 2));
 
-        Assert.assertEquals(new Circuit(CircuitType.T3J_TOP, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.T3J_TOP, ROAD, GROUND), get(map, 3, 3));
     }
 
     /**
@@ -162,7 +163,7 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 4));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 3));
 
-        Assert.assertEquals(new Circuit(CircuitType.T3J_LEFT, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.T3J_LEFT, ROAD, GROUND), get(map, 3, 3));
     }
 
     /**
@@ -178,7 +179,7 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 4));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 2, 3));
 
-        Assert.assertEquals(new Circuit(CircuitType.T3J_RIGHT, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.T3J_RIGHT, ROAD, GROUND), get(map, 3, 3));
     }
 
     /**
@@ -194,7 +195,7 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 3));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 4));
 
-        Assert.assertEquals(new Circuit(CircuitType.T3J_BOTTOM, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.T3J_BOTTOM, ROAD, GROUND), get(map, 3, 3));
     }
 
     /**
@@ -207,7 +208,7 @@ public class MapCircuitExtractorTest
         UtilMap.fill(map, TILE_GROUND);
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 3));
 
-        Assert.assertEquals(new Circuit(CircuitType.BLOCK, ROAD, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.BLOCK, ROAD, GROUND), get(map, 3, 3));
     }
 
     /**
@@ -220,7 +221,7 @@ public class MapCircuitExtractorTest
         map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 2));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 3, 3));
 
-        Assert.assertNull(get(map, 3, 3));
+        assertNull(get(map, 3, 3));
     }
 
     /**
@@ -233,6 +234,6 @@ public class MapCircuitExtractorTest
         UtilMap.fill(map, TILE_GROUND);
         map.setTile(map.createTile(Integer.valueOf(1), TILE_ROAD, 3, 3));
 
-        Assert.assertEquals(new Circuit(CircuitType.BLOCK, MapTileGroupModel.NO_GROUP_NAME, GROUND), get(map, 3, 3));
+        assertEquals(new Circuit(CircuitType.BLOCK, MapTileGroupModel.NO_GROUP_NAME, GROUND), get(map, 3, 3));
     }
 }

@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 /**
- * Test the circuit class.
+ * Test {@link Circuit}.
  */
-public class CircuitTest
+public final class CircuitTest
 {
     /**
      * Test the getters.
@@ -33,40 +37,9 @@ public class CircuitTest
     {
         final Circuit circuit = new Circuit(CircuitType.MIDDLE, "a", "b");
 
-        Assert.assertEquals(CircuitType.MIDDLE, circuit.getType());
-        Assert.assertEquals("a", circuit.getIn());
-        Assert.assertEquals("b", circuit.getOut());
-    }
-
-    /**
-     * Test the group circuit hash code.
-     */
-    @Test
-    public void testHashcode()
-    {
-        final CircuitType type = CircuitType.TOP;
-        final Circuit circuit = new Circuit(type, "a", "a");
-
-        Assert.assertEquals(circuit, circuit);
-        Assert.assertEquals(new Circuit(type, "a", "a").hashCode(), new Circuit(type, "a", "a").hashCode());
-        Assert.assertEquals(new Circuit(type, "a", "b").hashCode(), new Circuit(type, "a", "b").hashCode());
-
-        Assert.assertNotEquals(new Circuit(CircuitType.MIDDLE, "a", "b").hashCode(),
-                               new Circuit(CircuitType.MIDDLE.getSymetric(), "b", "a").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "b").hashCode(),
-                               new Circuit(type.getSymetric(), "b", "a").hashCode());
-
-        Assert.assertNotEquals(new Circuit(type, "a", "a").hashCode(), new Object().hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "b").hashCode(),
-                               new Circuit(CircuitType.MIDDLE, "b", "a").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "b").hashCode(),
-                               new Circuit(CircuitType.MIDDLE, "a", "b").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "b").hashCode(), new Circuit(type, "a", "a").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "b").hashCode(), new Circuit(type, "b", "b").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "a").hashCode(), new Circuit(type, "b", "a").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "a").hashCode(), new Circuit(type, "b", "b").hashCode());
-        Assert.assertNotEquals(new Circuit(type, "a", "a").hashCode(),
-                               new Circuit(type.getSymetric(), "b", "b").hashCode());
+        assertEquals(CircuitType.MIDDLE, circuit.getType());
+        assertEquals("a", circuit.getIn());
+        assertEquals("b", circuit.getOut());
     }
 
     /**
@@ -78,21 +51,48 @@ public class CircuitTest
         final CircuitType type = CircuitType.TOP;
         final Circuit circuit = new Circuit(type, "a", "a");
 
-        Assert.assertEquals(circuit, circuit);
-        Assert.assertEquals(new Circuit(type, "a", "a"), new Circuit(type, "a", "a"));
-        Assert.assertEquals(new Circuit(type, "a", "b"), new Circuit(type, "a", "b"));
-        Assert.assertEquals(new Circuit(CircuitType.MIDDLE, "a", "b"),
-                            new Circuit(CircuitType.MIDDLE.getSymetric(), "b", "a"));
-        Assert.assertEquals(new Circuit(type, "a", "b"), new Circuit(type.getSymetric(), "b", "a"));
+        assertEquals(circuit, circuit);
+        assertEquals(new Circuit(type, "a", "a"), new Circuit(type, "a", "a"));
+        assertEquals(new Circuit(type, "a", "b"), new Circuit(type, "a", "b"));
+        assertEquals(new Circuit(CircuitType.MIDDLE, "a", "b"),
+                     new Circuit(CircuitType.MIDDLE.getSymetric(), "b", "a"));
+        assertEquals(new Circuit(type, "a", "b"), new Circuit(type.getSymetric(), "b", "a"));
 
-        Assert.assertNotEquals(new Circuit(type, "a", "a"), new Object());
-        Assert.assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "b", "a"));
-        Assert.assertNotEquals(new Circuit(type, "a", "b"), new Circuit(CircuitType.MIDDLE, "a", "b"));
-        Assert.assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "a", "a"));
-        Assert.assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "b", "b"));
-        Assert.assertNotEquals(new Circuit(type, "a", "a"), new Circuit(type, "b", "a"));
-        Assert.assertNotEquals(new Circuit(type, "a", "a"), new Circuit(type, "b", "b"));
-        Assert.assertNotEquals(new Circuit(type, "a", "a"), new Circuit(type.getSymetric(), "b", "b"));
+        assertNotEquals(new Circuit(type, "a", "a"), new Object());
+        assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "b", "a"));
+        assertNotEquals(new Circuit(type, "a", "b"), new Circuit(CircuitType.MIDDLE, "a", "b"));
+        assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "a", "a"));
+        assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "b", "b"));
+        assertNotEquals(new Circuit(type, "a", "a"), new Circuit(type, "b", "a"));
+        assertNotEquals(new Circuit(type, "a", "a"), new Circuit(type, "b", "b"));
+        assertNotEquals(new Circuit(type, "a", "a"), new Circuit(type.getSymetric(), "b", "b"));
+    }
+
+    /**
+     * Test the group circuit hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final CircuitType type = CircuitType.TOP;
+        final Circuit circuit = new Circuit(type, "a", "a");
+
+        assertHashEquals(circuit, circuit);
+        assertHashEquals(new Circuit(type, "a", "a"), new Circuit(type, "a", "a"));
+        assertHashEquals(new Circuit(type, "a", "b"), new Circuit(type, "a", "b"));
+
+        assertHashNotEquals(new Circuit(CircuitType.MIDDLE, "a", "b"),
+                            new Circuit(CircuitType.MIDDLE.getSymetric(), "b", "a"));
+        assertHashNotEquals(new Circuit(type, "a", "b"), new Circuit(type.getSymetric(), "b", "a"));
+
+        assertHashNotEquals(new Circuit(type, "a", "a"), new Object());
+        assertHashNotEquals(new Circuit(type, "a", "b"), new Circuit(CircuitType.MIDDLE, "b", "a"));
+        assertHashNotEquals(new Circuit(type, "a", "b"), new Circuit(CircuitType.MIDDLE, "a", "b"));
+        assertHashNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "a", "a"));
+        assertHashNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "b", "b"));
+        assertHashNotEquals(new Circuit(type, "a", "a"), new Circuit(type, "b", "a"));
+        assertHashNotEquals(new Circuit(type, "a", "a"), new Circuit(type, "b", "b"));
+        assertHashNotEquals(new Circuit(type, "a", "a"), new Circuit(type.getSymetric(), "b", "b"));
     }
 
     /**
@@ -101,7 +101,6 @@ public class CircuitTest
     @Test
     public void testToString()
     {
-        Assert.assertEquals(CircuitType.MIDDLE.name() + " a -> b",
-                            new Circuit(CircuitType.MIDDLE, "a", "b").toString());
+        assertEquals(CircuitType.MIDDLE.name() + " a -> b", new Circuit(CircuitType.MIDDLE, "a", "b").toString());
     }
 }

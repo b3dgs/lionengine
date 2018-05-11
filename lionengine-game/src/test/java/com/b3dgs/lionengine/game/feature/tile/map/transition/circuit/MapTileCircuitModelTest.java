@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.ROAD;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
@@ -24,10 +26,9 @@ import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TRANSITION;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -39,9 +40,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
 
 /**
- * Test the map tile circuit model class.
+ * Test {@link MapTileCircuitModel}.
  */
-public class MapTileCircuitModelTest
+public final class MapTileCircuitModelTest
 {
     /** Test configuration transitions. */
     private static Media configTransitions;
@@ -51,8 +52,8 @@ public class MapTileCircuitModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         configTransitions = UtilMapTransition.createTransitions();
@@ -62,11 +63,11 @@ public class MapTileCircuitModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(configTransitions.getFile().delete());
-        Assert.assertTrue(configCircuits.getFile().delete());
+        assertTrue(configTransitions.getFile().delete());
+        assertTrue(configCircuits.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -105,7 +106,7 @@ public class MapTileCircuitModelTest
 
         mapCircuit.resolve(map.getTile(5, 5));
 
-        Assert.assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
+        assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
     }
 
     /**
@@ -122,14 +123,14 @@ public class MapTileCircuitModelTest
         map.setTile(newTile);
         mapCircuit.resolve(newTile);
 
-        Assert.assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 4)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(5, 4)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 4)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 5)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 5)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 6)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(5, 6)));
-        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 6)));
+        assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 4)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(5, 4)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 4)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 5)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 5)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 6)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(5, 6)));
+        assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 6)));
     }
 }
