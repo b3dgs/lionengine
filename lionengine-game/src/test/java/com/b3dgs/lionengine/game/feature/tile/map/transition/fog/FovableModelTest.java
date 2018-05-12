@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -35,9 +37,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
 /**
- * Test the fovable model class.
+ * Test {@link FovableModel}.
  */
-public class FovableModelTest
+public final class FovableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -45,8 +47,8 @@ public class FovableModelTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilSetup.createConfig();
@@ -55,10 +57,10 @@ public class FovableModelTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -82,10 +84,10 @@ public class FovableModelTest
         fovable.prepare(featurable);
         fovable.setFov(5);
 
-        Assert.assertEquals(1, fovable.getInTileX());
-        Assert.assertEquals(2, fovable.getInTileY());
-        Assert.assertEquals(3, fovable.getInTileWidth());
-        Assert.assertEquals(4, fovable.getInTileHeight());
-        Assert.assertEquals(5, fovable.getInTileFov());
+        assertEquals(1, fovable.getInTileX());
+        assertEquals(2, fovable.getInTileY());
+        assertEquals(3, fovable.getInTileWidth());
+        assertEquals(4, fovable.getInTileHeight());
+        assertEquals(5, fovable.getInTileFov());
     }
 }

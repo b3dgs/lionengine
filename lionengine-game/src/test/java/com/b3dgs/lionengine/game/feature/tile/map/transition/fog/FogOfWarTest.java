@@ -17,14 +17,16 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -41,9 +43,9 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
- * Test the fog of war class.
+ * Test {@link FogOfWar}.
  */
-public class FogOfWarTest
+public final class FogOfWarTest
 {
     /** Test configuration. */
     private static Media config;
@@ -51,8 +53,8 @@ public class FogOfWarTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
@@ -62,10 +64,10 @@ public class FogOfWarTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Graphics.setFactoryGraphic(null);
         Medias.setResourcesDirectory(null);
     }
@@ -78,7 +80,7 @@ public class FogOfWarTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         UtilMap.fill(map, UtilMap.TILE_GROUND);
@@ -102,40 +104,40 @@ public class FogOfWarTest
         fog.create(map, Medias.create("fog.xml"));
         Medias.setLoadFromJar(null);
 
-        Assert.assertFalse(fog.isFogged(2, 3));
-        Assert.assertFalse(fog.isFogged(3, 3));
-        Assert.assertFalse(fog.isFogged(4, 3));
-        Assert.assertTrue(fog.isFogged(map.getTile(2, 3)));
-        Assert.assertTrue(fog.isFogged(map.getTile(3, 3)));
-        Assert.assertTrue(fog.isFogged(map.getTile(4, 3)));
-        Assert.assertFalse(fog.isVisited(2, 3));
-        Assert.assertFalse(fog.isVisited(3, 3));
-        Assert.assertFalse(fog.isVisited(4, 3));
+        assertFalse(fog.isFogged(2, 3));
+        assertFalse(fog.isFogged(3, 3));
+        assertFalse(fog.isFogged(4, 3));
+        assertTrue(fog.isFogged(map.getTile(2, 3)));
+        assertTrue(fog.isFogged(map.getTile(3, 3)));
+        assertTrue(fog.isFogged(map.getTile(4, 3)));
+        assertFalse(fog.isVisited(2, 3));
+        assertFalse(fog.isVisited(3, 3));
+        assertFalse(fog.isVisited(4, 3));
 
         fog.update(new ArrayList<Fovable>(Arrays.asList(fovable)));
 
-        Assert.assertTrue(fog.isFogged(2, 3));
-        Assert.assertFalse(fog.isFogged(3, 3));
-        Assert.assertTrue(fog.isFogged(4, 3));
-        Assert.assertTrue(fog.isFogged(map.getTile(2, 3)));
-        Assert.assertTrue(fog.isFogged(map.getTile(3, 3)));
-        Assert.assertTrue(fog.isFogged(map.getTile(4, 3)));
-        Assert.assertFalse(fog.isVisited(2, 3));
-        Assert.assertTrue(fog.isVisited(3, 3));
-        Assert.assertFalse(fog.isVisited(4, 3));
+        assertTrue(fog.isFogged(2, 3));
+        assertFalse(fog.isFogged(3, 3));
+        assertTrue(fog.isFogged(4, 3));
+        assertTrue(fog.isFogged(map.getTile(2, 3)));
+        assertTrue(fog.isFogged(map.getTile(3, 3)));
+        assertTrue(fog.isFogged(map.getTile(4, 3)));
+        assertFalse(fog.isVisited(2, 3));
+        assertTrue(fog.isVisited(3, 3));
+        assertFalse(fog.isVisited(4, 3));
 
         transformable.teleport(6, 6);
         fog.update(new ArrayList<Fovable>(Arrays.asList(fovable)));
 
-        Assert.assertFalse(fog.isFogged(2, 3));
-        Assert.assertFalse(fog.isFogged(3, 3));
-        Assert.assertFalse(fog.isFogged(4, 3));
-        Assert.assertTrue(fog.isFogged(map.getTile(2, 3)));
-        Assert.assertTrue(fog.isFogged(map.getTile(3, 3)));
-        Assert.assertTrue(fog.isFogged(map.getTile(4, 3)));
-        Assert.assertFalse(fog.isVisited(2, 3));
-        Assert.assertTrue(fog.isVisited(3, 3));
-        Assert.assertFalse(fog.isVisited(4, 3));
+        assertFalse(fog.isFogged(2, 3));
+        assertFalse(fog.isFogged(3, 3));
+        assertFalse(fog.isFogged(4, 3));
+        assertTrue(fog.isFogged(map.getTile(2, 3)));
+        assertTrue(fog.isFogged(map.getTile(3, 3)));
+        assertTrue(fog.isFogged(map.getTile(4, 3)));
+        assertFalse(fog.isVisited(2, 3));
+        assertTrue(fog.isVisited(3, 3));
+        assertFalse(fog.isVisited(4, 3));
     }
 
     /**
@@ -148,7 +150,7 @@ public class FogOfWarTest
         fog.create(map, Medias.create("fog.xml"));
         Medias.setLoadFromJar(null);
 
-        Assert.assertFalse(fog.hasFogOfWar());
+        assertFalse(fog.hasFogOfWar());
 
         final Graphic g = Graphics.createGraphic();
 
@@ -157,29 +159,29 @@ public class FogOfWarTest
         fog.setTilesheet(new SpriteTiledMock(), null);
         fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
-        Assert.assertFalse(fog.hasFogOfWar());
+        assertFalse(fog.hasFogOfWar());
 
         fog.setTilesheet(null, new SpriteTiledMock());
         fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
-        Assert.assertFalse(fog.hasFogOfWar());
+        assertFalse(fog.hasFogOfWar());
 
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         fog.setEnabled(true, false);
         fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
-        Assert.assertTrue(fog.hasFogOfWar());
+        assertTrue(fog.hasFogOfWar());
 
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         fog.setEnabled(false, true);
         fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
-        Assert.assertTrue(fog.hasFogOfWar());
+        assertTrue(fog.hasFogOfWar());
 
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         fog.setEnabled(true, true);
         fog.renderTile(g, map, map.getTile(0, 0), 0, 0);
 
-        Assert.assertTrue(fog.hasFogOfWar());
+        assertTrue(fog.hasFogOfWar());
     }
 }

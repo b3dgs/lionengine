@@ -17,13 +17,15 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -38,9 +40,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
 
 /**
- * Test the map tile fog class.
+ * Test {@link MapTileFog}.
  */
-public class MapTileFogTest
+public final class MapTileFogTest
 {
     /** Test configuration. */
     private static Media config;
@@ -48,8 +50,8 @@ public class MapTileFogTest
     /**
      * Prepare test.
      */
-    @BeforeClass
-    public static void setUp()
+    @BeforeAll
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilMapTransition.createTransitions();
@@ -58,10 +60,10 @@ public class MapTileFogTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @AfterAll
+    public static void afterTests()
     {
-        Assert.assertTrue(config.getFile().delete());
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
@@ -89,26 +91,26 @@ public class MapTileFogTest
         fog.create(map, Medias.create("fog.xml"), null);
         Medias.setLoadFromJar(null);
 
-        Assert.assertEquals(16, fog.getTile(2, 3).getNumber());
-        Assert.assertEquals(16, fog.getTile(3, 3).getNumber());
-        Assert.assertEquals(16, fog.getTile(4, 3).getNumber());
+        assertEquals(16, fog.getTile(2, 3).getNumber());
+        assertEquals(16, fog.getTile(3, 3).getNumber());
+        assertEquals(16, fog.getTile(4, 3).getNumber());
 
         fog.update(new ArrayList<Fovable>(Arrays.asList(fovable)));
 
-        Assert.assertEquals(10, fog.getTile(2, 2).getNumber());
-        Assert.assertEquals(1, fog.getTile(3, 2).getNumber());
-        Assert.assertEquals(11, fog.getTile(4, 2).getNumber());
-        Assert.assertEquals(2, fog.getTile(2, 3).getNumber());
-        Assert.assertEquals(17, fog.getTile(3, 3).getNumber());
-        Assert.assertEquals(3, fog.getTile(4, 3).getNumber());
-        Assert.assertEquals(8, fog.getTile(2, 4).getNumber());
-        Assert.assertEquals(0, fog.getTile(3, 4).getNumber());
-        Assert.assertEquals(9, fog.getTile(4, 4).getNumber());
+        assertEquals(10, fog.getTile(2, 2).getNumber());
+        assertEquals(1, fog.getTile(3, 2).getNumber());
+        assertEquals(11, fog.getTile(4, 2).getNumber());
+        assertEquals(2, fog.getTile(2, 3).getNumber());
+        assertEquals(17, fog.getTile(3, 3).getNumber());
+        assertEquals(3, fog.getTile(4, 3).getNumber());
+        assertEquals(8, fog.getTile(2, 4).getNumber());
+        assertEquals(0, fog.getTile(3, 4).getNumber());
+        assertEquals(9, fog.getTile(4, 4).getNumber());
 
         fog.reset();
 
-        Assert.assertEquals(16, fog.getTile(2, 3).getNumber());
-        Assert.assertEquals(16, fog.getTile(3, 3).getNumber());
-        Assert.assertEquals(16, fog.getTile(4, 3).getNumber());
+        assertEquals(16, fog.getTile(2, 3).getNumber());
+        assertEquals(16, fog.getTile(3, 3).getNumber());
+        assertEquals(16, fog.getTile(4, 3).getNumber());
     }
 }

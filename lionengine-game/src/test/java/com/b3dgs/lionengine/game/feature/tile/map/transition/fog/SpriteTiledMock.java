@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Sprite tiled mock.
  */
-public class SpriteTiledMock implements SpriteTiled
+final class SpriteTiledMock implements SpriteTiled
 {
     @Override
     public void stretch(double percentWidth, double percentHeight)
@@ -143,13 +143,13 @@ public class SpriteTiledMock implements SpriteTiled
     @Override
     public double getX()
     {
-        return 0;
+        return 0.0;
     }
 
     @Override
     public double getY()
     {
-        return 0;
+        return 0.0;
     }
 
     @Override
