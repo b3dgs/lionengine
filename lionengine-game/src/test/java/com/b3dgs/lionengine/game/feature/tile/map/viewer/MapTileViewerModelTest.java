@@ -17,12 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -35,9 +37,9 @@ import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 
 /**
- * Test the map tile viewer class.
+ * Test {@link MapTileViewerModel}.
  */
-public class MapTileViewerModelTest
+public final class MapTileViewerModelTest
 {
     private final Services services = new Services();
     private MapTileViewer mapViewer;
@@ -45,7 +47,7 @@ public class MapTileViewerModelTest
     /**
      * Prepare test.
      */
-    @Before
+    @BeforeEach
     public void prepare()
     {
         services.add(new Camera());
@@ -72,29 +74,29 @@ public class MapTileViewerModelTest
 
         mapViewer.render(g);
 
-        Assert.assertFalse(rendered.get());
+        assertFalse(rendered.get());
 
         mapViewer.addRenderer(renderer);
 
         mapViewer.render(g);
 
-        Assert.assertTrue(rendered.get());
+        assertTrue(rendered.get());
 
         rendered.set(false);
         mapViewer.removeRenderer(renderer);
         mapViewer.render(g);
 
-        Assert.assertFalse(rendered.get());
+        assertFalse(rendered.get());
 
         mapViewer.addRenderer(renderer);
         mapViewer.render(g);
 
-        Assert.assertTrue(rendered.get());
+        assertTrue(rendered.get());
 
         rendered.set(false);
         mapViewer.clear();
         mapViewer.render(g);
 
-        Assert.assertFalse(rendered.get());
+        assertFalse(rendered.get());
     }
 }
