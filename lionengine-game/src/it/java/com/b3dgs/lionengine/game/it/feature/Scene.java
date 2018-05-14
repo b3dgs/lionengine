@@ -17,7 +17,8 @@
  */
 package com.b3dgs.lionengine.game.it.feature;
 
-import org.junit.Assert;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
@@ -47,6 +48,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         this.context = context;
         world = new World(context, false);
     }
@@ -60,21 +62,15 @@ class Scene extends Sequence
         }
         catch (final LionEngineException exception)
         {
-            Assert.assertEquals("Fail save", exception.getCause().getMessage());
+            assertEquals("Fail save", exception.getCause().getMessage());
 
             world.saveToFile(Medias.create("world.lvl"));
         }
-        try
-        {
-            new World(context, true).loadFromFile(Medias.create("world.lvl"));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals("Fail load", exception.getCause().getMessage());
 
-            world.loadFromFile(Medias.create("world.lvl"));
-        }
+        assertThrows(() -> new World(context, true).loadFromFile(Medias.create("world.lvl")),
+                     "[world.lvl] Error on loading from file !");
+
+        world.loadFromFile(Medias.create("world.lvl"));
         timing.start();
     }
 

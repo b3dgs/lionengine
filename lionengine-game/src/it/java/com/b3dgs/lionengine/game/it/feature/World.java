@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game.it.feature;
 
-import java.io.IOException;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 
-import org.junit.Assert;
+import java.io.IOException;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
@@ -84,6 +84,6 @@ class World extends WorldGame
         }
         str = file.readString();
 
-        Assert.assertNotNull(getInputDevice(InputDevicePointer.class));
+        assertNotNull(getInputDevice(InputDevicePointer.class));
     }
 }

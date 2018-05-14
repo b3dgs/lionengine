@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
@@ -49,11 +51,11 @@ public final class CollisionFunctionLinearTest
     @Test
     public void testHashCode()
     {
-        assertEquals(function, new CollisionFunctionLinear(2.0, 3.0));
+        assertHashEquals(function, new CollisionFunctionLinear(2.0, 3.0));
 
-        assertNotEquals(function, new Object());
-        assertNotEquals(function, new CollisionFunctionLinear(1.5, 3.0));
-        assertNotEquals(function, new CollisionFunctionLinear(2.0, 3.5));
+        assertHashNotEquals(function, new Object());
+        assertHashNotEquals(function, new CollisionFunctionLinear(1.5, 3.0));
+        assertHashNotEquals(function, new CollisionFunctionLinear(2.0, 3.5));
     }
 
     /**

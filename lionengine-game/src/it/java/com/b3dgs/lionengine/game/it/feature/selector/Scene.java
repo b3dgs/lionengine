@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.it.feature.selector;
 
-import org.junit.Assert;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
@@ -150,7 +152,7 @@ class Scene extends Sequence
         switch (click)
         {
             case 0: // Perform selection
-                Assert.assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
+                assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
                 mouse.doSetMouse((int) camera.getViewpointX(transformable.getX() - 16) * 2,
                                  (int) camera.getViewpointY(transformable.getY() - 16) * 2);
                 mouse.doClick(MouseAwt.LEFT);
@@ -163,11 +165,11 @@ class Scene extends Sequence
                 break;
             case 2:
                 click = 3;
-                Assert.assertEquals(4, handler.size());
+                assertEquals(4, handler.size());
                 break;
             case 3:
                 click = 4;
-                Assert.assertTrue(handler.get(Selectable.class).iterator().next().isSelected());
+                assertTrue(handler.get(Selectable.class).iterator().next().isSelected());
                 break;
             case 4: // Click build button
                 mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 170 * 2);
@@ -175,7 +177,7 @@ class Scene extends Sequence
                 break;
             case 5:
                 click = 6;
-                Assert.assertEquals(6, handler.size());
+                assertEquals(6, handler.size());
                 break;
             case 6: // Click cancel button
                 mouse.doClickAt(MouseAwt.LEFT, 45 * 2, 150 * 2);
@@ -183,7 +185,7 @@ class Scene extends Sequence
                 break;
             case 7:
                 click = 8;
-                Assert.assertEquals(6, handler.size());
+                assertEquals(6, handler.size());
                 break;
             case 8: // Click move button
                 mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 125 * 2);
@@ -201,7 +203,7 @@ class Scene extends Sequence
                 break;
             case 11:
                 click = 12;
-                Assert.assertEquals(6, handler.size());
+                assertEquals(6, handler.size());
                 break;
             case 12:
                 mouse.doClick(MouseAwt.LEFT);
@@ -211,7 +213,7 @@ class Scene extends Sequence
                 click = 14;
                 break;
             case 14:
-                Assert.assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
+                assertFalse(handler.get(Selectable.class).iterator().next().isSelected());
                 click = 15;
                 break;
             default:
