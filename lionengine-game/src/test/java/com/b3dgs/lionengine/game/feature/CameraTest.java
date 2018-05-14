@@ -25,7 +25,9 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
+import com.b3dgs.lionengine.SurfaceTile;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.graphic.GraphicMock;
 
 /**
  * Test {@link Camera}.
@@ -123,6 +125,8 @@ public final class CameraTest
         assertEquals(2, camera.getViewY());
         assertEquals(3, camera.getWidth());
         assertEquals(4, camera.getHeight());
+
+        camera.drawFov(new GraphicMock(), 0, 0, 1, 1, surface);
     }
 
     /**
@@ -270,6 +274,45 @@ public final class CameraTest
         assertEquals(5.0, camera.getY());
 
         camera.moveLocation(1.0, 0.0, -20.0);
+
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+
+        camera.setLimits(new SurfaceTile()
+        {
+            @Override
+            public int getWidth()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getTileWidth()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getTileHeight()
+            {
+                return 0;
+            }
+        });
+
+        // Limit right
+        camera.moveLocation(1.0, 50.0, 0.0);
+
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+
+        // Limit top
+        camera.moveLocation(1.0, 0.0, 50.0);
 
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
