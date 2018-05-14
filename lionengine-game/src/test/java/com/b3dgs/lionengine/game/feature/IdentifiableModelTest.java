@@ -18,12 +18,17 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
@@ -38,11 +43,10 @@ public final class IdentifiableModelTest
     /**
      * Test the id.
      * 
-     * @throws NoSuchFieldException If error.
-     * @throws IllegalAccessException If error.
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testId() throws NoSuchFieldException, IllegalAccessException
+    public void testId() throws ReflectiveOperationException
     {
         final Collection<Integer> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
         ids.clear();
@@ -73,8 +77,10 @@ public final class IdentifiableModelTest
             assertNull(identifiable.getId());
         }
 
-        final Identifiable identifiable = new IdentifiableModel();
-        identifiable.prepare(new FeaturableModel());
+        final IdentifiableModel identifiable = new IdentifiableModel();
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new Recycler());
+        identifiable.prepare(featurable);
         assertEquals(Integer.valueOf(0), identifiable.getId());
 
         identifiable.destroy();
@@ -83,8 +89,47 @@ public final class IdentifiableModelTest
         assertNull(identifiable.getId());
 
         identifiable.destroy();
+        identifiable.notifyDestroyed();
 
         assertNull(identifiable.getId());
+
+        identifiable.recycle();
+
+        assertNotNull(identifiable.getId());
+    }
+
+    /**
+     * Test the maximum id.
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testMaxId() throws ReflectiveOperationException
+    {
+        final HashSet<?> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
+        final HashMap<?, ?> map = UtilReflection.getField(ids, "map");
+        final Field size = map.getClass().getDeclaredField("size");
+        UtilReflection.setAccessible(size, true);
+        ids.clear();
+        size.setInt(map, Integer.MAX_VALUE);
+
+        final Field lastId = IdentifiableModel.class.getDeclaredField("lastId");
+        UtilReflection.setAccessible(lastId, true);
+        lastId.setInt(lastId, 0);
+
+        final Queue<?> recycle = UtilReflection.getField(IdentifiableModel.class, "RECYCLE");
+        recycle.clear();
+
+        try
+        {
+            assertThrows(() -> new IdentifiableModel(), IdentifiableModel.ERROR_FREE_ID);
+        }
+        finally
+        {
+            lastId.setInt(lastId, 0);
+            size.setInt(map, 0);
+            ids.clear();
+        }
     }
 
     /**
@@ -96,10 +141,12 @@ public final class IdentifiableModelTest
         final Identifiable identifiable = new IdentifiableModel();
         final AtomicBoolean destroyed = new AtomicBoolean();
         final IdentifiableListener listener = id -> destroyed.set(true);
+        identifiable.prepare(new FeaturableModel());
         identifiable.addListener(listener);
-        identifiable.removeListener(listener);
         identifiable.destroy();
+        identifiable.removeListener(listener);
+        identifiable.notifyDestroyed();
 
-        assertFalse(destroyed.get());
+        assertTrue(destroyed.get());
     }
 }
