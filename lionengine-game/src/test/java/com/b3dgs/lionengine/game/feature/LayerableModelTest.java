@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
@@ -90,5 +91,28 @@ public final class LayerableModelTest
 
         assertEquals(1, layerable.getLayerRefresh().intValue());
         assertEquals(1, layerable.getLayerDisplay().intValue());
+    }
+
+    /**
+     * Test constructor with setup.
+     */
+    @Test
+    public void testConstructorSetup()
+    {
+        final Services services = new Services();
+        services.add(new ComponentDisplayable());
+
+        LayerableModel layerable = new LayerableModel(services, new Setup(config));
+        assertEquals(0, layerable.getLayerRefresh().intValue());
+        assertEquals(0, layerable.getLayerDisplay().intValue());
+
+        final Xml xml = new Xml(config);
+        xml.add(LayerableConfig.exports(new LayerableConfig(1, 2)));
+        xml.save(config);
+
+        layerable = new LayerableModel(services, new Setup(config));
+
+        assertEquals(1, layerable.getLayerRefresh().intValue());
+        assertEquals(2, layerable.getLayerDisplay().intValue());
     }
 }
