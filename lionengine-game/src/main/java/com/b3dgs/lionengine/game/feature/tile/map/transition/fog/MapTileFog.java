@@ -151,7 +151,7 @@ public class MapTileFog
      * 
      * @param tx The horizontal location.
      * @param ty The vertical location.
-     * @return The tile reference.
+     * @return The tile reference (<code>null</code> if none).
      */
     public Tile getTile(int tx, int ty)
     {

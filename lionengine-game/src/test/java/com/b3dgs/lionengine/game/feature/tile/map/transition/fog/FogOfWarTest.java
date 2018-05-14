@@ -91,6 +91,18 @@ public final class FogOfWarTest
      * Test the fog of war.
      */
     @Test
+    public void testCreateSurface()
+    {
+        fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
+        Medias.setLoadFromJar(MapTileFog.class);
+        fog.create(map, Medias.create("fog.xml"));
+        Medias.setLoadFromJar(null);
+    }
+
+    /**
+     * Test the fog of war.
+     */
+    @Test
     public void testFogOfWar()
     {
         final Setup setup = new Setup(config);
@@ -107,9 +119,9 @@ public final class FogOfWarTest
         assertFalse(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
         assertFalse(fog.isFogged(4, 3));
-        assertTrue(fog.isFogged(map.getTile(2, 3)));
-        assertTrue(fog.isFogged(map.getTile(3, 3)));
-        assertTrue(fog.isFogged(map.getTile(4, 3)));
+        assertFalse(fog.isVisible(map.getTile(2, 3)));
+        assertFalse(fog.isVisible(map.getTile(3, 3)));
+        assertFalse(fog.isVisible(map.getTile(4, 3)));
         assertFalse(fog.isVisited(2, 3));
         assertFalse(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
@@ -119,9 +131,9 @@ public final class FogOfWarTest
         assertTrue(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
         assertTrue(fog.isFogged(4, 3));
-        assertTrue(fog.isFogged(map.getTile(2, 3)));
-        assertTrue(fog.isFogged(map.getTile(3, 3)));
-        assertTrue(fog.isFogged(map.getTile(4, 3)));
+        assertFalse(fog.isVisible(map.getTile(2, 3)));
+        assertTrue(fog.isVisible(map.getTile(3, 3)));
+        assertFalse(fog.isVisible(map.getTile(4, 3)));
         assertFalse(fog.isVisited(2, 3));
         assertTrue(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
@@ -132,9 +144,9 @@ public final class FogOfWarTest
         assertFalse(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
         assertFalse(fog.isFogged(4, 3));
-        assertTrue(fog.isFogged(map.getTile(2, 3)));
-        assertTrue(fog.isFogged(map.getTile(3, 3)));
-        assertTrue(fog.isFogged(map.getTile(4, 3)));
+        assertFalse(fog.isVisible(map.getTile(2, 3)));
+        assertTrue(fog.isVisible(map.getTile(3, 3)));
+        assertFalse(fog.isVisible(map.getTile(4, 3)));
         assertFalse(fog.isVisited(2, 3));
         assertTrue(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));

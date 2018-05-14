@@ -121,12 +121,12 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     }
 
     /**
-     * Check if the tile is currently hidden by the fog of war.
+     * Check if the tile is currently visible.
      * 
      * @param tiled The tiled to check.
      * @return <code>true</code> if hidden, <code>false</code> else.
      */
-    public boolean isFogged(Tiled tiled)
+    public boolean isVisible(Tiled tiled)
     {
         final int tx = tiled.getInTileX();
         final int ty = tiled.getInTileY();
@@ -137,7 +137,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
         {
             for (int cty = ty; cty <= ty + th; cty++)
             {
-                if (isFogged(ctx, cty) && isVisited(ctx, cty))
+                if (isFogged(ctx, cty) || !isVisited(ctx, cty))
                 {
                     return false;
                 }
