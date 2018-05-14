@@ -25,6 +25,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,14 +35,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.game.ActionsConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 
 /**
  * Test {@link ProducerModel}.
@@ -71,6 +77,22 @@ public final class ProducerModelTest
         HACK.restore();
     }
 
+    /**
+     * Create default media.
+     * 
+     * @return The default media.
+     */
+    private static Media createMedia()
+    {
+        final Media media = UtilSetup.createMedia(Featurable.class);
+        final Xml root = new Xml("test");
+        root.add(ActionsConfig.exports(Collections.emptyList()));
+        root.save(media);
+
+        return media;
+    }
+
+    private final Media media = createMedia();
     private final Services services = new Services();
     private final ProducerObject object = new ProducerObject();
     private ProducerModel producer;
@@ -83,7 +105,7 @@ public final class ProducerModelTest
     {
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
-        producer = new ProducerModel(services);
+        producer = new ProducerModel(services, new Setup(media));
         producer.prepare(object);
     }
 
@@ -94,6 +116,7 @@ public final class ProducerModelTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -183,6 +206,7 @@ public final class ProducerModelTest
         assertEquals(-1, producer.getProgressPercent());
         assertEquals(0, producer.getQueueLength());
         assertFalse(producer.isProducing());
+        assertTrue(producer.getActions().isEmpty());
 
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);
