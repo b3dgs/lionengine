@@ -179,12 +179,12 @@ final class SpriteTiledMock implements SpriteTiled
     @Override
     public int getTileWidth()
     {
-        return 0;
+        return 1;
     }
 
     @Override
     public int getTileHeight()
     {
-        return 0;
+        return 1;
     }
 }

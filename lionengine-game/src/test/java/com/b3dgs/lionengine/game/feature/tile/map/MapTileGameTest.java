@@ -23,14 +23,23 @@ import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
@@ -74,6 +83,94 @@ public final class MapTileGameTest
         assertEquals(32, tile.getHeight());
         assertEquals(1, tile.getInTileWidth());
         assertEquals(1, tile.getInTileHeight());
+    }
+
+    /**
+     * Test map creation from level rip.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testCreateFromRip() throws IOException
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        try
+        {
+            final Path level = Files.createTempFile("level", ".png");
+            try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
+            {
+                Files.copy(input, level, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            final Path sheet = Files.createTempFile("sheet", ".png");
+            try (InputStream input = MapTileGameTest.class.getResourceAsStream("sheet.png"))
+            {
+                Files.copy(input, sheet, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            final Media sheets = Medias.create("sheets.xml");
+            TileSheetsConfig.exports(sheets, 7, 11, Arrays.asList(sheet.toFile().getName()));
+
+            map.create(Medias.create(level.toFile().getName()), sheets);
+
+            assertTrue(map.isCreated());
+            assertEquals(7, map.getTileWidth());
+            assertEquals(11, map.getTileHeight());
+            assertEquals(2 * 7, map.getWidth());
+            assertEquals(2 * 11, map.getHeight());
+
+            assertTrue(sheets.getFile().delete());
+            Files.delete(level);
+            Files.delete(sheet);
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+            Graphics.setFactoryGraphic(null);
+        }
+    }
+
+    /**
+     * Test map creation from level rip without sheets.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testCreateFromRipWithoutSheet() throws IOException
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        try
+        {
+            final Path level = Files.createTempFile("level", ".png");
+            try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
+            {
+                Files.copy(input, level, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            final Path sheet = Files.createTempFile("sheet", ".png");
+            try (InputStream input = MapTileGameTest.class.getResourceAsStream("sheet.png"))
+            {
+                Files.copy(input, sheet, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            map.create(Medias.create(level.toFile().getName()), 7, 11, 7);
+
+            assertTrue(map.isCreated());
+            assertEquals(7, map.getTileWidth());
+            assertEquals(11, map.getTileHeight());
+            assertEquals(2 * 7, map.getWidth());
+            assertEquals(2 * 11, map.getHeight());
+
+            Files.delete(level);
+            Files.delete(sheet);
+        }
+        finally
+        {
+            Medias.setResourcesDirectory(null);
+            Graphics.setFactoryGraphic(null);
+        }
     }
 
     /**
