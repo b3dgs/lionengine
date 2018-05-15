@@ -25,6 +25,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -77,30 +79,6 @@ public final class CollidableModelTest
         Medias.setResourcesDirectory(null);
     }
 
-    private final Services services = new Services();
-    @SuppressWarnings("unused") private final Camera camera = services.add(new Camera());
-
-    private final Featurable featurable1 = createFeaturable(config, services);
-    private final Transformable transformable1 = featurable1.getFeature(Transformable.class);
-    private final Collidable collidable1 = featurable1.getFeature(Collidable.class);
-
-    private final Featurable featurable2 = createFeaturable(config, services);
-    private final Transformable transformable2 = featurable2.getFeature(Transformable.class);
-    private final Collidable collidable2 = featurable2.getFeature(Collidable.class);
-
-    /**
-     * Prepare test.
-     */
-    @BeforeEach
-    public void prepare()
-    {
-        collidable1.setGroup(0);
-        collidable2.setGroup(1);
-
-        collidable1.addAccept(collidable2.getGroup().intValue());
-        collidable2.addAccept(collidable1.getGroup().intValue());
-    }
-
     /**
      * Create a featurable test.
      * 
@@ -122,6 +100,41 @@ public final class CollidableModelTest
         return featurable;
     }
 
+    private final Services services = new Services();
+    @SuppressWarnings("unused") private final Camera camera = services.add(new Camera());
+
+    private final Featurable featurable1 = createFeaturable(config, services);
+    private final Transformable transformable1 = featurable1.getFeature(Transformable.class);
+    private final Collidable collidable1 = featurable1.getFeature(Collidable.class);
+
+    private final Featurable featurable2 = createFeaturable(config, services);
+    private final Transformable transformable2 = featurable2.getFeature(Transformable.class);
+    private final Collidable collidable2 = featurable2.getFeature(Collidable.class);
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    public void prepare()
+    {
+        transformable1.setSize(3, 3);
+        collidable1.setGroup(0);
+        collidable2.setGroup(1);
+
+        collidable1.addAccept(collidable2.getGroup().intValue());
+        collidable2.addAccept(collidable1.getGroup().intValue());
+    }
+
+    /**
+     * Clean test.
+     */
+    @AfterEach
+    public void clean()
+    {
+        collidable1.getFeature(Identifiable.class).destroy();
+        collidable2.getFeature(Identifiable.class).destroy();
+    }
+
     /**
      * Test collidable class.
      */
@@ -131,22 +144,22 @@ public final class CollidableModelTest
         assertNull(collidable1.collide(collidable1));
         assertNull(collidable2.collide(collidable1));
 
-        final Collision collision1 = new Collision("test1", 0, 0, 3, 3, true);
-        collidable1.addCollision(collision1);
+        collidable1.setOrigin(Origin.MIDDLE);
+        collidable1.addCollision(Collision.AUTOMATIC);
 
-        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
+        final Collision collision2 = new Collision("test2", 0, 1, 3, 3, false);
         collidable2.addCollision(collision2);
 
-        transformable1.moveLocation(1.0, 0, 1);
-        transformable2.moveLocation(1.0, 0, 1);
+        transformable1.moveLocation(1.0, 0.0, 1.0);
+        transformable2.moveLocation(1.0, 0.0, 1.0);
 
-        assertEquals(collision1, collidable1.collide(collidable2));
+        assertEquals(Collision.AUTOMATIC, collidable1.collide(collidable2));
         assertEquals(collision2, collidable2.collide(collidable1));
 
         assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
-        assertEquals(collision1, collidable1.getCollisions().iterator().next());
+        assertEquals(Collision.AUTOMATIC, collidable1.getCollisions().iterator().next());
 
-        transformable2.moveLocation(1.0, 2.0, 2.0);
+        transformable2.moveLocation(1.0, 2.0, 1.0);
 
         assertEquals(collision2, collidable2.collide(collidable1));
 
@@ -275,6 +288,7 @@ public final class CollidableModelTest
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable1.addCollision(collision);
+        collidable1.addCollision(Collision.AUTOMATIC);
         collidable1.setCollisionVisibility(true);
 
         transformable1.teleport(1.0, 1.0);
