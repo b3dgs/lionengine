@@ -67,12 +67,16 @@ public final class LauncherConfigTest
     public void testData()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LauncherConfig launcher = new LauncherConfig(1, 2, Arrays.asList(launchable));
 
         assertEquals("media", launchable.getMedia());
         assertEquals(10, launchable.getDelay());
         assertEquals(1, launchable.getOffsetX());
         assertEquals(2, launchable.getOffsetY());
         assertEquals(new Force(1.0, 2.0), launchable.getVector());
+
+        assertEquals(1, launcher.getLevel());
+        assertEquals(2, launcher.getRate());
     }
 
     /**
