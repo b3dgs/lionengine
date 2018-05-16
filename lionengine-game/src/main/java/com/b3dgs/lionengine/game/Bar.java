@@ -37,9 +37,9 @@ public class Bar implements Renderable
     /** Maximum height. */
     private int maxHeight;
     /** Current width percent. */
-    private int pWidth;
+    private int pWidth = 100;
     /** Current height percent. */
-    private int pHeight;
+    private int pHeight = 100;
     /** Horizontal border. */
     private int hBorder;
     /** Vertical border. */
@@ -51,7 +51,7 @@ public class Bar implements Renderable
     /** Gradient color. */
     private ColorGradient gradientColor;
     /** Left-Right referential. */
-    private boolean leftRight;
+    private boolean leftRight = true;
     /** Up-Down referential. */
     private boolean upDown;
 
@@ -63,18 +63,10 @@ public class Bar implements Renderable
      */
     public Bar(int width, int height)
     {
-        x = 0;
-        y = 0;
+        super();
+
         maxWidth = width;
         maxHeight = height;
-        pWidth = 100;
-        pHeight = 100;
-        vBorder = 0;
-        hBorder = 0;
-        leftRight = true;
-        upDown = false;
-        background = null;
-        foreground = null;
     }
 
     @Override

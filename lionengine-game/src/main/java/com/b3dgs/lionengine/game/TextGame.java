@@ -55,6 +55,8 @@ public class TextGame implements Text
      */
     public TextGame(String fontName, int size, TextStyle style)
     {
+        super();
+
         text = Graphics.createText(fontName, size, style);
     }
 

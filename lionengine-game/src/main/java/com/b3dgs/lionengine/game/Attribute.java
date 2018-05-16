@@ -30,7 +30,7 @@ public class Attribute
      */
     public Attribute()
     {
-        value = 0;
+        super();
     }
 
     /**

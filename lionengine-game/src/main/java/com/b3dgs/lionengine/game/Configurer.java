@@ -68,6 +68,8 @@ public class Configurer
      */
     public Configurer(Media media)
     {
+        super();
+
         Check.notNull(media);
 
         this.media = media;

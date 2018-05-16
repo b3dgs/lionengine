@@ -53,6 +53,8 @@ public class Alterable
      */
     public Alterable(int max, boolean overMax)
     {
+        super();
+
         this.overMax = overMax;
         this.max = max;
         if (this.max < Alterable.MIN)

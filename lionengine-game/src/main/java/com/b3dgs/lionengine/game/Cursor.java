@@ -130,11 +130,12 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     public void setInputDevice(InputDevicePointer pointer)
     {
         Check.notNull(pointer);
+
         this.pointer = pointer;
     }
 
     /**
-     * Set the viewer reference.
+     * Set the viewer reference. Input device must be set with {@link #setInputDevice(InputDevicePointer)}.
      * 
      * @param viewer The viewer reference.
      * @throws LionEngineException If invalid viewer.
@@ -142,6 +143,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     public void setViewer(Viewer viewer)
     {
         Check.notNull(pointer);
+
         this.viewer = viewer;
     }
 

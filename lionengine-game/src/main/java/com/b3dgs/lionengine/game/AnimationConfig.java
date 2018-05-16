@@ -146,6 +146,8 @@ public final class AnimationConfig
      */
     public AnimationConfig(Map<String, Animation> animations)
     {
+        super();
+
         Check.notNull(animations);
 
         this.animations = new HashMap<>(animations);
