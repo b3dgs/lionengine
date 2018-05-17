@@ -58,6 +58,8 @@ public abstract class CloudsAbstract implements BackgroundComponent
      */
     public CloudsAbstract(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
     {
+        super();
+
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);
         sprite.load();
@@ -119,6 +121,7 @@ public abstract class CloudsAbstract implements BackgroundComponent
     public void update(double extrp, int x, int y, double speed)
     {
         data.setOffsetY(y);
+
         for (int i = 0; i < cloudsNumber; i++)
         {
             this.x[i] += this.speed[i] * extrp;

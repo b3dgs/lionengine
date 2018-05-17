@@ -78,7 +78,7 @@ public abstract class BackgroundAbstract implements Background
     }
 
     /** List of components contained by this background. */
-    protected final List<BackgroundComponent> components;
+    protected final List<BackgroundComponent> components = new ArrayList<>(1);
     /** Minimum background value. */
     protected final int maxY;
     /** Maximum background value. */
@@ -99,8 +99,9 @@ public abstract class BackgroundAbstract implements Background
      */
     public BackgroundAbstract(String theme, int min, int max)
     {
+        super();
+
         this.theme = theme;
-        components = new ArrayList<>(1);
         maxY = max;
         minY = min;
     }

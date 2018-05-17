@@ -44,11 +44,11 @@ public class BackgroundElement
      */
     public BackgroundElement(int mainX, int mainY, Image renderable)
     {
+        super();
+
         this.mainX = mainX;
         this.mainY = mainY;
         this.renderable = renderable;
-        offsetX = 0.0;
-        offsetY = 0.0;
     }
 
     /**
