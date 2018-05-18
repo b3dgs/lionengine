@@ -127,6 +127,8 @@ public abstract class WorldGame implements Updatable, Renderable
      */
     public WorldGame(Context context, Services services)
     {
+        super();
+
         this.context = context;
         this.services = services;
         config = context.getConfig();

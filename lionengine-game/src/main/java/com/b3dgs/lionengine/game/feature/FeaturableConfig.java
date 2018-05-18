@@ -142,6 +142,8 @@ public final class FeaturableConfig
      */
     public FeaturableConfig(String clazz, String setup)
     {
+        super();
+
         Check.notNull(clazz);
         Check.notNull(setup);
 

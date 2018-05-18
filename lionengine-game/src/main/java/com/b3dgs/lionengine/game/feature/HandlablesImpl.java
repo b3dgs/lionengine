@@ -37,17 +37,16 @@ final class HandlablesImpl implements Handlables
     static final String ERROR_FEATURABLE_NOT_FOUND = "Featurable not found: ";
 
     /** List of featurables (key is the featurable ID). */
-    private final Map<Integer, Featurable> featurables;
+    private final Map<Integer, Featurable> featurables = new HashMap<>();
     /** List of typed items (key is the feature type). */
-    private final Map<Class<?>, Set<Object>> items;
+    private final Map<Class<?>, Set<Object>> items = new HashMap<>();
 
     /**
      * Create the handlables.
      */
     HandlablesImpl()
     {
-        featurables = new HashMap<>();
-        items = new HashMap<>();
+        super();
     }
 
     /**

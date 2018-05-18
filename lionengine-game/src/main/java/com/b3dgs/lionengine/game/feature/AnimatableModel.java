@@ -37,6 +37,7 @@ public class AnimatableModel extends FeatureModel implements Animatable
     public AnimatableModel(Animator animator)
     {
         super();
+
         this.animator = animator;
     }
 

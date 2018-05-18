@@ -32,14 +32,14 @@ public class Features
     private static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
 
     /** Features handled. */
-    private final Map<Class<? extends Feature>, Feature> typeToFeature;
+    private final Map<Class<? extends Feature>, Feature> typeToFeature = new HashMap<>();
 
     /**
      * Create features handler.
      */
     public Features()
     {
-        typeToFeature = new HashMap<>();
+        super();
     }
 
     /**
@@ -50,6 +50,7 @@ public class Features
     public void add(Feature feature)
     {
         typeToFeature.put(feature.getClass(), feature);
+
         for (final Class<?> type : feature.getClass().getInterfaces())
         {
             if (Feature.class.isAssignableFrom(type))
