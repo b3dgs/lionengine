@@ -66,7 +66,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     }
 
     /** Mapping reduced. */
-    private final Map<Integer, Map<Point, List<Collidable>>> collidables;
+    private final Map<Integer, Map<Point, List<Collidable>>> collidables = new HashMap<>();
 
     /**
      * Create component.
@@ -74,8 +74,6 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     public ComponentCollision()
     {
         super();
-
-        collidables = new HashMap<>();
     }
 
     /**

@@ -131,6 +131,8 @@ public final class CollisionConfig
      */
     public CollisionConfig(Map<String, Collision> collisions)
     {
+        super();
+
         Check.notNull(collisions);
 
         this.collisions = new HashMap<>(collisions);
