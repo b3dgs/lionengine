@@ -68,6 +68,8 @@ public abstract class StateAbstract implements State
      */
     protected StateAbstract(Enum<?> state)
     {
+        super();
+
         Check.notNull(state);
 
         this.state = state;

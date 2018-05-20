@@ -54,6 +54,8 @@ public class StateHandler implements Updatable
      */
     public StateHandler(StateFactory factory)
     {
+        super();
+
         this.factory = factory;
     }
 

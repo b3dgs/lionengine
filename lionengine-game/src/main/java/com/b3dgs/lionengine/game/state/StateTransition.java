@@ -39,6 +39,8 @@ public class StateTransition
      */
     protected StateTransition(Enum<?> state)
     {
+        super();
+
         this.state = state;
     }
 

@@ -32,14 +32,14 @@ import com.b3dgs.lionengine.LionEngineException;
 public class StateFactory
 {
     /** List of available states. */
-    private final Map<Enum<?>, State> states;
+    private final Map<Enum<?>, State> states = new HashMap<>();
 
     /**
      * Create the factory.
      */
     public StateFactory()
     {
-        states = new HashMap<>();
+        super();
     }
 
     /**
