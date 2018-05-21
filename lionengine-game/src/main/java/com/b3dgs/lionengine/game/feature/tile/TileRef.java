@@ -45,6 +45,8 @@ public class TileRef
      */
     public TileRef(Tile tile)
     {
+        super();
+
         Check.notNull(tile);
 
         sheet = tile.getSheet();
@@ -72,6 +74,8 @@ public class TileRef
      */
     public TileRef(Integer sheet, int number)
     {
+        super();
+
         Check.notNull(sheet);
         Check.superiorOrEqual(sheet.intValue(), 0);
         Check.superiorOrEqual(number, 0);
