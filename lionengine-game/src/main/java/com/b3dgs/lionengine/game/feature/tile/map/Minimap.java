@@ -67,7 +67,7 @@ public class Minimap implements Image
     /** Minimap image reference. */
     private ImageBuffer surface;
     /** Origin reference. */
-    private Origin origin;
+    private Origin origin = Origin.TOP_LEFT;
     /** Horizontal location. */
     private double x;
     /** Vertical location. */
@@ -81,10 +81,11 @@ public class Minimap implements Image
      */
     public Minimap(MapTile map)
     {
+        super();
+
         Check.notNull(map);
 
         this.map = map;
-        origin = Origin.TOP_LEFT;
     }
 
     /**
