@@ -41,7 +41,10 @@ public class CollisionResult
      */
     public CollisionResult(Double x, Double y, Tile tile)
     {
+        super();
+
         Check.notNull(tile);
+
         this.x = x;
         this.y = y;
         this.tile = tile;

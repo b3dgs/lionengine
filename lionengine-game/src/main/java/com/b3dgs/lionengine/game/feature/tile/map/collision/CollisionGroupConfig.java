@@ -193,6 +193,8 @@ public final class CollisionGroupConfig
      */
     public CollisionGroupConfig(Map<String, CollisionGroup> groups)
     {
+        super();
+
         Check.notNull(groups);
 
         this.groups = new HashMap<>(groups);

@@ -50,6 +50,8 @@ public class CollisionRange
      */
     public CollisionRange(Axis output, int minX, int maxX, int minY, int maxY)
     {
+        super();
+
         this.output = output;
         this.minX = minX;
         this.maxX = maxX;

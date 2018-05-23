@@ -38,6 +38,8 @@ public class CollisionFunctionLinear implements CollisionFunction
      */
     public CollisionFunctionLinear(double a, double b)
     {
+        super();
+
         this.a = a;
         this.b = b;
     }

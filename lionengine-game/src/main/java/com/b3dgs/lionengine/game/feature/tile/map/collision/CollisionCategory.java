@@ -73,7 +73,7 @@ public class CollisionCategory extends NameableAbstract
      * Collision formula used list (each must be available in
      * {@link com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision#getCollisionFormula(String)}.
      */
-    private final Collection<CollisionFormula> formulas;
+    private final Collection<CollisionFormula> formulas = new HashSet<>();
 
     /**
      * Constructor.
@@ -92,7 +92,6 @@ public class CollisionCategory extends NameableAbstract
         this.x = x;
         this.y = y;
         this.groups = new ArrayList<>(groups);
-        formulas = new HashSet<>();
         for (final CollisionGroup group : groups)
         {
             formulas.addAll(group.getFormulas());

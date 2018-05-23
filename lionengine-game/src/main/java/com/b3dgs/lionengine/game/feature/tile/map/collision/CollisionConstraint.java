@@ -32,14 +32,15 @@ import com.b3dgs.lionengine.game.Orientation;
 public class CollisionConstraint
 {
     /** Constraints defined. */
-    private final Map<Orientation, Collection<String>> constraints;
+    private final Map<Orientation, Collection<String>> constraints = new EnumMap<>(Orientation.class);
 
     /**
      * Create a collision constraint.
      */
     public CollisionConstraint()
     {
-        constraints = new EnumMap<>(Orientation.class);
+        super();
+
         for (final Orientation orientation : Orientation.values())
         {
             constraints.put(orientation, new ArrayList<String>());

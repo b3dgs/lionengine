@@ -43,6 +43,7 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
     public TileCollisionModel(Tile tile)
     {
         super();
+
         this.tile = tile;
     }
 

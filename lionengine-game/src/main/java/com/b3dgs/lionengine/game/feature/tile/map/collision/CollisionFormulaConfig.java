@@ -162,6 +162,8 @@ public final class CollisionFormulaConfig
      */
     public CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
     {
+        super();
+
         Check.notNull(formulas);
 
         this.formulas = new HashMap<>(formulas);
