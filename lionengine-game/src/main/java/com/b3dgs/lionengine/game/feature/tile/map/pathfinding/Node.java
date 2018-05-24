@@ -43,6 +43,8 @@ public final class Node implements Comparable<Node>
      */
     public Node(int x, int y)
     {
+        super();
+
         this.x = x;
         this.y = y;
     }

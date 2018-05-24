@@ -53,6 +53,8 @@ final class PathFinderImpl implements PathFinder
      */
     PathFinderImpl(MapTile map, int maxSearchDistance, Heuristic heuristic)
     {
+        super();
+
         this.heuristic = heuristic;
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;

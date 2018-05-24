@@ -32,6 +32,8 @@ public final class HeuristicManhattan implements Heuristic
      */
     public HeuristicManhattan(int minimumCost)
     {
+        super();
+
         this.minimumCost = minimumCost;
     }
 

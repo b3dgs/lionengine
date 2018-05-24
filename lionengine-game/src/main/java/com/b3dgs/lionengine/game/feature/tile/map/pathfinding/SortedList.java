@@ -31,17 +31,16 @@ import java.util.Set;
 public final class SortedList<E extends Comparable<E>>
 {
     /** List of object. */
-    private final List<E> list;
+    private final List<E> list = new ArrayList<>();
     /** Backed set. */
-    private final Set<E> set;
+    private final Set<E> set = new HashSet<>();
 
     /**
      * Internal constructor.
      */
     public SortedList()
     {
-        list = new ArrayList<>();
-        set = new HashSet<>();
+        super();
     }
 
     /**

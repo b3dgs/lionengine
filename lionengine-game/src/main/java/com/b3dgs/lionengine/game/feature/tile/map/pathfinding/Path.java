@@ -27,14 +27,14 @@ import java.util.List;
 public final class Path
 {
     /** List of steps. */
-    private final List<Step> steps;
+    private final List<Step> steps = new ArrayList<>();
 
     /**
      * Constructor.
      */
     public Path()
     {
-        steps = new ArrayList<>();
+        super();
     }
 
     /**

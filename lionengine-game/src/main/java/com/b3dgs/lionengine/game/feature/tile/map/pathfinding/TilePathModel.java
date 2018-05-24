@@ -41,6 +41,7 @@ public class TilePathModel extends FeatureModel implements TilePath
     public TilePathModel(String category)
     {
         super();
+
         this.category = category;
     }
 

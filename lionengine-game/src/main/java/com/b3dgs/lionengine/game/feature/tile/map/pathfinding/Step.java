@@ -35,6 +35,8 @@ public final class Step
      */
     public Step(int x, int y)
     {
+        super();
+
         this.x = x;
         this.y = y;
     }
