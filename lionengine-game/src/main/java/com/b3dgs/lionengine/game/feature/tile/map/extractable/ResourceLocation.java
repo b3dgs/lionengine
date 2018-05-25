@@ -43,6 +43,8 @@ final class ResourceLocation implements Tiled
      */
     ResourceLocation(int tx, int ty, int tw, int th)
     {
+        super();
+
         this.tx = tx;
         this.ty = ty;
         this.tw = tw;
