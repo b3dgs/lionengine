@@ -41,6 +41,8 @@ public class Transition
      */
     public Transition(TransitionType type, String groupIn, String groupOut)
     {
+        super();
+
         Check.notNull(type);
         Check.notNull(groupIn);
         Check.notNull(groupOut);

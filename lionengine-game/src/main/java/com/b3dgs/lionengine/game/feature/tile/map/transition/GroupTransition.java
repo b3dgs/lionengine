@@ -42,6 +42,8 @@ public class GroupTransition
      */
     public GroupTransition(String groupIn, String groupOut)
     {
+        super();
+
         Check.notNull(groupIn);
         Check.notNull(groupOut);
 

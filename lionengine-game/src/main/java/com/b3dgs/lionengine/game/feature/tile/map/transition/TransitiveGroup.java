@@ -74,14 +74,14 @@ public class TransitiveGroup
         toRemove.clear();
     }
 
+    /** Groups transitive transitions. */
+    private final Map<GroupTransition, Collection<GroupTransition>> transitives = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
     private final MapTileGroup mapGroup;
     /** Map transition. */
     private final MapTileTransition mapTransition;
-    /** Groups transitive transitions. */
-    private final Map<GroupTransition, Collection<GroupTransition>> transitives;
 
     /**
      * Create the transitive group handler.
@@ -97,10 +97,11 @@ public class TransitiveGroup
      */
     public TransitiveGroup(MapTile map)
     {
+        super();
+
         this.map = map;
         mapGroup = map.getFeature(MapTileGroup.class);
         mapTransition = map.getFeature(MapTileTransition.class);
-        transitives = new HashMap<>();
     }
 
     /**

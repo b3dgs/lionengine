@@ -101,6 +101,8 @@ public class MapTransitionExtractor
      */
     public MapTransitionExtractor(MapTile map)
     {
+        super();
+
         this.map = map;
         mapGroup = map.getFeature(MapTileGroup.class);
     }
