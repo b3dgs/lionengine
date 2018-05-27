@@ -42,6 +42,8 @@ public class Circuit
      */
     public Circuit(CircuitType type, String groupIn, String groupOut)
     {
+        super();
+
         Check.notNull(type);
         Check.notNull(groupIn);
         Check.notNull(groupOut);

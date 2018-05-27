@@ -96,6 +96,8 @@ public class MapCircuitExtractor
      */
     public MapCircuitExtractor(MapTile map)
     {
+        super();
+
         this.map = map;
         mapGroup = map.getFeature(MapTileGroup.class);
     }
