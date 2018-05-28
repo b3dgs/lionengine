@@ -35,7 +35,9 @@ public abstract class PrefAbstract implements Preference
     public PrefAbstract(int priority)
     {
         super();
+
         Check.superiorOrEqual(priority, 0);
+
         this.priority = Integer.valueOf(priority);
     }
 

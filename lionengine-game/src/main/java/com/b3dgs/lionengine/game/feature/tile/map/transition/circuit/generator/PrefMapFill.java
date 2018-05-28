@@ -44,6 +44,7 @@ public class PrefMapFill extends PrefAbstract
         super(1);
 
         Check.notNull(tile);
+
         sheet = tile.getSheet();
         number = tile.getNumber();
     }

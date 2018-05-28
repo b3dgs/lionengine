@@ -46,6 +46,8 @@ public class TileArea implements Tiled
      */
     public TileArea(int tx, int ty, int tw, int th)
     {
+        super();
+
         Check.superiorOrEqual(tx, 0);
         Check.superiorOrEqual(ty, 0);
         Check.superiorStrict(tw, 0);
