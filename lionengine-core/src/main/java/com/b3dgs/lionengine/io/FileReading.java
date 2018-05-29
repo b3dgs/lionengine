@@ -42,6 +42,8 @@ public final class FileReading implements Closeable
      */
     public FileReading(Media media)
     {
+        super();
+
         Check.notNull(media);
 
         in = new DataInputStream(new BufferedInputStream(media.getInputStream()));

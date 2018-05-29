@@ -42,6 +42,8 @@ public final class FileWriting implements Closeable
      */
     public FileWriting(Media media)
     {
+        super();
+
         Check.notNull(media);
 
         out = new DataOutputStream(new BufferedOutputStream(media.getOutputStream()));
