@@ -26,9 +26,6 @@ package com.b3dgs.lionengine;
  * <li>Call only one time {@link #play(Animation)}</li>
  * <li>Call {@link #update(double)} in your main loop</li>
  * </ul>
- * 
- * @see Animation
- * @see AnimState
  */
 public interface Animator extends Updatable
 {

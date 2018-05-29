@@ -48,9 +48,6 @@ public final class Timing
     public Timing()
     {
         super();
-
-        cur = 0L;
-        started = false;
     }
 
     /**

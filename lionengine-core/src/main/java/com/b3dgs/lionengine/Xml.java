@@ -41,10 +41,6 @@ import org.w3c.dom.NodeList;
 /**
  * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
  * any XML file.
- * <p>
- * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link #NULL}. When
- * read, the {@link #NULL} string is return if the stored string was <code>null</code>.
- * </p>
  */
 public class Xml extends XmlReader
 {

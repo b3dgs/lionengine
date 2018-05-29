@@ -30,20 +30,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
- * any XML file. XmlNode can be save in a file, using an XmlParser.
+ * Describe an XML node, which can be read.
  * <p>
  * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link #NULL}. When
  * read, the {@link #NULL} string is return if the stored string was <code>null</code>.
  * </p>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final XmlNode node = XmlFactory.createXmlNode(&quot;node&quot;);
- * node.writeBoolean(&quot;value&quot;, true);
- * </pre>
  */
 public class XmlReader
 {

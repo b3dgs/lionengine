@@ -55,6 +55,8 @@ public final class Range
      */
     public Range(int min, int max)
     {
+        super();
+
         Check.inferiorOrEqual(min, max);
 
         this.min = min;

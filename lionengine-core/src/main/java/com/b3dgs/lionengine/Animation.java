@@ -40,9 +40,6 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @see Animator
- * @see AnimState
  */
 public final class Animation extends NameableAbstract
 {

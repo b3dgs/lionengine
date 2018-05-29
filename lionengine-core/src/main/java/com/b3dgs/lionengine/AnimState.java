@@ -22,9 +22,6 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @see Animation
- * @see Animator
  */
 public enum AnimState
 {

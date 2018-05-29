@@ -19,6 +19,9 @@ package com.b3dgs.lionengine;
 
 /**
  * Base implementation of a nameable object, identified with its name considered as unique.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public abstract class NameableAbstract implements Nameable
 {

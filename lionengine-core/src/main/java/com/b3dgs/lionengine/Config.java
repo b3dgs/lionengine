@@ -30,8 +30,6 @@ import java.util.Optional;
  * fullscreen)</li>
  * <li>applet : Can be used to set the applet reference in case of applet mode</li>
  * </ul>
- * 
- * @see Resolution
  */
 public final class Config
 {

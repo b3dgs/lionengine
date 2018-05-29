@@ -57,6 +57,8 @@ public final class Resolution
      */
     public Resolution(int width, int height, int rate)
     {
+        super();
+
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
         Check.superiorOrEqual(rate, 0);
