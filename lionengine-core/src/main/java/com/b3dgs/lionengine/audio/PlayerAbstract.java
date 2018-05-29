@@ -72,6 +72,8 @@ public abstract class PlayerAbstract implements Audio
      */
     protected PlayerAbstract(Media media)
     {
+        super();
+
         Check.notNull(media);
 
         this.media = media;
