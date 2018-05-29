@@ -54,6 +54,8 @@ public final class ColorGradient
      */
     public ColorGradient(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
     {
+        super();
+
         Check.notNull(color1);
         Check.notNull(color2);
 

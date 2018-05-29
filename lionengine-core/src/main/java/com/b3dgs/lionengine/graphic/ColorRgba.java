@@ -93,6 +93,8 @@ public final class ColorRgba
      */
     public ColorRgba(int r, int g, int b, int a) // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity|TrailingComment
     {
+        super();
+
         Check.superiorOrEqual(r, 0);
         Check.inferiorOrEqual(r, 255);
 
@@ -122,6 +124,8 @@ public final class ColorRgba
      */
     public ColorRgba(int value)
     {
+        super();
+
         this.value = value;
         valueAlpha = value >> Constant.BYTE_4 & 0xFF;
         valueRed = value >> Constant.BYTE_3 & 0xFF;
