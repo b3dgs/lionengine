@@ -220,6 +220,8 @@ final class WavImpl implements Wav
      */
     WavImpl(ExecutorService executor, Media media)
     {
+        super();
+
         Check.notNull(media);
 
         this.executor = executor;

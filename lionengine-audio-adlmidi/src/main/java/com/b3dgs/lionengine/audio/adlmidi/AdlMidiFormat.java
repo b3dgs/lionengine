@@ -102,6 +102,8 @@ public final class AdlMidiFormat implements AudioFormat
      */
     public AdlMidiFormat()
     {
+        super();
+
         bind = loadLibrary();
     }
 

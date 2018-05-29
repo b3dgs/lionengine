@@ -97,6 +97,8 @@ public final class AdPlugFormat implements AudioFormat
      */
     public AdPlugFormat()
     {
+        super();
+
         bind = loadLibrary();
     }
 

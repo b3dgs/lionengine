@@ -99,6 +99,8 @@ public final class Sc68Format implements AudioFormat
      */
     public Sc68Format()
     {
+        super();
+
         bind = loadLibrary();
     }
 

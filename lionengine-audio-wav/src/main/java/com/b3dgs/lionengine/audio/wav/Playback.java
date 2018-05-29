@@ -41,6 +41,8 @@ final class Playback implements Closeable
      */
     Playback(AudioInputStream input, SourceDataLine dataLine)
     {
+        super();
+
         this.input = input;
         this.dataLine = dataLine;
     }
