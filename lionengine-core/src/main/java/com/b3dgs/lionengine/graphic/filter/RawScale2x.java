@@ -38,6 +38,8 @@ final class RawScale2x
      */
     RawScale2x(int dataWidth, int dataHeight)
     {
+        super();
+
         width = dataWidth;
         height = dataHeight;
     }

@@ -35,6 +35,8 @@ final class Kernel
      */
     Kernel(int width, float[] matrix)
     {
+        super();
+
         this.width = width;
         this.matrix = matrix;
     }

@@ -186,6 +186,8 @@ final class RawScale3x
      */
     RawScale3x(int dataWidth, int dataHeight)
     {
+        super();
+
         width = dataWidth;
         height = dataHeight;
     }
