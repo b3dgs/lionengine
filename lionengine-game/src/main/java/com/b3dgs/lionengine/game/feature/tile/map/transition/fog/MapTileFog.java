@@ -62,6 +62,8 @@ public class MapTileFog
      */
     public MapTileFog()
     {
+        super();
+
         final Services services = new Services();
         map = services.create(MapTileGame.class);
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
