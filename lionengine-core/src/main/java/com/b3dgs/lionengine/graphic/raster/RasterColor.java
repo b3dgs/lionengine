@@ -85,6 +85,8 @@ public final class RasterColor
      */
     private RasterColor(int start, int end)
     {
+        super();
+
         this.start = start;
         this.end = end;
     }
