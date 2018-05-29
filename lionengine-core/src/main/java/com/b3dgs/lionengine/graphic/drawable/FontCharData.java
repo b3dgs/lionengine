@@ -45,6 +45,8 @@ final class FontCharData
      */
     FontCharData(int id, int width, int height)
     {
+        super();
+
         Check.superiorOrEqual(id, 0);
         Check.superiorOrEqual(width, 0);
         Check.superiorOrEqual(height, 0);
