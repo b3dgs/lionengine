@@ -88,6 +88,6 @@ public final class VersionTest
     @Test
     public void testToString()
     {
-        assertEquals("Version [3.2.1]", Version.create(3, 2, 1).toString());
+        assertEquals("3.2.1", Version.create(3, 2, 1).toString());
     }
 }

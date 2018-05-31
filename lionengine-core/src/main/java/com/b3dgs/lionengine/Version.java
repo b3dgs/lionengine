@@ -129,14 +129,11 @@ public final class Version
     @Override
     public String toString()
     {
-        return new StringBuilder(LENGTH).append(getClass().getSimpleName())
-                                        .append(" [")
-                                        .append(major)
+        return new StringBuilder(LENGTH).append(major)
                                         .append(Constant.DOT)
                                         .append(minor)
                                         .append(Constant.DOT)
                                         .append(micro)
-                                        .append("]")
                                         .toString();
     }
 }
