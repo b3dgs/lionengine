@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -32,7 +34,7 @@ final class PathFinderImpl implements PathFinder
     /** Closed list. */
     private final Collection<Node> closed = new ArrayList<>(8);
     /** Open list. */
-    private final SortedList<Node> open = new SortedList<>();
+    private final NavigableSet<Node> open = new TreeSet<>();
     /** Map reference. */
     private final MapTile map;
     /** Map path reference. */
