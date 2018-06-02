@@ -123,78 +123,6 @@ final class PathFinderImpl implements PathFinder
     }
 
     /**
-     * Get the first element from the open list. This is the next one to be searched.
-     * 
-     * @return The first element in the open list.
-     */
-    private Node getFirstInOpen()
-    {
-        return open.first();
-    }
-
-    /**
-     * Add a node to the open list.
-     * 
-     * @param node The node to be added to the open list.
-     */
-    private void addToOpen(Node node)
-    {
-        open.add(node);
-    }
-
-    /**
-     * Check if a node is in the open list.
-     * 
-     * @param node The node to check for.
-     * @return <code>true</code> if the node given is in the open list, <code>false</code> else.
-     */
-    private boolean inOpenList(Node node)
-    {
-        return open.contains(node);
-    }
-
-    /**
-     * Remove a node from the open list.
-     * 
-     * @param node The node to remove from the open list.
-     */
-    private void removeFromOpen(Node node)
-    {
-        open.remove(node);
-    }
-
-    /**
-     * Add a node to the closed list.
-     * 
-     * @param node The node to add to the closed list.
-     */
-    private void addToClosed(Node node)
-    {
-        closed.add(node);
-    }
-
-    /**
-     * Check if the node supplied is in the closed list.
-     * 
-     * @param node The node to search for.
-     * @return <code>true</code> if the node specified is in the closed list, <code>false</code> else.
-     */
-    private boolean inClosedList(Node node)
-    {
-        return closed.contains(node);
-    }
-
-    /**
-     * Remove a node from the closed list.
-     * 
-     * @param node The node to remove from the closed list.
-     */
-    private void removeFromClosed(Node node)
-    {
-        closed.remove(node);
-    }
-
-    /**
      * Update the open and closed list to find the path.
      * 
      * @param mover The entity that will be moving along the path.
@@ -296,21 +224,15 @@ final class PathFinderImpl implements PathFinder
 
         if (nextStepCost < neighbour.getCost())
         {
-            if (inOpenList(neighbour))
-            {
-                removeFromOpen(neighbour);
-            }
-            if (inClosedList(neighbour))
-            {
-                removeFromClosed(neighbour);
-            }
+            open.remove(neighbour);
+            closed.remove(neighbour);
         }
-        if (!inOpenList(neighbour) && !inClosedList(neighbour))
+        if (!open.contains(neighbour) && !closed.contains(neighbour))
         {
             neighbour.setCost(nextStepCost);
             neighbour.setHeuristic(getHeuristicCost(xp, yp, dtx, dty));
             nextDepth = Math.max(maxDepth, neighbour.setParent(current));
-            addToOpen(neighbour);
+            open.add(neighbour);
         }
         return nextDepth;
     }
@@ -347,15 +269,15 @@ final class PathFinderImpl implements PathFinder
         nodes[dty][dtx].setParent(null);
 
         int maxDepth = 0;
-        while (maxDepth < maxSearchDistance && open.size() != 0)
+        while (maxDepth < maxSearchDistance && !open.isEmpty())
         {
-            final Node current = getFirstInOpen();
+            final Node current = open.first();
             if (current == nodes[dty][dtx])
             {
                 break;
             }
-            removeFromOpen(current);
-            addToClosed(current);
+            open.remove(current);
+            closed.add(current);
             maxDepth = updateList(mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
         }
         if (nodes[dty][dtx].getParent() == null)

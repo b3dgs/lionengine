@@ -38,17 +38,6 @@ public final class Path
     }
 
     /**
-     * Append a step to the path.
-     * 
-     * @param x The x coordinate of the new step.
-     * @param y The y coordinate of the new step.
-     */
-    public void appendStep(int x, int y)
-    {
-        steps.add(new Step(x, y));
-    }
-
-    /**
      * Prepend a step to the path.
      * 
      * @param x The x coordinate of the new step.
@@ -77,7 +66,7 @@ public final class Path
      */
     public int getX(int index)
     {
-        return getStep(index).getX();
+        return steps.get(index).getX();
     }
 
     /**
@@ -88,29 +77,14 @@ public final class Path
      */
     public int getY(int index)
     {
-        return getStep(index).getY();
+        return steps.get(index).getY();
     }
 
     /**
-     * Check if this path contains the given step.
-     * 
-     * @param x The x coordinate of the step to check for.
-     * @param y The y coordinate of the step to check for.
-     * @return <code>true</code> if the path contains the given step, <code>false</code> else.
+     * Clear path.
      */
-    public boolean contains(int x, int y)
+    public void clear()
     {
-        return steps.contains(new Step(x, y));
-    }
-
-    /**
-     * Get the step at a given index in the path.
-     * 
-     * @param index The index of the step to retrieve. Note this should be &lt;= 0 and &gt; getLength();
-     * @return The step information, the position on the map.
-     */
-    private Step getStep(int index)
-    {
-        return steps.get(index);
+        steps.clear();
     }
 }

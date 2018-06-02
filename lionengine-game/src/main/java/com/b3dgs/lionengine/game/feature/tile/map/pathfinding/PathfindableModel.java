@@ -402,6 +402,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             {
                 removeObjectId(path.getX(currentStep), path.getY(currentStep));
             }
+            if (path != null)
+            {
+                path.clear();
+            }
             path = pathfinder.findPath(this, destX, destY, false);
             pathFoundChanged = false;
             currentStep = 0;
@@ -617,9 +621,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     }
 
     @Override
-    public void moveTo(double extrp, double x, double y)
+    public void moveTo(double extrp, double dx, double dy)
     {
-        final Force force = getMovementForce(transformable.getX(), transformable.getY(), x, y);
+        final Force force = getMovementForce(transformable.getX(), transformable.getY(), dx, dy);
         transformable.moveLocation(extrp, force);
     }
 
@@ -820,7 +824,13 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public boolean isPathAvailable(int tx, int ty)
     {
-        return pathfinder.findPath(this, tx, ty, false) != null;
+        final Path path = pathfinder.findPath(this, tx, ty, false);
+        if (path != null)
+        {
+            path.clear();
+            return true;
+        }
+        return false;
     }
 
     @Override

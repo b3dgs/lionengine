@@ -58,10 +58,10 @@ public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Ren
      * Move to specified destination only when calling this function.
      * 
      * @param extrp The extrapolation value.
-     * @param x The destination horizontal location.
-     * @param y The destination vertical location.
+     * @param dx The destination horizontal location.
+     * @param dy The destination vertical location.
      */
-    void moveTo(double extrp, double x, double y);
+    void moveTo(double extrp, double dx, double dy);
 
     /**
      * Stop any pathfinding movements.

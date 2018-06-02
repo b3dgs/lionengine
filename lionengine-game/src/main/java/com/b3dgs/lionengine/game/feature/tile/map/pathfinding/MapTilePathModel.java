@@ -157,6 +157,33 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     }
 
     /**
+     * Search a free area from this location.
+     * 
+     * @param mover The object moving on map.
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
+     * @param tw The width in tile.
+     * @param th The height in tile.
+     * @param radius The search radius.
+     * @param id The mover id.
+     * @return The free tile found (<code>null</code> if none).
+     */
+    private CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int tw, int th, int radius, Integer id)
+    {
+        for (int ctx = tx - radius; ctx <= tx + radius; ctx++)
+        {
+            for (int cty = ty - radius; cty <= ty + radius; cty++)
+            {
+                if (isAreaAvailable(mover, ctx, cty, tw, th, id))
+                {
+                    return new CoordTile(ctx, cty);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get the group category.
      * 
      * @param group The group name.
@@ -320,26 +347,16 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     @Override
     public CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int tw, int th, int radius)
     {
-        int size = 0;
-        boolean search = true;
         final Integer id = mover.getFeature(Identifiable.class).getId();
-        while (search)
+        int size = 0;
+        while (size <= radius)
         {
-            for (int ctx = tx - size; ctx <= tx + size; ctx++)
+            final CoordTile tile = getFreeTileAround(mover, tx, ty, tw, th, size, id);
+            if (tile != null)
             {
-                for (int cty = ty - size; cty <= ty + size; cty++)
-                {
-                    if (isAreaAvailable(mover, ctx, cty, tw, th, id))
-                    {
-                        return new CoordTile(ctx, cty);
-                    }
-                }
+                return tile;
             }
             size++;
-            if (size > radius)
-            {
-                search = false;
-            }
         }
         return null;
     }

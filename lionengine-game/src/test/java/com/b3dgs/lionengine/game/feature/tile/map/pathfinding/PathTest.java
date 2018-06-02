@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertFalse;
-import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -36,23 +34,12 @@ public final class PathTest
     {
         final Path path = new Path();
 
-        assertFalse(path.contains(0, 1));
         assertEquals(0, path.getLength());
-
-        path.appendStep(0, 1);
-
-        assertTrue(path.contains(0, 1));
-        assertEquals(1, path.getLength());
-        assertEquals(0, path.getX(0));
-        assertEquals(1, path.getY(0));
 
         path.prependStep(1, 2);
 
-        assertTrue(path.contains(1, 2));
-        assertEquals(2, path.getLength());
+        assertEquals(1, path.getLength());
         assertEquals(1, path.getX(0));
         assertEquals(2, path.getY(0));
-        assertEquals(0, path.getX(1));
-        assertEquals(1, path.getY(1));
     }
 }
