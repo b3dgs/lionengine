@@ -824,10 +824,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public boolean isPathAvailable(int tx, int ty)
     {
-        final Path path = pathfinder.findPath(this, tx, ty, false);
-        if (path != null)
+        final Path found = pathfinder.findPath(this, tx, ty, false);
+        if (found != null)
         {
-            path.clear();
+            found.clear();
             return true;
         }
         return false;
