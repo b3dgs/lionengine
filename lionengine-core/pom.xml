@@ -33,7 +33,7 @@
                             javax.xml.xpath,
                             org.w3c.dom,
                             org.xml.sax,
-                            org.junit;resolution:=optional
+                            org.junit.jupiter.api;resolution:=optional
                         </Import-Package>
                     </instructions>
                 </configuration>

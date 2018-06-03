@@ -46,7 +46,7 @@
                         <Export-Package>
                             com.b3dgs.lionengine.game.*
                         </Export-Package>
-                        <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
+                        <Require-Bundle>${project.groupId}.core, org.junit.jupiter.api;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>
             </plugin>
