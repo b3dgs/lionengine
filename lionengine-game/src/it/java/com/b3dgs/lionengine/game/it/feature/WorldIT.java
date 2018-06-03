@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.it.feature;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
