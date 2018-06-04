@@ -465,18 +465,20 @@ public class Camera extends FeaturableModel implements Viewer
     @Override
     public boolean isViewable(Localizable localizable, int radiusX, int radiusY)
     {
-        return getViewpointX(localizable.getX() + radiusX) >= getViewX()
-               && getViewpointX(localizable.getX() - radiusX) <= getViewX() + width
-               && getViewpointY(localizable.getY() - radiusY) >= getViewY()
-               && getViewpointY(localizable.getY() + radiusY) <= getViewY() + height;
+        final boolean outside = getViewpointX(localizable.getX() + radiusX) < getViewX()
+                                || getViewpointX(localizable.getX() - radiusX) > getViewX() + width
+                                || getViewpointY(localizable.getY() - radiusY) < getViewY()
+                                || getViewpointY(localizable.getY() + radiusY) > getViewY() + height;
+        return !outside;
     }
 
     @Override
     public boolean isViewable(Shape shape, int radiusX, int radiusY)
     {
-        return getViewpointX(shape.getX() + shape.getWidth() + radiusX) >= getViewX()
-               && getViewpointX(shape.getX() - shape.getWidth() - radiusX) <= getViewX() + width
-               && getViewpointY(shape.getY() - shape.getHeight() - radiusY) >= getViewY()
-               && getViewpointY(shape.getY() + shape.getHeight() + radiusY) <= getViewY() + height;
+        final boolean outside = getViewpointX(shape.getX() + shape.getWidth() + radiusX) < getViewX()
+                                || getViewpointX(shape.getX() - shape.getWidth() - radiusX) > getViewX() + width
+                                || getViewpointY(shape.getY() - shape.getHeight() - radiusY) < getViewY()
+                                || getViewpointY(shape.getY() + shape.getHeight() + radiusY) > getViewY() + height;
+        return !outside;
     }
 }

@@ -202,19 +202,18 @@ public final class Rectangle implements Area
         {
             return false;
         }
-        return Double.compare(area.getX(), x) >= 0
-               && Double.compare(area.getY(), y) >= 0
-               && Double.compare(area.getX() + area.getWidthReal(), x + width) <= 0
-               && Double.compare(area.getY() + area.getHeightReal(), y + height) <= 0;
+        final boolean outside = area.getX() < x
+                                || area.getY() < y
+                                || area.getX() + area.getWidthReal() > x + width
+                                || area.getY() + area.getHeightReal() > y + height;
+        return !outside;
     }
 
     @Override
     public boolean contains(double x, double y)
     {
-        return Double.compare(x, this.x) >= 0
-               && Double.compare(y, this.y) >= 0
-               && Double.compare(x, this.x + width) <= 0
-               && Double.compare(y, this.y + height) <= 0;
+        final boolean outside = x < this.x || y < this.y || x > this.x + width || y > this.y + height;
+        return !outside;
     }
 
     @Override
