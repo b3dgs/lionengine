@@ -102,43 +102,6 @@ public class StateHandler implements Updatable
         return false;
     }
 
-    /*
-     * Updatable
-     */
-
-    @Override
-    public void update(double extrp)
-    {
-        if (current != null)
-        {
-            for (final InputDevice input : inputs)
-            {
-                updateInput(StateInputDirectionalUpdater.class, InputDeviceDirectional.class, input);
-                updateInput(StateInputPointerUpdater.class, InputDevicePointer.class, input);
-            }
-            current.update(extrp);
-
-            final State old = current;
-            for (final InputDevice input : inputs)
-            {
-                current = checkNext(InputDeviceDirectional.class, input);
-                if (!old.equals(current))
-                {
-                    break;
-                }
-                current = checkNext(InputDevicePointer.class, input);
-                if (!old.equals(current))
-                {
-                    break;
-                }
-            }
-            if (!old.equals(current))
-            {
-                old.exit();
-            }
-        }
-    }
-
     /**
      * Check the next state depending of the input used.
      * 
@@ -155,6 +118,43 @@ public class StateHandler implements Updatable
         {
             updaterType.cast(current).updateInput(inputType.cast(input));
         }
+    }
+
+    /**
+     * Update to check next state and exit current one.
+     */
+    private void updateNext()
+    {
+        final State old = current;
+        for (final InputDevice input : inputs)
+        {
+            if (checkNext(old, input))
+            {
+                break;
+            }
+        }
+        if (!old.equals(current))
+        {
+            old.exit();
+        }
+    }
+
+    /**
+     * Check the next state depending of the input used.
+     * 
+     * @param old The old state.
+     * @param input The input reference.
+     * @return <code>true</code> if changed, <code>false</code> else.
+     */
+    private boolean checkNext(State old, InputDevice input)
+    {
+        current = checkNext(InputDeviceDirectional.class, input);
+        if (!old.equals(current))
+        {
+            return true;
+        }
+        current = checkNext(InputDevicePointer.class, input);
+        return !old.equals(current);
     }
 
     /**
@@ -175,5 +175,25 @@ public class StateHandler implements Updatable
             }
         }
         return current;
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        if (current != null)
+        {
+            for (final InputDevice input : inputs)
+            {
+                updateInput(StateInputDirectionalUpdater.class, InputDeviceDirectional.class, input);
+                updateInput(StateInputPointerUpdater.class, InputDevicePointer.class, input);
+            }
+            current.update(extrp);
+
+            updateNext();
+        }
     }
 }
