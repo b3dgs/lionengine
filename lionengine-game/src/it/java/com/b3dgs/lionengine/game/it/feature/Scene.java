@@ -26,18 +26,16 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.engine.Sequence;
+import com.b3dgs.lionengine.game.feature.SequenceGame;
 
 /**
  * Game loop designed to handle our world.
  */
-class Scene extends Sequence
+class Scene extends SequenceGame
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     private final Timing timing = new Timing();
-    private final World world;
     private final Context context;
 
     /**
@@ -47,10 +45,9 @@ class Scene extends Sequence
      */
     public Scene(Context context)
     {
-        super(context, NATIVE);
+        super(context, NATIVE, (c, s) -> new World(c, s, false));
 
         this.context = context;
-        world = new World(context, false);
     }
 
     @Override
@@ -58,7 +55,7 @@ class Scene extends Sequence
     {
         try
         {
-            new World(context, true).saveToFile(Medias.create("world.lvl"));
+            new World(context, services, true).saveToFile(Medias.create("world.lvl"));
         }
         catch (final LionEngineException exception)
         {
@@ -67,7 +64,7 @@ class Scene extends Sequence
             world.saveToFile(Medias.create("world.lvl"));
         }
 
-        assertThrows(() -> new World(context, true).loadFromFile(Medias.create("world.lvl")),
+        assertThrows(() -> new World(context, services, true).loadFromFile(Medias.create("world.lvl")),
                      "[world.lvl] Error on loading from file !");
 
         world.loadFromFile(Medias.create("world.lvl"));
@@ -77,17 +74,11 @@ class Scene extends Sequence
     @Override
     public void update(double extrp)
     {
-        world.update(extrp);
+        super.update(extrp);
         if (timing.elapsed(200L))
         {
             end();
         }
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        world.render(g);
     }
 
     @Override

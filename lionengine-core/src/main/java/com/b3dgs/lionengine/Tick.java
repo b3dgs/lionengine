@@ -132,18 +132,16 @@ public final class Tick implements Updatable
     /**
      * Check if specific time has been elapsed (in tick referential).
      * 
-     * @param context The context reference (must not be <code>null</code>).
+     * @param rate The rate reference.
      * @param milli The milliseconds to check (based on frame time).
      * @return <code>true</code> if time elapsed, <code>false</code> else.
      * @throws LionEngineException If invalid argument.
      */
-    public boolean elapsedTime(Context context, long milli)
+    public boolean elapsedTime(int rate, long milli)
     {
-        Check.notNull(context);
-
-        if (started)
+        if (started && rate > 0)
         {
-            final double frameTime = ONE_SECOND_IN_MILLI / context.getConfig().getSource().getRate();
+            final double frameTime = ONE_SECOND_IN_MILLI / rate;
             return Double.compare(milli, StrictMath.floor(currentTicks * frameTime)) <= 0;
         }
         return false;

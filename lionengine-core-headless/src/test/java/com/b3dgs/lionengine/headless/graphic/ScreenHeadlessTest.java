@@ -78,7 +78,6 @@ public final class ScreenHeadlessTest
                                          32,
                                          true,
                                          Medias.create(IMAGE));
-        config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
 
         assertTimeout(1000L, () -> testScreen(config));
     }
@@ -93,7 +92,6 @@ public final class ScreenHeadlessTest
     {
         final Resolution resolution = com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240;
         final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
-        config.setSource(resolution);
 
         assertTimeout(1000L, () -> testScreen(config));
     }

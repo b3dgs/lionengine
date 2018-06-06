@@ -63,30 +63,6 @@ public final class ConfigTest
     }
 
     /**
-     * Test source.
-     */
-    @Test
-    public void testSource()
-    {
-        final Resolution output = new Resolution(320, 240, 60);
-        final Config config = new Config(output, 32, true);
-        config.setSource(output);
-
-        assertEquals(output.getWidth(), config.getSource().getWidth());
-        assertEquals(output.getHeight(), config.getSource().getHeight());
-        assertEquals(output.getRate(), config.getSource().getRate());
-    }
-
-    /**
-     * Test <code>null</code> source.
-     */
-    @Test
-    public void testSourceNull()
-    {
-        assertThrows(() -> new Config(new Resolution(320, 240, 60), 32, true).setSource(null), Check.ERROR_NULL);
-    }
-
-    /**
      * Test icon.
      */
     @Test

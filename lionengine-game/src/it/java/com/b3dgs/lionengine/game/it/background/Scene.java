@@ -51,8 +51,8 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        background = new Swamp(getConfig().getSource(), 1.0, 1.0);
-        foreground = new Foreground(getConfig().getSource());
+        background = new Swamp(NATIVE, 1.0, 1.0);
+        foreground = new Foreground(NATIVE);
     }
 
     /*

@@ -33,10 +33,11 @@ public final class WorldMock extends WorldGame
      * Constructor.
      * 
      * @param context The context reference.
+     * @param services The services reference.
      */
-    public WorldMock(Context context)
+    public WorldMock(Context context, Services services)
     {
-        super(context);
+        super(context, services);
     }
 
     @Override

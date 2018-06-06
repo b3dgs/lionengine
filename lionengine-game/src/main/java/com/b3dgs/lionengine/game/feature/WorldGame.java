@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 
@@ -50,43 +51,11 @@ import com.b3dgs.lionengine.io.FileWriting;
  * </li>
  * </ul>
  * <p>
- * It has to be handled by a {@link com.b3dgs.lionengine.graphic.engine.Sequence}. Here a standard world usage:
+ * The {@link Services} must provide:
  * </p>
- * 
- * <pre>
- * public class MySequence extends Sequence
- * {
- *     private final World world;
- * 
- *     public MySequence(Context context)
- *     {
- *         super(loader);
- *         // Initialize variables here
- *         world = new World(context);
- *     }
- * 
- *     &#064;Override
- *     public void load()
- *     {
- *         // Load resources here
- *         world.loadFromFile(Media.get(&quot;level.lvl&quot;));
- *     }
- * 
- *     &#064;Override
- *     public void update(double extrp)
- *     {
- *         // Update routine
- *         world.update(extrp);
- *     }
- * 
- *     &#064;Override
- *     public void render(Graphic g)
- *     {
- *         // Render routine
- *         world.render(g);
- *     }
- * }
- * </pre>
+ * <ul>
+ * <li>{@link SourceResolutionProvider}</li>
+ * </ul>
  */
 public abstract class WorldGame implements Updatable, Renderable
 {
@@ -100,12 +69,12 @@ public abstract class WorldGame implements Updatable, Renderable
     protected final Handler handler;
     /** Config reference. */
     protected final Config config;
-    /** Internal display reference. */
-    protected final Resolution source;
     /** External display reference. */
     protected final Resolution output;
     /** Context reference. */
     protected final Context context;
+    /** Source provider. */
+    protected final SourceResolutionProvider source;
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
@@ -129,12 +98,12 @@ public abstract class WorldGame implements Updatable, Renderable
     {
         super();
 
-        this.context = context;
         this.services = services;
+        this.context = context;
         config = context.getConfig();
-        source = config.getSource();
         output = config.getOutput();
 
+        source = services.get(SourceResolutionProvider.class);
         factory = services.create(Factory.class);
         handler = services.create(Handler.class);
         handler.addListener(factory);

@@ -31,28 +31,10 @@ import com.b3dgs.lionengine.graphic.Screen;
  */
 public final class LoopLocked implements Loop
 {
-    /**
-     * Get the maximum frame time in nano seconds.
-     * 
-     * @param output The output resolution.
-     * @return The maximum frame time in nano.
-     */
-    private static double getMaxFrameTime(Resolution output)
-    {
-        final double maxFrameTimeNano;
-        if (output.getRate() == 0)
-        {
-            maxFrameTimeNano = 0;
-        }
-        else
-        {
-            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) output.getRate() * Constant.NANO_TO_MILLI;
-        }
-        return maxFrameTimeNano;
-    }
-
     /** Running flag. */
     private boolean isRunning;
+    /** Max frame time in nano. */
+    private double maxFrameTimeNano = -1.0;
 
     /**
      * Create loop.
@@ -75,7 +57,10 @@ public final class LoopLocked implements Loop
         final Config config = screen.getConfig();
         final Resolution output = config.getOutput();
         final boolean sync = config.isWindowed() && output.getRate() > 0;
-        final double maxFrameTimeNano = getMaxFrameTime(output);
+        if (maxFrameTimeNano < 0)
+        {
+            notifyRateChanged(output.getRate());
+        }
 
         isRunning = true;
         while (isRunning)
@@ -108,5 +93,18 @@ public final class LoopLocked implements Loop
     public void stop()
     {
         isRunning = false;
+    }
+
+    @Override
+    public void notifyRateChanged(int rate)
+    {
+        if (rate == 0)
+        {
+            maxFrameTimeNano = 0.0;
+        }
+        else
+        {
+            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) rate * Constant.NANO_TO_MILLI;
+        }
     }
 }

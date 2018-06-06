@@ -22,10 +22,7 @@ import java.util.Optional;
 /**
  * Describe the engine screen configuration. It allows to define different parameters:
  * <ul>
- * <li>source : It is corresponding to the native screen resolution for what the program was designed for (the source is
- * defined by the {@link com.b3dgs.lionengine.graphic.engine.Sequence})</li>
- * <li>output : It is corresponding to the desired screen resolution output. If source and output are not equal, the
- * screen will be stretched</li>
+ * <li>output : It is corresponding to the desired screen resolution output.</li>
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for
  * fullscreen)</li>
  * <li>applet : Can be used to set the applet reference in case of applet mode</li>
@@ -68,8 +65,6 @@ public final class Config
     private final boolean windowed;
     /** Icon media. */
     private final Optional<Media> icon;
-    /** Source resolution reference. */
-    private volatile Resolution source;
 
     /**
      * Create a configuration without icon.
@@ -104,29 +99,6 @@ public final class Config
         this.depth = depth;
         this.windowed = windowed;
         this.icon = Optional.ofNullable(icon);
-    }
-
-    /**
-     * Set the resolution source.
-     * 
-     * @param source The native source resolution (must not be <code>null</code>).
-     * @throws LionEngineException If source is <code>null</code>.
-     */
-    public void setSource(Resolution source)
-    {
-        Check.notNull(source);
-
-        this.source = source;
-    }
-
-    /**
-     * Get the resolution source.
-     * 
-     * @return The resolution source, <code>null</code> if none defined.
-     */
-    public Resolution getSource()
-    {
-        return source;
     }
 
     /**

@@ -83,7 +83,6 @@ public final class ScreenAwtTest
                                          32,
                                          true,
                                          Medias.create(IMAGE));
-        config.setSource(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240);
 
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
@@ -108,7 +107,6 @@ public final class ScreenAwtTest
 
             final Resolution resolution = new Resolution(width, height, 60);
             final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
-            config.setSource(resolution);
 
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
@@ -130,7 +128,6 @@ public final class ScreenAwtTest
     {
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
-        config.setSource(resolution);
 
         assertThrowsPrefix(() -> testScreen(config), ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN);
         testHeadless(config);

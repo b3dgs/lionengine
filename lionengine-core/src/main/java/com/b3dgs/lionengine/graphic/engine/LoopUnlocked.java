@@ -77,4 +77,10 @@ public final class LoopUnlocked implements Loop
     {
         isRunning = false;
     }
+
+    @Override
+    public void notifyRateChanged(int rate)
+    {
+        // Nothing to do
+    }
 }

@@ -116,7 +116,6 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -140,8 +139,7 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
-        pause.set(screen.getConfig().getSource().getRate());
+        pause.set(50L);
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -169,7 +167,6 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 0));
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -190,7 +187,6 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final long maxFrameTime = Math.round(LoopFrameSkipping.MAX_FRAME_TIME_NANO / Constant.NANO_TO_MILLI);
         pause.set(maxFrameTime * 2);
@@ -200,7 +196,7 @@ public final class LoopFrameSkippingTest
 
         assertTimeout(2000L, thread::join);
 
-        final double frameTimeMilli = 1000.0 / screen.getConfig().getSource().getRate();
+        final double frameTimeMilli = 1000.0 / 50L;
         assertEquals(Math.round(Math.floor(maxFrameTime / frameTimeMilli)), tick.get());
         assertEquals(2, rendered.get());
 
@@ -218,7 +214,6 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -242,7 +237,6 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, false));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -266,7 +260,6 @@ public final class LoopFrameSkippingTest
         ScreenMock.setScreenWait(true);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();

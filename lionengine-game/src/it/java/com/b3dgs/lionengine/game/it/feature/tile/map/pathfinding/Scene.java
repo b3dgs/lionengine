@@ -58,7 +58,6 @@ class Scene extends Sequence
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Factory factory = services.create(Factory.class);
     private final Tick tick = new Tick();
-    private final Context context;
     private Featurable peon2;
     private boolean changed;
 
@@ -71,7 +70,7 @@ class Scene extends Sequence
     {
         super(context, NATIVE);
 
-        this.context = services.add(context);
+        services.add(context);
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
 
@@ -119,12 +118,12 @@ class Scene extends Sequence
         handler.update(extrp);
         text.update(camera);
         tick.update(extrp);
-        if (!changed && tick.elapsedTime(context, 200L))
+        if (!changed && tick.elapsedTime(NATIVE.getRate(), 200L))
         {
             peon2.getFeature(Pathfindable.class).setDestination(23, 14);
             changed = true;
         }
-        if (tick.elapsedTime(context, 600L))
+        if (tick.elapsedTime(NATIVE.getRate(), 600L))
         {
             end();
         }

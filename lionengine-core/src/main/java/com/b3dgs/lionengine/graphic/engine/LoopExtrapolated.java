@@ -34,28 +34,12 @@ public final class LoopExtrapolated implements Loop
     /** One second in nano. */
     private static final double ONE_SECOND_IN_NANO = 1_000_000_000.0;
 
-    /**
-     * Get the maximum frame time in nano seconds.
-     * 
-     * @param output The resolution output.
-     * @return The maximum frame time in nano.
-     */
-    private static double getMaxFrameTime(Resolution output)
-    {
-        final double maxFrameTimeNano;
-        if (output.getRate() == 0)
-        {
-            maxFrameTimeNano = 0;
-        }
-        else
-        {
-            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) output.getRate() * Constant.NANO_TO_MILLI;
-        }
-        return maxFrameTimeNano;
-    }
-
     /** Running flag. */
     private boolean isRunning;
+    /** Current rate. */
+    private int rate = -1;
+    /** Max frame time in nano. */
+    private double maxFrameTimeNano;
 
     /**
      * Create loop.
@@ -76,10 +60,12 @@ public final class LoopExtrapolated implements Loop
         Check.notNull(frame);
 
         final Config config = screen.getConfig();
-        final Resolution source = config.getSource();
         final Resolution output = config.getOutput();
         final boolean sync = config.isWindowed() && output.getRate() > 0;
-        final double maxFrameTimeNano = getMaxFrameTime(output);
+        if (rate < 0)
+        {
+            notifyRateChanged(output.getRate());
+        }
 
         double extrp = 1.0;
         isRunning = true;
@@ -100,7 +86,7 @@ public final class LoopExtrapolated implements Loop
                 }
 
                 final long currentTime = Math.max(lastTime + 1L, System.nanoTime());
-                extrp = source.getRate() / ONE_SECOND_IN_NANO * (currentTime - lastTime);
+                extrp = rate / ONE_SECOND_IN_NANO * (currentTime - lastTime);
                 frame.computeFrameRate(lastTime, currentTime);
             }
             else
@@ -115,5 +101,19 @@ public final class LoopExtrapolated implements Loop
     public void stop()
     {
         isRunning = false;
+    }
+
+    @Override
+    public void notifyRateChanged(int rate)
+    {
+        this.rate = rate;
+        if (rate == 0)
+        {
+            maxFrameTimeNano = 0.0;
+        }
+        else
+        {
+            maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / (double) rate * Constant.NANO_TO_MILLI;
+        }
     }
 }

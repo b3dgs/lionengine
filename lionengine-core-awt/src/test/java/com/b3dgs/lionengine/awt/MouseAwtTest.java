@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Verbose;
@@ -50,8 +49,6 @@ public final class MouseAwtTest
     static MouseAwt createMouse()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
-        final Config config = new Config(resolution, 32, false);
-        config.setSource(resolution);
 
         final MouseAwt mouse = new MouseAwt();
         mouse.setResolution(resolution, resolution);

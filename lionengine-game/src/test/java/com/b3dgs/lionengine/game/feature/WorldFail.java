@@ -33,10 +33,11 @@ public final class WorldFail extends WorldGame
      * Constructor.
      * 
      * @param context The context reference.
+     * @param services The services reference.
      */
-    public WorldFail(Context context)
+    public WorldFail(Context context, Services services)
     {
-        super(context);
+        super(context, services);
     }
 
     @Override

@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Test {@link WorldGame}.
@@ -66,8 +67,8 @@ public final class WorldTest
     {
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
-        config.setSource(output);
-        final WorldMock world = new WorldMock(new Context()
+        final Services services = new Services();
+        final Context context = services.add(new Context()
         {
             @Override
             public int getX()
@@ -93,6 +94,27 @@ public final class WorldTest
                 return config;
             }
         });
+        services.add(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return output.getWidth();
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return output.getHeight();
+            }
+
+            @Override
+            public int getRate()
+            {
+                return output.getRate();
+            }
+        });
+        final WorldMock world = new WorldMock(context, services);
 
         final Media media = Medias.create("test");
         try
@@ -116,8 +138,8 @@ public final class WorldTest
     {
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
-        config.setSource(output);
-        final WorldFail world = new WorldFail(new Context()
+        final Services services = new Services();
+        final Context context = services.add(new Context()
         {
             @Override
             public int getX()
@@ -143,6 +165,27 @@ public final class WorldTest
                 return config;
             }
         });
+        services.add(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return output.getWidth();
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return output.getHeight();
+            }
+
+            @Override
+            public int getRate()
+            {
+                return output.getRate();
+            }
+        });
+        final WorldFail world = new WorldFail(context, services);
 
         assertThrows(() -> world.saveToFile(null), "Unexpected null argument !");
 

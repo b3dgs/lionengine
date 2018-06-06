@@ -48,7 +48,8 @@ import com.b3dgs.lionengine.graphic.Transform;
  * @see Resolution
  * @see InputDevice
  */
-public abstract class Sequence implements Sequencable, Sequencer, ResolutionChanger, ScreenListener
+public abstract class Sequence implements Sequencable, Sequencer, SourceResolutionProvider, ResolutionChanger,
+                               ScreenListener
 {
     /** Context reference. */
     private final Context context;
@@ -64,6 +65,8 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     private Optional<Sequencable> nextSequence = Optional.empty();
     /** Loop mode. */
     private Loop loop = new LoopFrameSkipping();
+    /** Source resolution. */
+    private Resolution source;
     /** Current frame rate. */
     private int currentFrameRate;
     /** Image buffer (can be <code>null</code> for direct rendering). */
@@ -102,9 +105,9 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
 
         this.context = context;
         this.resolution = resolution;
+        source = resolution;
         config = context.getConfig();
         graphic = Graphics.createGraphic();
-        config.setSource(resolution);
     }
 
     /**
@@ -134,26 +137,6 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     {
         this.filter = Optional.ofNullable(filter).orElse(FilterNone.INSTANCE);
         transform = getTransform();
-    }
-
-    /**
-     * Get the rendering width.
-     * 
-     * @return The rendering width.
-     */
-    protected final int getWidth()
-    {
-        return config.getSource().getWidth();
-    }
-
-    /**
-     * Get the rendering height.
-     * 
-     * @return The rendering height.
-     */
-    protected final int getHeight()
-    {
-        return config.getSource().getHeight();
     }
 
     /**
@@ -209,18 +192,16 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     {
         Check.notNull(source);
 
-        config.setSource(source);
+        this.source = source;
+        loop.notifyRateChanged(source.getRate());
         screen.onSourceChanged(source);
 
-        // Store source size
         final int width = source.getWidth();
         final int height = source.getHeight();
 
         // Standard rendering
         final Resolution output = config.getOutput();
-        if (FilterNone.INSTANCE.equals(filter)
-            && source.getWidth() == output.getWidth()
-            && source.getHeight() == output.getHeight())
+        if (FilterNone.INSTANCE.equals(filter) && width == output.getWidth() && height == output.getHeight())
         {
             buf = null;
             transform = null;
@@ -242,9 +223,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
      */
     private Transform getTransform()
     {
-        final Resolution source = config.getSource();
         final Resolution output = config.getOutput();
-
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
 
@@ -310,6 +289,7 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
         // Main loop
         final Timing updateFpsTimer = new Timing();
         updateFpsTimer.start();
+        loop.notifyRateChanged(resolution.getRate());
         loop.start(screen, new Frame()
         {
             @Override
@@ -413,6 +393,28 @@ public abstract class Sequence implements Sequencable, Sequencer, ResolutionChan
     public void onTerminated(boolean hasNextSequence)
     {
         // Nothing by default
+    }
+
+    /*
+     * SourceResolutionProvider
+     */
+
+    @Override
+    public final int getWidth()
+    {
+        return source.getWidth();
+    }
+
+    @Override
+    public final int getHeight()
+    {
+        return source.getHeight();
+    }
+
+    @Override
+    public final int getRate()
+    {
+        return source.getRate();
     }
 
     /*

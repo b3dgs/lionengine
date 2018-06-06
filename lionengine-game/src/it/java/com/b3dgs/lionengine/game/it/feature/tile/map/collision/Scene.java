@@ -50,7 +50,8 @@ import com.b3dgs.lionengine.graphic.engine.Sequence;
  */
 class Scene extends Sequence
 {
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Native resolution. */
+    static final Resolution NATIVE = new Resolution(320, 240, 60);
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
     private final Services services = new Services();

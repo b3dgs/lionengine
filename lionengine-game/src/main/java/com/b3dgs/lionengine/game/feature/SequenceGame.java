@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.graphic.engine.ResolutionChanger;
 import com.b3dgs.lionengine.graphic.engine.Sequencable;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Sequence base dedicated to game module, supporting base tools by default.
@@ -34,8 +35,8 @@ import com.b3dgs.lionengine.graphic.engine.Sequencer;
  * The following tools are included:
  * </p>
  * <ul>
- * <li>{@link Services}: providing {@link Context} and {@link Sequencer} to control sequence (available after
- * {@link #load()}).</li>
+ * <li>{@link Services}: providing {@link Context}, {@link SourceResolutionProvider} and {@link Sequencer} to control
+ * sequence (available after {@link #load()}).</li>
  * <li>{@link WorldGame}: added to {@link Services}, {@link #update(double)} and {@link #render(Graphic)} are already
  * called.</li>
  * <li>{@link #setSystemCursorVisible(boolean)}: set to <code>false</code>.</li>
@@ -85,6 +86,26 @@ public abstract class SequenceGame extends Sequence
             public void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
             {
                 SequenceGame.this.end(nextSequenceClass, arguments);
+            }
+        });
+        services.add(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return SequenceGame.this.getWidth();
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return SequenceGame.this.getHeight();
+            }
+
+            @Override
+            public int getRate()
+            {
+                return SequenceGame.this.getRate();
             }
         });
         services.add((ResolutionChanger) this::setResolution);

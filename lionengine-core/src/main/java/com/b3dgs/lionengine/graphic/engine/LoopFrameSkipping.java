@@ -43,40 +43,6 @@ public final class LoopFrameSkipping implements Loop
     private static final int MAX_FRAME_RATE = 1000;
 
     /**
-     * Get the maximum frame time in nano seconds.
-     * 
-     * @param screen The screen reference.
-     * @return The maximum frame time in nano seconds.
-     */
-    private static double getMaxFrameTimeNano(Screen screen)
-    {
-        final Config config = screen.getConfig();
-        final Resolution source = config.getSource();
-        final double expectedRate = getExpectedRate(source);
-        return Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
-    }
-
-    /**
-     * Get the expected frame rate.
-     * 
-     * @param source The resolution source.
-     * @return The expected frame rate.
-     */
-    private static int getExpectedRate(Resolution source)
-    {
-        final int expectedRate;
-        if (source.getRate() == 0)
-        {
-            expectedRate = MAX_FRAME_RATE;
-        }
-        else
-        {
-            expectedRate = source.getRate();
-        }
-        return expectedRate;
-    }
-
-    /**
      * Check if screen has sync locked.
      * 
      * @param screen The screen reference.
@@ -91,6 +57,8 @@ public final class LoopFrameSkipping implements Loop
 
     /** Running flag. */
     private boolean isRunning;
+    /** Max frame time in nano. */
+    private double maxFrameTimeNano = -1.0;
 
     /**
      * Create loop.
@@ -110,8 +78,11 @@ public final class LoopFrameSkipping implements Loop
         Check.notNull(screen);
         Check.notNull(frame);
 
-        final double maxFrameTimeNano = getMaxFrameTimeNano(screen);
         final boolean sync = hasSync(screen);
+        if (maxFrameTimeNano < 0)
+        {
+            notifyRateChanged(screen.getConfig().getOutput().getRate());
+        }
         long currentTimeNano = System.nanoTime();
         double acc = 0.0;
         isRunning = true;
@@ -155,5 +126,20 @@ public final class LoopFrameSkipping implements Loop
     public void stop()
     {
         isRunning = false;
+    }
+
+    @Override
+    public void notifyRateChanged(int rate)
+    {
+        final int expectedRate;
+        if (rate == 0)
+        {
+            expectedRate = MAX_FRAME_RATE;
+        }
+        else
+        {
+            expectedRate = rate;
+        }
+        maxFrameTimeNano = Constant.ONE_SECOND_IN_MILLI / expectedRate * Constant.NANO_TO_MILLI;
     }
 }

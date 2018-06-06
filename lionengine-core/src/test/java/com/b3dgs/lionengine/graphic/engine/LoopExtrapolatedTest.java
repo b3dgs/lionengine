@@ -116,7 +116,6 @@ public final class LoopExtrapolatedTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -140,7 +139,6 @@ public final class LoopExtrapolatedTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -164,7 +162,7 @@ public final class LoopExtrapolatedTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, false));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
+        loop.notifyRateChanged(50);
 
         final Thread thread = getTask(screen);
         thread.start();
@@ -188,7 +186,6 @@ public final class LoopExtrapolatedTest
         ScreenMock.setScreenWait(true);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
-        screen.getConfig().setSource(new Resolution(320, 240, 50));
 
         final Thread thread = getTask(screen);
         thread.start();

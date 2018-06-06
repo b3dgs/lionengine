@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2017 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2018 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,32 +17,29 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.graphic.Screen;
-
 /**
- * Represents the loop interface, aimed to update and render frame on screen.
+ * Provide resolution from source.
  */
-public interface Loop
+public interface SourceResolutionProvider
 {
     /**
-     * Start the loop. Blocks until loop terminated. Can be initiated with {@link #stop()}.
+     * Get the rendering width.
      * 
-     * @param screen The screen reference (must not be <code>null</code>).
-     * @param frame The frame to loop reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
+     * @return The rendering width.
      */
-    void start(Screen screen, Frame frame);
+    int getWidth();
 
     /**
-     * Stop the loop.
+     * Get the rendering height.
+     * 
+     * @return The rendering height.
      */
-    void stop();
+    int getHeight();
 
     /**
-     * Called when source rate changed.
+     * Get the rendering rate.
      * 
-     * @param rate The new source rate.
+     * @return The rendering rate.
      */
-    void notifyRateChanged(int rate);
+    int getRate();
 }
