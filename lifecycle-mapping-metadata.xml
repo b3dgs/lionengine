@@ -7,7 +7,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <versionRange>[2.10,)</versionRange>
                 <goals>
-					<goal>unpack</goal>
+                    <goal>unpack</goal>
                     <goal>unpack-dependencies</goal>
                     <goal>copy-dependencies</goal>
                     <goal>copy</goal>
@@ -17,13 +17,13 @@
                 <ignore></ignore>
             </action>
         </pluginExecution>
-		<pluginExecution>
+        <pluginExecution>
             <pluginExecutionFilter>
                 <groupId>com.b3dgs.radialencapsulation</groupId>
                 <artifactId>radial-encapsulation-maven-plugin</artifactId>
                 <versionRange>[1.0.1,)</versionRange>
                 <goals>
-					<goal>radial-encapsulation</goal>
+                    <goal>radial-encapsulation</goal>
                 </goals>
             </pluginExecutionFilter>
             <action>
