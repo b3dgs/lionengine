@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Test {@link ExtractorModel}.
@@ -75,7 +76,26 @@ public final class ExtractorModelTest
     @BeforeEach
     public void prepare()
     {
-        services.add(Integer.valueOf(50));
+        services.add(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRate()
+            {
+                return 50;
+            }
+        });
         services.add(new MapTileGame());
     }
 

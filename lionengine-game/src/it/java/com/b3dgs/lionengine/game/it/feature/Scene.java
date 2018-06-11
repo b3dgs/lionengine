@@ -36,7 +36,6 @@ class Scene extends SequenceGame
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     private final Timing timing = new Timing();
-    private final Context context;
 
     /**
      * Constructor.
@@ -45,9 +44,7 @@ class Scene extends SequenceGame
      */
     public Scene(Context context)
     {
-        super(context, NATIVE, (c, s) -> new World(c, s, false));
-
-        this.context = context;
+        super(context, NATIVE, services -> new World(services, false));
     }
 
     @Override
@@ -55,7 +52,7 @@ class Scene extends SequenceGame
     {
         try
         {
-            new World(context, services, true).saveToFile(Medias.create("world.lvl"));
+            new World(services, true).saveToFile(Medias.create("world.lvl"));
         }
         catch (final LionEngineException exception)
         {
@@ -64,7 +61,7 @@ class Scene extends SequenceGame
             world.saveToFile(Medias.create("world.lvl"));
         }
 
-        assertThrows(() -> new World(context, services, true).loadFromFile(Medias.create("world.lvl")),
+        assertThrows(() -> new World(services, true).loadFromFile(Medias.create("world.lvl")),
                      "[world.lvl] Error on loading from file !");
 
         world.loadFromFile(Medias.create("world.lvl"));

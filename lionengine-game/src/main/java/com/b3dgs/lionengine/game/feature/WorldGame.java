@@ -80,26 +80,14 @@ public abstract class WorldGame implements Updatable, Renderable
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
      * screen size and wide state.
      * 
-     * @param context The context reference.
-     */
-    public WorldGame(Context context)
-    {
-        this(context, new Services());
-    }
-
-    /**
-     * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
-     * screen size and wide state.
-     * 
-     * @param context The context reference.
      * @param services The services reference.
      */
-    public WorldGame(Context context, Services services)
+    public WorldGame(Services services)
     {
         super();
 
         this.services = services;
-        this.context = context;
+        context = services.get(Context.class);
         config = context.getConfig();
         output = config.getOutput();
 
@@ -200,9 +188,18 @@ public abstract class WorldGame implements Updatable, Renderable
      * 
      * @param width The new screen width.
      * @param height The new screen height.
-     * @param rate The new rate.
      */
-    public void onResolutionChanged(int width, int height, int rate)
+    protected void onResolutionChanged(int width, int height)
+    {
+        // Nothing by default
+    }
+
+    /**
+     * Called when the rate changed. Does nothing by default.
+     * 
+     * @param rate The new screen rate.
+     */
+    protected void onRateChanged(int rate)
     {
         // Nothing by default
     }

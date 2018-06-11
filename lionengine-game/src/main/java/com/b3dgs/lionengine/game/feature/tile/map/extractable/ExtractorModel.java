@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
@@ -76,7 +77,8 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         super();
 
-        desiredFps = services.get(Integer.class).intValue();
+        // TODO be notified of changes
+        desiredFps = services.get(SourceResolutionProvider.class).getRate();
 
         recycle();
     }

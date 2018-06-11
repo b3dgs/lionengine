@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Producer model implementation.
@@ -95,7 +96,8 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         super();
 
         handler = services.get(Handler.class);
-        desiredFps = services.get(Integer.class).intValue();
+        // TODO be notified of changes
+        desiredFps = services.get(SourceResolutionProvider.class).getRate();
 
         actions = Collections.emptyList();
 
@@ -127,7 +129,8 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         super();
 
         handler = services.get(Handler.class);
-        desiredFps = services.get(Integer.class).intValue();
+        // TODO be notified of changes
+        desiredFps = services.get(SourceResolutionProvider.class).getRate();
 
         actions = ActionsConfig.imports(setup);
 

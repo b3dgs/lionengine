@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -48,7 +49,7 @@ import com.b3dgs.lionengine.graphic.Transform;
  * @see Resolution
  * @see InputDevice
  */
-public abstract class Sequence implements Sequencable, Sequencer, SourceResolutionProvider, ResolutionChanger,
+public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeControl, SourceResolutionProvider,
                                ScreenListener
 {
     /** Context reference. */
@@ -59,14 +60,14 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
     private final Config config;
     /** Filter graphic. */
     private final Graphic graphic;
+    /** Loop mode. */
+    private final Loop loop;
+    /** Source resolution. */
+    private Resolution source;
     /** Filter reference. */
     private volatile Filter filter = FilterNone.INSTANCE;
     /** Next sequence pointer. */
     private Optional<Sequencable> nextSequence = Optional.empty();
-    /** Loop mode. */
-    private Loop loop = new LoopFrameSkipping();
-    /** Source resolution. */
-    private Resolution source;
     /** Current frame rate. */
     private int currentFrameRate;
     /** Image buffer (can be <code>null</code> for direct rendering). */
@@ -98,13 +99,28 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
      */
     protected Sequence(Context context, Resolution resolution)
     {
+        this(context, resolution, new LoopFrameSkipping());
+    }
+
+    /**
+     * Constructor base.
+     * 
+     * @param context The context reference (must not be <code>null</code>).
+     * @param resolution The resolution source reference (must not be <code>null</code>).
+     * @param loop The loop used (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    protected Sequence(Context context, Resolution resolution, Loop loop)
+    {
         super();
 
         Check.notNull(context);
         Check.notNull(resolution);
+        Check.notNull(loop);
 
         this.context = context;
         this.resolution = resolution;
+        this.loop = loop;
         source = resolution;
         config = context.getConfig();
         graphic = Graphics.createGraphic();
@@ -114,19 +130,6 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
      * Loading sequence data.
      */
     public abstract void load();
-
-    /**
-     * Set the loop mode used.
-     * 
-     * @param loop The loop used (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public final void setLoop(Loop loop)
-    {
-        Check.notNull(loop);
-
-        this.loop = loop;
-    }
 
     /**
      * Set the filter to use.
@@ -175,9 +178,18 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
      * 
      * @param width The new screen width.
      * @param height The new screen height.
-     * @param rate The new rate.
      */
-    protected void onResolutionChanged(int width, int height, int rate)
+    protected void onResolutionChanged(int width, int height)
+    {
+        // Nothing by default
+    }
+
+    /**
+     * Called when the rate changed. Does nothing by default.
+     * 
+     * @param rate The new screen rate.
+     */
+    protected void onRateChanged(int rate)
     {
         // Nothing by default
     }
@@ -193,9 +205,7 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
         Check.notNull(source);
 
         this.source = source;
-        loop.notifyRateChanged(source.getRate());
         screen.onSourceChanged(source);
-
         final int width = source.getWidth();
         final int height = source.getHeight();
 
@@ -224,6 +234,7 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
     private Transform getTransform()
     {
         final Resolution output = config.getOutput();
+
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
 
@@ -335,10 +346,23 @@ public abstract class Sequence implements Sequencable, Sequencer, SourceResoluti
     }
 
     @Override
-    public final void setResolution(Resolution source)
+    public final void setZoom(double factor)
     {
-        initResolution(source);
-        onResolutionChanged(source.getWidth(), source.getHeight(), source.getRate());
+        final double scale = UtilMath.clamp(factor, 0.1, 5.0);
+        final Resolution zoomed = resolution.getScaled(scale, scale);
+        initResolution(zoomed);
+        onResolutionChanged(zoomed.getWidth(), zoomed.getHeight());
+    }
+
+    @Override
+    public void setTime(double factor)
+    {
+        final double scale = UtilMath.clamp(factor, 0.1, 5.0);
+        final Resolution time = new Resolution(resolution.getWidth(),
+                                               resolution.getHeight(),
+                                               (int) (resolution.getRate() * scale));
+        loop.notifyRateChanged(time.getRate());
+        onRateChanged(time.getRate());
     }
 
     @Override

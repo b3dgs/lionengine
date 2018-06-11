@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.graphic.engine;
 import java.util.concurrent.CountDownLatch;
 
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -33,11 +34,10 @@ final class SequenceScreenNotReady extends Sequence
 
     private SequenceScreenNotReady(Context context, CountDownLatch waitUpdate, CountDownLatch waitScreenUnready)
     {
-        super(context);
+        super(context, UtilTests.RESOLUTION_320_240, new LoopUnlocked());
 
         this.waitUpdate = waitUpdate;
         this.waitScreenUnready = waitScreenUnready;
-        setLoop(new LoopUnlocked());
     }
 
     @Override

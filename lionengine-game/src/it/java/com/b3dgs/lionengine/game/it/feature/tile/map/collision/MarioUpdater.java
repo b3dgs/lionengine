@@ -71,7 +71,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
         jump.setDestination(0.0, 0.0);
         transformable.teleport(350, 32);
 
-        body.setDesiredFps(Scene.NATIVE.getRate());
+        body.setDesiredFps(60);
         body.setGravity(GRAVITY);
         body.setVectors(movement, jump);
     }

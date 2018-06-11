@@ -22,7 +22,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -46,13 +45,12 @@ class World extends WorldGame
     /**
      * Create a new world.
      * 
-     * @param context The context reference.
      * @param services The services reference.
      * @param fail <code>true</code> to make fail on loading, <code>false</code> else.
      */
-    public World(Context context, Services services, boolean fail)
+    public World(Services services, boolean fail)
     {
-        super(context, services);
+        super(services);
 
         this.fail = fail;
     }

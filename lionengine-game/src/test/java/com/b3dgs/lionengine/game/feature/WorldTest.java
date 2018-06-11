@@ -68,7 +68,7 @@ public final class WorldTest
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Services services = new Services();
-        final Context context = services.add(new Context()
+        services.add(new Context()
         {
             @Override
             public int getX()
@@ -114,7 +114,7 @@ public final class WorldTest
                 return output.getRate();
             }
         });
-        final WorldMock world = new WorldMock(context, services);
+        final WorldMock world = new WorldMock(services);
 
         final Media media = Medias.create("test");
         try
@@ -139,7 +139,7 @@ public final class WorldTest
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Services services = new Services();
-        final Context context = services.add(new Context()
+        services.add(new Context()
         {
             @Override
             public int getX()
@@ -185,7 +185,7 @@ public final class WorldTest
                 return output.getRate();
             }
         });
-        final WorldFail world = new WorldFail(context, services);
+        final WorldFail world = new WorldFail(services);
 
         assertThrows(() -> world.saveToFile(null), "Unexpected null argument !");
 

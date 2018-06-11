@@ -48,6 +48,7 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Test {@link ProducerModel}.
@@ -104,7 +105,26 @@ public final class ProducerModelTest
     public void prepare()
     {
         services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
+        services.add(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRate()
+            {
+                return 50;
+            }
+        });
         producer = new ProducerModel(services, new Setup(media));
         producer.prepare(object);
     }

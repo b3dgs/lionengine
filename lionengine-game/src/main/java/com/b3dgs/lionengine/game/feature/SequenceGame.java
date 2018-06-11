@@ -23,11 +23,12 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.engine.ResolutionChanger;
 import com.b3dgs.lionengine.graphic.engine.Sequencable;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
+import com.b3dgs.lionengine.graphic.engine.TimeControl;
+import com.b3dgs.lionengine.graphic.engine.Zooming;
 
 /**
  * Sequence base dedicated to game module, supporting base tools by default.
@@ -35,8 +36,8 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  * The following tools are included:
  * </p>
  * <ul>
- * <li>{@link Services}: providing {@link Context}, {@link SourceResolutionProvider} and {@link Sequencer} to control
- * sequence (available after {@link #load()}).</li>
+ * <li>{@link Services}: providing {@link Context}, {@link Zooming}, {@link TimeControl},
+ * {@link SourceResolutionProvider}, {@link Sequencer} to control sequence (available after {@link #load()}).</li>
  * <li>{@link WorldGame}: added to {@link Services}, {@link #update(double)} and {@link #render(Graphic)} are already
  * called.</li>
  * <li>{@link #setSystemCursorVisible(boolean)}: set to <code>false</code>.</li>
@@ -88,6 +89,8 @@ public abstract class SequenceGame extends Sequence
                 SequenceGame.this.end(nextSequenceClass, arguments);
             }
         });
+        services.add((Zooming) this::setZoom);
+        services.add((TimeControl) this::setTime);
         services.add(new SourceResolutionProvider()
         {
             @Override
@@ -108,24 +111,10 @@ public abstract class SequenceGame extends Sequence
                 return SequenceGame.this.getRate();
             }
         });
-        services.add((ResolutionChanger) this::setResolution);
 
-        world = services.add(creator.createWorld(context, services));
+        world = services.add(creator.createWorld(services));
 
         setSystemCursorVisible(false);
-    }
-
-    /**
-     * Called when the resolution changed. Update world resolution.
-     * 
-     * @param width The new screen width.
-     * @param height The new screen height.
-     * @param rate The new rate.
-     */
-    @Override
-    protected void onResolutionChanged(int width, int height, int rate)
-    {
-        world.onResolutionChanged(width, height, rate);
     }
 
     /*
@@ -142,6 +131,29 @@ public abstract class SequenceGame extends Sequence
     public void render(Graphic g)
     {
         world.render(g);
+    }
+
+    /**
+     * Called when the resolution changed. Update world resolution.
+     * 
+     * @param width The new screen width.
+     * @param height The new screen height.
+     */
+    @Override
+    protected void onResolutionChanged(int width, int height)
+    {
+        world.onResolutionChanged(width, height);
+    }
+
+    /**
+     * Called when the rate changed. Update world rate.
+     * 
+     * @param rate The new screen rate.
+     */
+    @Override
+    protected void onRateChanged(int rate)
+    {
+        world.onRateChanged(rate);
     }
 
     /**
@@ -168,10 +180,9 @@ public abstract class SequenceGame extends Sequence
         /**
          * Create the world.
          * 
-         * @param context The context reference.
          * @param services The services reference.
          * @return The created world.
          */
-        WorldGame createWorld(Context context, Services services);
+        WorldGame createWorld(Services services);
     }
 }

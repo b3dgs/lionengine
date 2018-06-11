@@ -54,6 +54,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Game loop designed to handle our little world.
@@ -88,7 +89,26 @@ class Scene extends Sequence
         handler.addComponent(new ComponentDisplayable());
         handler.addComponent(new ComponentCollision());
 
-        services.add(Integer.valueOf(NATIVE.getRate()));
+        services.add(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return Scene.this.getWidth();
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return Scene.this.getHeight();
+            }
+
+            @Override
+            public int getRate()
+            {
+                return Scene.this.getRate();
+            }
+        });
 
         setSystemCursorVisible(false);
     }

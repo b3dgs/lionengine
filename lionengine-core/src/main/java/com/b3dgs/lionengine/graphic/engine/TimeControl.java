@@ -17,19 +17,15 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-
 /**
- * Allows to change resolution.
+ * Allows to change time.
  */
-public interface ResolutionChanger
+public interface TimeControl
 {
     /**
-     * Set the new resolution.
+     * Set the new time factor.
      * 
-     * @param resolution The new resolution used (must not be <code>null</code>).
-     * @throws LionEngineException If the resolution is <code>null</code>.
+     * @param factor The new time factor (must be superior to 0).
      */
-    void setResolution(Resolution resolution);
+    void setTime(double factor);
 }

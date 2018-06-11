@@ -36,7 +36,7 @@ public final class SequenceGameMock extends SequenceGame
      */
     public SequenceGameMock(Context context)
     {
-        super(context, (context1, services) -> new WorldGame(context1, services)
+        super(context, services -> new WorldGame(services)
         {
             @Override
             protected void saving(FileWriting file) throws IOException

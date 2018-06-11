@@ -19,37 +19,22 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 
 /**
  * Test world game fail class.
  */
-public final class WorldFail extends WorldGame
+final class WorldFail extends WorldGame
 {
     /**
      * Constructor.
      * 
-     * @param context The context reference.
      * @param services The services reference.
      */
-    public WorldFail(Context context, Services services)
+    public WorldFail(Services services)
     {
-        super(context, services);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        // Update
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        // Render
+        super(services);
     }
 
     @Override

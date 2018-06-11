@@ -17,48 +17,15 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import static com.b3dgs.lionengine.UtilAssert.assertNull;
-
-import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.InputDevice;
-import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.graphic.Graphic;
-
 /**
- * Single sequence mock.
+ * Allows to change zoom.
  */
-final class SequenceSingleMock extends Sequence
+public interface Zooming
 {
     /**
-     * Constructor.
+     * Set the new zoom factor.
      * 
-     * @param context The context reference.
+     * @param factor The new zoom factor (must be superior to 0).
      */
-    SequenceSingleMock(Context context)
-    {
-        super(context, UtilTests.RESOLUTION_320_240, new LoopUnlocked());
-    }
-
-    @Override
-    public void load()
-    {
-        setSystemCursorVisible(true);
-        setSystemCursorVisible(false);
-
-        assertNull(getInputDevice(InputDevice.class));
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        getX();
-        getY();
-        end(SequenceArgumentsMock.class, new Object());
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        // Mock
-    }
+    void setZoom(double factor);
 }
