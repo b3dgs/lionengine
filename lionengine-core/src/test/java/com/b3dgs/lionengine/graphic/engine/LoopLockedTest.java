@@ -153,6 +153,7 @@ public final class LoopLockedTest
         ScreenMock.setScreenWait(false);
 
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 0), 16, false));
+        loop.notifyRateChanged(0);
 
         final Thread thread = getTask(screen);
         thread.start();

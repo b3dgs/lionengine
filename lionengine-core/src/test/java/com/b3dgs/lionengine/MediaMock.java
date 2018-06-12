@@ -26,7 +26,7 @@ import java.util.Collection;
 /**
  * Media mock.
  */
-public final class MediaMock implements Media
+public class MediaMock implements Media
 {
     @Override
     public String getName()

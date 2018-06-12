@@ -75,6 +75,7 @@ public final class TickTest
     {
         assertFalse(tick.isStarted());
         assertFalse(tick.elapsed(0L));
+        assertFalse(tick.elapsedTime(0, 0L));
         assertFalse(tick.elapsedTime(60, 0L));
         assertEquals(0L, tick.elapsed());
 
@@ -82,6 +83,7 @@ public final class TickTest
 
         assertTrue(tick.isStarted());
         assertTrue(tick.elapsed(0L));
+        assertFalse(tick.elapsedTime(0, 0L));
         assertTrue(tick.elapsedTime(60, 0L));
         assertEquals(0L, tick.elapsed());
 
@@ -89,6 +91,7 @@ public final class TickTest
 
         assertTrue(tick.isStarted());
         assertFalse(tick.elapsed(1L));
+        assertFalse(tick.elapsedTime(0, 1L));
         assertFalse(tick.elapsedTime(60, 1L));
         assertEquals(0L, tick.elapsed());
     }

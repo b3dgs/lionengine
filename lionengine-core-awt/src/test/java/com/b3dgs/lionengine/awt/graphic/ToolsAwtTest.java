@@ -175,6 +175,28 @@ public final class ToolsAwtTest
     }
 
     /**
+     * Test buffer strategy creation.
+     */
+    @Test
+    public void testCreateBufferStrategyCanvas()
+    {
+        final AtomicReference<Integer> result = new AtomicReference<>();
+
+        ToolsAwt.createBufferStrategy(new java.awt.Canvas(null)
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
+            {
+                result.set(Integer.valueOf(numBuffers));
+            }
+        }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+
+        assertEquals(2, result.get().intValue());
+    }
+
+    /**
      * Test buffer strategy creation failure.
      */
     @Test
@@ -200,6 +222,28 @@ public final class ToolsAwtTest
         Verbose.info("****************************************************************************************");
 
         assertEquals(1, result.get().intValue());
+    }
+
+    /**
+     * Test buffer strategy creation.
+     */
+    @Test
+    public void testCreateBufferStrategyWindow()
+    {
+        final AtomicReference<Integer> result = new AtomicReference<>();
+
+        ToolsAwt.createBufferStrategy(new java.awt.Window(null)
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
+            {
+                result.set(Integer.valueOf(numBuffers));
+            }
+        }, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+
+        assertEquals(2, result.get().intValue());
     }
 
     /**

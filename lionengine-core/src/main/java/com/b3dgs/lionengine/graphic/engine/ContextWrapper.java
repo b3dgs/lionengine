@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.Screen;
 
 /**
@@ -35,6 +36,7 @@ final class ContextWrapper implements Context
      * Create wrapper.
      * 
      * @param screen The wrapper screen (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     ContextWrapper(Screen screen)
     {

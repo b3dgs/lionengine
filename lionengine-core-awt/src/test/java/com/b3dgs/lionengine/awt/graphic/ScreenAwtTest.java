@@ -25,7 +25,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrowsPrefix;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,14 +34,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
@@ -52,16 +49,13 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
  */
 public final class ScreenAwtTest
 {
-    /** Image media. */
-    private static final String IMAGE = "image.png";
-
     /**
      * Prepare tests.
      */
     @BeforeAll
     public static void beforeTests()
     {
-        EngineAwt.start(ScreenAwtTest.class.getName(), Version.DEFAULT);
+        Graphics.setFactoryGraphic(new FactoryGraphicAwt());
     }
 
     /**
@@ -70,7 +64,7 @@ public final class ScreenAwtTest
     @AfterAll
     public static void afterTests()
     {
-        Engine.terminate();
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -79,18 +73,8 @@ public final class ScreenAwtTest
     @Test
     public void testWindowed()
     {
-        final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
-                                         32,
-                                         true,
-                                         Medias.create(IMAGE));
-
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-
-        assertTimeout(10_000L, () -> testScreen(config));
-
-        Verbose.info("****************************************************************************************");
-
-        assertTimeout(10_000L, () -> testHeadless(config));
+        final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
+        testScreen(config);
     }
 
     /**
@@ -99,23 +83,8 @@ public final class ScreenAwtTest
     @Test
     public void testFullscreen()
     {
-        final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        if (gd.isFullScreenSupported())
-        {
-            final int width = gd.getDisplayMode().getWidth();
-            final int height = gd.getDisplayMode().getHeight();
-
-            final Resolution resolution = new Resolution(width, height, 60);
-            final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
-
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-
-            assertTimeout(10_000L, () -> testScreen(config));
-
-            Verbose.info("****************************************************************************************");
-
-            assertTimeout(10_000L, () -> testHeadless(config));
-        }
+        final Config config = new Config(UtilTests.RESOLUTION_640_480, 32, false, Medias.create("image.png"));
+        testScreen(config);
     }
 
     /**
@@ -130,7 +99,29 @@ public final class ScreenAwtTest
         final Config config = new Config(resolution, 32, false);
 
         assertThrowsPrefix(() -> testScreen(config), ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN);
-        testHeadless(config);
+    }
+
+    /**
+     * Test headless screen.
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testHeadless() throws ReflectiveOperationException
+    {
+        final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
+        final Field field = GraphicsEnvironment.class.getDeclaredField("headless");
+        UtilReflection.setAccessible(field, true);
+        field.set(GraphicsEnvironment.class, Boolean.TRUE);
+        try
+        {
+            final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true);
+            assertThrows(() -> Graphics.createScreen(config), "No available display !");
+        }
+        finally
+        {
+            field.set(GraphicsEnvironment.class, old);
+        }
     }
 
     /**
@@ -199,47 +190,34 @@ public final class ScreenAwtTest
         assertTrue(screen.getY() > -1);
         assertTrue(screen.isReady());
 
-        while (config.isWindowed() && !gained.get())
+        assertTimeout(10_000L, () ->
         {
-            continue;
-        }
+            while (config.isWindowed() && !gained.get())
+            {
+                continue;
+            }
+        });
         screen.setIcon("void");
         screen.setIcon("image.png");
 
         final javax.swing.JFrame frame = (javax.swing.JFrame) UtilReflection.getField(screen, "frame");
         frame.dispatchEvent(new java.awt.event.WindowEvent(frame, java.awt.event.WindowEvent.WINDOW_CLOSING));
-        while (config.isWindowed() && !gained.get())
+
+        assertTimeout(10_000L, () ->
         {
-            continue;
-        }
+            while (config.isWindowed() && !gained.get())
+            {
+                continue;
+            }
+        });
 
         screen.dispose();
 
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         assertEquals(0, screen.getX());
         assertEquals(0, screen.getY());
+        Verbose.info("****************************************************************************************");
 
         screen.removeListener(screenListener);
-    }
-
-    /**
-     * Test headless screen.
-     * 
-     * @param config The config reference.
-     * @throws ReflectiveOperationException If error.
-     */
-    private void testHeadless(Config config) throws ReflectiveOperationException
-    {
-        final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
-        final Field field = GraphicsEnvironment.class.getDeclaredField("headless");
-        UtilReflection.setAccessible(field, true);
-        field.set(GraphicsEnvironment.class, Boolean.TRUE);
-        try
-        {
-            assertThrows(() -> Graphics.createScreen(config), "No available display !");
-        }
-        finally
-        {
-            field.set(GraphicsEnvironment.class, old);
-        }
     }
 }

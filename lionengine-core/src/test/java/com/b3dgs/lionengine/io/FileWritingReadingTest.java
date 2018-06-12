@@ -19,8 +19,9 @@ package com.b3dgs.lionengine.io;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
@@ -53,12 +54,20 @@ public final class FileWritingReadingTest
     @Test
     public void testReaderWriter() throws IOException
     {
-        final File file = File.createTempFile("test", "dat");
-        file.deleteOnExit();
-        fileData = Medias.create(file.getAbsolutePath());
+        final Path file = Files.createTempFile("test", "dat");
+        Medias.setResourcesDirectory(file.getParent().toFile().getAbsolutePath());
+        try
+        {
+            fileData = Medias.get(file.toFile());
 
-        testFileWriting();
-        testFileReading();
+            testFileWriting();
+            testFileReading();
+        }
+        finally
+        {
+            Medias.setLoadFromJar(null);
+            Files.delete(file);
+        }
     }
 
     /**

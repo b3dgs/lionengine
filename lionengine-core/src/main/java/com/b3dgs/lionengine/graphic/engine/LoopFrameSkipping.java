@@ -131,7 +131,7 @@ public final class LoopFrameSkipping implements Loop
     @Override
     public void notifyRateChanged(int rate)
     {
-        final int expectedRate;
+        final double expectedRate;
         if (rate == 0)
         {
             expectedRate = MAX_FRAME_RATE;

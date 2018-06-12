@@ -15,46 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.io;
+package com.b3dgs.lionengine.audio;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
 
 /**
- * Mock input stream.
+ * Player mock.
  */
-public class InputStreamMock extends InputStream
+public class PlayerMock extends PlayerAbstract
 {
-    /** Available bytes. */
-    private int available;
+    /** Played track. */
+    final AtomicReference<String> played = new AtomicReference<>();
 
     /**
-     * Create mock.
+     * Create player.
+     * 
+     * @param media The media reference.
      */
-    public InputStreamMock()
+    protected PlayerMock(Media media)
     {
-        available = Constant.MAX_PORT * 2;
+        super(media);
     }
 
     @Override
-    public int read() throws IOException
+    protected void play(String track)
     {
-        available = Math.max(-1, available--);
-        return available;
+        played.set(track);
     }
 
     @Override
-    public int read(byte[] b) throws IOException
+    public void setVolume(int volume)
     {
-        available = Math.max(-1, available - b.length);
-        return available;
+        // Mock
     }
 
     @Override
-    public int available() throws IOException
+    public void stop()
     {
-        return available;
+        // Mock
     }
 }

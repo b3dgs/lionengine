@@ -25,10 +25,10 @@ import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
@@ -38,8 +38,8 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -65,26 +65,24 @@ public final class XmlTest
     private static final String STRING_VALUE = "string";
 
     /**
-     * Prepare tests.
+     * Prepare test.
      */
-    @BeforeAll
-    public static void beforeTests()
+    @BeforeEach
+    public void beforeTest()
     {
+        Medias.setResourcesDirectory(null);
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(XmlTest.class);
     }
 
     /**
-     * Clean up tests.
+     * Clean up test.
      */
-    @AfterAll
-    public static void afterTests()
+    @AfterEach
+    public void afterTest()
     {
         Medias.setLoadFromJar(null);
     }
-
-    /** Default test file xml. */
-    private Media fileXml;
 
     /**
      * Test create node.
@@ -106,9 +104,11 @@ public final class XmlTest
 
     /**
      * Test save with normalized output.
+     * 
+     * @throws IOException If error.
      */
     @Test
-    public void testSaveNormalized()
+    public void testSaveNormalized() throws IOException
     {
         final Media output = Medias.create("out.xml");
         new Xml(Medias.create("normalize.xml")).save(output);
@@ -125,17 +125,23 @@ public final class XmlTest
     public void testWriteRead() throws IOException
     {
         Medias.setLoadFromJar(null);
-        final File file = Files.createTempFile("test", "xml").toFile();
-        fileXml = Medias.create(file.getAbsolutePath());
 
-        testWriteXml();
-        testReadXml();
+        final Path file = Files.createTempFile("test", "xml");
+        Medias.setResourcesDirectory(file.getParent().toFile().getAbsolutePath());
+
+        final Media media = Medias.get(file.toFile());
+
+        testWriteXml(media);
+        testReadXml(media);
 
         Medias.setLoadFromJar(XmlTest.class);
-        testWrongReadXml();
-        testWrongWriteXml();
+        testWrongReadXml(media);
 
-        UtilFile.deleteFile(file);
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        testWrongWriteXml();
+        Verbose.info("****************************************************************************************");
+
+        Files.delete(file);
     }
 
     /**
@@ -430,8 +436,10 @@ public final class XmlTest
 
     /**
      * Test write in xml file.
+     * 
+     * @param media The media reference.
      */
-    private void testWriteXml()
+    private void testWriteXml(Media media)
     {
         final Xml root = new Xml("root");
         final Xml child = new Xml("child");
@@ -447,14 +455,14 @@ public final class XmlTest
         child.writeString("string", STRING_VALUE);
         child.writeString("null", null);
 
-        root.save(fileXml);
+        root.save(media);
 
         final Xml child2 = root.createChild("test");
         root.add(child2);
-        root.save(fileXml);
+        root.save(media);
 
         root.removeChild(child2);
-        root.save(fileXml);
+        root.save(media);
     }
 
     /**
@@ -473,11 +481,12 @@ public final class XmlTest
     /**
      * Test read in xml file.
      * 
+     * @param media The media reference.
      * @throws LionEngineException If node note found, error case.
      */
-    private void testReadXml()
+    private void testReadXml(Media media)
     {
-        final Xml root = new Xml(fileXml);
+        final Xml root = new Xml(media);
         final Xml child = root.getChild("child");
 
         assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(child.readBoolean("boolean")));
@@ -493,10 +502,12 @@ public final class XmlTest
 
     /**
      * Test wrong read data in xml file.
+     * 
+     * @param media The media reference.
      */
-    private void testWrongReadXml()
+    private void testWrongReadXml(Media media)
     {
-        final Xml root = new Xml(fileXml);
+        final Xml root = new Xml(media);
 
         assertThrows(() -> root.getChild("none"), Xml.ERROR_NODE + "none");
         assertThrows(() -> root.readInteger("wrong"), XmlReader.ERROR_ATTRIBUTE + "wrong");
