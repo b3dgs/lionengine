@@ -83,7 +83,7 @@ public final class ScreenAwtTest
     @Test
     public void testFullscreen()
     {
-        final Config config = new Config(UtilTests.RESOLUTION_640_480, 32, false, Medias.create("image.png"));
+        final Config config = new Config(new Resolution(1024, 768, 60), 32, false, Medias.create("image.png"));
         testScreen(config);
     }
 
