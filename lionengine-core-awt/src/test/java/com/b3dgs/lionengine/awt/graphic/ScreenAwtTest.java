@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
@@ -84,7 +85,18 @@ public final class ScreenAwtTest
     public void testFullscreen()
     {
         final Config config = new Config(new Resolution(1024, 768, 60), 32, false, Medias.create("image.png"));
-        testScreen(config);
+        try
+        {
+            testScreen(config);
+        }
+        catch (final LionEngineException exception)
+        {
+            // Skip test
+            if (!ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN.equals(exception.getMessage()))
+            {
+                throw exception;
+            }
+        }
     }
 
     /**

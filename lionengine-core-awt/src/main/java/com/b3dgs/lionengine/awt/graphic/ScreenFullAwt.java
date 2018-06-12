@@ -40,7 +40,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
     /** Error message unsupported full screen. */
     static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
     /** Unable to switch to full screen. */
-    private static final String ERROR_SWITCH = "Unable to switch to full screen mode !";
+    static final String ERROR_SWITCH = "Unable to switch to full screen mode !";
     /** Minimum length. */
     private static final int MIN_LENGTH = 18;
 
