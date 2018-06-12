@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.graphic.engine;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.UtilTests;
@@ -31,6 +33,8 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 final class SequenceFilterMock extends Sequence
 {
+    private final AtomicInteger rate = new AtomicInteger();
+
     /**
      * Constructor.
      * 
@@ -42,6 +46,14 @@ final class SequenceFilterMock extends Sequence
         super(context, UtilTests.RESOLUTION_320_240);
 
         setFilter(filter);
+        setTime(0.1);
+    }
+
+    @Override
+    protected void onRateChanged(int rate)
+    {
+        super.onRateChanged(rate);
+        this.rate.set(rate);
     }
 
     @Override
@@ -51,7 +63,10 @@ final class SequenceFilterMock extends Sequence
         setSystemCursorVisible(false);
 
         assertNull(getInputDevice(InputDevice.class));
+        assertEquals(320, getWidth());
+        assertEquals(240, getHeight());
         assertEquals(60, getRate());
+        assertEquals(6, rate.get());
     }
 
     @Override
