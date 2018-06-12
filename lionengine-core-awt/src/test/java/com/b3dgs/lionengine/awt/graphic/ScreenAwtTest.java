@@ -92,7 +92,7 @@ public final class ScreenAwtTest
         catch (final LionEngineException exception)
         {
             // Skip test
-            if (!ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN.equals(exception.getMessage()))
+            if (!ScreenFullAwt.ERROR_SWITCH.equals(exception.getMessage()))
             {
                 throw exception;
             }
