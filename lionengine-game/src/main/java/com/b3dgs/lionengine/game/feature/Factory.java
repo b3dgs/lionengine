@@ -59,7 +59,7 @@ public class Factory implements HandlerListener
     /** Setup class error. */
     private static final String ERROR_SETUP_CLASS = "Setup class not found !";
     /** Construction error. */
-    private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
+    static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
     /** Setups list. */
     private final Map<Media, Setup> setups = new HashMap<>();

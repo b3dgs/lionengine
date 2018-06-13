@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -69,6 +70,20 @@ public final class SetupTest
     }
 
     /**
+     * Test the setup config.
+     */
+    @Test
+    public void testConfigNoIcon()
+    {
+        final Media config = Medias.create("object_no_icon.xml");
+        final Setup setup = new Setup(config);
+
+        assertEquals(config, setup.getMedia());
+        assertThrows(() -> setup.getIconFile(), Setup.ERROR_ICON_FILE);
+        assertNotNull(setup);
+    }
+
+    /**
      * Test the setup class.
      */
     @Test
@@ -105,5 +120,28 @@ public final class SetupTest
         assertEquals(Medias.create("icon.png"), setup.getIconFile());
         assertEquals(7, setup.getSurface().getWidth());
         assertEquals(11, setup.getSurface().getHeight());
+    }
+
+    /**
+     * Test the setup with no surface.
+     */
+    @Test()
+    public void testNoSurface()
+    {
+        final Setup setup = new Setup(Medias.create("no_constructor.xml"));
+
+        assertThrows(() -> setup.getSurfaceFile(), Setup.ERROR_SURFACE_FILE);
+        assertThrows(() -> setup.getSurface(), Setup.ERROR_SURFACE);
+    }
+
+    /**
+     * Test the setup with no surface.
+     */
+    @Test()
+    public void testNoIcon()
+    {
+        final Setup setup = new Setup(Medias.create("no_constructor.xml"));
+
+        assertThrows(() -> setup.getIconFile(), Setup.ERROR_ICON_FILE);
     }
 }

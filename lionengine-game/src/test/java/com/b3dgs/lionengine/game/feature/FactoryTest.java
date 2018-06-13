@@ -21,7 +21,10 @@ import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -93,20 +96,11 @@ public final class FactoryTest
      * Test the object creation without constructor.
      */
     @Test
-    public void testCreateNoConstructor()
-    {
-        assertThrows(() -> factory.create(Medias.create("no_constructor.xml")),
-                     "[no_constructor.xml] Cannot open the media !");
-    }
-
-    /**
-     * Test the object creation without constructor.
-     */
-    @Test
     public void testCreateNoConstructorClass()
     {
-        assertThrows(() -> factory.create(Medias.create("no_constructor.xml"), ObjectNoConstructor.class),
-                     "[no_constructor.xml] Cannot open the media !");
+        final Media media = Medias.create("no_constructor.xml");
+
+        assertThrows(() -> factory.create(media, Featurable.class), Factory.ERROR_CONSTRUCTOR_MISSING + media);
     }
 
     /**
@@ -191,5 +185,53 @@ public final class FactoryTest
         factory.notifyHandlableRemoved(featurable);
 
         assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+    }
+
+    /**
+     * Test with handler notification.
+     */
+    @Test
+    public void testWithHandler()
+    {
+        final Handler handler = new Handler(services);
+        final AtomicReference<Featurable> added = new AtomicReference<>();
+        final AtomicReference<Featurable> removed = new AtomicReference<>();
+        final Factory factory = new Factory(services)
+        {
+            @Override
+            public void notifyHandlableAdded(Featurable featurable)
+            {
+                super.notifyHandlableAdded(featurable);
+                added.set(featurable);
+            }
+
+            @Override
+            public void notifyHandlableRemoved(Featurable featurable)
+            {
+                super.notifyHandlableRemoved(featurable);
+                removed.set(featurable);
+            }
+        };
+        handler.addListener(factory);
+        final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
+        handler.add(featurable);
+
+        assertNull(added.get());
+        assertNull(removed.get());
+
+        handler.update(1.0);
+
+        assertEquals(featurable, added.get());
+        assertNull(removed.get());
+
+        handler.remove(featurable);
+
+        assertEquals(featurable, added.get());
+        assertNull(removed.get());
+
+        handler.update(1.0);
+
+        assertEquals(featurable, added.get());
+        assertEquals(featurable, removed.get());
     }
 }

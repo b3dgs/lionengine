@@ -33,13 +33,13 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 public class Setup extends Configurer
 {
     /** No surface file. */
-    private static final String ERROR_SURFACE_FILE = "No surface file found !";
+    static final String ERROR_SURFACE_FILE = "No surface file found !";
     /** No icon file. */
-    private static final String ERROR_ICON_FILE = "No icon file found !";
+    static final String ERROR_ICON_FILE = "No icon file found !";
     /** No surface. */
-    private static final String ERROR_SURFACE = "No surface found !";
+    static final String ERROR_SURFACE = "No surface found !";
     /** Class error. */
-    private static final String ERROR_CLASS = "Class not found for: ";
+    static final String ERROR_CLASS = "Class not found for: ";
 
     /** Surface reference. */
     protected final Optional<ImageBuffer> surface;
