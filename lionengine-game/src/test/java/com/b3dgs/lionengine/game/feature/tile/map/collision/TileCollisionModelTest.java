@@ -19,12 +19,19 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.UtilEnum;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
@@ -34,6 +41,27 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
  */
 public class TileCollisionModelTest
 {
+    /** Hack enum. */
+    private static final UtilEnum<Axis> HACK = new UtilEnum<>(Axis.class, TileCollisionModel.class);
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        HACK.addByValue(HACK.make("FAIL"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        HACK.restore();
+    }
+
     /** Formula vertical test. */
     private final CollisionFormula formulaV = new CollisionFormula("y",
                                                                    new CollisionRange(Axis.Y, 0, 1, 0, 1),
@@ -123,5 +151,21 @@ public class TileCollisionModelTest
         assertNull(model.getCollisionY(categoryY, 2.0, -1.0, 2.0, 1.0));
         assertNull(model.getCollisionX(categoryX, -1.0, 2.0, 1.0, 2.0));
         assertNull(model.getCollisionX(categoryX, 1.0, 2.0, 0.0, 2.0));
+    }
+
+    /**
+     * Test with unknown axis.
+     */
+    @Test
+    public void testUnknownAxis()
+    {
+        final Axis unknown = Axis.values()[2];
+        assertThrows(InvocationTargetException.class, () ->
+        {
+            final Method method = model.getClass()
+                                       .getDeclaredMethod("getInputValue", Axis.class, Double.TYPE, Double.TYPE);
+            UtilReflection.setAccessible(method, true);
+            method.invoke(model, unknown, Double.valueOf(0.0), Double.valueOf(1.0));
+        }, null);
     }
 }

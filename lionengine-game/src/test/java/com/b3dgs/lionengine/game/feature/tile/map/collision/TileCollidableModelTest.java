@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -244,10 +245,16 @@ public final class TileCollidableModelTest
         final Transformable transformable = createObject(new FeaturableModel());
         final AtomicReference<Tile> collided = new AtomicReference<>();
         final TileCollidableListener listener = createListener(collided);
-        collidable.addListener(listener);
+        collidable.checkListener(transformable);
+        collidable.checkListener(listener);
 
         transformable.setLocation(0, 2);
         transformable.moveLocation(1.0, 0.0, -5.0);
+        collidable.update(1.0);
+
+        assertNotNull(collided.get());
+        collided.set(null);
+
         collidable.removeListener(listener);
         collidable.update(1.0);
 

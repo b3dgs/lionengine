@@ -82,6 +82,19 @@ public final class CollisionFunctionConfigTest
     }
 
     /**
+     * Test exports imports with unknown enum.
+     */
+    @Test
+    public void testFunctionUnknown()
+    {
+        final Xml root = new Xml("function");
+        root.createChild(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE,
+                                                                       CollisionFunctionType.values()[1].name());
+
+        assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown type: FAIL");
+    }
+
+    /**
      * Test export with <code>null</code> function.
      */
     @Test

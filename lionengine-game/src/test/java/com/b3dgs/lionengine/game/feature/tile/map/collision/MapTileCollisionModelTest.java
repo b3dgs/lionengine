@@ -23,6 +23,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -189,13 +190,28 @@ public final class MapTileCollisionModelTest
     }
 
     /**
-     * Test the map tile collision from left.
+     * Test the map tile no collision.
      */
     @Test
     public void testNoCollision()
     {
         transformable.teleport(6.0, 6.0);
         transformable.moveLocation(1.0, 1.0, 1.0);
+        final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
+
+        assertNull(result);
+    }
+
+    /**
+     * Test the map tile no collision formula defined.
+     */
+    @Test
+    public void testNoCollisionFormula()
+    {
+        mapCollision.loadCollisions(new CollisionFormulaConfig(Collections.emptyMap()),
+                                    new CollisionGroupConfig(Collections.emptyMap()));
+        transformable.teleport(6.0, 0.0);
+        transformable.moveLocation(1.0, -5.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
         assertNull(result);
