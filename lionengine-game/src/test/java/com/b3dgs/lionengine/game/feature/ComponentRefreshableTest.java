@@ -142,4 +142,26 @@ public final class ComponentRefreshableTest
 
         assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
+
+    /**
+     * Test with handler.
+     */
+    @Test
+    public void testWithHandler()
+    {
+        final Services services = new Services();
+        final FeaturableModel object = new FeaturableModel();
+        final Layerable layerable = new LayerableModel(1);
+        object.addFeature(layerable);
+        object.addFeature(new RefreshableModel(extrp ->
+        {
+            // Mock
+        }));
+        final Handler handler = new Handler(services);
+        handler.addComponent(new ComponentRefreshable());
+        handler.add(object);
+        handler.update(1.0);
+
+        assertEquals(1, layerable.getLayerRefresh().intValue());
+    }
 }

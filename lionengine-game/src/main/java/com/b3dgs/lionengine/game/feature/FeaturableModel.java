@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.Feature;
 public class FeaturableModel implements Featurable
 {
     /** Class not found error. */
-    private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
+    static final String ERROR_CLASS_PRESENCE = "Class not found: ";
     /** Inject service error. */
     private static final String ERROR_INJECT = "Error during service injection !";
     /** Class loader. */
