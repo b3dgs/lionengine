@@ -1,3 +1,6 @@
+<p align="center">
+<img src="https://user-images.githubusercontent.com/34600369/41499358-c6104102-7176-11e8-9ac8-c1817dcdecbb.png" width="700">
+
 # LionEngine
 [![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-9.0.0)](https://travis-ci.org/b3dgs/lionengine) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent) [![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <table>
