@@ -147,7 +147,7 @@ public class AppSamplePc
 ```java
 public class Scene extends Sequence
 {
-    public static final Resolution NATIVE = new Resolution(320, 240, 60);
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     public Scene(Context context)
     {
