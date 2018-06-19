@@ -22,12 +22,12 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
  */
 public final class Node implements Comparable<Node>
 {
+    /** Node location x. */
+    private final int x;
+    /** Node location y. */
+    private final int y;
     /** Node parent. */
     private Node parent;
-    /** Node location x. */
-    private int x;
-    /** Node location y. */
-    private int y;
     /** Node depth. */
     private int depth;
     /** Node cost. */
@@ -63,26 +63,6 @@ public final class Node implements Comparable<Node>
         }
         this.parent = parent;
         return depth;
-    }
-
-    /**
-     * Set location x.
-     * 
-     * @param x The location x.
-     */
-    public void setX(int x)
-    {
-        this.x = x;
-    }
-
-    /**
-     * Set location y.
-     * 
-     * @param y The location y.
-     */
-    public void setY(int y)
-    {
-        this.y = y;
     }
 
     /**
