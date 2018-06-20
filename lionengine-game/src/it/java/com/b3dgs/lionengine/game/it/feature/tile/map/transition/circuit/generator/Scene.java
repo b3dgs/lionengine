@@ -21,9 +21,11 @@ import java.util.Arrays;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
@@ -33,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator.GeneratorParameter;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator.MapGenerator;
@@ -80,6 +83,14 @@ class Scene extends Sequence
         map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
         map.addFeatureAndGet(new MapTileTransitionModel(services)).loadTransitions(Medias.create("transitions.xml"));
         map.addFeatureAndGet(new MapTileCircuitModel(services)).loadCircuits(Medias.create("circuits.xml"));
+
+        final Media media = Medias.create("transitions.xml");
+        TransitionsConfig.exports(media,
+                                  Arrays.asList(Medias.create("forest.png")),
+                                  Medias.create("sheets.xml"),
+                                  Medias.create("groups.xml"));
+
+        UtilFile.deleteFile(media.getFile());
 
         camera.setView(0, 0, 1024, 768, getHeight());
         camera.setLimits(map);
