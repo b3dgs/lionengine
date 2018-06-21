@@ -17,20 +17,31 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
+import com.b3dgs.lionengine.game.feature.tile.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
+import com.b3dgs.lionengine.game.feature.tile.map.SheetsExtractor;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 
 /**
@@ -69,7 +80,37 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        map.create(Medias.create("level.png"), 16, 16, 16);
+        final Media levelrip = Medias.create("level.png");
+        final TilesExtractor tilesExtractor = new TilesExtractor();
+        final AtomicInteger p = new AtomicInteger();
+
+        tilesExtractor.addListener((percent, tiles) -> p.set(percent));
+        Collection<ImageBuffer> buffers = tilesExtractor.extract(16, 16, Arrays.asList(levelrip));
+        map.loadSheets(SheetsExtractor.extract(buffers, 16));
+        buffers.forEach(ImageBuffer::dispose);
+
+        assertEquals(100, p.get());
+
+        p.set(0);
+        tilesExtractor.addListener((percent, tiles) -> p.set(percent));
+        buffers = tilesExtractor.extract(() -> true, 16, 16, Arrays.asList(levelrip));
+        map.loadSheets(SheetsExtractor.extract(buffers, 16));
+        buffers.forEach(ImageBuffer::dispose);
+
+        assertEquals(0, p.get());
+
+        tilesExtractor.addListener((percent, tiles) -> p.set(percent));
+        buffers = tilesExtractor.extract(() -> false, 16, 16, Arrays.asList(levelrip));
+        map.loadSheets(SheetsExtractor.extract(buffers, 16));
+        buffers.forEach(ImageBuffer::dispose);
+
+        assertEquals(100, p.get());
+
+        p.set(0);
+        LevelRipConverter.start(levelrip, map, (percent, progressTileX, progressTileY) -> p.set(percent));
+
+        assertEquals(100, p.get());
+
         mapViewer.prepare(map);
 
         minimap.load();
