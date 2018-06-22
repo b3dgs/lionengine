@@ -63,6 +63,7 @@ class Peon extends FeaturableModel
 
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         pathfindable.setSpeed(6.0, 6.0);
+        pathfindable.setRenderDebug(true);
 
         final Viewer viewer = services.get(Viewer.class);
 
