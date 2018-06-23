@@ -26,6 +26,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
@@ -447,6 +448,33 @@ public final class ExtractorModelTest
         assertEquals(2, object.flag.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
+    }
+
+    /**
+     * Test the check listener.
+     */
+    @Test
+    public void testCheckListener()
+    {
+        final ObjectExtractorSelf object = new ObjectExtractorSelf();
+        object.addFeature(new TransformableModel());
+
+        final AtomicBoolean add = new AtomicBoolean();
+        final Extractor extractor = new ExtractorModel(services)
+        {
+            @Override
+            public void addListener(ExtractorListener listener)
+            {
+                add.set(true);
+            }
+        };
+        extractor.prepare(null);
+
+        assertFalse(add.get());
+
+        extractor.checkListener(null);
+
+        assertFalse(add.get());
     }
 
     /**
