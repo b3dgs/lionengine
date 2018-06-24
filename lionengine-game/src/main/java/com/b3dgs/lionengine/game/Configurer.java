@@ -400,10 +400,7 @@ public class Configurer
 
             final Class<?> clazz = CLASS_CACHE.get(className);
             final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
-            if (!constructor.isAccessible())
-            {
-                UtilReflection.setAccessible(constructor, true);
-            }
+            UtilReflection.setAccessible(constructor, true);
             return type.cast(constructor.newInstance(paramsValue.toArray()));
         }
         catch (final InstantiationException | IllegalArgumentException | InvocationTargetException exception)

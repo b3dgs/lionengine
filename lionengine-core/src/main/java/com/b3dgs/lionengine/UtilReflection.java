@@ -282,11 +282,14 @@ public final class UtilReflection
     {
         Check.notNull(object);
 
-        java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () ->
+        if (object.isAccessible() != accessible)
         {
-            object.setAccessible(accessible);
-            return null;
-        });
+            java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () ->
+            {
+                object.setAccessible(accessible);
+                return null;
+            });
+        }
     }
 
     /**

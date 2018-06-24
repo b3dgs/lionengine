@@ -43,7 +43,6 @@ public final class UtilEnum<E extends Enum<E>>
     private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class[0];
     /** Empty object. */
     private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-
     /** Values field. */
     private static final String VALUES_FIELD = "$VALUES";
     /** Ordinal field. */

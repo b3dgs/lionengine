@@ -200,10 +200,8 @@ public class FeaturableModel implements Featurable
         for (int i = 0; i < length; i++)
         {
             final Field field = fields.get(i);
-            if (!field.isAccessible())
-            {
-                UtilReflection.setAccessible(field, true);
-            }
+            UtilReflection.setAccessible(field, true);
+
             final Class<?> type = field.getType();
             setField(field, object, type);
         }
