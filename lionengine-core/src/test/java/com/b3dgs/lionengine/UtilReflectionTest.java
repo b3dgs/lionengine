@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
@@ -25,6 +26,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.Serializable;
+import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -156,7 +158,25 @@ public final class UtilReflectionTest
     public void testCreateReduceMoreParameters() throws NoSuchMethodException
     {
         UtilReflection.createReduce(Reduce.class, Integer.valueOf(1), "test", Integer.valueOf(3));
+    }
 
+    /**
+     * Test the accessibility setting.
+     */
+    @Test
+    public void testSetAccessible()
+    {
+        final AccessibleObject accessible = AccessibleTest.class.getDeclaredFields()[0];
+
+        assertFalse(accessible.isAccessible());
+
+        UtilReflection.setAccessible(accessible, true);
+
+        assertTrue(accessible.isAccessible());
+
+        UtilReflection.setAccessible(accessible, false);
+
+        assertFalse(accessible.isAccessible());
     }
 
     /**
@@ -448,5 +468,13 @@ public final class UtilReflectionTest
     final class FieldTest2 extends FieldTest
     {
         // No field
+    }
+
+    /**
+     * Accessible object test.
+     */
+    final class AccessibleTest
+    {
+        @SuppressWarnings("unused") private int a;
     }
 }
