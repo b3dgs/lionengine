@@ -153,6 +153,7 @@ public final class ConfigurerTest
     {
         assertEquals("string", configurer.getStringDefault("default", "attStr"));
         assertEquals("default", configurer.getStringDefault("default", "void"));
+        assertEquals("default", configurer.getStringDefault("default", "void", "none"));
     }
 
     /**
@@ -380,6 +381,7 @@ public final class ConfigurerTest
     {
         assertFalse(configurer.hasNode("void"));
         assertTrue(configurer.hasNode("unknown"));
+        assertFalse(configurer.hasNode("void", "unknown"));
     }
 
     /**
