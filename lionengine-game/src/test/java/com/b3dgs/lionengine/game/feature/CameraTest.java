@@ -147,6 +147,11 @@ public final class CameraTest
         assertFalse(camera.isViewable((Localizable) cursor, -1, 0));
         assertFalse(camera.isViewable((Localizable) cursor, -1, -1));
 
+        assertTrue(camera.isViewable(cursor, 0, 0));
+        assertFalse(camera.isViewable(cursor, 0, -2));
+        assertFalse(camera.isViewable(cursor, -2, 0));
+        assertFalse(camera.isViewable(cursor, -2, -2));
+
         cursor.setLocation(3, 3);
         cursor.update(1.0);
 
@@ -154,6 +159,11 @@ public final class CameraTest
         assertFalse(camera.isViewable((Localizable) cursor, 0, 1));
         assertFalse(camera.isViewable((Localizable) cursor, 1, 0));
         assertTrue(camera.isViewable((Localizable) cursor, 1, 1));
+
+        assertFalse(camera.isViewable(cursor, -1, -1));
+        assertFalse(camera.isViewable(cursor, 0, -2));
+        assertFalse(camera.isViewable(cursor, -2, 0));
+        assertTrue(camera.isViewable(cursor, 0, 0));
 
         assertTrue(camera.isViewable(cursor, 0, 0));
         assertTrue(camera.isViewable(cursor, 1, 3));
@@ -223,6 +233,14 @@ public final class CameraTest
 
         assertEquals(2.0, camera.getX());
         assertEquals(3.0, camera.getY());
+
+        camera.setIntervals(10, 10);
+        camera.resetInterval(transformable);
+
+        camera.moveLocation(1.0, -2.0, -2.0);
+
+        assertEquals(1.0, camera.getX());
+        assertEquals(2.0, camera.getY());
     }
 
     /**
@@ -311,8 +329,20 @@ public final class CameraTest
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
 
+        // Limit left
+        camera.moveLocation(1.0, 50.0, 0.0);
+
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+
         // Limit top
         camera.moveLocation(1.0, 0.0, 50.0);
+
+        assertEquals(0.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+
+        // Limit bottom
+        camera.moveLocation(1.0, 0.0, -50.0);
 
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
@@ -325,27 +355,27 @@ public final class CameraTest
     public void testIntervalNoLimit()
     {
         // Limit right
-        camera.moveLocation(1.0, 20.0, 0.0);
+        camera.moveLocation(1.0, Integer.MAX_VALUE + 1.0, 0.0);
 
-        assertEquals(20.0, camera.getX());
+        assertEquals(Integer.MAX_VALUE + 1.0, camera.getX());
         assertEquals(0.0, camera.getY());
 
         // Limit left
-        camera.moveLocation(1.0, -20.0, 0.0);
+        camera.moveLocation(1.0, Integer.MIN_VALUE * 2.0 - 1.0, 0.0);
 
-        assertEquals(0.0, camera.getX());
+        assertEquals(Integer.MIN_VALUE - 1.0, camera.getX());
         assertEquals(0.0, camera.getY());
 
         // Limit top
-        camera.moveLocation(1.0, 0.0, 20.0);
+        camera.moveLocation(1.0, 0.0, Integer.MAX_VALUE + 1.0);
 
-        assertEquals(0.0, camera.getX());
-        assertEquals(20.0, camera.getY());
+        assertEquals(Integer.MIN_VALUE - 1.0, camera.getX());
+        assertEquals(Integer.MAX_VALUE + 1.0, camera.getY());
 
         // Limit bottom
-        camera.moveLocation(1.0, 0.0, -20.0);
+        camera.moveLocation(1.0, 0.0, Integer.MIN_VALUE * 2.0 - 1);
 
-        assertEquals(0.0, camera.getX());
-        assertEquals(0.0, camera.getY());
+        assertEquals(Integer.MIN_VALUE - 1.0, camera.getX());
+        assertEquals(Integer.MIN_VALUE - 1.0, camera.getY());
     }
 }
