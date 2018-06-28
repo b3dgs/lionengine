@@ -42,6 +42,9 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 public final class MapTileViewerModelTest
 {
     private final Services services = new Services();
+    private final Graphic g = new GraphicMock();
+    private ViewerMock viewer;
+    private MapTileGame map;
     private MapTileViewer mapViewer;
 
     /**
@@ -51,12 +54,10 @@ public final class MapTileViewerModelTest
     public void prepare()
     {
         services.add(new Camera());
-        services.add(new ViewerMock());
+        viewer = services.add(new ViewerMock());
+        viewer.set(-20, -20);
 
-        final MapTileGame map = services.add(new MapTileGame());
-        map.create(80, 80, 1, 1);
-        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 80, 80)));
-        map.setTile(map.createTile(Integer.valueOf(0), 0, 0, 0));
+        map = services.add(new MapTileGame());
         mapViewer = new MapTileViewerModel(services);
         mapViewer.prepare(map);
     }
@@ -67,10 +68,16 @@ public final class MapTileViewerModelTest
     @Test
     public void testViewer()
     {
+        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 80, 80)));
+
+        mapViewer.render(g);
+
+        map.create(80, 80, 1, 1);
+        map.setTile(map.createTile(Integer.valueOf(0), 0, 0, 0));
+        map.setTile(map.createTile(Integer.valueOf(0), 1, 2, 3));
+
         final AtomicBoolean rendered = new AtomicBoolean();
         final MapTileRenderer renderer = (g, map, tile, x, y) -> rendered.set(true);
-
-        final Graphic g = new GraphicMock();
 
         mapViewer.render(g);
 
@@ -98,5 +105,8 @@ public final class MapTileViewerModelTest
         mapViewer.render(g);
 
         assertFalse(rendered.get());
+
+        map.clear();
+        mapViewer.render(g);
     }
 }
