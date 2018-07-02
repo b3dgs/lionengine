@@ -22,6 +22,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -130,6 +131,13 @@ public final class ComponentRefreshableTest
         final ComponentRefreshable component = new ComponentRefreshable();
 
         final Featurable featurable = new FeaturableModel();
+        component.notifyHandlableAdded(featurable);
+        component.notifyLayerChanged(featurable, null, null, null, null);
+
+        assertTrue(((TreeSet<?>) UtilReflection.getField(component, "indexs")).isEmpty());
+
+        component.notifyHandlableRemoved(featurable);
+
         featurable.addFeature(new RefreshableModel(extrp ->
         {
             // Mock
