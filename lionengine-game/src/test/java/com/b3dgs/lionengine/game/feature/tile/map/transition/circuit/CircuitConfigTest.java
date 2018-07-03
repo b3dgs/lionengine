@@ -24,6 +24,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
@@ -32,13 +33,17 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
  * Test {@link CircuitsConfig}.
@@ -51,7 +56,8 @@ public final class CircuitConfigTest // TODO rename to CircuitsConfig
     @BeforeAll
     public static void beforeTests()
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Medias.setLoadFromJar(CircuitConfigTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -61,6 +67,7 @@ public final class CircuitConfigTest // TODO rename to CircuitsConfig
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -103,5 +110,13 @@ public final class CircuitConfigTest // TODO rename to CircuitsConfig
 
         assertTrue(media.getFile().delete());
         assertTrue(config.getFile().delete());
+
+        final Media sheets = Medias.create("sheets.xml");
+        TileSheetsConfig.exports(sheets, 1, 1, Arrays.asList("sheet.png"));
+
+        final Media groups = Medias.create("groups.xml");
+        TileGroupsConfig.exports(groups, Collections.emptyList());
+
+        CircuitsConfig.exports(media, Arrays.asList(Medias.create("level.png")), sheets, groups);
     }
 }
