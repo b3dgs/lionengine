@@ -21,6 +21,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,8 +33,12 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
+import com.b3dgs.lionengine.graphic.Graphics;
 
 /**
  * Test {@link Minimap}.
@@ -47,6 +52,7 @@ public final class MinimapTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -56,6 +62,7 @@ public final class MinimapTest
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -64,22 +71,42 @@ public final class MinimapTest
     @Test
     public void testMinimap()
     {
-        final Minimap minimap = new Minimap(new MapTileGame());
+        final MapTileGame map = new MapTileGame();
+        map.create(1, 1, 3, 3);
+
+        final Minimap minimap = new Minimap(map);
         final Media config = Medias.create("minimap.xml");
         final Map<TileRef, ColorRgba> tiles = new HashMap<>();
         tiles.put(new TileRef(0, 0), ColorRgba.RED);
         tiles.put(new TileRef(0, 1), ColorRgba.BLUE);
         tiles.put(new TileRef(1, 0), ColorRgba.GREEN);
 
-        MinimapConfig.exports(config, tiles);
+        minimap.automaticColor(config);
         minimap.loadPixelConfig(config);
-
         minimap.setOrigin(Origin.BOTTOM_LEFT);
 
         assertEquals(0.0, minimap.getX());
         assertEquals(0.0, minimap.getY());
         assertNull(minimap.getSurface());
         assertFalse(minimap.isLoaded());
+
+        minimap.load();
+        minimap.prepare();
+        minimap.setLocation(1.0, 2.0);
+        minimap.load();
+
+        assertTrue(minimap.isLoaded());
+        assertEquals(1.0, minimap.getX());
+        assertEquals(-1.0, minimap.getY());
+        assertEquals(3, minimap.getWidth());
+        assertEquals(3, minimap.getHeight());
+
+        minimap.setLocation(new ViewerMock(), Geom.createLocalizable(2.0, 3.0));
+
+        assertEquals(2.0, minimap.getX());
+        assertEquals(234.0, minimap.getY());
+
+        minimap.dispose();
     }
 
     /**
