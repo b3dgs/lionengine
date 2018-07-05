@@ -113,10 +113,19 @@ public final class HandlablesImplTest
     {
         final Mirrorable mirrorable = new MirrorableModel();
         object.addFeatureAndGet(mirrorable);
+
+        featurables.remove(object, object.getFeature(Identifiable.class).getId());
+
+        assertFalse(featurables.get(Mirrorable.class).iterator().hasNext());
+
         featurables.add(object);
 
         assertEquals(mirrorable, featurables.get(Mirrorable.class).iterator().next());
         assertFalse(featurables.get(Transformable.class).iterator().hasNext());
+
+        featurables.remove(object, object.getFeature(Identifiable.class).getId());
+
+        assertFalse(featurables.get(Mirrorable.class).iterator().hasNext());
 
         featurables.remove(object, object.getFeature(Identifiable.class).getId());
 
