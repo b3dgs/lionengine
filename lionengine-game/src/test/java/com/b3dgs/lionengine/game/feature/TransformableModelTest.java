@@ -18,7 +18,10 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -243,5 +246,53 @@ public final class TransformableModelTest
         assertEquals(32, transformable.getOldHeight());
         assertEquals(3, transformable.getWidth());
         assertEquals(4, transformable.getHeight());
+    }
+
+    /**
+     * Test transform notification.
+     */
+    @Test
+    public void testNotify()
+    {
+        final AtomicBoolean transformed = new AtomicBoolean();
+        transformable.addListener(t -> transformed.set(true));
+        transformable.setSize(transformable.getWidth(), transformable.getHeight());
+
+        assertFalse(transformed.get());
+
+        transformable.setSize(1, 0);
+
+        assertTrue(transformed.get());
+
+        transformed.set(false);
+        transformable.setSize(0, 1);
+
+        assertTrue(transformed.get());
+
+        transformed.set(false);
+        transformable.transform(transformable.getX(),
+                                transformable.getY(),
+                                transformable.getWidth(),
+                                transformable.getHeight());
+
+        assertTrue(transformed.get());
+
+        transformable.transform(1.0, 2.0, 0, 1);
+
+        assertTrue(transformed.get());
+
+        transformed.set(false);
+        transformable.moveLocation(1.0, 0.0, 0.0);
+
+        assertFalse(transformed.get());
+
+        transformable.moveLocation(1.0, 1.0, 0.0);
+
+        assertTrue(transformed.get());
+
+        transformed.set(false);
+        transformable.moveLocation(1.0, 0.0, 1.0);
+
+        assertTrue(transformed.get());
     }
 }
