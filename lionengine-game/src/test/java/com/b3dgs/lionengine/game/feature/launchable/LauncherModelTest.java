@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -415,5 +416,56 @@ public final class LauncherModelTest
             assertEquals(0, handler.size());
             assertTrue(launchableMedia.getFile().delete());
         }
+    }
+
+    /**
+     * Test check listener conditions.
+     */
+    @Test
+    public void testCheckListener()
+    {
+        final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
+        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
+        final Setup setup = new Setup(launcherMedia);
+        services.add(new Factory(services));
+        services.add(new Handler(services));
+        featurable.addFeature(new TransformableModel());
+
+        final AtomicBoolean launchableListener = new AtomicBoolean();
+        final AtomicBoolean launcherListener = new AtomicBoolean();
+        final Launcher launcher = new LauncherModel(services, setup)
+        {
+            @Override
+            public void addListener(LaunchableListener listener)
+            {
+                launchableListener.set(true);
+            }
+
+            @Override
+            public void addListener(LauncherListener listener)
+            {
+                launcherListener.set(true);
+            }
+        };
+
+        assertFalse(launchableListener.get());
+        assertFalse(launcherListener.get());
+
+        launcher.checkListener(null);
+
+        assertFalse(launchableListener.get());
+        assertFalse(launcherListener.get());
+
+        launcher.checkListener((LaunchableListener) l -> l.update(1.0));
+
+        assertTrue(launchableListener.get());
+        assertFalse(launcherListener.get());
+
+        launcher.checkListener((LauncherListener) () -> launcher.update(1.0));
+
+        launchableListener.set(false);
+
+        assertFalse(launchableListener.get());
+        assertTrue(launcherListener.get());
     }
 }
