@@ -125,6 +125,7 @@ public final class TileGameTest
         assertEquals(tile, tile);
         assertEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5));
 
+        assertNotEquals(tile, null);
         assertNotEquals(tile, new Object());
         assertNotEquals(tile, new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5));
         assertNotEquals(tile, new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5));

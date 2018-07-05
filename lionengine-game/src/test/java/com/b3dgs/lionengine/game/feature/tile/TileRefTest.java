@@ -91,6 +91,7 @@ public final class TileRefTest
         assertEquals(tile, new TileRef(Integer.valueOf(0), 1));
         assertEquals(tile, new TileRef(new TileGame(Integer.valueOf(0), 1, 1, 1, 1, 1)));
 
+        assertNotEquals(tile, null);
         assertNotEquals(tile, new Object());
         assertNotEquals(tile, new TileRef(0, 0));
         assertNotEquals(tile, new TileRef(1, 1));
