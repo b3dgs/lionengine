@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public final class FeatureModelTest
 {
-    private final Feature feature = new FeatureModel();
+    private final Feature feature = new FeatureTest();
 
     /**
      * Test the feature model.
@@ -41,6 +41,14 @@ public final class FeatureModelTest
         final Featurable featurable = new FeaturableModel();
         final Transformable transformable = new TransformableModel();
         featurable.addFeature(transformable);
+        feature.prepare(new FeatureModel()
+        {
+            @Override
+            public boolean hasFeature(Class<? extends Feature> feature)
+            {
+                return false;
+            }
+        });
         feature.prepare(featurable);
 
         assertEquals(featurable.getFeature(Transformable.class), feature.getFeature(Transformable.class));
@@ -69,5 +77,14 @@ public final class FeatureModelTest
     public void testNotPrepared()
     {
         assertThrows(NullPointerException.class, () -> feature.getFeatures(), null);
+    }
+
+    private class FeatureTest extends FeatureModel implements IdentifiableListener
+    {
+        @Override
+        public void notifyDestroyed(Integer id)
+        {
+            // Mock
+        }
     }
 }
