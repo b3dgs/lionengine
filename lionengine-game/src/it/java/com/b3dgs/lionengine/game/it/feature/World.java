@@ -17,9 +17,11 @@
  */
 package com.b3dgs.lionengine.game.it.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -29,6 +31,8 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.graphic.engine.TimeControl;
+import com.b3dgs.lionengine.graphic.engine.Zooming;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDevicePointer;
@@ -40,6 +44,8 @@ class World extends WorldGame
 {
     private final Text text = Graphics.createText(Constant.FONT_SERIF, 12, TextStyle.NORMAL);
     private final boolean fail;
+    private final AtomicInteger resized = new AtomicInteger();
+    private final AtomicInteger timed = new AtomicInteger();
     private String str;
 
     /**
@@ -56,12 +62,24 @@ class World extends WorldGame
     }
 
     @Override
+    public void update(double extrp)
+    {
+        super.update(extrp);
+
+        services.get(Zooming.class).setZoom(2.0);
+        services.get(TimeControl.class).setTime(2.0);
+    }
+
+    @Override
     public void render(Graphic g)
     {
         super.render(g);
 
         fill(g, ColorRgba.BLACK);
         text.draw(g, 10, 10, str);
+
+        assertEquals(640, resized.get());
+        assertEquals(120, timed.get());
     }
 
     @Override
@@ -85,5 +103,21 @@ class World extends WorldGame
         str = file.readString();
 
         assertNotNull(getInputDevice(InputDevicePointer.class));
+    }
+
+    @Override
+    protected void onResolutionChanged(int width, int height)
+    {
+        super.onResolutionChanged(width, height);
+
+        resized.set(width);
+    }
+
+    @Override
+    protected void onRateChanged(int rate)
+    {
+        super.onRateChanged(rate);
+
+        timed.set(rate);
     }
 }
