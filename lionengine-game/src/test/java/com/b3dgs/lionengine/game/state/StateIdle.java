@@ -19,12 +19,11 @@ package com.b3dgs.lionengine.game.state;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * State idle test implementation.
  */
-final class StateIdle extends StateBase implements StateInputDirectionalUpdater
+final class StateIdle extends StateBase
 {
     /**
      * Create the state.
@@ -44,33 +43,6 @@ final class StateIdle extends StateBase implements StateInputDirectionalUpdater
     {
         super(StateType.IDLE);
 
-        addTransition(new TransitionIdleToWalk());
-    }
-
-    @Override
-    public void updateInput(InputDeviceDirectional input)
-    {
-        // Mock
-    }
-
-    /**
-     * Transition from {@link StateIdle} to {@link StateWalk}.
-     */
-    private static final class TransitionIdleToWalk extends StateTransition
-                                                    implements StateTransitionInputDirectionalChecker
-    {
-        /**
-         * Create the transition.
-         */
-        TransitionIdleToWalk()
-        {
-            super(StateType.WALK);
-        }
-
-        @Override
-        public boolean check(InputDeviceDirectional input)
-        {
-            return true;
-        }
+        addTransition(StateType.WALK, () -> true);
     }
 }

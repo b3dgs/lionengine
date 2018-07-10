@@ -58,11 +58,11 @@ public final class StateHandlerTest
 
         handler.update(1.0);
 
-        assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(handler.isState(StateType.WALK));
         assertTrue(idle.isEntered());
         assertTrue(idle.isUpdated());
-        assertFalse(idle.isExited());
-        assertFalse(walk.isEntered());
+        assertTrue(idle.isExited());
+        assertTrue(walk.isEntered());
         assertFalse(walk.isUpdated());
 
         handler.changeState(StateType.WALK);
@@ -75,12 +75,12 @@ public final class StateHandlerTest
         handler.update(1.0);
 
         assertTrue(walk.isUpdated());
-        assertFalse(walk.isExited());
+        assertTrue(walk.isExited());
 
         handler.changeState(StateType.IDLE);
         handler.update(1.0);
 
-        assertTrue(handler.isState(StateType.IDLE));
+        assertTrue(handler.isState(StateType.WALK));
         assertTrue(walk.isExited());
     }
 
@@ -93,9 +93,6 @@ public final class StateHandlerTest
         final State idle = new StateIdle();
         factory.addState(idle);
         factory.addState(new StateWalk());
-
-        handler.addInput(new InputDirectionalMock());
-        handler.addInput(new InputPointerMock());
 
         handler.changeState(StateType.IDLE);
 

@@ -21,9 +21,7 @@
  * <p>
  * A {@link com.b3dgs.lionengine.game.state.State} is created by the
  * {@link com.b3dgs.lionengine.game.state.StateFactory}, and is handled by the
- * {@link com.b3dgs.lionengine.game.state.StateHandler}, which checks
- * {@link com.b3dgs.lionengine.game.state.StateTransition} depending of the
- * {@link com.b3dgs.lionengine.game.state.StateInputUpdater}.
+ * {@link com.b3dgs.lionengine.game.state.StateHandler}.
  * </p>
  */
 package com.b3dgs.lionengine.game.state;

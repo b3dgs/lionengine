@@ -17,31 +17,22 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
-import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
- * Handle the {@link State} and their {@link StateTransition}.
+ * Handle the {@link State}.
  * <p>
  * Usage example:
  * </p>
  * <ul>
- * <li>{@link #addInput(InputDevice)}</li>
  * <li>{@link #changeState(Enum)}</li>
  * <li>{@link #update(double)}</li>
  * </ul>
  */
 public class StateHandler implements Updatable
 {
-    /** Inputs used. */
-    private final Collection<InputDevice> inputs = new ArrayList<>();
     /** State factory reference. */
     private final StateFactory factory;
     /** Current state pointer (<code>null</code> if none). */
@@ -60,18 +51,6 @@ public class StateHandler implements Updatable
     }
 
     /**
-     * Set the input device used.
-     * 
-     * @param input The input device reference.
-     * @throws LionEngineException If input is <code>null</code>.
-     */
-    public void addInput(InputDevice input)
-    {
-        Check.notNull(input);
-        inputs.add(input);
-    }
-
-    /**
      * Change the current state.
      * 
      * @param next The next state.
@@ -80,6 +59,7 @@ public class StateHandler implements Updatable
     public void changeState(Enum<?> next)
     {
         Check.notNull(next);
+
         if (current != null)
         {
             current.exit();
@@ -102,81 +82,6 @@ public class StateHandler implements Updatable
         return false;
     }
 
-    /**
-     * Check the next state depending of the input used.
-     * 
-     * @param updaterType The input updater type.
-     * @param inputType The input type.
-     * @param input The input reference.
-     * @param <I> The input device type.
-     */
-    private <I extends InputDevice> void updateInput(Class<? extends StateInputUpdater<I>> updaterType,
-                                                     Class<I> inputType,
-                                                     InputDevice input)
-    {
-        if (updaterType.isAssignableFrom(current.getClass()) && inputType.isAssignableFrom(input.getClass()))
-        {
-            updaterType.cast(current).updateInput(inputType.cast(input));
-        }
-    }
-
-    /**
-     * Update to check next state and exit current one.
-     */
-    private void updateNext()
-    {
-        final State old = current;
-        for (final InputDevice input : inputs)
-        {
-            if (checkNext(old, input))
-            {
-                break;
-            }
-        }
-        if (!old.equals(current))
-        {
-            old.exit();
-        }
-    }
-
-    /**
-     * Check the next state depending of the input used.
-     * 
-     * @param old The old state.
-     * @param input The input reference.
-     * @return <code>true</code> if changed, <code>false</code> else.
-     */
-    private boolean checkNext(State old, InputDevice input)
-    {
-        current = checkNext(InputDeviceDirectional.class, input);
-        if (!old.equals(current))
-        {
-            return true;
-        }
-        current = checkNext(InputDevicePointer.class, input);
-        return !old.equals(current);
-    }
-
-    /**
-     * Check the next state depending of the input used.
-     * 
-     * @param inputType The input type.
-     * @param input The input reference.
-     * @return The next state.
-     */
-    private State checkNext(Class<? extends InputDevice> inputType, InputDevice input)
-    {
-        if (inputType.isAssignableFrom(input.getClass()))
-        {
-            final Enum<?> type = current.checkTransitions(inputType.cast(input));
-            if (type != null)
-            {
-                return factory.getState(type);
-            }
-        }
-        return current;
-    }
-
     /*
      * Updatable
      */
@@ -186,14 +91,13 @@ public class StateHandler implements Updatable
     {
         if (current != null)
         {
-            for (final InputDevice input : inputs)
-            {
-                updateInput(StateInputDirectionalUpdater.class, InputDeviceDirectional.class, input);
-                updateInput(StateInputPointerUpdater.class, InputDevicePointer.class, input);
-            }
             current.update(extrp);
 
-            updateNext();
+            final Enum<?> next = current.checkTransitions();
+            if (next != null)
+            {
+                changeState(next);
+            }
         }
     }
 }

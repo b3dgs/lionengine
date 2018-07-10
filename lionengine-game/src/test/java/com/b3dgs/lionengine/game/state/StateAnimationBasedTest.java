@@ -94,8 +94,6 @@ public final class StateAnimationBasedTest
     {
         final StateFactory factory = new StateFactory();
         final StateHandler handler = new StateHandler(factory);
-        handler.addInput(new InputDirectionalMock());
-        handler.addInput(new InputPointerMock());
 
         final Featurable featurable = new FeaturableModel();
         StateAnimationUtil.loadStates(StateType.values(), factory, featurable, new Setup(media));

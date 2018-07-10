@@ -17,28 +17,24 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.InputDevice;
-
 /**
- * Represents the {@link InputDevice} updater for the state.
- * <p>
- * {@link StateTransition} <b>must not implements this interface</b> to check input, but must instead use specific
- * interfaces, such as:
- * </p>
- * <ul>
- * <li>{@link StateTransitionInputDirectionalChecker}</li>
- * <li>{@link StateTransitionInputPointerChecker}</li>
- * </ul>
- * 
- * @param <I> The input device type.
+ * State transition check.
  */
-public interface StateTransitionInputChecker<I extends InputDevice>
+@FunctionalInterface
+public interface StateChecker
 {
     /**
-     * Check if transition is effective.
+     * Check if transition can be applied.
      * 
-     * @param input The input device reference.
-     * @return <code>true</code> if transition can be made, <code>false</code> else.
+     * @return <code>true</code> if apply transition, <code>false</code> else.
      */
-    boolean check(I input);
+    boolean check();
+
+    /**
+     * Called when transition has been performed. Does nothing by default.
+     */
+    default void exit()
+    {
+        // Nothing by default
+    }
 }

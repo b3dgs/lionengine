@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.Updatable;
 
 /**
@@ -39,23 +38,19 @@ import com.b3dgs.lionengine.Updatable;
  * <li>The {@link StateFactory} will allow to choose which state should be then returned if needed, and {@link #enter()}
  * will be called, and so on</li>
  * </ul>
- * <p>
- * It is possible to listen to {@link InputDevice}, by implementing children of {@link StateInputUpdater}.
- * </p>
  * 
- * @see StateTransition
  * @see StateHandler
  * @see StateFactory
- * @see StateInputUpdater
  */
 public interface State extends Updatable
 {
     /**
      * Add a transition with another state.
      * 
-     * @param transition The transition to add.
+     * @param next The next state.
+     * @param checker The transition checker.
      */
-    void addTransition(StateTransition transition);
+    void addTransition(Enum<?> next, StateChecker checker);
 
     /**
      * Clear all transitions defined.
@@ -75,10 +70,9 @@ public interface State extends Updatable
     /**
      * Check the transitions in order to find the next state.
      * 
-     * @param input The input device reference.
      * @return The next state type (<code>null</code> if none).
      */
-    Enum<?> checkTransitions(InputDevice input);
+    Enum<?> checkTransitions();
 
     /**
      * Get the corresponding state enum value.

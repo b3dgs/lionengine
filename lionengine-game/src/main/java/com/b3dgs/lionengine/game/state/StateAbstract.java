@@ -17,14 +17,12 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
-import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
  * State base implementation.
@@ -33,30 +31,8 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
  */
 public abstract class StateAbstract implements State
 {
-    /**
-     * Check the next state depending of the input used.
-     * 
-     * @param <I> The input device type.
-     * @param checkerType The checker type.
-     * @param inputType The input type.
-     * @param input The input reference.
-     * @param transition The state transition reference.
-     * @return <code>true</code> if checker valid, <code>false</code> else.
-     */
-    private static <I extends InputDevice> boolean check(Class<? extends StateTransitionInputChecker<I>> checkerType,
-                                                         Class<I> inputType,
-                                                         InputDevice input,
-                                                         StateTransition transition)
-    {
-        if (checkerType.isAssignableFrom(transition.getClass()) && inputType.isAssignableFrom(input.getClass()))
-        {
-            return checkerType.cast(transition).check(inputType.cast(input));
-        }
-        return false;
-    }
-
     /** Transitions list. */
-    private final Collection<StateTransition> transitions = new ArrayList<>();
+    private final Map<Enum<?>, StateChecker> transitions = new HashMap<>();
     /** The enum state. */
     private final Enum<?> state;
 
@@ -80,9 +56,9 @@ public abstract class StateAbstract implements State
      */
 
     @Override
-    public final void addTransition(StateTransition transition)
+    public final void addTransition(Enum<?> next, StateChecker checker)
     {
-        transitions.add(transition);
+        transitions.put(next, checker);
     }
 
     @Override
@@ -104,15 +80,15 @@ public abstract class StateAbstract implements State
     }
 
     @Override
-    public Enum<?> checkTransitions(InputDevice input)
+    public Enum<?> checkTransitions()
     {
-        for (final StateTransition transition : transitions)
+        for (final Entry<Enum<?>, StateChecker> entry : transitions.entrySet())
         {
-            if (check(StateTransitionInputDirectionalChecker.class, InputDeviceDirectional.class, input, transition)
-                || check(StateTransitionInputPointerChecker.class, InputDevicePointer.class, input, transition))
+            final StateChecker checker = entry.getValue();
+            if (checker.check())
             {
-                transition.exit();
-                return transition.getNext();
+                checker.exit();
+                return entry.getKey();
             }
         }
         return null;
