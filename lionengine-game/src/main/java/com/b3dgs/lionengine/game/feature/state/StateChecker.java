@@ -15,34 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
-
-import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeatureProvider;
+package com.b3dgs.lionengine.game.feature.state;
 
 /**
- * Represents an animation based state, where the state enum is corresponding to an animation.
- * <p>
- * Class which implements this interface must have its first constructor with the following types:
- * ({@link FeatureProvider}, {@link Animation}).
- * </p>
- * 
- * @see StateAnimationUtil#loadStates(StateAnimationBased[], StateFactory, FeatureProvider, Configurer)
+ * State transition check.
  */
-public interface StateAnimationBased
+@FunctionalInterface
+public interface StateChecker
 {
     /**
-     * Get the state class.
+     * Check if transition can be applied.
      * 
-     * @return The state class.
+     * @return <code>true</code> if apply transition, <code>false</code> else.
      */
-    Class<? extends State> getStateClass();
+    boolean check();
 
     /**
-     * Get the animation name.
-     * 
-     * @return The animation name.
+     * Called when transition has been performed. Does nothing by default.
      */
-    String getAnimationName();
+    default void exit()
+    {
+        // Nothing by default
+    }
 }

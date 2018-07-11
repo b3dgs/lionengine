@@ -15,48 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
-
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
+package com.b3dgs.lionengine.game.feature.state;
 
 /**
- * Input directional mock.
+ * State next test implementation.
  */
-final class InputDirectionalMock implements InputDeviceDirectional
+class StateNext extends StateAbstract
 {
-    @Override
-    public void setHorizontalControlPositive(Integer code)
+    /** Entered flag. */
+    static boolean entered;
+    /** Updated flag. */
+    static boolean updated;
+    /** Exited flag. */
+    static boolean exited;
+
+    /**
+     * Reset flags.
+     */
+    static void reset()
     {
-        // Mock
+        entered = false;
+        updated = false;
+        exited = false;
     }
 
     @Override
-    public void setHorizontalControlNegative(Integer code)
+    public void enter()
     {
-        // Mock
+        entered = true;
     }
 
     @Override
-    public void setVerticalControlPositive(Integer code)
+    public void update(double extrp)
     {
-        // Mock
+        updated = true;
     }
 
     @Override
-    public void setVerticalControlNegative(Integer code)
+    public void exit()
     {
-        // Mock
-    }
-
-    @Override
-    public double getHorizontalDirection()
-    {
-        return 0.0;
-    }
-
-    @Override
-    public double getVerticalDirection()
-    {
-        return 0.0;
+        super.exit();
+        exited = true;
     }
 }

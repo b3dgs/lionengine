@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
+package com.b3dgs.lionengine.game.feature.state;
 
 import com.b3dgs.lionengine.Updatable;
 
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Updatable;
  * </p>
  * <p>
  * The only counter part is the number of class, which is usually one class per state. So typically, for a simple
- * gameplay (<code>Idle, Walk, Jump</code>), it will need 3 state classes, plus the {@link StateFactory}.
+ * gameplay (<code>Idle, Walk, Jump</code>), it will need 3 state classes, plus the {@link StateHandler}.
  * </p>
  * <p>
  * Usage is quite simple:
@@ -35,12 +35,11 @@ import com.b3dgs.lionengine.Updatable;
  * <ul>
  * <li>{@link #enter()} one time on the state (reset default state and prepare for update)</li>
  * <li>{@link #update(double)} the state for each game loop</li>
- * <li>The {@link StateFactory} will allow to choose which state should be then returned if needed, and {@link #enter()}
+ * <li>The {@link StateHandler} will allow to choose which state should be then returned if needed, and {@link #enter()}
  * will be called, and so on</li>
  * </ul>
  * 
  * @see StateHandler
- * @see StateFactory
  */
 public interface State extends Updatable
 {
@@ -50,7 +49,7 @@ public interface State extends Updatable
      * @param next The next state.
      * @param checker The transition checker.
      */
-    void addTransition(Enum<?> next, StateChecker checker);
+    void addTransition(Class<? extends State> next, StateChecker checker);
 
     /**
      * Clear all transitions defined.
@@ -58,7 +57,7 @@ public interface State extends Updatable
     void clearTransitions();
 
     /**
-     * Called by the {@link StateFactory} when entering in the state.
+     * Called by the {@link StateHandler} when entering in the state.
      */
     void enter();
 
@@ -72,12 +71,5 @@ public interface State extends Updatable
      * 
      * @return The next state type (<code>null</code> if none).
      */
-    Enum<?> checkTransitions();
-
-    /**
-     * Get the corresponding state enum value.
-     * 
-     * @return The state enum value.
-     */
-    Enum<?> getState();
+    Class<? extends State> checkTransitions();
 }

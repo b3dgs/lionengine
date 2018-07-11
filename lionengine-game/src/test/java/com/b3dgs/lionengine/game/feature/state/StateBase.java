@@ -15,34 +15,58 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
-
-import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.game.feature.Featurable;
+package com.b3dgs.lionengine.game.feature.state;
 
 /**
- * State idle test implementation.
+ * State base test implementation.
  */
-final class StateIdle extends StateBase
+class StateBase extends StateAbstract
 {
+    /** Entered flag. */
+    static boolean entered;
+    /** Updated flag. */
+    static boolean updated;
+    /** Exited flag. */
+    static boolean exited;
+    /** Check flag. */
+    static boolean check;
+
     /**
-     * Create the state.
+     * Reset flags.
      */
-    StateIdle()
+    static void reset()
     {
-        this(null, null);
+        entered = false;
+        updated = false;
+        exited = false;
     }
 
     /**
-     * Create the state.
-     * 
-     * @param featurable The featurable reference.
-     * @param animation The associated animation.
+     * Create state.
      */
-    StateIdle(Featurable featurable, Animation animation)
+    StateBase()
     {
-        super(StateType.IDLE);
+        super();
 
-        addTransition(StateType.WALK, () -> true);
+        addTransition(StateNext.class, () -> check);
+    }
+
+    @Override
+    public void enter()
+    {
+        entered = true;
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        updated = true;
+    }
+
+    @Override
+    public void exit()
+    {
+        super.exit();
+        exited = true;
     }
 }

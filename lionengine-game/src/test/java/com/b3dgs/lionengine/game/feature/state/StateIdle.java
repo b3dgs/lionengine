@@ -15,13 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.game.feature.state;
+
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
- * State object representation which allows to represent a gameplay as a finite state machine.
- * <p>
- * A {@link com.b3dgs.lionengine.game.state.State} is created by the
- * {@link com.b3dgs.lionengine.game.state.StateFactory}, and is handled by the
- * {@link com.b3dgs.lionengine.game.state.StateHandler}.
- * </p>
+ * State idle test implementation.
  */
-package com.b3dgs.lionengine.game.state;
+final class StateIdle extends StateBase
+{
+    /**
+     * Create the state.
+     * 
+     * @param featurable The featurable reference.
+     * @param animation The associated animation.
+     */
+    StateIdle(Featurable featurable, Animation animation)
+    {
+        super();
+
+        addTransition(StateWalk.class, () -> true);
+    }
+}

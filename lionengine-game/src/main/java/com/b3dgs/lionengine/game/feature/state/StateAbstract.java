@@ -15,14 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
+package com.b3dgs.lionengine.game.feature.state;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * State base implementation.
@@ -32,23 +29,14 @@ import com.b3dgs.lionengine.LionEngineException;
 public abstract class StateAbstract implements State
 {
     /** Transitions list. */
-    private final Map<Enum<?>, StateChecker> transitions = new HashMap<>();
-    /** The enum state. */
-    private final Enum<?> state;
+    private final Map<Class<? extends State>, StateChecker> transitions = new HashMap<>();
 
     /**
      * Create the state.
-     * 
-     * @param state The corresponding enum.
-     * @throws LionEngineException If <code>null</code> argument.
      */
-    protected StateAbstract(Enum<?> state)
+    protected StateAbstract()
     {
         super();
-
-        Check.notNull(state);
-
-        this.state = state;
     }
 
     /*
@@ -56,7 +44,7 @@ public abstract class StateAbstract implements State
      */
 
     @Override
-    public final void addTransition(Enum<?> next, StateChecker checker)
+    public final void addTransition(Class<? extends State> next, StateChecker checker)
     {
         transitions.put(next, checker);
     }
@@ -80,9 +68,9 @@ public abstract class StateAbstract implements State
     }
 
     @Override
-    public Enum<?> checkTransitions()
+    public Class<? extends State> checkTransitions()
     {
-        for (final Entry<Enum<?>, StateChecker> entry : transitions.entrySet())
+        for (final Entry<Class<? extends State>, StateChecker> entry : transitions.entrySet())
         {
             final StateChecker checker = entry.getValue();
             if (checker.check())
@@ -92,11 +80,5 @@ public abstract class StateAbstract implements State
             }
         }
         return null;
-    }
-
-    @Override
-    public Enum<?> getState()
-    {
-        return state;
     }
 }

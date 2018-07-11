@@ -15,45 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
+package com.b3dgs.lionengine.game.feature.state;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
- * State types test.
+ * State walk test implementation.
  */
-enum StateType implements StateAnimationBased
+final class StateWalk extends StateBase
 {
-    /** Idle state. */
-    IDLE(StateIdle.class),
-    /** Walk state. */
-    WALK(StateWalk.class);
-
-    /** Class reference. */
-    private final Class<? extends State> clazz;
-    /** Animation name. */
-    private final String animationName;
-
     /**
-     * Constructor.
+     * Create the state.
      * 
-     * @param clazz The associated class reference.
+     * @param featurable The featurable reference.
+     * @param animation The associated animation.
      */
-    private StateType(Class<? extends State> clazz)
+    StateWalk(Featurable featurable, Animation animation)
     {
-        this.clazz = clazz;
-        animationName = name().toLowerCase(Locale.ENGLISH);
-    }
+        super();
 
-    @Override
-    public Class<? extends State> getStateClass()
-    {
-        return clazz;
-    }
-
-    @Override
-    public String getAnimationName()
-    {
-        return animationName;
+        addTransition(StateIdle.class, () -> true);
     }
 }

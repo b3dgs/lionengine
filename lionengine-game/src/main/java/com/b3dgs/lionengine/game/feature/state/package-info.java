@@ -15,18 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.state;
 
 /**
- * State jump test implementation.
+ * State object representation which allows to represent a gameplay as a finite state machine.
+ * <p>
+ * A {@link com.b3dgs.lionengine.game.feature.state.State} is created and handled by the
+ * {@link com.b3dgs.lionengine.game.feature.state.StateHandler}.
+ * </p>
  */
-final class StateJump extends StateBase
-{
-    /**
-     * Create the state.
-     */
-    StateJump()
-    {
-        super(StateTypeError.JUMP);
-    }
-}
+package com.b3dgs.lionengine.game.feature.state;

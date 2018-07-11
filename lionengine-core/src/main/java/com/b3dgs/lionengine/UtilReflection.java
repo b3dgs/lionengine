@@ -154,7 +154,7 @@ public final class UtilReflection
      * @throws LionEngineException If invalid parameters.
      */
     @SuppressWarnings("unchecked")
-    public static <T> Constructor<T> getCompatibleConstructor(Class<T> type, Class<?>[] paramTypes)
+    public static <T> Constructor<T> getCompatibleConstructor(Class<T> type, Class<?>... paramTypes)
             throws NoSuchMethodException
     {
         Check.notNull(type);
