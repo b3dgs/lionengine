@@ -73,7 +73,7 @@ public abstract class StateAbstract implements State
         for (final Entry<Class<? extends State>, StateChecker> entry : transitions.entrySet())
         {
             final StateChecker checker = entry.getValue();
-            if (checker.check())
+            if (checker.getAsBoolean())
             {
                 checker.exit();
                 return entry.getKey();

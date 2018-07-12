@@ -17,18 +17,45 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Test {@link StateHandler}.
  */
 public final class StateHandlerTest
 {
-    private final StateHandler handler = new StateHandler();
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setLoadFromJar(StateHandlerTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setLoadFromJar(null);
+    }
 
     /**
      * Test the state handling.
@@ -36,6 +63,8 @@ public final class StateHandlerTest
     @Test
     public void testHandler()
     {
+        final StateHandler handler = new StateHandler();
+
         assertFalse(handler.isState(StateBase.class));
         assertFalse(StateBase.entered);
         assertFalse(StateBase.updated);
@@ -90,11 +119,50 @@ public final class StateHandlerTest
     }
 
     /**
+     * Test state with configuration.
+     */
+    @Test
+    public void testWithConfig()
+    {
+        final Featurable featurable = new FeaturableModel();
+        final StateHandler handler;
+        handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml"))));
+        handler.prepare(featurable);
+        handler.changeState(StateIdle.class);
+
+        assertEquals(new Animation(StateIdle.class.getSimpleName(), 1, 1, 0.125, false, false), StateIdle.animation);
+        assertNull(StateWalk.animation);
+        assertTrue(handler.isState(StateIdle.class));
+
+        handler.update(1.0);
+
+        assertEquals(new Animation(StateWalk.class.getSimpleName(), 2, 2, 0.125, false, false), StateWalk.animation);
+        assertTrue(handler.isState(StateWalk.class));
+
+        handler.update(1.0);
+
+        assertTrue(handler.isState(StateIdle.class));
+    }
+
+    /**
      * Test is state with invalid parameter.
      */
     @Test
     public void testNullArgument()
     {
+        final StateHandler handler = new StateHandler();
+
         assertThrows(() -> handler.changeState(null), "Unexpected null argument !");
+    }
+
+    /**
+     * Test is state with invalid parameter.
+     */
+    @Test
+    public void testUnknownState()
+    {
+        final StateHandler handler = new StateHandler();
+
+        assertCause(() -> handler.changeState(State.class), NoSuchMethodException.class);
     }
 }

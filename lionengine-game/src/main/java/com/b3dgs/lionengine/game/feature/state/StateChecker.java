@@ -17,18 +17,20 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * State transition check.
  */
-@FunctionalInterface
-public interface StateChecker
+public interface StateChecker extends BooleanSupplier
 {
     /**
      * Check if transition can be applied.
      * 
      * @return <code>true</code> if apply transition, <code>false</code> else.
      */
-    boolean check();
+    @Override
+    boolean getAsBoolean();
 
     /**
      * Called when transition has been performed. Does nothing by default.

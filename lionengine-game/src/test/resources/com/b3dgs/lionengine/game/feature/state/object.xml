@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:animation name="StateIdle" start="1" end="1" speed="0.125" reversed="false" repeat="false" />
+    <lionengine:animation name="StateWalk" start="2" end="2" speed="0.125" reversed="false" repeat="false" />
+</lionengine:object>

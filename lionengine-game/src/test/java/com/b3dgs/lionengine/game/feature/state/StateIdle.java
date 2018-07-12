@@ -18,23 +18,38 @@
 package com.b3dgs.lionengine.game.feature.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * State idle test implementation.
  */
-final class StateIdle extends StateBase
+final class StateIdle extends StateAbstract
 {
+    /** Loaded animation. */
+    static Animation animation;
+
     /**
      * Create the state.
      * 
      * @param featurable The featurable reference.
      * @param animation The associated animation.
      */
-    StateIdle(Featurable featurable, Animation animation)
+    StateIdle(StateHandler featurable, Animation animation)
     {
         super();
 
         addTransition(StateWalk.class, () -> true);
+        StateIdle.animation = animation;
+    }
+
+    @Override
+    public void enter()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        // Nothing to do
     }
 }
