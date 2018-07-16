@@ -68,7 +68,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      * The {@link Services} must provide:
      * </p>
      * <ul>
-     * <li>{@link Integer}</li>
+     * <li>{@link SourceResolutionProvider}</li>
      * </ul>
      * 
      * @param services The services reference.

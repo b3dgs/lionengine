@@ -79,7 +79,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * </p>
      * <ul>
      * <li>{@link Handler}</li>
-     * <li>{@link Integer} (for the desired fps).</li>
+     * <li>{@link SourceResolutionProvider} (for the desired fps).</li>
      * </ul>
      * <p>
      * The {@link Featurable} must be a {@link ProducerChecker}.
@@ -111,7 +111,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * </p>
      * <ul>
      * <li>{@link Handler}</li>
-     * <li>{@link Integer} (for the desired fps).</li>
+     * <li>{@link SourceResolutionProvider} (for the desired fps).</li>
      * </ul>
      * <p>
      * The {@link Featurable} must be a {@link ProducerChecker}.
