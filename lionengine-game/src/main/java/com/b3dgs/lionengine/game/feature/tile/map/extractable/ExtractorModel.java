@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.IntSupplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -37,10 +38,10 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
 {
     /** Extractor listeners. */
     private final Collection<ExtractorListener> listeners = new ArrayList<>();
+    /** Rate provider. */
+    private final IntSupplier rate;
     /** Resources location. */
     private ResourceLocation resourceLocation;
-    /** Tick timer rate. */
-    private final double desiredFps;
     /** Extractor checker reference. */
     private ExtractorChecker checker;
     /** Current resource object. */
@@ -77,8 +78,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         super();
 
-        // TODO be notified of changes
-        desiredFps = services.get(SourceResolutionProvider.class).getRate();
+        rate = services.get(SourceResolutionProvider.class)::getRate;
 
         recycle();
     }
@@ -136,7 +136,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
             {
                 listener.notifyStartDropOff(resourceType, lastProgress);
             }
-            speed = dropOffPerSecond / desiredFps;
+            speed = dropOffPerSecond / rate.getAsInt();
             state = ExtractorState.DROPOFF;
         }
     }
@@ -263,7 +263,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     public void startExtraction()
     {
         state = ExtractorState.GOTO_RESOURCES;
-        speed = extractPerSecond / desiredFps;
+        speed = extractPerSecond / rate.getAsInt();
         progress = 0.0;
         lastProgress = 0;
         for (final ExtractorListener listener : listeners)

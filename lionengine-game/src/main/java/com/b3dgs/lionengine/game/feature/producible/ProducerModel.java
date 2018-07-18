@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.IntSupplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -53,8 +54,8 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private final List<ActionRef> actions;
     /** Handler reference. */
     private final Handler handler;
-    /** Tick timer rate. */
-    private final double desiredFps;
+    /** Rate provider. */
+    private final IntSupplier rate;
     /** Production checker. */
     private ProducerChecker checker = featurable -> true;
     /** Steps per second. */
@@ -96,9 +97,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         super();
 
         handler = services.get(Handler.class);
-        // TODO be notified of changes
-        desiredFps = services.get(SourceResolutionProvider.class).getRate();
-
+        rate = services.get(SourceResolutionProvider.class)::getRate;
         actions = Collections.emptyList();
 
         recycle();
@@ -129,8 +128,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         super();
 
         handler = services.get(Handler.class);
-        // TODO be notified of changes
-        desiredFps = services.get(SourceResolutionProvider.class).getRate();
+        rate = services.get(SourceResolutionProvider.class)::getRate;
 
         actions = ActionsConfig.imports(setup);
 
@@ -241,7 +239,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         transformable.setLocation(producible.getX(), producible.getY());
         handler.add(featurable);
         currentObject = featurable;
-        speed = stepsPerSecond / desiredFps;
+        speed = stepsPerSecond / rate.getAsInt();
         steps = current.getFeature(Producible.class).getSteps();
         progress = 0.0;
         for (final ProducerListener listener : listeners)
