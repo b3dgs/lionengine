@@ -98,6 +98,47 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     }
 
     /**
+     * Check if all objects id are non blocking.
+     * 
+     * @param mover The mover reference.
+     * @param tx The horizontal tile to check.
+     * @param ty The vertical tile to check.
+     * @return <code>true</code> if blocked, <code>false</code> else.
+     */
+    private boolean isBlocked(Pathfindable mover, int tx, int ty)
+    {
+        final Collection<Integer> ids = getObjectsId(tx, ty);
+        int ignoredCount = 0;
+        for (final Integer id : ids)
+        {
+            if (mover.isIgnoredId(id))
+            {
+                ignoredCount++;
+            }
+        }
+        return ignoredCount < ids.size();
+    }
+
+    /**
+     * Check if tile is blocking.
+     * 
+     * @param mover The mover reference.
+     * @param tx The horizontal tile to check.
+     * @param ty The vertical tile to check.
+     * @return <code>true</code> if blocked, <code>false</code> else.
+     */
+    private boolean isTileBlocked(Pathfindable mover, int tx, int ty)
+    {
+        final Tile tile = map.getTile(tx, ty);
+        if (tile != null)
+        {
+            final TilePath tilePath = tile.getFeature(TilePath.class);
+            return mover.isBlocking(tilePath.getCategory());
+        }
+        return false;
+    }
+
+    /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
      * @param mover The object moving on map.
@@ -270,38 +311,11 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         return map.getTile(tiled.getInTileX(), tiled.getInTileY());
     }
 
-    @Override // CHECKSTYLE IGNORE LINE: TrailingComment|ReturnCount
+    @Override
     public boolean isBlocked(Pathfindable mover, int tx, int ty, boolean ignoreObjectsId)
     {
-        // Blocked if outside map range
-        if (ty >= 0 && tx >= 0 && ty < map.getInTileHeight() && tx < map.getInTileWidth())
-        {
-            // Check if all objects id are non blocking
-            if (!ignoreObjectsId)
-            {
-                final Collection<Integer> ids = getObjectsId(tx, ty);
-                int ignoredCount = 0;
-                for (final Integer id : ids)
-                {
-                    if (mover.isIgnoredId(id)) // CHECKSTYLE IGNORE LINE: TrailingComment|NestedIfDepth
-                    {
-                        ignoredCount++;
-                    }
-                }
-                if (ignoredCount < ids.size()) // CHECKSTYLE IGNORE LINE: TrailingComment|NestedIfDepth
-                {
-                    return true;
-                }
-            }
-            // Check if tile is blocking
-            final Tile tile = map.getTile(tx, ty);
-            if (tile != null)
-            {
-                final TilePath tilePath = tile.getFeature(TilePath.class);
-                return mover.isBlocking(tilePath.getCategory());
-            }
-        }
-        return true;
+        final boolean inside = ty >= 0 && tx >= 0 && ty < map.getInTileHeight() && tx < map.getInTileWidth();
+        return !inside || !ignoreObjectsId && isBlocked(mover, tx, ty) || isTileBlocked(mover, tx, ty);
     }
 
     @Override
