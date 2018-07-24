@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.background;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteParallaxed;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Parallax is used for background depth effect (2.5D).
@@ -67,7 +67,13 @@ public class Parallax implements BackgroundComponent
      * @param sy The starting height.
      * @throws LionEngineException If arguments are invalid.
      */
-    public Parallax(Resolution source, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
+    public Parallax(SourceResolutionProvider source,
+                    Media media,
+                    int parallaxsNumber,
+                    int decX,
+                    int decY,
+                    int sx,
+                    int sy)
     {
         super();
 

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.it.background;
 
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.background.BackgroundAbstract;
 import com.b3dgs.lionengine.game.background.BackgroundComponent;
@@ -27,6 +26,7 @@ import com.b3dgs.lionengine.game.background.BackgroundElementRastered;
 import com.b3dgs.lionengine.game.background.Parallax;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Sprite;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Swamp background implementation.
@@ -56,7 +56,7 @@ class Swamp extends BackgroundAbstract
      * @param scaleH The horizontal factor.
      * @param scaleV The horizontal factor.
      */
-    Swamp(Resolution source, double scaleH, double scaleV)
+    Swamp(SourceResolutionProvider source, double scaleH, double scaleV)
     {
         super(null, 0, 512);
         this.scaleH = scaleH;
