@@ -130,6 +130,8 @@ final class DocumentFactory
         if (transformerFactory == null)
         {
             transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transformerFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         }
         return transformerFactory;
     }
