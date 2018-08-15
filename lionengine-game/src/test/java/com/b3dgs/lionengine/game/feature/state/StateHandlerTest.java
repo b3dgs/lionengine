@@ -26,6 +26,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
@@ -55,6 +56,15 @@ public final class StateHandlerTest
     public static void afterTests()
     {
         Medias.setLoadFromJar(null);
+    }
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    public void prepare()
+    {
+        StateBase.reset();
     }
 
     /**
@@ -116,6 +126,23 @@ public final class StateHandlerTest
 
         assertTrue(StateNext.updated);
         assertFalse(StateNext.exited);
+    }
+
+    /**
+     * Test the state clear transition.
+     */
+    @Test
+    public void testClear()
+    {
+        final StateHandler handler = new StateHandler();
+        handler.changeState(StateClear.class);
+        handler.update(1.0);
+
+        assertTrue(handler.isState(StateClear.class));
+
+        handler.update(1.0);
+
+        assertTrue(handler.isState(StateClear.class));
     }
 
     /**
