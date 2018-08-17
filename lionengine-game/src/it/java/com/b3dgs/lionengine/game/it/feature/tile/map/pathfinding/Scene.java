@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map.pathfinding;
 
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
@@ -103,6 +105,9 @@ class Scene extends Sequence
 
         final Featurable peon3 = factory.create(Peon.MEDIA);
         peon3.getFeature(Pathfindable.class).setLocation(25, 10);
+
+        assertTrue(peon3.getFeature(Pathfindable.class).isPathAvailable(23, 12));
+
         peon3.getFeature(Pathfindable.class).setDestination(23, 12);
         handler.add(peon3);
 
