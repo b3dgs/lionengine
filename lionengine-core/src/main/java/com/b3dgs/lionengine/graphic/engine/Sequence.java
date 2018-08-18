@@ -31,11 +31,8 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
-import com.b3dgs.lionengine.graphic.Transform;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
@@ -58,26 +55,18 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private final Resolution resolution;
     /** Config reference. */
     private final Config config;
-    /** Filter graphic. */
-    private final Graphic graphic;
     /** Loop mode. */
     private final Loop loop;
+    /** Sequence renderer. */
+    private final SequenceRenderer renderer;
     /** Source resolution. */
-    private Resolution source;
-    /** Filter reference. */
-    private volatile Filter filter = FilterNone.INSTANCE;
+    private final Resolution source;
     /** Next sequence pointer. */
     private Optional<Sequencable> nextSequence = Optional.empty();
     /** Current frame rate. */
     private int currentFrameRate;
-    /** Image buffer (can be <code>null</code> for direct rendering). */
-    private ImageBuffer buf;
-    /** Filter used (can be <code>null</code> for direct rendering). */
-    private Transform transform;
     /** Current screen used (<code>null</code> if not started). */
     private Screen screen;
-    /** Pending cursor visibility. */
-    private Boolean cursorVisibility = Boolean.TRUE;
 
     /**
      * Constructor base. Resolution will be based on {@link Config#getOutput()}.
@@ -123,7 +112,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         this.loop = loop;
         source = resolution;
         config = context.getConfig();
-        graphic = Graphics.createGraphic();
+        renderer = new SequenceRenderer(context, resolution, this::render);
     }
 
     /**
@@ -138,8 +127,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
      */
     public final void setFilter(Filter filter)
     {
-        this.filter = Optional.ofNullable(filter).orElse(FilterNone.INSTANCE);
-        transform = getTransform();
+        renderer.setFilter(filter);
     }
 
     /**
@@ -195,74 +183,6 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     }
 
     /**
-     * Initialize resolution.
-     * 
-     * @param source The resolution source (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    private void initResolution(Resolution source)
-    {
-        Check.notNull(source);
-
-        this.source = source;
-        screen.onSourceChanged(source);
-        final int width = source.getWidth();
-        final int height = source.getHeight();
-
-        // Standard rendering
-        final Resolution output = config.getOutput();
-        if (FilterNone.INSTANCE.equals(filter) && width == output.getWidth() && height == output.getHeight())
-        {
-            buf = null;
-            transform = null;
-        }
-        // Scaled rendering
-        else
-        {
-            buf = Graphics.createImageBuffer(width, height);
-            transform = getTransform();
-            final Graphic gbuf = buf.createGraphic();
-            graphic.setGraphic(gbuf.getGraphic());
-        }
-    }
-
-    /**
-     * Get the transform associated to the filter keeping screen scale independent.
-     * 
-     * @return The associated transform instance.
-     */
-    private Transform getTransform()
-    {
-        final Resolution output = config.getOutput();
-
-        final double scaleX = output.getWidth() / (double) source.getWidth();
-        final double scaleY = output.getHeight() / (double) source.getHeight();
-
-        return filter.getTransform(scaleX, scaleY);
-    }
-
-    /**
-     * Local render routine.
-     */
-    private void render()
-    {
-        if (screen.isReady())
-        {
-            final Graphic g = screen.getGraphic();
-            if (buf == null)
-            {
-                // Direct rendering
-                render(g);
-            }
-            else
-            {
-                render(graphic);
-                g.drawImage(filter.filter(buf), transform, 0, 0);
-            }
-        }
-    }
-
-    /**
      * Compute the frame rate depending of the game loop speed.
      * 
      * @param updateFpsTimer The update timing
@@ -289,8 +209,9 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
 
         this.screen = screen;
         screen.addListener(this);
-        setSystemCursorVisible(cursorVisibility.booleanValue());
-        initResolution(resolution);
+
+        renderer.setScreen(screen);
+        renderer.initResolution(resolution);
         currentFrameRate = config.getOutput().getRate();
         screen.requestFocus();
 
@@ -312,7 +233,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
             @Override
             public void render()
             {
-                Sequence.this.render();
+                renderer.render();
             }
 
             @Override
@@ -350,7 +271,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     {
         final double scale = UtilMath.clamp(factor, 0.1, 5.0);
         final Resolution zoomed = resolution.getScaled(scale, scale);
-        initResolution(zoomed);
+        renderer.initResolution(zoomed);
         onResolutionChanged(zoomed.getWidth(), zoomed.getHeight());
     }
 
@@ -368,21 +289,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public final void setSystemCursorVisible(boolean visible)
     {
-        if (screen == null)
-        {
-            cursorVisibility = Boolean.valueOf(visible);
-        }
-        else
-        {
-            if (visible)
-            {
-                screen.showCursor();
-            }
-            else
-            {
-                screen.hideCursor();
-            }
-        }
+        renderer.setSystemCursorVisible(visible);
     }
 
     @Override
