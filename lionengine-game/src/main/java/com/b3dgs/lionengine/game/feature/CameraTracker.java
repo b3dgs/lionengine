@@ -27,6 +27,10 @@ public class CameraTracker extends FeaturableModel
 {
     /** Followed element (can be <code>null</code>). */
     private Localizable tracked;
+    /** Horizontal offset. */
+    private int h;
+    /** Vertical offset. */
+    private int v;
 
     /**
      * Create tracker.
@@ -49,15 +53,28 @@ public class CameraTracker extends FeaturableModel
         {
             if (tracked != null)
             {
-                camera.setLocation(tracked.getX() - camera.getWidth() / 2.0, tracked.getY() - camera.getHeight() / 2.0);
+                camera.setLocation(tracked.getX() - camera.getWidth() / 2.0 + h,
+                                   tracked.getY() - camera.getHeight() / 2.0 + v);
             }
         }));
     }
 
     /**
+     * Set tracking offset.
+     * 
+     * @param h The horizontal offset.
+     * @param v The vertical offset.
+     */
+    public void setOffset(int h, int v)
+    {
+        this.h = h;
+        this.v = v;
+    }
+
+    /**
      * Track the specified localizable.
      * 
-     * @param localizable The localizable to track.
+     * @param localizable The localizable to track, <code>null</code> to stop follow.
      */
     public void track(Localizable localizable)
     {

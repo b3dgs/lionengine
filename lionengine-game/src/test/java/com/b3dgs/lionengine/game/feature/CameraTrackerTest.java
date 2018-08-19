@@ -61,5 +61,11 @@ public final class CameraTrackerTest
 
         assertEquals(-6.0, camera.getX());
         assertEquals(-13.0, camera.getY());
+
+        tracker.setOffset(1, 2);
+        tracker.getFeature(Refreshable.class).update(1.0);
+
+        assertEquals(-5.0, camera.getX());
+        assertEquals(-11.0, camera.getY());
     }
 }
