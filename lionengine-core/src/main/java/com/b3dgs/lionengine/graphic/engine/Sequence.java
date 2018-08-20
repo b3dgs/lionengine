@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.graphic.engine;
 
-import java.util.Optional;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
@@ -62,7 +60,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     /** Source resolution. */
     private final Resolution source;
     /** Next sequence pointer. */
-    private Optional<Sequencable> nextSequence = Optional.empty();
+    private Sequencable nextSequence;
     /** Current frame rate. */
     private int currentFrameRate;
     /** Current screen used (<code>null</code> if not started). */
@@ -256,7 +254,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     {
         Check.notNull(nextSequenceClass);
 
-        nextSequence = Optional.of(UtilSequence.create(nextSequenceClass, context, arguments));
+        nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
         loop.stop();
     }
 
@@ -311,7 +309,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     }
 
     @Override
-    public final Optional<Sequencable> getNextSequence()
+    public final Sequencable getNextSequence()
     {
         return nextSequence;
     }
