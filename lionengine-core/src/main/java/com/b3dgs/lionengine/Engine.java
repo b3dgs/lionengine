@@ -190,7 +190,7 @@ public abstract class Engine
     protected abstract void close();
 
     /**
-     * Post close action. Engine is closed at this point. Must be used for last clean up.
+     * Post close action. Engine is closed at this point. Must be used for last clean up. Does nothing by default.
      */
     protected void postClose()
     {

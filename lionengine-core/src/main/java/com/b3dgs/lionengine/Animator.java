@@ -23,8 +23,8 @@ package com.b3dgs.lionengine;
  * To play correctly an animation, it needs the following steps:
  * </p>
  * <ul>
- * <li>Call only one time {@link #play(Animation)}</li>
- * <li>Call {@link #update(double)} in your main loop</li>
+ * <li>Call only one time {@link #play(Animation)}.</li>
+ * <li>Call {@link #update(double)} in your main loop.</li>
  * </ul>
  */
 public interface Animator extends Updatable

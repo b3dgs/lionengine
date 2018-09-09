@@ -33,7 +33,7 @@ public final class UtilChecksum
     /** Instance error message. */
     static final String ERROR_ALGORITHM = "Unable to create algorithm: ";
     /** Message digest instance. */
-    private static final MessageDigest SHA256 = create("SHA-512");
+    private static final MessageDigest SHA512 = create("SHA-512");
     /** Maximum length. */
     private static final int MAX_LENGTH = 178;
 
@@ -83,7 +83,7 @@ public final class UtilChecksum
         Check.notNull(bytes);
 
         final StringBuilder builder = new StringBuilder(MAX_LENGTH);
-        for (final byte b : SHA256.digest(bytes))
+        for (final byte b : SHA512.digest(bytes))
         {
             builder.append(0xFF & b);
         }

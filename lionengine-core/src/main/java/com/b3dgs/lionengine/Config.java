@@ -24,8 +24,7 @@ import java.util.Optional;
  * <ul>
  * <li>output : It is corresponding to the desired screen resolution output.</li>
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for
- * fullscreen)</li>
- * <li>applet : Can be used to set the applet reference in case of applet mode</li>
+ * fullscreen).</li>
  * </ul>
  */
 public final class Config

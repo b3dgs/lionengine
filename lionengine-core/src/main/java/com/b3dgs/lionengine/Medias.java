@@ -184,8 +184,8 @@ public final class Medias
     /**
      * Get the media with an additional suffix, just before the dot of the extension if has.
      * 
-     * @param media The current media reference (must not be <code>null</code>)
-     * @param suffix The suffix to add (must not be <code>null</code>)
+     * @param media The current media reference (must not be <code>null</code>).
+     * @param suffix The suffix to add (must not be <code>null</code>).
      * @return The new media with suffix added.
      * @throws LionEngineException If invalid parameters.
      */
