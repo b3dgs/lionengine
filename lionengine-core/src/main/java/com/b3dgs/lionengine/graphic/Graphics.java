@@ -236,16 +236,12 @@ public final class Graphics
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
-     * @param er The end red.
-     * @param eg The end green.
-     * @param eb The end blue.
-     * @param size The reference size.
      * @return The rastered image.
      * @throws LionEngineException If invalid arguments.
      */
-    public static ImageBuffer getRasterBuffer(ImageBuffer img, int fr, int fg, int fb, int er, int eg, int eb, int size)
+    public static ImageBuffer getRasterBuffer(ImageBuffer img, double fr, double fg, double fb)
     {
-        return factoryGraphic.getRasterBuffer(img, fr, fg, fb, er, eg, eb, size);
+        return factoryGraphic.getRasterBuffer(img, fr, fg, fb);
     }
 
     /**

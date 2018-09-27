@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.graphic.raster.RasterColor;
 import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
@@ -47,7 +46,7 @@ public class SetupSurfaceRastered extends Setup
     private static final String ATTRIBUTE_RASTER_SMOOTH = "smooth";
 
     /** List of rasters animation. */
-    private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterColor.MAX_RASTERS);
+    private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
     /** List of rasters animation. */
     private final RasterImage raster;
 

@@ -342,7 +342,7 @@ public final class GraphicsTest
     public void testGetRasterBuffer()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
-        final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0, 255, 255, 255, 5);
+        final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0);
 
         assertNotEquals(image, raster);
         assertEquals(image.getWidth(), raster.getWidth());

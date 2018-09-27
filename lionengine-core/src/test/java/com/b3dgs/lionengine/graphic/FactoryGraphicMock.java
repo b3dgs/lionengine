@@ -161,7 +161,7 @@ public class FactoryGraphicMock implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
+    public ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb)
     {
         return new ImageBufferMock(image.getWidth(), image.getHeight());
     }

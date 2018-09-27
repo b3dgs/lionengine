@@ -27,10 +27,6 @@ import com.b3dgs.lionengine.Xml;
  */
 public final class RasterData
 {
-    /** Attribute raster start. */
-    private static final String ATT_START = "start";
-    /** Attribute raster step. */
-    private static final String ATT_STEP = "step";
     /** Attribute raster force. */
     private static final String ATT_FORCE = "force";
     /** Attribute raster amplitude. */
@@ -50,22 +46,16 @@ public final class RasterData
     public static RasterData load(Xml root, String color)
     {
         final Xml node = root.getChild(color);
-        final int start = Integer.decode(node.readString(ATT_START)).intValue();
-        final int step = Integer.decode(node.readString(ATT_STEP)).intValue();
-        final int force = node.readInteger(ATT_FORCE);
+        final double force = node.readDouble(ATT_FORCE);
         final int amplitude = node.readInteger(ATT_AMPLITUDE);
         final int offset = node.readInteger(ATT_OFFSET);
         final int type = node.readInteger(ATT_TYPE);
 
-        return new RasterData(start, step, force, amplitude, offset, type);
+        return new RasterData(force, amplitude, offset, type);
     }
 
-    /** Starting color. */
-    private final int start;
-    /** Color step value. */
-    private final int step;
     /** Applied force. */
-    private final int force;
+    private final double force;
     /** Maximum amplitude. */
     private final int amplitude;
     /** Starting color offset. */
@@ -76,19 +66,15 @@ public final class RasterData
     /**
      * Create the raster data.
      * 
-     * @param start The start color.
-     * @param step The step increment color.
      * @param force The modified color force.
      * @param amplitude The amplitude color modification.
      * @param offset The offset from start.
      * @param type The raster type.
      */
-    RasterData(int start, int step, int force, int amplitude, int offset, int type)
+    RasterData(double force, int amplitude, int offset, int type)
     {
         super();
 
-        this.start = start;
-        this.step = step;
         this.force = force;
         this.amplitude = amplitude;
         this.offset = offset;
@@ -96,31 +82,11 @@ public final class RasterData
     }
 
     /**
-     * Get the starting color.
-     * 
-     * @return The starting color.
-     */
-    public int getStart()
-    {
-        return start;
-    }
-
-    /**
-     * Get the color step.
-     * 
-     * @return The color step.
-     */
-    public int getStep()
-    {
-        return step;
-    }
-
-    /**
      * Get the color force.
      * 
      * @return The color force applied.
      */
-    public int getForce()
+    public double getForce()
     {
         return force;
     }

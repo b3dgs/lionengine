@@ -120,7 +120,7 @@ public final class RasterImageTest
 
         try
         {
-            for (int i = 1; i <= 15; i++)
+            for (int i = 0; i < 15; i++)
             {
                 final Media file = Medias.create("prefix_raster", i + Constant.DOT + ImageFormat.PNG);
 
@@ -156,7 +156,7 @@ public final class RasterImageTest
 
         try
         {
-            for (int i = 1; i <= 15; i++)
+            for (int i = 0; i < 15; i++)
             {
                 final Media file = Medias.create("cache_raster", i + Constant.DOT + ImageFormat.PNG);
 

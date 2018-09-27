@@ -136,24 +136,14 @@ public final class UtilColorTest
     @Test
     public void testFilterRgb()
     {
-        assertTrue(UtilColor.filterRgb(-16_711_423, 0, 0, 0) < 0);
-        assertTrue(UtilColor.filterRgb(0, 0, 0, 0) == 0);
-        assertTrue(UtilColor.filterRgb(16_711_935, 0, 0, 0) > 0);
-        assertTrue(UtilColor.filterRgb(5_000, 0, 0, 0) > 0);
-        assertFalse(UtilColor.filterRgb(0, 5_000, 0, 0) > 0);
-        assertFalse(UtilColor.filterRgb(0, 0, 5_000, 0) > 0);
-        assertFalse(UtilColor.filterRgb(0, 0, 0, 5_000) > 0);
-        assertTrue(UtilColor.filterRgb(-10_000, 0, -10_000_000, 0) < 0);
-        assertTrue(UtilColor.filterRgb(5_000, -100, -100, -100) > 0);
-        assertTrue(UtilColor.filterRgb(500_000, -100, -10_000, -100) > 0);
+        assertEquals(ColorRgba.BLACK.getRgba(), UtilColor.multiplyRgb(ColorRgba.WHITE.getRgba(), 0.0, 0.0, 0.0));
+        assertEquals(ColorRgba.BLUE.getRgba(), UtilColor.multiplyRgb(ColorRgba.CYAN.getRgba(), 1.0, 0.0, 1.0));
+        assertEquals(ColorRgba.GREEN.getRgba(), UtilColor.multiplyRgb(ColorRgba.YELLOW.getRgba(), 0.0, 1.0, 1.0));
+        assertEquals(ColorRgba.RED.getRgba(), UtilColor.multiplyRgb(ColorRgba.PURPLE.getRgba(), 1.0, 1.0, 0.0));
 
-        final int filterRgb1 = UtilColor.filterRgb(0, -1, -1, -1);
+        assertTrue(UtilColor.multiplyRgb(0, -1, -1, -1) >= 0);
 
-        assertTrue(filterRgb1 >= 0);
-
-        final int filterRgb2 = UtilColor.filterRgb(65_535, 0xFF_FF_FF, 0xFF_FF_FF, 0xFF_FF_FF);
-
-        assertTrue(filterRgb2 >= 0);
+        assertTrue(UtilColor.multiplyRgb(65_535, 0xFF_FF_FF, 0xFF_FF_FF, 0xFF_FF_FF) >= 0);
     }
 
     /**

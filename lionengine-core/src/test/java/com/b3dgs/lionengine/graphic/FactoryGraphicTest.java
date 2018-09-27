@@ -385,7 +385,7 @@ public class FactoryGraphicTest
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
-        final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0, 255, 255, 255, 5);
+        final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0);
 
         assertNotEquals(image, raster);
         assertEquals(image.getWidth(), raster.getWidth());

@@ -175,12 +175,8 @@ public interface FactoryGraphic
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
-     * @param er The end red.
-     * @param eg The end green.
-     * @param eb The end blue.
-     * @param refSize The reference size.
      * @return The rastered image.
      * @throws LionEngineException If invalid arguments.
      */
-    ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize);
+    ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb);
 }

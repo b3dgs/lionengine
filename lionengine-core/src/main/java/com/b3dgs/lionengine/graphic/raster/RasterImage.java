@@ -38,8 +38,38 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
  */
 public class RasterImage
 {
+    /** Maximum rasters. */
+    public static final int MAX_RASTERS = 15;
+    /** Maximum rasters R. */
+    public static final int MAX_RASTERS_R = MAX_RASTERS * 2 - 1;
+    /** Maximum rasters M. */
+    public static final int MAX_RASTERS_M = MAX_RASTERS - 1;
+
+    /**
+     * Get raster color.
+     * 
+     * @param i The color offset.
+     * @param data The raster data (must not be <code>null</code>).
+     * @return The rastered color.
+     * @throws LionEngineException If invalid arguments.
+     */
+    private static double getRasterFactor(int i, RasterData data)
+    {
+        Check.notNull(data);
+
+        final double force = data.getForce();
+        final int amplitude = data.getAmplitude();
+        final int offset = data.getOffset();
+
+        if (0 == data.getType())
+        {
+            return force * UtilMath.sin(i * amplitude + offset);
+        }
+        return force * UtilMath.cos(i * amplitude + offset);
+    }
+
     /** List of rasters. */
-    private final List<ImageBuffer> rasters = new ArrayList<>(RasterColor.MAX_RASTERS);
+    private final List<ImageBuffer> rasters = new ArrayList<>(MAX_RASTERS);
     /** Original image. */
     private final ImageBuffer surface;
     /** Raster filename. */
@@ -114,13 +144,13 @@ public class RasterImage
 
         for (int m = 0; m < max; m++)
         {
-            for (int i = 1; i <= RasterColor.MAX_RASTERS; i++)
+            for (int i = 0; i < MAX_RASTERS; i++)
             {
                 final String folder = prefix + Constant.UNDERSCORE + UtilFile.removeExtension(rasterFile.getName());
-                final String file = String.valueOf(i + m * RasterColor.MAX_RASTERS) + Constant.DOT + ImageFormat.PNG;
+                final String file = String.valueOf(i + m * MAX_RASTERS) + Constant.DOT + ImageFormat.PNG;
                 final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
 
-                final ImageBuffer rasterBuffer = createRaster(rasterMedia, raster, m, i, imageHeight, save);
+                final ImageBuffer rasterBuffer = createRaster(rasterMedia, raster, i, save);
                 rasters.add(rasterBuffer);
             }
         }
@@ -182,13 +212,11 @@ public class RasterImage
      * 
      * @param rasterMedia The raster media.
      * @param raster The raster data.
-     * @param m The smooth index.
      * @param i The raster index.
-     * @param imageHeight The image height.
      * @param save <code>true</code> to save generated raster, <code>false</code> else.
      * @return The created raster.
      */
-    private ImageBuffer createRaster(Media rasterMedia, Raster raster, int m, int i, int imageHeight, boolean save)
+    private ImageBuffer createRaster(Media rasterMedia, Raster raster, int i, boolean save)
     {
         final ImageBuffer rasterBuffer;
         if (rasterMedia.exists())
@@ -198,18 +226,11 @@ public class RasterImage
         }
         else
         {
-            final RasterColor red = RasterColor.load(raster.getRed(), m, i, rasterSmooth);
-            final RasterColor green = RasterColor.load(raster.getGreen(), m, i, rasterSmooth);
-            final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, rasterSmooth);
+            final double fr = getRasterFactor(i, raster.getRed());
+            final double fg = getRasterFactor(i, raster.getGreen());
+            final double fb = getRasterFactor(i, raster.getBlue());
 
-            rasterBuffer = Graphics.getRasterBuffer(surface,
-                                                    red.getStart(),
-                                                    green.getStart(),
-                                                    blue.getStart(),
-                                                    red.getEnd(),
-                                                    green.getEnd(),
-                                                    blue.getEnd(),
-                                                    imageHeight);
+            rasterBuffer = Graphics.getRasterBuffer(surface, fr, fg, fb);
 
             if (save)
             {

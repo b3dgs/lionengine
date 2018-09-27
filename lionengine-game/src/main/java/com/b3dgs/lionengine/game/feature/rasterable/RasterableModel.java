@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.graphic.raster.RasterColor;
+import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
  * Default rasterable implementation.
@@ -136,14 +136,14 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     public int getRasterIndex(double y)
     {
         final double value = y / height;
-        final int i = (int) value % RasterColor.MAX_RASTERS_R;
+        final int i = (int) value % RasterImage.MAX_RASTERS_R;
         int index = i;
 
-        if (!smooth && index > RasterColor.MAX_RASTERS_M)
+        if (!smooth && index > RasterImage.MAX_RASTERS_M)
         {
-            index = RasterColor.MAX_RASTERS_M - (index - RasterColor.MAX_RASTERS);
+            index = RasterImage.MAX_RASTERS_M - (index - RasterImage.MAX_RASTERS);
         }
-        return UtilMath.clamp(index, 0, RasterColor.MAX_RASTERS);
+        return UtilMath.clamp(index, 0, RasterImage.MAX_RASTERS);
     }
 
     @Override

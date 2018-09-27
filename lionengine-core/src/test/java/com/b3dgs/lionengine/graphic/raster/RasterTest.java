@@ -58,52 +58,14 @@ public final class RasterTest
     @Test
     public void testField()
     {
-        final RasterData red = new RasterData(0, 0, 0, 0, 0, 0);
-        final RasterData green = new RasterData(0, 0, 0, 0, 0, 0);
-        final RasterData blue = new RasterData(0, 0, 0, 0, 0, 0);
+        final RasterData red = new RasterData(0, 0, 0, 0);
+        final RasterData green = new RasterData(0, 0, 0, 0);
+        final RasterData blue = new RasterData(0, 0, 0, 0);
         final Raster raster = new Raster(red, green, blue);
 
         assertEquals(red, raster.getRed());
         assertEquals(green, raster.getGreen());
         assertEquals(blue, raster.getBlue());
-    }
-
-    /**
-     * Test color.
-     */
-    @Test
-    public void testColor()
-    {
-        final RasterData raster = new RasterData(0, 0, 0, 0, 0, 0);
-        final RasterColor color = RasterColor.load(raster, 0, 0, false);
-
-        assertEquals(0, color.getStart());
-        assertEquals(0, color.getEnd());
-
-        final RasterData raster2 = new RasterData(200, 10, 10, 100, 10, 0);
-        final RasterColor color2 = RasterColor.load(raster2, 0, 90, false);
-
-        assertEquals(130, color2.getStart());
-        assertEquals(130, color2.getEnd());
-    }
-
-    /**
-     * Test color smoothed.
-     */
-    @Test
-    public void testColorSmooth()
-    {
-        final RasterData raster = new RasterData(200, 10, 10, 100, 10, 0);
-        final RasterColor color = RasterColor.load(raster, 0, 90, true);
-
-        assertEquals(130, color.getStart());
-        assertEquals(120, color.getEnd());
-
-        final RasterData raster2 = new RasterData(200, 10, 10, 100, 10, 0);
-        final RasterColor color2 = RasterColor.load(raster2, 1, 90, true);
-
-        assertEquals(160, color2.getStart());
-        assertEquals(170, color2.getEnd());
     }
 
     /**

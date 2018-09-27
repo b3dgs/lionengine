@@ -338,46 +338,21 @@ public final class ToolsAwt
      * Get raster buffer from data.
      * 
      * @param image The image buffer.
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @param er The end red.
-     * @param eg The end green.
-     * @param eb The end blue.
-     * @param size The reference size.
+     * @param fr The factor red.
+     * @param fg The factor green.
+     * @param fb The factor blue.
      * @return The rastered image.
      */
-    public static BufferedImage getRasterBuffer(BufferedImage image,
-                                                int fr,
-                                                int fg,
-                                                int fb,
-                                                int er,
-                                                int eg,
-                                                int eb,
-                                                int size)
+    public static BufferedImage getRasterBuffer(BufferedImage image, double fr, double fg, double fb)
     {
         final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
-
-        final int divisorRed = 0x01_00_00;
-        final int divisorGreen = 0x00_01_00;
-        final int divisorBlue = 0x00_00_01;
-
-        final double sr = -((er - fr) / (double) divisorRed) / size;
-        final double sg = -((eg - fg) / (double) divisorGreen) / size;
-        final double sb = -((eb - fb) / (double) divisorBlue) / size;
-
         for (int i = 0; i < raster.getWidth(); i++)
         {
             for (int j = 0; j < raster.getHeight(); j++)
             {
-                final int r = (int) (sr * (j % size)) * divisorRed;
-                final int g = (int) (sg * (j % size)) * divisorGreen;
-                final int b = (int) (sb * (j % size)) * divisorBlue;
-
-                raster.setRGB(i, j, UtilColor.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
+                raster.setRGB(i, j, UtilColor.multiplyRgb(image.getRGB(i, j), fr, fg, fb));
             }
         }
-
         return raster;
     }
 

@@ -87,7 +87,7 @@ public final class ToolsAwtTest
 
         assertNotNull(image);
         assertEquals(Transparency.TRANSLUCENT, ToolsAwt.getImageBuffer(image).getTransparency());
-        assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
+        assertNotNull(ToolsAwt.getRasterBuffer(image, 1, 1, 1));
         assertNotNull(ToolsAwt.flipHorizontal(image));
         assertNotNull(ToolsAwt.flipVertical(image));
         assertNotNull(ToolsAwt.resize(image, 10, 10));

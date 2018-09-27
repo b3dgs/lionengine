@@ -30,39 +30,32 @@ import com.b3dgs.lionengine.UtilMath;
  */
 public final class UtilColor
 {
-    /** Minimum color value. */
-    private static final int MIN_COLOR = 0x00_00_00;
-    /** Maximum alpha value. */
-    private static final int MAX_ALPHA = 0xFF_00_00_00;
-    /** Maximum red value. */
-    private static final int MAX_RED = 0xFF_00_00;
-    /** Maximum green value. */
-    private static final int MAX_GREEN = 0x00_FF_00;
-    /** Maximum blue value. */
-    private static final int MAX_BLUE = 0x00_00_FF;
-
     /**
-     * Apply a filter rgb.
+     * Apply an rgb factor.
      * 
      * @param rgb The original rgb.
-     * @param fr The red filter.
-     * @param fg The green filter.
-     * @param fb The blue filter.
-     * @return The filtered rgb.
+     * @param fr The red factor.
+     * @param fg The green factor.
+     * @param fb The blue factor.
+     * @return The multiplied rgb.
      */
-    public static int filterRgb(int rgb, int fr, int fg, int fb)
+    public static int multiplyRgb(int rgb, double fr, double fg, double fb)
     {
         if (rgb == 0)
         {
             return rgb;
         }
 
-        final int a = rgb & MAX_ALPHA;
-        final int r = UtilMath.clamp((rgb & MAX_RED) + fr, MIN_COLOR, MAX_RED);
-        final int g = UtilMath.clamp((rgb & MAX_GREEN) + fg, MIN_COLOR, MAX_GREEN);
-        final int b = UtilMath.clamp((rgb & MAX_BLUE) + fb, MIN_COLOR, MAX_BLUE);
+        final int a = rgb >> Constant.BYTE_4 & 0xFF;
+        final int r = (int) UtilMath.clamp((rgb >> Constant.BYTE_3 & 0xFF) * fr, 0, 255);
+        final int g = (int) UtilMath.clamp((rgb >> Constant.BYTE_2 & 0xFF) * fg, 0, 255);
+        final int b = (int) UtilMath.clamp((rgb >> Constant.BYTE_1 & 0xFF) * fb, 0, 255);
 
-        return a | r | g | b;
+        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity|TrailingComment
+        return (a & 0xFF) << Constant.BYTE_4
+               | (r & 0xFF) << Constant.BYTE_3
+               | (g & 0xFF) << Constant.BYTE_2
+               | (b & 0xFF) << Constant.BYTE_1;
     }
 
     /**

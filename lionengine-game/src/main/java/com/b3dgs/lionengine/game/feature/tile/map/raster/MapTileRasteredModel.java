@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
-import com.b3dgs.lionengine.graphic.raster.RasterColor;
 import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
@@ -76,7 +75,7 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     {
         return rasterSheets.computeIfAbsent(sheet, s ->
         {
-            final List<SpriteTiled> rasters = new ArrayList<>(RasterColor.MAX_RASTERS);
+            final List<SpriteTiled> rasters = new ArrayList<>(RasterImage.MAX_RASTERS);
             rasterSheets.put(s, rasters);
             return rasters;
         });
@@ -122,10 +121,10 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     @Override
     public int getRasterIndex(int ty)
     {
-        int index = ty % RasterColor.MAX_RASTERS_R;
-        if (!smooth && index > RasterColor.MAX_RASTERS_M)
+        int index = ty % RasterImage.MAX_RASTERS_R;
+        if (!smooth && index > RasterImage.MAX_RASTERS_M)
         {
-            index = RasterColor.MAX_RASTERS_M - (index - RasterColor.MAX_RASTERS);
+            index = RasterImage.MAX_RASTERS_M - (index - RasterImage.MAX_RASTERS);
         }
         return index;
     }
