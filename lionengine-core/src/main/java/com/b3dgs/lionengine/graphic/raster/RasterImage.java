@@ -58,7 +58,7 @@ public class RasterImage
         Check.notNull(data);
 
         final double force = data.getForce();
-        final int amplitude = data.getAmplitude();
+        final double amplitude = data.getAmplitude();
         final int offset = data.getOffset();
 
         if (0 == data.getType())
