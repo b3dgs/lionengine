@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.body.Body;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListener;
 
@@ -107,9 +108,9 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     }
 
     @Override
-    public void notifyTileCollided(Tile tile, Axis axis)
+    public void notifyTileCollided(Tile tile, CollisionCategory category)
     {
-        if (Axis.Y == axis)
+        if (Axis.Y == category.getAxis())
         {
             body.resetGravity();
         }

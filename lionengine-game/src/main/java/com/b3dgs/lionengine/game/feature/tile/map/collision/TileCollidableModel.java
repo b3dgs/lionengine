@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -38,6 +40,8 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
 {
     /** Launcher listeners. */
     private final Collection<TileCollidableListener> listeners = new HashSet<>();
+    /** Computed results. */
+    private final Map<String, CollisionResult> results = new HashMap<>();
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The collisions used. */
@@ -89,17 +93,17 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      */
     private void update(CollisionCategory category)
     {
-        final CollisionResult result = map.computeCollision(transformable, category);
+        final CollisionResult result = results.get(category.getName());
         if (result != null)
         {
             if (result.getX() != null)
             {
-                onCollided(result.getTile(), category.getAxis());
+                onCollided(result.getTile(), category);
                 transformable.teleportX(result.getX().doubleValue());
             }
             if (result.getY() != null)
             {
-                onCollided(result.getTile(), category.getAxis());
+                onCollided(result.getTile(), category);
                 transformable.teleportY(result.getY().doubleValue());
             }
         }
@@ -109,13 +113,13 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * Called when a collision occurred on a specified axis.
      * 
      * @param tile The tile reference.
-     * @param axis The axis reference.
+     * @param category The collision category reference.
      */
-    private void onCollided(Tile tile, Axis axis)
+    private void onCollided(Tile tile, CollisionCategory category)
     {
         for (final TileCollidableListener listener : listeners)
         {
-            listener.notifyTileCollided(tile, axis);
+            listener.notifyTileCollided(tile, category);
         }
     }
 
@@ -162,6 +166,11 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         if (enabled)
         {
+            for (final CollisionCategory category : categories)
+            {
+                final CollisionResult result = map.computeCollision(transformable, category);
+                results.put(category.getName(), result);
+            }
             for (final CollisionCategory category : categories)
             {
                 update(category);

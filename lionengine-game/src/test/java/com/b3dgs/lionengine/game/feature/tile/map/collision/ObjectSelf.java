@@ -31,7 +31,7 @@ final class ObjectSelf extends FeaturableModel implements TileCollidableListener
     final AtomicBoolean called = new AtomicBoolean();
 
     @Override
-    public void notifyTileCollided(Tile tile, Axis axis)
+    public void notifyTileCollided(Tile tile, CollisionCategory category)
     {
         called.set(true);
     }

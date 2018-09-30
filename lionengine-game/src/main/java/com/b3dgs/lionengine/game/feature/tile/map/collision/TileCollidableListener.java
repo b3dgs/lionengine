@@ -28,7 +28,7 @@ public interface TileCollidableListener
      * Notify when a tile collision occurred.
      * 
      * @param tile The collided tile.
-     * @param axis The collided axis.
+     * @param category The collided axis.
      */
-    void notifyTileCollided(Tile tile, Axis axis);
+    void notifyTileCollided(Tile tile, CollisionCategory category);
 }
