@@ -156,11 +156,11 @@ public final class TileCollidableModelTest
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
-        transformable.setLocation(0, 2);
+        transformable.teleport(0, 3);
         transformable.moveLocation(1.0, 0.0, -2.0);
         collidable.update(1.0);
 
-        assertEquals(map.getTile(0, 2), collided.get());
+        assertEquals(map.getTile(1, 2), collided.get());
     }
 
     /**
@@ -174,11 +174,11 @@ public final class TileCollidableModelTest
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
-        transformable.setLocation(0, -2);
+        transformable.teleport(0, -1);
         transformable.moveLocation(1.0, 0.0, 2.0);
         collidable.update(1.0);
 
-        assertEquals(map.getTile(0, 0), collided.get());
+        assertEquals(map.getTile(1, 0), collided.get());
     }
 
     /**
@@ -192,7 +192,7 @@ public final class TileCollidableModelTest
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
-        transformable.setLocation(-2, 0);
+        transformable.teleport(-1, 0);
         transformable.moveLocation(1.0, 2.0, 0.0);
         collidable.update(1.0);
 
@@ -210,11 +210,11 @@ public final class TileCollidableModelTest
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
-        transformable.setLocation(2, 0);
+        transformable.teleport(3, 0);
         transformable.moveLocation(1.0, -2.0, 0.0);
         collidable.update(1.0);
 
-        assertEquals(map.getTile(1, 2), collided.get());
+        assertEquals(map.getTile(2, 0), collided.get());
     }
 
     /**
@@ -229,7 +229,7 @@ public final class TileCollidableModelTest
         collidable.addListener(listener);
         collidable.setEnabled(false);
 
-        transformable.setLocation(0, 2);
+        transformable.teleport(0, 2);
         transformable.moveLocation(1.0, 0.0, -5.0);
         collidable.update(1.0);
 
@@ -248,7 +248,7 @@ public final class TileCollidableModelTest
         collidable.checkListener(transformable);
         collidable.checkListener(listener);
 
-        transformable.setLocation(0, 2);
+        transformable.teleport(0, 2);
         transformable.moveLocation(1.0, 0.0, -5.0);
         collidable.update(1.0);
 
@@ -273,7 +273,7 @@ public final class TileCollidableModelTest
         final TileCollidableListener listener = createListener(collided);
         collidable.addListener(listener);
 
-        transformable.setLocation(0, 2);
+        transformable.teleport(0, 2);
         transformable.moveLocation(1.0, 0.0, -5.0);
         collidable.removeListener(listener);
         collidable.update(1.0);
