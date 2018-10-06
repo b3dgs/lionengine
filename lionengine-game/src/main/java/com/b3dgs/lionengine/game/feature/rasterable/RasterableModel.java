@@ -22,7 +22,7 @@ import java.util.List;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -49,6 +49,8 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     private final int height;
     /** The viewer reference. */
     private final Viewer viewer;
+    /** The updater. */
+    private final Updatable updater;
     /** Transformable reference. */
     private Transformable transformable;
     /** Mirrorable reference. */
@@ -91,6 +93,31 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         height = setup.getRasterHeight();
         rastersAnim = setup.getRasters();
         smooth = setup.hasSmooth();
+        raster = rastersAnim.get(0);
+
+        if (rastersAnim.size() == 1)
+        {
+            updater = new Updatable()
+            {
+                @Override
+                public void update(double extrp)
+                {
+                    // Nothing to do
+                }
+            };
+        }
+        else
+        {
+            updater = new Updatable()
+            {
+                @Override
+                public void update(double extrp)
+                {
+                    final int index = getRasterIndex(transformable.getY());
+                    raster = getRasterAnim(index);
+                }
+            };
+        }
 
         recycle();
     }
@@ -110,40 +137,28 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     @Override
     public void update(double extrp)
     {
-        final int index = getRasterIndex(transformable.getY());
-        raster = getRasterAnim(index);
-        if (raster != null)
-        {
-            raster.setFrame(animator.getFrame());
-            raster.setMirror(mirrorable.getMirror());
-            raster.setOrigin(origin);
-        }
+        updater.update(extrp);
+        raster.setFrame(animator.getFrame());
+        raster.setMirror(mirrorable.getMirror());
+        raster.setOrigin(origin);
+        raster.setLocation(viewer, transformable);
     }
 
     @Override
     public void render(Graphic g)
     {
-        if (raster != null)
-        {
-            final double x = viewer.getViewpointX(origin.getX(transformable.getX(), transformable.getWidth()));
-            final double y = viewer.getViewpointY(origin.getY(transformable.getY(), transformable.getHeight()));
-            raster.setLocation(x, y);
-            raster.render(g);
-        }
+        raster.render(g);
     }
 
     @Override
     public int getRasterIndex(double y)
     {
-        final double value = y / height;
-        final int i = (int) value % RasterImage.MAX_RASTERS_R;
-        int index = i;
-
+        int index = (int) y / height % RasterImage.MAX_RASTERS_R;
         if (!smooth && index > RasterImage.MAX_RASTERS_M)
         {
             index = RasterImage.MAX_RASTERS_M - (index - RasterImage.MAX_RASTERS);
         }
-        return UtilMath.clamp(index, 0, RasterImage.MAX_RASTERS);
+        return index;
     }
 
     @Override

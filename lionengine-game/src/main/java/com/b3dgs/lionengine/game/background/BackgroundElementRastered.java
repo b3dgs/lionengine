@@ -52,7 +52,7 @@ public class BackgroundElementRastered extends BackgroundElement
         super(mainX, mainY, null);
 
         final RasterImage raster = new RasterImage(media, rasterFile, rastersNumber, false);
-        raster.loadRasters(ImageInfo.get(media).getHeight(), true, UtilFile.removeExtension(media.getName()));
+        raster.loadRasters(ImageInfo.get(media).getHeight(), false, UtilFile.removeExtension(media.getName()));
 
         final Collection<ImageBuffer> surfaces = raster.getRasters();
         rasters = new ArrayList<>(surfaces.size());

@@ -72,30 +72,41 @@ public class SetupSurfaceRastered extends Setup
     {
         super(config);
 
-        final Media rasterFile;
-        if (rasterMedia != null)
-        {
-            rasterFile = rasterMedia;
-        }
-        else
-        {
-            rasterFile = Medias.create(getString("file", NODE_RASTER));
-        }
-
-        final int rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
-        final boolean smooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
-        raster = new RasterImage(getSurface(), rasterFile, rasterHeight, smooth);
-
         final FramesConfig framesData = FramesConfig.imports(getRoot());
         final int hf = framesData.getHorizontal();
         final int vf = framesData.getVertical();
-        final int frameHeight = getSurface().getHeight() / vf;
-        raster.loadRasters(frameHeight, true, UtilFile.removeExtension(config.getName()));
 
-        for (final ImageBuffer buffer : raster.getRasters())
+        if (hasNode(NODE_RASTER))
         {
-            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
+            final int rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
+            final boolean smooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
+
+            final Media rasterFile;
+            if (rasterMedia != null)
+            {
+                rasterFile = rasterMedia;
+            }
+            else
+            {
+                rasterFile = Medias.create(getString("file", NODE_RASTER));
+            }
+
+            raster = new RasterImage(getSurface(), rasterFile, rasterHeight, smooth);
+
+            final int frameHeight = getSurface().getHeight() / vf;
+            raster.loadRasters(frameHeight, false, UtilFile.removeExtension(config.getName()));
+
+            for (final ImageBuffer buffer : raster.getRasters())
+            {
+                final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
+                rastersAnim.add(sprite);
+            }
+        }
+        else
+        {
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(getSurface(), hf, vf);
             rastersAnim.add(sprite);
+            raster = new RasterImage(getSurface(), config, 1, false);
         }
     }
 
