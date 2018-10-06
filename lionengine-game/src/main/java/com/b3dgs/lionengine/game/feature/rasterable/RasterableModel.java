@@ -97,29 +97,28 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
         if (rastersAnim.size() == 1)
         {
-            updater = new Updatable()
+            updater = extrp ->
             {
-                @Override
-                public void update(double extrp)
-                {
-                    // Nothing to do
-                }
+                // Nothing to do
             };
         }
         else
         {
-            updater = new Updatable()
-            {
-                @Override
-                public void update(double extrp)
-                {
-                    final int index = getRasterIndex(transformable.getY());
-                    raster = getRasterAnim(index);
-                }
-            };
+            updater = this::updateRasterAnim;
         }
 
         recycle();
+    }
+
+    /**
+     * Update raster sprite with current vertical location.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateRasterAnim(double extrp)
+    {
+        final int index = getRasterIndex(transformable.getY());
+        raster = getRasterAnim(index);
     }
 
     /*
