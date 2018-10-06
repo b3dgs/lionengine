@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.graphic.drawable;
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorModel;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -32,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 {
     /** Animator reference. */
-    private final Animator animator = new AnimatorImpl();
+    private final Animator animator = new AnimatorModel();
     /** Media reference (<code>null</code> created with existing surface). */
     private final Media media;
     /** Number of horizontal frames. */

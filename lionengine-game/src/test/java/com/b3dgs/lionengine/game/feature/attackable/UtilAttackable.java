@@ -22,12 +22,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.graphic.drawable.AnimatorMock;
 
 /**
  * Utilities dedicated to attackable test.
@@ -41,7 +41,7 @@ final class UtilAttackable
      */
     public static void prepare(Featurable featurable)
     {
-        final Animator animator = new AnimatorMock();
+        final Animator animator = new AnimatorModel();
         animator.play(new Animation("test", 1, 1, 1.0, false, false));
         featurable.addFeature(new AnimatableModel(animator));
         featurable.addFeature(new TransformableModel());

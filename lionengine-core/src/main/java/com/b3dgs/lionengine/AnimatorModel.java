@@ -15,17 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.graphic.drawable;
-
-import com.b3dgs.lionengine.AnimState;
-import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Animator;
-import com.b3dgs.lionengine.Check;
+package com.b3dgs.lionengine;
 
 /**
  * Animator implementation.
  */
-final class AnimatorImpl implements Animator
+public final class AnimatorModel implements Animator
 {
     /** Frame. */
     private static final double FRAME = 1.0;
@@ -48,9 +43,9 @@ final class AnimatorImpl implements Animator
     private AnimState state = AnimState.STOPPED;
 
     /**
-     * Internal constructor.
+     * Create animator.
      */
-    AnimatorImpl()
+    public AnimatorModel()
     {
         super();
     }

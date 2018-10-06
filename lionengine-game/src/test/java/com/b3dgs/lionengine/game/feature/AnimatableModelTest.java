@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.graphic.drawable.AnimatorMock;
+import com.b3dgs.lionengine.AnimatorModel;
 
 /**
  * Test {@link AnimatableModel}.
@@ -54,7 +54,7 @@ public final class AnimatableModelTest
         final int first = 2;
         final int last = 4;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
-        final Animatable animatable = new AnimatableModel(new AnimatorMock());
+        final Animatable animatable = new AnimatableModel(new AnimatorModel());
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);
@@ -83,7 +83,7 @@ public final class AnimatableModelTest
         final int last = 5;
         final double speed = 2.0;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, speed, false, false);
-        final Animatable animatable = new AnimatableModel(new AnimatorMock());
+        final Animatable animatable = new AnimatableModel(new AnimatorModel());
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);

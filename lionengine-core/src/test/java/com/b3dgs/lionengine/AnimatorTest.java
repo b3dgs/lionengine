@@ -15,16 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.graphic.drawable;
+package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
-
-import com.b3dgs.lionengine.AnimState;
-import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Animator;
 
 /**
  * Test {@link Animator}.
@@ -37,7 +33,7 @@ public final class AnimatorTest
     @Test
     public void testConstructor()
     {
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
 
         assertEquals(AnimState.STOPPED, animator.getAnimState());
         assertEquals(Animation.MINIMUM_FRAME, animator.getFrame());
@@ -51,7 +47,7 @@ public final class AnimatorTest
     public void testPlay()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, animator.getAnimState());
@@ -65,7 +61,7 @@ public final class AnimatorTest
     @Test
     public void testPlayNull()
     {
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
 
         assertThrows(() -> animator.play(null), "Unexpected null argument !");
     }
@@ -76,7 +72,7 @@ public final class AnimatorTest
     @Test
     public void testStop()
     {
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.stop();
 
         assertEquals(AnimState.STOPPED, animator.getAnimState());
@@ -89,7 +85,7 @@ public final class AnimatorTest
     public void testUpdateNoLoopNoReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.0, false, false);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, animator.getAnimState());
@@ -122,7 +118,7 @@ public final class AnimatorTest
     public void testUpdateLoopNoReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, true);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, animator.getAnimState());
@@ -161,7 +157,7 @@ public final class AnimatorTest
     public void testUpdateNoLoopReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, false);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, animator.getAnimState());
@@ -206,7 +202,7 @@ public final class AnimatorTest
     public void testUpdateLoopReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, true);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, animator.getAnimState());
@@ -263,7 +259,7 @@ public final class AnimatorTest
     public void testSetSpeed()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
         animator.setAnimSpeed(2.0);
         animator.update(1.0);
@@ -279,7 +275,7 @@ public final class AnimatorTest
     @Test
     public void testSetSpeedNegative()
     {
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
 
         assertThrows(() -> animator.setAnimSpeed(-1.0), "Invalid argument: -1.0 is not superior or equal to 0.0");
     }
@@ -291,7 +287,7 @@ public final class AnimatorTest
     public void testSetFrame()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
         animator.play(animation);
         animator.setFrame(2);
         animator.update(1.0);
@@ -307,7 +303,7 @@ public final class AnimatorTest
     @Test
     public void testFrameInvalid()
     {
-        final Animator animator = new AnimatorImpl();
+        final Animator animator = new AnimatorModel();
 
         assertThrows(() -> animator.setFrame(0), "Invalid argument: 0 is not superior or equal to 1");
     }
