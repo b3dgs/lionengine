@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
@@ -203,7 +202,7 @@ public final class FeaturableModelTest
                 unfilledType.set(type);
             }
         };
-        assertThrows(() -> featurable.addFeature(feature), "Class not found: " + String.class);
+        assertThrows(() -> featurable.addFeature(feature), "Class not found: " + String.class + " in " + feature);
     }
 
     /**
@@ -272,67 +271,6 @@ public final class FeaturableModelTest
     }
 
     /**
-     * Test the add features with class not found.
-     */
-    @Test
-    public void testAddFeaturesClassNotFound()
-    {
-        final Media media = Medias.create("Features.xml");
-
-        final Xml root = new Xml(FeaturableConfig.NODE_FEATURABLE);
-        final Xml unknown = root.createChild(FeaturableConfig.NODE_FEATURE);
-        unknown.setText("void");
-
-        root.save(media);
-
-        assertThrows(() -> new FeaturableModel(new Services(), new Setup(media)),
-                     FeaturableModel.ERROR_CLASS_PRESENCE + "void");
-
-        UtilFile.deleteFile(media.getFile());
-    }
-
-    /**
-     * Test the add features without constructor.
-     */
-    @Test
-    public void testAddFeatureNoConstructor()
-    {
-        final Media media = Medias.create("Features.xml");
-
-        final Xml root = new Xml(FeaturableConfig.NODE_FEATURABLE);
-        final Xml unknown = root.createChild(FeaturableConfig.NODE_FEATURE);
-        unknown.setText(MyFeatureNoConstructor.class.getName());
-
-        root.save(media);
-
-        assertCause(() -> new FeaturableModel(new Services(), new Setup(media)), NoSuchMethodException.class);
-
-        UtilFile.deleteFile(media.getFile());
-    }
-
-    /**
-     * Test the add features without filled service.
-     */
-    @Test
-    public void testAddFeatureFilledService()
-    {
-        final Media media = Medias.create("Features.xml");
-
-        final Xml root = new Xml(FeaturableConfig.NODE_FEATURABLE);
-        final Xml unknown = root.createChild(FeaturableConfig.NODE_FEATURE);
-        unknown.setText(MyFeatureService.class.getName());
-
-        root.save(media);
-
-        final String error = "[Features.xml] Class not found: "
-                             + "class com.b3dgs.lionengine.game.feature.FeaturableModelTest$MyFeature";
-
-        assertThrows(() -> new FeaturableModel(new Services(), new Setup(media)), error);
-
-        UtilFile.deleteFile(media.getFile());
-    }
-
-    /**
      * Mock feature.
      */
     private static interface MyFeatureInterface extends Feature
@@ -346,25 +284,6 @@ public final class FeaturableModelTest
     private static class MyFeature extends FeatureModel implements MyFeatureInterface
     {
         // Mock
-    }
-
-    /**
-     * Mock feature.
-     */
-    private static class MyFeatureService extends FeatureModel
-    {
-        @FeatureGet private MyFeature feature;
-    }
-
-    /**
-     * Mock feature.
-     */
-    private static class MyFeatureNoConstructor extends FeatureModel implements MyFeatureInterface
-    {
-        private MyFeatureNoConstructor(@SuppressWarnings("unused") Boolean b)
-        {
-            // Mock
-        }
     }
 
     /**
