@@ -17,11 +17,19 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents the featurable configuration data.
@@ -41,10 +49,24 @@ public final class FeaturableConfig
     public static final String ATT_SETUP = Constant.XML_PREFIX + "setup";
     /** Feature node. */
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
+    /** Class not found error. */
+    static final String ERROR_CLASS_PRESENCE = "Class not found: ";
     /** Default class name. */
     private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 35;
+    /** Class loader. */
+    private static final ClassLoader LOADER = Configurer.class.getClassLoader();
+    /** Class cache. */
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
+
+    /**
+     * Clear classes cache.
+     */
+    public static void clearCache()
+    {
+        CLASS_CACHE.clear();
+    }
 
     /**
      * Import the featurable data from configurer.
@@ -126,6 +148,64 @@ public final class FeaturableConfig
         node.setText(setup);
 
         return node;
+    }
+
+    /**
+     * Get all available features.
+     * Default constructor of each feature must be available or with {@link Setup} as single parameter.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     * @return The available features.
+     * @throws LionEngineException If invalid class.
+     */
+    public static List<Feature> getFeatures(Services services, Setup setup)
+    {
+        final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
+        final List<Feature> features = new ArrayList<>(children.size());
+        for (final Xml featureNode : children)
+        {
+            final String className = featureNode.getText();
+            final Feature feature;
+            try
+            {
+                final Class<? extends Feature> clazz = getClass(className);
+                feature = UtilReflection.createReduce(clazz, services, setup);
+            }
+            catch (final NoSuchMethodException exception)
+            {
+                throw new LionEngineException(exception);
+            }
+            features.add(feature);
+        }
+        return features;
+    }
+
+    /**
+     * Get the class reference from its name using cache.
+     * 
+     * @param <T> The class type.
+     * @param className The class name.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> Class<T> getClass(String className)
+    {
+        if (CLASS_CACHE.containsKey(className))
+        {
+            return (Class<T>) CLASS_CACHE.get(className);
+        }
+        try
+        {
+            final Class<?> clazz = LOADER.loadClass(className);
+            CLASS_CACHE.put(className, clazz);
+            return (Class<T>) clazz;
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
+        }
     }
 
     /** Featurable class name. */

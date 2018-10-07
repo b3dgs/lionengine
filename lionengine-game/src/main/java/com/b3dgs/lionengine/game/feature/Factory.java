@@ -21,6 +21,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
@@ -241,6 +242,7 @@ public class Factory implements HandlerListener
     private <O extends Featurable> O createFeaturable(Class<O> type, Setup setup) throws NoSuchMethodException
     {
         final O featurable = UtilReflection.createReduce(type, services, setup);
+        addFeatures(featurable, services, setup);
         for (final Feature feature : featurable.getFeatures())
         {
             featurable.checkListener(feature);
@@ -252,8 +254,26 @@ public class Factory implements HandlerListener
                 }
             }
         }
-
         return featurable;
+    }
+
+    /**
+     * Add all features declared in configuration.
+     * 
+     * @param featurable The featurable to handle.
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    private void addFeatures(Featurable featurable, Services services, Setup setup)
+    {
+        final List<Feature> rawFeatures = FeaturableConfig.getFeatures(services, setup);
+        final int length = rawFeatures.size();
+        for (int i = 0; i < length; i++)
+        {
+            final Feature feature = rawFeatures.get(i);
+            featurable.addFeature(feature);
+        }
+        featurable.addAfter(services, setup);
     }
 
     /*

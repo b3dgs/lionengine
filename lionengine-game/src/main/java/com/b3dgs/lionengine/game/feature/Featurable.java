@@ -71,6 +71,18 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 public interface Featurable extends FeatureProvider
 {
     /**
+     * Add features after read from config.
+     * Does nothing by default.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    default void addAfter(Services services, Setup setup)
+    {
+        // Nothing by default
+    }
+
+    /**
      * Add a feature.
      * 
      * @param feature The feature to add.

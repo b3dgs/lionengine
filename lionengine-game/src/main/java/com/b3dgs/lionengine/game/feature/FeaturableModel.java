@@ -19,17 +19,12 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -39,78 +34,10 @@ public class FeaturableModel implements Featurable
 {
     /** Class not found error. */
     static final String ERROR_CLASS_PRESENCE = "Class not found: ";
+    /** In. */
+    private static final String IN = " in ";
     /** Inject service error. */
     private static final String ERROR_INJECT = "Error during service injection !";
-    /** Class loader. */
-    private static final ClassLoader LOADER = Configurer.class.getClassLoader();
-    /** Class cache. */
-    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
-
-    /**
-     * Clear classes cache.
-     */
-    public static void clearCache()
-    {
-        CLASS_CACHE.clear();
-    }
-
-    /**
-     * Get all available features.
-     * Default constructor of each feature must be available or with {@link Setup} as single parameter.
-     * 
-     * @param services The services reference.
-     * @param setup The setup reference.
-     * @return The available features.
-     * @throws LionEngineException If invalid class.
-     */
-    private static List<Feature> getFeatures(Services services, Setup setup)
-    {
-        final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
-        final List<Feature> features = new ArrayList<>(children.size());
-        for (final Xml featureNode : children)
-        {
-            final String className = featureNode.getText();
-            final Feature feature;
-            try
-            {
-                final Class<? extends Feature> clazz = getClass(className);
-                feature = UtilReflection.createReduce(clazz, services, setup);
-            }
-            catch (final NoSuchMethodException exception)
-            {
-                throw new LionEngineException(exception);
-            }
-            features.add(feature);
-        }
-        return features;
-    }
-
-    /**
-     * Get the class reference from its name using cache.
-     * 
-     * @param <T> The class type.
-     * @param className The class name.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> Class<T> getClass(String className)
-    {
-        if (CLASS_CACHE.containsKey(className))
-        {
-            return (Class<T>) CLASS_CACHE.get(className);
-        }
-        try
-        {
-            final Class<?> clazz = LOADER.loadClass(className);
-            CLASS_CACHE.put(className, clazz);
-            return (Class<T>) clazz;
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
-        }
-    }
 
     /**
      * Get all with that require an injected service.
@@ -167,24 +94,6 @@ public class FeaturableModel implements Featurable
 
         media = setup.getMedia();
         addFeature(new IdentifiableModel());
-        addFeatures(services, setup);
-    }
-
-    /**
-     * Add all features declared in configuration.
-     * 
-     * @param services The services reference.
-     * @param setup The setup reference.
-     */
-    private void addFeatures(Services services, Setup setup)
-    {
-        final List<Feature> rawFeatures = getFeatures(services, setup);
-        final int length = rawFeatures.size();
-        for (int i = 0; i < length; i++)
-        {
-            final Feature feature = rawFeatures.get(i);
-            addFeature(feature);
-        }
     }
 
     /**
@@ -229,11 +138,11 @@ public class FeaturableModel implements Featurable
                 }
                 else if (media != null)
                 {
-                    throw new LionEngineException(media, ERROR_CLASS_PRESENCE + String.valueOf(type));
+                    throw new LionEngineException(media, ERROR_CLASS_PRESENCE + String.valueOf(type) + IN + object);
                 }
                 else
                 {
-                    throw new LionEngineException(ERROR_CLASS_PRESENCE + String.valueOf(type));
+                    throw new LionEngineException(ERROR_CLASS_PRESENCE + String.valueOf(type) + IN + object);
                 }
             }
         }
