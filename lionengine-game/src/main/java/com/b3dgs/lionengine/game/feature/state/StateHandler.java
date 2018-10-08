@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature.state;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Check;
@@ -51,6 +52,8 @@ public class StateHandler extends FeatureModel implements Updatable
     private final Map<Class<? extends State>, State> states = new HashMap<>();
     /** Configurer reference. */
     private final Optional<Configurer> configurer;
+    /** Animation name converter. */
+    private final Function<Class<? extends State>, String> converter;
     /** Current state pointer (<code>null</code> if none). */
     private State current;
 
@@ -62,6 +65,7 @@ public class StateHandler extends FeatureModel implements Updatable
         super();
 
         configurer = Optional.empty();
+        converter = Class::getSimpleName;
     }
 
     /**
@@ -80,17 +84,27 @@ public class StateHandler extends FeatureModel implements Updatable
         Check.notNull(configurer);
 
         this.configurer = Optional.of(configurer);
+        converter = Class::getSimpleName;
     }
 
     /**
-     * Get the animation name ({@link Class#getSimpleName()} by default).
+     * Create a handler model.
+     * <p>
+     * The {@link Configurer} can provide {@link Animation}.
+     * </p>
      * 
-     * @param state The state class.
-     * @return The animation name.
+     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param converter The animation name converter.
+     * @throws LionEngineException If <code>null</code> argument.
      */
-    protected String getAnimationName(Class<? extends State> state)
+    public StateHandler(Configurer configurer, Function<Class<? extends State>, String> converter)
     {
-        return state.getSimpleName();
+        super();
+
+        Check.notNull(configurer);
+
+        this.configurer = Optional.of(configurer);
+        this.converter = converter;
     }
 
     /**
@@ -146,7 +160,7 @@ public class StateHandler extends FeatureModel implements Updatable
             if (configurer.isPresent())
             {
                 final AnimationConfig configAnimations = AnimationConfig.imports(configurer.get());
-                final String name = getAnimationName(state);
+                final String name = converter.apply(state);
                 final Animation animation = configAnimations.getAnimation(name);
                 final Class<? extends Feature> feature;
                 feature = (Class<? extends Feature>) UtilReflection.getCompatibleConstructor(state,
