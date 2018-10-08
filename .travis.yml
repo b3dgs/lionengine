@@ -1,3 +1,4 @@
+sudo: required
 language: java
 
 jdk: oraclejdk8
@@ -23,12 +24,12 @@ addons:
       - libasound2-dev
 
 before_install:
- - sudo apt-get update
  - sudo apt-get install gnome-themes-standard
  - sudo apt-get install metacity
  - sudo apt-get install libwebkit-dev
 
 cache:
+  apt: true
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
