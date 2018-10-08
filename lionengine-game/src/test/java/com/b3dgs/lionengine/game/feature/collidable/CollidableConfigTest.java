@@ -75,7 +75,7 @@ public final class CollidableConfigTest
         final String group = "1";
         final Media media = Medias.create("object.xml");
         final Xml root = new Xml("test");
-        final Xml node = root.createChild("group");
+        final Xml node = root.createChild("lionengine:group");
         node.setText(group);
         root.save(media);
 
@@ -91,7 +91,7 @@ public final class CollidableConfigTest
     {
         final Media media = Medias.create("object.xml");
         final Xml root = new Xml("test");
-        final Xml node = root.createChild("group");
+        final Xml node = root.createChild("lionengine:group");
         node.setText("a");
         root.save(media);
 
