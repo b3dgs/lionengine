@@ -62,6 +62,25 @@ public class Factory implements HandlerListener
     /** Construction error. */
     static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
+    /**
+     * Add all features declared in configuration.
+     * 
+     * @param featurable The featurable to handle.
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    private static void addFeatures(Featurable featurable, Services services, Setup setup)
+    {
+        final List<Feature> rawFeatures = FeaturableConfig.getFeatures(services, setup);
+        final int length = rawFeatures.size();
+        for (int i = 0; i < length; i++)
+        {
+            final Feature feature = rawFeatures.get(i);
+            featurable.addFeature(feature);
+        }
+        featurable.addAfter(services, setup);
+    }
+
     /** Setups list. */
     private final Map<Media, Setup> setups = new HashMap<>();
     /** Cached instances. */
@@ -257,24 +276,7 @@ public class Factory implements HandlerListener
         return featurable;
     }
 
-    /**
-     * Add all features declared in configuration.
-     * 
-     * @param featurable The featurable to handle.
-     * @param services The services reference.
-     * @param setup The setup reference.
-     */
-    private void addFeatures(Featurable featurable, Services services, Setup setup)
-    {
-        final List<Feature> rawFeatures = FeaturableConfig.getFeatures(services, setup);
-        final int length = rawFeatures.size();
-        for (int i = 0; i < length; i++)
-        {
-            final Feature feature = rawFeatures.get(i);
-            featurable.addFeature(feature);
-        }
-        featurable.addAfter(services, setup);
-    }
+    
 
     /*
      * HandlerListener
