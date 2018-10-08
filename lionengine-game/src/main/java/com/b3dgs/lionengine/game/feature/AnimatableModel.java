@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorModel;
 
 /**
  * Animatable model implementation.
@@ -28,6 +29,14 @@ public class AnimatableModel extends FeatureModel implements Animatable
 {
     /** Animator reference. */
     private final Animator animator;
+
+    /**
+     * Create the feature with internal animator.
+     */
+    public AnimatableModel()
+    {
+        this(new AnimatorModel());
+    }
 
     /**
      * Create the feature.
