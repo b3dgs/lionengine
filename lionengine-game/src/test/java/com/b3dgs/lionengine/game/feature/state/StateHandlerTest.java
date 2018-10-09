@@ -129,6 +129,20 @@ public final class StateHandlerTest
     }
 
     /**
+     * Test the state handling with custom converter.
+     */
+    @Test
+    public void testHandlerConverter()
+    {
+        final Featurable featurable = new FeaturableModel();
+        final StateHandler handler;
+        handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml")),
+                                                               state -> state.getName()));
+        handler.prepare(featurable);
+        assertThrows(() -> handler.changeState(StateIdle.class), "Animation not found: " + StateIdle.class.getName());
+    }
+
+    /**
      * Test the state clear transition.
      */
     @Test
