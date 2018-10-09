@@ -23,6 +23,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -90,6 +91,28 @@ public final class FactoryTest
 
         assertNotNull(featurable1);
         assertNotNull(featurable2);
+    }
+
+    /**
+     * Test the object creation with features.
+     */
+    @Test
+    public void testCreateFeatures()
+    {
+        final Featurable featurable = factory.create(Medias.create("object_features.xml"));
+
+        assertTrue(featurable.hasFeature(Mirrorable.class));
+    }
+
+    /**
+     * Test the object creation with unknown feature.
+     */
+    @Test
+    public void testCreateUnknownFeature()
+    {
+        final Media media = Medias.create("object_unknown_feature.xml");
+
+        assertThrows(() -> factory.create(media), FeaturableConfig.ERROR_CLASS_PRESENCE + "Unknown");
     }
 
     /**
