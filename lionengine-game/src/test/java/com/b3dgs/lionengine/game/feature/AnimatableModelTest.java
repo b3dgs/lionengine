@@ -54,7 +54,7 @@ public final class AnimatableModelTest
         final int first = 2;
         final int last = 4;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
-        final Animatable animatable = new AnimatableModel(new AnimatorModel());
+        final Animatable animatable = new AnimatableModel();
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);
