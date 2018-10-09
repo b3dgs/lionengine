@@ -142,7 +142,7 @@ final class SequenceRenderer
         {
             cursorVisibility = Boolean.valueOf(visible);
         }
-        else if (visible != cursorVisibility.booleanValue())
+        else
         {
             if (visible)
             {
