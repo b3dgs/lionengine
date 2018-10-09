@@ -70,11 +70,8 @@ public class SceneRasterable extends Sequence
         handler.addComponent(new ComponentDisplayable());
     }
 
-    @Override
-    public void load()
+    private void add(SetupSurfaceRastered setup, int offsetX)
     {
-        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create("object.xml"),
-                                                                    Medias.create("raster.xml"));
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new MirrorableModel());
@@ -93,8 +90,16 @@ public class SceneRasterable extends Sequence
         }));
         featurable.addFeature(new DisplayableModel(g -> rasterable.render(g)));
 
-        transformable.setLocationX(120);
+        transformable.setLocationX(120 + offsetX);
         handler.add(featurable);
+    }
+
+    @Override
+    public void load()
+    {
+        add(new SetupSurfaceRastered(Medias.create("object.xml"), Medias.create("raster.xml")), 0);
+        add(new SetupSurfaceRastered(Medias.create("object2.xml")), 64);
+        add(new SetupSurfaceRastered(Medias.create("object3.xml")), 128);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
 
         timing.start();
