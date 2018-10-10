@@ -63,7 +63,7 @@ public interface Mover extends Localizable
     void moveLocation(double extrp, double vx, double vy);
 
     /**
-     * Teleport to a new location. Old location is not stored..
+     * Teleport to a new location. Old location is not stored.
      * 
      * @param x The new horizontal location.
      * @param y The new vertical location.

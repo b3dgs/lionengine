@@ -276,8 +276,6 @@ public class Factory implements HandlerListener
         return featurable;
     }
 
-    
-
     /*
      * HandlerListener
      */
