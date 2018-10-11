@@ -22,6 +22,7 @@ import java.util.List;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -48,8 +49,14 @@ final class CollidableRenderer
      * @param origin The origin used.
      * @param transformable The transformable owner.
      * @param cacheColls The computed collisions.
+     * @param cacheRect The computed rectangles.
      */
-    public void render(Graphic g, Viewer viewer, Origin origin, Shape transformable, List<Collision> cacheColls)
+    public void render(Graphic g,
+                       Viewer viewer,
+                       Origin origin,
+                       Shape transformable,
+                       List<Collision> cacheColls,
+                       List<Area> cacheRect)
     {
         if (showCollision)
         {
@@ -67,11 +74,10 @@ final class CollidableRenderer
                 }
                 else
                 {
-                    final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
-                                                    collision.getWidth());
-                    final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
-                                                    collision.getHeight());
-                    g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
+                    final Area area = cacheRect.get(i);
+                    final int x = (int) viewer.getViewpointX(area.getX());
+                    final int y = (int) viewer.getViewpointY(area.getY());
+                    g.drawRect(x, y - area.getHeight(), area.getWidth(), area.getHeight(), false);
                 }
             }
         }

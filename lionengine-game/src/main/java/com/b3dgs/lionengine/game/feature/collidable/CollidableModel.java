@@ -197,7 +197,7 @@ public class CollidableModel extends FeatureModel
     @Override
     public void render(Graphic g)
     {
-        renderer.render(g, viewer, origin, transformable, updater.getCache());
+        renderer.render(g, viewer, origin, transformable, updater.getCache(), updater.getCollisionBounds());
     }
 
     @Override
