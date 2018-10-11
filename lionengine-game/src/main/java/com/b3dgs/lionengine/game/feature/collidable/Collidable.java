@@ -69,9 +69,9 @@ public interface Collidable extends Feature, Renderable, CollidableListener
      * Check if the collidable entered in collision with another one.
      * 
      * @param collidable The collidable reference.
-     * @return The collision found if collide, <code>null</code> if none.
+     * @return The collisions found if collide.
      */
-    Collision collide(Collidable collidable);
+    List<Collision> collide(Collidable collidable);
 
     /**
      * Set the associated group.

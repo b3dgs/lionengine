@@ -43,31 +43,10 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     /** Location reduce factor (the higher it is, the lower is the map division per location). */
     static final double REDUCE_FACTOR = 128.0;
 
-    /**
-     * Check others element at specified point.
-     * 
-     * @param objectA The collidable reference.
-     * @param acceptedElements The current elements to check.
-     * @param point The point to check.
-     */
-    private static void checkPoint(Collidable objectA, Map<Point, List<Collidable>> acceptedElements, Point point)
-    {
-        final List<Collidable> others = acceptedElements.get(point);
-        final int othersLength = others.size();
-
-        for (int k = 0; k < othersLength; k++)
-        {
-            final Collidable objectB = others.get(k);
-            final Collision collision = objectA.collide(objectB);
-            if (collision != null)
-            {
-                objectA.notifyCollided(objectB, collision);
-            }
-        }
-    }
-
     /** Mapping reduced. */
     private final Map<Integer, Map<Point, List<Collidable>>> collidables = new HashMap<>();
+    /** To be notified. */
+    private final List<Collided> toNotify = new ArrayList<>();
 
     /**
      * Create component.
@@ -153,6 +132,11 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
                 checkGroup(current);
             }
         }
+        for (final Collided collided : toNotify)
+        {
+            collided.collidableA.notifyCollided(collided.collidableB, collided.collision);
+        }
+        toNotify.clear();
     }
 
     /**
@@ -203,6 +187,32 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         if (acceptedElements.containsKey(point))
         {
             checkPoint(objectA, acceptedElements, point);
+        }
+    }
+
+    /**
+     * Check others element at specified point.
+     * 
+     * @param objectA The collidable reference.
+     * @param acceptedElements The current elements to check.
+     * @param point The point to check.
+     */
+    private void checkPoint(Collidable objectA, Map<Point, List<Collidable>> acceptedElements, Point point)
+    {
+        final List<Collidable> others = acceptedElements.get(point);
+        final int othersLength = others.size();
+
+        for (int k = 0; k < othersLength; k++)
+        {
+            final Collidable objectB = others.get(k);
+            if (objectA != objectB)
+            {
+                final List<Collision> collisions = objectA.collide(objectB);
+                for (final Collision collision : collisions)
+                {
+                    toNotify.add(new Collided(objectA, objectB, collision));
+                }
+            }
         }
     }
 
@@ -309,6 +319,32 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
             addPoint(new Point(minX, maxY), collidable);
             addPoint(new Point(maxX, minY), collidable);
             addPoint(new Point(maxX, maxY), collidable);
+        }
+    }
+
+    /**
+     * Collided data for postponed notification.
+     */
+    private static final class Collided
+    {
+        private final Collidable collidableA;
+        private final Collidable collidableB;
+        private final Collision collision;
+
+        /**
+         * Create collided data.
+         * 
+         * @param collidableA The first collidable.
+         * @param collidableB The second collidable.
+         * @param collision The associated collision.
+         */
+        private Collided(Collidable collidableA, Collidable collidableB, Collision collision)
+        {
+            super();
+
+            this.collidableA = collidableA;
+            this.collidableB = collidableB;
+            this.collision = collision;
         }
     }
 }

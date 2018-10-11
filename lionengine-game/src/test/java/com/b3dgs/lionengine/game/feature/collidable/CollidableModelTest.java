@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
-import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
@@ -141,8 +141,8 @@ public final class CollidableModelTest
     @Test
     public void testCollidable()
     {
-        assertNull(collidable1.collide(collidable1));
-        assertNull(collidable2.collide(collidable1));
+        assertTrue(collidable1.collide(collidable1).isEmpty());
+        assertTrue(collidable2.collide(collidable1).isEmpty());
 
         collidable1.setOrigin(Origin.MIDDLE);
         collidable1.addCollision(Collision.AUTOMATIC);
@@ -153,19 +153,19 @@ public final class CollidableModelTest
         transformable1.moveLocation(1.0, 0.0, 1.0);
         transformable2.moveLocation(1.0, 0.0, 1.0);
 
-        assertEquals(Collision.AUTOMATIC, collidable1.collide(collidable2));
-        assertEquals(collision2, collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(Collision.AUTOMATIC), collidable1.collide(collidable2));
+        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
 
         assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
         assertEquals(Collision.AUTOMATIC, collidable1.getCollisions().iterator().next());
 
         transformable2.moveLocation(1.0, 2.0, 1.0);
 
-        assertEquals(collision2, collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
 
         transformable2.moveLocation(1.0, 5.0, 5.0);
 
-        assertNull(collidable1.collide(collidable2));
+        assertTrue(collidable1.collide(collidable2).isEmpty());
     }
 
     /**
@@ -190,11 +190,11 @@ public final class CollidableModelTest
         transformable1.moveLocation(1.0, 1, 1);
         transformable2.moveLocation(1.0, 0, 0);
 
-        assertEquals(collision2, collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
 
         transformable1.teleport(2.0, 2.0);
 
-        assertEquals(collision2, collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
     }
 
     /**
@@ -217,16 +217,16 @@ public final class CollidableModelTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
-        transformable1.teleport(0, 0);
+        transformable1.teleport(0.0, 0.0);
         transformable2.moveLocation(0.0, 0.0, 0.0);
 
-        assertNull(collidable1.collide(collidable2));
-        assertNull(collidable2.collide(collidable1));
+        assertTrue(collidable1.collide(collidable2).isEmpty());
+        assertTrue(collidable2.collide(collidable1).isEmpty());
 
         transformable1.teleport(2.0, 2.0);
 
-        assertEquals(collision1, collidable1.collide(collidable2));
-        assertEquals(collision2, collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(collision1), collidable1.collide(collidable2));
+        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
     }
 
     /**
@@ -246,12 +246,12 @@ public final class CollidableModelTest
         collidable1.addCollision(collision);
         transformable1.teleport(1.0, 1.0);
 
-        assertNotNull(collidable1.collide(collidable1));
+        assertFalse(collidable1.collide(collidable1).isEmpty());
 
         collidable1.setEnabled(false);
         transformable1.teleport(1.0, 1.0);
 
-        assertNull(collidable1.collide(collidable1));
+        assertTrue(collidable1.collide(collidable1).isEmpty());
     }
 
     /**
@@ -264,15 +264,15 @@ public final class CollidableModelTest
         collidable1.addCollision(collision);
         transformable1.teleport(1.0, 1.0);
 
-        assertNull(collidable1.collide(collidable1));
+        assertTrue(collidable1.collide(collidable1).isEmpty());
 
         collidable1.addAccept(collidable1.getGroup().intValue());
 
-        assertNotNull(collidable1.collide(collidable1));
+        assertFalse(collidable1.collide(collidable1).isEmpty());
 
         collidable1.removeAccept(collidable1.getGroup().intValue());
 
-        assertNull(collidable1.collide(collidable1));
+        assertTrue(collidable1.collide(collidable1).isEmpty());
     }
 
     /**

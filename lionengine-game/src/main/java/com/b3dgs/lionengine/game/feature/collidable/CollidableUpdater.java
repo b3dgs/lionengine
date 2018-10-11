@@ -214,14 +214,15 @@ final class CollidableUpdater implements IdentifiableListener
      * @param transformable The transformable owner.
      * @param other The collidable reference.
      * @param accepted The accepted groups.
-     * @return The collision found if collide, <code>null</code> if none.
+     * @return The collisions found if collide.
      */
-    public Collision collide(Origin origin,
-                             FeatureProvider provider,
-                             Transformable transformable,
-                             Collidable other,
-                             Collection<Integer> accepted)
+    public List<Collision> collide(Origin origin,
+                                   FeatureProvider provider,
+                                   Transformable transformable,
+                                   Collidable other,
+                                   Collection<Integer> accepted)
     {
+        final List<Collision> collisions = new ArrayList<>();
         if (enabled && accepted.contains(other.getGroup()))
         {
             final int size = cacheColls.size();
@@ -235,11 +236,11 @@ final class CollidableUpdater implements IdentifiableListener
                                                     cacheRect.get(i));
                 if (collision != null)
                 {
-                    return collision;
+                    collisions.add(collision);
                 }
             }
         }
-        return null;
+        return collisions;
     }
 
     /**

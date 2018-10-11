@@ -189,7 +189,7 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public Collision collide(Collidable other)
+    public List<Collision> collide(Collidable other)
     {
         return updater.collide(origin, this, transformable, other, accepted);
     }
