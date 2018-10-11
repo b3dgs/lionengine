@@ -58,9 +58,10 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         for (int k = 0; k < othersLength; k++)
         {
             final Collidable objectB = others.get(k);
-            if (objectA.collide(objectB) != null)
+            final Collision collision = objectA.collide(objectB);
+            if (collision != null)
             {
-                objectA.notifyCollided(objectB);
+                objectA.notifyCollided(objectB, collision);
             }
         }
     }

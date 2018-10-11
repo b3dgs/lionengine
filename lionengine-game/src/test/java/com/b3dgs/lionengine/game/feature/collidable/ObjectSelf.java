@@ -30,7 +30,7 @@ final class ObjectSelf extends FeaturableModel implements CollidableListener
     final AtomicReference<Collidable> called = new AtomicReference<>();
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(Collidable collidable, Collision collision)
     {
         called.set(collidable);
     }

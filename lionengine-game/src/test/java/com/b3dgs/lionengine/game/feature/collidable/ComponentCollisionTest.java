@@ -128,7 +128,7 @@ public final class ComponentCollisionTest
         handler.add(featurable3);
         handler.add(nonCollidable);
 
-        final CollidableListener listener = collidable -> collide.set(collidable);
+        final CollidableListener listener = (collidable, collision) -> collide.set(collidable);
         collidable2.addListener(listener);
     }
 

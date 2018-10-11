@@ -26,6 +26,7 @@ public interface CollidableListener
      * Notify when a collision occurred with another {@link Collidable}.
      * 
      * @param collidable The collidable reference.
+     * @param collision The associated collision.
      */
-    void notifyCollided(Collidable collidable);
+    void notifyCollided(Collidable collidable, Collision collision);
 }

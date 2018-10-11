@@ -237,13 +237,13 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(Collidable collidable, Collision collision)
     {
         final int length = listeners.size();
         for (int i = 0; i < length; i++)
         {
             final CollidableListener listener = listeners.get(i);
-            listener.notifyCollided(collidable);
+            listener.notifyCollided(collidable, collision);
         }
     }
 

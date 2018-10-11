@@ -175,15 +175,16 @@ public final class CollidableModelTest
     public void testDifferentSizes()
     {
         final AtomicBoolean auto = new AtomicBoolean();
-        collidable1.checkListener((CollidableListener) collidable -> auto.set(true));
-
-        collidable1.notifyCollided(collidable2);
-        assertTrue(auto.get());
+        collidable1.checkListener((CollidableListener) (collidable, collision) -> auto.set(true));
 
         final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
+        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
+
+        collidable1.notifyCollided(collidable2, collision1);
+        assertTrue(auto.get());
+
         collidable1.addCollision(collision1);
 
-        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
         collidable2.addCollision(collision2);
 
         transformable1.moveLocation(1.0, 1, 1);

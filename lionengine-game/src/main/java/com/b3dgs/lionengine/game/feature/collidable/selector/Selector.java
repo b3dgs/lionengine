@@ -233,7 +233,7 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
      */
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(Collidable collidable, Collision collision)
     {
         if (collidable.hasFeature(Selectable.class))
         {
