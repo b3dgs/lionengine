@@ -86,10 +86,6 @@ public final class ComponentCollisionTest
     private Transformable transformable2;
     private Collidable collidable2;
 
-    private Featurable featurable3;
-    private Transformable transformable3;
-    private Collidable collidable3;
-
     /**
      * Prepare test.
      */
@@ -116,16 +112,10 @@ public final class ComponentCollisionTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
-        featurable3 = new ObjectSelf();
-        transformable3 = featurable3.addFeatureAndGet(new TransformableModel(setup));
-        collidable3 = featurable3.addFeatureAndGet(new CollidableModel(services, setup));
-        collidable3.setGroup(0);
-
         final ComponentCollision component = new ComponentCollision();
         handler.addComponent(component);
         handler.add(featurable1);
         handler.add(featurable2);
-        handler.add(featurable3);
         handler.add(nonCollidable);
 
         final CollidableListener listener = (collidable, collision) -> collide.set(collidable);
@@ -203,7 +193,6 @@ public final class ComponentCollisionTest
     {
         transformable1.teleport(0.0, 0.0);
         transformable2.teleport(0.0, 0.0);
-        transformable3.teleport(0.0, 0.0);
 
         handler.update(1.0);
 

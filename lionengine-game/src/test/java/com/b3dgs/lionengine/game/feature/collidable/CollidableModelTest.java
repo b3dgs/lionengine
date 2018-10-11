@@ -159,7 +159,7 @@ public final class CollidableModelTest
         assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
         assertEquals(Collision.AUTOMATIC, collidable1.getCollisions().iterator().next());
 
-        transformable2.moveLocation(1.0, 2.0, 1.0);
+        transformable2.moveLocation(1.0, 1.0, 0.0);
 
         assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
 
@@ -192,7 +192,7 @@ public final class CollidableModelTest
 
         assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
 
-        transformable1.teleport(2.0, 2.0);
+        transformable1.teleport(0.5, 3.5);
 
         assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
     }
@@ -223,7 +223,7 @@ public final class CollidableModelTest
         assertTrue(collidable1.collide(collidable2).isEmpty());
         assertTrue(collidable2.collide(collidable1).isEmpty());
 
-        transformable1.teleport(2.0, 2.0);
+        transformable1.teleport(1.5, 2.5);
 
         assertEquals(Arrays.asList(collision1), collidable1.collide(collidable2));
         assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));

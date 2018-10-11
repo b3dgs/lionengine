@@ -119,7 +119,7 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
             public void notifySelectionDone(Area selection)
             {
                 transformable.transform(selection.getX(),
-                                        selection.getY(),
+                                        selection.getY() - selection.getHeight(),
                                         selection.getWidth(),
                                         selection.getHeight());
                 notifyAction = notifyAll;

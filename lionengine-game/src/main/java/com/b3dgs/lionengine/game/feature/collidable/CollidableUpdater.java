@@ -61,8 +61,8 @@ final class CollidableUpdater implements IdentifiableListener
         final int offsetX = getOffsetX(collision, mirror);
         final int offsetY = getOffsetY(collision, mirror);
 
-        final double sh = rectangle.getX();
-        final double sv = rectangle.getY();
+        final double sh = origin.getX(transformable.getOldX() + offsetX, rectangle.getWidthReal());
+        final double sv = origin.getY(transformable.getOldY() + offsetY, rectangle.getHeightReal());
         final double dh = origin.getX(transformable.getX() + offsetX, rectangle.getWidthReal()) - sh;
         final double dv = origin.getY(transformable.getY() + offsetY, rectangle.getHeightReal()) - sv;
         final double norm = Math.sqrt(dh * dh + dv * dv);
@@ -336,9 +336,8 @@ final class CollidableUpdater implements IdentifiableListener
                 {
                     maxHeight = height;
                 }
-                final double x = origin.getX(transformable.getX() + offsetX, collision.getWidth());
-                final double y = origin.getY(transformable.getY() + offsetY, collision.getHeight());
-
+                final double x = origin.getX(transformable.getX() + offsetX, width);
+                final double y = origin.getY(transformable.getY() + offsetY, height) + height;
                 update(collision, x, y, width, height);
             }
         }
