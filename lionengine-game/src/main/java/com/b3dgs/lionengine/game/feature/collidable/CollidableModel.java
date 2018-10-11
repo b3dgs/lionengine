@@ -163,6 +163,12 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
+    public void removeListener(CollidableListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    @Override
     public void addCollision(Collision collision)
     {
         collisions.add(collision);
