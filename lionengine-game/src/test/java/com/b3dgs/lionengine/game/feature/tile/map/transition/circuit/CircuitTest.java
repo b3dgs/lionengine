@@ -58,6 +58,7 @@ public final class CircuitTest
                      new Circuit(CircuitType.MIDDLE.getSymetric(), "b", "a"));
         assertEquals(new Circuit(type, "a", "b"), new Circuit(type.getSymetric(), "b", "a"));
 
+        assertNotEquals(new Circuit(type, "a", "a"), null);
         assertNotEquals(new Circuit(type, "a", "a"), new Object());
         assertNotEquals(new Circuit(type, "a", "b"), new Circuit(type, "b", "a"));
         assertNotEquals(new Circuit(type, "a", "b"), new Circuit(CircuitType.MIDDLE, "a", "b"));

@@ -17,7 +17,10 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map.pathfinding;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
@@ -26,6 +29,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.awt.Mouse;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.ComponentDisplayable;
@@ -40,6 +44,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.TextStyle;
@@ -60,6 +65,29 @@ class Scene extends Sequence
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Factory factory = services.create(Factory.class);
     private final Tick tick = new Tick();
+    private final AtomicBoolean listenerStartMove = new AtomicBoolean();
+    private final AtomicBoolean listenerMove = new AtomicBoolean();
+    private final AtomicBoolean listenerArrived = new AtomicBoolean();
+    private final PathfindableListener listener = new PathfindableListener()
+    {
+        @Override
+        public void notifyStartMove()
+        {
+            listenerStartMove.set(true);
+        }
+
+        @Override
+        public void notifyMoving()
+        {
+            listenerMove.set(true);
+        }
+
+        @Override
+        public void notifyArrived()
+        {
+            listenerArrived.set(true);
+        }
+    };
     private Featurable peon2;
     private boolean changed;
 
@@ -97,6 +125,7 @@ class Scene extends Sequence
         final Featurable peon1 = factory.create(Peon.MEDIA);
         peon1.getFeature(Pathfindable.class).setLocation(20, 16);
         peon1.getFeature(Pathfindable.class).setDestination(23, 12);
+        peon1.getFeature(Pathfindable.class).pointTo(1, 2);
         handler.add(peon1);
 
         peon2 = factory.create(Peon.MEDIA);
@@ -112,6 +141,15 @@ class Scene extends Sequence
         handler.add(peon3);
 
         peon2.getFeature(Pathfindable.class).setIgnoreId(peon3.getFeature(Identifiable.class).getId(), true);
+        peon2.getFeature(Pathfindable.class).pointTo(map.getTile(25, 25));
+
+        assertEquals(Orientation.NORTH_EAST, peon2.getFeature(Pathfindable.class).getOrientation());
+
+        peon2.getFeature(Pathfindable.class).setOrientation(Orientation.NORTH_WEST);
+
+        assertEquals(Orientation.NORTH_WEST, peon2.getFeature(Pathfindable.class).getOrientation());
+
+        peon2.getFeature(Pathfindable.class).addListener(listener);
 
         tick.start();
     }
@@ -132,6 +170,15 @@ class Scene extends Sequence
         {
             end();
         }
+
+        if (!peon2.getFeature(Pathfindable.class).isMoving())
+        {
+            assertEquals(0.0, peon2.getFeature(Pathfindable.class).getMoveX());
+            assertEquals(0.0, peon2.getFeature(Pathfindable.class).getMoveY());
+        }
+
+        assertEquals(6.0, peon2.getFeature(Pathfindable.class).getSpeedX());
+        assertEquals(6.0, peon2.getFeature(Pathfindable.class).getSpeedY());
     }
 
     @Override
@@ -143,6 +190,11 @@ class Scene extends Sequence
     @Override
     public void onTerminated(boolean hasNextSequence)
     {
+        assertTrue(listenerStartMove.get());
+        assertTrue(listenerMove.get());
+        assertTrue(listenerArrived.get());
+        assertTrue(peon2.getFeature(Pathfindable.class).isDestinationReached());
+
         Engine.terminate();
     }
 }

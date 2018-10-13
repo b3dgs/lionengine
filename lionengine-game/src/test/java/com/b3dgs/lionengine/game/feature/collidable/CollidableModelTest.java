@@ -310,4 +310,31 @@ public final class CollidableModelTest
 
         assertEquals(1, collidable1.getGroup().intValue());
     }
+
+    /**
+     * Test listener add and remove.
+     */
+    @Test
+    public void testListener()
+    {
+        final AtomicBoolean called = new AtomicBoolean();
+        final CollidableListener listener = (collidable, collision) -> called.set(true);
+
+        collidable1.notifyCollided(null, null);
+
+        assertFalse(called.get());
+
+        collidable1.addListener(listener);
+
+        collidable1.notifyCollided(null, null);
+
+        assertTrue(called.get());
+
+        collidable1.removeListener(listener);
+        called.set(false);
+
+        collidable1.notifyCollided(null, null);
+
+        assertFalse(called.get());
+    }
 }

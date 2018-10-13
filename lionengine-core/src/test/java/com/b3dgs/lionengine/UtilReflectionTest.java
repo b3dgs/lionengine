@@ -177,6 +177,10 @@ public final class UtilReflectionTest
         UtilReflection.setAccessible(accessible, false);
 
         assertFalse(accessible.isAccessible());
+
+        UtilReflection.setAccessible(accessible, false);
+
+        assertFalse(accessible.isAccessible());
     }
 
     /**

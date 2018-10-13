@@ -68,6 +68,10 @@ public final class NodeTest
         assertNotEquals(node, new Node(0, 0));
         assertNotEquals(node, new Node(1, 1));
         assertNotEquals(node, new Node(1, 0));
+
+        final Node node2 = new Node(0, 1);
+        node2.setDepth(1);
+        assertEquals(node, node2);
     }
 
     /**

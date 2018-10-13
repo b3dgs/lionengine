@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map.pathfinding;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
@@ -64,6 +66,13 @@ class Peon extends FeaturableModel
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         pathfindable.setSpeed(6.0, 6.0);
         pathfindable.setRenderDebug(true);
+        pathfindable.clearIgnoredId();
+        pathfindable.clearPath();
+        pathfindable.clearSharedPathIds();
+        pathfindable.stopMoves();
+
+        assertEquals(1, pathfindable.getInTileWidth());
+        assertEquals(1, pathfindable.getInTileHeight());
 
         final Viewer viewer = services.get(Viewer.class);
 
