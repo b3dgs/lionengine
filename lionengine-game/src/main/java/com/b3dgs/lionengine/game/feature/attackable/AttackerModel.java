@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -42,7 +42,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     /** Listener list. */
     private final Collection<AttackerListener> listeners = new HashSet<>(1);
     /** Attack timer. */
-    private final Timing timer = new Timing();
+    private final Tick tick = new Tick();
     /** Damages. */
     private final Damages damages = new Damages();
     /** Attack distance allowed. */
@@ -57,7 +57,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     private Transformable target;
     /** Attack frame number. */
     private int frameAttack;
-    /** Attack pause time. */
+    /** Attack pause time in tick. */
     private int attackPause;
     /** Attack state. */
     private AttackState state;
@@ -125,7 +125,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
                 state = AttackState.ATTACKING;
             }
         }
-        else if (timer.elapsed(attackPause))
+        else if (tick.elapsed(attackPause))
         {
             for (final AttackerListener listener : listeners)
             {
@@ -139,7 +139,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
     private void updateAttacking()
     {
-        if (timer.elapsed(attackPause))
+        if (tick.elapsed(attackPause))
         {
             updateAttackHit();
         }
@@ -187,7 +187,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
                 listener.notifyAttackEnded(damages.getRandom(), target);
             }
             attacked = true;
-            timer.restart();
+            tick.restart();
         }
     }
 
@@ -240,7 +240,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             state = AttackState.CHECK;
             attacking = false;
             stop = false;
-            timer.start();
+            tick.start();
         }
     }
 
@@ -253,6 +253,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     @Override
     public void update(double extrp)
     {
+        tick.update(extrp);
         switch (state)
         {
             case NONE:
@@ -275,9 +276,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
-    public void setAttackTimer(int time)
+    public void setAttackTimer(int tick)
     {
-        attackPause = time;
+        attackPause = tick;
     }
 
     @Override

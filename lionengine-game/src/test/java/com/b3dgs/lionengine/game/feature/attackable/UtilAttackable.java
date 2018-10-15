@@ -60,7 +60,7 @@ final class UtilAttackable
         attacker.setAttackDamages(1, 2);
         attacker.setAttackDistance(1, 2);
         attacker.setAttackFrame(1);
-        attacker.setAttackTimer(0);
+        attacker.setAttackTimer(2);
         attacker.prepare(object);
 
         return attacker;

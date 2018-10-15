@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -48,9 +49,10 @@ public interface Attacker extends Feature, Updatable
     /**
      * Set attack pause time between two attacks.
      * 
-     * @param time The attack pause time.
+     * @param tick The attack pause time in tick.
+     * @see Tick
      */
-    void setAttackTimer(int time);
+    void setAttackTimer(int tick);
 
     /**
      * Represents the frame number (inside animation) which design the attack action.

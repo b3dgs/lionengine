@@ -132,6 +132,21 @@ public final class AttackerModelTest
     }
 
     /**
+     * Test the reach target with not elapsed time.
+     */
+    @Test
+    public void testTargetReachTimeNotElapsed()
+    {
+        target.teleport(0, 10);
+        attacker.attack(target);
+        final ObjectAttackerSelf listener = new ObjectAttackerSelf();
+        attacker.addListener(listener);
+        attacker.update(1.0);
+
+        assertFalse(listener.flag.get());
+    }
+
+    /**
      * Test the cannot attack.
      */
     @Test
@@ -241,16 +256,25 @@ public final class AttackerModelTest
     @Test
     public void testSelfListener()
     {
-        final ObjectAttackerSelf object = new ObjectAttackerSelf();
         UtilAttackable.prepare(object);
-        final Attacker attacker = UtilAttackable.createAttacker(object, services);
+        UtilAttackable.createAttacker(object, services); // No listener check
+
+        final ObjectAttackerSelf object2 = new ObjectAttackerSelf();
+        UtilAttackable.prepare(object2);
+        final Attacker attacker = UtilAttackable.createAttacker(object2, services);
         canAttack.set(true);
 
         target.teleport(10, 10);
         attacker.attack(target);
         attacker.update(1.0);
 
-        assertTrue(object.flag.get());
+        assertFalse(object2.flag.get());
+
+        attacker.update(1.0);
+
+        assertTrue(object2.flag.get());
+
+        object2.getFeature(Identifiable.class).notifyDestroyed();
     }
 
     /**
@@ -275,6 +299,7 @@ public final class AttackerModelTest
         target.teleport(5, 5);
         attacker.attack(target);
         attacker.update(1.0);
+        attacker.update(1.0); // 2 ticks for attack interval
 
         assertEquals(target, reaching.get());
         assertFalse(preparing.get());
@@ -322,6 +347,7 @@ public final class AttackerModelTest
 
         attacker.attack(target);
         attacker.update(1.0);
+        attacker.update(1.0); // 2 ticks for attack interval
 
         assertTrue(object.flag.get());
     }
