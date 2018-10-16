@@ -80,6 +80,7 @@ public class SceneRasterable extends Sequence
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
         final Rasterable rasterable = new RasterableModel(services, setup);
         rasterable.setOrigin(Origin.MIDDLE);
+        rasterable.setFrameOffsets(1, 2);
         featurable.addFeature(rasterable);
         featurable.addFeature(new RefreshableModel(extrp ->
         {

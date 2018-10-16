@@ -61,6 +61,10 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     private SpriteAnimated raster;
     /** Origin value. */
     private Origin origin;
+    /** Frame offsets x. */
+    private int frameOffsetX;
+    /** Frame offsets y. */
+    private int frameOffsetY;
 
     /**
      * Create a rasterable model.
@@ -110,6 +114,13 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         recycle();
     }
 
+    @Override
+    public void setFrameOffsets(int offsetX, int offsetY)
+    {
+        frameOffsetX = offsetX;
+        frameOffsetY = offsetY;
+    }
+
     /**
      * Update raster sprite with current vertical location.
      */
@@ -138,12 +149,13 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         raster.setFrame(animator.getFrame());
         raster.setMirror(mirrorable.getMirror());
         raster.setOrigin(origin);
-        raster.setLocation(viewer, transformable);
+        raster.setFrameOffsets(frameOffsetX, frameOffsetY);
     }
 
     @Override
     public void render(Graphic g)
     {
+        raster.setLocation(viewer, transformable);
         raster.render(g);
     }
 

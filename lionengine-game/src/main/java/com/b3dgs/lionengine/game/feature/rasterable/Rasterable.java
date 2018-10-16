@@ -29,6 +29,14 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 public interface Rasterable extends Feature, Updatable, Renderable
 {
     /**
+     * Set frame offsets (offsets on rendering).
+     * 
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
+     */
+    void setFrameOffsets(int offsetX, int offsetY);
+
+    /**
      * Get raster index from location.
      * 
      * @param y The current y location.
