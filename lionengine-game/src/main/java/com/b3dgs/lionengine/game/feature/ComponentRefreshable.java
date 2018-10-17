@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Refresher component implementation which refreshes {@link Refreshable} elements with {@link Layerable} support to
  * order rendering. If there is not {@link Layerable} feature, {@link #LAYER_DEFAULT} will be used as default layer
- * value.
+ * value. The lower layer index is handled first.
  */
 public class ComponentRefreshable implements ComponentUpdater, HandlerListener, LayerableListener
 {

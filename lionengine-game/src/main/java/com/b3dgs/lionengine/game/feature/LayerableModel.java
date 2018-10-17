@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Layerable model implementation.
+ * Layerable model implementation. 0 has higher priority, 1 less...
  */
 public class LayerableModel extends FeatureModel implements Layerable
 {
