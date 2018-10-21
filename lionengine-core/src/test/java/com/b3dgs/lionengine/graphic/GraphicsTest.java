@@ -107,6 +107,7 @@ public final class GraphicsTest
     public void testCreateText()
     {
         assertNotNull(Graphics.createText("test", 10, TextStyle.NORMAL));
+        assertNotNull(Graphics.createText(10));
     }
 
     /**

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.graphic;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
@@ -72,6 +73,18 @@ public final class Graphics
     public static Transform createTransform()
     {
         return factoryGraphic.createTransform();
+    }
+
+    /**
+     * Crate a text with {@link Constant#FONT_SANS_SERIF} and {@link TextStyle#NORMAL}.
+     * 
+     * @param size The font size in pixel (must be strictly positive).
+     * @return The created text.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static Text createText(int size)
+    {
+        return factoryGraphic.createText(Constant.FONT_SANS_SERIF, size, TextStyle.NORMAL);
     }
 
     /**
