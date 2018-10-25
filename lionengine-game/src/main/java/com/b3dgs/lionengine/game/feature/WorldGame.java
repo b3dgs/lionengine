@@ -47,6 +47,7 @@ import com.b3dgs.lionengine.io.FileWriting;
  * <li>{@link Camera}: Configured with screen size as view</li>
  * <li>{@link Handler}: Shipped with {@link ComponentRefreshable} and {@link ComponentDisplayable}</li>
  * <li>{@link Factory}: Listener added with {@link Handler#addListener(HandlerListener)}</li>
+ * <li>{@link Spawner}: Allows to spawn a {@link Featurable} at specified location.</li>
  * </ul>
  * </li>
  * </ul>
@@ -57,7 +58,7 @@ import com.b3dgs.lionengine.io.FileWriting;
  * <li>{@link SourceResolutionProvider}</li>
  * </ul>
  */
-public abstract class WorldGame implements Updatable, Renderable
+public abstract class WorldGame implements Updatable, Renderable, Spawner
 {
     /** Services instance. */
     protected final Services services;
@@ -75,6 +76,17 @@ public abstract class WorldGame implements Updatable, Renderable
     protected final Context context;
     /** Source provider. */
     protected final SourceResolutionProvider source;
+    /** Spawner. */
+    private final Spawner spawner = new Spawner()
+    {
+        @Override
+        public void spawn(Media media, double x, double y)
+        {
+            final Featurable featurable = factory.create(media);
+            featurable.getFeature(Transformable.class).teleport(x, y);
+            handler.add(featurable);
+        }
+    };
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
@@ -97,6 +109,8 @@ public abstract class WorldGame implements Updatable, Renderable
         handler.addListener(factory);
         camera = services.create(Camera.class);
         camera.setView(0, 0, source.getWidth(), source.getHeight(), source.getHeight());
+
+        services.add(spawner);
 
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());
@@ -230,5 +244,15 @@ public abstract class WorldGame implements Updatable, Renderable
     public void render(Graphic g)
     {
         handler.render(g);
+    }
+
+    /*
+     * Spawner
+     */
+
+    @Override
+    public void spawn(Media media, double x, double y)
+    {
+        spawner.spawn(media, x, y);
     }
 }

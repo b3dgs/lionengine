@@ -17,11 +17,14 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
@@ -59,15 +62,16 @@ public final class WorldTest
         Graphics.setFactoryGraphic(null);
     }
 
+    private final Resolution output = new Resolution(640, 480, 60);
+    private final Config config = new Config(output, 16, true);
+    private final Services services = new Services();
+
     /**
-     * Test the world.
+     * Prepare test.
      */
-    @Test
-    public void testWorld()
+    @BeforeEach
+    public void prepare()
     {
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Services services = new Services();
         services.add(new Context()
         {
             @Override
@@ -114,6 +118,14 @@ public final class WorldTest
                 return output.getRate();
             }
         });
+    }
+
+    /**
+     * Test the world.
+     */
+    @Test
+    public void testWorld()
+    {
         final WorldMock world = new WorldMock(services);
 
         final Media media = Medias.create("test");
@@ -136,55 +148,6 @@ public final class WorldTest
     @Test
     public void testWorldFail()
     {
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Services services = new Services();
-        services.add(new Context()
-        {
-            @Override
-            public int getX()
-            {
-                return 0;
-            }
-
-            @Override
-            public int getY()
-            {
-                return 0;
-            }
-
-            @Override
-            public <T extends InputDevice> T getInputDevice(Class<T> type)
-            {
-                return null;
-            }
-
-            @Override
-            public Config getConfig()
-            {
-                return config;
-            }
-        });
-        services.add(new SourceResolutionProvider()
-        {
-            @Override
-            public int getWidth()
-            {
-                return output.getWidth();
-            }
-
-            @Override
-            public int getHeight()
-            {
-                return output.getHeight();
-            }
-
-            @Override
-            public int getRate()
-            {
-                return output.getRate();
-            }
-        });
         final WorldFail world = new WorldFail(services);
 
         assertThrows(() -> world.saveToFile(null), "Unexpected null argument !");
@@ -196,5 +159,34 @@ public final class WorldTest
 
         assertThrows(() -> world.loadFromFile(Medias.create("type.xml")), "[type.xml] Cannot open the media !");
         assertThrows(() -> world.loadFromFile(null), "Unexpected null argument !");
+    }
+
+    /**
+     * Test spawn with no transformable.
+     */
+    @Test
+    public void testSpawnNoTransformable()
+    {
+        final WorldGame world = new WorldMock(services);
+        assertThrows(() -> world.spawn(Medias.create("object.xml"), 0, 0),
+                     Features.ERROR_FEATURE_NOT_FOUND + Transformable.class.getName());
+    }
+
+    /**
+     * Test spawn.
+     */
+    @Test
+    public void testSpawn()
+    {
+        final WorldGame world = new WorldMock(services);
+        world.spawn(Medias.create("object_features.xml"), 1.0, 2.0);
+
+        final Handler handler = services.get(Handler.class);
+
+        assertFalse(handler.get(Transformable.class).iterator().hasNext());
+
+        world.update(1.0);
+
+        assertEquals(1.0, handler.get(Transformable.class).iterator().next().getX());
     }
 }

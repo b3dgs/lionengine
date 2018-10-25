@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.Feature;
 public class Features
 {
     /** Feature not found error. */
-    private static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
+    static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
 
     /** Features handled. */
     private final Map<Class<? extends Feature>, Feature> typeToFeature = new HashMap<>();
