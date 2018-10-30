@@ -63,8 +63,7 @@ public final class FeatureModelTest
             assertTrue(type == Identifiable.class
                        || type == IdentifiableModel.class
                        || type == Transformable.class
-                       || type == TransformableModel.class
-                       || type == Recyclable.class,
+                       || type == TransformableModel.class,
                        type.getName());
         }
         assertTrue(feature.hasFeature(Transformable.class));
