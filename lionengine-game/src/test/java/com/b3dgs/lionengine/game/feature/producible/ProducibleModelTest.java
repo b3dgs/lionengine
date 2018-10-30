@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
@@ -64,8 +63,6 @@ public final class ProducibleModelTest
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
-
         final Producible producible = new ProducibleModel(setup);
         final ProducibleListener listener = UtilProducible.createListener();
         producible.setLocation(1.0, 2.0);

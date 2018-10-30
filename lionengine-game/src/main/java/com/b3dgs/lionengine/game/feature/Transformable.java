@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.Mover;
 /**
  * Represents something that can be transformed with a translation or a size modification.
  */
+@FeatureInterface
 public interface Transformable extends Feature, Mover, Shape
 {
     /**

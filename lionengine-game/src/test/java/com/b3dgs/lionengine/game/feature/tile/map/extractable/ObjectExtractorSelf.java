@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**
  * Extractor test with self listener.
@@ -30,16 +29,6 @@ final class ObjectExtractorSelf extends FeaturableModel implements ExtractorChec
 {
     /** Flag. */
     final AtomicInteger flag = new AtomicInteger();
-
-    /**
-     * Constructor.
-     */
-    public ObjectExtractorSelf()
-    {
-        super();
-
-        addFeature(new IdentifiableModel());
-    }
 
     @Override
     public boolean canExtract()

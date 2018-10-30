@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.geom.Area;
 /**
  * Represents a clickable action, allows to perform an action on click.
  */
+@FeatureInterface
 public interface Actionable extends Feature, Updatable
 {
     /**

@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.feature.Refreshable;
+import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Represents something that can throw a {@link Launchable} at a defined rate from a defined location using a specified
@@ -28,7 +30,8 @@ import com.b3dgs.lionengine.game.feature.Refreshable;
  * 
  * @see Launchable
  */
-public interface Launcher extends Refreshable
+@FeatureInterface
+public interface Launcher extends Feature, Updatable
 {
     /**
      * Add a launcher listener.

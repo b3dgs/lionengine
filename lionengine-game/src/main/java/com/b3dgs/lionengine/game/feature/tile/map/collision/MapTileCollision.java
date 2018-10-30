@@ -22,6 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
@@ -30,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  * @see CollisionFormula
  * @see CollisionGroup
  */
+@FeatureInterface
 public interface MapTileCollision extends Feature
 {
     /**

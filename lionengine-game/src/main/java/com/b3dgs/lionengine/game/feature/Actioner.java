@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Represents an ability of performing actions.
  */
+@FeatureInterface
 public interface Actioner extends Feature
 {
     /**

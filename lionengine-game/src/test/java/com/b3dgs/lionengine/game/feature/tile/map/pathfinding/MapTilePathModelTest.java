@@ -86,7 +86,6 @@ public final class MapTilePathModelTest
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        map.addFeature(new MapTileGroupModel());
         mapPath = map.addFeatureAndGet(new MapTilePathModel(services));
         mapPath.prepare(map);
 

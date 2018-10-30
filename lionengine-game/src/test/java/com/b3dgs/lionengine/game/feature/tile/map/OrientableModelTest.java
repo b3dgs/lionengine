@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 
@@ -48,7 +47,6 @@ public final class OrientableModelTest
     public void prepare()
     {
         services.add(new MapTileGame());
-        featurable.addFeature(new IdentifiableModel());
         featurable.addFeature(new TransformableModel());
 
         orientable = new OrientableModel(services);

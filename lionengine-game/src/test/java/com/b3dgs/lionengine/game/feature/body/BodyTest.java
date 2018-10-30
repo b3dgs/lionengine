@@ -20,14 +20,12 @@ package com.b3dgs.lionengine.game.feature.body;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 
@@ -39,15 +37,6 @@ public final class BodyTest
     private final Body body = new BodyModel();
     private final FeaturableModel object = new FeaturableModel();
     private final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
-
-    /**
-     * Prepare test.
-     */
-    @BeforeEach
-    public void prepare()
-    {
-        object.addFeature(new IdentifiableModel());
-    }
 
     /**
      * Clean test.

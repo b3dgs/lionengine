@@ -26,7 +26,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
@@ -65,15 +64,6 @@ public final class HandlablesImplTest
     private final HandlablesImpl featurables = new HandlablesImpl();
     /** Object test. */
     private final FeaturableModel object = new FeaturableModel();
-
-    /**
-     * Prepare test.
-     */
-    @BeforeEach
-    public void prepare()
-    {
-        object.addFeature(new IdentifiableModel());
-    }
 
     /**
      * Clean test.
@@ -175,18 +165,9 @@ public final class HandlablesImplTest
     /**
      * Complex object with interface.
      */
+    @FeatureInterface
     private static final class ObjectComplex extends FeaturableModel implements Updatable
     {
-        /**
-         * Create object.
-         */
-        public ObjectComplex()
-        {
-            super();
-
-            addFeature(new IdentifiableModel());
-        }
-
         @Override
         public void update(double extrp)
         {
@@ -197,6 +178,7 @@ public final class HandlablesImplTest
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static class FeatureLevel1 extends FeatureModel implements Refreshable
     {
         @Override
@@ -209,6 +191,7 @@ public final class HandlablesImplTest
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static final class FeatureLevel2 extends FeatureLevel1
     {
         // Mock

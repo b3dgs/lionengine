@@ -19,10 +19,12 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Represents something that have a field of view, able to see until a defined range only.
  */
+@FeatureInterface
 public interface Fovable extends Feature, Tiled
 {
     /**

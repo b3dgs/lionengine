@@ -40,7 +40,6 @@ import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -84,7 +83,6 @@ public final class AttackerModelTest
     public void prepare()
     {
         UtilAttackable.prepare(object);
-        object.addFeature(new IdentifiableModel());
         attacker = UtilAttackable.createAttacker(object, services);
     }
 
@@ -256,7 +254,6 @@ public final class AttackerModelTest
     @Test
     public void testSelfListener()
     {
-        UtilAttackable.prepare(object);
         UtilAttackable.createAttacker(object, services); // No listener check
 
         final ObjectAttackerSelf object2 = new ObjectAttackerSelf();

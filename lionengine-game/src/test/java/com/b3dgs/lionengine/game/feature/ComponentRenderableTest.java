@@ -86,16 +86,6 @@ public final class ComponentRenderableTest
         private boolean rendered;
 
         /**
-         * Constructor.
-         */
-        public Renderer()
-        {
-            super();
-
-            addFeature(new IdentifiableModel());
-        }
-
-        /**
          * Check if has been rendered.
          * 
          * @return <code>true</code> if rendered, <code>false</code> else.

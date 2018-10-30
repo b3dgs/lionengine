@@ -109,7 +109,7 @@ public final class TileGameTest
         assertTrue(tile.hasFeature(TileCollision.class));
         assertFalse(tile.hasFeature(MockFeature.class));
 
-        final Class<?> next = tile.getFeature(Feature.class).getClass();
+        final Class<?> next = tile.getFeature(TileCollision.class).getClass();
 
         assertTrue(next.equals(feature.getClass()) || Identifiable.class.isAssignableFrom(next), next.getName());
     }

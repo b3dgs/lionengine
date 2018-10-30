@@ -45,8 +45,6 @@ public final class ComponentRefreshableTest
     private static Layerable createObject(Services services, final AtomicInteger last)
     {
         final FeaturableModel object = new FeaturableModel();
-        object.addFeature(new IdentifiableModel());
-
         final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services));
         layerable.prepare(object);
 

@@ -429,7 +429,6 @@ public final class LauncherModelTest
         final Setup setup = new Setup(launcherMedia);
         services.add(new Factory(services));
         services.add(new Handler(services));
-        featurable.addFeature(new TransformableModel());
 
         final AtomicBoolean launchableListener = new AtomicBoolean();
         final AtomicBoolean launcherListener = new AtomicBoolean();

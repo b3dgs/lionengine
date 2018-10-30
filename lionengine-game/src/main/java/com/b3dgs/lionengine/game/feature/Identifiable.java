@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Feature;
  * Represents something which can be identified by a unique ID.
  * Can request to be removed and free its ID in order to be reused.
  */
+@FeatureInterface
 public interface Identifiable extends Feature
 {
     /**

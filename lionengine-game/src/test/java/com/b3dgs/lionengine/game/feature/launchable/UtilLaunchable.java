@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handler;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 
 /**
@@ -48,7 +48,6 @@ final class UtilLaunchable
      */
     public static Launchable createLaunchable(Services services, Featurable featurable)
     {
-        featurable.addFeature(new IdentifiableModel());
         featurable.addFeature(new TransformableModel());
 
         final Launchable launchable = new LaunchableModel();
@@ -107,7 +106,10 @@ final class UtilLaunchable
     {
         services.add(new Factory(services));
         services.add(new Handler(services));
-        featurable.addFeature(new TransformableModel());
+        if (!featurable.hasFeature(Transformable.class))
+        {
+            featurable.addFeature(new TransformableModel());
+        }
 
         final Launcher launcher = new LauncherModel(services, setup);
         launcher.prepare(featurable);

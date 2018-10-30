@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
-
 /**
  * Launchable object test self listener.
  */
@@ -31,16 +29,6 @@ class LaunchableObjectSelf extends LaunchableObject implements LauncherListener,
     final AtomicBoolean fired = new AtomicBoolean();
     /** Fired launchable flag. */
     final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
-
-    /**
-     * Constructor.
-     */
-    public LaunchableObjectSelf()
-    {
-        super();
-
-        addFeature(new IdentifiableModel());
-    }
 
     @Override
     public void notifyFired()

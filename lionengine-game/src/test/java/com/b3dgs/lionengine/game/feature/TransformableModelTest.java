@@ -70,7 +70,6 @@ public final class TransformableModelTest
     public void before()
     {
         services.add(new MapTileGame());
-        featurable.addFeature(new IdentifiableModel());
         transformable.prepare(featurable);
     }
 

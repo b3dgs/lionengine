@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Recyclable feature marker.
+ * Recyclable marker.
  * <p>
  * Allows to recycle a {@link Featurable} and all its {@link Feature} when using
  * {@link Factory#create(com.b3dgs.lionengine.Media)} or {@link Factory#create(com.b3dgs.lionengine.Media, Class)}.
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.Feature;
  * bullets).
  * </p>
  */
-public interface Recyclable extends Feature
+public interface Recyclable
 {
     /**
      * Recycle feature, to make it ready for reuse.

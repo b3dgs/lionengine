@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**
  * Extractor test.
@@ -42,7 +41,6 @@ final class ObjectExtractor extends FeaturableModel implements ExtractorChecker
 
         this.extract = extract;
         this.carry = carry;
-        addFeature(new IdentifiableModel());
     }
 
     @Override

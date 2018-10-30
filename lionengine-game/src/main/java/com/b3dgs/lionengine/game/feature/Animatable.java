@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Animator feature wrapper.
  */
+@FeatureInterface
 public interface Animatable extends Feature, Animator
 {
     // Wrapper

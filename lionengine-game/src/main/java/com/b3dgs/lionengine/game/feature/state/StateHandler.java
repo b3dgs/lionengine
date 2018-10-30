@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
@@ -43,6 +44,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
  * <li>{@link #update(double)}</li>
  * </ul>
  */
+@FeatureInterface
 public class StateHandler extends FeatureModel implements Updatable
 {
     /** Feature parameter constructor index. */

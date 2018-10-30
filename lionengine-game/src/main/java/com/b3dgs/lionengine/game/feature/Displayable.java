@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 /**
  * Renderable feature wrapper.
  */
+@FeatureInterface
 public interface Displayable extends Feature, Renderable
 {
     // Wrapper

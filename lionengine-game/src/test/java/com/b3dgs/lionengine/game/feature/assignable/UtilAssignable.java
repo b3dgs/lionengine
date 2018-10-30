@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 
 /**
@@ -69,8 +68,6 @@ final class UtilAssignable
     public static AssignableModel createAssignable(Services services)
     {
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
-
         final AssignableModel assignable = new AssignableModel(services);
         assignable.prepare(featurable);
 

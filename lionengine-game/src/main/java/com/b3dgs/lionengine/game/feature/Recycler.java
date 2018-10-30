@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Recycler implementation, searching for {@link Recyclable} {@link Feature}s.
  */
+@FeatureInterface
 public class Recycler extends FeatureModel
 {
     /**

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Feature;
  * 
  * @see Mirror
  */
+@FeatureInterface
 public interface Mirrorable extends Feature, Updatable
 {
     /**

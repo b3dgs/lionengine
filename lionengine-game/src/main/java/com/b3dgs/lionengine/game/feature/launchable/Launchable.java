@@ -20,12 +20,14 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Represents something which can be launched with a specified vector.
  * 
  * @see Launcher
  */
+@FeatureInterface
 public interface Launchable extends Feature, Updatable
 {
     /**

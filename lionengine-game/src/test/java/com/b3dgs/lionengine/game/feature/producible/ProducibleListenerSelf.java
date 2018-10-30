@@ -18,23 +18,12 @@
 package com.b3dgs.lionengine.game.feature.producible;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**
  * Producible self listener test.
  */
 final class ProducibleListenerSelf extends FeaturableModel implements ProducibleListener
 {
-    /**
-     * Constructor.
-     */
-    public ProducibleListenerSelf()
-    {
-        super();
-
-        addFeature(new IdentifiableModel());
-    }
-
     @Override
     public void notifyProductionStarted(Producer producer)
     {

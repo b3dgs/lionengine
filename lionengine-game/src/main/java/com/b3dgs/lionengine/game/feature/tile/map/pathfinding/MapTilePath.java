@@ -22,11 +22,13 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
  * Represents the pathfinding feature of a map tile. It works by using {@link TilePath} feature.
  */
+@FeatureInterface
 public interface MapTilePath extends Feature
 {
     /**

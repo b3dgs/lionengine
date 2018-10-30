@@ -18,11 +18,13 @@
 package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 
 import com.b3dgs.lionengine.game.feature.Displayable;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
 
 /**
  * Describe how the map viewing is performed. This will allow to customize map rendering.
  */
+@FeatureInterface
 public interface MapTileViewer extends Displayable
 {
     /**

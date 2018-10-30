@@ -22,6 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
@@ -29,6 +30,7 @@ import com.b3dgs.lionengine.game.feature.tile.TileRef;
 /**
  * Represents the group definition for each tile.
  */
+@FeatureInterface
 public interface MapTileGroup extends Feature
 {
     /**

@@ -22,8 +22,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.Serializable;
-
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.Feature;
@@ -33,28 +31,34 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public final class FeaturesTest
 {
+    private final Features features = new Features();
+
+    /**
+     * Test the feature not annotated.
+     */
+    @Test
+    public void testFeatureNotAnnotated()
+    {
+        assertThrows(() -> features.add(new FeatureModel()), Features.ERROR_FEATURE_NOT_ANNOTATED + FeatureModel.class);
+    }
+
     /**
      * Test the features.
      */
     @Test
     public void testFeatures()
     {
-        final Features features = new Features();
-
         assertFalse(features.contains(Feature.class));
 
-        final Feature feature = new FeatureModel()
-        {
-            // Mock
-        };
-        features.add(feature);
+        final Identifiable identifiable = new IdentifiableModel();
+        features.add(identifiable);
 
-        assertTrue(features.contains(Feature.class));
-        assertEquals(feature, features.get(Feature.class));
+        assertEquals(identifiable, features.get(Identifiable.class));
+        assertEquals(identifiable, features.get(IdentifiableModel.class));
 
         for (final Feature current : features.getFeatures())
         {
-            assertEquals(feature, current);
+            assertEquals(identifiable, current);
         }
         for (final Class<? extends Feature> type : features.getFeaturesType())
         {
@@ -68,23 +72,7 @@ public final class FeaturesTest
     @Test
     public void testFeatureNotFound()
     {
-        final Features features = new Features();
-
         assertThrows(() -> features.get(Feature.class), "Feature not found: " + Feature.class.getName());
-    }
-
-    /**
-     * Test the feature with not compatible interface.
-     */
-    @Test
-    public void testInterfaceNotCompatible()
-    {
-        final Features features = new Features();
-        features.add(new FeatureNotCompatible());
-
-        assertTrue(features.contains(Feature.class));
-        assertTrue(features.contains(Refreshable.class));
-        assertFalse(features.contains(Displayable.class));
     }
 
     /**
@@ -93,8 +81,7 @@ public final class FeaturesTest
     @Test
     public void testInheritance()
     {
-        final Features features = new Features();
-        features.add(new FeatureLevel2());
+        features.add(new FeatureLevel2Model());
 
         assertTrue(features.contains(FeatureLevel1.class));
         assertTrue(features.contains(FeatureLevel2.class));
@@ -102,12 +89,67 @@ public final class FeaturesTest
     }
 
     /**
+     * Test add feature already referenced.
+     */
+    @Test
+    public void testAddExists()
+    {
+        final Features features = new Features();
+        features.add(new FeatureLevel1Model());
+
+        final String error = Features.ERROR_FEATURE_EXISTS
+                             + FeatureLevel1Model.class
+                             + Features.WITH
+                             + FeatureLevel1Model.class;
+
+        assertThrows(() -> features.add(new FeatureLevel1Model()), error);
+    }
+
+    /**
+     * Test add feature already referenced in depth.
+     */
+    @Test
+    public void testAddExistsDepth()
+    {
+        final Features features = new Features();
+        features.add(new RefreshableModel(extrp ->
+        {
+            // Nothing to do
+        }));
+
+        final String error = Features.ERROR_FEATURE_EXISTS
+                             + FeatureLevel1Model.class
+                             + Features.AS
+                             + Refreshable.class
+                             + Features.WITH
+                             + RefreshableModel.class;
+
+        assertThrows(() -> features.add(new FeatureLevel1Model()), error);
+    }
+
+    /**
      * Mock feature.
      */
-    private static class FeatureNotCompatible extends FeatureModel implements Serializable, Refreshable
+    @FeatureInterface
+    private static interface FeatureLevel1 extends Refreshable
     {
-        private static final long serialVersionUID = 1L;
+        // Mock
+    }
 
+    /**
+     * Mock feature.
+     */
+    @FeatureInterface
+    private static interface FeatureLevel2 extends FeatureLevel1
+    {
+        // Mock
+    }
+
+    /**
+     * Mock feature.
+     */
+    private static class FeatureLevel1Model extends FeatureModel implements FeatureLevel1
+    {
         @Override
         public void update(double extrp)
         {
@@ -118,19 +160,7 @@ public final class FeaturesTest
     /**
      * Mock feature.
      */
-    private static class FeatureLevel1 extends FeatureModel implements Refreshable
-    {
-        @Override
-        public void update(double extrp)
-        {
-            // Mock
-        }
-    }
-
-    /**
-     * Mock feature.
-     */
-    private static final class FeatureLevel2 extends FeatureLevel1
+    private static class FeatureLevel2Model extends FeatureLevel1Model implements FeatureLevel2
     {
         // Mock
     }

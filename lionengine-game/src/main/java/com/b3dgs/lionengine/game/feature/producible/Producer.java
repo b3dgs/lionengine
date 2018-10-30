@@ -23,10 +23,12 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.feature.Actioner;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Represents an ability of creating new object.
  */
+@FeatureInterface
 public interface Producer extends Actioner, Updatable
 {
     /**

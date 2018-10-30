@@ -19,10 +19,12 @@ package com.b3dgs.lionengine.game.feature.tile.map.persister;
 
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Persistable;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Handle the map persistence by providing saving and loading functions.
  */
+@FeatureInterface
 public interface MapTilePersister extends Feature, Persistable
 {
     // Marker

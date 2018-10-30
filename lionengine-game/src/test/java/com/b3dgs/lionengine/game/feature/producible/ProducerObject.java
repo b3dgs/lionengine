@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 
 /**
  * Object producer test.
@@ -30,16 +29,6 @@ final class ProducerObject extends FeaturableModel implements ProducerChecker
 {
     /** Checker. */
     final AtomicBoolean check = new AtomicBoolean(true);
-
-    /**
-     * Constructor.
-     */
-    public ProducerObject()
-    {
-        super();
-
-        addFeature(new IdentifiableModel());
-    }
 
     @Override
     public boolean checkProduction(Featurable featurable)

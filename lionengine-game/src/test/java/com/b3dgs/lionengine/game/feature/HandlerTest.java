@@ -65,7 +65,6 @@ public final class HandlerTest
     {
         final Handler handler = new Handler(new Services());
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
 
         final Integer id = featurable.getFeature(Identifiable.class).getId();
@@ -113,7 +112,6 @@ public final class HandlerTest
         assertEquals(0, handler.size());
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
         assertEquals(0, handler.size());
 
@@ -146,7 +144,6 @@ public final class HandlerTest
     {
         final Handler handler = new Handler(new Services());
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
 
         assertEquals(0, handler.size());
@@ -186,7 +183,6 @@ public final class HandlerTest
         handler.addListener(listener);
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
 
         assertNull(added.get());
         handler.add(featurable);
@@ -241,7 +237,6 @@ public final class HandlerTest
         assertNull(updated.get());
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
         handler.update(1.0);
 
@@ -267,7 +262,6 @@ public final class HandlerTest
         assertNull(rendered.get());
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
         handler.add(featurable);
         handler.update(1.0);
         handler.render(Graphics.createGraphic());
@@ -296,7 +290,6 @@ public final class HandlerTest
         });
         final Handler handler = new Handler(services);
         final Featurable featurable = new ObjectFeatures();
-        featurable.addFeature(new IdentifiableModel());
 
         handler.add(featurable);
         handler.update(1.0);

@@ -24,12 +24,39 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Features handler representation. Store features by type, allowing quick access from an interface.
+ * Features handler representation. Store features by type (must be annotated by {@link FeatureInterface}), allowing
+ * quick access from an interface.
  */
 public class Features
 {
+    /** Feature not annotated. */
+    static final String ERROR_FEATURE_NOT_ANNOTATED = "Feature not annotated: ";
     /** Feature not found error. */
     static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
+    /** Feature exists error. */
+    static final String ERROR_FEATURE_EXISTS = "Feature already exists: ";
+    /** Feature exists as error. */
+    static final String AS = " as: ";
+    /** Feature exists with error. */
+    static final String WITH = " with: ";
+
+    /**
+     * Check if feature is annotated in its direct parents.
+     * 
+     * @param feature The feature to check.
+     * @return <code>true</code> if annotated, <code>false</code> else.
+     */
+    private static boolean isAnnotated(Feature feature)
+    {
+        for (final Class<?> current : feature.getClass().getInterfaces())
+        {
+            if (current.isAnnotationPresent(FeatureInterface.class))
+            {
+                return true;
+            }
+        }
+        return feature.getClass().isAnnotationPresent(FeatureInterface.class);
+    }
 
     /** Features handled. */
     private final Map<Class<? extends Feature>, Feature> typeToFeature = new HashMap<>();
@@ -43,21 +70,25 @@ public class Features
     }
 
     /**
-     * Add a feature. Stores its interface, and all sub interfaces which describe also a {@link Feature}.
+     * Add a feature. Stores its interface, and all sub interfaces which describe also a {@link Feature} annotated by
+     * {@link FeatureInterface}.
      * 
      * @param feature The feature to add.
+     * @throws LionEngineException If feature is not annotated by {@link FeatureInterface} or already referenced.
      */
     public void add(Feature feature)
     {
-        typeToFeature.put(feature.getClass(), feature);
-
-        for (final Class<?> type : feature.getClass().getInterfaces())
+        if (!isAnnotated(feature))
         {
-            if (Feature.class.isAssignableFrom(type))
-            {
-                typeToFeature.put(type.asSubclass(Feature.class), feature);
-            }
+            throw new LionEngineException(ERROR_FEATURE_NOT_ANNOTATED + feature.getClass());
         }
+        final Feature old;
+        // CHECKSTYLE IGNORE LINE: InnerAssignment
+        if ((old = typeToFeature.put(feature.getClass(), feature)) != null)
+        {
+            throw new LionEngineException(ERROR_FEATURE_EXISTS + feature.getClass() + WITH + old.getClass());
+        }
+        checkTypeDepth(feature, feature.getClass());
     }
 
     /**
@@ -70,23 +101,12 @@ public class Features
      */
     public <C extends Feature> C get(Class<C> feature)
     {
-        final C value;
-        if (typeToFeature.containsKey(feature))
+        final Feature found = typeToFeature.get(feature);
+        if (found != null)
         {
-            value = feature.cast(typeToFeature.get(feature));
+            return feature.cast(found);
         }
-        else
-        {
-            for (final Feature current : typeToFeature.values())
-            {
-                if (feature.isAssignableFrom(current.getClass()))
-                {
-                    return feature.cast(current);
-                }
-            }
-            throw new LionEngineException(ERROR_FEATURE_NOT_FOUND + feature.getName());
-        }
-        return value;
+        throw new LionEngineException(ERROR_FEATURE_NOT_FOUND + feature.getName());
     }
 
     /**
@@ -98,23 +118,7 @@ public class Features
      */
     public <C extends Feature> boolean contains(Class<C> feature)
     {
-        final boolean contains;
-        if (typeToFeature.containsKey(feature))
-        {
-            contains = true;
-        }
-        else
-        {
-            for (final Feature current : typeToFeature.values())
-            {
-                if (feature.isAssignableFrom(current.getClass()))
-                {
-                    return true;
-                }
-            }
-            contains = false;
-        }
-        return contains;
+        return typeToFeature.containsKey(feature);
     }
 
     /**
@@ -135,5 +139,33 @@ public class Features
     public Iterable<Class<? extends Feature>> getFeaturesType()
     {
         return typeToFeature.keySet();
+    }
+
+    /**
+     * Check annotated features parent recursively.
+     * 
+     * @param feature The main feature.
+     * @param current The current parent.
+     */
+    private void checkTypeDepth(Feature feature, Class<?> current)
+    {
+        for (final Class<?> type : current.getInterfaces())
+        {
+            if (type.isAnnotationPresent(FeatureInterface.class))
+            {
+                final Feature old;
+                // CHECKSTYLE IGNORE LINE: InnerAssignment
+                if ((old = typeToFeature.put(type.asSubclass(Feature.class), feature)) != null)
+                {
+                    throw new LionEngineException(ERROR_FEATURE_EXISTS
+                                                  + feature.getClass()
+                                                  + AS
+                                                  + type
+                                                  + WITH
+                                                  + old.getClass());
+                }
+                checkTypeDepth(feature, type);
+            }
+        }
     }
 }

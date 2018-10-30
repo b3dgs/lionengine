@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.IdentifiableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.geom.Area;
@@ -100,8 +99,6 @@ final class UtilActionnable
     {
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new IdentifiableModel());
-
         final ActionableModel actionable = new ActionableModel(services, setup);
         actionable.prepare(featurable);
 

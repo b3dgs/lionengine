@@ -28,16 +28,6 @@ final class Updater extends FeaturableModel implements Updatable
     private boolean updated;
 
     /**
-     * Constructor.
-     */
-    public Updater()
-    {
-        super();
-
-        addFeature(new IdentifiableModel());
-    }
-
-    /**
      * Check if has been updated.
      * 
      * @return <code>true</code> if updated, <code>false</code> else.

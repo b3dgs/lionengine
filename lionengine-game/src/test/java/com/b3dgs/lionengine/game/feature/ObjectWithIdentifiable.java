@@ -34,8 +34,6 @@ public final class ObjectWithIdentifiable extends FeaturableModel
     {
         super(services, setup);
 
-        addFeature(new IdentifiableModel());
-
         assertNotNull(setup);
     }
 }

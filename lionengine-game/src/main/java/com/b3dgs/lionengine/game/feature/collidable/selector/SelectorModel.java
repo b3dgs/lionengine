@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -25,6 +26,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Represents the selector model data.
  */
+@FeatureInterface
 public class SelectorModel extends FeatureModel implements SelectorConfigurer
 {
     /** Current selection area. */

@@ -15,30 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.assignable;
+package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Represents an assignable action, allows to assign an action by click.
+ * Tag interface as a feature used to identify it for a quick retrieval from interface instead of searching for
+ * interface implementation.
  */
-@FeatureInterface
-public interface Assignable extends Feature, Updatable
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface FeatureInterface
 {
-    /**
-     * Set the executable assign.
-     * 
-     * @param assign The assign to execute.
-     */
-    void setAssign(Assign assign);
-
-    /**
-     * Set the mouse click selection value to {@link Assign#assign()} the assign.
-     * 
-     * @param click The click number.
-     * @see com.b3dgs.lionengine.io.InputDevicePointer
-     */
-    void setClickAssign(int click);
+    // Nothing
 }

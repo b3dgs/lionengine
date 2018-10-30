@@ -128,59 +128,13 @@ public final class FeaturableModelTest
     public void testServiceAnnotation()
     {
         final Featurable featurable = new FeaturableModel();
-        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<>();
 
         final MyFeatureInterface featureModel = new MyFeature();
         featurable.addFeature(featureModel);
 
-        final Feature feature = new FeatureModel()
-        {
-            private @FeatureGet MyFeatureInterface feature;
+        final MyFeatureModel feature = featurable.addFeatureAndGet(new MyFeatureModel());
 
-            @Override
-            public void prepare(FeatureProvider provider)
-            {
-                super.prepare(provider);
-                filledFeature.set(feature);
-            }
-        };
-        featurable.addFeature(feature);
-
-        assertEquals(featureModel, filledFeature.get());
-    }
-
-    /**
-     * Test the service with annotation twice loaded.
-     */
-    @Test
-    public void testServiceAnnotationTwice()
-    {
-        final Featurable featurable = new FeaturableModel();
-        final AtomicReference<MyFeatureInterface> filledFeature = new AtomicReference<>();
-
-        final MyFeatureInterface featureModel = new MyFeature();
-        featurable.addFeature(featureModel);
-
-        final Feature feature = new FeatureModel()
-        {
-            private @FeatureGet MyFeatureInterface feature;
-
-            @Override
-            public void prepare(FeatureProvider provider)
-            {
-                super.prepare(provider);
-                filledFeature.set(feature);
-            }
-        };
-        assertEquals(feature, featurable.addFeatureAndGet(feature));
-
-        assertEquals(featureModel, filledFeature.get());
-
-        filledFeature.set(null);
-
-        featurable.addFeature(feature);
-
-        assertEquals(featureModel, filledFeature.get());
+        assertEquals(featureModel, feature.feature);
     }
 
     /**
@@ -270,9 +224,16 @@ public final class FeaturableModelTest
         UtilFile.deleteFile(media.getFile());
     }
 
+    @FeatureInterface
+    private static class MyFeatureModel extends FeatureModel
+    {
+        private @FeatureGet MyFeatureInterface feature;
+    }
+
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static interface MyFeatureInterface extends Feature
     {
         // Mock
@@ -281,6 +242,7 @@ public final class FeaturableModelTest
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static class MyFeature extends FeatureModel implements MyFeatureInterface
     {
         // Mock
@@ -289,6 +251,7 @@ public final class FeaturableModelTest
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static class MyFeatureNotCompatible extends FeatureModel implements Serializable
     {
         private static final long serialVersionUID = 1L;
@@ -297,6 +260,7 @@ public final class FeaturableModelTest
     /**
      * Mock feature itself.
      */
+    @FeatureInterface
     private static class FeatureItself extends FeaturableModel implements Feature
     {
         @SuppressWarnings("unused") private Object object;

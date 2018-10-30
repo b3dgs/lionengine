@@ -18,10 +18,12 @@
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Selection event linking.
  */
+@FeatureInterface
 public interface Selectable extends Feature
 {
     /**

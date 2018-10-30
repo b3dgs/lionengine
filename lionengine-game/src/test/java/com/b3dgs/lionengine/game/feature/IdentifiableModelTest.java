@@ -77,8 +77,8 @@ public final class IdentifiableModelTest
             assertNull(identifiable.getId());
         }
 
-        final IdentifiableModel identifiable = new IdentifiableModel();
         final Featurable featurable = new FeaturableModel();
+        final IdentifiableModel identifiable = featurable.getFeature(IdentifiableModel.class);
         featurable.addFeature(new Recycler());
         identifiable.prepare(featurable);
         assertEquals(Integer.valueOf(0), identifiable.getId());

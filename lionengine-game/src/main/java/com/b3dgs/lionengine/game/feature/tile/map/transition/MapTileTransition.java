@@ -22,12 +22,14 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Represents the transition handling between two different groups of tiles.
  */
+@FeatureInterface
 public interface MapTileTransition extends Feature
 {
     /**

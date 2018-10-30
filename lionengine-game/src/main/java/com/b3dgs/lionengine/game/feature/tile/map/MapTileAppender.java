@@ -20,10 +20,12 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Handle map tile resizing.
  */
+@FeatureInterface
 public interface MapTileAppender extends Feature
 {
     /**

@@ -20,10 +20,12 @@ package com.b3dgs.lionengine.game.feature.body;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Represents something designed to receive a gravitational force.
  */
+@FeatureInterface
 public interface Body extends Feature, Updatable
 {
     /**
