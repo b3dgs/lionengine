@@ -53,8 +53,8 @@ public class CameraTracker extends FeaturableModel
         {
             if (tracked != null)
             {
-                camera.setLocation(tracked.getX() - camera.getWidth() / 2.0 + h,
-                                   tracked.getY() - camera.getHeight() / 2.0 + v);
+                camera.setLocation(Math.floor(tracked.getX()) - camera.getWidth() / 2 + h,
+                                   Math.ceil(tracked.getY()) - camera.getHeight() / 2 + v);
             }
         }));
     }
