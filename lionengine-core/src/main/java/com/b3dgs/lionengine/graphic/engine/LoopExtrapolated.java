@@ -62,10 +62,8 @@ public final class LoopExtrapolated implements Loop
         final Config config = screen.getConfig();
         final Resolution output = config.getOutput();
         final boolean sync = config.isWindowed() && output.getRate() > 0;
-        if (rate < 0)
-        {
-            notifyRateChanged(output.getRate());
-        }
+
+        notifyRateChanged(output.getRate());
 
         double extrp = 1.0;
         isRunning = true;
@@ -106,7 +104,10 @@ public final class LoopExtrapolated implements Loop
     @Override
     public void notifyRateChanged(int rate)
     {
-        this.rate = rate;
+        if (this.rate < 0)
+        {
+            this.rate = rate;
+        }
         if (rate == 0)
         {
             maxFrameTimeNano = 0.0;
