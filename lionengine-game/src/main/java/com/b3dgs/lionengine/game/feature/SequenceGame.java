@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.engine.Loop;
+import com.b3dgs.lionengine.graphic.engine.LoopFrameSkipping;
 import com.b3dgs.lionengine.graphic.engine.Sequencable;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
@@ -57,7 +59,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    public SequenceGame(Context context, WorldCreator creator)
+    protected SequenceGame(Context context, WorldCreator creator)
     {
         this(context, context.getConfig().getOutput(), creator);
     }
@@ -70,9 +72,23 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    public SequenceGame(Context context, Resolution resolution, WorldCreator creator)
+    protected SequenceGame(Context context, Resolution resolution, WorldCreator creator)
     {
-        super(context, resolution);
+        this(context, resolution, new LoopFrameSkipping(), creator);
+    }
+
+    /**
+     * Create sequence.
+     * 
+     * @param context The context reference.
+     * @param resolution The resolution source reference.
+     * @param loop The loop used (must not be <code>null</code>).
+     * @param creator The world creator reference.
+     * @throws LionEngineException If invalid arguments.
+     */
+    protected SequenceGame(Context context, Resolution resolution, Loop loop, WorldCreator creator)
+    {
+        super(context, resolution, loop);
 
         services.add(context);
         services.add(new Sequencer()
