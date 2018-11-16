@@ -139,12 +139,26 @@ public final class MapTileCollisionModelTest
     @Test
     public void testFromTop()
     {
-        transformable.teleport(0.0, 6.0);
-        transformable.moveLocation(1.0, 0.0, -5.0);
+        transformable.teleport(1.0, 3.0);
+        transformable.moveLocation(1.0, 0.0, -1.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
         assertNull(result.getX());
-        assertEquals(Double.valueOf(3.0), result.getY());
+        assertEquals(Double.valueOf(2.0), result.getY());
+    }
+
+    /**
+     * Test the map tile collision from top wit fast speed.
+     */
+    @Test
+    public void testFromTopFast()
+    {
+        transformable.teleport(1.0, 3.0);
+        transformable.moveLocation(1.0, 0.0, -20.0);
+        final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
+
+        assertNull(result.getX());
+        assertEquals(Double.valueOf(2.0), result.getY());
     }
 
     /**
@@ -153,12 +167,26 @@ public final class MapTileCollisionModelTest
     @Test
     public void testFromBottom()
     {
-        transformable.teleport(0.0, -2.0);
-        transformable.moveLocation(1.0, 0.0, 5.0);
+        transformable.teleport(1.0, -1.0);
+        transformable.moveLocation(1.0, 0.0, 1.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
         assertNull(result.getX());
-        assertEquals(Double.valueOf(3.0), result.getY());
+        assertEquals(Double.valueOf(0.0), result.getY());
+    }
+
+    /**
+     * Test the map tile collision from bottom with fast speed.
+     */
+    @Test
+    public void testFromBottomFast()
+    {
+        transformable.teleport(1.0, -1.0);
+        transformable.moveLocation(1.0, 0.0, 20.0);
+        final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
+
+        assertNull(result.getX());
+        assertEquals(Double.valueOf(0.0), result.getY());
     }
 
     /**
@@ -167,22 +195,50 @@ public final class MapTileCollisionModelTest
     @Test
     public void testFromLeft()
     {
-        transformable.teleport(-2.0, 0.0);
-        transformable.moveLocation(1.0, 5.0, 0.0);
+        transformable.teleport(-1.0, 0.0);
+        transformable.moveLocation(1.0, 1.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
         assertNull(result.getY());
-        assertEquals(Double.valueOf(1.0), result.getX());
+        assertEquals(Double.valueOf(0.0), result.getX());
     }
 
     /**
-     * Test the map tile collision from left.
+     * Test the map tile collision from left with fast speed.
+     */
+    @Test
+    public void testFromLeftFast()
+    {
+        transformable.teleport(-1.0, 0.0);
+        transformable.moveLocation(1.0, 20.0, 0.0);
+        final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
+
+        assertNull(result.getY());
+        assertEquals(Double.valueOf(0.0), result.getX());
+    }
+
+    /**
+     * Test the map tile collision from right.
      */
     @Test
     public void testFromRight()
     {
-        transformable.teleport(6.0, 0.0);
-        transformable.moveLocation(1.0, -5.0, 0.0);
+        transformable.teleport(3.0, 0.0);
+        transformable.moveLocation(1.0, -1.0, 0.0);
+        final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
+
+        assertNull(result.getY());
+        assertEquals(Double.valueOf(2.0), result.getX());
+    }
+
+    /**
+     * Test the map tile collision from right with fast speed.
+     */
+    @Test
+    public void testFromRightFast()
+    {
+        transformable.teleport(3.0, 0.0);
+        transformable.moveLocation(1.0, -20.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
         assertNull(result.getY());

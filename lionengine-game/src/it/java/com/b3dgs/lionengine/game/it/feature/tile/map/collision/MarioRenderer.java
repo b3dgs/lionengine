@@ -62,7 +62,6 @@ class MarioRenderer extends FeatureModel implements Displayable
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
-        surface.setFrameOffsets(-1, 0);
 
         text.setAlign(Align.CENTER);
         text.setColor(ColorRgba.BLACK);

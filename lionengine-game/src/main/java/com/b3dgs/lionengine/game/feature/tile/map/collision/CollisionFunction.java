@@ -34,6 +34,22 @@ public interface CollisionFunction
     double compute(double input);
 
     /**
+     * Get the collision vertical render from input value.
+     * 
+     * @param input The input value.
+     * @return The output value.
+     */
+    int getRenderX(double input);
+
+    /**
+     * Get the collision horizontal render from input value.
+     * 
+     * @param input The input value.
+     * @return The output value.
+     */
+    int getRenderY(double input);
+
+    /**
      * Get the collision function type.
      * 
      * @return The function type.

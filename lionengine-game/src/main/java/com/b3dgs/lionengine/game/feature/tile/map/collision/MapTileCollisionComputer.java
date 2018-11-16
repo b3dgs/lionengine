@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -54,22 +53,15 @@ final class MapTileCollisionComputer
      * 
      * @param category The collision category.
      * @param tileCollision The current tile collision.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The computed horizontal collision.
      */
-    private static Double getCollisionX(CollisionCategory category,
-                                        TileCollision tileCollision,
-                                        double ox,
-                                        double oy,
-                                        double x,
-                                        double y)
+    private static Double getCollisionX(CollisionCategory category, TileCollision tileCollision, double x, double y)
     {
         if (category.getAxis() == Axis.X)
         {
-            return tileCollision.getCollisionX(category, ox, oy, x, y);
+            return tileCollision.getCollisionX(category, x, y);
         }
         return null;
     }
@@ -79,22 +71,15 @@ final class MapTileCollisionComputer
      * 
      * @param category The collision category.
      * @param tileCollision The current tile collision.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The computed vertical collision.
      */
-    private static Double getCollisionY(CollisionCategory category,
-                                        TileCollision tileCollision,
-                                        double ox,
-                                        double oy,
-                                        double x,
-                                        double y)
+    private static Double getCollisionY(CollisionCategory category, TileCollision tileCollision, double x, double y)
     {
         if (category.getAxis() == Axis.Y)
         {
-            return tileCollision.getCollisionY(category, ox, oy, x, y);
+            return tileCollision.getCollisionY(category, x, y);
         }
         return null;
     }
@@ -133,92 +118,119 @@ final class MapTileCollisionComputer
 
         // Search vector and number of search steps
         final double norm = Math.sqrt(dh * dh + dv * dv);
-        final double sx;
-        final double sy;
+        double sx;
+        double sy;
         if (Double.compare(norm, 0.0) == 0)
         {
-            sx = 0;
-            sy = 0;
+            sx = 0.0;
+            sy = 0.0;
         }
         else
         {
             sx = dh / norm;
             sy = dv / norm;
+
+            final double maxNorm = 1.0 / Math.max(Math.abs(sx), Math.abs(sy));
+            sx *= maxNorm;
+            sy *= maxNorm;
         }
 
-        double h = sh;
-        double v = sv;
+        final int max = (int) Math.ceil(norm) + 1;
 
-        CollisionResult found = null;
-        for (int count = 0; count < norm; count++)
+        return computeCollision(category, sh, sv, sx, sy, max);
+    }
+
+    /**
+     * Compute collision step by step moving first horizontal and then vertical.
+     * 
+     * @param category The collisions category to search in.
+     * @param sh The starting horizontal location.
+     * @param sv The starting vertical location.
+     * @param sx The horizontal search vector.
+     * @param sy The vertical search vector.
+     * @param max The maximum search iterations.
+     * @return The collision found, <code>null</code> if none.
+     */
+    private CollisionResult computeCollision(CollisionCategory category,
+                                             double sh,
+                                             double sv,
+                                             double sx,
+                                             double sy,
+                                             int max)
+    {
+        double x = sh;
+        double y = sv;
+        double ox = x;
+        double oy = y;
+
+        CollisionResult last = null;
+        for (int cur = 0; cur < max; cur++)
         {
-            final CollisionResult res = getResult(category, sx, sy, h, v);
-            if (res != null)
+            ox = x;
+            CollisionResult current = computeCollision(category, ox, oy, x, y);
+            if (current != null)
             {
-                found = res;
-                if (res.getX() != null)
+                last = current;
+                if (current.getX() != null)
                 {
-                    h = res.getX().doubleValue();
+                    x = current.getX().doubleValue();
                 }
-                if (res.getY() != null)
+                if (current.getY() != null)
                 {
-                    v = res.getY().doubleValue();
+                    y = current.getY().doubleValue();
                 }
             }
-            v += sy;
-            h += sx;
+            x += sx;
+
+            oy = y;
+            current = computeCollision(category, ox, oy, x, y);
+            if (current != null)
+            {
+                last = current;
+                if (current.getX() != null)
+                {
+                    x = current.getX().doubleValue();
+                }
+                if (current.getY() != null)
+                {
+                    y = current.getY().doubleValue();
+                }
+            }
+            y += sy;
         }
-        return found;
+        return last;
     }
 
     /**
      * Compute the collision from current location.
      * 
      * @param category The collision category.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
+     * @param ox The current horizontal location.
+     * @param oy The current vertical location.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The computed collision result, <code>null</code> if none.
      */
     private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        final Tile tile = map.getTile((int) Math.floor(x / map.getTileWidth()),
-                                      (int) Math.floor(y / map.getTileHeight()));
+        final Tile tile = map.getTile((int) Math.floor(ox / map.getTileWidth()),
+                                      (int) Math.floor(oy / map.getTileHeight()));
         if (tile != null)
         {
-            final TileCollision tileCollision = tile.getFeature(TileCollision.class);
+            TileCollisionModel tileCollision = tile.getFeature(TileCollisionModel.class);
+
+            tileCollision = tile.getFeature(TileCollisionModel.class);
             if (containsCollisionFormula(tileCollision, category))
             {
-                final Double cx = getCollisionX(category, tileCollision, ox, oy, x, y);
-                final Double cy = getCollisionY(category, tileCollision, ox, oy, x, y);
-                return new CollisionResult(cx, cy, tile);
+                final Double cx = getCollisionX(category, tileCollision, x, y);
+                final Double cy = getCollisionY(category, tileCollision, x, y);
+                // CHECKSTYLE IGNORE LINE: NestedIfDepth
+                if (cx != null || cy != null)
+                {
+                    return new CollisionResult(cx, cy, tile);
+                }
             }
         }
         return null;
-    }
-
-    /**
-     * Get the collision result from current sub location.
-     * 
-     * @param category The collision category.
-     * @param sx The horizontal speed.
-     * @param sy The vertical speed.
-     * @param h The current horizontal location.
-     * @param v The current vertical location.
-     * @return The collision found, <code>null</code> if none.
-     */
-    private CollisionResult getResult(CollisionCategory category, double sx, double sy, double h, double v)
-    {
-        final double oh = UtilMath.getRound(sx, h);
-        final double ov = UtilMath.getRound(sy, v);
-
-        final CollisionResult result;
-        result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v));
-        if (result == null)
-        {
-            return computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v + sy));
-        }
-        return result;
     }
 }

@@ -114,6 +114,18 @@ public final class CollisionFunctionConfigTest
             {
                 return 0;
             }
+
+            @Override
+            public int getRenderX(double input)
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRenderY(double input)
+            {
+                return 0;
+            }
         });
 
         assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "null");
@@ -136,6 +148,18 @@ public final class CollisionFunctionConfigTest
 
             @Override
             public double compute(double input)
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRenderX(double input)
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRenderY(double input)
             {
                 return 0;
             }

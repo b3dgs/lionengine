@@ -114,11 +114,9 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      */
     private static void renderX(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
     {
-        final double fx = function.compute(y);
-        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
-            && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
         {
-            g.drawRect((int) fx, th - y - 1, 0, 0, false);
+            g.drawRect(function.getRenderX(y), th - y - 1, 0, 0, false);
         }
     }
 
@@ -134,11 +132,9 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      */
     private static void renderY(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
     {
-        final double fy = function.compute(x);
-        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
-            && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
         {
-            g.drawRect(x, th - (int) fy - 1, 0, 0, false);
+            g.drawRect(x, th - function.getRenderY(x) - 1, 0, 0, false);
         }
     }
 
