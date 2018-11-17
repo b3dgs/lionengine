@@ -59,7 +59,7 @@ final class MapTileCollisionComputer
      */
     private static Double getCollisionX(CollisionCategory category, TileCollision tileCollision, double x, double y)
     {
-        if (category.getAxis() == Axis.X)
+        if (Axis.X == category.getAxis())
         {
             return tileCollision.getCollisionX(category, x, y);
         }
@@ -77,11 +77,29 @@ final class MapTileCollisionComputer
      */
     private static Double getCollisionY(CollisionCategory category, TileCollision tileCollision, double x, double y)
     {
-        if (category.getAxis() == Axis.Y)
+        if (Axis.Y == category.getAxis())
         {
             return tileCollision.getCollisionY(category, x, y);
         }
         return null;
+    }
+
+    /**
+     * Get position on tile depending on side.
+     * 
+     * @param old The old position.
+     * @param cur The current position.
+     * @return The position on side.
+     */
+    private static double getPositionToSide(double old, double cur)
+    {
+        // Moving right
+        if (Double.compare(old, cur) > 0)
+        {
+            return cur;
+        }
+        // Moving left
+        return old;
     }
 
     /** Map reference. */
@@ -116,26 +134,23 @@ final class MapTileCollisionComputer
         final double dh = transformable.getX() + category.getOffsetX() - sh;
         final double dv = transformable.getY() + category.getOffsetY() - sv;
 
-        // Search vector and number of search steps
-        final double norm = Math.sqrt(dh * dh + dv * dv);
-        double sx;
-        double sy;
-        if (Double.compare(norm, 0.0) == 0)
+        final double nh = Math.abs(dh);
+        final double nv = Math.abs(dv);
+
+        final int max = (int) Math.ceil(Math.max(nh, nv));
+        final double sx;
+        final double sy;
+
+        if (Double.compare(nh, 1.0) >= 0 || Double.compare(nv, 1.0) >= 0)
         {
-            sx = 0.0;
-            sy = 0.0;
+            sx = dh / max;
+            sy = dv / max;
         }
         else
         {
-            sx = dh / norm;
-            sy = dv / norm;
-
-            final double maxNorm = 1.0 / Math.max(Math.abs(sx), Math.abs(sy));
-            sx *= maxNorm;
-            sy *= maxNorm;
+            sx = dh;
+            sy = dv;
         }
-
-        final int max = (int) Math.ceil(norm) + 1;
 
         return computeCollision(category, sh, sv, sx, sy, max);
     }
@@ -151,6 +166,7 @@ final class MapTileCollisionComputer
      * @param max The maximum search iterations.
      * @return The collision found, <code>null</code> if none.
      */
+    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
     private CollisionResult computeCollision(CollisionCategory category,
                                              double sh,
                                              double sv,
@@ -163,10 +179,12 @@ final class MapTileCollisionComputer
         double ox = x;
         double oy = y;
 
+        boolean collX = false;
+        boolean collY = false;
+
         CollisionResult last = null;
         for (int cur = 0; cur < max; cur++)
         {
-            ox = x;
             CollisionResult current = computeCollision(category, ox, oy, x, y);
             if (current != null)
             {
@@ -174,15 +192,35 @@ final class MapTileCollisionComputer
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
+                    collX = true;
+                }
+                else
+                {
+                    collX = false;
                 }
                 if (current.getY() != null)
                 {
                     y = current.getY().doubleValue();
+                    oy = y;
+                    collY = true;
+                }
+                else
+                {
+                    collY = false;
                 }
             }
-            x += sx;
+            else
+            {
+                collX = false;
+                collY = false;
+            }
 
-            oy = y;
+            if (!collX)
+            {
+                ox = x;
+                x += sx;
+            }
+
             current = computeCollision(category, ox, oy, x, y);
             if (current != null)
             {
@@ -190,14 +228,35 @@ final class MapTileCollisionComputer
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
+                    collX = true;
+                }
+                else
+                {
+                    collX = false;
                 }
                 if (current.getY() != null)
                 {
                     y = current.getY().doubleValue();
+                    collY = true;
+                }
+                else
+                {
+                    collY = false;
                 }
             }
-            y += sy;
+            else
+            {
+                collX = false;
+                collY = false;
+            }
+
+            if (!collY)
+            {
+                oy = y;
+                y += sy;
+            }
         }
+
         return last;
     }
 
@@ -213,13 +272,10 @@ final class MapTileCollisionComputer
      */
     private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        final Tile tile = map.getTile((int) Math.floor(ox / map.getTileWidth()),
-                                      (int) Math.floor(oy / map.getTileHeight()));
+        final Tile tile = map.getTileAt(getPositionToSide(ox, x), getPositionToSide(oy, y));
         if (tile != null)
         {
-            TileCollisionModel tileCollision = tile.getFeature(TileCollisionModel.class);
-
-            tileCollision = tile.getFeature(TileCollisionModel.class);
+            final TileCollision tileCollision = tile.getFeature(TileCollision.class);
             if (containsCollisionFormula(tileCollision, category))
             {
                 final Double cx = getCollisionX(category, tileCollision, x, y);

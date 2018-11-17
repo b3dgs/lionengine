@@ -140,7 +140,7 @@ public final class MapTileCollisionModelTest
     public void testFromTop()
     {
         transformable.teleport(1.0, 3.0);
-        transformable.moveLocation(1.0, 0.0, -1.0);
+        transformable.moveLocation(1.0, 0.0, -2.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
         assertNull(result.getX());
@@ -168,7 +168,7 @@ public final class MapTileCollisionModelTest
     public void testFromBottom()
     {
         transformable.teleport(1.0, -1.0);
-        transformable.moveLocation(1.0, 0.0, 1.0);
+        transformable.moveLocation(1.0, 0.0, 3.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryY);
 
         assertNull(result.getX());
@@ -196,7 +196,7 @@ public final class MapTileCollisionModelTest
     public void testFromLeft()
     {
         transformable.teleport(-1.0, 0.0);
-        transformable.moveLocation(1.0, 1.0, 0.0);
+        transformable.moveLocation(1.0, 2.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
         assertNull(result.getY());

@@ -71,7 +71,7 @@ public class CollisionFunctionLinear implements CollisionFunction
     @Override
     public double compute(double input)
     {
-        return Math.floor(a * input + b);
+        return a * input + b;
     }
 
     @Override
