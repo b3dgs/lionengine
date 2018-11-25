@@ -92,10 +92,10 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
         switch (range.getOutput())
         {
             case X:
-                renderX(g, function, range, th, x, y);
+                renderX(g, function, range, th, y);
                 break;
             case Y:
-                renderY(g, function, range, th, x, y);
+                renderY(g, function, range, th, x);
                 break;
             default:
                 throw new LionEngineException(range.getOutput());
@@ -109,10 +109,9 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      * @param function The collision function.
      * @param range The collision range.
      * @param th The tile height.
-     * @param x The current horizontal location.
      * @param y The current vertical location.
      */
-    private static void renderX(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
+    private static void renderX(Graphic g, CollisionFunction function, CollisionRange range, int th, int y)
     {
         if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
         {
@@ -128,9 +127,8 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      * @param range The collision range.
      * @param th The tile height.
      * @param x The current horizontal location.
-     * @param y The current vertical location.
      */
-    private static void renderY(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
+    private static void renderY(Graphic g, CollisionFunction function, CollisionRange range, int th, int x)
     {
         if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
         {
