@@ -202,17 +202,11 @@ final class MapTileCollisionComputer
                 {
                     y = current.getY().doubleValue();
                     oy = y;
-                    collY = true;
-                }
-                else
-                {
-                    collY = false;
                 }
             }
             else
             {
                 collX = false;
-                collY = false;
             }
 
             if (!collX)
@@ -228,11 +222,6 @@ final class MapTileCollisionComputer
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
-                    collX = true;
-                }
-                else
-                {
-                    collX = false;
                 }
                 if (current.getY() != null)
                 {
@@ -246,7 +235,6 @@ final class MapTileCollisionComputer
             }
             else
             {
-                collX = false;
                 collY = false;
             }
 
