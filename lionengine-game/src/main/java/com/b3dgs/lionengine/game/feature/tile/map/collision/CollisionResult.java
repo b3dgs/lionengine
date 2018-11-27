@@ -25,6 +25,9 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
  */
 public class CollisionResult
 {
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 30;
+
     /** Horizontal collision location (<code>null</code> if none). */
     private final Double x;
     /** Vertical collision location (<code>null</code> if none). */
@@ -78,5 +81,17 @@ public class CollisionResult
     public Tile getTile()
     {
         return tile;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [x=")
+                                            .append(x)
+                                            .append(", y=")
+                                            .append(y)
+                                            .append("]")
+                                            .toString();
     }
 }

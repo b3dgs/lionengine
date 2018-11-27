@@ -44,4 +44,16 @@ public final class CollisionResultTest
         assertEquals(y, result.getY());
         assertEquals(tile, result.getTile());
     }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        assertEquals("CollisionResult [x=1.0, y=2.0]",
+                     new CollisionResult(Double.valueOf(1.0),
+                                         Double.valueOf(2.0),
+                                         new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1)).toString());
+    }
 }
