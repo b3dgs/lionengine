@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
@@ -40,6 +41,14 @@ public interface MapTileGroup extends Feature
      * @throws LionEngineException If error when reading groups.
      */
     void loadGroups(Media groupsConfig);
+
+    /**
+     * Load tiles group from an external file.
+     * 
+     * @param groups The tile collision groups.
+     * @throws LionEngineException If error when reading groups.
+     */
+    void loadGroups(Collection<TileGroup> groups);
 
     /**
      * Change the group of the tile.

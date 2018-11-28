@@ -63,14 +63,13 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
      */
 
     @Override
-    public void loadGroups(Media groupsConfig)
+    public void loadGroups(Collection<TileGroup> groups)
     {
-        this.groupsConfig = groupsConfig;
         groupTiles.clear();
         tilesGroup.clear();
         groupTypes.clear();
 
-        for (final TileGroup group : TileGroupsConfig.imports(groupsConfig))
+        for (final TileGroup group : groups)
         {
             final String name = group.getName();
             groupTiles.put(name, group.getTiles());
@@ -80,6 +79,13 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
                 tilesGroup.put(tile, name);
             }
         }
+    }
+
+    @Override
+    public void loadGroups(Media groupsConfig)
+    {
+        this.groupsConfig = groupsConfig;
+        loadGroups(TileGroupsConfig.imports(groupsConfig));
     }
 
     @Override
