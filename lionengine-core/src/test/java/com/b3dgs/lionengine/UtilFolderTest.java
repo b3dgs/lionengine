@@ -163,8 +163,6 @@ public final class UtilFolderTest
         UtilFolder.deleteDirectory(new File("void"));
         UtilFolder.deleteDirectory(new File("warn")
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public boolean isDirectory()
             {
@@ -184,8 +182,6 @@ public final class UtilFolderTest
                 {
                     new File("warn")
                     {
-                        private static final long serialVersionUID = 1L;
-
                         @Override
                         public boolean isFile()
                         {
@@ -203,8 +199,6 @@ public final class UtilFolderTest
         });
         UtilFolder.deleteDirectory(new File("null")
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public boolean isDirectory()
             {

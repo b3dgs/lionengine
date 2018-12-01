@@ -284,7 +284,7 @@ public final class UtilReflectionTest
     @Test
     public void testGetFieldNotAccessible()
     {
-        assertNotNull(UtilReflection.getField(LionEngineException.class, "serialVersionUID"));
+        assertNotNull(UtilReflection.getField(Verbose.class, "LOGGER"));
     }
 
     /**
@@ -411,7 +411,7 @@ public final class UtilReflectionTest
      */
     class ObjectTest1 implements Interface1, Serializable
     {
-        private static final long serialVersionUID = 1L;
+        // Mock
     }
 
     /**
@@ -419,7 +419,7 @@ public final class UtilReflectionTest
      */
     final class ObjectTest2 extends ObjectTest1 implements Interface3
     {
-        private static final long serialVersionUID = 1L;
+        // Mock
     }
 
     /**

@@ -28,8 +28,6 @@ public final class LionEngineException extends RuntimeException
     static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
     /** Null enum. */
     static final String NULL_ENUM = "null";
-    /** Uid. */
-    private static final long serialVersionUID = 5387489108947599464L;
 
     /**
      * Get formatted message with media.

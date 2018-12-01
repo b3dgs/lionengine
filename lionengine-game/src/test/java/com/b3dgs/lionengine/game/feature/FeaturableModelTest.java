@@ -22,7 +22,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -252,9 +251,9 @@ public final class FeaturableModelTest
      * Mock feature.
      */
     @FeatureInterface
-    private static class MyFeatureNotCompatible extends FeatureModel implements Serializable
+    private static class MyFeatureNotCompatible extends FeatureModel
     {
-        private static final long serialVersionUID = 1L;
+        // Mock
     }
 
     /**

@@ -184,8 +184,6 @@ public final class ToolsAwtTest
 
         ToolsAwt.createBufferStrategy(new java.awt.Canvas(null)
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
             {
@@ -207,8 +205,6 @@ public final class ToolsAwtTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         ToolsAwt.createBufferStrategy(new java.awt.Canvas(null)
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
             {
@@ -234,8 +230,6 @@ public final class ToolsAwtTest
 
         ToolsAwt.createBufferStrategy(new java.awt.Window(null)
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
             {
@@ -257,8 +251,6 @@ public final class ToolsAwtTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         ToolsAwt.createBufferStrategy(new java.awt.Window(null)
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void createBufferStrategy(int numBuffers, BufferCapabilities caps) throws java.awt.AWTException
             {

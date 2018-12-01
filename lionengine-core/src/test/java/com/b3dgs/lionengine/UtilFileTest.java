@@ -211,8 +211,6 @@ public final class UtilFileTest
     {
         assertThrows(() -> UtilFile.getFiles(new File("void")
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public boolean isDirectory()
             {
