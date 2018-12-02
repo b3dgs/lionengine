@@ -45,9 +45,9 @@ public final class KeyboardHeadless implements Keyboard
     /** Pressed states. */
     private final Collection<Integer> pressed = new HashSet<>();
     /** Last key code. */
-    private volatile Integer lastCode = NO_KEY_CODE;
+    private Integer lastCode = NO_KEY_CODE;
     /** Last key name. */
-    private volatile char lastKeyName = EMPTY_KEY_NAME;
+    private char lastKeyName = EMPTY_KEY_NAME;
     /** Left key. */
     private Integer leftKey = LEFT;
     /** Right key. */

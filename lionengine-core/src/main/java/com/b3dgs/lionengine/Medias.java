@@ -38,11 +38,11 @@ public final class Medias
     /** Factory media implementation. */
     private static FactoryMedia factoryMedia = new FactoryMediaDefault();
     /** Path separator. */
-    private static volatile String separator = File.separator;
+    private static String separator = File.separator;
     /** Resources directory. */
-    private static volatile String resourcesDir = Constant.EMPTY_STRING;
+    private static String resourcesDir = Constant.EMPTY_STRING;
     /** Class loader. */
-    private static volatile Optional<Class<?>> loader = Optional.empty();
+    private static Optional<Class<?>> loader = Optional.empty();
 
     /**
      * Create a media.
@@ -208,7 +208,7 @@ public final class Medias
      * 
      * @return The resources directory.
      */
-    public static String getResourcesDirectory()
+    public static synchronized String getResourcesDirectory()
     {
         return resourcesDir;
     }
@@ -218,7 +218,7 @@ public final class Medias
      * 
      * @return The resources loader.
      */
-    public static Optional<Class<?>> getResourcesLoader()
+    public static synchronized Optional<Class<?>> getResourcesLoader()
     {
         return loader;
     }
@@ -271,7 +271,7 @@ public final class Medias
      * @param separator The path separator (must not be <code>null</code>).
      * @throws LionEngineException If invalid parameter.
      */
-    public static void setSeparator(String separator)
+    public static synchronized void setSeparator(String separator)
     {
         Check.notNull(separator);
 
@@ -283,7 +283,7 @@ public final class Medias
      * 
      * @return The path separator.
      */
-    public static String getSeparator()
+    public static synchronized String getSeparator()
     {
         return separator;
     }

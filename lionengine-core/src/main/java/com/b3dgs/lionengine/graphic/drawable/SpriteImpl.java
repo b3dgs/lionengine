@@ -43,7 +43,7 @@ class SpriteImpl implements Sprite
     /** Sprite file name (can be <code>null</code> created with existing surface). */
     private final Media media;
     /** Sprite current surface (<code>null</code> if not loaded from existing media). */
-    private volatile ImageBuffer surface;
+    private ImageBuffer surface;
     /** Sprite original surface (<code>null</code> if surface unmodified). */
     private ImageBuffer surfaceOriginal;
     /** Origin point. */

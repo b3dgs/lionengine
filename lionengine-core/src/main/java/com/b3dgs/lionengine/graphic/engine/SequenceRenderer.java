@@ -46,7 +46,7 @@ final class SequenceRenderer
     /** Source resolution. */
     private Resolution source;
     /** Filter reference. */
-    private volatile Filter filter = FilterNone.INSTANCE;
+    private Filter filter = FilterNone.INSTANCE;
     /** Image buffer (can be <code>null</code> for direct rendering). */
     private ImageBuffer buf;
     /** Filter used (can be <code>null</code> for direct rendering). */

@@ -42,7 +42,7 @@ final class ImageImpl implements Image
     /** Sprite height. */
     private final int height;
     /** Image surface (can be <code>null</code>). */
-    private volatile ImageBuffer surface;
+    private ImageBuffer surface;
     /** Origin point. */
     private Origin origin = Origin.TOP_LEFT;
     /** Image horizontal position. */
