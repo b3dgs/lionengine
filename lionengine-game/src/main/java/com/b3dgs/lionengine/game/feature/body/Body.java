@@ -26,19 +26,12 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * Represents something designed to receive a gravitational force.
  */
 @FeatureInterface
-public interface Body extends Feature, Updatable
+public interface Body extends Feature, Updatable, Direction
 {
     /**
      * Reset current gravity force (usually when hit the ground).
      */
     void resetGravity();
-
-    /**
-     * Set forces involved in gravity and movement.
-     * 
-     * @param vectors The vectors list.
-     */
-    void setVectors(Direction... vectors);
 
     /**
      * Set the desired fps.

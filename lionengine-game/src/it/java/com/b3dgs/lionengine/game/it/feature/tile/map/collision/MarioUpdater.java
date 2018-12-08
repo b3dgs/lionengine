@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.body.Body;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.Axis;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionCategory;
+import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionResult;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListener;
 
@@ -74,7 +74,6 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
 
         body.setDesiredFps(60);
         body.setGravity(GRAVITY);
-        body.setVectors(movement, jump);
     }
 
     @Override
@@ -98,6 +97,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
+        transformable.moveLocation(extrp, body, movement, jump);
         tileCollidable.update(extrp);
 
         if (transformable.getY() < 0)
@@ -108,7 +108,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     }
 
     @Override
-    public void notifyTileCollided(Tile tile, CollisionCategory category)
+    public void notifyTileCollided(CollisionResult result, CollisionCategory category)
     {
         if (Axis.Y == category.getAxis())
         {

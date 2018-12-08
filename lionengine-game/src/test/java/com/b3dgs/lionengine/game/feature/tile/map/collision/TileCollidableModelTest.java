@@ -142,7 +142,7 @@ public final class TileCollidableModelTest
      */
     private TileCollidableListener createListener(final AtomicReference<Tile> collided)
     {
-        return (tile, category) -> collided.set(tile);
+        return (result, category) -> collided.set(result.getTile());
     }
 
     /**

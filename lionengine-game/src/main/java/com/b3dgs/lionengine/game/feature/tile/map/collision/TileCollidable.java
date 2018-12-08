@@ -44,11 +44,26 @@ public interface TileCollidable extends Feature, Updatable
     void removeListener(TileCollidableListener listener);
 
     /**
-     * Set the collision tile enabled flag.
+     * Apply collision result.
+     * 
+     * @param result The collision result used.
+     */
+    void apply(CollisionResult result);
+
+    /**
+     * Set the collision tile enabled flag on all axis.
      * 
      * @param enabled <code>true</code> to enable collision checking, <code>false</code> else.
      */
     void setEnabled(boolean enabled);
+
+    /**
+     * Set the collision tile enabled flag.
+     * 
+     * @param axis The specific axis to control.
+     * @param enabled <code>true</code> to enable collision checking, <code>false</code> else.
+     */
+    void setEnabled(Axis axis, boolean enabled);
 
     /**
      * Get the collision tile category used as read only..

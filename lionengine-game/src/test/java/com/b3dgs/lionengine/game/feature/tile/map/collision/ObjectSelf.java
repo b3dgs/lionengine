@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
  * Object self collision listener mock.
@@ -31,7 +30,7 @@ final class ObjectSelf extends FeaturableModel implements TileCollidableListener
     final AtomicBoolean called = new AtomicBoolean();
 
     @Override
-    public void notifyTileCollided(Tile tile, CollisionCategory category)
+    public void notifyTileCollided(CollisionResult result, CollisionCategory category)
     {
         called.set(true);
     }

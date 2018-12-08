@@ -260,7 +260,7 @@ final class MapTileCollisionComputer
      */
     private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        final Tile tile = map.getTileAt(getPositionToSide(ox, x), getPositionToSide(oy, y));
+        final Tile tile = map.getTileAt(ox, getPositionToSide(oy, y));
         if (tile != null)
         {
             final TileCollision tileCollision = tile.getFeature(TileCollision.class);

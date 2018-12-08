@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
@@ -48,6 +47,8 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
     private final MapTileCollision map;
+    /** Enabled flags. */
+    private final Map<Axis, Boolean> enabledAxis = new HashMap<>();
     /** Collision enabled. */
     private boolean enabled;
 
@@ -94,32 +95,26 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private void update(CollisionCategory category)
     {
         final CollisionResult result = results.get(category.getName());
-        if (result != null)
+
+        if (result != null
+            && (result.getX() != null || result.getY() != null)
+            && Boolean.TRUE.equals(enabledAxis.get(category.getAxis())))
         {
-            if (result.getX() != null)
-            {
-                onCollided(result.getTile(), category);
-                transformable.teleportX(result.getX().doubleValue());
-            }
-            if (result.getY() != null)
-            {
-                onCollided(result.getTile(), category);
-                transformable.teleportY(result.getY().doubleValue());
-            }
+            onCollided(result, category);
         }
     }
 
     /**
      * Called when a collision occurred on a specified axis.
      * 
-     * @param tile The tile reference.
+     * @param result The result reference.
      * @param category The collision category reference.
      */
-    private void onCollided(Tile tile, CollisionCategory category)
+    private void onCollided(CollisionResult result, CollisionCategory category)
     {
         for (final TileCollidableListener listener : listeners)
         {
-            listener.notifyTileCollided(tile, category);
+            listener.notifyTileCollided(result, category);
         }
     }
 
@@ -179,9 +174,28 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     }
 
     @Override
+    public void apply(CollisionResult result)
+    {
+        if (result.getX() != null)
+        {
+            transformable.teleportX(result.getX().doubleValue());
+        }
+        if (result.getY() != null)
+        {
+            transformable.teleportY(result.getY().doubleValue());
+        }
+    }
+
+    @Override
     public void setEnabled(boolean enabled)
     {
         this.enabled = enabled;
+    }
+
+    @Override
+    public void setEnabled(Axis axis, boolean enabled)
+    {
+        enabledAxis.put(axis, Boolean.valueOf(enabled));
     }
 
     @Override
@@ -198,5 +212,9 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     public final void recycle()
     {
         enabled = true;
+        for (final Axis axis : Axis.values())
+        {
+            enabledAxis.put(axis, Boolean.TRUE);
+        }
     }
 }

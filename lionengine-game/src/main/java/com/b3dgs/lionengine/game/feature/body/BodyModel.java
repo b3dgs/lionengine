@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.game.feature.body;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.DirectionNone;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -37,12 +35,8 @@ public class BodyModel extends FeatureModel implements Body
     private final Force force = new Force();
     /** Maximum gravity value. */
     private final Force gravityMax = new Force();
-    /** Body location. */
-    private Transformable transformable;
     /** Gravity used. */
     private double gravity = Constant.GRAVITY_EARTH;
-    /** Vector used. */
-    private Direction[] vectors = new Direction[0];
     /** Body mass. */
     private double mass;
     /** Desired FPS. */
@@ -67,30 +61,15 @@ public class BodyModel extends FeatureModel implements Body
      */
 
     @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        transformable = provider.getFeature(Transformable.class);
-    }
-
-    @Override
     public void update(double extrp)
     {
         force.addDirection(extrp, 0.0, -gravity * (desiredFps / (double) Constant.ONE_SECOND_IN_MILLI) * extrp);
-        transformable.moveLocation(extrp, force, vectors);
     }
 
     @Override
     public void resetGravity()
     {
         force.setDirection(DirectionNone.INSTANCE);
-    }
-
-    @Override
-    public void setVectors(Direction... vectors)
-    {
-        this.vectors = vectors;
     }
 
     @Override
@@ -129,5 +108,17 @@ public class BodyModel extends FeatureModel implements Body
     public double getWeight()
     {
         return mass * gravity;
+    }
+
+    @Override
+    public double getDirectionHorizontal()
+    {
+        return force.getDirectionHorizontal();
+    }
+
+    @Override
+    public double getDirectionVertical()
+    {
+        return force.getDirectionVertical();
     }
 }

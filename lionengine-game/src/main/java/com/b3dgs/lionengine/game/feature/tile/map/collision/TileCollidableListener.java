@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import com.b3dgs.lionengine.game.feature.tile.Tile;
-
 /**
  * Notify events from the {@link TileCollidable}.
  */
@@ -27,8 +25,8 @@ public interface TileCollidableListener
     /**
      * Notify when a tile collision occurred.
      * 
-     * @param tile The collided tile.
+     * @param result The collided tile.
      * @param category The collided axis.
      */
-    void notifyTileCollided(Tile tile, CollisionCategory category);
+    void notifyTileCollided(CollisionResult result, CollisionCategory category);
 }

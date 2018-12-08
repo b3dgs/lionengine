@@ -88,7 +88,7 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
         if (UtilMath.isBetween(yOnTile, range.getMinY(), range.getMaxY()))
         {
             final double xOnTile = getInputValue(Axis.X, x, y);
-            final double result = function.compute(yOnTile);
+            final double result = Math.floor(function.compute(yOnTile));
 
             if (UtilMath.isBetween(xOnTile, result + range.getMinX() - 1, result + range.getMaxX()))
             {

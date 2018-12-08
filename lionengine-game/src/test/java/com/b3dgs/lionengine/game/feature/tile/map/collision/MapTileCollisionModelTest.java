@@ -223,7 +223,7 @@ public final class MapTileCollisionModelTest
     @Test
     public void testFromRight()
     {
-        transformable.teleport(3.0, 0.0);
+        transformable.teleport(2.0, 0.0);
         transformable.moveLocation(1.0, -1.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
@@ -237,7 +237,7 @@ public final class MapTileCollisionModelTest
     @Test
     public void testFromRightFast()
     {
-        transformable.teleport(3.0, 0.0);
+        transformable.teleport(2.0, 0.0);
         transformable.moveLocation(1.0, -20.0, 0.0);
         final CollisionResult result = mapCollision.computeCollision(transformable, categoryX);
 
