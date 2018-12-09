@@ -317,7 +317,7 @@ public final class MapTileCollisionModelComplexTest
     {
         final CollisionResult res = test(1, 0, TILE_SLOPE_RIGHT_0, 0, 1, TILE_SLOPE_RIGHT_1, 16.0, 15.9, -1, speedX);
 
-        UtilAssert.assertEquals(Math.floor(16.0), res.getY().doubleValue());
+        UtilAssert.assertEquals(Math.floor(16.0 + speedX / 2.0), res.getY().doubleValue());
     }
 
     /**
