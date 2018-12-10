@@ -182,6 +182,21 @@ public class StateHandler extends FeatureModel implements Updatable
         }
     }
 
+    /**
+     * Post update checking next transition if has.
+     */
+    public void postUpdate()
+    {
+        if (current != null)
+        {
+            final Class<? extends State> next = current.checkTransitions();
+            if (next != null)
+            {
+                changeState(next);
+            }
+        }
+    }
+
     /*
      * Updatable
      */
@@ -192,12 +207,6 @@ public class StateHandler extends FeatureModel implements Updatable
         if (current != null)
         {
             current.update(extrp);
-
-            final Class<? extends State> next = current.checkTransitions();
-            if (next != null)
-            {
-                changeState(next);
-            }
         }
     }
 }

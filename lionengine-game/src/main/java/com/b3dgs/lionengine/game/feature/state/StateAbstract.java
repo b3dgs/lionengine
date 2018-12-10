@@ -39,6 +39,14 @@ public abstract class StateAbstract implements State
         super();
     }
 
+    /**
+     * Called once update is done and no next transition found. Does nothing by default.
+     */
+    protected void postUpdate()
+    {
+        // Nothing by default
+    }
+
     /*
      * State
      */
@@ -79,6 +87,7 @@ public abstract class StateAbstract implements State
                 return entry.getKey();
             }
         }
+        postUpdate();
         return null;
     }
 }

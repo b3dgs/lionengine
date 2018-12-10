@@ -81,6 +81,7 @@ public final class StateHandlerTest
         assertFalse(StateBase.exited);
 
         handler.update(1.0);
+        handler.postUpdate();
 
         assertFalse(handler.isState(StateBase.class));
         assertFalse(StateBase.entered);
@@ -96,6 +97,7 @@ public final class StateHandlerTest
 
         StateBase.reset();
         handler.update(1.0);
+        handler.postUpdate();
 
         assertFalse(StateBase.entered);
         assertTrue(StateBase.updated);
@@ -108,6 +110,7 @@ public final class StateHandlerTest
         StateBase.reset();
         StateBase.check = true;
         handler.update(1.0);
+        handler.postUpdate();
 
         assertFalse(StateBase.entered);
         assertTrue(StateBase.updated);
@@ -119,6 +122,7 @@ public final class StateHandlerTest
 
         StateBase.reset();
         handler.update(1.0);
+        handler.postUpdate();
 
         assertFalse(StateBase.entered);
         assertFalse(StateBase.updated);
@@ -177,10 +181,15 @@ public final class StateHandlerTest
 
         handler.update(1.0);
 
+        assertNull(StateWalk.animation);
+
+        handler.postUpdate();
+
         assertEquals(new Animation(StateWalk.class.getSimpleName(), 2, 2, 0.125, false, false), StateWalk.animation);
         assertTrue(handler.isState(StateWalk.class));
 
         handler.update(1.0);
+        handler.postUpdate();
 
         assertTrue(handler.isState(StateIdle.class));
     }
