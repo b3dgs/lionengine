@@ -4,16 +4,16 @@
     <lionengine:surface image="Mario.png"/>
     <lionengine:frames horizontal="7" vertical="1"/>
     <lionengine:size width="16" height="16"/>
-    <lionengine:category name="leg_right" axis="Y" x="6" y="0">
+    <lionengine:category axis="Y" name="leg_l" x="6" y="0">
         <lionengine:group>block</lionengine:group>
     </lionengine:category>
-    <lionengine:category name="leg_left" axis="Y" x="-6" y="0">
+    <lionengine:category axis="Y" name="leg_r" x="-6" y="0">
         <lionengine:group>block</lionengine:group>
     </lionengine:category>
-    <lionengine:category name="knee_right" axis="X" x="6" y="0">
+    <lionengine:category axis="X" name="knee_l" x="7" y="1">
         <lionengine:group>block</lionengine:group>
     </lionengine:category>
-    <lionengine:category name="knee_left" axis="X" x="-6" y="0">
+    <lionengine:category axis="X" name="knee_r" x="-7" y="1">
         <lionengine:group>block</lionengine:group>
     </lionengine:category>
     <lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="16" mirror="false"/>

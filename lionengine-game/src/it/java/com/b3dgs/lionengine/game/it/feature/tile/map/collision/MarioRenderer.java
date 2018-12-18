@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -40,7 +41,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
  */
 class MarioRenderer extends FeatureModel implements Displayable
 {
-    private final TextGame text = new TextGame("Arial", 12, TextStyle.NORMAL);
+    private final TextGame text = new TextGame(Constant.FONT_SERIF, 12, TextStyle.NORMAL);
     private final SpriteAnimated surface;
 
     private final Viewer viewer;
@@ -65,7 +66,7 @@ class MarioRenderer extends FeatureModel implements Displayable
 
         text.setAlign(Align.CENTER);
         text.setColor(ColorRgba.BLACK);
-        text.setText("Mario");
+        text.setText(Mario.class.getSimpleName());
     }
 
     @Override
@@ -74,6 +75,7 @@ class MarioRenderer extends FeatureModel implements Displayable
         super.prepare(provider);
 
         collidable.setCollisionVisibility(true);
+        surface.setFrameOffsets(0, -1);
     }
 
     @Override
@@ -85,7 +87,7 @@ class MarioRenderer extends FeatureModel implements Displayable
         text.update(viewer);
         text.setLocation((int) transformable.getX(), (int) transformable.getY());
         g.setColor(ColorRgba.BLACK);
-        text.draw(g, transformable, 0, 28, Align.CENTER, "Mario");
+        text.draw(g, transformable, 0, 28, Align.CENTER, Mario.class.getSimpleName());
         text.render(g);
 
         g.setColor(ColorRgba.GREEN);

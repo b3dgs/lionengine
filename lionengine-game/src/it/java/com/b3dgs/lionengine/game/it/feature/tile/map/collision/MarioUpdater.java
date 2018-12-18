@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.awt.Keyboard;
-import com.b3dgs.lionengine.awt.KeyboardAwt;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
@@ -40,11 +38,10 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListen
  */
 class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
-    private static final double GRAVITY = 6.0;
+    private static final double GRAVITY = 10.0;
 
     private final Force movement = new Force();
     private final Force jump = new Force();
-    private final Keyboard keyboard;
 
     @FeatureGet private Body body;
     @FeatureGet private Transformable transformable;
@@ -58,7 +55,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
      */
     public MarioUpdater(Services services)
     {
-        keyboard = services.get(Keyboard.class);
+        super();
     }
 
     @Override
@@ -66,53 +63,47 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     {
         super.prepare(provider);
 
+        transformable.teleport(400, 31);
+
         collidable.setOrigin(Origin.CENTER_BOTTOM);
 
-        jump.setVelocity(0.1);
-        jump.setDestination(0.0, 0.0);
-        transformable.teleport(350, 32);
+        movement.setVelocity(1.0);
 
-        body.setDesiredFps(60);
+        jump.setSensibility(0.1);
+        jump.setVelocity(0.5);
+        jump.setDestination(0.0, 0.0);
+
         body.setGravity(GRAVITY);
+        body.setGravityMax(GRAVITY);
+        body.setDesiredFps(Scene.NATIVE.getRate());
     }
 
     @Override
     public void update(double extrp)
     {
-        movement.setDirection(2, 0);
-        jump.setDirection(0.0, 8.0);
-        if (keyboard.isPressed(KeyboardAwt.LEFT))
-        {
-            movement.setDirection(-2, 0);
-        }
-        if (keyboard.isPressed(KeyboardAwt.RIGHT))
-        {
-            movement.setDirection(2, 0);
-        }
-        if (keyboard.isPressedOnce(KeyboardAwt.UP))
-        {
-            jump.setDirection(0.0, 8.0);
-        }
-
+        movement.setDirection(3, 0);
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
         transformable.moveLocation(extrp, body, movement, jump);
         tileCollidable.update(extrp);
-
-        if (transformable.getY() < 0)
-        {
-            transformable.teleportY(80);
-            body.resetGravity();
-        }
     }
 
     @Override
     public void notifyTileCollided(CollisionResult result, CollisionCategory category)
     {
-        if (Axis.Y == category.getAxis())
+        if (Axis.X == category.getAxis())
         {
-            body.resetGravity();
+            tileCollidable.apply(result);
+        }
+        else if (Axis.Y == category.getAxis())
+        {
+            if (transformable.getY() < transformable.getOldY())
+            {
+                tileCollidable.apply(result);
+                body.resetGravity();
+                jump.setDirection(0.0, 10.0);
+            }
         }
     }
 }
