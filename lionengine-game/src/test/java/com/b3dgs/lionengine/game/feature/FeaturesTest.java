@@ -140,7 +140,7 @@ public final class FeaturesTest
      * Mock feature.
      */
     @FeatureInterface
-    private static interface FeatureLevel2 extends FeatureLevel1
+    private static interface FeatureLevel2 extends Feature
     {
         // Mock
     }
@@ -148,6 +148,7 @@ public final class FeaturesTest
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static class FeatureLevel1Model extends FeatureModel implements FeatureLevel1
     {
         @Override
@@ -160,8 +161,13 @@ public final class FeaturesTest
     /**
      * Mock feature.
      */
+    @FeatureInterface
     private static class FeatureLevel2Model extends FeatureLevel1Model implements FeatureLevel2
     {
-        // Mock
+        @Override
+        public void update(double extrp)
+        {
+            // Mock
+        }
     }
 }

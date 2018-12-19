@@ -167,5 +167,10 @@ public class Features
                 checkTypeDepth(feature, type);
             }
         }
+        final Class<?> parent = current.getSuperclass();
+        if (parent != null)
+        {
+            checkTypeDepth(feature, parent);
+        }
     }
 }
