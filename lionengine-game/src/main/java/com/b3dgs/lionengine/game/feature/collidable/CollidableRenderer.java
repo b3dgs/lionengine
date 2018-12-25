@@ -66,18 +66,18 @@ final class CollidableRenderer
                 final Collision collision = cacheColls.get(i);
                 if (Collision.AUTOMATIC == collision)
                 {
-                    final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX()),
-                                                    transformable.getWidth());
-                    final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY()),
-                                                    transformable.getHeight());
+                    final int x = (int) Math.round(origin.getX(viewer.getViewpointX(transformable.getX()),
+                                                               transformable.getWidth()));
+                    final int y = (int) Math.floor(origin.getY(viewer.getViewpointY(transformable.getY()),
+                                                               transformable.getHeight()));
                     g.drawRect(x, y, transformable.getWidth(), transformable.getHeight(), false);
                 }
                 else
                 {
                     final Area area = cacheRect.get(i);
-                    final int x = (int) viewer.getViewpointX(area.getX());
-                    final int y = (int) viewer.getViewpointY(area.getY());
-                    g.drawRect(x, y - area.getHeight(), area.getWidth(), area.getHeight(), false);
+                    final int x = (int) Math.round(viewer.getViewpointX(area.getX()));
+                    final int y = (int) Math.floor(viewer.getViewpointY(area.getY())) - area.getHeight();
+                    g.drawRect(x, y, area.getWidth(), area.getHeight(), false);
                 }
             }
         }
