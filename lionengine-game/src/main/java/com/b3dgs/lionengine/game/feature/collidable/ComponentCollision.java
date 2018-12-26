@@ -19,9 +19,11 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.b3dgs.lionengine.game.feature.ComponentUpdater;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -44,7 +46,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     static final double REDUCE_FACTOR = 128.0;
 
     /** Mapping reduced. */
-    private final Map<Integer, Map<Point, List<Collidable>>> collidables = new HashMap<>();
+    private final Map<Integer, Map<Point, Set<Collidable>>> collidables = new HashMap<>();
     /** To be notified. */
     private final List<Collided> toNotify = new ArrayList<>();
 
@@ -67,7 +69,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final Integer group = collidable.getGroup();
         if (collidables.containsKey(group))
         {
-            final Map<Point, List<Collidable>> elements = collidables.get(group);
+            final Map<Point, Set<Collidable>> elements = collidables.get(group);
             if (elements.containsKey(point))
             {
                 removePoint(point, collidable, elements, group);
@@ -83,9 +85,9 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
      * @param elements The current group elements.
      * @param group The current group.
      */
-    private void removePoint(Point point, Collidable collidable, Map<Point, List<Collidable>> elements, Integer group)
+    private void removePoint(Point point, Collidable collidable, Map<Point, Set<Collidable>> elements, Integer group)
     {
-        final List<Collidable> points = elements.get(point);
+        final Set<Collidable> points = elements.get(point);
         points.remove(collidable);
         if (points.isEmpty())
         {
@@ -108,12 +110,12 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final Integer group = collidable.getGroup();
         if (!collidables.containsKey(group))
         {
-            collidables.put(group, new HashMap<Point, List<Collidable>>());
+            collidables.put(group, new HashMap<Point, Set<Collidable>>());
         }
-        final Map<Point, List<Collidable>> elements = collidables.get(group);
+        final Map<Point, Set<Collidable>> elements = collidables.get(group);
         if (!elements.containsKey(point))
         {
-            elements.put(point, new ArrayList<Collidable>());
+            elements.put(point, new HashSet<Collidable>());
         }
         elements.get(point).add(collidable);
     }
@@ -125,9 +127,9 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     @Override
     public void update(double extrp, Handlables objects)
     {
-        for (final Map<Point, List<Collidable>> groups : collidables.values())
+        for (final Map<Point, Set<Collidable>> groups : collidables.values())
         {
-            for (final Entry<Point, List<Collidable>> current : groups.entrySet())
+            for (final Entry<Point, Set<Collidable>> current : groups.entrySet())
             {
                 checkGroup(current);
             }
@@ -144,13 +146,11 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
      * 
      * @param current The elements in group.
      */
-    private void checkGroup(Entry<Point, List<Collidable>> current)
+    private void checkGroup(Entry<Point, Set<Collidable>> current)
     {
-        final List<Collidable> elements = current.getValue();
-        final int length = elements.size();
-        for (int i = 0; i < length; i++)
+        final Set<Collidable> elements = current.getValue();
+        for (final Collidable objectA : elements)
         {
-            final Collidable objectA = elements.get(i);
             checkOthers(objectA, current);
         }
     }
@@ -161,7 +161,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
      * @param objectA The collidable reference.
      * @param current The current group to check.
      */
-    private void checkOthers(Collidable objectA, Entry<Point, List<Collidable>> current)
+    private void checkOthers(Collidable objectA, Entry<Point, Set<Collidable>> current)
     {
         for (final Integer acceptedGroup : objectA.getAccepted())
         {
@@ -180,9 +180,9 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
      * @param current The current group to check.
      * @param acceptedGroup The accepted group.
      */
-    private void checkOthers(Collidable objectA, Entry<Point, List<Collidable>> current, Integer acceptedGroup)
+    private void checkOthers(Collidable objectA, Entry<Point, Set<Collidable>> current, Integer acceptedGroup)
     {
-        final Map<Point, List<Collidable>> acceptedElements = collidables.get(acceptedGroup);
+        final Map<Point, Set<Collidable>> acceptedElements = collidables.get(acceptedGroup);
         final Point point = current.getKey();
         if (acceptedElements.containsKey(point))
         {
@@ -197,14 +197,11 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
      * @param acceptedElements The current elements to check.
      * @param point The point to check.
      */
-    private void checkPoint(Collidable objectA, Map<Point, List<Collidable>> acceptedElements, Point point)
+    private void checkPoint(Collidable objectA, Map<Point, Set<Collidable>> acceptedElements, Point point)
     {
-        final List<Collidable> others = acceptedElements.get(point);
-        final int othersLength = others.size();
-
-        for (int k = 0; k < othersLength; k++)
+        final Set<Collidable> others = acceptedElements.get(point);
+        for (final Collidable objectB : others)
         {
-            final Collidable objectB = others.get(k);
             if (objectA != objectB)
             {
                 final List<Collision> collisions = objectA.collide(objectB);
@@ -254,8 +251,27 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     {
         final Collidable collidable = transformable.getFeature(Collidable.class);
 
-        removePoints(transformable.getOldX(), transformable.getOldY(), collidable);
-        addPoints(transformable.getX(), transformable.getY(), collidable);
+        final double oldX = transformable.getOldX();
+        final double oldY = transformable.getOldY();
+
+        final int oldMinX = (int) Math.floor(oldX / REDUCE_FACTOR);
+        final int oldMinY = (int) Math.floor(oldY / REDUCE_FACTOR);
+        final int oldMaxX = (int) Math.floor((oldX + collidable.getMaxWidth()) / REDUCE_FACTOR);
+        final int oldMaxY = (int) Math.floor((oldY + collidable.getMaxHeight()) / REDUCE_FACTOR);
+
+        final double x = transformable.getX();
+        final double y = transformable.getY();
+
+        final int minX = (int) Math.floor(x / REDUCE_FACTOR);
+        final int minY = (int) Math.floor(y / REDUCE_FACTOR);
+        final int maxX = (int) Math.floor((x + collidable.getMaxWidth()) / REDUCE_FACTOR);
+        final int maxY = (int) Math.floor((y + collidable.getMaxHeight()) / REDUCE_FACTOR);
+
+        if (oldMinX != minX || oldMinY != minY || oldMaxX != maxX || oldMaxY != maxY)
+        {
+            removePoints(oldMinX, oldMinY, oldMaxX, oldMaxY, collidable);
+        }
+        addPoints(minX, minY, maxX, maxY, collidable);
     }
 
     /**
@@ -272,6 +288,20 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final int maxX = (int) Math.floor((x + collidable.getMaxWidth()) / REDUCE_FACTOR);
         final int maxY = (int) Math.floor((y + collidable.getMaxHeight()) / REDUCE_FACTOR);
 
+        removePoints(minX, minY, maxX, maxY, collidable);
+    }
+
+    /**
+     * Remove point and adjacent points depending of the collidable max collision size.
+     * 
+     * @param minX The min horizontal location.
+     * @param minY The min vertical location.
+     * @param maxX The min horizontal location.
+     * @param maxY The min vertical location.
+     * @param collidable The collidable reference.
+     */
+    private void removePoints(int minX, int minY, int maxX, int maxY, Collidable collidable)
+    {
         removePoint(new Point(minX, minY), collidable);
 
         if (minX != maxX && minY == maxY)
@@ -293,17 +323,14 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     /**
      * Add point and adjacent points depending of the collidable max collision size.
      * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param minX The min horizontal location.
+     * @param minY The min vertical location.
+     * @param maxX The min horizontal location.
+     * @param maxY The min vertical location.
      * @param collidable The collidable reference.
      */
-    private void addPoints(double x, double y, Collidable collidable)
+    private void addPoints(int minX, int minY, int maxX, int maxY, Collidable collidable)
     {
-        final int minX = (int) Math.floor(x / REDUCE_FACTOR);
-        final int minY = (int) Math.floor(y / REDUCE_FACTOR);
-        final int maxX = (int) Math.floor((x + collidable.getMaxWidth()) / REDUCE_FACTOR);
-        final int maxY = (int) Math.floor((y + collidable.getMaxHeight()) / REDUCE_FACTOR);
-
         addPoint(new Point(minX, minY), collidable);
 
         if (minX != maxX && minY == maxY)
