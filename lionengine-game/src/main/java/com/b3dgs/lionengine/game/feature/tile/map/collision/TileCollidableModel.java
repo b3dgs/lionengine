@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     /** Map tile reference. */
     private final MapTileCollision map;
     /** Enabled flags. */
-    private final Map<Axis, Boolean> enabledAxis = new HashMap<>();
+    private final Map<Axis, Boolean> enabledAxis = new EnumMap<>(Axis.class);
     /** Collision enabled. */
     private boolean enabled;
 

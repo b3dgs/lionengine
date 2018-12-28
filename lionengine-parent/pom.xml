@@ -39,6 +39,13 @@
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-9.0.0</sonar-branch>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.b3dgs</groupId>
+            <artifactId>b3dgs-buildtools</artifactId>
+            <version>${b3dgs.version}</version>
+        </dependency>
+    </dependencies>
     <repositories>
         <repository>
             <id>snapshots</id>
@@ -50,13 +57,6 @@
             </snapshots>
         </repository>
     </repositories>
-    <dependencies>
-        <dependency>
-            <groupId>com.b3dgs</groupId>
-            <artifactId>b3dgs-buildtools</artifactId>
-            <version>${b3dgs.version}</version>
-        </dependency>
-    </dependencies>
     <build>
         <plugins>
             <plugin>
