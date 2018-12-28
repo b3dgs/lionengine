@@ -50,6 +50,13 @@
             </snapshots>
         </repository>
     </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>com.b3dgs</groupId>
+            <artifactId>b3dgs-buildtools</artifactId>
+            <version>${b3dgs.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
