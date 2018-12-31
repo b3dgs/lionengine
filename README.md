@@ -1,4 +1,4 @@
-| [![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-9.0.0)](https://travis-ci.org/b3dgs/lionengine)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core)<br>[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) | <a href="https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine"><img hspace="170" src="https://user-images.githubusercontent.com/34600369/41530953-b6f4554a-72e9-11e8-9ab1-e49d390a9117.png" width="200"/></a> | [Presentation](#presentation)<br>[General features](#general-features)<br>[Download](#download)<br>[Installation](#installation)<br>[Getting Started](#getting-started)<br>[Tutorials](#tutorials) |
+| [![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=master)](https://travis-ci.org/b3dgs/lionengine)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.b3dgs.lionengine%3Alionengine-parent&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.b3dgs.lionengine%3Alionengine-parent)<br>[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.b3dgs.lionengine/lionengine-core)<br>[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) | <a href="https://www.b3dgs.com/v7/page.php?lang=en&section=lionengine"><img hspace="170" src="https://user-images.githubusercontent.com/34600369/41530953-b6f4554a-72e9-11e8-9ab1-e49d390a9117.png" width="200"/></a> | [Presentation](#presentation)<br>[General features](#general-features)<br>[Download](#download)<br>[Installation](#installation)<br>[Getting Started](#getting-started)<br>[Tutorials](#tutorials) |
 |:---|:---:|---:|
 
 ## Presentation
@@ -13,7 +13,7 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
-[![Overview](http://lionengine.b3dgs.com/v8-4/img/home/overview_en.png)](http://lionengine.b3dgs.com/v8-4/page.php?lang=en&section=home)
+[![Overview](http://lionengine.b3dgs.com/v9-0/img/home/overview_en.png)](http://lionengine.b3dgs.com/v9-0/page.php?lang=en&section=home)
 
 ## General Features
 
@@ -84,7 +84,7 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 ## Download
 
-|[Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)|[Last version](http://www.b3dgs.com/v7/projects/lionengine/files/LionEngine_8.4.1_lib.zip)|
+|[Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)|[Last version](http://www.b3dgs.com/v7/projects/lionengine/files/maven-repository-9.0.0.zip)|
 |---|---|
 
 ## Installation
