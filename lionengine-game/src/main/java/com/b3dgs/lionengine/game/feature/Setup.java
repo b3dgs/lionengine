@@ -65,7 +65,7 @@ public class Setup extends Configurer
             final String conf = config.getPath();
             final SurfaceConfig surfaceData = SurfaceConfig.imports(getRoot());
             final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
-            surfaceFile = Optional.of(Medias.create(prefix + surfaceData.getImage()));
+            final Media surfaceMedia = Medias.create(prefix + surfaceData.getImage());
             if (surfaceData.getIcon().isPresent())
             {
                 iconFile = Optional.of(Medias.create(prefix + surfaceData.getIcon().get()));
@@ -74,7 +74,8 @@ public class Setup extends Configurer
             {
                 iconFile = Optional.empty();
             }
-            surface = Optional.of(Graphics.getImageBuffer(surfaceFile.get()));
+            surface = Optional.of(Graphics.getImageBuffer(surfaceMedia));
+            surfaceFile = Optional.of(surfaceMedia);
         }
         else
         {
