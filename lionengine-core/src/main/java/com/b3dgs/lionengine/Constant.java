@@ -32,7 +32,7 @@ public final class Constant
     /** Engine website. */
     public static final String ENGINE_WEBSITE = "http://lionengine.b3dgs.com";
     /** Engine version. */
-    public static final Version ENGINE_VERSION = Version.create(9, 0, 0);
+    public static final Version ENGINE_VERSION = Version.create(9, 0, 1);
     /** Header XML. */
     public static final String XML_HEADER = "xmlns:lionengine";
     /** Prefix XML node. */
