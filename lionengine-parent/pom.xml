@@ -37,7 +37,7 @@
     </ciManagement>
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
-        <sonar-branch>lionengine-9.0.1-SNAPSHOT</sonar-branch>
+        <sonar-branch>lionengine-9.0.1</sonar-branch>
     </properties>
     <repositories>
         <repository>
