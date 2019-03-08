@@ -27,10 +27,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.MediaMock;
 import com.b3dgs.lionengine.Medias;
@@ -162,8 +162,7 @@ public final class PlayerTest
             }
             catch (final IOException exception)
             {
-                Assertions.fail(exception);
-                return null;
+                throw new LionEngineException(exception);
             }
         }
 
