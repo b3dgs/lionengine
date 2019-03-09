@@ -108,8 +108,8 @@ public class MapTileFog
             {
                 final Tile tile = new TileGame(Integer.valueOf(0),
                                                FOG,
-                                               x * map.getTileWidth(),
-                                               y * map.getTileHeight(),
+                                               x * (double) map.getTileWidth(),
+                                               y * (double) map.getTileHeight(),
                                                map.getTileWidth(),
                                                map.getTileHeight());
                 this.map.setTile(tile);
@@ -184,8 +184,8 @@ public class MapTileFog
             {
                 final Tile tile = new TileGame(Integer.valueOf(0),
                                                NO_FOG,
-                                               x * map.getTileWidth(),
-                                               y * map.getTileHeight(),
+                                               x * (double) map.getTileWidth(),
+                                               y * (double) map.getTileHeight(),
                                                map.getTileWidth(),
                                                map.getTileHeight());
                 map.setTile(tile);
