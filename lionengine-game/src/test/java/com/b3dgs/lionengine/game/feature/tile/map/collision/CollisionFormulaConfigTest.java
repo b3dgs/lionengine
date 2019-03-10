@@ -59,7 +59,7 @@ public final class CollisionFormulaConfigTest
     /** Constraint test. */
     private final CollisionConstraint constaint = new CollisionConstraint();
     /** Formula test. */
-    private final CollisionFormula formula = new CollisionFormula("formula", range, function, constaint);
+    private final CollisionFormula formula = new CollisionFormula("formula", range, function, constaint, true);
 
     /**
      * Test exports imports.
@@ -77,6 +77,7 @@ public final class CollisionFormulaConfigTest
 
         assertEquals("formula", imported.getFormulas().keySet().iterator().next());
         assertEquals(formula, imported.getFormula("formula"));
+        assertTrue(imported.getFormulas().values().iterator().next().isGlue());
 
         assertTrue(config.getFile().delete());
     }

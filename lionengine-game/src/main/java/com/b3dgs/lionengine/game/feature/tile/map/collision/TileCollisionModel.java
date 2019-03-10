@@ -103,21 +103,23 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
      * Get the vertical collision location between the tile and the current location.
      * 
      * @param range The collision range.
-     * @param function The collision function.
+     * @param formula The collision formula.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @param offsetY The vertical offset.
      * @return The vertical collision (<code>null</code> if none).
      */
-    private Double getCollisionY(CollisionRange range, CollisionFunction function, double x, double y, int offsetY)
+    private Double getCollisionY(CollisionRange range, CollisionFormula formula, double x, double y, int offsetY)
     {
         final double xOnTile = getInputValue(Axis.X, x, y);
         if (UtilMath.isBetween(xOnTile, range.getMinX(), range.getMaxX()))
         {
             final double yOnTile = getInputValue(Axis.Y, x, y);
-            final double result = Math.floor(function.compute(xOnTile));
+            final double result = Math.floor(formula.getFunction().compute(xOnTile));
 
-            if (UtilMath.isBetween(yOnTile, result + range.getMinY() - 1, result + range.getMaxY()))
+            if (UtilMath.isBetween(yOnTile,
+                                   result + range.getMinY() - 1,
+                                   result + range.getMaxY() + (formula.isGlue() ? Math.ceil(Math.abs(x)) : 0)))
             {
                 final double coll = Math.floor(tile.getY() + result - offsetY);
                 return Double.valueOf(coll);
@@ -174,7 +176,7 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
             final CollisionRange range = formula.getRange();
             if (category.getAxis() == range.getOutput() && formulas.contains(formula))
             {
-                final Double collisionY = getCollisionY(range, formula.getFunction(), x, y, category.getOffsetY());
+                final Double collisionY = getCollisionY(range, formula, x, y, category.getOffsetY());
                 if (collisionY != null)
                 {
                     return collisionY;

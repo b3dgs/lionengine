@@ -69,6 +69,8 @@ public class CollisionFormula extends NameableAbstract
     private final CollisionFunction function;
     /** Constraint defined. */
     private final CollisionConstraint constraint;
+    /** Glue flag. */
+    private final boolean glue;
 
     /**
      * Create a collision formula.
@@ -83,11 +85,30 @@ public class CollisionFormula extends NameableAbstract
                             CollisionFunction function,
                             CollisionConstraint constraint)
     {
+        this(name, range, function, constraint, false);
+    }
+
+    /**
+     * Create a collision formula.
+     * 
+     * @param name The formula name.
+     * @param range The range reference.
+     * @param function The function used.
+     * @param constraint The constraint used.
+     * @param glue The glue flag.
+     */
+    public CollisionFormula(String name,
+                            CollisionRange range,
+                            CollisionFunction function,
+                            CollisionConstraint constraint,
+                            boolean glue)
+    {
         super(name);
 
         this.range = range;
         this.function = function;
         this.constraint = constraint;
+        this.glue = glue;
     }
 
     /**
@@ -120,6 +141,16 @@ public class CollisionFormula extends NameableAbstract
         return constraint;
     }
 
+    /**
+     * Check if formula is glued.
+     * 
+     * @return <code>true</code> if glue, <code>false</code> else.
+     */
+    public boolean isGlue()
+    {
+        return glue;
+    }
+
     /*
      * Object
      */
@@ -140,6 +171,9 @@ public class CollisionFormula extends NameableAbstract
                                                 .append(System.lineSeparator())
                                                 .append(Constant.TAB)
                                                 .append(constraint)
+                                                .append(System.lineSeparator())
+                                                .append(Constant.TAB)
+                                                .append(glue)
                                                 .toString();
     }
 }
