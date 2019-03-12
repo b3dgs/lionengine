@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +37,7 @@ public final class CollisionFormulaTest
     /** Constraint test. */
     private final CollisionConstraint constaint = new CollisionConstraint();
     /** Formula test. */
-    private final CollisionFormula formula = new CollisionFormula("formula", range, function, constaint, true);
+    private final CollisionFormula formula = new CollisionFormula("formula", range, function, constaint);
 
     /**
      * Test the collision formula construction
@@ -50,7 +49,6 @@ public final class CollisionFormulaTest
         assertEquals(range, formula.getRange());
         assertEquals(function, formula.getFunction());
         assertEquals(constaint, formula.getConstraint());
-        assertTrue(formula.isGlue());
     }
 
     /**
@@ -63,8 +61,6 @@ public final class CollisionFormulaTest
         assertEquals(formula,
                      new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
         assertEquals(formula, new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint));
-        assertEquals(formula,
-                     new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint, true));
 
         final CollisionConstraint newConstraint = new CollisionConstraint();
         newConstraint.add(Orientation.EAST, "test");
@@ -74,7 +70,6 @@ public final class CollisionFormulaTest
         assertNotEquals(formula, null);
         assertNotEquals(formula, new Object());
         assertNotEquals(formula, new CollisionFormula("void", range, function, constaint));
-        assertNotEquals(formula, new CollisionFormula("void", range, function, constaint, false));
     }
 
     /**
@@ -86,8 +81,6 @@ public final class CollisionFormulaTest
         assertEquals(formula,
                      new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
         assertEquals(formula, new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint));
-        assertEquals(formula,
-                     new CollisionFormula("formula", range, new CollisionFunctionLinear(2.0, 2.0), constaint, true));
 
         final CollisionConstraint newConstraint = new CollisionConstraint();
         newConstraint.add(Orientation.EAST, "test");
@@ -96,7 +89,6 @@ public final class CollisionFormulaTest
 
         assertNotEquals(formula, new Object());
         assertNotEquals(formula, new CollisionFormula("void", range, function, constaint));
-        assertNotEquals(formula, new CollisionFormula("void", range, function, constaint, false));
     }
 
     /**
@@ -115,10 +107,7 @@ public final class CollisionFormulaTest
                      + System.lineSeparator()
                      + Constant.TAB
                      + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], "
-                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}"
-                     + System.lineSeparator()
-                     + Constant.TAB
-                     + "true",
+                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}",
                      formula.toString());
     }
 }

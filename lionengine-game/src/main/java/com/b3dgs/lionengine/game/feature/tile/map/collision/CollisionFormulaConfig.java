@@ -45,8 +45,6 @@ public final class CollisionFormulaConfig
     public static final String NODE_FORMULA = Constant.XML_PREFIX + "formula";
     /** The formula name attribute. */
     public static final String ATT_NAME = "name";
-    /** The formula glue attribute. */
-    public static final String ATT_GLUE = "glue";
 
     /**
      * Create the formula data from node.
@@ -84,7 +82,6 @@ public final class CollisionFormulaConfig
 
         final Xml node = root.createChild(NODE_FORMULA);
         node.writeString(ATT_NAME, formula.getName());
-        node.writeBoolean(ATT_GLUE, formula.isGlue());
 
         CollisionRangeConfig.exports(node, formula.getRange());
         CollisionFunctionConfig.exports(node, formula.getFunction());
@@ -106,9 +103,8 @@ public final class CollisionFormulaConfig
         final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.NODE_RANGE));
         final CollisionFunction function = CollisionFunctionConfig.imports(node);
         final CollisionConstraint constraint = CollisionConstraintConfig.imports(node);
-        final boolean glue = node.readBoolean(false, ATT_GLUE);
 
-        return new CollisionFormula(name, range, function, constraint, glue);
+        return new CollisionFormula(name, range, function, constraint);
     }
 
     /**
