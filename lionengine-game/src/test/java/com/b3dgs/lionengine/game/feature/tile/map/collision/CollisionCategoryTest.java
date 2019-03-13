@@ -42,7 +42,7 @@ public final class CollisionCategoryTest
     /** Group test. */
     private final CollisionGroup group = new CollisionGroup("group", Arrays.asList(formula));
     /** Category test. */
-    private final CollisionCategory category = new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group));
+    private final CollisionCategory category = new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group));
 
     /**
      * Test the category construction.
@@ -65,15 +65,16 @@ public final class CollisionCategoryTest
     public void testEquals()
     {
         assertEquals(category, category);
-        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group)));
-        assertEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, Arrays.asList(group)));
-        assertEquals(category, new CollisionCategory("name", Axis.X, 2, 2, Arrays.asList(group)));
-        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 3, Arrays.asList(group)));
-        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, new ArrayList<CollisionGroup>()));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, true, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 2, 2, true, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 3, true, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, false, Arrays.asList(group)));
+        assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, new ArrayList<CollisionGroup>()));
 
         assertNotEquals(category, null);
         assertNotEquals(category, new Object());
-        assertNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, Arrays.asList(group)));
+        assertNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, true, Arrays.asList(group)));
     }
 
     /**
@@ -82,14 +83,15 @@ public final class CollisionCategoryTest
     @Test
     public void testHashCode()
     {
-        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group)));
-        assertHashEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, Arrays.asList(group)));
-        assertHashEquals(category, new CollisionCategory("name", Axis.X, 2, 2, Arrays.asList(group)));
-        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 3, Arrays.asList(group)));
-        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, new ArrayList<CollisionGroup>()));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, true, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 2, 2, true, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 3, true, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, false, Arrays.asList(group)));
+        assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, new ArrayList<CollisionGroup>()));
 
         assertHashNotEquals(category, new Object());
-        assertHashNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, Arrays.asList(group)));
+        assertHashNotEquals(category, new CollisionCategory("void", Axis.X, 1, 2, true, Arrays.asList(group)));
     }
 
     /**
@@ -98,7 +100,7 @@ public final class CollisionCategoryTest
     @Test
     public void testToString()
     {
-        assertEquals("CollisionCategory (name=name, axis=X, x=1, y=2)"
+        assertEquals("CollisionCategory (name=name, axis=X, x=1, y=2, glue=true)"
                      + System.lineSeparator()
                      + Constant.TAB
                      + "[CollisionGroup (name=group)"

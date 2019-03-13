@@ -80,15 +80,15 @@ class Scene extends Sequence
         map.create(Medias.create("forest.png"));
         mapViewer.prepare(map);
 
-        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
-        map.addFeatureAndGet(new MapTileTransitionModel(services)).loadTransitions(Medias.create("transitions.xml"));
-        map.addFeatureAndGet(new MapTileCircuitModel(services)).loadCircuits(Medias.create("circuits.xml"));
-
         final Media media = Medias.create("transitions.xml");
         TransitionsConfig.exports(media,
                                   Arrays.asList(Medias.create("forest.png")),
                                   Medias.create("sheets.xml"),
                                   Medias.create("groups.xml"));
+
+        map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
+        map.addFeatureAndGet(new MapTileTransitionModel(services)).loadTransitions(Medias.create("transitions.xml"));
+        map.addFeatureAndGet(new MapTileCircuitModel(services)).loadCircuits(Medias.create("circuits.xml"));
 
         UtilFile.deleteFile(media.getFile());
 

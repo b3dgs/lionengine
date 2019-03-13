@@ -166,7 +166,7 @@ final class MapTileCollisionComputer
      * @param max The maximum search iterations.
      * @return The collision found, <code>null</code> if none.
      */
-    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount
+    // CHECKSTYLE IGNORE LINE: ExecutableStatementCount|CyclomaticComplexity|NPathComplexity
     private CollisionResult computeCollision(CollisionCategory category,
                                              double sh,
                                              double sv,
@@ -244,7 +244,17 @@ final class MapTileCollisionComputer
                 y += sy;
             }
         }
-
+        if (category.isGlue())
+        {
+            if (last == null)
+            {
+                last = computeCollision(category, ox, oy, x, y - 1);
+            }
+            if (last == null)
+            {
+                last = computeCollision(category, ox, oy, x, y - 2);
+            }
+        }
         return last;
     }
 

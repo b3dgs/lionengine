@@ -120,7 +120,7 @@ public final class MapTileCollisionModelComplexTest
                                                                   g_slope_right_0,
                                                                   g_slope_right_1);
 
-    private final CollisionCategory category = new CollisionCategory("y", Axis.Y, 0, 0, groupsList);
+    private final CollisionCategory category = new CollisionCategory("y", Axis.Y, 0, 0, true, groupsList);
 
     private final Services services = new Services();
     private final MapTile map = services.create(MapTileGame.class);

@@ -47,6 +47,8 @@ public final class CollisionCategoryConfig
     public static final String ATT_X = "x";
     /** Category attribute vertical offset. */
     public static final String ATT_Y = "y";
+    /** Category attribute glue flag. */
+    public static final String ATT_GLUE = "glue";
     /** Unknown axis error. */
     private static final String ERROR_AXIS = "Unknown axis: ";
 
@@ -80,8 +82,9 @@ public final class CollisionCategoryConfig
             final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
             final int x = node.readInteger(ATT_X);
             final int y = node.readInteger(ATT_Y);
+            final boolean glue = node.readBoolean(ATT_GLUE);
 
-            final CollisionCategory category = new CollisionCategory(name, axis, x, y, groups);
+            final CollisionCategory category = new CollisionCategory(name, axis, x, y, glue, groups);
             categories.add(category);
         }
 
@@ -149,9 +152,10 @@ public final class CollisionCategoryConfig
 
         final int x = root.readInteger(ATT_X);
         final int y = root.readInteger(ATT_Y);
+        final boolean glue = root.readBoolean(true, ATT_GLUE);
         final String name = root.readString(ATT_NAME);
 
-        return new CollisionCategory(name, axis, x, y, groups);
+        return new CollisionCategory(name, axis, x, y, glue, groups);
     }
 
     /**
@@ -171,6 +175,7 @@ public final class CollisionCategoryConfig
         node.writeString(ATT_AXIS, category.getAxis().name());
         node.writeInteger(ATT_X, category.getOffsetX());
         node.writeInteger(ATT_Y, category.getOffsetY());
+        node.writeBoolean(ATT_GLUE, category.isGlue());
 
         for (final CollisionGroup group : category.getGroups())
         {

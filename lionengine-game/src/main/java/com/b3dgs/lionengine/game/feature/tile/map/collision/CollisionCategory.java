@@ -67,6 +67,8 @@ public class CollisionCategory extends NameableAbstract
     private final int x;
     /** Vertical offset relative to collision owner. */
     private final int y;
+    /** Glue flag (keep collision locked on ground even on fast movement over slopes). */
+    private final boolean glue;
     /** Defined groups. */
     private final Collection<CollisionGroup> groups;
     /**
@@ -82,15 +84,17 @@ public class CollisionCategory extends NameableAbstract
      * @param axis The designated axis to apply collision.
      * @param x The horizontal offset.
      * @param y The vertical offset.
+     * @param glue The glue flag.
      * @param groups The collision groups used.
      */
-    public CollisionCategory(String name, Axis axis, int x, int y, Collection<CollisionGroup> groups)
+    public CollisionCategory(String name, Axis axis, int x, int y, boolean glue, Collection<CollisionGroup> groups)
     {
         super(name);
 
         this.axis = axis;
         this.x = x;
         this.y = y;
+        this.glue = glue;
         this.groups = new ArrayList<>(groups);
         for (final CollisionGroup group : groups)
         {
@@ -148,6 +152,16 @@ public class CollisionCategory extends NameableAbstract
         return y;
     }
 
+    /**
+     * Get the glue flag.
+     * 
+     * @return <code>true</code> if glue enabled, <code>false</code> else.
+     */
+    public boolean isGlue()
+    {
+        return glue;
+    }
+
     /*
      * Object
      */
@@ -164,6 +178,8 @@ public class CollisionCategory extends NameableAbstract
                                                 .append(x)
                                                 .append(", y=")
                                                 .append(y)
+                                                .append(", glue=")
+                                                .append(glue)
                                                 .append(")")
                                                 .append(System.lineSeparator())
                                                 .append(Constant.TAB)

@@ -72,7 +72,7 @@ public final class CollisionCategoryConfigTest
     /** Group test. */
     private final CollisionGroup group = new CollisionGroup("group", Arrays.asList(formula));
     /** Category test. */
-    private final CollisionCategory category = new CollisionCategory("name", Axis.X, 1, 2, Arrays.asList(group));
+    private final CollisionCategory category = new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group));
     /** Map collision. */
     private MapTileCollision mapCollision;
 
@@ -134,7 +134,7 @@ public final class CollisionCategoryConfigTest
     {
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
-        CollisionCategoryConfig.exports(root, new CollisionCategory("name2", Axis.X, 1, 2, Arrays.asList(group)));
+        CollisionCategoryConfig.exports(root, new CollisionCategory("name2", Axis.X, 1, 2, true, Arrays.asList(group)));
 
         final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(root);
 

@@ -75,9 +75,9 @@ public class TileCollisionModelTest
     /** Group test. */
     private final CollisionGroup group = new CollisionGroup(UtilMap.GROUND, Arrays.asList(formulaV, formulaH));
     /** Category vertical test. */
-    private final CollisionCategory categoryY = new CollisionCategory("y", Axis.Y, 0, 0, Arrays.asList(group));
+    private final CollisionCategory categoryY = new CollisionCategory("y", Axis.Y, 0, 0, true, Arrays.asList(group));
     /** Category horizontal test. */
-    private final CollisionCategory categoryX = new CollisionCategory("x", Axis.X, 0, 0, Arrays.asList(group));
+    private final CollisionCategory categoryX = new CollisionCategory("x", Axis.X, 0, 0, true, Arrays.asList(group));
     /** Tile test. */
     private final Tile tile = new TileGame(Integer.valueOf(0), 0, 0.0, 0.0, 1, 1);
     /** Model test. */
