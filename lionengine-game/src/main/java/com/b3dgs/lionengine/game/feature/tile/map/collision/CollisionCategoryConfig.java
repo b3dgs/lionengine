@@ -82,7 +82,7 @@ public final class CollisionCategoryConfig
             final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
             final int x = node.readInteger(ATT_X);
             final int y = node.readInteger(ATT_Y);
-            final boolean glue = node.readBoolean(ATT_GLUE);
+            final boolean glue = node.readBoolean(true, ATT_GLUE);
 
             final CollisionCategory category = new CollisionCategory(name, axis, x, y, glue, groups);
             categories.add(category);
