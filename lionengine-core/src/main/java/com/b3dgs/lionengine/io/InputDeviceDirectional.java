@@ -58,6 +58,34 @@ public interface InputDeviceDirectional extends InputDevice
     void setVerticalControlNegative(Integer code);
 
     /**
+     * Get the horizontal positive control code.
+     * 
+     * @return The horizontal positive control code.
+     */
+    Integer getHorizontalControlPositive();
+
+    /**
+     * Get the horizontal negative control code.
+     * 
+     * @return The horizontal negative control code.
+     */
+    Integer getHorizontalControlNegative();
+
+    /**
+     * Get the vertical positive control code.
+     * 
+     * @return The vertical positive control code.
+     */
+    Integer getVerticalControlPositive();
+
+    /**
+     * Get the vertical negative control code.
+     * 
+     * @return The vertical negative control code.
+     */
+    Integer getVerticalControlNegative();
+
+    /**
      * Get the horizontal direction.
      * 
      * @return <code>negative</code> if left, <code>positive</code> if right, 0 if none.

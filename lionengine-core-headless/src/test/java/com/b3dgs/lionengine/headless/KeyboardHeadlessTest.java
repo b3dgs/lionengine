@@ -105,6 +105,12 @@ public final class KeyboardHeadlessTest
         keyboard.setVerticalControlNegative(KeyboardHeadless.DOWN);
         keyboard.setHorizontalControlPositive(KeyboardHeadless.RIGHT);
         keyboard.setVerticalControlPositive(KeyboardHeadless.UP);
+
+        assertEquals(KeyboardHeadless.LEFT, keyboard.getHorizontalControlNegative());
+        assertEquals(KeyboardHeadless.DOWN, keyboard.getVerticalControlNegative());
+        assertEquals(KeyboardHeadless.RIGHT, keyboard.getHorizontalControlPositive());
+        assertEquals(KeyboardHeadless.UP, keyboard.getVerticalControlPositive());
+
         keyboard.keyPressed(createEvent(KeyboardHeadless.RIGHT));
 
         assertEquals(1.0, keyboard.getHorizontalDirection());

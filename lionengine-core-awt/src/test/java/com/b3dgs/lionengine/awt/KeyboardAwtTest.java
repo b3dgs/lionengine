@@ -118,6 +118,11 @@ public final class KeyboardAwtTest
         keyboard.setHorizontalControlPositive(KeyboardAwt.RIGHT);
         keyboard.setVerticalControlPositive(KeyboardAwt.UP);
 
+        assertEquals(KeyboardAwt.LEFT, keyboard.getHorizontalControlNegative());
+        assertEquals(KeyboardAwt.DOWN, keyboard.getVerticalControlNegative());
+        assertEquals(KeyboardAwt.RIGHT, keyboard.getHorizontalControlPositive());
+        assertEquals(KeyboardAwt.UP, keyboard.getVerticalControlPositive());
+
         keyboard.keyPressed(createEvent(KeyboardAwt.RIGHT));
         assertEquals(1.0, keyboard.getHorizontalDirection());
         keyboard.keyReleased(createEvent(KeyboardAwt.RIGHT));

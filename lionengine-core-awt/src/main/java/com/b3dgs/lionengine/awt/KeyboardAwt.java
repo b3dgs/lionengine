@@ -199,6 +199,30 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     }
 
     @Override
+    public Integer getHorizontalControlPositive()
+    {
+        return rightKey;
+    }
+
+    @Override
+    public Integer getHorizontalControlNegative()
+    {
+        return leftKey;
+    }
+
+    @Override
+    public Integer getVerticalControlPositive()
+    {
+        return upKey;
+    }
+
+    @Override
+    public Integer getVerticalControlNegative()
+    {
+        return downKey;
+    }
+
+    @Override
     public double getHorizontalDirection()
     {
         final double direction;
