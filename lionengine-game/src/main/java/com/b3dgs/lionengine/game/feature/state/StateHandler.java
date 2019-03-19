@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +58,8 @@ public class StateHandler extends FeatureModel implements Updatable
     private final Optional<Configurer> configurer;
     /** Animation name converter. */
     private final Function<Class<? extends State>, String> converter;
+    /** Transition listeners. */
+    private final Collection<StateTransitionListener> listeners = new ArrayList<>();
     /** Current state pointer (<code>null</code> if none). */
     private State current;
 
@@ -110,6 +114,16 @@ public class StateHandler extends FeatureModel implements Updatable
     }
 
     /**
+     * Add a state transition listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addListener(StateTransitionListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /**
      * Change the current state.
      * 
      * @param next The next state.
@@ -119,6 +133,7 @@ public class StateHandler extends FeatureModel implements Updatable
     {
         Check.notNull(next);
 
+        final State from = current;
         if (current != null)
         {
             current.exit();
@@ -130,6 +145,8 @@ public class StateHandler extends FeatureModel implements Updatable
         }
         current = states.get(next);
         current.enter();
+
+        listeners.forEach(l -> l.notifyStateTransition(from != null ? from.getClass() : null, next));
     }
 
     /**

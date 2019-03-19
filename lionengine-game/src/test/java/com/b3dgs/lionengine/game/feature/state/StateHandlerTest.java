@@ -24,6 +24,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -214,5 +216,35 @@ public final class StateHandlerTest
         final StateHandler handler = new StateHandler();
 
         assertCause(() -> handler.changeState(State.class), NoSuchMethodException.class);
+    }
+
+    /**
+     * Test is state with listener.
+     */
+    @Test
+    public void testListener()
+    {
+        final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
+        final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
+
+        final Featurable featurable = new FeaturableModel();
+        final StateHandler handler;
+        handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml"))));
+        handler.prepare(featurable);
+        handler.addListener((o, n) ->
+        {
+            old.set(o);
+            next.set(n);
+        });
+
+        handler.changeState(StateIdle.class);
+
+        assertNull(old.get());
+        assertEquals(StateIdle.class, next.get());
+
+        handler.changeState(StateWalk.class);
+
+        assertEquals(StateIdle.class, old.get());
+        assertEquals(StateWalk.class, next.get());
     }
 }
