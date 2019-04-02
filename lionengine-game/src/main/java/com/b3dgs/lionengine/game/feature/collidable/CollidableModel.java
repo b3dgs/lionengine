@@ -20,8 +20,10 @@ package com.b3dgs.lionengine.game.feature.collidable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
@@ -34,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableListener;
-import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -53,6 +55,8 @@ public class CollidableModel extends FeatureModel
     private final List<Collision> collisions = new ArrayList<>();
     /** The accepted groups. */
     private final Collection<Integer> accepted = new HashSet<>();
+    /** Bounding box cache for rendering. */
+    private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
     /** The viewer reference. */
     private final Viewer viewer;
 
@@ -197,7 +201,7 @@ public class CollidableModel extends FeatureModel
     @Override
     public void render(Graphic g)
     {
-        renderer.render(g, viewer, origin, transformable, updater.getCache(), updater.getCollisionBounds());
+        renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender);
     }
 
     @Override
@@ -231,7 +235,7 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public List<Area> getCollisionBounds()
+    public List<Rectangle> getCollisionBounds()
     {
         return updater.getCollisionBounds();
     }
@@ -288,7 +292,7 @@ public class CollidableModel extends FeatureModel
     @Override
     public void notifyTransformed(Transformable transformable)
     {
-        updater.notifyTransformed(origin, this, transformable, collisions);
+        updater.notifyTransformed(origin, this, transformable, collisions, cacheRectRender);
     }
 
     /*

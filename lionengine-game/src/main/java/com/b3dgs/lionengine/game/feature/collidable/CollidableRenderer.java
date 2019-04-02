@@ -18,11 +18,13 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.List;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -56,7 +58,7 @@ final class CollidableRenderer
                        Origin origin,
                        Shape transformable,
                        List<Collision> cacheColls,
-                       List<Area> cacheRect)
+                       Map<Collision, Rectangle> cacheRect)
     {
         if (showCollision)
         {
@@ -74,7 +76,7 @@ final class CollidableRenderer
                 }
                 else
                 {
-                    final Area area = cacheRect.get(i);
+                    final Area area = cacheRect.get(collision);
                     final int x = (int) Math.round(viewer.getViewpointX(area.getX()));
                     final int y = (int) Math.floor(viewer.getViewpointY(area.getY())) - area.getHeight();
                     g.drawRect(x, y, area.getWidth(), area.getHeight(), false);

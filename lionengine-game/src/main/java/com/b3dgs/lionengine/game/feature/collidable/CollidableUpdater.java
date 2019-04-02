@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +98,7 @@ final class CollidableUpdater implements IdentifiableListener
      */
     private static boolean checkCollide(Area area, Collidable other)
     {
-        final List<Area> others = other.getCollisionBounds();
+        final List<Rectangle> others = other.getCollisionBounds();
         final int size = others.size();
         for (int i = 0; i < size; i++)
         {
@@ -189,19 +188,27 @@ final class CollidableUpdater implements IdentifiableListener
      * @param y The vertical location.
      * @param width The collision width.
      * @param height The collision height.
+     * @param cacheRectRender Cache for rendering.
      */
-    private void update(Collision collision, double x, double y, int width, int height)
+    private void update(Collision collision,
+                        double x,
+                        double y,
+                        int width,
+                        int height,
+                        Map<Collision, Rectangle> cacheRectRender)
     {
         if (boxs.containsKey(collision))
         {
             final Rectangle rectangle = boxs.get(collision);
             rectangle.set(x, y, width, height);
+            cacheRectRender.get(collision).set(x, y, width, height);
         }
         else
         {
             final Rectangle rectangle = new Rectangle(x, y, width, height);
             cacheColls.add(collision);
             cacheRect.add(rectangle);
+            cacheRectRender.put(collision, new Rectangle(x, y, width, height));
             boxs.put(collision, rectangle);
         }
     }
@@ -254,13 +261,13 @@ final class CollidableUpdater implements IdentifiableListener
     }
 
     /**
-     * Get the collisions bounds as read only.
+     * Get the collisions bounds.
      * 
      * @return The collisions bounds.
      */
-    public List<Area> getCollisionBounds()
+    public List<Rectangle> getCollisionBounds()
     {
-        return Collections.unmodifiableList(cacheRect);
+        return cacheRect;
     }
 
     /**
@@ -300,11 +307,13 @@ final class CollidableUpdater implements IdentifiableListener
      * @param provider The provider owner.
      * @param transformable The modified transformable.
      * @param collisions The declared collisions.
+     * @param cacheRectRender Cache for rendering.
      */
     public void notifyTransformed(Origin origin,
                                   FeatureProvider provider,
                                   Shape transformable,
-                                  List<Collision> collisions)
+                                  List<Collision> collisions,
+                                  Map<Collision, Rectangle> cacheRectRender)
     {
         if (enabled)
         {
@@ -338,7 +347,7 @@ final class CollidableUpdater implements IdentifiableListener
                 }
                 final double x = origin.getX(transformable.getX() + offsetX, width);
                 final double y = origin.getY(transformable.getY() + offsetY, height) + height;
-                update(collision, x, y, width, height);
+                update(collision, x, y, width, height, cacheRectRender);
             }
         }
     }
