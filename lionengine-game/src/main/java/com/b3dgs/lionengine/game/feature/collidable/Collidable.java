@@ -104,6 +104,13 @@ public interface Collidable extends Feature, Renderable, CollidableListener
     void setCollisionVisibility(boolean visible);
 
     /**
+     * Check if collision is enabled.
+     * 
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    boolean isEnabled();
+
+    /**
      * Get the declared collisions as read only.
      * 
      * @return The declared collisions.

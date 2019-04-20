@@ -230,7 +230,7 @@ final class CollidableUpdater implements IdentifiableListener
                                    Collection<Integer> accepted)
     {
         final List<Collision> collisions = new ArrayList<>();
-        if (enabled && accepted.contains(other.getGroup()))
+        if (enabled && other.isEnabled() && accepted.contains(other.getGroup()))
         {
             final int size = cacheColls.size();
             for (int i = 0; i < size; i++)
@@ -258,6 +258,16 @@ final class CollidableUpdater implements IdentifiableListener
     public void setEnabled(boolean enabled)
     {
         this.enabled = enabled;
+    }
+
+    /**
+     * Check if collision is enabled.
+     * 
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    public boolean isEnabled()
+    {
+        return enabled;
     }
 
     /**

@@ -244,6 +244,9 @@ public final class CollidableModelTest
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable1.addCollision(collision);
+
+        assertTrue(collidable1.isEnabled());
+
         transformable1.teleport(1.0, 1.0);
 
         assertFalse(collidable1.collide(collidable1).isEmpty());
@@ -251,6 +254,7 @@ public final class CollidableModelTest
         collidable1.setEnabled(false);
         transformable1.teleport(1.0, 1.0);
 
+        assertFalse(collidable1.isEnabled());
         assertTrue(collidable1.collide(collidable1).isEmpty());
     }
 

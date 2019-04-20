@@ -201,7 +201,10 @@ public class CollidableModel extends FeatureModel
     @Override
     public void render(Graphic g)
     {
-        renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender);
+        if (isEnabled())
+        {
+            renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender);
+        }
     }
 
     @Override
@@ -226,6 +229,12 @@ public class CollidableModel extends FeatureModel
     public void setCollisionVisibility(boolean visible)
     {
         renderer.setCollisionVisibility(visible);
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return updater.isEnabled();
     }
 
     @Override
