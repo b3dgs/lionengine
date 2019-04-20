@@ -47,6 +47,7 @@ import com.b3dgs.lionengine.graphic.Text;
 /**
  * Pathfindable implementation.
  */
+// CHECKSTYLE IGNORE LINE: FanOutComplexity
 public class PathfindableModel extends FeatureModel implements Pathfindable, Recyclable
 {
     /** Category not found error. */

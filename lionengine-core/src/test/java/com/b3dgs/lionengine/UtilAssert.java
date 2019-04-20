@@ -21,6 +21,7 @@ import java.time.Duration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
+import org.opentest4j.AssertionFailedError;
 
 /**
  * Set of utility function related to unit test assertions.
@@ -269,7 +270,10 @@ public final class UtilAssert
      */
     public static void assertNotEquals(int expected, int actual)
     {
-        Assertions.assertNotEquals(Integer.valueOf(expected), Integer.valueOf(actual));
+        if (expected == actual)
+        {
+            throw new AssertionFailedError("expected: not equal but was: <" + actual + ">");
+        }
     }
 
     /**
@@ -280,7 +284,10 @@ public final class UtilAssert
      */
     public static void assertNotEquals(Object expected, Object actual)
     {
-        Assertions.assertNotEquals(expected, actual);
+        if (expected == null && actual == null || expected != null && expected.equals(actual))
+        {
+            throw new AssertionFailedError("expected: not equal but was: <" + actual + ">");
+        }
     }
 
     /**
