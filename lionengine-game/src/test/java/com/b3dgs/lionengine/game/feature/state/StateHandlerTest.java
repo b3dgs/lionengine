@@ -219,6 +219,38 @@ public final class StateHandlerTest
     }
 
     /**
+     * Test transition with last state.
+     */
+    @Test
+    public void testLast()
+    {
+        final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
+        final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
+
+        final StateHandler handler = new StateHandler();
+        handler.addListener((o, n) ->
+        {
+            old.set(o);
+            next.set(n);
+        });
+
+        handler.changeState(StateMock.class);
+        handler.postUpdate();
+
+        assertNull(old.get());
+        assertEquals(StateMock.class, next.get());
+
+        old.set(null);
+        next.set(null);
+
+        handler.changeState(StateMock.class);
+        handler.postUpdate();
+
+        assertEquals(StateMock.class, old.get());
+        assertEquals(StateMock.class, next.get());
+    }
+
+    /**
      * Test is state with listener.
      */
     @Test
@@ -246,5 +278,27 @@ public final class StateHandlerTest
 
         assertEquals(StateIdle.class, old.get());
         assertEquals(StateWalk.class, next.get());
+    }
+
+    private static class StateMock extends StateAbstract
+    {
+        private StateMock()
+        {
+            super();
+
+            addTransition(StateLast.class, () -> true);
+        }
+
+        @Override
+        public void update(double extrp)
+        {
+            // Nothing to do
+        }
+
+        @Override
+        public void enter()
+        {
+            // Nothing to do
+        }
     }
 }

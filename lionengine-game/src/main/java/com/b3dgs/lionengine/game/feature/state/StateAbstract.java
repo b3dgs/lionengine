@@ -76,7 +76,7 @@ public abstract class StateAbstract implements State
     }
 
     @Override
-    public Class<? extends State> checkTransitions()
+    public Class<? extends State> checkTransitions(Class<? extends State> last)
     {
         for (final Entry<Class<? extends State>, StateChecker> entry : transitions.entrySet())
         {
@@ -84,7 +84,16 @@ public abstract class StateAbstract implements State
             if (checker.getAsBoolean())
             {
                 checker.exit();
-                return entry.getKey();
+                final Class<? extends State> next;
+                if (entry.getKey() == StateLast.class)
+                {
+                    next = last;
+                }
+                else
+                {
+                    next = entry.getKey();
+                }
+                return next;
             }
         }
         postUpdate();

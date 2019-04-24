@@ -60,6 +60,8 @@ public class StateHandler extends FeatureModel implements Updatable
     private final Function<Class<? extends State>, String> converter;
     /** Transition listeners. */
     private final Collection<StateTransitionListener> listeners = new ArrayList<>();
+    /** Last state (<code>null</code> if none). */
+    private Class<? extends State> last;
     /** Current state pointer (<code>null</code> if none). */
     private State current;
 
@@ -136,6 +138,7 @@ public class StateHandler extends FeatureModel implements Updatable
         final State from = current;
         if (current != null)
         {
+            last = current.getClass();
             current.exit();
         }
         if (!states.containsKey(next))
@@ -206,7 +209,7 @@ public class StateHandler extends FeatureModel implements Updatable
     {
         if (current != null)
         {
-            final Class<? extends State> next = current.checkTransitions();
+            final Class<? extends State> next = current.checkTransitions(last);
             if (next != null)
             {
                 changeState(next);

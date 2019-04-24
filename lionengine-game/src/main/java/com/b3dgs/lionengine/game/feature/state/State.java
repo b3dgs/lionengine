@@ -48,6 +48,7 @@ public interface State extends Updatable
      * 
      * @param next The next state.
      * @param checker The transition checker.
+     * @see StateLast
      */
     void addTransition(Class<? extends State> next, StateChecker checker);
 
@@ -69,7 +70,8 @@ public interface State extends Updatable
     /**
      * Check the transitions in order to find the next state.
      * 
+     * @param last The last state (<code>null</code> if none).
      * @return The next state type (<code>null</code> if none).
      */
-    Class<? extends State> checkTransitions();
+    Class<? extends State> checkTransitions(Class<? extends State> last);
 }
