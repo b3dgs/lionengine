@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
-import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -39,7 +38,7 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 /**
  * Default rasterable implementation.
  */
-public class RasterableModel extends FeatureModel implements Rasterable, Recyclable
+public class RasterableModel extends FeatureModel implements Rasterable
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim;
@@ -110,8 +109,6 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         {
             updater = extrp -> updateRasterAnim();
         }
-
-        recycle();
     }
 
     @Override
@@ -137,6 +134,8 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     @Override
     public void prepare(FeatureProvider provider)
     {
+        super.prepare(provider);
+
         transformable = provider.getFeature(Transformable.class);
         mirrorable = provider.getFeature(Mirrorable.class);
         animator = provider.getFeature(Animatable.class);
@@ -184,15 +183,5 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         Check.notNull(origin);
 
         this.origin = origin;
-    }
-
-    /*
-     * Recyclable
-     */
-
-    @Override
-    public final void recycle()
-    {
-        origin = Origin.TOP_LEFT;
     }
 }
