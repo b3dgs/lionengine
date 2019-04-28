@@ -61,7 +61,6 @@ public final class MapTileCollisionModelComplexTest
     private static final int TILE_SLOPE_RIGHT_0 = 3;
     private static final int TILE_SLOPE_RIGHT_1 = 4;
 
-    @SuppressWarnings("unused")
     private static Stream<Arguments> speedX()
     {
         return Stream.of(Arguments.of(Double.valueOf(0.1)),
