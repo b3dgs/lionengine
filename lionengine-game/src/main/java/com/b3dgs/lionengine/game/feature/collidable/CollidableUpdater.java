@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
@@ -37,7 +39,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Box ray cast collidable model implementation.
  */
-final class CollidableUpdater implements IdentifiableListener
+final class CollidableUpdater implements IdentifiableListener, CollisionChecker
 {
     /**
      * Check if other collides with collision and its rectangle area.
@@ -118,7 +120,7 @@ final class CollidableUpdater implements IdentifiableListener
             final Area current = others.get(i);
             final Collision by = othersColl.get(i);
 
-            if (area.intersects(current) || area.contains(current))
+            if (other.isEnabled(by) && (area.intersects(current) || area.contains(current)))
             {
                 collisions.add(new CollisionCouple(with, by));
                 collided = true;
@@ -177,6 +179,8 @@ final class CollidableUpdater implements IdentifiableListener
 
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs = new HashMap<>();
+    /** Collisions disabled list. */
+    private final Set<Collision> disabled = new HashSet<>();
     /** Collisions cache. */
     private final List<Collision> cacheColls = new ArrayList<>();
     /** Bounding box cache. */
@@ -252,11 +256,32 @@ final class CollidableUpdater implements IdentifiableListener
             for (int i = 0; i < size; i++)
             {
                 final Collision with = cacheColls.get(i);
-                collide(origin, provider, transformable, with, other, cacheRect.get(i), collisions);
+                if (!disabled.contains(with))
+                {
+                    collide(origin, provider, transformable, with, other, cacheRect.get(i), collisions);
+                }
             }
             return collisions;
         }
         return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * Set the collision enabled flag.
+     * 
+     * @param enabled <code>true</code> to enable collision checking, <code>false</code> else.
+     * @param collision The collision to change.
+     */
+    public void setEnabled(boolean enabled, Collision collision)
+    {
+        if (enabled)
+        {
+            disabled.remove(collision);
+        }
+        else
+        {
+            disabled.add(collision);
+        }
     }
 
     /**
@@ -382,5 +407,16 @@ final class CollidableUpdater implements IdentifiableListener
         boxs.clear();
         cacheColls.clear();
         cacheRect.clear();
+        disabled.clear();
+    }
+
+    /*
+     * CollisionChecker
+     */
+
+    @Override
+    public boolean isEnabled(Collision collision)
+    {
+        return !disabled.contains(collision);
     }
 }

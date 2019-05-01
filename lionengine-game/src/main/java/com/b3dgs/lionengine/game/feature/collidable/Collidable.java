@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
  * Represents something which can enter in collision with another.
  */
 @FeatureInterface
-public interface Collidable extends Feature, Renderable, CollidableListener
+public interface Collidable extends Feature, Renderable, CollidableListener, CollisionChecker
 {
     /**
      * Add a collision listener.
@@ -68,6 +68,11 @@ public interface Collidable extends Feature, Renderable, CollidableListener
     void removeAccept(int group);
 
     /**
+     * Force collision update.
+     */
+    void forceUpdate();
+
+    /**
      * Check if the collidable entered in collision with another one.
      * 
      * @param collidable The collidable reference.
@@ -88,6 +93,14 @@ public interface Collidable extends Feature, Renderable, CollidableListener
      * @param origin The origin to use.
      */
     void setOrigin(Origin origin);
+
+    /**
+     * Set the collision enabled flag.
+     * 
+     * @param enabled <code>true</code> to enable collision checking, <code>false</code> else.
+     * @param collision The collision to change.
+     */
+    void setEnabled(boolean enabled, Collision collision);
 
     /**
      * Set the collision enabled flag.

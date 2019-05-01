@@ -52,13 +52,15 @@ final class CollidableRenderer
      * @param transformable The transformable owner.
      * @param cacheColls The computed collisions.
      * @param cacheRect The computed rectangles.
+     * @param checker The collision checker.
      */
     public void render(Graphic g,
                        Viewer viewer,
                        Origin origin,
                        Shape transformable,
                        List<Collision> cacheColls,
-                       Map<Collision, Rectangle> cacheRect)
+                       Map<Collision, Rectangle> cacheRect,
+                       CollisionChecker checker)
     {
         if (showCollision)
         {
@@ -74,7 +76,7 @@ final class CollidableRenderer
                                                                transformable.getHeight()));
                     g.drawRect(x, y, transformable.getWidth(), transformable.getHeight(), false);
                 }
-                else
+                else if (checker.isEnabled(collision))
                 {
                     final Area area = cacheRect.get(collision);
                     final int x = (int) Math.round(viewer.getViewpointX(area.getX()));

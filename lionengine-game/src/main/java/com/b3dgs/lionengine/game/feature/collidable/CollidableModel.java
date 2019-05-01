@@ -56,6 +56,8 @@ public class CollidableModel extends FeatureModel
     private final Collection<Integer> accepted = new HashSet<>();
     /** Bounding box cache for rendering. */
     private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
+    /** Rendering checker. */
+    private final CollisionChecker checker = collision -> updater.isEnabled(collision);
     /** The viewer reference. */
     private final Viewer viewer;
 
@@ -192,6 +194,12 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
+    public void forceUpdate()
+    {
+        notifyTransformed(transformable);
+    }
+
+    @Override
     public List<CollisionCouple> collide(Collidable other)
     {
         return updater.collide(origin, this, transformable, other, accepted);
@@ -202,7 +210,7 @@ public class CollidableModel extends FeatureModel
     {
         if (isEnabled())
         {
-            renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender);
+            renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender, checker);
         }
     }
 
@@ -216,6 +224,12 @@ public class CollidableModel extends FeatureModel
     public void setOrigin(Origin origin)
     {
         this.origin = origin;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled, Collision collision)
+    {
+        updater.setEnabled(enabled, collision);
     }
 
     @Override
@@ -311,5 +325,15 @@ public class CollidableModel extends FeatureModel
     public void notifyDestroyed(Integer id)
     {
         updater.notifyDestroyed(id);
+    }
+
+    /*
+     * CollidableChecker
+     */
+
+    @Override
+    public boolean isEnabled(Collision collision)
+    {
+        return updater.isEnabled(collision);
     }
 }
