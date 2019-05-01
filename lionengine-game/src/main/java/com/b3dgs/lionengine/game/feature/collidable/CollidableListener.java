@@ -22,6 +22,12 @@ package com.b3dgs.lionengine.game.feature.collidable;
  */
 public interface CollidableListener
 {
+    /** Void listener. */
+    CollidableListener VOID = (collidable, with, by) ->
+    {
+        // Nothing to do
+    };
+
     /**
      * Notify when a collision occurred with another {@link Collidable}.
      * 
