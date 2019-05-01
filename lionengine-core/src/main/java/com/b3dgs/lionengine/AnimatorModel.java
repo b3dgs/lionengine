@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.ArrayList;
+
 /**
  * Animator implementation.
  */
@@ -27,6 +29,8 @@ public final class AnimatorModel implements Animator
     /** Half frame. */
     private static final double HALF_FRAME = 0.5;
 
+    /** Animation listener. */
+    private final ArrayList<AnimatorListener> listeners = new ArrayList<>();
     /** First frame. */
     private int first = Animation.MINIMUM_FRAME;
     /** Last frame. */
@@ -57,6 +61,8 @@ public final class AnimatorModel implements Animator
      */
     private void updatePlaying(double extrp)
     {
+        final int old = getFrame();
+
         current += speed * extrp;
 
         // Last frame reached
@@ -65,6 +71,15 @@ public final class AnimatorModel implements Animator
             // If not reversed, done, else, reverse
             current = last + HALF_FRAME;
             checkStatePlaying();
+            listeners.forEach(l -> l.notifyAnimState(state));
+        }
+        else
+        {
+            final int cur = getFrame();
+            if (cur != old)
+            {
+                listeners.forEach(l -> l.notifyAnimFrame(cur));
+            }
         }
     }
 
@@ -98,6 +113,8 @@ public final class AnimatorModel implements Animator
      */
     private void updateReversing(double extrp)
     {
+        final int old = getFrame();
+
         current -= speed * extrp;
 
         // First frame reached, done
@@ -114,12 +131,29 @@ public final class AnimatorModel implements Animator
             {
                 state = AnimState.FINISHED;
             }
+            listeners.forEach(l -> l.notifyAnimState(state));
+        }
+        else
+        {
+            final int cur = getFrame();
+            if (cur != old)
+            {
+                listeners.forEach(l -> l.notifyAnimFrame(cur));
+            }
         }
     }
 
     /*
      * Animator
      */
+
+    @Override
+    public void addListener(AnimatorListener listener)
+    {
+        Check.notNull(listener);
+
+        listeners.add(listener);
+    }
 
     @Override
     public void play(Animation anim)
@@ -139,12 +173,20 @@ public final class AnimatorModel implements Animator
         repeat = animRepeat;
         current = first;
         state = AnimState.PLAYING;
+
+        listeners.forEach(l ->
+        {
+            l.notifyAnimPlayed(anim);
+            l.notifyAnimState(state);
+            l.notifyAnimFrame(first);
+        });
     }
 
     @Override
     public void stop()
     {
         state = AnimState.STOPPED;
+        listeners.forEach(l -> l.notifyAnimState(state));
     }
 
     @Override
@@ -174,6 +216,7 @@ public final class AnimatorModel implements Animator
         Check.superiorOrEqual(frame, Animation.MINIMUM_FRAME);
 
         current = frame;
+        listeners.forEach(l -> l.notifyAnimFrame(frame));
     }
 
     @Override

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
 
 /**
@@ -53,6 +54,12 @@ public class AnimatableModel extends FeatureModel implements Animatable
     /*
      * Animatable
      */
+
+    @Override
+    public void addListener(AnimatorListener listener)
+    {
+        animator.addListener(listener);
+    }
 
     @Override
     public void update(double extrp)

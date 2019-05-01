@@ -30,6 +30,14 @@ package com.b3dgs.lionengine;
 public interface Animator extends Updatable
 {
     /**
+     * Add an animator listener.
+     * 
+     * @param listener The listener to add (must not be <code>null</code>).
+     * @throws LionEngineException If the listener is <code>null</code>.
+     */
+    void addListener(AnimatorListener listener);
+
+    /**
      * Play the animation. Should be called only one time to start, as {@link #update(double)} does the animation
      * update.
      * 

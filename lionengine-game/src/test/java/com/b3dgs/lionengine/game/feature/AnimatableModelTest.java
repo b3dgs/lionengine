@@ -18,11 +18,15 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
 
 /**
@@ -100,5 +104,49 @@ public final class AnimatableModelTest
 
         animatable.stop();
         testAnimatorState(animatable, first, 1, AnimState.STOPPED);
+    }
+
+    /**
+     * Test with listener.
+     */
+    @Test
+    public void testListener()
+    {
+        final AtomicReference<Animation> played = new AtomicReference<>();
+        final AtomicReference<AnimState> stated = new AtomicReference<>();
+        final AtomicReference<Integer> framed = new AtomicReference<>();
+        final AnimatorListener listener = new AnimatorListener()
+        {
+            @Override
+            public void notifyAnimPlayed(Animation anim)
+            {
+                played.set(anim);
+            }
+
+            @Override
+            public void notifyAnimState(AnimState state)
+            {
+                stated.set(state);
+            }
+
+            @Override
+            public void notifyAnimFrame(int frame)
+            {
+                framed.set(Integer.valueOf(frame));
+            }
+        };
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
+        final Animatable animatable = new AnimatableModel(new AnimatorModel());
+        animatable.addListener(listener);
+
+        assertNull(played.get());
+        assertNull(stated.get());
+        assertNull(framed.get());
+
+        animatable.play(animation);
+
+        assertEquals(animation, played.get());
+        assertEquals(AnimState.PLAYING, stated.get());
+        assertEquals(Integer.valueOf(1), framed.get());
     }
 }

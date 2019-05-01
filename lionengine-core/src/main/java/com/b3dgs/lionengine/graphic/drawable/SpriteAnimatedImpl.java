@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.graphic.drawable;
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -94,6 +95,12 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     /*
      * SpriteAnimated
      */
+
+    @Override
+    public void addListener(AnimatorListener listener)
+    {
+        animator.addListener(listener);
+    }
 
     @Override
     public void play(Animation animation)

@@ -18,7 +18,10 @@
 package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 
@@ -306,5 +309,91 @@ public final class AnimatorTest
         final Animator animator = new AnimatorModel();
 
         assertThrows(() -> animator.setFrame(0), "Invalid argument: 0 is not superior or equal to 1");
+    }
+
+    /**
+     * Test with listener.
+     */
+    @Test
+    public void testListener()
+    {
+        final AtomicReference<Animation> played = new AtomicReference<>();
+        final AtomicReference<AnimState> stated = new AtomicReference<>();
+        final AtomicReference<Integer> framed = new AtomicReference<>();
+        final AnimatorListener listener = new AnimatorListener()
+        {
+            @Override
+            public void notifyAnimPlayed(Animation anim)
+            {
+                played.set(anim);
+            }
+
+            @Override
+            public void notifyAnimState(AnimState state)
+            {
+                stated.set(state);
+            }
+
+            @Override
+            public void notifyAnimFrame(int frame)
+            {
+                framed.set(Integer.valueOf(frame));
+            }
+        };
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
+        final Animator animator = new AnimatorModel();
+        animator.addListener(listener);
+
+        assertNull(played.get());
+        assertNull(stated.get());
+        assertNull(framed.get());
+
+        animator.play(animation);
+
+        assertEquals(animation, played.get());
+        assertEquals(AnimState.PLAYING, stated.get());
+        assertEquals(Integer.valueOf(1), framed.get());
+
+        played.set(null);
+        stated.set(null);
+        framed.set(null);
+        animator.update(1.0);
+
+        assertNull(played.get());
+        assertNull(stated.get());
+        assertNull(framed.get());
+
+        animator.update(1.0);
+        animator.update(1.0);
+        animator.update(1.0);
+
+        assertEquals(Integer.valueOf(2), framed.get());
+
+        for (int i = 0; i < 8; i++)
+        {
+            animator.update(1.0);
+        }
+
+        assertEquals(AnimState.REVERSING, stated.get());
+        assertEquals(Integer.valueOf(3), framed.get());
+
+        stated.set(null);
+        framed.set(null);
+        for (int i = 0; i < 9; i++)
+        {
+            animator.update(1.0);
+        }
+
+        assertEquals(AnimState.FINISHED, stated.get());
+        assertEquals(Integer.valueOf(1), framed.get());
+
+        animator.stop();
+
+        assertEquals(AnimState.STOPPED, stated.get());
+        assertEquals(Integer.valueOf(1), framed.get());
+
+        animator.setFrame(2);
+
+        assertEquals(Integer.valueOf(2), framed.get());
     }
 }
