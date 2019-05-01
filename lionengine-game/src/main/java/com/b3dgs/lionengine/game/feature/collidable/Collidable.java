@@ -73,7 +73,7 @@ public interface Collidable extends Feature, Renderable, CollidableListener
      * @param collidable The collidable reference.
      * @return The collisions found if collide.
      */
-    List<Collision> collide(Collidable collidable);
+    List<CollisionCouple> collide(Collidable collidable);
 
     /**
      * Set the associated group.
@@ -111,14 +111,14 @@ public interface Collidable extends Feature, Renderable, CollidableListener
     boolean isEnabled();
 
     /**
-     * Get the declared collisions as read only.
+     * Get the declared collisions.
      * 
      * @return The declared collisions.
      */
-    Collection<Collision> getCollisions();
+    List<Collision> getCollisions();
 
     /**
-     * Get the collisions bounds as read only.
+     * Get the collisions bounds.
      * 
      * @return The collisions bounds.
      */

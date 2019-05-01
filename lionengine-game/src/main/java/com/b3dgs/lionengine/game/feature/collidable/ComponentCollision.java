@@ -136,7 +136,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         }
         for (final Collided collided : toNotify)
         {
-            collided.collidableA.notifyCollided(collided.collidableB, collided.collision);
+            collided.collidableA.notifyCollided(collided.collidableB, collided.with, collided.by);
         }
         toNotify.clear();
     }
@@ -204,8 +204,8 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         {
             if (objectA != objectB)
             {
-                final List<Collision> collisions = objectA.collide(objectB);
-                for (final Collision collision : collisions)
+                final List<CollisionCouple> collisions = objectA.collide(objectB);
+                for (final CollisionCouple collision : collisions)
                 {
                     toNotify.add(new Collided(objectA, objectB, collision));
                 }
@@ -356,7 +356,8 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     {
         private final Collidable collidableA;
         private final Collidable collidableB;
-        private final Collision collision;
+        private final Collision with;
+        private final Collision by;
 
         /**
          * Create collided data.
@@ -365,13 +366,14 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
          * @param collidableB The second collidable.
          * @param collision The associated collision.
          */
-        private Collided(Collidable collidableA, Collidable collidableB, Collision collision)
+        private Collided(Collidable collidableA, Collidable collidableB, CollisionCouple collision)
         {
             super();
 
             this.collidableA = collidableA;
             this.collidableB = collidableB;
-            this.collision = collision;
+            with = collision.getWith();
+            by = collision.getBy();
         }
     }
 }

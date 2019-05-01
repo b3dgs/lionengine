@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -193,7 +192,7 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public List<Collision> collide(Collidable other)
+    public List<CollisionCouple> collide(Collidable other)
     {
         return updater.collide(origin, this, transformable, other, accepted);
     }
@@ -238,9 +237,9 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public Collection<Collision> getCollisions()
+    public List<Collision> getCollisions()
     {
-        return Collections.unmodifiableCollection(collisions);
+        return collisions;
     }
 
     @Override
@@ -250,13 +249,13 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public void notifyCollided(Collidable collidable, Collision collision)
+    public void notifyCollided(Collidable collidable, Collision with, Collision by)
     {
         final int length = listeners.size();
         for (int i = 0; i < length; i++)
         {
             final CollidableListener listener = listeners.get(i);
-            listener.notifyCollided(collidable, collision);
+            listener.notifyCollided(collidable, with, by);
         }
     }
 

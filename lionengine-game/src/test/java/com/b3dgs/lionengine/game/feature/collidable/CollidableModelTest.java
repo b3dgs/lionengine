@@ -153,15 +153,18 @@ public final class CollidableModelTest
         transformable1.moveLocation(1.0, 0.0, 1.0);
         transformable2.moveLocation(1.0, 0.0, 1.0);
 
-        assertEquals(Arrays.asList(Collision.AUTOMATIC), collidable1.collide(collidable2));
-        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(new CollisionCouple(Collision.AUTOMATIC, collision2)),
+                     collidable1.collide(collidable2));
+        assertEquals(Arrays.asList(new CollisionCouple(collision2, Collision.AUTOMATIC)),
+                     collidable2.collide(collidable1));
 
         assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
         assertEquals(Collision.AUTOMATIC, collidable1.getCollisions().iterator().next());
 
         transformable2.moveLocation(1.0, 1.0, 0.0);
 
-        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(new CollisionCouple(collision2, Collision.AUTOMATIC)),
+                     collidable2.collide(collidable1));
 
         transformable2.moveLocation(1.0, 5.0, 5.0);
 
@@ -175,12 +178,12 @@ public final class CollidableModelTest
     public void testDifferentSizes()
     {
         final AtomicBoolean auto = new AtomicBoolean();
-        collidable1.checkListener((CollidableListener) (collidable, collision) -> auto.set(true));
+        collidable1.checkListener((CollidableListener) (collidable, with, by) -> auto.set(true));
 
         final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
 
-        collidable1.notifyCollided(collidable2, collision1);
+        collidable1.notifyCollided(collidable2, collision1, collision2);
         assertTrue(auto.get());
 
         collidable1.addCollision(collision1);
@@ -190,11 +193,11 @@ public final class CollidableModelTest
         transformable1.moveLocation(1.0, 1, 1);
         transformable2.moveLocation(1.0, 0, 0);
 
-        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(new CollisionCouple(collision2, collision1)), collidable2.collide(collidable1));
 
         transformable1.teleport(0.5, 3.5);
 
-        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(new CollisionCouple(collision2, collision1)), collidable2.collide(collidable1));
     }
 
     /**
@@ -225,8 +228,8 @@ public final class CollidableModelTest
 
         transformable1.teleport(1.5, 2.5);
 
-        assertEquals(Arrays.asList(collision1), collidable1.collide(collidable2));
-        assertEquals(Arrays.asList(collision2), collidable2.collide(collidable1));
+        assertEquals(Arrays.asList(new CollisionCouple(collision1, collision2)), collidable1.collide(collidable2));
+        assertEquals(Arrays.asList(new CollisionCouple(collision2, collision1)), collidable2.collide(collidable1));
     }
 
     /**
@@ -322,22 +325,22 @@ public final class CollidableModelTest
     public void testListener()
     {
         final AtomicBoolean called = new AtomicBoolean();
-        final CollidableListener listener = (collidable, collision) -> called.set(true);
+        final CollidableListener listener = (collidable, with, by) -> called.set(true);
 
-        collidable1.notifyCollided(null, null);
+        collidable1.notifyCollided(null, null, null);
 
         assertFalse(called.get());
 
         collidable1.addListener(listener);
 
-        collidable1.notifyCollided(null, null);
+        collidable1.notifyCollided(null, null, null);
 
         assertTrue(called.get());
 
         collidable1.removeListener(listener);
         called.set(false);
 
-        collidable1.notifyCollided(null, null);
+        collidable1.notifyCollided(null, null, null);
 
         assertFalse(called.get());
     }

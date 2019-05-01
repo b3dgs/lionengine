@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,74 +45,86 @@ final class CollidableUpdater implements IdentifiableListener
      * @param origin The origin used.
      * @param provider The provider owner.
      * @param transformable The transformable owner.
+     * @param with The collision to check with.
      * @param other The other collidable to check.
-     * @param collision The collision to check with.
      * @param rectangle The collision rectangle.
-     * @return The collision collides with other, <code>null</code> if none.
+     * @param collisions The collisions couple.
      */
-    private static Collision collide(Origin origin,
-                                     FeatureProvider provider,
-                                     Transformable transformable,
-                                     Collidable other,
-                                     Collision collision,
-                                     Rectangle rectangle)
+    private static void collide(Origin origin,
+                                FeatureProvider provider,
+                                Transformable transformable,
+                                Collision with,
+                                Collidable other,
+                                Rectangle rectangle,
+                                List<CollisionCouple> collisions)
     {
-        final Mirror mirror = getMirror(provider, collision);
-        final int offsetX = getOffsetX(collision, mirror);
-        final int offsetY = getOffsetY(collision, mirror);
+        final Mirror mirror = getMirror(provider, with);
+        final int offsetX = getOffsetX(with, mirror);
+        final int offsetY = getOffsetY(with, mirror);
 
         final double sh = origin.getX(transformable.getOldX() + offsetX, rectangle.getWidthReal());
         final double sv = origin.getY(transformable.getOldY() + offsetY, rectangle.getHeightReal());
         final double dh = origin.getX(transformable.getX() + offsetX, rectangle.getWidthReal()) - sh;
         final double dv = origin.getY(transformable.getY() + offsetY, rectangle.getHeightReal()) - sv;
-        final double norm = Math.sqrt(dh * dh + dv * dv);
+
+        final double nh = Math.abs(dh);
+        final double nv = Math.abs(dv);
+
+        final int max = (int) Math.ceil(Math.max(nh, nv));
         final double sx;
         final double sy;
-        if (Double.compare(norm, 0.0) == 0)
+
+        if (Double.compare(nh, 1.0) >= 0 || Double.compare(nv, 1.0) >= 0)
         {
-            sx = 0;
-            sy = 0;
+            sx = dh / max;
+            sy = dv / max;
         }
         else
         {
-            sx = dh / norm;
-            sy = dv / norm;
+            sx = dh;
+            sy = dv;
         }
 
         final double oldX = rectangle.getX();
         final double oldY = rectangle.getY();
-        for (int count = 0; count <= norm; count++)
+        for (int count = 0; count < max + 1; count++)
         {
-            if (checkCollide(rectangle, other))
+            if (checkCollide(with, rectangle, other, collisions))
             {
-                return collision;
+                return;
             }
             rectangle.translate(sx, sy);
         }
         rectangle.set(oldX, oldY, rectangle.getWidth(), rectangle.getHeight());
-        return null;
     }
 
     /**
      * Check if current area collides other collidable area.
      * 
+     * @param with The collision to check with.
      * @param area The current area.
      * @param other The other collidable.
-     * @return <code>true</code> if collide, <code>false</code> else.
+     * @param collisions The collisions couple.
+     * @return <code>true</code> if collided, <code>false</code> else.
      */
-    private static boolean checkCollide(Area area, Collidable other)
+    private static boolean checkCollide(Collision with, Area area, Collidable other, List<CollisionCouple> collisions)
     {
         final List<Rectangle> others = other.getCollisionBounds();
+        final List<Collision> othersColl = other.getCollisions();
         final int size = others.size();
+        boolean collided = false;
         for (int i = 0; i < size; i++)
         {
             final Area current = others.get(i);
-            if (area.intersects(current))
+            final Collision by = othersColl.get(i);
+
+            if (area.intersects(current) || area.contains(current))
             {
-                return true;
+                collisions.add(new CollisionCouple(with, by));
+                collided = true;
             }
         }
-        return false;
+        return collided;
     }
 
     /**
@@ -226,31 +239,24 @@ final class CollidableUpdater implements IdentifiableListener
      * @param accepted The accepted groups.
      * @return The collisions found if collide.
      */
-    public List<Collision> collide(Origin origin,
-                                   FeatureProvider provider,
-                                   Transformable transformable,
-                                   Collidable other,
-                                   Collection<Integer> accepted)
+    public List<CollisionCouple> collide(Origin origin,
+                                         FeatureProvider provider,
+                                         Transformable transformable,
+                                         Collidable other,
+                                         Collection<Integer> accepted)
     {
-        final List<Collision> collisions = new ArrayList<>();
         if (enabled && other.isEnabled() && accepted.contains(other.getGroup()))
         {
+            final List<CollisionCouple> collisions = new ArrayList<>();
             final int size = cacheColls.size();
             for (int i = 0; i < size; i++)
             {
-                final Collision collision = collide(origin,
-                                                    provider,
-                                                    transformable,
-                                                    other,
-                                                    cacheColls.get(i),
-                                                    cacheRect.get(i));
-                if (collision != null)
-                {
-                    collisions.add(collision);
-                }
+                final Collision with = cacheColls.get(i);
+                collide(origin, provider, transformable, with, other, cacheRect.get(i), collisions);
             }
+            return collisions;
         }
-        return collisions;
+        return Collections.EMPTY_LIST;
     }
 
     /**
