@@ -56,8 +56,6 @@ public class CollidableModel extends FeatureModel
     private final Collection<Integer> accepted = new HashSet<>();
     /** Bounding box cache for rendering. */
     private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
-    /** Rendering checker. */
-    private final CollisionChecker checker = collision -> updater.isEnabled(collision);
     /** The viewer reference. */
     private final Viewer viewer;
 
@@ -210,7 +208,7 @@ public class CollidableModel extends FeatureModel
     {
         if (isEnabled())
         {
-            renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender, checker);
+            renderer.render(g, viewer, origin, transformable, updater.getCache(), cacheRectRender, updater::isEnabled);
         }
     }
 

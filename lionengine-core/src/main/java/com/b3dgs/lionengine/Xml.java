@@ -168,8 +168,9 @@ public class Xml extends XmlReader
     /**
      * Create a child node.
      * 
-     * @param child The child name@throws LionEngineException If invalid argument.
+     * @param child The child name
      * @return The child node.
+     * @throws LionEngineException If invalid argument.
      */
     public Xml createChild(String child)
     {
@@ -183,7 +184,7 @@ public class Xml extends XmlReader
     /**
      * Add a child node.
      * 
-     * @param node The child node@throws LionEngineException If invalid argument.
+     * @param node The child node
      * @throws LionEngineException If error when adding the node.
      */
     public void add(XmlReader node)

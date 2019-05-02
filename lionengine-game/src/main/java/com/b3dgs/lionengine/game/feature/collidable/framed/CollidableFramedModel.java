@@ -35,10 +35,6 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     /** Loaded collisions framed. */
     private final CollidableFramedConfig config;
 
-    /** Collidable feature. */
-    private Collidable collidable;
-    /** Collidable feature. */
-    private Animatable animatable;
     /** Last collision found. */
     private Collision last;
 
@@ -71,8 +67,8 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     {
         super.prepare(provider);
 
-        collidable = provider.getFeature(Collidable.class);
-        animatable = provider.getFeature(Animatable.class);
+        final Collidable collidable = provider.getFeature(Collidable.class);
+        final Animatable animatable = provider.getFeature(Animatable.class);
 
         for (final Collision collision : config.getCollisions())
         {
