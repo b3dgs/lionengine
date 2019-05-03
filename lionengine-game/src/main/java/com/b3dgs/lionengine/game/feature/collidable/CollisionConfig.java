@@ -55,6 +55,8 @@ public final class CollisionConfig
     public static final String ATT_MIRROR = "mirror";
     /** Error collision not found. */
     static final String ERROR_COLLISION_NOT_FOUND = "Collision not found: ";
+    /** Default mirror. */
+    private static final boolean DEFAULT_MIRROR = false;
 
     /**
      * Create the collision data from node.
@@ -95,7 +97,7 @@ public final class CollisionConfig
         final int offsetY = node.readInteger(ATT_OFFSETY);
         final int width = node.readInteger(ATT_WIDTH);
         final int height = node.readInteger(ATT_HEIGHT);
-        final boolean mirror = node.readBoolean(ATT_MIRROR);
+        final boolean mirror = node.readBoolean(DEFAULT_MIRROR, ATT_MIRROR);
 
         return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
