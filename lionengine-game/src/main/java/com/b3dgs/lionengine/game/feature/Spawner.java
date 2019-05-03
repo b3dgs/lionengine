@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 
 /**
@@ -25,6 +26,18 @@ import com.b3dgs.lionengine.Media;
  */
 public interface Spawner
 {
+    /**
+     * Spawn a {@link Featurable} at specified {@link Localizable}. Must have {@link Transformable} feature.
+     * 
+     * @param media The featurable media.
+     * @param localizable The localizable reference.
+     * @throws LionEngineException If invalid media or missing feature.
+     */
+    default void spawn(Media media, Localizable localizable)
+    {
+        spawn(media, localizable.getX(), localizable.getY());
+    }
+
     /**
      * Spawn a {@link Featurable} at specified location. Must have {@link Transformable} feature.
      * 
