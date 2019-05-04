@@ -230,6 +230,7 @@ public class RasterImage
             final double fg = getRasterFactor(i, raster.getGreen());
             final double fb = getRasterFactor(i, raster.getBlue());
 
+            surface.prepare();
             rasterBuffer = Graphics.getRasterBuffer(surface, fr, fg, fb);
 
             if (save)
