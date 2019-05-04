@@ -71,6 +71,16 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 public interface Featurable extends FeatureProvider
 {
     /**
+     * Check if features auto loading from configuration file is enabled.
+     * 
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    default boolean isLoadFeaturesEnabled()
+    {
+        return true;
+    }
+
+    /**
      * Add features after read from config.
      * Does nothing by default.
      * 

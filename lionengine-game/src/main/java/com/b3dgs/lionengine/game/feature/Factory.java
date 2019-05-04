@@ -242,7 +242,10 @@ public class Factory implements HandlerListener
     private <O extends Featurable> O createFeaturable(Class<O> type, Setup setup) throws NoSuchMethodException
     {
         final O featurable = UtilReflection.createReduce(type, services, setup);
-        addFeatures(featurable, services, setup);
+        if (featurable.isLoadFeaturesEnabled())
+        {
+            addFeatures(featurable, services, setup);
+        }
         for (final Feature feature : featurable.getFeatures())
         {
             featurable.checkListener(feature);
