@@ -55,8 +55,6 @@ public final class FeaturableConfig
     private static final String DEFAULT_CLASS_NAME = FeaturableModel.class.getName();
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 35;
-    /** Class loader. */
-    private static final ClassLoader LOADER = Configurer.class.getClassLoader();
     /** Class cache. */
     private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
 
@@ -154,12 +152,13 @@ public final class FeaturableConfig
      * Get all available features.
      * Default constructor of each feature must be available or with {@link Setup} as single parameter.
      * 
+     * @param loader The class loader reference.
      * @param services The services reference.
      * @param setup The setup reference.
      * @return The available features.
      * @throws LionEngineException If invalid class.
      */
-    public static List<Feature> getFeatures(Services services, Setup setup)
+    public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup)
     {
         final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
         final List<Feature> features = new ArrayList<>(children.size());
@@ -169,7 +168,7 @@ public final class FeaturableConfig
             final Feature feature;
             try
             {
-                final Class<? extends Feature> clazz = getClass(className);
+                final Class<? extends Feature> clazz = getClass(loader, className);
                 feature = UtilReflection.createReduce(clazz, services, setup);
             }
             catch (final NoSuchMethodException exception)
@@ -185,12 +184,13 @@ public final class FeaturableConfig
      * Get the class reference from its name using cache.
      * 
      * @param <T> The class type.
+     * @param loader The class loader reference.
      * @param className The class name.
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
     @SuppressWarnings("unchecked")
-    private static <T> Class<T> getClass(String className)
+    private static <T> Class<T> getClass(ClassLoader loader, String className)
     {
         if (CLASS_CACHE.containsKey(className))
         {
@@ -198,7 +198,7 @@ public final class FeaturableConfig
         }
         try
         {
-            final Class<?> clazz = LOADER.loadClass(className);
+            final Class<?> clazz = loader.loadClass(className);
             CLASS_CACHE.put(className, clazz);
             return (Class<T>) clazz;
         }
