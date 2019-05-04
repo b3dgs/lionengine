@@ -17,17 +17,34 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
- * Notify collision events between two {@link Collidable}.
+ * Void {@link CollidableListener}.
  */
-public interface CollidableListener
+public final class CollidableListenerVoid
 {
+    /** Void instance. */
+    private static final CollidableListener INSTANCE = (collidable, with, by) ->
+    {
+        // Nothing to do
+    };
+
     /**
-     * Notify when a collision occurred with another {@link Collidable}.
+     * Get instance.
      * 
-     * @param collidable The collidable reference.
-     * @param with The collision collided with (source).
-     * @param by The collision collided by (other).
+     * @return The instance.
      */
-    void notifyCollided(Collidable collidable, Collision with, Collision by);
+    public static CollidableListener getInstance()
+    {
+        return INSTANCE;
+    }
+
+    /**
+     * Private.
+     */
+    private CollidableListenerVoid()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }

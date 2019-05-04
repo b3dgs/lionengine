@@ -15,19 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature.collidable;
+package com.b3dgs.lionengine;
 
 /**
- * Notify collision events between two {@link Collidable}.
+ * Void {@link Updatable}.
  */
-public interface CollidableListener
+public final class UpdatableVoid
 {
+    /** Void instance. */
+    private static final Updatable INSTANCE = extrp ->
+    {
+        // Nothing to do
+    };
+
     /**
-     * Notify when a collision occurred with another {@link Collidable}.
+     * Get instance.
      * 
-     * @param collidable The collidable reference.
-     * @param with The collision collided with (source).
-     * @param by The collision collided by (other).
+     * @return The instance.
      */
-    void notifyCollided(Collidable collidable, Collision with, Collision by);
+    public static Updatable getInstance()
+    {
+        return INSTANCE;
+    }
+
+    /**
+     * Private.
+     */
+    private UpdatableVoid()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }
