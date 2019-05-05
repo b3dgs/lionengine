@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -32,15 +33,16 @@ import com.b3dgs.lionengine.io.FileWriting;
 /**
  * Handle the map persistence by providing saving and loading functions.
  */
+@FeatureInterface
 public class MapTilePersisterModel extends FeatureModel implements MapTilePersister
 {
+    /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
+    protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE;
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
-    /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
-    private static final int BLOC_SIZE = 256;
 
     /** The services reference. */
-    private final MapTile map;
+    protected final MapTile map;
 
     /**
      * Create the persister.
@@ -99,8 +101,6 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      */
     protected Tile loadTile(FileReading file, int i) throws IOException
     {
-        Check.notNull(file);
-
         final Integer sheet = Integer.valueOf(file.readInteger());
         final int number = file.readInteger();
         final int x = file.readInteger() * map.getTileWidth() + i * BLOC_SIZE * map.getTileWidth();
@@ -182,6 +182,8 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
     @Override
     public void save(FileWriting output) throws IOException
     {
+        Check.notNull(output);
+
         final int widthInTile = map.getInTileWidth();
 
         // Header
@@ -237,6 +239,8 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
     @Override
     public void load(FileReading input) throws IOException
     {
+        Check.notNull(input);
+
         map.create(input.readInteger(), input.readInteger(), input.readInteger(), input.readInteger());
         if (input.readBoolean())
         {
