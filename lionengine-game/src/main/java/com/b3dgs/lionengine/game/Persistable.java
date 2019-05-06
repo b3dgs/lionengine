@@ -30,16 +30,16 @@ public interface Persistable
     /**
      * Save to local storage.
      * 
-     * @param output The output writer.
+     * @param writing The output writer.
      * @throws IOException If error on writing.
      */
-    void save(FileWriting output) throws IOException;
+    void save(FileWriting writing) throws IOException;
 
     /**
      * Load from local storage.
      * 
-     * @param input The input reader.
+     * @param reading The input reader.
      * @throws IOException If error on reading.
      */
-    void load(FileReading input) throws IOException;
+    void load(FileReading reading) throws IOException;
 }
