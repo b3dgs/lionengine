@@ -106,6 +106,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
             final Featurable featurable = factory.create(media);
             featurable.getFeature(Transformable.class).teleport(x, y);
             handler.add(featurable);
+            return featurable;
         });
 
         handler.addComponent(new ComponentRefreshable());
@@ -247,8 +248,8 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
      */
 
     @Override
-    public void spawn(Media media, double x, double y)
+    public Featurable spawn(Media media, double x, double y)
     {
-        spawner.spawn(media, x, y);
+        return spawner.spawn(media, x, y);
     }
 }

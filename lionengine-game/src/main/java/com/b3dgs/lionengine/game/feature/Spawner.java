@@ -31,11 +31,12 @@ public interface Spawner
      * 
      * @param media The featurable media.
      * @param localizable The localizable reference.
+     * @return The spawned featurable.
      * @throws LionEngineException If invalid media or missing feature.
      */
-    default void spawn(Media media, Localizable localizable)
+    default Featurable spawn(Media media, Localizable localizable)
     {
-        spawn(media, localizable.getX(), localizable.getY());
+        return spawn(media, localizable.getX(), localizable.getY());
     }
 
     /**
@@ -44,7 +45,8 @@ public interface Spawner
      * @param media The featurable media.
      * @param x The horizontal spawn location.
      * @param y The vertical spawn location.
+     * @return The spawned featurable.
      * @throws LionEngineException If invalid media or missing feature.
      */
-    void spawn(Media media, double x, double y);
+    Featurable spawn(Media media, double x, double y);
 }

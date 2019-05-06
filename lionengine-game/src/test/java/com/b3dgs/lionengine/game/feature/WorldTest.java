@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -33,6 +34,7 @@ import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
@@ -179,7 +181,10 @@ public final class WorldTest
     public void testSpawn()
     {
         final WorldGame world = new WorldMock(services);
-        world.spawn(Medias.create("object_features.xml"), 1.0, 2.0);
+        final Featurable featurable = world.spawn(Medias.create("object_features.xml"),
+                                                  Geom.createLocalizable(1.0, 2.0));
+
+        assertNotNull(featurable);
 
         final Handler handler = services.get(Handler.class);
 
