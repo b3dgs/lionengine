@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -107,6 +108,20 @@ public final class ServicesTest
         final Services services = new Services();
 
         assertThrows(() -> services.get(null), "Unexpected null argument !");
+    }
+
+    /**
+     * Test the service as optional.
+     */
+    @Test
+    public void testOptional()
+    {
+        final Services services = new Services();
+        final Camera camera = services.create(Camera.class);
+
+        assertEquals(services, services.getOptional(Services.class).get());
+        assertEquals(camera, services.getOptional(Camera.class).get());
+        assertFalse(services.getOptional(String.class).isPresent());
     }
 
     /**

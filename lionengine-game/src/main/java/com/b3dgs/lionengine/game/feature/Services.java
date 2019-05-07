@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -192,18 +193,68 @@ public class Services
      */
     public <S> S get(Class<S> service)
     {
-        Check.notNull(service);
-        for (final Object object : servicesSet)
+        final S instance = getService(service);
+        if (instance == null)
         {
-            if (service.isAssignableFrom(object.getClass()))
-            {
-                return service.cast(object);
-            }
+            throw new LionEngineException(ERROR_SERVICE_GET + service.getName());
         }
+        return instance;
+    }
+
+    /**
+     * Get a service from its class.
+     * <p>
+     * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
+     * type is returned.
+     * </p>
+     * 
+     * @param <S> The service type.
+     * @param service The service type.
+     * @return The service implementation found.
+     * @throws LionEngineException If <code>null</code> argument.
+     */
+    public <S> Optional<S> getOptional(Class<S> service)
+    {
+        return Optional.ofNullable(getService(service));
+    }
+
+    /**
+     * Get a service from its class.
+     * <p>
+     * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
+     * type is returned.
+     * </p>
+     * 
+     * <pre>
+     * final Services services = new Services();
+     * services.add(new Camera());
+     * ...
+     * final Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
+     * </pre>
+     * 
+     * @param <S> The service type.
+     * @param service The service type.
+     * @return The service implementation found.
+     */
+    private <S> S getService(Class<S> service)
+    {
+        Check.notNull(service);
+        S instance = null;
         if (service == getClass())
         {
-            return service.cast(this);
+            instance = service.cast(this);
         }
-        throw new LionEngineException(ERROR_SERVICE_GET + service.getName());
+        else
+        {
+            for (final Object object : servicesSet)
+            {
+                if (service.isAssignableFrom(object.getClass()))
+                {
+                    instance = service.cast(object);
+                    break;
+                }
+            }
+        }
+        return instance;
     }
 }
