@@ -124,8 +124,8 @@ public class HandlerPersister implements Persistable
         if (featurable.hasFeature(Transformable.class))
         {
             final Transformable transformable = featurable.getFeature(Transformable.class);
-            final int x = input.readInteger();
-            final int y = input.readInteger();
+            final double x = input.readInteger();
+            final double y = input.readInteger();
             if (map.isPresent())
             {
                 transformable.teleport(x * map.get().getTileWidth(), y * map.get().getTileHeight());
