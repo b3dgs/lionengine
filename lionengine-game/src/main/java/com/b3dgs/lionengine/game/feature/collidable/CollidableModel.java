@@ -295,6 +295,12 @@ public class CollidableModel extends FeatureModel
         return updater.getMaxHeight();
     }
 
+    @Override
+    public Origin getOrigin()
+    {
+        return origin;
+    }
+
     /*
      * Recyclable
      */

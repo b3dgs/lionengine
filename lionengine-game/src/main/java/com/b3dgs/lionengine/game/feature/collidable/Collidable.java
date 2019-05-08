@@ -164,4 +164,11 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
      * @return The max height.
      */
     int getMaxHeight();
+
+    /**
+     * Get the origin used.
+     * 
+     * @return The origin used.
+     */
+    Origin getOrigin();
 }

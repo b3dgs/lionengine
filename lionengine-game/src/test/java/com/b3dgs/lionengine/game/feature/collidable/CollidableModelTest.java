@@ -144,7 +144,12 @@ public final class CollidableModelTest
         assertTrue(collidable1.collide(collidable1).isEmpty());
         assertTrue(collidable2.collide(collidable1).isEmpty());
 
+        assertEquals(Origin.TOP_LEFT, collidable1.getOrigin());
+
         collidable1.setOrigin(Origin.MIDDLE);
+
+        assertEquals(Origin.MIDDLE, collidable1.getOrigin());
+
         collidable1.addCollision(Collision.AUTOMATIC);
 
         final Collision collision2 = new Collision("test2", 0, 1, 3, 3, false);
