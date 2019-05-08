@@ -133,6 +133,10 @@ final class MediaDefault implements Media
         {
             parent = path.substring(0, index);
         }
+        else if (path.lastIndexOf(File.separator) > -1)
+        {
+            parent = path.substring(0, path.lastIndexOf(File.separator));
+        }
         else
         {
             parent = NO_PARENT;

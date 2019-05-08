@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.io.File;
 import java.util.Optional;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -64,7 +65,15 @@ public class Setup extends Configurer
         {
             final String conf = config.getPath();
             final SurfaceConfig surfaceData = SurfaceConfig.imports(getRoot());
-            final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
+            final String prefix;
+            if (conf.lastIndexOf(Medias.getSeparator()) > -1)
+            {
+                prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
+            }
+            else
+            {
+                prefix = conf.substring(0, conf.lastIndexOf(File.separator) + 1);
+            }
             final Media surfaceMedia = Medias.create(prefix + surfaceData.getImage());
             if (surfaceData.getIcon().isPresent())
             {

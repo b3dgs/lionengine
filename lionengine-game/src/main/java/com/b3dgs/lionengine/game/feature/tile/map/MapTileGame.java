@@ -236,13 +236,11 @@ public class MapTileGame extends FeaturableModel implements MapTile
         tileWidth = config.getTileWidth();
         tileHeight = config.getTileHeight();
 
-        final String path = sheetsConfig.getPath();
-        final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
         sheets.clear();
         int sheetId = 0;
         for (final String sheet : config.getSheets())
         {
-            final Media media = Medias.create(folder, sheet);
+            final Media media = Medias.create(sheetsConfig.getParentPath(), sheet);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
             sprite.load();
             sprite.prepare();
