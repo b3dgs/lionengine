@@ -23,6 +23,7 @@ import java.util.Optional;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Persistable;
+import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
@@ -92,24 +93,21 @@ public class HandlerPersister implements Persistable
      */
     private void saveTransformable(Featurable featurable, FileWriting output) throws IOException
     {
-        if (featurable.hasFeature(Transformable.class))
+        final Transformable transformable = featurable.getFeature(Transformable.class);
+        final int x;
+        final int y;
+        if (map.isPresent())
         {
-            final Transformable transformable = featurable.getFeature(Transformable.class);
-            final int x;
-            final int y;
-            if (map.isPresent())
-            {
-                x = map.get().getInTileX(transformable);
-                y = map.get().getInTileY(transformable);
-            }
-            else
-            {
-                x = (int) Math.floor(transformable.getX());
-                y = (int) Math.floor(transformable.getY());
-            }
-            output.writeInteger(x);
-            output.writeInteger(y);
+            x = map.get().getInTileX(transformable);
+            y = map.get().getInTileY(transformable);
         }
+        else
+        {
+            x = (int) Math.floor(transformable.getX());
+            y = (int) Math.floor(transformable.getY());
+        }
+        output.writeInteger(x);
+        output.writeInteger(y);
     }
 
     /**
@@ -121,20 +119,21 @@ public class HandlerPersister implements Persistable
      */
     private void loadTransformable(Featurable featurable, FileReading input) throws IOException
     {
-        if (featurable.hasFeature(Transformable.class))
+        final Transformable transformable = featurable.getFeature(Transformable.class);
+        double x = input.readInteger();
+        double y = input.readInteger();
+
+        if (map.isPresent())
         {
-            final Transformable transformable = featurable.getFeature(Transformable.class);
-            final double x = input.readInteger();
-            final double y = input.readInteger();
-            if (map.isPresent())
+            x *= map.get().getTileWidth();
+            y *= map.get().getTileHeight();
+
+            if (featurable.hasFeature(Collidable.class))
             {
-                transformable.teleport(x * map.get().getTileWidth(), y * map.get().getTileHeight());
-            }
-            else
-            {
-                transformable.teleport(x, y);
+                x += x - featurable.getFeature(Collidable.class).getOrigin().getX(x, transformable.getWidth());
             }
         }
+        transformable.teleport(x, y);
     }
 
     /*
@@ -148,19 +147,28 @@ public class HandlerPersister implements Persistable
         for (final Featurable featurable : handler.values())
         {
             writing.writeString(featurable.getMedia().getPath());
-            saveTransformable(featurable, writing);
+            if (featurable.hasFeature(Transformable.class))
+            {
+                saveTransformable(featurable, writing);
+            }
         }
     }
 
     @Override
     public void load(FileReading reading) throws IOException
     {
+        handler.removeAll();
+        handler.update(1.0);
+
         final int count = reading.readInteger();
         for (int i = 0; i < count; i++)
         {
             final Media media = Medias.create(reading.readString());
             final Featurable featurable = create(media);
-            loadTransformable(featurable, reading);
+            if (featurable.hasFeature(Transformable.class))
+            {
+                loadTransformable(featurable, reading);
+            }
             handler.add(featurable);
         }
     }
