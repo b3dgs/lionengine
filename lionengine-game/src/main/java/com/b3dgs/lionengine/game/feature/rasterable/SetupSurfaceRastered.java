@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature.rasterable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,8 +28,6 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.drawable.Drawable;
-import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
@@ -45,9 +42,7 @@ public class SetupSurfaceRastered extends Setup
     /** Raster smooth attribute. */
     private static final String ATTRIBUTE_RASTER_SMOOTH = "smooth";
 
-    /** List of rasters animation. */
-    private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
-    /** List of rasters animation. */
+    /** Raster image. */
     private final RasterImage raster;
 
     /**
@@ -73,7 +68,6 @@ public class SetupSurfaceRastered extends Setup
         super(config);
 
         final FramesConfig framesData = FramesConfig.imports(getRoot());
-        final int hf = framesData.getHorizontal();
         final int vf = framesData.getVertical();
 
         if (hasNode(NODE_RASTER))
@@ -95,17 +89,9 @@ public class SetupSurfaceRastered extends Setup
 
             final int frameHeight = getSurface().getHeight() / vf;
             raster.loadRasters(frameHeight, false, UtilFile.removeExtension(config.getName()));
-
-            for (final ImageBuffer buffer : raster.getRasters())
-            {
-                final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
-                rastersAnim.add(sprite);
-            }
         }
         else
         {
-            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(getSurface(), hf, vf);
-            rastersAnim.add(sprite);
             raster = new RasterImage(getSurface(), config, 1, false);
         }
     }
@@ -115,9 +101,9 @@ public class SetupSurfaceRastered extends Setup
      * 
      * @return The rasters.
      */
-    public List<SpriteAnimated> getRasters()
+    public List<ImageBuffer> getRasters()
     {
-        return Collections.unmodifiableList(rastersAnim);
+        return Collections.unmodifiableList(raster.getRasters());
     }
 
     /**

@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Test {@link SetupSurfaceRastered}.
@@ -77,10 +77,10 @@ public final class SetupSurfaceRasteredTest
         assertEquals(raster, setup.getFile());
         assertFalse(setup.hasSmooth());
 
-        for (final SpriteAnimated sprite : setup.getRasters())
+        for (final ImageBuffer buffer : setup.getRasters())
         {
-            assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
-            assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
+            assertEquals(setup.getSurface().getWidth(), buffer.getWidth());
+            assertEquals(setup.getSurface().getHeight(), buffer.getHeight());
         }
 
         UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
@@ -97,10 +97,10 @@ public final class SetupSurfaceRasteredTest
 
         assertEquals(raster, setup.getFile());
         assertTrue(setup.hasSmooth());
-        for (final SpriteAnimated sprite : setup.getRasters())
+        for (final ImageBuffer buffer : setup.getRasters())
         {
-            assertEquals(setup.getSurface().getWidth(), sprite.getSurface().getWidth());
-            assertEquals(setup.getSurface().getHeight(), sprite.getSurface().getHeight());
+            assertEquals(setup.getSurface().getWidth(), buffer.getWidth());
+            assertEquals(setup.getSurface().getHeight(), buffer.getHeight());
         }
         UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
     }

@@ -17,31 +17,37 @@
  */
 package com.b3dgs.lionengine.game.feature.rasterable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
  * Default rasterable implementation.
  */
+@FeatureInterface
 public class RasterableModel extends FeatureModel implements Rasterable
 {
     /** List of rastered frames. */
-    private final List<SpriteAnimated> rastersAnim;
+    private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
     /** Smooth raster flag. */
     private final boolean smooth;
     /** Raster height. */
@@ -54,8 +60,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private Transformable transformable;
     /** Mirrorable reference. */
     private Mirrorable mirrorable;
-    /** Animator reference. */
-    private Animator animator;
+    /** Animatable reference. */
+    private Animatable animatable;
     /** Last raster. */
     private SpriteAnimated raster;
     /** Origin value. */
@@ -94,21 +100,28 @@ public class RasterableModel extends FeatureModel implements Rasterable
         viewer = services.get(Viewer.class);
 
         height = setup.getRasterHeight();
-        rastersAnim = setup.getRasters();
         smooth = setup.hasSmooth();
-        raster = rastersAnim.get(0);
 
-        if (rastersAnim.size() == 1)
+        final FramesConfig framesData = FramesConfig.imports(setup);
+        final int hf = framesData.getHorizontal();
+        final int vf = framesData.getVertical();
+
+        for (final ImageBuffer buffer : setup.getRasters())
         {
-            updater = extrp ->
-            {
-                // Nothing to do
-            };
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
+            rastersAnim.add(sprite);
+        }
+        if (rastersAnim.isEmpty())
+        {
+            rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
+            updater = UpdatableVoid.getInstance();
         }
         else
         {
             updater = extrp -> updateRasterAnim();
         }
+
+        raster = rastersAnim.get(0);
     }
 
     @Override
@@ -138,14 +151,15 @@ public class RasterableModel extends FeatureModel implements Rasterable
 
         transformable = provider.getFeature(Transformable.class);
         mirrorable = provider.getFeature(Mirrorable.class);
-        animator = provider.getFeature(Animatable.class);
+        animatable = provider.getFeature(Animatable.class);
     }
 
     @Override
     public void update(double extrp)
     {
         updater.update(extrp);
-        raster.setFrame(animator.getFrame());
+
+        raster.setFrame(animatable.getFrame());
         raster.setMirror(mirrorable.getMirror());
         raster.setOrigin(origin);
         raster.setFrameOffsets(frameOffsetX, frameOffsetY);
