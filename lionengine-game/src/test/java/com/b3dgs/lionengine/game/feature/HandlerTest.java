@@ -81,6 +81,19 @@ public final class HandlerTest
     }
 
     /**
+     * Add a featurable and remove it without update.
+     */
+    @Test
+    public void testAddRemoveWithoutUpdate()
+    {
+        final Handler handler = new Handler(new Services());
+        final Featurable featurable = new FeaturableModel();
+        handler.add(featurable);
+        handler.remove(featurable);
+        handler.update(1.0);
+    }
+
+    /**
      * Get not found featurable from id.
      */
     @Test

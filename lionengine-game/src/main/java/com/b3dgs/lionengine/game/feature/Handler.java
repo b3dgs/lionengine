@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -38,20 +40,20 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
 {
     /** Handler listeners. */
     private final Collection<HandlerListener> listeners = new HashSet<>();
-    /** List of components. */
+    /** List of components updater. */
     private final Collection<ComponentUpdater> updaters = new ArrayList<>();
-    /** List of components. */
+    /** List of components renderer. */
     private final Collection<ComponentRenderer> renderers = new ArrayList<>();
-    /** List of items. */
+    /** List of featurables. */
     private final HandlablesImpl featurables = new HandlablesImpl();
     /** To add list. */
-    private final Collection<Featurable> toAdd = new HashSet<>();
-    /** To delete list. */
-    private final Collection<Integer> toDelete = new HashSet<>();
+    private final Map<Integer, Featurable> toAdd = new HashMap<>();
+    /** To remove list. */
+    private final Collection<Integer> toRemove = new HashSet<>();
     /** Services reference. */
     private final Services services;
-    /** Will delete flag. */
-    private boolean willDelete;
+    /** Will remove flag. */
+    private boolean willRemove;
     /** Will add flag. */
     private boolean willAdd;
 
@@ -131,8 +133,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      */
     public final void add(Featurable featurable)
     {
-        featurable.getFeature(Identifiable.class).addListener(this);
-        toAdd.add(featurable);
+        final Identifiable identifiable = featurable.getFeature(Identifiable.class);
+        identifiable.addListener(this);
+        toAdd.put(identifiable.getId(), featurable);
         willAdd = true;
     }
 
@@ -145,8 +148,8 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      */
     public final void remove(FeatureProvider featurable)
     {
-        toDelete.add(featurable.getFeature(Identifiable.class).getId());
-        willDelete = true;
+        toRemove.add(featurable.getFeature(Identifiable.class).getId());
+        willRemove = true;
     }
 
     /**
@@ -156,8 +159,8 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      */
     public final void removeAll()
     {
-        toDelete.addAll(featurables.getIds());
-        willDelete = true;
+        toRemove.addAll(featurables.getIds());
+        willRemove = true;
     }
 
     /**
@@ -175,24 +178,21 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      */
     private void updateAdd()
     {
-        if (willAdd)
+        for (final Featurable featurable : toAdd.values())
         {
-            for (final Featurable featurable : toAdd)
+            featurables.add(featurable);
+            for (final HandlerListener listener : listeners)
             {
-                featurables.add(featurable);
-                for (final HandlerListener listener : listeners)
-                {
-                    listener.notifyHandlableAdded(featurable);
-                }
-                if (featurable.hasFeature(Transformable.class))
-                {
-                    final Transformable transformable = featurable.getFeature(Transformable.class);
-                    transformable.teleport(transformable.getX(), transformable.getY());
-                }
+                listener.notifyHandlableAdded(featurable);
             }
-            toAdd.clear();
-            willAdd = false;
+            if (featurable.hasFeature(Transformable.class))
+            {
+                final Transformable transformable = featurable.getFeature(Transformable.class);
+                transformable.teleport(transformable.getX(), transformable.getY());
+            }
         }
+        toAdd.clear();
+        willAdd = false;
     }
 
     /**
@@ -200,9 +200,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
      */
     private void updateRemove()
     {
-        if (willDelete)
+        for (final Integer id : toRemove)
         {
-            for (final Integer id : toDelete)
+            if (toAdd.remove(id) == null)
             {
                 final Featurable featurable = featurables.get(id);
                 for (final HandlerListener listener : listeners)
@@ -212,9 +212,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
                 featurable.getFeature(Identifiable.class).notifyDestroyed();
                 featurables.remove(featurable, id);
             }
-            toDelete.clear();
-            willDelete = false;
         }
+        toRemove.clear();
+        willRemove = false;
     }
 
     /*
@@ -246,8 +246,14 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     @Override
     public void update(double extrp)
     {
-        updateRemove();
-        updateAdd();
+        if (willRemove)
+        {
+            updateRemove();
+        }
+        if (willAdd)
+        {
+            updateAdd();
+        }
         for (final ComponentUpdater component : updaters)
         {
             component.update(extrp, featurables);
@@ -274,7 +280,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     @Override
     public final void notifyDestroyed(Integer id)
     {
-        toDelete.add(id);
-        willDelete = true;
+        toRemove.add(id);
+        willRemove = true;
     }
 }
