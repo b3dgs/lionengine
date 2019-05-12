@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine.game.feature;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
@@ -60,6 +62,8 @@ public class Features
 
     /** Features handled. */
     private final Map<Class<? extends Feature>, Feature> typeToFeature = new HashMap<>();
+    /** Unique features. */
+    private final Set<Feature> features = new HashSet<>();
 
     /**
      * Create features handler.
@@ -89,6 +93,7 @@ public class Features
             throw new LionEngineException(ERROR_FEATURE_EXISTS + feature.getClass() + WITH + old.getClass());
         }
         checkTypeDepth(feature, feature.getClass());
+        features.add(feature);
     }
 
     /**
@@ -128,7 +133,7 @@ public class Features
      */
     public Iterable<Feature> getFeatures()
     {
-        return typeToFeature.values();
+        return features;
     }
 
     /**

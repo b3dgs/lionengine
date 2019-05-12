@@ -56,14 +56,21 @@ public final class FeaturesTest
         assertEquals(identifiable, features.get(Identifiable.class));
         assertEquals(identifiable, features.get(IdentifiableModel.class));
 
+        int i = 0;
         for (final Feature current : features.getFeatures())
         {
             assertEquals(identifiable, current);
+            i++;
         }
+        assertEquals(1, i);
+
+        i = 0;
         for (final Class<? extends Feature> type : features.getFeaturesType())
         {
             assertTrue(Feature.class.isAssignableFrom(type));
+            i++;
         }
+        assertEquals(2, i);
     }
 
     /**
