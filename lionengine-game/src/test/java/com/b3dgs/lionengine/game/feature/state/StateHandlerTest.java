@@ -91,6 +91,7 @@ public final class StateHandlerTest
         assertFalse(StateBase.exited);
 
         handler.changeState(StateBase.class);
+        handler.postUpdate();
 
         assertTrue(handler.isState(StateBase.class));
         assertTrue(StateBase.entered);
@@ -145,7 +146,9 @@ public final class StateHandlerTest
         handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml")),
                                                                state -> state.getName()));
         handler.prepare(featurable);
-        assertThrows(() -> handler.changeState(StateIdle.class), "Animation not found: " + StateIdle.class.getName());
+        handler.changeState(StateIdle.class);
+
+        assertThrows(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
     }
 
     /**
@@ -158,9 +161,9 @@ public final class StateHandlerTest
         handler.changeState(StateClear.class);
         handler.update(1.0);
 
-        assertTrue(handler.isState(StateClear.class));
+        assertFalse(handler.isState(StateClear.class));
 
-        handler.update(1.0);
+        handler.postUpdate();
 
         assertTrue(handler.isState(StateClear.class));
     }
@@ -176,6 +179,7 @@ public final class StateHandlerTest
         handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml"))));
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
+        handler.postUpdate();
 
         assertEquals(new Animation(StateIdle.class.getSimpleName(), 1, 1, 0.125, false, false), StateIdle.animation);
         assertNull(StateWalk.animation);
@@ -214,8 +218,9 @@ public final class StateHandlerTest
     public void testUnknownState()
     {
         final StateHandler handler = new StateHandler();
+        handler.changeState(State.class);
 
-        assertCause(() -> handler.changeState(State.class), NoSuchMethodException.class);
+        assertCause(() -> handler.postUpdate(), NoSuchMethodException.class);
     }
 
     /**
@@ -270,11 +275,13 @@ public final class StateHandlerTest
         });
 
         handler.changeState(StateIdle.class);
+        handler.postUpdate();
 
         assertNull(old.get());
         assertEquals(StateIdle.class, next.get());
 
         handler.changeState(StateWalk.class);
+        handler.postUpdate();
 
         assertEquals(StateIdle.class, old.get());
         assertEquals(StateWalk.class, next.get());

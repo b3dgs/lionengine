@@ -64,6 +64,8 @@ public class StateHandler extends FeatureModel implements Updatable
     private Class<? extends State> last;
     /** Current state pointer (<code>null</code> if none). */
     private State current;
+    /** Next state pointer (<code>null</code> if no change). */
+    private Class<? extends State> next;
 
     /**
      * Create a handler model.
@@ -135,21 +137,7 @@ public class StateHandler extends FeatureModel implements Updatable
     {
         Check.notNull(next);
 
-        final State from = current;
-        if (current != null)
-        {
-            last = current.getClass();
-            current.exit();
-        }
-        if (!states.containsKey(next))
-        {
-            final State state = create(next);
-            states.put(next, state);
-        }
-        current = states.get(next);
-        current.enter();
-
-        listeners.forEach(l -> l.notifyStateTransition(from != null ? from.getClass() : null, next));
+        this.next = next;
     }
 
     /**
@@ -165,6 +153,51 @@ public class StateHandler extends FeatureModel implements Updatable
             return current.getClass().equals(state);
         }
         return false;
+    }
+
+    /**
+     * Post update checking next transition if has.
+     */
+    public void postUpdate()
+    {
+        if (current != null)
+        {
+            final Class<? extends State> next = current.checkTransitions(last);
+            if (next != null)
+            {
+                changeState(next);
+            }
+        }
+        if (next != null)
+        {
+            updateState();
+        }
+    }
+
+    /**
+     * Update to next state defined and notify changes.
+     */
+    private void updateState()
+    {
+        final State from = current;
+        if (current != null && next != current.getClass())
+        {
+            if (last != current.getClass())
+            {
+                last = current.getClass();
+            }
+            current.exit();
+        }
+        if (!states.containsKey(next))
+        {
+            final State state = create(next);
+            states.put(next, state);
+        }
+        current = states.get(next);
+        current.enter();
+
+        listeners.forEach(l -> l.notifyStateTransition(from != null ? from.getClass() : null, next));
+        next = null;
     }
 
     /**
@@ -199,21 +232,6 @@ public class StateHandler extends FeatureModel implements Updatable
         catch (final NoSuchMethodException exception)
         {
             throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Post update checking next transition if has.
-     */
-    public void postUpdate()
-    {
-        if (current != null)
-        {
-            final Class<? extends State> next = current.checkTransitions(last);
-            if (next != null)
-            {
-                changeState(next);
-            }
         }
     }
 
