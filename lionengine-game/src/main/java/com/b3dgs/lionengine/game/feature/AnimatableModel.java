@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.AnimatorModel;
 /**
  * Animatable model implementation.
  */
+@FeatureInterface
 public class AnimatableModel extends FeatureModel implements Animatable
 {
     /** Animator reference. */
