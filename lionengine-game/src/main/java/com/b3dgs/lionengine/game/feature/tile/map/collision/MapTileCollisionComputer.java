@@ -281,7 +281,7 @@ final class MapTileCollisionComputer
                 // CHECKSTYLE IGNORE LINE: NestedIfDepth
                 if (cx != null || cy != null)
                 {
-                    return new CollisionResult(cx, cy, tile);
+                    return new CollisionResult(cx, cy, tile, tileCollision.getCollisionFormulas());
                 }
             }
         }

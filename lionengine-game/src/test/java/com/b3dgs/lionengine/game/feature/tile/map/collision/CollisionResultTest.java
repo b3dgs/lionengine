@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -38,7 +40,7 @@ public final class CollisionResultTest
         final Double x = Double.valueOf(1.0);
         final Double y = Double.valueOf(2.0);
         final Tile tile = new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1);
-        final CollisionResult result = new CollisionResult(x, y, tile);
+        final CollisionResult result = new CollisionResult(x, y, tile, Collections.emptyList());
 
         assertEquals(x, result.getX());
         assertEquals(y, result.getY());
@@ -51,9 +53,10 @@ public final class CollisionResultTest
     @Test
     public void testToString()
     {
-        assertEquals("CollisionResult [x=1.0, y=2.0]",
+        assertEquals("CollisionResult [x=1.0, y=2.0, []]",
                      new CollisionResult(Double.valueOf(1.0),
                                          Double.valueOf(2.0),
-                                         new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1)).toString());
+                                         new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1),
+                                         Collections.emptyList()).toString());
     }
 }

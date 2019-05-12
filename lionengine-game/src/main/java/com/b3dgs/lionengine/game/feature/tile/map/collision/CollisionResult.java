@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 
@@ -34,6 +36,8 @@ public class CollisionResult
     private final Double y;
     /** Collided tile. */
     private final Tile tile;
+    /** Formulas used. */
+    private final Collection<CollisionFormula> formulas;
 
     /**
      * Create a collision result.
@@ -41,8 +45,9 @@ public class CollisionResult
      * @param x The horizontal collision location (<code>null</code> if none).
      * @param y The vertical collision location (<code>null</code> if none).
      * @param tile The collided tile.
+     * @param formulas The formulas used.
      */
-    public CollisionResult(Double x, Double y, Tile tile)
+    public CollisionResult(Double x, Double y, Tile tile, Collection<CollisionFormula> formulas)
     {
         super();
 
@@ -51,6 +56,7 @@ public class CollisionResult
         this.x = x;
         this.y = y;
         this.tile = tile;
+        this.formulas = formulas;
     }
 
     /**
@@ -83,6 +89,28 @@ public class CollisionResult
         return tile;
     }
 
+    /**
+     * Get the collision formulas.
+     * 
+     * @param name The formula collision name prefix.
+     * @return <code>true</code> if collision starts with prefix, <code>false</code> else.
+     */
+    public boolean startWith(String name)
+    {
+        for (final CollisionFormula formula : formulas)
+        {
+            if (formula.getName().startsWith(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+     * Object
+     */
+
     @Override
     public String toString()
     {
@@ -91,6 +119,8 @@ public class CollisionResult
                                             .append(x)
                                             .append(", y=")
                                             .append(y)
+                                            .append(", ")
+                                            .append(formulas)
                                             .append("]")
                                             .toString();
     }
