@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.framed;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -36,7 +39,7 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     private final CollidableFramedConfig config;
 
     /** Last collision found. */
-    private Collision last;
+    private Collection<Collision> last = Collections.emptyList();
 
     /**
      * Create a collidable framed model.
@@ -78,14 +81,14 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
 
         animatable.addListener(frame ->
         {
-            if (last != null)
+            for (final Collision collision : last)
             {
-                collidable.setEnabled(false, last);
+                collidable.setEnabled(false, collision);
             }
             last = config.getCollision(Integer.valueOf(frame));
-            if (last != null)
+            for (final Collision collision : last)
             {
-                collidable.setEnabled(true, last);
+                collidable.setEnabled(true, collision);
                 collidable.forceUpdate();
             }
         });

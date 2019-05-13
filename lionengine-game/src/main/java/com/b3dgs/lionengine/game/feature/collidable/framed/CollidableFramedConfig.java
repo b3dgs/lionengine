@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.framed;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,8 @@ public final class CollidableFramedConfig
 {
     /** Collision framed node name. */
     public static final String NODE_COLLISION_FRAMED = Constant.XML_PREFIX + "collisionFramed";
+    /** Collision attribute prefix. */
+    public static final String ATT_PREFIX = "prefix";
     /** Collision attribute number. */
     public static final String ATT_NUMBER = "number";
     /** Collision attribute offset x. */
@@ -70,16 +74,14 @@ public final class CollidableFramedConfig
     {
         Check.notNull(configurer);
 
-        final Map<Integer, Collision> collisions = new HashMap<>(0);
+        final Map<Integer, Collection<Collision>> collisions = new HashMap<>(0);
 
         for (final Xml node : configurer.getRoot().getChildren(AnimationConfig.ANIMATION))
         {
             final int start = node.readInteger(AnimationConfig.ANIMATION_START);
             for (final Xml framed : node.getChildren(NODE_COLLISION_FRAMED))
             {
-                final int number = framed.readInteger(ATT_NUMBER) - 1;
-                final Collision collision = createCollision(node.readString(AnimationConfig.ANIMATION_NAME), framed);
-                collisions.put(Integer.valueOf(start + number), collision);
+                importFrame(node, framed, start, collisions);
             }
         }
 
@@ -91,14 +93,14 @@ public final class CollidableFramedConfig
      * 
      * @param name The animation name.
      * @param node The collision node (must not be <code>null</code>).
+     * @param number The frame number.
      * @return The collision instance.
      * @throws LionEngineException If error when reading collision data.
      */
-    public static Collision createCollision(String name, XmlReader node)
+    public static Collision createCollision(String name, XmlReader node, int number)
     {
         Check.notNull(node);
 
-        final int number = node.readInteger(ATT_NUMBER);
         final int offsetX = node.readInteger(ATT_OFFSETX);
         final int offsetY = node.readInteger(ATT_OFFSETY);
         final int width = node.readInteger(ATT_WIDTH);
@@ -128,8 +130,56 @@ public final class CollidableFramedConfig
         node.writeBoolean(ATT_MIRROR, collision.hasMirror());
     }
 
+    /**
+     * Import frame collision data.
+     * 
+     * @param node The node root reference.
+     * @param framed The framed node reference.
+     * @param start The collision start number.
+     * @param collisions The imported collisions.
+     */
+    private static void importFrame(Xml node, Xml framed, int start, Map<Integer, Collection<Collision>> collisions)
+    {
+        final String name = getFrameName(node, framed);
+        if (framed.hasAttribute(ATT_NUMBER))
+        {
+            final int number = start + framed.readInteger(ATT_NUMBER);
+            final Collision collision = createCollision(name, framed, number - start);
+            final Integer key = Integer.valueOf(number - 1);
+            collisions.computeIfAbsent(key, k -> new ArrayList<>()).add(collision);
+        }
+        else
+        {
+            final int end = node.readInteger(AnimationConfig.ANIMATION_END);
+            for (int number = start; number <= end; number++)
+            {
+                final Collision collision = createCollision(name, framed, number - start + 1);
+                final Integer key = Integer.valueOf(number);
+                collisions.computeIfAbsent(key, k -> new ArrayList<>()).add(collision);
+            }
+        }
+    }
+
+    /**
+     * Get the frame name.
+     * 
+     * @param node The node root reference.
+     * @param framed The framed node reference.
+     * @return The frame name.
+     */
+    private static String getFrameName(Xml node, Xml framed)
+    {
+        final String anim = node.readString(AnimationConfig.ANIMATION_NAME);
+        final String prefix = framed.readString(Constant.EMPTY_STRING, ATT_PREFIX);
+        if (prefix.isEmpty())
+        {
+            return anim;
+        }
+        return prefix + Constant.PERCENT + anim;
+    }
+
     /** Collisions map. */
-    private final Map<Integer, Collision> collisions;
+    private final Map<Integer, Collection<Collision>> collisions;
 
     /**
      * Load collisions from configuration media.
@@ -137,7 +187,7 @@ public final class CollidableFramedConfig
      * @param collisions The collisions mapping (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableFramedConfig(Map<Integer, Collision> collisions)
+    public CollidableFramedConfig(Map<Integer, Collection<Collision>> collisions)
     {
         super();
 
@@ -150,11 +200,16 @@ public final class CollidableFramedConfig
      * Get a collision data from its frame number.
      * 
      * @param frame The collision frame.
-     * @return The collision reference, <code>null</code> if none.
+     * @return The collisions reference.
      */
-    public Collision getCollision(Integer frame)
+    public Collection<Collision> getCollision(Integer frame)
     {
-        return collisions.get(frame);
+        final Collection<Collision> found = collisions.get(frame);
+        if (found != null)
+        {
+            return found;
+        }
+        return Collections.emptyList();
     }
 
     /**
@@ -164,6 +219,11 @@ public final class CollidableFramedConfig
      */
     public Collection<Collision> getCollisions()
     {
-        return collisions.values();
+        final Collection<Collision> all = new ArrayList<>();
+        for (final Collection<Collision> current : collisions.values())
+        {
+            all.addAll(current);
+        }
+        return all;
     }
 }
