@@ -30,6 +30,8 @@ public class Collision extends NameableAbstract
 {
     /** Compute automatically collision by using the owner size. */
     public static final Collision AUTOMATIC = new Collision("automatic", 0, 0, 0, 0, false);
+    /** Min to string length. */
+    private static final int MIN_LENGTH = 64;
 
     /** Horizontal offset. */
     private final int offsetX;
@@ -112,5 +114,29 @@ public class Collision extends NameableAbstract
     public boolean hasMirror()
     {
         return mirror;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [name=")
+                                            .append(getName())
+                                            .append(", offsetX=")
+                                            .append(offsetX)
+                                            .append(", offsetY=")
+                                            .append(offsetY)
+                                            .append(", width=")
+                                            .append(width)
+                                            .append(", height=")
+                                            .append(height)
+                                            .append(", mirror=")
+                                            .append(mirror)
+                                            .append("]")
+                                            .toString();
     }
 }

@@ -95,4 +95,16 @@ public final class CollisionTest
         assertHashEquals(collision, new Collision("void", 1, 2, 3, 0, true));
         assertHashEquals(collision, new Collision("void", 1, 2, 3, 4, false));
     }
+
+    /**
+     * Test to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final Collision collision = new Collision("void", 0, 2, 3, 4, true);
+
+        assertEquals("Collision [name=void, offsetX=0, offsetY=2, width=3, height=4, mirror=true]",
+                     collision.toString());
+    }
 }
