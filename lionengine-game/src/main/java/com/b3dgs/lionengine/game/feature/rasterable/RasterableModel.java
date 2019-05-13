@@ -137,7 +137,10 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private void updateRasterAnim()
     {
         final int index = getRasterIndex(transformable.getY());
-        raster = getRasterAnim(index);
+        if (index >= 0)
+        {
+            raster = rastersAnim.get(index);
+        }
     }
 
     /*
