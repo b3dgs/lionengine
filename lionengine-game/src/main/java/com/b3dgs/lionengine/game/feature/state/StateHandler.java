@@ -162,10 +162,10 @@ public class StateHandler extends FeatureModel implements Updatable
     {
         if (current != null)
         {
-            final Class<? extends State> next = current.checkTransitions(last);
-            if (next != null)
+            final Class<? extends State> state = current.checkTransitions(last);
+            if (state != null)
             {
-                changeState(next);
+                next = state;
             }
         }
         if (next != null)
