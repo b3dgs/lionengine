@@ -287,6 +287,19 @@ public final class StateHandlerTest
         assertEquals(StateWalk.class, next.get());
     }
 
+    /**
+     * Test state with transition to itself.
+     */
+    @Test
+    public void testAddTransitionItself()
+    {
+        final StateMock mock = new StateMock();
+        assertThrows(() -> mock.addTransition(StateMock.class, () ->
+        {
+            return true;
+        }), StateAbstract.ERROR_ADD_ITSELF);
+    }
+
     private static class StateMock extends StateAbstract
     {
         private StateMock()

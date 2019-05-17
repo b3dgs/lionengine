@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Updatable;
 
 /**
@@ -48,6 +49,7 @@ public interface State extends Updatable
      * 
      * @param next The next state.
      * @param checker The transition checker.
+     * @throws LionEngineException If adding transition to itself.
      * @see StateLast
      */
     void addTransition(Class<? extends State> next, StateChecker checker);

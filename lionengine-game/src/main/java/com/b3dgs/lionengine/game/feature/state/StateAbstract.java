@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * State base implementation.
  * 
@@ -28,6 +30,9 @@ import java.util.Map.Entry;
  */
 public abstract class StateAbstract implements State
 {
+    /** Error add itself. */
+    static final String ERROR_ADD_ITSELF = "Add transition to itself not allowed !";
+
     /** Transitions list. */
     private final Map<Class<? extends State>, StateChecker> transitions = new HashMap<>();
 
@@ -54,6 +59,10 @@ public abstract class StateAbstract implements State
     @Override
     public final void addTransition(Class<? extends State> next, StateChecker checker)
     {
+        if (next == getClass())
+        {
+            throw new LionEngineException(ERROR_ADD_ITSELF);
+        }
         transitions.put(next, checker);
     }
 
