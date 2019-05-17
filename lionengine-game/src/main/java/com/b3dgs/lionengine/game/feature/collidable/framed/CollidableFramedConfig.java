@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -60,8 +61,12 @@ public final class CollidableFramedConfig
     public static final String ATT_MIRROR = "mirror";
     /** Error collision framed not found. */
     static final String ERROR_COLLISION_NOT_FOUND = "Collision framed not found: ";
+    /** Frame separator. */
+    private static final String FRAME_SEPARATOR = Constant.PERCENT;
     /** Default mirror. */
     private static final boolean DEFAULT_MIRROR = true;
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 64;
 
     /**
      * Create the collision data from node.
@@ -89,45 +94,29 @@ public final class CollidableFramedConfig
     }
 
     /**
-     * Create an collision from its node.
-     * 
-     * @param name The animation name.
-     * @param node The collision node (must not be <code>null</code>).
-     * @param number The frame number.
-     * @return The collision instance.
-     * @throws LionEngineException If error when reading collision data.
-     */
-    public static Collision createCollision(String name, XmlReader node, int number)
-    {
-        Check.notNull(node);
-
-        final int offsetX = node.readInteger(ATT_OFFSETX);
-        final int offsetY = node.readInteger(ATT_OFFSETY);
-        final int width = node.readInteger(ATT_WIDTH);
-        final int height = node.readInteger(ATT_HEIGHT);
-        final boolean mirror = node.readBoolean(DEFAULT_MIRROR, ATT_MIRROR);
-
-        return new Collision(name + Constant.PERCENT + number, offsetX, offsetY, width, height, mirror);
-    }
-
-    /**
      * Create an XML node from a collision.
      * 
      * @param root The node root (must not be <code>null</code>).
-     * @param collision The collision reference (must not be <code>null</code>).
+     * @param collisions The collisions reference (must not be <code>null</code>).
      */
-    public static void exports(Xml root, Collision collision)
+    public static void exports(Xml root, Map<Integer, Collection<Collision>> collisions)
     {
         Check.notNull(root);
-        Check.notNull(collision);
+        Check.notNull(collisions);
 
-        final Xml node = root.createChild(NODE_COLLISION_FRAMED);
-        node.writeString(ATT_NUMBER, collision.getName());
-        node.writeInteger(ATT_OFFSETX, collision.getOffsetX());
-        node.writeInteger(ATT_OFFSETY, collision.getOffsetY());
-        node.writeInteger(ATT_WIDTH, collision.getWidth());
-        node.writeInteger(ATT_HEIGHT, collision.getHeight());
-        node.writeBoolean(ATT_MIRROR, collision.hasMirror());
+        for (final Entry<Integer, Collection<Collision>> entry : collisions.entrySet())
+        {
+            for (final Collision collision : entry.getValue())
+            {
+                final Xml node = root.createChild(NODE_COLLISION_FRAMED);
+                node.writeInteger(ATT_NUMBER, entry.getKey().intValue());
+                node.writeInteger(ATT_OFFSETX, collision.getOffsetX());
+                node.writeInteger(ATT_OFFSETY, collision.getOffsetY());
+                node.writeInteger(ATT_WIDTH, collision.getWidth());
+                node.writeInteger(ATT_HEIGHT, collision.getHeight());
+                node.writeBoolean(ATT_MIRROR, collision.hasMirror());
+            }
+        }
     }
 
     /**
@@ -175,7 +164,29 @@ public final class CollidableFramedConfig
         {
             return anim;
         }
-        return prefix + Constant.PERCENT + anim;
+        return prefix + FRAME_SEPARATOR + anim;
+    }
+
+    /**
+     * Create an collision from its node.
+     * 
+     * @param name The animation name.
+     * @param node The collision node (must not be <code>null</code>).
+     * @param number The frame number.
+     * @return The collision instance.
+     * @throws LionEngineException If error when reading collision data.
+     */
+    private static Collision createCollision(String name, XmlReader node, int number)
+    {
+        Check.notNull(node);
+
+        final int offsetX = node.readInteger(ATT_OFFSETX);
+        final int offsetY = node.readInteger(ATT_OFFSETY);
+        final int width = node.readInteger(ATT_WIDTH);
+        final int height = node.readInteger(ATT_HEIGHT);
+        final boolean mirror = node.readBoolean(DEFAULT_MIRROR, ATT_MIRROR);
+
+        return new Collision(name + FRAME_SEPARATOR + number, offsetX, offsetY, width, height, mirror);
     }
 
     /** Collisions map. */
@@ -225,5 +236,39 @@ public final class CollidableFramedConfig
             all.addAll(current);
         }
         return all;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + collisions.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final CollidableFramedConfig other = (CollidableFramedConfig) object;
+        return collisions.equals(other.collisions);
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName()).append(collisions).toString();
     }
 }
