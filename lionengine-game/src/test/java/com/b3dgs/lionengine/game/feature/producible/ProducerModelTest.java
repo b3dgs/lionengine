@@ -147,7 +147,7 @@ public final class ProducerModelTest
     {
         final ProducerModel producer = new ProducerModel(services);
         producer.prepare(new FeaturableModel());
-
+        producer.recycle();
         producer.setStepsPerSecond(25.0);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
@@ -155,7 +155,6 @@ public final class ProducerModelTest
         final AtomicReference<Featurable> done = new AtomicReference<>();
         final AtomicReference<Featurable> cant = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
-
         producer.update(1.0);
 
         assertNull(producer.getProducingElement());
@@ -277,6 +276,7 @@ public final class ProducerModelTest
         final ProducerObjectSelf object = new ProducerObjectSelf();
         final ProducerModel producer = new ProducerModel(services);
         producer.prepare(object);
+        producer.recycle();
         producer.setStepsPerSecond(50.0);
         producer.addListener(object);
 
@@ -491,6 +491,7 @@ public final class ProducerModelTest
         producer.prepare(object);
         producer.setStepsPerSecond(50.0);
         producer.checkListener(object);
+        producer.recycle();
 
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);

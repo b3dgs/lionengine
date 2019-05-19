@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,11 @@ public final class MirrorableModelTest
     @Test
     public void testMirror()
     {
-        final Mirrorable mirrorable = new MirrorableModel();
+        final MirrorableModel mirrorable = new MirrorableModel();
+
+        assertNull(mirrorable.getMirror());
+
+        mirrorable.recycle();
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
 

@@ -54,9 +54,9 @@ final class UtilAttackable
      * @param services The services.
      * @return The attacker.
      */
-    public static Attacker createAttacker(Featurable object, Services services)
+    public static AttackerModel createAttacker(Featurable object, Services services)
     {
-        final Attacker attacker = new AttackerModel();
+        final AttackerModel attacker = new AttackerModel();
         attacker.setAttackDamages(1, 2);
         attacker.setAttackDistance(1, 2);
         attacker.setAttackFrame(1);

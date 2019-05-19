@@ -74,7 +74,7 @@ public final class AttackerModelTest
     private final AtomicBoolean canAttack = new AtomicBoolean();
     private final ObjectAttacker object = new ObjectAttacker(canAttack);
     private final Transformable target = new TransformableModel();
-    private Attacker attacker;
+    private AttackerModel attacker;
 
     /**
      * Prepare test.
@@ -290,7 +290,7 @@ public final class AttackerModelTest
         final AtomicBoolean anim = new AtomicBoolean();
         final AtomicReference<Transformable> ended = new AtomicReference<>();
         attacker.addListener(UtilAttackable.createListener(preparing, reaching, started, ended, anim));
-
+        attacker.recycle();
         attacker.update(1.0);
         attacker.getFeature(Transformable.class).teleport(0, 0);
         target.teleport(5, 5);
