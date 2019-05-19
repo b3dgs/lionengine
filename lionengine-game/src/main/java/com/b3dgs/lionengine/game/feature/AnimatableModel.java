@@ -109,4 +109,10 @@ public class AnimatableModel extends FeatureModel implements Animatable
     {
         return animator.getAnimState();
     }
+
+    @Override
+    public boolean is(AnimState state)
+    {
+        return animator.getAnimState() == state;
+    }
 }

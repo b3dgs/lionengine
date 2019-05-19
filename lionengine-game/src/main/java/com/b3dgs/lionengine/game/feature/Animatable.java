@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.game.Feature;
 
@@ -26,5 +27,11 @@ import com.b3dgs.lionengine.game.Feature;
 @FeatureInterface
 public interface Animatable extends Feature, Animator
 {
-    // Wrapper
+    /**
+     * Check if is current animation state.
+     * 
+     * @param state The expected state to be.
+     * @return <code>true</code> if is state, <code>false</code> else.
+     */
+    boolean is(AnimState state);
 }

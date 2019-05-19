@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -44,6 +45,7 @@ public final class AnimatableModelTest
      */
     private static void testAnimatorState(Animatable animatable, int first, int expectedFrame, AnimState expectedState)
     {
+        assertTrue(animatable.is(expectedState));
         assertEquals(expectedState, animatable.getAnimState());
         assertEquals(expectedFrame, animatable.getFrame());
         assertEquals(expectedFrame - first + 1, animatable.getFrameAnim());
