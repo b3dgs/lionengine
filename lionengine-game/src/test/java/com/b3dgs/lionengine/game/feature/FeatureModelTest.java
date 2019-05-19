@@ -60,12 +60,12 @@ public final class FeatureModelTest
 
         for (final Class<? extends Feature> type : feature.getFeaturesType())
         {
-            assertTrue(type == Recycler.class
-                       || type == Identifiable.class
-                       || type == IdentifiableModel.class
-                       || type == Transformable.class
-                       || type == TransformableModel.class,
-                       type.getName());
+            assertTrue(Recycler.class.isAssignableFrom(type)
+                       || Identifiable.class.isAssignableFrom(type)
+                       || IdentifiableModel.class.isAssignableFrom(type)
+                       || Transformable.class.isAssignableFrom(type)
+                       || TransformableModel.class.isAssignableFrom(type),
+                       type.toString());
         }
         assertTrue(feature.hasFeature(Transformable.class));
     }
