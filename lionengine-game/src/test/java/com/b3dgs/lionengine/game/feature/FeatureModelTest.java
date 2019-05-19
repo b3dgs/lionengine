@@ -60,7 +60,8 @@ public final class FeatureModelTest
 
         for (final Class<? extends Feature> type : feature.getFeaturesType())
         {
-            assertTrue(type == Identifiable.class
+            assertTrue(type == Recycler.class
+                       || type == Identifiable.class
                        || type == IdentifiableModel.class
                        || type == Transformable.class
                        || type == TransformableModel.class,

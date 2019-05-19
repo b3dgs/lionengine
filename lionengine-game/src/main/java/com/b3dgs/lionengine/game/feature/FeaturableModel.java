@@ -79,6 +79,7 @@ public class FeaturableModel implements Featurable
         super();
 
         media = null;
+        addFeature(new Recycler());
         addFeature(new IdentifiableModel());
     }
 
@@ -93,6 +94,7 @@ public class FeaturableModel implements Featurable
         super();
 
         media = setup.getMedia();
+        addFeature(new Recycler());
         addFeature(new IdentifiableModel());
     }
 
@@ -173,6 +175,10 @@ public class FeaturableModel implements Featurable
     public final void addFeature(Feature feature)
     {
         fillServices(feature);
+        if (feature instanceof Recyclable)
+        {
+            ((Recyclable) feature).recycle();
+        }
         feature.prepare(this);
         features.add(feature);
     }

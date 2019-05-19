@@ -124,8 +124,6 @@ public class CollidableModel extends FeatureModel
 
         group = CollidableConfig.imports(setup);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
-
-        recycle();
     }
 
     /*

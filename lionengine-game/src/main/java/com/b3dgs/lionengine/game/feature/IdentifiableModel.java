@@ -128,11 +128,8 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     public void notifyDestroyed()
     {
         destroyed = true;
-        if (!hasFeature(Recycler.class))
-        {
-            IDS.remove(id);
-            RECYCLE.add(id);
-        }
+        IDS.remove(id);
+        RECYCLE.add(id);
     }
 
     @Override

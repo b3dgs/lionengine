@@ -80,14 +80,15 @@ public final class FeaturableModelTest
         for (final Feature current : featurable.getFeatures())
         {
             assertTrue(feature.getClass().equals(current.getClass())
-                       || Identifiable.class.isAssignableFrom(current.getClass()),
+                       || Identifiable.class.isAssignableFrom(current.getClass())
+                       || Recycler.class.isAssignableFrom(current.getClass()),
                        current.getClass().getName());
         }
         for (final Class<? extends Feature> type : featurable.getFeaturesType())
         {
             assertTrue(MyFeatureInterface.class.isAssignableFrom(type)
                        || Identifiable.class.isAssignableFrom(type)
-                       || Recyclable.class.isAssignableFrom(type),
+                       || Recycler.class.isAssignableFrom(type),
                        type.getName());
         }
     }
@@ -108,14 +109,15 @@ public final class FeaturableModelTest
         for (final Feature current : featurable.getFeatures())
         {
             assertTrue(feature.getClass().equals(current.getClass())
-                       || Identifiable.class.isAssignableFrom(current.getClass()),
+                       || Identifiable.class.isAssignableFrom(current.getClass())
+                       || Recycler.class.isAssignableFrom(current.getClass()),
                        current.getClass().getName());
         }
         for (final Class<? extends Feature> type : featurable.getFeaturesType())
         {
             assertTrue(MyFeatureNotCompatible.class.isAssignableFrom(type)
                        || Identifiable.class.isAssignableFrom(type)
-                       || Recyclable.class.isAssignableFrom(type),
+                       || Recycler.class.isAssignableFrom(type),
                        type.getName());
         }
     }
@@ -214,7 +216,9 @@ public final class FeaturableModelTest
 
         for (final Feature next : featurable.getFeatures())
         {
-            assertTrue(MyFeature.class.equals(next.getClass()) || Identifiable.class.isAssignableFrom(next.getClass()),
+            assertTrue(MyFeature.class.equals(next.getClass())
+                       || Identifiable.class.isAssignableFrom(next.getClass())
+                       || Recycler.class.isAssignableFrom(next.getClass()),
                        next.getClass().getName());
         }
 

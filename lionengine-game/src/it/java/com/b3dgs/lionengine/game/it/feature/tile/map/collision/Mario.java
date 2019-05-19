@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
-import com.b3dgs.lionengine.game.feature.Recycler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -48,7 +47,6 @@ class Mario extends FeaturableModel
     {
         super();
 
-        addFeature(new Recycler());
         addFeature(new TransformableModel());
         addFeature(new BodyModel());
         addFeature(new LayerableModel(1));

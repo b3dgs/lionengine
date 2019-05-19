@@ -257,10 +257,6 @@ public class Factory implements HandlerListener
                 }
             }
         }
-        if (featurable.hasFeature(Recycler.class))
-        {
-            featurable.getFeature(Recycler.class).recycle();
-        }
         return featurable;
     }
 

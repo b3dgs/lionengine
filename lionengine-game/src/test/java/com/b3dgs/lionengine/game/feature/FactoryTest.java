@@ -174,7 +174,6 @@ public final class FactoryTest
     public void testRecycle()
     {
         final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
-        featurable.addFeature(new Recycler());
 
         assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
 
@@ -187,27 +186,7 @@ public final class FactoryTest
 
         factory.notifyHandlableRemoved(featurable2);
 
-        assertNotEquals(featurable2, factory.create(media));
-
-        featurable2.addFeature(new Recycler());
-        factory.notifyHandlableRemoved(featurable2);
-
         assertEquals(featurable2, factory.create(media));
-    }
-
-    /**
-     * Test the object recycling without recyclable.
-     */
-    @Test
-    public void testRecycleWithoutRecyclable()
-    {
-        final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
-
-        assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
-
-        factory.notifyHandlableRemoved(featurable);
-
-        assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
     }
 
     /**

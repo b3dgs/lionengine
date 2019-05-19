@@ -79,8 +79,8 @@ public final class IdentifiableModelTest
 
         final Featurable featurable = new FeaturableModel();
         final IdentifiableModel identifiable = featurable.getFeature(IdentifiableModel.class);
-        featurable.addFeature(new Recycler());
         identifiable.prepare(featurable);
+
         assertEquals(Integer.valueOf(0), identifiable.getId());
 
         identifiable.destroy();

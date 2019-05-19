@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
-import com.b3dgs.lionengine.game.feature.Recycler;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -91,7 +90,6 @@ public class SceneRasterable extends Sequence
             surface.update(extrp);
         }));
         featurable.addFeature(new DisplayableModel(g -> rasterable.render(g)));
-        featurable.addFeatureAndGet(new Recycler()).recycle();
 
         transformable.setLocationX(120 + offsetX);
         handler.add(featurable);
