@@ -154,8 +154,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());
-
-        recycle();
     }
 
     /**
@@ -865,7 +863,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         speedX = 1.0;
         speedY = 1.0;

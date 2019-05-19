@@ -81,8 +81,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     public AttackerModel()
     {
         super();
-
-        recycle();
     }
 
     /**
@@ -322,7 +320,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         attacking = false;
         attacked = false;

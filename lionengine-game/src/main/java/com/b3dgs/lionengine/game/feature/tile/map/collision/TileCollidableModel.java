@@ -84,8 +84,6 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
 
         map = services.get(MapTile.class).getFeature(MapTileCollision.class);
         categories = CollisionCategoryConfig.imports(setup, map);
-
-        recycle();
     }
 
     /**
@@ -210,7 +208,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         enabled = true;
         for (final Axis axis : Axis.values())

@@ -99,8 +99,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         handler = services.get(Handler.class);
         rate = services.get(SourceResolutionProvider.class)::getRate;
         actions = Collections.emptyList();
-
-        recycle();
     }
 
     /**
@@ -417,7 +415,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         state = ProducerState.NONE;
         stepsPerSecond = 1.0;

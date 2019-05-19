@@ -60,8 +60,6 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
         super();
 
         map = services.get(MapTile.class);
-
-        recycle();
     }
 
     /*
@@ -69,7 +67,7 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         orientation = Orientation.NORTH;
     }

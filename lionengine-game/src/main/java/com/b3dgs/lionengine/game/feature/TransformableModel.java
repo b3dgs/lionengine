@@ -49,8 +49,6 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     public TransformableModel()
     {
         super();
-
-        recycle();
     }
 
     /**
@@ -257,7 +255,7 @@ public class TransformableModel extends FeatureModel implements Transformable, R
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         mover.teleport(0.0, 0.0);
     }

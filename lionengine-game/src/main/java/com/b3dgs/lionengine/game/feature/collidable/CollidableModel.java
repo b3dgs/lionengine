@@ -92,8 +92,6 @@ public class CollidableModel extends FeatureModel
         super();
 
         viewer = services.get(Viewer.class);
-
-        recycle();
     }
 
     /**
@@ -306,7 +304,7 @@ public class CollidableModel extends FeatureModel
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         updater.setEnabled(true);
     }

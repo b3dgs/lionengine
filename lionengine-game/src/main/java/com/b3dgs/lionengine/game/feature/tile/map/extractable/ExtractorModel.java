@@ -79,8 +79,6 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         super();
 
         rate = services.get(SourceResolutionProvider.class)::getRate;
-
-        recycle();
     }
 
     /**
@@ -358,7 +356,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         state = ExtractorState.NONE;
         progress = 0.0;

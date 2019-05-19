@@ -37,8 +37,6 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     public MirrorableModel()
     {
         super();
-
-        recycle();
     }
 
     /*
@@ -73,7 +71,7 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         mirror = Mirror.NONE;
         nextState = Mirror.NONE;

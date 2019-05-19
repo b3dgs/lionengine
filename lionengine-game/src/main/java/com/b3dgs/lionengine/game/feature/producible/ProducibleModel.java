@@ -69,8 +69,6 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
         steps = configProducible.getSteps();
         width = configProducible.getWidth();
         height = configProducible.getHeight();
-
-        recycle();
     }
 
     /*
@@ -159,7 +157,7 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
      */
 
     @Override
-    public final void recycle()
+    public void recycle()
     {
         x = 0.0;
         y = 0.0;
