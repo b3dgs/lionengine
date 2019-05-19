@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
+import com.b3dgs.lionengine.game.feature.Recycler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -46,10 +48,11 @@ class Mario extends FeaturableModel
     {
         super();
 
+        addFeature(new Recycler());
         addFeature(new TransformableModel());
         addFeature(new BodyModel());
         addFeature(new LayerableModel(1));
-        addFeature(new CollidableModel(services, setup));
+        addFeatureAndGet(new CollidableModel(services, setup)).setOrigin(Origin.CENTER_BOTTOM);
         addFeature(new TileCollidableModel(services, setup));
         addFeature(new MarioUpdater(services));
         addFeature(new MarioRenderer(services, setup));

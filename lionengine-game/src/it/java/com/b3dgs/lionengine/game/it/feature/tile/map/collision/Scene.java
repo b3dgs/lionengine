@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.feature.ComponentRefreshable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -106,6 +107,7 @@ class Scene extends Sequence
 
         final Factory factory = services.create(Factory.class);
         final Mario mario = factory.create(Mario.MEDIA);
+        mario.getFeature(Transformable.class).teleport(400, 31);
         handler.add(mario);
 
         final CameraTracker tracker = new CameraTracker(services);

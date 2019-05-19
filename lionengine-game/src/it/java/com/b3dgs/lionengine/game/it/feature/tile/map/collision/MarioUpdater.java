@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.it.feature.tile.map.collision;
 
-import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
@@ -62,10 +61,6 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     public void prepare(FeatureProvider provider)
     {
         super.prepare(provider);
-
-        transformable.teleport(400, 31);
-
-        collidable.setOrigin(Origin.CENTER_BOTTOM);
 
         movement.setVelocity(1.0);
 
