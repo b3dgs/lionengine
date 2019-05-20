@@ -42,4 +42,12 @@ public interface Mirrorable extends Feature, Updatable
      * @return The current mirror state.
      */
     Mirror getMirror();
+
+    /**
+     * Check if is current mirror state.
+     * 
+     * @param mirror The expected state to be.
+     * @return <code>true</code> if is mirror, <code>false</code> else.
+     */
+    boolean is(Mirror mirror);
 }

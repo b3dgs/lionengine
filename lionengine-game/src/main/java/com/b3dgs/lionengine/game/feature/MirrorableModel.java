@@ -66,6 +66,12 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
         return mirror;
     }
 
+    @Override
+    public boolean is(Mirror mirror)
+    {
+        return this.mirror == mirror;
+    }
+
     /*
      * Recyclable
      */
