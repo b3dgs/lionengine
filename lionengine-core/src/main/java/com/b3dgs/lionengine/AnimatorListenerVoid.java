@@ -18,28 +18,47 @@
 package com.b3dgs.lionengine;
 
 /**
- * Listen to {@link Animator} events.
+ * Void {@link AnimatorListener}.
  */
-public interface AnimatorListener
+public final class AnimatorListenerVoid
 {
-    /**
-     * Notify the new animation to be played.
-     * 
-     * @param anim The animation to be played.
-     */
-    void notifyAnimPlayed(Animation anim);
+    /** Void instance. */
+    private static final AnimatorListener INSTANCE = new AnimatorListener()
+    {
+        @Override
+        public void notifyAnimState(AnimState state)
+        {
+            // Nothing to do
+        }
+
+        @Override
+        public void notifyAnimPlayed(Animation anim)
+        {
+            // Nothing to do
+        }
+
+        @Override
+        public void notifyAnimFrame(int frame)
+        {
+            // Nothing to do
+        }
+    };
 
     /**
-     * Notify the new animation state.
+     * Get instance.
      * 
-     * @param state The animation state.
+     * @return The instance.
      */
-    void notifyAnimState(AnimState state);
+    public static AnimatorListener getInstance()
+    {
+        return INSTANCE;
+    }
 
     /**
-     * Notify the new animation frame.
-     * 
-     * @param frame The animation frame.
+     * Private.
      */
-    void notifyAnimFrame(int frame);
+    private AnimatorListenerVoid()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }

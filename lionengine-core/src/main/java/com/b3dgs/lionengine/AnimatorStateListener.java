@@ -18,28 +18,19 @@
 package com.b3dgs.lionengine;
 
 /**
- * Listen to {@link Animator} events.
+ * Listen to {@link Animator} state update.
  */
-public interface AnimatorListener
+public interface AnimatorStateListener extends AnimatorListener
 {
-    /**
-     * Notify the new animation to be played.
-     * 
-     * @param anim The animation to be played.
-     */
-    void notifyAnimPlayed(Animation anim);
+    @Override
+    default void notifyAnimPlayed(Animation anim)
+    {
+        // Nothing by default
+    }
 
-    /**
-     * Notify the new animation state.
-     * 
-     * @param state The animation state.
-     */
-    void notifyAnimState(AnimState state);
-
-    /**
-     * Notify the new animation frame.
-     * 
-     * @param frame The animation frame.
-     */
-    void notifyAnimFrame(int frame);
+    @Override
+    default void notifyAnimFrame(int frame)
+    {
+        // Nothing by default
+    }
 }
