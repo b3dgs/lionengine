@@ -73,7 +73,7 @@ public class Entity extends FeaturableModel
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
-        collidable.setGroup(2);
+        collidable.setGroup(Integer.valueOf(2));
         collidable.addCollision(Collision.AUTOMATIC);
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);

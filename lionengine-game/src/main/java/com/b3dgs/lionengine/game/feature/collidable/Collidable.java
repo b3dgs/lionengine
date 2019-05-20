@@ -58,14 +58,14 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
      * 
      * @param group The group to accept on {@link #collide(Collidable)}.
      */
-    void addAccept(int group);
+    void addAccept(Integer group);
 
     /**
      * Remove a group from accept list.
      * 
      * @param group The group to remove on {@link #collide(Collidable)}.
      */
-    void removeAccept(int group);
+    void removeAccept(Integer group);
 
     /**
      * Force collision update.
@@ -85,7 +85,7 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
      * 
      * @param group The associated group.
      */
-    void setGroup(int group);
+    void setGroup(Integer group);
 
     /**
      * Set the origin to use.

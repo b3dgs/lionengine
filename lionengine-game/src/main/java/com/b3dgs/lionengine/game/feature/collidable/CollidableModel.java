@@ -174,17 +174,15 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public void addAccept(int group)
+    public void addAccept(Integer group)
     {
-        final Integer id = Integer.valueOf(group);
-        accepted.add(id);
+        accepted.add(group);
     }
 
     @Override
-    public void removeAccept(int group)
+    public void removeAccept(Integer group)
     {
-        final Integer id = Integer.valueOf(group);
-        accepted.remove(id);
+        accepted.remove(group);
     }
 
     @Override
@@ -209,9 +207,9 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public void setGroup(int group)
+    public void setGroup(Integer group)
     {
-        this.group = Integer.valueOf(group);
+        this.group = group;
     }
 
     @Override

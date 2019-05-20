@@ -127,7 +127,7 @@ public final class CollidableConfigTest
         services.add(new ViewerMock());
 
         final Collidable collidable = new CollidableModel(services, new Setup(media));
-        collidable.setGroup(1);
+        collidable.setGroup(Integer.valueOf(1));
         CollidableConfig.exports(root, collidable);
 
         root.save(media);

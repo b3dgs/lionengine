@@ -118,11 +118,11 @@ public final class CollidableModelTest
     public void prepare()
     {
         transformable1.setSize(3, 3);
-        collidable1.setGroup(0);
-        collidable2.setGroup(1);
+        collidable1.setGroup(Integer.valueOf(0));
+        collidable2.setGroup(Integer.valueOf(1));
 
-        collidable1.addAccept(collidable2.getGroup().intValue());
-        collidable2.addAccept(collidable1.getGroup().intValue());
+        collidable1.addAccept(collidable2.getGroup());
+        collidable2.addAccept(collidable1.getGroup());
     }
 
     /**
@@ -246,9 +246,9 @@ public final class CollidableModelTest
         collidable1.getAccepted().clear();
         assertTrue(collidable1.getAccepted().isEmpty());
 
-        collidable1.addAccept(0);
+        collidable1.addAccept(Integer.valueOf(0));
 
-        assertEquals(0, collidable1.getAccepted().iterator().next().intValue());
+        assertEquals(Integer.valueOf(0), collidable1.getAccepted().iterator().next());
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable1.addCollision(collision);
@@ -278,11 +278,11 @@ public final class CollidableModelTest
 
         assertTrue(collidable1.collide(collidable1).isEmpty());
 
-        collidable1.addAccept(collidable1.getGroup().intValue());
+        collidable1.addAccept(collidable1.getGroup());
 
         assertFalse(collidable1.collide(collidable1).isEmpty());
 
-        collidable1.removeAccept(collidable1.getGroup().intValue());
+        collidable1.removeAccept(collidable1.getGroup());
 
         assertTrue(collidable1.collide(collidable1).isEmpty());
     }
@@ -316,11 +316,11 @@ public final class CollidableModelTest
     @Test
     public void testGroup()
     {
-        assertEquals(0, collidable1.getGroup().intValue());
+        assertEquals(Integer.valueOf(0), collidable1.getGroup());
 
-        collidable1.setGroup(1);
+        collidable1.setGroup(Integer.valueOf(1));
 
-        assertEquals(1, collidable1.getGroup().intValue());
+        assertEquals(Integer.valueOf(1), collidable1.getGroup());
     }
 
     /**

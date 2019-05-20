@@ -147,7 +147,7 @@ class Scene extends Sequence
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(MouseAwt.LEFT);
-        selector.getFeature(Collidable.class).addAccept(2);
+        selector.getFeature(Collidable.class).addAccept(Integer.valueOf(2));
 
         final Featurable peon = factory.create(Medias.create("Peon.xml"));
         peon.getFeature(Pathfindable.class).setLocation(20, 10);

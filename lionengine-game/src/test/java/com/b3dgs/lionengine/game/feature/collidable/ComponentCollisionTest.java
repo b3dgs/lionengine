@@ -97,8 +97,8 @@ public final class ComponentCollisionTest
         featurable1 = new ObjectSelf();
         transformable1 = featurable1.addFeatureAndGet(new TransformableModel(setup));
         collidable1 = featurable1.addFeatureAndGet(new CollidableModel(services, setup));
-        collidable1.setGroup(1);
-        collidable1.addAccept(0);
+        collidable1.setGroup(Integer.valueOf(1));
+        collidable1.addAccept(Integer.valueOf(0));
 
         final Collision collision1 = new Collision("test1", 0, 0, 3, 3, false);
         collidable1.addCollision(collision1);
@@ -106,8 +106,8 @@ public final class ComponentCollisionTest
         featurable2 = CollidableModelTest.createFeaturable(config, services);
         transformable2 = featurable2.getFeature(Transformable.class);
         collidable2 = featurable2.getFeature(Collidable.class);
-        collidable2.addAccept(1);
-        collidable2.setGroup(0);
+        collidable2.addAccept(Integer.valueOf(1));
+        collidable2.setGroup(Integer.valueOf(0));
 
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
