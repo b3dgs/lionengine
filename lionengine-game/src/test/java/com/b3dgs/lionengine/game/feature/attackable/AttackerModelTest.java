@@ -36,6 +36,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -297,6 +298,7 @@ public final class AttackerModelTest
         attacker.attack(target);
         attacker.update(1.0);
         attacker.update(1.0); // 2 ticks for attack interval
+        attacker.getFeature(Animatable.class).play(new Animation("test", 1, 1, 1.0, false, false));
 
         assertEquals(target, reaching.get());
         assertFalse(preparing.get());
