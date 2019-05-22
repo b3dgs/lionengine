@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 
 /**
  * Handle the {@link State}.
@@ -47,7 +48,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
  * </ul>
  */
 @FeatureInterface
-public class StateHandler extends FeatureModel implements Updatable
+public class StateHandler extends FeatureModel implements Updatable, Recyclable
 {
     /** Feature parameter constructor index. */
     private static final int PARAM_FEATURE_INDEX = 0;
@@ -246,5 +247,17 @@ public class StateHandler extends FeatureModel implements Updatable
         {
             current.update(extrp);
         }
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        last = null;
+        current = null;
+        next = null;
     }
 }

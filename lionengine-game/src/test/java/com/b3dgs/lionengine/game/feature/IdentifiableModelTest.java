@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
@@ -50,9 +49,6 @@ public final class IdentifiableModelTest
     {
         final Collection<Integer> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
         ids.clear();
-
-        final Collection<Integer> recycle = UtilReflection.getField(IdentifiableModel.class, "RECYCLE");
-        recycle.clear();
 
         final Field field = IdentifiableModel.class.getDeclaredField("lastId");
         UtilReflection.setAccessible(field, true);
@@ -81,7 +77,7 @@ public final class IdentifiableModelTest
         final IdentifiableModel identifiable = featurable.getFeature(IdentifiableModel.class);
         identifiable.prepare(featurable);
 
-        assertEquals(Integer.valueOf(0), identifiable.getId());
+        assertEquals(Integer.valueOf(10), identifiable.getId());
 
         identifiable.destroy();
         identifiable.notifyDestroyed();
@@ -116,9 +112,6 @@ public final class IdentifiableModelTest
         final Field lastId = IdentifiableModel.class.getDeclaredField("lastId");
         UtilReflection.setAccessible(lastId, true);
         lastId.setInt(lastId, 0);
-
-        final Queue<?> recycle = UtilReflection.getField(IdentifiableModel.class, "RECYCLE");
-        recycle.clear();
 
         try
         {

@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Queue;
 
 import com.b3dgs.lionengine.LionEngineException;
 
@@ -31,10 +29,8 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
 {
     /** Free ID error. */
     static final String ERROR_FREE_ID = "No more free id available !";
-    /** ID used (list of active id used). */
+    /** ID used. */
     private static final Collection<Integer> IDS = new HashSet<>();
-    /** Recycle ID (reuse previous removed object ID). */
-    private static final Queue<Integer> RECYCLE = new ArrayDeque<>();
     /** Last ID used (last maximum id value). */
     private static int lastId;
 
@@ -46,12 +42,6 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
      */
     private static Integer getFreeId()
     {
-        if (!RECYCLE.isEmpty())
-        {
-            final Integer id = RECYCLE.poll();
-            IDS.add(id);
-            return id;
-        }
         if (IDS.size() == Integer.MAX_VALUE)
         {
             throw new LionEngineException(ERROR_FREE_ID);
@@ -128,8 +118,6 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     public void notifyDestroyed()
     {
         destroyed = true;
-        IDS.remove(id);
-        RECYCLE.add(id);
     }
 
     @Override

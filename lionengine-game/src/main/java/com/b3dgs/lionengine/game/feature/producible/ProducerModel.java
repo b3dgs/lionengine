@@ -129,8 +129,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         rate = services.get(SourceResolutionProvider.class)::getRate;
 
         actions = ActionsConfig.imports(setup);
-
-        recycle();
     }
 
     /**

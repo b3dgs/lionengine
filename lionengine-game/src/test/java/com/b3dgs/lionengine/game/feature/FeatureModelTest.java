@@ -55,7 +55,9 @@ public final class FeatureModelTest
         assertEquals(transformable, feature.getFeature(Transformable.class));
 
         final Feature feature = featurable.getFeatures().iterator().next();
-        assertTrue(feature.equals(featurable.getFeature(Identifiable.class)) || feature.equals(transformable),
+        assertTrue(feature.equals(featurable.getFeature(Recycler.class))
+                   || feature.equals(featurable.getFeature(Identifiable.class))
+                   || feature.equals(transformable),
                    feature.getClass().getName());
 
         for (final Class<? extends Feature> type : feature.getFeaturesType())
