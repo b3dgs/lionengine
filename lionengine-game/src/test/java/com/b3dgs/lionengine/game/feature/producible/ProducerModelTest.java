@@ -209,6 +209,7 @@ public final class ProducerModelTest
     @Test
     public void testProduction()
     {
+        producer.recycle();
         producer.setStepsPerSecond(25.0);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
@@ -306,6 +307,7 @@ public final class ProducerModelTest
     @Test
     public void testPending()
     {
+        producer.recycle();
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
@@ -342,6 +344,7 @@ public final class ProducerModelTest
     @Test
     public void testPendingCannot()
     {
+        producer.recycle();
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
@@ -373,7 +376,7 @@ public final class ProducerModelTest
         final AtomicReference<Featurable> done = new AtomicReference<>();
         final AtomicReference<Featurable> skip = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
-
+        producer.recycle();
         producer.skipProduction();
 
         final Featurable featurable = UtilProducible.createProducible(services);
@@ -400,6 +403,7 @@ public final class ProducerModelTest
         final AtomicReference<Featurable> done = new AtomicReference<>();
         final AtomicReference<Featurable> skip = new AtomicReference<>();
         producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
+        producer.recycle();
 
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);
@@ -429,6 +433,7 @@ public final class ProducerModelTest
     public void testCannot()
     {
         object.check.set(false);
+        producer.recycle();
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Featurable> skip = new AtomicReference<>();
@@ -449,6 +454,7 @@ public final class ProducerModelTest
     @Test
     public void testProducibleListener()
     {
+        producer.recycle();
         producer.setStepsPerSecond(50.0);
 
         final Featurable featurable = UtilProducible.createProducible(services);
