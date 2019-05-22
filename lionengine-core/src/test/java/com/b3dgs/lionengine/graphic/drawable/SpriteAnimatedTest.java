@@ -513,13 +513,19 @@ public final class SpriteAnimatedTest
     @Test
     public void testPlay()
     {
-        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.5, false, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.play(animation);
 
         assertEquals(AnimState.PLAYING, sprite.getAnimState());
         assertEquals(1, sprite.getFrame());
         assertEquals(1, sprite.getFrameAnim());
+
+        sprite.update(1.0);
+
+        assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        assertEquals(2, sprite.getFrame());
+        assertEquals(2, sprite.getFrameAnim());
     }
 
     /**
@@ -532,6 +538,23 @@ public final class SpriteAnimatedTest
         sprite.stop();
 
         assertEquals(AnimState.STOPPED, sprite.getAnimState());
+    }
+
+    /**
+     * Test reset.
+     */
+    @Test
+    public void testReset()
+    {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+        sprite.update(1.0);
+        sprite.reset();
+
+        assertEquals(AnimState.STOPPED, sprite.getAnimState());
+        assertEquals(1, sprite.getFrame());
+        assertEquals(1, sprite.getFrameAnim());
     }
 
     /**

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.AnimatorModel;
  * Animatable model implementation.
  */
 @FeatureInterface
-public class AnimatableModel extends FeatureModel implements Animatable
+public class AnimatableModel extends FeatureModel implements Animatable, Recyclable
 {
     /** Animator reference. */
     private final Animator animator;
@@ -81,6 +81,12 @@ public class AnimatableModel extends FeatureModel implements Animatable
     }
 
     @Override
+    public void reset()
+    {
+        animator.reset();
+    }
+
+    @Override
     public void setAnimSpeed(double speed)
     {
         animator.setAnimSpeed(speed);
@@ -114,5 +120,15 @@ public class AnimatableModel extends FeatureModel implements Animatable
     public boolean is(AnimState state)
     {
         return animator.getAnimState() == state;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        animator.reset();
     }
 }

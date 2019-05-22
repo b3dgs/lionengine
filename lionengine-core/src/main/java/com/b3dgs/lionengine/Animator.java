@@ -52,6 +52,11 @@ public interface Animator extends Updatable
     void stop();
 
     /**
+     * Reset to initial default state without notification.
+     */
+    void reset();
+
+    /**
      * Set the current animation speed. This function allows to change the current playing animation speed.
      * <p>
      * Can be used to synchronize the movement speed to the walking animation speed for example.

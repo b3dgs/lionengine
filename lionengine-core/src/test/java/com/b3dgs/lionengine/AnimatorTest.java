@@ -19,6 +19,7 @@ package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -312,6 +313,56 @@ public final class AnimatorTest
     }
 
     /**
+     * Test reset.
+     */
+    @Test
+    public void testReset()
+    {
+        final AtomicReference<Animation> played = new AtomicReference<>();
+        final AtomicReference<AnimState> stated = new AtomicReference<>();
+        final AtomicReference<Integer> framed = new AtomicReference<>();
+        final AnimatorListener listener = new AnimatorListener()
+        {
+            @Override
+            public void notifyAnimPlayed(Animation anim)
+            {
+                played.set(anim);
+            }
+
+            @Override
+            public void notifyAnimState(AnimState state)
+            {
+                stated.set(state);
+            }
+
+            @Override
+            public void notifyAnimFrame(int frame)
+            {
+                framed.set(Integer.valueOf(frame));
+            }
+        };
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
+        final Animator animator = new AnimatorModel();
+        animator.addListener(listener);
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertEquals(animation, played.get());
+        assertEquals(AnimState.PLAYING, stated.get());
+        assertEquals(Integer.valueOf(1), framed.get());
+
+        played.set(null);
+        stated.set(null);
+        framed.set(null);
+        animator.update(1.0);
+        animator.reset();
+
+        assertNull(played.get());
+        assertNull(stated.get());
+        assertNull(framed.get());
+    }
+
+    /**
      * Test with listener.
      */
     @Test
@@ -395,5 +446,70 @@ public final class AnimatorTest
         animator.setFrame(2);
 
         assertEquals(Integer.valueOf(2), framed.get());
+    }
+
+    /**
+     * Test with state listener.
+     */
+    @Test
+    public void testListenerState()
+    {
+        final AtomicReference<AnimState> stated = new AtomicReference<>();
+        final AnimatorListener listener = (AnimatorStateListener) state -> stated.set(state);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
+        final Animator animator = new AnimatorModel();
+        animator.addListener(listener);
+
+        assertNull(stated.get());
+
+        animator.play(animation);
+
+        assertEquals(AnimState.PLAYING, stated.get());
+    }
+
+    /**
+     * Test with frame listener.
+     */
+    @Test
+    public void testListenerFrame()
+    {
+        final AtomicReference<Integer> framed = new AtomicReference<>();
+        final AnimatorListener listener = (AnimatorFrameListener) frame -> framed.set(Integer.valueOf(frame));
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.25, true, false);
+        final Animator animator = new AnimatorModel();
+        animator.addListener(listener);
+
+        assertNull(framed.get());
+
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertEquals(Integer.valueOf(2), framed.get());
+    }
+
+    /**
+     * Test with void listener.
+     */
+    @Test
+    public void testListenerVoid()
+    {
+        final AnimatorListener listener = AnimatorListenerVoid.getInstance();
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
+        final Animator animator = new AnimatorModel();
+        animator.addListener(listener);
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(1, animator.getFrame());
+    }
+
+    /**
+     * Test the constructor.
+     */
+    @Test
+    public void testConstructorPrivate()
+    {
+        assertPrivateConstructor(AnimatorListenerVoid.class);
     }
 }

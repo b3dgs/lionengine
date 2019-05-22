@@ -34,7 +34,7 @@ public final class AnimatorModel implements Animator
     /** First frame. */
     private int first = Animation.MINIMUM_FRAME;
     /** Last frame. */
-    private int last;
+    private int last = Animation.MINIMUM_FRAME;
     /** Animation speed. */
     private double speed;
     /** Reverse flag. */
@@ -187,6 +187,18 @@ public final class AnimatorModel implements Animator
     {
         state = AnimState.STOPPED;
         listeners.forEach(l -> l.notifyAnimState(state));
+    }
+
+    @Override
+    public void reset()
+    {
+        first = Animation.MINIMUM_FRAME;
+        current = Animation.MINIMUM_FRAME;
+        last = Animation.MINIMUM_FRAME;
+        speed = 0.0;
+        reverse = false;
+        repeat = false;
+        state = AnimState.STOPPED;
     }
 
     @Override

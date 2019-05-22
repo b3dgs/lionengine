@@ -115,6 +115,12 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
+    public void reset()
+    {
+        animator.reset();
+    }
+
+    @Override
     public void update(double extrp)
     {
         animator.update(extrp);
