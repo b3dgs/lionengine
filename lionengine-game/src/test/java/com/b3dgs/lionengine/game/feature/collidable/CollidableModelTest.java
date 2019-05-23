@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -267,6 +269,30 @@ public final class CollidableModelTest
     }
 
     /**
+     * Test set enabled collision.
+     */
+    @Test
+    public void testSetEnabledCollision()
+    {
+        final Collision collision = new Collision("test", 0, 0, 3, 3, false);
+        collidable1.addCollision(collision);
+        collidable1.addAccept(collidable1.getGroup());
+        transformable1.teleport(1.0, 1.0);
+
+        assertFalse(collidable1.collide(collidable1).isEmpty());
+
+        collidable1.setEnabled(false, collision);
+        collidable1.forceUpdate();
+
+        assertTrue(collidable1.collide(collidable1).isEmpty());
+
+        collidable1.setEnabled(true, collision);
+        collidable1.forceUpdate();
+
+        assertFalse(collidable1.collide(collidable1).isEmpty());
+    }
+
+    /**
      * Test collidable accept collision.
      */
     @Test
@@ -348,5 +374,24 @@ public final class CollidableModelTest
         collidable1.notifyCollided(null, null, null);
 
         assertFalse(called.get());
+    }
+
+    /**
+     * Test listener void.
+     */
+    @Test
+    public void testListenerVoid()
+    {
+        assertNotNull(CollidableListenerVoid.getInstance());
+        CollidableListenerVoid.getInstance().notifyCollided(null, null, null);
+    }
+
+    /**
+     * Test the constructor listener void.
+     */
+    @Test
+    public void testConstructorPrivate()
+    {
+        assertPrivateConstructor(CollidableListenerVoid.class);
     }
 }
