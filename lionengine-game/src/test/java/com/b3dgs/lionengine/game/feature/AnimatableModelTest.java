@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -65,6 +66,7 @@ public final class AnimatableModelTest
 
         animatable.play(animation);
         testAnimatorState(animatable, first, first, AnimState.PLAYING);
+        assertFalse(animatable.is(AnimState.FINISHED));
 
         animatable.update(1.0);
         testAnimatorState(animatable, first, first + 1, AnimState.PLAYING);
@@ -77,6 +79,26 @@ public final class AnimatableModelTest
 
         animatable.stop();
         testAnimatorState(animatable, first, last, AnimState.STOPPED);
+    }
+
+    /**
+     * Test the reset case.
+     */
+    @Test
+    public void testReset()
+    {
+        final int first = 2;
+        final int last = 4;
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
+        final Animatable animatable = new AnimatableModel();
+        testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
+
+        animatable.play(animation);
+        testAnimatorState(animatable, first, first, AnimState.PLAYING);
+
+        animatable.reset();
+
+        testAnimatorState(animatable, 1, 1, AnimState.STOPPED);
     }
 
     /**
