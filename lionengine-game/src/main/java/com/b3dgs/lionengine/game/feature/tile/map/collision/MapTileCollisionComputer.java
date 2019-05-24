@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
  */
 final class MapTileCollisionComputer
 {
+    private static final int MAX_GLUED = 5;
+
     /**
      * Check if tile contains at least one collision from the category.
      * 
@@ -244,18 +246,34 @@ final class MapTileCollisionComputer
                 y += sy;
             }
         }
-        if (category.isGlue())
+        if (category.isGlue() && last == null)
         {
-            if (last == null)
-            {
-                last = computeCollision(category, ox, oy, x, y - 1);
-            }
-            if (last == null)
-            {
-                last = computeCollision(category, ox, oy, x, y - 2);
-            }
+            last = getGlued(category, ox, oy, x, y);
         }
         return last;
+    }
+
+    /**
+     * Get glued collision by searching under if needed.
+     * 
+     * @param category The category reference.
+     * @param ox The old horizontal collision.
+     * @param oy The old vertical collision.
+     * @param x The current horizontal collision.
+     * @param y The current vertical collision.
+     * @return The collision found, <code>null</code> if none.
+     */
+    private CollisionResult getGlued(CollisionCategory category, double ox, double oy, double x, double y)
+    {
+        for (int i = 1; i < MAX_GLUED; i++)
+        {
+            final CollisionResult found = computeCollision(category, ox, oy, x, y - i);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+        return null;
     }
 
     /**
