@@ -106,6 +106,8 @@ final class MapTileCollisionComputer
 
     /** Map reference. */
     private final MapTile map;
+    /** Last result. */
+    private CollisionResult lastFound;
 
     /**
      * Create the map tile collision computer.
@@ -154,6 +156,11 @@ final class MapTileCollisionComputer
             sy = dv;
         }
 
+        if (transformable.getY() > transformable.getOldY())
+        {
+            lastFound = null;
+        }
+
         return computeCollision(category, sh, sv, sx, sy, max);
     }
 
@@ -191,6 +198,7 @@ final class MapTileCollisionComputer
             if (current != null)
             {
                 last = current;
+                lastFound = last;
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
@@ -221,6 +229,7 @@ final class MapTileCollisionComputer
             if (current != null)
             {
                 last = current;
+                lastFound = last;
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
@@ -246,7 +255,8 @@ final class MapTileCollisionComputer
                 y += sy;
             }
         }
-        if (category.isGlue() && last == null)
+
+        if (lastFound != null && category.isGlue() && last == null)
         {
             last = getGlued(category, ox, oy, x, y);
         }
@@ -270,6 +280,7 @@ final class MapTileCollisionComputer
             final CollisionResult found = computeCollision(category, ox, oy, x, y - i);
             if (found != null)
             {
+                lastFound = found;
                 return found;
             }
         }
