@@ -92,15 +92,45 @@ public class CollisionResult
     }
 
     /**
-     * Check the collision formula.
+     * Check the collision formula on X.
      * 
      * @param name The formula collision name prefix.
      * @return <code>true</code> if collision starts with prefix, <code>false</code> else.
      */
-    public boolean startWith(String name)
+    public boolean startWithX(String name)
     {
-        if (formulaX != null && formulaX.getName().startsWith(name)
-            || formulaY != null && formulaY.getName().startsWith(name))
+        if (formulaX != null && formulaX.getName().startsWith(name))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check the collision formula on Y.
+     * 
+     * @param name The formula collision name prefix.
+     * @return <code>true</code> if collision starts with prefix, <code>false</code> else.
+     */
+    public boolean startWithY(String name)
+    {
+        if (formulaY != null && formulaY.getName().startsWith(name))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check the collision formula.
+     * 
+     * @param name The formula collision name contains.
+     * @return <code>true</code> if collision starts with prefix, <code>false</code> else.
+     */
+    public boolean contains(String name)
+    {
+        if (formulaX != null && formulaX.getName().contains(name)
+            || formulaY != null && formulaY.getName().contains(name))
         {
             return true;
         }

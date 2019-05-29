@@ -56,8 +56,8 @@ public final class CollisionResultTest
         assertEquals(x, result.getX());
         assertEquals(y, result.getY());
         assertEquals(tile, result.getTile());
-        assertTrue(result.startWith("formula"));
-        assertFalse(result.startWith("formulaZ"));
+        assertTrue(result.startWithX("formula"));
+        assertFalse(result.startWithY("formulaZ"));
     }
 
     /**
