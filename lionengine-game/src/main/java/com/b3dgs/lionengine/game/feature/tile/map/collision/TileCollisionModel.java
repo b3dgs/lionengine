@@ -150,36 +150,30 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
     }
 
     @Override
-    public Double getCollisionX(CollisionCategory category, double x, double y)
+    public Double getCollisionX(CollisionCategory category, CollisionFormula formula, double x, double y)
     {
-        for (final CollisionFormula formula : category.getFormulas())
+        final CollisionRange range = formula.getRange();
+        if (category.getAxis() == range.getOutput())
         {
-            final CollisionRange range = formula.getRange();
-            if (category.getAxis() == range.getOutput() && formulas.contains(formula))
+            final Double collisionX = getCollisionX(range, formula.getFunction(), x, y, category.getOffsetX());
+            if (collisionX != null)
             {
-                final Double collisionX = getCollisionX(range, formula.getFunction(), x, y, category.getOffsetX());
-                if (collisionX != null)
-                {
-                    return collisionX;
-                }
+                return collisionX;
             }
         }
         return null;
     }
 
     @Override
-    public Double getCollisionY(CollisionCategory category, double x, double y)
+    public Double getCollisionY(CollisionCategory category, CollisionFormula formula, double x, double y)
     {
-        for (final CollisionFormula formula : category.getFormulas())
+        final CollisionRange range = formula.getRange();
+        if (category.getAxis() == range.getOutput())
         {
-            final CollisionRange range = formula.getRange();
-            if (category.getAxis() == range.getOutput() && formulas.contains(formula))
+            final Double collisionY = getCollisionY(range, formula.getFunction(), x, y, category.getOffsetY());
+            if (collisionY != null)
             {
-                final Double collisionY = getCollisionY(range, formula.getFunction(), x, y, category.getOffsetY());
-                if (collisionY != null)
-                {
-                    return collisionY;
-                }
+                return collisionY;
             }
         }
         return null;

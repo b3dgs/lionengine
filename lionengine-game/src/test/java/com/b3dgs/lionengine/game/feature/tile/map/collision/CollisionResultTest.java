@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-
-import java.util.Collections;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +31,17 @@ import com.b3dgs.lionengine.game.feature.tile.TileGame;
  */
 public final class CollisionResultTest
 {
+    /** Range test. */
+    private final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
+    /** Function test. */
+    private final CollisionFunction function = new CollisionFunctionLinear(1.0, 2.0);
+    /** Constraint test. */
+    private final CollisionConstraint constaint = new CollisionConstraint();
+    /** Formula test. */
+    private final CollisionFormula formulaX = new CollisionFormula("formulaX", range, function, constaint);
+    /** Formula test. */
+    private final CollisionFormula formulaY = new CollisionFormula("formulaY", range, function, constaint);
+
     /**
      * Test the collision result.
      */
@@ -40,11 +51,13 @@ public final class CollisionResultTest
         final Double x = Double.valueOf(1.0);
         final Double y = Double.valueOf(2.0);
         final Tile tile = new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1);
-        final CollisionResult result = new CollisionResult(x, y, tile, Collections.emptyList());
+        final CollisionResult result = new CollisionResult(x, y, tile, formulaX, formulaY);
 
         assertEquals(x, result.getX());
         assertEquals(y, result.getY());
         assertEquals(tile, result.getTile());
+        assertTrue(result.startWith("formula"));
+        assertFalse(result.startWith("formulaZ"));
     }
 
     /**
@@ -53,10 +66,11 @@ public final class CollisionResultTest
     @Test
     public void testToString()
     {
-        assertEquals("CollisionResult [x=1.0, y=2.0, []]",
+        assertEquals("CollisionResult [x=1.0, y=2.0, fx=formulaX, fy=formulaY]",
                      new CollisionResult(Double.valueOf(1.0),
                                          Double.valueOf(2.0),
                                          new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1),
-                                         Collections.emptyList()).toString());
+                                         formulaX,
+                                         formulaY).toString());
     }
 }

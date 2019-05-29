@@ -35,7 +35,7 @@ final class MapTileCollisionComputer
      * 
      * @param tile The tile reference.
      * @param category The category reference.
-     * @return <code>true</code> if there is a formula in common between tile and category.
+     * @return The formula in common between tile and category, <code>null</code> if none.
      */
     private static boolean containsCollisionFormula(TileCollision tile, CollisionCategory category)
     {
@@ -54,16 +54,21 @@ final class MapTileCollisionComputer
      * Get the horizontal collision from current location.
      * 
      * @param category The collision category.
+     * @param formula The formula to apply.
      * @param tileCollision The current tile collision.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The computed horizontal collision.
      */
-    private static Double getCollisionX(CollisionCategory category, TileCollision tileCollision, double x, double y)
+    private static Double getCollisionX(CollisionCategory category,
+                                        CollisionFormula formula,
+                                        TileCollision tileCollision,
+                                        double x,
+                                        double y)
     {
-        if (Axis.X == category.getAxis())
+        if (Axis.X == category.getAxis() && containsCollisionFormula(tileCollision, category))
         {
-            return tileCollision.getCollisionX(category, x, y);
+            return tileCollision.getCollisionX(category, formula, x, y);
         }
         return null;
     }
@@ -72,16 +77,21 @@ final class MapTileCollisionComputer
      * Get the vertical collision from current location.
      * 
      * @param category The collision category.
+     * @param formula The formula to apply.
      * @param tileCollision The current tile collision.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The computed vertical collision.
      */
-    private static Double getCollisionY(CollisionCategory category, TileCollision tileCollision, double x, double y)
+    private static Double getCollisionY(CollisionCategory category,
+                                        CollisionFormula formula,
+                                        TileCollision tileCollision,
+                                        double x,
+                                        double y)
     {
-        if (Axis.Y == category.getAxis())
+        if (Axis.Y == category.getAxis() && containsCollisionFormula(tileCollision, category))
         {
-            return tileCollision.getCollisionY(category, x, y);
+            return tileCollision.getCollisionY(category, formula, x, y);
         }
         return null;
     }
@@ -303,15 +313,26 @@ final class MapTileCollisionComputer
         if (tile != null)
         {
             final TileCollision tileCollision = tile.getFeature(TileCollision.class);
-            if (containsCollisionFormula(tileCollision, category))
+            Double cx = null;
+            Double cy = null;
+            CollisionFormula fx = null;
+            CollisionFormula fy = null;
+            for (final CollisionFormula formula : tileCollision.getCollisionFormulas())
             {
-                final Double cx = getCollisionX(category, tileCollision, x, y);
-                final Double cy = getCollisionY(category, tileCollision, x, y);
-                // CHECKSTYLE IGNORE LINE: NestedIfDepth
-                if (cx != null || cy != null)
+                if (cx == null)
                 {
-                    return new CollisionResult(cx, cy, tile, tileCollision.getCollisionFormulas());
+                    cx = getCollisionX(category, formula, tileCollision, x, y);
+                    fx = formula;
                 }
+                if (cy == null)
+                {
+                    cy = getCollisionY(category, formula, tileCollision, x, y);
+                    fy = formula;
+                }
+            }
+            if (cx != null || cy != null)
+            {
+                return new CollisionResult(cx, cy, tile, fx, fy);
             }
         }
         return null;

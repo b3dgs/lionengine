@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 
@@ -36,8 +34,10 @@ public class CollisionResult
     private final Double y;
     /** Collided tile. */
     private final Tile tile;
-    /** Formulas used. */
-    private final Collection<CollisionFormula> formulas;
+    /** Formula used on horizontal. */
+    private final CollisionFormula formulaX;
+    /** Formula used on vertical. */
+    private final CollisionFormula formulaY;
 
     /**
      * Create a collision result.
@@ -45,9 +45,10 @@ public class CollisionResult
      * @param x The horizontal collision location (<code>null</code> if none).
      * @param y The vertical collision location (<code>null</code> if none).
      * @param tile The collided tile.
-     * @param formulas The formulas used.
+     * @param formulaX The formula used on horizontal.
+     * @param formulaY The formula used on vertical.
      */
-    public CollisionResult(Double x, Double y, Tile tile, Collection<CollisionFormula> formulas)
+    public CollisionResult(Double x, Double y, Tile tile, CollisionFormula formulaX, CollisionFormula formulaY)
     {
         super();
 
@@ -56,7 +57,8 @@ public class CollisionResult
         this.x = x;
         this.y = y;
         this.tile = tile;
-        this.formulas = formulas;
+        this.formulaX = formulaX;
+        this.formulaY = formulaY;
     }
 
     /**
@@ -90,19 +92,17 @@ public class CollisionResult
     }
 
     /**
-     * Get the collision formulas.
+     * Check the collision formula.
      * 
      * @param name The formula collision name prefix.
      * @return <code>true</code> if collision starts with prefix, <code>false</code> else.
      */
     public boolean startWith(String name)
     {
-        for (final CollisionFormula formula : formulas)
+        if (formulaX != null && formulaX.getName().startsWith(name)
+            || formulaY != null && formulaY.getName().startsWith(name))
         {
-            if (formula.getName().startsWith(name))
-            {
-                return true;
-            }
+            return true;
         }
         return false;
     }
@@ -119,8 +119,10 @@ public class CollisionResult
                                             .append(x)
                                             .append(", y=")
                                             .append(y)
-                                            .append(", ")
-                                            .append(formulas)
+                                            .append(", fx=")
+                                            .append(formulaX.getName())
+                                            .append(", fy=")
+                                            .append(formulaY.getName())
                                             .append("]")
                                             .toString();
     }

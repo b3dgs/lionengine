@@ -60,21 +60,23 @@ public interface TileCollision extends Feature
      * Get the horizontal collision location between the tile and the movement vector.
      * 
      * @param category The collision category.
+     * @param formula The formula to apply.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The horizontal collision (<code>null</code> if none).
      */
-    Double getCollisionX(CollisionCategory category, double x, double y);
+    Double getCollisionX(CollisionCategory category, CollisionFormula formula, double x, double y);
 
     /**
      * Get the vertical collision location between the tile and the movement vector.
      * 
      * @param category The collision category.
+     * @param formula The formula to apply.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      * @return The vertical collision (<code>null</code> if none).
      */
-    Double getCollisionY(CollisionCategory category, double x, double y);
+    Double getCollisionY(CollisionCategory category, CollisionFormula formula, double x, double y);
 
     /**
      * Get tile collision formulas.
