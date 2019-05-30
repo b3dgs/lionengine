@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -114,10 +116,10 @@ final class MapTileCollisionComputer
         return old;
     }
 
+    /** Last result. */
+    private final Map<Transformable, CollisionResult> lastFound = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
-    /** Last result. */
-    private CollisionResult lastFound;
 
     /**
      * Create the map tile collision computer.
@@ -166,17 +168,18 @@ final class MapTileCollisionComputer
             sy = dv;
         }
 
-        if (transformable.getY() > transformable.getOldY())
+        if (category.isGlue() && transformable.getY() > transformable.getOldY())
         {
-            lastFound = null;
+            lastFound.remove(transformable);
         }
 
-        return computeCollision(category, sh, sv, sx, sy, max);
+        return computeCollision(transformable, category, sh, sv, sx, sy, max);
     }
 
     /**
      * Compute collision step by step moving first horizontal and then vertical.
      * 
+     * @param transformable The transformable reference.
      * @param category The collisions category to search in.
      * @param sh The starting horizontal location.
      * @param sv The starting vertical location.
@@ -186,7 +189,8 @@ final class MapTileCollisionComputer
      * @return The collision found, <code>null</code> if none.
      */
     // CHECKSTYLE IGNORE LINE: ExecutableStatementCount|CyclomaticComplexity|NPathComplexity
-    private CollisionResult computeCollision(CollisionCategory category,
+    private CollisionResult computeCollision(Transformable transformable,
+                                             CollisionCategory category,
                                              double sh,
                                              double sv,
                                              double sx,
@@ -208,7 +212,6 @@ final class MapTileCollisionComputer
             if (current != null)
             {
                 last = current;
-                lastFound = last;
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
@@ -239,7 +242,6 @@ final class MapTileCollisionComputer
             if (current != null)
             {
                 last = current;
-                lastFound = last;
                 if (current.getX() != null)
                 {
                     x = current.getX().doubleValue();
@@ -266,9 +268,16 @@ final class MapTileCollisionComputer
             }
         }
 
-        if (lastFound != null && category.isGlue() && last == null)
+        if (category.isGlue())
         {
-            last = getGlued(category, ox, oy, x, y);
+            if (last != null)
+            {
+                lastFound.put(transformable, last);
+            }
+            else if (lastFound.containsKey(transformable))
+            {
+                last = getGlued(transformable, category, ox, oy, x, y);
+            }
         }
         return last;
     }
@@ -276,6 +285,7 @@ final class MapTileCollisionComputer
     /**
      * Get glued collision by searching under if needed.
      * 
+     * @param transformable The transformable reference.
      * @param category The category reference.
      * @param ox The old horizontal collision.
      * @param oy The old vertical collision.
@@ -283,14 +293,19 @@ final class MapTileCollisionComputer
      * @param y The current vertical collision.
      * @return The collision found, <code>null</code> if none.
      */
-    private CollisionResult getGlued(CollisionCategory category, double ox, double oy, double x, double y)
+    private CollisionResult getGlued(Transformable transformable,
+                                     CollisionCategory category,
+                                     double ox,
+                                     double oy,
+                                     double x,
+                                     double y)
     {
         for (int i = 1; i < MAX_GLUED; i++)
         {
             final CollisionResult found = computeCollision(category, ox, oy, x, y - i);
             if (found != null)
             {
-                lastFound = found;
+                lastFound.put(transformable, found);
                 return found;
             }
         }
