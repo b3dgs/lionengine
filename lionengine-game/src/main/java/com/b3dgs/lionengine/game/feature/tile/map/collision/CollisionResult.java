@@ -99,11 +99,7 @@ public class CollisionResult
      */
     public boolean startWithX(String name)
     {
-        if (formulaX != null && formulaX.getName().startsWith(name))
-        {
-            return true;
-        }
-        return false;
+        return formulaX != null && formulaX.getName().startsWith(name);
     }
 
     /**
@@ -114,11 +110,7 @@ public class CollisionResult
      */
     public boolean startWithY(String name)
     {
-        if (formulaY != null && formulaY.getName().startsWith(name))
-        {
-            return true;
-        }
-        return false;
+        return formulaY != null && formulaY.getName().startsWith(name);
     }
 
     /**
@@ -129,12 +121,8 @@ public class CollisionResult
      */
     public boolean contains(String name)
     {
-        if (formulaX != null && formulaX.getName().contains(name)
-            || formulaY != null && formulaY.getName().contains(name))
-        {
-            return true;
-        }
-        return false;
+        return formulaX != null && formulaX.getName().contains(name)
+               || formulaY != null && formulaY.getName().contains(name);
     }
 
     /*
