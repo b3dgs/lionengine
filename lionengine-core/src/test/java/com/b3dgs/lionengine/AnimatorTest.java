@@ -465,6 +465,14 @@ public final class AnimatorTest
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, stated.get());
+
+        stated.set(null);
+        animator.removeListener(listener);
+
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertNull(stated.get());
     }
 
     /**
@@ -485,6 +493,14 @@ public final class AnimatorTest
         animator.update(1.0);
 
         assertEquals(Integer.valueOf(2), framed.get());
+
+        framed.set(null);
+        animator.removeListener(listener);
+
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertNull(framed.get());
     }
 
     /**

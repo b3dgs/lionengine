@@ -63,6 +63,12 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
     }
 
     @Override
+    public void removeListener(AnimatorListener listener)
+    {
+        animator.removeListener(listener);
+    }
+
+    @Override
     public void update(double extrp)
     {
         animator.update(extrp);

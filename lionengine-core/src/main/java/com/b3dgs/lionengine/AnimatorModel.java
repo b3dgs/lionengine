@@ -156,6 +156,14 @@ public final class AnimatorModel implements Animator
     }
 
     @Override
+    public void removeListener(AnimatorListener listener)
+    {
+        Check.notNull(listener);
+
+        listeners.remove(listener);
+    }
+
+    @Override
     public void play(Animation anim)
     {
         Check.notNull(anim);

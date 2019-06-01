@@ -773,6 +773,18 @@ public final class SpriteAnimatedTest
         assertEquals(animation, played.get());
         assertEquals(AnimState.PLAYING, stated.get());
         assertEquals(Integer.valueOf(1), framed.get());
+
+        played.set(null);
+        stated.set(null);
+        framed.set(null);
+
+        sprite.removeListener(listener);
+        sprite.play(animation);
+        sprite.update(1.0);
+
+        assertNull(played.get());
+        assertNull(stated.get());
+        assertNull(framed.get());
     }
 
     /**

@@ -103,6 +103,12 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
+    public void removeListener(AnimatorListener listener)
+    {
+        animator.removeListener(listener);
+    }
+
+    @Override
     public void play(Animation animation)
     {
         animator.play(animation);

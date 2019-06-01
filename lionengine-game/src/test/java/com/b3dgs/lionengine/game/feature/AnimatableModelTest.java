@@ -172,5 +172,17 @@ public final class AnimatableModelTest
         assertEquals(animation, played.get());
         assertEquals(AnimState.PLAYING, stated.get());
         assertEquals(Integer.valueOf(1), framed.get());
+
+        played.set(null);
+        stated.set(null);
+        framed.set(null);
+
+        animatable.removeListener(listener);
+        animatable.play(animation);
+        animatable.update(1.0);
+
+        assertNull(played.get());
+        assertNull(stated.get());
+        assertNull(framed.get());
     }
 }

@@ -38,6 +38,14 @@ public interface Animator extends Updatable
     void addListener(AnimatorListener listener);
 
     /**
+     * Remove an animator listener.
+     * 
+     * @param listener The listener to remove (must not be <code>null</code>).
+     * @throws LionEngineException If the listener is <code>null</code>.
+     */
+    void removeListener(AnimatorListener listener);
+
+    /**
      * Play the animation. Should be called only one time to start, as {@link #update(double)} does the animation
      * update.
      * 
