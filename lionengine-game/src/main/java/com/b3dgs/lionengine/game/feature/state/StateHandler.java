@@ -258,6 +258,5 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
     {
         last = null;
         current = null;
-        next = null;
     }
 }
