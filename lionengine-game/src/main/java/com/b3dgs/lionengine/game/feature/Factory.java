@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -157,6 +159,32 @@ public class Factory implements HandlerListener
         catch (final NoSuchMethodException exception)
         {
             throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + media);
+        }
+    }
+
+    /**
+     * Create cached medias from folder.
+     * 
+     * @param folder The root folder.
+     * @param count The caches number.
+     */
+    public void createCache(Media folder, int count)
+    {
+        for (final Media media : folder.getMedias())
+        {
+            if (media.getName().endsWith(FILE_DATA_DOT_EXTENSION))
+            {
+                final Collection<Featurable> cache = new ArrayList<>();
+                for (int i = 0; i < count; i++)
+                {
+                    cache.add(create(media));
+                }
+                for (final Featurable featurable : cache)
+                {
+                    featurable.getFeature(Identifiable.class).destroy();
+                    notifyHandlableRemoved(featurable);
+                }
+            }
         }
     }
 
