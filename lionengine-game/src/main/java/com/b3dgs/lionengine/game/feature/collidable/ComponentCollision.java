@@ -43,7 +43,18 @@ import com.b3dgs.lionengine.geom.Point;
 public class ComponentCollision implements ComponentUpdater, HandlerListener, TransformableListener
 {
     /** Location reduce factor (the higher it is, the lower is the map division per location). */
-    static final double REDUCE_FACTOR = 128.0;
+    static final double REDUCE_FACTOR = 256.0;
+
+    /**
+     * Convert real position value to index.
+     * 
+     * @param value The real position value.
+     * @return The index value.
+     */
+    private static int getIndex(double value)
+    {
+        return (int) Math.floor(value / REDUCE_FACTOR);
+    }
 
     /** Mapping reduced. */
     private final Map<Integer, Map<Point, Set<Collidable>>> collidables = new HashMap<>();
@@ -56,6 +67,28 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     public ComponentCollision()
     {
         super();
+    }
+
+    /**
+     * Remove point and adjacent points depending of the collidable max collision size.
+     * 
+     * @param transformable The transformable reference.
+     * @param collidable The collidable reference.
+     */
+    private void removePoints(Transformable transformable, Collidable collidable)
+    {
+        final int oldMinX = getIndex(transformable.getOldX() - collidable.getMaxWidth());
+        final int oldMinY = getIndex(transformable.getOldY() - collidable.getMaxHeight());
+        final int oldMaxX = getIndex(transformable.getOldX() + collidable.getMaxWidth());
+        final int oldMaxY = getIndex(transformable.getOldY() + collidable.getMaxHeight());
+
+        for (int x = oldMinX; x <= oldMaxX; x++)
+        {
+            for (int y = oldMinY; y <= oldMaxY; y++)
+            {
+                removePoint(new Point(x, y), collidable);
+            }
+        }
     }
 
     /**
@@ -100,6 +133,28 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     }
 
     /**
+     * Add point and adjacent points depending of the collidable max collision size.
+     * 
+     * @param transformable The transformable reference.
+     * @param collidable The collidable reference.
+     */
+    private void addPoints(Transformable transformable, Collidable collidable)
+    {
+        final int minX = getIndex(transformable.getX() - collidable.getMaxWidth());
+        final int minY = getIndex(transformable.getY() - collidable.getMaxHeight());
+        final int maxX = getIndex(transformable.getX() + collidable.getMaxWidth());
+        final int maxY = getIndex(transformable.getY() + collidable.getMaxHeight());
+    
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                addPoint(new Point(x, y), collidable);
+            }
+        }
+    }
+
+    /**
      * Add point. Create empty list of not existing.
      * 
      * @param point The point to remove.
@@ -118,27 +173,6 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
             elements.put(point, new HashSet<Collidable>());
         }
         elements.get(point).add(collidable);
-    }
-
-    /*
-     * ComponentUpdater
-     */
-
-    @Override
-    public void update(double extrp, Handlables objects)
-    {
-        for (final Map<Point, Set<Collidable>> groups : collidables.values())
-        {
-            for (final Entry<Point, Set<Collidable>> current : groups.entrySet())
-            {
-                checkGroup(current);
-            }
-        }
-        for (final Collided collided : toNotify)
-        {
-            collided.collidableA.notifyCollided(collided.collidableB, collided.with, collided.by);
-        }
-        toNotify.clear();
     }
 
     /**
@@ -214,6 +248,27 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     }
 
     /*
+     * ComponentUpdater
+     */
+
+    @Override
+    public void update(double extrp, Handlables objects)
+    {
+        for (final Map<Point, Set<Collidable>> groups : collidables.values())
+        {
+            for (final Entry<Point, Set<Collidable>> current : groups.entrySet())
+            {
+                checkGroup(current);
+            }
+        }
+        for (final Collided collided : toNotify)
+        {
+            collided.collidableA.notifyCollided(collided.collidableB, collided.with, collided.by);
+        }
+        toNotify.clear();
+    }
+
+    /*
      * HandlerListener
      */
 
@@ -235,8 +290,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
             final Transformable transformable = featurable.getFeature(Transformable.class);
             final Collidable collidable = transformable.getFeature(Collidable.class);
 
-            removePoints(transformable.getOldX(), transformable.getOldY(), collidable);
-            removePoints(transformable.getX(), transformable.getY(), collidable);
+            removePoints(transformable, collidable);
 
             transformable.removeListener(this);
         }
@@ -251,102 +305,8 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     {
         final Collidable collidable = transformable.getFeature(Collidable.class);
 
-        final double oldX = transformable.getOldX();
-        final double oldY = transformable.getOldY();
-
-        final int oldMinX = (int) Math.floor(oldX / REDUCE_FACTOR);
-        final int oldMinY = (int) Math.floor(oldY / REDUCE_FACTOR);
-        final int oldMaxX = (int) Math.floor((oldX + collidable.getMaxWidth()) / REDUCE_FACTOR);
-        final int oldMaxY = (int) Math.floor((oldY + collidable.getMaxHeight()) / REDUCE_FACTOR);
-
-        final double x = transformable.getX();
-        final double y = transformable.getY();
-
-        final int minX = (int) Math.floor(x / REDUCE_FACTOR);
-        final int minY = (int) Math.floor(y / REDUCE_FACTOR);
-        final int maxX = (int) Math.floor((x + collidable.getMaxWidth()) / REDUCE_FACTOR);
-        final int maxY = (int) Math.floor((y + collidable.getMaxHeight()) / REDUCE_FACTOR);
-
-        if (oldMinX != minX || oldMinY != minY || oldMaxX != maxX || oldMaxY != maxY)
-        {
-            removePoints(oldMinX, oldMinY, oldMaxX, oldMaxY, collidable);
-        }
-        addPoints(minX, minY, maxX, maxY, collidable);
-    }
-
-    /**
-     * Remove point and adjacent points depending of the collidable max collision size.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param collidable The collidable reference.
-     */
-    private void removePoints(double x, double y, Collidable collidable)
-    {
-        final int minX = (int) Math.floor(x / REDUCE_FACTOR);
-        final int minY = (int) Math.floor(y / REDUCE_FACTOR);
-        final int maxX = (int) Math.floor((x + collidable.getMaxWidth()) / REDUCE_FACTOR);
-        final int maxY = (int) Math.floor((y + collidable.getMaxHeight()) / REDUCE_FACTOR);
-
-        removePoints(minX, minY, maxX, maxY, collidable);
-    }
-
-    /**
-     * Remove point and adjacent points depending of the collidable max collision size.
-     * 
-     * @param minX The min horizontal location.
-     * @param minY The min vertical location.
-     * @param maxX The min horizontal location.
-     * @param maxY The min vertical location.
-     * @param collidable The collidable reference.
-     */
-    private void removePoints(int minX, int minY, int maxX, int maxY, Collidable collidable)
-    {
-        removePoint(new Point(minX, minY), collidable);
-
-        if (minX != maxX && minY == maxY)
-        {
-            removePoint(new Point(maxX, minY), collidable);
-        }
-        else if (minX == maxX && minY != maxY)
-        {
-            removePoint(new Point(minX, maxY), collidable);
-        }
-        else if (minX != maxX)
-        {
-            removePoint(new Point(minX, maxY), collidable);
-            removePoint(new Point(maxX, minY), collidable);
-            removePoint(new Point(maxX, maxY), collidable);
-        }
-    }
-
-    /**
-     * Add point and adjacent points depending of the collidable max collision size.
-     * 
-     * @param minX The min horizontal location.
-     * @param minY The min vertical location.
-     * @param maxX The min horizontal location.
-     * @param maxY The min vertical location.
-     * @param collidable The collidable reference.
-     */
-    private void addPoints(int minX, int minY, int maxX, int maxY, Collidable collidable)
-    {
-        addPoint(new Point(minX, minY), collidable);
-
-        if (minX != maxX && minY == maxY)
-        {
-            addPoint(new Point(maxX, minY), collidable);
-        }
-        else if (minX == maxX && minY != maxY)
-        {
-            addPoint(new Point(minX, maxY), collidable);
-        }
-        else if (minX != maxX)
-        {
-            addPoint(new Point(minX, maxY), collidable);
-            addPoint(new Point(maxX, minY), collidable);
-            addPoint(new Point(maxX, maxY), collidable);
-        }
+        removePoints(transformable, collidable);
+        addPoints(transformable, collidable);
     }
 
     /**
