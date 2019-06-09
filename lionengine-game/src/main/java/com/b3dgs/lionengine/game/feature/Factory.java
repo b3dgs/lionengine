@@ -174,16 +174,17 @@ public class Factory implements HandlerListener
         {
             if (media.getName().endsWith(FILE_DATA_DOT_EXTENSION))
             {
-                final Collection<Featurable> cache = new ArrayList<>();
+                final Collection<Featurable> cached = new ArrayList<>();
                 for (int i = 0; i < count; i++)
                 {
-                    cache.add(create(media));
+                    cached.add(create(media));
                 }
-                for (final Featurable featurable : cache)
+                for (final Featurable featurable : cached)
                 {
                     featurable.getFeature(Identifiable.class).destroy();
                     notifyHandlableRemoved(featurable);
                 }
+                cached.clear();
             }
         }
     }
