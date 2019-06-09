@@ -270,7 +270,7 @@ public class Camera extends FeaturableModel implements Viewer
         }
         else
         {
-            limitRight = Math.max(0, surface.getWidth() - UtilMath.getRounded(width, gridH));
+            limitRight = Math.max(0, surface.getWidth() - UtilMath.getRoundedC(width, gridH));
         }
         if (gridV == 0)
         {
@@ -278,7 +278,7 @@ public class Camera extends FeaturableModel implements Viewer
         }
         else
         {
-            limitTop = Math.max(0, surface.getHeight() - UtilMath.getRounded(height, gridV));
+            limitTop = Math.max(0, surface.getHeight() - UtilMath.getRoundedC(height, gridV));
         }
         limitLeft = 0;
         limitBottom = 0;
