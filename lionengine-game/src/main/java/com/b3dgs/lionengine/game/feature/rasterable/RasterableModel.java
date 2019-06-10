@@ -120,6 +120,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
         {
             updater = extrp -> updateRasterAnim();
         }
+        frameOffsetX = framesData.getOffsetX();
+        frameOffsetY = framesData.getOffsetY();
 
         raster = rastersAnim.get(0);
     }
