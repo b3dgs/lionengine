@@ -160,6 +160,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         if (enabled)
         {
+            results.clear();
             for (final CollisionCategory category : categories)
             {
                 final CollisionResult result = map.computeCollision(transformable, category);
