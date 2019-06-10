@@ -98,6 +98,9 @@ public final class DrawableTest
         assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
 
         assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));
+
+        assertNotNull(Drawable.loadSpriteDigit(Graphics.createImageBuffer(16, 32), 1, 1, 1));
+        assertNotNull(Drawable.loadSpriteDigit(media, 1, 1, 1));
     }
 
     /**
@@ -125,6 +128,9 @@ public final class DrawableTest
             assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
 
             assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));
+
+            assertNotNull(Drawable.loadSpriteDigit(Graphics.createImageBuffer(16, 32), 1, 1, 1));
+            assertNotNull(Drawable.loadSpriteDigit(media, 1, 1, 1));
         }
         Drawable.setDpi(null);
     }
@@ -152,6 +158,9 @@ public final class DrawableTest
         assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
 
         assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));
+
+        assertNotNull(Drawable.loadSpriteDigit(Graphics.createImageBuffer(16, 32), 1, 1, 1));
+        assertNotNull(Drawable.loadSpriteDigit(media, 1, 1, 1));
 
         Drawable.setDpi(null);
     }

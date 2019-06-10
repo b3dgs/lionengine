@@ -37,11 +37,13 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  * <li>{@link SpriteTiled}</li>
  * <li>{@link SpriteParallaxed}</li>
  * <li>{@link SpriteFont}</li>
+ * <li>{@link SpriteDigit}</li>
  * </ul>
  * <p>
  * This class is Thread-Safe.
  * </p>
  */
+// CHECKSTYLE IGNORE LINE: ClassDataAbstractionCoupling
 public final class Drawable
 {
     /** The current DPI type used (can be <code>null</code> if unused). */
@@ -268,6 +270,42 @@ public final class Drawable
     public static SpriteFont loadSpriteFont(Media media, Media data, int letterWidth, int letterHeight)
     {
         return new SpriteFontImpl(getMediaDpi(media), data, letterWidth, letterHeight);
+    }
+
+    /**
+     * Load a digit based on an image.
+     * <p>
+     * {@link SpriteDigit#load()} must not be called as surface has already been loaded.
+     * </p>
+     * 
+     * @param media The sprite media (must not be <code>null</code>).
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
+     * @param digitNumber The number of digits.
+     * @return The created font sprite.
+     * @throws LionEngineException If an error occurred when creating the font.
+     */
+    public static SpriteDigit loadSpriteDigit(Media media, int tileWidth, int tileHeight, int digitNumber)
+    {
+        return new SpriteDigitImpl(getMediaDpi(media), tileWidth, tileHeight, digitNumber);
+    }
+
+    /**
+     * Load a digit based on a surface.
+     * <p>
+     * {@link SpriteDigit#load()} must not be called as surface has already been loaded.
+     * </p>
+     * 
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
+     * @param digitNumber The number of digits.
+     * @return The created font sprite.
+     * @throws LionEngineException If an error occurred when creating the font.
+     */
+    public static SpriteDigit loadSpriteDigit(ImageBuffer surface, int tileWidth, int tileHeight, int digitNumber)
+    {
+        return new SpriteDigitImpl(surface, tileWidth, tileHeight, digitNumber);
     }
 
     /**
