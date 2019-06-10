@@ -161,7 +161,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
      */
     public void postUpdate()
     {
-        if (current != null)
+        if (current != null && next == null)
         {
             final Class<? extends State> state = current.checkTransitions(last);
             if (state != null)
