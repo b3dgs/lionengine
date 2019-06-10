@@ -144,7 +144,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final int minY = getIndex(transformable.getY() - collidable.getMaxHeight());
         final int maxX = getIndex(transformable.getX() + collidable.getMaxWidth());
         final int maxY = getIndex(transformable.getY() + collidable.getMaxHeight());
-    
+
         for (int x = minX; x <= maxX; x++)
         {
             for (int y = minY; y <= maxY; y++)
