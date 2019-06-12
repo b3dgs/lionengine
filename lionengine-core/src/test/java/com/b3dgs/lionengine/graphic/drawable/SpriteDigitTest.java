@@ -95,8 +95,8 @@ public final class SpriteDigitTest
 
         assertTrue(sprite.isLoaded());
         assertNotNull(sprite.getSurface());
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(1, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
     }
 
     /**
@@ -120,8 +120,8 @@ public final class SpriteDigitTest
 
         assertTrue(sprite.isLoaded());
         assertEquals(surface, sprite.getSurface());
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(1, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
     }
 
     /**
@@ -201,23 +201,23 @@ public final class SpriteDigitTest
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.stretch(100.0, 100.0);
 
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(1, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
 
         sprite.stretch(200.0, 100.0);
 
-        assertEquals(128, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(2, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
 
         sprite.stretch(100.0, 200.0);
 
-        assertEquals(128, sprite.getWidth());
-        assertEquals(64, sprite.getHeight());
+        assertEquals(2, sprite.getWidth());
+        assertEquals(2, sprite.getHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        assertEquals(256, sprite.getWidth());
-        assertEquals(128, sprite.getHeight());
+        assertEquals(4, sprite.getWidth());
+        assertEquals(4, sprite.getHeight());
     }
 
     /**
@@ -253,8 +253,8 @@ public final class SpriteDigitTest
         {
             sprite.rotate(angle);
 
-            assertTrue(sprite.getWidth() >= 64, angle + Constant.SPACE + sprite.getWidth());
-            assertTrue(sprite.getHeight() >= 32, angle + Constant.SPACE + sprite.getHeight());
+            assertTrue(sprite.getWidth() >= 1, angle + Constant.SPACE + sprite.getWidth());
+            assertTrue(sprite.getHeight() >= 1, angle + Constant.SPACE + sprite.getHeight());
         }
     }
 
@@ -306,8 +306,8 @@ public final class SpriteDigitTest
         {
             sprite.setAlpha(alpha);
 
-            assertEquals(64, sprite.getWidth());
-            assertEquals(32, sprite.getHeight());
+            assertEquals(1, sprite.getWidth());
+            assertEquals(1, sprite.getHeight());
         }
     }
 
@@ -342,8 +342,8 @@ public final class SpriteDigitTest
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.setTransparency(ColorRgba.BLACK);
 
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(1, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
     }
 
     /**
@@ -356,8 +356,8 @@ public final class SpriteDigitTest
         sprite.setFade(128, 128);
         sprite.setFade(128, 128);
 
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(1, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
     }
 
     /**
@@ -369,8 +369,8 @@ public final class SpriteDigitTest
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.filter(new FilterBilinear());
 
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
+        assertEquals(1, sprite.getWidth());
+        assertEquals(1, sprite.getHeight());
     }
 
     /**

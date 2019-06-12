@@ -267,13 +267,13 @@ public class SpriteDigitImpl implements SpriteDigit
     @Override
     public int getWidth()
     {
-        return sprite.getWidth();
+        return sprite.getTileWidth() * digitNumber;
     }
 
     @Override
     public int getHeight()
     {
-        return sprite.getHeight();
+        return sprite.getTileHeight();
     }
 
     @Override
