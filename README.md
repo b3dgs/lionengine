@@ -84,7 +84,7 @@ In its current version, the engine greatly simplifies the development of __Platf
 
 ## Download
 
-|[Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)|[Last version](http://www.b3dgs.com/v7/projects/lionengine/files/maven-repository-9.0.0.zip)|
+|[Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)|[Last version](http://www.b3dgs.com/v7/projects/lionengine/files/maven-repository-9.0.1.zip)|
 |---|---|
 
 ## Installation
