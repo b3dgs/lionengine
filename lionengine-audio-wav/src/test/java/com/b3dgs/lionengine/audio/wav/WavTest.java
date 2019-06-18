@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.audio.wav;
 
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -76,8 +77,11 @@ public final class WavTest
         final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));
         try
         {
-            wav.play();
-            Thread.sleep(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                wav.play();
+                Thread.sleep(Constant.HUNDRED);
+            });
         }
         finally
         {
@@ -132,27 +136,18 @@ public final class WavTest
         try
         {
             wav.setVolume(50);
-            wav.play();
-            Thread.sleep(Constant.HUNDRED);
 
-            wav.play(Align.LEFT);
-            Thread.sleep(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                wav.play(Align.LEFT);
+                Thread.sleep(Constant.HUNDRED);
 
-            wav.play(Align.CENTER);
-            Thread.sleep(Constant.HUNDRED);
+                wav.play(Align.CENTER);
+                Thread.sleep(Constant.HUNDRED);
 
-            wav.play(Align.RIGHT);
-            Thread.sleep(Constant.HUNDRED);
-
-            wav.play();
-            Thread.sleep(Constant.THOUSAND);
-
-            wav.play();
-            Thread.sleep(Constant.DECADE);
-
-            wav.play();
-            wav.play(Align.CENTER);
-            Thread.sleep(Constant.HUNDRED);
+                wav.play(Align.RIGHT);
+                Thread.sleep(Constant.HUNDRED);
+            });
         }
         finally
         {

@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.File;
@@ -185,20 +186,23 @@ public final class AdlMidiTest
     @Test
     public void testPlay()
     {
-        AdlMidi adlmidi = createAdlMidi();
+        final AdlMidi adlmidi = createAdlMidi();
         try
         {
             adlmidi.setVolume(30);
             adlmidi.setBank(43);
-            adlmidi.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adlmidi.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adlmidi.pause();
+                adlmidi.pause();
+                UtilTests.pause(Constant.BYTE_4);
 
-            UtilTests.pause(Constant.HUNDRED);
-            adlmidi.resume();
-            UtilTests.pause(Constant.HUNDRED);
+                adlmidi.resume();
+                UtilTests.pause(Constant.BYTE_4);
+            });
 
             assertTrue(adlmidi.getTicks() > -1L, String.valueOf(adlmidi.getTicks()));
         }
@@ -207,23 +211,26 @@ public final class AdlMidiTest
             adlmidi.stop();
         }
 
-        adlmidi = createAdlMidi();
+        final AdlMidi adlmidi2 = createAdlMidi();
         try
         {
-            adlmidi.setVolume(30);
-            adlmidi.play();
+            adlmidi2.setVolume(30);
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adlmidi2.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adlmidi.pause();
+                adlmidi2.pause();
+                UtilTests.pause(Constant.BYTE_4);
 
-            UtilTests.pause(Constant.HUNDRED);
-            adlmidi.resume();
-            UtilTests.pause(Constant.HUNDRED);
+                adlmidi2.resume();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
-            adlmidi.stop();
+            adlmidi2.stop();
         }
     }
 
@@ -236,11 +243,14 @@ public final class AdlMidiTest
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
-            adlmidi.play();
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adlmidi.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adlmidi.play();
-            UtilTests.pause(Constant.HUNDRED);
+                adlmidi.play();
+                UtilTests.pause(Constant.BYTE_4);
+            });
 
             assertTrue(adlmidi.getTicks() > -1L, String.valueOf(adlmidi.getTicks()));
         }
@@ -261,14 +271,17 @@ public final class AdlMidiTest
         {
             adlmidi.setVolume(30);
 
-            adlmidi.play();
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adlmidi.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adlmidi.pause();
-            UtilTests.pause(Constant.BYTE_4);
+                adlmidi.pause();
+                UtilTests.pause(Constant.BYTE_4);
 
-            adlmidi.resume();
-            UtilTests.pause(Constant.HUNDRED);
+                adlmidi.resume();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
@@ -380,8 +393,12 @@ public final class AdlMidiTest
             try
             {
                 adlmidi.setVolume(50);
-                adlmidi.play();
-                UtilTests.pause(Constant.HUNDRED);
+
+                assertTimeout(5000L, () ->
+                {
+                    adlmidi.play();
+                    UtilTests.pause(Constant.HUNDRED);
+                });
             }
             finally
             {

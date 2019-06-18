@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.File;
@@ -184,42 +185,48 @@ public final class AdPlugTest
     @Test
     public void testPlay()
     {
-        AdPlug adplug = createAdPlug();
+        final AdPlug adplug = createAdPlug();
         try
         {
             adplug.setVolume(30);
-            adplug.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adplug.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adplug.pause();
+                adplug.pause();
+                UtilTests.pause(Constant.BYTE_4);
 
-            UtilTests.pause(Constant.HUNDRED);
-            adplug.resume();
-            UtilTests.pause(Constant.HUNDRED);
+                adplug.resume();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
             adplug.stop();
         }
 
-        adplug = createAdPlug();
+        final AdPlug adplug2 = createAdPlug();
         try
         {
-            adplug.setVolume(30);
-            adplug.play();
+            adplug2.setVolume(30);
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adplug2.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adplug.pause();
+                adplug2.pause();
+                UtilTests.pause(Constant.BYTE_4);
+                adplug2.resume();
 
-            UtilTests.pause(Constant.HUNDRED);
-            adplug.resume();
-            UtilTests.pause(Constant.HUNDRED);
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
-            adplug.stop();
+            adplug2.stop();
         }
     }
 
@@ -232,13 +239,14 @@ public final class AdPlugTest
         final AdPlug adplug = createAdPlug();
         try
         {
-            adplug.play();
+            assertTimeout(5000L, () ->
+            {
+                adplug.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            UtilTests.pause(Constant.HUNDRED);
-
-            adplug.play();
-
-            UtilTests.pause(Constant.HUNDRED);
+                adplug.play();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
@@ -256,15 +264,18 @@ public final class AdPlugTest
         try
         {
             adplug.setVolume(30);
-            adplug.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                adplug.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            adplug.pause();
-            UtilTests.pause(Constant.BYTE_4);
-            adplug.resume();
+                adplug.pause();
+                UtilTests.pause(Constant.BYTE_4);
 
-            UtilTests.pause(Constant.HUNDRED);
+                adplug.resume();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
@@ -378,8 +389,12 @@ public final class AdPlugTest
             try
             {
                 adplug.setVolume(50);
-                adplug.play();
-                UtilTests.pause(Constant.HUNDRED);
+
+                assertTimeout(5000L, () ->
+                {
+                    adplug.play();
+                    UtilTests.pause(Constant.HUNDRED);
+                });
             }
             finally
             {

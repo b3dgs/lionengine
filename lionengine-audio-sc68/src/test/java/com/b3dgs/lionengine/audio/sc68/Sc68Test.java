@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.File;
@@ -188,10 +189,14 @@ public final class Sc68Test
         try
         {
             assertTrue(sc68.getTicks() >= -1, String.valueOf(sc68.getTicks()));
-            sc68.setVolume(30);
-            sc68.play();
 
-            UtilTests.pause(Constant.THOUSAND);
+            sc68.setVolume(30);
+
+            assertTimeout(5000L, () ->
+            {
+                sc68.play();
+                UtilTests.pause(Constant.HUNDRED);
+            });
 
             assertTrue(sc68.getTicks() > -1L, String.valueOf(sc68.getTicks()));
         }
@@ -212,13 +217,14 @@ public final class Sc68Test
         final Sc68 sc68 = createSc68();
         try
         {
-            sc68.play();
+            assertTimeout(5000L, () ->
+            {
+                sc68.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            UtilTests.pause(Constant.HUNDRED);
-
-            sc68.play();
-
-            UtilTests.pause(Constant.HUNDRED);
+                sc68.play();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
@@ -232,37 +238,43 @@ public final class Sc68Test
     @Test
     public void testStart()
     {
-        Sc68 sc68 = createSc68();
+        final Sc68 sc68 = createSc68();
         try
         {
             sc68.setVolume(30);
             sc68.setStart(0);
-            sc68.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                sc68.play();
+                UtilTests.pause(Constant.HUNDRED);
+            });
         }
         finally
         {
             sc68.stop();
         }
 
-        sc68 = createSc68();
+        final Sc68 sc682 = createSc68();
         try
         {
-            sc68.setVolume(30);
-            sc68.play();
+            sc682.setVolume(30);
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                sc682.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            sc68.pause();
+                sc682.pause();
 
-            UtilTests.pause(Constant.HUNDRED);
-            sc68.resume();
-            UtilTests.pause(Constant.HUNDRED);
+                UtilTests.pause(Constant.BYTE_4);
+                sc682.resume();
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
-            sc68.stop();
+            sc682.stop();
         }
     }
 
@@ -277,9 +289,12 @@ public final class Sc68Test
         {
             sc68.setVolume(30);
             sc68.setLoop(0, 100);
-            sc68.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                sc68.play();
+                UtilTests.pause(Constant.HUNDRED);
+            });
         }
         finally
         {
@@ -297,15 +312,18 @@ public final class Sc68Test
         try
         {
             sc68.setVolume(30);
-            sc68.play();
 
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                sc68.play();
+                UtilTests.pause(Constant.HUNDRED);
 
-            sc68.pause();
-            UtilTests.pause(Constant.BYTE_4);
-            sc68.resume();
+                sc68.pause();
+                UtilTests.pause(Constant.BYTE_4);
+                sc68.resume();
 
-            UtilTests.pause(Constant.HUNDRED);
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
@@ -325,20 +343,20 @@ public final class Sc68Test
             sc68.setVolume(30);
             sc68.setConfig(false, false);
 
-            sc68.play();
-            UtilTests.pause(Constant.HUNDRED);
+            assertTimeout(5000L, () ->
+            {
+                sc68.play();
+                UtilTests.pause(Constant.BYTE_4);
 
-            sc68.setConfig(false, true);
+                sc68.setConfig(false, true);
+                UtilTests.pause(Constant.BYTE_4);
 
-            UtilTests.pause(Constant.HUNDRED);
+                sc68.setConfig(true, false);
+                UtilTests.pause(Constant.BYTE_4);
 
-            sc68.setConfig(true, false);
-
-            UtilTests.pause(Constant.HUNDRED);
-
-            sc68.setConfig(true, true);
-
-            UtilTests.pause(Constant.HUNDRED);
+                sc68.setConfig(true, true);
+                UtilTests.pause(Constant.BYTE_4);
+            });
         }
         finally
         {
@@ -452,8 +470,12 @@ public final class Sc68Test
             try
             {
                 sc68.setVolume(50);
-                sc68.play();
-                UtilTests.pause(Constant.HUNDRED);
+
+                assertTimeout(5000L, () ->
+                {
+                    sc68.play();
+                    UtilTests.pause(Constant.HUNDRED);
+                });
             }
             finally
             {
