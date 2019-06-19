@@ -230,7 +230,10 @@ final class WavImpl implements Wav
 
             final AudioInputStream input = openStream(media);
             final SourceDataLine dataLine = playback.getDataLine();
-            dataLine.open(input.getFormat());
+            if (!dataLine.isOpen())
+            {
+                dataLine.open(input.getFormat());
+            }
             updateAlignment(dataLine, alignment);
             updateVolume(dataLine, volume);
             dataLine.start();
