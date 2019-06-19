@@ -224,6 +224,18 @@ final class WavImpl implements Wav
      */
     private void play(Media media, Align alignment)
     {
+        if (opened.containsKey(media))
+        {
+            try
+            {
+                opened.get(media).close();
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(exception, media.toString());
+            }
+        }
+
         try (Playback playback = createPlayback(media, alignment, volume))
         {
             opened.put(media, playback);
