@@ -97,7 +97,7 @@ final class WavImpl implements Wav
      * @throws IOException If no audio line available (may be already opened).
      */
     @SuppressWarnings("resource")
-    private static SourceDataLine getDataLine(AudioInputStream input) throws IOException
+    private static synchronized SourceDataLine getDataLine(AudioInputStream input) throws IOException
     {
         final AudioFormat format = input.getFormat();
         try
@@ -115,7 +115,7 @@ final class WavImpl implements Wav
 
             return dataLine;
         }
-        catch (final LineUnavailableException exception)
+        catch (final LineUnavailableException | IllegalArgumentException | IllegalStateException exception)
         {
             throw new IOException(exception);
         }
