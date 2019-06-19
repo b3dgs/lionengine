@@ -25,7 +25,7 @@ package com.b3dgs.lionengine.game;
 public class Alterable
 {
     /** Minimum value. */
-    private static final int MIN = 0;
+    public static final int MIN = 0;
 
     /** Over max. */
     private final boolean overMax;
