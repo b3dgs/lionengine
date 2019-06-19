@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 final class SequenceInterruptMock extends Sequence
 {
     /** Pause time. */
-    public static final long PAUSE_MILLI = 250L;
+    public static final long PAUSE_MILLI = 100L;
 
     /**
      * Constructor.

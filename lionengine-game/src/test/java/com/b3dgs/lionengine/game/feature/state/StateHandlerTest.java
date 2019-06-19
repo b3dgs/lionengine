@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -240,6 +241,7 @@ public final class StateHandlerTest
 
         handler.changeState(StateMock.class);
         handler.postUpdate();
+        handler.postUpdate();
 
         assertNull(old.get());
         assertEquals(StateMock.class, next.get());
@@ -252,6 +254,19 @@ public final class StateHandlerTest
 
         assertEquals(StateMock.class, old.get());
         assertEquals(StateMock.class, next.get());
+    }
+
+    /**
+     * Test last state instance.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testLastInstance() throws Exception
+    {
+        final StateLast state = UtilReflection.create(StateLast.class, new Class[] {});
+        state.enter();
+        state.update(1.0);
     }
 
     /**

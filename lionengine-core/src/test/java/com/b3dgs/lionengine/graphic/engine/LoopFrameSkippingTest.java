@@ -188,7 +188,7 @@ public final class LoopFrameSkippingTest
         final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
 
         final long maxFrameTime = Math.round(LoopFrameSkipping.MAX_FRAME_TIME_NANO / Constant.NANO_TO_MILLI);
-        pause.set(maxFrameTime * 2);
+        pause.set(maxFrameTime + 50L);
 
         final Thread thread = getTask(screen);
         thread.start();

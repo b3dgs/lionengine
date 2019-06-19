@@ -167,8 +167,11 @@ public final class MediasTest
         Medias.setLoadFromJar(MediasTest.class);
 
         final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-        final String prefix = Medias.getResourcesLoader().get().getPackage().getName().replace(Constant.DOT,
-                                                                                               Constant.SLASH);
+        final String prefix = Medias.getResourcesLoader()
+                                    .get()
+                                    .getPackage()
+                                    .getName()
+                                    .replace(Constant.DOT, Constant.SLASH);
         final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
         final int jarSeparatorIndex = jarPath.indexOf(prefix);
         final File jar = Medias.getJarResources();
@@ -196,8 +199,11 @@ public final class MediasTest
         Medias.setLoadFromJar(MediasTest.class);
 
         final File folder = Medias.create(com.b3dgs.lionengine.Constant.EMPTY_STRING).getFile();
-        final String prefix = Medias.getResourcesLoader().get().getPackage().getName().replace(Constant.DOT,
-                                                                                               Constant.SLASH);
+        final String prefix = Medias.getResourcesLoader()
+                                    .get()
+                                    .getPackage()
+                                    .getName()
+                                    .replace(Constant.DOT, Constant.SLASH);
         final String jarPath = folder.getPath().replace(File.separator, Constant.SLASH);
         final int jarSeparatorIndex = jarPath.indexOf(prefix);
         final String resourcesPrefix = Medias.getJarResourcesPrefix();

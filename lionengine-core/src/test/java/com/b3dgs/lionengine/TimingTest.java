@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 public final class TimingTest
 {
     /** Pause time value. */
-    private static final long PAUSE = 50L;
+    private static final long PAUSE = 30L;
 
     /** Timing instance. */
     private final Timing timing = new Timing();

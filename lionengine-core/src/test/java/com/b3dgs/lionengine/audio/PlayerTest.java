@@ -63,8 +63,9 @@ public final class PlayerTest
         player.play();
 
         final String mediaPath = media.getFile().getAbsolutePath();
-        final String playedPrefix = player.played.get().substring(player.played.get().lastIndexOf(File.separator) + 1,
-                                                                  player.played.get().lastIndexOf(Constant.DOT));
+        final String playedPrefix = player.played.get()
+                                                 .substring(player.played.get().lastIndexOf(File.separator) + 1,
+                                                            player.played.get().lastIndexOf(Constant.DOT));
         final String mediaPrefix = mediaPath.substring(mediaPath.lastIndexOf(File.separator) + 1,
                                                        mediaPath.lastIndexOf(Constant.DOT));
 
@@ -88,8 +89,9 @@ public final class PlayerTest
         player.play();
 
         final String mediaPath = media.getFile().getAbsolutePath();
-        final String playedPrefix = player.played.get().substring(player.played.get().lastIndexOf(File.separator) + 1,
-                                                                  player.played.get().lastIndexOf(Constant.DOT));
+        final String playedPrefix = player.played.get()
+                                                 .substring(player.played.get().lastIndexOf(File.separator) + 1,
+                                                            player.played.get().lastIndexOf(Constant.DOT));
         final String mediaPrefix = mediaPath.substring(mediaPath.lastIndexOf(File.separator) + 1,
                                                        mediaPath.lastIndexOf(Constant.DOT));
 

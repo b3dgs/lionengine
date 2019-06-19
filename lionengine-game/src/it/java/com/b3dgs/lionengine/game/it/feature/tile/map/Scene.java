@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
@@ -62,9 +62,9 @@ class Scene extends Sequence
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Scrolling speed. */
-    private final double speed = 50;
+    private final double speed = 10;
     /** Test timing. */
-    private final Timing timing = new Timing();
+    private final Tick tick = new Tick();
 
     /**
      * Constructor.
@@ -119,13 +119,14 @@ class Scene extends Sequence
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
-        timing.start();
+        tick.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timing.elapsed(1000L))
+        tick.update(extrp);
+        if (tick.elapsed(20L))
         {
             end();
         }

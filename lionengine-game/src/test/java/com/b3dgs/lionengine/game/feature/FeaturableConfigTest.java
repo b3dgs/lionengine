@@ -16,12 +16,15 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,6 +34,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Test {@link FeaturableConfig}.
@@ -127,6 +131,44 @@ public final class FeaturableConfigTest
     public void testNullSetup()
     {
         assertThrows(() -> new FeaturableConfig("class", null), "Unexpected null argument !");
+    }
+
+    /**
+     * Test with cached feature class.
+     */
+    @Test
+    public void testGetFeaturesCache()
+    {
+        final Xml root = new Xml("test");
+        root.createChild(FeaturableConfig.NODE_FEATURE).setText(FeatureModel.class.getName());
+        final Media media = Medias.create("object.xml");
+        root.save(media);
+
+        final ClassLoader loader = ClassLoader.getSystemClassLoader();
+        final Services services = new Services();
+        final Setup setup = new Setup(media);
+
+        final List<Feature> a = FeaturableConfig.getFeatures(loader, services, setup);
+        final List<Feature> b = FeaturableConfig.getFeatures(loader, services, setup);
+
+        assertNotEquals(a.get(0), b.get(0));
+    }
+
+    /**
+     * Test with unknown feature class.
+     */
+    @Test
+    public void testGetFeaturesUnknown()
+    {
+        final Xml root = new Xml("test");
+        root.createChild(FeaturableConfig.NODE_FEATURE).setText(Feature.class.getName());
+        final Media media = Medias.create("object.xml");
+        root.save(media);
+
+        assertCause(() -> FeaturableConfig.getFeatures(ClassLoader.getSystemClassLoader(),
+                                                       new Services(),
+                                                       new Setup(media)),
+                    NoSuchMethodException.class);
     }
 
     /**

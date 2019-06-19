@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.awt.Mouse;
 import com.b3dgs.lionengine.awt.MouseAwt;
 import com.b3dgs.lionengine.game.Cursor;
@@ -70,7 +70,7 @@ class Scene extends Sequence
     private final MapTile map = services.create(MapTileGame.class);
     private final Cursor cursor = services.create(Cursor.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
-    private final Timing timing = new Timing();
+    private final Tick tick = new Tick();
     private Transformable transformable;
 
     private int click;
@@ -153,7 +153,7 @@ class Scene extends Sequence
         handler.add(peon);
         transformable = peon.getFeature(Transformable.class);
 
-        timing.start();
+        tick.start();
     }
 
     @Override
@@ -162,8 +162,9 @@ class Scene extends Sequence
         mouse.update(extrp);
         cursor.update(extrp);
         handler.update(extrp);
+        tick.update(extrp);
 
-        if (timing.elapsed(1000L))
+        if (tick.elapsed(25L))
         {
             end();
         }

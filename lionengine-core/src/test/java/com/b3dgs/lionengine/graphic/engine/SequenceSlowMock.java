@@ -59,7 +59,7 @@ final class SequenceSlowMock extends Sequence
     @Override
     public void update(double extrp)
     {
-        UtilTests.pause(Constant.THOUSAND + Constant.HUNDRED);
+        UtilTests.pause(Constant.HUNDRED);
         notifyClosed();
     }
 

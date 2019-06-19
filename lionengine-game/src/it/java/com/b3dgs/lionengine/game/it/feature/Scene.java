@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.game.feature.SequenceGame;
 
 /**
@@ -34,7 +34,7 @@ class Scene extends SequenceGame
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    private final Timing timing = new Timing();
+    private final Tick tick = new Tick();
 
     /**
      * Constructor.
@@ -64,14 +64,15 @@ class Scene extends SequenceGame
                      "[world.lvl] Error on loading from file !");
 
         world.loadFromFile(Medias.create("world.lvl"));
-        timing.start();
+        tick.start();
     }
 
     @Override
     public void update(double extrp)
     {
         super.update(extrp);
-        if (timing.elapsed(200L))
+        tick.update(extrp);
+        if (tick.elapsed(10L))
         {
             end();
         }

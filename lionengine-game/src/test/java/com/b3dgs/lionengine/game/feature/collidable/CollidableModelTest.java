@@ -283,11 +283,13 @@ public final class CollidableModelTest
         collidable1.setEnabled(false, collision);
         collidable1.forceUpdate();
 
+        assertFalse(collidable1.isEnabled(collision));
         assertTrue(collidable1.collide(collidable1).isEmpty());
 
         collidable1.setEnabled(true, collision);
         collidable1.forceUpdate();
 
+        assertTrue(collidable1.isEnabled(collision));
         assertFalse(collidable1.collide(collidable1).isEmpty());
     }
 

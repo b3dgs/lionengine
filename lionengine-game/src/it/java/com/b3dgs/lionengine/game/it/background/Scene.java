@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.it.background;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.background.BackgroundAbstract;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -41,7 +41,7 @@ class Scene extends Sequence
     /** Camera y. */
     private double y;
     /** Count. */
-    private final Timing timing = new Timing();
+    private final Tick tick = new Tick();
 
     /**
      * Constructor.
@@ -83,17 +83,18 @@ class Scene extends Sequence
     public void load()
     {
         y = 230;
-        timing.start();
+        tick.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        y = UtilMath.wrapDouble(y + 10, 0.0, 360.0);
+        y = UtilMath.wrapDouble(y + 20, 0.0, 360.0);
         final double dy = UtilMath.sin(y) * 100 + 100;
-        background.update(extrp, 5.0, dy);
-        foreground.update(extrp, 5.0, dy);
-        if (timing.elapsed(1000L))
+        background.update(extrp, 10.0, dy);
+        foreground.update(extrp, 10.0, dy);
+        tick.update(extrp);
+        if (tick.elapsed(20L))
         {
             end();
         }

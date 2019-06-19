@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
@@ -22,9 +22,9 @@ import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test {@link UpdatableVoid}.
+ * Test {@link TileCollidableListenerVoid}.
  */
-public final class UpdatableVoidTest
+public final class TileCollidableListenerVoidTest
 {
     /**
      * Test the constructor.
@@ -32,7 +32,7 @@ public final class UpdatableVoidTest
     @Test
     public void testConstructorPrivate()
     {
-        assertPrivateConstructor(UpdatableVoid.class);
+        assertPrivateConstructor(TileCollidableListenerVoid.class);
     }
 
     /**
@@ -41,15 +41,15 @@ public final class UpdatableVoidTest
     @Test
     public void testGetInstance()
     {
-        assertNotNull(UpdatableVoid.getInstance());
+        assertNotNull(TileCollidableListenerVoid.getInstance());
     }
 
     /**
-     * Test the update.
+     * Test the notify.
      */
     @Test
-    public void testUpdate()
+    public void testNotify()
     {
-        UpdatableVoid.getInstance().update(1.0);
+        TileCollidableListenerVoid.getInstance().notifyTileCollided(null, null);
     }
 }

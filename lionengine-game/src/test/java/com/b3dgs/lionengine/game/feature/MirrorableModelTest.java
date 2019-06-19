@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -65,5 +66,6 @@ public final class MirrorableModelTest
 
         assertEquals(Mirror.VERTICAL, mirrorable.getMirror());
         assertTrue(mirrorable.is(Mirror.VERTICAL));
+        assertFalse(mirrorable.is(Mirror.HORIZONTAL));
     }
 }

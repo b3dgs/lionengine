@@ -96,6 +96,18 @@ public final class FactoryTest
      * Test the object creation with features.
      */
     @Test
+    public void testCache()
+    {
+        factory.createCache(Medias.create("state"), 2);
+
+        final Featurable featurable = factory.create(Medias.create("object_features.xml"));
+        assertNotEquals(featurable, factory.create(Medias.create("object_features.xml")));
+    }
+
+    /**
+     * Test the object creation with features.
+     */
+    @Test
     public void testCreateFeatures()
     {
         final Featurable featurable = factory.create(Medias.create("object_features.xml"));

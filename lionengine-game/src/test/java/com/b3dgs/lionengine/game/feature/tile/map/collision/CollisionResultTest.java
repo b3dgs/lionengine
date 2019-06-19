@@ -57,6 +57,43 @@ public final class CollisionResultTest
         assertEquals(tile, result.getTile());
         assertTrue(result.startWithX("formula"));
         assertFalse(result.startWithY("formulaZ"));
+        assertTrue(result.contains("formula"));
+        assertFalse(result.contains("formulaZ"));
+    }
+
+    /**
+     * Test the collision no result.
+     */
+    @Test
+    public void testNoResult()
+    {
+        final Tile tile = new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1);
+        CollisionResult result = new CollisionResult(null, null, tile, null, null);
+
+        assertFalse(result.startWithX("formula"));
+        assertFalse(result.startWithY("formulaZ"));
+
+        assertFalse(result.contains("formula"));
+
+        result = new CollisionResult(null, null, tile, formulaX, null);
+
+        assertTrue(result.startWithX("formula"));
+        assertFalse(result.startWithX("formulaZ"));
+        assertFalse(result.startWithY("formula"));
+        assertFalse(result.startWithY("formulaZ"));
+
+        assertTrue(result.contains("formula"));
+        assertFalse(result.contains("formulaZ"));
+
+        result = new CollisionResult(null, null, tile, null, formulaY);
+
+        assertFalse(result.startWithX("formula"));
+        assertFalse(result.startWithX("formulaZ"));
+        assertTrue(result.startWithY("formula"));
+        assertFalse(result.startWithY("formulaZ"));
+
+        assertTrue(result.contains("formula"));
+        assertFalse(result.contains("formulaZ"));
     }
 
     /**

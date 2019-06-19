@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.EngineMock;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
@@ -271,8 +272,7 @@ public final class LoaderTest
         thread.interrupt();
 
         assertTimeout(SequenceInterruptMock.PAUSE_MILLI * 2L, semaphore::acquire);
-        assertEquals("com.b3dgs.lionengine.LionEngineException: Task stopped before ended !",
-                     exception.get().toString());
+        assertEquals(LionEngineException.class.getName() + ": Task stopped before ended !", exception.get().toString());
     }
 
     /**
@@ -408,13 +408,13 @@ public final class LoaderTest
             semaphore.release();
         });
         thread.start();
-        UtilTests.pause(ScreenMock.READY_TIMEOUT / 2L);
+        UtilTests.pause(ScreenMock.READY_TIMEOUT / 2);
         thread.interrupt();
 
         try
         {
-            assertTimeout(ScreenMock.READY_TIMEOUT * 2L, semaphore::acquire);
-            assertEquals("com.b3dgs.lionengine.LionEngineException: Unable to get screen ready !",
+            assertTimeout(ScreenMock.READY_TIMEOUT * 2, semaphore::acquire);
+            assertEquals(LionEngineException.class.getName() + ": Unable to get screen ready !",
                          exception.get().toString());
         }
         finally
@@ -446,12 +446,12 @@ public final class LoaderTest
         final Thread thread = new Thread(() -> Loader.start(config, SequenceEngineTerminateMock.class).await());
         thread.start();
 
-        assertTimeout(1000L, () -> thread.join(500L));
+        assertTimeout(1000L, () -> thread.join(50L));
         assertTrue(thread.isAlive());
 
         SequenceEngineTerminateMock.CLOSE.set(true);
 
-        assertTimeout(1000L, () -> thread.join(500L));
+        assertTimeout(1000L, () -> thread.join(50L));
         assertFalse(thread.isAlive());
     }
 

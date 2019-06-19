@@ -160,12 +160,12 @@ class Scene extends Sequence
         handler.update(extrp);
         text.update(camera);
         tick.update(extrp);
-        if (!changed && tick.elapsedTime(getRate(), 200L))
+        if (!changed && tick.elapsed(15L))
         {
             peon2.getFeature(Pathfindable.class).setDestination(23, 14);
             changed = true;
         }
-        if (tick.elapsedTime(getRate(), 600L))
+        if (tick.elapsed(40L))
         {
             end();
         }

@@ -87,8 +87,8 @@ public final class CollisionFunctionConfigTest
     public void testFunctionUnknown()
     {
         final Xml root = new Xml("function");
-        root.createChild(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE,
-                                                                       CollisionFunctionType.values()[1].name());
+        root.createChild(CollisionFunctionConfig.FUNCTION)
+            .writeString(CollisionFunctionConfig.TYPE, CollisionFunctionType.values()[1].name());
 
         assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown type: FAIL");
     }

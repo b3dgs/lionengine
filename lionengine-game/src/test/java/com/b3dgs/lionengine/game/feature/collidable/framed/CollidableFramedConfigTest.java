@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.collidable.framed;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
@@ -87,6 +88,36 @@ public final class CollidableFramedConfigTest
         assertEquals(collisions.values().iterator().next(), config.getCollisions());
         assertEquals(collisions.get(Integer.valueOf(1)), config.getCollision(Integer.valueOf(1)));
         assertTrue(config.getCollision(Integer.valueOf(2)).isEmpty());
+        assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test exports imports with number.
+     */
+    @Test
+    public void testExportsImportsNumber()
+    {
+        final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
+        collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("coll%anim%1", 0, 1, 2, 3, true)));
+
+        final Xml root = new Xml("test");
+        final Animation animation = new Animation("anim", 1, 2, 3.0, false, true);
+        AnimationConfig.exports(root, animation);
+
+        final Xml framed = root.getChild(AnimationConfig.ANIMATION);
+        CollidableFramedConfig.exports(framed, collisions);
+        framed.getChild(CollidableFramedConfig.NODE_COLLISION_FRAMED)
+              .removeAttribute(CollidableFramedConfig.ATT_NUMBER);
+        framed.getChild(CollidableFramedConfig.NODE_COLLISION_FRAMED)
+              .writeString(CollidableFramedConfig.ATT_PREFIX, "coll");
+
+        final Media media = Medias.create("object.xml");
+        root.save(media);
+
+        final CollidableFramedConfig imported = CollidableFramedConfig.imports(new Configurer(media));
+
+        assertEquals(collisions.get(Integer.valueOf(1)), imported.getCollision(Integer.valueOf(1)));
+        assertFalse(imported.getCollision(Integer.valueOf(2)).isEmpty());
         assertTrue(media.getFile().delete());
     }
 

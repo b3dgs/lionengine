@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -42,8 +42,8 @@ public class SceneMapTileRastered extends Sequence
     private final MapTile map = services.create(MapTileGame.class);
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
     private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel(services));
-    private final Timing timingRaster = new Timing();
-    private final Timing timing = new Timing();
+    private final Tick tickRaster = new Tick();
+    private final Tick tick = new Tick();
 
     private boolean useRaster;
 
@@ -66,14 +66,16 @@ public class SceneMapTileRastered extends Sequence
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
         camera.setLimits(map);
 
-        timingRaster.start();
-        timing.start();
+        tickRaster.start();
+        tick.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timing.isStarted() && timingRaster.elapsed(150))
+        tick.update(extrp);
+        tickRaster.update(extrp);
+        if (tick.isStarted() && tickRaster.elapsed(10L))
         {
             useRaster = !useRaster;
             if (useRaster)
@@ -84,9 +86,9 @@ public class SceneMapTileRastered extends Sequence
             {
                 mapViewer.removeRenderer(raster);
             }
-            timingRaster.restart();
+            tickRaster.restart();
         }
-        if (timing.elapsed(1000L))
+        if (tick.elapsed(20L))
         {
             end();
         }

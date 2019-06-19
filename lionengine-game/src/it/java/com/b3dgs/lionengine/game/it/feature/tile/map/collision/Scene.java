@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.awt.Keyboard;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.CameraTracker;
@@ -56,8 +56,8 @@ class Scene extends Sequence
 
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
-    private final Timing clear = new Timing();
-    private final Timing timing = new Timing();
+    private final Tick clear = new Tick();
+    private final Tick tick = new Tick();
 
     private MapTileCollisionRenderer mapCollisionRenderer;
 
@@ -114,20 +114,22 @@ class Scene extends Sequence
         handler.add(tracker);
 
         clear.start();
-        timing.start();
+        tick.start();
     }
 
     @Override
     public void update(double extrp)
     {
         handler.update(extrp);
+        tick.update(extrp);
+        clear.update(extrp);
 
-        if (clear.elapsed(500L))
+        if (clear.elapsed(25L))
         {
             mapCollisionRenderer.clearCollisionDraw();
             clear.stop();
         }
-        if (timing.elapsed(1000L))
+        if (tick.elapsed(50L))
         {
             end();
         }

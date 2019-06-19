@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.graphic.engine.Sequence;
  */
 public class SceneRasterable extends Sequence
 {
-    private final Timing timing = new Timing();
+    private final Tick tick = new Tick();
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
     private final Handler handler = services.create(Handler.class);
@@ -83,7 +83,7 @@ public class SceneRasterable extends Sequence
         featurable.addFeature(rasterable);
         featurable.addFeature(new RefreshableModel(extrp ->
         {
-            transformable.setLocationY(UtilMath.sin(count * 3) * 240);
+            transformable.setLocationY(UtilMath.sin(count) * 240);
             surface.setLocation(camera, transformable);
             rasterable.update(extrp);
             surface.update(extrp);
@@ -102,15 +102,16 @@ public class SceneRasterable extends Sequence
         add(new SetupSurfaceRastered(Medias.create("object3.xml")), 128);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
 
-        timing.start();
+        tick.start();
     }
 
     @Override
     public void update(double extrp)
     {
         handler.update(extrp);
-        count++;
-        if (timing.elapsed(1000L))
+        tick.update(extrp);
+        count += 6;
+        if (tick.elapsed(20L))
         {
             end();
         }

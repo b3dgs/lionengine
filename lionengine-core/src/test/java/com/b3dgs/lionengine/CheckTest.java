@@ -59,7 +59,7 @@ public final class CheckTest
     @Test
     public void testSuperiorOrEqual()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             Check.superiorOrEqual(i, i);
             Check.superiorOrEqual(i + 1, i);
@@ -75,7 +75,7 @@ public final class CheckTest
     @Test
     public void testSuperiorOrEqualFail()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final int a = i;
             final int b = i + 1;
@@ -92,7 +92,7 @@ public final class CheckTest
     public void testSuperiorOrEqualDouble()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double value = i * factor;
 
@@ -111,7 +111,7 @@ public final class CheckTest
     public void testSuperiorOrEqualDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double a = i * factor;
             final double b = a + Double.MIN_VALUE;
@@ -127,7 +127,7 @@ public final class CheckTest
     @Test
     public void testSuperiorStrict()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             Check.superiorStrict(i + 1, i);
         }
@@ -140,7 +140,7 @@ public final class CheckTest
     @Test
     public void testSuperiorStrictFail()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final int a = i;
             final int b = i + 1;
@@ -157,7 +157,7 @@ public final class CheckTest
     public void testSuperiorStrictDouble()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double value = i * factor;
 
@@ -173,7 +173,7 @@ public final class CheckTest
     public void testSuperiorStrictDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double a = i * factor;
             final double b = a + Double.MIN_VALUE;
@@ -189,7 +189,7 @@ public final class CheckTest
     @Test
     public void testInferiorOrEqual()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             Check.inferiorOrEqual(i, i);
             Check.inferiorOrEqual(i, i + 1);
@@ -205,7 +205,7 @@ public final class CheckTest
     @Test
     public void testInferiorOrEqualFail()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final int a = i + 1;
             final int b = i;
@@ -222,7 +222,7 @@ public final class CheckTest
     public void testInferiorOrEqualDouble()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double value = i * factor;
 
@@ -241,7 +241,7 @@ public final class CheckTest
     public void testInferiorOrEqualDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double a = i * factor + Double.MIN_VALUE;
             final double b = i * factor;
@@ -257,7 +257,7 @@ public final class CheckTest
     @Test
     public void testInferiorStrict()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             Check.inferiorStrict(i, i + 1);
         }
@@ -270,7 +270,7 @@ public final class CheckTest
     @Test
     public void testInferiorStrictFail()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final int a = i + 1;
             final int b = i;
@@ -287,7 +287,7 @@ public final class CheckTest
     public void testInferiorStrictDouble()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double value = i * factor;
 
@@ -303,7 +303,7 @@ public final class CheckTest
     public void testInferiorStrictDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final double a = i * factor + Double.MIN_VALUE;
             final double b = i * factor;
@@ -319,9 +319,9 @@ public final class CheckTest
     @Test
     public void testDifferent()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
-            for (int j = -Constant.THOUSAND; j < Constant.THOUSAND; j++)
+            for (int j = -Constant.HUNDRED; j < Constant.HUNDRED; j++)
             {
                 if (i != j)
                 {
@@ -337,9 +337,9 @@ public final class CheckTest
     @Test
     public void testDifferentDouble()
     {
-        for (double i = -Constant.THOUSAND; Double.compare(i, Constant.THOUSAND) < 0; i += 0.9)
+        for (double i = -Constant.HUNDRED; Double.compare(i, Constant.HUNDRED) < 0; i += 0.9)
         {
-            for (double j = -Constant.THOUSAND; Double.compare(j, Constant.THOUSAND) < 0; j += 0.9)
+            for (double j = -Constant.HUNDRED; Double.compare(j, Constant.HUNDRED) < 0; j += 0.9)
             {
                 if (Double.compare(i, j) != 0)
                 {
@@ -355,7 +355,7 @@ public final class CheckTest
     @Test
     public void testDifferentFail()
     {
-        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
             final int a = i;
             assertThrows(() -> Check.different(a, a), Check.ERROR_ARGUMENT + a + Check.ERROR_DIFFERENT + a);
@@ -370,7 +370,7 @@ public final class CheckTest
     @Test
     public void testDifferentDoubleFail()
     {
-        for (double i = -Constant.THOUSAND; Double.compare(i, Constant.THOUSAND) < 0; i += 0.9)
+        for (double i = -Constant.HUNDRED; Double.compare(i, Constant.HUNDRED) < 0; i += 0.9)
         {
             final double a = i;
             assertThrows(() -> Check.different(a, a), Check.ERROR_ARGUMENT + a + Check.ERROR_DIFFERENT + a);
