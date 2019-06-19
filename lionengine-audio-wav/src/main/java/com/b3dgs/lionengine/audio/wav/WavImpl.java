@@ -53,12 +53,10 @@ final class WavImpl implements Wav
      * Play a sound.
      * 
      * @param media The audio media.
-     * @param alignment The alignment type.
-     * @param volume The audio volume value.
      * @return The created and opened playback ready to be played.
      * @throws IOException If playback error.
      */
-    private static Playback createPlayback(Media media, Align alignment, int volume) throws IOException
+    private static Playback createPlayback(Media media) throws IOException
     {
         final AudioInputStream input = openStream(media);
         final SourceDataLine dataLine = getDataLine(input);
@@ -236,7 +234,7 @@ final class WavImpl implements Wav
             }
         }
 
-        try (Playback playback = createPlayback(media, alignment, volume))
+        try (Playback playback = createPlayback(media))
         {
             opened.put(media, playback);
 

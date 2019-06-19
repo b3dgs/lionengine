@@ -78,7 +78,7 @@ public final class WavTest
         try
         {
             wav.play();
-            Thread.sleep(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {
