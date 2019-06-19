@@ -12,13 +12,13 @@
     <name>LionEngine Audio Wav</name>
     <properties>
         <radial.base-package>com.b3dgs.lionengine.audio</radial.base-package>
-        <sonar.skip>true</sonar.skip>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
