@@ -154,6 +154,28 @@ final class WavImpl implements Wav
     }
 
     /**
+     * Open audio line.
+     * 
+     * @param dataLine The data line.
+     * @param input The input stream.
+     * @throws LineUnavailableException If error.
+     */
+    private static void openLine(SourceDataLine dataLine, AudioInputStream input) throws LineUnavailableException
+    {
+        if (!dataLine.isOpen())
+        {
+            try
+            {
+                dataLine.open(input.getFormat());
+            }
+            catch (final IllegalStateException exception)
+            {
+                Verbose.exception(exception);
+            }
+        }
+    }
+
+    /**
      * Read the full sound and play it by buffer.
      * 
      * @param input The audio input.
@@ -240,17 +262,7 @@ final class WavImpl implements Wav
 
             final AudioInputStream input = openStream(media);
             final SourceDataLine dataLine = playback.getDataLine();
-            if (!dataLine.isOpen())
-            {
-                try
-                {
-                    dataLine.open(input.getFormat());
-                }
-                catch (final IllegalStateException exception)
-                {
-                    Verbose.exception(exception);
-                }
-            }
+            openLine(dataLine, input);
             updateAlignment(dataLine, alignment);
             updateVolume(dataLine, volume);
             dataLine.start();
