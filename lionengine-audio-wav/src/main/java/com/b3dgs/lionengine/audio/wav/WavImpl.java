@@ -244,7 +244,14 @@ final class WavImpl implements Wav
             final SourceDataLine dataLine = playback.getDataLine();
             if (!dataLine.isOpen())
             {
-                dataLine.open(input.getFormat());
+                try
+                {
+                    dataLine.open(input.getFormat());
+                }
+                catch (final IllegalStateException exception)
+                {
+                    Verbose.exception(exception);
+                }
             }
             updateAlignment(dataLine, alignment);
             updateVolume(dataLine, volume);
