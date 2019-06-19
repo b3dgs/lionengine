@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
@@ -123,11 +124,9 @@ public final class WavTest
 
     /**
      * Test functions.
-     * 
-     * @throws InterruptedException If error.
      */
     @Test
-    public void testWav() throws InterruptedException
+    public void testWav()
     {
         final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
         try
@@ -135,13 +134,13 @@ public final class WavTest
             wav.setVolume(50);
 
             wav.play(Align.LEFT);
-            Thread.sleep(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
 
             wav.play(Align.CENTER);
-            Thread.sleep(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
 
             wav.play(Align.RIGHT);
-            Thread.sleep(Constant.HUNDRED);
+            UtilTests.pause(Constant.HUNDRED);
         }
         finally
         {

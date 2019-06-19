@@ -62,8 +62,6 @@ final class WavImpl implements Wav
     {
         final AudioInputStream input = openStream(media);
         final SourceDataLine dataLine = getDataLine(input);
-        updateAlignment(dataLine, alignment);
-        updateVolume(dataLine, volume);
 
         return new Playback(input, dataLine);
     }
@@ -95,26 +93,18 @@ final class WavImpl implements Wav
      * @return The audio source data.
      * @throws IOException If no audio line available (may be already opened).
      */
-    @SuppressWarnings("resource")
     private static SourceDataLine getDataLine(AudioInputStream input) throws IOException
     {
         final AudioFormat format = input.getFormat();
         try
         {
-            final SourceDataLine dataLine;
             if (WavFormat.mixer != null)
             {
-                dataLine = AudioSystem.getSourceDataLine(format, WavFormat.mixer);
+                return AudioSystem.getSourceDataLine(format, WavFormat.mixer);
             }
-            else
-            {
-                dataLine = AudioSystem.getSourceDataLine(format);
-            }
-            dataLine.open(format);
-
-            return dataLine;
+            return AudioSystem.getSourceDataLine(format);
         }
-        catch (final LineUnavailableException | IllegalArgumentException | IllegalStateException exception)
+        catch (final LineUnavailableException | IllegalArgumentException exception)
         {
             throw new IOException(exception);
         }
@@ -205,7 +195,7 @@ final class WavImpl implements Wav
     /** Sound file reference. */
     private final Media media;
     /** Volume used. */
-    private int volume = PlayerAbstract.VOLUME_MAX;
+    private volatile int volume = PlayerAbstract.VOLUME_MAX;
     /** Exception flag. */
     private Exception last;
 
@@ -236,15 +226,13 @@ final class WavImpl implements Wav
     {
         try (Playback playback = createPlayback(media, alignment, volume))
         {
-            if (opened.containsKey(media))
-            {
-                opened.get(media).close();
-            }
             opened.put(media, playback);
 
             final AudioInputStream input = openStream(media);
             final SourceDataLine dataLine = playback.getDataLine();
             dataLine.open(input.getFormat());
+            updateAlignment(dataLine, alignment);
+            updateVolume(dataLine, volume);
             dataLine.start();
 
             readSound(input, dataLine);
