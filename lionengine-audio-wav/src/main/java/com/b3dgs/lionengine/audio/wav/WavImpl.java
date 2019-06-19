@@ -62,7 +62,6 @@ final class WavImpl implements Wav
     {
         final AudioInputStream input = openStream(media);
         final SourceDataLine dataLine = getDataLine(input);
-        dataLine.start();
         updateAlignment(dataLine, alignment);
         updateVolume(dataLine, volume);
 
@@ -97,7 +96,7 @@ final class WavImpl implements Wav
      * @throws IOException If no audio line available (may be already opened).
      */
     @SuppressWarnings("resource")
-    private static synchronized SourceDataLine getDataLine(AudioInputStream input) throws IOException
+    private static SourceDataLine getDataLine(AudioInputStream input) throws IOException
     {
         final AudioFormat format = input.getFormat();
         try
@@ -208,7 +207,7 @@ final class WavImpl implements Wav
     /** Volume used. */
     private int volume = PlayerAbstract.VOLUME_MAX;
     /** Exception flag. */
-    private IOException last;
+    private Exception last;
 
     /**
      * Internal constructor.
@@ -245,11 +244,13 @@ final class WavImpl implements Wav
 
             final AudioInputStream input = openStream(media);
             final SourceDataLine dataLine = playback.getDataLine();
+            dataLine.open(input.getFormat());
             dataLine.start();
+
             readSound(input, dataLine);
             close(input, dataLine);
         }
-        catch (final IOException exception)
+        catch (final IOException | LineUnavailableException exception)
         {
             if (last == null || !exception.getMessage().equals(last.getMessage()))
             {
@@ -270,7 +271,7 @@ final class WavImpl implements Wav
     }
 
     @Override
-    public void play(final Align alignment)
+    public void play(Align alignment)
     {
         executor.execute(() -> play(media, alignment));
     }

@@ -136,15 +136,12 @@ public final class WavTest
 
             wav.play(Align.LEFT);
             Thread.sleep(Constant.HUNDRED);
-            wav.stop();
 
             wav.play(Align.CENTER);
             Thread.sleep(Constant.HUNDRED);
-            wav.stop();
 
             wav.play(Align.RIGHT);
             Thread.sleep(Constant.HUNDRED);
-            wav.stop();
         }
         finally
         {
