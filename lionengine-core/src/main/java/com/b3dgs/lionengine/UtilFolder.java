@@ -58,8 +58,7 @@ public final class UtilFolder
     }
 
     /**
-     * Construct a usable path using a list of string, automatically separated by the portable separator. The
-     * constructed path will use local system file separator.
+     * Construct a usable path using a list of string, automatically separated by the portable separator.
      * 
      * @param path The list of directories, if has, and file (must not be <code>null</code>).
      * @return The full media path.
@@ -67,7 +66,7 @@ public final class UtilFolder
      */
     public static String getPath(String... path)
     {
-        return getPathSeparator(File.separator, path);
+        return getPathSeparator(Constant.SLASH, path);
     }
 
     /**

@@ -132,10 +132,6 @@ final class MediaDefault implements Media
         {
             parent = path.substring(0, index);
         }
-        else if (path.lastIndexOf(File.separator) > -1)
-        {
-            parent = path.substring(0, path.lastIndexOf(File.separator));
-        }
         else
         {
             parent = NO_PARENT;
@@ -153,7 +149,7 @@ final class MediaDefault implements Media
         final String prefix;
         if (loader.isPresent())
         {
-            prefix = loader.get().getPackage().getName().replace(Constant.DOT, File.separator);
+            prefix = loader.get().getPackage().getName().replace(Constant.DOT, separator);
         }
         else
         {
@@ -172,9 +168,8 @@ final class MediaDefault implements Media
      */
     private Media create(String prefix, int prefixLength, File file)
     {
-        final String currentPath = file.getPath();
-        final String[] systemPath = SLASH.split(currentPath.substring(currentPath.indexOf(prefix) + prefixLength)
-                                                           .replace(File.separator, Constant.SLASH));
+        final String currentPath = file.getPath().replace(File.separator, separator);
+        final String[] systemPath = SLASH.split(currentPath.substring(currentPath.indexOf(prefix) + prefixLength));
         final Media media;
         if (loader.isPresent())
         {
@@ -220,9 +215,7 @@ final class MediaDefault implements Media
      */
     private String getPathTemp()
     {
-        return UtilFolder.getPathSeparator(File.separator,
-                                           getTempDir(loader.get()),
-                                           path.replace(separator, File.separator));
+        return UtilFolder.getPathSeparator(separator, getTempDir(loader.get()), path);
     }
 
     /*
@@ -372,6 +365,6 @@ final class MediaDefault implements Media
     @Override
     public String toString()
     {
-        return getPath();
+        return path;
     }
 }

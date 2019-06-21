@@ -72,7 +72,7 @@ public final class UtilFolderTest
     @Test
     public void testGetPath()
     {
-        assertEquals("a" + File.separator + "b" + File.separator + "c", UtilFolder.getPath("a", "b", "c"));
+        assertEquals("a" + Constant.SLASH + "b" + Constant.SLASH + "c", UtilFolder.getPath("a", "b", "c"));
     }
 
     /**

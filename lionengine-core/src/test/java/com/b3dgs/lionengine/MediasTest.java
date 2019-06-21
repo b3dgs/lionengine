@@ -103,7 +103,7 @@ public final class MediasTest
         final Media media2 = Medias.create("test", "toto.txt");
 
         assertEquals("test", media2.getParentPath());
-        assertEquals("test" + File.separator + "toto.txt", media2.getPath());
+        assertEquals("test" + Constant.SLASH + "toto.txt", media2.getPath());
         assertEquals("rsc" + File.separator + "test" + File.separator + "toto.txt", media2.getFile().getPath());
     }
 
@@ -305,12 +305,7 @@ public final class MediasTest
     @Test
     public void testSeparator()
     {
-        final String old = Medias.getSeparator();
-        Medias.setSeparator("%");
-
-        assertEquals("%", Medias.getSeparator());
-
-        Medias.setSeparator(old);
+        assertEquals(Constant.SLASH, Medias.getSeparator());
     }
 
     /**

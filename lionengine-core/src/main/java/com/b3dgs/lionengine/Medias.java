@@ -34,10 +34,10 @@ public final class Medias
 {
     /** Not in JAR resources. */
     static final String JAR_LOADER_ERROR = "Load from JAR not enabled !";
+    /** Path separator. */
+    private static final String SEPARATOR = Constant.SLASH;
     /** Factory media implementation. */
     private static FactoryMedia factoryMedia = new FactoryMediaDefault();
-    /** Path separator. */
-    private static String separator = File.separator;
     /** Resources directory. */
     private static String resourcesDir = Constant.EMPTY_STRING;
     /** Class loader. */
@@ -54,9 +54,9 @@ public final class Medias
     {
         if (loader.isPresent())
         {
-            return factoryMedia.create(separator, loader.get(), path);
+            return factoryMedia.create(SEPARATOR, loader.get(), path);
         }
-        return factoryMedia.create(separator, resourcesDir, path);
+        return factoryMedia.create(SEPARATOR, resourcesDir, path);
     }
 
     /**
@@ -98,14 +98,6 @@ public final class Medias
     public static synchronized void setLoadFromJar(Class<?> clazz)
     {
         loader = Optional.ofNullable(clazz);
-        if (loader.isPresent())
-        {
-            setSeparator(Constant.SLASH);
-        }
-        else
-        {
-            setSeparator(File.separator);
-        }
     }
 
     /**
@@ -119,7 +111,7 @@ public final class Medias
     {
         Check.notNull(file);
 
-        final String filename = file.getPath();
+        final String filename = file.getPath().replace(File.separator, SEPARATOR);
         final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
 
         return create(localFile);
@@ -161,7 +153,7 @@ public final class Medias
      * @return The medias found.
      * @throws LionEngineException If invalid parameters.
      */
-    public static synchronized List<Media> getByExtension(File jar, String fullPath, int prefixLength, String extension)
+    public static List<Media> getByExtension(File jar, String fullPath, int prefixLength, String extension)
     {
         if (jar.isDirectory())
         {
@@ -188,7 +180,7 @@ public final class Medias
      * @return The new media with suffix added.
      * @throws LionEngineException If invalid parameters.
      */
-    public static synchronized Media getWithSuffix(Media media, String suffix)
+    public static Media getWithSuffix(Media media, String suffix)
     {
         Check.notNull(media);
         Check.notNull(suffix);
@@ -265,26 +257,13 @@ public final class Medias
     }
 
     /**
-     * Set the path separator.
-     * 
-     * @param separator The path separator (must not be <code>null</code>).
-     * @throws LionEngineException If invalid parameter.
-     */
-    public static synchronized void setSeparator(String separator)
-    {
-        Check.notNull(separator);
-
-        Medias.separator = separator;
-    }
-
-    /**
      * Get the path separator.
      * 
      * @return The path separator.
      */
-    public static synchronized String getSeparator()
+    public static String getSeparator()
     {
-        return separator;
+        return SEPARATOR;
     }
 
     /**
