@@ -61,8 +61,8 @@ public final class ColorRgbaTest
     @Test
     public void testConstructorValue()
     {
-        final int step = 51;
-        for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE; i += step)
+        final int step = 128;
+        for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE + 1; i += step)
         {
             final ColorRgba color = new ColorRgba(i);
 
