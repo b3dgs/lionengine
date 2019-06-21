@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:transitions xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:transition in="water" out="grass" type="DOWN_LEFT">
+        <lionengine:tile number="41" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="UP">
+        <lionengine:tile number="7" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="8" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP_RIGHT">
+        <lionengine:tile number="27" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="DOWN">
+        <lionengine:tile number="19" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="UP_RIGHT">
+        <lionengine:tile number="8" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="LEFT">
+        <lionengine:tile number="30" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="DOWN">
+        <lionengine:tile number="26" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="41" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="DOWN_LEFT">
+        <lionengine:tile number="31" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="35" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP">
+        <lionengine:tile number="26" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP_LEFT">
+        <lionengine:tile number="34" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="water" type="CENTER">
+        <lionengine:tile number="12" sheet="0"/>
+        <lionengine:tile number="38" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="CORNER_UP_LEFT">
+        <lionengine:tile number="39" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="LEFT">
+        <lionengine:tile number="11" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="40" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="20" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="DOWN">
+        <lionengine:tile number="7" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP_RIGHT">
+        <lionengine:tile number="35" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="LEFT">
+        <lionengine:tile number="28" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="LEFT">
+        <lionengine:tile number="13" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="UP_RIGHT">
+        <lionengine:tile number="40" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="DOWN">
+        <lionengine:tile number="32" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="DOWN_LEFT">
+        <lionengine:tile number="18" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="33" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="27" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="DOWN_LEFT">
+        <lionengine:tile number="36" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="CORNER_UP_LEFT">
+        <lionengine:tile number="6" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="tree" type="CENTER">
+        <lionengine:tile number="29" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_UP_LEFT">
+        <lionengine:tile number="34" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_UP_LEFT">
+        <lionengine:tile number="25" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="42" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="DOWN_RIGHT">
+        <lionengine:tile number="33" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="DOWN_RIGHT">
+        <lionengine:tile number="37" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="31" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="road" out="road" type="CENTER">
+        <lionengine:tile number="16" sheet="0"/>
+        <lionengine:tile number="15" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="RIGHT">
+        <lionengine:tile number="13" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="RIGHT">
+        <lionengine:tile number="28" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="UP_LEFT">
+        <lionengine:tile number="6" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="37" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="DOWN_RIGHT">
+        <lionengine:tile number="42" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="18" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="DOWN_RIGHT">
+        <lionengine:tile number="20" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="UP">
+        <lionengine:tile number="19" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="36" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="water" out="grass" type="UP_LEFT">
+        <lionengine:tile number="39" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="grass" type="CENTER">
+        <lionengine:tile number="0" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="RIGHT">
+        <lionengine:tile number="30" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP">
+        <lionengine:tile number="32" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP_LEFT">
+        <lionengine:tile number="25" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="water" type="RIGHT">
+        <lionengine:tile number="11" sheet="0"/>
+    </lionengine:transition>
+</lionengine:transitions>
