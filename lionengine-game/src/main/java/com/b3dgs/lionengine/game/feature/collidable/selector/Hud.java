@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
 import com.b3dgs.lionengine.Medias;
@@ -99,6 +100,8 @@ public class Hud extends FeaturableModel
     protected final Selector selector;
     /** Hud surface. */
     protected final SpriteAnimated surface;
+    /** Listeners reference. */
+    private final Collection<HudListener> listeners = new ArrayList<>();
     /** Current active menus. */
     private final Collection<Featurable> menus = new ArrayList<>();
     /** Previous menus. */
@@ -107,6 +110,10 @@ public class Hud extends FeaturableModel
     private final Handler handler;
     /** Factory reference. */
     private final Factory factory;
+    /** Cancel shortcut provider. */
+    private BooleanSupplier cancelShortcut = () -> false;
+    /** Last action. */
+    private final List<Selectable> last = new ArrayList<>();
 
     /**
      * Create the HUD.
@@ -136,7 +143,12 @@ public class Hud extends FeaturableModel
                 // Nothing to do
             }
         });
-        selector.addListener(selection -> createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection)));
+        selector.addListener(selection ->
+        {
+            last.clear();
+            last.addAll(selection);
+            createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection));
+        });
         handler.add(selector);
 
         addFeature(new LayerableModel(services, setup));
@@ -157,7 +169,19 @@ public class Hud extends FeaturableModel
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), h, v);
         surface.prepare();
 
-        addFeature(new RefreshableModel(selector::update));
+        addFeature(new RefreshableModel(extrp ->
+        {
+            selector.update(extrp);
+            if (cancelShortcut.getAsBoolean())
+            {
+                clearMenus();
+                createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(last));
+                for (final HudListener listener : listeners)
+                {
+                    listener.notifyCanceled();
+                }
+            }
+        }));
         addFeature(new DisplayableModel(g ->
         {
             surface.render(g);
@@ -172,9 +196,39 @@ public class Hud extends FeaturableModel
     }
 
     /**
+     * Add a listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public void addListener(HudListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /**
+     * Remove a listener.
+     * 
+     * @param listener The listener to remove.
+     */
+    public void removeListener(HudListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    /**
+     * Set the cancel shortcut provider.
+     * 
+     * @param cancelShortcut The provider reference.
+     */
+    public void setCancelShortcut(BooleanSupplier cancelShortcut)
+    {
+        this.cancelShortcut = cancelShortcut;
+    }
+
+    /**
      * Clear current menus.
      */
-    private void clearMenus()
+    public void clearMenus()
     {
         for (final Featurable menu : menus)
         {
@@ -231,7 +285,7 @@ public class Hud extends FeaturableModel
      * @param action The current action.
      * @param menu The current menu to check.
      */
-    private void generateSubMenu(final Collection<ActionRef> parents, final ActionRef action, Featurable menu)
+    private void generateSubMenu(Collection<ActionRef> parents, ActionRef action, Featurable menu)
     {
         menu.getFeature(Actionable.class).setAction(() ->
         {
@@ -246,7 +300,7 @@ public class Hud extends FeaturableModel
      * @param action The associated action.
      * @param menu The current menu to check.
      */
-    private void generateCancel(final ActionRef action, Featurable menu)
+    private void generateCancel(ActionRef action, Featurable menu)
     {
         menu.getFeature(Actionable.class).setAction(() ->
         {
