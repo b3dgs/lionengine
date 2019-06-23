@@ -307,6 +307,10 @@ public class Hud extends FeaturableModel
             clearMenus();
             final Collection<ActionRef> parents = previous.get(action);
             createMenus(parents, parents);
+            for (final HudListener listener : listeners)
+            {
+                listener.notifyCanceled();
+            }
         });
     }
 
