@@ -57,6 +57,30 @@ public class Hud extends FeaturableModel
     private static final Pattern PATH = Pattern.compile(File.pathSeparator);
 
     /**
+     * Load surface from configuration.
+     * 
+     * @param setup The setup reference.
+     * @return The loaded sprite.
+     */
+    private static SpriteAnimated load(Setup setup)
+    {
+        final int h;
+        final int v;
+        if (setup.hasNode(FramesConfig.NODE_FRAMES))
+        {
+            final FramesConfig config = FramesConfig.imports(setup);
+            h = config.getHorizontal();
+            v = config.getVertical();
+        }
+        else
+        {
+            h = 1;
+            v = 1;
+        }
+        return Drawable.loadSpriteAnimated(setup.getSurface(), h, v);
+    }
+
+    /**
      * Get all actions in common.
      * 
      * @param selection The current selection.
@@ -153,20 +177,7 @@ public class Hud extends FeaturableModel
 
         addFeature(new LayerableModel(services, setup));
 
-        final int h;
-        final int v;
-        if (setup.hasNode(FramesConfig.NODE_FRAMES))
-        {
-            final FramesConfig config = FramesConfig.imports(setup);
-            h = config.getHorizontal();
-            v = config.getVertical();
-        }
-        else
-        {
-            h = 1;
-            v = 1;
-        }
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), h, v);
+        surface = load(setup);
         surface.prepare();
 
         addFeature(new RefreshableModel(extrp ->
