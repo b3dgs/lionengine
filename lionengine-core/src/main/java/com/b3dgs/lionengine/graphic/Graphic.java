@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.graphic;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
 
 /**
@@ -118,6 +119,23 @@ public interface Graphic
      * @param fill <code>true</code> to fill the rectangle, <code>false</code> to draw only its borders.
      */
     void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill);
+
+    /**
+     * Draws the specified rectangle. The left and right edges of the rectangle are at <code>x</code> and
+     * <code>x&nbsp;+&nbsp;width&nbsp;-&nbsp;1</code>. The top and bottom edges are at <code>y</code> and
+     * <code>y&nbsp;+&nbsp;height&nbsp;-&nbsp;1</code>. The resulting rectangle covers an area <code>width</code> pixels
+     * wide by <code>height</code> pixels tall.
+     * Rendering is performed considering the viewer location.
+     * 
+     * @param viewer The viewer reference.
+     * @param origin Origin point referential used.
+     * @param shape The shape to draw.
+     * @param fill <code>true</code> to fill the rectangle, <code>false</code> to draw only its borders.
+     */
+    default void drawRect(Viewer viewer, Origin origin, Shape shape, boolean fill)
+    {
+        drawRect(viewer, origin, shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight(), fill);
+    }
 
     /**
      * Draws the specified gradient rectangle. The left and right edges of the rectangle are at <code>x</code> and

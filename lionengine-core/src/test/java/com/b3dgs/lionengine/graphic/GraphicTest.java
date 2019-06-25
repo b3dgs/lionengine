@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.ViewerMock;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Test {@link Graphic}.
@@ -110,6 +111,10 @@ public class GraphicTest
         g.drawLine(new ViewerMock(), 4, 3, 2, 3);
         g.drawOval(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, image.getWidth(), image.getHeight(), true);
         g.drawRect(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, image.getWidth(), image.getHeight(), true);
+        g.drawRect(new ViewerMock(),
+                   Origin.BOTTOM_LEFT,
+                   Geom.createArea(0, 0, image.getWidth(), image.getHeight()),
+                   true);
         g.drawGradient(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, 100, 100);
 
         g.dispose();
