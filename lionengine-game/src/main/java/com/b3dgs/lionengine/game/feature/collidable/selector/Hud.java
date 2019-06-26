@@ -130,14 +130,14 @@ public class Hud extends FeaturableModel
     private final Collection<Featurable> menus = new ArrayList<>();
     /** Previous menus. */
     private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<>();
+    /** Last action. */
+    private final List<Selectable> last = new ArrayList<>();
     /** Handler reference. */
     private final Handler handler;
     /** Factory reference. */
     private final Factory factory;
     /** Cancel shortcut provider. */
     private BooleanSupplier cancelShortcut = () -> false;
-    /** Last action. */
-    private final List<Selectable> last = new ArrayList<>();
 
     /**
      * Create the HUD.
