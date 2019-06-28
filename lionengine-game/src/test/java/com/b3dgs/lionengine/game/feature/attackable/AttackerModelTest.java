@@ -142,7 +142,7 @@ public final class AttackerModelTest
         attacker.addListener(listener);
         attacker.update(1.0);
 
-        assertFalse(listener.flag.get());
+        assertTrue(listener.flag.get());
     }
 
     /**
@@ -259,15 +259,16 @@ public final class AttackerModelTest
 
         final ObjectAttackerSelf object2 = new ObjectAttackerSelf();
         UtilAttackable.prepare(object2);
-        final Attacker attacker = UtilAttackable.createAttacker(object2, services);
+        final AttackerModel attacker = UtilAttackable.createAttacker(object2, services);
+        attacker.recycle();
         canAttack.set(true);
 
         target.teleport(10, 10);
-        attacker.attack(target);
         attacker.update(1.0);
 
         assertFalse(object2.flag.get());
 
+        attacker.attack(target);
         attacker.update(1.0);
 
         assertTrue(object2.flag.get());
@@ -294,6 +295,7 @@ public final class AttackerModelTest
         attacker.recycle();
         attacker.update(1.0);
         attacker.getFeature(Transformable.class).teleport(0, 0);
+        attacker.setAttackTimer(10);
         target.teleport(5, 5);
         attacker.attack(target);
         attacker.update(1.0);
@@ -304,7 +306,6 @@ public final class AttackerModelTest
         assertFalse(preparing.get());
         assertFalse(attacker.isAttacking());
 
-        attacker.setAttackTimer(10);
         target.teleport(0, 1);
         attacker.update(1.0);
 
@@ -312,6 +313,13 @@ public final class AttackerModelTest
         assertNotEquals(target, started.get());
         assertNotEquals(target, ended.get());
 
+        attacker.update(1.0);
+        attacker.getFeature(Animatable.class).update(1.0);
+        attacker.update(1.0);
+
+        assertFalse(preparing.get());
+
+        attacker.update(1.0);
         attacker.update(1.0);
 
         assertTrue(preparing.get());
