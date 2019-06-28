@@ -90,6 +90,7 @@ public final class AnimationTest
         assertEquals(3.5, animation.getSpeed());
         assertTrue(animation.hasReverse());
         assertFalse(animation.hasRepeat());
+        assertEquals(2, animation.getFrames());
     }
 
     /**

@@ -107,6 +107,16 @@ public final class Animation extends NameableAbstract
     }
 
     /**
+     * Get frames number.
+     * 
+     * @return The frames number.
+     */
+    public int getFrames()
+    {
+        return lastFrame - firstFrame + 1;
+    }
+
+    /**
      * Get the animation speed.
      * 
      * @return The animation speed.
