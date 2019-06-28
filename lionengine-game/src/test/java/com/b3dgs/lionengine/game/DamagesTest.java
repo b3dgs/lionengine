@@ -17,6 +17,9 @@
 package com.b3dgs.lionengine.game;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -183,5 +186,46 @@ public final class DamagesTest
 
         assertEquals(1, damages.getRandom());
         assertEquals(1, damages.getLast());
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Damages damages = new Damages(1, 2);
+
+        assertEquals(damages, damages);
+        assertEquals(damages, new Damages(1, 2));
+
+        assertNotEquals(damages, null);
+        assertNotEquals(damages, new Object());
+        assertNotEquals(damages, new Damages(2, 2));
+        assertNotEquals(damages, new Damages(1, 1));
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final Damages damages = new Damages(1, 2);
+
+        assertHashEquals(damages, new Damages(1, 2));
+
+        assertHashNotEquals(damages, new Object());
+        assertHashNotEquals(damages, new Damages(2, 2));
+        assertHashNotEquals(damages, new Damages(1, 1));
+    }
+
+    /**
+     * Test to string.
+     */
+    @Test
+    public void testToString()
+    {
+        assertEquals("Damages [min=1, max=2]", new Damages(1, 2).toString());
     }
 }

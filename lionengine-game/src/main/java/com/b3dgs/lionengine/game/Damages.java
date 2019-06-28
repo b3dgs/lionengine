@@ -25,6 +25,9 @@ import com.b3dgs.lionengine.UtilRandom;
  */
 public class Damages
 {
+    /** Min to string size. */
+    private static final int MIN_LENGHT = 10;
+
     /** Minimum value. */
     private int min;
     /** Maximum value. */
@@ -136,5 +139,46 @@ public class Damages
     public Range getDamages()
     {
         return new Range(min, max);
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + min;
+        result = prime * result + max;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final Damages other = (Damages) object;
+        return min == other.min && max == other.max;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGHT).append(getClass().getSimpleName())
+                                            .append(" [min=")
+                                            .append(min)
+                                            .append(", max=")
+                                            .append(max)
+                                            .append("]")
+                                            .toString();
     }
 }
