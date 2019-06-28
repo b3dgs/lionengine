@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -80,6 +81,29 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     public AttackerModel()
     {
         super();
+    }
+
+    /**
+     * Create an attacker model.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link Animatable}</li>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * 
+     * @param configurer The configurer reference.
+     */
+    public AttackerModel(Configurer configurer)
+    {
+        super();
+
+        final AttackerConfig config = AttackerConfig.imports(configurer);
+
+        setAttackTimer(config.getDelay());
+        setAttackDistance(config.getDistance());
+        setAttackDamages(config.getDamages());
     }
 
     /**
@@ -276,6 +300,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     public void setAttackTimer(int tick)
     {
         attackPause = tick;
+        this.tick.set(tick);
     }
 
     @Override
@@ -285,15 +310,15 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
-    public void setAttackDistance(int min, int max)
+    public void setAttackDistance(Range range)
     {
-        distAttack = new Range(min, max);
+        distAttack = range;
     }
 
     @Override
-    public void setAttackDamages(int min, int max)
+    public void setAttackDamages(Range range)
     {
-        damages.setDamages(min, max);
+        damages.setDamages(range.getMin(), range.getMax());
     }
 
     @Override

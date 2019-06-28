@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
@@ -23,15 +24,15 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
- * List of services provided by a weapon.
+ * Represents something that can attack something at a defined rate, distance and damages.
  */
 @FeatureInterface
 public interface Attacker extends Feature, Updatable
 {
     /**
-     * Add an attacker listener.
+     * Add a listener.
      * 
-     * @param listener The attacker listener to add.
+     * @param listener The listener to add.
      */
     void addListener(AttackerListener listener);
 
@@ -56,30 +57,29 @@ public interface Attacker extends Feature, Updatable
     void setAttackTimer(int tick);
 
     /**
-     * Represents the frame number (inside animation) which design the attack action.
+     * Set the frame number (inside animation) which represents the attack action.
      * <p>
-     * Example: for a footman, the frame number when the sword is going to hurt somebody (between 1-last).
+     * Example: for a soldier, the frame number when the sword is going to hurt somebody.
      * </p>
      * 
-     * @param frame The frame attack number.
+     * @param frame The attack frame number.
      */
     void setAttackFrame(int frame);
 
     /**
-     * Set attack distance between entity and target.
+     * Set attack distance between source and target. Attack will be possible inside this range, else it will need to
+     * reach target in order to perform the attack.
      * 
-     * @param min The minimum attack distance (in tile).
-     * @param max The maximum attack distance (in tile).
+     * @param range The attack range in tile.
      */
-    void setAttackDistance(int min, int max);
+    void setAttackDistance(Range range);
 
     /**
-     * Set attack damages between entity and target.
+     * Set attack damages.
      * 
-     * @param min The minimum attack damages.
-     * @param max The maximum attack damages.
+     * @param damages The attack damages.
      */
-    void setAttackDamages(int min, int max);
+    void setAttackDamages(Range damages);
 
     /**
      * Get a random attack damages (between min and max).
@@ -89,16 +89,16 @@ public interface Attacker extends Feature, Updatable
     int getAttackDamages();
 
     /**
-     * Check weapon is attacking.
+     * Check is attacking state.
      * 
      * @return <code>true</code> if currently attacking, <code>false</code> else.
      */
     boolean isAttacking();
 
     /**
-     * Get the target entity.
+     * Get the current target.
      * 
-     * @return The target entity.
+     * @return The target reference.
      */
     Transformable getTarget();
 }

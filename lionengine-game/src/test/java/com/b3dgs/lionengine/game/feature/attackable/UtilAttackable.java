@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorModel;
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -56,8 +57,8 @@ final class UtilAttackable
     public static AttackerModel createAttacker(Featurable object, Services services)
     {
         final AttackerModel attacker = new AttackerModel();
-        attacker.setAttackDamages(1, 2);
-        attacker.setAttackDistance(1, 2);
+        attacker.setAttackDamages(new Range(1, 2));
+        attacker.setAttackDistance(new Range(1, 2));
         attacker.setAttackFrame(1);
         attacker.setAttackTimer(2);
         attacker.prepare(object);

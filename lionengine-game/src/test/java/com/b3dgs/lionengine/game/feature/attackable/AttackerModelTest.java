@@ -36,6 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -109,8 +110,8 @@ public final class AttackerModelTest
         final int time = 100;
 
         final AttackerModel attacker = new AttackerModel();
-        attacker.setAttackDamages(damageMin, damageMax);
-        attacker.setAttackDistance(distanceMin, distanceMax);
+        attacker.setAttackDamages(new Range(damageMin, damageMax));
+        attacker.setAttackDistance(new Range(distanceMin, distanceMax));
         attacker.setAttackFrame(frame);
         attacker.setAttackTimer(time);
 
