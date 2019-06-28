@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +37,23 @@ public final class OrientationTest
     public void testEnum() throws Exception
     {
         UtilTests.testEnum(Orientation.class);
+    }
+
+    /**
+     * Test the get.
+     */
+    @Test
+    public void testGet()
+    {
+        assertNull(Orientation.get(0, 0));
+        assertEquals(Orientation.NORTH, Orientation.get(0, 1));
+        assertEquals(Orientation.SOUTH, Orientation.get(0, -1));
+        assertEquals(Orientation.EAST, Orientation.get(1, 0));
+        assertEquals(Orientation.WEST, Orientation.get(-1, 0));
+        assertEquals(Orientation.NORTH_EAST, Orientation.get(1, 1));
+        assertEquals(Orientation.SOUTH_EAST, Orientation.get(1, -1));
+        assertEquals(Orientation.NORTH_WEST, Orientation.get(-1, 1));
+        assertEquals(Orientation.SOUTH_WEST, Orientation.get(-1, -1));
     }
 
     /**

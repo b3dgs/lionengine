@@ -61,6 +61,18 @@ public enum Orientation
     }
 
     /**
+     * Get the orientation depending of the speed.
+     * 
+     * @param sx The horizontal speed.
+     * @param sy The vertical speed.
+     * @return The corresponding orientation (<code>null</code> if unchanged).
+     */
+    public static Orientation get(int sx, int sy)
+    {
+        return get(0, 0, sx, sy);
+    }
+
+    /**
      * Get the orientation depending of the current tile index and destination tile index.
      * 
      * @param stx The starting horizontal tile index.
