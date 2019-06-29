@@ -18,9 +18,10 @@ package com.b3dgs.lionengine.game.feature.attackable;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.BooleanSupplier;
 
 import com.b3dgs.lionengine.AnimState;
-import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
@@ -39,21 +40,21 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  */
 public class AttackerModel extends FeatureModel implements Attacker, Recyclable
 {
-    /** Listener list. */
+    /** Listeners list. */
     private final Collection<AttackerListener> listeners = new HashSet<>(1);
-    /** Attack timer. */
+    /** Attack tick delay. */
     private final Tick tick = new Tick();
-    /** Damages. */
+    /** Attack damages. */
     private final Damages damages = new Damages();
     /** Attack distance allowed. */
     private Range distAttack = new Range(1, 1);
-    /** Animator reference. */
-    private Animator animator;
+    /** Animatable reference. */
+    private Animatable animatable;
     /** Transformable reference. */
     private Transformable transformable;
-    /** Attacker checker reference. */
-    private AttackerChecker checker;
-    /** Attacker target. */
+    /** Attacker checker. */
+    private BooleanSupplier canAttack;
+    /** Attacker target (can be <code>null</code>). */
     private Transformable target;
     /** Attack frame number. */
     private int frameAttack;
@@ -99,11 +100,15 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         super();
 
-        final AttackerConfig config = AttackerConfig.imports(configurer);
+        Check.notNull(configurer);
 
-        setAttackTimer(config.getDelay());
-        setAttackDistance(config.getDistance());
-        setAttackDamages(config.getDamages());
+        if (configurer.hasNode(AttackerConfig.NODE_ATTACKER))
+        {
+            final AttackerConfig config = AttackerConfig.imports(configurer);
+            setAttackTimer(config.getDelay());
+            setAttackDistance(config.getDistance());
+            setAttackDamages(config.getDamages());
+        }
     }
 
     /**
@@ -141,7 +146,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         if (distAttack.includes(dist))
         {
-            if (checker.canAttack())
+            if (canAttack.getAsBoolean())
             {
                 state = AttackState.ATTACKING;
             }
@@ -166,7 +171,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
         else if (attacked)
         {
-            if (AnimState.FINISHED == animator.getAnimState())
+            if (AnimState.FINISHED == animatable.getAnimState())
             {
                 for (final AttackerListener listener : listeners)
                 {
@@ -200,7 +205,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             attacked = false;
         }
         // Hit when frame attack reached
-        if (animator.getFrame() >= frameAttack)
+        if (animatable.getFrame() >= frameAttack)
         {
             attacking = false;
             for (final AttackerListener listener : listeners)
@@ -221,14 +226,13 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         super.prepare(provider);
 
-        animator = provider.getFeature(Animatable.class);
+        animatable = provider.getFeature(Animatable.class);
         transformable = provider.getFeature(Transformable.class);
 
         if (provider instanceof AttackerListener)
         {
             addListener((AttackerListener) provider);
         }
-        checker = (AttackerChecker) provider;
     }
 
     @Override
@@ -245,6 +249,8 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     @Override
     public void addListener(AttackerListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
     }
 
@@ -297,8 +303,18 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
+    public void setAttackChecker(BooleanSupplier checker)
+    {
+        Check.notNull(checker);
+
+        canAttack = checker;
+    }
+
+    @Override
     public void setAttackTimer(int tick)
     {
+        Check.superiorOrEqual(tick, 0);
+
         attackPause = tick;
         this.tick.set(tick);
     }
@@ -306,18 +322,24 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     @Override
     public void setAttackFrame(int frame)
     {
+        Check.superiorStrict(frame, 0);
+
         frameAttack = frame;
     }
 
     @Override
     public void setAttackDistance(Range range)
     {
+        Check.notNull(range);
+
         distAttack = range;
     }
 
     @Override
     public void setAttackDamages(Range range)
     {
+        Check.notNull(range);
+
         damages.setDamages(range.getMin(), range.getMax());
     }
 
@@ -353,5 +375,6 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         attackPause = 1;
         target = null;
         state = AttackState.NONE;
+        canAttack = Boolean.TRUE::booleanValue;
     }
 }

@@ -57,6 +57,7 @@ final class UtilAttackable
     public static AttackerModel createAttacker(Featurable object, Services services)
     {
         final AttackerModel attacker = new AttackerModel();
+        attacker.recycle();
         attacker.setAttackDamages(new Range(1, 2));
         attacker.setAttackDistance(new Range(1, 2));
         attacker.setAttackFrame(1);

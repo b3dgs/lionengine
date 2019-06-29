@@ -16,6 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import java.util.function.BooleanSupplier;
+
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
@@ -32,14 +35,15 @@ public interface Attacker extends Feature, Updatable
     /**
      * Add a listener.
      * 
-     * @param listener The listener to add.
+     * @param listener The listener to add (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addListener(AttackerListener listener);
 
     /**
      * Define a target to attack.
      * 
-     * @param target The target to attack.
+     * @param target The target to attack (can be <code>null</code> for not target).
      */
     void attack(Transformable target);
 
@@ -49,20 +53,27 @@ public interface Attacker extends Feature, Updatable
     void stopAttack();
 
     /**
+     * Set attack checker.
+     * 
+     * @param checker The checker function allowing attack (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    void setAttackChecker(BooleanSupplier checker);
+
+    /**
      * Set attack pause time between two attacks.
      * 
-     * @param tick The attack pause time in tick.
+     * @param tick The attack pause time in tick (must be positive).
+     * @throws LionEngineException If invalid argument.
      * @see Tick
      */
     void setAttackTimer(int tick);
 
     /**
      * Set the frame number (inside animation) which represents the attack action.
-     * <p>
-     * Example: for a soldier, the frame number when the sword is going to hurt somebody.
-     * </p>
      * 
-     * @param frame The attack frame number.
+     * @param frame The attack frame number (must be strictly positive).
+     * @throws LionEngineException If invalid argument.
      */
     void setAttackFrame(int frame);
 
@@ -70,14 +81,16 @@ public interface Attacker extends Feature, Updatable
      * Set attack distance between source and target. Attack will be possible inside this range, else it will need to
      * reach target in order to perform the attack.
      * 
-     * @param range The attack range in tile.
+     * @param range The attack range in tile (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setAttackDistance(Range range);
 
     /**
      * Set attack damages.
      * 
-     * @param damages The attack damages.
+     * @param damages The attack damages (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setAttackDamages(Range damages);
 
@@ -98,7 +111,7 @@ public interface Attacker extends Feature, Updatable
     /**
      * Get the current target.
      * 
-     * @return The target reference.
+     * @return The target reference (<code>null</code> if not defined).
      */
     Transformable getTarget();
 }

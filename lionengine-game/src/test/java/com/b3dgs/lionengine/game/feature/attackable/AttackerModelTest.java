@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.feature.Animatable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -73,7 +74,7 @@ public final class AttackerModelTest
 
     private final Services services = new Services();
     private final AtomicBoolean canAttack = new AtomicBoolean();
-    private final ObjectAttacker object = new ObjectAttacker(canAttack);
+    private final FeaturableModel object = new FeaturableModel();
     private final Transformable target = new TransformableModel();
     private AttackerModel attacker;
 
@@ -151,6 +152,8 @@ public final class AttackerModelTest
     @Test
     public void testCantAttack()
     {
+        canAttack.set(false);
+        attacker.setAttackChecker(canAttack::get);
         target.teleport(0, 1);
         attacker.attack(target);
 
@@ -168,6 +171,7 @@ public final class AttackerModelTest
     public void testAttackNull()
     {
         canAttack.set(true);
+        attacker.setAttackChecker(canAttack::get);
         attacker.attack(target);
 
         assertNotNull(attacker.getTarget());
@@ -198,6 +202,7 @@ public final class AttackerModelTest
     public void testAttackDifferent()
     {
         canAttack.set(true);
+        attacker.setAttackChecker(canAttack::get);
 
         final Transformable target1 = new TransformableModel();
         attacker.attack(target1);
@@ -231,6 +236,7 @@ public final class AttackerModelTest
     public void testStopAttack()
     {
         canAttack.set(true);
+        attacker.setAttackChecker(canAttack::get);
 
         final Transformable target = new TransformableModel();
         target.teleport(1, 1);
@@ -262,6 +268,7 @@ public final class AttackerModelTest
         final AttackerModel attacker = UtilAttackable.createAttacker(object2, services);
         attacker.recycle();
         canAttack.set(true);
+        attacker.setAttackChecker(canAttack::get);
 
         target.teleport(10, 10);
         attacker.update(1.0);
@@ -285,6 +292,7 @@ public final class AttackerModelTest
     public void testListener() throws InterruptedException
     {
         canAttack.set(true);
+        attacker.setAttackChecker(canAttack::get);
 
         final AtomicBoolean preparing = new AtomicBoolean();
         final AtomicReference<Transformable> reaching = new AtomicReference<>();
