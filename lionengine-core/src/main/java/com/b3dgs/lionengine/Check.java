@@ -42,7 +42,7 @@ public final class Check
     static final String ERROR_EQUALS = " is not equal to ";
 
     /**
-     * Check if <code>a</code> is superior to <code>b</code>.
+     * Check if <code>a</code> is superior or equal to <code>b</code>.
      * 
      * @param a The parameter to test.
      * @param b The parameter to compare to.
@@ -57,7 +57,7 @@ public final class Check
     }
 
     /**
-     * Check if <code>a</code> is superior to <code>b</code>.
+     * Check if <code>a</code> is superior or equal to <code>b</code>.
      * 
      * @param a The parameter to test.
      * @param b The parameter to compare to.
@@ -108,7 +108,7 @@ public final class Check
     }
 
     /**
-     * Check if <code>a</code> is inferior to <code>b</code>.
+     * Check if <code>a</code> is inferior or equal to <code>b</code>.
      * 
      * @param a The parameter to test.
      * @param b The parameter to compare to.
@@ -123,7 +123,7 @@ public final class Check
     }
 
     /**
-     * Check if <code>a</code> is inferior to <code>b</code>.
+     * Check if <code>a</code> is inferior or equal to <code>b</code>.
      * 
      * @param a The parameter to test.
      * @param b The parameter to compare to.
