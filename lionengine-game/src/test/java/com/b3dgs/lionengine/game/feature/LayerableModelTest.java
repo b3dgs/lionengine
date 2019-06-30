@@ -86,10 +86,10 @@ public final class LayerableModelTest
         assertEquals(0, layerable.getLayerRefresh().intValue());
         assertEquals(0, layerable.getLayerDisplay().intValue());
 
-        layerable.setLayer(1);
+        layerable.setLayer(Integer.valueOf(1), Integer.valueOf(2));
 
         assertEquals(1, layerable.getLayerRefresh().intValue());
-        assertEquals(1, layerable.getLayerDisplay().intValue());
+        assertEquals(2, layerable.getLayerDisplay().intValue());
     }
 
     /**

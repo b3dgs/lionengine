@@ -17,7 +17,10 @@
 package com.b3dgs.lionengine.game.feature;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Layerable model implementation. 0 has higher priority, 1 less...
@@ -25,7 +28,7 @@ import java.util.Collection;
 public class LayerableModel extends FeatureModel implements Layerable
 {
     /** Layers listener. */
-    private final Collection<LayerableListener> listeners = new ArrayList<>();
+    private final List<LayerableListener> listeners = new ArrayList<>();
     /** Layer refresh value. */
     private Integer layerRefresh = Integer.valueOf(0);
     /** Layer display value. */
@@ -65,6 +68,9 @@ public class LayerableModel extends FeatureModel implements Layerable
      * <ul>
      * <li>{@link LayerableListener}</li>
      * </ul>
+     * <p>
+     * The {@link Configurer} can provide a valid {@link LayerableConfig}.
+     * </p>
      * 
      * @param services The services reference.
      * @param setup The setup reference.
@@ -110,29 +116,20 @@ public class LayerableModel extends FeatureModel implements Layerable
      */
 
     @Override
-    public final void addListener(LayerableListener listener)
+    public void addListener(LayerableListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
-    }
-
-    @Override
-    public void setLayer(int layer)
-    {
-        setLayer(layer, layer);
-    }
-
-    @Override
-    public void setLayer(int layerRefresh, int layerDisplay)
-    {
-        setLayer(Integer.valueOf(layerRefresh), Integer.valueOf(layerDisplay));
     }
 
     @Override
     public void setLayer(Integer layerRefresh, Integer layerDisplay)
     {
-        for (final LayerableListener listener : listeners)
+        final int n = listeners.size();
+        for (int i = 0; i < n; i++)
         {
-            listener.notifyLayerChanged(this, this.layerRefresh, layerRefresh, this.layerDisplay, layerDisplay);
+            listeners.get(i).notifyLayerChanged(this, this.layerRefresh, layerRefresh, this.layerDisplay, layerDisplay);
         }
         this.layerRefresh = layerRefresh;
         this.layerDisplay = layerDisplay;

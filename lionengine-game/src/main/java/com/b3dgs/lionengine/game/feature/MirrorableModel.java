@@ -16,19 +16,22 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UpdatableVoid;
 
 /**
- * Default mirrorable implementation.
+ * Mirrorable model implementation.
  */
 public class MirrorableModel extends FeatureModel implements Mirrorable, Recyclable
 {
-    /** Mirror state. */
-    private Mirror mirror;
-    /** Mirror next state flag. */
-    private Mirror nextState;
-    /** Mirror requested flag. */
-    private boolean requested;
+    /** Update mirror. */
+    private Updatable updater = UpdatableVoid.getInstance();
+    /** Current mirror. */
+    private Mirror mirror = Mirror.NONE;
+    /** Next mirror to apply. */
+    private Mirror nextState = mirror;
 
     /**
      * Create a mirrorable model.
@@ -38,6 +41,17 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
         super();
     }
 
+    /**
+     * Apply next mirror.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateMirror(double extrp)
+    {
+        mirror = nextState;
+        updater = UpdatableVoid.getInstance();
+    }
+
     /*
      * Mirrorable
      */
@@ -45,18 +59,16 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     @Override
     public void mirror(Mirror state)
     {
-        requested = true;
+        Check.notNull(state);
+
         nextState = state;
+        updater = this::updateMirror;
     }
 
     @Override
     public void update(double extrp)
     {
-        if (requested)
-        {
-            mirror = nextState;
-            requested = false;
-        }
+        updater.update(extrp);
     }
 
     @Override
@@ -79,7 +91,7 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     public void recycle()
     {
         mirror = Mirror.NONE;
-        nextState = Mirror.NONE;
-        requested = false;
+        nextState = mirror;
+        updater = UpdatableVoid.getInstance();
     }
 }

@@ -16,33 +16,38 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Represents something which can be identified by a unique ID.
- * Can request to be removed and free its ID in order to be reused.
+ * Represents something identified by a unique number.
+ * <p>
+ * Can request to be removed in order to be reused.
+ * </p>
  */
 @FeatureInterface
 public interface Identifiable extends Feature
 {
     /**
-     * Add an identifiable listener.
+     * Add a listener.
      * 
-     * @param listener The listener reference.
+     * @param listener The listener reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addListener(IdentifiableListener listener);
 
     /**
-     * Remove an identifiable listener.
+     * Remove a listener.
      * 
      * @param listener The listener reference.
+     * @throws LionEngineException If invalid argument.
      */
     void removeListener(IdentifiableListener listener);
 
     /**
-     * Get the ID (<code>null</code> will be returned once removed after a call to {@link #destroy()}).
+     * Get the Id (<code>null</code> will be returned once removed after a call to {@link #destroy()}).
      * 
-     * @return The object unique ID.
+     * @return The unique Id.
      */
     Integer getId();
 
@@ -53,9 +58,7 @@ public interface Identifiable extends Feature
     void destroy();
 
     /**
-     * Notify effective destruction, and allow to recycle destroyed ID. Any call to {@link #getId()} will return
-     * <code>null</code>.
-     * Called by the identifiable handler after a call to {@link #destroy()}.
+     * Notify effective destruction, and allow to recycle destroyed Id.
      */
     void notifyDestroyed();
 }

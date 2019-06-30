@@ -41,7 +41,7 @@ public final class ComponentDisplayableTest
      * @param last The last rendered element.
      * @return The created object.
      */
-    private static Layerable createObject(Services services, final AtomicInteger last)
+    private static Layerable createObject(Services services, AtomicInteger last)
     {
         final FeaturableModel object = new FeaturableModel();
         final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services));
@@ -75,10 +75,10 @@ public final class ComponentDisplayableTest
         final Layerable object3 = createObject(services, last);
         final Layerable object4 = createObject(services, last);
 
-        object1.setLayer(4);
-        object2.setLayer(6);
-        object3.setLayer(5);
-        object4.setLayer(4);
+        object1.setLayer(Integer.valueOf(4), Integer.valueOf(4));
+        object2.setLayer(Integer.valueOf(6), Integer.valueOf(6));
+        object3.setLayer(Integer.valueOf(5), Integer.valueOf(5));
+        object4.setLayer(Integer.valueOf(4), Integer.valueOf(4));
         last.set(-1);
 
         component.render(null, null);

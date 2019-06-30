@@ -33,7 +33,7 @@ public class Recycler extends FeatureModel
     }
 
     /**
-     * Recycle features, to make it ready for reuse.
+     * Recycle features, to make them ready for reuse.
      */
     public void recycle()
     {

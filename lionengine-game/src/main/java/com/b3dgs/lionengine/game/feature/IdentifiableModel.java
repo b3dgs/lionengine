@@ -16,27 +16,33 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Default identifiable implementation. Handle a list of unique ID, provide the next free ID, and recycle destroyed ID.
+ * Identifiable model implementation.
+ * <p>
+ * Handle a list of unique Id, provide the next free Id, and recycle destroyed Id.
+ * </p>
  */
 public class IdentifiableModel extends FeatureModel implements Identifiable, Recyclable
 {
-    /** Free ID error. */
+    /** Free Id error. */
     static final String ERROR_FREE_ID = "No more free id available !";
-    /** ID used. */
+    /** Id used. */
     private static final Collection<Integer> IDS = new HashSet<>();
-    /** Last ID used (last maximum id value). */
+    /** Last Id used (last maximum id value). */
     private static int lastId;
 
     /**
-     * Get the next unused ID.
+     * Get the next unused Id.
      * 
-     * @return The next unused ID.
+     * @return The next unused Id.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
     private static Integer getFreeId()
@@ -55,8 +61,8 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     }
 
     /** Listeners. */
-    private final Collection<IdentifiableListener> listeners = new HashSet<>(1);
-    /** Unique ID. */
+    private final List<IdentifiableListener> listeners = new ArrayList<>(1);
+    /** Unique Id. */
     private final Integer id = getFreeId();
     /** Destroy request flag. */
     private boolean destroy;
@@ -64,9 +70,9 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     private boolean destroyed;
 
     /**
-     * Create the identifiable with a unique ID.
+     * Create the identifiable with a unique Id.
      * 
-     * @throws LionEngineException If no free ID available.
+     * @throws LionEngineException If no free Id available.
      */
     public IdentifiableModel()
     {
@@ -80,12 +86,16 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     @Override
     public void addListener(IdentifiableListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
     }
 
     @Override
     public void removeListener(IdentifiableListener listener)
     {
+        Check.notNull(listener);
+
         listeners.remove(listener);
     }
 
@@ -106,9 +116,10 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
         {
             destroy = true;
 
-            for (final IdentifiableListener listener : listeners)
+            final int n = listeners.size();
+            for (int i = 0; i < n; i++)
             {
-                listener.notifyDestroyed(id);
+                listeners.get(i).notifyDestroyed(id);
             }
         }
     }

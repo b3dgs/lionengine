@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Updatable;
 
 /**
@@ -29,11 +31,14 @@ public class RefreshableModel extends FeatureModel implements Refreshable
     /**
      * Create feature.
      * 
-     * @param updatable The updatable reference.
+     * @param updatable The updatable reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public RefreshableModel(Updatable updatable)
     {
         super();
+
+        Check.notNull(updatable);
 
         this.updatable = updatable;
     }

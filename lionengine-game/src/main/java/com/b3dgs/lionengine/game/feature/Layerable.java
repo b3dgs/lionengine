@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -25,26 +26,12 @@ import com.b3dgs.lionengine.game.Feature;
 public interface Layerable extends Feature
 {
     /**
-     * Add a layer listener.
+     * Add a listener.
      * 
-     * @param listener The layer listener reference.
+     * @param listener The listener reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addListener(LayerableListener listener);
-
-    /**
-     * Set the layer value.
-     * 
-     * @param layer The layer refresh and display value.
-     */
-    void setLayer(int layer);
-
-    /**
-     * Set the layer value.
-     * 
-     * @param layerRefresh The layer refresh value.
-     * @param layerDisplay The layer display value.
-     */
-    void setLayer(int layerRefresh, int layerDisplay);
 
     /**
      * Set the layer value.

@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
- * Updatable feature wrapper.
+ * Refreshable feature wrapper.
  */
 @FeatureInterface
 public interface Refreshable extends Feature, Updatable

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
@@ -44,6 +46,9 @@ public class TransformableModel extends FeatureModel implements Transformable, R
 
     /**
      * Create a transformable model without configuration.
+     * <p>
+     * Use {@link TransformableModel#TransformableModel(Configurer)} instead to load a configuration.
+     * </p>
      */
     public TransformableModel()
     {
@@ -53,23 +58,23 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     /**
      * Create a transformable model.
      * <p>
-     * The {@link Setup} can provide a valid {@link SizeConfig}.
+     * The {@link Configurer} can provide a valid {@link SizeConfig}.
      * </p>
      * 
-     * @param setup The setup reference.
+     * @param configurer The configurer reference.
      */
-    public TransformableModel(Setup setup)
+    public TransformableModel(Configurer configurer)
     {
         super();
 
-        if (setup.getRoot().hasChild(SizeConfig.NODE_SIZE))
+        if (configurer.hasNode(SizeConfig.NODE_SIZE))
         {
-            final SizeConfig sizeData = SizeConfig.imports(setup);
-            width = sizeData.getWidth();
-            height = sizeData.getHeight();
+            final SizeConfig config = SizeConfig.imports(configurer);
+            width = config.getWidth();
+            height = config.getHeight();
+            oldWidth = width;
+            oldHeight = height;
         }
-        oldWidth = width;
-        oldHeight = height;
     }
 
     /**
@@ -101,12 +106,16 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     @Override
     public void addListener(TransformableListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
     }
 
     @Override
     public void removeListener(TransformableListener listener)
     {
+        Check.notNull(listener);
+
         listeners.remove(listener);
     }
 

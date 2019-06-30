@@ -16,12 +16,13 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Mover;
 
 /**
- * Represents something that can be transformed with a translation or a size modification.
+ * Represents something that can be transformed with a translation and size modification.
  */
 @FeatureInterface
 public interface Transformable extends Feature, Mover, Shape
@@ -29,22 +30,24 @@ public interface Transformable extends Feature, Mover, Shape
     /**
      * Add a listener.
      * 
-     * @param listener The listener to add.
+     * @param listener The listener to add (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addListener(TransformableListener listener);
 
     /**
      * Remove a listener.
      * 
-     * @param listener The listener to remove.
+     * @param listener The listener to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void removeListener(TransformableListener listener);
 
     /**
-     * Set surface size. Old size is stored.
+     * Set current size.
      * 
-     * @param width The width.
-     * @param height The height.
+     * @param width The current width.
+     * @param height The current height.
      */
     void setSize(int width, int height);
 

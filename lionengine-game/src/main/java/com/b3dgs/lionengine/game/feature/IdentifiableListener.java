@@ -22,9 +22,9 @@ package com.b3dgs.lionengine.game.feature;
 public interface IdentifiableListener
 {
     /**
-     * Called when identifiable is destroyed (after a call to {@link Identifiable#destroy()}.
+     * Called when destroyed.
      * 
-     * @param id The destroyed ID.
+     * @param id The destroyed Id.
      */
     void notifyDestroyed(Integer id);
 }

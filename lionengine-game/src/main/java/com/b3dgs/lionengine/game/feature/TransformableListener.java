@@ -17,7 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 /**
- * Describes the transformable events.
+ * Describes the {@link Transformable} events.
  */
 public interface TransformableListener
 {

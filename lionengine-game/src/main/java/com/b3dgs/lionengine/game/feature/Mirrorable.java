@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
@@ -31,7 +32,8 @@ public interface Mirrorable extends Feature, Updatable
     /**
      * Set the next mirror state and apply it on next {@link Updatable#update(double)} call.
      * 
-     * @param state The next mirror state.
+     * @param state The next mirror state (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void mirror(Mirror state);
 
@@ -45,8 +47,8 @@ public interface Mirrorable extends Feature, Updatable
     /**
      * Check if is current mirror state.
      * 
-     * @param mirror The expected state to be.
-     * @return <code>true</code> if is mirror, <code>false</code> else.
+     * @param mirror The expected state to be (can be <code>null</code>).
+     * @return <code>true</code> if is mirror, <code>false</code> else or <code>null</code>.
      */
     boolean is(Mirror mirror);
 }
