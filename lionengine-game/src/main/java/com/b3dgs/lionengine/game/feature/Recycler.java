@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.Feature;
 public class Recycler extends FeatureModel
 {
     /**
-     * Create recycler.
+     * Create feature.
      */
     public Recycler()
     {

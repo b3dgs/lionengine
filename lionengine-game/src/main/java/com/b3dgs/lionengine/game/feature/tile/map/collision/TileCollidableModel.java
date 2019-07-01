@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -53,7 +55,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private boolean enabled;
 
     /**
-     * Create a tile collidable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -75,11 +77,14 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * </p>
      * 
      * @param services The services reference.
-     * @param setup The setup reference.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public TileCollidableModel(Services services, Setup setup)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class).getFeature(MapTileCollision.class);
         categories = CollisionCategoryConfig.imports(setup, map);

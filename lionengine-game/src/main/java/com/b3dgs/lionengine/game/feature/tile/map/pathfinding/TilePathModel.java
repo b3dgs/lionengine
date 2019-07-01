@@ -33,7 +33,7 @@ public class TilePathModel extends FeatureModel implements TilePath
     private final String category;
 
     /**
-     * Create a tile path.
+     * Create feature.
      * 
      * @param category The category name.
      */

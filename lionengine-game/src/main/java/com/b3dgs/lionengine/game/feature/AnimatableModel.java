@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Animatable model implementation.
@@ -32,7 +34,7 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
     private final Animator animator;
 
     /**
-     * Create the feature with internal animator.
+     * Create feature with internal {@link AnimatorModel}.
      */
     public AnimatableModel()
     {
@@ -40,13 +42,16 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
     }
 
     /**
-     * Create the feature.
+     * Create feature.
      * 
-     * @param animator The animator reference.
+     * @param animator The animator reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public AnimatableModel(Animator animator)
     {
         super();
+
+        Check.notNull(animator);
 
         this.animator = animator;
     }

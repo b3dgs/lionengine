@@ -40,7 +40,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     private Action action;
 
     /**
-     * Create an actionable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>

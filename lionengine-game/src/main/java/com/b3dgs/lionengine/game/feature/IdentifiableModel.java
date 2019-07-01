@@ -63,20 +63,22 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     /** Listeners. */
     private final List<IdentifiableListener> listeners = new ArrayList<>(1);
     /** Unique Id. */
-    private final Integer id = getFreeId();
+    private final Integer id;
     /** Destroy request flag. */
     private boolean destroy;
     /** Destroyed flag. */
     private boolean destroyed;
 
     /**
-     * Create the identifiable with a unique Id.
+     * Create feature.
      * 
      * @throws LionEngineException If no free Id available.
      */
     public IdentifiableModel()
     {
         super();
+
+        id = getFreeId();
     }
 
     /*

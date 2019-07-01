@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
- * Default launchable model implementation.
+ * Launchable model implementation.
  */
 public class LaunchableModel extends FeatureModel implements Launchable
 {
@@ -38,9 +38,9 @@ public class LaunchableModel extends FeatureModel implements Launchable
     private Force vector;
 
     /**
-     * Create the launchable model.
+     * Create feature.
      * <p>
-     * The {@link Featurable} owner must have:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>

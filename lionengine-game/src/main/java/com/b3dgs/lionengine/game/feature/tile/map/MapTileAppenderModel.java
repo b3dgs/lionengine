@@ -38,7 +38,7 @@ public class MapTileAppenderModel extends FeatureModel implements MapTileAppende
     private final MapTileGame map;
 
     /**
-     * Create a map tile appender.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -46,12 +46,14 @@ public class MapTileAppenderModel extends FeatureModel implements MapTileAppende
      * <li>{@link MapTileGame}</li>
      * </ul>
      * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileAppenderModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTileGame.class);
     }

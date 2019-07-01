@@ -34,7 +34,7 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
     private Mirror nextState = mirror;
 
     /**
-     * Create a mirrorable model.
+     * Create feature.
      */
     public MirrorableModel()
     {

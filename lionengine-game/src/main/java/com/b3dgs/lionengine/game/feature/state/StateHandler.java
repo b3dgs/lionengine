@@ -68,7 +68,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
     private Class<? extends State> next;
 
     /**
-     * Create a handler model.
+     * Create feature.
      */
     public StateHandler()
     {
@@ -79,7 +79,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
     }
 
     /**
-     * Create a handler model.
+     * Create feature.
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
@@ -98,7 +98,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
     }
 
     /**
-     * Create a handler model.
+     * Create feature.
      * <p>
      * The {@link Configurer} can provide {@link Animation}.
      * </p>

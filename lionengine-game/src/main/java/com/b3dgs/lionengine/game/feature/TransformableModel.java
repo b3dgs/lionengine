@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
@@ -45,10 +46,7 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     private int oldHeight;
 
     /**
-     * Create a transformable model without configuration.
-     * <p>
-     * Use {@link TransformableModel#TransformableModel(Configurer)} instead to load a configuration.
-     * </p>
+     * Create feature.
      */
     public TransformableModel()
     {
@@ -56,16 +54,19 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     }
 
     /**
-     * Create a transformable model.
+     * Create feature.
      * <p>
      * The {@link Configurer} can provide a valid {@link SizeConfig}.
      * </p>
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public TransformableModel(Configurer configurer)
     {
         super();
+
+        Check.notNull(configurer);
 
         if (configurer.hasNode(SizeConfig.NODE_SIZE))
         {

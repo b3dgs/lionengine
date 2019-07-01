@@ -16,8 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.Displayable;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.geom.Area;
@@ -27,6 +30,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * This class allows to render selection.
  */
+@FeatureInterface
 public class SelectorDisplayer extends FeatureModel implements Displayable
 {
     /** Selector model reference. */
@@ -37,7 +41,7 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
     private ColorRgba colorSelection = ColorRgba.GRAY;
 
     /**
-     * Create a selector.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -45,12 +49,16 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
      * <li>{@link Viewer}</li>
      * </ul>
      * 
-     * @param services The services reference.
-     * @param model The model reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param model The model reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public SelectorDisplayer(Services services, SelectorModel model)
     {
         super();
+
+        Check.notNull(services);
+        Check.notNull(model);
 
         this.model = model;
         viewer = services.get(Viewer.class);

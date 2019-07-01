@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
@@ -28,7 +29,8 @@ public interface Feature extends FeatureProvider
      * Prepare the feature. Automatically called when added with {@link Featurable#addFeature(Feature)} or
      * {@link Featurable#addFeatureAndGet(Feature)}.
      * 
-     * @param provider The owner reference.
+     * @param provider The owner reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void prepare(FeatureProvider provider);
 
@@ -36,7 +38,8 @@ public interface Feature extends FeatureProvider
      * Check object interface listening and add them automatically. If the {@link Feature} provide listeners, this will
      * allow to add them automatically.
      * 
-     * @param listener The listener to check.
+     * @param listener The listener to check (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void checkListener(Object listener);
 }

@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
@@ -46,7 +47,7 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     private final MapTileGroup mapGroup;
 
     /**
-     * Create a map tile path.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -60,12 +61,14 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
      * <li>{@link MapTileGroup}</li>
      * </ul>
      * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTilePathModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroupModel.class);

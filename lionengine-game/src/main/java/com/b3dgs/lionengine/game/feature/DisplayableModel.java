@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -30,11 +32,14 @@ public class DisplayableModel extends FeatureModel implements Displayable
     /**
      * Create feature.
      * 
-     * @param renderable The renderable reference.
+     * @param renderable The renderable reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public DisplayableModel(Renderable renderable)
     {
         super();
+
+        Check.notNull(renderable);
 
         this.renderable = renderable;
     }

@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
- * Default launcher model implementation.
+ * Launcher model implementation.
  */
 public class LauncherModel extends FeatureModel implements Launcher
 {
@@ -78,7 +78,7 @@ public class LauncherModel extends FeatureModel implements Launcher
     private int offsetY;
 
     /**
-     * Create a launcher model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -101,11 +101,14 @@ public class LauncherModel extends FeatureModel implements Launcher
      * </p>
      * 
      * @param services The services reference.
-     * @param setup The setup reference.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public LauncherModel(Services services, Setup setup)
     {
         super();
+
+        Check.notNull(services);
 
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);

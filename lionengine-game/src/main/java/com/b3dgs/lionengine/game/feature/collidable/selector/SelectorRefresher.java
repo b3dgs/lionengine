@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
@@ -69,7 +71,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     private double startY;
 
     /**
-     * Create a selector.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -78,12 +80,16 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
      * <li>{@link Cursor}</li>
      * </ul>
      * 
-     * @param services The services reference.
-     * @param model The model reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param model The model reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public SelectorRefresher(Services services, SelectorModel model)
     {
         super();
+
+        Check.notNull(services);
+        Check.notNull(model);
 
         final Viewer viewer = services.get(Viewer.class);
         final Cursor cursor = services.get(Cursor.class);

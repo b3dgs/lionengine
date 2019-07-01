@@ -48,7 +48,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     private Media groupsConfig;
 
     /**
-     * Create a map tile group.
+     * Create feature.
      */
     public MapTileGroupModel()
     {

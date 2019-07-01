@@ -63,7 +63,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     private int lastProgress;
 
     /**
-     * Create an extractor model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -71,11 +71,14 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      * <li>{@link SourceResolutionProvider}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public ExtractorModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         rate = services.get(SourceResolutionProvider.class)::getRate;
     }

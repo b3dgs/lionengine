@@ -48,7 +48,7 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     private double y;
 
     /**
-     * Create a producible and load its configuration.
+     * Create feature.
      * <p>
      * The {@link Setup} must provide a valid {@link ProducibleConfig}.
      * </p>

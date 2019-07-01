@@ -449,7 +449,7 @@ public final class LauncherModelTest
         assertFalse(launchableListener.get());
         assertFalse(launcherListener.get());
 
-        launcher.checkListener(null);
+        launcher.checkListener(launcher);
 
         assertFalse(launchableListener.get());
         assertFalse(launcherListener.get());

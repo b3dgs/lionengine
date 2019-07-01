@@ -35,7 +35,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     private Integer layerDisplay = layerRefresh;
 
     /**
-     * Create a layerable model.
+     * Create feature.
      */
     public LayerableModel()
     {
@@ -43,7 +43,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     }
 
     /**
-     * Create a layerable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -61,7 +61,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     }
 
     /**
-     * Create a layerable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -88,7 +88,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     }
 
     /**
-     * Create a layerable model.
+     * Create feature.
      * 
      * @param layer The default layer refresh and display value.
      */
@@ -98,7 +98,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     }
 
     /**
-     * Create a layerable model.
+     * Create feature.
      * 
      * @param layerRefresh The default layer refresh value.
      * @param layerDisplay The default layer display value.

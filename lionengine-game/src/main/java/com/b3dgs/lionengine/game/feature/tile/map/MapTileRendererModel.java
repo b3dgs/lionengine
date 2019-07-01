@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public class MapTileRendererModel implements MapTileRenderer
 {
     /**
-     * Create the renderer.
+     * Create feature.
      */
     public MapTileRendererModel()
     {

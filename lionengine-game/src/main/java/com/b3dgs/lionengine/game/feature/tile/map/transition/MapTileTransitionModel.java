@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -141,7 +143,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     private TransitiveGroup transitiveGroup;
 
     /**
-     * Create a map tile transition.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -155,11 +157,14 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
      * <li>{@link MapTileGroup}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileTransitionModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);

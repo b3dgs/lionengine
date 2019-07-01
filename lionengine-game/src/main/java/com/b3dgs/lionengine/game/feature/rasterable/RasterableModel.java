@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
@@ -40,7 +41,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
 /**
- * Default rasterable implementation.
+ * Rasterable model implementation.
  */
 @FeatureInterface
 public class RasterableModel extends FeatureModel implements Rasterable
@@ -71,7 +72,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private int frameOffsetY;
 
     /**
-     * Create a rasterable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -88,22 +89,23 @@ public class RasterableModel extends FeatureModel implements Rasterable
      * </ul>
      * 
      * @param services The services reference.
-     * @param setup The setup reference.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public RasterableModel(Services services, SetupSurfaceRastered setup)
     {
         super();
 
-        Check.notNull(setup);
+        Check.notNull(services);
 
         viewer = services.get(Viewer.class);
-
-        height = setup.getRasterHeight();
-        smooth = setup.hasSmooth();
 
         final FramesConfig framesData = FramesConfig.imports(setup);
         final int hf = framesData.getHorizontal();
         final int vf = framesData.getVertical();
+
+        height = setup.getRasterHeight();
+        smooth = setup.hasSmooth();
 
         for (final ImageBuffer buffer : setup.getRasters())
         {

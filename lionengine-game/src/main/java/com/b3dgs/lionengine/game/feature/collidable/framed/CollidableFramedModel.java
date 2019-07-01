@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.b3dgs.lionengine.AnimatorFrameListener;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -42,7 +44,7 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
     private Collection<Collision> last = Collections.emptyList();
 
     /**
-     * Create a collidable framed model.
+     * Create feature.
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -51,12 +53,15 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
      * <li>{@link Animatable}</li>
      * </ul>
      * 
-     * @param services The services reference.
-     * @param setup The setup reference, must provide a valid {@link CollisionConfig}.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference, must provide a valid {@link CollisionConfig} (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public CollidableFramedModel(Services services, Setup setup)
     {
         super();
+
+        Check.notNull(services);
 
         config = CollidableFramedConfig.imports(setup);
     }

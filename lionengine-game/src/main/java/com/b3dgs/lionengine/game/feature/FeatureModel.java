@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
@@ -32,7 +33,7 @@ public class FeatureModel implements Feature
     private FeatureProvider provider;
 
     /**
-     * Create model.
+     * Create feature.
      */
     public FeatureModel()
     {
@@ -46,6 +47,8 @@ public class FeatureModel implements Feature
     @Override
     public void prepare(FeatureProvider provider)
     {
+        Check.notNull(provider);
+
         this.provider = provider;
 
         if (this instanceof IdentifiableListener && provider.hasFeature(Identifiable.class))
@@ -54,16 +57,10 @@ public class FeatureModel implements Feature
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Does nothing by default.
-     * </p>
-     */
     @Override
     public void checkListener(Object listener)
     {
-        // Nothing by default
+        Check.notNull(listener);
     }
 
     @Override

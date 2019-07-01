@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -39,7 +41,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     private Enum<?> type;
 
     /**
-     * Create an extractable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -53,11 +55,14 @@ public class ExtractableModel extends FeatureModel implements Extractable
      * <li>{@link Transformable}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public ExtractableModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
     }

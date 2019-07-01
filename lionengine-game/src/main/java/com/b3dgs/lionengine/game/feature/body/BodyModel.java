@@ -19,16 +19,14 @@ package com.b3dgs.lionengine.game.feature.body;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
- * Default body supporting gravity implementation.
+ * Body model implementation.
  */
 public class BodyModel extends FeatureModel implements Body
 {
-    /** Default FPS. */
+    /** Default rate. */
     private static final int DEFAULT_FPS = 60;
     /** Body force. */
     private final Force force = new Force();
@@ -38,17 +36,11 @@ public class BodyModel extends FeatureModel implements Body
     private double gravity = Constant.GRAVITY_EARTH;
     /** Body mass. */
     private double mass;
-    /** Desired FPS. */
+    /** Desired rate. */
     private int desiredFps = DEFAULT_FPS;
 
     /**
-     * Create a body model.
-     * <p>
-     * The {@link Featurable} must have:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
+     * Create feature.
      */
     public BodyModel()
     {

@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
@@ -38,7 +40,7 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     private Orientation orientation;
 
     /**
-     * Create an orientable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -52,11 +54,14 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
      * <li>{@link Transformable}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public OrientableModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
     }

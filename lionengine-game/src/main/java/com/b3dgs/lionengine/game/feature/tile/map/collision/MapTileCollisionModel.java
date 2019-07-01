@@ -18,6 +18,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -48,13 +50,16 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     private final MapTileGroup mapGroup;
 
     /**
-     * Create the map tile collision.
+     * Create feature.
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileCollisionModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);

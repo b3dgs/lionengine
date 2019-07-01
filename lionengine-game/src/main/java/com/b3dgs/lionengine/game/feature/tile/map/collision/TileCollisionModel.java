@@ -35,7 +35,7 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
     private final Tile tile;
 
     /**
-     * Create a tile collision.
+     * Create feature.
      * 
      * @param tile The tile reference.
      */

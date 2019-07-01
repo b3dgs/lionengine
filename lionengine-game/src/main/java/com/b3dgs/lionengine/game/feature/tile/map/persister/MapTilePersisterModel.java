@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -44,7 +45,7 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
     protected final MapTile map;
 
     /**
-     * Create the persister.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -52,11 +53,14 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      * <li>{@link MapTile}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTilePersisterModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
     }

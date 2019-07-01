@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.assignable;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
@@ -25,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 
 /**
- * Assignable implementation.
+ * Assignable model implementation.
  */
 public class AssignableModel extends FeatureModel implements Assignable
 {
@@ -39,7 +41,7 @@ public class AssignableModel extends FeatureModel implements Assignable
     private Assign assign;
 
     /**
-     * Create an assignable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -51,11 +53,14 @@ public class AssignableModel extends FeatureModel implements Assignable
      * If the {@link Featurable} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
      * </p>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public AssignableModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         cursor = services.get(Cursor.class);
         viewer = services.get(Viewer.class);

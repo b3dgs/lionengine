@@ -40,9 +40,9 @@ public interface Body extends Feature, Updatable, Direction
     void setDesiredFps(int desiredFps);
 
     /**
-     * Set the gravity to use. {@link com.b3dgs.lionengine.Constant#GRAVITY_EARTH} is used by default.
+     * Set the gravity to use.
      * 
-     * @param gravity The gravity to use (in m/s²).
+     * @param gravity The gravity to use.
      */
     void setGravity(double gravity);
 

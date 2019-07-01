@@ -44,7 +44,7 @@ public class SelectorModel extends FeatureModel implements SelectorConfigurer
     private boolean enabled = true;
 
     /**
-     * Create a selector.
+     * Create feature.
      */
     public SelectorModel()
     {

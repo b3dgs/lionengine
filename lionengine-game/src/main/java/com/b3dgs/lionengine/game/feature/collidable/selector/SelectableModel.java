@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature.collidable.selector;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
- * Selectable model base.
+ * Selectable model implementation.
  */
 public class SelectableModel extends FeatureModel implements Selectable
 {
@@ -27,7 +27,7 @@ public class SelectableModel extends FeatureModel implements Selectable
     private boolean selected;
 
     /**
-     * Create selectable.
+     * Create feature.
      */
     public SelectableModel()
     {

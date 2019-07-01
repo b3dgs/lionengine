@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -143,7 +144,7 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
     private Map<CollisionFormula, ImageBuffer> collisionCache;
 
     /**
-     * Create the map tile collision.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -152,11 +153,14 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      * <li>{@link MapTileCollision}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileCollisionRendererModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         mapCollision = map.getFeature(MapTileCollision.class);

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Viewer;
@@ -114,7 +115,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     private boolean renderDebug;
 
     /**
-     * Create a pathfindable model.
+     * Create feature.
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -137,12 +138,15 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * {@link #addListener(PathfindableListener)} on it.
      * </p>
      * 
-     * @param services The services reference.
-     * @param setup The setup reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public PathfindableModel(Services services, Setup setup)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);

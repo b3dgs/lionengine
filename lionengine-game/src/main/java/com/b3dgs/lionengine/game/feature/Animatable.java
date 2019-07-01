@@ -29,7 +29,7 @@ public interface Animatable extends Feature, Animator
     /**
      * Check if is current animation state.
      * 
-     * @param state The expected state to be.
+     * @param state The expected state to be (can be <code>null</code>).
      * @return <code>true</code> if is state, <code>false</code> else.
      */
     boolean is(AnimState state);

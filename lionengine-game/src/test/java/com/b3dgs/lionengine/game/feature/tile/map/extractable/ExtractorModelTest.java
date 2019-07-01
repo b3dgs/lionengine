@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -467,13 +468,13 @@ public final class ExtractorModelTest
                 add.set(true);
             }
         };
-        extractor.prepare(null);
+        extractor.prepare(new FeaturableModel());
 
         assertFalse(add.get());
 
-        extractor.checkListener(null);
+        extractor.checkListener(object);
 
-        assertFalse(add.get());
+        assertTrue(add.get());
     }
 
     /**

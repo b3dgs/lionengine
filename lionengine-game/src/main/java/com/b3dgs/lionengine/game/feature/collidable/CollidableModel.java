@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -58,7 +60,7 @@ public class CollidableModel extends FeatureModel
     /** The viewer reference. */
     private final Viewer viewer;
 
-    /** Associated group ID. */
+    /** Associated group Id. */
     private Integer group = Integer.valueOf(0);
     /** Transformable owning this model. */
     private Transformable transformable;
@@ -66,7 +68,7 @@ public class CollidableModel extends FeatureModel
     private Origin origin = Origin.TOP_LEFT;
 
     /**
-     * Create a collidable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -84,17 +86,20 @@ public class CollidableModel extends FeatureModel
      * {@link #addListener(CollidableListener)} on it.
      * </p>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public CollidableModel(Services services)
     {
         super();
 
+        Check.notNull(services);
+
         viewer = services.get(Viewer.class);
     }
 
     /**
-     * Create a collidable model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -112,12 +117,15 @@ public class CollidableModel extends FeatureModel
      * {@link #addListener(CollidableListener)} on it.
      * </p>
      * 
-     * @param services The services reference.
-     * @param setup The setup reference, must provide a valid {@link CollisionConfig}.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference, must provide a valid {@link CollisionConfig} (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public CollidableModel(Services services, Setup setup)
     {
         super();
+
+        Check.notNull(services);
 
         viewer = services.get(Viewer.class);
 

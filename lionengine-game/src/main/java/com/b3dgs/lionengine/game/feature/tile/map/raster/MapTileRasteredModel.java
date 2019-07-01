@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -47,7 +49,7 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     private boolean smooth;
 
     /**
-     * Create a map tile rastered.
+     * Create feature.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -55,11 +57,14 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
      * <li>{@link MapTile}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileRasteredModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
     }

@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -54,7 +56,7 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     private final MapCircuitExtractor extractor;
 
     /**
-     * Create a map tile circuit.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -69,11 +71,14 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
      * <li>{@link MapTileTransition}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileCircuitModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);

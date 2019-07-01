@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -41,7 +43,7 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     private final Viewer viewer;
 
     /**
-     * Create the viewer. It is shipped with a default renderer: {@link MapTileRendererModel}.
+     * Create feature. It uses default renderer: {@link MapTileRendererModel}.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -50,11 +52,14 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
      * <li>{@link Viewer}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public MapTileViewerModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);

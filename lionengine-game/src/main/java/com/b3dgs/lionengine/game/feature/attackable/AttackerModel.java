@@ -70,7 +70,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     private boolean attacked;
 
     /**
-     * Create an attacker model.
+     * Create feature.
      * <p>
      * The {@link Featurable} must have:
      * </p>
@@ -85,7 +85,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     /**
-     * Create an attacker model.
+     * Create feature.
      * <p>
      * The {@link Featurable} must have:
      * </p>

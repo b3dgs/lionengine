@@ -73,7 +73,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private ProducerState state;
 
     /**
-     * Create a producer model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -89,11 +89,14 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * {@link #addListener(ProducerListener)} on it.
      * </p>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public ProducerModel(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         handler = services.get(Handler.class);
         rate = services.get(SourceResolutionProvider.class)::getRate;
@@ -101,7 +104,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     }
 
     /**
-     * Create a producer model.
+     * Create feature.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
