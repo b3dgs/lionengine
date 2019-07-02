@@ -72,8 +72,8 @@ public final class AttackerConfig
         Check.notNull(root);
 
         final Xml node = root.getChild(NODE_ATTACKER);
-        final int delay = node.readInteger(ATT_DELAY);
-        final int distanceMin = node.readInteger(ATT_DISTANCE_MIN);
+        final int delay = node.readInteger(0, ATT_DELAY);
+        final int distanceMin = node.readInteger(0, ATT_DISTANCE_MIN);
         final int distanceMax = node.readInteger(0, ATT_DISTANCE_MAX);
         final int damagesMin = node.readInteger(0, ATT_DAMAGES_MIN);
         final int damagesMax = node.readInteger(0, ATT_DAMAGES_MAX);

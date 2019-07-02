@@ -67,7 +67,7 @@ public interface Attacker extends Feature, Updatable
      * @throws LionEngineException If invalid argument.
      * @see Tick
      */
-    void setAttackTimer(int tick);
+    void setAttackDelay(int tick);
 
     /**
      * Set the frame number (inside animation) which represents the attack action.

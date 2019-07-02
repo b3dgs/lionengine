@@ -98,6 +98,15 @@ public final class AttackerModelTest
     }
 
     /**
+     * Test constructor with null configurer.
+     */
+    @Test
+    public void testConstructorNullConfigurer()
+    {
+        assertThrows(() -> new AttackerModel(null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the config.
      */
     @Test
@@ -114,7 +123,7 @@ public final class AttackerModelTest
         attacker.setAttackDamages(new Range(damageMin, damageMax));
         attacker.setAttackDistance(new Range(distanceMin, distanceMax));
         attacker.setAttackFrame(frame);
-        attacker.setAttackTimer(time);
+        attacker.setAttackDelay(time);
 
         assertTrue(attacker.getAttackDamages() >= damageMin);
         assertTrue(attacker.getAttackDamages() <= damageMax);
@@ -303,7 +312,7 @@ public final class AttackerModelTest
         attacker.recycle();
         attacker.update(1.0);
         attacker.getFeature(Transformable.class).teleport(0, 0);
-        attacker.setAttackTimer(10);
+        attacker.setAttackDelay(10);
         target.teleport(5, 5);
         attacker.attack(target);
         attacker.update(1.0);

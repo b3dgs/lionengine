@@ -53,7 +53,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     /** Transformable reference. */
     private Transformable transformable;
     /** Attacker checker. */
-    private BooleanSupplier canAttack;
+    private BooleanSupplier canAttack = Boolean.TRUE::booleanValue;
     /** Attacker target (can be <code>null</code>). */
     private Transformable target;
     /** Attack frame number. */
@@ -105,7 +105,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         if (configurer.hasNode(AttackerConfig.NODE_ATTACKER))
         {
             final AttackerConfig config = AttackerConfig.imports(configurer);
-            setAttackTimer(config.getDelay());
+            setAttackDelay(config.getDelay());
             setAttackDistance(config.getDistance());
             setAttackDamages(config.getDamages());
         }
@@ -165,7 +165,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
     private void updateAttacking()
     {
-        if (tick.elapsed(attackPause))
+        if (!attacked && tick.elapsed(attackPause))
         {
             updateAttackHit();
         }
@@ -205,7 +205,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             attacked = false;
         }
         // Hit when frame attack reached
-        if (animatable.getFrame() >= frameAttack)
+        if (animatable.getFrameAnim() >= frameAttack)
         {
             attacking = false;
             for (final AttackerListener listener : listeners)
@@ -311,7 +311,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
-    public void setAttackTimer(int tick)
+    public void setAttackDelay(int tick)
     {
         Check.superiorOrEqual(tick, 0);
 
@@ -371,10 +371,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         attacking = false;
         attacked = false;
         stop = false;
-        frameAttack = 1;
-        attackPause = 1;
         target = null;
         state = AttackState.NONE;
-        canAttack = Boolean.TRUE::booleanValue;
     }
 }
