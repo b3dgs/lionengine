@@ -312,7 +312,8 @@ public final class AttackerModelTest
         attacker.recycle();
         attacker.update(1.0);
         attacker.getFeature(Transformable.class).teleport(0, 0);
-        attacker.setAttackDelay(10);
+        attacker.setAttackDelay(5);
+        attacker.setAttackFrame(1);
         target.teleport(5, 5);
         attacker.attack(target);
         attacker.update(1.0);
@@ -336,6 +337,9 @@ public final class AttackerModelTest
 
         assertFalse(preparing.get());
 
+        attacker.update(1.0);
+        attacker.update(1.0);
+        attacker.update(1.0);
         attacker.update(1.0);
         attacker.update(1.0);
 

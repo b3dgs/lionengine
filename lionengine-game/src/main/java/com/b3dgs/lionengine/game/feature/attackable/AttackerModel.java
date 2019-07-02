@@ -205,7 +205,8 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             attacked = false;
         }
         // Hit when frame attack reached
-        if (animatable.getFrameAnim() >= frameAttack)
+
+        else if (animatable.getFrame() == frameAttack)
         {
             attacking = false;
             for (final AttackerListener listener : listeners)

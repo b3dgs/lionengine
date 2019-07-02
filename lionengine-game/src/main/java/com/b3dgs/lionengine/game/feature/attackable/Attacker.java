@@ -70,7 +70,7 @@ public interface Attacker extends Feature, Updatable
     void setAttackDelay(int tick);
 
     /**
-     * Set the frame number (inside animation) which represents the attack action.
+     * Set the frame number which represents the attack action.
      * 
      * @param frame The attack frame number (must be strictly positive).
      * @throws LionEngineException If invalid argument.
