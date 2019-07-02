@@ -301,6 +301,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         {
             attacking = false;
             state = AttackState.NONE;
+            stop = false;
         }
     }
 
