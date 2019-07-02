@@ -151,6 +151,19 @@ public final class DamagesTest
     }
 
     /**
+     * Test set damages with range.
+     */
+    @Test
+    public void testSetDamagesRange()
+    {
+        final Damages damages = new Damages();
+        damages.setDamages(new Range(1, 5));
+
+        assertEquals(1, damages.getMin());
+        assertEquals(5, damages.getMax());
+    }
+
+    /**
      * Test set damages min over max.
      */
     @Test

@@ -91,6 +91,16 @@ public class Damages
     }
 
     /**
+     * Set the maximum damage value. Max set to min value if over.
+     * 
+     * @param range The damages range.
+     */
+    public void setDamages(Range range)
+    {
+        setDamages(range.getMin(), range.getMax());
+    }
+
+    /**
      * Get random damages between min-max.
      * 
      * @return The randomized damages.
