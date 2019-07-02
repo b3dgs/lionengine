@@ -105,9 +105,10 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         if (configurer.hasNode(AttackerConfig.NODE_ATTACKER))
         {
             final AttackerConfig config = AttackerConfig.imports(configurer);
-            setAttackDelay(config.getDelay());
-            setAttackDistance(config.getDistance());
-            setAttackDamages(config.getDamages());
+            damages.setDamages(config.getDamages());
+            distAttack = config.getDistance();
+            attackPause = config.getDelay();
+            tick.set(attackPause);
         }
     }
 
