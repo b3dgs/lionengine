@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.Cursor;
@@ -54,12 +56,15 @@ public class ActionableModel extends FeatureModel implements Actionable
      * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>
      * 
-     * @param services The services reference.
-     * @param setup The setup reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public ActionableModel(Services services, Setup setup)
     {
         super();
+
+        Check.notNull(services);
 
         cursor = services.get(Cursor.class);
 

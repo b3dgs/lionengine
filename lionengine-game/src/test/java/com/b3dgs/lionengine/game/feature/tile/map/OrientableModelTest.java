@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +61,15 @@ public final class OrientableModelTest
     public void clean()
     {
         featurable.getFeature(Identifiable.class).notifyDestroyed();
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new OrientableModel(null), "Unexpected null argument !");
     }
 
     /**

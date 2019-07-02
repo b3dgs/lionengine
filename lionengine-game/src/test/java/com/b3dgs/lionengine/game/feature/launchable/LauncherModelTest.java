@@ -99,6 +99,15 @@ public final class LauncherModelTest
     }
 
     /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new LauncherModel(null, null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the launcher.
      * 
      * @throws InterruptedException If error.

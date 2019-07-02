@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -134,6 +135,16 @@ public final class CollidableModelTest
     {
         collidable1.getFeature(Identifiable.class).destroy();
         collidable2.getFeature(Identifiable.class).destroy();
+    }
+
+    /**
+     * Test constructor with null configurer.
+     */
+    @Test
+    public void testConstructorNullConfigurer()
+    {
+        assertThrows(() -> new CollidableModel(null), "Unexpected null argument !");
+        assertThrows(() -> new CollidableModel(null, null), "Unexpected null argument !");
     }
 
     /**

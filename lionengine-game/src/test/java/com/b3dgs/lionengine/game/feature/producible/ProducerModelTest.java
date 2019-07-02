@@ -139,6 +139,16 @@ public final class ProducerModelTest
     }
 
     /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new ProducerModel(null), "Unexpected null argument !");
+        assertThrows(() -> new ProducerModel(null, null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the default production with default checker.
      */
     @Test

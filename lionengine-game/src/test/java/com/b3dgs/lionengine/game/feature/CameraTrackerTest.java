@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,15 @@ import org.junit.jupiter.api.Test;
  */
 public final class CameraTrackerTest
 {
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new CameraTracker(null), "Unexpected null argument !");
+    }
+
     /**
      * Test the tracker feature.
      */

@@ -36,6 +36,15 @@ public final class MapTileAppenderTest
     private final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel(services));
 
     /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTileAppenderModel(null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the map append when map is not created.
      */
     @Test

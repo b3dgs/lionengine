@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.collidable.framed;
 
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -147,6 +148,15 @@ public final class CollidableFramedModelTest
     {
         collidable1.getFeature(Identifiable.class).destroy();
         collidable2.getFeature(Identifiable.class).destroy();
+    }
+
+    /**
+     * Test constructor with null configurer.
+     */
+    @Test
+    public void testConstructorNullConfigurer()
+    {
+        assertThrows(() -> new CollidableFramedModel(null, null), "Unexpected null argument !");
     }
 
     /**

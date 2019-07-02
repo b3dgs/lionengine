@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -59,6 +60,15 @@ public final class MapTileViewerModelTest
         map = services.add(new MapTileGame());
         mapViewer = new MapTileViewerModel(services);
         mapViewer.prepare(map);
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTileViewerModel(null), "Unexpected null argument !");
     }
 
     /**

@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.body;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,15 @@ public final class BodyTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
+    }
+
+    /**
+     * Test constructor with null configurer.
+     */
+    @Test
+    public void testConstructorNullConfigurer()
+    {
+        assertThrows(() -> new TransformableModel(null), "Unexpected null argument !");
     }
 
     /**

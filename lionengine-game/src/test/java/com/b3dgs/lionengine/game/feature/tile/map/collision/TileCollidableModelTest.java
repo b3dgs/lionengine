@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -142,6 +143,15 @@ public final class TileCollidableModelTest
     private TileCollidableListener createListener(final AtomicReference<Tile> collided)
     {
         return (result, category) -> collided.set(result.getTile());
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new TileCollidableModel(null, null), "Unexpected null argument !");
     }
 
     /**

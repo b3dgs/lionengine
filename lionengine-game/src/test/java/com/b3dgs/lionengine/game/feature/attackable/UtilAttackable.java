@@ -61,7 +61,7 @@ final class UtilAttackable
         attacker.setAttackDamages(new Range(1, 2));
         attacker.setAttackDistance(new Range(1, 2));
         attacker.setAttackFrame(1);
-        attacker.setAttackTimer(2);
+        attacker.setAttackDelay(2);
         attacker.prepare(object);
 
         return attacker;

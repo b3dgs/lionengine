@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.actionable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -78,6 +79,15 @@ public final class ActionableModelTest
         actionable.getFeature(Identifiable.class).notifyDestroyed();
 
         assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new ActionableModel(null, null), "Unexpected null argument !");
     }
 
     /**

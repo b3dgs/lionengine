@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.producible;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -51,6 +52,15 @@ public final class ProducibleModelTest
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+    }
+
+    /**
+     * Test constructor with null setup.
+     */
+    @Test
+    public void testConstructorNullSetup()
+    {
+        assertThrows(() -> new ProducibleModel(null), "Unexpected null argument !");
     }
 
     /**

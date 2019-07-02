@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,15 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
  */
 public final class ExtractableModelTest
 {
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new ExtractableModel(null), "Unexpected null argument !");
+    }
+
     /**
      * Test the extraction config.
      */

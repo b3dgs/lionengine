@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.rasterable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -70,6 +71,15 @@ public final class RasterableModelTest
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new RasterableModel(null, null), "Unexpected null argument !");
     }
 
     /**

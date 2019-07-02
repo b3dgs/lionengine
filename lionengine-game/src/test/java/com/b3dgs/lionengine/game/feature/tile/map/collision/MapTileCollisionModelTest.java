@@ -133,6 +133,15 @@ public final class MapTileCollisionModelTest
     }
 
     /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTileCollisionModel(null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the map tile collision from top.
      */
     @Test

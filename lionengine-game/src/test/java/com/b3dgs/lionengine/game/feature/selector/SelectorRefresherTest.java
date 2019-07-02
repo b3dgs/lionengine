@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.selector;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -88,6 +89,16 @@ public final class SelectorRefresherTest
             }
         });
         refresher.prepare(featurable);
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new SelectorRefresher(null, null), "Unexpected null argument !");
+        assertThrows(() -> new SelectorRefresher(new Services(), null), "Unexpected null argument !");
     }
 
     /**

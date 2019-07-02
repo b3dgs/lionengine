@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 
@@ -40,11 +41,14 @@ public class CameraTracker extends FeaturableModel
      * <li>{@link Camera}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public CameraTracker(Services services)
     {
         super();
+
+        Check.notNull(services);
 
         final Camera camera = services.get(Camera.class);
 

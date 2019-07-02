@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -37,11 +38,14 @@ public class TileCollisionModel extends FeatureModel implements TileCollision
     /**
      * Create feature.
      * 
-     * @param tile The tile reference.
+     * @param tile The tile reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public TileCollisionModel(Tile tile)
     {
         super();
+
+        Check.notNull(tile);
 
         this.tile = tile;
     }

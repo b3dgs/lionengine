@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -89,6 +90,16 @@ public final class MapTilePathModelTest
         mapPath.prepare(map);
 
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTilePathModel(null), "Unexpected null argument !");
+        assertThrows(() -> new PathfindableModel(null, null), "Unexpected null argument !");
     }
 
     /**

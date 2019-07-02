@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
@@ -107,6 +108,15 @@ public final class MapTileTransitionModelTest
         {
             assertEquals(transition, mapGroup.getGroup(neighbor));
         }
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTileTransitionModel(null), "Unexpected null argument !");
     }
 
     /**

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.persister;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertThrowsIo;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -58,6 +59,15 @@ public final class MapTilePersisterModelTest
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTilePersisterModel(null), "Unexpected null argument !");
     }
 
     /**

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.assignable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -48,6 +49,15 @@ public final class AssignableModelTest
     public void clean()
     {
         assignable.getFeature(Identifiable.class).notifyDestroyed();
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new AssignableModel(null), "Unexpected null argument !");
     }
 
     /**

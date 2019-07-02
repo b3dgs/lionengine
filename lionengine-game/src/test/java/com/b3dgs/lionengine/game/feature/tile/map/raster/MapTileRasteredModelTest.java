@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.raster;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import java.util.Arrays;
 
@@ -87,6 +88,15 @@ public final class MapTileRasteredModelTest
         mapViewer.prepare(map);
         mapRastered = new MapTileRasteredModel(services);
         mapRastered.prepare(map);
+    }
+
+    /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new MapTileRasteredModel(null), "Unexpected null argument !");
     }
 
     /**

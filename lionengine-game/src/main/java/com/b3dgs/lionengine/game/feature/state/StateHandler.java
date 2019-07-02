@@ -112,6 +112,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
         super();
 
         Check.notNull(configurer);
+        Check.notNull(converter);
 
         this.configurer = Optional.of(configurer);
         this.converter = converter;

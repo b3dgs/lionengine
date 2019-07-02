@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -49,6 +50,15 @@ public final class AnimatableModelTest
         assertEquals(expectedState, animatable.getAnimState());
         assertEquals(expectedFrame, animatable.getFrame());
         assertEquals(expectedFrame - first + 1, animatable.getFrameAnim());
+    }
+
+    /**
+     * Test constructor with null animator.
+     */
+    @Test
+    public void testConstructorNullAnimator()
+    {
+        assertThrows(() -> new AnimatableModel(null), "Unexpected null argument !");
     }
 
     /**

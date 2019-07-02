@@ -70,6 +70,17 @@ public final class StateHandlerTest
     }
 
     /**
+     * Test constructor with null configurer.
+     */
+    @Test
+    public void testConstructorNullConfigurer()
+    {
+        assertThrows(() -> new StateHandler(null, null), "Unexpected null argument !");
+        assertThrows(() -> new StateHandler(new Configurer(Medias.create("object.xml")), null),
+                     "Unexpected null argument !");
+    }
+
+    /**
      * Test the state handling.
      */
     @Test

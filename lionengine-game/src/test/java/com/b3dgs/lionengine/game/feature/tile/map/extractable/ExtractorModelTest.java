@@ -101,6 +101,15 @@ public final class ExtractorModelTest
     }
 
     /**
+     * Test constructor with null services.
+     */
+    @Test
+    public void testConstructorNullServices()
+    {
+        assertThrows(() -> new ExtractorModel(null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the extractor config.
      */
     @Test

@@ -83,6 +83,15 @@ public class TileCollisionModelTest
     private final TileCollisionModel model = new TileCollisionModel(tile);
 
     /**
+     * Test constructor with null tile.
+     */
+    @Test
+    public void testConstructorNullTile()
+    {
+        assertThrows(() -> new TileCollisionModel(null), "Unexpected null argument !");
+    }
+
+    /**
      * Test the tile collision model.
      */
     @Test
