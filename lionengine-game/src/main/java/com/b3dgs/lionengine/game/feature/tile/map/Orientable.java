@@ -44,7 +44,7 @@ public interface Orientable
     /**
      * Set the orientation to use.
      * 
-     * @param orientation The orientation to use.
+     * @param orientation The orientation to use (must not be <code>null</code>).
      */
     void setOrientation(Orientation orientation);
 

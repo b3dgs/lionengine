@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterEach;
@@ -89,7 +88,9 @@ public final class OrientableModelTest
     @Test
     public void testOrientable()
     {
-        assertNull(orientable.getOrientation());
+        assertThrows(() -> orientable.setOrientation(null), "Unexpected null argument !");
+
+        assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.recycle();
 
@@ -133,7 +134,7 @@ public final class OrientableModelTest
     @Test
     public void testOrientableTiled()
     {
-        assertNull(orientable.getOrientation());
+        assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.recycle();
 

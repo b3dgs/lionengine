@@ -37,7 +37,7 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     /** Localizable reference. */
     private Transformable transformable;
     /** Current orientation. */
-    private Orientation orientation;
+    private Orientation orientation = Orientation.NORTH;
 
     /**
      * Create feature.
@@ -64,16 +64,6 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
         Check.notNull(services);
 
         map = services.get(MapTile.class);
-    }
-
-    /*
-     * Recyclable
-     */
-
-    @Override
-    public void recycle()
-    {
-        orientation = Orientation.NORTH;
     }
 
     /*
@@ -107,6 +97,8 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     @Override
     public void setOrientation(Orientation orientation)
     {
+        Check.notNull(orientation);
+
         this.orientation = orientation;
     }
 
@@ -114,5 +106,15 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
     public Orientation getOrientation()
     {
         return orientation;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        orientation = Orientation.NORTH;
     }
 }
