@@ -43,10 +43,10 @@ final class UtilProducible
      * @param cant The cannot.
      * @return The listener.
      */
-    public static ProducerListener createProducerListener(final AtomicReference<Featurable> start,
-                                                          final AtomicReference<Featurable> current,
-                                                          final AtomicReference<Featurable> done,
-                                                          final AtomicReference<Featurable> cant)
+    public static ProducerListener createProducerListener(AtomicReference<Featurable> start,
+                                                          AtomicReference<Featurable> current,
+                                                          AtomicReference<Featurable> done,
+                                                          AtomicReference<Featurable> cant)
     {
         return new ProducerListener()
         {
@@ -85,11 +85,11 @@ final class UtilProducible
      * 
      * @return The listener.
      */
-    public static ProducibleListener createProducibleListener(final AtomicBoolean start,
-                                                              final AtomicBoolean progress,
-                                                              final AtomicBoolean end)
+    public static ProducibleListener createProducibleListener(AtomicBoolean start,
+                                                              AtomicBoolean progress,
+                                                              AtomicBoolean end)
     {
-        return new ProducibleListener()
+        return new ProducibleListenerVoid()
         {
             @Override
             public void notifyProductionStarted(Producer producer)
@@ -153,7 +153,7 @@ final class UtilProducible
      */
     public static ProducibleListener createListener()
     {
-        return new ProducibleListener()
+        return new ProducibleListenerVoid()
         {
             @Override
             public void notifyProductionStarted(Producer producer)

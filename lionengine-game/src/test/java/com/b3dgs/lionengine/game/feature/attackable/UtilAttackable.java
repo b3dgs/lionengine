@@ -77,13 +77,13 @@ final class UtilAttackable
      * @param anim The anim state.
      * @return The created listener
      */
-    public static AttackerListener createListener(final AtomicBoolean preparing,
-                                                  final AtomicReference<Transformable> reaching,
-                                                  final AtomicReference<Transformable> started,
-                                                  final AtomicReference<Transformable> ended,
-                                                  final AtomicBoolean anim)
+    public static AttackerListener createListener(AtomicBoolean preparing,
+                                                  AtomicReference<Transformable> reaching,
+                                                  AtomicReference<Transformable> started,
+                                                  AtomicReference<Transformable> ended,
+                                                  AtomicBoolean anim)
     {
-        return new AttackerListener()
+        return new AttackerListenerVoid()
         {
             @Override
             public void notifyReachingTarget(Transformable target)
