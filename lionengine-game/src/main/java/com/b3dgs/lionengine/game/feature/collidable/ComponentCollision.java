@@ -57,6 +57,8 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
 
     /** Mapping reduced. */
     private final Map<Integer, Map<Point, Set<Collidable>>> collidables = new HashMap<>();
+    /** Already collided mapping. */
+    private final Map<Collidable, Collidable> done = new HashMap<>(1);
     /** To be notified. */
     private final List<Collided> toNotify = new ArrayList<>();
 
@@ -235,12 +237,14 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final Set<Collidable> others = acceptedElements.get(point);
         for (final Collidable objectB : others)
         {
-            if (objectA != objectB)
+            // Ensures not already collided with object with other point (because of subdivision mapping)
+            if (objectA != objectB && !(done.get(objectA) == objectB))
             {
                 final List<CollisionCouple> collisions = objectA.collide(objectB);
                 for (final CollisionCouple collision : collisions)
                 {
                     toNotify.add(new Collided(objectA, objectB, collision));
+                    done.put(objectA, objectB);
                 }
             }
         }
@@ -253,6 +257,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     @Override
     public void update(double extrp, Handlables objects)
     {
+        done.clear();
         for (final Map<Point, Set<Collidable>> groups : collidables.values())
         {
             for (final Entry<Point, Set<Collidable>> current : groups.entrySet())

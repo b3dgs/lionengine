@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
@@ -143,6 +144,23 @@ public final class ComponentCollisionTest
 
         assertNull(collide.get());
         assertNull(featurable1.called.get());
+    }
+
+    /**
+     * Test collidable not collide more than one time if on many points with reduce factor.
+     */
+    @Test
+    public void testCollidableTwoPoints()
+    {
+        transformable1.teleport(ComponentCollision.REDUCE_FACTOR - 3.0, 0.0);
+        transformable2.teleport(ComponentCollision.REDUCE_FACTOR - 1.0, 0.0);
+
+        final AtomicInteger count = new AtomicInteger();
+        collidable2.addListener((c, w, b) -> count.incrementAndGet());
+
+        handler.update(1.0);
+
+        assertEquals(1, count.get());
     }
 
     /**
