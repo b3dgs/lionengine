@@ -238,7 +238,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         for (final Collidable objectB : others)
         {
             // Ensures not already collided with object with other point (because of subdivision mapping)
-            if (objectA != objectB && !(done.get(objectA) == objectB))
+            if (objectA != objectB && done.get(objectA) != objectB)
             {
                 final List<CollisionCouple> collisions = objectA.collide(objectB);
                 for (final CollisionCouple collision : collisions)

@@ -57,7 +57,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     {
         super();
 
-        addListener(services.get(LayerableListener.class));
+        listeners.add(services.get(LayerableListener.class));
     }
 
     /**
