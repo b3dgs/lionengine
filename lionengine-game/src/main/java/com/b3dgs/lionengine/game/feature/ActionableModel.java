@@ -40,6 +40,8 @@ public class ActionableModel extends FeatureModel implements Actionable
     private int clickAction;
     /** Action used. */
     private Action action;
+    /** Enabled flag. */
+    private boolean enabled = true;
 
     /**
      * Create feature.
@@ -91,7 +93,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     @Override
     public void update(double extrp)
     {
-        if (action != null && isOver() && cursor.hasClickedOnce(clickAction))
+        if (enabled && action != null && isOver() && cursor.hasClickedOnce(clickAction))
         {
             action.execute();
         }
@@ -110,6 +112,12 @@ public class ActionableModel extends FeatureModel implements Actionable
     }
 
     @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    @Override
     public Area getButton()
     {
         return button;
@@ -125,5 +133,11 @@ public class ActionableModel extends FeatureModel implements Actionable
     public boolean isOver()
     {
         return button.contains(cursor.getScreenX(), cursor.getScreenY());
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return enabled;
     }
 }

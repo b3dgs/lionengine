@@ -32,6 +32,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 
 /**
  * Test {@link ActionRef}.
@@ -39,8 +40,9 @@ import com.b3dgs.lionengine.Constant;
 public final class ActionRefTest
 {
     private final boolean cancel = true;
+    private final FeaturableModel model = new FeaturableModel();
     private final ActionRef actionRef1 = new ActionRef("path", !cancel, new ArrayList<ActionRef>());
-    private final ActionRef actionRef2 = new ActionRef("path2", cancel, Arrays.asList(actionRef1));
+    private final ActionRef actionRef2 = new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature);
 
     /**
      * Test constructor with <code>null</code> path.
@@ -72,6 +74,9 @@ public final class ActionRefTest
         assertFalse(actionRef1.hasCancel());
         assertTrue(actionRef2.hasCancel());
 
+        assertFalse(actionRef1.isUnique());
+        assertTrue(actionRef2.isUnique());
+
         assertTrue(actionRef1.getRefs().isEmpty());
         assertEquals(actionRef1, actionRef2.getRefs().iterator().next());
     }
@@ -82,11 +87,15 @@ public final class ActionRefTest
     @Test
     public void testEquals()
     {
+        final FeaturableModel featurable = new FeaturableModel();
+
         assertEquals(actionRef1, actionRef1);
         assertEquals(actionRef1, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
 
         assertEquals(actionRef2, actionRef2);
-        assertEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1)));
+        assertEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature));
+        assertEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
+                     new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature));
 
         assertNotEquals(actionRef1, null);
         assertNotEquals(actionRef1, new Object());
@@ -97,6 +106,8 @@ public final class ActionRefTest
         assertNotEquals(actionRef1, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
         assertNotEquals(actionRef1, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
         assertNotEquals(actionRef1, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
+        assertNotEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
+                        new ActionRef("path2", cancel, Arrays.asList(actionRef1), new FeaturableModel()::getFeature));
     }
 
     /**
@@ -106,11 +117,14 @@ public final class ActionRefTest
     public void testHashCode()
     {
         final ActionRef hash = actionRef1;
+        final FeaturableModel featurable = new FeaturableModel();
 
         assertHashEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
 
         assertHashEquals(actionRef2, actionRef2);
-        assertHashEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1)));
+        assertHashEquals(actionRef2, new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature));
+        assertHashEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
+                         new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature));
 
         assertHashNotEquals(hash, new Object());
         assertHashNotEquals(hash, actionRef2);
@@ -120,6 +134,11 @@ public final class ActionRefTest
         assertHashNotEquals(hash, new ActionRef("path", cancel, new ArrayList<ActionRef>()));
         assertHashNotEquals(hash, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
         assertHashNotEquals(hash, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
+        assertHashNotEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
+                            new ActionRef("path2",
+                                          cancel,
+                                          Arrays.asList(actionRef1),
+                                          new FeaturableModel()::getFeature));
     }
 
     /**

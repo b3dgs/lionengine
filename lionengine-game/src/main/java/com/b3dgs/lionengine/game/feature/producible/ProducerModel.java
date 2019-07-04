@@ -19,17 +19,13 @@ package com.b3dgs.lionengine.game.feature.producible;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Queue;
 import java.util.function.IntSupplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.ActionRef;
-import com.b3dgs.lionengine.game.ActionsConfig;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -49,8 +45,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private final Collection<ProducerListener> listeners = new ArrayList<>();
     /** Production queue. */
     private final Queue<Featurable> productions = new ArrayDeque<>();
-    /** Allowed actions name. */
-    private final List<ActionRef> actions;
     /** Handler reference. */
     private final Handler handler;
     /** Rate provider. */
@@ -100,7 +94,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
 
         handler = services.get(Handler.class);
         rate = services.get(SourceResolutionProvider.class)::getRate;
-        actions = Collections.emptyList();
     }
 
     /**
@@ -131,8 +124,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
 
         handler = services.get(Handler.class);
         rate = services.get(SourceResolutionProvider.class)::getRate;
-
-        actions = ActionsConfig.imports(setup);
     }
 
     /**
@@ -161,6 +152,8 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      */
     private void actionProducing(double extrp)
     {
+        progress += speed * extrp;
+
         for (final ProducerListener listener : listeners)
         {
             listener.notifyProducing(currentObject);
@@ -169,7 +162,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         {
             listener.notifyProductionProgress(this);
         }
-        progress += speed * extrp;
 
         // Production time elapsed
         if (progress >= steps)
@@ -392,12 +384,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     public Iterator<Featurable> iterator()
     {
         return productions.iterator();
-    }
-
-    @Override
-    public List<ActionRef> getActions()
-    {
-        return Collections.unmodifiableList(actions);
     }
 
     @Override

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -42,29 +43,33 @@ public final class ActionsConfig
     public static final String ATT_PATH = "path";
     /** Action cancel attribute name. */
     public static final String ATT_CANCEL = "cancel";
+    /** Action unique attribute name. */
+    public static final String ATT_UNIQUE = "unique";
 
     /**
      * Create the action data from configurer.
      *
      * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param id The id supplier to handle unique instance if needed (must not be <code>null</code>).
      * @return The actions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static List<ActionRef> imports(Configurer configurer)
+    public static List<ActionRef> imports(Configurer configurer, Function<Class<? extends Feature>, Feature> id)
     {
         Check.notNull(configurer);
 
-        return imports(configurer.getRoot());
+        return imports(configurer.getRoot(), id);
     }
 
     /**
      * Create the action data from node.
      *
      * @param root The root reference (must not be <code>null</code>).
+     * @param id The id supplier to handle unique instance if needed (must not be <code>null</code>).
      * @return The allowed actions.
      * @throws LionEngineException If unable to read node.
      */
-    public static List<ActionRef> imports(Xml root)
+    public static List<ActionRef> imports(Xml root, Function<Class<? extends Feature>, Feature> id)
     {
         Check.notNull(root);
 
@@ -74,7 +79,7 @@ public final class ActionsConfig
         }
         final Xml node = root.getChild(NODE_ACTIONS);
 
-        return getRefs(node);
+        return getRefs(node, id);
     }
 
     /**
@@ -98,6 +103,10 @@ public final class ActionsConfig
             {
                 nodeAction.writeBoolean(ATT_CANCEL, true);
             }
+            if (action.hasCancel())
+            {
+                nodeAction.writeBoolean(ATT_UNIQUE, true);
+            }
             for (final ActionRef ref : action.getRefs())
             {
                 exports(nodeAction, ref);
@@ -111,9 +120,10 @@ public final class ActionsConfig
      * Get all actions and their references.
      * 
      * @param node The current node to check (must not be <code>null</code>).
+     * @param id The id supplier to handle unique instance if needed (must not be <code>null</code>).
      * @return The actions found.
      */
-    private static List<ActionRef> getRefs(Xml node)
+    private static List<ActionRef> getRefs(Xml node, Function<Class<? extends Feature>, Feature> id)
     {
         final Collection<Xml> children = node.getChildren(NODE_ACTION);
         final List<ActionRef> actions = new ArrayList<>(children.size());
@@ -122,7 +132,8 @@ public final class ActionsConfig
         {
             final String path = action.readString(ATT_PATH);
             final boolean cancel = action.readBoolean(false, ATT_CANCEL);
-            actions.add(new ActionRef(path, cancel, getRefs(action)));
+            final boolean unique = action.readBoolean(false, ATT_UNIQUE);
+            actions.add(new ActionRef(path, cancel, getRefs(action, id), unique ? id : null));
         }
 
         return actions;

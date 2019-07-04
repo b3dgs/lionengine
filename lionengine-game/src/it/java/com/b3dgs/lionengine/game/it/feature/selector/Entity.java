@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.it.feature.selector;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.SelectableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -83,7 +84,7 @@ public class Entity extends FeaturableModel
         final MapTile map = services.get(MapTile.class);
 
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
-        producible.addListener(new ProducibleListener()
+        producible.addListener(new ProducibleListenerVoid()
         {
             @Override
             public void notifyProductionStarted(Producer producer)
@@ -93,17 +94,12 @@ public class Entity extends FeaturableModel
             }
 
             @Override
-            public void notifyProductionProgress(Producer producer)
-            {
-                // Nothing to do
-            }
-
-            @Override
             public void notifyProductionEnded(Producer producer)
             {
                 surface.setFrame(2);
             }
         });
+        addFeature(new ActionerModel(setup));
 
         final Viewer viewer = services.get(Viewer.class);
 

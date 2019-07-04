@@ -235,7 +235,6 @@ public final class ProducerModelTest
         assertEquals(-1, producer.getProgressPercent());
         assertEquals(0, producer.getQueueLength());
         assertFalse(producer.isProducing());
-        assertTrue(producer.getActions().isEmpty());
 
         final Featurable featurable = UtilProducible.createProducible(services);
         producer.addToProductionQueue(featurable);

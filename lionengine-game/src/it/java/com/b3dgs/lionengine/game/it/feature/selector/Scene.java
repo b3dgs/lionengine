@@ -205,7 +205,7 @@ class Scene extends Sequence
                 break;
             case 7:
                 click = 8;
-                assertEquals(6, handler.size());
+                assertEquals(8, handler.size());
                 break;
             case 8: // Click move button
                 mouse.doClickAt(MouseAwt.LEFT, 16 * 2, 125 * 2);
@@ -223,7 +223,7 @@ class Scene extends Sequence
                 break;
             case 11:
                 click = 12;
-                assertEquals(6, handler.size());
+                assertEquals(8, handler.size());
                 break;
             case 12:
                 mouse.doClick(MouseAwt.LEFT);

@@ -43,6 +43,13 @@ public interface Actionable extends Feature, Updatable
     void setClickAction(int click);
 
     /**
+     * Set the enabled flag.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    void setEnabled(boolean enabled);
+
+    /**
      * Get the button surface representation.
      * 
      * @return The button surface representation.
@@ -62,4 +69,11 @@ public interface Actionable extends Feature, Updatable
      * @return <code>true</code> if cursor is over, <code>false</code> else.
      */
     boolean isOver();
+
+    /**
+     * Check if is enabled.
+     * 
+     * @return <code>true</code> if enabled.
+     */
+    boolean isEnabled();
 }

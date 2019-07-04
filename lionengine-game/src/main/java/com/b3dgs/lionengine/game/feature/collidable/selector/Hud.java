@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
-import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -51,6 +50,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Hud featurable implementation, containing a surface image, a {@link Selector} and menus handling.
  */
+// CHECKSTYLE IGNORE LINE: FanOutComplexity
 public class Hud extends FeaturableModel
 {
     /** Split with path. */
@@ -126,8 +126,10 @@ public class Hud extends FeaturableModel
     protected final SpriteAnimated surface;
     /** Listeners reference. */
     private final Collection<HudListener> listeners = new ArrayList<>();
+    /** Created menus. */
+    private final Map<ActionRef, Actionable> menus = new HashMap<>();
     /** Current active menus. */
-    private final Collection<Featurable> menus = new ArrayList<>();
+    private final Collection<Actionable> active = new ArrayList<>();
     /** Previous menus. */
     private final Map<ActionRef, Collection<ActionRef>> previous = new HashMap<>();
     /** Last action. */
@@ -241,12 +243,11 @@ public class Hud extends FeaturableModel
      */
     public void clearMenus()
     {
-        for (final Featurable menu : menus)
+        for (final Actionable menu : active)
         {
-            menu.getFeature(Identifiable.class).destroy();
-            handler.remove(menu);
+            menu.setEnabled(false);
         }
-        menus.clear();
+        active.clear();
     }
 
     /**
@@ -259,7 +260,7 @@ public class Hud extends FeaturableModel
     {
         for (final ActionRef action : actions)
         {
-            final Featurable menu = createMenu(action);
+            final Actionable menu = createMenu(action);
             if (!action.getRefs().isEmpty())
             {
                 generateSubMenu(actions, action, menu);
@@ -270,10 +271,6 @@ public class Hud extends FeaturableModel
                 generateCancel(action, menu);
             }
         }
-        for (final Featurable current : menus)
-        {
-            handler.add(current);
-        }
     }
 
     /**
@@ -282,10 +279,17 @@ public class Hud extends FeaturableModel
      * @param action The action used.
      * @return The created menu.
      */
-    private Featurable createMenu(ActionRef action)
+    private Actionable createMenu(ActionRef action)
     {
-        final Featurable menu = factory.create(Medias.create(PATH.split(action.getPath())));
-        menus.add(menu);
+        if (!menus.containsKey(action))
+        {
+            final Featurable featurable = factory.create(Medias.create(PATH.split(action.getPath())));
+            menus.put(action, featurable.getFeature(Actionable.class));
+            handler.add(featurable);
+        }
+        final Actionable menu = menus.get(action);
+        menu.setEnabled(true);
+        active.add(menu);
         return menu;
     }
 
@@ -296,9 +300,9 @@ public class Hud extends FeaturableModel
      * @param action The current action.
      * @param menu The current menu to check.
      */
-    private void generateSubMenu(Collection<ActionRef> parents, ActionRef action, Featurable menu)
+    private void generateSubMenu(Collection<ActionRef> parents, ActionRef action, Actionable menu)
     {
-        menu.getFeature(Actionable.class).setAction(() ->
+        menu.setAction(() ->
         {
             clearMenus();
             createMenus(parents, action.getRefs());
@@ -311,9 +315,9 @@ public class Hud extends FeaturableModel
      * @param action The associated action.
      * @param menu The current menu to check.
      */
-    private void generateCancel(ActionRef action, Featurable menu)
+    private void generateCancel(ActionRef action, Actionable menu)
     {
-        menu.getFeature(Actionable.class).setAction(() ->
+        menu.setAction(() ->
         {
             clearMenus();
             final Collection<ActionRef> parents = previous.get(action);

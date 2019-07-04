@@ -126,8 +126,8 @@ public final class ActionableModelTest
         clickNumber.set(0);
         actionable.update(1.0);
 
-        assertEquals(0, clickNumber.get());
         assertFalse(executed.get());
+        assertEquals(0, clickNumber.get());
     }
 
     /**
@@ -141,8 +141,8 @@ public final class ActionableModelTest
         actionable.setClickAction(2);
         actionable.update(1.0);
 
-        assertEquals(2, clickNumber.get());
         assertTrue(executed.get());
+        assertEquals(2, clickNumber.get());
     }
 
     /**
@@ -159,8 +159,8 @@ public final class ActionableModelTest
         actionable.setClickAction(1);
         actionable.update(1.0);
 
-        assertEquals(1, clickNumber.get());
         assertFalse(executed.get());
+        assertEquals(1, clickNumber.get());
     }
 
     /**

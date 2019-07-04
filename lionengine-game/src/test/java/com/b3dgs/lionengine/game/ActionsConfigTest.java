@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.producible;
+package com.b3dgs.lionengine.game;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
@@ -32,14 +32,11 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.ActionRef;
-import com.b3dgs.lionengine.game.ActionsConfig;
-import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Test {@link ActionsConfig}.
  */
-public final class ProducerConfigTest // TODO rename to ActionsConfig
+public final class ActionsConfigTest
 {
     /**
      * Prepare test.
@@ -84,8 +81,8 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
         final Media media = Medias.create("producer.xml");
         root.save(media);
 
-        assertEquals(refs, ActionsConfig.imports(new Xml(media)));
-        assertEquals(refs, ActionsConfig.imports(new Configurer(media)));
+        assertEquals(refs, ActionsConfig.imports(new Xml(media), null));
+        assertEquals(refs, ActionsConfig.imports(new Configurer(media), null));
 
         assertTrue(media.getFile().delete());
     }
@@ -105,8 +102,8 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
         final Media media = Medias.create("producer.xml");
         root.save(media);
 
-        assertNotEquals(refs, ActionsConfig.imports(new Xml(media)));
-        assertNotEquals(refs, ActionsConfig.imports(new Configurer(media)));
+        assertNotEquals(refs, ActionsConfig.imports(new Xml(media), null));
+        assertNotEquals(refs, ActionsConfig.imports(new Configurer(media), null));
 
         assertTrue(media.getFile().delete());
     }
@@ -121,7 +118,7 @@ public final class ProducerConfigTest // TODO rename to ActionsConfig
         final Xml root = new Xml("test");
         root.save(media);
 
-        assertTrue(ActionsConfig.imports(new Xml(media)).isEmpty());
+        assertTrue(ActionsConfig.imports(new Xml(media), null).isEmpty());
 
         assertTrue(media.getFile().delete());
     }

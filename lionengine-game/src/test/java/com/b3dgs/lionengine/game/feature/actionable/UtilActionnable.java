@@ -68,7 +68,7 @@ final class UtilActionnable
      * @param clickNumber The click number recorded.
      * @return The services.
      */
-    public static Services createServices(final AtomicBoolean clicked, final AtomicInteger clickNumber)
+    public static Services createServices(AtomicBoolean clicked, AtomicInteger clickNumber)
     {
         final Services services = new Services();
         final Cursor cursor = new Cursor()
@@ -110,7 +110,7 @@ final class UtilActionnable
      * @param executed The execution flag.
      * @return The created action.
      */
-    public static Action createAction(final AtomicBoolean executed)
+    public static Action createAction(AtomicBoolean executed)
     {
         return () -> executed.set(true);
     }

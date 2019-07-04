@@ -16,18 +16,15 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.function.Function;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 
 /**
  * Action reference structure.
- * <p>
- * This class is Thread-Safe.
- * </p>
  */
 public class ActionRef
 {
@@ -35,18 +32,39 @@ public class ActionRef
     private final String path;
     /** Cancel flag. */
     private final boolean cancel;
+    /** Unique flag. */
+    private final boolean unique;
     /** Associated actions. */
     private final Collection<ActionRef> refs;
+    /** Id supplier. */
+    private final Function<Class<? extends Feature>, Feature> id;
 
     /**
      * Create action reference.
      * 
-     * @param path The action media path.
-     * @param cancel The cancel flag.
-     * @param refs The associated actions.
+     * @param path The action media path (must not be <code>null</code>).
+     * @param cancel The cancel flag (must not be <code>null</code>).
+     * @param refs The associated actions (must not be <code>null</code>).
      * @throws LionEngineException If <code>null</code> arguments.
      */
     public ActionRef(String path, boolean cancel, Collection<ActionRef> refs)
+    {
+        this(path, cancel, refs, null);
+    }
+
+    /**
+     * Create action reference.
+     * 
+     * @param path The action media path (must not be <code>null</code>).
+     * @param cancel The cancel flag (must not be <code>null</code>).
+     * @param refs The associated actions (must not be <code>null</code>).
+     * @param id The id supplier to handle unique instance if needed (can be <code>null</code> if non unique).
+     * @throws LionEngineException If <code>null</code> arguments.
+     */
+    public ActionRef(String path,
+                     boolean cancel,
+                     Collection<ActionRef> refs,
+                     Function<Class<? extends Feature>, Feature> id)
     {
         super();
 
@@ -55,7 +73,9 @@ public class ActionRef
 
         this.path = path;
         this.cancel = cancel;
-        this.refs = new ArrayList<>(refs);
+        this.refs = refs;
+        this.id = id;
+        unique = id != null;
     }
 
     /**
@@ -79,13 +99,23 @@ public class ActionRef
     }
 
     /**
-     * Get the associated actions as read only.
+     * Get the unique flag.
+     * 
+     * @return The unique flag.
+     */
+    public boolean isUnique()
+    {
+        return unique;
+    }
+
+    /**
+     * Get the associated actions.
      * 
      * @return The associated actions.
      */
     public Collection<ActionRef> getRefs()
     {
-        return Collections.unmodifiableCollection(refs);
+        return refs;
     }
 
     /*
@@ -100,6 +130,10 @@ public class ActionRef
         result = prime * result + (cancel ? 1231 : 1237);
         result = prime * result + path.hashCode();
         result = prime * result + refs.hashCode();
+        if (unique)
+        {
+            result = prime * result + id.apply(Identifiable.class).hashCode();
+        }
         return result;
     }
 
@@ -115,7 +149,10 @@ public class ActionRef
             return false;
         }
         final ActionRef other = (ActionRef) obj;
-        return other.cancel == cancel && other.path.equals(path) && other.refs.equals(refs);
+        return other.cancel == cancel
+               && other.path.equals(path)
+               && other.refs.equals(refs)
+               && (!unique || other.id.apply(Identifiable.class).equals(id.apply(Identifiable.class)));
     }
 
     @Override
