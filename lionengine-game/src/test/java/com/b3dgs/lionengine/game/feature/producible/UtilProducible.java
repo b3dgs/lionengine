@@ -48,29 +48,33 @@ final class UtilProducible
                                                           AtomicReference<Featurable> done,
                                                           AtomicReference<Featurable> cant)
     {
-        return new ProducerListener()
+        return new ProducerListenerVoid()
         {
             @Override
             public void notifyStartProduction(Featurable featurable)
             {
+                super.notifyStartProduction(featurable);
                 start.set(featurable);
             }
 
             @Override
             public void notifyProducing(Featurable featurable)
             {
+                super.notifyProducing(featurable);
                 current.set(featurable);
             }
 
             @Override
             public void notifyProduced(Featurable featurable)
             {
+                super.notifyProduced(featurable);
                 done.set(featurable);
             }
 
             @Override
             public void notifyCanNotProduce(Featurable featurable)
             {
+                super.notifyCanNotProduce(featurable);
                 cant.set(featurable);
             }
         };
@@ -94,18 +98,21 @@ final class UtilProducible
             @Override
             public void notifyProductionStarted(Producer producer)
             {
+                super.notifyProductionStarted(producer);
                 start.set(true);
             }
 
             @Override
             public void notifyProductionProgress(Producer producer)
             {
+                super.notifyProductionProgress(producer);
                 progress.set(true);
             }
 
             @Override
             public void notifyProductionEnded(Producer producer)
             {
+                super.notifyProductionEnded(producer);
                 end.set(true);
             }
         };
@@ -144,34 +151,5 @@ final class UtilProducible
         root.save(media);
 
         return media;
-    }
-
-    /**
-     * Create listener.
-     * 
-     * @return The listener.
-     */
-    public static ProducibleListener createListener()
-    {
-        return new ProducibleListenerVoid()
-        {
-            @Override
-            public void notifyProductionStarted(Producer producer)
-            {
-                // Mock
-            }
-
-            @Override
-            public void notifyProductionProgress(Producer producer)
-            {
-                // Mock
-            }
-
-            @Override
-            public void notifyProductionEnded(Producer producer)
-            {
-                // Mock
-            }
-        };
     }
 }

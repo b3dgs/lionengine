@@ -179,4 +179,17 @@ public final class ActionableModelTest
 
         assertTrue(executed.get());
     }
+
+    /**
+     * Test enabled flag.
+     */
+    @Test
+    public void testEnabled()
+    {
+        assertTrue(actionable.isEnabled());
+
+        actionable.setEnabled(false);
+
+        assertFalse(actionable.isEnabled());
+    }
 }

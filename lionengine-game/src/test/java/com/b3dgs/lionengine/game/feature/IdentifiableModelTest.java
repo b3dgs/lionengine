@@ -17,6 +17,9 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
@@ -140,5 +143,34 @@ public final class IdentifiableModelTest
         identifiable.notifyDestroyed();
 
         assertTrue(destroyed.get());
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final IdentifiableModel model = new IdentifiableModel();
+
+        assertEquals(model, model);
+
+        assertNotEquals(model, null);
+        assertNotEquals(model, new Object());
+        assertNotEquals(model, new IdentifiableModel());
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final IdentifiableModel model = new IdentifiableModel();
+
+        assertHashEquals(model, model);
+
+        assertHashNotEquals(model, new Object());
+        assertHashNotEquals(model, new IdentifiableModel());
     }
 }

@@ -118,7 +118,8 @@ public final class ExtractorModelTest
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
 
-        final Extractor extractor = new ExtractorModel(services);
+        final ExtractorModel extractor = new ExtractorModel(services);
+        extractor.recycle();
         extractor.setCapacity(5);
         extractor.setExtractionPerSecond(1.0);
         extractor.setDropOffPerSecond(2.0);
@@ -140,7 +141,8 @@ public final class ExtractorModelTest
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
 
-        final Extractor extractor = new ExtractorModel(services);
+        final ExtractorModel extractor = new ExtractorModel(services);
+        extractor.recycle();
         extractor.setCapacity(6);
         extractor.setExtractionPerSecond(50.0);
         extractor.setChecker(object);

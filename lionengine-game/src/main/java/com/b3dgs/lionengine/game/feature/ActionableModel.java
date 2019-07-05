@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Action;
-import com.b3dgs.lionengine.game.ActionConfig;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.geom.Area;

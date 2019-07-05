@@ -73,7 +73,7 @@ public final class ProducibleModelTest
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
         final Producible producible = new ProducibleModel(setup);
-        final ProducibleListener listener = UtilProducible.createListener();
+        final ProducibleListener listener = new ProducibleListenerVoid();
         producible.setLocation(1.0, 2.0);
         producible.prepare(featurable);
         producible.addListener(listener);

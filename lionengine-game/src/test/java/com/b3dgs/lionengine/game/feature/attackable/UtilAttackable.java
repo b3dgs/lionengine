@@ -88,30 +88,35 @@ final class UtilAttackable
             @Override
             public void notifyReachingTarget(Transformable target)
             {
+                super.notifyReachingTarget(target);
                 reaching.set(target);
             }
 
             @Override
             public void notifyPreparingAttack()
             {
+                super.notifyPreparingAttack();
                 preparing.set(true);
             }
 
             @Override
             public void notifyAttackStarted(Transformable target)
             {
+                super.notifyAttackStarted(target);
                 started.set(target);
             }
 
             @Override
             public void notifyAttackEnded(int damages, Transformable target)
             {
+                super.notifyAttackEnded(damages, target);
                 ended.set(target);
             }
 
             @Override
             public void notifyAttackAnimEnded()
             {
+                super.notifyAttackAnimEnded();
                 anim.set(true);
             }
         };

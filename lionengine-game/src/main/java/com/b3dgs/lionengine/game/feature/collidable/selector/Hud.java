@@ -27,9 +27,9 @@ import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.ActionRef;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.feature.ActionRef;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Actioner;
 import com.b3dgs.lionengine.game.feature.Displayable;

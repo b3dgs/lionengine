@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.ActionsConfig;
+import com.b3dgs.lionengine.game.feature.ActionsConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
