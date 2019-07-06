@@ -181,8 +181,7 @@ public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Ren
      * 
      * @param category The category the check.
      * @param movement The movement to check.
-     * @return <code>true</code> if movement allowed, <code>false</code> else.
-     * @throws LionEngineException If category has not been found.
+     * @return <code>true</code> if movement allowed, <code>false</code> else or category not found.
      */
     boolean isMovementAllowed(String category, MovementTile movement);
 

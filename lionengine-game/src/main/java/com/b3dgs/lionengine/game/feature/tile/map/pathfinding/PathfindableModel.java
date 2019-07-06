@@ -699,15 +699,18 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             // New first path, when object is not moving
             if (path == null)
             {
-                currentStep = 0;
-                path = pathfinder.findPath(this, tx, ty, true);
-                pathFoundChanged = false;
-                for (final PathfindableListener listener : listeners)
+                // CHECKSTYLE IGNORE LINE: NestedIfDepth|InnerAssignment
+                if ((path = pathfinder.findPath(this, tx, ty, true)) != null)
                 {
-                    listener.notifyStartMove();
+                    currentStep = 0;
+                    pathFoundChanged = false;
+                    prepareDestination(tx, ty);
+                    for (final PathfindableListener listener : listeners)
+                    {
+                        listener.notifyStartMove();
+                    }
+                    return true;
                 }
-                prepareDestination(tx, ty);
-                return true;
             }
             // Next path, while object is moving, change takes effect when the object reached a step point
             prepareDestination(tx, ty);
@@ -818,7 +821,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         {
             return categories.get(category).isAllowedMovement(movement);
         }
-        throw new LionEngineException(ERROR_CATEGORY + category);
+        return false;
     }
 
     @Override
