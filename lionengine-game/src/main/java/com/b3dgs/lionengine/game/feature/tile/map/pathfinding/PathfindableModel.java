@@ -697,21 +697,19 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         if (getInTileX() != tx || getInTileY() != ty)
         {
             // New first path, when object is not moving
-            if (path == null)
+            // CHECKSTYLE IGNORE LINE: InnerAssignment
+            if (path == null && (path = pathfinder.findPath(this, tx, ty, true)) != null)
             {
-                // CHECKSTYLE IGNORE LINE: NestedIfDepth|InnerAssignment
-                if ((path = pathfinder.findPath(this, tx, ty, true)) != null)
+                currentStep = 0;
+                pathFoundChanged = false;
+                prepareDestination(tx, ty);
+                for (final PathfindableListener listener : listeners)
                 {
-                    currentStep = 0;
-                    pathFoundChanged = false;
-                    prepareDestination(tx, ty);
-                    for (final PathfindableListener listener : listeners)
-                    {
-                        listener.notifyStartMove();
-                    }
-                    return true;
+                    listener.notifyStartMove();
                 }
+                return true;
             }
+
             // Next path, while object is moving, change takes effect when the object reached a step point
             prepareDestination(tx, ty);
             pathFoundChanged = true;
