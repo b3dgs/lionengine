@@ -54,6 +54,20 @@ public final class SelectorRefresherTest
     private final MouseMock mouse = new MouseMock();
     private final AtomicReference<Area> started = new AtomicReference<>();
     private final AtomicReference<Area> done = new AtomicReference<>();
+    private final SelectorListener listener = new SelectorListener()
+    {
+        @Override
+        public void notifySelectionStarted(Area selection)
+        {
+            started.set(selection);
+        }
+
+        @Override
+        public void notifySelectionDone(Area selection)
+        {
+            done.set(selection);
+        }
+    };
     private SelectorRefresher refresher;
 
     /**
@@ -74,20 +88,7 @@ public final class SelectorRefresherTest
         featurable.addFeature(new CollidableModel(services));
 
         refresher = new SelectorRefresher(services, model);
-        refresher.addListener(new SelectorListener()
-        {
-            @Override
-            public void notifySelectionStarted(Area selection)
-            {
-                started.set(selection);
-            }
-
-            @Override
-            public void notifySelectionDone(Area selection)
-            {
-                done.set(selection);
-            }
-        });
+        refresher.addListener(listener);
         refresher.prepare(featurable);
     }
 
@@ -158,5 +159,46 @@ public final class SelectorRefresherTest
 
         assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
         assertEquals(Geom.createArea(1.0, 1.0, 10.0, 20.0), done.get());
+    }
+
+    /**
+     * Test the listener.
+     */
+    @Test
+    public void testListener()
+    {
+        model.setClickSelection(1);
+
+        mouse.move(1, 1);
+        cursor.update(1.0);
+        refresher.update(1.0);
+
+        assertNull(started.get());
+
+        mouse.setClick(1);
+        cursor.update(1.0);
+        refresher.update(1.0);
+
+        assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
+
+        refresher.removeListener(listener);
+        started.set(null);
+
+        mouse.setClick(0);
+        mouse.move(-1, -1);
+        cursor.update(1.0);
+        refresher.update(1.0);
+
+        mouse.move(1, 1);
+        cursor.update(1.0);
+        refresher.update(1.0);
+
+        assertNull(started.get());
+
+        mouse.setClick(1);
+        cursor.update(1.0);
+        refresher.update(1.0);
+
+        assertNull(started.get());
     }
 }

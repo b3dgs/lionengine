@@ -121,7 +121,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     {
         Check.notNull(listener);
 
-        listeners.add(listener);
+        listeners.remove(listener);
     }
 
     /**
