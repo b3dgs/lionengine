@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
@@ -77,6 +78,7 @@ public final class ComponentCollisionTest
     private final Setup setup = new Setup(config);
     private final AtomicReference<Collidable> collide = new AtomicReference<>();
     private final Featurable nonCollidable = new FeaturableModel();
+    private final ComponentCollision component = new ComponentCollision();
 
     private ObjectSelf featurable1;
     private Transformable transformable1;
@@ -112,7 +114,6 @@ public final class ComponentCollisionTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
-        final ComponentCollision component = new ComponentCollision();
         handler.addComponent(component);
         handler.add(featurable1);
         handler.add(featurable2);
@@ -261,5 +262,19 @@ public final class ComponentCollisionTest
 
         assertNull(collide.get());
         assertNull(featurable1.called.get());
+    }
+
+    /**
+     * Test collidable get inside.
+     */
+    @Test
+    public void testGetInside()
+    {
+        transformable1.teleport(20.0, 20.0);
+        transformable2.teleport(30.0, 30.0);
+        handler.update(1.0);
+
+        assertTrue(component.getInside(Geom.createArea(0, 0, 16, 16)).isEmpty());
+        assertEquals(2, component.getInside(Geom.createArea(15, 15, 32, 32)).size());
     }
 }

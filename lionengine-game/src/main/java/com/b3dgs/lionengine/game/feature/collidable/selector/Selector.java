@@ -17,20 +17,14 @@
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.collidable.CollidableListener;
-import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
-import com.b3dgs.lionengine.game.feature.collidable.Collision;
+import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
@@ -52,14 +46,8 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  * @see Cursor
  * @see Viewer
  */
-public class Selector extends FeaturableModel implements Updatable, SelectorConfigurer, CollidableListener
+public class Selector extends FeaturableModel implements SelectorConfigurer
 {
-    /** Void notify. */
-    private static final Action CHECK = () ->
-    {
-        // Nothing to do
-    };
-
     /** Selector model. */
     private final SelectorModel model = addFeatureAndGet(new SelectorModel());
     /** Selector refresher. */
@@ -70,18 +58,6 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     private final List<Selectable> selected = new ArrayList<>();
     /** Selection listeners. */
     private final List<SelectionListener> listeners = new ArrayList<>();
-    /** Void notify. */
-    private final Action notifyAll = () ->
-    {
-        final int n = listeners.size();
-        for (int i = 0; i < n; i++)
-        {
-            listeners.get(i).notifySelected(selected);
-        }
-        notifyAction = CHECK;
-    };
-    /** Notify action. */
-    private Action notifyAction = CHECK;
 
     /**
      * Create the selector.
@@ -99,12 +75,10 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     {
         super();
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel());
-        final Collidable collidable = addFeatureAndGet(new CollidableModel(services));
-        collidable.addCollision(Collision.AUTOMATIC);
-
         refresher = addFeatureAndGet(new SelectorRefresher(services, model));
         displayer = addFeatureAndGet(new SelectorDisplayer(services, model));
+
+        final ComponentCollision componentCollision = services.get(ComponentCollision.class);
 
         addListener(new SelectorListener()
         {
@@ -117,11 +91,12 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
             @Override
             public void notifySelectionDone(Area selection)
             {
-                transformable.transform(selection.getX(),
-                                        selection.getY() - selection.getHeight(),
-                                        selection.getWidth(),
-                                        selection.getHeight());
-                notifyAction = notifyAll;
+                checkSelection(componentCollision, selection);
+                final int n = listeners.size();
+                for (int i = 0; i < n; i++)
+                {
+                    listeners.get(i).notifySelected(selected);
+                }
             }
         });
     }
@@ -167,13 +142,32 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     }
 
     /**
-     * Get the current selection as read only.
+     * Get the current selection.
      * 
      * @return The current selection.
      */
     public List<Selectable> getSelection()
     {
-        return Collections.unmodifiableList(selected);
+        return selected;
+    }
+
+    /**
+     * Check selection depending of area.
+     * 
+     * @param componentCollision The component collision reference.
+     * @param selection The current selection area.
+     */
+    private void checkSelection(ComponentCollision componentCollision, Area selection)
+    {
+        for (final Collidable collidable : componentCollision.getInside(selection))
+        {
+            if (collidable.hasFeature(Selectable.class))
+            {
+                final Selectable selectable = collidable.getFeature(Selectable.class);
+                selectable.onSelection(true);
+                selected.add(selectable);
+            }
+        }
     }
 
     /**
@@ -187,16 +181,6 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
             selected.get(i).onSelection(false);
         }
         selected.clear();
-    }
-
-    /*
-     * Updatable
-     */
-
-    @Override
-    public void update(double extrp)
-    {
-        notifyAction.notifySelection();
     }
 
     /*
@@ -225,31 +209,5 @@ public class Selector extends FeaturableModel implements Updatable, SelectorConf
     public void setEnabled(boolean enabled)
     {
         model.setEnabled(enabled);
-    }
-
-    /*
-     * CollidableListener
-     */
-
-    @Override
-    public void notifyCollided(Collidable collidable, Collision with, Collision by)
-    {
-        if (collidable.hasFeature(Selectable.class))
-        {
-            final Selectable selectable = collidable.getFeature(Selectable.class);
-            selectable.onSelection(true);
-            selected.add(selectable);
-        }
-    }
-
-    /**
-     * Notify action.
-     */
-    private interface Action
-    {
-        /**
-         * Notify current selection.
-         */
-        void notifySelection();
     }
 }

@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,9 @@ import com.b3dgs.lionengine.game.feature.Handlables;
 import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableListener;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Point;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Default collision component implementation. Designed to check collision between {@link Collidable}.
@@ -43,6 +46,51 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
 {
     /** Location reduce factor (the higher it is, the lower is the map division per location). */
     static final double REDUCE_FACTOR = 256.0;
+
+    /**
+     * Get point representing the area.
+     * 
+     * @param area The area reference.
+     * @return The area divided in point depending of reduce factor.
+     */
+    private static Collection<Point> getPoints(Area area)
+    {
+        final Collection<Point> points = new HashSet<>(4);
+        final int oldMinX = getIndex(area.getX() - area.getWidth());
+        final int oldMinY = getIndex(area.getY() - area.getHeight());
+        final int oldMaxX = getIndex(area.getX() + area.getWidth());
+        final int oldMaxY = getIndex(area.getY() + area.getHeight());
+    
+        for (int x = oldMinX; x <= oldMaxX; x++)
+        {
+            for (int y = oldMinY; y <= oldMaxY; y++)
+            {
+                points.add(new Point(x, y));
+            }
+        }
+        return points;
+    }
+
+    /**
+     * Check elements inside area.
+     * 
+     * @param elements The elements to check.
+     * @param area The area to check.
+     * @param inside The elements inside the area found.
+     */
+    private static void checkInside(Collection<Collidable> elements, Area area, Collection<Collidable> inside)
+    {
+        for (final Collidable current : elements)
+        {
+            for (final Rectangle bound : current.getCollisionBounds())
+            {
+                if (area.intersects(bound) || area.contains(bound))
+                {
+                    inside.add(current);
+                }
+            }
+        }
+    }
 
     /**
      * Convert real position value to index.
@@ -68,6 +116,32 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     public ComponentCollision()
     {
         super();
+    }
+
+    /**
+     * Get elements inside area.
+     * 
+     * @param area The area used.
+     * @return The elements inside area.
+     */
+    public Collection<Collidable> getInside(Area area)
+    {
+        final Collection<Collidable> inside = new HashSet<>();
+        final Collection<Point> points = getPoints(area);
+    
+        for (final Map<Point, Set<Collidable>> groups : collidables.values())
+        {
+            for (final Point point : points)
+            {
+                final Collection<Collidable> elements = groups.get(point);
+                if (elements != null)
+                {
+                    checkInside(elements, area, inside);
+                }
+            }
+        }
+    
+        return inside;
     }
 
     /**

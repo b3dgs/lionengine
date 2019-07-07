@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
@@ -146,7 +145,6 @@ class Scene extends Sequence
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(MouseAwt.LEFT);
-        selector.getFeature(Collidable.class).addAccept(Integer.valueOf(2));
 
         final Featurable peon = factory.create(Medias.create("Peon.xml"));
         peon.getFeature(Pathfindable.class).setLocation(20, 10);

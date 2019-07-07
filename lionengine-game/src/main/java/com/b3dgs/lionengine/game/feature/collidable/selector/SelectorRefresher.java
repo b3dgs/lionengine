@@ -25,11 +25,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -61,8 +59,6 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
 
     /** List of listeners. */
     private final Collection<SelectorListener> listeners = new HashSet<>(1);
-    /** Collidable reference. */
-    private Collidable collidable;
     /** Current update action. */
     private StateUpdater action;
     /** Mouse location x when started click selection. */
@@ -96,30 +92,35 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
 
         final AtomicReference<StateUpdater> actionStart = new AtomicReference<>();
         final StateUpdater check = createCheck(cursor, model, actionStart);
-        final StateUpdater reset = createReset(check);
-        final StateUpdater select = createSelection(viewer, cursor, model, reset);
+        final StateUpdater select = createSelection(viewer, cursor, model, check);
         actionStart.set(createStart(cursor, model, check, select));
 
         action = check;
     }
 
     /**
-     * Add a selector listener.
+     * Add a listener.
      * 
-     * @param listener The selector listener reference.
+     * @param listener The selector listener reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void addListener(SelectorListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
     }
 
     /**
-     * Remove a selector listener.
+     * Remove a listener.
      * 
-     * @param listener The selector listener reference.
+     * @param listener The selector listener reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public void removeListener(SelectorListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
     }
 
@@ -181,10 +182,10 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
      * @param viewer The viewer reference.
      * @param cursor The cursor reference.
      * @param model The selector model.
-     * @param reset The reset action.
+     * @param check The check action.
      * @return The selection action.
      */
-    private StateUpdater createSelection(Viewer viewer, Cursor cursor, SelectorModel model, StateUpdater reset)
+    private StateUpdater createSelection(Viewer viewer, Cursor cursor, SelectorModel model, StateUpdater check)
     {
         return (extrp, current) ->
         {
@@ -192,7 +193,6 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
 
             if (model.getSelectionClick() != cursor.getClick())
             {
-                collidable.setEnabled(true);
                 final Rectangle sel = model.getSelectionArea();
                 final Area done = Geom.createArea(sel.getX(), sel.getY(), sel.getWidthReal(), sel.getHeightReal());
                 for (final SelectorListener listener : listeners)
@@ -202,7 +202,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
                 sel.set(-1, -1, 0, 0);
                 model.setSelecting(false);
 
-                return reset;
+                return check;
             }
             return current;
         };
@@ -245,32 +245,9 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
         model.getSelectionArea().set(selectX, selectY, selectW, selectH);
     }
 
-    /**
-     * Create selection action.
-     * 
-     * @param check The check action.
-     * @return The selection action.
-     */
-    private StateUpdater createReset(StateUpdater check)
-    {
-        return (extrp, current) ->
-        {
-            collidable.setEnabled(false);
-            return check;
-        };
-    }
-
     /*
      * Refreshable
      */
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        collidable = provider.getFeature(Collidable.class);
-    }
 
     @Override
     public void update(double extrp)

@@ -184,7 +184,6 @@ public class Hud extends FeaturableModel
 
         addFeature(new RefreshableModel(extrp ->
         {
-            selector.update(extrp);
             if (cancelShortcut.getAsBoolean())
             {
                 clearMenus();
