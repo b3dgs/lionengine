@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.producible;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -30,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 
 /**
  * Test {@link ProducibleModel}.
@@ -64,6 +66,22 @@ public final class ProducibleModelTest
     }
 
     /**
+     * Test the producible with no node.
+     */
+    @Test
+    public void testNoNode()
+    {
+        final Media media = UtilSetup.createMedia(Featurable.class);
+        final Setup setup = new Setup(media);
+        final Producible producible = new ProducibleModel(setup);
+
+        assertNull(producible.getMedia());
+        assertEquals(0, producible.getSteps());
+        assertEquals(0, producible.getWidth());
+        assertEquals(0, producible.getHeight());
+    }
+
+    /**
      * Test the producible.
      */
     @Test
@@ -72,7 +90,8 @@ public final class ProducibleModelTest
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final Featurable featurable = new FeaturableModel();
-        final Producible producible = new ProducibleModel(setup);
+        final ProducibleModel producible = new ProducibleModel(setup);
+        producible.recycle();
         final ProducibleListener listener = new ProducibleListenerVoid();
         producible.setLocation(1.0, 2.0);
         producible.prepare(featurable);

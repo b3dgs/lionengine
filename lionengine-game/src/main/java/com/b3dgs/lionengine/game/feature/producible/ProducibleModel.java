@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -57,17 +59,30 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
      * {@link #addListener(ProducibleListener)} on it.
      * </p>
      * 
-     * @param setup The setup reference.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     public ProducibleModel(Setup setup)
     {
         super();
 
-        final ProducibleConfig configProducible = ProducibleConfig.imports(setup);
-        media = setup.getMedia();
-        steps = configProducible.getSteps();
-        width = configProducible.getWidth();
-        height = configProducible.getHeight();
+        Check.notNull(setup);
+
+        if (setup.hasNode(ProducibleConfig.NODE_PRODUCIBLE))
+        {
+            final ProducibleConfig configProducible = ProducibleConfig.imports(setup);
+            media = setup.getMedia();
+            steps = configProducible.getSteps();
+            width = configProducible.getWidth();
+            height = configProducible.getHeight();
+        }
+        else
+        {
+            media = null;
+            steps = 0;
+            width = 0;
+            height = 0;
+        }
     }
 
     /*
