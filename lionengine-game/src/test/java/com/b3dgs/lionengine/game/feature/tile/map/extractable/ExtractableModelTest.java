@@ -19,13 +19,18 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
@@ -34,12 +39,31 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 public final class ExtractableModelTest
 {
     /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+    }
+
+    /**
      * Test constructor with null services.
      */
     @Test
     public void testConstructorNullServices()
     {
-        assertThrows(() -> new ExtractableModel(null), "Unexpected null argument !");
+        assertThrows(() -> new ExtractableModel(null, null), "Unexpected null argument !");
+        assertThrows(() -> new ExtractableModel(new Services(), null), "Unexpected null argument !");
     }
 
     /**
@@ -73,7 +97,7 @@ public final class ExtractableModelTest
         final Featurable featurable = new FeaturableModel();
         featurable.addFeature(new TransformableModel());
 
-        final Extractable extractable = new ExtractableModel(services);
+        final Extractable extractable = new ExtractableModel(services, new Setup(UtilSetup.createConfig()));
         extractable.prepare(featurable);
         extractable.setResourcesQuantity(10);
 

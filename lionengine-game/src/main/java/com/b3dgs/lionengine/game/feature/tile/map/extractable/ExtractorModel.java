@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.IntSupplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -27,7 +26,7 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
@@ -37,12 +36,23 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
 {
     /** Extractor listeners. */
     private final Collection<ExtractorListener> listeners = new ArrayList<>();
-    /** Rate provider. */
-    private final IntSupplier rate;
     /** Resources location. */
     private ResourceLocation resourceLocation;
     /** Extractor checker reference. */
-    private ExtractorChecker checker;
+    private ExtractorChecker checker = new ExtractorChecker()
+    {
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean canCarry()
+        {
+            return false;
+        }
+    };
     /** Current resource object. */
     private Extractable extractable;
     /** Current resources type. */
@@ -51,36 +61,36 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     private ExtractorState state;
     /** Extraction capacity. */
     private int extractionCapacity;
-    /** Extraction speed. */
-    private double extractPerSecond;
-    /** Drop off speed. */
-    private double dropOffPerSecond;
-    /** Extraction and drop off speed time relative. */
-    private double speed;
-    /** Extraction progress. */
-    private double progress;
-    /** Last extraction progress. */
-    private int lastProgress;
+    /** Extraction count per tick. */
+    private double extractPerTick;
+    /** Drop off count per tick. */
+    private double dropOffPerTick;
+    /** Current resources count. */
+    private double resourceCount;
+    /** Last extraction count. */
+    private int resourceCountLast;
 
     /**
      * Create feature.
-     * <p>
-     * The {@link Services} must provide:
-     * </p>
-     * <ul>
-     * <li>{@link SourceResolutionProvider}</li>
-     * </ul>
      * 
      * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public ExtractorModel(Services services)
+    public ExtractorModel(Services services, Setup setup)
     {
         super();
 
         Check.notNull(services);
+        Check.notNull(setup);
 
-        rate = services.get(SourceResolutionProvider.class)::getRate;
+        if (setup.hasNode(ExtractorConfig.NODE_EXTRACTOR))
+        {
+            final ExtractorConfig config = ExtractorConfig.imports(setup);
+            extractPerTick = config.getExtract();
+            dropOffPerTick = config.getDropOff();
+            extractionCapacity = config.getCapacity();
+        }
     }
 
     /**
@@ -100,25 +110,23 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
 
     /**
      * Action called from update extraction in extract state.
-     * 
-     * @param extrp extrapolation value.
      */
-    protected void actionExtracting(double extrp)
+    protected void actionExtracting()
     {
         if (extractable == null || extractable.getResourceQuantity() > 0)
         {
             if (extractable != null)
             {
-                progress += Math.min(extractable.getResourceQuantity(), speed * extrp);
+                resourceCount += Math.min(extractable.getResourceQuantity(), extractPerTick);
             }
             else
             {
-                progress += speed * extrp;
+                resourceCount += extractPerTick;
             }
-            final int curProgress = Math.min((int) Math.floor(progress), extractionCapacity);
+            final int curProgress = Math.min((int) Math.floor(resourceCount), extractionCapacity);
 
             // Check increases
-            if (curProgress > lastProgress)
+            if (curProgress > resourceCountLast)
             {
                 extract(curProgress);
             }
@@ -134,29 +142,26 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         {
             for (final ExtractorListener listener : listeners)
             {
-                listener.notifyStartDropOff(resourceType, lastProgress);
+                listener.notifyStartDropOff(resourceType, resourceCountLast);
             }
-            speed = dropOffPerSecond / rate.getAsInt();
             state = ExtractorState.DROPOFF;
         }
     }
 
     /**
      * Action called from update extraction in drop off state.
-     * 
-     * @param extrp extrapolation value.
      */
-    protected void actionDropingOff(double extrp)
+    protected void actionDropingOff()
     {
-        progress -= speed * extrp;
-        final int curProgress = (int) Math.floor(progress);
+        resourceCount -= dropOffPerTick;
+        final int curProgress = (int) Math.floor(resourceCount);
 
         // Check ended
         if (curProgress <= 0)
         {
             for (final ExtractorListener listener : listeners)
             {
-                listener.notifyDroppedOff(resourceType, lastProgress);
+                listener.notifyDroppedOff(resourceType, resourceCountLast);
             }
             startExtraction();
         }
@@ -171,22 +176,23 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         if (extractable != null)
         {
-            extractable.extractResource(curProgress - lastProgress);
+            extractable.extractResource(curProgress - resourceCountLast);
         }
         for (final ExtractorListener listener : listeners)
         {
             listener.notifyExtracted(resourceType, curProgress);
         }
-        lastProgress = curProgress;
+        resourceCountLast = curProgress;
 
         if (curProgress >= extractionCapacity)
         {
-            progress = extractionCapacity;
-            lastProgress = extractionCapacity;
+            resourceCount = extractionCapacity;
+            resourceCountLast = extractionCapacity;
             state = ExtractorState.GOTO_WAREHOUSE;
+
             for (final ExtractorListener listener : listeners)
             {
-                listener.notifyStartCarry(resourceType, lastProgress);
+                listener.notifyStartCarry(resourceType, resourceCountLast);
             }
         }
     }
@@ -224,6 +230,8 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     @Override
     public void addListener(ExtractorListener listener)
     {
+        Check.notNull(listener);
+
         listeners.add(listener);
     }
 
@@ -231,6 +239,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     public void setChecker(ExtractorChecker checker)
     {
         Check.notNull(checker);
+
         this.checker = checker;
     }
 
@@ -246,13 +255,13 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
                 actionGoingToResources();
                 break;
             case EXTRACTING:
-                actionExtracting(extrp);
+                actionExtracting();
                 break;
             case GOTO_WAREHOUSE:
                 actionGoingToWarehouse();
                 break;
             case DROPOFF:
-                actionDropingOff(extrp);
+                actionDropingOff();
                 break;
             default:
                 throw new LionEngineException(state);
@@ -263,9 +272,8 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     public void startExtraction()
     {
         state = ExtractorState.GOTO_RESOURCES;
-        speed = extractPerSecond / rate.getAsInt();
-        progress = 0.0;
-        lastProgress = 0;
+        resourceCount = 0.0;
+        resourceCountLast = 0;
         for (final ExtractorListener listener : listeners)
         {
             listener.notifyStartGoToRessources(resourceType, resourceLocation);
@@ -306,15 +314,15 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     }
 
     @Override
-    public void setExtractionPerSecond(double speed)
+    public void setExtractionSpeed(double count)
     {
-        extractPerSecond = speed;
+        extractPerTick = count;
     }
 
     @Override
-    public void setDropOffPerSecond(double speed)
+    public void setDropOffSpeed(double count)
     {
-        dropOffPerSecond = speed;
+        dropOffPerTick = count;
     }
 
     @Override
@@ -330,15 +338,15 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     }
 
     @Override
-    public double getExtractionPerSecond()
+    public double getExtractionSpeed()
     {
-        return extractPerSecond;
+        return extractPerTick;
     }
 
     @Override
-    public double getDropOffPerSecond()
+    public double getDropOffSpeed()
     {
-        return dropOffPerSecond;
+        return dropOffPerTick;
     }
 
     @Override
@@ -361,7 +369,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     public void recycle()
     {
         state = ExtractorState.NONE;
-        progress = 0.0;
-        lastProgress = 0;
+        resourceCount = 0.0;
+        resourceCountLast = 0;
     }
 }

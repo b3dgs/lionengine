@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -56,15 +57,24 @@ public class ExtractableModel extends FeatureModel implements Extractable
      * </ul>
      * 
      * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public ExtractableModel(Services services)
+    public ExtractableModel(Services services, Setup setup)
     {
         super();
 
         Check.notNull(services);
+        Check.notNull(setup);
 
         map = services.get(MapTile.class);
+
+        if (setup.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
+        {
+            final ExtractableConfig config = ExtractableConfig.imports(setup);
+            resources.setMax(config.getQuantity());
+            resources.fill();
+        }
     }
 
     /*

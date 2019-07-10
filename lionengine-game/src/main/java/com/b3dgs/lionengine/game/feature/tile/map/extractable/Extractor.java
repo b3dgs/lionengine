@@ -16,13 +16,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
- * This interface represents the ability of resource extraction. It is also possible to specify work time.
+ * This interface represents the ability of resource extraction.
  */
 @FeatureInterface
 public interface Extractor extends Feature, Updatable
@@ -30,7 +31,8 @@ public interface Extractor extends Feature, Updatable
     /**
      * Add an extractor listener.
      * 
-     * @param listener The extractor listener to add.
+     * @param listener The extractor listener to add (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addListener(ExtractorListener listener);
 
@@ -49,18 +51,18 @@ public interface Extractor extends Feature, Updatable
     void setResource(Extractable extractable);
 
     /**
-     * Set the extraction unit per second.
+     * Set the extraction unit per tick.
      * 
-     * @param speed The extraction unit per second.
+     * @param count The extraction count per tick.
      */
-    void setExtractionPerSecond(double speed);
+    void setExtractionSpeed(double count);
 
     /**
-     * Set the drop off unit per second.
+     * Set the drop off unit per tick.
      * 
-     * @param speed The drop off unit per second.
+     * @param count The drop off count per tick.
      */
-    void setDropOffPerSecond(double speed);
+    void setDropOffSpeed(double count);
 
     /**
      * Set the maximum extractible unit number.
@@ -98,18 +100,18 @@ public interface Extractor extends Feature, Updatable
     int getExtractionCapacity();
 
     /**
-     * Get the extraction unit per second.
+     * Get the extraction unit per tick.
      * 
-     * @return The extraction unit per second.
+     * @return The extraction unit per tick.
      */
-    double getExtractionPerSecond();
+    double getExtractionSpeed();
 
     /**
-     * Get the drop off unit per second.
+     * Get the drop off unit per tick.
      * 
-     * @return The drop off unit per second.
+     * @return The drop off unit per tick.
      */
-    double getDropOffPerSecond();
+    double getDropOffSpeed();
 
     /**
      * Get the resource location in tile.
