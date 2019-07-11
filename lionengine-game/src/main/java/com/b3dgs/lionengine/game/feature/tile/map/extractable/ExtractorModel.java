@@ -156,13 +156,14 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         resourceCount -= dropOffPerTick;
         final int curProgress = (int) Math.floor(resourceCount);
 
+        for (final ExtractorListener listener : listeners)
+        {
+            listener.notifyDroppedOff(resourceType, curProgress);
+        }
+
         // Check ended
         if (curProgress <= 0)
         {
-            for (final ExtractorListener listener : listeners)
-            {
-                listener.notifyDroppedOff(resourceType, resourceCountLast);
-            }
             startExtraction();
         }
     }
@@ -233,6 +234,14 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         Check.notNull(listener);
 
         listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(ExtractorListener listener)
+    {
+        Check.notNull(listener);
+
+        listeners.remove(listener);
     }
 
     @Override

@@ -494,6 +494,35 @@ public final class ExtractorModelTest
     }
 
     /**
+     * Test the remove listener.
+     */
+    @Test
+    public void testRemoveListener()
+    {
+        final AtomicBoolean check = new AtomicBoolean();
+        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final ExtractorListener listener = new ExtractorListenerVoid()
+        {
+            @Override
+            public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+            {
+                check.set(true);
+            }
+        };
+        extractor.addListener(listener);
+        extractor.prepare(new FeaturableModel());
+        extractor.startExtraction();
+
+        assertTrue(check.get());
+
+        extractor.removeListener(listener);
+        check.set(false);
+        extractor.startExtraction();
+
+        assertFalse(check.get());
+    }
+
+    /**
      * Test with enum fail.
      * 
      * @throws NoSuchFieldException If error.

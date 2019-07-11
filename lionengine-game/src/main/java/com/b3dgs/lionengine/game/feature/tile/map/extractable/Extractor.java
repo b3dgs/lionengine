@@ -37,6 +37,14 @@ public interface Extractor extends Feature, Updatable
     void addListener(ExtractorListener listener);
 
     /**
+     * Remove an extractor listener.
+     * 
+     * @param listener The extractor listener to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    void removeListener(ExtractorListener listener);
+
+    /**
      * Set the extractor checker.
      * 
      * @param checker The extractor checker reference.
