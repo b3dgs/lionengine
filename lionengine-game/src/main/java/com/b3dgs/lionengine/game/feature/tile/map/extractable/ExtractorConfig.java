@@ -36,14 +36,14 @@ public final class ExtractorConfig
     /** Capacity attribute name. */
     public static final String ATT_CAPACITY = "capacity";
     /** Minimum to string length. */
-    private static final int MIN_LENGTH = 73;
+    private static final int MIN_LENGTH = 54;
 
     /**
      * Imports the config from configurer.
      * 
      * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The extractor data.
-     * @throws LionEngineException If unable to read node or invalid integer.
+     * @throws LionEngineException If unable to read node.
      */
     public static ExtractorConfig imports(Configurer configurer)
     {
@@ -57,7 +57,7 @@ public final class ExtractorConfig
      * 
      * @param root The root reference (must not be <code>null</code>).
      * @return The extractor data.
-     * @throws LionEngineException If unable to read node or invalid integer.
+     * @throws LionEngineException If unable to read node.
      */
     public static ExtractorConfig imports(Xml root)
     {
@@ -76,7 +76,7 @@ public final class ExtractorConfig
      * 
      * @param config The config reference (must not be <code>null</code>).
      * @return The extractor node.
-     * @throws LionEngineException If unable to read node or invalid integer.
+     * @throws LionEngineException If unable to read node.
      */
     public static Xml exports(ExtractorConfig config)
     {
@@ -157,6 +157,7 @@ public final class ExtractorConfig
         result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(dropoff);
         result = prime * result + (int) (temp ^ temp >>> 32);
+        result = prime * result + capacity;
         return result;
     }
 

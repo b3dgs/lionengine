@@ -32,7 +32,7 @@ public final class ExtractableConfig
     /** Quantity attribute name. */
     public static final String ATT_QUANTITY = "quantity";
     /** Minimum to string length. */
-    private static final int MIN_LENGTH = 73;
+    private static final int MIN_LENGTH = 30;
 
     /**
      * Imports the config from configurer.
