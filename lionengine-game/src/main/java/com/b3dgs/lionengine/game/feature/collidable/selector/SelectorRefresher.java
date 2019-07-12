@@ -16,12 +16,12 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Handle the selector refreshing.
  */
-public class SelectorRefresher extends FeatureModel implements Refreshable
+public class SelectorRefresher extends FeatureModel implements Refreshable, Listenable<SelectorListener>
 {
     /**
      * Create check action.
@@ -58,7 +58,7 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
     }
 
     /** List of listeners. */
-    private final Collection<SelectorListener> listeners = new HashSet<>(1);
+    private final ListenableModel<SelectorListener> listenable = new ListenableModel<>();
     /** Current update action. */
     private StateUpdater action;
     /** Mouse location x when started click selection. */
@@ -96,32 +96,6 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
         actionStart.set(createStart(cursor, model, check, select));
 
         action = check;
-    }
-
-    /**
-     * Add a listener.
-     * 
-     * @param listener The selector listener reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void addListener(SelectorListener listener)
-    {
-        Check.notNull(listener);
-
-        listeners.add(listener);
-    }
-
-    /**
-     * Remove a listener.
-     * 
-     * @param listener The selector listener reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void removeListener(SelectorListener listener)
-    {
-        Check.notNull(listener);
-
-        listeners.remove(listener);
     }
 
     /**
@@ -169,9 +143,9 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
             startX = cursor.getX();
             startY = cursor.getY();
 
-            for (final SelectorListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifySelectionStarted(Geom.createArea(startX, startY, 0, 0));
+                listenable.get(i).notifySelectionStarted(Geom.createArea(startX, startY, 0, 0));
             }
         }
     }
@@ -195,10 +169,12 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
             {
                 final Rectangle sel = model.getSelectionArea();
                 final Area done = Geom.createArea(sel.getX(), sel.getY(), sel.getWidthReal(), sel.getHeightReal());
-                for (final SelectorListener listener : listeners)
+
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listener.notifySelectionDone(done);
+                    listenable.get(i).notifySelectionDone(done);
                 }
+
                 sel.set(-1, -1, 0, 0);
                 model.setSelecting(false);
 
@@ -243,6 +219,22 @@ public class SelectorRefresher extends FeatureModel implements Refreshable
             selectH = -selectH;
         }
         model.getSelectionArea().set(selectX, selectY, selectW, selectH);
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public void addListener(SelectorListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(SelectorListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     /*

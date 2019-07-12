@@ -16,8 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.state;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +24,8 @@ import java.util.function.Function;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.AnimationConfig;
@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.game.feature.Recyclable;
  * </ul>
  */
 @FeatureInterface
-public class StateHandler extends FeatureModel implements Updatable, Recyclable
+public class StateHandler extends FeatureModel implements Updatable, Recyclable, Listenable<StateTransitionListener>
 {
     /** Feature parameter constructor index. */
     private static final int PARAM_FEATURE_INDEX = 0;
@@ -59,7 +59,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
     /** Animation name converter. */
     private final Function<Class<? extends State>, String> converter;
     /** Transition listeners. */
-    private final Collection<StateTransitionListener> listeners = new ArrayList<>();
+    private final ListenableModel<StateTransitionListener> listenable = new ListenableModel<>();
     /** Last state (<code>null</code> if none). */
     private Class<? extends State> last;
     /** Current state pointer (<code>null</code> if none). */
@@ -116,16 +116,6 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
 
         this.configurer = Optional.of(configurer);
         this.converter = converter;
-    }
-
-    /**
-     * Add a state transition listener.
-     * 
-     * @param listener The listener reference.
-     */
-    public void addListener(StateTransitionListener listener)
-    {
-        listeners.add(listener);
     }
 
     /**
@@ -197,7 +187,10 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
         current = states.get(next);
         current.enter();
 
-        listeners.forEach(l -> l.notifyStateTransition(from != null ? from.getClass() : null, next));
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyStateTransition(from != null ? from.getClass() : null, next);
+        }
         next = null;
     }
 
@@ -234,6 +227,22 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable
         {
             throw new LionEngineException(exception);
         }
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public void addListener(StateTransitionListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(StateTransitionListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     /*

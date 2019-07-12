@@ -65,6 +65,12 @@ final class ObjectFeatures extends FeaturableModel implements Localizable, Layer
     }
 
     @Override
+    public void removeListener(LayerableListener listener)
+    {
+        // Mock
+    }
+
+    @Override
     public void setLayer(Integer layerRefresh, Integer layerDisplay)
     {
         // Mock

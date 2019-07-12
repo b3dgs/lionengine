@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
+import com.b3dgs.lionengine.Listenable;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FramesConfig;
@@ -51,7 +53,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
  * Hud featurable implementation, containing a surface image, a {@link Selector} and menus handling.
  */
 // CHECKSTYLE IGNORE LINE: FanOutComplexity
-public class Hud extends FeaturableModel
+public class Hud extends FeaturableModel implements Listenable<HudListener>
 {
     /** Split with path. */
     private static final Pattern PATH = Pattern.compile(File.pathSeparator);
@@ -125,7 +127,7 @@ public class Hud extends FeaturableModel
     /** Hud surface. */
     protected final SpriteAnimated surface;
     /** Listeners reference. */
-    private final Collection<HudListener> listeners = new ArrayList<>();
+    private final ListenableModel<HudListener> listenable = new ListenableModel<>();
     /** Created menus. */
     private final Map<ActionRef, Actionable> menus = new HashMap<>();
     /** Current active menus. */
@@ -188,9 +190,10 @@ public class Hud extends FeaturableModel
             {
                 clearMenus();
                 createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(last));
-                for (final HudListener listener : listeners)
+
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listener.notifyCanceled();
+                    listenable.get(i).notifyCanceled();
                 }
             }
         }));
@@ -205,26 +208,6 @@ public class Hud extends FeaturableModel
                 }
             }
         }));
-    }
-
-    /**
-     * Add a listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public void addListener(HudListener listener)
-    {
-        listeners.add(listener);
-    }
-
-    /**
-     * Remove a listener.
-     * 
-     * @param listener The listener to remove.
-     */
-    public void removeListener(HudListener listener)
-    {
-        listeners.remove(listener);
     }
 
     /**
@@ -321,11 +304,28 @@ public class Hud extends FeaturableModel
             clearMenus();
             final Collection<ActionRef> parents = previous.get(action);
             createMenus(parents, parents);
-            for (final HudListener listener : listeners)
+
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyCanceled();
+                listenable.get(i).notifyCanceled();
             }
         });
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public void addListener(HudListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(HudListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     /*

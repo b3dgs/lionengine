@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -50,7 +51,7 @@ public class CollidableModel extends FeatureModel
     /** Collision renderer. */
     private final CollidableRenderer renderer = new CollidableRenderer();
     /** The collision listener reference. */
-    private final List<CollidableListener> listeners = new ArrayList<>();
+    private final ListenableModel<CollidableListener> listenable = new ListenableModel<>();
     /** The collisions used. */
     private final List<Collision> collisions = new ArrayList<>();
     /** The accepted groups. */
@@ -165,13 +166,13 @@ public class CollidableModel extends FeatureModel
     @Override
     public void addListener(CollidableListener listener)
     {
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(CollidableListener listener)
     {
-        listeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override
@@ -264,11 +265,9 @@ public class CollidableModel extends FeatureModel
     @Override
     public void notifyCollided(Collidable collidable, Collision with, Collision by)
     {
-        final int length = listeners.size();
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            final CollidableListener listener = listeners.get(i);
-            listener.notifyCollided(collidable, with, by);
+            listenable.get(i).notifyCollided(collidable, with, by);
         }
     }
 

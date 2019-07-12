@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.Iterator;
 
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
@@ -28,15 +29,8 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * Represents an ability of creating new object.
  */
 @FeatureInterface
-public interface Producer extends Feature, Updatable
+public interface Producer extends Feature, Updatable, Listenable<ProducerListener>
 {
-    /**
-     * Add a producer listener.
-     * 
-     * @param listener The producer listener to add.
-     */
-    void addListener(ProducerListener listener);
-
     /**
      * Set the production checker.
      * 

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -26,22 +27,8 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * Represents something which can enter in collision with a {@link TileCollision}.
  */
 @FeatureInterface
-public interface TileCollidable extends Feature, Updatable
+public interface TileCollidable extends Feature, Updatable, Listenable<TileCollidableListener>
 {
-    /**
-     * Add a tile collision listener.
-     * 
-     * @param listener The tile collision listener to add.
-     */
-    void addListener(TileCollidableListener listener);
-
-    /**
-     * Remove a tile collision listener.
-     * 
-     * @param listener The tile collision listener to remove.
-     */
-    void removeListener(TileCollidableListener listener);
-
     /**
      * Apply collision result.
      * 

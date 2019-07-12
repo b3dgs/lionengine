@@ -16,23 +16,15 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Represents something that can support layer, in order to define an order.
  */
 @FeatureInterface
-public interface Layerable extends Feature
+public interface Layerable extends Feature, Listenable<LayerableListener>
 {
-    /**
-     * Add a listener.
-     * 
-     * @param listener The listener reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    void addListener(LayerableListener listener);
-
     /**
      * Set the layer value.
      * 

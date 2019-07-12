@@ -26,24 +26,8 @@ package com.b3dgs.lionengine;
  * <li>Call {@link #update(double)} in your main loop.</li>
  * </ul>
  */
-public interface Animator extends Updatable
+public interface Animator extends Updatable, Listenable<AnimatorListener>
 {
-    /**
-     * Add an animator listener.
-     * 
-     * @param listener The listener to add (must not be <code>null</code>).
-     * @throws LionEngineException If the listener is <code>null</code>.
-     */
-    void addListener(AnimatorListener listener);
-
-    /**
-     * Remove an animator listener.
-     * 
-     * @param listener The listener to remove (must not be <code>null</code>).
-     * @throws LionEngineException If the listener is <code>null</code>.
-     */
-    void removeListener(AnimatorListener listener);
-
     /**
      * Play the animation. Should be called only one time to start, as {@link #update(double)} does the animation
      * update.

@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Listenable;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -35,10 +37,10 @@ import com.b3dgs.lionengine.graphic.Renderable;
  * @see ComponentUpdater
  * @see ComponentRenderer
  */
-public class Handler implements Handlables, Updatable, Renderable, IdentifiableListener
+public class Handler implements Handlables, Updatable, Renderable, IdentifiableListener, Listenable<HandlerListener>
 {
     /** Handler listeners. */
-    private final Collection<HandlerListener> listeners = new HashSet<>();
+    private final ListenableModel<HandlerListener> listenable = new ListenableModel<>();
     /** List of components updater. */
     private final Collection<ComponentUpdater> updaters = new ArrayList<>();
     /** List of components renderer. */
@@ -66,26 +68,6 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         super();
 
         this.services = services;
-    }
-
-    /**
-     * Add a handler listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public final void addListener(HandlerListener listener)
-    {
-        listeners.add(listener);
-    }
-
-    /**
-     * Remove a handler listener.
-     * 
-     * @param listener The listener to remove.
-     */
-    public final void removeListener(HandlerListener listener)
-    {
-        listeners.remove(listener);
     }
 
     /**
@@ -180,9 +162,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         for (final Featurable featurable : toAdd.values())
         {
             featurables.add(featurable);
-            for (final HandlerListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyHandlableAdded(featurable);
+                listenable.get(i).notifyHandlableAdded(featurable);
             }
             if (featurable.hasFeature(Transformable.class))
             {
@@ -204,9 +186,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             if (toAdd.remove(id) == null)
             {
                 final Featurable featurable = featurables.get(id);
-                for (final HandlerListener listener : listeners)
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listener.notifyHandlableRemoved(featurable);
+                    listenable.get(i).notifyHandlableRemoved(featurable);
                 }
                 featurable.getFeature(Identifiable.class).notifyDestroyed();
                 featurables.remove(featurable, id);
@@ -214,6 +196,22 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         }
         toRemove.clear();
         willRemove = false;
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public final void addListener(HandlerListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public final void removeListener(HandlerListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     /*

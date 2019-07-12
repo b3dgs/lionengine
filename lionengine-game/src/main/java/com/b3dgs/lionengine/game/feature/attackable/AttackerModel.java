@@ -16,13 +16,12 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.function.BooleanSupplier;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
@@ -41,7 +40,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 public class AttackerModel extends FeatureModel implements Attacker, Recyclable
 {
     /** Listeners list. */
-    private final Collection<AttackerListener> listeners = new HashSet<>(1);
+    private final ListenableModel<AttackerListener> listenable = new ListenableModel<>();
     /** Attack tick delay. */
     private final Tick tick = new Tick();
     /** Attack damages. */
@@ -154,9 +153,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
         else if (tick.elapsed(attackPause))
         {
-            for (final AttackerListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyReachingTarget(target);
+                listenable.get(i).notifyReachingTarget(target);
             }
         }
     }
@@ -174,9 +173,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         {
             if (AnimState.FINISHED == animatable.getAnimState())
             {
-                for (final AttackerListener listener : listeners)
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listener.notifyAttackAnimEnded();
+                    listenable.get(i).notifyAttackAnimEnded();
                 }
                 attacked = false;
                 state = AttackState.CHECK;
@@ -184,9 +183,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
         else
         {
-            for (final AttackerListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyPreparingAttack();
+                listenable.get(i).notifyPreparingAttack();
             }
         }
     }
@@ -198,9 +197,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         if (!attacking)
         {
-            for (final AttackerListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyAttackStarted(target);
+                listenable.get(i).notifyAttackStarted(target);
             }
             attacking = true;
             attacked = false;
@@ -210,9 +209,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         else if (animatable.getFrame() == frameAttack)
         {
             attacking = false;
-            for (final AttackerListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyAttackEnded(damages.getRandom(), target);
+                listenable.get(i).notifyAttackEnded(damages.getRandom(), target);
             }
             attacked = true;
             tick.restart();
@@ -251,9 +250,13 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     @Override
     public void addListener(AttackerListener listener)
     {
-        Check.notNull(listener);
+        listenable.addListener(listener);
+    }
 
-        listeners.add(listener);
+    @Override
+    public void removeListener(AttackerListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     @Override

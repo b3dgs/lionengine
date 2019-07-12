@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.SurfaceTile;
@@ -39,7 +40,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * @see Minimap
  * @see Tile
  */
-public interface MapTile extends SurfaceTile, Featurable
+public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetListener>
 {
     /**
      * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(Tile)}).
@@ -134,20 +135,6 @@ public interface MapTile extends SurfaceTile, Featurable
      * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
     void clear();
-
-    /**
-     * Add a tile set listener.
-     * 
-     * @param listener The listener reference.
-     */
-    void addListener(TileSetListener listener);
-
-    /**
-     * Remove a tile set listener.
-     * 
-     * @param listener The listener reference.
-     */
-    void removeListener(TileSetListener listener);
 
     /**
      * Set a tile at specified map location.

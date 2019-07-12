@@ -17,14 +17,14 @@
 package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 import java.util.function.IntSupplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 public class ProducerModel extends FeatureModel implements Producer, Recyclable
 {
     /** Producer listeners. */
-    private final Collection<ProducerListener> listeners = new ArrayList<>();
+    private final ListenableModel<ProducerListener> listenable = new ListenableModel<>();
     /** Production queue. */
     private final Queue<Featurable> productions = new ArrayDeque<>();
     /** Handler reference. */
@@ -138,9 +138,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         }
         else
         {
-            for (final ProducerListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyCanNotProduce(current);
+                listenable.get(i).notifyCanNotProduce(current);
             }
         }
     }
@@ -154,9 +154,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     {
         progress += speed * extrp;
 
-        for (final ProducerListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyProducing(currentObject);
+            listenable.get(i).notifyProducing(currentObject);
         }
         for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
         {
@@ -176,13 +176,15 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      */
     private void actionProduced()
     {
-        for (final ProducerListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyProduced(currentObject);
+            listenable.get(i).notifyProduced(currentObject);
         }
-        for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
+        final List<ProducibleListener> listeners = current.getFeature(Producible.class).getListeners();
+        final int n = listeners.size();
+        for (int i = 0; i < n; i++)
         {
-            listener.notifyProductionEnded(this);
+            listeners.get(i).notifyProductionEnded(this);
         }
         currentObject = null;
         progress = -1;
@@ -234,9 +236,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         speed = stepsPerSecond / rate.getAsInt();
         steps = current.getFeature(Producible.class).getSteps();
         progress = 0.0;
-        for (final ProducerListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyStartProduction(featurable);
+            listenable.get(i).notifyStartProduction(featurable);
         }
         for (final ProducibleListener listener : featurable.getFeature(Producible.class).getListeners())
         {
@@ -277,7 +279,13 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     @Override
     public void addListener(ProducerListener listener)
     {
-        listeners.add(listener);
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(ProducerListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     @Override

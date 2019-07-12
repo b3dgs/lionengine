@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
@@ -31,15 +32,9 @@ import com.b3dgs.lionengine.graphic.Renderable;
  * Describe an object which can move on a {@link MapTilePath} by using A-Star algorithm.
  */
 @FeatureInterface
-public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Renderable
+public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Renderable,
+                              Listenable<PathfindableListener>
 {
-    /**
-     * Add a pathfindable listener.
-     * 
-     * @param listener The pathfindable listener to add.
-     */
-    void addListener(PathfindableListener listener);
-
     /**
      * Clear current used path ID.
      */

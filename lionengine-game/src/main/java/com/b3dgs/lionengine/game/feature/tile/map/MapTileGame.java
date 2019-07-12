@@ -26,6 +26,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -66,7 +67,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
 
     /** Tile set listeners. */
-    private final Collection<TileSetListener> tileSetListeners = new ArrayList<>();
+    private final ListenableModel<TileSetListener> listenable = new ListenableModel<>();
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
     /** Sheet configuration file. */
@@ -266,13 +267,13 @@ public class MapTileGame extends FeaturableModel implements MapTile
     @Override
     public void addListener(TileSetListener listener)
     {
-        tileSetListeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(TileSetListener listener)
     {
-        tileSetListeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override
@@ -285,9 +286,9 @@ public class MapTileGame extends FeaturableModel implements MapTile
 
         tiles.get(ty).set(tx, tile);
 
-        for (final TileSetListener listener : tileSetListeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.onTileSet(tile);
+            listenable.get(i).onTileSet(tile);
         }
     }
 

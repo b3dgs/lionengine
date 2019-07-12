@@ -16,11 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -35,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 public class ExtractorModel extends FeatureModel implements Extractor, Recyclable
 {
     /** Extractor listeners. */
-    private final Collection<ExtractorListener> listeners = new ArrayList<>();
+    private final ListenableModel<ExtractorListener> listenable = new ListenableModel<>();
     /** Resources location. */
     private ResourceLocation resourceLocation;
     /** Extractor checker reference. */
@@ -100,9 +98,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         if (checker.canExtract())
         {
-            for (final ExtractorListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyStartExtraction(resourceType, resourceLocation);
+                listenable.get(i).notifyStartExtraction(resourceType, resourceLocation);
             }
             state = ExtractorState.EXTRACTING;
         }
@@ -140,9 +138,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         if (checker.canCarry())
         {
-            for (final ExtractorListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyStartDropOff(resourceType, resourceCountLast);
+                listenable.get(i).notifyStartDropOff(resourceType, resourceCountLast);
             }
             state = ExtractorState.DROPOFF;
         }
@@ -156,9 +154,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         resourceCount -= dropOffPerTick;
         final int curProgress = (int) Math.floor(resourceCount);
 
-        for (final ExtractorListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyDroppedOff(resourceType, curProgress);
+            listenable.get(i).notifyDroppedOff(resourceType, curProgress);
         }
 
         // Check ended
@@ -179,9 +177,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         {
             extractable.extractResource(curProgress - resourceCountLast);
         }
-        for (final ExtractorListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyExtracted(resourceType, curProgress);
+            listenable.get(i).notifyExtracted(resourceType, curProgress);
         }
         resourceCountLast = curProgress;
 
@@ -191,9 +189,9 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
             resourceCountLast = extractionCapacity;
             state = ExtractorState.GOTO_WAREHOUSE;
 
-            for (final ExtractorListener listener : listeners)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listener.notifyStartCarry(resourceType, resourceCountLast);
+                listenable.get(i).notifyStartCarry(resourceType, resourceCountLast);
             }
         }
     }
@@ -231,17 +229,13 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     @Override
     public void addListener(ExtractorListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(ExtractorListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override
@@ -283,9 +277,10 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         state = ExtractorState.GOTO_RESOURCES;
         resourceCount = 0.0;
         resourceCountLast = 0;
-        for (final ExtractorListener listener : listeners)
+
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyStartGoToRessources(resourceType, resourceLocation);
+            listenable.get(i).notifyStartGoToRessources(resourceType, resourceLocation);
         }
     }
 

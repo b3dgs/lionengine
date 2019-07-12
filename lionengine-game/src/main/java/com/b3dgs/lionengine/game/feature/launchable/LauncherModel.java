@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -47,7 +48,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 public class LauncherModel extends FeatureModel implements Launcher
 {
     /** Launcher listeners. */
-    private final Collection<LauncherListener> listenersLauncher = new HashSet<>();
+    private final ListenableModel<LauncherListener> listenable = new ListenableModel<>();
     /** Launchable listeners. */
     private final Collection<LaunchableListener> listenersLaunchable = new HashSet<>();
     /** Delayed launches. */
@@ -127,9 +128,9 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
     private void fired(Direction initial)
     {
-        for (final LauncherListener listener : listenersLauncher)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyFired();
+            listenable.get(i).notifyFired();
         }
         for (final LaunchableConfig launchableConfig : launchables)
         {
@@ -273,7 +274,13 @@ public class LauncherModel extends FeatureModel implements Launcher
     @Override
     public void addListener(LauncherListener listener)
     {
-        listenersLauncher.add(listener);
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(LauncherListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     @Override

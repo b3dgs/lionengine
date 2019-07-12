@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.collidable.selector;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Listenable;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -46,7 +48,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  * @see Cursor
  * @see Viewer
  */
-public class Selector extends FeaturableModel implements SelectorConfigurer
+public class Selector extends FeaturableModel implements SelectorConfigurer, Listenable<SelectionListener>
 {
     /** Selector model. */
     private final SelectorModel model = addFeatureAndGet(new SelectorModel());
@@ -57,7 +59,7 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     /** Backed selection. */
     private final List<Selectable> selected = new ArrayList<>();
     /** Selection listeners. */
-    private final List<SelectionListener> listeners = new ArrayList<>();
+    private final ListenableModel<SelectionListener> listenable = new ListenableModel<>();
 
     /**
      * Create the selector.
@@ -92,10 +94,10 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
             public void notifySelectionDone(Area selection)
             {
                 checkSelection(componentCollision, selection);
-                final int n = listeners.size();
-                for (int i = 0; i < n; i++)
+
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listeners.get(i).notifySelected(selected);
+                    listenable.get(i).notifySelected(selected);
                 }
             }
         });
@@ -109,16 +111,6 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
     public final void addListener(SelectorListener listener)
     {
         refresher.addListener(listener);
-    }
-
-    /**
-     * Add a selection listener.
-     * 
-     * @param listener The selection listener reference.
-     */
-    public final void addListener(SelectionListener listener)
-    {
-        listeners.add(listener);
     }
 
     /**
@@ -181,6 +173,22 @@ public class Selector extends FeaturableModel implements SelectorConfigurer
             selected.get(i).onSelection(false);
         }
         selected.clear();
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public final void addListener(SelectionListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(SelectionListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     /*

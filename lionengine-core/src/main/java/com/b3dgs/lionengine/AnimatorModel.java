@@ -16,8 +16,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.util.ArrayList;
-
 /**
  * Animator implementation.
  */
@@ -29,7 +27,7 @@ public final class AnimatorModel implements Animator
     private static final double HALF_FRAME = 0.5;
 
     /** Animation listener. */
-    private final ArrayList<AnimatorListener> listeners = new ArrayList<>();
+    private final ListenableModel<AnimatorListener> listenable = new ListenableModel<>();
     /** First frame. */
     private int first = Animation.MINIMUM_FRAME;
     /** Last frame. */
@@ -70,14 +68,21 @@ public final class AnimatorModel implements Animator
             // If not reversed, done, else, reverse
             current = last + HALF_FRAME;
             checkStatePlaying();
-            listeners.forEach(l -> l.notifyAnimState(state));
+
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).notifyAnimState(state);
+            }
         }
         else
         {
             final int cur = getFrame();
             if (cur != old)
             {
-                listeners.forEach(l -> l.notifyAnimFrame(cur));
+                for (int i = 0; i < listenable.size(); i++)
+                {
+                    listenable.get(i).notifyAnimFrame(cur);
+                }
             }
         }
     }
@@ -130,14 +135,20 @@ public final class AnimatorModel implements Animator
             {
                 state = AnimState.FINISHED;
             }
-            listeners.forEach(l -> l.notifyAnimState(state));
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).notifyAnimState(state);
+            }
         }
         else
         {
             final int cur = getFrame();
             if (cur != old)
             {
-                listeners.forEach(l -> l.notifyAnimFrame(cur));
+                for (int i = 0; i < listenable.size(); i++)
+                {
+                    listenable.get(i).notifyAnimFrame(cur);
+                }
             }
         }
     }
@@ -149,17 +160,13 @@ public final class AnimatorModel implements Animator
     @Override
     public void addListener(AnimatorListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(AnimatorListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override
@@ -181,19 +188,24 @@ public final class AnimatorModel implements Animator
         current = first;
         state = AnimState.PLAYING;
 
-        listeners.forEach(l ->
+        for (int i = 0; i < listenable.size(); i++)
         {
-            l.notifyAnimPlayed(anim);
-            l.notifyAnimState(state);
-            l.notifyAnimFrame(first);
-        });
+            final AnimatorListener listener = listenable.get(i);
+            listener.notifyAnimPlayed(anim);
+            listener.notifyAnimState(state);
+            listener.notifyAnimFrame(first);
+        }
     }
 
     @Override
     public void stop()
     {
         state = AnimState.STOPPED;
-        listeners.forEach(l -> l.notifyAnimState(state));
+
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyAnimState(state);
+        }
     }
 
     @Override
@@ -235,7 +247,11 @@ public final class AnimatorModel implements Animator
         Check.superiorOrEqual(frame, Animation.MINIMUM_FRAME);
 
         current = frame;
-        listeners.forEach(l -> l.notifyAnimFrame(frame));
+
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyAnimFrame(frame);
+        }
     }
 
     @Override

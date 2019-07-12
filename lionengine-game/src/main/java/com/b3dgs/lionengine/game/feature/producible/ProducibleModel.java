@@ -16,12 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -35,7 +34,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 public class ProducibleModel extends FeatureModel implements Producible, Recyclable
 {
     /** Producer listeners. */
-    private final Collection<ProducibleListener> listeners = new ArrayList<>();
+    private final ListenableModel<ProducibleListener> listenable = new ListenableModel<>();
     /** Producible media. */
     private final Media media;
     /** Production steps needed. */
@@ -114,13 +113,19 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     @Override
     public void addListener(ProducibleListener listener)
     {
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
-    public Collection<ProducibleListener> getListeners()
+    public void removeListener(ProducibleListener listener)
     {
-        return Collections.unmodifiableCollection(listeners);
+        listenable.removeListener(listener);
+    }
+
+    @Override
+    public List<ProducibleListener> getListeners()
+    {
+        return listenable.get();
     }
 
     @Override

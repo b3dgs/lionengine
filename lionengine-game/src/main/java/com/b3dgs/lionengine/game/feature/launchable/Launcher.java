@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Direction;
@@ -30,15 +31,8 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * @see Launchable
  */
 @FeatureInterface
-public interface Launcher extends Feature, Updatable
+public interface Launcher extends Feature, Updatable, Listenable<LauncherListener>
 {
-    /**
-     * Add a launcher listener.
-     * 
-     * @param listener The launcher listener to add.
-     */
-    void addListener(LauncherListener listener);
-
     /**
      * Add a launchable listener.
      * 

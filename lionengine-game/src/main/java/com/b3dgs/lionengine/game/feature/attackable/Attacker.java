@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.attackable;
 import java.util.function.BooleanSupplier;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
@@ -30,16 +31,8 @@ import com.b3dgs.lionengine.game.feature.Transformable;
  * Represents something that can attack something at a defined rate, distance and damages.
  */
 @FeatureInterface
-public interface Attacker extends Feature, Updatable
+public interface Attacker extends Feature, Updatable, Listenable<AttackerListener>
 {
-    /**
-     * Add a listener.
-     * 
-     * @param listener The listener to add (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    void addListener(AttackerListener listener);
-
     /**
      * Define a target to attack.
      * 

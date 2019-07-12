@@ -16,13 +16,13 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -58,7 +58,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     private static final int TEXT_DEBUG_SIZE = 8;
 
     /** Pathfindable listeners. */
-    private final Collection<PathfindableListener> listeners = new ArrayList<>();
+    private final ListenableModel<PathfindableListener> listenable = new ListenableModel<>();
     /** List of shared path id. */
     private final Collection<Integer> sharedPathIds = new HashSet<>(0);
     /** List of ignored id. */
@@ -461,9 +461,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         moveX = 0.0;
         moveY = 0.0;
         sharedPathIds.clear();
-        for (final PathfindableListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyArrived();
+            listenable.get(i).notifyArrived();
         }
     }
 
@@ -554,7 +554,13 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public void addListener(PathfindableListener listener)
     {
-        listeners.add(listener);
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(PathfindableListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     @Override
@@ -607,9 +613,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
                 moveX = 0.0;
                 moveY = 0.0;
                 moveTo(extrp, dx, dy);
-                for (final PathfindableListener listener : listeners)
+
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listener.notifyMoving();
+                    listenable.get(i).notifyMoving();
                 }
             }
             // Max step is reached, stop moves and animation
@@ -703,9 +710,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
                 currentStep = 0;
                 pathFoundChanged = false;
                 prepareDestination(tx, ty);
-                for (final PathfindableListener listener : listeners)
+
+                for (int i = 0; i < listenable.size(); i++)
                 {
-                    listener.notifyStartMove();
+                    listenable.get(i).notifyStartMove();
                 }
                 return true;
             }

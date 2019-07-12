@@ -14,35 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature;
-
-import com.b3dgs.lionengine.Listenable;
-import com.b3dgs.lionengine.game.Feature;
+package com.b3dgs.lionengine;
 
 /**
- * Represents something identified by a unique number.
- * <p>
- * Can request to be removed in order to be reused.
- * </p>
+ * Describe something that can provide event notification.
+ * 
+ * @param <T> The listener type.
  */
-@FeatureInterface
-public interface Identifiable extends Feature, Listenable<IdentifiableListener>
+public interface Listenable<T>
 {
     /**
-     * Get the Id (<code>null</code> will be returned once removed after a call to {@link #destroy()}).
+     * Add a listener.
      * 
-     * @return The unique Id.
+     * @param listener The listener to add (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    Integer getId();
+    void addListener(T listener);
 
     /**
-     * Declare as removable. Can be destroyed only one time.
-     * {@link #notifyDestroyed()} should be called when recycle can be performed.
+     * Remove a listener.
+     * 
+     * @param listener The listener to remove (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    void destroy();
-
-    /**
-     * Notify effective destruction, and allow to recycle destroyed Id.
-     */
-    void notifyDestroyed();
+    void removeListener(T listener);
 }

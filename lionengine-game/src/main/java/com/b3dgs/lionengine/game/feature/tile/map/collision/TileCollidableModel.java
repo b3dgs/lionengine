@@ -20,11 +20,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 public class TileCollidableModel extends FeatureModel implements TileCollidable, Recyclable
 {
     /** Launcher listeners. */
-    private final Collection<TileCollidableListener> listeners = new HashSet<>();
+    private final ListenableModel<TileCollidableListener> listenable = new ListenableModel<>();
     /** Computed results. */
     private final Map<String, CollisionResult> results = new HashMap<>();
     /** Transformable owning this model. */
@@ -115,9 +115,9 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      */
     private void onCollided(CollisionResult result, CollisionCategory category)
     {
-        for (final TileCollidableListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyTileCollided(result, category);
+            listenable.get(i).notifyTileCollided(result, category);
         }
     }
 
@@ -150,13 +150,13 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     @Override
     public void addListener(TileCollidableListener listener)
     {
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(TileCollidableListener listener)
     {
-        listeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override

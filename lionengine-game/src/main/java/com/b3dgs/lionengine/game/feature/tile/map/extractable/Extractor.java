@@ -16,7 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
@@ -26,24 +26,8 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * This interface represents the ability of resource extraction.
  */
 @FeatureInterface
-public interface Extractor extends Feature, Updatable
+public interface Extractor extends Feature, Updatable, Listenable<ExtractorListener>
 {
-    /**
-     * Add an extractor listener.
-     * 
-     * @param listener The extractor listener to add (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    void addListener(ExtractorListener listener);
-
-    /**
-     * Remove an extractor listener.
-     * 
-     * @param listener The extractor listener to remove (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    void removeListener(ExtractorListener listener);
-
     /**
      * Set the extractor checker.
      * 

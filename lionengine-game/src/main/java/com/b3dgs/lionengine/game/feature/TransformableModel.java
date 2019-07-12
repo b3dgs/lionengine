@@ -16,11 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
@@ -33,7 +31,7 @@ import com.b3dgs.lionengine.game.SizeConfig;
 public class TransformableModel extends FeatureModel implements Transformable, Recyclable
 {
     /** Listeners. */
-    private final List<TransformableListener> listeners = new ArrayList<>();
+    private final ListenableModel<TransformableListener> listenable = new ListenableModel<>();
     /** Mover model. */
     private final Mover mover = new MoverModel();
     /** Body width. */
@@ -92,10 +90,9 @@ public class TransformableModel extends FeatureModel implements Transformable, R
             || Double.compare(getWidth(), getOldWidth()) != 0
             || Double.compare(getHeight(), getOldHeight()) != 0)
         {
-            final int length = listeners.size();
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listeners.get(i).notifyTransformed(this);
+                listenable.get(i).notifyTransformed(this);
             }
         }
     }
@@ -107,17 +104,13 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     @Override
     public void addListener(TransformableListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(TransformableListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override

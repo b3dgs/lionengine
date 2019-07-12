@@ -16,10 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -28,7 +25,7 @@ import com.b3dgs.lionengine.game.Configurer;
 public class LayerableModel extends FeatureModel implements Layerable
 {
     /** Layers listener. */
-    private final List<LayerableListener> listeners = new ArrayList<>();
+    private final ListenableModel<LayerableListener> listenable = new ListenableModel<>();
     /** Layer refresh value. */
     private Integer layerRefresh = Integer.valueOf(0);
     /** Layer display value. */
@@ -57,7 +54,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     {
         super();
 
-        listeners.add(services.get(LayerableListener.class));
+        listenable.addListener(services.get(LayerableListener.class));
     }
 
     /**
@@ -118,18 +115,22 @@ public class LayerableModel extends FeatureModel implements Layerable
     @Override
     public void addListener(LayerableListener listener)
     {
-        Check.notNull(listener);
+        listenable.addListener(listener);
+    }
 
-        listeners.add(listener);
+    @Override
+    public void removeListener(LayerableListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     @Override
     public void setLayer(Integer layerRefresh, Integer layerDisplay)
     {
-        final int n = listeners.size();
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listeners.get(i).notifyLayerChanged(this, this.layerRefresh, layerRefresh, this.layerDisplay, layerDisplay);
+            listenable.get(i)
+                      .notifyLayerChanged(this, this.layerRefresh, layerRefresh, this.layerDisplay, layerDisplay);
         }
         this.layerRefresh = layerRefresh;
         this.layerDisplay = layerDisplay;

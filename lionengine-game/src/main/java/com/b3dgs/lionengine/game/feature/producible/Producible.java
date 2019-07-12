@@ -16,8 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
-import java.util.Collection;
+import java.util.List;
 
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.game.Feature;
@@ -27,21 +28,14 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * Represents a producible object.
  */
 @FeatureInterface
-public interface Producible extends Feature, Shape
+public interface Producible extends Feature, Shape, Listenable<ProducibleListener>
 {
-    /**
-     * Add a producible listener.
-     * 
-     * @param listener The producible listener to add.
-     */
-    void addListener(ProducibleListener listener);
-
     /**
      * Get the listeners reference as read only.
      * 
      * @return The listeners reference.
      */
-    Collection<ProducibleListener> getListeners();
+    List<ProducibleListener> getListeners();
 
     /**
      * Set the production location.

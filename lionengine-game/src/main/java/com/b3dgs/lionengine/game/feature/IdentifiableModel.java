@@ -16,13 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 
 /**
  * Identifiable model implementation.
@@ -61,7 +59,7 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     }
 
     /** Listeners. */
-    private final List<IdentifiableListener> listeners = new ArrayList<>(1);
+    private final ListenableModel<IdentifiableListener> listenable = new ListenableModel<>();
     /** Unique Id. */
     private final Integer id;
     /** Destroy request flag. */
@@ -88,17 +86,13 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     @Override
     public void addListener(IdentifiableListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.add(listener);
+        listenable.addListener(listener);
     }
 
     @Override
     public void removeListener(IdentifiableListener listener)
     {
-        Check.notNull(listener);
-
-        listeners.remove(listener);
+        listenable.removeListener(listener);
     }
 
     @Override
@@ -118,10 +112,9 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
         {
             destroy = true;
 
-            final int n = listeners.size();
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < listenable.size(); i++)
             {
-                listeners.get(i).notifyDestroyed(id);
+                listenable.get(i).notifyDestroyed(id);
             }
         }
     }

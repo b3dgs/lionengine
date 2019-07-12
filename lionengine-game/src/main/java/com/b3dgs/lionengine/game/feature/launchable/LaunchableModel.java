@@ -16,9 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -31,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 public class LaunchableModel extends FeatureModel implements Launchable
 {
     /** Launcher listeners. */
-    private final Collection<LaunchableListener> listeners = new HashSet<>();
+    private final ListenableModel<LaunchableListener> listenable = new ListenableModel<>();
     /** Transformable reference. */
     private Transformable transformable;
     /** Vector reference. */
@@ -77,15 +75,21 @@ public class LaunchableModel extends FeatureModel implements Launchable
     @Override
     public void addListener(LaunchableListener listener)
     {
-        listeners.add(listener);
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(LaunchableListener listener)
+    {
+        listenable.removeListener(listener);
     }
 
     @Override
     public void launch()
     {
-        for (final LaunchableListener listener : listeners)
+        for (int i = 0; i < listenable.size(); i++)
         {
-            listener.notifyFired(this);
+            listenable.get(i).notifyFired(this);
         }
     }
 
