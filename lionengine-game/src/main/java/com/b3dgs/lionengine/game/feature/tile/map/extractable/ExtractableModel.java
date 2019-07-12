@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -55,23 +55,26 @@ public class ExtractableModel extends FeatureModel implements Extractable
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * <p>
+     * The {@link Configurer} can provide a valid {@link ExtractableConfig}.
+     * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param setup The setup reference (must not be <code>null</code>).
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public ExtractableModel(Services services, Setup setup)
+    public ExtractableModel(Services services, Configurer configurer)
     {
         super();
 
         Check.notNull(services);
-        Check.notNull(setup);
+        Check.notNull(configurer);
 
         map = services.get(MapTile.class);
 
-        if (setup.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
+        if (configurer.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
         {
-            final ExtractableConfig config = ExtractableConfig.imports(setup);
+            final ExtractableConfig config = ExtractableConfig.imports(configurer);
             resources.setMax(config.getQuantity());
             resources.fill();
         }

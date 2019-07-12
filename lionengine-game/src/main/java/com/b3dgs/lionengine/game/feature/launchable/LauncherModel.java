@@ -101,7 +101,7 @@ public class LauncherModel extends FeatureModel implements Launcher
      * {@link #addListener(LauncherListener)} on it.
      * </p>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */

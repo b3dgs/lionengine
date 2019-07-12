@@ -25,12 +25,12 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -69,7 +69,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
-     * The {@link Setup} must provide a valid {@link CollisionCategoryConfig}.
+     * The {@link Configurer} must provide a valid {@link CollisionCategoryConfig}.
      * </p>
      * <p>
      * If the {@link Featurable} is a {@link TileCollidableListener}, it will automatically
@@ -77,17 +77,17 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * </p>
      * 
      * @param services The services reference.
-     * @param setup The setup reference (must not be <code>null</code>).
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public TileCollidableModel(Services services, Setup setup)
+    public TileCollidableModel(Services services, Configurer configurer)
     {
         super();
 
         Check.notNull(services);
 
         map = services.get(MapTile.class).getFeature(MapTileCollision.class);
-        categories = CollisionCategoryConfig.imports(setup, map);
+        categories = CollisionCategoryConfig.imports(configurer, map);
     }
 
     /**

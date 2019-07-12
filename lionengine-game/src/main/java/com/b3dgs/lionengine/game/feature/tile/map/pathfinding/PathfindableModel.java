@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
@@ -34,7 +35,6 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -124,7 +124,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
-     * The {@link Setup} owner must provide a valid {@link PathfindableConfig}.
+     * The {@link Configurer} owner must provide a valid {@link PathfindableConfig}.
      * </p>
      * <p>
      * The {@link Services} must provide the following services:
@@ -139,10 +139,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param setup The setup reference (must not be <code>null</code>).
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public PathfindableModel(Services services, Setup setup)
+    public PathfindableModel(Services services, Configurer configurer)
     {
         super();
 
@@ -151,7 +151,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
         mapPath = map.getFeature(MapTilePath.class);
-        categories = PathfindableConfig.imports(setup);
+        categories = PathfindableConfig.imports(configurer);
         orientable = new OrientableModel(services);
 
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()

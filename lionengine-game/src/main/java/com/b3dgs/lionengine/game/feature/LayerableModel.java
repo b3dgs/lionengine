@@ -70,15 +70,15 @@ public class LayerableModel extends FeatureModel implements Layerable
      * </p>
      * 
      * @param services The services reference.
-     * @param setup The setup reference.
+     * @param configurer The configurer reference.
      */
-    public LayerableModel(Services services, Setup setup)
+    public LayerableModel(Services services, Configurer configurer)
     {
         this(services);
 
-        if (setup.hasNode(LayerableConfig.NODE_LAYERABLE))
+        if (configurer.hasNode(LayerableConfig.NODE_LAYERABLE))
         {
-            final LayerableConfig config = LayerableConfig.imports(setup);
+            final LayerableConfig config = LayerableConfig.imports(configurer);
             layerRefresh = Integer.valueOf(config.getLayerRefresh());
             layerDisplay = Integer.valueOf(config.getLayerDisplay());
         }

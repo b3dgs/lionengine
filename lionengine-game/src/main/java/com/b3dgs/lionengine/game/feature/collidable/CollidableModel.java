@@ -28,13 +28,13 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableListener;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -114,15 +114,18 @@ public class CollidableModel extends FeatureModel
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
+     * The {@link Configurer} can provide a valid {@link CollidableConfig} and {@link CollisionConfig}.
+     * </p>
+     * <p>
      * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
      * {@link #addListener(CollidableListener)} on it.
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param setup The setup reference, must provide a valid {@link CollisionConfig} (must not be <code>null</code>).
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableModel(Services services, Setup setup)
+    public CollidableModel(Services services, Configurer configurer)
     {
         super();
 
@@ -130,8 +133,8 @@ public class CollidableModel extends FeatureModel
 
         viewer = services.get(Viewer.class);
 
-        group = CollidableConfig.imports(setup);
-        collisions.addAll(CollisionConfig.imports(setup).getCollisions());
+        group = CollidableConfig.imports(configurer);
+        collisions.addAll(CollisionConfig.imports(configurer).getCollisions());
     }
 
     /*

@@ -18,6 +18,9 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
+
 /**
  * Actioner model implementation.
  */
@@ -29,14 +32,18 @@ public class ActionerModel extends FeatureModel implements Actioner
 
     /**
      * Create feature.
+     * <p>
+     * The {@link Configurer} must provide a valid {@link ActionsConfig}.
+     * </p>
      * 
-     * @param setup The setup reference.
+     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    public ActionerModel(Setup setup)
+    public ActionerModel(Configurer configurer)
     {
         super();
 
-        actions = ActionsConfig.imports(setup, this::getFeature);
+        actions = ActionsConfig.imports(configurer, this::getFeature);
     }
 
     /*

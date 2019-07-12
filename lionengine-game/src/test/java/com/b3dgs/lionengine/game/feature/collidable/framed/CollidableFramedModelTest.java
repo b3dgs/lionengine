@@ -111,7 +111,7 @@ public final class CollidableFramedModelTest
 
         featurable.addFeature(new AnimatableModel());
         featurable.addFeatureAndGet(new CollidableModel(services, setup));
-        featurable.addFeature(new CollidableFramedModel(services, setup));
+        featurable.addFeature(new CollidableFramedModel(setup));
 
         return featurable;
     }
@@ -156,7 +156,7 @@ public final class CollidableFramedModelTest
     @Test
     public void testConstructorNullConfigurer()
     {
-        assertThrows(() -> new CollidableFramedModel(null, null), "Unexpected null argument !");
+        assertThrows(() -> new CollidableFramedModel(null), "Unexpected null argument !");
     }
 
     /**

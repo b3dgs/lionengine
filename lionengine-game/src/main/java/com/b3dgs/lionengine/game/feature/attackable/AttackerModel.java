@@ -92,6 +92,9 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      * <li>{@link Animatable}</li>
      * <li>{@link Transformable}</li>
      * </ul>
+     * <p>
+     * The {@link Configurer} can provide a valid {@link AttackerConfig}.
+     * </p>
      * 
      * @param configurer The configurer reference.
      */

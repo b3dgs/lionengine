@@ -60,7 +60,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final int oldMinY = getIndex(area.getY() - area.getHeight());
         final int oldMaxX = getIndex(area.getX() + area.getWidth());
         final int oldMaxY = getIndex(area.getY() + area.getHeight());
-    
+
         for (int x = oldMinX; x <= oldMaxX; x++)
         {
             for (int y = oldMinY; y <= oldMaxY; y++)
@@ -128,7 +128,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     {
         final Collection<Collidable> inside = new HashSet<>();
         final Collection<Point> points = getPoints(area);
-    
+
         for (final Map<Point, Set<Collidable>> groups : collidables.values())
         {
             for (final Point point : points)
@@ -140,7 +140,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
                 }
             }
         }
-    
+
         return inside;
     }
 

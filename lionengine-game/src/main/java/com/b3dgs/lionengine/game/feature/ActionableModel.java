@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Action;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.geom.Area;
@@ -51,17 +52,17 @@ public class ActionableModel extends FeatureModel implements Actionable
      * <li>{@link Cursor}</li>
      * </ul>
      * <p>
-     * The {@link Setup} must provide a valid {@link ActionConfig}.
+     * The {@link Configurer} must provide a valid {@link ActionConfig}.
      * </p>
      * <p>
      * If the {@link Featurable} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param setup The setup reference (must not be <code>null</code>).
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public ActionableModel(Services services, Setup setup)
+    public ActionableModel(Services services, Configurer configurer)
     {
         super();
 
@@ -69,7 +70,7 @@ public class ActionableModel extends FeatureModel implements Actionable
 
         cursor = services.get(Cursor.class);
 
-        final ActionConfig config = ActionConfig.imports(setup);
+        final ActionConfig config = ActionConfig.imports(configurer);
         button = Geom.createArea(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
     }
