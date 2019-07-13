@@ -90,7 +90,7 @@ public final class ColorRgba
      * @param a The alpha value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b, int a) // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity|TrailingComment
+    public ColorRgba(int r, int g, int b, int a)
     {
         super();
 
@@ -106,10 +106,7 @@ public final class ColorRgba
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        value = (a & 0xFF) << Constant.BYTE_4
-                | (r & 0xFF) << Constant.BYTE_3
-                | (g & 0xFF) << Constant.BYTE_2
-                | (b & 0xFF) << Constant.BYTE_1;
+        value = UtilColor.getRgbaValue(r, g, b, a);
         valueAlpha = a;
         valueRed = r;
         valueGreen = g;

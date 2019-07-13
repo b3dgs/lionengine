@@ -30,6 +30,24 @@ import com.b3dgs.lionengine.UtilMath;
 public final class UtilColor
 {
     /**
+     * Get color as integer value.
+     * 
+     * @param r The red value [0-255].
+     * @param g The green value [0-255].
+     * @param b The blue value [0-255].
+     * @param a The alpha value [0-255].
+     * @return The integer color.
+     */
+    public static int getRgbaValue(int r, int g, int b, int a)
+    {
+        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity
+        return (a & 0xFF) << Constant.BYTE_4
+               | (r & 0xFF) << Constant.BYTE_3
+               | (g & 0xFF) << Constant.BYTE_2
+               | (b & 0xFF) << Constant.BYTE_1;
+    }
+
+    /**
      * Apply an rgb factor.
      * 
      * @param rgb The original rgb.
@@ -50,11 +68,7 @@ public final class UtilColor
         final int g = (int) UtilMath.clamp((rgb >> Constant.BYTE_2 & 0xFF) * fg, 0, 255);
         final int b = (int) UtilMath.clamp((rgb >> Constant.BYTE_1 & 0xFF) * fb, 0, 255);
 
-        // CHECKSTYLE IGNORE LINE: BooleanExpressionComplexity|TrailingComment
-        return (a & 0xFF) << Constant.BYTE_4
-               | (r & 0xFF) << Constant.BYTE_3
-               | (g & 0xFF) << Constant.BYTE_2
-               | (b & 0xFF) << Constant.BYTE_1;
+        return getRgbaValue(r, g, b, a);
     }
 
     /**
@@ -77,12 +91,10 @@ public final class UtilColor
         final int green = value >> Constant.BYTE_2 & 0xFF;
         final int blue = value >> Constant.BYTE_1 & 0xFF;
 
-        final int alphaMask = (UtilMath.clamp(alpha, 0, 255) & 0xFF) << Constant.BYTE_4;
-        final int redMask = (UtilMath.clamp(red + r, 0, 255) & 0xFF) << Constant.BYTE_3;
-        final int greenMask = (UtilMath.clamp(green + g, 0, 255) & 0xFF) << Constant.BYTE_2;
-        final int blueMask = (UtilMath.clamp(blue + b, 0, 255) & 0xFF) << Constant.BYTE_1;
-
-        return alphaMask | redMask | greenMask | blueMask;
+        return getRgbaValue(UtilMath.clamp(red + r, 0, 255),
+                            UtilMath.clamp(green + g, 0, 255),
+                            UtilMath.clamp(blue + b, 0, 255),
+                            UtilMath.clamp(alpha, 0, 255));
     }
 
     /**
