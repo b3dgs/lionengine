@@ -78,8 +78,8 @@ public class Entity extends FeaturableModel
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
-        producer.setStepsPerSecond(1.0);
+        final Producer producer = addFeatureAndGet(new ProducerModel(services));
+        producer.setStepsSpeed(1.0);
 
         final MapTile map = services.get(MapTile.class);
 

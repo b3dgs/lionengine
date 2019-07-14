@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.Iterator;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
@@ -34,7 +35,8 @@ public interface Producer extends Feature, Updatable, Listenable<ProducerListene
     /**
      * Set the production checker.
      * 
-     * @param checker The production checker reference.
+     * @param checker The production checker reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void setChecker(ProducerChecker checker);
 
@@ -42,7 +44,8 @@ public interface Producer extends Feature, Updatable, Listenable<ProducerListene
      * Add an element to the production queue. It works as a FIFO (First In, First Out). Production will be stopped when
      * the list is empty. In this case, getProductionProgress() will return -1. Production list stores only entity name.
      * 
-     * @param featurable The element to produce.
+     * @param featurable The element to produce (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     void addToProductionQueue(Featurable featurable);
 
@@ -57,11 +60,12 @@ public interface Producer extends Feature, Updatable, Listenable<ProducerListene
     void stopProduction();
 
     /**
-     * Set the production steps number per second.
+     * Set the production steps number per tick.
      * 
-     * @param stepsPerSecond The production steps number per second.
+     * @param stepsPerTick The production steps number per tick (must be strictly positive).
+     * @throws LionEngineException If invalid argument.
      */
-    void setStepsPerSecond(double stepsPerSecond);
+    void setStepsSpeed(double stepsPerTick);
 
     /**
      * Get production progress. If it returns -1, it means that there are not any active production.

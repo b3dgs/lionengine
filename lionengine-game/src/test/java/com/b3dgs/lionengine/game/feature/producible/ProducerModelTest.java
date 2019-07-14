@@ -45,7 +45,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
@@ -124,7 +123,7 @@ public final class ProducerModelTest
                 return 50;
             }
         });
-        producer = new ProducerModel(services, new Setup(media));
+        producer = new ProducerModel(services);
         producer.prepare(object);
     }
 
@@ -145,7 +144,6 @@ public final class ProducerModelTest
     public void testConstructorNullServices()
     {
         assertThrows(() -> new ProducerModel(null), "Unexpected null argument !");
-        assertThrows(() -> new ProducerModel(null, null), "Unexpected null argument !");
     }
 
     /**
@@ -157,7 +155,7 @@ public final class ProducerModelTest
         final ProducerModel producer = new ProducerModel(services);
         producer.prepare(new FeaturableModel());
         producer.recycle();
-        producer.setStepsPerSecond(25.0);
+        producer.setStepsSpeed(0.5);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
         final AtomicReference<Featurable> current = new AtomicReference<>();
@@ -219,7 +217,7 @@ public final class ProducerModelTest
     public void testProduction()
     {
         producer.recycle();
-        producer.setStepsPerSecond(25.0);
+        producer.setStepsSpeed(0.5);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
         final AtomicReference<Featurable> current = new AtomicReference<>();
@@ -286,7 +284,7 @@ public final class ProducerModelTest
         final ProducerModel producer = new ProducerModel(services);
         producer.prepare(object);
         producer.recycle();
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(1.0);
         producer.addListener(object);
 
         final Featurable featurable = UtilProducible.createProducible(services);
@@ -307,6 +305,12 @@ public final class ProducerModelTest
         assertEquals(3, object.flag.get());
 
         producer.update(1.0);
+        object.flag.set(0);
+        producer.removeListener(object);
+        producer.update(1.0);
+        producer.update(1.0);
+
+        assertEquals(0, object.flag.get());
     }
 
     /**
@@ -316,7 +320,7 @@ public final class ProducerModelTest
     public void testPending()
     {
         producer.recycle();
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
         final AtomicReference<Featurable> skip = new AtomicReference<>();
@@ -353,7 +357,7 @@ public final class ProducerModelTest
     public void testPendingCannot()
     {
         producer.recycle();
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
 
         final AtomicReference<Featurable> start = new AtomicReference<>();
         final AtomicReference<Featurable> skip = new AtomicReference<>();
@@ -379,7 +383,7 @@ public final class ProducerModelTest
     @Test
     public void testSkip()
     {
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
 
         final AtomicReference<Featurable> done = new AtomicReference<>();
         final AtomicReference<Featurable> skip = new AtomicReference<>();
@@ -406,7 +410,7 @@ public final class ProducerModelTest
     @Test
     public void testStop()
     {
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
 
         final AtomicReference<Featurable> done = new AtomicReference<>();
         final AtomicReference<Featurable> skip = new AtomicReference<>();
@@ -442,7 +446,7 @@ public final class ProducerModelTest
     {
         object.check.set(false);
         producer.recycle();
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
 
         final AtomicReference<Featurable> skip = new AtomicReference<>();
         final AtomicReference<Featurable> cant = new AtomicReference<>();
@@ -463,7 +467,7 @@ public final class ProducerModelTest
     public void testProducibleListener()
     {
         producer.recycle();
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
 
         final Featurable featurable = UtilProducible.createProducible(services);
         final AtomicBoolean start = new AtomicBoolean();
@@ -503,7 +507,7 @@ public final class ProducerModelTest
         final ProducerObjectSelf object = new ProducerObjectSelf();
         final ProducerModel producer = new ProducerModel(services);
         producer.prepare(object);
-        producer.setStepsPerSecond(50.0);
+        producer.setStepsSpeed(50.0);
         producer.checkListener(object);
         producer.recycle();
 

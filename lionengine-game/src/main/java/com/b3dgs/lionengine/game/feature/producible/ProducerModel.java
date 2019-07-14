@@ -20,7 +20,6 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
-import java.util.function.IntSupplier;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -32,9 +31,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Producer model implementation.
@@ -47,12 +44,10 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private final Queue<Featurable> productions = new ArrayDeque<>();
     /** Handler reference. */
     private final Handler handler;
-    /** Rate provider. */
-    private final IntSupplier rate;
     /** Production checker. */
     private ProducerChecker checker = featurable -> true;
-    /** Steps per second. */
-    private double stepsPerSecond;
+    /** Steps per tick. */
+    private double stepsPerTick = 1.0;
     /** Current element being under production. */
     private Featurable current;
     /** Current object being under production. */
@@ -61,10 +56,8 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private int steps;
     /** Production progress. */
     private double progress;
-    /** Production speed. */
-    private double speed;
     /** Production state. */
-    private ProducerState state;
+    private ProducerState state = ProducerState.NONE;
 
     /**
      * Create feature.
@@ -73,10 +66,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * </p>
      * <ul>
      * <li>{@link Handler}</li>
-     * <li>{@link SourceResolutionProvider} (for the desired fps).</li>
      * </ul>
      * <p>
-     * The {@link Featurable} must be a {@link ProducerChecker}.
+     * The {@link Featurable} can be a {@link ProducerChecker}.
      * </p>
      * <p>
      * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
@@ -93,37 +85,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         Check.notNull(services);
 
         handler = services.get(Handler.class);
-        rate = services.get(SourceResolutionProvider.class)::getRate;
-    }
-
-    /**
-     * Create feature.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Handler}</li>
-     * <li>{@link SourceResolutionProvider} (for the desired fps).</li>
-     * </ul>
-     * <p>
-     * The {@link Featurable} must be a {@link ProducerChecker}.
-     * </p>
-     * <p>
-     * If the {@link Featurable} is a {@link ProducerListener}, it will automatically
-     * {@link #addListener(ProducerListener)} on it.
-     * </p>
-     * 
-     * @param services The services reference.
-     * @param setup The setup reference.
-     */
-    public ProducerModel(Services services, Setup setup)
-    {
-        super();
-
-        Check.notNull(services);
-
-        handler = services.get(Handler.class);
-        rate = services.get(SourceResolutionProvider.class)::getRate;
     }
 
     /**
@@ -147,12 +108,10 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
 
     /**
      * Action called from update production in producing state.
-     * 
-     * @param extrp The extrapolation value.
      */
-    private void actionProducing(double extrp)
+    private void actionProducing()
     {
-        progress += speed * extrp;
+        progress += stepsPerTick;
 
         for (int i = 0; i < listenable.size(); i++)
         {
@@ -163,7 +122,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
             listener.notifyProductionProgress(this);
         }
 
-        // Production time elapsed
+        // Production finished
         if (progress >= steps)
         {
             progress = steps;
@@ -233,7 +192,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         transformable.setLocation(producible.getX(), producible.getY());
         handler.add(featurable);
         currentObject = featurable;
-        speed = stepsPerSecond / rate.getAsInt();
         steps = current.getFeature(Producible.class).getSteps();
         progress = 0.0;
         for (int i = 0; i < listenable.size(); i++)
@@ -292,12 +250,15 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     public void setChecker(ProducerChecker checker)
     {
         Check.notNull(checker);
+
         this.checker = checker;
     }
 
     @Override
     public void addToProductionQueue(Featurable featurable)
     {
+        Check.notNull(featurable);
+
         productions.add(featurable);
         if (state == ProducerState.NONE)
         {
@@ -313,19 +274,15 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
             case NONE:
                 progress = -1;
                 break;
-            // Before production
             case WILL_PRODUCE:
                 actionWillProduce();
                 break;
-            // During production
             case PRODUCING:
-                actionProducing(extrp);
+                actionProducing();
                 break;
-            // Production done
             case PRODUCED:
                 actionProduced();
                 break;
-            // Next production ?
             case CHECK:
                 actionCheck();
                 break;
@@ -357,9 +314,11 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     }
 
     @Override
-    public void setStepsPerSecond(double stepsPerSecond)
+    public void setStepsSpeed(double stepsPerTick)
     {
-        this.stepsPerSecond = stepsPerSecond;
+        Check.superiorStrict(stepsPerTick, 0.0);
+
+        this.stepsPerTick = stepsPerTick;
     }
 
     @Override
@@ -414,7 +373,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     public void recycle()
     {
         state = ProducerState.NONE;
-        stepsPerSecond = 1.0;
+        stepsPerTick = 1.0;
         progress = 0.0;
         steps = 0;
     }
