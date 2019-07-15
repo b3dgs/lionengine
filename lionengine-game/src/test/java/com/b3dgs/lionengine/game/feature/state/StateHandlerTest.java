@@ -293,11 +293,12 @@ public final class StateHandlerTest
         final StateHandler handler;
         handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml"))));
         handler.prepare(featurable);
-        handler.addListener((o, n) ->
+        final StateTransitionListener listener = (o, n) ->
         {
             old.set(o);
             next.set(n);
-        });
+        };
+        handler.addListener(listener);
 
         handler.changeState(StateIdle.class);
         handler.postUpdate();
@@ -310,6 +311,15 @@ public final class StateHandlerTest
 
         assertEquals(StateIdle.class, old.get());
         assertEquals(StateWalk.class, next.get());
+
+        handler.removeListener(listener);
+        old.set(null);
+        next.set(null);
+        handler.changeState(StateIdle.class);
+        handler.postUpdate();
+
+        assertNull(old.get());
+        assertNull(next.get());
     }
 
     /**

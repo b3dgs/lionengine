@@ -128,8 +128,11 @@ public final class ComponentDisplayableTest
         final ComponentDisplayable component = new ComponentDisplayable();
 
         final Featurable featurable = new FeaturableModel();
+        final Featurable featurable2 = new FeaturableModel();
         component.notifyHandlableAdded(featurable);
+        component.notifyHandlableAdded(featurable2);
         component.notifyLayerChanged(featurable, null, null, null, null);
+        component.notifyLayerChanged(featurable2, null, null, null, null);
 
         assertTrue(((TreeSet<?>) UtilReflection.getField(component, "indexs")).isEmpty());
 
@@ -139,11 +142,20 @@ public final class ComponentDisplayableTest
         {
             // Mock
         }));
+        featurable2.addFeature(new DisplayableModel(g ->
+        {
+            // Mock
+        }));
         component.notifyHandlableAdded(featurable);
+        component.notifyHandlableAdded(featurable2);
 
         assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
+
+        assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+
+        component.notifyHandlableRemoved(featurable2);
 
         assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }

@@ -38,6 +38,10 @@ import com.b3dgs.lionengine.io.FileWriting;
  */
 public final class HandlerPersisterTest
 {
+    private final Services services = new Services();
+    private final Factory factory = services.add(new Factory(services));
+    private final Handler handler = services.add(new Handler(services));
+
     /**
      * Prepare test.
      */
@@ -64,9 +68,6 @@ public final class HandlerPersisterTest
     @Test
     public void testWithoutMap() throws IOException
     {
-        final Services services = new Services();
-        final Factory factory = services.add(new Factory(services));
-        final Handler handler = services.add(new Handler(services));
         final Featurable featurable = factory.create(Medias.create("object_features.xml"));
         featurable.getFeature(Transformable.class).teleport(1, 2);
         handler.add(featurable);
@@ -107,10 +108,7 @@ public final class HandlerPersisterTest
     @Test
     public void testWithMap() throws IOException
     {
-        final Services services = new Services();
         services.add(new Camera());
-        final Factory factory = services.add(new Factory(services));
-        final Handler handler = services.add(new Handler(services));
         final MapTile map = services.add(new MapTileGame());
         map.create(16, 16, 5, 5);
 
@@ -138,8 +136,52 @@ public final class HandlerPersisterTest
         }
         handler2.update(1.0);
 
-        final Featurable featurable3 = handler2.values().iterator().next();
-        final Transformable transformable = featurable3.getFeature(Transformable.class);
+        final Featurable featurable2 = handler2.values().iterator().next();
+        final Transformable transformable = featurable2.getFeature(Transformable.class);
+
+        assertEquals(16.0, transformable.getX());
+        assertEquals(32.0, transformable.getY());
+    }
+
+    /**
+     * Test with map and collidable.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testWithMapCollidable() throws IOException
+    {
+        services.add(new Camera());
+        final MapTile map = services.add(new MapTileGame());
+        map.create(16, 16, 5, 5);
+
+        final Featurable featurable = factory.create(Medias.create("object_coll.xml"));
+        featurable.getFeature(Transformable.class).teleport(16, 32);
+        handler.add(featurable);
+
+        handler.update(1.0);
+
+        final HandlerPersister persister = new HandlerPersister(services);
+        final Media media = Medias.create("persister.data");
+        try (FileWriting writing = new FileWriting(media))
+        {
+            persister.save(writing);
+        }
+
+        final Services services2 = new Services();
+        services2.add(new Camera());
+        services2.add(new Factory(services2));
+        services2.add(map);
+        final Handler handler2 = services2.add(new Handler(services2));
+        final HandlerPersister persister2 = new HandlerPersister(services2);
+        try (FileReading reading = new FileReading(media))
+        {
+            persister2.load(reading);
+        }
+        handler2.update(1.0);
+
+        final Featurable featurable2 = handler2.values().iterator().next();
+        final Transformable transformable = featurable2.getFeature(Transformable.class);
 
         assertEquals(16.0, transformable.getX());
         assertEquals(32.0, transformable.getY());

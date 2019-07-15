@@ -69,6 +69,19 @@ public final class SetupTest
     }
 
     /**
+     * Test the setup config inside folder.
+     */
+    @Test
+    public void testConfigFolder()
+    {
+        final Media config = Medias.create("setup", "object.xml");
+        final Setup setup = new Setup(config);
+
+        assertEquals(config, setup.getMedia());
+        assertNotNull(setup);
+    }
+
+    /**
      * Test the setup config.
      */
     @Test

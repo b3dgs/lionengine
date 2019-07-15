@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 
@@ -71,6 +73,58 @@ public final class UtilTests
             }
         }
         Assertions.fail("Constructor is not private !");
+    }
+
+    /**
+     * Test object functions call.
+     * 
+     * @param signature The object functions to call.
+     * @param object The object to call with.
+     */
+    public static void testCalls(Class<?> signature, Object object)
+    {
+        for (final Method method : signature.getMethods())
+        {
+            try
+            {
+                final List<Object> arguments = new ArrayList<>();
+                for (final Class<?> type : method.getParameterTypes())
+                {
+                    if (type.isPrimitive())
+                    {
+                        arguments.add(getPrimitive(type));
+                    }
+                    else
+                    {
+                        arguments.add(null);
+                    }
+                }
+                method.invoke(object, arguments.toArray());
+            }
+            catch (final InvocationTargetException | IllegalAccessException exception)
+            {
+                Assertions.fail(exception);
+            }
+        }
+    }
+
+    /**
+     * Get primitive instance.
+     * 
+     * @param type The primitive type.
+     * @return The primitive instance;
+     */
+    private static Object getPrimitive(Class<?> type)
+    {
+        if (type == Integer.TYPE)
+        {
+            return Integer.valueOf(0);
+        }
+        else if (type == Double.TYPE)
+        {
+            return Double.valueOf(0.0);
+        }
+        throw new IllegalArgumentException();
     }
 
     /**

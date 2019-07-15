@@ -39,6 +39,11 @@ public final class CollisionFunctionLinearTest
     {
         assertEquals(13.0, function.compute(5.0));
         assertEquals(-7.0, function.compute(-5.0));
+        assertEquals(-7.0, function.getRenderX(-5.0));
+        assertEquals(13.0, function.getRenderX(5.0));
+        assertEquals(-7.0, function.getRenderY(-5.0));
+        assertEquals(13.0, function.getRenderY(5.0));
+        assertEquals(-9.0, new CollisionFunctionLinear(-2.0, 3.0).getRenderY(5.0));
         assertEquals(CollisionFunctionType.LINEAR, function.getType());
         assertEquals(2.0, function.getA());
         assertEquals(3.0, function.getB());

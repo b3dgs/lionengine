@@ -308,7 +308,8 @@ public final class AttackerModelTest
         final AtomicReference<Transformable> started = new AtomicReference<>();
         final AtomicBoolean anim = new AtomicBoolean();
         final AtomicReference<Transformable> ended = new AtomicReference<>();
-        attacker.addListener(UtilAttackable.createListener(preparing, reaching, started, ended, anim));
+        final AttackerListener listener = UtilAttackable.createListener(preparing, reaching, started, ended, anim);
+        attacker.addListener(listener);
         attacker.recycle();
         attacker.update(1.0);
         attacker.getFeature(Transformable.class).teleport(0, 0);
@@ -360,6 +361,23 @@ public final class AttackerModelTest
         attacker.update(1.0);
 
         assertTrue(anim.get());
+
+        attacker.removeListener(listener);
+        preparing.set(false);
+        reaching.set(null);
+        started.set(null);
+        ended.set(null);
+        anim.set(false);
+
+        attacker.attack(target);
+        attacker.update(1.0);
+        attacker.update(1.0);
+
+        assertFalse(preparing.get());
+        assertNull(reaching.get());
+        assertNull(started.get());
+        assertNull(ended.get());
+        assertFalse(anim.get());
     }
 
     /**

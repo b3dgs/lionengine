@@ -52,6 +52,7 @@ public final class GroupTransitionTest
         assertEquals(new GroupTransition("a", "a"), new GroupTransition("a", "a"));
         assertEquals(new GroupTransition("a", "b"), new GroupTransition("a", "b"));
 
+        assertNotEquals(new GroupTransition("a", "a"), null);
         assertNotEquals(new GroupTransition("a", "a"), new Object());
         assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("b", "a"));
         assertNotEquals(new GroupTransition("a", "b"), new GroupTransition("a", "a"));

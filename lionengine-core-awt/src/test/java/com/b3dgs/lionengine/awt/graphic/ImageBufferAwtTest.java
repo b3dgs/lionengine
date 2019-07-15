@@ -92,5 +92,9 @@ public final class ImageBufferAwtTest
 
         assertEquals(Transparency.BITMASK, image.getTransparency());
         assertEquals(ColorRgba.TRANSPARENT, image.getTransparentColor());
+
+        image.setRgb(0, 0, ColorRgba.TRANSPARENT.getRgba());
+
+        assertEquals(ColorRgba.TRANSPARENT.getRgba(), image.getRgb(0, 0));
     }
 }

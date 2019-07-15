@@ -33,6 +33,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
@@ -40,6 +41,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.ScreenListener;
@@ -65,6 +67,18 @@ public final class ScreenAwtTest
     public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
+        Engine.terminate();
+    }
+
+    /**
+     * Test with engine
+     */
+    @Test
+    public void testEngineWindowed()
+    {
+        final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
+        EngineAwt.start(ScreenAwtTest.class.getSimpleName(), Version.DEFAULT);
+        testScreen(config);
     }
 
     /**

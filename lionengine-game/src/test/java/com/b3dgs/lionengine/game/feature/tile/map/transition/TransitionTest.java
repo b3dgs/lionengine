@@ -57,6 +57,7 @@ public final class TransitionTest
                      new Transition(TransitionType.CENTER.getSymetric(), "b", "a"));
         assertEquals(new Transition(type, "a", "b"), new Transition(type.getSymetric(), "b", "a"));
 
+        assertNotEquals(new Transition(type, "a", "a"), null);
         assertNotEquals(new Transition(type, "a", "a"), new Object());
         assertNotEquals(new Transition(type, "a", "b"), new Transition(type, "b", "a"));
         assertNotEquals(new Transition(type, "a", "b"), new Transition(TransitionType.CENTER, "a", "b"));

@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,12 +71,17 @@ public final class LayerableModelTest
         final AtomicReference<FeatureProvider> objectRef = new AtomicReference<>();
         final AtomicInteger oldLayerRef = new AtomicInteger();
         final AtomicInteger newLayerRef = new AtomicInteger();
-        layerable.addListener((provider, layerRefreshOld, layerRefreshNew, layerDisplayOld, layerDisplayNew) ->
+        final LayerableListener listener = (provider,
+                                            layerRefreshOld,
+                                            layerRefreshNew,
+                                            layerDisplayOld,
+                                            layerDisplayNew) ->
         {
             objectRef.set(provider);
             oldLayerRef.set(layerRefreshOld.intValue());
             newLayerRef.set(layerRefreshNew.intValue());
-        });
+        };
+        layerable.addListener(listener);
 
         final Services services = new Services();
         services.add(new ComponentDisplayable());
@@ -90,6 +96,12 @@ public final class LayerableModelTest
 
         assertEquals(1, layerable.getLayerRefresh().intValue());
         assertEquals(2, layerable.getLayerDisplay().intValue());
+
+        layerable.removeListener(listener);
+        objectRef.set(null);
+        layerable.setLayer(Integer.valueOf(1), Integer.valueOf(2));
+
+        assertNull(objectRef.get());
     }
 
     /**
