@@ -6,7 +6,6 @@ jdk: openjdk8
 env:
   global:
     - AUDIODEV=null
-    - DISPLAY=:99.0
 
 install:
  - git fetch --unshallow
@@ -23,6 +22,7 @@ addons:
       - libstdc++6
       - portaudio19-dev
       - libasound2-dev
+      - pulseaudio
 
 before_install:
  - sudo apt-get install gnome-themes-standard
@@ -35,11 +35,10 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
 
-before_script:
- - sh -e /etc/init.d/xvfb start
- - sleep 10
- - metacity --sm-disable --replace &
- - sleep 10
+dist: xenial
+
+services:
+  - xvfb
 
 script:
   - export
