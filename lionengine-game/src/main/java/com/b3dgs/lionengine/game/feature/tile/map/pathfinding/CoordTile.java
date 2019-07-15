@@ -21,6 +21,9 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
  */
 public class CoordTile
 {
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 22;
+
     /** Horizontal tile location. */
     private final int tx;
     /** Vertical tile location. */
@@ -58,5 +61,46 @@ public class CoordTile
     public int getY()
     {
         return ty;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + tx;
+        result = prime * result + ty;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final CoordTile other = (CoordTile) object;
+        return other.tx == tx && other.ty == ty;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [tx=")
+                                            .append(tx)
+                                            .append(", ty=")
+                                            .append(ty)
+                                            .append("]")
+                                            .toString();
     }
 }

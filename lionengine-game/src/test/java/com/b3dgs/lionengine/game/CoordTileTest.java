@@ -17,6 +17,9 @@
 package com.b3dgs.lionengine.game;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,5 +40,47 @@ public final class CoordTileTest
 
         assertEquals(1, coord.getX());
         assertEquals(2, coord.getY());
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final CoordTile coord = new CoordTile(1, 2);
+
+        assertEquals(coord, coord);
+        assertEquals(coord, new CoordTile(1, 2));
+
+        assertNotEquals(coord, null);
+        assertNotEquals(coord, new Object());
+        assertNotEquals(coord, new CoordTile(0, 2));
+        assertNotEquals(coord, new CoordTile(1, 0));
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final CoordTile hash = new CoordTile(1, 2);
+
+        assertHashEquals(hash, new CoordTile(1, 2));
+
+        assertHashNotEquals(hash, new CoordTile(0, 2));
+        assertHashNotEquals(hash, new CoordTile(1, 0));
+    }
+
+    /**
+     * Test to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final CoordTile config = new CoordTile(1, 2);
+
+        assertHashEquals("CoordTile [tx=1, ty=2]", config.toString());
     }
 }
