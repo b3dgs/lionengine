@@ -345,6 +345,7 @@ public final class CollidableModelTest
         transformable1.teleport(1.0, 1.0);
         transformable1.moveLocation(1.0, 1.0, 1.0);
 
+        collidable1.setEnabled(false);
         collidable1.render(g);
     }
 

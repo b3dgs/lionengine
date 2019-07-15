@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
  * Test {@link TransformableModel}.
@@ -58,10 +58,9 @@ public final class TransformableModelTest
     }
 
     private final Media media = UtilTransformable.createMedia(Featurable.class);
-    private final Services services = new Services();
     private final Setup setup = new Setup(media);
     private final Featurable featurable = new FeaturableModel();
-    private final Transformable transformable = new TransformableModel(setup);
+    private final TransformableModel transformable = new TransformableModel(setup);
 
     /**
      * Prepare test.
@@ -69,7 +68,6 @@ public final class TransformableModelTest
     @BeforeEach
     public void before()
     {
-        services.add(new MapTileGame());
         transformable.prepare(featurable);
     }
 
@@ -106,36 +104,36 @@ public final class TransformableModelTest
     }
 
     /**
+     * Test the transformable without configuration node.
+     */
+    @Test
+    public void testWithoutConfig()
+    {
+        final Transformable transformable = new TransformableModel(new Configurer(UtilSetup.createConfig()));
+
+        assertEquals(0, transformable.getWidth());
+        assertEquals(0, transformable.getHeight());
+    }
+
+    /**
      * Test the transformable teleport.
      */
     @Test
     public void testTeleport()
     {
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(0.0, transformable.getX());
-        assertEquals(0.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 0.0, 0.0);
 
         transformable.teleport(1.0, -1.0);
 
-        assertEquals(1.0, transformable.getOldX());
-        assertEquals(-1.0, transformable.getOldY());
-        assertEquals(1.0, transformable.getX());
-        assertEquals(-1.0, transformable.getY());
+        assertLocalization(1.0, -1.0, 1.0, -1.0);
 
         transformable.teleportX(2.0);
 
-        assertEquals(2.0, transformable.getOldX());
-        assertEquals(-1.0, transformable.getOldY());
-        assertEquals(2.0, transformable.getX());
-        assertEquals(-1.0, transformable.getY());
+        assertLocalization(2.0, -1.0, 2.0, -1.0);
 
         transformable.teleportY(3.0);
 
-        assertEquals(2.0, transformable.getOldX());
-        assertEquals(3.0, transformable.getOldY());
-        assertEquals(2.0, transformable.getX());
-        assertEquals(3.0, transformable.getY());
+        assertLocalization(2.0, 3.0, 2.0, 3.0);
     }
 
     /**
@@ -144,31 +142,19 @@ public final class TransformableModelTest
     @Test
     public void testSetLocation()
     {
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(0.0, transformable.getX());
-        assertEquals(0.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 0.0, 0.0);
 
         transformable.setLocation(1.0, 1.0);
 
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(1.0, transformable.getX());
-        assertEquals(1.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 1.0, 1.0);
 
         transformable.setLocationX(2.0);
 
-        assertEquals(1.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(2.0, transformable.getX());
-        assertEquals(1.0, transformable.getY());
+        assertLocalization(1.0, 0.0, 2.0, 1.0);
 
         transformable.setLocationY(3.0);
 
-        assertEquals(1.0, transformable.getOldX());
-        assertEquals(1.0, transformable.getOldY());
-        assertEquals(2.0, transformable.getX());
-        assertEquals(3.0, transformable.getY());
+        assertLocalization(1.0, 1.0, 2.0, 3.0);
     }
 
     /**
@@ -196,24 +182,15 @@ public final class TransformableModelTest
     @Test
     public void testMoveLocation()
     {
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(0.0, transformable.getX());
-        assertEquals(0.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 0.0, 0.0);
 
         transformable.moveLocation(1.0, 1.0, 2.0);
 
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(1.0, transformable.getX());
-        assertEquals(2.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 1.0, 2.0);
 
         transformable.moveLocation(1.0, new Force(-2.0, -3.0), new Force(-1.0, -2.0));
 
-        assertEquals(1.0, transformable.getOldX());
-        assertEquals(2.0, transformable.getOldY());
-        assertEquals(-2.0, transformable.getX());
-        assertEquals(-3.0, transformable.getY());
+        assertLocalization(1.0, 2.0, -2.0, -3.0);
     }
 
     /**
@@ -224,17 +201,11 @@ public final class TransformableModelTest
     {
         transformable.moveLocationX(1.0, 1.0);
 
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(1.0, transformable.getX());
-        assertEquals(0.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 1.0, 0.0);
 
         transformable.moveLocationY(1.0, 1.0);
 
-        assertEquals(0.0, transformable.getOldX());
-        assertEquals(0.0, transformable.getOldY());
-        assertEquals(1.0, transformable.getX());
-        assertEquals(1.0, transformable.getY());
+        assertLocalization(0.0, 0.0, 1.0, 1.0);
     }
 
     /**
@@ -245,10 +216,7 @@ public final class TransformableModelTest
     {
         transformable.transform(1.0, 2.0, 3, 4);
 
-        assertEquals(1.0, transformable.getOldX());
-        assertEquals(2.0, transformable.getOldY());
-        assertEquals(1.0, transformable.getX());
-        assertEquals(2.0, transformable.getY());
+        assertLocalization(1.0, 2.0, 1.0, 2.0);
 
         assertEquals(16, transformable.getOldWidth());
         assertEquals(32, transformable.getOldHeight());
@@ -263,21 +231,26 @@ public final class TransformableModelTest
     public void testNotify()
     {
         final AtomicBoolean transformed = new AtomicBoolean();
-        transformable.addListener(t -> transformed.set(true));
+        final TransformableListener listener = t -> transformed.set(true);
+        transformable.addListener(listener);
         transformable.setSize(transformable.getWidth(), transformable.getHeight());
 
         assertFalse(transformed.get());
 
-        transformable.setSize(1, 0);
+        transformable.setSize(1, transformable.getHeight());
 
         assertTrue(transformed.get());
 
         transformed.set(false);
-        transformable.setSize(0, 1);
+        transformable.setSize(transformable.getWidth(), 1);
 
         assertTrue(transformed.get());
 
         transformed.set(false);
+        transformable.setSize(2, 2);
+
+        assertTrue(transformed.get());
+
         transformable.transform(transformable.getX(),
                                 transformable.getY(),
                                 transformable.getWidth(),
@@ -285,22 +258,55 @@ public final class TransformableModelTest
 
         assertTrue(transformed.get());
 
-        transformable.transform(1.0, 2.0, 0, 1);
-
-        assertTrue(transformed.get());
-
         transformed.set(false);
+        transformable.setSize(2, 2);
+
         transformable.moveLocation(1.0, 0.0, 0.0);
 
         assertFalse(transformed.get());
 
-        transformable.moveLocation(1.0, 1.0, 0.0);
+        transformable.moveLocationX(1.0, 1.0);
 
         assertTrue(transformed.get());
 
         transformed.set(false);
-        transformable.moveLocation(1.0, 0.0, 1.0);
+
+        transformable.moveLocation(1.0, 0.0, 0.0);
+        transformable.moveLocationY(1.0, 1.0);
 
         assertTrue(transformed.get());
+
+        transformed.set(false);
+
+        transformable.moveLocation(1.0, 0.0, 0.0);
+        transformable.moveLocation(1.0, 1.0, 1.0);
+
+        assertTrue(transformed.get());
+
+        transformed.set(false);
+        transformable.removeListener(listener);
+        transformable.transform(1.0, 2.0, 3, 4);
+
+        assertFalse(transformed.get());
+    }
+
+    /**
+     * Test recycle call.
+     */
+    @Test
+    public void testRecycle()
+    {
+        transformable.teleport(1.0, 1.0);
+        transformable.recycle();
+
+        assertLocalization(0.0, 0.0, 0.0, 0.0);
+    }
+
+    private void assertLocalization(double oldX, double oldY, double x, double y)
+    {
+        assertEquals(oldX, transformable.getOldX());
+        assertEquals(oldY, transformable.getOldY());
+        assertEquals(x, transformable.getX());
+        assertEquals(y, transformable.getY());
     }
 }

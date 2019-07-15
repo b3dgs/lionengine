@@ -36,7 +36,6 @@ public final class UtilTransformable
     {
         final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass(clazz.getName()));
-        root.add(FeaturableConfig.exportSetup("com.b3dgs.lionengine.game.object.Setup"));
         root.add(SizeConfig.exports(new SizeConfig(16, 32)));
 
         final Media media = Medias.create("object.xml");
