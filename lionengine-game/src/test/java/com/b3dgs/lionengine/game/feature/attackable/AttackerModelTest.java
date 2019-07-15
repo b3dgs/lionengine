@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
@@ -64,6 +65,7 @@ public final class AttackerModelTest
     public static void beforeTests()
     {
         HACK.addByValue(HACK.make("FAIL"));
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
 
     /**
@@ -73,6 +75,7 @@ public final class AttackerModelTest
     public static void afterTests()
     {
         HACK.restore();
+        Medias.setResourcesDirectory(null);
     }
 
     private final Services services = new Services();
