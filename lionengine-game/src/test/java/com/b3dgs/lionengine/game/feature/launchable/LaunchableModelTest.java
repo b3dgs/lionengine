@@ -134,13 +134,21 @@ public final class LaunchableModelTest
     public void testListener()
     {
         final AtomicBoolean fired = new AtomicBoolean();
-        launchable.addListener(launchable -> fired.set(true));
+        final LaunchableListener listener = launchable -> fired.set(true);
+        launchable.addListener(listener);
 
         assertFalse(fired.get());
 
         launchable.launch();
 
         assertTrue(fired.get());
+
+        launchable.removeListener(listener);
+        fired.set(false);
+
+        launchable.launch();
+
+        assertFalse(fired.get());
     }
 
     /**

@@ -36,15 +36,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Range;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 
 /**
  * Test {@link AttackerModel}.
@@ -112,21 +115,24 @@ public final class AttackerModelTest
     @Test
     public void testConfig()
     {
-        final int damageMin = 1;
-        final int damageMax = 2;
+        final int damagesMin = 1;
+        final int damagesMax = 2;
         final int distanceMin = 1;
         final int distanceMax = 2;
         final int frame = 1;
         final int time = 100;
 
-        final AttackerModel attacker = new AttackerModel();
-        attacker.setAttackDamages(new Range(damageMin, damageMax));
-        attacker.setAttackDistance(new Range(distanceMin, distanceMax));
-        attacker.setAttackFrame(frame);
-        attacker.setAttackDelay(time);
+        final Media media = UtilSetup.createConfig();
+        final Xml xml = new Xml(media);
+        xml.add(AttackerConfig.exports(new AttackerConfig(time, distanceMin, distanceMax, damagesMin, damagesMax)));
+        xml.save(media);
 
-        assertTrue(attacker.getAttackDamages() >= damageMin);
-        assertTrue(attacker.getAttackDamages() <= damageMax);
+        final AttackerModel attacker = new AttackerModel(new Setup(media));
+        attacker.setAttackFrame(frame);
+
+        assertTrue(attacker.getAttackDamages() >= damagesMin);
+        assertTrue(attacker.getAttackDamages() <= damagesMax);
+        assertTrue(media.getFile().delete());
     }
 
     /**

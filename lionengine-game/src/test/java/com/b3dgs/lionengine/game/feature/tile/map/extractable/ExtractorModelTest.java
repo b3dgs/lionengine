@@ -33,9 +33,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
@@ -124,11 +126,18 @@ public final class ExtractorModelTest
         final ObjectExtractor object = new ObjectExtractor(true, true);
         object.addFeature(new TransformableModel());
 
-        final ExtractorModel extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Media media = UtilSetup.createConfig();
+        final Xml xml = new Xml(media);
+        xml.add(ExtractorConfig.exports(new ExtractorConfig(1.0, 2.0, 5)));
+        xml.save(media);
+
+        final ExtractorModel extractor = new ExtractorModel(services, new Setup(media));
         extractor.recycle();
-        extractor.setCapacity(5);
-        extractor.setExtractionSpeed(1.0);
-        extractor.setDropOffSpeed(2.0);
+
+        assertEquals(5, extractor.getExtractionCapacity());
+        assertEquals(1.0, extractor.getExtractionSpeed());
+        assertEquals(2.0, extractor.getDropOffSpeed());
+
         extractor.prepare(object);
 
         assertEquals(5, extractor.getExtractionCapacity());
@@ -136,6 +145,8 @@ public final class ExtractorModelTest
         assertEquals(2.0, extractor.getDropOffSpeed());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
