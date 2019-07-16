@@ -86,48 +86,90 @@ public enum Orientation
         final Orientation orientation;
         if (sty < dty)
         {
-            if (stx < dtx)
-            {
-                orientation = Orientation.NORTH_EAST;
-            }
-            else if (stx > dtx)
-            {
-                orientation = Orientation.NORTH_WEST;
-            }
-            else
-            {
-                orientation = Orientation.NORTH;
-            }
+            orientation = getNorth(stx, dtx);
         }
         else if (sty > dty)
         {
-            if (stx > dtx)
-            {
-                orientation = Orientation.SOUTH_WEST;
-            }
-            else if (stx < dtx)
-            {
-                orientation = Orientation.SOUTH_EAST;
-            }
-            else
-            {
-                orientation = Orientation.SOUTH;
-            }
+            orientation = getSouth(stx, dtx);
         }
         else
         {
-            if (stx < dtx)
-            {
-                orientation = Orientation.EAST;
-            }
-            else if (stx > dtx)
-            {
-                orientation = Orientation.WEST;
-            }
-            else
-            {
-                orientation = null;
-            }
+            orientation = getEstWest(stx, dtx);
+        }
+        return orientation;
+    }
+
+    /**
+     * Get the orientation on north side.
+     * 
+     * @param stx The starting horizontal tile index.
+     * @param dtx The destination horizontal tile index.
+     * @return The corresponding orientation.
+     */
+    private static Orientation getNorth(int stx, int dtx)
+    {
+        final Orientation orientation;
+        if (stx < dtx)
+        {
+            orientation = Orientation.NORTH_EAST;
+        }
+        else if (stx > dtx)
+        {
+            orientation = Orientation.NORTH_WEST;
+        }
+        else
+        {
+            orientation = Orientation.NORTH;
+        }
+        return orientation;
+    }
+
+    /**
+     * Get the orientation on south side.
+     * 
+     * @param stx The starting horizontal tile index.
+     * @param dtx The destination horizontal tile index.
+     * @return The corresponding orientation.
+     */
+    private static Orientation getSouth(int stx, int dtx)
+    {
+        final Orientation orientation;
+        if (stx > dtx)
+        {
+            orientation = Orientation.SOUTH_WEST;
+        }
+        else if (stx < dtx)
+        {
+            orientation = Orientation.SOUTH_EAST;
+        }
+        else
+        {
+            orientation = Orientation.SOUTH;
+        }
+        return orientation;
+    }
+
+    /**
+     * Get the orientation on horizontal side.
+     * 
+     * @param stx The starting horizontal tile index.
+     * @param dtx The destination horizontal tile index.
+     * @return The corresponding orientation, <code>null</code> if unchanged.
+     */
+    private static Orientation getEstWest(int stx, int dtx)
+    {
+        final Orientation orientation;
+        if (stx < dtx)
+        {
+            orientation = Orientation.EAST;
+        }
+        else if (stx > dtx)
+        {
+            orientation = Orientation.WEST;
+        }
+        else
+        {
+            orientation = null;
         }
         return orientation;
     }
