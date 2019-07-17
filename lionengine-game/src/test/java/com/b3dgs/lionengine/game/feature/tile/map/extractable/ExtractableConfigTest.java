@@ -60,7 +60,7 @@ public final class ExtractableConfigTest
     @Test
     public void testExportsImports()
     {
-        final ExtractableConfig config = new ExtractableConfig(1);
+        final ExtractableConfig config = new ExtractableConfig("gold", 1);
 
         final Xml root = new Xml("test");
         root.add(ExtractableConfig.exports(config));
@@ -80,14 +80,15 @@ public final class ExtractableConfigTest
     @Test
     public void testEquals()
     {
-        final ExtractableConfig config = new ExtractableConfig(1);
+        final ExtractableConfig config = new ExtractableConfig("gold", 1);
 
         assertEquals(config, config);
-        assertEquals(config, new ExtractableConfig(1));
+        assertEquals(config, new ExtractableConfig("gold", 1));
 
         assertNotEquals(config, null);
         assertNotEquals(config, new Object());
-        assertNotEquals(config, new ExtractableConfig(0));
+        assertNotEquals(config, new ExtractableConfig("wood", 1));
+        assertNotEquals(config, new ExtractableConfig("gold", 0));
     }
 
     /**
@@ -96,11 +97,12 @@ public final class ExtractableConfigTest
     @Test
     public void testHashCode()
     {
-        final ExtractableConfig hash = new ExtractableConfig(1);
+        final ExtractableConfig hash = new ExtractableConfig("gold", 1);
 
-        assertHashEquals(hash, new ExtractableConfig(1));
+        assertHashEquals(hash, new ExtractableConfig("gold", 1));
 
-        assertHashNotEquals(hash, new ExtractableConfig(0));
+        assertHashNotEquals(hash, new ExtractableConfig("wood", 1));
+        assertHashNotEquals(hash, new ExtractableConfig("gold", 0));
     }
 
     /**
@@ -109,8 +111,8 @@ public final class ExtractableConfigTest
     @Test
     public void testToString()
     {
-        final ExtractableConfig config = new ExtractableConfig(1);
+        final ExtractableConfig config = new ExtractableConfig("gold", 1);
 
-        assertEquals("ExtractableConfig [quantity=1]", config.toString());
+        assertEquals("ExtractableConfig [type=gold quantity=1]", config.toString());
     }
 }

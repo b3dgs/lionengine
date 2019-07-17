@@ -75,7 +75,7 @@ public final class ExtractableModelTest
         final Extractable extractable = UtilExtractable.createExtractable();
 
         assertEquals(10, extractable.getResourceQuantity());
-        assertEquals(ResourceType.WOOD, extractable.getResourceType());
+        assertEquals("wood", extractable.getResourceType());
 
         assertEquals(0, extractable.getInTileX());
         assertEquals(0, extractable.getInTileY());

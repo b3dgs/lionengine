@@ -54,7 +54,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     /** Current resource object. */
     private Extractable extractable;
     /** Current resources type. */
-    private Enum<?> resourceType;
+    private String resourceType;
     /** Extraction state. */
     private ExtractorState state;
     /** Extraction capacity. */
@@ -314,7 +314,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     }
 
     @Override
-    public void setResource(Enum<?> type, int tx, int ty, int tw, int th)
+    public void setResource(String type, int tx, int ty, int tw, int th)
     {
         resourceLocation = new ResourceLocation(tx, ty, tw, th);
         resourceType = type;
@@ -363,7 +363,7 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     }
 
     @Override
-    public Enum<?> getResourceType()
+    public String getResourceType()
     {
         return resourceType;
     }

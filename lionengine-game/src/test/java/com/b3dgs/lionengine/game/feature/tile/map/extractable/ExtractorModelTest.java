@@ -166,42 +166,42 @@ public final class ExtractorModelTest
         extractor.setDropOffSpeed(100.0);
         extractor.prepare(object);
 
-        final AtomicReference<Enum<?>> goTo = new AtomicReference<>();
-        final AtomicReference<Enum<?>> startExtract = new AtomicReference<>();
-        final AtomicReference<Enum<?>> extracted = new AtomicReference<>();
-        final AtomicReference<Enum<?>> carry = new AtomicReference<>();
-        final AtomicReference<Enum<?>> startDrop = new AtomicReference<>();
-        final AtomicReference<Enum<?>> endDrop = new AtomicReference<>();
+        final AtomicReference<String> goTo = new AtomicReference<>();
+        final AtomicReference<String> startExtract = new AtomicReference<>();
+        final AtomicReference<String> extracted = new AtomicReference<>();
+        final AtomicReference<String> carry = new AtomicReference<>();
+        final AtomicReference<String> startDrop = new AtomicReference<>();
+        final AtomicReference<String> endDrop = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, carry, startDrop, endDrop));
 
         assertNull(extractor.getResourceLocation());
         assertNull(extractor.getResourceType());
 
-        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
+        extractor.setResource("wood", 1, 2, 1, 1);
 
         final Tiled location = extractor.getResourceLocation();
         assertEquals(1.0, location.getInTileX());
         assertEquals(2.0, location.getInTileY());
         assertEquals(1.0, location.getInTileWidth());
         assertEquals(1.0, location.getInTileHeight());
-        assertEquals(ResourceType.WOOD, extractor.getResourceType());
+        assertEquals("wood", extractor.getResourceType());
         assertFalse(extractor.isExtracting());
 
         extractor.startExtraction();
 
         assertFalse(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, goTo.get());
+        assertEquals("wood", goTo.get());
 
         extractor.update(1.0);
 
         assertTrue(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, startExtract.get());
-        assertNotEquals(ResourceType.WOOD, extracted.get());
+        assertEquals("wood", startExtract.get());
+        assertNotEquals("wood", extracted.get());
 
         extractor.update(1.0);
 
         assertTrue(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, extracted.get());
+        assertEquals("wood", extracted.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
@@ -210,19 +210,19 @@ public final class ExtractorModelTest
         extractor.update(1.0);
 
         assertTrue(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, carry.get());
+        assertEquals("wood", carry.get());
 
         extractor.update(1.0);
 
         assertFalse(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, startDrop.get());
+        assertEquals("wood", startDrop.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
         extractor.update(1.0);
 
         assertTrue(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, endDrop.get());
+        assertEquals("wood", endDrop.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -242,10 +242,10 @@ public final class ExtractorModelTest
         extractor.setDropOffSpeed(50.0);
         extractor.prepare(object);
 
-        final AtomicReference<Enum<?>> goTo = new AtomicReference<>();
-        final AtomicReference<Enum<?>> skip = new AtomicReference<>();
+        final AtomicReference<String> goTo = new AtomicReference<>();
+        final AtomicReference<String> skip = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, skip, skip, skip, skip, skip));
-        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
+        extractor.setResource("wood", 1, 2, 1, 1);
         extractor.startExtraction();
         extractor.update(1.0);
 
@@ -275,10 +275,10 @@ public final class ExtractorModelTest
         extractor.setDropOffSpeed(50.0);
         extractor.prepare(object);
 
-        final AtomicReference<Enum<?>> drop = new AtomicReference<>();
-        final AtomicReference<Enum<?>> skip = new AtomicReference<>();
+        final AtomicReference<String> drop = new AtomicReference<>();
+        final AtomicReference<String> skip = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(skip, skip, skip, skip, drop, skip));
-        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
+        extractor.setResource("wood", 1, 2, 1, 1);
         extractor.startExtraction();
         extractor.update(1.0);
 
@@ -426,32 +426,32 @@ public final class ExtractorModelTest
         extractor.setExtractionSpeed(50.0);
         extractor.setDropOffSpeed(100.0);
 
-        final AtomicReference<Enum<?>> goTo = new AtomicReference<>();
-        final AtomicReference<Enum<?>> startExtract = new AtomicReference<>();
-        final AtomicReference<Enum<?>> empty = new AtomicReference<>();
-        final AtomicReference<Enum<?>> extracted = new AtomicReference<>();
+        final AtomicReference<String> goTo = new AtomicReference<>();
+        final AtomicReference<String> startExtract = new AtomicReference<>();
+        final AtomicReference<String> empty = new AtomicReference<>();
+        final AtomicReference<String> extracted = new AtomicReference<>();
         extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, empty, empty, empty));
 
         assertNull(extractor.getResourceLocation());
         assertNull(extractor.getResourceType());
 
-        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
+        extractor.setResource("wood", 1, 2, 1, 1);
         extractor.startExtraction();
 
         assertFalse(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, goTo.get());
+        assertEquals("wood", goTo.get());
 
         extractor.update(1.0);
 
         assertTrue(extractor.isExtracting());
-        assertEquals(ResourceType.WOOD, startExtract.get());
-        assertNotEquals(ResourceType.WOOD, extracted.get());
+        assertEquals("wood", startExtract.get());
+        assertNotEquals("wood", extracted.get());
 
         extractor.stopExtraction();
         extractor.update(1.0);
 
         assertFalse(extractor.isExtracting());
-        assertNotEquals(ResourceType.WOOD, extracted.get());
+        assertNotEquals("wood", extracted.get());
 
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
@@ -468,7 +468,7 @@ public final class ExtractorModelTest
         final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
         extractor.prepare(object);
         extractor.checkListener(object);
-        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
+        extractor.setResource("wood", 1, 2, 1, 1);
         extractor.startExtraction();
         extractor.update(1.0);
 
@@ -515,7 +515,7 @@ public final class ExtractorModelTest
         final ExtractorListener listener = new ExtractorListenerVoid()
         {
             @Override
-            public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+            public void notifyStartGoToRessources(String type, Tiled resourceLocation)
             {
                 check.set(true);
             }

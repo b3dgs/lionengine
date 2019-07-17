@@ -72,7 +72,7 @@ public interface Extractor extends Feature, Updatable, Listenable<ExtractorListe
      * @param tw The width in tile.
      * @param th The height in tile.
      */
-    void setResource(Enum<?> type, int tx, int ty, int tw, int th);
+    void setResource(String type, int tx, int ty, int tw, int th);
 
     /**
      * Start extraction.
@@ -117,7 +117,7 @@ public interface Extractor extends Feature, Updatable, Listenable<ExtractorListe
      * 
      * @return The resource type.
      */
-    Enum<?> getResourceType();
+    String getResourceType();
 
     /**
      * Check if extractor is currently working on extraction.

@@ -29,7 +29,7 @@ public interface ExtractorListener
      * @param type The resource type.
      * @param resourceLocation The resource location.
      */
-    void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation);
+    void notifyStartGoToRessources(String type, Tiled resourceLocation);
 
     /**
      * Notify listener when extractor is going to start extraction (called once).
@@ -37,7 +37,7 @@ public interface ExtractorListener
      * @param type The resource type.
      * @param resourceLocation The resource location.
      */
-    void notifyStartExtraction(Enum<?> type, Tiled resourceLocation);
+    void notifyStartExtraction(String type, Tiled resourceLocation);
 
     /**
      * Notify listener when extractor extracted one unit (called once when one quantity is extracted).
@@ -45,7 +45,7 @@ public interface ExtractorListener
      * @param type The resource type.
      * @param currentQuantity The current quantity of extracted resources.
      */
-    void notifyExtracted(Enum<?> type, int currentQuantity);
+    void notifyExtracted(String type, int currentQuantity);
 
     /**
      * Notify listener when extractor is going to start carry (called once).
@@ -53,7 +53,7 @@ public interface ExtractorListener
      * @param type The resource type.
      * @param totalQuantity The total resource quantity to carry.
      */
-    void notifyStartCarry(Enum<?> type, int totalQuantity);
+    void notifyStartCarry(String type, int totalQuantity);
 
     /**
      * Notify listener when extractor carried and will start to drop off resources (called once).
@@ -61,7 +61,7 @@ public interface ExtractorListener
      * @param type The resource type.
      * @param totalQuantity The total resource quantity to drop.
      */
-    void notifyStartDropOff(Enum<?> type, int totalQuantity);
+    void notifyStartDropOff(String type, int totalQuantity);
 
     /**
      * Notify listener when extractor has dropped resources to warehouse.
@@ -69,5 +69,5 @@ public interface ExtractorListener
      * @param type The resource type.
      * @param droppedQuantity The total resource quantity dropped off.
      */
-    void notifyDroppedOff(Enum<?> type, int droppedQuantity);
+    void notifyDroppedOff(String type, int droppedQuantity);
 }

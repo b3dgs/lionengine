@@ -31,8 +31,10 @@ public final class ExtractableConfig
     public static final String NODE_EXTRACTABLE = Constant.XML_PREFIX + "extractable";
     /** Quantity attribute name. */
     public static final String ATT_QUANTITY = "quantity";
+    /** Resource type attribute name. */
+    public static final String ATT_TYPE = "type";
     /** Minimum to string length. */
-    private static final int MIN_LENGTH = 30;
+    private static final int MIN_LENGTH = 40;
 
     /**
      * Imports the config from configurer.
@@ -60,9 +62,10 @@ public final class ExtractableConfig
         Check.notNull(root);
 
         final Xml node = root.getChild(NODE_EXTRACTABLE);
+        final String type = node.readString(Constant.EMPTY_STRING, ATT_TYPE);
         final int quantity = node.readInteger(0, ATT_QUANTITY);
 
-        return new ExtractableConfig(quantity);
+        return new ExtractableConfig(type, quantity);
     }
 
     /**
@@ -77,24 +80,39 @@ public final class ExtractableConfig
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_EXTRACTABLE);
+        node.writeString(ATT_TYPE, config.getType());
         node.writeInteger(ATT_QUANTITY, config.getQuantity());
 
         return node;
     }
 
+    /** Resource type. */
+    private final String type;
     /** Resource quantity. */
     private final int quantity;
 
     /**
      * Create the configuration.
      * 
+     * @param type The resource type.
      * @param quantity The resource quantity.
      */
-    public ExtractableConfig(int quantity)
+    public ExtractableConfig(String type, int quantity)
     {
         super();
 
+        this.type = type;
         this.quantity = quantity;
+    }
+
+    /**
+     * Get the resource type.
+     * 
+     * @return The resource type.
+     */
+    public String getType()
+    {
+        return type;
     }
 
     /**
@@ -116,6 +134,7 @@ public final class ExtractableConfig
     {
         final int prime = 31;
         int result = 1;
+        result = prime * result + type.hashCode();
         result = prime * result + quantity;
         return result;
     }
@@ -132,14 +151,16 @@ public final class ExtractableConfig
             return false;
         }
         final ExtractableConfig other = (ExtractableConfig) object;
-        return quantity == other.quantity;
+        return type.equals(other.type) && quantity == other.quantity;
     }
 
     @Override
     public String toString()
     {
         return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [quantity=")
+                                            .append(" [type=")
+                                            .append(type)
+                                            .append(" quantity=")
                                             .append(quantity)
                                             .append("]")
                                             .toString();

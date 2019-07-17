@@ -39,7 +39,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     /** Transformable model. */
     private Transformable transformable;
     /** Resource type. */
-    private Enum<?> type;
+    private String type;
 
     /**
      * Create feature.
@@ -75,6 +75,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
         if (configurer.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
         {
             final ExtractableConfig config = ExtractableConfig.imports(configurer);
+            type = config.getType();
             resources.setMax(config.getQuantity());
             resources.fill();
         }
@@ -105,7 +106,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     }
 
     @Override
-    public void setResourcesType(Enum<?> type)
+    public void setResourcesType(String type)
     {
         this.type = type;
     }
@@ -117,7 +118,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     }
 
     @Override
-    public Enum<?> getResourceType()
+    public String getResourceType()
     {
         return type;
     }

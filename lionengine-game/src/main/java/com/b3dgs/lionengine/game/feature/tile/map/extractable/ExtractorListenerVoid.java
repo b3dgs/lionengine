@@ -32,37 +32,37 @@ public class ExtractorListenerVoid implements ExtractorListener
     }
 
     @Override
-    public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(String type, Tiled resourceLocation)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
+    public void notifyStartExtraction(String type, Tiled resourceLocation)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyExtracted(Enum<?> type, int currentQuantity)
+    public void notifyExtracted(String type, int currentQuantity)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyStartCarry(Enum<?> type, int totalQuantity)
+    public void notifyStartCarry(String type, int totalQuantity)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyStartDropOff(Enum<?> type, int totalQuantity)
+    public void notifyStartDropOff(String type, int totalQuantity)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
+    public void notifyDroppedOff(String type, int droppedQuantity)
     {
         // Nothing by default
     }

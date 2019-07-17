@@ -46,7 +46,7 @@ public interface Extractable extends Feature, Tiled
      * 
      * @param type The resources type.
      */
-    void setResourcesType(Enum<?> type);
+    void setResourcesType(String type);
 
     /**
      * Get the current resource quantity.
@@ -60,5 +60,5 @@ public interface Extractable extends Feature, Tiled
      * 
      * @return The resource type.
      */
-    Enum<?> getResourceType();
+    String getResourceType();
 }

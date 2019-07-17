@@ -47,7 +47,7 @@ final class UtilExtractable
 
         final Extractable extractable = new ExtractableModel(services, new Setup(UtilSetup.createConfig()));
         extractable.setResourcesQuantity(10);
-        extractable.setResourcesType(ResourceType.WOOD);
+        extractable.setResourcesType("wood");
         extractable.prepare(featurable);
 
         return extractable;
@@ -64,47 +64,47 @@ final class UtilExtractable
      * @param endDrop The dropped.
      * @return The created listener.
      */
-    public static ExtractorListener createListener(final AtomicReference<Enum<?>> goTo,
-                                                   final AtomicReference<Enum<?>> startExtract,
-                                                   final AtomicReference<Enum<?>> extracted,
-                                                   final AtomicReference<Enum<?>> carry,
-                                                   final AtomicReference<Enum<?>> startDrop,
-                                                   final AtomicReference<Enum<?>> endDrop)
+    public static ExtractorListener createListener(AtomicReference<String> goTo,
+                                                   AtomicReference<String> startExtract,
+                                                   AtomicReference<String> extracted,
+                                                   AtomicReference<String> carry,
+                                                   AtomicReference<String> startDrop,
+                                                   AtomicReference<String> endDrop)
     {
         return new ExtractorListener()
         {
             @Override
-            public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+            public void notifyStartGoToRessources(String type, Tiled resourceLocation)
             {
                 goTo.set(type);
             }
 
             @Override
-            public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
+            public void notifyStartExtraction(String type, Tiled resourceLocation)
             {
                 startExtract.set(type);
             }
 
             @Override
-            public void notifyExtracted(Enum<?> type, int currentQuantity)
+            public void notifyExtracted(String type, int currentQuantity)
             {
                 extracted.set(type);
             }
 
             @Override
-            public void notifyStartCarry(Enum<?> type, int totalQuantity)
+            public void notifyStartCarry(String type, int totalQuantity)
             {
                 carry.set(type);
             }
 
             @Override
-            public void notifyStartDropOff(Enum<?> type, int totalQuantity)
+            public void notifyStartDropOff(String type, int totalQuantity)
             {
                 startDrop.set(type);
             }
 
             @Override
-            public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
+            public void notifyDroppedOff(String type, int droppedQuantity)
             {
                 endDrop.set(type);
             }

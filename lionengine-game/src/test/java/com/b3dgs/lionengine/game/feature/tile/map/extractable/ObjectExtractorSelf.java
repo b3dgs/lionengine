@@ -42,37 +42,37 @@ final class ObjectExtractorSelf extends FeaturableModel implements ExtractorChec
     }
 
     @Override
-    public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(String type, Tiled resourceLocation)
     {
         flag.compareAndSet(0, 1);
     }
 
     @Override
-    public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
+    public void notifyStartExtraction(String type, Tiled resourceLocation)
     {
         flag.set(2);
     }
 
     @Override
-    public void notifyExtracted(Enum<?> type, int currentQuantity)
+    public void notifyExtracted(String type, int currentQuantity)
     {
         flag.set(3);
     }
 
     @Override
-    public void notifyStartCarry(Enum<?> type, int totalQuantity)
+    public void notifyStartCarry(String type, int totalQuantity)
     {
         flag.set(4);
     }
 
     @Override
-    public void notifyStartDropOff(Enum<?> type, int totalQuantity)
+    public void notifyStartDropOff(String type, int totalQuantity)
     {
         flag.set(5);
     }
 
     @Override
-    public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
+    public void notifyDroppedOff(String type, int droppedQuantity)
     {
         flag.set(6);
     }
