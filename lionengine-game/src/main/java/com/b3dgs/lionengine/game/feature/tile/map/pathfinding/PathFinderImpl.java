@@ -240,8 +240,25 @@ final class PathFinderImpl implements PathFinder
      * PathFinder
      */
 
-    @Override // CHECKSTYLE IGNORE LINE: TrailingComment|ReturnCount
+    @Override
     public Path findPath(Pathfindable mover, int dtx, int dty, boolean ignoreRef)
+    {
+        return findPathRecursive(mover, dtx, dty, ignoreRef, null);
+    }
+
+    /**
+     * Find a path from the starting location provided to the destination location avoiding blockages and attempting to
+     * honor costs provided by the tile map.
+     * 
+     * @param mover The entity that will be moving along the path.
+     * @param dtx The x coordinate of the destination location.
+     * @param dty The y coordinate of the destination location.
+     * @param ignoreRef The ignore map array reference checking (<code>true</code> to ignore references).
+     * @param last The last available free tile used if blocked, <code>null</code> if none.
+     * @return The path found from start to end, or null if no path can be found.
+     */
+    // CHECKSTYLE IGNORE LINE: ReturnCount|CyclomaticComplexity
+    private Path findPathRecursive(Pathfindable mover, int dtx, int dty, boolean ignoreRef, CoordTile last)
     {
         final int stx = mover.getInTileX();
         final int sty = mover.getInTileY();
@@ -253,11 +270,11 @@ final class PathFinderImpl implements PathFinder
         if (mapPath.isBlocked(mover, dtx, dty, ignoreRef))
         {
             final CoordTile tile = mapPath.getClosestAvailableTile(mover, dtx, dty, stx, sty, map.getInTileRadius());
-            if (tile == null)
+            if (tile == null || tile.equals(last))
             {
                 return null;
             }
-            return findPath(mover, tile.getX(), tile.getY(), ignoreRef);
+            return findPathRecursive(mover, tile.getX(), tile.getY(), ignoreRef, tile);
         }
 
         nodes[sty][stx].setCost(0);

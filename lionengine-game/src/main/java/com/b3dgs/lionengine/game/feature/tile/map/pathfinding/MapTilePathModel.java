@@ -91,7 +91,7 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         {
             final TilePath tilePath = tile.getFeature(TilePath.class);
             if (mover.isBlocking(tilePath.getCategory())
-                || ignoreObjectId != null && !ids.isEmpty() && !ids.contains(ignoreObjectId))
+                || !ids.isEmpty() && (ignoreObjectId == null || !ids.contains(ignoreObjectId)))
             {
                 return true;
             }
