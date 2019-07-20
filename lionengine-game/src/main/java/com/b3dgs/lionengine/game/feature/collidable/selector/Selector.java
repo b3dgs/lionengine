@@ -82,12 +82,18 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
 
         final ComponentCollision componentCollision = services.get(ComponentCollision.class);
 
+        // CHECKSTYLE IGNORE LINE: AnonInnerLengthCheck
         addListener(new SelectorListener()
         {
             @Override
             public void notifySelectionStarted(Area selection)
             {
                 unSelectAll();
+
+                for (int i = 0; i < listenable.size(); i++)
+                {
+                    listenable.get(i).notifySelectionStarted();
+                }
             }
 
             @Override

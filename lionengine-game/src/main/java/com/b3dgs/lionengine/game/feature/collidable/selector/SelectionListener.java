@@ -24,6 +24,14 @@ import java.util.List;
 public interface SelectionListener
 {
     /**
+     * Notify selection started.
+     */
+    default void notifySelectionStarted()
+    {
+        // Nothing by default
+    }
+
+    /**
      * Notify selected featurables.
      * 
      * @param selection The selected elements.
