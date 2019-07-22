@@ -43,6 +43,8 @@ public final class AdlMidiFormat implements AudioFormat
                                                                                                        "rmi",
                                                                                                        "imf",
                                                                                                        "mus"));
+    /** Default sound bank (<code>null</code> if not defined). */
+    private static Integer bank;
 
     /**
      * Specific case to not inline for test purpose.
@@ -68,6 +70,26 @@ public final class AdlMidiFormat implements AudioFormat
             Verbose.exception(exception, ERROR_LOAD_LIBRARY);
             return new AudioVoidFormat(FORMATS);
         }
+    }
+
+    /**
+     * Set the default sound bank.
+     * 
+     * @param bank The bank id (<code>null</code> if none).
+     */
+    public static void setDefaultBank(Integer bank)
+    {
+        AdlMidiFormat.bank = bank;
+    }
+
+    /**
+     * Get the default bank used.
+     * 
+     * @return The default bank id, <code>null</code> if not defined.
+     */
+    static Integer getDefaultBank()
+    {
+        return bank;
     }
 
     /**

@@ -43,6 +43,12 @@ final class AdlMidiPlayer extends PlayerAbstract implements AdlMidi
         Check.notNull(binding);
 
         this.binding = binding;
+
+        final Integer bank = AdlMidiFormat.getDefaultBank();
+        if (bank != null)
+        {
+            binding.adlSetBank(bank.intValue());
+        }
     }
 
     /*

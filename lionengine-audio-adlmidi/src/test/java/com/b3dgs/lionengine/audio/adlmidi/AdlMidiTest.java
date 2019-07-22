@@ -186,11 +186,11 @@ public final class AdlMidiTest
     @Test
     public void testPlay()
     {
+        AdlMidiFormat.setDefaultBank(Integer.valueOf(43));
         final AdlMidi adlmidi = createAdlMidi();
         try
         {
             adlmidi.setVolume(30);
-            adlmidi.setBank(43);
 
             assertTimeout(5000L, () ->
             {
@@ -232,6 +232,7 @@ public final class AdlMidiTest
         {
             adlmidi2.stop();
         }
+        AdlMidiFormat.setDefaultBank(null);
     }
 
     /**
