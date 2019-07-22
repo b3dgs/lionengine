@@ -43,6 +43,25 @@ public interface Extractor extends Feature, Updatable, Listenable<ExtractorListe
     void setResource(Extractable extractable);
 
     /**
+     * Set the resources location in tile.
+     * 
+     * @param type The resource type to extract.
+     * @param tiled The tiled resource.
+     */
+    void setResource(String type, Tiled tiled);
+
+    /**
+     * Set the resources location in tile.
+     * 
+     * @param type The resource type to extract.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @param tw The width in tile.
+     * @param th The height in tile.
+     */
+    void setResource(String type, int tx, int ty, int tw, int th);
+
+    /**
      * Set the extraction unit per tick.
      * 
      * @param count The extraction count per tick.
@@ -62,17 +81,6 @@ public interface Extractor extends Feature, Updatable, Listenable<ExtractorListe
      * @param capacity The extraction capacity.
      */
     void setCapacity(int capacity);
-
-    /**
-     * Set the resources location in tile.
-     * 
-     * @param type The resource type to extract.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @param tw The width in tile.
-     * @param th The height in tile.
-     */
-    void setResource(String type, int tx, int ty, int tw, int th);
 
     /**
      * Start extraction.

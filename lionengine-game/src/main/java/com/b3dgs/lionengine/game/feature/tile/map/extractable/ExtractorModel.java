@@ -306,11 +306,13 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     public void setResource(Extractable extractable)
     {
         this.extractable = extractable;
-        resourceLocation = new ResourceLocation(extractable.getInTileX(),
-                                                extractable.getInTileY(),
-                                                extractable.getInTileWidth(),
-                                                extractable.getInTileHeight());
-        resourceType = extractable.getResourceType();
+        setResource(extractable.getResourceType(), extractable);
+    }
+
+    @Override
+    public void setResource(String type, Tiled tiled)
+    {
+        setResource(type, tiled.getInTileX(), tiled.getInTileY(), tiled.getInTileWidth(), tiled.getInTileHeight());
     }
 
     @Override
