@@ -194,12 +194,12 @@ public final class Node implements Comparable<Node>
 
     @Override public String toString()
     {
-        return "Node{" +
-            "x=" + x +
-            ", y=" + y +
-            ", depth=" + depth +
-            ", cost=" + cost +
-            ", heuristic=" + heuristic +
-            '}';
+        return "Node{"
+            + "x=" + x
+            + ", y=" + y
+            + ", depth=" + depth
+            + ", cost=" + cost
+            + ", heuristic=" + heuristic
+            + '}';
     }
 }

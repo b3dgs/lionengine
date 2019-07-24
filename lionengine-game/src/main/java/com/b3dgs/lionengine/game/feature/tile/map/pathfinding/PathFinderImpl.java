@@ -229,7 +229,9 @@ final class PathFinderImpl implements PathFinder
         if (nextStepCost == neighbour.getCost())
         {
             if (neighbour.getParent() != null && current.getHeuristic() < neighbour.getHeuristic())
+            {
                 neighbour.setParent(current);
+            }
         }
         if (!open.contains(neighbour) && !closed.contains(neighbour) || neighbour.getParent() == null)
         {
