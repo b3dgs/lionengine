@@ -191,4 +191,15 @@ public final class Node implements Comparable<Node>
         hash = hash * 14 + depth;
         return hash;
     }
+
+    @Override public String toString()
+    {
+        return "Node{" +
+            "x=" + x +
+            ", y=" + y +
+            ", depth=" + depth +
+            ", cost=" + cost +
+            ", heuristic=" + heuristic +
+            '}';
+    }
 }

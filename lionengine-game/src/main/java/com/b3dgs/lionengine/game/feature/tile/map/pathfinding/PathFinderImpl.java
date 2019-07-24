@@ -226,7 +226,12 @@ final class PathFinderImpl implements PathFinder
             open.remove(neighbour);
             closed.remove(neighbour);
         }
-        if (!open.contains(neighbour) && !closed.contains(neighbour))
+        if (nextStepCost == neighbour.getCost())
+        {
+            if (neighbour.getParent() != null && current.getHeuristic() < neighbour.getHeuristic())
+                neighbour.setParent(current);
+        }
+        if (!open.contains(neighbour) && !closed.contains(neighbour) || neighbour.getParent() == null)
         {
             neighbour.setCost(nextStepCost);
             neighbour.setHeuristic(getHeuristicCost(xp, yp, dtx, dty));
