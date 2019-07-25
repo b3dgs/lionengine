@@ -264,13 +264,19 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    final String group = mapGroup.getGroup(tile);
-                    final String category = getCategory(group);
-                    final TilePath tilePath = new TilePathModel(category);
-                    tile.addFeature(tilePath);
+                    loadTile(tile);
                 }
             }
         }
+    }
+
+    @Override
+    public void loadTile(Tile tile)
+    {
+        final String group = mapGroup.getGroup(tile);
+        final String category = getCategory(group);
+        final TilePath tilePath = new TilePathModel(category);
+        tile.addFeature(tilePath);
     }
 
     @Override

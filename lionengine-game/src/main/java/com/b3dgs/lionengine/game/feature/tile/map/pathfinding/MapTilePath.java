@@ -38,6 +38,13 @@ public interface MapTilePath extends Feature
     void loadPathfinding(Media pathfindingConfig);
 
     /**
+     * Load tile path data.
+     * 
+     * @param tile The tile to load.
+     */
+    void loadTile(Tile tile);
+
+    /**
      * Add object ID at this location.
      * 
      * @param tx The horizontal tile index.
