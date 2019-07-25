@@ -31,9 +31,9 @@ public final class SizeConfig
 {
     /** Size node name. */
     public static final String NODE_SIZE = Constant.XML_PREFIX + "size";
-    /** Size width node. */
+    /** Size width attribute. */
     public static final String ATT_WIDTH = "width";
-    /** Size height node. */
+    /** Size height attribute. */
     public static final String ATT_HEIGHT = "height";
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 30;

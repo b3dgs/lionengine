@@ -21,6 +21,9 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
  */
 public final class Node implements Comparable<Node>
 {
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 45;
+
     /** Node location x. */
     private final int x;
     /** Node location y. */
@@ -192,14 +195,21 @@ public final class Node implements Comparable<Node>
         return hash;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
-        return "Node{"
-            + "x=" + x
-            + ", y=" + y
-            + ", depth=" + depth
-            + ", cost=" + cost
-            + ", heuristic=" + heuristic
-            + '}';
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [x=")
+                                            .append(x)
+                                            .append(", y=")
+                                            .append(y)
+                                            .append(", depth=")
+                                            .append(depth)
+                                            .append(", cost=")
+                                            .append(cost)
+                                            .append(", heuristic=")
+                                            .append(heuristic)
+                                            .append("]")
+                                            .toString();
     }
 }
