@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.collidable.selector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -63,7 +64,7 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
     /** Selection listeners. */
     private final ListenableModel<SelectionListener> listenable = new ListenableModel<>();
     /** Accept selection filter. */
-    private Filter filter = (c, s) -> true;
+    private BiPredicate<List<Selectable>, Selectable> filter = (c, s) -> true;
 
     /**
      * Create the selector.
@@ -119,7 +120,7 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
      * @param filter The accept filter (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public void setAccept(Filter filter)
+    public void setAccept(BiPredicate<List<Selectable>, Selectable> filter)
     {
         Check.notNull(filter);
 
@@ -179,7 +180,7 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
             if (collidable.hasFeature(Selectable.class))
             {
                 final Selectable selectable = collidable.getFeature(Selectable.class);
-                if (filter.accept(selected, selectable))
+                if (filter.test(selected, selectable))
                 {
                     selectable.onSelection(true);
                     selected.add(selectable);
@@ -243,21 +244,5 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
     public void setEnabled(boolean enabled)
     {
         model.setEnabled(enabled);
-    }
-
-    /**
-     * Filter selection interface.
-     */
-    @FunctionalInterface
-    public interface Filter
-    {
-        /**
-         * Check if accept selectable in selection list.
-         * 
-         * @param selection The current selected selectables.
-         * @param selectable The current selectable to check.
-         * @return <code>true</code> if add selectable, <code>false</code> else.
-         */
-        boolean accept(List<Selectable> selection, Selectable selectable);
     }
 }
