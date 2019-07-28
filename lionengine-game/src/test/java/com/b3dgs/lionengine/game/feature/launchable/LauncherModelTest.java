@@ -21,6 +21,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsTimeout;
+import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -120,10 +122,14 @@ public final class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        while (!launcher.fire())
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         assertTrue(fired.get());
         assertNotNull(firedLaunchable.get());
@@ -135,10 +141,14 @@ public final class LauncherModelTest
         assertEquals(1, handler.size());
 
         final Transformable transformable = new TransformableModel();
-        while (!launcher.fire(transformable))
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire(transformable))
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         assertNotNull(firedLaunchable.get());
         firedLaunchable.set(null);
@@ -148,10 +158,14 @@ public final class LauncherModelTest
         assertEquals(2, handler.size());
 
         final Localizable localizable = UtilLaunchable.createLocalizable();
-        while (!launcher.fire(localizable))
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire(localizable))
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         assertNotNull(firedLaunchable.get());
 
@@ -179,10 +193,14 @@ public final class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
         final Force force = new Force(1.0, 2.0);
-        while (!launcher.fire(force))
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire(force))
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         assertTrue(fired.get());
         assertNotNull(firedLaunchable.get());
@@ -220,10 +238,14 @@ public final class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        while (!launcher.fire())
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         final Handler handler = services.get(Handler.class);
         launcher.update(1.0);
@@ -260,10 +282,14 @@ public final class LauncherModelTest
         launcher.addListener(UtilLaunchable.createListener(fired));
         launcher.addListener(UtilLaunchable.createListener(firedLaunchable));
 
-        while (!launcher.fire())
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         assertTrue(fired.get());
         assertNotNull(firedLaunchable.get());
@@ -278,14 +304,22 @@ public final class LauncherModelTest
 
         assertNull(firedLaunchable.get());
 
-        while (!launcher.fire())
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
-        while (!launcher.fire())
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
 
         assertNotNull(firedLaunchable.get());
 
@@ -315,10 +349,15 @@ public final class LauncherModelTest
         assertFalse(object.fired.get());
         assertNull(object.firedLaunchable.get());
 
-        while (!launcher.fire())
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
+
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
@@ -346,10 +385,14 @@ public final class LauncherModelTest
         assertFalse(object.fired.get());
         assertNull(object.firedLaunchable.get());
 
-        while (!launcher.fire())
+        assertTimeout(1000L, () ->
         {
-            continue;
-        }
+            while (!launcher.fire())
+            {
+                launcher.update(1.0);
+                continue;
+            }
+        });
         final Handler handler = services.get(Handler.class);
         handler.update(1.0);
 
@@ -375,10 +418,11 @@ public final class LauncherModelTest
 
         try
         {
-            assertThrows(() ->
+            assertThrowsTimeout(1000L, () ->
             {
                 while (!launcher.fire())
                 {
+                    launcher.update(1.0);
                     continue;
                 }
             }, "No recognized constructor found for: Featurable.xml");
@@ -407,10 +451,11 @@ public final class LauncherModelTest
 
         try
         {
-            assertThrows(() ->
+            assertThrowsTimeout(1000L, () ->
             {
                 while (!launcher.fire())
                 {
+                    launcher.update(1.0);
                     continue;
                 }
             }, "Feature not found: " + Launchable.class.getName());
