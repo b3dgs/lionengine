@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.DirectionNone;
@@ -55,8 +55,8 @@ public class LauncherModel extends FeatureModel implements Launcher
     private final Collection<DelayedLaunch> delayed = new ArrayList<>();
     /** Delayed launches launched. */
     private final Collection<DelayedLaunch> launched = new ArrayList<>();
-    /** Fire timer. */
-    private final Timing fire = new Timing();
+    /** Fire tick. */
+    private final Tick fire = new Tick();
     /** Levels configuration. */
     private final List<LauncherConfig> config;
     /** Factory reference. */
@@ -71,7 +71,7 @@ public class LauncherModel extends FeatureModel implements Launcher
     private Localizable target;
     /** Current level. */
     private int level;
-    /** Fire rate in millisecond. */
+    /** Fire rate in tick. */
     private long rate;
     /** Horizontal offset. */
     private int offsetX;
@@ -323,6 +323,7 @@ public class LauncherModel extends FeatureModel implements Launcher
     @Override
     public void update(double extrp)
     {
+        fire.update(extrp);
         for (final DelayedLaunch launch : delayed)
         {
             if (launch.isReady())
