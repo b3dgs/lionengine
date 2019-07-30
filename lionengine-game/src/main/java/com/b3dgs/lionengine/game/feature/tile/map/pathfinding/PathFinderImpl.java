@@ -18,8 +18,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.NavigableSet;
-import java.util.TreeSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -33,7 +33,7 @@ final class PathFinderImpl implements PathFinder
     /** Closed list. */
     private final Collection<Node> closed = new HashSet<>();
     /** Open list. */
-    private final NavigableSet<Node> open = new TreeSet<>();
+    private final Queue<Node> open = new PriorityQueue<>();
     /** Map reference. */
     private final MapTile map;
     /** Map path reference. */
@@ -293,12 +293,11 @@ final class PathFinderImpl implements PathFinder
         int maxDepth = 0;
         while (maxDepth < maxSearchDistance && !open.isEmpty())
         {
-            final Node current = open.first();
+            final Node current = open.poll();
             if (current == nodes[dty][dtx])
             {
                 break;
             }
-            open.remove(current);
             closed.add(current);
             maxDepth = updateList(mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
         }

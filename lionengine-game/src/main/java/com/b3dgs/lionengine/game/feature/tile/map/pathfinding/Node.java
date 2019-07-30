@@ -164,10 +164,14 @@ public final class Node implements Comparable<Node>
     @Override
     public int compareTo(Node other)
     {
-        final double f = getHeuristic() + getCost();
-        final double of = other.getHeuristic() + other.getCost();
+        int res = Double.compare(getCost(), other.getCost());
 
-        return Double.compare(f, of);
+        if (res == 0)
+        {
+            res = Double.compare(getHeuristic(), other.getHeuristic());
+        }
+
+        return res;
     }
 
     @Override
@@ -182,7 +186,7 @@ public final class Node implements Comparable<Node>
             return false;
         }
         final Node node = (Node) object;
-        return x == node.x && y == node.y && depth == node.depth;
+        return x == node.x && y == node.y;
     }
 
     @Override
@@ -191,7 +195,6 @@ public final class Node implements Comparable<Node>
         int hash = 12;
         hash = hash * 17 + x;
         hash = hash * 31 + y;
-        hash = hash * 14 + depth;
         return hash;
     }
 
@@ -209,6 +212,8 @@ public final class Node implements Comparable<Node>
                                             .append(cost)
                                             .append(", heuristic=")
                                             .append(heuristic)
+                                            .append(", parent=")
+                                            .append(parent != null ? "{x=" + parent.x + ", y=" + parent.y + '}' : null)
                                             .append("]")
                                             .toString();
     }
