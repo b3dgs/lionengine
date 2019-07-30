@@ -202,10 +202,8 @@ public final class Node implements Comparable<Node>
     public String toString()
     {
         return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
-                                            .append(" [x=")
-                                            .append(x)
-                                            .append(", y=")
-                                            .append(y)
+                                            .append(" [")
+                                            .append(toStringCoordinates())
                                             .append(", depth=")
                                             .append(depth)
                                             .append(", cost=")
@@ -213,8 +211,16 @@ public final class Node implements Comparable<Node>
                                             .append(", heuristic=")
                                             .append(heuristic)
                                             .append(", parent=")
-                                            .append(parent != null ? "{x=" + parent.x + ", y=" + parent.y + '}' : null)
+                                            .append(parent != null ? '{' + parent.toStringCoordinates() + '}' : null)
                                             .append("]")
                                             .toString();
+    }
+
+    /**
+     * @return Coordinates.
+     */
+    public String toStringCoordinates()
+    {
+        return "x=" + x + ", y=" + y;
     }
 }
