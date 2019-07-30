@@ -56,7 +56,7 @@ public final class LaunchableConfig
         Check.notNull(node);
 
         final String media = node.readString(ATT_MEDIA);
-        final int delay = node.readInteger(ATT_DELAY);
+        final int delay = node.readInteger(0, ATT_DELAY);
         final int ox = node.readInteger(0, ATT_OFFSET_X);
         final int oy = node.readInteger(0, ATT_OFFSET_Y);
 

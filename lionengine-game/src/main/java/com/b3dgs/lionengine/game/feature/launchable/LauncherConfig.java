@@ -86,8 +86,8 @@ public final class LauncherConfig
             launchables.add(LaunchableConfig.imports(launchable));
         }
 
-        final int level = node.readInteger(0, ATT_RATE);
-        final int rate = node.readInteger(ATT_RATE);
+        final int level = node.readInteger(0, ATT_LEVEL);
+        final int rate = node.readInteger(0, ATT_RATE);
 
         return new LauncherConfig(level, rate, launchables);
     }
@@ -104,6 +104,7 @@ public final class LauncherConfig
         Check.notNull(config);
 
         final Xml node = new Xml(NODE_LAUNCHER);
+        node.writeInteger(ATT_LEVEL, config.getLevel());
         node.writeInteger(ATT_RATE, config.getRate());
 
         for (final LaunchableConfig launchable : config.getLaunchables())
