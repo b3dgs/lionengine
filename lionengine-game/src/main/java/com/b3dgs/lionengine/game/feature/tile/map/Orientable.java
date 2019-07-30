@@ -16,15 +16,18 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
  * Represents something which can be oriented.
  * 
  * @see Orientation
  */
-public interface Orientable
+@FeatureInterface
+public interface Orientable extends Feature
 {
     /**
      * Adjust orientation to face to specified tile.
