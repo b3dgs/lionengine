@@ -76,4 +76,10 @@ final class ObjectExtractorSelf extends FeaturableModel implements ExtractorChec
     {
         flag.set(6);
     }
+
+    @Override
+    public void notifyStopped()
+    {
+        flag.set(7);
+    }
 }

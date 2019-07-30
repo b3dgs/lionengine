@@ -453,6 +453,11 @@ public final class ExtractorModelTest
         assertFalse(extractor.isExtracting());
         assertNotEquals("wood", extracted.get());
 
+        assertNull(goTo.get());
+        assertNull(startExtract.get());
+        assertNull(extracted.get());
+        assertNull(empty.get());
+
         object.getFeature(Identifiable.class).notifyDestroyed();
     }
 

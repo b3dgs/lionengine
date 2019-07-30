@@ -292,6 +292,11 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
     {
         state = ExtractorState.NONE;
         resourceType = null;
+
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyStopped();
+        }
     }
 
     @Override

@@ -66,4 +66,10 @@ public class ExtractorListenerVoid implements ExtractorListener
     {
         // Nothing by default
     }
+
+    @Override
+    public void notifyStopped()
+    {
+        // Nothing by default
+    }
 }

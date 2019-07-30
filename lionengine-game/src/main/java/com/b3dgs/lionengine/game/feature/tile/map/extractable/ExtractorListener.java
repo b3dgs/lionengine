@@ -70,4 +70,9 @@ public interface ExtractorListener
      * @param droppedQuantity The total resource quantity dropped off.
      */
     void notifyDroppedOff(String type, int droppedQuantity);
+
+    /**
+     * Notify listener when extractor stopped extraction.
+     */
+    void notifyStopped();
 }

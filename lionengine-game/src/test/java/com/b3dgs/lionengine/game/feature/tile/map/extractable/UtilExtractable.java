@@ -108,6 +108,16 @@ final class UtilExtractable
             {
                 endDrop.set(type);
             }
+
+            @Override
+            public void notifyStopped()
+            {
+                goTo.set(null);
+                startExtract.set(null);
+                extracted.set(null);
+                startDrop.set(null);
+                endDrop.set(null);
+            }
         };
     }
 }
