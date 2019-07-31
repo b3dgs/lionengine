@@ -60,7 +60,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     /** Layer to update. */
     private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
     /** Update flag. */
-    private boolean update;
+    private boolean updateRequested;
 
     /**
      * Create component.
@@ -121,7 +121,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
                 displayable.render(g);
             }
         }
-        if (update)
+        if (updateRequested)
         {
             for (final LayerUpdate update : toUpdate)
             {
@@ -130,7 +130,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
                 indexs.add(update.layerNew);
             }
             toUpdate.clear();
-            update = false;
+            updateRequested = false;
         }
     }
 
@@ -185,7 +185,7 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         {
             final Displayable displayable = provider.getFeature(Displayable.class);
             toUpdate.add(new LayerUpdate(displayable, layerDisplayOld, layerDisplayNew));
-            update = true;
+            updateRequested = true;
         }
     }
 

@@ -59,7 +59,7 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     /** Layer to update. */
     private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
     /** Update flag. */
-    private boolean update;
+    private boolean updateRequested;
 
     /**
      * Create component.
@@ -120,7 +120,7 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
                 refreshable.update(extrp);
             }
         }
-        if (update)
+        if (updateRequested)
         {
             for (final LayerUpdate update : toUpdate)
             {
@@ -129,7 +129,7 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
                 indexs.add(update.layerNew);
             }
             toUpdate.clear();
-            update = false;
+            updateRequested = false;
         }
     }
 
@@ -184,7 +184,7 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         {
             final Refreshable refreshable = provider.getFeature(Refreshable.class);
             toUpdate.add(new LayerUpdate(refreshable, layerRefreshOld, layerRefreshNew));
-            update = true;
+            updateRequested = true;
         }
     }
 
