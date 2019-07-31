@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +56,10 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     private final Set<Integer> indexs = new TreeSet<>();
     /** Layers to render. */
     private final Map<Integer, Collection<Refreshable>> layers = new HashMap<>();
+    /** Layer to update. */
+    private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
+    /** Update flag. */
+    private boolean update;
 
     /**
      * Create component.
@@ -115,6 +120,17 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
                 refreshable.update(extrp);
             }
         }
+        if (update)
+        {
+            for (final LayerUpdate update : toUpdate)
+            {
+                getLayer(update.layerOld).remove(update.refreshable);
+                getLayer(update.layerNew).add(update.refreshable);
+                indexs.add(update.layerNew);
+            }
+            toUpdate.clear();
+            update = false;
+        }
     }
 
     /*
@@ -132,6 +148,10 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
             refreshables.add(refreshable);
             indexs.add(layer);
         }
+        if (featurable.hasFeature(Layerable.class))
+        {
+            featurable.getFeature(Layerable.class).addListener(this);
+        }
     }
 
     @Override
@@ -142,6 +162,10 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
             final Refreshable refreshable = featurable.getFeature(Refreshable.class);
             final Integer layer = getLayer(featurable);
             remove(layer, refreshable);
+        }
+        if (featurable.hasFeature(Layerable.class))
+        {
+            featurable.getFeature(Layerable.class).removeListener(this);
         }
     }
 
@@ -159,9 +183,37 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         if (provider.hasFeature(Refreshable.class))
         {
             final Refreshable refreshable = provider.getFeature(Refreshable.class);
-            getLayer(layerRefreshOld).remove(refreshable);
-            getLayer(layerRefreshNew).add(refreshable);
-            indexs.add(layerRefreshNew);
+            toUpdate.add(new LayerUpdate(refreshable, layerRefreshOld, layerRefreshNew));
+            update = true;
+        }
+    }
+
+    /**
+     * Layer update data.
+     */
+    private static final class LayerUpdate
+    {
+        /** Refreshable reference. */
+        private final Refreshable refreshable;
+        /** Old layer. */
+        private final Integer layerOld;
+        /** New layer. */
+        private final Integer layerNew;
+
+        /**
+         * Create data.
+         * 
+         * @param refreshable The refreshable reference.
+         * @param layerOld The old layer.
+         * @param layerNew The new layer.
+         */
+        private LayerUpdate(Refreshable refreshable, Integer layerOld, Integer layerNew)
+        {
+            super();
+
+            this.refreshable = refreshable;
+            this.layerOld = layerOld;
+            this.layerNew = layerNew;
         }
     }
 }

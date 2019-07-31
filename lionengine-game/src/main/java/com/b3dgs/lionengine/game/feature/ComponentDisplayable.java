@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,6 +57,10 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     private final Set<Integer> indexs = new TreeSet<>();
     /** Layers to render. */
     private final Map<Integer, Collection<Displayable>> layers = new HashMap<>();
+    /** Layer to update. */
+    private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
+    /** Update flag. */
+    private boolean update;
 
     /**
      * Create component.
@@ -116,6 +121,17 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
                 displayable.render(g);
             }
         }
+        if (update)
+        {
+            for (final LayerUpdate update : toUpdate)
+            {
+                getLayer(update.layerOld).remove(update.displayable);
+                getLayer(update.layerNew).add(update.displayable);
+                indexs.add(update.layerNew);
+            }
+            toUpdate.clear();
+            update = false;
+        }
     }
 
     /*
@@ -133,6 +149,10 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
             displayables.add(displayable);
             indexs.add(layer);
         }
+        if (featurable.hasFeature(Layerable.class))
+        {
+            featurable.getFeature(Layerable.class).addListener(this);
+        }
     }
 
     @Override
@@ -143,6 +163,10 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
             final Displayable displayable = featurable.getFeature(Displayable.class);
             final Integer layer = getLayer(featurable);
             remove(layer, displayable);
+        }
+        if (featurable.hasFeature(Layerable.class))
+        {
+            featurable.getFeature(Layerable.class).removeListener(this);
         }
     }
 
@@ -160,9 +184,37 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         if (provider.hasFeature(Displayable.class))
         {
             final Displayable displayable = provider.getFeature(Displayable.class);
-            getLayer(layerDisplayOld).remove(displayable);
-            getLayer(layerDisplayNew).add(displayable);
-            indexs.add(layerDisplayNew);
+            toUpdate.add(new LayerUpdate(displayable, layerDisplayOld, layerDisplayNew));
+            update = true;
+        }
+    }
+
+    /**
+     * Layer update data.
+     */
+    private static final class LayerUpdate
+    {
+        /** Displayable reference. */
+        private final Displayable displayable;
+        /** Old layer. */
+        private final Integer layerOld;
+        /** New layer. */
+        private final Integer layerNew;
+
+        /**
+         * Create data.
+         * 
+         * @param displayable The displayable reference.
+         * @param layerOld The old layer.
+         * @param layerNew The new layer.
+         */
+        private LayerUpdate(Displayable displayable, Integer layerOld, Integer layerNew)
+        {
+            super();
+
+            this.displayable = displayable;
+            this.layerOld = layerOld;
+            this.layerNew = layerNew;
         }
     }
 }

@@ -47,24 +47,6 @@ public class LayerableModel extends FeatureModel implements Layerable
      * <ul>
      * <li>{@link LayerableListener}</li>
      * </ul>
-     * 
-     * @param services The services reference.
-     */
-    public LayerableModel(Services services)
-    {
-        super();
-
-        listenable.addListener(services.get(LayerableListener.class));
-    }
-
-    /**
-     * Create feature.
-     * <p>
-     * The {@link Services} must provide:
-     * </p>
-     * <ul>
-     * <li>{@link LayerableListener}</li>
-     * </ul>
      * <p>
      * The {@link Configurer} can provide a valid {@link LayerableConfig}.
      * </p>
@@ -74,7 +56,7 @@ public class LayerableModel extends FeatureModel implements Layerable
      */
     public LayerableModel(Services services, Configurer configurer)
     {
-        this(services);
+        this();
 
         if (configurer.hasNode(LayerableConfig.NODE_LAYERABLE))
         {

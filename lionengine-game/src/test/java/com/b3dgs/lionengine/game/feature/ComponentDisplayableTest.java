@@ -37,15 +37,17 @@ public final class ComponentDisplayableTest
     /**
      * Create a test object.
      * 
+     * @param component The component reference.
      * @param services The services reference.
      * @param last The last rendered element.
      * @return The created object.
      */
-    private static Layerable createObject(Services services, AtomicInteger last)
+    private static Layerable createObject(ComponentDisplayable component, Services services, AtomicInteger last)
     {
         final FeaturableModel object = new FeaturableModel();
-        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services));
+        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
         layerable.prepare(object);
+        component.notifyHandlableAdded(object);
 
         object.addFeature(new DisplayableModel(g ->
         {
@@ -70,10 +72,10 @@ public final class ComponentDisplayableTest
 
         final AtomicInteger last = new AtomicInteger();
 
-        final Layerable object1 = createObject(services, last);
-        final Layerable object2 = createObject(services, last);
-        final Layerable object3 = createObject(services, last);
-        final Layerable object4 = createObject(services, last);
+        final Layerable object1 = createObject(component, services, last);
+        final Layerable object2 = createObject(component, services, last);
+        final Layerable object3 = createObject(component, services, last);
+        final Layerable object4 = createObject(component, services, last);
 
         object1.setLayer(Integer.valueOf(4), Integer.valueOf(4));
         object2.setLayer(Integer.valueOf(6), Integer.valueOf(6));
@@ -87,6 +89,10 @@ public final class ComponentDisplayableTest
         assertEquals(6, object2.getLayerDisplay().intValue());
         assertEquals(5, object3.getLayerDisplay().intValue());
         assertEquals(4, object4.getLayerDisplay().intValue());
+
+        assertEquals(-1, last.get());
+
+        component.render(null, null);
 
         assertEquals(object2.getFeature(Identifiable.class).getId().intValue(), last.get());
 
