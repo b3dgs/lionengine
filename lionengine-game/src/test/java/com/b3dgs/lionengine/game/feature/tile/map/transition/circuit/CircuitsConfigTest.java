@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link CircuitsConfig}.
  */
-public final class CircuitConfigTest // TODO rename to CircuitsConfig
+public final class CircuitsConfigTest
 {
     /**
      * Prepare test.
@@ -55,7 +55,7 @@ public final class CircuitConfigTest // TODO rename to CircuitsConfig
     @BeforeAll
     public static void beforeTests()
     {
-        Medias.setLoadFromJar(CircuitConfigTest.class);
+        Medias.setLoadFromJar(CircuitsConfigTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 

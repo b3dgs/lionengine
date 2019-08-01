@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link TransitionsConfig}.
  */
-public final class TransitionConfigTest // TODO rename to TransitionsConfig
+public final class TransitionsConfigTest
 {
     /**
      * Prepare test.
