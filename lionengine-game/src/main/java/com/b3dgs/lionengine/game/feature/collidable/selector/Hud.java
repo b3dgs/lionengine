@@ -243,6 +243,10 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         for (final ActionRef action : actions)
         {
             final Actionable menu = createMenu(action);
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).notifyCreated(last, menu);
+            }
             if (!action.getRefs().isEmpty())
             {
                 generateSubMenu(actions, action, menu);

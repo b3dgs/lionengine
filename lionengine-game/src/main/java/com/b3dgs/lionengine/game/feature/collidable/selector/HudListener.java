@@ -16,11 +16,23 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
+import java.util.List;
+
+import com.b3dgs.lionengine.game.feature.Actionable;
+
 /**
  * Listen to Hud event.
  */
 public interface HudListener
 {
+    /**
+     * Notify created menu.
+     * 
+     * @param selection The current selection.
+     * @param actionable The actionable reference.
+     */
+    void notifyCreated(List<Selectable> selection, Actionable actionable);
+
     /**
      * Notify canceled.
      */
