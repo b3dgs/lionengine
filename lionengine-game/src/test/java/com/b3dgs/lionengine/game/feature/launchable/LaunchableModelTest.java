@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -77,6 +78,8 @@ public final class LaunchableModelTest
         assertEquals(0.0, transformable.getOldY());
         assertEquals(0.0, transformable.getX());
         assertEquals(0.0, transformable.getY());
+        assertEquals(0.0, launchable.getDirection().getDirectionHorizontal());
+        assertEquals(1.0, launchable.getDirection().getDirectionVertical());
 
         launchable.update(1.0);
 
@@ -84,6 +87,8 @@ public final class LaunchableModelTest
         assertEquals(0.0, transformable.getOldY());
         assertEquals(0.0, transformable.getX());
         assertEquals(1.0, transformable.getY());
+        assertEquals(0.0, launchable.getDirection().getDirectionHorizontal());
+        assertEquals(1.0, launchable.getDirection().getDirectionVertical());
 
         UtilTests.pause(11);
         launchable.update(1.0);
@@ -92,6 +97,8 @@ public final class LaunchableModelTest
         assertEquals(1.0, transformable.getOldY());
         assertEquals(0.0, transformable.getX());
         assertEquals(2.0, transformable.getY());
+        assertEquals(0.0, launchable.getDirection().getDirectionHorizontal());
+        assertEquals(1.0, launchable.getDirection().getDirectionVertical());
 
         launchable.update(1.0);
 
@@ -99,6 +106,8 @@ public final class LaunchableModelTest
         assertEquals(2.0, transformable.getOldY());
         assertEquals(0.0, transformable.getX());
         assertEquals(3.0, transformable.getY());
+        assertEquals(0.0, launchable.getDirection().getDirectionHorizontal());
+        assertEquals(1.0, launchable.getDirection().getDirectionVertical());
     }
 
     /**
@@ -117,6 +126,7 @@ public final class LaunchableModelTest
         assertEquals(0.0, transformable.getOldY());
         assertEquals(0.0, transformable.getX());
         assertEquals(0.0, transformable.getY());
+        assertNull(launchable.getDirection());
 
         UtilTests.pause(11);
         launchable.update(1.0);
@@ -125,6 +135,7 @@ public final class LaunchableModelTest
         assertEquals(0.0, transformable.getOldY());
         assertEquals(0.0, transformable.getX());
         assertEquals(0.0, transformable.getY());
+        assertNull(launchable.getDirection());
     }
 
     /**

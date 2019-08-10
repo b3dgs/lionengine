@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -113,5 +114,11 @@ public class LaunchableModel extends FeatureModel implements Launchable
     public void setVector(Force force)
     {
         vector = force;
+    }
+
+    @Override
+    public Direction getDirection()
+    {
+        return vector;
     }
 }

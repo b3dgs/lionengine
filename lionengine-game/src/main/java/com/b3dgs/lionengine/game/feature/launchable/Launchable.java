@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -50,4 +51,11 @@ public interface Launchable extends Feature, Updatable, Listenable<LaunchableLis
      * @param force The force to use.
      */
     void setVector(Force force);
+
+    /**
+     * Get the current direction.
+     * 
+     * @return The current direction, <code>null</code> if undefined.
+     */
+    Direction getDirection();
 }
