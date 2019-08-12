@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -38,6 +39,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * <li>{@link #create(MapTile, Media)}</li>
  * </ul>
  */
+@FeatureInterface
 public class FogOfWar extends FeatureModel implements MapTileRenderer
 {
     /** Hidden map. */
@@ -54,7 +56,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     private boolean fogMap;
 
     /**
-     * Create a fog of war.
+     * Create feature.
      */
     public FogOfWar()
     {
@@ -74,15 +76,27 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     }
 
     /**
-     * Update fovable field of view (fog of war).
+     * Update hidden layer.
      * 
-     * @param fovables The entities reference.
+     * @param fovable The fovable to update with.
      */
-    public void update(Collection<Fovable> fovables)
+    public void updateHidden(Fovable fovable)
     {
-        mapHidden.update(fovables);
+        mapHidden.updateFov(fovable);
+    }
+
+    /**
+     * Update the discovered but not currently visible layer.
+     * 
+     * @param fovables The fovable to update with.
+     */
+    public void updateFog(Collection<Fovable> fovables)
+    {
         mapFogged.reset();
-        mapFogged.update(fovables);
+        for (final Fovable fovable : fovables)
+        {
+            mapFogged.updateFov(fovable);
+        }
     }
 
     /**
@@ -136,13 +150,13 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
         {
             for (int cty = ty; cty <= ty + th; cty++)
             {
-                if (isFogged(ctx, cty) || !isVisited(ctx, cty))
+                if (isVisited(ctx, cty) && !isFogged(ctx, cty))
                 {
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -154,7 +168,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
     public boolean isVisited(int tx, int ty)
     {
-        return mapHidden.getTile(tx, ty).getNumber() == MapTileFog.NO_FOG;
+        return hideMap && mapHidden.getTile(tx, ty).getNumber() == MapTileFog.NO_FOG;
     }
 
     /**
@@ -166,7 +180,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
     public boolean isFogged(int tx, int ty)
     {
-        return mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
+        return fogMap && mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
     }
 
     /*

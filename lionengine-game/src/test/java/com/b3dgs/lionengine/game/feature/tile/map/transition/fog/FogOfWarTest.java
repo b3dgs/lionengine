@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterAll;
@@ -73,7 +72,6 @@ public final class FogOfWarTest
 
     private final Services services = new Services();
     private final MapTile map = services.add(UtilMap.createMap(5));
-    private final FovableModel fovable = new FovableModel(services);
     private final FogOfWar fog = new FogOfWar();
 
     /**
@@ -107,11 +105,12 @@ public final class FogOfWarTest
         final Setup setup = new Setup(config);
         final FeaturableModel object = new FeaturableModel();
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
-        transformable.teleport(3, 3);
+        final FovableModel fovable = object.addFeatureAndGet(new FovableModel(services));
         fovable.prepare(object);
         fovable.setFov(1);
 
         Medias.setLoadFromJar(MapTileFog.class);
+        fog.setEnabled(true, true);
         fog.create(map, Medias.create("fog.xml"));
         Medias.setLoadFromJar(null);
 
@@ -125,7 +124,9 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
 
-        fog.update(new ArrayList<Fovable>(Arrays.asList(fovable)));
+        transformable.teleport(3, 3);
+        fog.updateHidden(fovable);
+        fog.updateFog(Arrays.asList(fovable));
 
         assertTrue(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
@@ -138,7 +139,8 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(4, 3));
 
         transformable.teleport(6, 6);
-        fog.update(new ArrayList<Fovable>(Arrays.asList(fovable)));
+        fog.updateHidden(fovable);
+        fog.updateFog(Arrays.asList(fovable));
 
         assertFalse(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));

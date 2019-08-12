@@ -111,19 +111,6 @@ public class MapTileFog
     }
 
     /**
-     * Update fovable field of view (fog of war).
-     * 
-     * @param fovables The entities reference.
-     */
-    public void update(Iterable<Fovable> fovables)
-    {
-        for (final Fovable fovable : fovables)
-        {
-            updateFov(fovable);
-        }
-    }
-
-    /**
      * Reset the revealed tiles to fogged.
      */
     public void reset()
@@ -152,7 +139,7 @@ public class MapTileFog
      * 
      * @param fovable The fovable reference.
      */
-    private void updateFov(Fovable fovable)
+    public void updateFov(Fovable fovable)
     {
         final int tx = fovable.getInTileX();
         final int ty = fovable.getInTileY();

@@ -19,9 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -94,7 +91,7 @@ public final class MapTileFogTest
         assertEquals(16, fog.getTile(3, 3).getNumber());
         assertEquals(16, fog.getTile(4, 3).getNumber());
 
-        fog.update(new ArrayList<Fovable>(Arrays.asList(fovable)));
+        fog.updateFov(fovable);
 
         assertEquals(10, fog.getTile(2, 2).getNumber());
         assertEquals(1, fog.getTile(3, 2).getNumber());
