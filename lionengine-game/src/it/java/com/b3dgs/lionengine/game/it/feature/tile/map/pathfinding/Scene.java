@@ -70,19 +70,19 @@ class Scene extends Sequence
     private final PathfindableListener listener = new PathfindableListener()
     {
         @Override
-        public void notifyStartMove()
+        public void notifyStartMove(Pathfindable pathfindable)
         {
             listenerStartMove.set(true);
         }
 
         @Override
-        public void notifyMoving()
+        public void notifyMoving(Pathfindable pathfindable)
         {
             listenerMove.set(true);
         }
 
         @Override
-        public void notifyArrived()
+        public void notifyArrived(Pathfindable pathfindable)
         {
             listenerArrived.set(true);
         }
