@@ -107,11 +107,11 @@ public final class MapTileCircuitModelTest
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final MapTileCircuit mapCircuit = map.getFeature(MapTileCircuitModel.class);
 
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 6));
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 4));
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 5));
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 5));
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 6, 5));
+        map.setTile(5, 6, SHEET, TILE_ROAD);
+        map.setTile(5, 4, SHEET, TILE_ROAD);
+        map.setTile(5, 5, SHEET, TILE_ROAD);
+        map.setTile(4, 5, SHEET, TILE_ROAD);
+        map.setTile(6, 5, SHEET, TILE_ROAD);
 
         mapCircuit.resolve(map.getTile(5, 5));
 
@@ -128,8 +128,8 @@ public final class MapTileCircuitModelTest
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final MapTileCircuit mapCircuit = map.getFeature(MapTileCircuitModel.class);
 
-        final Tile newTile = map.createTile(SHEET, TILE_ROAD, 5, 5);
-        map.setTile(newTile);
+        map.setTile(5, 5, SHEET, TILE_ROAD);
+        final Tile newTile = map.getTile(5, 5);
         mapCircuit.resolve(newTile);
 
         assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));

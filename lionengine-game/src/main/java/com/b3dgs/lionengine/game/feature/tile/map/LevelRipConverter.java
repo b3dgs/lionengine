@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
@@ -133,12 +132,7 @@ public final class LevelRipConverter
         if (TilesExtractor.IGNORED_COLOR_VALUE != pixel)
         {
             // Search if tile is on sheet and get it
-            final Tile tile = searchForTile(map, tileRef, progressTileX, progressTileY);
-            if (tile == null)
-            {
-                return false;
-            }
-            map.setTile(tile);
+            return searchForTile(map, tileRef, progressTileX, progressTileY);
         }
         return true;
     }
@@ -150,22 +144,22 @@ public final class LevelRipConverter
      * @param tileSprite The tiled sprite
      * @param x The location x.
      * @param y The location y.
-     * @return The tile found.
+     * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    private static Tile searchForTile(MapTile map, ImageBuffer tileSprite, int x, int y)
+    private static boolean searchForTile(MapTile map, ImageBuffer tileSprite, int x, int y)
     {
         // Check each tile on each sheet
         for (final Integer sheet : map.getSheets())
         {
-            final Tile tile = checkTile(map, tileSprite, sheet, x, y);
-            if (tile != null)
+            final boolean found = checkTile(map, tileSprite, sheet, x, y);
+            if (found)
             {
-                return tile;
+                return true;
             }
         }
 
         // No tile found
-        return null;
+        return false;
     }
 
     /**
@@ -176,9 +170,9 @@ public final class LevelRipConverter
      * @param sheet The sheet number.
      * @param x The location x.
      * @param y The location y.
-     * @return The tile found.
+     * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    private static Tile checkTile(MapTile map, ImageBuffer tileSprite, Integer sheet, int x, int y)
+    private static boolean checkTile(MapTile map, ImageBuffer tileSprite, Integer sheet, int x, int y)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -202,11 +196,12 @@ public final class LevelRipConverter
 
                 if (TilesExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
                 {
-                    return map.createTile(sheet, number, xa, (map.getInTileHeight() - 1.0 - y) * th);
+                    map.setTile(x, map.getInTileHeight() - 1 - y, sheet, number);
+                    return true;
                 }
             }
         }
-        return null;
+        return false;
     }
 
     /**

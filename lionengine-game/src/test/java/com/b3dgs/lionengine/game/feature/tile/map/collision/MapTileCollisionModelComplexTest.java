@@ -190,11 +190,6 @@ public final class MapTileCollisionModelComplexTest
         return transformable;
     }
 
-    private void setTile(int tx, int ty, int number)
-    {
-        map.setTile(map.createTile(Integer.valueOf(0), number, tx * map.getTileWidth(), ty * map.getTileHeight()));
-    }
-
     private CollisionResult test(int tx1,
                                  int ty1,
                                  int n1,
@@ -206,8 +201,8 @@ public final class MapTileCollisionModelComplexTest
                                  int side,
                                  double speedX)
     {
-        setTile(tx1, ty1, n1);
-        setTile(tx2, ty2, n2);
+        map.setTile(tx1, ty1, Integer.valueOf(0), n1);
+        map.setTile(tx2, ty2, Integer.valueOf(0), n2);
         loadCollisions();
         transformable = createObject();
         transformable.teleport(x, y);

@@ -43,8 +43,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetListener>
 {
     /**
-     * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(Tile)}).
-     * Previous map data (if existing) will be cleared ({@link #clear()}).
+     * Create and prepare map memory area. Previous map data (if existing) will be cleared ({@link #clear()}).
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
@@ -102,18 +101,6 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
     void create(Media levelrip, Media sheetsConfig);
 
     /**
-     * Create a tile.
-     * 
-     * @param sheet The sheet number (must be positive or equal to 0).
-     * @param number The tile number on sheet (must be positive or equal to 0).
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @return The created tile.
-     * @throws LionEngineException If invalid arguments.
-     */
-    Tile createTile(Integer sheet, int number, double x, double y);
-
-    /**
      * Load map sheets (tiles surfaces). Must be called before rendering map.
      * Clear previous sheets if has.
      * 
@@ -141,14 +128,14 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
      * <p>
      * The tile location must be between 0 and map size ({@link #getInTileWidth()}, {@link #getInTileHeight()}).
      * </p>
-     * <p>
-     * If a tile exists at the tile location, it will be removed.
-     * </p>
      * 
-     * @param tile The tile reference.
+     * @param tx The horizontal tile location.
+     * @param ty The vertical tile location.
+     * @param sheet The sheet number (must be positive or equal to 0).
+     * @param number The tile number on sheet (must be positive or equal to 0).
      * @throws LionEngineException If outside map range.
      */
-    void setTile(Tile tile);
+    void setTile(int tx, int ty, Integer sheet, int number);
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this

@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
@@ -97,8 +98,8 @@ public class PrefMapRegion extends PrefAbstract
                 {
                     final double x = UtilMath.clamp(tx + ox, sx, ex) * tw;
                     final double y = UtilMath.clamp(ty + oy, sy, ey) * th;
-                    final Tile tile = map.createTile(sheet, number, x, y);
-                    map.setTile(tile);
+                    final Tile tile = new TileGame(sheet, number, x, y, map.getTileWidth(), map.getTileHeight());
+                    map.setTile(tile.getInTileX(), tile.getInTileY(), sheet, number);
                     mapTransition.resolve(tile);
                 }
             }

@@ -99,16 +99,20 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      * 
      * @param file The file reader reference.
      * @param i The last loaded tile number.
-     * @return The loaded tile.
      * @throws IOException If error on reading.
      */
-    protected Tile loadTile(FileReading file, int i) throws IOException
+    protected void loadTile(FileReading file, int i) throws IOException
     {
-        final Integer sheet = Integer.valueOf(file.readInteger());
+        final int sheet = file.readInteger();
+        if (sheet > map.getSheetsNumber())
+        {
+            throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + sheet);
+        }
         final int number = file.readInteger();
-        final int x = file.readInteger() * map.getTileWidth() + i * BLOC_SIZE * map.getTileWidth();
-        final int y = file.readInteger() * map.getTileHeight();
-        return map.createTile(sheet, number, x, y);
+        final int tx = file.readInteger() + i * BLOC_SIZE;
+        final int ty = file.readInteger();
+
+        map.setTile(tx, ty, Integer.valueOf(sheet), number);
     }
 
     /**
@@ -256,12 +260,7 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
             final int n = input.readShort();
             for (int h = 0; h < n; h++)
             {
-                final Tile tile = loadTile(input, v);
-                if (tile.getSheet().intValue() > map.getSheetsNumber())
-                {
-                    throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet());
-                }
-                map.setTile(tile);
+                loadTile(input, v);
             }
         }
     }

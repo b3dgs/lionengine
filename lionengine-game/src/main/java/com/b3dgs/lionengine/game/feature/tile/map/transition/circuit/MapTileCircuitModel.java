@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -99,13 +100,19 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
             final String group = getTransitiveGroup(circuit, tile);
             if (group != null)
             {
+                final TileRef old = new TileRef(tile);
                 final TileRef ref = mapTransition.getTiles(new Transition(TransitionType.CENTER, group, group))
                                                  .iterator()
                                                  .next();
-                final Tile newTile = map.createTile(ref.getSheet(), ref.getNumber(), tile.getX(), tile.getY());
-                map.setTile(newTile);
+                final Tile newTile = new TileGame(ref.getSheet(),
+                                                  ref.getNumber(),
+                                                  tile.getX(),
+                                                  tile.getY(),
+                                                  tile.getWidth(),
+                                                  tile.getHeight());
+                map.setTile(newTile.getInTileX(), newTile.getInTileY(), newTile.getSheet(), newTile.getNumber());
                 mapTransition.resolve(newTile);
-                map.setTile(tile);
+                map.setTile(newTile.getInTileX(), newTile.getInTileY(), old.getSheet(), old.getNumber());
             }
         }
     }
@@ -165,7 +172,7 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
             final TileRef newTile = iterator.next();
             if (mapGroup.getGroup(newTile).equals(mapGroup.getGroup(tile)))
             {
-                map.setTile(map.createTile(newTile.getSheet(), newTile.getNumber(), neighbor.getX(), neighbor.getY()));
+                map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), newTile.getSheet(), newTile.getNumber());
                 break;
             }
         }

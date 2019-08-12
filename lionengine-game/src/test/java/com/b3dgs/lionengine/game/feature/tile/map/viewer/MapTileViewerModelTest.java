@@ -81,9 +81,9 @@ public final class MapTileViewerModelTest
 
         mapViewer.render(g);
 
-        map.create(80, 80, 1, 1);
-        map.setTile(map.createTile(Integer.valueOf(0), 0, 0, 0));
-        map.setTile(map.createTile(Integer.valueOf(0), 1, 2, 3));
+        map.create(80, 80, 2, 2);
+        map.setTile(0, 0, Integer.valueOf(0), 0);
+        map.setTile(1, 1, Integer.valueOf(0), 1);
 
         final AtomicBoolean rendered = new AtomicBoolean();
         final MapTileRenderer renderer = (g, map, tile, x, y) -> rendered.set(true);

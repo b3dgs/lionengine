@@ -92,8 +92,8 @@ public final class MapTileTransitionModelTest
 
         assertEquals(groupOrigin, mapGroup.getGroup(map.getTile(8, 8)));
 
-        final Tile tile = map.createTile(SHEET, tileNew, 8, 8);
-        map.setTile(tile);
+        map.setTile(8, 8, SHEET, tileNew);
+        final Tile tile = map.getTile(8, 8);
 
         assertEquals(groupNew, mapGroup.getGroup(map.getTile(8, 8)));
 

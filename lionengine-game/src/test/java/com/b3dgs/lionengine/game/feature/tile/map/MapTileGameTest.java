@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
@@ -69,19 +70,6 @@ public final class MapTileGameTest
         assertEquals(2, map.getInTileWidth());
         assertEquals(3, map.getInTileHeight());
         assertEquals((int) Math.ceil(StrictMath.sqrt(2.0 * 2.0 + 3.0 * 3.0)), map.getInTileRadius());
-
-        final Tile tile = map.createTile(Integer.valueOf(1), 2, 16.0, 32.0);
-
-        assertEquals(1, tile.getSheet().intValue());
-        assertEquals(2, tile.getNumber());
-        assertEquals(16.0, tile.getX());
-        assertEquals(32.0, tile.getY());
-        assertEquals(1, tile.getInTileX());
-        assertEquals(1, tile.getInTileY());
-        assertEquals(16, tile.getWidth());
-        assertEquals(32, tile.getHeight());
-        assertEquals(1, tile.getInTileWidth());
-        assertEquals(1, tile.getInTileHeight());
     }
 
     /**
@@ -209,13 +197,13 @@ public final class MapTileGameTest
     }
 
     /**
-     * Test map create tile not initialized.
+     * Test map set tile error.
      */
     @Test
-    public void testCreateTileError()
+    public void testSetTileError()
     {
-        assertThrows(() -> map.createTile(Integer.valueOf(0), 0, 0.0, 0.0),
-                     "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> map.setTile(0, 0, Integer.valueOf(0), 0),
+                     "Invalid argument: 0 is not strictly inferior to 0");
     }
 
     /**
@@ -225,10 +213,10 @@ public final class MapTileGameTest
     public void testClear()
     {
         map.create(16, 16, 2, 2);
-        final Tile tile = map.createTile(Integer.valueOf(0), 0, 0, 0);
-        map.setTile(tile);
 
-        assertEquals(tile, map.getTile(0, 0));
+        map.setTile(0, 0, Integer.valueOf(0), 0);
+
+        assertNotNull(map.getTile(0, 0));
 
         map.clear();
 
@@ -257,8 +245,8 @@ public final class MapTileGameTest
         assertNull(map.getTile(0, 0));
         assertNull(map.getTileAt(51.0, 68.0));
 
-        final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);
-        map.setTile(tile);
+        map.setTile(0, 0, Integer.valueOf(0), 0);
+        final Tile tile = map.getTile(0, 0);
 
         assertEquals(1, map.getTilesNumber());
         assertEquals(tile, map.getTile(0, 0));
@@ -278,16 +266,13 @@ public final class MapTileGameTest
         final AtomicReference<Tile> set = new AtomicReference<>();
         final TileSetListener listener = tile -> set.set(tile);
         map.addListener(listener);
+        map.setTile(0, 0, Integer.valueOf(0), 0);
 
-        final Tile tile = map.createTile(Integer.valueOf(0), 0, 0.0, 0.0);
-        map.setTile(tile);
-
-        assertEquals(tile, set.get());
+        assertEquals(map.getTile(0, 0), set.get());
 
         set.set(null);
         map.removeListener(listener);
-
-        map.setTile(tile);
+        map.setTile(0, 0, Integer.valueOf(0), 0);
 
         assertNull(set.get());
     }

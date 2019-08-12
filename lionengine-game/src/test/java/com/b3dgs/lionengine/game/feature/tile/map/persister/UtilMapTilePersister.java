@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
@@ -47,15 +46,11 @@ final class UtilMapTilePersister
         map.loadSheets(new ArrayList<SpriteTiled>());
 
         final Integer sheet = Integer.valueOf(0);
-        for (int x = 0; x < map.getInTileWidth(); x++)
+        for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {
-            for (int y = 1; y < map.getInTileHeight(); y++)
+            for (int ty = 1; ty < map.getInTileHeight(); ty++)
             {
-                final Tile tile = map.createTile(sheet,
-                                                 x * y,
-                                                 x * (double) map.getTileWidth(),
-                                                 y * (double) map.getTileHeight());
-                map.setTile(tile);
+                map.setTile(tx, ty, sheet, tx * ty);
             }
         }
         return map;

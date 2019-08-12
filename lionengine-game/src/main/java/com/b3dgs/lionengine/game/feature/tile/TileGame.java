@@ -25,10 +25,6 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
  */
 public class TileGame extends FeaturableModel implements Tile
 {
-    /** Tile sheet number where tile is contained. */
-    private final Integer sheet;
-    /** Position number in the tilesheet. */
-    private final int number;
     /** Horizontal location on map. */
     private final double x;
     /** Vertical location on map. */
@@ -41,6 +37,10 @@ public class TileGame extends FeaturableModel implements Tile
     private final int inTileX;
     /** In tile y. */
     private final int inTileY;
+    /** Tile sheet number where tile is contained. */
+    private Integer sheet;
+    /** Position number in the tilesheet. */
+    private int number;
 
     /**
      * Create a tile.
@@ -72,6 +72,22 @@ public class TileGame extends FeaturableModel implements Tile
 
         inTileX = (int) Math.floor(x / width);
         inTileY = (int) Math.floor(y / height);
+    }
+
+    /**
+     * Set the tile number.
+     * 
+     * @param sheet The sheet number (must be positive or equal to 0).
+     * @param number The tile number on sheet (must be positive or equal to 0).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public void set(Integer sheet, int number)
+    {
+        Check.superiorOrEqual(sheet.intValue(), 0);
+        Check.superiorOrEqual(number, 0);
+
+        this.sheet = sheet;
+        this.number = number;
     }
 
     /*

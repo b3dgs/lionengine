@@ -101,17 +101,11 @@ public class MapTileFog
                              MapTileGroupModel.NO_GROUP_NAME);
         transition.loadTransitions(config);
 
-        for (int x = 0; x < map.getInTileWidth(); x++)
+        for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {
-            for (int y = 0; y < map.getInTileHeight(); y++)
+            for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                final Tile tile = new TileGame(Integer.valueOf(0),
-                                               FOG,
-                                               x * (double) map.getTileWidth(),
-                                               y * (double) map.getTileHeight(),
-                                               map.getTileWidth(),
-                                               map.getTileHeight());
-                this.map.setTile(tile);
+                this.map.setTile(tx, ty, Integer.valueOf(0), FOG);
             }
         }
     }
@@ -136,13 +130,7 @@ public class MapTileFog
     {
         for (final Tile tile : revealed)
         {
-            final Tile reset = new TileGame(tile.getSheet(),
-                                            FOG,
-                                            tile.getX(),
-                                            tile.getY(),
-                                            tile.getWidth(),
-                                            tile.getHeight());
-            map.setTile(reset);
+            map.setTile(tile.getInTileX(), tile.getInTileY(), tile.getSheet(), FOG);
         }
         revealed.clear();
     }
@@ -181,13 +169,7 @@ public class MapTileFog
         {
             for (int y = sy + 1; y < ey; y++)
             {
-                final Tile tile = new TileGame(Integer.valueOf(0),
-                                               NO_FOG,
-                                               x * (double) map.getTileWidth(),
-                                               y * (double) map.getTileHeight(),
-                                               map.getTileWidth(),
-                                               map.getTileHeight());
-                map.setTile(tile);
+                map.setTile(x, y, Integer.valueOf(0), NO_FOG);
                 transition.resolve(getTile(x, y));
             }
         }

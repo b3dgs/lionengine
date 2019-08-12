@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -55,17 +54,11 @@ public class PrefMapFill extends PrefAbstract
     @Override
     public void apply(MapTile map)
     {
-        final double tw = map.getTileWidth();
-        final double th = map.getTileHeight();
-
         for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {
-            final double x = tx * tw;
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                final double y = ty * th;
-                final Tile tile = map.createTile(sheet, number, x, y);
-                map.setTile(tile);
+                map.setTile(tx, ty, sheet, number);
             }
         }
     }

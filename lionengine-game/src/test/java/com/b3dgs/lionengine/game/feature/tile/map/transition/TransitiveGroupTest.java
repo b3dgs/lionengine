@@ -87,8 +87,8 @@ public final class TransitiveGroupTest
 
         assertEquals(WATER, mapGroup.getGroup(map.getTile(15, 15)));
 
-        final Tile tile = map.createTile(SHEET, TILE_TREE, 15, 15);
-        map.setTile(tile);
+        map.setTile(15, 15, SHEET, TILE_TREE);
+        final Tile tile = map.getTile(15, 15);
         transitive.checkTransitives(tile);
 
         assertEquals(TREE, mapGroup.getGroup(map.getTile(15, 15)));

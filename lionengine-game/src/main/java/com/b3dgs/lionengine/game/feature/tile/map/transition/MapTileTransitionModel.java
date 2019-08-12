@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -290,13 +291,22 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
         if (iterator.hasNext())
         {
             final TileRef ref = iterator.next();
-            final Tile newTile = map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY());
-            map.setTile(newTile);
-            resolved.add(newTile);
+            map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), ref.getSheet(), ref.getNumber());
+            resolved.add(new TileGame(ref.getSheet(),
+                                      ref.getNumber(),
+                                      neighbor.getInTileX(),
+                                      neighbor.getInTileY(),
+                                      map.getTileWidth(),
+                                      map.getTileHeight()));
         }
         else
         {
-            final Tile newTile = map.createTile(tile.getSheet(), tile.getNumber(), neighbor.getX(), neighbor.getY());
+            final Tile newTile = new TileGame(tile.getSheet(),
+                                              tile.getNumber(),
+                                              neighbor.getX(),
+                                              neighbor.getY(),
+                                              tile.getWidth(),
+                                              tile.getHeight());
             final String groupA = mapGroup.getGroup(tile);
             final String groupB = mapGroup.getGroup(neighbor);
 
@@ -306,7 +316,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
                     || groupA.equals(groupB)
                     || groupLinks.contains(new GroupTransition(groupA, groupB))))
             {
-                map.setTile(newTile);
+                map.setTile(newTile.getInTileX(), newTile.getInTileY(), newTile.getSheet(), newTile.getNumber());
                 toResolve.add(newTile);
             }
             resolved.add(newTile);
@@ -322,9 +332,10 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     private void checkTransitives(Collection<Tile> resolved, Tile tile)
     {
         boolean isTransitive = false;
+        final TileRef old = new TileRef(tile);
         for (final Tile neighbor : map.getNeighbors(tile))
         {
-            final String group = mapGroup.getGroup(tile);
+            final String group = mapGroup.getGroup(old);
             final String neighborGroup = mapGroup.getGroup(neighbor);
             final Collection<GroupTransition> transitives = getTransitives(group, neighborGroup);
 
@@ -347,7 +358,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
         // Restore initial tile once transition solved by transitive
         if (isTransitive)
         {
-            map.setTile(tile);
+            map.setTile(tile.getInTileX(), tile.getInTileY(), old.getSheet(), old.getNumber());
         }
     }
 
@@ -369,12 +380,16 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
             final TileRef ref = refs.iterator().next();
 
             // Replace user tile with the needed tile to solve transition (restored later)
-            final Tile newTile = map.createTile(ref.getSheet(), ref.getNumber(), tile.getX(), tile.getY());
-            map.setTile(newTile);
+            map.setTile(tile.getInTileX(), tile.getInTileY(), ref.getSheet(), ref.getNumber());
 
             // Replace neighbor with the needed tile to solve transition
-            final Tile newTile2 = map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY());
-            map.setTile(newTile2);
+            final Tile newTile2 = new TileGame(ref.getSheet(),
+                                               ref.getNumber(),
+                                               neighbor.getX(),
+                                               neighbor.getY(),
+                                               neighbor.getWidth(),
+                                               neighbor.getHeight());
+            map.setTile(newTile2.getInTileX(), newTile2.getInTileY(), newTile2.getSheet(), newTile2.getNumber());
             resolved.addAll(resolve(newTile2));
         }
     }

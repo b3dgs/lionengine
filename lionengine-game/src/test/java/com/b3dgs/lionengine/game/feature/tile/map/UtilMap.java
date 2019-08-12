@@ -126,8 +126,7 @@ public final class UtilMap
         {
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                final Tile tile = map.createTile(SHEET, number, tx, ty);
-                map.setTile(tile);
+                map.setTile(tx, ty, SHEET, number);
             }
         }
     }
@@ -156,15 +155,13 @@ public final class UtilMap
      */
     public static void fill(MapTile map, int n1, int n2, int posX, int posY)
     {
-        final Tile center = map.createTile(SHEET, n1, posX, posY);
-        map.setTile(center);
+        map.setTile(posX, posY, SHEET, n1);
 
-        for (final Tile neighbor : map.getNeighbors(center))
+        for (final Tile neighbor : map.getNeighbors(map.getTile(posX, posY)))
         {
             if (neighbor.getNumber() != n1)
             {
-                final Tile tile = map.createTile(SHEET, n2, neighbor.getX(), neighbor.getY());
-                map.setTile(tile);
+                map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), SHEET, n2);
             }
         }
     }

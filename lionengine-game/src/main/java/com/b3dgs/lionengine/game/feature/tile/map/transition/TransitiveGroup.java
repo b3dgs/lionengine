@@ -320,7 +320,7 @@ public class TransitiveGroup
         if (!group.equals(current.getOut())
             && TransitionType.CENTER == mapTransition.getTransition(ref, current.getOut()).getType())
         {
-            map.setTile(map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY()));
+            map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), ref.getSheet(), ref.getNumber());
         }
     }
 }

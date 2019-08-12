@@ -83,7 +83,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     /** Map radius. */
     private int radius;
     /** Tiles map. */
-    private List<List<Tile>> tiles;
+    private List<List<TileGame>> tiles;
 
     /**
      * Create a map tile.
@@ -107,7 +107,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
         // Adjust height
         for (int v = 0; v < newHeight - oldheight; v++)
         {
-            tiles.add(new ArrayList<Tile>(newWidth));
+            tiles.add(new ArrayList<TileGame>(newWidth));
         }
         // Adjust width
         for (int v = 0; v < newHeight; v++)
@@ -156,18 +156,12 @@ public class MapTileGame extends FeaturableModel implements MapTile
 
         for (int v = 0; v < heightInTile; v++)
         {
-            tiles.add(v, new ArrayList<Tile>(widthInTile));
+            tiles.add(v, new ArrayList<TileGame>(widthInTile));
             for (int h = 0; h < widthInTile; h++)
             {
                 tiles.get(v).add(h, null);
             }
         }
-    }
-
-    @Override
-    public Tile createTile(Integer sheet, int number, double x, double y)
-    {
-        return new TileGame(sheet, number, x, y, tileWidth, tileHeight);
     }
 
     @Override
@@ -254,7 +248,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     {
         if (tiles != null)
         {
-            for (final List<Tile> list : tiles)
+            for (final List<TileGame> list : tiles)
             {
                 list.clear();
             }
@@ -277,14 +271,18 @@ public class MapTileGame extends FeaturableModel implements MapTile
     }
 
     @Override
-    public void setTile(Tile tile)
+    public void setTile(int tx, int ty, Integer sheet, int number)
     {
-        final int tx = tile.getInTileX();
-        final int ty = tile.getInTileY();
         Check.inferiorStrict(tx, getInTileWidth());
         Check.inferiorStrict(ty, getInTileHeight());
 
-        tiles.get(ty).set(tx, tile);
+        TileGame tile = tiles.get(ty).get(tx);
+        if (tile == null)
+        {
+            tile = new TileGame(sheet, number, tx * tileWidth, ty * tileHeight, tileWidth, tileHeight);
+            tiles.get(ty).set(tx, tile);
+        }
+        tile.set(sheet, number);
 
         for (int i = 0; i < listenable.size(); i++)
         {

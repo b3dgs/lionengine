@@ -49,7 +49,7 @@ public final class UtilMapTransition
         UtilMap.fill(map1, TILE_WATER, TILE_TRANSITION, 3);
         UtilMap.fill(map1, TILE_TREE, TILE_TRANSITION2, 9);
         UtilMap.fill(map1, TILE_GROUND, TILE_TRANSITION, 13);
-        map1.setTile(map1.createTile(SHEET, TILE_ROAD, 13, 13));
+        map1.setTile(13, 13, SHEET, TILE_ROAD);
 
         final MapTile map2 = UtilMap.createMap(10);
         UtilMap.fill(map2, TILE_WATER);
@@ -61,7 +61,7 @@ public final class UtilMapTransition
 
         final MapTile map4 = UtilMap.createMap(5);
         UtilMap.fill(map4, TILE_ROAD);
-        map4.setTile(map4.createTile(SHEET, TILE_GROUND, 2, 2));
+        map4.setTile(2, 2, SHEET, TILE_GROUND);
 
         final Media config = Medias.create("transitives.xml");
         TransitionsConfig.exports(config,

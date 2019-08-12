@@ -152,7 +152,7 @@ public final class MapTilePersisterModelTest
     {
         final MapTile map = UtilMapTilePersister.createMap();
         final Media level = Medias.create("level");
-        map.setTile(map.createTile(Integer.valueOf(Integer.MAX_VALUE), 0, 0, 0));
+        map.setTile(0, 0, Integer.valueOf(Integer.MAX_VALUE), 0);
         UtilMapTilePersister.saveMap(map, level);
 
         assertThrowsIo(() -> UtilMapTilePersister.loadMap(level), "");
