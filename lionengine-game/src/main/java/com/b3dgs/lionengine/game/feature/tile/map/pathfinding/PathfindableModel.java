@@ -350,6 +350,11 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             {
                 checkPathfinderChanges();
             }
+
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).notifyMoving(this);
+            }
         }
     }
 
@@ -463,7 +468,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         sharedPathIds.clear();
         for (int i = 0; i < listenable.size(); i++)
         {
-            listenable.get(i).notifyArrived();
+            listenable.get(i).notifyArrived(this);
         }
     }
 
@@ -613,11 +618,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
                 moveX = 0.0;
                 moveY = 0.0;
                 moveTo(extrp, dx, dy);
-
-                for (int i = 0; i < listenable.size(); i++)
-                {
-                    listenable.get(i).notifyMoving();
-                }
             }
             // Max step is reached, stop moves and animation
             else
@@ -713,7 +713,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
 
                 for (int i = 0; i < listenable.size(); i++)
                 {
-                    listenable.get(i).notifyStartMove();
+                    listenable.get(i).notifyStartMove(this);
                 }
                 return true;
             }

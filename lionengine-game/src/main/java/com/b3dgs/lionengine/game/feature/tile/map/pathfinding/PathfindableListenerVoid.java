@@ -30,19 +30,19 @@ public class PathfindableListenerVoid implements PathfindableListener
     }
 
     @Override
-    public void notifyStartMove()
+    public void notifyStartMove(Pathfindable pathfindable)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyMoving()
+    public void notifyMoving(Pathfindable pathfindable)
     {
         // Nothing by default
     }
 
     @Override
-    public void notifyArrived()
+    public void notifyArrived(Pathfindable pathfindable)
     {
         // Nothing by default
     }

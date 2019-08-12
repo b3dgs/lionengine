@@ -23,16 +23,22 @@ public interface PathfindableListener
 {
     /**
      * Notify listener when mover starting to move.
+     * 
+     * @param pathfindable The pathfindable reference.
      */
-    void notifyStartMove();
+    void notifyStartMove(Pathfindable pathfindable);
 
     /**
      * Notify listener while mover is moving.
+     * 
+     * @param pathfindable The pathfindable reference.
      */
-    void notifyMoving();
+    void notifyMoving(Pathfindable pathfindable);
 
     /**
      * Notify listener when mover has arrived.
+     * 
+     * @param pathfindable The pathfindable reference.
      */
-    void notifyArrived();
+    void notifyArrived(Pathfindable pathfindable);
 }
