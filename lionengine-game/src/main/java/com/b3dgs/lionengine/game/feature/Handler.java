@@ -157,7 +157,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     /**
      * Update the add list. Prepare features, add to main list and notify listeners.
      */
-    private void updateAdd()
+    public void updateAdd()
     {
         for (final Featurable featurable : toAdd.values())
         {
@@ -179,7 +179,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     /**
      * Update the remove list. Remove from main list and notify listeners. Notify featurable destroyed.
      */
-    private void updateRemove()
+    public void updateRemove()
     {
         for (final Integer id : toRemove)
         {
