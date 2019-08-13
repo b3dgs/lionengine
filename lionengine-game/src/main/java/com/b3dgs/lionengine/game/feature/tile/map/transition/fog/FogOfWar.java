@@ -16,8 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -90,7 +88,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      * 
      * @param fovables The fovable to update with.
      */
-    public void updateFog(Collection<Fovable> fovables)
+    public void updateFog(Iterable<Fovable> fovables)
     {
         mapFogged.reset();
         for (final Fovable fovable : fovables)
