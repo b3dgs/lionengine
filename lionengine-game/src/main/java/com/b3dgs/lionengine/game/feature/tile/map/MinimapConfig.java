@@ -67,7 +67,8 @@ public final class MinimapConfig
         final Map<TileRef, ColorRgba> colors = new HashMap<>();
         final Xml nodeMinimap = new Xml(configMinimap);
 
-        for (final Xml nodeColor : nodeMinimap.getChildren(NODE_COLOR))
+        final Collection<Xml> children = nodeMinimap.getChildren(NODE_COLOR);
+        for (final Xml nodeColor : children)
         {
             final ColorRgba color = new ColorRgba(nodeColor.readInteger(ATT_COLOR_RED),
                                                   nodeColor.readInteger(ATT_COLOR_GREEN),
@@ -79,6 +80,7 @@ public final class MinimapConfig
                 colors.put(tileRef, color);
             }
         }
+        children.clear();
 
         return colors;
     }

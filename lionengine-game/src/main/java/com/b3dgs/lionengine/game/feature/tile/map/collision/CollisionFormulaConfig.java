@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,12 +58,14 @@ public final class CollisionFormulaConfig
         final Xml root = new Xml(config);
         final Map<String, CollisionFormula> collisions = new HashMap<>(0);
 
-        for (final Xml node : root.getChildren(NODE_FORMULA))
+        final Collection<Xml> children = root.getChildren(NODE_FORMULA);
+        for (final Xml node : children)
         {
             final String name = node.readString(ATT_NAME);
             final CollisionFormula collision = createCollision(node);
             collisions.put(name, collision);
         }
+        children.clear();
 
         return new CollisionFormulaConfig(collisions);
     }
@@ -118,13 +121,15 @@ public final class CollisionFormulaConfig
         Check.notNull(root);
         Check.notNull(formula);
 
-        for (final Xml node : root.getChildren(NODE_FORMULA))
+        final Collection<Xml> children = root.getChildren(NODE_FORMULA);
+        for (final Xml node : children)
         {
             if (node.readString(ATT_NAME).equals(formula))
             {
                 root.removeChild(node);
             }
         }
+        children.clear();
     }
 
     /**
@@ -140,14 +145,18 @@ public final class CollisionFormulaConfig
         Check.notNull(root);
         Check.notNull(formula);
 
-        for (final Xml node : root.getChildren(NODE_FORMULA))
+        final Collection<Xml> children = root.getChildren(NODE_FORMULA);
+        boolean has = false;
+        for (final Xml node : children)
         {
             if (node.readString(ATT_NAME).equals(formula))
             {
-                return true;
+                has = true;
+                break;
             }
         }
-        return false;
+        children.clear();
+        return has;
     }
 
     /** Collision formulas list. */

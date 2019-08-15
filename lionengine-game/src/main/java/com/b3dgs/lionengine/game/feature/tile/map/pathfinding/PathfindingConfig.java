@@ -70,10 +70,12 @@ public final class PathfindingConfig
             {
                 groups.add(groupNode.getText());
             }
+            childrenGroup.clear();
 
             final PathCategory category = new PathCategory(name, groups);
             categories.add(category);
         }
+        childrenTile.clear();
 
         return categories;
     }

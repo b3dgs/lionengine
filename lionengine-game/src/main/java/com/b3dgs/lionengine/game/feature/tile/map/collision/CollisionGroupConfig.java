@@ -71,11 +71,13 @@ public final class CollisionGroupConfig
                 final String formulaName = formula.getText();
                 formulas.add(new CollisionFormula(formulaName, null, null, null));
             }
+            childrenFormula.clear();
 
             final String groupName = node.readString(ATT_GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
+        childrenCollision.clear();
 
         return new CollisionGroupConfig(groups);
     }
@@ -106,11 +108,13 @@ public final class CollisionGroupConfig
                 final String formulaName = formula.getText();
                 formulas.add(map.getCollisionFormula(formulaName));
             }
+            childrenFormula.clear();
 
             final String groupName = node.readString(ATT_GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
+        childrenCollision.clear();
 
         return new CollisionGroupConfig(groups);
     }
@@ -149,13 +153,15 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(group);
 
-        for (final Xml node : root.getChildren(NODE_COLLISION))
+        final Collection<Xml> children = root.getChildren(NODE_COLLISION);
+        for (final Xml node : children)
         {
             if (node.readString(ATT_GROUP).equals(group))
             {
                 root.removeChild(node);
             }
         }
+        children.clear();
     }
 
     /**
@@ -171,14 +177,18 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(group);
 
-        for (final Xml node : root.getChildren(NODE_COLLISION))
+        final Collection<Xml> children = root.getChildren(NODE_COLLISION);
+        boolean has = false;
+        for (final Xml node : children)
         {
             if (node.readString(ATT_GROUP).equals(group))
             {
-                return true;
+                has = true;
+                break;
             }
         }
-        return false;
+        children.clear();
+        return has;
     }
 
     /** Collision groups list. */

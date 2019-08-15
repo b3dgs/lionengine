@@ -76,9 +76,11 @@ public final class TransitionsConfig
 
             final Collection<Xml> nodesTileRef = nodeTransition.getChildren(TileConfig.NODE_TILE);
             final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
+            nodesTileRef.clear();
 
             transitions.put(transition, tilesRef);
         }
+        nodesTransition.clear();
 
         return transitions;
     }

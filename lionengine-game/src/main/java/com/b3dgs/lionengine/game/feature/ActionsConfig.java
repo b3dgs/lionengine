@@ -137,6 +137,7 @@ public final class ActionsConfig
             final boolean unique = action.readBoolean(false, ATT_UNIQUE);
             actions.add(new ActionRef(path, cancel, getRefs(action, id), unique ? id : null));
         }
+        children.clear();
 
         return actions;
     }

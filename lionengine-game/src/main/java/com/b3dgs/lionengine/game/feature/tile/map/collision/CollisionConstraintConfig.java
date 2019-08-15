@@ -57,12 +57,14 @@ public final class CollisionConstraintConfig
 
         if (node.hasChild(NODE_CONSTRAINT))
         {
-            for (final Xml current : node.getChildren(NODE_CONSTRAINT))
+            final Collection<Xml> children = node.getChildren(NODE_CONSTRAINT);
+            for (final Xml current : children)
             {
                 final Orientation orientation = Orientation.valueOf(current.readString(ATT_ORIENTATION));
                 final String group = current.readString(ATT_GROUP);
                 constraint.add(orientation, group);
             }
+            children.clear();
         }
 
         return constraint;

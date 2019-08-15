@@ -80,9 +80,11 @@ public final class CircuitsConfig
 
             final Collection<Xml> nodesTileRef = nodeCircuit.getChildren(TileConfig.NODE_TILE);
             final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
+            nodesTileRef.clear();
 
             circuits.put(circuit, tilesRef);
         }
+        nodesCircuit.clear();
 
         return circuits;
     }

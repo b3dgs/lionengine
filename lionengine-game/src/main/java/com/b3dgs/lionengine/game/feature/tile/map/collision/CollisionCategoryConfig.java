@@ -76,6 +76,7 @@ public final class CollisionCategoryConfig
                 final String name = group.getText();
                 groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
             }
+            childrenGroup.clear();
 
             final String name = node.readString(ATT_NAME);
             final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
@@ -86,6 +87,7 @@ public final class CollisionCategoryConfig
             final CollisionCategory category = new CollisionCategory(name, axis, x, y, glue, groups);
             categories.add(category);
         }
+        childrenCategory.clear();
 
         return categories;
     }
@@ -111,6 +113,7 @@ public final class CollisionCategoryConfig
             final CollisionCategory category = imports(node, map);
             categories.add(category);
         }
+        children.clear();
 
         return categories;
     }
@@ -137,6 +140,7 @@ public final class CollisionCategoryConfig
             final CollisionGroup group = map.getCollisionGroup(groupName);
             groups.add(group);
         }
+        children.clear();
 
         final String axisName = root.readString(ATT_AXIS);
         final Axis axis;

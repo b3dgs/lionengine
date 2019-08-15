@@ -82,12 +82,14 @@ public final class AnimationConfig
 
         final Map<String, Animation> animations = new HashMap<>(0);
 
-        for (final Xml node : root.getChildren(ANIMATION))
+        final Collection<Xml> children = root.getChildren(ANIMATION);
+        for (final Xml node : children)
         {
             final String anim = node.readString(ANIMATION_NAME);
             final Animation animation = createAnimation(node);
             animations.put(anim, animation);
         }
+        children.clear();
 
         return new AnimationConfig(animations);
     }

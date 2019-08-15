@@ -161,6 +161,7 @@ public final class FeaturableConfig
     {
         final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
         final List<Feature> features = new ArrayList<>(children.size());
+
         for (final Xml featureNode : children)
         {
             final String className = featureNode.getText();
@@ -176,6 +177,8 @@ public final class FeaturableConfig
             }
             features.add(feature);
         }
+        children.clear();
+
         return features;
     }
 

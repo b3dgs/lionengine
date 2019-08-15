@@ -69,11 +69,13 @@ public final class PathfindableConfig
         final Map<String, PathData> categories = new HashMap<>(0);
         final Xml nodePathfindable = root.getChild(NODE_PATHFINDABLE);
 
-        for (final Xml nodePath : nodePathfindable.getChildren(NODE_PATH))
+        final Collection<Xml> children = nodePathfindable.getChildren(NODE_PATH);
+        for (final Xml nodePath : children)
         {
             final PathData data = importPathData(nodePath);
             categories.put(data.getName(), data);
         }
+        children.clear();
 
         return categories;
     }
@@ -152,7 +154,8 @@ public final class PathfindableConfig
 
         final Collection<MovementTile> movements = EnumSet.noneOf(MovementTile.class);
 
-        for (final Xml movementNode : node.getChildren(NODE_MOVEMENT))
+        final Collection<Xml> children = node.getChildren(NODE_MOVEMENT);
+        for (final Xml movementNode : children)
         {
             try
             {
@@ -163,6 +166,7 @@ public final class PathfindableConfig
                 throw new LionEngineException(exception);
             }
         }
+        children.clear();
 
         return movements;
     }

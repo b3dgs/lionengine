@@ -69,6 +69,7 @@ public final class TileGroupsConfig
             final TileGroup group = importGroup(nodeGroup);
             groups.add(group);
         }
+        children.clear();
 
         return groups;
     }
@@ -112,6 +113,7 @@ public final class TileGroupsConfig
             final TileRef tileRef = TileConfig.imports(nodeTileRef);
             tiles.add(tileRef);
         }
+        children.clear();
 
         final String groupName = nodeGroup.readString(ATT_GROUP_NAME);
         final TileGroupType groupType = TileGroupType.from(nodeGroup.readString(TileGroupType.NONE.name(),

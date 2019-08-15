@@ -63,6 +63,7 @@ public final class LauncherConfig
         {
             launchers.add(imports(launcher));
         }
+        children.clear();
 
         return launchers;
     }
@@ -85,6 +86,7 @@ public final class LauncherConfig
         {
             launchables.add(LaunchableConfig.imports(launchable));
         }
+        children.clear();
 
         final int level = node.readInteger(0, ATT_LEVEL);
         final int rate = node.readInteger(0, ATT_RATE);

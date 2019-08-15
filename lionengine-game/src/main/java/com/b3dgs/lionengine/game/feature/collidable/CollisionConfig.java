@@ -70,12 +70,14 @@ public final class CollisionConfig
 
         final Map<String, Collision> collisions = new HashMap<>(0);
 
-        for (final Xml node : configurer.getRoot().getChildren(NODE_COLLISION))
+        final Collection<Xml> children = configurer.getRoot().getChildren(NODE_COLLISION);
+        for (final Xml node : children)
         {
             final String coll = node.readString(ATT_NAME);
             final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
+        children.clear();
 
         return new CollisionConfig(collisions);
     }

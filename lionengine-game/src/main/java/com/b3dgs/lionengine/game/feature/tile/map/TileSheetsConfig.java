@@ -109,6 +109,7 @@ public final class TileSheetsConfig
             final String sheetFilename = nodeSheet.getText();
             sheets.add(sheetFilename);
         }
+        children.clear();
 
         return sheets;
     }
