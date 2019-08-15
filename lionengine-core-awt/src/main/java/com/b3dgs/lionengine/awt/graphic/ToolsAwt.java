@@ -122,6 +122,7 @@ public final class ToolsAwt
         {
             throw new IOException("Invalid image !");
         }
+        // This provides better performance on rendering
         return copyImage(buffer);
     }
 
