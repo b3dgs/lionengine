@@ -166,7 +166,8 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
     public boolean isVisited(int tx, int ty)
     {
-        return hideMap && mapHidden.getTile(tx, ty).getNumber() == MapTileFog.NO_FOG;
+        final Tile tile = mapHidden.getTile(tx, ty);
+        return hideMap && tile != null && tile.getNumber() == MapTileFog.NO_FOG;
     }
 
     /**
@@ -178,7 +179,8 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
     public boolean isFogged(int tx, int ty)
     {
-        return fogMap && mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
+        final Tile tile = mapHidden.getTile(tx, ty);
+        return fogMap && tile != null && mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
     }
 
     /*
