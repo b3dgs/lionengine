@@ -16,26 +16,24 @@
  */
 package com.b3dgs.lionengine.game.feature.tile;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.NameableAbstract;
 
 /**
- * Represents the tile group, which can be applied to a {@link TileRef}.
+ * Represents the tile group, which can be applied to a {@link Integer}.
  * Here a definition example:
  * 
  * <pre>
  * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
  *    &lt;lionengine:group name="block"&gt; type="PLAIN"&gt;
- *      &lt;lionengine:tile sheet="0" number="1"/&gt;
- *      &lt;lionengine:tile sheet="1" number="5"/&gt;
+ *      &lt;lionengine:tile number="1"/&gt;
+ *      &lt;lionengine:tile number="5"/&gt;
  *    &lt;/lionengine:group&gt;
  *    &lt;lionengine:group name="top"&gt; type="TRANSITION"&gt;
- *      &lt;lionengine:tile sheet="0" number="2"/&gt;
- *      &lt;lionengine:tile sheet="0" number="3"/&gt;
+ *      &lt;lionengine:tile number="2"/&gt;
+ *      &lt;lionengine:tile number="3"/&gt;
  *    &lt;/lionengine:group&gt;
  * &lt;/lionengine:groups&gt;
  * </pre>
@@ -47,7 +45,7 @@ public class TileGroup extends NameableAbstract
     /** The group type. */
     private final TileGroupType type;
     /** Elements inside group. */
-    private final Collection<TileRef> tiles;
+    private final Set<Integer> tiles;
 
     /**
      * Create a tile group.
@@ -57,12 +55,12 @@ public class TileGroup extends NameableAbstract
      * @param tiles The tiles inside the group.
      * @throws LionEngineException If invalid arguments.
      */
-    public TileGroup(String name, TileGroupType type, Collection<TileRef> tiles)
+    public TileGroup(String name, TileGroupType type, Set<Integer> tiles)
     {
         super(name);
 
         this.type = type;
-        this.tiles = new ArrayList<>(tiles);
+        this.tiles = tiles;
     }
 
     /**
@@ -73,26 +71,18 @@ public class TileGroup extends NameableAbstract
      */
     public boolean contains(Tile tile)
     {
-        return contains(tile.getSheet(), tile.getNumber());
+        return contains(tile.getKey());
     }
 
     /**
      * Check if tile is contained by the group.
      * 
-     * @param sheet The sheet number.
      * @param number The tile number.
      * @return <code>true</code> if part of the group, <code>false</code> else.
      */
-    public boolean contains(Integer sheet, int number)
+    public boolean contains(Integer number)
     {
-        for (final TileRef current : tiles)
-        {
-            if (current.getSheet().equals(sheet) && current.getNumber() == number)
-            {
-                return true;
-            }
-        }
-        return false;
+        return tiles.contains(number);
     }
 
     /**
@@ -106,12 +96,12 @@ public class TileGroup extends NameableAbstract
     }
 
     /**
-     * Get the tiles inside group as read only.
+     * Get the tiles inside group.
      * 
      * @return The tiles inside group.
      */
-    public Collection<TileRef> getTiles()
+    public Set<Integer> getTiles()
     {
-        return Collections.unmodifiableCollection(tiles);
+        return tiles;
     }
 }

@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
@@ -36,7 +35,7 @@ public interface TransitionsExtractor
      * @param groupsConfig The groups configuration media.
      * @return The transitions found with their associated tiles.
      */
-    Map<Transition, Collection<TileRef>> getTransitions(Collection<Media> levels,
+    Map<Transition, Collection<Integer>> getTransitions(Collection<Media> levels,
                                                         Media sheetsConfig,
                                                         Media groupsConfig);
 
@@ -46,5 +45,5 @@ public interface TransitionsExtractor
      * @param maps The maps reference.
      * @return The transitions found with their associated tiles.
      */
-    Map<Transition, Collection<TileRef>> getTransitions(Collection<MapTile> maps);
+    Map<Transition, Collection<Integer>> getTransitions(Collection<MapTile> maps);
 }

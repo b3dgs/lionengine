@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
@@ -70,11 +69,11 @@ public final class MinimapConfigTest
     @Test
     public void testExportsImports()
     {
-        final Map<TileRef, ColorRgba> tiles = new HashMap<>();
-        tiles.put(new TileRef(0, 0), ColorRgba.RED);
-        tiles.put(new TileRef(0, 1), ColorRgba.BLUE);
-        tiles.put(new TileRef(1, 0), ColorRgba.GREEN);
-        tiles.put(new TileRef(1, 1), ColorRgba.GREEN);
+        final Map<Integer, ColorRgba> tiles = new HashMap<>();
+        tiles.put(Integer.valueOf(0), ColorRgba.RED);
+        tiles.put(Integer.valueOf(1), ColorRgba.BLUE);
+        tiles.put(Integer.valueOf(0), ColorRgba.GREEN);
+        tiles.put(Integer.valueOf(1), ColorRgba.GREEN);
 
         final Media config = Medias.create("minimap.xml");
         MinimapConfig.exports(config, tiles);

@@ -51,7 +51,7 @@ public final class MapTileAppenderTest
     {
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         assertEquals(0, map.getInTileWidth());
         assertEquals(0, map.getInTileHeight());
@@ -74,7 +74,7 @@ public final class MapTileAppenderTest
 
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         assertEquals(1, map.getInTileWidth());
         assertEquals(1, map.getInTileHeight());
@@ -97,7 +97,7 @@ public final class MapTileAppenderTest
 
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         assertThrows(() -> appender.append(map1, 0, 0), MapTileAppenderModel.ERROR_APPEND_MAP_TILE_SIZE + "1 1");
     }
@@ -112,7 +112,7 @@ public final class MapTileAppenderTest
 
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         assertThrows(() -> appender.append(map1, 0, 0), MapTileAppenderModel.ERROR_APPEND_MAP_TILE_SIZE + "1 2");
     }
@@ -125,7 +125,7 @@ public final class MapTileAppenderTest
     {
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         assertEquals(0, map.getInTileWidth());
         assertEquals(0, map.getInTileHeight());
@@ -148,7 +148,7 @@ public final class MapTileAppenderTest
 
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 2, 2);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         assertEquals(1, map.getInTileWidth());
         assertEquals(1, map.getInTileHeight());
@@ -171,7 +171,7 @@ public final class MapTileAppenderTest
 
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         final MapTile map2 = new MapTileGame();
         map2.create(2, 1, 1, 1);
@@ -190,7 +190,7 @@ public final class MapTileAppenderTest
 
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
-        map1.setTile(0, 0, Integer.valueOf(0), 0);
+        map1.setTile(0, 0, 0);
 
         final MapTile map2 = new MapTileGame();
         map2.create(1, 2, 1, 1);

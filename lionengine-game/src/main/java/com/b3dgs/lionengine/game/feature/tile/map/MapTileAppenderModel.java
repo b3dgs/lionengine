@@ -76,7 +76,7 @@ public class MapTileAppenderModel extends FeatureModel implements MapTileAppende
                 final Tile tile = other.getTile(h, v);
                 if (tile != null)
                 {
-                    map.setTile(tx, ty, tile.getSheet(), tile.getNumber());
+                    map.setTile(tx, ty, tile.getNumber());
                 }
             }
         }

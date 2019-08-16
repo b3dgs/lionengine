@@ -149,9 +149,10 @@ public final class LevelRipConverter
     private static boolean searchForTile(MapTile map, ImageBuffer tileSprite, int x, int y)
     {
         // Check each tile on each sheet
-        for (final Integer sheet : map.getSheets())
+        final int sheetsCount = map.getSheetsNumber();
+        for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
-            final boolean found = checkTile(map, tileSprite, sheet, x, y);
+            final boolean found = checkTile(map, tileSprite, sheetId, x, y);
             if (found)
             {
                 return true;
@@ -167,16 +168,16 @@ public final class LevelRipConverter
      * 
      * @param map The destination map reference.
      * @param tileSprite The tiled sprite
-     * @param sheet The sheet number.
+     * @param sheetId The sheet number.
      * @param x The location x.
      * @param y The location y.
      * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    private static boolean checkTile(MapTile map, ImageBuffer tileSprite, Integer sheet, int x, int y)
+    private static boolean checkTile(MapTile map, ImageBuffer tileSprite, int sheetId, int x, int y)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final SpriteTiled tileSheet = map.getSheet(sheet);
+        final SpriteTiled tileSheet = map.getSheet(sheetId);
         final ImageBuffer sheetImage = tileSheet.getSurface();
         final int tilesInX = tileSheet.getWidth() / tw;
         final int tilesInY = tileSheet.getHeight() / th;
@@ -196,7 +197,7 @@ public final class LevelRipConverter
 
                 if (TilesExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
                 {
-                    map.setTile(x, map.getInTileHeight() - 1 - y, sheet, number);
+                    map.setTile(x, map.getInTileHeight() - 1 - y, number);
                     return true;
                 }
             }

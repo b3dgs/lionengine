@@ -38,8 +38,6 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
 {
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE;
-    /** Error sheet missing message. */
-    private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
 
     /** The services reference. */
     protected final MapTile map;
@@ -69,8 +67,7 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      * Save tile. Data are saved this way:
      * 
      * <pre>
-     * (integer) sheet number
-     * (integer) index number inside sheet
+     * (integer) index number
      * (integer) tile location x % MapTile.BLOC_SIZE
      * (integer tile location y
      * </pre>
@@ -81,7 +78,6 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      */
     protected void saveTile(FileWriting file, Tile tile) throws IOException
     {
-        file.writeInteger(tile.getSheet().intValue());
         file.writeInteger(tile.getNumber());
         file.writeInteger(tile.getInTileX() % BLOC_SIZE);
         file.writeInteger(tile.getInTileY());
@@ -91,8 +87,7 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      * Load tile. Data are loaded this way:
      * 
      * <pre>
-     * (integer) sheet number
-     * (integer) index number inside sheet
+     * (integer) index number
      * (integer) tile location x
      * (integer tile location y
      * </pre>
@@ -103,16 +98,11 @@ public class MapTilePersisterModel extends FeatureModel implements MapTilePersis
      */
     protected void loadTile(FileReading file, int i) throws IOException
     {
-        final int sheet = file.readInteger();
-        if (sheet > map.getSheetsNumber())
-        {
-            throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + sheet);
-        }
         final int number = file.readInteger();
         final int tx = file.readInteger() + i * BLOC_SIZE;
         final int ty = file.readInteger();
 
-        map.setTile(tx, ty, Integer.valueOf(sheet), number);
+        map.setTile(tx, ty, number);
     }
 
     /**

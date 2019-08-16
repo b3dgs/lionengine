@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppender;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
@@ -95,14 +94,14 @@ class Scene extends Sequence
         camera.setLimits(map);
 
         parameters.add(new PrefMapSize(16, 16, 64, 48))
-                  .add(new PrefMapFill(new TileRef(0, 0)))
-                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(0, 0, 8, 48), 4, 60))
-                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(56, 0, 64, 48), 4, 60))
-                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(0, 0, 64, 8), 4, 60))
-                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(0, 40, 64, 48), 4, 60))
-                  .add(new PrefMapRegion(new TileRef(0, 29), new TileArea(12, 12, 56, 42), 2, 250))
-                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(24, 24, 40, 40), 2, 80))
-                  .add(new PrefMapRegion(new TileRef(0, 0), new TileArea(4, 4, 60, 40), 1, 100));
+                  .add(new PrefMapFill(0))
+                  .add(new PrefMapRegion(12, new TileArea(0, 0, 8, 48), 4, 60))
+                  .add(new PrefMapRegion(12, new TileArea(56, 0, 64, 48), 4, 60))
+                  .add(new PrefMapRegion(12, new TileArea(0, 0, 64, 8), 4, 60))
+                  .add(new PrefMapRegion(12, new TileArea(0, 40, 64, 48), 4, 60))
+                  .add(new PrefMapRegion(29, new TileArea(12, 12, 56, 42), 2, 250))
+                  .add(new PrefMapRegion(12, new TileArea(24, 24, 40, 40), 2, 80))
+                  .add(new PrefMapRegion(0, new TileArea(4, 4, 60, 40), 1, 100));
 
         tickGen.start();
         tick.start();

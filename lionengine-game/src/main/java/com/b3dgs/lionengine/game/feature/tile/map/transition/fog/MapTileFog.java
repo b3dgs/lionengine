@@ -94,10 +94,9 @@ public class MapTileFog
             {
                 group = TRANSITION_GROUP;
             }
-            mapGroup.changeGroup(new TileGame(Integer.valueOf(0), i, 0, 0, map.getTileWidth(), map.getTileHeight()),
-                                 group);
+            mapGroup.changeGroup(new TileGame(i, 0, 0, map.getTileWidth(), map.getTileHeight()), group);
         }
-        mapGroup.changeGroup(new TileGame(Integer.valueOf(0), NO_FOG, 0, 0, map.getTileWidth(), map.getTileHeight()),
+        mapGroup.changeGroup(new TileGame(NO_FOG, 0, 0, map.getTileWidth(), map.getTileHeight()),
                              MapTileGroupModel.NO_GROUP_NAME);
         transition.loadTransitions(config);
 
@@ -105,7 +104,7 @@ public class MapTileFog
         {
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                this.map.setTile(tx, ty, Integer.valueOf(0), FOG);
+                this.map.setTile(tx, ty, FOG);
             }
         }
     }
@@ -117,7 +116,7 @@ public class MapTileFog
     {
         for (final Tile tile : revealed)
         {
-            map.setTile(tile.getInTileX(), tile.getInTileY(), tile.getSheet(), FOG);
+            map.setTile(tile.getInTileX(), tile.getInTileY(), FOG);
         }
         revealed.clear();
     }
@@ -156,7 +155,7 @@ public class MapTileFog
         {
             for (int y = sy + 1; y < ey; y++)
             {
-                map.setTile(x, y, Integer.valueOf(0), NO_FOG);
+                map.setTile(x, y, NO_FOG);
                 transition.resolve(getTile(x, y));
             }
         }

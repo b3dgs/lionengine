@@ -31,7 +31,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -90,7 +89,7 @@ public final class TransitionsConfigTest
         map3.create(1, 1, 3, 3);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
-        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(Arrays.asList(map,
+        final Map<Transition, Collection<Integer>> transitions = extractor.getTransitions(Arrays.asList(map,
                                                                                                         map2,
                                                                                                         map3));
 

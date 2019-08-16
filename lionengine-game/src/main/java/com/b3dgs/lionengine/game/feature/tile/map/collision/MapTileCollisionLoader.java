@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -28,7 +29,6 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 
@@ -285,11 +285,10 @@ final class MapTileCollisionLoader
      */
     private void addTileCollisions(MapTileCollision mapCollision, TileCollision tileCollision, Tile tile)
     {
-        final TileRef ref = new TileRef(tile);
         for (final CollisionGroup collision : mapCollision.getCollisionGroups())
         {
-            final Collection<TileRef> group = mapGroup.getGroup(collision.getName());
-            if (group.contains(ref))
+            final Set<Integer> group = mapGroup.getGroup(collision.getName());
+            if (group.contains(tile.getKey()))
             {
                 for (final CollisionFormula formula : collision.getFormulas())
                 {

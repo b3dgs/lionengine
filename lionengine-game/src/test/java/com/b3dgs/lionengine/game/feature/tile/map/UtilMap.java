@@ -21,6 +21,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -29,7 +31,6 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
 
@@ -62,8 +63,6 @@ public final class UtilMap
     public static final String TRANSITION = "transition";
     /** Tree transition group name. */
     public static final String TRANSITION2 = "transition2";
-    /** Sheet ID. */
-    public static final Integer SHEET = Integer.valueOf(0);
 
     /**
      * Create the raw test map without transition.
@@ -94,16 +93,12 @@ public final class UtilMap
     public static void setGroups(MapTile map)
     {
         final Collection<TileGroup> groups = new ArrayList<>();
-        groups.add(new TileGroup(WATER, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_WATER))));
-        groups.add(new TileGroup(GROUND, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_GROUND))));
-        groups.add(new TileGroup(TREE, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_TREE))));
-        groups.add(new TileGroup(ROAD, TileGroupType.CIRCUIT, Arrays.asList(new TileRef(SHEET, TILE_ROAD))));
-        groups.add(new TileGroup(TRANSITION,
-                                 TileGroupType.TRANSITION,
-                                 Arrays.asList(new TileRef(SHEET, TILE_TRANSITION))));
-        groups.add(new TileGroup(TRANSITION2,
-                                 TileGroupType.TRANSITION,
-                                 Arrays.asList(new TileRef(SHEET, TILE_TRANSITION2))));
+        groups.add(new TileGroup(WATER, TileGroupType.PLAIN, getTile(TILE_WATER)));
+        groups.add(new TileGroup(GROUND, TileGroupType.PLAIN, getTile(TILE_GROUND)));
+        groups.add(new TileGroup(TREE, TileGroupType.PLAIN, getTile(TILE_TREE)));
+        groups.add(new TileGroup(ROAD, TileGroupType.CIRCUIT, getTile(TILE_ROAD)));
+        groups.add(new TileGroup(TRANSITION, TileGroupType.TRANSITION, getTile(TILE_TRANSITION)));
+        groups.add(new TileGroup(TRANSITION2, TileGroupType.TRANSITION, getTile(TILE_TRANSITION2)));
 
         final Media config = Medias.create("groups.xml");
         TileGroupsConfig.exports(config, groups);
@@ -126,7 +121,7 @@ public final class UtilMap
         {
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                map.setTile(tx, ty, SHEET, number);
+                map.setTile(tx, ty, number);
             }
         }
     }
@@ -155,14 +150,25 @@ public final class UtilMap
      */
     public static void fill(MapTile map, int n1, int n2, int posX, int posY)
     {
-        map.setTile(posX, posY, SHEET, n1);
+        map.setTile(posX, posY, n1);
 
         for (final Tile neighbor : map.getNeighbors(map.getTile(posX, posY)))
         {
             if (neighbor.getNumber() != n1)
             {
-                map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), SHEET, n2);
+                map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), n2);
             }
         }
+    }
+
+    /**
+     * Get tile from number.
+     * 
+     * @param number The tile number.
+     * @return The tile set.
+     */
+    private static Set<Integer> getTile(int number)
+    {
+        return new HashSet<>(Arrays.asList(Integer.valueOf(number)));
     }
 }

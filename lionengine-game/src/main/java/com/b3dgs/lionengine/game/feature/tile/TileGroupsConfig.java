@@ -18,6 +18,8 @@ package com.b3dgs.lionengine.game.feature.tile;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -106,12 +108,12 @@ public final class TileGroupsConfig
     private static TileGroup importGroup(Xml nodeGroup)
     {
         final Collection<Xml> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
-        final Collection<TileRef> tiles = new ArrayList<>(children.size());
+        final Set<Integer> tiles = new HashSet<>(children.size());
 
-        for (final Xml nodeTileRef : children)
+        for (final Xml nodeTile : children)
         {
-            final TileRef tileRef = TileConfig.imports(nodeTileRef);
-            tiles.add(tileRef);
+            final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
+            tiles.add(tile);
         }
         children.clear();
 
@@ -133,9 +135,9 @@ public final class TileGroupsConfig
         nodeGroup.writeString(ATT_GROUP_NAME, group.getName());
         nodeGroup.writeString(ATT_GROUP_TYPE, group.getType().name());
 
-        for (final TileRef tileRef : group.getTiles())
+        for (final Integer tile : group.getTiles())
         {
-            final Xml nodeTileRef = TileConfig.exports(tileRef);
+            final Xml nodeTileRef = TileConfig.exports(tile.intValue());
             nodeGroup.add(nodeTileRef);
         }
     }

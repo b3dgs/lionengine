@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
@@ -34,7 +33,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
@@ -89,16 +87,15 @@ public final class TransitionsExtractorTest
      * @param out The group out.
      * @param number The tile number.
      */
-    private static void has(Map<Transition, Collection<TileRef>> transitions,
+    private static void has(Map<Transition, Collection<Integer>> transitions,
                             TransitionType type,
                             String in,
                             String out,
                             int number)
     {
         final Transition transition = new Transition(type, in, out);
-        final TileRef tile = new TileRef(SHEET, number);
 
-        assertTrue(transitions.get(transition).contains(tile));
+        assertTrue(transitions.get(transition).contains(Integer.valueOf(number)));
     }
 
     /**
@@ -118,7 +115,7 @@ public final class TransitionsExtractorTest
         final MapTile map3 = createMap(3);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
-        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(Arrays.asList(map,
+        final Map<Transition, Collection<Integer>> transitions = extractor.getTransitions(Arrays.asList(map,
                                                                                                         map2,
                                                                                                         map3));
 

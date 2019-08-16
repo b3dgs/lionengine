@@ -78,7 +78,7 @@ public class TileCollisionModelTest
     /** Category horizontal test. */
     private final CollisionCategory categoryX = new CollisionCategory("x", Axis.X, 0, 0, true, Arrays.asList(group));
     /** Tile test. */
-    private final Tile tile = new TileGame(Integer.valueOf(0), 0, 0.0, 0.0, 1, 1);
+    private final Tile tile = new TileGame(0, 0, 0, 1, 1);
     /** Model test. */
     private final TileCollisionModel model = new TileCollisionModel(tile);
 

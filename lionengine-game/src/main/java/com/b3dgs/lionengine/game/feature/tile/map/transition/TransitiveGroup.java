@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 
@@ -165,7 +164,7 @@ public class TransitiveGroup
      * @param transition The transition reference.
      * @return The associated tiles from direct transitive transition.
      */
-    public Collection<TileRef> getDirectTransitiveTiles(Transition transition)
+    public Collection<Integer> getDirectTransitiveTiles(Transition transition)
     {
         final String groupOut = transition.getOut();
         final Collection<GroupTransition> currentTransitives = getTransitives(transition.getIn(), groupOut);
@@ -298,9 +297,9 @@ public class TransitiveGroup
         {
             for (final GroupTransition current : getTransitives(mapGroup.getGroup(tile), mapGroup.getGroup(neighbor)))
             {
-                for (final TileRef ref : mapGroup.getGroup(current.getOut()))
+                for (final Integer number : mapGroup.getGroup(current.getOut()))
                 {
-                    checkTransitives(neighbor, group, current, ref);
+                    checkTransitives(neighbor, group, current, number);
                 }
                 break;
             }
@@ -313,14 +312,14 @@ public class TransitiveGroup
      * @param neighbor The current neighbor.
      * @param group The current group.
      * @param current The current transition.
-     * @param ref The tile ref to check.
+     * @param number The tile number to check.
      */
-    private void checkTransitives(Tile neighbor, String group, GroupTransition current, TileRef ref)
+    private void checkTransitives(Tile neighbor, String group, GroupTransition current, Integer number)
     {
         if (!group.equals(current.getOut())
-            && TransitionType.CENTER == mapTransition.getTransition(ref, current.getOut()).getType())
+            && TransitionType.CENTER == mapTransition.getTransition(number, current.getOut()).getType())
         {
-            map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), ref.getSheet(), ref.getNumber());
+            map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), number.intValue());
         }
     }
 }

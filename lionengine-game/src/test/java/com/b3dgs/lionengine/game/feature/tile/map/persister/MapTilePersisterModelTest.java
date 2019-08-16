@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
-import static com.b3dgs.lionengine.UtilAssert.assertThrowsIo;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.IOException;
@@ -104,7 +103,6 @@ public final class MapTilePersisterModelTest
                 else
                 {
                     assertNotNull(tile);
-                    assertEquals(0, tile.getSheet().intValue());
                     assertEquals(x * y, tile.getNumber());
                     assertEquals(x * mapLoaded.getTileWidth(), tile.getX());
                     assertEquals(y * mapLoaded.getTileHeight(), tile.getY());
@@ -139,23 +137,6 @@ public final class MapTilePersisterModelTest
 
         assertEquals(config, mapLoaded.getMedia());
         assertTrue(config.getFile().delete());
-        assertTrue(level.getFile().delete());
-    }
-
-    /**
-     * Test the save and load map from file with invalid tile sheet number.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testInvalidSheet() throws IOException
-    {
-        final MapTile map = UtilMapTilePersister.createMap();
-        final Media level = Medias.create("level");
-        map.setTile(0, 0, Integer.valueOf(Integer.MAX_VALUE), 0);
-        UtilMapTilePersister.saveMap(map, level);
-
-        assertThrowsIo(() -> UtilMapTilePersister.loadMap(level), "");
         assertTrue(level.getFile().delete());
     }
 

@@ -23,18 +23,11 @@ import com.b3dgs.lionengine.Xml;
 
 /**
  * Represents the tile configuration.
- * <p>
- * This class is Thread-Safe.
- * </p>
- * 
- * @see TileRef
  */
 public final class TileConfig
 {
     /** Tile node. */
     public static final String NODE_TILE = Constant.XML_PREFIX + "tile";
-    /** Sheet attribute. */
-    public static final String ATT_TILE_SHEET = "sheet";
     /** Number attribute. */
     public static final String ATT_TILE_NUMBER = "number";
 
@@ -42,33 +35,29 @@ public final class TileConfig
      * Create the tile data from node.
      * 
      * @param nodeTile The node reference (must not be <code>null</code>).
-     * @return The tile data.
+     * @return The tile number.
      * @throws LionEngineException If <code>null</code> argument or error when reading.
      */
-    public static TileRef imports(Xml nodeTile)
+    public static int imports(Xml nodeTile)
     {
         Check.notNull(nodeTile);
 
-        final int sheet = nodeTile.readInteger(ATT_TILE_SHEET);
         final int number = nodeTile.readInteger(ATT_TILE_NUMBER);
 
-        return new TileRef(sheet, number);
+        return number;
     }
 
     /**
      * Export the tile as a node.
      * 
-     * @param tileRef The tile to export (must not be <code>null</code>).
+     * @param number The tile number to export.
      * @return The exported node.
      * @throws LionEngineException If <code>null</code> argument or error on writing.
      */
-    public static Xml exports(TileRef tileRef)
+    public static Xml exports(int number)
     {
-        Check.notNull(tileRef);
-
         final Xml node = new Xml(NODE_TILE);
-        node.writeInteger(ATT_TILE_SHEET, tileRef.getSheet().intValue());
-        node.writeInteger(ATT_TILE_NUMBER, tileRef.getNumber());
+        node.writeInteger(ATT_TILE_NUMBER, number);
 
         return node;
     }

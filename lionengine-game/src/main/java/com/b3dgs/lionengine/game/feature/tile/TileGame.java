@@ -18,87 +18,100 @@ package com.b3dgs.lionengine.game.feature.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Feature;
+import com.b3dgs.lionengine.game.feature.Features;
 
 /**
  * Tile base implementation.
  */
-public class TileGame extends FeaturableModel implements Tile
+public class TileGame implements Tile
 {
-    /** Horizontal location on map. */
-    private final double x;
-    /** Vertical location on map. */
-    private final double y;
+    /** Features provider. */
+    private final Features features = new Features();
+    /** Horizontal in tile location. */
+    private final int tx;
+    /** Vertical in tile location. */
+    private final int ty;
     /** Tile width. */
     private final int width;
     /** Tile height. */
     private final int height;
-    /** In tile x. */
-    private final int inTileX;
-    /** In tile y. */
-    private final int inTileY;
-    /** Tile sheet number where tile is contained. */
-    private Integer sheet;
-    /** Position number in the tilesheet. */
+    /** Horizontal location on map. */
+    private final double x;
+    /** Vertical location on map. */
+    private final double y;
+    /** Tile number. */
     private int number;
+    /** Key. */
+    private Integer key;
+    /** Sheet id. */
+    private int sheetId;
+    /** Sheet id key. */
+    private Integer sheetKey;
 
     /**
      * Create a tile.
      * 
-     * @param sheet The sheet number (must be positive or equal to 0).
      * @param number The tile number on sheet (must be positive or equal to 0).
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param tx The horizontal in tile location (must be positive or equal to 0).
+     * @param ty The vertical in tile location (must be positive or equal to 0).
      * @param width The tile width (must be strictly positive).
      * @param height The tile height (must be strictly positive).
      * @throws LionEngineException If invalid arguments.
      */
-    public TileGame(Integer sheet, int number, double x, double y, int width, int height)
+    public TileGame(int number, int tx, int ty, int width, int height)
     {
         super();
 
-        Check.notNull(sheet);
-        Check.superiorOrEqual(sheet.intValue(), 0);
         Check.superiorOrEqual(number, 0);
+        Check.superiorOrEqual(tx, 0);
+        Check.superiorOrEqual(ty, 0);
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
 
-        this.sheet = sheet;
         this.number = number;
-        this.x = x;
-        this.y = y;
+        this.tx = tx;
+        this.ty = ty;
         this.width = width;
         this.height = height;
 
-        inTileX = (int) Math.floor(x / width);
-        inTileY = (int) Math.floor(y / height);
+        key = Integer.valueOf(number);
+        x = tx * width;
+        y = ty * height;
     }
 
     /**
      * Set the tile number.
      * 
-     * @param sheet The sheet number (must be positive or equal to 0).
      * @param number The tile number on sheet (must be positive or equal to 0).
-     * @throws LionEngineException If invalid arguments.
+     * @throws LionEngineException If invalid argument.
      */
-    public void set(Integer sheet, int number)
+    public void set(int number)
     {
-        Check.superiorOrEqual(sheet.intValue(), 0);
         Check.superiorOrEqual(number, 0);
 
-        this.sheet = sheet;
         this.number = number;
+        key = Integer.valueOf(number);
+    }
+
+    /**
+     * Set the tile sheet id.
+     * 
+     * @param sheetId The tile sheet id (must be positive or equal to 0).
+     * @throws LionEngineException If invalid argument.
+     */
+    public void setSheet(int sheetId)
+    {
+        Check.superiorOrEqual(sheetId, 0);
+
+        this.sheetId = sheetId;
+        sheetKey = Integer.valueOf(sheetId);
     }
 
     /*
      * Tile
      */
-
-    @Override
-    public Integer getSheet()
-    {
-        return sheet;
-    }
 
     @Override
     public int getNumber()
@@ -107,15 +120,45 @@ public class TileGame extends FeaturableModel implements Tile
     }
 
     @Override
-    public double getX()
+    public Integer getKey()
     {
-        return x;
+        return key;
     }
 
     @Override
-    public double getY()
+    public int getSheet()
     {
-        return y;
+        return sheetId;
+    }
+
+    @Override
+    public Integer getSheetKey()
+    {
+        return sheetKey;
+    }
+
+    @Override
+    public int getInTileX()
+    {
+        return tx;
+    }
+
+    @Override
+    public int getInTileY()
+    {
+        return ty;
+    }
+
+    @Override
+    public int getInTileWidth()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getInTileHeight()
+    {
+        return 1;
     }
 
     @Override
@@ -131,27 +174,75 @@ public class TileGame extends FeaturableModel implements Tile
     }
 
     @Override
-    public int getInTileX()
+    public double getX()
     {
-        return inTileX;
+        return x;
     }
 
     @Override
-    public int getInTileY()
+    public double getY()
     {
-        return inTileY;
+        return y;
+    }
+
+    /*
+     * Featurable
+     */
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Does nothing by default.
+     * </p>
+     */
+    @Override
+    public void checkListener(Object listener)
+    {
+        // Nothing by default
     }
 
     @Override
-    public int getInTileWidth()
+    public final void addFeature(Feature feature)
     {
-        return 1;
+        feature.prepare(this);
+        features.add(feature);
     }
 
     @Override
-    public int getInTileHeight()
+    public final <T extends Feature> T addFeatureAndGet(T feature)
     {
-        return 1;
+        addFeature(feature);
+        return feature;
+    }
+
+    @Override
+    public final <C extends Feature> C getFeature(Class<C> feature)
+    {
+        return features.get(feature);
+    }
+
+    @Override
+    public final Iterable<Feature> getFeatures()
+    {
+        return features.getFeatures();
+    }
+
+    @Override
+    public final Iterable<Class<? extends Feature>> getFeaturesType()
+    {
+        return features.getFeaturesType();
+    }
+
+    @Override
+    public final boolean hasFeature(Class<? extends Feature> feature)
+    {
+        return features.contains(feature);
+    }
+
+    @Override
+    public Media getMedia()
+    {
+        return null;
     }
 
     /*
@@ -163,12 +254,11 @@ public class TileGame extends FeaturableModel implements Tile
     {
         final int prime = 31;
         int result = 1;
+        result = prime * result + number;
+        result = prime * result + tx;
+        result = prime * result + ty;
         result = prime * result + width;
         result = prime * result + height;
-        result = prime * result + inTileX;
-        result = prime * result + inTileY;
-        result = prime * result + sheet.hashCode();
-        result = prime * result + number;
         return result;
     }
 
@@ -185,24 +275,21 @@ public class TileGame extends FeaturableModel implements Tile
         }
         final TileGame other = (TileGame) object;
         return number == other.number
+               && tx == other.tx
+               && ty == other.ty
                && width == other.width
-               && height == other.height
-               && inTileX == other.inTileX
-               && inTileY == other.inTileY
-               && sheet.equals(other.sheet);
+               && height == other.height;
     }
 
     @Override
     public String toString()
     {
-        return new StringBuilder().append("sheet = ")
-                                  .append(sheet)
-                                  .append(" | number = ")
+        return new StringBuilder().append("number = ")
                                   .append(number)
                                   .append(" | tx = ")
-                                  .append(inTileX)
+                                  .append(tx)
                                   .append(" | ty = ")
-                                  .append(inTileY)
+                                  .append(ty)
                                   .toString();
     }
 }

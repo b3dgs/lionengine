@@ -22,6 +22,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,11 +34,12 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.ViewerMock;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBufferMock;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
 
 /**
  * Test {@link Minimap}.
@@ -71,14 +73,16 @@ public final class MinimapTest
     public void testMinimap()
     {
         final MapTileGame map = new MapTileGame();
-        map.create(1, 1, 3, 3);
+        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
+        map.create(40, 40, 3, 3);
+        map.setTile(0, 0, 0);
 
         final Minimap minimap = new Minimap(map);
         final Media config = Medias.create("minimap.xml");
-        final Map<TileRef, ColorRgba> tiles = new HashMap<>();
-        tiles.put(new TileRef(0, 0), ColorRgba.RED);
-        tiles.put(new TileRef(0, 1), ColorRgba.BLUE);
-        tiles.put(new TileRef(1, 0), ColorRgba.GREEN);
+        final Map<Integer, ColorRgba> tiles = new HashMap<>();
+        tiles.put(Integer.valueOf(0), ColorRgba.RED);
+        tiles.put(Integer.valueOf(1), ColorRgba.BLUE);
+        tiles.put(Integer.valueOf(0), ColorRgba.GREEN);
 
         minimap.automaticColor(config);
         minimap.loadPixelConfig(config);

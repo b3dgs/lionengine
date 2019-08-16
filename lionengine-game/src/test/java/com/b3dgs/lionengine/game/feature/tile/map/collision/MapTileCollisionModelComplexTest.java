@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -43,7 +44,6 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -143,7 +143,7 @@ public final class MapTileCollisionModelComplexTest
 
     private TileGroup createGroup(String group, int number)
     {
-        return new TileGroup(group, TileGroupType.NONE, Arrays.asList(new TileRef(0, number)));
+        return new TileGroup(group, TileGroupType.NONE, new HashSet<>(Arrays.asList(Integer.valueOf(number))));
     }
 
     /**
@@ -201,8 +201,8 @@ public final class MapTileCollisionModelComplexTest
                                  int side,
                                  double speedX)
     {
-        map.setTile(tx1, ty1, Integer.valueOf(0), n1);
-        map.setTile(tx2, ty2, Integer.valueOf(0), n2);
+        map.setTile(tx1, ty1, n1);
+        map.setTile(tx2, ty2, n2);
         loadCollisions();
         transformable = createObject();
         transformable.teleport(x, y);

@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.GroupTransition;
@@ -46,7 +45,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionType;
 public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
 {
     /** Circuits as key. */
-    private final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>();
+    private final Map<Circuit, Collection<Integer>> circuits = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -100,19 +99,18 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
             final String group = getTransitiveGroup(circuit, tile);
             if (group != null)
             {
-                final TileRef old = new TileRef(tile);
-                final TileRef ref = mapTransition.getTiles(new Transition(TransitionType.CENTER, group, group))
+                final int old = tile.getNumber();
+                final Integer ref = mapTransition.getTiles(new Transition(TransitionType.CENTER, group, group))
                                                  .iterator()
                                                  .next();
-                final Tile newTile = new TileGame(ref.getSheet(),
-                                                  ref.getNumber(),
-                                                  tile.getX(),
-                                                  tile.getY(),
+                final Tile newTile = new TileGame(ref.intValue(),
+                                                  tile.getInTileX(),
+                                                  tile.getInTileY(),
                                                   tile.getWidth(),
                                                   tile.getHeight());
-                map.setTile(newTile.getInTileX(), newTile.getInTileY(), newTile.getSheet(), newTile.getNumber());
+                map.setTile(newTile.getInTileX(), newTile.getInTileY(), newTile.getNumber());
                 mapTransition.resolve(newTile);
-                map.setTile(newTile.getInTileX(), newTile.getInTileY(), old.getSheet(), old.getNumber());
+                map.setTile(newTile.getInTileX(), newTile.getInTileY(), old);
             }
         }
     }
@@ -166,13 +164,13 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
      */
     private void updateTile(Tile tile, Tile neighbor, Circuit circuit)
     {
-        final Iterator<TileRef> iterator = getTiles(circuit).iterator();
+        final Iterator<Integer> iterator = getTiles(circuit).iterator();
         while (iterator.hasNext())
         {
-            final TileRef newTile = iterator.next();
+            final Integer newTile = iterator.next();
             if (mapGroup.getGroup(newTile).equals(mapGroup.getGroup(tile)))
             {
-                map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), newTile.getSheet(), newTile.getNumber());
+                map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), newTile.intValue());
                 break;
             }
         }
@@ -290,7 +288,7 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     }
 
     @Override
-    public void loadCircuits(Map<Circuit, Collection<TileRef>> circuits)
+    public void loadCircuits(Map<Circuit, Collection<Integer>> circuits)
     {
         this.circuits.clear();
         this.circuits.putAll(circuits);
@@ -308,7 +306,7 @@ public class MapTileCircuitModel extends FeatureModel implements MapTileCircuit
     }
 
     @Override
-    public Collection<TileRef> getTiles(Circuit circuit)
+    public Collection<Integer> getTiles(Circuit circuit)
     {
         if (!circuits.containsKey(circuit))
         {

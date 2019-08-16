@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.ROAD;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
@@ -107,11 +106,11 @@ public final class MapTileCircuitModelTest
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final MapTileCircuit mapCircuit = map.getFeature(MapTileCircuitModel.class);
 
-        map.setTile(5, 6, SHEET, TILE_ROAD);
-        map.setTile(5, 4, SHEET, TILE_ROAD);
-        map.setTile(5, 5, SHEET, TILE_ROAD);
-        map.setTile(4, 5, SHEET, TILE_ROAD);
-        map.setTile(6, 5, SHEET, TILE_ROAD);
+        map.setTile(5, 6, TILE_ROAD);
+        map.setTile(5, 4, TILE_ROAD);
+        map.setTile(5, 5, TILE_ROAD);
+        map.setTile(4, 5, TILE_ROAD);
+        map.setTile(6, 5, TILE_ROAD);
 
         mapCircuit.resolve(map.getTile(5, 5));
 
@@ -128,7 +127,7 @@ public final class MapTileCircuitModelTest
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final MapTileCircuit mapCircuit = map.getFeature(MapTileCircuitModel.class);
 
-        map.setTile(5, 5, SHEET, TILE_ROAD);
+        map.setTile(5, 5, TILE_ROAD);
         final Tile newTile = map.getTile(5, 5);
         mapCircuit.resolve(newTile);
 

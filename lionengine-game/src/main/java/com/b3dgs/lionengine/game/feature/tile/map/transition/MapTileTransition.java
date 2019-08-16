@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Represents the transition handling between two different groups of tiles.
@@ -52,7 +51,7 @@ public interface MapTileTransition extends Feature
      * 
      * @param transitions The transitions data.
      */
-    void loadTransitions(Map<Transition, Collection<TileRef>> transitions);
+    void loadTransitions(Map<Transition, Collection<Integer>> transitions);
 
     /**
      * Resolve transitions by updating tiles if necessary.
@@ -69,7 +68,7 @@ public interface MapTileTransition extends Feature
      * @param groupOut The transition with this group.
      * @return The tile transition with the group.
      */
-    Transition getTransition(TileRef tile, String groupOut);
+    Transition getTransition(Integer tile, String groupOut);
 
     /**
      * Get the tile transition.
@@ -102,5 +101,5 @@ public interface MapTileTransition extends Feature
      * @param transition The transition reference.
      * @return The associated tiles.
      */
-    Collection<TileRef> getTiles(Transition transition);
+    Collection<Integer> getTiles(Transition transition);
 }

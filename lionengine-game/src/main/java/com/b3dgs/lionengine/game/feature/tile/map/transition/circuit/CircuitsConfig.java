@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Find all tiles circuits and extract them to an XML file.
@@ -62,13 +61,13 @@ public final class CircuitsConfig
      * @return The circuits imported.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<Circuit, Collection<TileRef>> imports(Media circuitsConfig)
+    public static Map<Circuit, Collection<Integer>> imports(Media circuitsConfig)
     {
         Check.notNull(circuitsConfig);
 
         final Xml root = new Xml(circuitsConfig);
         final Collection<Xml> nodesCircuit = root.getChildren(NODE_CIRCUIT);
-        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<>(nodesCircuit.size());
+        final Map<Circuit, Collection<Integer>> circuits = new HashMap<>(nodesCircuit.size());
 
         for (final Xml nodeCircuit : nodesCircuit)
         {
@@ -78,11 +77,11 @@ public final class CircuitsConfig
             final CircuitType type = CircuitType.from(circuitType);
             final Circuit circuit = new Circuit(type, groupIn, groupOut);
 
-            final Collection<Xml> nodesTileRef = nodeCircuit.getChildren(TileConfig.NODE_TILE);
-            final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
-            nodesTileRef.clear();
+            final Collection<Xml> nodesTile = nodeCircuit.getChildren(TileConfig.NODE_TILE);
+            final Collection<Integer> tiles = importTiles(nodesTile);
+            nodesTile.clear();
 
-            circuits.put(circuit, tilesRef);
+            circuits.put(circuit, tiles);
         }
         nodesCircuit.clear();
 
@@ -106,7 +105,7 @@ public final class CircuitsConfig
         Check.notNull(groupsConfig);
 
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
-        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels, sheetsConfig, groupsConfig);
+        final Map<Circuit, Collection<Integer>> circuits = extractor.getCircuits(levels, sheetsConfig, groupsConfig);
         exports(media, circuits);
     }
 
@@ -117,14 +116,14 @@ public final class CircuitsConfig
      * @param circuits The circuits reference (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, Map<Circuit, Collection<TileRef>> circuits)
+    public static void exports(Media media, Map<Circuit, Collection<Integer>> circuits)
     {
         Check.notNull(media);
         Check.notNull(circuits);
 
         final Xml nodeCircuits = new Xml(NODE_CIRCUITS);
 
-        for (final Map.Entry<Circuit, Collection<TileRef>> entry : circuits.entrySet())
+        for (final Map.Entry<Circuit, Collection<Integer>> entry : circuits.entrySet())
         {
             final Circuit circuit = entry.getKey();
             final Xml nodeCircuit = nodeCircuits.createChild(NODE_CIRCUIT);
@@ -141,32 +140,32 @@ public final class CircuitsConfig
     /**
      * Import all tiles from their nodes.
      * 
-     * @param nodesTileRef The tiles nodes (must not be <code>null</code>).
-     * @return The imported tiles ref.
+     * @param nodesTile The tiles nodes (must not be <code>null</code>).
+     * @return The imported tiles.
      */
-    private static Collection<TileRef> importTiles(Collection<Xml> nodesTileRef)
+    private static Collection<Integer> importTiles(Collection<Xml> nodesTile)
     {
-        final Collection<TileRef> tilesRef = new HashSet<>(nodesTileRef.size());
-        for (final Xml nodeTileRef : nodesTileRef)
+        final Collection<Integer> tiles = new HashSet<>(nodesTile.size());
+        for (final Xml nodeTile : nodesTile)
         {
-            final TileRef tileRef = TileConfig.imports(nodeTileRef);
-            tilesRef.add(tileRef);
+            final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
+            tiles.add(tile);
         }
-        return tilesRef;
+        return tiles;
     }
 
     /**
      * Export all tiles for the circuit.
      * 
      * @param nodeCircuit The circuit node (must not be <code>null</code>).
-     * @param tilesRef The circuit tiles ref.
+     * @param tiles The circuit tiles.
      */
-    private static void exportTiles(Xml nodeCircuit, Collection<TileRef> tilesRef)
+    private static void exportTiles(Xml nodeCircuit, Collection<Integer> tiles)
     {
-        for (final TileRef tileRef : tilesRef)
+        for (final Integer tile : tiles)
         {
-            final Xml nodeTileRef = TileConfig.exports(tileRef);
-            nodeCircuit.add(nodeTileRef);
+            final Xml nodeTile = TileConfig.exports(tile.intValue());
+            nodeCircuit.add(nodeTile);
         }
     }
 

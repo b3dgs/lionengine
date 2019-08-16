@@ -44,10 +44,9 @@ public final class TileConfigTest
     public void testImports()
     {
         final Xml nodeTile = new Xml(TileConfig.NODE_TILE);
-        nodeTile.writeInteger(TileConfig.ATT_TILE_SHEET, 0);
         nodeTile.writeInteger(TileConfig.ATT_TILE_NUMBER, 1);
 
-        assertEquals(new TileRef(0, 1), TileConfig.imports(nodeTile));
+        assertEquals(1, TileConfig.imports(nodeTile));
     }
 
     /**
@@ -56,11 +55,9 @@ public final class TileConfigTest
     @Test
     public void testExports()
     {
-        final int sheet = 0;
         final int number = 1;
-        final Xml nodeTile = TileConfig.exports(new TileRef(sheet, number));
+        final Xml nodeTile = TileConfig.exports(number);
 
-        assertEquals(sheet, nodeTile.readInteger(TileConfig.ATT_TILE_SHEET));
         assertEquals(number, nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER));
     }
 }

@@ -45,12 +45,11 @@ final class UtilMapTilePersister
         map.create(16, 32, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
 
-        final Integer sheet = Integer.valueOf(0);
         for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {
             for (int ty = 1; ty < map.getInTileHeight(); ty++)
             {
-                map.setTile(tx, ty, sheet, tx * ty);
+                map.setTile(tx, ty, tx * ty);
             }
         }
         return map;

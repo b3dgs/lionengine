@@ -19,10 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -56,20 +54,20 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * <p>
  * Or import a map from a level rip with {@link #create(Media, Media)}.
  * </p>
- * 
- * @see Tile
  */
 public class MapTileGame extends FeaturableModel implements MapTile
 {
-    /** Error sheet missing message. */
-    static final String ERROR_SHEET_MISSING = "Sheet missing: ";
     /** Inconsistent tile size. */
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
+    /** Inconsistent tile count. */
+    private static final String ERROR_TILE_COUNT = "Tile count is inconsistent between sheets !";
 
     /** Tile set listeners. */
     private final ListenableModel<TileSetListener> listenable = new ListenableModel<>();
-    /** Sheets list. */
-    private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
+    /** Sheets defined. */
+    private SpriteTiled[] sheets;
+    /** Tiles number per sheet. */
+    private int tilesPerSheet = -1;
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Tile width. */
@@ -130,6 +128,39 @@ public class MapTileGame extends FeaturableModel implements MapTile
         widthInTile = newWidth;
         heightInTile = newHeight;
         radius = (int) Math.ceil(StrictMath.sqrt(newWidth * (double) newWidth + newHeight * (double) newHeight));
+    }
+
+    /**
+     * Check tiles per sheet integrity.
+     * 
+     * @param sheet The sheet to check.
+     */
+    private void checkTilesPerSheet(SpriteTiled sheet)
+    {
+        final int tilesCount = sheet.getTilesHorizontal() * sheet.getTilesVertical();
+        if (tilesPerSheet < 0)
+        {
+            tilesPerSheet = tilesCount;
+        }
+        else if (tilesCount != tilesPerSheet)
+        {
+            throw new LionEngineException(ERROR_TILE_COUNT);
+        }
+    }
+
+    /**
+     * Check tile size integrity.
+     * 
+     * @param sheet The sheet to check.
+     */
+    private void checkTileSize(SpriteTiled sheet)
+    {
+        if ((tileWidth != 0 || tileHeight != 0)
+            && tileWidth != sheet.getTileWidth()
+            && tileHeight != sheet.getTileHeight())
+        {
+            throw new LionEngineException(ERROR_TILE_SIZE);
+        }
     }
 
     /*
@@ -203,21 +234,20 @@ public class MapTileGame extends FeaturableModel implements MapTile
     }
 
     @Override
-    public void loadSheets(Collection<SpriteTiled> sheets)
+    public void loadSheets(List<SpriteTiled> sheets)
     {
-        int sheetId = 0;
-        for (final SpriteTiled sheet : sheets)
+        final int sheetsCount = sheets.size();
+        this.sheets = new SpriteTiled[sheetsCount];
+
+        for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
-            this.sheets.put(Integer.valueOf(sheetId), sheet);
-            if ((tileWidth != 0 || tileHeight != 0)
-                && tileWidth != sheet.getTileWidth()
-                && tileHeight != sheet.getTileHeight())
-            {
-                throw new LionEngineException(ERROR_TILE_SIZE);
-            }
+            final SpriteTiled sheet = sheets.get(sheetId);
+            checkTilesPerSheet(sheet);
+            checkTileSize(sheet);
+
+            this.sheets[sheetId] = sheet;
             tileWidth = sheet.getTileWidth();
             tileHeight = sheet.getTileHeight();
-            sheetId++;
         }
     }
 
@@ -230,16 +260,22 @@ public class MapTileGame extends FeaturableModel implements MapTile
         tileWidth = config.getTileWidth();
         tileHeight = config.getTileHeight();
 
-        sheets.clear();
-        int sheetId = 0;
-        for (final String sheet : config.getSheets())
+        final List<String> configSheets = config.getSheets();
+        final int sheetsCount = configSheets.size();
+        sheets = new SpriteTiled[sheetsCount];
+
+        for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
-            final Media media = Medias.create(sheetsConfig.getParentPath(), sheet);
-            final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-            sprite.load();
-            sprite.prepare();
-            sheets.put(Integer.valueOf(sheetId), sprite);
-            sheetId++;
+            final String sheetFile = configSheets.get(sheetId);
+            final Media sheetMedia = Medias.create(sheetsConfig.getParentPath(), sheetFile);
+            final SpriteTiled sheet = Drawable.loadSpriteTiled(sheetMedia, tileWidth, tileHeight);
+            sheet.load();
+            sheet.prepare();
+
+            checkTilesPerSheet(sheet);
+            checkTileSize(sheet);
+
+            sheets[sheetId] = sheet;
         }
     }
 
@@ -271,7 +307,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
     }
 
     @Override
-    public void setTile(int tx, int ty, Integer sheet, int number)
+    public void setTile(int tx, int ty, int number)
     {
         Check.inferiorStrict(tx, getInTileWidth());
         Check.inferiorStrict(ty, getInTileHeight());
@@ -279,10 +315,14 @@ public class MapTileGame extends FeaturableModel implements MapTile
         TileGame tile = tiles.get(ty).get(tx);
         if (tile == null)
         {
-            tile = new TileGame(sheet, number, tx * tileWidth, ty * tileHeight, tileWidth, tileHeight);
+            tile = new TileGame(number, tx, ty, tileWidth, tileHeight);
             tiles.get(ty).set(tx, tile);
         }
-        tile.set(sheet, number);
+        tile.set(number);
+        if (tilesPerSheet > 0)
+        {
+            tile.setSheet((int) Math.floor(number / (double) tilesPerSheet));
+        }
 
         for (int i = 0; i < listenable.size(); i++)
         {
@@ -383,25 +423,25 @@ public class MapTileGame extends FeaturableModel implements MapTile
     }
 
     @Override
-    public Collection<Integer> getSheets()
+    public SpriteTiled getSheet(int sheetId)
     {
-        return sheets.keySet();
-    }
-
-    @Override
-    public SpriteTiled getSheet(Integer sheet)
-    {
-        if (!sheets.containsKey(sheet))
-        {
-            throw new LionEngineException(ERROR_SHEET_MISSING + sheet.toString());
-        }
-        return sheets.get(sheet);
+        return sheets[sheetId];
     }
 
     @Override
     public int getSheetsNumber()
     {
-        return sheets.size();
+        if (sheets == null)
+        {
+            return 0;
+        }
+        return sheets.length;
+    }
+
+    @Override
+    public int getTilesPerSheet()
+    {
+        return tilesPerSheet;
     }
 
     @Override

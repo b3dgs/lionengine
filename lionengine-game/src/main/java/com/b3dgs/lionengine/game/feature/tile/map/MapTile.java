@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
@@ -107,7 +108,7 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
      * @param sheets The sheets reference.
      * @throws LionEngineException If inconsistent tile size.
      */
-    void loadSheets(Collection<SpriteTiled> sheets);
+    void loadSheets(List<SpriteTiled> sheets);
 
     /**
      * Load map sheets (tiles surfaces) from directory. Must be called before rendering map.
@@ -131,11 +132,10 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
      * 
      * @param tx The horizontal tile location.
      * @param ty The vertical tile location.
-     * @param sheet The sheet number (must be positive or equal to 0).
      * @param number The tile number on sheet (must be positive or equal to 0).
      * @throws LionEngineException If outside map range.
      */
-    void setTile(int tx, int ty, Integer sheet, int number);
+    void setTile(int tx, int ty, int number);
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
@@ -202,20 +202,13 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
     int getInTileY(Localizable localizable);
 
     /**
-     * Get list of sheets id.
-     * 
-     * @return The set of sheets id.
-     */
-    Collection<Integer> getSheets();
-
-    /**
      * Get sheet from its id.
      * 
-     * @param sheet The sheet id.
+     * @param sheetId The sheet id.
      * @return The sheet found.
      * @throws LionEngineException If sheet not found.
      */
-    SpriteTiled getSheet(Integer sheet);
+    SpriteTiled getSheet(int sheetId);
 
     /**
      * Get the number of used sheets.
@@ -223,6 +216,13 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
      * @return The number of used sheets.
      */
     int getSheetsNumber();
+
+    /**
+     * Get the number of tiles per sheet.
+     * 
+     * @return The tile number per sheet.
+     */
+    int getTilesPerSheet();
 
     /**
      * Get number of active tiles (which are not <code>null</code>).

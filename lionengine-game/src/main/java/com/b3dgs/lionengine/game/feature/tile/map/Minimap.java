@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -60,7 +59,7 @@ public class Minimap implements Image
     private static final ColorRgba DEFAULT_COLOR = ColorRgba.WHITE;
 
     /** Pixel configuration. */
-    private Map<TileRef, ColorRgba> pixels = new HashMap<>();
+    private Map<Integer, ColorRgba> pixels = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Minimap image reference. */
@@ -104,10 +103,11 @@ public class Minimap implements Image
      */
     public void automaticColor()
     {
-        final Map<TileRef, ColorRgba> colors = new HashMap<>();
-        for (final Integer sheet : map.getSheets())
+        final Map<Integer, ColorRgba> colors = new HashMap<>();
+        final int sheetsCount = map.getSheetsNumber();
+        for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
-            computeSheet(colors, sheet);
+            computeSheet(colors, sheetId);
         }
         pixels = colors;
     }
@@ -139,14 +139,14 @@ public class Minimap implements Image
         }
         else
         {
-            final TileRef ref = new TileRef(tile.getSheet(), tile.getNumber());
-            if (!pixels.containsKey(ref))
+            final Integer number = tile.getKey();
+            if (!pixels.containsKey(number))
             {
                 color = DEFAULT_COLOR;
             }
             else
             {
-                color = pixels.get(ref);
+                color = pixels.get(number);
             }
         }
         return color;
@@ -156,11 +156,11 @@ public class Minimap implements Image
      * Compute the current sheet.
      * 
      * @param colors The colors data.
-     * @param sheet The sheet number.
+     * @param sheetId The sheet id.
      */
-    private void computeSheet(Map<TileRef, ColorRgba> colors, Integer sheet)
+    private void computeSheet(Map<Integer, ColorRgba> colors, int sheetId)
     {
-        final SpriteTiled tiles = map.getSheet(sheet);
+        final SpriteTiled tiles = map.getSheet(sheetId);
         final ImageBuffer tilesSurface = tiles.getSurface();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -176,7 +176,7 @@ public class Minimap implements Image
 
                 if (!(NO_TILE.equals(color) || color.getAlpha() == 0))
                 {
-                    colors.put(new TileRef(sheet, number), color);
+                    colors.put(Integer.valueOf(number), color);
                 }
                 number++;
             }

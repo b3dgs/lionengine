@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
@@ -36,7 +35,7 @@ public interface CircuitsExtractor
      * @param groupsConfig The groups configuration media.
      * @return The circuits found with their associated tiles.
      */
-    Map<Circuit, Collection<TileRef>> getCircuits(Collection<Media> levels, Media sheetsConfig, Media groupsConfig);
+    Map<Circuit, Collection<Integer>> getCircuits(Collection<Media> levels, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Get map tile circuits from existing maps.
@@ -44,5 +43,5 @@ public interface CircuitsExtractor
      * @param maps The maps reference.
      * @return The circuits found with their associated tiles.
      */
-    Map<Circuit, Collection<TileRef>> getCircuits(Collection<MapTile> maps);
+    Map<Circuit, Collection<Integer>> getCircuits(Collection<MapTile> maps);
 }

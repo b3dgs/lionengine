@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Find all tiles transitions and extract them to an XML file.
@@ -60,11 +59,11 @@ public final class TransitionsConfig
      * @return The transitions imported with associated tiles.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<Transition, Collection<TileRef>> imports(Media config)
+    public static Map<Transition, Collection<Integer>> imports(Media config)
     {
         final Xml root = new Xml(config);
         final Collection<Xml> nodesTransition = root.getChildren(NODE_TRANSITION);
-        final Map<Transition, Collection<TileRef>> transitions = new HashMap<>(nodesTransition.size());
+        final Map<Transition, Collection<Integer>> transitions = new HashMap<>(nodesTransition.size());
 
         for (final Xml nodeTransition : nodesTransition)
         {
@@ -74,11 +73,11 @@ public final class TransitionsConfig
             final TransitionType type = TransitionType.from(transitionType);
             final Transition transition = new Transition(type, groupIn, groupOut);
 
-            final Collection<Xml> nodesTileRef = nodeTransition.getChildren(TileConfig.NODE_TILE);
-            final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
-            nodesTileRef.clear();
+            final Collection<Xml> nodesTile = nodeTransition.getChildren(TileConfig.NODE_TILE);
+            final Collection<Integer> tiles = importTiles(nodesTile);
+            nodesTile.clear();
 
-            transitions.put(transition, tilesRef);
+            transitions.put(transition, tiles);
         }
         nodesTransition.clear();
 
@@ -102,7 +101,7 @@ public final class TransitionsConfig
         Check.notNull(groupsMedia);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
-        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(levels,
+        final Map<Transition, Collection<Integer>> transitions = extractor.getTransitions(levels,
                                                                                           sheetsMedia,
                                                                                           groupsMedia);
         exports(media, transitions);
@@ -115,14 +114,14 @@ public final class TransitionsConfig
      * @param transitions The transitions reference (must not be <code>null</code>).
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, Map<Transition, Collection<TileRef>> transitions)
+    public static void exports(Media media, Map<Transition, Collection<Integer>> transitions)
     {
         Check.notNull(media);
         Check.notNull(transitions);
 
         final Xml nodeTransitions = new Xml(NODE_TRANSITIONS);
 
-        for (final Map.Entry<Transition, Collection<TileRef>> entry : transitions.entrySet())
+        for (final Map.Entry<Transition, Collection<Integer>> entry : transitions.entrySet())
         {
             final Transition transition = entry.getKey();
 
@@ -140,34 +139,34 @@ public final class TransitionsConfig
     /**
      * Import all tiles from their nodes.
      * 
-     * @param nodesTileRef The tiles nodes (must not be <code>null</code>).
-     * @return The imported tiles ref.
+     * @param nodesTile The tiles nodes (must not be <code>null</code>).
+     * @return The imported tiles.
      */
-    private static Collection<TileRef> importTiles(Collection<Xml> nodesTileRef)
+    private static Collection<Integer> importTiles(Collection<Xml> nodesTile)
     {
-        final Collection<TileRef> tilesRef = new HashSet<>(nodesTileRef.size());
+        final Collection<Integer> tiles = new HashSet<>(nodesTile.size());
 
-        for (final Xml nodeTileRef : nodesTileRef)
+        for (final Xml nodeTile : nodesTile)
         {
-            final TileRef tileRef = TileConfig.imports(nodeTileRef);
-            tilesRef.add(tileRef);
+            final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
+            tiles.add(tile);
         }
 
-        return tilesRef;
+        return tiles;
     }
 
     /**
      * Export all tiles for the transition.
      * 
      * @param nodeTransition The transition node (must not be <code>null</code>).
-     * @param tilesRef The transition tiles ref (must not be <code>null</code>).
+     * @param tiles The transition tiles (must not be <code>null</code>).
      */
-    private static void exportTiles(Xml nodeTransition, Collection<TileRef> tilesRef)
+    private static void exportTiles(Xml nodeTransition, Collection<Integer> tiles)
     {
-        for (final TileRef tileRef : tilesRef)
+        for (final Integer tile : tiles)
         {
-            final Xml nodeTileRef = TileConfig.exports(tileRef);
-            nodeTransition.add(nodeTileRef);
+            final Xml nodeTile = TileConfig.exports(tile.intValue());
+            nodeTransition.add(nodeTile);
         }
     }
 

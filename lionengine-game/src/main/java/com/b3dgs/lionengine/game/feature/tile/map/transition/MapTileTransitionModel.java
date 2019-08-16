@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 
@@ -131,9 +130,9 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     }
 
     /** Tile as key. */
-    private final Map<TileRef, Collection<Transition>> tiles = new HashMap<>();
+    private final Map<Integer, Collection<Transition>> tiles = new HashMap<>();
     /** Transitions as key. */
-    private final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
+    private final Map<Transition, Collection<Integer>> transitions = new HashMap<>();
     /** Existing group links. */
     private final Collection<GroupTransition> groupLinks = new HashSet<>();
     /** Map reference. */
@@ -287,13 +286,12 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
                             Tile neighbor,
                             Transition transition)
     {
-        final Iterator<TileRef> iterator = getTiles(transition).iterator();
+        final Iterator<Integer> iterator = getTiles(transition).iterator();
         if (iterator.hasNext())
         {
-            final TileRef ref = iterator.next();
-            map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), ref.getSheet(), ref.getNumber());
-            resolved.add(new TileGame(ref.getSheet(),
-                                      ref.getNumber(),
+            final Integer ref = iterator.next();
+            map.setTile(neighbor.getInTileX(), neighbor.getInTileY(), ref.intValue());
+            resolved.add(new TileGame(ref.intValue(),
                                       neighbor.getInTileX(),
                                       neighbor.getInTileY(),
                                       map.getTileWidth(),
@@ -301,10 +299,9 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
         }
         else
         {
-            final Tile newTile = new TileGame(tile.getSheet(),
-                                              tile.getNumber(),
-                                              neighbor.getX(),
-                                              neighbor.getY(),
+            final Tile newTile = new TileGame(tile.getNumber(),
+                                              neighbor.getInTileX(),
+                                              neighbor.getInTileY(),
                                               tile.getWidth(),
                                               tile.getHeight());
             final String groupA = mapGroup.getGroup(tile);
@@ -316,7 +313,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
                     || groupA.equals(groupB)
                     || groupLinks.contains(new GroupTransition(groupA, groupB))))
             {
-                map.setTile(newTile.getInTileX(), newTile.getInTileY(), newTile.getSheet(), newTile.getNumber());
+                map.setTile(newTile.getInTileX(), newTile.getInTileY(), newTile.getNumber());
                 toResolve.add(newTile);
             }
             resolved.add(newTile);
@@ -332,7 +329,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     private void checkTransitives(Collection<Tile> resolved, Tile tile)
     {
         boolean isTransitive = false;
-        final TileRef old = new TileRef(tile);
+        final Integer old = tile.getKey();
         for (final Tile neighbor : map.getNeighbors(tile))
         {
             final String group = mapGroup.getGroup(old);
@@ -358,7 +355,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
         // Restore initial tile once transition solved by transitive
         if (isTransitive)
         {
-            map.setTile(tile.getInTileX(), tile.getInTileY(), old.getSheet(), old.getNumber());
+            map.setTile(tile.getInTileX(), tile.getInTileY(), old.intValue());
         }
     }
 
@@ -374,22 +371,21 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     {
         final String transitiveOut = transitive.getOut();
         final Transition transition = new Transition(TransitionType.CENTER, transitiveOut, transitiveOut);
-        final Collection<TileRef> refs = getTiles(transition);
+        final Collection<Integer> refs = getTiles(transition);
         if (!refs.isEmpty())
         {
-            final TileRef ref = refs.iterator().next();
+            final Integer ref = refs.iterator().next();
 
             // Replace user tile with the needed tile to solve transition (restored later)
-            map.setTile(tile.getInTileX(), tile.getInTileY(), ref.getSheet(), ref.getNumber());
+            map.setTile(tile.getInTileX(), tile.getInTileY(), ref.intValue());
 
             // Replace neighbor with the needed tile to solve transition
-            final Tile newTile2 = new TileGame(ref.getSheet(),
-                                               ref.getNumber(),
-                                               neighbor.getX(),
-                                               neighbor.getY(),
+            final Tile newTile2 = new TileGame(ref.intValue(),
+                                               neighbor.getInTileX(),
+                                               neighbor.getInTileY(),
                                                neighbor.getWidth(),
                                                neighbor.getHeight());
-            map.setTile(newTile2.getInTileX(), newTile2.getInTileY(), newTile2.getSheet(), newTile2.getNumber());
+            map.setTile(newTile2.getInTileX(), newTile2.getInTileY(), newTile2.getNumber());
             resolved.addAll(resolve(newTile2));
         }
     }
@@ -402,7 +398,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
      */
     private boolean isCenter(Tile tile)
     {
-        for (final Transition transition : tiles.get(new TileRef(tile)))
+        for (final Transition transition : tiles.get(tile.getKey()))
         {
             if (TransitionType.CENTER == transition.getType())
             {
@@ -430,16 +426,16 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     }
 
     @Override
-    public void loadTransitions(Map<Transition, Collection<TileRef>> transitions)
+    public void loadTransitions(Map<Transition, Collection<Integer>> transitions)
     {
         this.transitions.clear();
         this.transitions.putAll(transitions);
 
         tiles.clear();
-        for (final Entry<Transition, Collection<TileRef>> entry : this.transitions.entrySet())
+        for (final Entry<Transition, Collection<Integer>> entry : this.transitions.entrySet())
         {
             final Transition transition = entry.getKey();
-            for (final TileRef tileRef : entry.getValue())
+            for (final Integer tileRef : entry.getValue())
             {
                 if (!tiles.containsKey(tileRef))
                 {
@@ -477,7 +473,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     }
 
     @Override
-    public Transition getTransition(TileRef tile, String groupOut)
+    public Transition getTransition(Integer tile, String groupOut)
     {
         final String groupIn = mapGroup.getGroup(tile);
         if (tiles.containsKey(tile))
@@ -496,7 +492,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     @Override
     public Transition getTransition(Tile tile, String group)
     {
-        return getTransition(new TileRef(tile), group);
+        return getTransition(tile.getKey(), group);
     }
 
     @Override
@@ -512,7 +508,7 @@ public class MapTileTransitionModel extends FeatureModel implements MapTileTrans
     }
 
     @Override
-    public Collection<TileRef> getTiles(Transition transition)
+    public Collection<Integer> getTiles(Transition transition)
     {
         if (!transitions.containsKey(transition))
         {

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TREE;
@@ -196,7 +195,7 @@ public final class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        map.setTile(3, 3, SHEET, TILE_TRANSITION);
+        map.setTile(3, 3, TILE_TRANSITION);
 
         assertNull(get(map, 3, 3));
     }
@@ -212,8 +211,8 @@ public final class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        map.setTile(1, 1, SHEET, TILE_GROUND);
-        map.setTile(3, 3, SHEET, TILE_TREE);
+        map.setTile(1, 1, TILE_GROUND);
+        map.setTile(3, 3, TILE_TREE);
 
         assertNull(get(map, 2, 2));
     }
@@ -225,22 +224,9 @@ public final class MapTransitionExtractorTest
     public void testNullNeighbor()
     {
         final MapTile map = UtilMap.createMap(7);
-        map.setTile(4, 2, SHEET, TILE_WATER);
-        map.setTile(3, 3, SHEET, TILE_WATER);
+        map.setTile(4, 2, TILE_WATER);
+        map.setTile(3, 3, TILE_WATER);
 
         assertEquals(new Transition(TransitionType.CENTER, WATER, WATER), get(map, 3, 3));
-    }
-
-    /**
-     * Check the transition with different sheets.
-     */
-    @Test
-    public void testDifferentSheet()
-    {
-        final MapTile map = UtilMap.createMap(7);
-        UtilMap.fill(map, TILE_WATER);
-        map.setTile(3, 3, Integer.valueOf(1), TILE_WATER);
-
-        assertNull(get(map, 3, 3));
     }
 }

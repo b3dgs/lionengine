@@ -23,6 +23,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -70,7 +71,7 @@ public final class TileGroupsConfigTest
     public void testExportsImports()
     {
         final Collection<TileGroup> groups = new ArrayList<>();
-        groups.add(new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
+        groups.add(new TileGroup("test", TileGroupType.NONE, new HashSet<>(Arrays.asList(Integer.valueOf(1)))));
 
         final Media config = Medias.create("tilegroups.xml");
         TileGroupsConfig.exports(config, groups);

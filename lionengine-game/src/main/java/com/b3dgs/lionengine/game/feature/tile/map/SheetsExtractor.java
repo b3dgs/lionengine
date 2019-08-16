@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Surface;
@@ -39,13 +40,13 @@ public final class SheetsExtractor
      * @param horizontalTiles The number of horizontal tiles on sheet (inferior or equal to 0 to use automatic).
      * @return The list of tile sheets.
      */
-    public static Collection<SpriteTiled> extract(Collection<ImageBuffer> tiles, int horizontalTiles)
+    public static List<SpriteTiled> extract(Collection<ImageBuffer> tiles, int horizontalTiles)
     {
         final Surface surface = getSheetSize(tiles, horizontalTiles);
         final int horizontals = surface.getWidth();
         final int verticals = surface.getHeight();
         final int tilesPerSheet = Math.min(tiles.size(), horizontals * verticals);
-        final Collection<SpriteTiled> sheets = new ArrayList<>();
+        final List<SpriteTiled> sheets = new ArrayList<>();
 
         ImageBuffer sheet = null;
         Graphic g = null;

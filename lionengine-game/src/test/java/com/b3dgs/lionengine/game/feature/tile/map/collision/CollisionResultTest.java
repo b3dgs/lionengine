@@ -49,7 +49,7 @@ public final class CollisionResultTest
     {
         final Double x = Double.valueOf(1.0);
         final Double y = Double.valueOf(2.0);
-        final Tile tile = new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1);
+        final Tile tile = new TileGame(1, 3, 4, 1, 1);
         final CollisionResult result = new CollisionResult(x, y, tile, formulaX, formulaY);
 
         assertEquals(x, result.getX());
@@ -67,7 +67,7 @@ public final class CollisionResultTest
     @Test
     public void testNoResult()
     {
-        final Tile tile = new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1);
+        final Tile tile = new TileGame(1, 3, 4, 1, 1);
         CollisionResult result = new CollisionResult(null, null, tile, null, null);
 
         assertFalse(result.startWithX("formula"));
@@ -105,7 +105,7 @@ public final class CollisionResultTest
         assertEquals("CollisionResult [x=1.0, y=2.0, fx=formulaX, fy=formulaY]",
                      new CollisionResult(Double.valueOf(1.0),
                                          Double.valueOf(2.0),
-                                         new TileGame(Integer.valueOf(0), 1, 3.0, 4.0, 1, 1),
+                                         new TileGame(1, 3, 4, 1, 1),
                                          formulaX,
                                          formulaY).toString());
     }

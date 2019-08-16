@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertArrayEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TRANSITION2;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TREE;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
@@ -38,7 +37,6 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
@@ -87,7 +85,7 @@ public final class TransitiveGroupTest
 
         assertEquals(WATER, mapGroup.getGroup(map.getTile(15, 15)));
 
-        map.setTile(15, 15, SHEET, TILE_TREE);
+        map.setTile(15, 15, TILE_TREE);
         final Tile tile = map.getTile(15, 15);
         transitive.checkTransitives(tile);
 
@@ -98,7 +96,7 @@ public final class TransitiveGroupTest
         assertTrue(transitive.getTransitives("a", "b").isEmpty());
         assertTrue(transitive.getDirectTransitiveTiles(new Transition(TransitionType.CENTER, "a", "a")).isEmpty());
 
-        assertArrayEquals(Arrays.asList(new TileRef(SHEET, TILE_TRANSITION2)).toArray(),
+        assertArrayEquals(Arrays.asList(Integer.valueOf(TILE_TRANSITION2)).toArray(),
                           transitive.getDirectTransitiveTiles(new Transition(TransitionType.UP_LEFT, WATER, TREE))
                                     .toArray());
 

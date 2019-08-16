@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_TREE;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_WATER;
@@ -92,7 +91,7 @@ public final class MapTileTransitionModelTest
 
         assertEquals(groupOrigin, mapGroup.getGroup(map.getTile(8, 8)));
 
-        map.setTile(8, 8, SHEET, tileNew);
+        map.setTile(8, 8, tileNew);
         final Tile tile = map.getTile(8, 8);
 
         assertEquals(groupNew, mapGroup.getGroup(map.getTile(8, 8)));

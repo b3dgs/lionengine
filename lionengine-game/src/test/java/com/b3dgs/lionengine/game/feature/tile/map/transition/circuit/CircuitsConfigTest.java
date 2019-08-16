@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -98,12 +97,12 @@ public final class CircuitsConfigTest
         map3.create(1, 1, 3, 3);
 
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
-        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(Arrays.asList(map, map3));
+        final Map<Circuit, Collection<Integer>> circuits = extractor.getCircuits(Arrays.asList(map, map3));
 
         final Media media = Medias.create("circuit.xml");
 
         CircuitsConfig.exports(media, circuits);
-        final Map<Circuit, Collection<TileRef>> imported = CircuitsConfig.imports(media);
+        final Map<Circuit, Collection<Integer>> imported = CircuitsConfig.imports(media);
 
         assertEquals(circuits, imported);
 

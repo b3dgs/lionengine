@@ -202,8 +202,7 @@ public final class MapTileGameTest
     @Test
     public void testSetTileError()
     {
-        assertThrows(() -> map.setTile(0, 0, Integer.valueOf(0), 0),
-                     "Invalid argument: 0 is not strictly inferior to 0");
+        assertThrows(() -> map.setTile(0, 0, 0), "Invalid argument: 0 is not strictly inferior to 0");
     }
 
     /**
@@ -214,22 +213,13 @@ public final class MapTileGameTest
     {
         map.create(16, 16, 2, 2);
 
-        map.setTile(0, 0, Integer.valueOf(0), 0);
+        map.setTile(0, 0, 0);
 
         assertNotNull(map.getTile(0, 0));
 
         map.clear();
 
         assertNull(map.getTile(0, 0));
-    }
-
-    /**
-     * Test unknown sheet get.
-     */
-    @Test
-    public void testGetUnknownSheet()
-    {
-        assertThrows(() -> map.getSheet(Integer.valueOf(1)), MapTileGame.ERROR_SHEET_MISSING + 1);
     }
 
     /**
@@ -245,7 +235,7 @@ public final class MapTileGameTest
         assertNull(map.getTile(0, 0));
         assertNull(map.getTileAt(51.0, 68.0));
 
-        map.setTile(0, 0, Integer.valueOf(0), 0);
+        map.setTile(0, 0, 0);
         final Tile tile = map.getTile(0, 0);
 
         assertEquals(1, map.getTilesNumber());
@@ -266,13 +256,13 @@ public final class MapTileGameTest
         final AtomicReference<Tile> set = new AtomicReference<>();
         final TileSetListener listener = tile -> set.set(tile);
         map.addListener(listener);
-        map.setTile(0, 0, Integer.valueOf(0), 0);
+        map.setTile(0, 0, 0);
 
         assertEquals(map.getTile(0, 0), set.get());
 
         set.set(null);
         map.removeListener(listener);
-        map.setTile(0, 0, Integer.valueOf(0), 0);
+        map.setTile(0, 0, 0);
 
         assertNull(set.get());
     }

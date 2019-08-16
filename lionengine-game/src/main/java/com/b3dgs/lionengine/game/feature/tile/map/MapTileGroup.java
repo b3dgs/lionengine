@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map;
 
 import java.util.Collection;
+import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -25,7 +26,6 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Represents the group definition for each tile.
@@ -70,15 +70,7 @@ public interface MapTileGroup extends Feature
      * @param name The group name.
      * @return The associated tiles.
      */
-    Collection<TileRef> getGroup(String name);
-
-    /**
-     * Get the group name of the tile.
-     * 
-     * @param tile The tile reference.
-     * @return The associated group name.
-     */
-    String getGroup(TileRef tile);
+    Set<Integer> getGroup(String name);
 
     /**
      * Get the group name of the tile.
@@ -89,13 +81,12 @@ public interface MapTileGroup extends Feature
     String getGroup(Tile tile);
 
     /**
-     * Get the group name from the sheet and number value.
+     * Get the group name from tile number value.
      * 
-     * @param sheet The sheet number.
      * @param number The tile number on sheet.
      * @return The associated group name.
      */
-    String getGroup(Integer sheet, int number);
+    String getGroup(Integer number);
 
     /**
      * Get the group type from its name.
@@ -118,5 +109,5 @@ public interface MapTileGroup extends Feature
      * 
      * @return The groups list.
      */
-    Collection<String> getGroups();
+    Set<String> getGroups();
 }

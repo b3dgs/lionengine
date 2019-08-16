@@ -77,13 +77,13 @@ public final class MapTileViewerModelTest
     @Test
     public void testViewer()
     {
-        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 80, 80)));
+        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
 
         mapViewer.render(g);
 
-        map.create(80, 80, 2, 2);
-        map.setTile(0, 0, Integer.valueOf(0), 0);
-        map.setTile(1, 1, Integer.valueOf(0), 1);
+        map.create(40, 40, 2, 2);
+        map.setTile(0, 0, 0);
+        map.setTile(1, 1, 1);
 
         final AtomicBoolean rendered = new AtomicBoolean();
         final MapTileRenderer renderer = (g, map, tile, x, y) -> rendered.set(true);

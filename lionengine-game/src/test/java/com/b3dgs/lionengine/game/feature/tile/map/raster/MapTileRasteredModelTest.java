@@ -105,10 +105,10 @@ public final class MapTileRasteredModelTest
     @Test
     public void testRastered()
     {
-        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 80, 80)));
-        map.create(80, 80, 2, 2);
-        map.setTile(0, 0, Integer.valueOf(0), 0);
-        map.setTile(1, 1, Integer.valueOf(0), 1);
+        map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
+        map.create(40, 40, 2, 2);
+        map.setTile(0, 0, 0);
+        map.setTile(1, 1, 1);
 
         mapRastered.loadSheets(Medias.create("raster.xml"), false);
         mapViewer.addRenderer(mapRastered);

@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
-import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_ROAD;
 
@@ -45,51 +44,51 @@ final class UtilMapCircuit
         map1.getFeature(MapTileTransition.class).loadTransitions(configTransition);
         UtilMap.fill(map1, TILE_GROUND);
 
-        map1.setTile(1, 2, SHEET, TILE_ROAD);
-        map1.setTile(2, 3, SHEET, TILE_ROAD);
-        map1.setTile(2, 1, SHEET, TILE_ROAD);
-        map1.setTile(2, 2, SHEET, TILE_ROAD);
-        map1.setTile(3, 2, SHEET, TILE_ROAD);
+        map1.setTile(1, 2, TILE_ROAD);
+        map1.setTile(2, 3, TILE_ROAD);
+        map1.setTile(2, 1, TILE_ROAD);
+        map1.setTile(2, 2, TILE_ROAD);
+        map1.setTile(3, 2, TILE_ROAD);
 
-        map1.setTile(5, 5, SHEET, TILE_ROAD);
+        map1.setTile(5, 5, TILE_ROAD);
 
         final MapTile map2 = UtilMap.createMap(5);
         map2.getFeature(MapTileTransition.class).loadTransitions(configTransition);
         UtilMap.fill(map2, TILE_GROUND);
 
-        map2.setTile(1, 1, SHEET, TILE_ROAD);
-        map2.setTile(1, 2, SHEET, TILE_ROAD);
-        map2.setTile(1, 3, SHEET, TILE_ROAD);
-        map2.setTile(2, 1, SHEET, TILE_ROAD);
-        map2.setTile(2, 2, SHEET, TILE_ROAD);
-        map2.setTile(2, 3, SHEET, TILE_ROAD);
-        map2.setTile(3, 1, SHEET, TILE_ROAD);
-        map2.setTile(3, 2, SHEET, TILE_ROAD);
-        map2.setTile(3, 3, SHEET, TILE_ROAD);
+        map2.setTile(1, 1, TILE_ROAD);
+        map2.setTile(1, 2, TILE_ROAD);
+        map2.setTile(1, 3, TILE_ROAD);
+        map2.setTile(2, 1, TILE_ROAD);
+        map2.setTile(2, 2, TILE_ROAD);
+        map2.setTile(2, 3, TILE_ROAD);
+        map2.setTile(3, 1, TILE_ROAD);
+        map2.setTile(3, 2, TILE_ROAD);
+        map2.setTile(3, 3, TILE_ROAD);
 
         final MapTile map3 = UtilMap.createMap(10);
         map3.getFeature(MapTileTransition.class).loadTransitions(configTransition);
         UtilMap.fill(map3, TILE_GROUND);
 
-        map3.setTile(1, 2, SHEET, TILE_ROAD);
-        map3.setTile(2, 2, SHEET, TILE_ROAD);
-        map3.setTile(3, 2, SHEET, TILE_ROAD);
-        map3.setTile(2, 1, SHEET, TILE_ROAD);
+        map3.setTile(1, 2, TILE_ROAD);
+        map3.setTile(2, 2, TILE_ROAD);
+        map3.setTile(3, 2, TILE_ROAD);
+        map3.setTile(2, 1, TILE_ROAD);
 
-        map3.setTile(1, 5, SHEET, TILE_ROAD);
-        map3.setTile(2, 5, SHEET, TILE_ROAD);
-        map3.setTile(3, 5, SHEET, TILE_ROAD);
-        map3.setTile(2, 6, SHEET, TILE_ROAD);
+        map3.setTile(1, 5, TILE_ROAD);
+        map3.setTile(2, 5, TILE_ROAD);
+        map3.setTile(3, 5, TILE_ROAD);
+        map3.setTile(2, 6, TILE_ROAD);
 
-        map3.setTile(5, 6, SHEET, TILE_ROAD);
-        map3.setTile(5, 7, SHEET, TILE_ROAD);
-        map3.setTile(5, 8, SHEET, TILE_ROAD);
-        map3.setTile(6, 5, SHEET, TILE_ROAD);
+        map3.setTile(5, 6, TILE_ROAD);
+        map3.setTile(5, 7, TILE_ROAD);
+        map3.setTile(5, 8, TILE_ROAD);
+        map3.setTile(6, 5, TILE_ROAD);
 
-        map3.setTile(5, 6, SHEET, TILE_ROAD);
-        map3.setTile(5, 7, SHEET, TILE_ROAD);
-        map3.setTile(5, 8, SHEET, TILE_ROAD);
-        map3.setTile(6, 9, SHEET, TILE_ROAD);
+        map3.setTile(5, 6, TILE_ROAD);
+        map3.setTile(5, 7, TILE_ROAD);
+        map3.setTile(5, 8, TILE_ROAD);
+        map3.setTile(6, 9, TILE_ROAD);
 
         final Media config = Medias.create("circuits.xml");
         CircuitsConfig.exports(config, new CircuitsExtractorImpl().getCircuits(Arrays.asList(map1, map2, map3)));

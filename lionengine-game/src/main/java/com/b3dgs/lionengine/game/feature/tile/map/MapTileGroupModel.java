@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Map tile group model implementation.
@@ -39,11 +38,11 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     public static final String NO_GROUP_NAME = "none";
 
     /** Group tiles mapping. */
-    private final Map<String, Collection<TileRef>> groupTiles = new HashMap<>();
+    private final Map<String, Set<Integer>> groupTiles = new HashMap<>();
     /** Group types mapping. */
     private final Map<String, TileGroupType> groupTypes = new HashMap<>();
     /** Tiles group mapping. */
-    private final Map<TileRef, String> tilesGroup = new HashMap<>();
+    private final Map<Integer, String> tilesGroup = new HashMap<>();
     /** Groups configuration file. */
     private Media groupsConfig;
 
@@ -54,7 +53,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     {
         super();
 
-        groupTiles.put(NO_GROUP_NAME, new HashSet<TileRef>());
+        groupTiles.put(NO_GROUP_NAME, new HashSet<Integer>());
     }
 
     /*
@@ -73,7 +72,8 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
             final String name = group.getName();
             groupTiles.put(name, group.getTiles());
             groupTypes.put(name, group.getType());
-            for (final TileRef tile : group.getTiles())
+
+            for (final Integer tile : group.getTiles())
             {
                 tilesGroup.put(tile, name);
             }
@@ -90,25 +90,25 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     @Override
     public void changeGroup(Tile tile, String group)
     {
-        final TileRef ref = new TileRef(tile);
+        final Integer number = tile.getKey();
         final String oldGroup = getGroup(tile);
 
         if (groupTiles.containsKey(oldGroup))
         {
-            groupTiles.get(oldGroup).remove(ref);
+            groupTiles.get(oldGroup).remove(number);
         }
         if (group != null)
         {
-            tilesGroup.put(ref, group);
+            tilesGroup.put(number, group);
             if (!groupTiles.containsKey(group))
             {
-                groupTiles.put(group, new HashSet<TileRef>());
+                groupTiles.put(group, new HashSet<Integer>());
             }
-            groupTiles.get(group).add(ref);
+            groupTiles.get(group).add(number);
         }
         else
         {
-            tilesGroup.remove(ref);
+            tilesGroup.remove(number);
         }
     }
 
@@ -119,7 +119,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     }
 
     @Override
-    public Collection<TileRef> getGroup(String name)
+    public Set<Integer> getGroup(String name)
     {
         if (groupTiles.containsKey(name))
         {
@@ -129,7 +129,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     }
 
     @Override
-    public String getGroup(TileRef tile)
+    public String getGroup(Integer tile)
     {
         if (tilesGroup.containsKey(tile))
         {
@@ -141,21 +141,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     @Override
     public String getGroup(Tile tile)
     {
-        return getGroup(new TileRef(tile));
-    }
-
-    @Override
-    public String getGroup(Integer sheet, int number)
-    {
-        final TileRef ref = new TileRef(sheet, number);
-        for (final Entry<TileRef, String> tile : tilesGroup.entrySet())
-        {
-            if (tile.getKey().equals(ref))
-            {
-                return tile.getValue();
-            }
-        }
-        return NO_GROUP_NAME;
+        return getGroup(tile.getKey());
     }
 
     @Override
@@ -175,7 +161,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
     }
 
     @Override
-    public Collection<String> getGroups()
+    public Set<String> getGroups()
     {
         return groupTiles.keySet();
     }

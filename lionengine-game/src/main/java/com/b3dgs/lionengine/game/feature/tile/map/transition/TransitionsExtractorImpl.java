@@ -24,7 +24,6 @@ import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -41,9 +40,9 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      * @param map The map reference.
      * @return The transitions found with their associated tiles.
      */
-    private static Map<Transition, Collection<TileRef>> getTransitions(MapTile map)
+    private static Map<Transition, Collection<Integer>> getTransitions(MapTile map)
     {
-        final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
+        final Map<Transition, Collection<Integer>> transitions = new HashMap<>();
         final MapTransitionExtractor extractor = new MapTransitionExtractor(map);
         for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
         {
@@ -66,19 +65,19 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      * @param extractor The transition extractor.
      * @param tile The tile to check.
      */
-    private static void checkTransition(Map<Transition, Collection<TileRef>> transitions,
+    private static void checkTransition(Map<Transition, Collection<Integer>> transitions,
                                         MapTransitionExtractor extractor,
                                         Tile tile)
     {
         final Transition transition = extractor.getTransition(tile);
         if (transition != null)
         {
-            getTiles(transitions, transition).add(new TileRef(tile));
+            getTiles(transitions, transition).add(tile.getKey());
 
             final Transition symetric = new Transition(transition.getType().getSymetric(),
                                                        transition.getOut(),
                                                        transition.getIn());
-            getTiles(transitions, symetric).add(new TileRef(tile));
+            getTiles(transitions, symetric).add(tile.getKey());
         }
     }
 
@@ -89,11 +88,11 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      * @param transition The transition type.
      * @return The associated tiles.
      */
-    private static Collection<TileRef> getTiles(Map<Transition, Collection<TileRef>> transitions, Transition transition)
+    private static Collection<Integer> getTiles(Map<Transition, Collection<Integer>> transitions, Transition transition)
     {
         if (!transitions.containsKey(transition))
         {
-            transitions.put(transition, new HashSet<TileRef>());
+            transitions.put(transition, new HashSet<Integer>());
         }
         return transitions.get(transition);
     }
@@ -111,7 +110,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      */
 
     @Override
-    public Map<Transition, Collection<TileRef>> getTransitions(Collection<Media> levels,
+    public Map<Transition, Collection<Integer>> getTransitions(Collection<Media> levels,
                                                                Media sheetsConfig,
                                                                Media groupsConfig)
     {
@@ -130,16 +129,16 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
     }
 
     @Override
-    public Map<Transition, Collection<TileRef>> getTransitions(Collection<MapTile> maps)
+    public Map<Transition, Collection<Integer>> getTransitions(Collection<MapTile> maps)
     {
-        final Map<Transition, Collection<TileRef>> transitions = new HashMap<>();
+        final Map<Transition, Collection<Integer>> transitions = new HashMap<>();
         for (final MapTile map : maps)
         {
-            final Map<Transition, Collection<TileRef>> currents = getTransitions(map);
-            for (final Entry<Transition, Collection<TileRef>> entry : currents.entrySet())
+            final Map<Transition, Collection<Integer>> currents = getTransitions(map);
+            for (final Entry<Transition, Collection<Integer>> entry : currents.entrySet())
             {
                 final Transition transition = entry.getKey();
-                final Collection<TileRef> tiles = entry.getValue();
+                final Collection<Integer> tiles = entry.getValue();
                 if (transitions.containsKey(transition))
                 {
                     transitions.get(transition).addAll(tiles);

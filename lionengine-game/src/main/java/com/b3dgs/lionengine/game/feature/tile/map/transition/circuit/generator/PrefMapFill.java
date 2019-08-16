@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
@@ -26,25 +25,22 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
  */
 public class PrefMapFill extends PrefAbstract
 {
-    /** The sheet value. */
-    private final Integer sheet;
     /** The number value. */
     private final int number;
 
     /**
      * Create preference.
      * 
-     * @param tile The tile to use.
+     * @param number The tile number to use.
      * @throws LionEngineException If invalid arguments.
      */
-    public PrefMapFill(TileRef tile)
+    public PrefMapFill(int number)
     {
         super(1);
 
-        Check.notNull(tile);
+        Check.superiorOrEqual(number, 0);
 
-        sheet = tile.getSheet();
-        number = tile.getNumber();
+        this.number = number;
     }
 
     /*
@@ -58,7 +54,7 @@ public class PrefMapFill extends PrefAbstract
         {
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
-                map.setTile(tx, ty, sheet, number);
+                map.setTile(tx, ty, number);
             }
         }
     }

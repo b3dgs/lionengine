@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 
 /**
  * Represents the circuit handling between two different groups of tiles.
@@ -52,7 +51,7 @@ public interface MapTileCircuit extends Feature
      * 
      * @param circuits The circuits raw data.
      */
-    void loadCircuits(Map<Circuit, Collection<TileRef>> circuits);
+    void loadCircuits(Map<Circuit, Collection<Integer>> circuits);
 
     /**
      * Resolve circuit by updating tiles if necessary.
@@ -67,5 +66,5 @@ public interface MapTileCircuit extends Feature
      * @param circuit The circuit reference.
      * @return The associated tiles.
      */
-    Collection<TileRef> getTiles(Circuit circuit);
+    Collection<Integer> getTiles(Circuit circuit);
 }

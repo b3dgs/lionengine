@@ -37,32 +37,12 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel;
 public final class TileGameTest
 {
     /**
-     * Test constructor with null sheet.
-     */
-    @Test
-    public void testConstructoNullSheet()
-    {
-        assertThrows(() -> new TileGame(null, 0, 0, 0, 1, 1), "Unexpected null argument !");
-    }
-
-    /**
-     * Test constructor with negative sheet.
-     */
-    @Test
-    public void testConstructorNegativeSheet()
-    {
-        assertThrows(() -> new TileGame(Integer.valueOf(-1), 0, 0, 0, 1, 1),
-                     "Invalid argument: -1 is not superior or equal to 0");
-    }
-
-    /**
      * Test constructor with negative number.
      */
     @Test
     public void testConstructorNegativeNumber()
     {
-        assertThrows(() -> new TileGame(Integer.valueOf(0), -1, 0, 0, 1, 1),
-                     "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new TileGame(-1, 0, 0, 1, 1), "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
@@ -71,8 +51,7 @@ public final class TileGameTest
     @Test
     public void testConstructorNegativeWidth()
     {
-        assertThrows(() -> new TileGame(Integer.valueOf(0), 0, 0, 0, 0, 1),
-                     "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> new TileGame(0, 0, 0, 0, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
@@ -81,8 +60,7 @@ public final class TileGameTest
     @Test
     public void testConstructorInvalidHeight()
     {
-        assertThrows(() -> new TileGame(Integer.valueOf(0), 0, 0, 0, 1, 0),
-                     "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> new TileGame(0, 0, 0, 1, 0), "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
@@ -91,20 +69,20 @@ public final class TileGameTest
     @Test
     public void testGetters()
     {
-        final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
+        final TileGame tile = new TileGame(1, 2, 3, 4, 5);
         final TileCollision feature = new TileCollisionModel(tile);
         tile.addFeature(feature);
 
-        assertEquals(Integer.valueOf(0), tile.getSheet());
         assertEquals(1, tile.getNumber());
-        assertEquals(16, tile.getX());
-        assertEquals(25, tile.getY());
-        assertEquals(4, tile.getInTileX());
-        assertEquals(5, tile.getInTileY());
-        assertEquals(4, tile.getWidth());
-        assertEquals(5, tile.getHeight());
+        assertEquals(Integer.valueOf(1), tile.getKey());
+        assertEquals(2, tile.getInTileX());
+        assertEquals(3, tile.getInTileY());
         assertEquals(1, tile.getInTileWidth());
         assertEquals(1, tile.getInTileHeight());
+        assertEquals(8.0, tile.getX());
+        assertEquals(15.0, tile.getY());
+        assertEquals(4, tile.getWidth());
+        assertEquals(5, tile.getHeight());
         assertTrue(tile.hasFeature(TileCollision.class));
         assertFalse(tile.hasFeature(MockFeature.class));
 
@@ -119,19 +97,18 @@ public final class TileGameTest
     @Test
     public void testEquals()
     {
-        final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
+        final TileGame tile = new TileGame(1, 16, 25, 4, 5);
 
         assertEquals(tile, tile);
-        assertEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5));
+        assertEquals(tile, new TileGame(1, 16, 25, 4, 5));
 
         assertNotEquals(tile, null);
         assertNotEquals(tile, new Object());
-        assertNotEquals(tile, new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5));
-        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5));
-        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 0, 25, 4, 5));
-        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 0, 4, 5));
-        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 10, 5));
-        assertNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 10));
+        assertNotEquals(tile, new TileGame(0, 16, 25, 4, 5));
+        assertNotEquals(tile, new TileGame(1, 0, 25, 4, 5));
+        assertNotEquals(tile, new TileGame(1, 16, 0, 4, 5));
+        assertNotEquals(tile, new TileGame(1, 16, 25, 10, 5));
+        assertNotEquals(tile, new TileGame(1, 16, 25, 4, 10));
     }
 
     /**
@@ -140,18 +117,17 @@ public final class TileGameTest
     @Test
     public void testHashCode()
     {
-        final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
+        final TileGame tile = new TileGame(1, 16, 25, 4, 5);
 
         assertHashEquals(tile, tile);
-        assertHashEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5));
+        assertHashEquals(tile, new TileGame(1, 16, 25, 4, 5));
 
         assertHashNotEquals(tile, new Object());
-        assertHashNotEquals(tile, new TileGame(Integer.valueOf(1), 1, 16, 25, 4, 5));
-        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 0, 16, 25, 4, 5));
-        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 0, 25, 4, 5));
-        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 0, 4, 5));
-        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 10, 5));
-        assertHashNotEquals(tile, new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 10));
+        assertHashNotEquals(tile, new TileGame(0, 16, 25, 4, 5));
+        assertHashNotEquals(tile, new TileGame(1, 0, 25, 4, 5));
+        assertHashNotEquals(tile, new TileGame(1, 16, 0, 4, 5));
+        assertHashNotEquals(tile, new TileGame(1, 16, 25, 10, 5));
+        assertHashNotEquals(tile, new TileGame(1, 16, 25, 4, 10));
     }
 
     /**
@@ -160,8 +136,7 @@ public final class TileGameTest
     @Test
     public void testToString()
     {
-        assertEquals("sheet = 0 | number = 1 | tx = 2 | ty = 3",
-                     new TileGame(Integer.valueOf(0), 1, 32, 48, 16, 16).toString());
+        assertEquals("number = 1 | tx = 2 | ty = 3", new TileGame(1, 2, 3, 16, 16).toString());
     }
 
     /**

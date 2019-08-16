@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
@@ -60,11 +59,11 @@ public final class MinimapConfig
      * @return The minimap data.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<TileRef, ColorRgba> imports(Media configMinimap)
+    public static Map<Integer, ColorRgba> imports(Media configMinimap)
     {
         Check.notNull(configMinimap);
 
-        final Map<TileRef, ColorRgba> colors = new HashMap<>();
+        final Map<Integer, ColorRgba> colors = new HashMap<>();
         final Xml nodeMinimap = new Xml(configMinimap);
 
         final Collection<Xml> children = nodeMinimap.getChildren(NODE_COLOR);
@@ -74,10 +73,10 @@ public final class MinimapConfig
                                                   nodeColor.readInteger(ATT_COLOR_GREEN),
                                                   nodeColor.readInteger(ATT_COLOR_BLUE));
 
-            for (final Xml nodeTileRef : nodeColor.getChildren(TileConfig.NODE_TILE))
+            for (final Xml nodeTile : nodeColor.getChildren(TileConfig.NODE_TILE))
             {
-                final TileRef tileRef = TileConfig.imports(nodeTileRef);
-                colors.put(tileRef, color);
+                final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
+                colors.put(tile, color);
             }
         }
         children.clear();
@@ -92,15 +91,15 @@ public final class MinimapConfig
      * @param tiles The tiles data (must not be <code>null</code>).
      * @throws LionEngineException If error on writing.
      */
-    public static void exports(Media configMinimap, Map<TileRef, ColorRgba> tiles)
+    public static void exports(Media configMinimap, Map<Integer, ColorRgba> tiles)
     {
         Check.notNull(configMinimap);
         Check.notNull(tiles);
 
-        final Map<ColorRgba, Collection<TileRef>> colors = convertToColorKey(tiles);
+        final Map<ColorRgba, Collection<Integer>> colors = convertToColorKey(tiles);
         final Xml nodeMinimap = new Xml(NODE_MINIMAP);
 
-        for (final Map.Entry<ColorRgba, Collection<TileRef>> entry : colors.entrySet())
+        for (final Map.Entry<ColorRgba, Collection<Integer>> entry : colors.entrySet())
         {
             final ColorRgba color = entry.getKey();
             final Xml nodeColor = nodeMinimap.createChild(NODE_COLOR);
@@ -108,10 +107,10 @@ public final class MinimapConfig
             nodeColor.writeInteger(ATT_COLOR_GREEN, color.getGreen());
             nodeColor.writeInteger(ATT_COLOR_BLUE, color.getBlue());
 
-            for (final TileRef tileRef : entry.getValue())
+            for (final Integer number : entry.getValue())
             {
-                final Xml nodeTileRef = TileConfig.exports(tileRef);
-                nodeColor.add(nodeTileRef);
+                final Xml nodeTile = TileConfig.exports(number.intValue());
+                nodeColor.add(nodeTile);
             }
         }
 
@@ -124,14 +123,14 @@ public final class MinimapConfig
      * @param tiles The tiles data (must not be <code>null</code>).
      * @return The map with color as key.
      */
-    private static Map<ColorRgba, Collection<TileRef>> convertToColorKey(Map<TileRef, ColorRgba> tiles)
+    private static Map<ColorRgba, Collection<Integer>> convertToColorKey(Map<Integer, ColorRgba> tiles)
     {
-        final Map<ColorRgba, Collection<TileRef>> colors = new HashMap<>();
+        final Map<ColorRgba, Collection<Integer>> colors = new HashMap<>();
 
-        for (final Map.Entry<TileRef, ColorRgba> entry : tiles.entrySet())
+        for (final Map.Entry<Integer, ColorRgba> entry : tiles.entrySet())
         {
-            final Collection<TileRef> tilesRef = getTiles(colors, entry.getValue());
-            tilesRef.add(entry.getKey());
+            final Collection<Integer> tilesNumber = getTiles(colors, entry.getValue());
+            tilesNumber.add(entry.getKey());
         }
 
         return colors;
@@ -144,11 +143,11 @@ public final class MinimapConfig
      * @param color The color to check (must not be <code>null</code>).
      * @return The associated tiles.
      */
-    private static Collection<TileRef> getTiles(Map<ColorRgba, Collection<TileRef>> colors, ColorRgba color)
+    private static Collection<Integer> getTiles(Map<ColorRgba, Collection<Integer>> colors, ColorRgba color)
     {
         if (!colors.containsKey(color))
         {
-            colors.put(color, new HashSet<TileRef>());
+            colors.put(color, new HashSet<Integer>());
         }
         return colors.get(color);
     }

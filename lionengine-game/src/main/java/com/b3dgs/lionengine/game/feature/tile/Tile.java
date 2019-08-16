@@ -27,16 +27,30 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 public interface Tile extends Surface, Localizable, Tiled, Featurable
 {
     /**
-     * Get sheet number.
-     * 
-     * @return The sheet number.
-     */
-    Integer getSheet();
-
-    /**
      * Get tile index number.
      * 
      * @return The tile index number.
      */
     int getNumber();
+
+    /**
+     * Get the key representation (number as Integer).
+     * 
+     * @return The key representation.
+     */
+    Integer getKey();
+
+    /**
+     * Get the sheet id defined by the number and the sheets count.
+     * 
+     * @return The sheet computed id.
+     */
+    int getSheet();
+
+    /**
+     * Get the sheet id key representation (id as Integer).
+     * 
+     * @return The sheet key.
+     */
+    Integer getSheetKey();
 }

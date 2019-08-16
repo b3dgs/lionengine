@@ -25,7 +25,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,19 +36,28 @@ import org.junit.jupiter.api.Test;
 public final class TileGroupTest
 {
     /**
+     * Get tile from number.
+     * 
+     * @param number The tile number.
+     * @return The tile set.
+     */
+    private static Set<Integer> getTile(int number)
+    {
+        return new HashSet<>(Arrays.asList(Integer.valueOf(number)));
+    }
+
+    /**
      * Test the contains.
      */
     @Test
     public void testContains()
     {
-        final Collection<TileRef> tiles = Arrays.asList(new TileRef(0, 1));
-        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, tiles);
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, getTile(1));
 
-        assertTrue(tileGroup.contains(Integer.valueOf(0), 1));
-        assertTrue(tileGroup.contains(new TileGame(Integer.valueOf(0), 1, 1, 1, 1, 1)));
+        assertTrue(tileGroup.contains(Integer.valueOf(1)));
+        assertTrue(tileGroup.contains(new TileGame(1, 1, 1, 1, 1)));
 
-        assertFalse(tileGroup.contains(Integer.valueOf(0), 2));
-        assertFalse(tileGroup.contains(Integer.valueOf(1), 1));
+        assertFalse(tileGroup.contains(Integer.valueOf(2)));
     }
 
     /**
@@ -56,7 +66,7 @@ public final class TileGroupTest
     @Test
     public void testGetters()
     {
-        final Collection<TileRef> tiles = Arrays.asList(new TileRef(0, 1));
+        final Set<Integer> tiles = getTile(1);
         final TileGroup tileGroup = new TileGroup("test", TileGroupType.PLAIN, tiles);
 
         assertEquals("test", tileGroup.getName());
@@ -70,20 +80,17 @@ public final class TileGroupTest
     @Test
     public void testEquals()
     {
-        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1)));
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, getTile(1));
 
         assertEquals(tileGroup, tileGroup);
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
+        assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(1)));
+        assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(2)));
+        assertEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(1)));
+        assertEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(2)));
 
         assertNotEquals(tileGroup, new Object());
-        assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 2))));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))));
-        assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))));
-        assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.TRANSITION, Arrays.asList(new TileRef(0, 1))));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, Arrays.asList(new TileRef(0, 2))));
-        assertEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, Arrays.asList(new TileRef(1, 1))));
-        assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.TRANSITION, Arrays.asList(new TileRef(1, 1))));
+        assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, getTile(1)));
+        assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.TRANSITION, getTile(1)));
     }
 
     /**
@@ -92,21 +99,16 @@ public final class TileGroupTest
     @Test
     public void testHashCode()
     {
-        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1)));
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, getTile(1));
 
         assertHashEquals(tileGroup, tileGroup);
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
+        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(1)));
+        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, getTile(2)));
+        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(1)));
+        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, getTile(2)));
 
         assertHashNotEquals(tileGroup, new Object());
-        assertHashNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 2))));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))));
-        assertHashNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))));
-        assertHashNotEquals(tileGroup,
-                            new TileGroup("toto", TileGroupType.TRANSITION, Arrays.asList(new TileRef(0, 1))));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, Arrays.asList(new TileRef(0, 2))));
-        assertHashEquals(tileGroup, new TileGroup("test", TileGroupType.TRANSITION, Arrays.asList(new TileRef(1, 1))));
-        assertHashNotEquals(tileGroup,
-                            new TileGroup("toto", TileGroupType.TRANSITION, Arrays.asList(new TileRef(1, 1))));
+        assertHashNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, getTile(1)));
+        assertHashNotEquals(tileGroup, new TileGroup("toto", TileGroupType.TRANSITION, getTile(1)));
     }
 }

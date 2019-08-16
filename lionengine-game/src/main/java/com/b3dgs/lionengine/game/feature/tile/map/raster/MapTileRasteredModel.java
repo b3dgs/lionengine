@@ -17,8 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.raster;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -92,14 +90,13 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     @Override
     public void loadSheets(Media rasterConfig, boolean smooth)
     {
-        final Collection<Integer> sheets = map.getSheets();
-        final Iterator<Integer> itr = sheets.iterator();
         final int th = map.getTileHeight();
+        final int sheetsCount = map.getSheetsNumber();
 
-        while (itr.hasNext())
+        for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
-            final Integer sheet = itr.next();
-            final RasterImage raster = new RasterImage(map.getSheet(sheet).getSurface(), rasterConfig, th, smooth);
+            final Integer sheet = Integer.valueOf(sheetId);
+            final RasterImage raster = new RasterImage(map.getSheet(sheetId).getSurface(), rasterConfig, th, smooth);
             raster.loadRasters(map.getTileHeight(), false, sheet.toString());
 
             final List<SpriteTiled> rastersSheet = getRasters(sheet);
@@ -114,11 +111,9 @@ public class MapTileRasteredModel extends FeatureModel implements MapTileRastere
     @Override
     public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
     {
-        final Integer sheet = tile.getSheet();
-        final int number = tile.getNumber();
-        final SpriteTiled raster = getRasterSheet(sheet, getRasterIndex(tile.getInTileY()));
+        final SpriteTiled raster = getRasterSheet(tile.getSheetKey(), getRasterIndex(tile.getInTileY()));
         raster.setLocation(x, y);
-        raster.setTile(number);
+        raster.setTile(tile.getNumber());
         raster.render(g);
     }
 
