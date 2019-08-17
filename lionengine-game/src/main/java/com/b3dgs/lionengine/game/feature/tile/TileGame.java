@@ -77,8 +77,8 @@ public class TileGame implements Tile
         this.height = height;
 
         key = Integer.valueOf(number);
-        x = tx * width;
-        y = ty * height;
+        x = tx * (double) width;
+        y = ty * (double) height;
     }
 
     /**

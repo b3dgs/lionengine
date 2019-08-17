@@ -52,7 +52,7 @@ public class TileGroup extends NameableAbstract
      * 
      * @param name The group name.
      * @param type The group type.
-     * @param tiles The tiles inside the group.
+     * @param tiles The tiles inside the group (stores reference).
      * @throws LionEngineException If invalid arguments.
      */
     public TileGroup(String name, TileGroupType type, Set<Integer> tiles)
@@ -98,7 +98,7 @@ public class TileGroup extends NameableAbstract
     /**
      * Get the tiles inside group.
      * 
-     * @return The tiles inside group.
+     * @return The tiles inside group (as reference).
      */
     public Set<Integer> getTiles()
     {

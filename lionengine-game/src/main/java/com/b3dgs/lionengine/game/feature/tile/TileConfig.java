@@ -42,9 +42,7 @@ public final class TileConfig
     {
         Check.notNull(nodeTile);
 
-        final int number = nodeTile.readInteger(ATT_TILE_NUMBER);
-
-        return number;
+        return nodeTile.readInteger(ATT_TILE_NUMBER);
     }
 
     /**

@@ -138,7 +138,7 @@ public final class TileSheetsConfig
      * 
      * @param tileWidth The tile width (strictly positive).
      * @param tileHeight The tile height (strictly positive).
-     * @param sheets The defined sheets (must not be <code>null</code>).
+     * @param sheets The defined sheets (stores reference, must not be <code>null</code>).
      * @throws LionEngineException If invalid size or sheets is <code>null</code>.
      */
     public TileSheetsConfig(int tileWidth, int tileHeight, List<String> sheets)
@@ -151,7 +151,7 @@ public final class TileSheetsConfig
 
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        this.sheets = new ArrayList<>(sheets);
+        this.sheets = sheets;
     }
 
     /**
@@ -177,7 +177,7 @@ public final class TileSheetsConfig
     /**
      * Get the sheets filename defined.
      * 
-     * @return The sheets filename defined.
+     * @return The sheets filename defined (as reference).
      */
     public List<String> getSheets()
     {

@@ -277,6 +277,7 @@ public class MapTileGame extends FeaturableModel implements MapTile
 
             sheets[sheetId] = sheet;
         }
+        configSheets.clear();
     }
 
     @Override
