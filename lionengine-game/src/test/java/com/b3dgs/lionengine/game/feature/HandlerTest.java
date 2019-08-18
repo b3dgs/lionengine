@@ -67,7 +67,7 @@ public final class HandlerTest
         handler.add(featurable);
 
         final Integer id = featurable.getFeature(Identifiable.class).getId();
-        assertThrows(() -> handler.get(id), HandlablesImpl.ERROR_FEATURABLE_NOT_FOUND + id);
+        assertNotNull(handler.get(id));
 
         handler.update(1.0);
         assertEquals(1, handler.size());
@@ -100,7 +100,7 @@ public final class HandlerTest
     {
         final Handler handler = new Handler(new Services());
 
-        assertThrows(() -> handler.get(Integer.valueOf(0)), HandlablesImpl.ERROR_FEATURABLE_NOT_FOUND + 0);
+        assertThrows(() -> handler.get(Integer.valueOf(0)), Handler.ERROR_FEATURABLE_NOT_FOUND + 0);
     }
 
     /**

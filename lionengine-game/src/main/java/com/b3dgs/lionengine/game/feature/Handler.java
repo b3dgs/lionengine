@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
@@ -39,6 +40,8 @@ import com.b3dgs.lionengine.graphic.Renderable;
  */
 public class Handler implements Handlables, Updatable, Renderable, IdentifiableListener, Listenable<HandlerListener>
 {
+    /** Featurable not found error. */
+    static final String ERROR_FEATURABLE_NOT_FOUND = "Featurable not found: ";
     /** Handler listeners. */
     private final ListenableModel<HandlerListener> listenable = new ListenableModel<>();
     /** List of components updater. */
@@ -221,7 +224,16 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     @Override
     public final Featurable get(Integer id)
     {
-        return featurables.get(id);
+        Featurable featurable = featurables.get(id);
+        if (featurable == null)
+        {
+            featurable = toAdd.get(id);
+        }
+        if (featurable != null)
+        {
+            return featurable;
+        }
+        throw new LionEngineException(ERROR_FEATURABLE_NOT_FOUND + String.valueOf(id));
     }
 
     @Override

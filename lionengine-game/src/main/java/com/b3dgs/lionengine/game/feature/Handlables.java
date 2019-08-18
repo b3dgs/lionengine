@@ -16,8 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Represents the featurables handled by the handler, providing quick access to them from their type.
  * 
@@ -26,11 +24,10 @@ import com.b3dgs.lionengine.LionEngineException;
 public interface Handlables
 {
     /**
-     * Get the featurable from its ID.
+     * Get the featurable from its Id.
      * 
-     * @param id The featurable ID.
-     * @return The featurable instance.
-     * @throws LionEngineException If no featurable found with this ID.
+     * @param id The featurable Id.
+     * @return The featurable instance, <code>null</code> if none.
      */
     Featurable get(Integer id);
 

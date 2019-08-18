@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Feature;
 
@@ -32,9 +31,6 @@ import com.b3dgs.lionengine.game.Feature;
  */
 final class HandlablesImpl implements Handlables
 {
-    /** Featurable not found error. */
-    static final String ERROR_FEATURABLE_NOT_FOUND = "Featurable not found: ";
-
     /** List of featurables (key is the featurable ID). */
     private final Map<Integer, Featurable> featurables = new HashMap<>();
     /** List of typed items (key is the feature type). */
@@ -189,12 +185,7 @@ final class HandlablesImpl implements Handlables
     @Override
     public Featurable get(Integer id)
     {
-        final Featurable featurable = featurables.get(id);
-        if (featurable != null)
-        {
-            return featurable;
-        }
-        throw new LionEngineException(ERROR_FEATURABLE_NOT_FOUND + String.valueOf(id));
+        return featurables.get(id);
     }
 
     @Override
