@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -91,7 +91,7 @@ public final class HandlablesImplTest
         assertFalse(featurables.values().iterator().hasNext());
 
         final Integer id = object.getFeature(Identifiable.class).getId();
-        assertThrows(() -> featurables.get(id), "Featurable not found: " + id);
+        assertNull(featurables.get(id));
     }
 
     /**
