@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
@@ -40,6 +41,8 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
  */
 final class SpriteFontImpl implements SpriteFont
 {
+    /** Error already loaded. */
+    static final String ERROR_ALREADY_LOADED = "Surface has already been loaded: ";
     /** New line separator character. */
     private static final String NL_STR = Constant.EMPTY_STRING + Constant.PERCENT;
     /** Split with new line. */
@@ -75,11 +78,13 @@ final class SpriteFontImpl implements SpriteFont
     /** Media reference. */
     private final Media media;
     /** Font surface. */
-    private final SpriteTiled surface;
+    private SpriteTiled surface;
     /** Text. */
     private String text = Constant.EMPTY_STRING;
     /** Alignment. */
     private Align align = Align.LEFT;
+    /** Char width. */
+    private final int tw;
     /** Line height value. */
     private int lineHeight;
     /** Horizontal location. */
@@ -101,10 +106,40 @@ final class SpriteFontImpl implements SpriteFont
         super();
 
         this.media = media;
-        surface = new SpriteTiledImpl(media, tw, th);
-        lineHeight = surface.getTileHeight();
+        this.tw = tw;
+        lineHeight = th;
 
-        // Load data for each characters
+        loadData(mediaData);
+    }
+
+    /**
+     * Internal constructor.
+     * 
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param mediaData The font data media (must not be <code>null</code>).
+     * @param tw The horizontal character number (must be strictly positive).
+     * @param th The vertical character number (must be strictly positive).
+     * @throws LionEngineException If invalid arguments or an error occurred when creating the font.
+     */
+    SpriteFontImpl(ImageBuffer surface, Media mediaData, int tw, int th)
+    {
+        super();
+
+        this.surface = Drawable.loadSpriteTiled(surface, tw, th);
+        media = null;
+        this.tw = tw;
+        lineHeight = th;
+
+        loadData(mediaData);
+    }
+
+    /**
+     * Load characters data.
+     * 
+     * @param mediaData The media data.
+     */
+    private void loadData(Media mediaData)
+    {
         final Xml letters = new Xml(mediaData);
         final Collection<Xml> children = letters.getChildren();
         int id = 0;
@@ -125,7 +160,15 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public void load()
     {
-        surface.load();
+        if (surface != null)
+        {
+            if (media != null)
+            {
+                throw new LionEngineException(media, ERROR_ALREADY_LOADED);
+            }
+            throw new LionEngineException(ERROR_ALREADY_LOADED);
+        }
+        surface = Drawable.loadSpriteTiled(Graphics.getImageBuffer(media), tw, lineHeight);
     }
 
     @Override
@@ -326,6 +369,10 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public ImageBuffer getSurface()
     {
+        if (surface == null)
+        {
+            return null;
+        }
         return surface.getSurface();
     }
 

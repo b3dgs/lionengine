@@ -272,6 +272,21 @@ public final class Drawable
     }
 
     /**
+     * Load a font based on an image.
+     * 
+     * @param surface The surface reference (must not be <code>null</code>).
+     * @param data The font data media (must not be <code>null</code>).
+     * @param letterWidth The font image letter width (must be strictly positive).
+     * @param letterHeight The font image letter height (must be strictly positive).
+     * @return The created font sprite.
+     * @throws LionEngineException If an error occurred when creating the font.
+     */
+    public static SpriteFont loadSpriteFont(ImageBuffer surface, Media data, int letterWidth, int letterHeight)
+    {
+        return new SpriteFontImpl(surface, data, letterWidth, letterHeight);
+    }
+
+    /**
      * Load a digit based on an image.
      * <p>
      * {@link SpriteDigit#load()} must not be called as surface has already been loaded.

@@ -94,6 +94,7 @@ public final class DrawableTest
         assertNotNull(Drawable.loadSpriteTiled(Graphics.createImageBuffer(16, 32), 1, 1));
         assertNotNull(Drawable.loadSpriteTiled(media, 1, 1));
 
+        assertNotNull(Drawable.loadSpriteFont(Graphics.createImageBuffer(16, 32), font, 1, 1));
         assertNotNull(Drawable.loadSpriteFont(media, font, 1, 1));
 
         assertNotNull(Drawable.loadSpriteParallaxed(media, 1, 1, 1));

@@ -160,6 +160,19 @@ public final class SpriteFontTest
     }
 
     /**
+     * Test load with surface.
+     */
+    @Test
+    public void testLoadSurfaceAlready()
+    {
+        final SpriteFont sprite = new SpriteFontImpl(Graphics.createImageBuffer(32, 16), font, 6, 7);
+
+        assertThrows(() -> sprite.load(), SpriteImpl.ERROR_ALREADY_LOADED);
+
+        sprite.dispose();
+    }
+
+    /**
      * Test stretch sprite.
      */
     @Test
