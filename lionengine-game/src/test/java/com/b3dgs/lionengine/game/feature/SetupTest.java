@@ -132,6 +132,8 @@ public final class SetupTest
         assertEquals(Medias.create("icon.png"), setup.getIconFile());
         assertEquals(7, setup.getSurface().getWidth());
         assertEquals(11, setup.getSurface().getHeight());
+        assertEquals(7, setup.getIcon().getWidth());
+        assertEquals(11, setup.getIcon().getHeight());
     }
 
     /**

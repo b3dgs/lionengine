@@ -38,11 +38,30 @@ public class Setup extends Configurer
     static final String ERROR_ICON_FILE = "No icon file found !";
     /** No surface. */
     static final String ERROR_SURFACE = "No surface found !";
+    /** No icon. */
+    static final String ERROR_ICON = "No icon found !";
     /** Class error. */
     static final String ERROR_CLASS = "Class not found for: ";
 
+    /**
+     * Get icon if exists.
+     * 
+     * @param iconMedia The icon media.
+     * @return The loaded icon.
+     */
+    private static Optional<ImageBuffer> getIcon(Media iconMedia)
+    {
+        if (iconMedia.exists())
+        {
+            return Optional.of(Graphics.getImageBuffer(iconMedia));
+        }
+        return Optional.empty();
+    }
+
     /** Surface reference. */
     protected final Optional<ImageBuffer> surface;
+    /** Icon reference. */
+    protected final Optional<ImageBuffer> icon;
     /** Surface file name. */
     private final Optional<Media> surfaceFile;
     /** Icon file name. */
@@ -76,11 +95,14 @@ public class Setup extends Configurer
             final Media surfaceMedia = Medias.create(prefix + surfaceData.getImage());
             if (surfaceData.getIcon().isPresent())
             {
-                iconFile = Optional.of(Medias.create(prefix + surfaceData.getIcon().get()));
+                final Media iconMedia = Medias.create(prefix + surfaceData.getIcon().get());
+                iconFile = Optional.of(iconMedia);
+                icon = getIcon(iconMedia);
             }
             else
             {
                 iconFile = Optional.empty();
+                icon = Optional.empty();
             }
             surface = Optional.of(Graphics.getImageBuffer(surfaceMedia));
             surfaceFile = Optional.of(surfaceMedia);
@@ -90,6 +112,7 @@ public class Setup extends Configurer
             surfaceFile = Optional.empty();
             iconFile = Optional.empty();
             surface = Optional.empty();
+            icon = Optional.empty();
         }
     }
 
@@ -150,5 +173,16 @@ public class Setup extends Configurer
     public final ImageBuffer getSurface()
     {
         return surface.orElseThrow(() -> new LionEngineException(ERROR_SURFACE));
+    }
+
+    /**
+     * Get the icon representation.
+     * 
+     * @return The icon buffer.
+     * @throws LionEngineException If icon not defined.
+     */
+    public final ImageBuffer getIcon()
+    {
+        return icon.orElseThrow(() -> new LionEngineException(ERROR_ICON));
     }
 }
