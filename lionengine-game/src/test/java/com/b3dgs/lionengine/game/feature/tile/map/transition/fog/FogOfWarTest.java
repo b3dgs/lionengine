@@ -105,7 +105,7 @@ public final class FogOfWarTest
         final Setup setup = new Setup(config);
         final FeaturableModel object = new FeaturableModel();
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
-        final FovableModel fovable = object.addFeatureAndGet(new FovableModel(services));
+        final FovableModel fovable = object.addFeatureAndGet(new FovableModel(services, setup));
         fovable.prepare(object);
         fovable.setFov(1);
 

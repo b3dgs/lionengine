@@ -18,8 +18,10 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -51,17 +53,22 @@ public class FovableModel extends FeatureModel implements Fovable
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * <p>
+     * The {@link Configurer} can provide a valid {@link FeaturableConfig}.
+     * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
+     * @param configurer The configurer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public FovableModel(Services services)
+    public FovableModel(Services services, Configurer configurer)
     {
         super();
 
         Check.notNull(services);
 
         map = services.get(MapTile.class);
+        fov = FovableConfig.imports(configurer);
     }
 
     /*

@@ -70,7 +70,7 @@ public final class FovableModelTest
     @Test
     public void testConstructorNullServices()
     {
-        assertThrows(() -> new FovableModel(null), "Unexpected null argument !");
+        assertThrows(() -> new FovableModel(null, null), "Unexpected null argument !");
     }
 
     /**
@@ -83,9 +83,9 @@ public final class FovableModelTest
         final MapTile map = UtilMap.createMap(7);
         services.add(map);
 
-        final Fovable fovable = new FovableModel(services);
-
         final Setup setup = new Setup(config);
+        final Fovable fovable = new FovableModel(services, setup);
+
         final Featurable featurable = new FeaturableModel();
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(1, 2);
