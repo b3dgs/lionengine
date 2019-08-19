@@ -22,6 +22,7 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
@@ -105,6 +106,9 @@ final class SpriteFontImpl implements SpriteFont
     {
         super();
 
+        Check.notNull(media);
+        Check.notNull(mediaData);
+
         this.media = media;
         this.tw = tw;
         lineHeight = th;
@@ -124,6 +128,9 @@ final class SpriteFontImpl implements SpriteFont
     SpriteFontImpl(ImageBuffer surface, Media mediaData, int tw, int th)
     {
         super();
+
+        Check.notNull(surface);
+        Check.notNull(mediaData);
 
         this.surface = Drawable.loadSpriteTiled(surface, tw, th);
         media = null;
@@ -379,6 +386,10 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public boolean isLoaded()
     {
+        if (surface == null)
+        {
+            return false;
+        }
         return surface.isLoaded();
     }
 

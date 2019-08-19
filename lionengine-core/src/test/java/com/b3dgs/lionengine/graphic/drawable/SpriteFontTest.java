@@ -102,7 +102,8 @@ public final class SpriteFontTest
     @Test
     public void testConstructorInvalidLetterWidth()
     {
-        assertThrows(() -> new SpriteFontImpl(media, font, 0, 1), "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> new SpriteFontImpl(media, font, 0, 1).load(),
+                     "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
@@ -111,7 +112,8 @@ public final class SpriteFontTest
     @Test
     public void testConstructorInvalidLetterHeight()
     {
-        assertThrows(() -> new SpriteFontImpl(media, font, 1, 0), "Invalid argument: 0 is not strictly superior to 0");
+        assertThrows(() -> new SpriteFontImpl(media, font, 1, 0).load(),
+                     "Invalid argument: 0 is not strictly superior to 0");
     }
 
     /**
@@ -124,6 +126,10 @@ public final class SpriteFontTest
 
         assertFalse(sprite.isLoaded());
         assertNull(sprite.getSurface());
+
+        sprite.load();
+        sprite.prepare();
+
         assertEquals(64, sprite.getWidth());
         assertEquals(32, sprite.getHeight());
 
@@ -210,6 +216,8 @@ public final class SpriteFontTest
     public void testStretchInvalidWidth()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.stretch(0.0, 100.0), "Invalid argument: 0.0 is not strictly superior to 0.0");
 
@@ -223,6 +231,8 @@ public final class SpriteFontTest
     public void testStretchInvalidHeight()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.stretch(100, 0.0), "Invalid argument: 0.0 is not strictly superior to 0.0");
 
@@ -254,6 +264,8 @@ public final class SpriteFontTest
     public void testSetLocation()
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertEquals(0.0, sprite.getX());
         assertEquals(0.0, sprite.getY());
@@ -274,6 +286,7 @@ public final class SpriteFontTest
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
+
         final ViewerMock viewer = new ViewerMock();
         sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
@@ -314,6 +327,8 @@ public final class SpriteFontTest
     public void testSetAlphaLow()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.setAlpha(-1), "Invalid argument: -1 is not superior or equal to 0");
 
@@ -327,6 +342,8 @@ public final class SpriteFontTest
     public void testSetAlphaHigh()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.setAlpha(256), "Invalid argument: 256 is not inferior or equal to 255");
 
@@ -389,6 +406,8 @@ public final class SpriteFontTest
     public void testFilterNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.filter(null), "Unexpected null argument !");
 
@@ -402,6 +421,8 @@ public final class SpriteFontTest
     public void testMirror()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertEquals(Mirror.NONE, sprite.getMirror());
 
@@ -419,6 +440,8 @@ public final class SpriteFontTest
     public void testMirrorNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.setMirror(null), "Unexpected null argument !");
 
@@ -432,6 +455,8 @@ public final class SpriteFontTest
     public void testRenderingPoint()
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
         sprite.setLocation(5.0, 10.0);
         sprite.setOrigin(Origin.TOP_LEFT);
         sprite.setOrigin(Origin.MIDDLE);
@@ -446,6 +471,8 @@ public final class SpriteFontTest
     public void testSetOriginNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
 
         assertThrows(() -> sprite.setOrigin(null), "Unexpected null argument !");
 
@@ -460,6 +487,8 @@ public final class SpriteFontTest
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
+        sprite.load();
+        sprite.prepare();
         sprite.render(g);
 
         sprite.setMirror(Mirror.HORIZONTAL);
@@ -500,8 +529,8 @@ public final class SpriteFontTest
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
 
-        assertEquals(8, sprite.getTextHeight("az"));
-        assertEquals(16, sprite.getTextHeight("az%az"));
+        assertEquals(7, sprite.getTextHeight("az"));
+        assertEquals(14, sprite.getTextHeight("az%az"));
 
         sprite.dispose();
     }
