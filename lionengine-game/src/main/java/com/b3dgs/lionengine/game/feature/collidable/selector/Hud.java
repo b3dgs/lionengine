@@ -233,6 +233,16 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     }
 
     /**
+     * Get the current active menus.
+     * 
+     * @return The active menus.
+     */
+    public Collection<Actionable> getActive()
+    {
+        return active;
+    }
+
+    /**
      * Create menus from actions.
      * 
      * @param parents The parents menu.
