@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.geom.Area;
 
 /**
  * Map tile path model implementation.
@@ -402,6 +403,28 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     public CoordTile getClosestAvailableTile(Pathfindable mover, int stx, int sty, int dtx, int dty, int radius)
     {
         return getClosestAvailableTile(mover, stx, sty, 1, 1, dtx, dty, 1, 1, radius);
+    }
+
+    @Override
+    public boolean isAreaAvailable(Area area, Pathfindable mover)
+    {
+        final int tx = map.getInTileX(area);
+        final int ty = map.getInTileY(area);
+        final int tw = area.getWidth() / map.getTileWidth();
+        final int th = area.getHeight() / map.getTileHeight();
+        final Integer id = mover.getFeature(Identifiable.class).getId();
+
+        for (int cty = ty; cty < ty + th; cty++)
+        {
+            for (int ctx = tx; ctx < tx + tw; ctx++)
+            {
+                if (isTileNotAvailable(mover, ctx, cty, id))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override

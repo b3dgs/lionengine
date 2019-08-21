@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.geom.Area;
 
 /**
  * Represents the pathfinding feature of a map tile. It works by using {@link TilePath} feature.
@@ -151,6 +152,15 @@ public interface MapTilePath extends Feature
      * @return The categories.
      */
     Collection<String> getCategories();
+
+    /**
+     * Check if area if unused.
+     * 
+     * @param area The area to check.
+     * @param mover The object moving on map.
+     * @return <code>true</code> if area is free, <code>false</code> else.
+     */
+    boolean isAreaAvailable(Area area, Pathfindable mover);
 
     /**
      * Check if area if unused.
