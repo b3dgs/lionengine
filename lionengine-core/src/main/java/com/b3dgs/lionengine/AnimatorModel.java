@@ -23,8 +23,6 @@ public final class AnimatorModel implements Animator
 {
     /** Frame. */
     private static final double FRAME = 1.0;
-    /** Half frame. */
-    private static final double HALF_FRAME = 0.5;
 
     /** Animation listener. */
     private final ListenableModel<AnimatorListener> listenable = new ListenableModel<>();
@@ -66,7 +64,7 @@ public final class AnimatorModel implements Animator
         if (Double.compare(current, last + FRAME) >= 0)
         {
             // If not reversed, done, else, reverse
-            current = last + HALF_FRAME;
+            current = last;
             checkStatePlaying();
 
             for (int i = 0; i < listenable.size(); i++)
@@ -129,7 +127,7 @@ public final class AnimatorModel implements Animator
             if (repeat)
             {
                 state = AnimState.PLAYING;
-                current += 1.0;
+                current += FRAME - speed;
             }
             else
             {

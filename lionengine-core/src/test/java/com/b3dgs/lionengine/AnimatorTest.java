@@ -187,12 +187,6 @@ public final class AnimatorTest
 
         animator.update(1.0);
 
-        assertEquals(AnimState.REVERSING, animator.getAnimState());
-        assertEquals(1, animator.getFrame());
-        assertEquals(1, animator.getFrameAnim());
-
-        animator.update(1.0);
-
         assertEquals(AnimState.FINISHED, animator.getAnimState());
         assertEquals(1, animator.getFrame());
         assertEquals(1, animator.getFrameAnim());
@@ -232,7 +226,7 @@ public final class AnimatorTest
 
         animator.update(1.0);
 
-        assertEquals(AnimState.REVERSING, animator.getAnimState());
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
         assertEquals(1, animator.getFrame());
         assertEquals(1, animator.getFrameAnim());
 
@@ -425,7 +419,7 @@ public final class AnimatorTest
         }
 
         assertEquals(AnimState.REVERSING, stated.get());
-        assertEquals(Integer.valueOf(3), framed.get());
+        assertEquals(Integer.valueOf(2), framed.get());
 
         stated.set(null);
         framed.set(null);

@@ -662,12 +662,6 @@ public final class SpriteAnimatedTest
 
         sprite.update(1.0);
 
-        assertEquals(AnimState.REVERSING, sprite.getAnimState());
-        assertEquals(1, sprite.getFrame());
-        assertEquals(1, sprite.getFrameAnim());
-
-        sprite.update(1.0);
-
         assertEquals(AnimState.FINISHED, sprite.getAnimState());
         assertEquals(1, sprite.getFrame());
         assertEquals(1, sprite.getFrameAnim());
@@ -707,7 +701,7 @@ public final class SpriteAnimatedTest
 
         sprite.update(1.0);
 
-        assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        assertEquals(AnimState.PLAYING, sprite.getAnimState());
         assertEquals(1, sprite.getFrame());
         assertEquals(1, sprite.getFrameAnim());
 
