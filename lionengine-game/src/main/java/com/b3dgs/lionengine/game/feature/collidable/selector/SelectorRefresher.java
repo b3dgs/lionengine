@@ -193,10 +193,11 @@ public class SelectorRefresher extends FeatureModel implements Refreshable, List
      */
     private void computeSelection(Viewer viewer, Cursor cursor, SelectorModel model)
     {
-        final double viewX = viewer.getX() + viewer.getViewX();
-        final double viewY = viewer.getY() - viewer.getViewY();
-        final double currentX = UtilMath.clamp(cursor.getX(), viewX, viewX + viewer.getWidth());
-        final double currentY = UtilMath.clamp(cursor.getY(), viewY, viewY + viewer.getHeight());
+        final Area area = model.getClickableArea();
+        final double viewX = viewer.getX() + area.getX();
+        final double viewY = viewer.getY() - area.getY();
+        final double currentX = UtilMath.clamp(cursor.getX(), viewX, viewX + area.getWidth());
+        final double currentY = UtilMath.clamp(cursor.getY(), viewY, viewY + area.getHeight());
 
         double selectX = startX;
         double selectY = startY;
