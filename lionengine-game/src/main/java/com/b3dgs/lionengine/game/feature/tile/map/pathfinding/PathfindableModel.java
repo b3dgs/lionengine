@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -225,6 +226,18 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     }
 
     /**
+     * Update orientation based on movement.
+     */
+    private void updateOrientation()
+    {
+        final Orientation orientation = Orientation.get(UtilMath.getSign(moveX), UtilMath.getSign(moveY));
+        if (orientation != null)
+        {
+            orientable.setOrientation(orientation);
+        }
+    }
+
+    /**
      * Update the next step has it is free.
      * 
      * @param lastStep The last step.
@@ -326,10 +339,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         moving = true;
 
         // Object arrived, next step
-        final boolean arrivedX = checkArrivedX(extrp, sx, dx);
-        final boolean arrivedY = checkArrivedY(extrp, sy, dy);
-
-        if (arrivedX && arrivedY)
+        if (isStepReached(sx, sy, dx, dy))
         {
             // When object arrived on next step, we place it on step location, in order to avoid bug
             // (to be sure object location is correct)
@@ -359,19 +369,37 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     }
 
     /**
+     * Check if step is reached horizontally or vertically.
+     * 
+     * @param sx The horizontal speed.
+     * @param sy The vertical speed.
+     * @param dx The horizontal destination.
+     * @param dy The vertical destination.
+     * @return <code>true</code> if reached, <code>false</code> else.
+     */
+    private boolean isStepReached(double sx, double sy, int dx, int dy)
+    {
+        final boolean arrivedX = checkArrivedX(sx, dx);
+        final boolean arrivedY = checkArrivedY(sy, dy);
+        final boolean arrivedLinear = arrivedX && arrivedY;
+        final boolean arrivedDiagonal = Double.compare(sx, 0) != 0
+                                        && Double.compare(sy, 0) != 0
+                                        && (arrivedX || arrivedY);
+        return arrivedLinear || arrivedDiagonal;
+    }
+
+    /**
      * Check if the pathfindable is horizontally arrived.
      * 
-     * @param extrp The extrapolation value.
      * @param sx The horizontal speed.
      * @param dx The horizontal tile destination.
      * @return <code>true</code> if arrived, <code>false</code> else.
      */
-    private boolean checkArrivedX(double extrp, double sx, double dx)
+    private boolean checkArrivedX(double sx, double dx)
     {
         final double x = transformable.getX();
-        if (sx < 0 && x <= dx || sx >= 0 && x >= dx)
+        if (sx < 0 && Double.compare(x, dx) <= 0 || Double.compare(sx, 0) >= 0 && Double.compare(x, dx) >= 0)
         {
-            transformable.moveLocation(extrp, dx - x, 0);
             return true;
         }
         return false;
@@ -380,17 +408,15 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     /**
      * Check if the pathfindable is vertically arrived.
      * 
-     * @param extrp The extrapolation value.
      * @param sy The vertical speed.
      * @param dy The vertical tile destination.
      * @return <code>true</code> if arrived, <code>false</code> else.
      */
-    private boolean checkArrivedY(double extrp, double sy, double dy)
+    private boolean checkArrivedY(double sy, double dy)
     {
         final double y = transformable.getY();
-        if (sy < 0 && y <= dy || sy >= 0 && y >= dy)
+        if (sy < 0 && Double.compare(y, dy) <= 0 || Double.compare(sy, 0) >= 0 && Double.compare(y, dy) >= 0)
         {
-            transformable.moveLocation(extrp, 0, dy - y);
             return true;
         }
         return false;
@@ -487,30 +513,29 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         double sy = 0.0;
 
         // Horizontal speed
-        if (dx - x < 0)
+        if (dx < x)
         {
             sx = -getSpeedX();
         }
-        else if (dx - x > 0)
+        else if (dx > x)
         {
             sx = getSpeedX();
         }
         // Vertical speed
-        if (dy - y < 0)
+        if (dy < y)
         {
-            sy = -getSpeedX();
+            sy = -getSpeedY();
         }
-        else if (dy - y > 0)
+        else if (dy > y)
         {
-            sy = getSpeedX();
+            sy = getSpeedY();
         }
         // Diagonal speed
         if (Double.compare(sx, 0) != 0 && Double.compare(sy, 0) != 0)
         {
-            sx *= PathfindableModel.DIAGONAL_SPEED;
-            sy *= PathfindableModel.DIAGONAL_SPEED;
+            sx *= DIAGONAL_SPEED;
+            sy *= DIAGONAL_SPEED;
         }
-
         return new Force(sx, sy);
     }
 
@@ -611,13 +636,13 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             // Continue until max step
             if (currentStep < getMaxStep())
             {
-                final int dx = path.getX(currentStep) * map.getTileWidth();
-                final int dy = path.getY(currentStep) * map.getTileHeight();
-                orientable.pointTo(path.getX(currentStep), path.getY(currentStep));
+                final int dx = path.getX(currentStep);
+                final int dy = path.getY(currentStep);
+                updateOrientation();
                 moving = false;
                 moveX = 0.0;
                 moveY = 0.0;
-                moveTo(extrp, dx, dy);
+                moveTo(extrp, dx * map.getTileWidth(), dy * map.getTileHeight());
             }
             // Max step is reached, stop moves and animation
             else
