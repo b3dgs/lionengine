@@ -58,6 +58,19 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     /** Debug text size. */
     private static final int TEXT_DEBUG_SIZE = 8;
 
+    /**
+     * Check if the pathfindable is arrived.
+     * 
+     * @param v The current value.
+     * @param s The speed.
+     * @param d The tile destination.
+     * @return <code>true</code> if arrived, <code>false</code> else.
+     */
+    private static boolean checkArrived(double v, double s, double d)
+    {
+        return s < 0 && Double.compare(v, d) <= 0 || Double.compare(s, 0) >= 0 && Double.compare(v, d) >= 0;
+    }
+
     /** Pathfindable listeners. */
     private final ListenableModel<PathfindableListener> listenable = new ListenableModel<>();
     /** List of shared path id. */
@@ -379,47 +392,13 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
     private boolean isStepReached(double sx, double sy, int dx, int dy)
     {
-        final boolean arrivedX = checkArrivedX(sx, dx);
-        final boolean arrivedY = checkArrivedY(sy, dy);
+        final boolean arrivedX = checkArrived(transformable.getX(), sx, dx);
+        final boolean arrivedY = checkArrived(transformable.getY(), sy, dy);
         final boolean arrivedLinear = arrivedX && arrivedY;
         final boolean arrivedDiagonal = Double.compare(sx, 0) != 0
                                         && Double.compare(sy, 0) != 0
                                         && (arrivedX || arrivedY);
         return arrivedLinear || arrivedDiagonal;
-    }
-
-    /**
-     * Check if the pathfindable is horizontally arrived.
-     * 
-     * @param sx The horizontal speed.
-     * @param dx The horizontal tile destination.
-     * @return <code>true</code> if arrived, <code>false</code> else.
-     */
-    private boolean checkArrivedX(double sx, double dx)
-    {
-        final double x = transformable.getX();
-        if (sx < 0 && Double.compare(x, dx) <= 0 || Double.compare(sx, 0) >= 0 && Double.compare(x, dx) >= 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if the pathfindable is vertically arrived.
-     * 
-     * @param sy The vertical speed.
-     * @param dy The vertical tile destination.
-     * @return <code>true</code> if arrived, <code>false</code> else.
-     */
-    private boolean checkArrivedY(double sy, double dy)
-    {
-        final double y = transformable.getY();
-        if (sy < 0 && Double.compare(y, dy) <= 0 || Double.compare(sy, 0) >= 0 && Double.compare(y, dy) >= 0)
-        {
-            return true;
-        }
-        return false;
     }
 
     /**
