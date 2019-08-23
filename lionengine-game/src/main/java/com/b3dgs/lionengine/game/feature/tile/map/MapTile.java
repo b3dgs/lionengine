@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.SurfaceTile;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -200,6 +201,22 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
      * @return The location y relative to map referential as tile.
      */
     int getInTileY(Localizable localizable);
+
+    /**
+     * Get width relative to map referential as tile.
+     * 
+     * @param surface The surface reference.
+     * @return The width relative to map referential as tile.
+     */
+    int getInTileWidth(Surface surface);
+
+    /**
+     * Get height relative to map referential as tile.
+     * 
+     * @param surface The surface reference.
+     * @return The height relative to map referential as tile.
+     */
+    int getInTileHeight(Surface surface);
 
     /**
      * Get sheet from its id.

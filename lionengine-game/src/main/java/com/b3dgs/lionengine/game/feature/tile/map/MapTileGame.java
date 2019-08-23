@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Force;
@@ -415,6 +416,18 @@ public class MapTileGame extends FeaturableModel implements MapTile
     public int getInTileY(Localizable localizable)
     {
         return (int) Math.floor(localizable.getY() / getTileHeight());
+    }
+
+    @Override
+    public int getInTileWidth(Surface surface)
+    {
+        return (int) Math.floor(surface.getWidth() / (double) getTileWidth());
+    }
+
+    @Override
+    public int getInTileHeight(Surface surface)
+    {
+        return (int) Math.floor(surface.getHeight() / (double) getTileHeight());
     }
 
     @Override
