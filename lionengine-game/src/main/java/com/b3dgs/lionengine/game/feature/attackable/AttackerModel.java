@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.attackable;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.ToDoubleBiFunction;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Check;
@@ -54,14 +55,14 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     /** Attacker checker. */
     private BooleanSupplier canAttack = Boolean.TRUE::booleanValue;
     /** Attack distance computer. */
-    private AttackDistanceComputer distance = (transformable, target) -> UtilMath.getDistance(transformable.getX(),
-                                                                                              transformable.getY(),
-                                                                                              transformable.getWidth(),
-                                                                                              transformable.getHeight(),
-                                                                                              target.getX(),
-                                                                                              target.getY(),
-                                                                                              target.getWidth(),
-                                                                                              target.getHeight());
+    private ToDoubleBiFunction<Transformable, Transformable> distance = (s, t) -> UtilMath.getDistance(s.getX(),
+                                                                                                       s.getY(),
+                                                                                                       s.getWidth(),
+                                                                                                       s.getHeight(),
+                                                                                                       t.getX(),
+                                                                                                       t.getY(),
+                                                                                                       t.getWidth(),
+                                                                                                       t.getHeight());
     /** Attacker target (can be <code>null</code>). */
     private Transformable target;
     /** Attack frame number. */
@@ -137,7 +138,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
         else
         {
-            final double dist = distance.getDistance(transformable, target);
+            final double dist = distance.applyAsDouble(transformable, target);
             checkTargetDistance(dist);
         }
     }
@@ -321,7 +322,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
-    public void setAttackDistanceComputer(AttackDistanceComputer distance)
+    public void setAttackDistanceComputer(ToDoubleBiFunction<Transformable, Transformable> distance)
     {
         Check.notNull(distance);
 

@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.attackable;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.ToDoubleBiFunction;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
@@ -59,7 +60,7 @@ public interface Attacker extends Feature, Updatable, Listenable<AttackerListene
      * @param distance The attack distance computer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    void setAttackDistanceComputer(AttackDistanceComputer distance);
+    void setAttackDistanceComputer(ToDoubleBiFunction<Transformable, Transformable> distance);
 
     /**
      * Set attack pause time between two attacks.
