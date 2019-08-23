@@ -53,6 +53,15 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     private Transformable transformable;
     /** Attacker checker. */
     private BooleanSupplier canAttack = Boolean.TRUE::booleanValue;
+    /** Attack distance computer. */
+    private AttackDistanceComputer distance = (transformable, target) -> UtilMath.getDistance(transformable.getX(),
+                                                                                              transformable.getY(),
+                                                                                              transformable.getWidth(),
+                                                                                              transformable.getHeight(),
+                                                                                              target.getX(),
+                                                                                              target.getY(),
+                                                                                              target.getWidth(),
+                                                                                              target.getHeight());
     /** Attacker target (can be <code>null</code>). */
     private Transformable target;
     /** Attack frame number. */
@@ -128,14 +137,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
         else
         {
-            final double dist = UtilMath.getDistance(transformable.getX(),
-                                                     transformable.getY(),
-                                                     transformable.getWidth(),
-                                                     transformable.getHeight(),
-                                                     target.getX(),
-                                                     target.getY(),
-                                                     target.getWidth(),
-                                                     target.getHeight());
+            final double dist = distance.getDistance(transformable, target);
             checkTargetDistance(dist);
         }
     }
@@ -316,6 +318,14 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         Check.notNull(checker);
 
         canAttack = checker;
+    }
+
+    @Override
+    public void setAttackDistanceComputer(AttackDistanceComputer distance)
+    {
+        Check.notNull(distance);
+
+        this.distance = distance;
     }
 
     @Override

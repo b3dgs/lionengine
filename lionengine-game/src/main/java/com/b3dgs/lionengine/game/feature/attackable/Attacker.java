@@ -54,6 +54,14 @@ public interface Attacker extends Feature, Updatable, Listenable<AttackerListene
     void setAttackChecker(BooleanSupplier checker);
 
     /**
+     * Set attack distance computer.
+     * 
+     * @param distance The attack distance computer reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    void setAttackDistanceComputer(AttackDistanceComputer distance);
+
+    /**
      * Set attack pause time between two attacks.
      * 
      * @param tick The attack pause time in tick (must be positive).
