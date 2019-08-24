@@ -101,7 +101,7 @@ public class SelectorDisplayer extends FeatureModel implements Displayable
             if (w > 0 && h > 0)
             {
                 g.setColor(colorSelection);
-                g.drawRect(x, y, w, h, false);
+                g.drawRect(x, y, w - 1, h - 1, false);
             }
         }
     }
