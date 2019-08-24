@@ -189,7 +189,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     {
         final Transformable transformable = featurable.getFeature(Transformable.class);
         final Producible producible = featurable.getFeature(Producible.class);
-        transformable.setLocation(producible.getX(), producible.getY());
+        transformable.teleport(producible.getX(), producible.getY());
         handler.add(featurable);
         currentObject = featurable;
         steps = current.getFeature(Producible.class).getSteps();
