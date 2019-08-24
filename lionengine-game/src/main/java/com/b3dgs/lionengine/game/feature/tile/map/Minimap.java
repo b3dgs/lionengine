@@ -224,7 +224,7 @@ public class Minimap implements Image
                 if (!NO_TILE.equals(color))
                 {
                     g.setColor(color);
-                    g.drawRect(tx, v - ty - 1, 1, 1, true);
+                    g.drawRect(tx, v - ty - 1, 0, 0, false);
                 }
             }
         }

@@ -134,7 +134,7 @@ public interface Graphic
      */
     default void drawRect(Viewer viewer, Origin origin, Shape shape, boolean fill)
     {
-        drawRect(viewer, origin, shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight(), fill);
+        drawRect(viewer, origin, shape.getX(), shape.getY() + 1, shape.getWidth() - 1, shape.getHeight() - 1, fill);
     }
 
     /**
