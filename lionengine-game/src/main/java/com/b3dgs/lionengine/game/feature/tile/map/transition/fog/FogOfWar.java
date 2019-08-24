@@ -167,7 +167,7 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     public boolean isVisited(int tx, int ty)
     {
         final Tile tile = mapHidden.getTile(tx, ty);
-        return hideMap && tile != null && tile.getNumber() == MapTileFog.NO_FOG;
+        return !hideMap || tile != null && tile.getNumber() == MapTileFog.NO_FOG;
     }
 
     /**
