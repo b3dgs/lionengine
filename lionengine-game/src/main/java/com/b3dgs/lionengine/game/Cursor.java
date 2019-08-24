@@ -380,7 +380,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         if (viewer != null)
         {
             offX = (int) viewer.getX();
-            offY = (int) viewer.getY() - viewer.getViewY();
+            offY = (int) viewer.getY();
         }
 
         screenX = UtilMath.clamp(screenX, minX, maxX);

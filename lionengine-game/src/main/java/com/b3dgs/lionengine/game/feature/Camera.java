@@ -416,7 +416,7 @@ public class Camera extends FeaturableModel implements Viewer
     @Override
     public double getViewpointY(double y)
     {
-        return getY() + height - y - getViewY();
+        return getY() + height - y;
     }
 
     @Override

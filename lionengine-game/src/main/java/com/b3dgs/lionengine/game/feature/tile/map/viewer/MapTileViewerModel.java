@@ -143,7 +143,7 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
         {
             final int inTileHeight = (int) Math.ceil(viewer.getHeight() / (double) map.getTileHeight());
             final int sy = (int) Math.floor((viewer.getY() - viewer.getViewY()) / map.getTileHeight());
-            final double viewY = viewer.getY() - viewer.getViewY() + viewer.getScreenHeight() - viewer.getViewY();
+            final double viewY = viewer.getY() + viewer.getScreenHeight();
 
             for (int v = 0; v <= inTileHeight; v++)
             {
