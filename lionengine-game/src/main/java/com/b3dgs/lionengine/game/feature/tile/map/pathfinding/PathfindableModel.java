@@ -709,7 +709,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         {
             // New first path, when object is not moving
             // CHECKSTYLE IGNORE LINE: InnerAssignment
-            if (path == null && (path = pathfinder.findPath(this, tx, ty, true)) != null)
+            if (path == null && (path = pathfinder.findPath(this, tx, ty, false)) != null)
             {
                 currentStep = 0;
                 pathFoundChanged = false;
