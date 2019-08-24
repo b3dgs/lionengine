@@ -212,22 +212,30 @@ public final class UtilMath
      */
     public static double getDistance(double x1, double y1, double x2, double y2, int w2, int h2)
     {
+        double curMin = getDistance(x2, y2, x1, y1);
+        if (w2 == 1 && h2 == 1)
+        {
+            return curMin;
+        }
+
         final double maxX = x2 + w2;
         final double maxY = y2 + h2;
 
-        double min = getDistance(x1, y1, x2, y2);
-        for (double x = x2; Double.compare(x, maxX) <= 0; x++)
+        for (double x = x2 + 1; Double.compare(x, maxX) < 0; x++)
         {
-            for (double y = y2; Double.compare(y, maxY) <= 0; y++)
-            {
-                final double dist = getDistance(x1, y1, x, y);
-                if (dist < min)
-                {
-                    min = dist;
-                }
-            }
+            curMin = min(curMin, getDistance(x, y2, x1, y1));
+            curMin = min(curMin, getDistance(x, maxY, x1, y1));
         }
-        return min;
+        for (double y = y2 + 1; Double.compare(y, maxY) < 0; y++)
+        {
+            curMin = min(curMin, getDistance(x2, y, x1, y1));
+            curMin = min(curMin, getDistance(maxX, y, x1, y1));
+        }
+        curMin = min(curMin, getDistance(maxX, y2, x1, y1));
+        curMin = min(curMin, getDistance(x2, maxY, x1, y1));
+        curMin = min(curMin, getDistance(maxX, maxY, x1, y1));
+
+        return curMin;
     }
 
     /**
@@ -245,22 +253,30 @@ public final class UtilMath
      */
     public static double getDistance(double x1, double y1, int w1, int h1, double x2, double y2, int w2, int h2)
     {
+        if (w1 == 1 && h1 == 1 && w2 == 1 && h2 == 1)
+        {
+            return getDistance(x1, y1, x2, y2);
+        }
+
         final double maxX = x2 + w2;
         final double maxY = y2 + h2;
 
-        double min = getDistance(x1, y1, x2, y2);
-        for (double x = x2; Double.compare(x, maxX) <= 0; x++)
+        double curMin = getDistance(x2, y2, x1, y1, w1, h1);
+        for (double x = x2 + 1; Double.compare(x, maxX) < 0; x++)
         {
-            for (double y = y2; Double.compare(y, maxY) <= 0; y++)
-            {
-                final double dist = getDistance(x, y, x1, y1, w1, h1);
-                if (dist < min)
-                {
-                    min = dist;
-                }
-            }
+            curMin = min(curMin, getDistance(x, y2, x1, y1, w1, h1));
+            curMin = min(curMin, getDistance(x, maxY, x1, y1, w1, h1));
         }
-        return min;
+        for (double y = y2 + 1; Double.compare(y, maxY) < 0; y++)
+        {
+            curMin = min(curMin, getDistance(x2, y, x1, y1, w1, h1));
+            curMin = min(curMin, getDistance(maxX, y, x1, y1, w1, h1));
+        }
+        curMin = min(curMin, getDistance(maxX, y2, x1, y1, w1, h1));
+        curMin = min(curMin, getDistance(x2, maxY, x1, y1, w1, h1));
+        curMin = min(curMin, getDistance(maxX, maxY, x1, y1, w1, h1));
+
+        return curMin;
     }
 
     /**
@@ -367,6 +383,22 @@ public final class UtilMath
             sign = 0;
         }
         return sign;
+    }
+
+    /**
+     * Get minimum value.
+     * 
+     * @param a The first value.
+     * @param b The second value.
+     * @return The minimum value.
+     */
+    private static double min(double a, double b)
+    {
+        if (a < b)
+        {
+            return a;
+        }
+        return b;
     }
 
     /**
