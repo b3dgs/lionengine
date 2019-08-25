@@ -33,9 +33,9 @@ public final class SurfaceConfig
 {
     /** Surface node name. */
     public static final String NODE_SURFACE = Constant.XML_PREFIX + "surface";
-    /** Surface image node. */
+    /** Image attribute name. */
     public static final String ATT_IMAGE = "image";
-    /** Surface icon node. */
+    /** Icon attribute name. */
     public static final String ATT_ICON = "icon";
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 31;
