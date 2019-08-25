@@ -156,11 +156,11 @@ public class Camera extends FeaturableModel implements Viewer
      */
     public void drawFov(Graphic g, int x, int y, int gridH, int gridV, Surface surface)
     {
-        final int h = x + (int) Math.floor((getX() + getViewX()) / gridH);
-        final int v = y + (int) -Math.floor((getY() + getHeight()) / gridV);
-        final int tileWidth = getWidth() / gridH;
-        final int tileHeight = getHeight() / gridV;
-        g.drawRect(h, v + surface.getHeight(), tileWidth, tileHeight, false);
+        final int h = x + UtilMath.getRounded(getX() + getViewX(), gridH) / gridH;
+        final int v = y + -UtilMath.getRounded(getY() + getHeight(), gridV) / gridV;
+        final int tileWidth = UtilMath.getRounded(getWidth(), gridH) / gridH;
+        final int tileHeight = UtilMath.getRounded(getHeight(), gridV) / gridV;
+        g.drawRect(h, v + surface.getHeight(), tileWidth - 1, tileHeight - 1, false);
     }
 
     /**
