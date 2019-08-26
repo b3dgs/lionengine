@@ -103,7 +103,7 @@ public final class MapTileFogTest
         assertEquals(0, fog.getTile(3, 4).getNumber());
         assertEquals(9, fog.getTile(4, 4).getNumber());
 
-        fog.reset();
+        fog.reset(fovable);
 
         assertEquals(16, fog.getTile(2, 3).getNumber());
         assertEquals(16, fog.getTile(3, 3).getNumber());

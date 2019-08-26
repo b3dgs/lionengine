@@ -17,12 +17,11 @@
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -47,8 +46,6 @@ public class MapTileFog
     /** Transition group. */
     private static final String TRANSITION_GROUP = "transition";
 
-    /** Revealed tiles. */
-    private final Collection<Tile> revealed = new HashSet<>();
     /** Hidden map. */
     private final MapTile map;
     /** Map group. */
@@ -110,15 +107,60 @@ public class MapTileFog
     }
 
     /**
-     * Reset the revealed tiles to fogged.
+     * Update fovable field of view (fog of war).
+     * 
+     * @param fovable The fovable reference.
      */
-    public void reset()
+    public void updateFov(Fovable fovable)
     {
-        for (final Tile tile : revealed)
+        final int tx = fovable.getInTileX();
+        final int ty = fovable.getInTileY();
+        final int tw = fovable.getInTileWidth() / 2;
+        final int th = fovable.getInTileHeight() / 2;
+        final int ray = fovable.getInTileFov() - 1;
+
+        final int sx = UtilMath.clamp(tx - ray - tw, 0, map.getInTileWidth() - 1);
+        final int ex = UtilMath.clamp(tx + ray + tw, 0, map.getInTileWidth() - 1);
+        final int sy = UtilMath.clamp(ty - ray - th, 0, map.getInTileHeight() - 1);
+        final int ey = UtilMath.clamp(ty + ray + th, 0, map.getInTileHeight() - 1);
+
+        for (int x = sx; x < ex + 1; x++)
         {
-            map.setTile(tile.getInTileX(), tile.getInTileY(), FOG);
+            for (int y = sy; y < ey + 1; y++)
+            {
+                map.setTile(x, y, NO_FOG);
+                transition.resolve(map.getTile(x, y));
+            }
         }
-        revealed.clear();
+    }
+
+    /**
+     * Reset the revealed tiles to fogged.
+     * 
+     * @param fovable The fovable reference.
+     */
+    void reset(Fovable fovable)
+    {
+        final Transformable transformable = fovable.getFeature(Transformable.class);
+        final int tx = (int) Math.floor(transformable.getOldX() / map.getTileWidth());
+        final int ty = (int) Math.floor(transformable.getOldY() / map.getTileHeight());
+        final int tw = map.getInTileHeight(transformable) / 2;
+        final int th = map.getInTileHeight(transformable) / 2;
+        final int ray = fovable.getInTileFov() - 1;
+
+        final int sx = UtilMath.clamp(tx - ray - tw, 0, map.getInTileWidth() - 1);
+        final int ex = UtilMath.clamp(tx + ray + tw, 0, map.getInTileWidth() - 1);
+        final int sy = UtilMath.clamp(ty - ray - th, 0, map.getInTileHeight() - 1);
+        final int ey = UtilMath.clamp(ty + ray + th, 0, map.getInTileHeight() - 1);
+
+        for (int x = sx; x < ex + 1; x++)
+        {
+            for (int y = sy; y < ey + 1; y++)
+            {
+                map.setTile(x, y, FOG);
+                transition.resolve(map.getTile(x, y));
+            }
+        }
     }
 
     /**
@@ -128,45 +170,8 @@ public class MapTileFog
      * @param ty The vertical location.
      * @return The tile reference (<code>null</code> if none).
      */
-    public Tile getTile(int tx, int ty)
+    Tile getTile(int tx, int ty)
     {
         return map.getTile(tx, ty);
-    }
-
-    /**
-     * Update fovable field of view (fog of war).
-     * 
-     * @param fovable The fovable reference.
-     */
-    public void updateFov(Fovable fovable)
-    {
-        final int tx = fovable.getInTileX();
-        final int ty = fovable.getInTileY();
-        final int tw = fovable.getInTileWidth();
-        final int th = fovable.getInTileHeight();
-        final int ray = fovable.getInTileFov();
-
-        final int sx = UtilMath.clamp(tx - ray - tw / 2, 0, map.getInTileWidth() - 1);
-        final int ex = UtilMath.clamp(tx + ray + tw / 2, 0, map.getInTileWidth() - 1);
-        final int sy = UtilMath.clamp(ty - ray - th / 2, 0, map.getInTileHeight() - 1);
-        final int ey = UtilMath.clamp(ty + ray + th / 2, 0, map.getInTileHeight() - 1);
-
-        for (int x = sx + 1; x < ex; x++)
-        {
-            for (int y = sy + 1; y < ey; y++)
-            {
-                map.setTile(x, y, NO_FOG);
-                transition.resolve(getTile(x, y));
-            }
-        }
-
-        for (int x = sx; x < ex + 1; x++)
-        {
-            for (int y = sy; y < ey + 1; y++)
-            {
-                final Tile tile = map.getTile(x, y);
-                revealed.add(tile);
-            }
-        }
     }
 }

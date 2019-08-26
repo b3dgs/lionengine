@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -125,8 +123,7 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(4, 3));
 
         transformable.teleport(3, 3);
-        fog.updateHidden(fovable);
-        fog.updateFog(Arrays.asList(fovable));
+        fog.update(fovable);
 
         assertTrue(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
@@ -138,15 +135,14 @@ public final class FogOfWarTest
         assertTrue(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
 
-        transformable.teleport(6, 6);
-        fog.updateHidden(fovable);
-        fog.updateFog(Arrays.asList(fovable));
+        transformable.setLocation(6, 6);
+        fog.update(fovable);
 
         assertFalse(fog.isFogged(2, 3));
-        assertFalse(fog.isFogged(3, 3));
-        assertFalse(fog.isFogged(4, 3));
+        assertTrue(fog.isFogged(3, 3));
+        assertTrue(fog.isFogged(4, 3));
         assertFalse(fog.isVisible(map.getTile(2, 3)));
-        assertTrue(fog.isVisible(map.getTile(3, 3)));
+        assertFalse(fog.isVisible(map.getTile(3, 3)));
         assertFalse(fog.isVisible(map.getTile(4, 3)));
         assertFalse(fog.isVisited(2, 3));
         assertTrue(fog.isVisited(3, 3));

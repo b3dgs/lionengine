@@ -74,27 +74,15 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     }
 
     /**
-     * Update hidden layer.
+     * Update fog of war.
      * 
      * @param fovable The fovable to update with.
      */
-    public void updateHidden(Fovable fovable)
+    public void update(Fovable fovable)
     {
         mapHidden.updateFov(fovable);
-    }
-
-    /**
-     * Update the discovered but not currently visible layer.
-     * 
-     * @param fovables The fovable to update with.
-     */
-    public void updateFog(Iterable<Fovable> fovables)
-    {
-        mapFogged.reset();
-        for (final Fovable fovable : fovables)
-        {
-            mapFogged.updateFov(fovable);
-        }
+        mapFogged.reset(fovable);
+        mapFogged.updateFov(fovable);
     }
 
     /**
