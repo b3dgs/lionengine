@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
+import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
@@ -120,6 +121,32 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     }
 
     /**
+     * Check if the area has been visited.
+     * 
+     * @param area The tiled to check.
+     * @return <code>true</code> if hidden, <code>false</code> else.
+     */
+    public boolean isVisited(Area area)
+    {
+        final int tx = (int) Math.floor(area.getX() / hideTiles.getTileWidth());
+        final int ty = (int) Math.floor(area.getY() / hideTiles.getTileHeight());
+        final int tw = area.getWidth() / hideTiles.getTileWidth();
+        final int th = area.getHeight() / hideTiles.getTileHeight();
+
+        for (int ctx = tx; ctx < tx + tw; ctx++)
+        {
+            for (int cty = ty; cty < ty + th; cty++)
+            {
+                if (!isVisited(ctx, cty))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Check if the tile is currently visible.
      * 
      * @param tiled The tiled to check.
@@ -129,12 +156,12 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     {
         final int tx = tiled.getInTileX();
         final int ty = tiled.getInTileY();
-        final int tw = tiled.getInTileWidth() - 1;
-        final int th = tiled.getInTileHeight() - 1;
+        final int tw = tiled.getInTileWidth();
+        final int th = tiled.getInTileHeight();
 
-        for (int ctx = tx; ctx <= tx + tw; ctx++)
+        for (int ctx = tx; ctx < tx + tw; ctx++)
         {
-            for (int cty = ty; cty <= ty + th; cty++)
+            for (int cty = ty; cty < ty + th; cty++)
             {
                 if (isVisited(ctx, cty) && !isFogged(ctx, cty))
                 {
