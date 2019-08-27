@@ -212,16 +212,38 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
      * @param id The mover id.
      * @return The free tile found (<code>null</code> if none).
      */
+    // CHECKSTYLE IGNORE LINE: ReturnCount
     private CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int tw, int th, int radius, Integer id)
     {
-        for (int ctx = tx - radius; ctx <= tx + radius; ctx++)
+        final int w = mover.getInTileWidth();
+        final int h = mover.getInTileHeight();
+
+        for (int y = ty + th + radius; y > ty - h - radius - 1; y--)
         {
-            for (int cty = ty - radius; cty <= ty + radius; cty++)
+            if (isAreaAvailable(mover, tx - w - radius, y, w, h, id))
             {
-                if (isAreaAvailable(mover, ctx, cty, tw, th, id))
-                {
-                    return new CoordTile(ctx, cty);
-                }
+                return new CoordTile(tx - w - radius, y);
+            }
+        }
+        for (int x = tx - w - radius; x < tx + tw + radius + 1; x++)
+        {
+            if (isAreaAvailable(mover, x, ty - h - radius, w, h, id))
+            {
+                return new CoordTile(x, ty - h - radius);
+            }
+        }
+        for (int y = ty - h - radius + 1; y < ty + th + radius + 1; y++)
+        {
+            if (isAreaAvailable(mover, tx + tw + radius, y, w, h, id))
+            {
+                return new CoordTile(tx + tw + radius, y);
+            }
+        }
+        for (int x = tx + tw + radius - 1; x > tx - tw - radius + 2; x--)
+        {
+            if (isAreaAvailable(mover, x, ty + th + radius, w, h, id))
+            {
+                return new CoordTile(x, ty + th + radius);
             }
         }
         return null;

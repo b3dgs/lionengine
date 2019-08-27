@@ -112,13 +112,13 @@ public final class MapTilePathModelTest
         final TileArea tile = new TileArea(1, 2, 1, 1);
         CoordTile coord = mapPath.getFreeTileAround(pathfindable, tile);
 
-        assertEquals(1, coord.getX());
-        assertEquals(2, coord.getY());
+        assertEquals(0, coord.getX());
+        assertEquals(3, coord.getY());
 
         coord = mapPath.getFreeTileAround(pathfindable, tile, 4);
 
-        assertEquals(1, coord.getX());
-        assertEquals(2, coord.getY());
+        assertEquals(0, coord.getX());
+        assertEquals(3, coord.getY());
     }
 
     /**
