@@ -32,6 +32,8 @@ public final class Tick implements Updatable
         // Nothing to do
     };
 
+    /** Actions to add. */
+    private final Collection<TickActionDelayed> toAdd = new ArrayList<>();
     /** Actions. */
     private final Collection<TickActionDelayed> actions = new ArrayList<>();
     /** Actions executed. */
@@ -62,7 +64,7 @@ public final class Tick implements Updatable
      */
     public void addAction(TickAction action, long tickDelay)
     {
-        actions.add(new TickActionDelayed(action, tickDelay));
+        toAdd.add(new TickActionDelayed(action, currentTicks + tickDelay));
     }
 
     /**
@@ -185,6 +187,12 @@ public final class Tick implements Updatable
     {
         updater.update(extrp);
 
+        if (!toAdd.isEmpty())
+        {
+            actions.addAll(toAdd);
+            toAdd.clear();
+        }
+
         for (final TickActionDelayed action : actions)
         {
             if (elapsed(action.getDelay()))
@@ -193,6 +201,7 @@ public final class Tick implements Updatable
                 toRemove.add(action);
             }
         }
+
         if (!toRemove.isEmpty())
         {
             actions.removeAll(toRemove);
