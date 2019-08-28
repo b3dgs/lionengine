@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.SurfaceTile;
@@ -27,6 +28,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Standard camera, able to handle movement, and both vertical/horizontal interval. Camera can be used to move
@@ -145,6 +147,28 @@ public class Camera extends FeaturableModel implements Viewer
     }
 
     /**
+     * Teleport the camera at the specified location and reset offset position.
+     * 
+     * @param shape The center to center camera on.
+     */
+    public void center(Shape shape)
+    {
+        teleport(shape.getX() + (shape.getWidth() - getWidth()) / 2,
+                 shape.getY() + (shape.getHeight() - getHeight()) / 2);
+    }
+
+    /**
+     * Round location with the specified size.
+     * 
+     * @param round The round used.
+     */
+    public void round(SurfaceTile round)
+    {
+        final int th = round.getTileHeight();
+        teleport(UtilMath.getRounded(mover.getX(), round.getTileWidth()), UtilMath.getRounded(mover.getY(), th) + th);
+    }
+
+    /**
      * Draw the camera field of view according to a grid.
      * 
      * @param g The graphic output.
@@ -219,6 +243,26 @@ public class Camera extends FeaturableModel implements Viewer
         this.width = UtilMath.clamp(width, 0, Integer.MAX_VALUE);
         this.height = UtilMath.clamp(height, 0, Integer.MAX_VALUE);
         this.screenHeight = screenHeight;
+    }
+
+    /**
+     * Define the rendering area.
+     * 
+     * @param source The source resolution.
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
+     * @param origin The view origin.
+     * @see #setView(int, int, int, int, int)
+     */
+    public void setView(SourceResolutionProvider source, int offsetX, int offsetY, Origin origin)
+    {
+        final int width = source.getWidth();
+        final int height = source.getHeight();
+        setView((int) origin.getX(offsetX, width),
+                (int) origin.getY(offsetY, height),
+                width - offsetX,
+                height - offsetY,
+                height);
     }
 
     /**
