@@ -60,4 +60,10 @@ public class AttackerListenerVoid implements AttackerListener
     {
         // Nothing by default
     }
+
+    @Override
+    public void notifyAttackStopped()
+    {
+        // Nothing by default
+    }
 }

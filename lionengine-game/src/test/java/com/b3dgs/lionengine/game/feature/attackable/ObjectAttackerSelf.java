@@ -66,4 +66,10 @@ final class ObjectAttackerSelf extends FeaturableModel implements AttackerListen
     {
         // Mock
     }
+
+    @Override
+    public void notifyAttackStopped()
+    {
+        // Mock
+    }
 }

@@ -54,4 +54,9 @@ public interface AttackerListener
      * Notify while attacker is waiting for next attack.
      */
     void notifyPreparingAttack();
+
+    /**
+     * Notify when attacker has stopped.
+     */
+    void notifyAttackStopped();
 }

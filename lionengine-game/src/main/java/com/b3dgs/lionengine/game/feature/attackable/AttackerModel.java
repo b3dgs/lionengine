@@ -309,7 +309,12 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         {
             attacking = false;
             state = AttackState.NONE;
+            target = null;
             stop = false;
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).notifyAttackStopped();
+            }
         }
     }
 
