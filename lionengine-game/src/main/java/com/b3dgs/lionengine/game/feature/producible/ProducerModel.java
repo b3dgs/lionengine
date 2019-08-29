@@ -135,15 +135,15 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      */
     private void actionProduced()
     {
-        for (int i = 0; i < listenable.size(); i++)
-        {
-            listenable.get(i).notifyProduced(currentObject);
-        }
         final List<ProducibleListener> listeners = current.getFeature(Producible.class).getListeners();
         final int n = listeners.size();
         for (int i = 0; i < n; i++)
         {
             listeners.get(i).notifyProductionEnded(this);
+        }
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyProduced(currentObject);
         }
         currentObject = null;
         progress = -1;
