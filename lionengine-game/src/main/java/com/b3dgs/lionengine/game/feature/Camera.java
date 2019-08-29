@@ -142,7 +142,7 @@ public class Camera extends FeaturableModel implements Viewer
      */
     public void teleport(double x, double y)
     {
-        offset.teleport(0, 0);
+        offset.teleport(0.0, 0.0);
         mover.teleport(x, y);
     }
 
@@ -153,8 +153,8 @@ public class Camera extends FeaturableModel implements Viewer
      */
     public void center(Shape shape)
     {
-        teleport(shape.getX() + (shape.getWidth() - getWidth()) / 2,
-                 shape.getY() + (shape.getHeight() - getHeight()) / 2);
+        teleport(shape.getX() + (shape.getWidth() - getWidth()) / 2.0,
+                 shape.getY() + (shape.getHeight() - getHeight()) / 2.0);
     }
 
     /**
@@ -165,7 +165,8 @@ public class Camera extends FeaturableModel implements Viewer
     public void round(SurfaceTile round)
     {
         final int th = round.getTileHeight();
-        teleport(UtilMath.getRounded(mover.getX(), round.getTileWidth()), UtilMath.getRounded(mover.getY(), th) + th);
+        teleport(UtilMath.getRounded(mover.getX(), round.getTileWidth()),
+                 UtilMath.getRounded(mover.getY(), th) + (double) th);
     }
 
     /**
@@ -248,21 +249,25 @@ public class Camera extends FeaturableModel implements Viewer
     /**
      * Define the rendering area.
      * 
-     * @param source The source resolution.
+     * @param source The source resolution (must not be <code>null</code>).
      * @param offsetX The horizontal offset.
      * @param offsetY The vertical offset.
      * @param origin The view origin.
+     * @throws LionEngineException If invalid argument.
      * @see #setView(int, int, int, int, int)
      */
     public void setView(SourceResolutionProvider source, int offsetX, int offsetY, Origin origin)
     {
-        final int width = source.getWidth();
-        final int height = source.getHeight();
-        setView((int) origin.getX(offsetX, width),
-                (int) origin.getY(offsetY, height),
-                width - offsetX,
-                height - offsetY,
-                height);
+        Check.notNull(source);
+        Check.notNull(origin);
+
+        final int sourceWidth = source.getWidth();
+        final int sourceHeight = source.getHeight();
+        setView((int) origin.getX(offsetX, sourceWidth),
+                (int) origin.getY(offsetY, sourceHeight),
+                sourceWidth - offsetX,
+                sourceHeight - offsetY,
+                sourceHeight);
     }
 
     /**

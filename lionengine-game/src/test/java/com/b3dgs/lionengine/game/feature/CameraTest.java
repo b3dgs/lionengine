@@ -18,15 +18,20 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.SurfaceTile;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.GraphicMock;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
  * Test {@link Camera}.
@@ -64,6 +69,58 @@ public final class CameraTest
         assertEquals(0.0, camera.getY());
         assertEquals(0.0, camera.getMovementHorizontal());
         assertEquals(0.0, camera.getMovementVertical());
+    }
+
+    /**
+     * Test the camera center.
+     */
+    @Test
+    public void testCameraCenter()
+    {
+        final Shape shape = Geom.createArea(60, 50, 20, 10);
+        camera.setView(0, 0, 120, 100, 100);
+        camera.center(shape);
+
+        assertEquals(10.0, camera.getX());
+        assertEquals(5.0, camera.getY());
+    }
+
+    /**
+     * Test the camera round.
+     */
+    @Test
+    public void testCameraRound()
+    {
+        camera.teleport(11.1, 12.2);
+        camera.round(new SurfaceTile()
+        {
+            @Override
+            public int getWidth()
+            {
+                return 100;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 200;
+            }
+
+            @Override
+            public int getTileWidth()
+            {
+                return 10;
+            }
+
+            @Override
+            public int getTileHeight()
+            {
+                return 20;
+            }
+        });
+
+        assertEquals(10.0, camera.getX());
+        assertEquals(20.0, camera.getY());
     }
 
     /**
@@ -126,6 +183,34 @@ public final class CameraTest
         assertEquals(4, camera.getHeight());
 
         camera.drawFov(new GraphicMock(), 0, 0, 1, 1, surface);
+
+        assertThrows(() -> camera.setView(null, 0, 0, null), "Unexpected null argument !");
+
+        camera.setView(new SourceResolutionProvider()
+        {
+            @Override
+            public int getWidth()
+            {
+                return 320;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 240;
+            }
+
+            @Override
+            public int getRate()
+            {
+                return 60;
+            }
+        }, 10, 20, Origin.TOP_LEFT);
+
+        assertEquals(10, camera.getViewX());
+        assertEquals(20, camera.getViewY());
+        assertEquals(310, camera.getWidth());
+        assertEquals(220, camera.getHeight());
     }
 
     /**
