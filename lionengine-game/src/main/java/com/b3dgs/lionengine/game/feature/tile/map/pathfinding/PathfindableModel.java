@@ -181,8 +181,8 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
     private void assignObjectId(int dtx, int dty)
     {
-        final int tw = transformable.getWidth() / map.getTileWidth();
-        final int th = transformable.getHeight() / map.getTileHeight();
+        final int tw = map.getInTileWidth(transformable);
+        final int th = map.getInTileHeight(transformable);
 
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
@@ -201,11 +201,12 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
     private void removeObjectId(int dtx, int dty)
     {
-        final int tw = transformable.getWidth() / map.getTileWidth();
-        final int th = transformable.getHeight() / map.getTileHeight();
-        for (int tx = dtx; tx < dtx + tw; tx++)
+        final int tw = map.getInTileWidth(transformable);
+        final int th = map.getInTileHeight(transformable);
+
+        for (int tx = dtx - 1; tx < dtx + tw + 1; tx++)
         {
-            for (int ty = dty; ty < dty + th; ty++)
+            for (int ty = dty - 1; ty < dty + th + 1; ty++)
             {
                 if (mapPath.getObjectsId(tx, ty).contains(id))
                 {
@@ -310,8 +311,8 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
                 final Tile tile = map.getTile(path.getX(i), path.getY(i));
                 if (tile != null)
                 {
-                    final TilePath tilePath = tile.getFeature(TilePath.class);
-                    text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(tilePath.getCategory())));
+                    final String category = mapPath.getCategory(tile);
+                    text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(category)));
                 }
             }
         }
@@ -444,8 +445,8 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      */
     private boolean checkObjectId(int dtx, int dty)
     {
-        final int tw = transformable.getWidth() / map.getTileWidth();
-        final int th = transformable.getHeight() / map.getTileHeight();
+        final int tw = map.getInTileWidth(transformable);
+        final int th = map.getInTileHeight(transformable);
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
             for (int ty = dty; ty < dty + th; ty++)
@@ -805,13 +806,13 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public int getInTileWidth()
     {
-        return transformable.getWidth() / map.getTileWidth();
+        return map.getInTileWidth(transformable);
     }
 
     @Override
     public int getInTileHeight()
     {
-        return transformable.getHeight() / map.getTileHeight();
+        return map.getInTileHeight(transformable);
     }
 
     @Override

@@ -145,14 +145,14 @@ final class PathFinderImpl implements PathFinder
     {
         int depth = maxDepth;
         final Tile tile = map.getTile(current.getX(), current.getY());
-        final TilePath tilePath = tile.getFeature(TilePath.class);
+        final String category = mapPath.getCategory(tile);
         for (int y = -1; y < 2; y++)
         {
             for (int x = -1; x < 2; x++)
             {
                 if (!(x == 0 && y == 0))
                 {
-                    depth = check(tilePath, depth, x, y, mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
+                    depth = check(category, depth, x, y, mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
                 }
             }
         }
@@ -162,7 +162,7 @@ final class PathFinderImpl implements PathFinder
     /**
      * Update the open and closed list to find the path.
      * 
-     * @param tilePath The current tile.
+     * @param category The current tile category.
      * @param nextDepth The next depth value.
      * @param x The current horizontal movement.
      * @param y The current vertical movement.
@@ -176,7 +176,7 @@ final class PathFinderImpl implements PathFinder
      * @param maxDepth The last max depth.
      * @return The next max depth.
      */
-    private int check(TilePath tilePath,
+    private int check(String category,
                       int nextDepth,
                       int x,
                       int y,
@@ -190,7 +190,7 @@ final class PathFinderImpl implements PathFinder
                       int maxDepth)
     {
         final MovementTile movement = MovementTile.from(x, y);
-        if (mover.isMovementAllowed(tilePath.getCategory(), movement))
+        if (mover.isMovementAllowed(category, movement))
         {
             final int xp = x + current.getX();
             final int yp = y + current.getY();

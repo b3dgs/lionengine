@@ -16,10 +16,14 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -46,6 +50,8 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
     private final MapTile map;
     /** Map group reference. */
     private final MapTileGroup mapGroup;
+    /** Path id mapping. */
+    private List<List<Set<Integer>>> tiles;
 
     /**
      * Create feature.
@@ -90,8 +96,8 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         final Tile tile = map.getTile(ctx, cty);
         if (tile != null)
         {
-            final TilePath tilePath = tile.getFeature(TilePath.class);
-            if (mover.isBlocking(tilePath.getCategory())
+            final String category = getCategory(tile);
+            if (mover.isBlocking(category)
                 || !ids.isEmpty() && (ignoreObjectId == null || !ids.contains(ignoreObjectId)))
             {
                 return true;
@@ -135,8 +141,8 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         final Tile tile = map.getTile(tx, ty);
         if (tile != null)
         {
-            final TilePath tilePath = tile.getFeature(TilePath.class);
-            return mover.isBlocking(tilePath.getCategory());
+            final String category = getCategory(tile);
+            return mover.isBlocking(category);
         }
         return false;
     }
@@ -280,66 +286,60 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         {
             categories.put(category.getName(), category);
         }
-        for (int ty = 0; ty < map.getInTileHeight(); ty++)
+
+        final int widthInTile = map.getInTileWidth();
+        final int heightInTile = map.getInTileHeight();
+        tiles = new ArrayList<>(heightInTile);
+
+        for (int v = 0; v < heightInTile; v++)
         {
-            for (int tx = 0; tx < map.getInTileWidth(); tx++)
+            tiles.add(v, new ArrayList<Set<Integer>>(widthInTile));
+            for (int h = 0; h < widthInTile; h++)
             {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null)
-                {
-                    loadTile(tile);
-                }
+                tiles.get(v).add(h, new HashSet<>(1));
             }
         }
     }
 
     @Override
-    public void loadTile(Tile tile)
-    {
-        final String group = mapGroup.getGroup(tile);
-        final String category = getCategory(group);
-        final TilePath tilePath = new TilePathModel(category);
-        tile.addFeature(tilePath);
-    }
-
-    @Override
     public void addObjectId(int tx, int ty, Integer id)
     {
-        final Tile tile = map.getTile(tx, ty);
-        if (tile != null)
+        if (UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1) && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
         {
-            final TilePath tilePath = tile.getFeature(TilePath.class);
-            tilePath.addObjectId(id);
+            tiles.get(ty).get(tx).add(id);
         }
     }
 
     @Override
     public void removeObjectId(int tx, int ty, Integer id)
     {
-        final Tile tile = map.getTile(tx, ty);
-        if (tile != null)
+        if (UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1) && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
         {
-            final TilePath tilePath = tile.getFeature(TilePath.class);
-            tilePath.removeObjectId(id);
+            tiles.get(ty).get(tx).remove(id);
         }
     }
 
     @Override
-    public Collection<Integer> getObjectsId(int tx, int ty)
+    public Set<Integer> getObjectsId(int tx, int ty)
     {
-        final Tile tile = map.getTile(tx, ty);
-        if (tile != null)
+        if (UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1) && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
         {
-            final TilePath tilePath = tile.getFeature(TilePath.class);
-            return tilePath.getObjectsId();
+            return tiles.get(ty).get(tx);
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
     @Override
     public Tile getTile(Tiled tiled)
     {
         return map.getTile(tiled.getInTileX(), tiled.getInTileY());
+    }
+
+    @Override
+    public String getCategory(Tile tile)
+    {
+        final String group = mapGroup.getGroup(tile);
+        return getCategory(group);
     }
 
     @Override
@@ -355,8 +355,8 @@ public class MapTilePathModel extends FeatureModel implements MapTilePath
         final Tile tile = map.getTile(tx, ty);
         if (tile != null)
         {
-            final TilePath tilePath = tile.getFeature(TilePath.class);
-            return mover.getCost(tilePath.getCategory());
+            final String category = getCategory(tile);
+            return mover.getCost(category);
         }
         return 0.0;
     }

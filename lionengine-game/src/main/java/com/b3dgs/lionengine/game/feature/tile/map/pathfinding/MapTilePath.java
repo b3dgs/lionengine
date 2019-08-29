@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import java.util.Collection;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
@@ -26,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.geom.Area;
 
 /**
- * Represents the pathfinding feature of a map tile. It works by using {@link TilePath} feature.
+ * Represents the pathfinding feature of a map tile.
  */
 @FeatureInterface
 public interface MapTilePath extends Feature
@@ -37,13 +38,6 @@ public interface MapTilePath extends Feature
      * @param pathfindingConfig The pathfinding descriptor.
      */
     void loadPathfinding(Media pathfindingConfig);
-
-    /**
-     * Load tile path data.
-     * 
-     * @param tile The tile to load.
-     */
-    void loadTile(Tile tile);
 
     /**
      * Add object ID at this location.
@@ -70,7 +64,7 @@ public interface MapTilePath extends Feature
      * @param ty The vertical tile index.
      * @return The objects ID found.
      */
-    Collection<Integer> getObjectsId(int tx, int ty);
+    Set<Integer> getObjectsId(int tx, int ty);
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
@@ -80,6 +74,14 @@ public interface MapTilePath extends Feature
      * @return The tile reference.
      */
     Tile getTile(Tiled tiled);
+
+    /**
+     * Get the category name of the tile.
+     * 
+     * @param tile The tile reference.
+     * @return The associated category name.
+     */
+    String getCategory(Tile tile);
 
     /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
