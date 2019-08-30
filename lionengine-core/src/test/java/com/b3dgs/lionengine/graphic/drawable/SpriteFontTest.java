@@ -130,6 +130,7 @@ public final class SpriteFontTest
         sprite.load();
         sprite.prepare();
 
+        assertTrue(sprite.isLoaded());
         assertEquals(64, sprite.getWidth());
         assertEquals(32, sprite.getHeight());
 
