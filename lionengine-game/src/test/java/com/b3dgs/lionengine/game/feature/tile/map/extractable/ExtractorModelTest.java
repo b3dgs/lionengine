@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -155,14 +156,13 @@ public final class ExtractorModelTest
     @Test
     public void testExtractor()
     {
-        final ObjectExtractor object = new ObjectExtractor(true, true);
+        final Featurable object = new FeaturableModel();
         object.addFeature(new TransformableModel());
 
         final ExtractorModel extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
         extractor.recycle();
         extractor.setCapacity(6);
         extractor.setExtractionSpeed(50.0);
-        extractor.setChecker(object);
         extractor.setDropOffSpeed(100.0);
         extractor.prepare(object);
 
@@ -472,6 +472,7 @@ public final class ExtractorModelTest
 
         final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
         extractor.prepare(object);
+        extractor.checkListener(new Object());
         extractor.checkListener(object);
         extractor.setResource("wood", 1, 2, 1, 1);
         extractor.startExtraction();

@@ -42,13 +42,13 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
         @Override
         public boolean canExtract()
         {
-            return false;
+            return true;
         }
 
         @Override
         public boolean canCarry()
         {
-            return false;
+            return true;
         }
     };
     /** Current resource object. */
