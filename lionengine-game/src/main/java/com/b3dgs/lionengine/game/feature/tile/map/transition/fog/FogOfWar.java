@@ -45,6 +45,10 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     private final MapTileFog mapHidden = new MapTileFog();
     /** Fogged map. */
     private final MapTileFog mapFogged = new MapTileFog();
+    /** Tile width. */
+    private int tw = 1;
+    /** Tile width. */
+    private int th = 1;
     /** Fog black tile. */
     private SpriteTiled hideTiles;
     /** Fog gray tiles. */
@@ -70,6 +74,8 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
     public void create(MapTile map, Media config)
     {
+        tw = map.getTileWidth();
+        th = map.getTileHeight();
         mapHidden.create(map, config, hideTiles);
         mapFogged.create(map, config, fogTiles);
     }
@@ -128,14 +134,14 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
      */
     public boolean isVisited(Area area)
     {
-        final int tx = (int) Math.floor(area.getX() / hideTiles.getTileWidth());
-        final int ty = (int) Math.floor(area.getY() / hideTiles.getTileHeight());
-        final int tw = area.getWidth() / hideTiles.getTileWidth();
-        final int th = area.getHeight() / hideTiles.getTileHeight();
+        final int tx = (int) Math.floor(area.getX() / tw);
+        final int ty = (int) Math.floor(area.getY() / th);
+        final int atw = area.getWidth() / tw;
+        final int ath = area.getHeight() / th;
 
-        for (int ctx = tx; ctx < tx + tw; ctx++)
+        for (int ctx = tx; ctx < tx + atw; ctx++)
         {
-            for (int cty = ty; cty < ty + th; cty++)
+            for (int cty = ty; cty < ty + ath; cty++)
             {
                 if (!isVisited(ctx, cty))
                 {

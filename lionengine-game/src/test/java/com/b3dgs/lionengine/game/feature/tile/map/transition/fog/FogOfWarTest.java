@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -121,6 +122,7 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(2, 3));
         assertFalse(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
+        assertFalse(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
 
         transformable.teleport(3, 3);
         fog.update(fovable);
@@ -134,6 +136,7 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(2, 3));
         assertTrue(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
+        assertTrue(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
 
         transformable.setLocation(6, 6);
         fog.update(fovable);
@@ -147,6 +150,7 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(2, 3));
         assertTrue(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
+        assertTrue(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
     }
 
     /**
