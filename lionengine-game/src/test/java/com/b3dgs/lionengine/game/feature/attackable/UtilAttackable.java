@@ -75,13 +75,15 @@ final class UtilAttackable
      * @param started The attack started state.
      * @param ended The attack ended state.
      * @param anim The anim state.
+     * @param stopped The stopped state.
      * @return The created listener
      */
     public static AttackerListener createListener(AtomicBoolean preparing,
                                                   AtomicReference<Transformable> reaching,
                                                   AtomicReference<Transformable> started,
                                                   AtomicReference<Transformable> ended,
-                                                  AtomicBoolean anim)
+                                                  AtomicBoolean anim,
+                                                  AtomicBoolean stopped)
     {
         return new AttackerListenerVoid()
         {
@@ -118,6 +120,13 @@ final class UtilAttackable
             {
                 super.notifyAttackAnimEnded();
                 anim.set(true);
+            }
+
+            @Override
+            public void notifyAttackStopped()
+            {
+                super.notifyAttackStopped();
+                stopped.set(true);
             }
         };
     }

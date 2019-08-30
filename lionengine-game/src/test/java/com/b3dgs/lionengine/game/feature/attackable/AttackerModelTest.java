@@ -113,6 +113,22 @@ public final class AttackerModelTest
     }
 
     /**
+     * Test without config.
+     */
+    @Test
+    public void testNoConfig()
+    {
+        final Media media = UtilSetup.createConfig();
+        final Xml xml = new Xml(media);
+        xml.save(media);
+
+        final AttackerModel attacker = new AttackerModel(new Setup(media));
+
+        assertTrue(attacker.getAttackDamages() == 0);
+        assertTrue(media.getFile().delete());
+    }
+
+    /**
      * Test the config.
      */
     @Test
@@ -162,6 +178,31 @@ public final class AttackerModelTest
         attacker.update(1.0);
 
         assertTrue(listener.flag.get());
+    }
+
+    /**
+     * Test the custom distance computer.
+     */
+    @Test
+    public void testCustomDistandceComputer()
+    {
+        assertThrows(() -> attacker.setAttackDistanceComputer(null), "Unexpected null argument !");
+
+        canAttack.set(true);
+        attacker.setAttackChecker(canAttack::get);
+
+        final Transformable target = new TransformableModel();
+        target.teleport(1, 1);
+        attacker.setAttackDistanceComputer((s, t) -> 5);
+        attacker.attack(target);
+        attacker.update(1.0);
+
+        assertFalse(attacker.isAttacking());
+
+        attacker.setAttackDistanceComputer((s, t) -> 1);
+        attacker.update(1.0);
+
+        assertTrue(attacker.isAttacking());
     }
 
     /**
@@ -317,7 +358,10 @@ public final class AttackerModelTest
         final AtomicReference<Transformable> started = new AtomicReference<>();
         final AtomicBoolean anim = new AtomicBoolean();
         final AtomicReference<Transformable> ended = new AtomicReference<>();
-        final AttackerListener listener = UtilAttackable.createListener(preparing, reaching, started, ended, anim);
+        final AtomicBoolean stopped = new AtomicBoolean();
+        final AttackerListener listener;
+        listener = UtilAttackable.createListener(preparing, reaching, started, ended, anim, stopped);
+
         attacker.addListener(listener);
         attacker.recycle();
         attacker.update(1.0);
@@ -370,6 +414,15 @@ public final class AttackerModelTest
         attacker.update(1.0);
 
         assertTrue(anim.get());
+        assertFalse(stopped.get());
+
+        attacker.stopAttack();
+
+        assertFalse(stopped.get());
+
+        attacker.update(1.0);
+
+        assertTrue(stopped.get());
 
         attacker.removeListener(listener);
         preparing.set(false);
@@ -398,6 +451,7 @@ public final class AttackerModelTest
         final ObjectAttackerSelf object = new ObjectAttackerSelf();
         UtilAttackable.prepare(object);
         final Attacker attacker = UtilAttackable.createAttacker(object, new Services());
+        attacker.checkListener(new Object());
         attacker.checkListener(object);
 
         attacker.attack(target);
