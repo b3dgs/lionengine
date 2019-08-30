@@ -20,6 +20,9 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.ListenableModel;
@@ -55,10 +58,12 @@ public final class ListenableModelTest
 
         assertEquals(1, model.size());
         assertEquals(object, model.get(0));
+        assertEquals(Arrays.asList(object), model.get());
 
         model.removeListener(object);
 
         assertTrue(model.get().isEmpty());
         assertEquals(0, model.size());
+        assertEquals(Collections.emptyList(), model.get());
     }
 }

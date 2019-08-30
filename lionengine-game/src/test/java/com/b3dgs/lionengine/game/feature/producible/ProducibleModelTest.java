@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.producible;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
@@ -137,10 +138,17 @@ public final class ProducibleModelTest
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final ProducibleListenerSelf object = new ProducibleListenerSelf();
+        final Object object2 = new Object();
         final Producible producible = new ProducibleModel(setup);
         producible.checkListener(object);
+        producible.checkListener(object2);
 
         assertTrue(producible.getListeners().contains(object));
+        assertFalse(producible.getListeners().contains(object2));
+
+        producible.removeListener(object);
+
+        assertFalse(producible.getListeners().contains(object));
 
         object.getFeature(Identifiable.class).notifyDestroyed();
 

@@ -399,6 +399,15 @@ public final class LauncherModelTest
         assertTrue(object.fired.get());
         assertNotNull(object.firedLaunchable.get());
 
+        launcher.removeListener(object);
+        object.fired.set(false);
+        object.firedLaunchable.set(null);
+
+        assertFalse(object.fired.get());
+        assertNull(object.firedLaunchable.get());
+
+        handler.update(1.0);
+
         handler.removeAll();
         handler.update(1.0);
 
