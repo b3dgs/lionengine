@@ -409,10 +409,6 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     {
         if (pathFoundChanged)
         {
-            if (currentStep < getMaxStep())
-            {
-                removeObjectId(path.getX(currentStep), path.getY(currentStep));
-            }
             if (path != null)
             {
                 path.clear();
@@ -426,6 +422,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             if (path == null)
             {
                 pathStoppedRequested = true;
+            }
+            else if (currentStep < getMaxStep())
+            {
+                removeObjectId(path.getX(currentStep), path.getY(currentStep));
             }
         }
         if (pathStoppedRequested)
