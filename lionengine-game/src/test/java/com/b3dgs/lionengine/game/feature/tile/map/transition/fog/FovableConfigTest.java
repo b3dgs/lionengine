@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -49,6 +50,15 @@ public final class FovableConfigTest
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+    }
+
+    /**
+     * Test the constructor.
+     */
+    @Test
+    public void testConstructorPrivate()
+    {
+        assertPrivateConstructor(FovableConfig.class);
     }
 
     /**
