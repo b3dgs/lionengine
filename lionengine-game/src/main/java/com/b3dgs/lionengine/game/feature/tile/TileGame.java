@@ -27,6 +27,9 @@ import com.b3dgs.lionengine.game.feature.Features;
  */
 public class TileGame implements Tile
 {
+    /** Minimum to string length. */
+    private static final int MIN_LENGHT = 28;
+
     /** Features provider. */
     private final Features features = new Features();
     /** Horizontal in tile location. */
@@ -257,8 +260,6 @@ public class TileGame implements Tile
         result = prime * result + number;
         result = prime * result + tx;
         result = prime * result + ty;
-        result = prime * result + width;
-        result = prime * result + height;
         return result;
     }
 
@@ -274,22 +275,18 @@ public class TileGame implements Tile
             return false;
         }
         final TileGame other = (TileGame) object;
-        return number == other.number
-               && tx == other.tx
-               && ty == other.ty
-               && width == other.width
-               && height == other.height;
+        return number == other.number && tx == other.tx && ty == other.ty;
     }
 
     @Override
     public String toString()
     {
-        return new StringBuilder().append("number = ")
-                                  .append(number)
-                                  .append(" | tx = ")
-                                  .append(tx)
-                                  .append(" | ty = ")
-                                  .append(ty)
-                                  .toString();
+        return new StringBuilder(MIN_LENGHT).append("number = ")
+                                            .append(number)
+                                            .append(" | tx = ")
+                                            .append(tx)
+                                            .append(" | ty = ")
+                                            .append(ty)
+                                            .toString();
     }
 }

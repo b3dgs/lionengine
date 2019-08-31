@@ -101,14 +101,14 @@ public final class TileGameTest
 
         assertEquals(tile, tile);
         assertEquals(tile, new TileGame(1, 16, 25, 4, 5));
+        assertEquals(tile, new TileGame(1, 16, 25, 10, 5));
+        assertEquals(tile, new TileGame(1, 16, 25, 4, 10));
 
         assertNotEquals(tile, null);
         assertNotEquals(tile, new Object());
         assertNotEquals(tile, new TileGame(0, 16, 25, 4, 5));
         assertNotEquals(tile, new TileGame(1, 0, 25, 4, 5));
         assertNotEquals(tile, new TileGame(1, 16, 0, 4, 5));
-        assertNotEquals(tile, new TileGame(1, 16, 25, 10, 5));
-        assertNotEquals(tile, new TileGame(1, 16, 25, 4, 10));
     }
 
     /**
@@ -121,13 +121,13 @@ public final class TileGameTest
 
         assertHashEquals(tile, tile);
         assertHashEquals(tile, new TileGame(1, 16, 25, 4, 5));
+        assertHashEquals(tile, new TileGame(1, 16, 25, 10, 5));
+        assertHashEquals(tile, new TileGame(1, 16, 25, 4, 10));
 
         assertHashNotEquals(tile, new Object());
         assertHashNotEquals(tile, new TileGame(0, 16, 25, 4, 5));
         assertHashNotEquals(tile, new TileGame(1, 0, 25, 4, 5));
         assertHashNotEquals(tile, new TileGame(1, 16, 0, 4, 5));
-        assertHashNotEquals(tile, new TileGame(1, 16, 25, 10, 5));
-        assertHashNotEquals(tile, new TileGame(1, 16, 25, 4, 10));
     }
 
     /**
