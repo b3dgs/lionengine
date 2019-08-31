@@ -217,7 +217,7 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(1000L, thread::join);
+        assertTimeout(10_000L, thread::join);
 
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
