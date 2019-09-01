@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import java.util.function.Predicate;
 import java.util.function.ToDoubleBiFunction;
 
 import com.b3dgs.lionengine.AnimState;
@@ -52,7 +53,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     /** Transformable reference. */
     private Transformable transformable;
     /** Attacker checker. */
-    private AttackChecker canAttack = t -> true;
+    private Predicate<Transformable> canAttack = t -> true;
     /** Attack distance computer. */
     private ToDoubleBiFunction<Transformable, Transformable> distance = (s, t) -> UtilMath.getDistance(s.getX(),
                                                                                                        s.getY(),
@@ -151,7 +152,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         if (distAttack.includes(dist))
         {
-            if (canAttack.check(target))
+            if (canAttack.test(target))
             {
                 state = AttackState.ATTACKING;
             }
@@ -170,15 +171,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
     private void updateAttacking()
     {
-        if (!canAttack.check(target))
-        {
-            stop = true;
-        }
-        else if (!attacked && tick.elapsed(attackPause))
-        {
-            updateAttackHit();
-        }
-        else if (attacked)
+        if (attacked)
         {
             if (AnimState.FINISHED == animatable.getAnimState())
             {
@@ -192,9 +185,20 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         }
         else
         {
-            for (int i = 0; i < listenable.size(); i++)
+            if (!canAttack.test(target) || !distAttack.includes(distance.applyAsDouble(transformable, target)))
             {
-                listenable.get(i).notifyPreparingAttack(target);
+                stop = true;
+            }
+            else if (tick.elapsed(attackPause))
+            {
+                updateAttackHit();
+            }
+            else
+            {
+                for (int i = 0; i < listenable.size(); i++)
+                {
+                    listenable.get(i).notifyPreparingAttack(target);
+                }
             }
         }
     }
@@ -322,7 +326,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
-    public void setAttackChecker(AttackChecker checker)
+    public void setAttackChecker(Predicate<Transformable> checker)
     {
         Check.notNull(checker);
 

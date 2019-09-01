@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import java.util.function.Predicate;
 import java.util.function.ToDoubleBiFunction;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -51,7 +52,7 @@ public interface Attacker extends Feature, Updatable, Listenable<AttackerListene
      * @param checker The checker function allowing attack (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    void setAttackChecker(AttackChecker checker);
+    void setAttackChecker(Predicate<Transformable> checker);
 
     /**
      * Set attack distance computer.
