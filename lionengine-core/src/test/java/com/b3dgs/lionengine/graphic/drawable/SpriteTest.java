@@ -123,6 +123,7 @@ public final class SpriteTest
     public void testLoadMedia()
     {
         final Sprite sprite = new SpriteImpl(Medias.create("image.png"));
+        sprite.dispose();
         sprite.load();
 
         assertNotNull(sprite.getSurface());

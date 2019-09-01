@@ -197,6 +197,7 @@ public final class AdlMidiTest
                 adlmidi.play();
                 UtilTests.pause(Constant.HUNDRED);
 
+                adlmidi.setBank(0);
                 adlmidi.pause();
                 UtilTests.pause(Constant.BYTE_4);
 

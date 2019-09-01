@@ -84,4 +84,19 @@ public final class NodeTest
         assertHashNotEquals(hash, new Node(1, 0));
         assertHashNotEquals(hash, new Node(1, 1));
     }
+
+    /**
+     * Test to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final Node node = new Node(1, 2);
+
+        assertEquals("Node [x=1, y=2, depth=0, cost=0.0, heuristic=0.0, parent=null]", node.toString());
+
+        node.setParent(node);
+
+        assertEquals("Node [x=1, y=2, depth=1, cost=0.0, heuristic=0.0, parent={x=1, y=2}]", node.toString());
+    }
 }
