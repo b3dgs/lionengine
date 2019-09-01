@@ -31,6 +31,13 @@ public interface AttackerListener
     void notifyReachingTarget(Transformable target);
 
     /**
+     * Notify while attacker is waiting for next attack.
+     * 
+     * @param target The target reference.
+     */
+    void notifyPreparingAttack(Transformable target);
+
+    /**
      * Notify when attacker is going to attack.
      * 
      * @param target The target reference.
@@ -43,17 +50,12 @@ public interface AttackerListener
      * @param target The target reference.
      * @param damages The final damages.
      */
-    void notifyAttackEnded(int damages, Transformable target);
+    void notifyAttackEnded(Transformable target, int damages);
 
     /**
      * Notify when attacker has played his attack completely.
      */
     void notifyAttackAnimEnded();
-
-    /**
-     * Notify while attacker is waiting for next attack.
-     */
-    void notifyPreparingAttack();
 
     /**
      * Notify when attacker has stopped.

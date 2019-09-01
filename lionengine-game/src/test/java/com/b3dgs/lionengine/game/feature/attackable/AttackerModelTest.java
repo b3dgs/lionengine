@@ -189,7 +189,7 @@ public final class AttackerModelTest
         assertThrows(() -> attacker.setAttackDistanceComputer(null), "Unexpected null argument !");
 
         canAttack.set(true);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
 
         final Transformable target = new TransformableModel();
         target.teleport(1, 1);
@@ -212,7 +212,7 @@ public final class AttackerModelTest
     public void testCantAttack()
     {
         canAttack.set(false);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
         target.teleport(0, 1);
         attacker.attack(target);
 
@@ -230,7 +230,7 @@ public final class AttackerModelTest
     public void testAttackNull()
     {
         canAttack.set(true);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
         attacker.attack(target);
 
         assertNotNull(attacker.getTarget());
@@ -261,7 +261,7 @@ public final class AttackerModelTest
     public void testAttackDifferent()
     {
         canAttack.set(true);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
 
         final Transformable target1 = new TransformableModel();
         attacker.attack(target1);
@@ -295,7 +295,7 @@ public final class AttackerModelTest
     public void testStopAttack()
     {
         canAttack.set(true);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
 
         final Transformable target = new TransformableModel();
         target.teleport(1, 1);
@@ -327,7 +327,7 @@ public final class AttackerModelTest
         final AttackerModel attacker = UtilAttackable.createAttacker(object2, services);
         attacker.recycle();
         canAttack.set(true);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
 
         target.teleport(10, 10);
         attacker.update(1.0);
@@ -351,7 +351,7 @@ public final class AttackerModelTest
     public void testListener() throws InterruptedException
     {
         canAttack.set(true);
-        attacker.setAttackChecker(canAttack::get);
+        attacker.setAttackChecker(t -> canAttack.get());
 
         final AtomicBoolean preparing = new AtomicBoolean();
         final AtomicReference<Transformable> reaching = new AtomicReference<>();

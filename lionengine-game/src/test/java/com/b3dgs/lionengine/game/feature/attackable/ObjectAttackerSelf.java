@@ -50,7 +50,7 @@ final class ObjectAttackerSelf extends FeaturableModel implements AttackerListen
     }
 
     @Override
-    public void notifyAttackEnded(int damages, Transformable target)
+    public void notifyAttackEnded(Transformable target, int damages)
     {
         // Mock
     }
@@ -62,7 +62,7 @@ final class ObjectAttackerSelf extends FeaturableModel implements AttackerListen
     }
 
     @Override
-    public void notifyPreparingAttack()
+    public void notifyPreparingAttack(Transformable target)
     {
         // Mock
     }

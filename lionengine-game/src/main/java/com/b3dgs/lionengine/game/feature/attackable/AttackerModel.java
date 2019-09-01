@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.ToDoubleBiFunction;
 
 import com.b3dgs.lionengine.AnimState;
@@ -53,7 +52,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     /** Transformable reference. */
     private Transformable transformable;
     /** Attacker checker. */
-    private BooleanSupplier canAttack = Boolean.TRUE::booleanValue;
+    private AttackChecker canAttack = t -> true;
     /** Attack distance computer. */
     private ToDoubleBiFunction<Transformable, Transformable> distance = (s, t) -> UtilMath.getDistance(s.getX(),
                                                                                                        s.getY(),
@@ -152,7 +151,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     {
         if (distAttack.includes(dist))
         {
-            if (canAttack.getAsBoolean())
+            if (canAttack.check(target))
             {
                 state = AttackState.ATTACKING;
             }
@@ -171,7 +170,11 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      */
     private void updateAttacking()
     {
-        if (!attacked && tick.elapsed(attackPause))
+        if (!canAttack.check(target))
+        {
+            stop = true;
+        }
+        else if (!attacked && tick.elapsed(attackPause))
         {
             updateAttackHit();
         }
@@ -191,7 +194,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
         {
             for (int i = 0; i < listenable.size(); i++)
             {
-                listenable.get(i).notifyPreparingAttack();
+                listenable.get(i).notifyPreparingAttack(target);
             }
         }
     }
@@ -216,7 +219,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
             attacking = false;
             for (int i = 0; i < listenable.size(); i++)
             {
-                listenable.get(i).notifyAttackEnded(damages.getRandom(), target);
+                listenable.get(i).notifyAttackEnded(target, damages.getRandom());
             }
             attacked = true;
             tick.restart();
@@ -319,7 +322,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     }
 
     @Override
-    public void setAttackChecker(BooleanSupplier checker)
+    public void setAttackChecker(AttackChecker checker)
     {
         Check.notNull(checker);
 

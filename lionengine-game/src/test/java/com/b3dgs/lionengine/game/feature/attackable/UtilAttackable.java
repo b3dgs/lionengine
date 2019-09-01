@@ -95,9 +95,9 @@ final class UtilAttackable
             }
 
             @Override
-            public void notifyPreparingAttack()
+            public void notifyPreparingAttack(Transformable target)
             {
-                super.notifyPreparingAttack();
+                super.notifyPreparingAttack(target);
                 preparing.set(true);
             }
 
@@ -109,9 +109,9 @@ final class UtilAttackable
             }
 
             @Override
-            public void notifyAttackEnded(int damages, Transformable target)
+            public void notifyAttackEnded(Transformable target, int damages)
             {
-                super.notifyAttackEnded(damages, target);
+                super.notifyAttackEnded(target, damages);
                 ended.set(target);
             }
 

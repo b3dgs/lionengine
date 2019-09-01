@@ -19,51 +19,16 @@ package com.b3dgs.lionengine.game.feature.attackable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
- * Attacker listener void.
+ * Attack checker interface.
  */
-public class AttackerListenerVoid implements AttackerListener
+@FunctionalInterface
+public interface AttackChecker
 {
     /**
-     * Create void listener.
+     * Check if can attack.
+     * 
+     * @param target The target reference.
+     * @return <code>true</code> if can attack, <code>false</code> else.
      */
-    public AttackerListenerVoid()
-    {
-        super();
-    }
-
-    @Override
-    public void notifyReachingTarget(Transformable target)
-    {
-        // Nothing by default
-    }
-
-    @Override
-    public void notifyAttackStarted(Transformable target)
-    {
-        // Nothing by default
-    }
-
-    @Override
-    public void notifyAttackEnded(Transformable target, int damages)
-    {
-        // Nothing by default
-    }
-
-    @Override
-    public void notifyAttackAnimEnded()
-    {
-        // Nothing by default
-    }
-
-    @Override
-    public void notifyPreparingAttack(Transformable target)
-    {
-        // Nothing by default
-    }
-
-    @Override
-    public void notifyAttackStopped()
-    {
-        // Nothing by default
-    }
+    boolean check(Transformable target);
 }
