@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.function.Function;
+
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
@@ -58,7 +60,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceGame(Context context, WorldCreator creator)
+    protected SequenceGame(Context context, Function<Services, WorldGame> creator)
     {
         this(context, context.getConfig().getOutput(), creator);
     }
@@ -71,7 +73,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceGame(Context context, Resolution resolution, WorldCreator creator)
+    protected SequenceGame(Context context, Resolution resolution, Function<Services, WorldGame> creator)
     {
         this(context, resolution, new LoopFrameSkipping(), creator);
     }
@@ -85,7 +87,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceGame(Context context, Resolution resolution, Loop loop, WorldCreator creator)
+    protected SequenceGame(Context context, Resolution resolution, Loop loop, Function<Services, WorldGame> creator)
     {
         super(context, resolution, loop);
 
@@ -127,7 +129,7 @@ public abstract class SequenceGame extends Sequence
             }
         });
 
-        world = services.add(creator.createWorld(services));
+        world = services.add(creator.apply(services));
 
         setSystemCursorVisible(false);
     }
@@ -185,19 +187,5 @@ public abstract class SequenceGame extends Sequence
         {
             Engine.terminate();
         }
-    }
-
-    /**
-     * World factory interface.
-     */
-    protected interface WorldCreator
-    {
-        /**
-         * Create the world.
-         * 
-         * @param services The services reference.
-         * @return The created world.
-         */
-        WorldGame createWorld(Services services);
     }
 }

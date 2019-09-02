@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.game.FeatureProvider;
 
 /**
  * Test {@link ComponentRefreshable}.
@@ -152,6 +153,7 @@ public final class ComponentRefreshableTest
         {
             // Mock
         }));
+
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableAdded(featurable2);
 
@@ -164,6 +166,41 @@ public final class ComponentRefreshableTest
         component.notifyHandlableRemoved(featurable2);
 
         assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+    }
+
+    /**
+     * Test the component with layerable remove.
+     */
+    @Test
+    public void testRemoveLayerable()
+    {
+        final AtomicBoolean called = new AtomicBoolean();
+        final ComponentRefreshable component = new ComponentRefreshable()
+        {
+            @Override
+            public void notifyLayerChanged(FeatureProvider provider,
+                                           Integer layerRefreshOld,
+                                           Integer layerRefreshNew,
+                                           Integer layerDisplayOld,
+                                           Integer layerDisplayNew)
+            {
+                super.notifyLayerChanged(provider, layerRefreshOld, layerRefreshNew, layerDisplayOld, layerDisplayNew);
+                called.set(true);
+            }
+        };
+
+        final Featurable featurable = new FeaturableModel();
+        featurable.addFeature(new RefreshableModel(extrp ->
+        {
+            // Mock
+        }));
+        final Layerable layerable = featurable.addFeatureAndGet(new LayerableModel());
+        component.notifyHandlableAdded(featurable);
+        component.notifyHandlableRemoved(featurable);
+
+        layerable.setLayer(Integer.valueOf(1), Integer.valueOf(1));
+
+        assertFalse(called.get());
     }
 
     /**

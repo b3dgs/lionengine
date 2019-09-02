@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -94,7 +95,7 @@ public final class RasterableModelTest
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
 
         final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new TransformableModel());
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
         featurable.addFeature(new AnimatableModel());
         featurable.addFeature(new MirrorableModel());
 
@@ -104,6 +105,13 @@ public final class RasterableModelTest
         rasterable.setOrigin(Origin.TOP_LEFT);
         rasterable.update(1.0);
         rasterable.render(g);
+
+        assertEquals(0, rasterable.getRasterIndex(0));
+        assertEquals(RasterImage.MAX_RASTERS_M, rasterable.getRasterIndex(240));
+        assertNotNull(rasterable.getRasterAnim(0));
+
+        transformable.teleportY(-100);
+        rasterable.update(1.0);
 
         assertEquals(0, rasterable.getRasterIndex(0));
         assertEquals(RasterImage.MAX_RASTERS_M, rasterable.getRasterIndex(240));
