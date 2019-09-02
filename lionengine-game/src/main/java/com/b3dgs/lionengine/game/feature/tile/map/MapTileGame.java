@@ -315,20 +315,29 @@ public class MapTileGame extends FeaturableModel implements MapTile
         Check.inferiorStrict(ty, getInTileHeight());
 
         TileGame tile = tiles.get(ty).get(tx);
+        final int oldNum;
         if (tile == null)
         {
             tile = new TileGame(number, tx, ty, tileWidth, tileHeight);
             tiles.get(ty).set(tx, tile);
+            oldNum = -1;
         }
-        tile.set(number);
-        if (tilesPerSheet > 0)
+        else
         {
-            tile.setSheet((int) Math.floor(number / (double) tilesPerSheet));
+            oldNum = tile.getNumber();
         }
+        if (number != oldNum)
+        {
+            tile.set(number);
+            if (tilesPerSheet > 0)
+            {
+                tile.setSheet((int) Math.floor(number / (double) tilesPerSheet));
+            }
 
-        for (int i = 0; i < listenable.size(); i++)
-        {
-            listenable.get(i).onTileSet(tile);
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).onTileSet(tile);
+            }
         }
     }
 
