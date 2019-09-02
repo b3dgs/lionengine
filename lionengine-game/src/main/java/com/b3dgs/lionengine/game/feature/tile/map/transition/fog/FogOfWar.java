@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -39,7 +40,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * </ul>
  */
 @FeatureInterface
-public class FogOfWar extends FeatureModel implements MapTileRenderer
+public class FogOfWar extends FeatureModel implements MapTileRenderer, Listenable<RevealedListener>
 {
     /** Hidden map. */
     private final MapTileFog mapHidden = new MapTileFog();
@@ -202,6 +203,22 @@ public class FogOfWar extends FeatureModel implements MapTileRenderer
     {
         final Tile tile = mapHidden.getTile(tx, ty);
         return fogMap && tile != null && mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public void addListener(RevealedListener listener)
+    {
+        mapHidden.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(RevealedListener listener)
+    {
+        mapHidden.removeListener(listener);
     }
 
     /*

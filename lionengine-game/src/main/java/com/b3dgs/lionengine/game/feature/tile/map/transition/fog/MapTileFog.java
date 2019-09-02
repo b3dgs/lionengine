@@ -18,6 +18,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import java.util.Arrays;
 
+import com.b3dgs.lionengine.Listenable;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -35,7 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
  */
-public class MapTileFog
+public class MapTileFog implements Listenable<RevealedListener>
 {
     /** No fog tile. */
     static final int FOG = 16;
@@ -46,6 +48,8 @@ public class MapTileFog
     /** Transition group. */
     private static final String TRANSITION_GROUP = "transition";
 
+    /** Listener. */
+    private final ListenableModel<RevealedListener> listenable = new ListenableModel<>();
     /** Hidden map. */
     private final MapTile map;
     /** Map group. */
@@ -64,6 +68,17 @@ public class MapTileFog
         map = services.create(MapTileGame.class);
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         transition = map.addFeatureAndGet(new MapTileTransitionModel(services));
+        map.addListener(tile ->
+        {
+            if (NO_FOG == tile.getNumber())
+            {
+                final int n = listenable.size();
+                for (int i = 0; i < n; i++)
+                {
+                    listenable.get(i).notifyVisited(tile.getInTileX(), tile.getInTileY());
+                }
+            }
+        });
     }
 
     /**
@@ -128,8 +143,11 @@ public class MapTileFog
         {
             for (int y = sy; y < ey + 1; y++)
             {
-                map.setTile(x, y, NO_FOG);
-                transition.resolve(map.getTile(x, y));
+                if (map.getTile(x, y).getNumber() != NO_FOG)
+                {
+                    map.setTile(x, y, NO_FOG);
+                    transition.resolve(map.getTile(x, y));
+                }
             }
         }
     }
@@ -157,8 +175,11 @@ public class MapTileFog
         {
             for (int y = sy; y < ey + 1; y++)
             {
-                map.setTile(x, y, FOG);
-                transition.resolve(map.getTile(x, y));
+                if (map.getTile(x, y).getNumber() != FOG)
+                {
+                    map.setTile(x, y, FOG);
+                    transition.resolve(map.getTile(x, y));
+                }
             }
         }
     }
@@ -173,5 +194,21 @@ public class MapTileFog
     Tile getTile(int tx, int ty)
     {
         return map.getTile(tx, ty);
+    }
+
+    /*
+     * Listenable
+     */
+
+    @Override
+    public void addListener(RevealedListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(RevealedListener listener)
+    {
+        listenable.removeListener(listener);
     }
 }
