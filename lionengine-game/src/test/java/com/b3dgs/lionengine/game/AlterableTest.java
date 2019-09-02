@@ -97,6 +97,26 @@ public final class AlterableTest
     }
 
     /**
+     * Test percent.
+     */
+    @Test
+    public void testPercent()
+    {
+        final Alterable alterable = new Alterable(1);
+        alterable.fill();
+        alterable.decrease(0.999, 1);
+
+        assertEquals(1, alterable.getCurrent());
+        assertEquals(1, alterable.getMax());
+        assertEquals(1, alterable.getPercent());
+
+        alterable.decrease(1);
+
+        assertEquals(0, alterable.getCurrent());
+        assertEquals(0, alterable.getPercent());
+    }
+
+    /**
      * Test reset.
      */
     @Test

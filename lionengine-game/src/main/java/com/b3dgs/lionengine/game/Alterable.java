@@ -200,7 +200,7 @@ public class Alterable
      */
     public int getCurrent()
     {
-        return (int) Math.floor(cur);
+        return (int) Math.ceil(cur);
     }
 
     /**
@@ -214,7 +214,7 @@ public class Alterable
         {
             return 0;
         }
-        return (int) (cur * 100.0 / max);
+        return (int) Math.ceil(cur * 100.0 / max);
     }
 
     /**
