@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
@@ -296,6 +297,7 @@ public final class AttackerModelTest
     {
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
+        attacker.setAttackDistance(new Range(0, 2));
 
         final Transformable target = new TransformableModel();
         target.teleport(1, 1);
@@ -368,6 +370,7 @@ public final class AttackerModelTest
         attacker.getFeature(Transformable.class).teleport(0, 0);
         attacker.setAttackDelay(5);
         attacker.setAttackFrame(1);
+        attacker.setAttackDistance(new Range(0, 2));
         target.teleport(5, 5);
         attacker.attack(target);
         attacker.update(1.0);
