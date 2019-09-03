@@ -18,9 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.feature.Features;
 
 /**
  * Tile base implementation.
@@ -30,8 +27,6 @@ public class TileGame implements Tile
     /** Minimum to string length. */
     private static final int MIN_LENGHT = 28;
 
-    /** Features provider. */
-    private final Features features = new Features();
     /** Horizontal in tile location. */
     private final int tx;
     /** Vertical in tile location. */
@@ -186,66 +181,6 @@ public class TileGame implements Tile
     public double getY()
     {
         return y;
-    }
-
-    /*
-     * Featurable
-     */
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Does nothing by default.
-     * </p>
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
-    @Override
-    public final void addFeature(Feature feature)
-    {
-        feature.prepare(this);
-        features.add(feature);
-    }
-
-    @Override
-    public final <T extends Feature> T addFeatureAndGet(T feature)
-    {
-        addFeature(feature);
-        return feature;
-    }
-
-    @Override
-    public final <C extends Feature> C getFeature(Class<C> feature)
-    {
-        return features.get(feature);
-    }
-
-    @Override
-    public final Iterable<Feature> getFeatures()
-    {
-        return features.getFeatures();
-    }
-
-    @Override
-    public final Iterable<Class<? extends Feature>> getFeaturesType()
-    {
-        return features.getFeaturesType();
-    }
-
-    @Override
-    public final boolean hasFeature(Class<? extends Feature> feature)
-    {
-        return features.contains(feature);
-    }
-
-    @Override
-    public Media getMedia()
-    {
-        return null;
     }
 
     /*

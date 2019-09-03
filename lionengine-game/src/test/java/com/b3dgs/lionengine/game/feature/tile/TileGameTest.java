@@ -17,15 +17,12 @@
 package com.b3dgs.lionengine.game.feature.tile;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
-
-import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Test {@link TileGame}.
@@ -77,7 +74,6 @@ public final class TileGameTest
         assertEquals(15.0, tile.getY());
         assertEquals(4, tile.getWidth());
         assertEquals(5, tile.getHeight());
-        assertFalse(tile.hasFeature(MockFeature.class));
     }
 
     /**
@@ -126,13 +122,5 @@ public final class TileGameTest
     public void testToString()
     {
         assertEquals("number = 1 | tx = 2 | ty = 3", new TileGame(1, 2, 3, 16, 16).toString());
-    }
-
-    /**
-     * Mock feature.
-     */
-    private interface MockFeature extends Feature
-    {
-        // Mock
     }
 }
