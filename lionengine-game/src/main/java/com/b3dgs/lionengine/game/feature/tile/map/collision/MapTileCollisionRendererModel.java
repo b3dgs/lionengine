@@ -174,9 +174,9 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
      * @param x The horizontal render location.
      * @param y The vertical render location.
      */
-    private void renderCollision(Graphic g, TileCollision tile, int x, int y)
+    private void renderCollision(Graphic g, Tile tile, int x, int y)
     {
-        for (final CollisionFormula collision : tile.getCollisionFormulas())
+        for (final CollisionFormula collision : mapCollision.getCollisionFormulas(tile))
         {
             final ImageBuffer buffer = collisionCache.get(collision);
             if (buffer != null)
@@ -222,9 +222,9 @@ public class MapTileCollisionRendererModel extends FeatureModel implements MapTi
     @Override
     public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
     {
-        if (collisionCache != null && tile.hasFeature(TileCollision.class))
+        if (collisionCache != null)
         {
-            renderCollision(g, tile.getFeature(TileCollision.class), x, y);
+            renderCollision(g, tile, x, y);
         }
     }
 }

@@ -93,10 +93,7 @@ public class MapTileGroupModel extends FeatureModel implements MapTileGroup
         final Integer number = tile.getKey();
         final String oldGroup = getGroup(tile);
 
-        if (groupTiles.containsKey(oldGroup))
-        {
-            groupTiles.get(oldGroup).remove(number);
-        }
+        groupTiles.get(oldGroup).remove(number);
         if (group != null)
         {
             tilesGroup.put(number, group);

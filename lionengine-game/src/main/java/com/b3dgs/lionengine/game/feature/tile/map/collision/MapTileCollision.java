@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
  * Represents the collision feature of a map tile.
@@ -85,6 +86,14 @@ public interface MapTileCollision extends Feature
      * @throws LionEngineException If group not found.
      */
     CollisionGroup getCollisionGroup(String name);
+
+    /**
+     * Get tile formulas.
+     * 
+     * @param tile The tile reference.
+     * @return The associated formulas.
+     */
+    Collection<CollisionFormula> getCollisionFormulas(Tile tile);
 
     /**
      * Get the collision formulas list.

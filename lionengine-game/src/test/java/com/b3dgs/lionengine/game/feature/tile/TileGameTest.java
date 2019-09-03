@@ -22,14 +22,10 @@ import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
-import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollision;
-import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollisionModel;
 
 /**
  * Test {@link TileGame}.
@@ -70,8 +66,6 @@ public final class TileGameTest
     public void testGetters()
     {
         final TileGame tile = new TileGame(1, 2, 3, 4, 5);
-        final TileCollision feature = new TileCollisionModel(tile);
-        tile.addFeature(feature);
 
         assertEquals(1, tile.getNumber());
         assertEquals(Integer.valueOf(1), tile.getKey());
@@ -83,12 +77,7 @@ public final class TileGameTest
         assertEquals(15.0, tile.getY());
         assertEquals(4, tile.getWidth());
         assertEquals(5, tile.getHeight());
-        assertTrue(tile.hasFeature(TileCollision.class));
         assertFalse(tile.hasFeature(MockFeature.class));
-
-        final Class<?> next = tile.getFeature(TileCollision.class).getClass();
-
-        assertTrue(next.equals(feature.getClass()) || Identifiable.class.isAssignableFrom(next), next.getName());
     }
 
     /**

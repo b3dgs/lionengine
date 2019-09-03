@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -32,15 +34,74 @@ final class MapTileCollisionComputer
     private static final int MAX_GLUED = 5;
 
     /**
-     * Check if tile contains at least one collision from the category.
+     * Get the horizontal collision location between the tile and the movement vector.
      * 
      * @param tile The tile reference.
+     * @param category The collision category.
+     * @param formulas The tile formulas.
+     * @param formula The formula to apply.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The horizontal collision (<code>null</code> if none).
+     */
+    private static Double getCollisionX(Tile tile,
+                                        CollisionCategory category,
+                                        Collection<CollisionFormula> formulas,
+                                        CollisionFormula formula,
+                                        double x,
+                                        double y)
+    {
+        final CollisionRange range = formula.getRange();
+        if (Axis.X == category.getAxis() && Axis.X == range.getOutput() && containsCollisionFormula(category, formulas))
+        {
+            final Double collisionX = getCollisionX(tile, range, formula.getFunction(), x, y, category.getOffsetX());
+            if (collisionX != null)
+            {
+                return collisionX;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the vertical collision location between the tile and the movement vector.
+     * 
+     * @param tile The tile reference.
+     * @param category The collision category.
+     * @param formulas The tile formulas.
+     * @param formula The formula to apply.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The vertical collision (<code>null</code> if none).
+     */
+    private static Double getCollisionY(Tile tile,
+                                        CollisionCategory category,
+                                        Collection<CollisionFormula> formulas,
+                                        CollisionFormula formula,
+                                        double x,
+                                        double y)
+    {
+        final CollisionRange range = formula.getRange();
+        if (Axis.Y == category.getAxis() && Axis.Y == range.getOutput() && containsCollisionFormula(category, formulas))
+        {
+            final Double collisionY = getCollisionY(tile, range, formula.getFunction(), x, y, category.getOffsetY());
+            if (collisionY != null)
+            {
+                return collisionY;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check if tile contains at least one collision from the category.
+     * 
      * @param category The category reference.
+     * @param formulas The tile formulas.
      * @return The formula in common between tile and category, <code>null</code> if none.
      */
-    private static boolean containsCollisionFormula(TileCollision tile, CollisionCategory category)
+    private static boolean containsCollisionFormula(CollisionCategory category, Collection<CollisionFormula> formulas)
     {
-        final Collection<CollisionFormula> formulas = tile.getCollisionFormulas();
         for (final CollisionFormula formula : category.getFormulas())
         {
             if (formulas.contains(formula))
@@ -52,49 +113,96 @@ final class MapTileCollisionComputer
     }
 
     /**
-     * Get the horizontal collision from current location.
+     * Get the horizontal collision location between the tile and the current location.
      * 
-     * @param category The collision category.
-     * @param formula The formula to apply.
-     * @param tileCollision The current tile collision.
+     * @param tile The tile reference.
+     * @param range The collision range.
+     * @param function The collision function.
      * @param x The current horizontal location.
      * @param y The current vertical location.
-     * @return The computed horizontal collision.
+     * @param offsetX The horizontal offset.
+     * @return The horizontal collision (<code>null</code> if none).
      */
-    private static Double getCollisionX(CollisionCategory category,
-                                        CollisionFormula formula,
-                                        TileCollision tileCollision,
+    private static Double getCollisionX(Tile tile,
+                                        CollisionRange range,
+                                        CollisionFunction function,
                                         double x,
-                                        double y)
+                                        double y,
+                                        int offsetX)
     {
-        if (Axis.X == category.getAxis() && containsCollisionFormula(tileCollision, category))
+        final double yOnTile = getInputValue(tile, Axis.Y, x, y);
+        if (UtilMath.isBetween(yOnTile, range.getMinY(), range.getMaxY()))
         {
-            return tileCollision.getCollisionX(category, formula, x, y);
+            final double xOnTile = getInputValue(tile, Axis.X, x, y);
+            final double result = Math.floor(function.compute(yOnTile));
+
+            if (UtilMath.isBetween(xOnTile, result + range.getMinX() - 1, result + range.getMaxX()))
+            {
+                final double coll = Math.floor(tile.getX() + result - offsetX);
+                return Double.valueOf(coll);
+            }
         }
         return null;
     }
 
     /**
-     * Get the vertical collision from current location.
+     * Get the vertical collision location between the tile and the current location.
      * 
-     * @param category The collision category.
-     * @param formula The formula to apply.
-     * @param tileCollision The current tile collision.
+     * @param tile The tile reference.
+     * @param range The collision range.
+     * @param function The collision function.
      * @param x The current horizontal location.
      * @param y The current vertical location.
-     * @return The computed vertical collision.
+     * @param offsetY The vertical offset.
+     * @return The vertical collision (<code>null</code> if none).
      */
-    private static Double getCollisionY(CollisionCategory category,
-                                        CollisionFormula formula,
-                                        TileCollision tileCollision,
+    private static Double getCollisionY(Tile tile,
+                                        CollisionRange range,
+                                        CollisionFunction function,
                                         double x,
-                                        double y)
+                                        double y,
+                                        int offsetY)
     {
-        if (Axis.Y == category.getAxis() && containsCollisionFormula(tileCollision, category))
+        final double xOnTile = getInputValue(tile, Axis.X, x, y);
+        if (UtilMath.isBetween(xOnTile, range.getMinX(), range.getMaxX()))
         {
-            return tileCollision.getCollisionY(category, formula, x, y);
+            final double yOnTile = getInputValue(tile, Axis.Y, x, y);
+            final double result = Math.floor(function.compute(xOnTile));
+            final double margin = Math.ceil(Math.abs(function.compute(1) - function.compute(0)));
+
+            if (UtilMath.isBetween(yOnTile, result + range.getMinY() - margin, result + range.getMaxY()))
+            {
+                final double coll = Math.floor(tile.getY() + result - offsetY);
+                return Double.valueOf(coll);
+            }
         }
         return null;
+    }
+
+    /**
+     * Get the input value relative to tile.
+     * 
+     * @param tile The tile reference.
+     * @param input The input used.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return The input value.
+     */
+    private static double getInputValue(Tile tile, Axis input, double x, double y)
+    {
+        final double v;
+        switch (input)
+        {
+            case X:
+                v = Math.floor(x - tile.getX());
+                break;
+            case Y:
+                v = Math.floor(y - tile.getY());
+                break;
+            default:
+                throw new LionEngineException(input);
+        }
+        return v;
     }
 
     /**
@@ -119,17 +227,21 @@ final class MapTileCollisionComputer
     private final Map<Transformable, CollisionResult> lastFound = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
+    /** Map collision loader. */
+    private final MapTileCollisionLoader loader;
 
     /**
      * Create the map tile collision computer.
      * 
      * @param map The map tile owner.
+     * @param loader The collisions loader.
      */
-    MapTileCollisionComputer(MapTile map)
+    MapTileCollisionComputer(MapTile map, MapTileCollisionLoader loader)
     {
         super();
 
         this.map = map;
+        this.loader = loader;
     }
 
     /**
@@ -326,21 +438,21 @@ final class MapTileCollisionComputer
         final Tile tile = map.getTileAt(getPositionToSide(ox, x), getPositionToSide(oy, y));
         if (tile != null)
         {
-            final TileCollision tileCollision = tile.getFeature(TileCollision.class);
             Double cx = null;
             Double cy = null;
             CollisionFormula fx = null;
             CollisionFormula fy = null;
-            for (final CollisionFormula formula : tileCollision.getCollisionFormulas())
+            final Collection<CollisionFormula> formulas = loader.getCollisionFormulas(tile);
+            for (final CollisionFormula formula : formulas)
             {
                 if (cx == null)
                 {
-                    cx = getCollisionX(category, formula, tileCollision, x, y);
+                    cx = getCollisionX(tile, category, formulas, formula, x, y);
                     fx = formula;
                 }
                 if (cy == null)
                 {
-                    cy = getCollisionY(category, formula, tileCollision, x, y);
+                    cy = getCollisionY(tile, category, formulas, formula, x, y);
                     fy = formula;
                 }
             }

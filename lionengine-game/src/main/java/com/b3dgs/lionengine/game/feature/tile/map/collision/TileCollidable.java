@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 
 /**
- * Represents something which can enter in collision with a {@link TileCollision}.
+ * Represents something which can enter in collision with a {@link MapTileCollision}.
  */
 @FeatureInterface
 public interface TileCollidable extends Feature, Updatable, Listenable<TileCollidableListener>

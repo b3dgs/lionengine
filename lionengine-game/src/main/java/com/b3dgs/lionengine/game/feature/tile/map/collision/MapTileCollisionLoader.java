@@ -18,7 +18,9 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -48,6 +50,8 @@ final class MapTileCollisionLoader
     private final Map<String, CollisionFormula> formulas = new HashMap<>();
     /** Collisions groups list. */
     private final Map<String, CollisionGroup> groups = new HashMap<>();
+    /** Formulas per tiles. */
+    private final Map<Tile, Collection<CollisionFormula>> tilesFormulas = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -89,7 +93,7 @@ final class MapTileCollisionLoader
         {
             loadCollisionGroups(mapCollision, collisionGroups);
         }
-        loadTilesCollisions(mapCollision);
+        loadTilesCollisions();
         applyConstraints();
     }
 
@@ -107,7 +111,7 @@ final class MapTileCollisionLoader
     {
         loadCollisionFormulas(formulasConfig);
         loadCollisionGroups(groupsConfig);
-        loadTilesCollisions(mapCollision);
+        loadTilesCollisions();
         applyConstraints();
     }
 
@@ -141,6 +145,17 @@ final class MapTileCollisionLoader
             return groups.get(name);
         }
         throw new LionEngineException(ERROR_FORMULA + name);
+    }
+
+    /**
+     * Get tile formulas.
+     * 
+     * @param tile The tile reference.
+     * @return The associated formulas.
+     */
+    public Collection<CollisionFormula> getCollisionFormulas(Tile tile)
+    {
+        return tilesFormulas.get(tile);
     }
 
     /**
@@ -236,10 +251,8 @@ final class MapTileCollisionLoader
 
     /**
      * Load collisions for each tile. Previous collisions will be removed.
-     * 
-     * @param mapCollision The map tile collision owner.
      */
-    private void loadTilesCollisions(MapTileCollision mapCollision)
+    private void loadTilesCollisions()
     {
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
@@ -248,7 +261,7 @@ final class MapTileCollisionLoader
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    loadTileCollisions(mapCollision, tile);
+                    loadTileCollisions(tile);
                 }
             }
         }
@@ -257,42 +270,36 @@ final class MapTileCollisionLoader
     /**
      * Load the tile collisions.
      * 
-     * @param mapCollision The map tile collision owner.
      * @param tile The tile reference.
      */
-    private void loadTileCollisions(MapTileCollision mapCollision, Tile tile)
+    private void loadTileCollisions(Tile tile)
     {
-        final TileCollision tileCollision;
-        if (!tile.hasFeature(TileCollision.class))
+        if (tilesFormulas.containsKey(tile))
         {
-            tileCollision = new TileCollisionModel(tile);
-            tile.addFeature(tileCollision);
+            tilesFormulas.get(tile).clear();
         }
         else
         {
-            tileCollision = tile.getFeature(TileCollision.class);
+            tilesFormulas.put(tile, new HashSet<>());
         }
-        tileCollision.removeCollisionFormulas();
-        addTileCollisions(mapCollision, tileCollision, tile);
+        addTileCollisions(tile);
     }
 
     /**
      * Add the tile collisions from loaded configuration.
      * 
-     * @param mapCollision The map tile collision owner.
-     * @param tileCollision The tile reference.
      * @param tile The tile reference.
      */
-    private void addTileCollisions(MapTileCollision mapCollision, TileCollision tileCollision, Tile tile)
+    private void addTileCollisions(Tile tile)
     {
-        for (final CollisionGroup collision : mapCollision.getCollisionGroups())
+        for (final CollisionGroup collision : getCollisionGroups())
         {
             final Set<Integer> group = mapGroup.getGroup(collision.getName());
             if (group.contains(tile.getKey()))
             {
                 for (final CollisionFormula formula : collision.getFormulas())
                 {
-                    tileCollision.addCollisionFormula(formula);
+                    tilesFormulas.get(tile).add(formula);
                 }
             }
         }
@@ -311,18 +318,19 @@ final class MapTileCollisionLoader
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    final TileCollision tileCollision = tile.getFeature(TileCollision.class);
-                    toRemove.put(tile, checkConstraints(tileCollision, h, v));
+                    toRemove.put(tile, checkConstraints(tile, h, v));
                 }
             }
         }
         for (final Entry<Tile, Collection<CollisionFormula>> current : toRemove.entrySet())
         {
             final Tile tile = current.getKey();
-            final TileCollision tileCollision = tile.getFeature(TileCollision.class);
             for (final CollisionFormula formula : current.getValue())
             {
-                tileCollision.removeCollisionFormula(formula);
+                if (tilesFormulas.containsKey(tile))
+                {
+                    tilesFormulas.get(tile).remove(formula);
+                }
             }
         }
     }
@@ -335,7 +343,7 @@ final class MapTileCollisionLoader
      * @param v The vertical location.
      * @return The formula to remove.
      */
-    private Collection<CollisionFormula> checkConstraints(TileCollision tile, int h, int v)
+    private Collection<CollisionFormula> checkConstraints(Tile tile, int h, int v)
     {
         final Tile top = map.getTile(h, v + 1);
         final Tile bottom = map.getTile(h, v - 1);
@@ -343,7 +351,7 @@ final class MapTileCollisionLoader
         final Tile right = map.getTile(h + 1, v);
 
         final Collection<CollisionFormula> toRemove = new ArrayList<>();
-        for (final CollisionFormula formula : tile.getCollisionFormulas())
+        for (final CollisionFormula formula : tilesFormulas.computeIfAbsent(tile, t -> Collections.emptyList()))
         {
             final CollisionConstraint constraint = formula.getConstraint();
             if (checkConstraint(constraint.getConstraints(Orientation.NORTH), top)
@@ -366,8 +374,6 @@ final class MapTileCollisionLoader
      */
     private boolean checkConstraint(Collection<String> constraints, Tile tile)
     {
-        return tile != null
-               && constraints.contains(mapGroup.getGroup(tile))
-               && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
+        return tile != null && constraints.contains(mapGroup.getGroup(tile)) && !tilesFormulas.get(tile).isEmpty();
     }
 }

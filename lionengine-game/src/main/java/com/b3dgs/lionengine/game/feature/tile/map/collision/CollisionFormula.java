@@ -139,6 +139,7 @@ public class CollisionFormula extends NameableAbstract
                                                 .append(System.lineSeparator())
                                                 .append(Constant.TAB)
                                                 .append(constraint)
+                                                .append(System.lineSeparator())
                                                 .toString();
     }
 }

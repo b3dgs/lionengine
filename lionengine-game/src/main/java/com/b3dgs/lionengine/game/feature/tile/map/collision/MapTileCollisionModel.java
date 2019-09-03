@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 
@@ -64,7 +65,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);
         loader = new MapTileCollisionLoader(map, mapGroup);
-        computer = new MapTileCollisionComputer(map);
+        computer = new MapTileCollisionComputer(map, loader);
     }
 
     /*
@@ -129,6 +130,12 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     public CollisionGroup getCollisionGroup(String name)
     {
         return loader.getCollisionGroup(name);
+    }
+
+    @Override
+    public Collection<CollisionFormula> getCollisionFormulas(Tile tile)
+    {
+        return loader.getCollisionFormulas(tile);
     }
 
     @Override

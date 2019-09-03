@@ -106,7 +106,8 @@ public final class CollisionFormulaTest
                      + System.lineSeparator()
                      + Constant.TAB
                      + "CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[], SOUTH_EAST=[], "
-                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}",
+                     + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}"
+                     + System.lineSeparator(),
                      formula.toString());
     }
 }
