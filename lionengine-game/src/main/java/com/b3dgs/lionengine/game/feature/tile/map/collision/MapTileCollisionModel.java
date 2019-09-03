@@ -81,7 +81,7 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     @Override
     public void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig)
     {
-        loader.loadCollisions(this, formulasConfig, groupsConfig);
+        loader.loadCollisions(formulasConfig, groupsConfig);
     }
 
     @Override
