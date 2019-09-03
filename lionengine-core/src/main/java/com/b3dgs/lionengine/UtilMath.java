@@ -218,8 +218,8 @@ public final class UtilMath
             return curMin;
         }
 
-        final double maxX = x2 + w2;
-        final double maxY = y2 + h2;
+        final double maxX = x2 + w2 - 1;
+        final double maxY = y2 + h2 - 1;
 
         for (double x = x2 + 1; Double.compare(x, maxX) < 0; x++)
         {
@@ -258,8 +258,8 @@ public final class UtilMath
             return getDistance(x1, y1, x2, y2);
         }
 
-        final double maxX = x2 + w2;
-        final double maxY = y2 + h2;
+        final double maxX = x2 + w2 - 1;
+        final double maxY = y2 + h2 - 1;
 
         double curMin = getDistance(x2, y2, x1, y1, w1, h1);
         for (double x = x2 + 1; Double.compare(x, maxX) < 0; x++)

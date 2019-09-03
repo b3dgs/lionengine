@@ -155,11 +155,11 @@ public final class UtilMathTest
     {
         assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0, 0, 0));
         assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 1));
-        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 0, 1));
-        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 0));
+        assertEquals(1.0, UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 0, 1));
+        assertEquals(1.0, UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 0));
         assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0, 2, 2));
-        assertEquals(2.0, UtilMath.getDistance(-2.0, -6.0, -6.0, -6.0, 2, 2));
-        assertEquals(0.0, UtilMath.getDistance(3.0, 3.0, 0.0, 0.0, 3, 3));
+        assertEquals(3.0, UtilMath.getDistance(-2.0, -6.0, -6.0, -6.0, 2, 2));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(3.0, 3.0, 0.0, 0.0, 3, 3));
     }
 
     /**
@@ -169,15 +169,15 @@ public final class UtilMathTest
     public void testDistanceAreaArea()
     {
         assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0, 0, 0.0, 0.0, 0, 0));
-        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 0, 0, 2.0, 2.0, 0, 0));
-        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 0, 1));
-        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 1, 0));
+        assertEquals(0.0, UtilMath.getDistance(1.0, 1.0, 0, 0, 2.0, 2.0, 0, 0));
+        assertEquals(1.0, UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 0, 1));
+        assertEquals(1.0, UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 1, 0));
         assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 1, 1));
-        assertEquals(1.0, UtilMath.getDistance(1.0, 1.0, 1, 0, 2.0, 2.0, 1, 1));
-        assertEquals(1.0, UtilMath.getDistance(1.0, 1.0, 0, 1, 2.0, 2.0, 1, 1));
-        assertEquals(4.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 4.0, 12.0, 2, 2));
-        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, 3.0, 3.0, 3, 3));
-        assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, -3.0, -3.0, 3, 3));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 1, 0, 2.0, 2.0, 1, 1));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 0, 1, 2.0, 2.0, 1, 1));
+        assertEquals(5.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 4.0, 12.0, 2, 2));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(0.0, 0.0, 3, 3, 3.0, 3.0, 3, 3));
+        assertEquals(Math.sqrt(2), UtilMath.getDistance(0.0, 0.0, 3, 3, -3.0, -3.0, 3, 3));
     }
 
     /**
