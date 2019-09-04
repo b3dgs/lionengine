@@ -62,7 +62,7 @@ public class Entity extends FeaturableModel
 
         addFeature(new LayerableModel(services, setup));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(services, setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
 
         final FramesConfig config = FramesConfig.imports(setup);
@@ -78,12 +78,12 @@ public class Entity extends FeaturableModel
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        final Producer producer = addFeatureAndGet(new ProducerModel(services));
+        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
         producer.setStepsSpeed(1.0);
 
         final MapTile map = services.get(MapTile.class);
 
-        final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
+        final Producible producible = addFeatureAndGet(new ProducibleModel(services, setup));
         producible.addListener(new ProducibleListenerVoid()
         {
             @Override
@@ -99,7 +99,7 @@ public class Entity extends FeaturableModel
                 surface.setFrame(2);
             }
         });
-        addFeature(new ActionerModel(setup));
+        addFeature(new ActionerModel(services, setup));
 
         final Viewer viewer = services.get(Viewer.class);
 
@@ -110,7 +110,7 @@ public class Entity extends FeaturableModel
             surface.setLocation(viewer, transformable);
         }));
 
-        final Selectable selectable = addFeatureAndGet(new SelectableModel());
+        final Selectable selectable = addFeatureAndGet(new SelectableModel(services, setup));
 
         addFeature(new DisplayableModel(g ->
         {

@@ -30,6 +30,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 
@@ -38,6 +40,9 @@ import com.b3dgs.lionengine.graphic.Graphics;
  */
 public final class HandlerTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -45,6 +50,8 @@ public final class HandlerTest
     public static void beforeTests()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createConfig(HandlerTest.class);
     }
 
     /**
@@ -53,8 +60,14 @@ public final class HandlerTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
         Graphics.setFactoryGraphic(null);
+        Medias.setResourcesDirectory(null);
     }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+    private final Handler handler = new Handler(services);
 
     /**
      * Add a featurable and get it.
@@ -62,8 +75,7 @@ public final class HandlerTest
     @Test
     public void testAddGetObject()
     {
-        final Handler handler = new Handler(new Services());
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
 
         final Integer id = featurable.getFeature(Identifiable.class).getId();
@@ -85,8 +97,7 @@ public final class HandlerTest
     @Test
     public void testAddRemoveWithoutUpdate()
     {
-        final Handler handler = new Handler(new Services());
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
         handler.remove(featurable);
         handler.update(1.0);
@@ -98,8 +109,6 @@ public final class HandlerTest
     @Test
     public void testObjectIdNotFound()
     {
-        final Handler handler = new Handler(new Services());
-
         assertThrows(() -> handler.get(Integer.valueOf(0)), Handler.ERROR_FEATURABLE_NOT_FOUND + 0);
     }
 
@@ -109,8 +118,6 @@ public final class HandlerTest
     @Test
     public void testObjectTypeNotFound()
     {
-        final Handler handler = new Handler(new Services());
-
         assertFalse(handler.get(Featurable.class).iterator().hasNext());
     }
 
@@ -120,10 +127,9 @@ public final class HandlerTest
     @Test
     public void testRemoveObject()
     {
-        final Handler handler = new Handler(new Services());
         assertEquals(0, handler.size());
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
         assertEquals(0, handler.size());
 
@@ -154,8 +160,7 @@ public final class HandlerTest
     @Test
     public void testDestroyObject()
     {
-        final Handler handler = new Handler(new Services());
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
 
         assertEquals(0, handler.size());
@@ -175,7 +180,6 @@ public final class HandlerTest
     @Test
     public void testAddRemoveListener()
     {
-        final Handler handler = new Handler(new Services());
         final AtomicReference<Featurable> added = new AtomicReference<>();
         final AtomicReference<Featurable> removed = new AtomicReference<>();
         final HandlerListener listener = new HandlerListener()
@@ -194,7 +198,7 @@ public final class HandlerTest
         };
         handler.addListener(listener);
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
 
         assertNull(added.get());
         handler.add(featurable);
@@ -233,7 +237,6 @@ public final class HandlerTest
     @Test
     public void testUpdatable()
     {
-        final Handler handler = new Handler(new Services());
         final AtomicReference<Double> extrapolation = new AtomicReference<>();
         final AtomicReference<Featurable> updated = new AtomicReference<>();
         handler.addComponent((ComponentUpdater) (extrp, featurables) ->
@@ -248,7 +251,7 @@ public final class HandlerTest
         assertNull(extrapolation.get());
         assertNull(updated.get());
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
         handler.update(1.0);
 
@@ -266,14 +269,13 @@ public final class HandlerTest
     @Test
     public void testRenderable()
     {
-        final Handler handler = new Handler(new Services());
         final AtomicReference<Featurable> rendered = new AtomicReference<>();
         handler.addComponent((ComponentRenderer) (g,
                                                   featurables) -> rendered.set(featurables.values().iterator().next()));
 
         assertNull(rendered.get());
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
         handler.update(1.0);
         handler.render(Graphics.createGraphic());
@@ -291,7 +293,6 @@ public final class HandlerTest
     @Test
     public void testFeatures()
     {
-        final Services services = new Services();
         services.add((LayerableListener) (provider,
                                           layerRefreshOld,
                                           layerRefreshNew,
@@ -300,8 +301,7 @@ public final class HandlerTest
         {
             // Mock
         });
-        final Handler handler = new Handler(services);
-        final Featurable featurable = new ObjectFeatures();
+        final Featurable featurable = new ObjectFeatures(services, setup);
 
         handler.add(featurable);
         handler.update(1.0);
@@ -324,10 +324,9 @@ public final class HandlerTest
         final AtomicBoolean add = new AtomicBoolean();
         final AtomicBoolean remove = new AtomicBoolean();
         final Listener listener = new Listener(add, remove);
-        final Handler handler = new Handler(new Services());
         handler.addComponent(listener);
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
 
         assertFalse(add.get());

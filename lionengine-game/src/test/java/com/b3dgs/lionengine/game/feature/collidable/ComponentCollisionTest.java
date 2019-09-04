@@ -59,7 +59,7 @@ public final class ComponentCollisionTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(ComponentCollisionTest.class);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class ComponentCollisionTest
     private final Handler handler = new Handler(services);
     private final Setup setup = new Setup(config);
     private final AtomicReference<Collidable> collide = new AtomicReference<>();
-    private final Featurable nonCollidable = new FeaturableModel();
+    private final Featurable nonCollidable = new FeaturableModel(services, setup);
     private final ComponentCollision component = new ComponentCollision();
 
     private ObjectSelf featurable1;
@@ -96,8 +96,8 @@ public final class ComponentCollisionTest
     {
         services.add(new Camera());
 
-        featurable1 = new ObjectSelf();
-        transformable1 = featurable1.addFeatureAndGet(new TransformableModel(setup));
+        featurable1 = new ObjectSelf(services, setup);
+        transformable1 = featurable1.addFeatureAndGet(new TransformableModel(services, setup));
         collidable1 = featurable1.addFeatureAndGet(new CollidableModel(services, setup));
         collidable1.setGroup(Integer.valueOf(1));
         collidable1.addAccept(Integer.valueOf(0));

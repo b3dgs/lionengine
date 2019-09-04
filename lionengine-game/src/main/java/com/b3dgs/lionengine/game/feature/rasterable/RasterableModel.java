@@ -88,15 +88,13 @@ public class RasterableModel extends FeatureModel implements Rasterable
      * <li>{@link Animatable}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @throws LionEngineException If invalid arguments.
      */
     public RasterableModel(Services services, SetupSurfaceRastered setup)
     {
-        super();
-
-        Check.notNull(services);
+        super(services, setup);
 
         viewer = services.get(Viewer.class);
 

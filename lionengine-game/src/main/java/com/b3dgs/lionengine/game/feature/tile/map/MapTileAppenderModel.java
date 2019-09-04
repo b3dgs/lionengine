@@ -22,14 +22,14 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilRandom;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
  * Handle map tile append.
  */
-public class MapTileAppenderModel extends FeatureModel implements MapTileAppender
+public class MapTileAppenderModel extends FeatureAbstract implements MapTileAppender
 {
     /** Invalid map tile size. */
     static final String ERROR_APPEND_MAP_TILE_SIZE = "Appended map does not have the same tile size: ";

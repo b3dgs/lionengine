@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -54,8 +53,9 @@ public final class MapTilePathModelTest
     @BeforeAll
     public static void beforeTests()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createConfig(MapTilePathModelTest.class);
         Medias.setLoadFromJar(MapTilePathModelTest.class);
-        config = UtilSetup.createConfig();
     }
 
     /**
@@ -66,13 +66,12 @@ public final class MapTilePathModelTest
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
+        Medias.setLoadFromJar(null);
     }
 
-    /** The services reference. */
     private final Services services = new Services();
-    /** Map. */
-    private final MapTile map = services.create(MapTileGame.class);
-    /** Map collision. */
+    private final Setup setup = new Setup(config);
+    private final MapTile map = services.add(new MapTileGame());
     private MapTilePath mapPath;
 
     /**
@@ -90,16 +89,6 @@ public final class MapTilePathModelTest
         mapPath.prepare(map);
 
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTilePathModel(null), "Unexpected null argument !");
-        assertThrows(() -> new PathfindableModel(null, null), "Unexpected null argument !");
     }
 
     /**
@@ -147,14 +136,10 @@ public final class MapTilePathModelTest
      */
     private Pathfindable createObject()
     {
-        final Setup setup = new Setup(config);
-        final FeaturableModel object = new FeaturableModel();
-
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final FeaturableModel object = new FeaturableModel(services, setup);
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.setSize(1, 1);
 
-        final Pathfindable pathfindable = object.addFeatureAndGet(new PathfindableModel(services, setup));
-
-        return pathfindable;
+        return object.addFeatureAndGet(new PathfindableModel(services, setup));
     }
 }

@@ -17,9 +17,12 @@
 package com.b3dgs.lionengine.game.feature.body;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Body model implementation.
@@ -41,10 +44,14 @@ public class BodyModel extends FeatureModel implements Body
 
     /**
      * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public BodyModel()
+    public BodyModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     /*

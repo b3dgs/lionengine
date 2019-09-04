@@ -23,8 +23,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
@@ -32,13 +35,19 @@ import com.b3dgs.lionengine.graphic.Renderable;
  */
 public final class ComponentRenderableTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
     @BeforeAll
     public static void beforeTests()
     {
-        Medias.setLoadFromJar(HandlerTest.class);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Medias.setLoadFromJar(ComponentRenderableTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        config = UtilTransformable.createMedia(ComponentRenderableTest.class);
     }
 
     /**
@@ -47,8 +56,14 @@ public final class ComponentRenderableTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
+        Graphics.setFactoryGraphic(null);
     }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the renderable.
@@ -57,10 +72,10 @@ public final class ComponentRenderableTest
     public void testRenderable()
     {
         final ComponentRenderable renderable = new ComponentRenderable();
-        final Handler handler = new Handler(new Services());
+        final Handler handler = new Handler(services);
         handler.addComponent(renderable);
 
-        final Renderer object = new Renderer();
+        final Renderer object = new Renderer(services, setup);
         handler.add(object);
 
         assertFalse(object.isRendered());
@@ -81,6 +96,17 @@ public final class ComponentRenderableTest
      */
     private static final class Renderer extends FeaturableModel implements Renderable
     {
+        /**
+         * Constructor.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
+         */
+        private Renderer(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         /** Rendered flag. */
         private boolean rendered;
 

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 /**
  * Map tile group model implementation.
  */
-public class MapTileGroupModel extends FeatureModel implements MapTileGroup
+public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
 {
     /** No group name. */
     public static final String NO_GROUP_NAME = "none";

@@ -25,13 +25,16 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 final class ObjectFeatures extends FeaturableModel implements Localizable, Layerable, LayerableListener
 {
     /**
-     * Create object.
+     * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public ObjectFeatures()
+    public ObjectFeatures(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        addFeature(new LayerableModel());
+        addFeature(new LayerableModel(services, setup));
     }
 
     @Override

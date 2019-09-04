@@ -65,7 +65,7 @@ public class MapTileFog implements Listenable<RevealedListener>
         super();
 
         final Services services = new Services();
-        map = services.create(MapTileGame.class);
+        map = services.add(new MapTileGame());
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         transition = map.addFeatureAndGet(new MapTileTransitionModel(services));
         map.addListener(tile ->

@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -26,10 +27,14 @@ public class Recycler extends FeatureModel
 {
     /**
      * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public Recycler()
+    public Recycler(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     /**

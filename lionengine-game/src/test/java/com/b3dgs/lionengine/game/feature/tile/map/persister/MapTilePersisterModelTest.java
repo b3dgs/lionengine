@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.persister;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.IOException;
@@ -43,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
 public final class MapTilePersisterModelTest
 {
     /**
-     * Prepare tests.
+     * Prepare test.
      */
     @BeforeAll
     public static void beforeTests()
@@ -52,7 +51,7 @@ public final class MapTilePersisterModelTest
     }
 
     /**
-     * Clean tests.
+     * Clean up test.
      */
     @AfterAll
     public static void afterTests()
@@ -60,14 +59,7 @@ public final class MapTilePersisterModelTest
         Medias.setResourcesDirectory(null);
     }
 
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTilePersisterModel(null), "Unexpected null argument !");
-    }
+    private final Services services = new Services();
 
     /**
      * Test the save and load map from file.
@@ -121,12 +113,11 @@ public final class MapTilePersisterModelTest
     @Test
     public void testSaveLoadWithConfig() throws IOException
     {
-        final Media config = Medias.create("config");
+        final Media config = Medias.create("config.xml");
 
         TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
 
-        final Services services = new Services();
-        final MapTile map = services.create(MapTileGame.class);
+        final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTilePersisterModel(services));
         map.create(16, 32, 3, 3);
         map.loadSheets(config);
@@ -146,8 +137,7 @@ public final class MapTilePersisterModelTest
     @Test
     public void testConstructor()
     {
-        final Services services = new Services();
-        final MapTile map = services.create(MapTileGame.class);
+        final MapTile map = services.add(new MapTileGame());
         final MapTilePersister mapPersister = new MapTilePersisterModel(services);
 
         assertNotNull(mapPersister);

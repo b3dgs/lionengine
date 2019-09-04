@@ -55,7 +55,7 @@ public final class FogOfWarTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(FogOfWarTest.class);
     }
 
     /**
@@ -102,8 +102,8 @@ public final class FogOfWarTest
     public void testFogOfWar()
     {
         final Setup setup = new Setup(config);
-        final FeaturableModel object = new FeaturableModel();
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final FeaturableModel object = new FeaturableModel(services, setup);
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         final FovableModel fovable = object.addFeatureAndGet(new FovableModel(services, setup));
         fovable.prepare(object);
         fovable.setFov(1);

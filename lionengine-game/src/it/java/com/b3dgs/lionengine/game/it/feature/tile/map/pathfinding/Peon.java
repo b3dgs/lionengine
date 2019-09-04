@@ -51,11 +51,11 @@ class Peon extends FeaturableModel
      */
     public Peon(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        addFeature(new LayerableModel(1));
+        addFeatureAndGet(new LayerableModel(1));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(services, setup));
         transformable.teleport(208, 224);
 
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);

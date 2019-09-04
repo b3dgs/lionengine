@@ -21,8 +21,12 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -30,6 +34,31 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public final class FeaturesTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(FeaturesTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
     private final Features features = new Features();
 
     /**
@@ -38,7 +67,8 @@ public final class FeaturesTest
     @Test
     public void testFeatureNotAnnotated()
     {
-        assertThrows(() -> features.add(new FeatureModel()), Features.ERROR_FEATURE_NOT_ANNOTATED + FeatureModel.class);
+        assertThrows(() -> features.add(new FeatureModel(services, setup)),
+                     Features.ERROR_FEATURE_NOT_ANNOTATED + FeatureModel.class);
     }
 
     /**
@@ -87,7 +117,7 @@ public final class FeaturesTest
     @Test
     public void testInheritance()
     {
-        features.add(new FeatureLevel2Model());
+        features.add(new FeatureLevel2Model(services, setup));
 
         assertTrue(features.contains(FeatureLevel1.class));
         assertTrue(features.contains(FeatureLevel2.class));
@@ -100,15 +130,14 @@ public final class FeaturesTest
     @Test
     public void testAddExists()
     {
-        final Features features = new Features();
-        features.add(new FeatureLevel1Model());
+        features.add(new FeatureLevel1Model(services, setup));
 
         final String error = Features.ERROR_FEATURE_EXISTS
                              + FeatureLevel1Model.class
                              + Features.WITH
                              + FeatureLevel1Model.class;
 
-        assertThrows(() -> features.add(new FeatureLevel1Model()), error);
+        assertThrows(() -> features.add(new FeatureLevel1Model(services, setup)), error);
     }
 
     /**
@@ -117,7 +146,6 @@ public final class FeaturesTest
     @Test
     public void testAddExistsDepth()
     {
-        final Features features = new Features();
         features.add(new RefreshableModel(extrp ->
         {
             // Nothing to do
@@ -130,7 +158,7 @@ public final class FeaturesTest
                              + Features.WITH
                              + RefreshableModel.class;
 
-        assertThrows(() -> features.add(new FeatureLevel1Model()), error);
+        assertThrows(() -> features.add(new FeatureLevel1Model(services, setup)), error);
     }
 
     /**
@@ -157,6 +185,11 @@ public final class FeaturesTest
     @FeatureInterface
     private static class FeatureLevel1Model extends FeatureModel implements FeatureLevel1
     {
+        private FeatureLevel1Model(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         @Override
         public void update(double extrp)
         {
@@ -170,6 +203,11 @@ public final class FeaturesTest
     @FeatureInterface
     private static class FeatureLevel2Model extends FeatureLevel1Model implements FeatureLevel2
     {
+        private FeatureLevel2Model(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         @Override
         public void update(double extrp)
         {

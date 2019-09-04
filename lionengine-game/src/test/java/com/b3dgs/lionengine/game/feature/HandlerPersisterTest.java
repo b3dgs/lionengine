@@ -38,16 +38,13 @@ import com.b3dgs.lionengine.io.FileWriting;
  */
 public final class HandlerPersisterTest
 {
-    private final Services services = new Services();
-    private final Factory factory = services.add(new Factory(services));
-    private final Handler handler = services.add(new Handler(services));
-
     /**
      * Prepare test.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(HandlerPersisterTest.class);
     }
 
@@ -55,10 +52,15 @@ public final class HandlerPersisterTest
      * Clean up test.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
+        Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
     }
+
+    private final Services services = new Services();
+    private final Factory factory = services.add(new Factory(services));
+    private final Handler handler = services.add(new Handler(services));
 
     /**
      * Test without map.
@@ -98,6 +100,8 @@ public final class HandlerPersisterTest
         assertTrue(iterable.hasNext());
         assertEquals(1.0, transformable.getX());
         assertEquals(2.0, transformable.getY());
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -141,6 +145,8 @@ public final class HandlerPersisterTest
 
         assertEquals(16.0, transformable.getX());
         assertEquals(32.0, transformable.getY());
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -185,5 +191,7 @@ public final class HandlerPersisterTest
 
         assertEquals(16.0, transformable.getX());
         assertEquals(32.0, transformable.getY());
+
+        assertTrue(media.getFile().delete());
     }
 }

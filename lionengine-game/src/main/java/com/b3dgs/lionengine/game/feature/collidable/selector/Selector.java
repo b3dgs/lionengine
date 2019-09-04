@@ -24,9 +24,10 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
@@ -51,18 +52,18 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  * @see Cursor
  * @see Viewer
  */
-public class Selector extends FeaturableModel implements SelectorConfigurer, Listenable<SelectionListener>
+public class Selector extends FeaturableAbstract implements SelectorConfigurer, Listenable<SelectionListener>
 {
-    /** Selector model. */
-    private final SelectorModel model = addFeatureAndGet(new SelectorModel());
-    /** Selector refresher. */
-    private final SelectorRefresher refresher;
-    /** Selector displayer. */
-    private final SelectorDisplayer displayer;
     /** Backed selection. */
     private final List<Selectable> selected = new ArrayList<>();
     /** Selection listeners. */
     private final ListenableModel<SelectionListener> listenable = new ListenableModel<>();
+    /** Selector model. */
+    private final SelectorModel model;
+    /** Selector refresher. */
+    private final SelectorRefresher refresher;
+    /** Selector displayer. */
+    private final SelectorDisplayer displayer;
     /** Accept selection filter. */
     private BiPredicate<List<Selectable>, Selectable> filter = (c, s) -> true;
 
@@ -76,12 +77,16 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
      * <li>{@link Cursor}</li>
      * </ul>
      * 
-     * @param services The services reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public Selector(Services services)
     {
         super();
 
+        Check.notNull(services);
+
+        model = addFeatureAndGet(new SelectorModel());
         refresher = addFeatureAndGet(new SelectorRefresher(services, model));
         displayer = addFeatureAndGet(new SelectorDisplayer(services, model));
 
@@ -244,5 +249,18 @@ public class Selector extends FeaturableModel implements SelectorConfigurer, Lis
     public void setEnabled(boolean enabled)
     {
         model.setEnabled(enabled);
+    }
+
+    /*
+     * Featurable
+     */
+
+    /**
+     * Return always <code>null</code>.
+     */
+    @Override
+    public Media getMedia()
+    {
+        return null;
     }
 }

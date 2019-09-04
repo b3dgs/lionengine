@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
@@ -43,7 +44,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     /** Production queue. */
     private final Queue<Featurable> productions = new ArrayDeque<>();
     /** Handler reference. */
-    private final Handler handler;
+    private final Handler handler = services.get(Handler.class);
     /** Production checker. */
     private ProducerChecker checker = featurable -> true;
     /** Steps per tick. */
@@ -76,15 +77,12 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public ProducerModel(Services services)
+    public ProducerModel(Services services, Setup setup)
     {
-        super();
-
-        Check.notNull(services);
-
-        handler = services.get(Handler.class);
+        super(services, setup);
     }
 
     /**

@@ -22,6 +22,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Tick;
@@ -137,11 +138,12 @@ class Scene extends Sequence
 
         final Factory factory = services.create(Factory.class);
 
-        final Hud hud = factory.create(Medias.create("Hud.xml"));
+        final Media media = Medias.create("Hud.xml");
+        final Hud hud = factory.create(media);
         handler.add(hud);
 
         final Selector selector = services.get(Selector.class);
-        selector.addFeature(new LayerableModel(4, 4));
+        selector.addFeatureAndGet(new LayerableModel(4));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(MouseAwt.LEFT);

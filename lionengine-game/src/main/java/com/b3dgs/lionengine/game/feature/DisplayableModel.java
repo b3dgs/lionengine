@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 /**
  * Displayable feature implementation.
  */
-public class DisplayableModel extends FeatureModel implements Displayable
+public class DisplayableModel extends FeatureAbstract implements Displayable
 {
     /** Renderable reference. */
     private final Renderable renderable;

@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
 
@@ -36,7 +38,6 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
 {
     /** Loaded collisions framed. */
     private final CollidableFramedConfig config;
-
     /** Last collision found. */
     private Collection<Collision> last = Collections.emptyList();
 
@@ -53,14 +54,15 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
      * The {@link Configurer} can provide a valid {@link CollidableFramedConfig}.
      * </p>
      * 
-     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public CollidableFramedModel(Configurer configurer)
+    public CollidableFramedModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        config = CollidableFramedConfig.imports(configurer);
+        config = CollidableFramedConfig.imports(setup);
     }
 
     /*

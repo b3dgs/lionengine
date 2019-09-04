@@ -20,8 +20,12 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Feature;
 
 /**
@@ -29,7 +33,32 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public final class FeatureModelTest
 {
-    private final Feature feature = new FeatureTest();
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(FeatureModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+    private final Feature feature = new FeatureTest(services, setup);
 
     /**
      * Test the feature model.
@@ -37,10 +66,10 @@ public final class FeatureModelTest
     @Test
     public void testModel()
     {
-        final Featurable featurable = new FeaturableModel();
-        final Transformable transformable = new TransformableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final Transformable transformable = new TransformableModel(services, setup);
         featurable.addFeature(transformable);
-        feature.prepare(new FeatureModel()
+        feature.prepare(new FeatureModel(services, setup)
         {
             @Override
             public boolean hasFeature(Class<? extends Feature> feature)
@@ -82,6 +111,11 @@ public final class FeatureModelTest
 
     private class FeatureTest extends FeatureModel implements IdentifiableListener
     {
+        private FeatureTest(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         @Override
         public void notifyDestroyed(Integer id)
         {

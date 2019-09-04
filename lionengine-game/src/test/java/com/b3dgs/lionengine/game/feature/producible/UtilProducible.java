@@ -128,9 +128,9 @@ final class UtilProducible
     {
         final Media media = createProducibleMedia();
         final Setup setup = new Setup(media);
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new TransformableModel());
-        featurable.addFeature(new ProducibleModel(setup));
+        final Featurable featurable = new FeaturableModel(services, setup);
+        featurable.addFeature(new TransformableModel(services, setup));
+        featurable.addFeature(new ProducibleModel(services, setup));
 
         return featurable;
     }

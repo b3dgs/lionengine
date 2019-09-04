@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Updatable;
 /**
  * Refreshable feature implementation.
  */
-public class RefreshableModel extends FeatureModel implements Refreshable
+public class RefreshableModel extends FeatureAbstract implements Refreshable
 {
     /** Updatable reference. */
     private final Updatable updatable;

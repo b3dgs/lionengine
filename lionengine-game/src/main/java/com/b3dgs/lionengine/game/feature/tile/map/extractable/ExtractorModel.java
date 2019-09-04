@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
@@ -75,19 +76,16 @@ public class ExtractorModel extends FeatureModel implements Extractor, Recyclabl
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public ExtractorModel(Services services, Configurer configurer)
+    public ExtractorModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(services);
-        Check.notNull(configurer);
-
-        if (configurer.hasNode(ExtractorConfig.NODE_EXTRACTOR))
+        if (setup.hasNode(ExtractorConfig.NODE_EXTRACTOR))
         {
-            final ExtractorConfig config = ExtractorConfig.imports(configurer);
+            final ExtractorConfig config = ExtractorConfig.imports(setup);
             extractPerTick = config.getExtract();
             dropOffPerTick = config.getDropOff();
             extractionCapacity = config.getCapacity();

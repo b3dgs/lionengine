@@ -19,12 +19,25 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Object self collision listener mock.
  */
 final class ObjectSelf extends FeaturableModel implements TileCollidableListener
 {
+    /**
+     * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    public ObjectSelf(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     /** Called flag. */
     final AtomicBoolean called = new AtomicBoolean();
 

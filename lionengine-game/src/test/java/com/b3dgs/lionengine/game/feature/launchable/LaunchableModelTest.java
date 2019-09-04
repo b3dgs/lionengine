@@ -23,17 +23,23 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
@@ -41,9 +47,33 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
  */
 public final class LaunchableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(LaunchableModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
     private final Services services = new Services();
-    private final Featurable featurable = new FeaturableModel();
-    private final Launchable launchable = UtilLaunchable.createLaunchable(services, featurable);
+    private final Setup setup = new Setup(config);
+    private final Featurable featurable = new FeaturableModel(services, setup);
+    private final Launchable launchable = UtilLaunchable.createLaunchable(services, setup, featurable);
     private final Transformable transformable = featurable.getFeature(Transformable.class);
 
     /**
@@ -168,8 +198,8 @@ public final class LaunchableModelTest
     @Test
     public void testCheck()
     {
-        final Launchable launchable = new LaunchableModel();
-        final Self self = new Self();
+        final Launchable launchable = new LaunchableModel(services, setup);
+        final Self self = new Self(services, setup);
         launchable.checkListener(self);
         launchable.launch();
 
@@ -185,10 +215,13 @@ public final class LaunchableModelTest
 
         /**
          * Create self.
+         * 
+         * @param services The services reference.
+         * @param setup The setup reference.
          */
-        Self()
+        Self(Services services, Setup setup)
         {
-            super();
+            super(services, setup);
         }
 
         @Override

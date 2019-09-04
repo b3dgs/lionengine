@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.body.Body;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -50,10 +51,11 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
      * Create updater.
      * 
      * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public MarioUpdater(Services services)
+    public MarioUpdater(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     @Override

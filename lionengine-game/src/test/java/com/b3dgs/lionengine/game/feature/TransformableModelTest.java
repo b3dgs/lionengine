@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 
 /**
@@ -39,6 +37,9 @@ import com.b3dgs.lionengine.game.Force;
  */
 public final class TransformableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -46,6 +47,7 @@ public final class TransformableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(TransformableModelTest.class);
     }
 
     /**
@@ -54,13 +56,14 @@ public final class TransformableModelTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
-    private final Media media = UtilTransformable.createMedia(Featurable.class);
-    private final Setup setup = new Setup(media);
-    private final Featurable featurable = new FeaturableModel();
-    private final TransformableModel transformable = new TransformableModel(setup);
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+    private final Featurable featurable = new FeaturableModel(services, setup);
+    private final TransformableModel transformable = new TransformableModel(services, setup);
 
     /**
      * Prepare test.
@@ -78,17 +81,6 @@ public final class TransformableModelTest
     public void after()
     {
         featurable.getFeature(Identifiable.class).notifyDestroyed();
-
-        assertTrue(media.getFile().delete());
-    }
-
-    /**
-     * Test constructor with null configurer.
-     */
-    @Test
-    public void testConstructorNullConfigurer()
-    {
-        assertThrows(() -> new TransformableModel(null), "Unexpected null argument !");
     }
 
     /**
@@ -97,22 +89,12 @@ public final class TransformableModelTest
     @Test
     public void testDefaultSize()
     {
-        final Transformable transformable = new TransformableModel();
+        final Media media = UtilSetup.createConfig(TransformableModelTest.class);
+        final Transformable transformable = new TransformableModel(services, new Setup(media));
 
         assertEquals(0, transformable.getWidth());
         assertEquals(0, transformable.getHeight());
-    }
-
-    /**
-     * Test the transformable without configuration node.
-     */
-    @Test
-    public void testWithoutConfig()
-    {
-        final Transformable transformable = new TransformableModel(new Configurer(UtilSetup.createConfig()));
-
-        assertEquals(0, transformable.getWidth());
-        assertEquals(0, transformable.getHeight());
+        assertTrue(media.getFile().delete());
     }
 
     /**

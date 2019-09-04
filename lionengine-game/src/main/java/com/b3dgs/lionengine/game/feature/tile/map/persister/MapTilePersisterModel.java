@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.io.FileWriting;
  * Handle the map persistence by providing saving and loading functions.
  */
 @FeatureInterface
-public class MapTilePersisterModel extends FeatureModel implements MapTilePersister
+public class MapTilePersisterModel extends FeatureAbstract implements MapTilePersister
 {
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE;

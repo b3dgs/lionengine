@@ -50,6 +50,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 
 /**
  * Test {@link AttackerModel}.
@@ -59,6 +60,9 @@ public final class AttackerModelTest
     /** Hack enum. */
     private static final UtilEnum<AttackState> HACK = new UtilEnum<>(AttackState.class, AttackerModel.class);
 
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -67,6 +71,7 @@ public final class AttackerModelTest
     {
         HACK.addByValue(HACK.make("FAIL"));
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createMedia(AttackerModelTest.class);
     }
 
     /**
@@ -76,13 +81,15 @@ public final class AttackerModelTest
     public static void afterTests()
     {
         HACK.restore();
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     private final Services services = new Services();
+    private final Setup setup = new Setup(config);
     private final AtomicBoolean canAttack = new AtomicBoolean();
-    private final FeaturableModel object = new FeaturableModel();
-    private final Transformable target = new TransformableModel();
+    private final FeaturableModel object = new FeaturableModel(services, setup);
+    private final Transformable target = new TransformableModel(services, setup);
     private AttackerModel attacker;
 
     /**
@@ -91,8 +98,8 @@ public final class AttackerModelTest
     @BeforeEach
     public void prepare()
     {
-        UtilAttackable.prepare(object);
-        attacker = UtilAttackable.createAttacker(object, services);
+        UtilAttackable.prepare(object, services, setup);
+        attacker = UtilAttackable.createAttacker(object, services, setup);
     }
 
     /**
@@ -105,25 +112,16 @@ public final class AttackerModelTest
     }
 
     /**
-     * Test constructor with null configurer.
-     */
-    @Test
-    public void testConstructorNullConfigurer()
-    {
-        assertThrows(() -> new AttackerModel(null), "Unexpected null argument !");
-    }
-
-    /**
      * Test without config.
      */
     @Test
     public void testNoConfig()
     {
-        final Media media = UtilSetup.createConfig();
+        final Media media = UtilTransformable.createMedia(AttackerModelTest.class);
         final Xml xml = new Xml(media);
         xml.save(media);
 
-        final AttackerModel attacker = new AttackerModel(new Setup(media));
+        final AttackerModel attacker = new AttackerModel(services, new Setup(media));
 
         assertTrue(attacker.getAttackDamages() == 0);
         assertTrue(media.getFile().delete());
@@ -142,12 +140,12 @@ public final class AttackerModelTest
         final int frame = 1;
         final int time = 100;
 
-        final Media media = UtilSetup.createConfig();
+        final Media media = UtilTransformable.createMedia(AttackerModelTest.class);
         final Xml xml = new Xml(media);
         xml.add(AttackerConfig.exports(new AttackerConfig(time, distanceMin, distanceMax, damagesMin, damagesMax)));
         xml.save(media);
 
-        final AttackerModel attacker = new AttackerModel(new Setup(media));
+        final AttackerModel attacker = new AttackerModel(services, new Setup(media));
         attacker.setAttackFrame(frame);
 
         assertTrue(attacker.getAttackDamages() >= damagesMin);
@@ -174,7 +172,7 @@ public final class AttackerModelTest
     {
         target.teleport(0, 10);
         attacker.attack(target);
-        final ObjectAttackerSelf listener = new ObjectAttackerSelf();
+        final ObjectAttackerSelf listener = new ObjectAttackerSelf(services, setup);
         attacker.addListener(listener);
         attacker.update(1.0);
 
@@ -192,7 +190,7 @@ public final class AttackerModelTest
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
 
-        final Transformable target = new TransformableModel();
+        final Transformable target = new TransformableModel(services, setup);
         target.teleport(1, 1);
         attacker.setAttackDistanceComputer((s, t) -> 5);
         attacker.attack(target);
@@ -264,7 +262,7 @@ public final class AttackerModelTest
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
 
-        final Transformable target1 = new TransformableModel();
+        final Transformable target1 = new TransformableModel(services, setup);
         attacker.attack(target1);
 
         assertEquals(target1, attacker.getTarget());
@@ -276,7 +274,7 @@ public final class AttackerModelTest
         assertEquals(target1, attacker.getTarget());
         assertFalse(attacker.isAttacking());
 
-        final Transformable target2 = new TransformableModel();
+        final Transformable target2 = new TransformableModel(services, setup);
         attacker.stopAttack();
         attacker.attack(target2);
 
@@ -299,7 +297,7 @@ public final class AttackerModelTest
         attacker.setAttackChecker(t -> canAttack.get());
         attacker.setAttackDistance(new Range(0, 2));
 
-        final Transformable target = new TransformableModel();
+        final Transformable target = new TransformableModel(services, setup);
         target.teleport(1, 1);
         attacker.attack(target);
         attacker.update(1.0);
@@ -322,11 +320,11 @@ public final class AttackerModelTest
     @Test
     public void testSelfListener()
     {
-        UtilAttackable.createAttacker(object, services); // No listener check
+        UtilAttackable.createAttacker(object, services, setup); // No listener check
 
-        final ObjectAttackerSelf object2 = new ObjectAttackerSelf();
-        UtilAttackable.prepare(object2);
-        final AttackerModel attacker = UtilAttackable.createAttacker(object2, services);
+        final ObjectAttackerSelf object2 = new ObjectAttackerSelf(services, setup);
+        UtilAttackable.prepare(object2, services, setup);
+        final AttackerModel attacker = UtilAttackable.createAttacker(object2, services, setup);
         attacker.recycle();
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
@@ -371,8 +369,10 @@ public final class AttackerModelTest
         attacker.setAttackDelay(5);
         attacker.setAttackFrame(1);
         attacker.setAttackDistance(new Range(0, 2));
+        target.setSize(1, 1);
         target.teleport(5, 5);
         attacker.attack(target);
+        attacker.update(1.0);
         attacker.update(1.0);
         attacker.update(1.0); // 2 ticks for attack interval
         attacker.getFeature(Animatable.class).play(new Animation("test", 1, 1, 1.0, false, false));
@@ -451,9 +451,9 @@ public final class AttackerModelTest
     @Test
     public void testListenerAutoAdd()
     {
-        final ObjectAttackerSelf object = new ObjectAttackerSelf();
-        UtilAttackable.prepare(object);
-        final Attacker attacker = UtilAttackable.createAttacker(object, new Services());
+        final ObjectAttackerSelf object = new ObjectAttackerSelf(services, setup);
+        UtilAttackable.prepare(object, services, setup);
+        final Attacker attacker = UtilAttackable.createAttacker(object, services, setup);
         attacker.checkListener(new Object());
         attacker.checkListener(object);
 
@@ -472,7 +472,7 @@ public final class AttackerModelTest
     @Test
     public void testEnumFail() throws ReflectiveOperationException
     {
-        final AttackerModel attacker = new AttackerModel();
+        final AttackerModel attacker = new AttackerModel(services, setup);
         final Field field = attacker.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(attacker, AttackState.values()[3]);

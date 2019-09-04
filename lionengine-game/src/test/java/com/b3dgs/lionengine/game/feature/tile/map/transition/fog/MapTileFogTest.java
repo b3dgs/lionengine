@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
@@ -40,6 +40,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
  */
 public final class MapTileFogTest
 {
+    /** Object config test. */
+    private static Media media;
     /** Test configuration. */
     private static Media config;
 
@@ -47,9 +49,10 @@ public final class MapTileFogTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        media = UtilTransformable.createMedia(MapTileFogTest.class);
         config = UtilMapTransition.createTransitions();
     }
 
@@ -57,11 +60,15 @@ public final class MapTileFogTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    public static void cleanUp()
     {
+        assertTrue(media.getFile().delete());
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the fog.
@@ -69,15 +76,13 @@ public final class MapTileFogTest
     @Test
     public void testFog()
     {
-        final Services services = new Services();
         final MapTile map = UtilMap.createMap(5);
         services.add(map);
 
-        final Setup setup = new Setup(UtilSetup.createConfig());
         final FovableModel fovable = new FovableModel(services, setup);
 
-        final FeaturableModel object = new FeaturableModel();
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final FeaturableModel object = new FeaturableModel(services, setup);
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.teleport(3, 3);
         fovable.prepare(object);
         fovable.setFov(1);

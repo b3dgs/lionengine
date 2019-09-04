@@ -23,6 +23,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 
 /**
@@ -30,23 +31,33 @@ import com.b3dgs.lionengine.Medias;
  */
 public final class ComponentUpdatableTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(ComponentUpdatableTest.class);
+        config = UtilTransformable.createMedia(ComponentUpdatableTest.class);
     }
 
     /**
      * Clean up test.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
     }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the updater.
@@ -58,7 +69,7 @@ public final class ComponentUpdatableTest
         final Handler handler = new Handler(new Services());
         handler.addComponent(updatable);
 
-        final Updater object = new Updater();
+        final Updater object = new Updater(services, setup);
         handler.add(object);
 
         assertFalse(object.isUpdated());

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -38,10 +39,14 @@ public class Routines extends FeatureModel implements Updatable, Renderable
 
     /**
      * Create routines.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public Routines()
+    public Routines(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     /*

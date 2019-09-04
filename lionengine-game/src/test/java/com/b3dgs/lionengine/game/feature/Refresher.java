@@ -28,10 +28,13 @@ final class Refresher extends FeaturableModel implements Refreshable
 
     /**
      * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public Refresher()
+    public Refresher(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         addFeature(new IdentifiableModel());
     }

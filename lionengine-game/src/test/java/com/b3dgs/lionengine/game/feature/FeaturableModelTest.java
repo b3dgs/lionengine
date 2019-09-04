@@ -43,24 +43,32 @@ import com.b3dgs.lionengine.game.FeatureProvider;
  */
 public final class FeaturableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(FeaturableModelTest.class);
     }
 
     /**
      * Clean up test.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
         FeaturableConfig.clearCache();
     }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the featurable model with compatible feature.
@@ -68,8 +76,8 @@ public final class FeaturableModelTest
     @Test
     public void testFeaturableCompatible()
     {
-        final Featurable featurable = new FeaturableModel();
-        final MyFeatureInterface feature = new MyFeature();
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final MyFeatureInterface feature = new MyFeature(services, setup);
         featurable.addFeature(feature);
 
         assertTrue(featurable.hasFeature(MyFeatureInterface.class));
@@ -98,8 +106,8 @@ public final class FeaturableModelTest
     @Test
     public void testFeaturableNotcompatible()
     {
-        final Featurable featurable = new FeaturableModel();
-        final MyFeatureNotCompatible feature = new MyFeatureNotCompatible();
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final MyFeatureNotCompatible feature = new MyFeatureNotCompatible(services, setup);
         featurable.addFeature(feature);
 
         assertTrue(featurable.hasFeature(MyFeatureNotCompatible.class));
@@ -122,30 +130,30 @@ public final class FeaturableModelTest
     }
 
     /**
-     * Test the service with annotation.
+     * Test with annotation.
      */
     @Test
-    public void testServiceAnnotation()
+    public void testFeatureAnnotation()
     {
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
 
-        final MyFeatureInterface featureModel = new MyFeature();
+        final MyFeatureInterface featureModel = new MyFeature(services, setup);
         featurable.addFeature(featureModel);
 
-        final MyFeatureModel feature = featurable.addFeatureAndGet(new MyFeatureModel());
+        final MyFeatureModel feature = featurable.addFeatureAndGet(new MyFeatureModel(services, setup));
 
         assertEquals(featureModel, feature.feature);
     }
 
     /**
-     * Test the service with annotation and service not found.
+     * Test with annotation and feature not found.
      */
     @Test
-    public void testServiceAnnotationNotFound()
+    public void testFeatureAnnotationNotFound()
     {
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         final AtomicReference<String> unfilledType = new AtomicReference<>();
-        final Feature feature = new FeatureModel()
+        final Feature feature = new FeatureModel(services, setup)
         {
             private @FeatureGet String type;
 
@@ -156,7 +164,8 @@ public final class FeaturableModelTest
                 unfilledType.set(type);
             }
         };
-        assertThrows(() -> featurable.addFeature(feature), "Class not found: " + String.class + " in " + feature);
+        assertThrows(() -> featurable.addFeature(feature),
+                     "[transformable_FeaturableModelTest.xml] Class not found: " + String.class + " in " + feature);
     }
 
     /**
@@ -165,7 +174,7 @@ public final class FeaturableModelTest
     @Test
     public void testFeatureItself()
     {
-        final FeatureItself object = new FeatureItself();
+        final FeatureItself object = new FeatureItself(services, setup);
         object.prepare(object);
 
         assertFalse(object.hasFeature(FeatureItself.class));
@@ -179,7 +188,7 @@ public final class FeaturableModelTest
     @Test
     public void testSetFieldNotAccessible() throws ReflectiveOperationException
     {
-        final FeatureItself featurable = new FeatureItself();
+        final FeatureItself featurable = new FeatureItself(services, setup);
         final Method method = FeaturableModel.class.getDeclaredMethod("setField",
                                                                       Field.class,
                                                                       Object.class,
@@ -229,6 +238,11 @@ public final class FeaturableModelTest
     @FeatureInterface
     private static class MyFeatureModel extends FeatureModel
     {
+        private MyFeatureModel(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         private @FeatureGet MyFeatureInterface feature;
     }
 
@@ -247,6 +261,10 @@ public final class FeaturableModelTest
     @FeatureInterface
     private static class MyFeature extends FeatureModel implements MyFeatureInterface
     {
+        private MyFeature(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
         // Mock
     }
 
@@ -256,6 +274,10 @@ public final class FeaturableModelTest
     @FeatureInterface
     private static class MyFeatureNotCompatible extends FeatureModel
     {
+        private MyFeatureNotCompatible(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
         // Mock
     }
 
@@ -265,6 +287,11 @@ public final class FeaturableModelTest
     @FeatureInterface
     private static class FeatureItself extends FeaturableModel implements Feature
     {
+        private FeatureItself(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         @SuppressWarnings("unused") private Object object;
 
         @Override

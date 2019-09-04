@@ -63,16 +63,13 @@ public final class CollisionCategoryConfigTest
         Medias.setResourcesDirectory(null);
     }
 
-    /** Formula test. */
+    private final Services services = new Services();
     private final CollisionFormula formula = new CollisionFormula("formula",
                                                                   new CollisionRange(Axis.X, 0, 1, 2, 3),
                                                                   new CollisionFunctionLinear(1.0, 2.0),
                                                                   new CollisionConstraint());
-    /** Group test. */
     private final CollisionGroup group = new CollisionGroup("group", Arrays.asList(formula));
-    /** Category test. */
     private final CollisionCategory category = new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group));
-    /** Map collision. */
     private MapTileCollision mapCollision;
 
     /**
@@ -81,7 +78,6 @@ public final class CollisionCategoryConfigTest
     @BeforeEach
     public void prepare()
     {
-        final Services services = new Services();
         services.add(new Camera());
 
         final MapTile map = services.add(new MapTileGame());

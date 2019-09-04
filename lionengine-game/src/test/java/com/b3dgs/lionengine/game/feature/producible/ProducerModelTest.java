@@ -45,7 +45,9 @@ import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
@@ -55,6 +57,8 @@ public final class ProducerModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<ProducerState> HACK = new UtilEnum<>(ProducerState.class, ProducerModel.class);
+    /** Object config test. */
+    private static Media config;
 
     /**
      * Prepare test.
@@ -64,6 +68,7 @@ public final class ProducerModelTest
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         HACK.addByValue(HACK.make("FAIL"));
+        config = UtilTransformable.createMedia(ProducerModelTest.class);
     }
 
     /**
@@ -72,6 +77,7 @@ public final class ProducerModelTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
         HACK.restore();
     }
@@ -91,9 +97,10 @@ public final class ProducerModelTest
         return media;
     }
 
-    private final Media media = createMedia();
     private final Services services = new Services();
-    private final ProducerObject object = new ProducerObject();
+    private final Setup setup = new Setup(config);
+    private final Media media = createMedia();
+    private final ProducerObject object = new ProducerObject(services, setup);
     private ProducerModel producer;
 
     /**
@@ -123,7 +130,7 @@ public final class ProducerModelTest
                 return 50;
             }
         });
-        producer = new ProducerModel(services);
+        producer = new ProducerModel(services, setup);
         producer.prepare(object);
     }
 
@@ -138,22 +145,13 @@ public final class ProducerModelTest
     }
 
     /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new ProducerModel(null), "Unexpected null argument !");
-    }
-
-    /**
      * Test the default production with default checker.
      */
     @Test
     public void testDefaultProduction()
     {
-        final ProducerModel producer = new ProducerModel(services);
-        producer.prepare(new FeaturableModel());
+        final ProducerModel producer = new ProducerModel(services, setup);
+        producer.prepare(new FeaturableModel(services, setup));
         producer.recycle();
         producer.setStepsSpeed(0.5);
 
@@ -280,8 +278,8 @@ public final class ProducerModelTest
     @Test
     public void testProductionListenerSelf()
     {
-        final ProducerObjectSelf object = new ProducerObjectSelf();
-        final ProducerModel producer = new ProducerModel(services);
+        final ProducerObjectSelf object = new ProducerObjectSelf(services, setup);
+        final ProducerModel producer = new ProducerModel(services, setup);
         producer.prepare(object);
         producer.recycle();
         producer.setStepsSpeed(1.0);
@@ -504,8 +502,8 @@ public final class ProducerModelTest
     @Test
     public void testListenerAutoAdd()
     {
-        final ProducerObjectSelf object = new ProducerObjectSelf();
-        final ProducerModel producer = new ProducerModel(services);
+        final ProducerObjectSelf object = new ProducerObjectSelf(services, setup);
+        final ProducerModel producer = new ProducerModel(services, setup);
         producer.prepare(object);
         producer.setStepsSpeed(50.0);
         producer.checkListener(object);
@@ -529,7 +527,7 @@ public final class ProducerModelTest
     @Test
     public void testEnumFail() throws ReflectiveOperationException
     {
-        final ProducerModel producer = new ProducerModel(services);
+        final ProducerModel producer = new ProducerModel(services, setup);
         final Field field = producer.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(producer, ProducerState.values()[5]);

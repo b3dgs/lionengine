@@ -45,7 +45,7 @@ public final class TransitionsConfigTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
@@ -54,7 +54,7 @@ public final class TransitionsConfigTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    public static void cleanUp()
     {
         Medias.setResourcesDirectory(null);
     }

@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.state;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 import com.b3dgs.lionengine.Animation;
@@ -35,6 +34,8 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Handle the {@link State}.
@@ -55,7 +56,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     /** List of available states. */
     private final Map<Class<? extends State>, State> states = new HashMap<>();
     /** Configurer reference. */
-    private final Optional<Configurer> configurer;
+    private final Setup setup;
     /** Animation name converter. */
     private final Function<Class<? extends State>, String> converter;
     /** Transition listeners. */
@@ -69,13 +70,17 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
 
     /**
      * Create feature.
+     * <p>
+     * The {@link Configurer} can provide {@link Animation}.
+     * </p>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public StateHandler()
+    public StateHandler(Services services, Setup setup)
     {
-        super();
-
-        configurer = Optional.empty();
-        converter = Class::getSimpleName;
+        this(services, setup, Class::getSimpleName);
     }
 
     /**
@@ -84,37 +89,18 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
      * The {@link Configurer} can provide {@link Animation}.
      * </p>
      * 
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If <code>null</code> argument.
-     */
-    public StateHandler(Configurer configurer)
-    {
-        super();
-
-        Check.notNull(configurer);
-
-        this.configurer = Optional.of(configurer);
-        converter = Class::getSimpleName;
-    }
-
-    /**
-     * Create feature.
-     * <p>
-     * The {@link Configurer} can provide {@link Animation}.
-     * </p>
-     * 
-     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @param converter The animation name converter.
-     * @throws LionEngineException If <code>null</code> argument.
+     * @throws LionEngineException If invalid arguments.
      */
-    public StateHandler(Configurer configurer, Function<Class<? extends State>, String> converter)
+    public StateHandler(Services services, Setup setup, Function<Class<? extends State>, String> converter)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(configurer);
         Check.notNull(converter);
 
-        this.configurer = Optional.of(configurer);
+        this.setup = setup;
         this.converter = converter;
     }
 
@@ -206,9 +192,9 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     {
         try
         {
-            if (configurer.isPresent())
+            if (setup.hasNode(AnimationConfig.ANIMATION))
             {
-                final AnimationConfig configAnimations = AnimationConfig.imports(configurer.get());
+                final AnimationConfig configAnimations = AnimationConfig.imports(setup);
                 final String name = converter.apply(state);
                 final Animation animation = configAnimations.getAnimation(name);
                 final Class<? extends Feature> feature;

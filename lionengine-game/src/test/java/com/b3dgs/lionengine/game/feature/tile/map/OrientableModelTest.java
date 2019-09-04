@@ -18,26 +18,57 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 
 /**
  * Test {@link OrientableModel}.
  */
 public final class OrientableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(OrientableModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
     private final Services services = new Services();
-    private final Featurable featurable = new FeaturableModel();
+    private final Setup setup = new Setup(config);
+    private final Featurable featurable = new FeaturableModel(services, setup);
     private OrientableModel orientable;
 
     /**
@@ -47,9 +78,9 @@ public final class OrientableModelTest
     public void prepare()
     {
         services.add(new MapTileGame());
-        featurable.addFeature(new TransformableModel());
+        featurable.addFeature(new TransformableModel(services, setup));
 
-        orientable = new OrientableModel(services);
+        orientable = new OrientableModel(services, setup);
         orientable.prepare(featurable);
     }
 
@@ -60,15 +91,6 @@ public final class OrientableModelTest
     public void clean()
     {
         featurable.getFeature(Identifiable.class).notifyDestroyed();
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new OrientableModel(null), "Unexpected null argument !");
     }
 
     /**

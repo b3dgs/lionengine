@@ -27,6 +27,17 @@ final class Updater extends FeaturableModel implements Updatable
     private boolean updated;
 
     /**
+     * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    public Updater(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
+    /**
      * Check if has been updated.
      * 
      * @return <code>true</code> if updated, <code>false</code> else.

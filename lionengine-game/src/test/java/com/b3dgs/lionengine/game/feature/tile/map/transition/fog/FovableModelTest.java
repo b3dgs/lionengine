@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -32,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
@@ -51,7 +50,7 @@ public final class FovableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilTransformable.createMedia(FovableModelTest.class);
     }
 
     /**
@@ -64,14 +63,7 @@ public final class FovableModelTest
         Medias.setResourcesDirectory(null);
     }
 
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new FovableModel(null, null), "Unexpected null argument !");
-    }
+    private final Services services = new Services();
 
     /**
      * Test the fovable model.
@@ -79,15 +71,14 @@ public final class FovableModelTest
     @Test
     public void testFovable()
     {
-        final Services services = new Services();
         final MapTile map = UtilMap.createMap(7);
         services.add(map);
 
         final Setup setup = new Setup(config);
         final Fovable fovable = new FovableModel(services, setup);
 
-        final Featurable featurable = new FeaturableModel();
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);
         fovable.prepare(featurable);

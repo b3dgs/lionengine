@@ -56,7 +56,7 @@ class MarioRenderer extends FeatureModel implements Displayable
      */
     public MarioRenderer(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         viewer = services.get(Viewer.class);
 

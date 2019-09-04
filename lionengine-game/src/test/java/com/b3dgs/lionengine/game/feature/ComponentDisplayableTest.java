@@ -25,8 +25,12 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.FeatureProvider;
 
@@ -35,31 +39,31 @@ import com.b3dgs.lionengine.game.FeatureProvider;
  */
 public final class ComponentDisplayableTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
-     * Create a test object.
-     * 
-     * @param component The component reference.
-     * @param services The services reference.
-     * @param last The last rendered element.
-     * @return The created object.
+     * Prepare test.
      */
-    private static Layerable createObject(ComponentDisplayable component, Services services, AtomicInteger last)
+    @BeforeAll
+    public static void beforeTests()
     {
-        final FeaturableModel object = new FeaturableModel();
-        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
-        layerable.prepare(object);
-        component.notifyHandlableAdded(object);
-
-        object.addFeature(new DisplayableModel(g ->
-        {
-            if (object.getFeature(Identifiable.class).getId() != null)
-            {
-                last.set(object.getFeature(Identifiable.class).getId().intValue());
-            }
-        }));
-
-        return layerable;
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(ComponentDisplayableTest.class);
     }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the component.
@@ -68,15 +72,14 @@ public final class ComponentDisplayableTest
     public void testComponentLayer()
     {
         final ComponentDisplayable component = new ComponentDisplayable();
-        final Services services = new Services();
         services.add(component);
 
         final AtomicInteger last = new AtomicInteger();
 
-        final Layerable object1 = createObject(component, services, last);
-        final Layerable object2 = createObject(component, services, last);
-        final Layerable object3 = createObject(component, services, last);
-        final Layerable object4 = createObject(component, services, last);
+        final Layerable object1 = createObject(component, last);
+        final Layerable object2 = createObject(component, last);
+        final Layerable object3 = createObject(component, last);
+        final Layerable object4 = createObject(component, last);
 
         object1.setLayer(Integer.valueOf(4), Integer.valueOf(4));
         object2.setLayer(Integer.valueOf(6), Integer.valueOf(6));
@@ -113,12 +116,11 @@ public final class ComponentDisplayableTest
     public void testComponentLayerDefault()
     {
         final ComponentDisplayable component = new ComponentDisplayable();
-        final Services services = new Services();
         services.add(component);
 
         final AtomicBoolean auto = new AtomicBoolean();
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         featurable.addFeature(new DisplayableModel(g -> auto.set(true)));
         component.notifyHandlableAdded(featurable);
         component.render(null, null);
@@ -134,8 +136,8 @@ public final class ComponentDisplayableTest
     {
         final ComponentDisplayable component = new ComponentDisplayable();
 
-        final Featurable featurable = new FeaturableModel();
-        final Featurable featurable2 = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final Featurable featurable2 = new FeaturableModel(services, setup);
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableAdded(featurable2);
         component.notifyLayerChanged(featurable, null, null, null, null);
@@ -188,12 +190,12 @@ public final class ComponentDisplayableTest
             }
         };
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         featurable.addFeature(new RefreshableModel(extrp ->
         {
             // Mock
         }));
-        final Layerable layerable = featurable.addFeatureAndGet(new LayerableModel());
+        final Layerable layerable = featurable.addFeatureAndGet(new LayerableModel(services, setup));
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableRemoved(featurable);
 
@@ -208,9 +210,8 @@ public final class ComponentDisplayableTest
     @Test
     public void testWithHandler()
     {
-        final Services services = new Services();
-        final FeaturableModel object = new FeaturableModel();
-        final Layerable layerable = new LayerableModel(1);
+        final FeaturableModel object = new FeaturableModel(services, setup);
+        final Layerable layerable = new LayerableModel(services, setup);
         object.addFeature(layerable);
         object.addFeature(new DisplayableModel(g ->
         {
@@ -221,6 +222,31 @@ public final class ComponentDisplayableTest
         handler.add(object);
         handler.update(1.0);
 
-        assertEquals(1, layerable.getLayerDisplay().intValue());
+        assertEquals(0, layerable.getLayerDisplay().intValue());
+    }
+
+    /**
+     * Create a test object.
+     * 
+     * @param component The component reference.
+     * @param last The last rendered element.
+     * @return The created object.
+     */
+    private Layerable createObject(ComponentDisplayable component, AtomicInteger last)
+    {
+        final FeaturableModel object = new FeaturableModel(services, setup);
+        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel(services, setup));
+        layerable.prepare(object);
+        component.notifyHandlableAdded(object);
+
+        object.addFeature(new DisplayableModel(g ->
+        {
+            if (object.getFeature(Identifiable.class).getId() != null)
+            {
+                last.set(object.getFeature(Identifiable.class).getId().intValue());
+            }
+        }));
+
+        return layerable;
     }
 }

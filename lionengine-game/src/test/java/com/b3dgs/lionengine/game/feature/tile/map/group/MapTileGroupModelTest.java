@@ -36,6 +36,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
@@ -49,6 +52,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
  */
 public final class MapTileGroupModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -56,6 +62,7 @@ public final class MapTileGroupModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(MapTileGroupModelTest.class);
     }
 
     /**
@@ -64,11 +71,14 @@ public final class MapTileGroupModelTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
     private final MapTileGroup mapGroup = new MapTileGroupModel();
-    private final Featurable featurable = new FeaturableModel();
+    private final Featurable featurable = new FeaturableModel(services, setup);
     private final Tile tile = new TileGame(0, 0, 0, 1, 1);
 
     /**

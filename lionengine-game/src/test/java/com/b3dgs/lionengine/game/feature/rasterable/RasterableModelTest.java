@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.rasterable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -75,15 +74,6 @@ public final class RasterableModelTest
     }
 
     /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new RasterableModel(null, null), "Unexpected null argument !");
-    }
-
-    /**
      * Test the model.
      */
     @Test
@@ -94,10 +84,10 @@ public final class RasterableModelTest
         final Media raster = Medias.create(RASTER_XML);
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
 
-        final Featurable featurable = new FeaturableModel();
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
-        featurable.addFeature(new AnimatableModel());
-        featurable.addFeature(new MirrorableModel());
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
+        featurable.addFeature(new AnimatableModel(services, setup));
+        featurable.addFeature(new MirrorableModel(services, setup));
 
         final Rasterable rasterable = new RasterableModel(services, setup);
         rasterable.setFrameOffsets(1, 2);

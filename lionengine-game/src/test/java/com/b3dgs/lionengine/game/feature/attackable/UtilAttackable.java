@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 
@@ -38,13 +39,15 @@ final class UtilAttackable
      * Create the featurable.
      * 
      * @param featurable The featurable to prepare.
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public static void prepare(Featurable featurable)
+    public static void prepare(Featurable featurable, Services services, Setup setup)
     {
         final Animator animator = new AnimatorModel();
         animator.play(new Animation("test", 1, 1, 1.0, false, false));
-        featurable.addFeature(new AnimatableModel(animator));
-        featurable.addFeature(new TransformableModel());
+        featurable.addFeature(new AnimatableModel(services, setup, animator));
+        featurable.addFeature(new TransformableModel(services, setup));
     }
 
     /**
@@ -52,11 +55,12 @@ final class UtilAttackable
      * 
      * @param object The object.
      * @param services The services.
+     * @param setup The setup reference.
      * @return The attacker.
      */
-    public static AttackerModel createAttacker(Featurable object, Services services)
+    public static AttackerModel createAttacker(Featurable object, Services services, Setup setup)
     {
-        final AttackerModel attacker = new AttackerModel();
+        final AttackerModel attacker = new AttackerModel(services, setup);
         attacker.recycle();
         attacker.setAttackDamages(new Range(1, 2));
         attacker.setAttackDistance(new Range(1, 2));

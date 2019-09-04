@@ -43,26 +43,26 @@ public final class HandlablesImplTest
      * Prepare test.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(HandlablesImplTest.class);
     }
 
     /**
      * Clean up test.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
-    /** Handlables test. */
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
     private final HandlablesImpl featurables = new HandlablesImpl();
-    /** Object test. */
-    private final FeaturableModel object = new FeaturableModel();
+    private final FeaturableModel object = new FeaturableModel(services, setup);
 
     /**
      * Clean test.
@@ -100,7 +100,7 @@ public final class HandlablesImplTest
     @Test
     public void testFeature()
     {
-        final Mirrorable mirrorable = new MirrorableModel();
+        final Mirrorable mirrorable = new MirrorableModel(services, setup);
         object.addFeatureAndGet(mirrorable);
 
         featurables.remove(object, object.getFeature(Identifiable.class).getId());
@@ -127,10 +127,9 @@ public final class HandlablesImplTest
     @Test
     public void testFeatureComplex()
     {
-        final Setup setup = new Setup(config);
-        final Featurable complex = new ObjectComplex();
-        complex.addFeature(new MirrorableModel());
-        complex.addFeature(new TransformableModel(setup));
+        final Featurable complex = new ObjectComplex(services, setup);
+        complex.addFeature(new MirrorableModel(services, setup));
+        complex.addFeature(new TransformableModel(services, setup));
         featurables.add(complex);
 
         int i = 0;
@@ -148,8 +147,8 @@ public final class HandlablesImplTest
     @Test
     public void testFeatureInheritance()
     {
-        final Featurable inheritance = new ObjectComplex();
-        inheritance.addFeature(new FeatureLevel2());
+        final Featurable inheritance = new ObjectComplex(services, setup);
+        inheritance.addFeature(new FeatureLevel2(services, setup));
         featurables.add(inheritance);
 
         int i = 0;
@@ -167,6 +166,11 @@ public final class HandlablesImplTest
     @FeatureInterface
     private static final class ObjectComplex extends FeaturableModel implements Updatable
     {
+        private ObjectComplex(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         @Override
         public void update(double extrp)
         {
@@ -180,6 +184,11 @@ public final class HandlablesImplTest
     @FeatureInterface
     private static class FeatureLevel1 extends FeatureModel implements Refreshable
     {
+        private FeatureLevel1(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         @Override
         public void update(double extrp)
         {
@@ -193,6 +202,9 @@ public final class HandlablesImplTest
     @FeatureInterface
     private static final class FeatureLevel2 extends FeatureLevel1
     {
-        // Mock
+        private FeatureLevel2(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
     }
 }

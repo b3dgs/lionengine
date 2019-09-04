@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.collidable.framed;
 
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -69,7 +68,7 @@ public final class CollidableFramedModelTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(CollidableFramedModelTest.class);
 
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 0, 2, 2, false)));
@@ -104,14 +103,14 @@ public final class CollidableFramedModelTest
     public static FeaturableModel createFeaturable(Media config, Services services)
     {
         final Setup setup = new Setup(config);
-        final FeaturableModel featurable = new FeaturableModel();
+        final FeaturableModel featurable = new FeaturableModel(services, setup);
 
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.setLocation(1.0, 2.0);
 
-        featurable.addFeature(new AnimatableModel());
+        featurable.addFeature(new AnimatableModel(services, setup));
         featurable.addFeatureAndGet(new CollidableModel(services, setup));
-        featurable.addFeature(new CollidableFramedModel(setup));
+        featurable.addFeature(new CollidableFramedModel(services, setup));
 
         return featurable;
     }
@@ -148,15 +147,6 @@ public final class CollidableFramedModelTest
     {
         collidable1.getFeature(Identifiable.class).destroy();
         collidable2.getFeature(Identifiable.class).destroy();
-    }
-
-    /**
-     * Test constructor with null configurer.
-     */
-    @Test
-    public void testConstructorNullConfigurer()
-    {
-        assertThrows(() -> new CollidableFramedModel(null), "Unexpected null argument !");
     }
 
     /**

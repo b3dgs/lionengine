@@ -24,18 +24,48 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.AnimatorListener;
 import com.b3dgs.lionengine.AnimatorModel;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 
 /**
  * Test {@link AnimatableModel}.
  */
 public final class AnimatableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(AnimatableModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+
     /**
      * Check the animator state.
      * 
@@ -58,7 +88,7 @@ public final class AnimatableModelTest
     @Test
     public void testConstructorNullAnimator()
     {
-        assertThrows(() -> new AnimatableModel(null), "Unexpected null argument !");
+        assertThrows(() -> new AnimatableModel(services, setup, null), "Unexpected null argument !");
     }
 
     /**
@@ -70,7 +100,7 @@ public final class AnimatableModelTest
         final int first = 2;
         final int last = 4;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
-        final Animatable animatable = new AnimatableModel();
+        final Animatable animatable = new AnimatableModel(services, setup);
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);
@@ -99,7 +129,7 @@ public final class AnimatableModelTest
         final int first = 2;
         final int last = 4;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, 1.0, false, false);
-        final Animatable animatable = new AnimatableModel();
+        final Animatable animatable = new AnimatableModel(services, setup);
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);
@@ -120,7 +150,7 @@ public final class AnimatableModelTest
         final int last = 5;
         final double speed = 2.0;
         final Animation animation = new Animation(Animation.DEFAULT_NAME, first, last, speed, false, false);
-        final Animatable animatable = new AnimatableModel(new AnimatorModel());
+        final Animatable animatable = new AnimatableModel(services, setup, new AnimatorModel());
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animatable.play(animation);
@@ -169,7 +199,7 @@ public final class AnimatableModelTest
             }
         };
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
-        final Animatable animatable = new AnimatableModel(new AnimatorModel());
+        final Animatable animatable = new AnimatableModel(services, setup, new AnimatorModel());
         animatable.addListener(listener);
 
         assertNull(played.get());

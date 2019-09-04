@@ -19,14 +19,17 @@ package com.b3dgs.lionengine.game.feature.selector;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.MouseMock;
@@ -35,7 +38,9 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorModel;
@@ -48,7 +53,31 @@ import com.b3dgs.lionengine.geom.Geom;
  */
 public final class SelectorRefresherTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(SelectorRefresherTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
     private final Services services = new Services();
+    private final Setup setup = new Setup(config);
     private final Cursor cursor = services.create(Cursor.class);
     private final SelectorModel model = new SelectorModel();
     private final MouseMock mouse = new MouseMock();
@@ -82,24 +111,14 @@ public final class SelectorRefresherTest
         services.add(new Camera());
         services.add(new ViewerMock());
 
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new LayerableModel(1));
-        featurable.addFeature(new TransformableModel());
-        featurable.addFeature(new CollidableModel(services));
+        final Featurable featurable = new FeaturableModel(services, setup);
+        featurable.addFeature(new LayerableModel(services, setup));
+        featurable.addFeature(new TransformableModel(services, setup));
+        featurable.addFeature(new CollidableModel(services, setup));
 
         refresher = new SelectorRefresher(services, model);
         refresher.addListener(listener);
         refresher.prepare(featurable);
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new SelectorRefresher(null, null), "Unexpected null argument !");
-        assertThrows(() -> new SelectorRefresher(new Services(), null), "Unexpected null argument !");
     }
 
     /**

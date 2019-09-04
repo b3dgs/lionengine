@@ -72,11 +72,11 @@ public class SceneRasterable extends Sequence
     private void add(SetupSurfaceRastered setup, int offsetX)
     {
         final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 4, 4);
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new MirrorableModel());
-        featurable.addFeature(new AnimatableModel(surface));
+        final Featurable featurable = new FeaturableModel(services, setup);
+        featurable.addFeature(new MirrorableModel(services, setup));
+        featurable.addFeature(new AnimatableModel(services, setup, surface));
 
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel());
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
         final Rasterable rasterable = new RasterableModel(services, setup);
         rasterable.setOrigin(Origin.MIDDLE);
         rasterable.setFrameOffsets(1, 2);

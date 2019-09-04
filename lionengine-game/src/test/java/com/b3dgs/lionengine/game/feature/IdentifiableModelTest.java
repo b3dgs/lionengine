@@ -32,8 +32,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
 
 /**
@@ -41,6 +45,32 @@ import com.b3dgs.lionengine.UtilReflection;
  */
 public final class IdentifiableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createConfig(IdentifiableModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+
     /**
      * Test the id.
      * 
@@ -59,7 +89,7 @@ public final class IdentifiableModelTest
         final Collection<Identifiable> identifiables = new ArrayList<>();
         for (int i = 0; i < 10; i++)
         {
-            final Featurable featurable = new FeaturableModel();
+            final Featurable featurable = new FeaturableModel(services, setup);
             final Identifiable identifiable = featurable.getFeature(Identifiable.class);
             identifiable.prepare(featurable);
             identifiables.add(identifiable);
@@ -75,7 +105,7 @@ public final class IdentifiableModelTest
             assertNull(identifiable.getId());
         }
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         final IdentifiableModel identifiable = featurable.getFeature(IdentifiableModel.class);
         identifiable.prepare(featurable);
 
@@ -136,7 +166,7 @@ public final class IdentifiableModelTest
         final Identifiable identifiable = new IdentifiableModel();
         final AtomicBoolean destroyed = new AtomicBoolean();
         final IdentifiableListener listener = id -> destroyed.set(true);
-        identifiable.prepare(new FeaturableModel());
+        identifiable.prepare(new FeaturableModel(services, setup));
         identifiable.addListener(listener);
         identifiable.destroy();
         identifiable.removeListener(listener);

@@ -21,8 +21,11 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
 
 /**
@@ -30,18 +33,27 @@ import com.b3dgs.lionengine.game.feature.Services;
  */
 public final class MapTileAppenderTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+    }
+
     private final Services services = new Services();
     private final MapTileGame map = services.add(new MapTileGame());
     private final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel(services));
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTileAppenderModel(null), "Unexpected null argument !");
-    }
 
     /**
      * Test the map append when map is not created.

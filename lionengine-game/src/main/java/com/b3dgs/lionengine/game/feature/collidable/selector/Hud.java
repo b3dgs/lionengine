@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Medias;
@@ -137,24 +138,22 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
     /** Last action. */
     private final List<Selectable> last = new ArrayList<>();
     /** Handler reference. */
-    private final Handler handler;
+    private final Handler handler = services.get(Handler.class);
     /** Factory reference. */
-    private final Factory factory;
+    private final Factory factory = services.get(Factory.class);
     /** Cancel shortcut provider. */
     private BooleanSupplier cancelShortcut = () -> false;
 
     /**
      * Create the HUD.
      * 
-     * @param services The services reference.
-     * @param setup The setup reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public Hud(Services services, Setup setup)
     {
         super(services, setup);
-
-        handler = services.get(Handler.class);
-        factory = services.get(Factory.class);
 
         selector = services.add(new Selector(services));
         selector.addListener(new SelectorListener()

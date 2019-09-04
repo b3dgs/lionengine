@@ -22,7 +22,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Configurer;
@@ -31,6 +30,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -43,14 +43,14 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private final ListenableModel<TileCollidableListener> listenable = new ListenableModel<>();
     /** Computed results. */
     private final Map<String, CollisionResult> results = new HashMap<>();
-    /** Transformable owning this model. */
-    private Transformable transformable;
-    /** The collisions used. */
-    private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
-    private final MapTileCollision map;
+    private final MapTileCollision map = services.get(MapTile.class).getFeature(MapTileCollision.class);
     /** Enabled flags. */
     private final Map<Axis, Boolean> enabledAxis = new EnumMap<>(Axis.class);
+    /** The collisions used. */
+    private final Collection<CollisionCategory> categories;
+    /** Transformable owning this model. */
+    private Transformable transformable;
     /** Collision enabled. */
     private boolean enabled;
 
@@ -76,18 +76,15 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
      * {@link #addListener(TileCollidableListener)} on it.
      * </p>
      * 
-     * @param services The services reference.
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public TileCollidableModel(Services services, Configurer configurer)
+    public TileCollidableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(services);
-
-        map = services.get(MapTile.class).getFeature(MapTileCollision.class);
-        categories = CollisionCategoryConfig.imports(configurer, map);
+        categories = CollisionCategoryConfig.imports(setup, map);
     }
 
     /**

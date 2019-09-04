@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableAbstract;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
@@ -56,7 +56,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * Or import a map from a level rip with {@link #create(Media, Media)}.
  * </p>
  */
-public class MapTileGame extends FeaturableModel implements MapTile
+public class MapTileGame extends FeaturableAbstract implements MapTile
 {
     /** Inconsistent tile size. */
     private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
@@ -440,12 +440,6 @@ public class MapTileGame extends FeaturableModel implements MapTile
     }
 
     @Override
-    public Media getMedia()
-    {
-        return sheetsConfig;
-    }
-
-    @Override
     public SpriteTiled getSheet(int sheetId)
     {
         return sheets[sheetId];
@@ -535,5 +529,15 @@ public class MapTileGame extends FeaturableModel implements MapTile
     public int getHeight()
     {
         return getInTileHeight() * getTileHeight();
+    }
+
+    /*
+     * Featurable
+     */
+
+    @Override
+    public Media getMedia()
+    {
+        return sheetsConfig;
     }
 }

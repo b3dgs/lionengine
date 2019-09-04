@@ -20,8 +20,12 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
 
 /**
@@ -29,13 +33,39 @@ import com.b3dgs.lionengine.Mirror;
  */
 public final class MirrorableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createConfig(MirrorableModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+
     /**
      * Test the mirror.
      */
     @Test
     public void testMirror()
     {
-        final MirrorableModel mirrorable = new MirrorableModel();
+        final MirrorableModel mirrorable = new MirrorableModel(services, setup);
 
         assertEquals(Mirror.NONE, mirrorable.getMirror());
 

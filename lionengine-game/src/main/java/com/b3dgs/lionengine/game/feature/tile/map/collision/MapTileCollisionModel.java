@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -31,30 +31,30 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 
 /**
  * Map tile collision model implementation.
- * <p>
- * The {@link Services} must provide:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * <li>{@link MapTileGroup}</li>
- * </ul>
  */
-public class MapTileCollisionModel extends FeatureModel implements MapTileCollision
+public class MapTileCollisionModel extends FeatureAbstract implements MapTileCollision
 {
-    /** Map collision loader. */
-    private final MapTileCollisionLoader loader;
-    /** Map collision computer. */
-    private final MapTileCollisionComputer computer;
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
     private final MapTileGroup mapGroup;
+    /** Map collision loader. */
+    private final MapTileCollisionLoader loader;
+    /** Map collision computer. */
+    private final MapTileCollisionComputer computer;
 
     /**
      * Create feature.
+     * <p>
+     * The {@link Services} must provide:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * <li>{@link MapTileGroup}</li>
+     * </ul>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @throws LionEngineException If invalid arguments.
      */
     public MapTileCollisionModel(Services services)
     {

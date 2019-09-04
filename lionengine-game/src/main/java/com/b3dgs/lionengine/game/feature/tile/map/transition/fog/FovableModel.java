@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -24,6 +23,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 public class FovableModel extends FeatureModel implements Fovable
 {
     /** Map tile reference. */
-    private final MapTile map;
+    private final MapTile map = services.get(MapTile.class);
     /** Transformable model. */
     private Transformable transformable;
     /** Field of view in tile value. */
@@ -58,17 +58,14 @@ public class FovableModel extends FeatureModel implements Fovable
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public FovableModel(Services services, Configurer configurer)
+    public FovableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
-        fov = FovableConfig.imports(configurer);
+        fov = FovableConfig.imports(setup);
     }
 
     /*

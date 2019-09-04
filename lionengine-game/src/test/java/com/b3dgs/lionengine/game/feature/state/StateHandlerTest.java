@@ -31,24 +31,32 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 
 /**
  * Test {@link StateHandler}.
  */
 public final class StateHandlerTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
     @BeforeAll
     public static void beforeTests()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(StateHandlerTest.class);
+        config = UtilTransformable.createMedia(StateHandlerTest.class);
     }
 
     /**
@@ -57,8 +65,13 @@ public final class StateHandlerTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
     }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Prepare test.
@@ -70,23 +83,12 @@ public final class StateHandlerTest
     }
 
     /**
-     * Test constructor with null configurer.
-     */
-    @Test
-    public void testConstructorNullConfigurer()
-    {
-        assertThrows(() -> new StateHandler(null, null), "Unexpected null argument !");
-        assertThrows(() -> new StateHandler(new Configurer(Medias.create("object.xml")), null),
-                     "Unexpected null argument !");
-    }
-
-    /**
      * Test the state handling.
      */
     @Test
     public void testHandler()
     {
-        final StateHandler handler = new StateHandler();
+        final StateHandler handler = new StateHandler(services, setup);
 
         assertFalse(handler.isState(StateBase.class));
         assertFalse(StateBase.entered);
@@ -152,9 +154,10 @@ public final class StateHandlerTest
     @Test
     public void testHandlerConverter()
     {
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml")),
+        handler = featurable.addFeatureAndGet(new StateHandler(services,
+                                                               new Setup(Medias.create("object.xml")),
                                                                state -> state.getName()));
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
@@ -168,7 +171,7 @@ public final class StateHandlerTest
     @Test
     public void testClear()
     {
-        final StateHandler handler = new StateHandler();
+        final StateHandler handler = new StateHandler(services, setup);
         handler.changeState(StateClear.class);
         handler.update(1.0);
 
@@ -185,9 +188,9 @@ public final class StateHandlerTest
     @Test
     public void testWithConfig()
     {
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml"))));
+        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("object.xml"))));
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
         handler.postUpdate();
@@ -217,7 +220,7 @@ public final class StateHandlerTest
     @Test
     public void testNullArgument()
     {
-        final StateHandler handler = new StateHandler();
+        final StateHandler handler = new StateHandler(services, setup);
 
         assertThrows(() -> handler.changeState(null), "Unexpected null argument !");
     }
@@ -228,7 +231,7 @@ public final class StateHandlerTest
     @Test
     public void testUnknownState()
     {
-        final StateHandler handler = new StateHandler();
+        final StateHandler handler = new StateHandler(services, setup);
         handler.changeState(State.class);
 
         assertCause(() -> handler.postUpdate(), NoSuchMethodException.class);
@@ -243,7 +246,7 @@ public final class StateHandlerTest
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
 
-        final StateHandler handler = new StateHandler();
+        final StateHandler handler = new StateHandler(services, setup);
         handler.addListener((o, n) ->
         {
             old.set(o);
@@ -289,9 +292,9 @@ public final class StateHandlerTest
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(new Configurer(Medias.create("object.xml"))));
+        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("object.xml"))));
         handler.prepare(featurable);
         final StateTransitionListener listener = (o, n) ->
         {

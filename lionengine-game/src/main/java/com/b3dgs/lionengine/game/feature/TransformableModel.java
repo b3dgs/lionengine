@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Configurer;
@@ -45,30 +44,21 @@ public class TransformableModel extends FeatureModel implements Transformable, R
 
     /**
      * Create feature.
-     */
-    public TransformableModel()
-    {
-        super();
-    }
-
-    /**
-     * Create feature.
      * <p>
      * The {@link Configurer} can provide a valid {@link SizeConfig}.
      * </p>
      * 
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public TransformableModel(Configurer configurer)
+    public TransformableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(configurer);
-
-        if (configurer.hasNode(SizeConfig.NODE_SIZE))
+        if (setup.hasNode(SizeConfig.NODE_SIZE))
         {
-            final SizeConfig config = SizeConfig.imports(configurer);
+            final SizeConfig config = SizeConfig.imports(setup);
             width = config.getWidth();
             height = config.getHeight();
             oldWidth = width;

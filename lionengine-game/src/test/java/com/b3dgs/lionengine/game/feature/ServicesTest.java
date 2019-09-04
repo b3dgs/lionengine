@@ -23,12 +23,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-
 /**
  * Test {@link Services}.
  */
@@ -41,16 +35,10 @@ public final class ServicesTest
     public void testCreateGet()
     {
         final Services services = new Services();
-        final Camera camera = services.create(Camera.class);
         final Factory factory = services.create(Factory.class);
-        final MapTile map = services.create(MapTileGame.class);
-        final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
 
         assertEquals(services, services.get(Services.class));
-        assertEquals(camera, services.get(Viewer.class));
         assertEquals(factory, services.get(Factory.class));
-        assertEquals(map, services.get(MapTile.class));
-        assertEquals(mapGroup, map.getFeature(MapTileGroup.class));
     }
 
     /**
@@ -60,9 +48,9 @@ public final class ServicesTest
     public void testAddGet()
     {
         final Services services = new Services();
-        final Camera camera = services.add(new Camera());
+        final Factory factory = services.add(new Factory(services));
 
-        assertEquals(camera, services.get(Camera.class));
+        assertEquals(factory, services.get(Factory.class));
     }
 
     /**
@@ -116,10 +104,10 @@ public final class ServicesTest
     public void testOptional()
     {
         final Services services = new Services();
-        final Camera camera = services.create(Camera.class);
+        final Factory factory = services.add(new Factory(services));
 
         assertEquals(services, services.getOptional(Services.class).get());
-        assertEquals(camera, services.getOptional(Camera.class).get());
+        assertEquals(factory, services.getOptional(Factory.class).get());
         assertFalse(services.getOptional(String.class).isPresent());
     }
 

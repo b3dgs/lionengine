@@ -19,12 +19,25 @@ package com.b3dgs.lionengine.game.feature.collidable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Object self collision listener mock.
  */
 final class ObjectSelf extends FeaturableModel implements CollidableListener
 {
+    /**
+     * Create self.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    ObjectSelf(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     /** Called flag. */
     final AtomicReference<Collidable> called = new AtomicReference<>();
 

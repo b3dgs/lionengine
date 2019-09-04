@@ -24,7 +24,7 @@ import java.util.TreeMap;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 /**
  * Rastered map tile implementation.
  */
-public class MapTileRasteredModel extends FeatureModel implements MapTileRastered
+public class MapTileRasteredModel extends FeatureAbstract implements MapTileRastered
 {
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();

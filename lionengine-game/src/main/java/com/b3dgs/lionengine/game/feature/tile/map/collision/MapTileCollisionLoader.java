@@ -99,13 +99,12 @@ final class MapTileCollisionLoader
 
     /**
      * Load map collision with default files.
+     * 
      * @param formulasConfig The collision formulas descriptor.
      * @param groupsConfig The tile collision groups descriptor.
-     * 
      * @throws LionEngineException If error when reading collisions.
      */
-    public void loadCollisions(CollisionFormulaConfig formulasConfig,
-                               CollisionGroupConfig groupsConfig)
+    public void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig)
     {
         loadCollisionFormulas(formulasConfig);
         loadCollisionGroups(groupsConfig);

@@ -110,6 +110,8 @@ public final class MinimapTest
         assertEquals(234.0, minimap.getY());
 
         minimap.dispose();
+
+        assertTrue(config.getFile().delete());
     }
 
     /**

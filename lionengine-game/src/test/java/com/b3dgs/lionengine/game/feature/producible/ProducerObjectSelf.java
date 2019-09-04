@@ -21,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Object producer self listener test.
@@ -34,10 +36,13 @@ final class ProducerObjectSelf extends FeaturableModel implements ProducerChecke
 
     /**
      * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public ProducerObjectSelf()
+    public ProducerObjectSelf(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     @Override

@@ -29,16 +29,16 @@ public final class UtilTransformable
     /**
      * Create the object media.
      * 
-     * @param clazz The class type.
+     * @param caller The caller class.
      * @return The object media.
      */
-    public static Media createMedia(Class<?> clazz)
+    public static Media createMedia(Class<?> caller)
     {
         final Xml root = new Xml("test");
-        root.add(FeaturableConfig.exportClass(clazz.getName()));
+        root.add(FeaturableConfig.exportClass(Featurable.class.getName()));
         root.add(SizeConfig.exports(new SizeConfig(16, 32)));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("transformable_" + caller.getSimpleName() + Factory.FILE_DATA_DOT_EXTENSION);
         root.save(media);
 
         return media;

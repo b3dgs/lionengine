@@ -20,12 +20,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Extractor test with self listener.
  */
 final class ObjectExtractorSelf extends FeaturableModel implements ExtractorChecker, ExtractorListener
 {
+    /**
+     * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    public ObjectExtractorSelf(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     /** Flag. */
     final AtomicInteger flag = new AtomicInteger();
 

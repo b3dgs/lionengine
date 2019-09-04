@@ -17,15 +17,17 @@
 package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -41,6 +43,24 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
  */
 public final class MapTileViewerModelTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+    }
+
     private final Services services = new Services();
     private final Graphic g = new GraphicMock();
     private ViewerMock viewer;
@@ -60,15 +80,6 @@ public final class MapTileViewerModelTest
         map = services.add(new MapTileGame());
         mapViewer = new MapTileViewerModel(services);
         mapViewer.prepare(map);
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTileViewerModel(null), "Unexpected null argument !");
     }
 
     /**

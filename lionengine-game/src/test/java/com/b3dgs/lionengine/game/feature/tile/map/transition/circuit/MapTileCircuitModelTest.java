@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.ROAD;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
@@ -85,15 +84,6 @@ public final class MapTileCircuitModelTest
         UtilMap.fill(map, tileNumber);
 
         return map;
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTileCircuitModel(null), "Unexpected null argument !");
     }
 
     /**

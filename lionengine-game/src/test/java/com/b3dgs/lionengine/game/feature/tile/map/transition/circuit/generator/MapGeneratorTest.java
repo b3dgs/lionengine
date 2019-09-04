@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
 
@@ -28,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -51,34 +51,36 @@ import com.b3dgs.lionengine.graphic.Graphics;
  */
 public final class MapGeneratorTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Medias.setLoadFromJar(MapGeneratorTest.class);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+        Medias.setLoadFromJar(null);
+        Graphics.setFactoryGraphic(null);
+    }
+
     private final Services services = new Services();
-    private final Camera camera = services.create(Camera.class);
-    private final MapTile map = services.create(MapTileGame.class);
+    private final Camera camera = services.add(new Camera());
+    private final MapTile map = services.add(new MapTileGame());
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
     private final MapTileAppender append = map.addFeatureAndGet(new MapTileAppenderModel(services));
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
     private final Graphic g = new GraphicMock();
-
-    /**
-     * Prepare tests.
-     */
-    @BeforeAll
-    public static void beforeTests()
-    {
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        Medias.setLoadFromJar(MapGeneratorTest.class);
-    }
-
-    /**
-     * Clean up tests.
-     */
-    @AfterAll
-    public static void afterTests()
-    {
-        Graphics.setFactoryGraphic(null);
-        Medias.setLoadFromJar(null);
-    }
 
     /**
      * Prepare test.
@@ -99,8 +101,6 @@ public final class MapGeneratorTest
         map.addFeatureAndGet(new MapTileTransitionModel(services)).loadTransitions(Medias.create("transitions.xml"));
         map.addFeatureAndGet(new MapTileCircuitModel(services)).loadCircuits(Medias.create("circuits.xml"));
 
-        UtilFile.deleteFile(media.getFile());
-
         camera.setView(0, 0, 640, 480, 480);
         camera.setLimits(map);
 
@@ -113,6 +113,8 @@ public final class MapGeneratorTest
                   .add(new PrefMapRegion(29, new TileArea(12, 12, 56, 42), 2, 250))
                   .add(new PrefMapRegion(12, new TileArea(24, 24, 40, 40), 2, 80))
                   .add(new PrefMapRegion(0, new TileArea(4, 4, 60, 40), 1, 100));
+
+        assertTrue(media.getFile().delete());
     }
 
     /**
@@ -132,6 +134,7 @@ public final class MapGeneratorTest
         assertEquals(16, map.getTileHeight());
         assertEquals(64, map.getInTileWidth());
         assertEquals(48, map.getInTileHeight());
+
         for (int tx = 0; tx < map.getInTileWidth(); tx++)
         {
             for (int ty = 0; ty < map.getInTileHeight(); ty++)

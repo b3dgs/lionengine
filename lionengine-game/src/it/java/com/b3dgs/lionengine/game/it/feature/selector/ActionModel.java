@@ -64,20 +64,20 @@ public class ActionModel extends FeaturableModel
      */
     public ActionModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         cursor = services.get(Cursor.class);
         handler = services.get(Handler.class);
         selector = services.get(Selector.class);
 
-        addFeature(new LayerableModel(4, 6));
+        addFeatureAndGet(new LayerableModel(4, 6));
 
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setClickAction(MouseAwt.LEFT);
 
         state = new AtomicReference<>(actionable);
 
-        assignable = addFeatureAndGet(new AssignableModel(services));
+        assignable = addFeatureAndGet(new AssignableModel(services, setup));
         assignable.setClickAssign(MouseAwt.LEFT);
 
         actionable.setAction(() ->

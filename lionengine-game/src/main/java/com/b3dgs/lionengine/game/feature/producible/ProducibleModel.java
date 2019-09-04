@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.producible;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
@@ -27,6 +26,8 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Represents a producible object.
@@ -58,19 +59,18 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
      * {@link #addListener(ProducibleListener)} on it.
      * </p>
      * 
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public ProducibleModel(Configurer configurer)
+    public ProducibleModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(configurer);
-
-        if (configurer.hasNode(ProducibleConfig.NODE_PRODUCIBLE))
+        if (setup.hasNode(ProducibleConfig.NODE_PRODUCIBLE))
         {
-            final ProducibleConfig configProducible = ProducibleConfig.imports(configurer);
-            media = configurer.getMedia();
+            final ProducibleConfig configProducible = ProducibleConfig.imports(setup);
+            media = setup.getMedia();
             steps = configProducible.getSteps();
             width = configProducible.getWidth();
             height = configProducible.getHeight();

@@ -17,25 +17,57 @@
 package com.b3dgs.lionengine.game.feature.body;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.UtilSetup;
 
 /**
  * Test {@link BodyModel}.
  */
 public final class BodyTest
 {
-    private final Body body = new BodyModel();
-    private final FeaturableModel object = new FeaturableModel();
-    private final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createConfig(BodyTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+    private final Body body = new BodyModel(services, setup);
+    private final FeaturableModel object = new FeaturableModel(services, setup);
+    private final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
 
     /**
      * Clean test.
@@ -44,15 +76,6 @@ public final class BodyTest
     public void clean()
     {
         object.getFeature(Identifiable.class).notifyDestroyed();
-    }
-
-    /**
-     * Test constructor with null configurer.
-     */
-    @Test
-    public void testConstructorNullConfigurer()
-    {
-        assertThrows(() -> new TransformableModel(null), "Unexpected null argument !");
     }
 
     /**

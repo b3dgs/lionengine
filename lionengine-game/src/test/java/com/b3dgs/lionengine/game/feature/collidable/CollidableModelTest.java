@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
@@ -67,7 +66,7 @@ public final class CollidableModelTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(CollidableModelTest.class);
     }
 
     /**
@@ -91,9 +90,9 @@ public final class CollidableModelTest
     public static FeaturableModel createFeaturable(Media config, Services services)
     {
         final Setup setup = new Setup(config);
-        final FeaturableModel featurable = new FeaturableModel();
+        final FeaturableModel featurable = new FeaturableModel(services, setup);
 
-        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.setLocation(1.0, 2.0);
         transformable.setSize(2, 2);
 
@@ -103,6 +102,7 @@ public final class CollidableModelTest
     }
 
     private final Services services = new Services();
+    private final Setup setup = new Setup(config);
     @SuppressWarnings("unused") private final Camera camera = services.add(new Camera());
 
     private final Featurable featurable1 = createFeaturable(config, services);
@@ -135,16 +135,6 @@ public final class CollidableModelTest
     {
         collidable1.getFeature(Identifiable.class).destroy();
         collidable2.getFeature(Identifiable.class).destroy();
-    }
-
-    /**
-     * Test constructor with null configurer.
-     */
-    @Test
-    public void testConstructorNullConfigurer()
-    {
-        assertThrows(() -> new CollidableModel(null), "Unexpected null argument !");
-        assertThrows(() -> new CollidableModel(null, null), "Unexpected null argument !");
     }
 
     /**
@@ -223,11 +213,11 @@ public final class CollidableModelTest
     @Test
     public void testMirror()
     {
-        final Mirrorable mirror1 = featurable1.addFeatureAndGet(new MirrorableModel());
+        final Mirrorable mirror1 = featurable1.addFeatureAndGet(new MirrorableModel(services, setup));
         mirror1.mirror(Mirror.HORIZONTAL);
         mirror1.update(1.0);
 
-        final Mirrorable mirror2 = featurable2.addFeatureAndGet(new MirrorableModel());
+        final Mirrorable mirror2 = featurable2.addFeatureAndGet(new MirrorableModel(services, setup));
         mirror2.mirror(Mirror.VERTICAL);
         mirror2.update(1.0);
 

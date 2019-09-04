@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Utilities dedicated to assignable test.
@@ -37,7 +38,7 @@ final class UtilAssignable
      * @param clickNumber The click number recorded.
      * @return The services.
      */
-    public static Services createServices(final AtomicBoolean clicked, final AtomicInteger clickNumber)
+    public static Services createServices(AtomicBoolean clicked, AtomicInteger clickNumber)
     {
         final Services services = new Services();
         final Camera camera = services.create(Camera.class);
@@ -62,12 +63,13 @@ final class UtilAssignable
      * Create the assignable.
      * 
      * @param services The services.
+     * @param setup The setup.
      * @return The prepared assignable.
      */
-    public static AssignableModel createAssignable(Services services)
+    public static AssignableModel createAssignable(Services services, Setup setup)
     {
-        final Featurable featurable = new FeaturableModel();
-        final AssignableModel assignable = new AssignableModel(services);
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final AssignableModel assignable = new AssignableModel(services, setup);
         assignable.prepare(featurable);
 
         return assignable;
@@ -79,7 +81,7 @@ final class UtilAssignable
      * @param assigned The assigned flag.
      * @return The created assign.
      */
-    public static Assign createAssign(final AtomicBoolean assigned)
+    public static Assign createAssign(AtomicBoolean assigned)
     {
         return () -> assigned.set(true);
     }

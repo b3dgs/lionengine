@@ -29,17 +29,47 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 
 /**
  * Test {@link ActionRef}.
  */
 public final class ActionRefTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(ActionRefTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+
     private final boolean cancel = true;
-    private final FeaturableModel model = new FeaturableModel();
+    private final FeaturableModel model = new FeaturableModel(services, setup);
     private final ActionRef actionRef1 = new ActionRef("path", !cancel, new ArrayList<ActionRef>());
     private final ActionRef actionRef2 = new ActionRef("path2", cancel, Arrays.asList(actionRef1), model::getFeature);
 
@@ -86,7 +116,7 @@ public final class ActionRefTest
     @Test
     public void testEquals()
     {
-        final FeaturableModel featurable = new FeaturableModel();
+        final FeaturableModel featurable = new FeaturableModel(services, setup);
 
         assertEquals(actionRef1, actionRef1);
         assertEquals(actionRef1, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
@@ -106,7 +136,10 @@ public final class ActionRefTest
         assertNotEquals(actionRef1, new ActionRef("path", cancel, Arrays.asList(actionRef1)));
         assertNotEquals(actionRef1, new ActionRef("path", !cancel, Arrays.asList(actionRef1)));
         assertNotEquals(new ActionRef("path2", cancel, Arrays.asList(actionRef1), featurable::getFeature),
-                        new ActionRef("path2", cancel, Arrays.asList(actionRef1), new FeaturableModel()::getFeature));
+                        new ActionRef("path2",
+                                      cancel,
+                                      Arrays.asList(actionRef1),
+                                      new FeaturableModel(services, setup)::getFeature));
     }
 
     /**
@@ -116,7 +149,7 @@ public final class ActionRefTest
     public void testHashCode()
     {
         final ActionRef hash = actionRef1;
-        final FeaturableModel featurable = new FeaturableModel();
+        final FeaturableModel featurable = new FeaturableModel(services, setup);
 
         assertHashEquals(hash, new ActionRef("path", !cancel, new ArrayList<ActionRef>()));
 
@@ -137,7 +170,7 @@ public final class ActionRefTest
                             new ActionRef("path2",
                                           cancel,
                                           Arrays.asList(actionRef1),
-                                          new FeaturableModel()::getFeature));
+                                          new FeaturableModel(services, setup)::getFeature));
     }
 
     /**

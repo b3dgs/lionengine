@@ -21,9 +21,13 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
@@ -38,6 +42,29 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  */
 public final class CameraTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(CameraTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
     private final Camera camera = new Camera();
     private final Surface surface = new Surface()
     {
@@ -297,7 +324,7 @@ public final class CameraTest
     @Test
     public void testInterval()
     {
-        final Transformable transformable = new TransformableModel();
+        final Transformable transformable = new TransformableModel(new Services(), new Setup(config));
         transformable.teleport(1.0, 2.0);
 
         camera.setView(0, 0, 1, 1, 1);

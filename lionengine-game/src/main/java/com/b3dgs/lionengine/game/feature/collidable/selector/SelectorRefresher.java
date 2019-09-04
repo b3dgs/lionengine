@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.geom.Area;
@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Handle the selector refreshing.
  */
-public class SelectorRefresher extends FeatureModel implements Refreshable, Listenable<SelectorListener>
+public class SelectorRefresher extends FeatureAbstract implements Refreshable, Listenable<SelectorListener>
 {
     /**
      * Create check action.

@@ -23,7 +23,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Map tile collision model implementation.
  */
-public class MapTileCollisionRendererModel extends FeatureModel implements MapTileCollisionRenderer
+public class MapTileCollisionRendererModel extends FeatureAbstract implements MapTileCollisionRenderer
 {
     /**
      * Create the function draw to buffer.

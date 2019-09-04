@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.assignable;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
@@ -25,6 +24,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Assignable model implementation.
@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.game.feature.Services;
 public class AssignableModel extends FeatureModel implements Assignable
 {
     /** Cursor reference. */
-    private final Cursor cursor;
+    private final Cursor cursor = services.get(Cursor.class);
     /** Viewer reference. */
-    private final Viewer viewer;
+    private final Viewer viewer = services.get(Viewer.class);
     /** Mouse click number to assign action. */
     private int clickAssign;
     /** Assign used. */
@@ -54,16 +54,12 @@ public class AssignableModel extends FeatureModel implements Assignable
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public AssignableModel(Services services)
+    public AssignableModel(Services services, Setup setup)
     {
-        super();
-
-        Check.notNull(services);
-
-        cursor = services.get(Cursor.class);
-        viewer = services.get(Viewer.class);
+        super(services, setup);
     }
 
     /*

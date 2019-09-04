@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.producible;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -31,6 +30,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 
@@ -57,14 +57,7 @@ public final class ProducibleModelTest
         Medias.setResourcesDirectory(null);
     }
 
-    /**
-     * Test constructor with null setup.
-     */
-    @Test
-    public void testConstructorNullSetup()
-    {
-        assertThrows(() -> new ProducibleModel(null), "Unexpected null argument !");
-    }
+    private final Services services = new Services();
 
     /**
      * Test the producible with no node.
@@ -74,7 +67,7 @@ public final class ProducibleModelTest
     {
         final Media media = UtilSetup.createMedia(Featurable.class);
         final Setup setup = new Setup(media);
-        final Producible producible = new ProducibleModel(setup);
+        final Producible producible = new ProducibleModel(services, setup);
 
         assertNull(producible.getMedia());
         assertEquals(0, producible.getSteps());
@@ -90,8 +83,8 @@ public final class ProducibleModelTest
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final Featurable featurable = new FeaturableModel();
-        final ProducibleModel producible = new ProducibleModel(setup);
+        final Featurable featurable = new FeaturableModel(services, setup);
+        final ProducibleModel producible = new ProducibleModel(services, setup);
         producible.recycle();
         final ProducibleListener listener = new ProducibleListenerVoid();
         producible.setLocation(1.0, 2.0);
@@ -118,8 +111,8 @@ public final class ProducibleModelTest
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ProducibleListenerSelf object = new ProducibleListenerSelf();
-        final Producible producible = new ProducibleModel(setup);
+        final ProducibleListenerSelf object = new ProducibleListenerSelf(services, setup);
+        final Producible producible = new ProducibleModel(services, setup);
         producible.prepare(object);
 
         assertTrue(producible.getListeners().contains(object));
@@ -137,9 +130,9 @@ public final class ProducibleModelTest
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ProducibleListenerSelf object = new ProducibleListenerSelf();
+        final ProducibleListenerSelf object = new ProducibleListenerSelf(services, setup);
         final Object object2 = new Object();
-        final Producible producible = new ProducibleModel(setup);
+        final Producible producible = new ProducibleModel(services, setup);
         producible.checkListener(object);
         producible.checkListener(object2);
 

@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
@@ -87,36 +89,21 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
      * <li>{@link Animatable}</li>
      * <li>{@link Transformable}</li>
      * </ul>
-     */
-    public AttackerModel()
-    {
-        super();
-    }
-
-    /**
-     * Create feature.
-     * <p>
-     * The {@link Featurable} must have:
-     * </p>
-     * <ul>
-     * <li>{@link Animatable}</li>
-     * <li>{@link Transformable}</li>
-     * </ul>
      * <p>
      * The {@link Configurer} can provide a valid {@link AttackerConfig}.
      * </p>
      * 
-     * @param configurer The configurer reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public AttackerModel(Configurer configurer)
+    public AttackerModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(configurer);
-
-        if (configurer.hasNode(AttackerConfig.NODE_ATTACKER))
+        if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
-            final AttackerConfig config = AttackerConfig.imports(configurer);
+            final AttackerConfig config = AttackerConfig.imports(setup);
             damages.setDamages(config.getDamages());
             distAttack = config.getDistance();
             attackPause = config.getDelay();

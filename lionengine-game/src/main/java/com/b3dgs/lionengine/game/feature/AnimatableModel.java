@@ -35,21 +35,27 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
 
     /**
      * Create feature with internal {@link AnimatorModel}.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public AnimatableModel()
+    public AnimatableModel(Services services, Setup setup)
     {
-        this(new AnimatorModel());
+        this(services, setup, new AnimatorModel());
     }
 
     /**
      * Create feature.
      * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @param animator The animator reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @throws LionEngineException If invalid arguments.
      */
-    public AnimatableModel(Animator animator)
+    public AnimatableModel(Services services, Setup setup, Animator animator)
     {
-        super();
+        super(services, setup);
 
         Check.notNull(animator);
 

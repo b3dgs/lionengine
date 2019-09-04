@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
@@ -57,6 +58,9 @@ public final class ExtractorModelTest
     /** Hack enum. */
     private static final UtilEnum<ExtractorState> HACK = new UtilEnum<>(ExtractorState.class, ExtractorModel.class);
 
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -65,6 +69,7 @@ public final class ExtractorModelTest
     {
         HACK.addByValue(HACK.make("FAIL"));
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(ExtractorModelTest.class);
     }
 
     /**
@@ -74,10 +79,12 @@ public final class ExtractorModelTest
     public static void afterTests()
     {
         HACK.restore();
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
     private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Prepare test.
@@ -109,25 +116,15 @@ public final class ExtractorModelTest
     }
 
     /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new ExtractorModel(null, null), "Unexpected null argument !");
-        assertThrows(() -> new ExtractorModel(new Services(), null), "Unexpected null argument !");
-    }
-
-    /**
      * Test the extractor config.
      */
     @Test
     public void testConfig()
     {
-        final ObjectExtractor object = new ObjectExtractor(true, true);
-        object.addFeature(new TransformableModel());
+        final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Media media = UtilSetup.createConfig();
+        final Media media = UtilSetup.createConfig(ExtractorModelTest.class);
         final Xml xml = new Xml(media);
         xml.add(ExtractorConfig.exports(new ExtractorConfig(1.0, 2.0, 5)));
         xml.save(media);
@@ -156,10 +153,10 @@ public final class ExtractorModelTest
     @Test
     public void testExtractor()
     {
-        final Featurable object = new FeaturableModel();
-        object.addFeature(new TransformableModel());
+        final Featurable object = new FeaturableModel(services, setup);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final ExtractorModel extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final ExtractorModel extractor = new ExtractorModel(services, setup);
         extractor.recycle();
         extractor.setCapacity(6);
         extractor.setExtractionSpeed(50.0);
@@ -233,10 +230,10 @@ public final class ExtractorModelTest
     @Test
     public void testCannotExtract()
     {
-        final ObjectExtractor object = new ObjectExtractor(false, true);
-        object.addFeature(new TransformableModel());
+        final ObjectExtractor object = new ObjectExtractor(services, setup, false, true);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(1);
         extractor.setExtractionSpeed(50.0);
         extractor.setDropOffSpeed(50.0);
@@ -266,10 +263,10 @@ public final class ExtractorModelTest
     @Test
     public void testCannotCarry()
     {
-        final ObjectExtractor object = new ObjectExtractor(true, false);
-        object.addFeature(new TransformableModel());
+        final ObjectExtractor object = new ObjectExtractor(services, setup, true, false);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(1);
         extractor.setExtractionSpeed(50.0);
         extractor.setDropOffSpeed(50.0);
@@ -299,10 +296,10 @@ public final class ExtractorModelTest
     @Test
     public void testExtractorExtractable()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf();
-        object.addFeature(new TransformableModel());
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(2);
         extractor.setExtractionSpeed(25.0);
         extractor.setDropOffSpeed(100.0);
@@ -312,7 +309,7 @@ public final class ExtractorModelTest
         assertNull(extractor.getResourceLocation());
         assertNull(extractor.getResourceType());
 
-        final Extractable extractable = UtilExtractable.createExtractable();
+        final Extractable extractable = UtilExtractable.createExtractable(services, setup);
         extractor.setResource(extractable);
 
         assertFalse(extractor.isExtracting());
@@ -373,10 +370,10 @@ public final class ExtractorModelTest
     @Test
     public void testExtractorExtractableNoResource()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf();
-        object.addFeature(new TransformableModel());
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         extractor.setCapacity(6);
         extractor.setExtractionSpeed(50.0);
         extractor.setDropOffSpeed(100.0);
@@ -386,7 +383,7 @@ public final class ExtractorModelTest
         assertNull(extractor.getResourceLocation());
         assertNull(extractor.getResourceType());
 
-        final Extractable extractable = UtilExtractable.createExtractable();
+        final Extractable extractable = UtilExtractable.createExtractable(services, setup);
         extractable.setResourcesQuantity(0);
         extractor.setResource(extractable);
 
@@ -417,10 +414,10 @@ public final class ExtractorModelTest
     @Test
     public void testStopExtraction()
     {
-        final ObjectExtractor object = new ObjectExtractor(true, true);
-        object.addFeature(new TransformableModel());
+        final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         extractor.prepare(object);
         extractor.setCapacity(6);
         extractor.setExtractionSpeed(50.0);
@@ -467,10 +464,10 @@ public final class ExtractorModelTest
     @Test
     public void testListenerAutoAdd()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf();
-        object.addFeature(new TransformableModel());
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
+        object.addFeature(new TransformableModel(services, setup));
 
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         extractor.prepare(object);
         extractor.checkListener(new Object());
         extractor.checkListener(object);
@@ -489,11 +486,11 @@ public final class ExtractorModelTest
     @Test
     public void testCheckListener()
     {
-        final ObjectExtractorSelf object = new ObjectExtractorSelf();
-        object.addFeature(new TransformableModel());
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
+        object.addFeature(new TransformableModel(services, setup));
 
         final AtomicBoolean add = new AtomicBoolean();
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()))
+        final Extractor extractor = new ExtractorModel(services, setup)
         {
             @Override
             public void addListener(ExtractorListener listener)
@@ -501,7 +498,7 @@ public final class ExtractorModelTest
                 add.set(true);
             }
         };
-        extractor.prepare(new FeaturableModel());
+        extractor.prepare(new FeaturableModel(services, setup));
 
         assertFalse(add.get());
 
@@ -517,7 +514,7 @@ public final class ExtractorModelTest
     public void testRemoveListener()
     {
         final AtomicBoolean check = new AtomicBoolean();
-        final Extractor extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractor extractor = new ExtractorModel(services, setup);
         final ExtractorListener listener = new ExtractorListenerVoid()
         {
             @Override
@@ -527,7 +524,7 @@ public final class ExtractorModelTest
             }
         };
         extractor.addListener(listener);
-        extractor.prepare(new FeaturableModel());
+        extractor.prepare(new FeaturableModel(services, setup));
         extractor.startExtraction();
 
         assertTrue(check.get());
@@ -549,7 +546,7 @@ public final class ExtractorModelTest
     @Test
     public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
-        final ExtractorModel extractor = new ExtractorModel(services, new Setup(UtilSetup.createConfig()));
+        final ExtractorModel extractor = new ExtractorModel(services, setup);
         final Field field = extractor.getClass().getDeclaredField("state");
         UtilReflection.setAccessible(field, true);
         field.set(extractor, ExtractorState.values()[5]);

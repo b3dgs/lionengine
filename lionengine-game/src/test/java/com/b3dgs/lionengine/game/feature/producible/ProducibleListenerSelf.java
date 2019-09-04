@@ -17,12 +17,25 @@
 package com.b3dgs.lionengine.game.feature.producible;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Producible self listener test.
  */
 final class ProducibleListenerSelf extends FeaturableModel implements ProducibleListener
 {
+    /**
+     * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    public ProducibleListenerSelf(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     @Override
     public void notifyProductionStarted(Producer producer)
     {

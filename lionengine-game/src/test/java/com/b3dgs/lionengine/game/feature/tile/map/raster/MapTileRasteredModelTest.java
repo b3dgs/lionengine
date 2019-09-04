@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.raster;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import java.util.Arrays;
 
@@ -46,32 +45,34 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
  */
 public final class MapTileRasteredModelTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setLoadFromJar(MapTileRasteredModelTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+        Graphics.setFactoryGraphic(null);
+        Medias.setLoadFromJar(null);
+    }
+
     private final Services services = new Services();
     private final Graphic g = new GraphicMock();
     private ViewerMock viewer;
     private MapTileGame map;
     private MapTileViewer mapViewer;
     private MapTileRastered mapRastered;
-
-    /**
-     * Prepare tests.
-     */
-    @BeforeAll
-    public static void beforeTests()
-    {
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        Medias.setLoadFromJar(MapTileRasteredModelTest.class);
-    }
-
-    /**
-     * Clean up tests.
-     */
-    @AfterAll
-    public static void afterTests()
-    {
-        Graphics.setFactoryGraphic(null);
-        Medias.setLoadFromJar(null);
-    }
 
     /**
      * Prepare test.
@@ -88,15 +89,6 @@ public final class MapTileRasteredModelTest
         mapViewer.prepare(map);
         mapRastered = new MapTileRasteredModel(services);
         mapRastered.prepare(map);
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTileRasteredModel(null), "Unexpected null argument !");
     }
 
     /**

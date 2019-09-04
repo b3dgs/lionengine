@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
@@ -44,7 +45,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  * <li>{@link #setLimits(Surface)}</li>
  * </ul>
  */
-public class Camera extends FeaturableModel implements Viewer
+public class Camera extends FeaturableAbstract implements Viewer
 {
     /** Current location. */
     private final Mover mover = new MoverModel();
@@ -528,5 +529,14 @@ public class Camera extends FeaturableModel implements Viewer
                                 || getViewpointY(shape.getY() - shape.getHeight() - radiusY) < getViewY()
                                 || getViewpointY(shape.getY() + shape.getHeight() + radiusY) > getViewY() + height;
         return !outside;
+    }
+
+    /**
+     * Return always <code>null</code>.
+     */
+    @Override
+    public Media getMedia()
+    {
+        return null;
     }
 }

@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Layerable model implementation. 0 has higher priority, 1 less...
  */
-public class LayerableModel extends FeatureModel implements Layerable
+public class LayerableModel extends FeatureAbstract implements Layerable
 {
     /** Layers listener. */
     private final ListenableModel<LayerableListener> listenable = new ListenableModel<>();
@@ -33,10 +33,26 @@ public class LayerableModel extends FeatureModel implements Layerable
 
     /**
      * Create feature.
+     * 
+     * @param layer The layer to use.
      */
-    public LayerableModel()
+    public LayerableModel(int layer)
+    {
+        this(layer, layer);
+    }
+
+    /**
+     * Create feature.
+     * 
+     * @param layerRefresh The layer refresh to use.
+     * @param layerDisplay The layer display to use.
+     */
+    public LayerableModel(int layerRefresh, int layerDisplay)
     {
         super();
+
+        this.layerRefresh = Integer.valueOf(layerRefresh);
+        this.layerDisplay = Integer.valueOf(layerDisplay);
     }
 
     /**
@@ -51,43 +67,19 @@ public class LayerableModel extends FeatureModel implements Layerable
      * The {@link Configurer} can provide a valid {@link LayerableConfig}.
      * </p>
      * 
-     * @param services The services reference.
-     * @param configurer The configurer reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      */
-    public LayerableModel(Services services, Configurer configurer)
-    {
-        this();
-
-        if (configurer.hasNode(LayerableConfig.NODE_LAYERABLE))
-        {
-            final LayerableConfig config = LayerableConfig.imports(configurer);
-            layerRefresh = Integer.valueOf(config.getLayerRefresh());
-            layerDisplay = Integer.valueOf(config.getLayerDisplay());
-        }
-    }
-
-    /**
-     * Create feature.
-     * 
-     * @param layer The default layer refresh and display value.
-     */
-    public LayerableModel(int layer)
-    {
-        this(layer, layer);
-    }
-
-    /**
-     * Create feature.
-     * 
-     * @param layerRefresh The default layer refresh value.
-     * @param layerDisplay The default layer display value.
-     */
-    public LayerableModel(int layerRefresh, int layerDisplay)
+    public LayerableModel(Services services, Setup setup)
     {
         super();
 
-        this.layerRefresh = Integer.valueOf(layerRefresh);
-        this.layerDisplay = Integer.valueOf(layerDisplay);
+        if (setup.hasNode(LayerableConfig.NODE_LAYERABLE))
+        {
+            final LayerableConfig config = LayerableConfig.imports(setup);
+            layerRefresh = Integer.valueOf(config.getLayerRefresh());
+            layerDisplay = Integer.valueOf(config.getLayerDisplay());
+        }
     }
 
     /*

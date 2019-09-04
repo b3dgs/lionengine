@@ -54,6 +54,7 @@ public final class CircuitsConfigTest
     @BeforeAll
     public static void beforeTests()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(CircuitsConfigTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -65,6 +66,7 @@ public final class CircuitsConfigTest
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
+        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
 
@@ -116,5 +118,9 @@ public final class CircuitsConfigTest
         TileGroupsConfig.exports(groups, Collections.emptyList());
 
         CircuitsConfig.exports(media, Arrays.asList(Medias.create("level.png")), sheets, groups);
+
+        assertTrue(sheets.getFile().delete());
+        assertTrue(groups.getFile().delete());
+        assertTrue(media.getFile().delete());
     }
 }

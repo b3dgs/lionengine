@@ -97,7 +97,7 @@ final class UtilActionnable
     public static ActionableModel createActionable(Media media, Services services)
     {
         final Setup setup = new Setup(media);
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         final ActionableModel actionable = new ActionableModel(services, setup);
         actionable.prepare(featurable);
 

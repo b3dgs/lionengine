@@ -17,12 +17,13 @@
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -30,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.UtilSetup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
@@ -38,6 +39,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
  */
 public final class ExtractableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -45,6 +49,7 @@ public final class ExtractableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(ExtractableModelTest.class);
     }
 
     /**
@@ -53,18 +58,12 @@ public final class ExtractableModelTest
     @AfterAll
     public static void afterTests()
     {
+        assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new ExtractableModel(null, null), "Unexpected null argument !");
-        assertThrows(() -> new ExtractableModel(new Services(), null), "Unexpected null argument !");
-    }
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the extraction config.
@@ -72,7 +71,7 @@ public final class ExtractableModelTest
     @Test
     public void testConfig()
     {
-        final Extractable extractable = UtilExtractable.createExtractable();
+        final Extractable extractable = UtilExtractable.createExtractable(services, setup);
 
         assertEquals(10, extractable.getResourceQuantity());
         assertEquals("wood", extractable.getResourceType());
@@ -91,13 +90,12 @@ public final class ExtractableModelTest
     @Test
     public void testExtract()
     {
-        final Services services = new Services();
         services.add(new MapTileGame());
 
-        final Featurable featurable = new FeaturableModel();
-        featurable.addFeature(new TransformableModel());
+        final Featurable featurable = new FeaturableModel(services, setup);
+        featurable.addFeature(new TransformableModel(services, setup));
 
-        final Extractable extractable = new ExtractableModel(services, new Setup(UtilSetup.createConfig()));
+        final Extractable extractable = new ExtractableModel(services, setup);
         extractable.prepare(featurable);
         extractable.setResourcesQuantity(10);
 

@@ -17,6 +17,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Extractor test.
@@ -31,12 +33,14 @@ final class ObjectExtractor extends FeaturableModel implements ExtractorChecker
     /**
      * Constructor.
      * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      * @param extract Extract.
      * @param carry Carry.
      */
-    public ObjectExtractor(boolean extract, boolean carry)
+    public ObjectExtractor(Services services, Setup setup, boolean extract, boolean carry)
     {
-        super();
+        super(services, setup);
 
         this.extract = extract;
         this.carry = carry;

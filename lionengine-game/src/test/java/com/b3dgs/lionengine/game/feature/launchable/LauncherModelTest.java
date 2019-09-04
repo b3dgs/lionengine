@@ -20,7 +20,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertThrowsTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
@@ -75,7 +74,7 @@ public final class LauncherModelTest
     private final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
     private final Services services = new Services();
     private final Setup setup = new Setup(launcherMedia);
-    private final Featurable featurable = new FeaturableModel();
+    private final Featurable featurable = new FeaturableModel(services, setup);
     private final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
 
     /**
@@ -98,15 +97,6 @@ public final class LauncherModelTest
         assertEquals(10, launcher.getRate());
         assertEquals(1.0, launcher.getOffsetX());
         assertEquals(2.0, launcher.getOffsetY());
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new LauncherModel(null, null), "Unexpected null argument !");
     }
 
     /**
@@ -140,7 +130,7 @@ public final class LauncherModelTest
 
         assertEquals(1, handler.size());
 
-        final Transformable transformable = new TransformableModel();
+        final Transformable transformable = new TransformableModel(services, setup);
         assertTimeout(1000L, () ->
         {
             while (!launcher.fire(transformable))
@@ -341,7 +331,7 @@ public final class LauncherModelTest
     @Test
     public void testLauncherSelfListener() throws InterruptedException
     {
-        final LaunchableObjectSelf object = new LaunchableObjectSelf();
+        final LaunchableObjectSelf object = new LaunchableObjectSelf(services, setup);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
         launcher.addListener((LauncherListener) object);
         launcher.addListener((LaunchableListener) object);
@@ -378,7 +368,7 @@ public final class LauncherModelTest
     @Test
     public void testListenerAutoAdd() throws InterruptedException
     {
-        final LaunchableObjectSelf object = new LaunchableObjectSelf();
+        final LaunchableObjectSelf object = new LaunchableObjectSelf(services, setup);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
         launcher.checkListener(object);
 
@@ -528,5 +518,7 @@ public final class LauncherModelTest
 
         assertFalse(launchableListener.get());
         assertTrue(launcherListener.get());
+
+        assertTrue(launchableMedia.getFile().delete());
     }
 }

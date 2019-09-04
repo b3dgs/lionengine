@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Object containing action.
@@ -32,11 +34,13 @@ final class ObjectAction extends FeaturableModel implements Action
     /**
      * Constructor.
      * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      * @param executed The executed flag.
      */
-    public ObjectAction(AtomicBoolean executed)
+    public ObjectAction(Services services, Setup setup, AtomicBoolean executed)
     {
-        super();
+        super(services, setup);
 
         this.executed = executed;
     }

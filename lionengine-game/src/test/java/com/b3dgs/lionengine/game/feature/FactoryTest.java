@@ -46,6 +46,7 @@ public final class FactoryTest
     @BeforeAll
     public static void beforeTests()
     {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(FactoryTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
@@ -56,6 +57,7 @@ public final class FactoryTest
     @AfterAll
     public static void afterTests()
     {
+        Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
@@ -198,6 +200,8 @@ public final class FactoryTest
         factory.notifyHandlableRemoved(featurable2);
 
         assertEquals(featurable2, factory.create(media));
+
+        assertTrue(media.getFile().delete());
     }
 
     /**

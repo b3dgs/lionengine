@@ -16,7 +16,10 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Selectable model implementation.
@@ -28,10 +31,14 @@ public class SelectableModel extends FeatureModel implements Selectable
 
     /**
      * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public SelectableModel()
+    public SelectableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     /*

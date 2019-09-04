@@ -56,49 +56,38 @@ public final class MapTileCollisionModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(MapTileCollisionModelTest.class);
     }
 
     /**
      * Clean up test.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
 
-    /** Formula vertical test. */
     private final CollisionFormula formulaV = new CollisionFormula("y",
                                                                    new CollisionRange(Axis.Y, 0, 1, 0, 1),
                                                                    new CollisionFunctionLinear(0.0, 0.0),
                                                                    new CollisionConstraint());
-    /** Formula horizontal test. */
     private final CollisionFormula formulaH = new CollisionFormula("x",
                                                                    new CollisionRange(Axis.X, 0, 1, 0, 1),
                                                                    new CollisionFunctionLinear(0.0, 0.0),
                                                                    new CollisionConstraint());
-    /** Group test. */
     private final CollisionGroup group = new CollisionGroup(UtilMap.GROUND, Arrays.asList(formulaV, formulaH));
-    /** Category vertical test. */
     private final CollisionCategory categoryY = new CollisionCategory("y", Axis.Y, 0, 0, true, Arrays.asList(group));
-    /** Category horizontal test. */
     private final CollisionCategory categoryX = new CollisionCategory("x", Axis.X, 0, 0, true, Arrays.asList(group));
-    /** The services reference. */
     private final Services services = new Services();
-    /** Map. */
-    private final MapTile map = services.create(MapTileGame.class);
-    /** Object test. */
+    private final MapTile map = services.add(new MapTileGame());
     private Transformable transformable;
-    /** Map collision. */
     private MapTileCollision mapCollision;
-    /** Formulas config. */
     private Media formulasConfig;
-    /** Groups config. */
     private Media groupsConfig;
 
     /**
@@ -130,15 +119,6 @@ public final class MapTileCollisionModelTest
     {
         assertTrue(formulasConfig.getFile().delete());
         assertTrue(groupsConfig.getFile().delete());
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTileCollisionModel(null), "Unexpected null argument !");
     }
 
     /**
@@ -353,9 +333,9 @@ public final class MapTileCollisionModelTest
         final Setup setup = new Setup(config);
         CollisionCategoryConfig.exports(setup.getRoot(), categoryY);
         CollisionCategoryConfig.exports(setup.getRoot(), categoryX);
-        final FeaturableModel object = new FeaturableModel();
+        final FeaturableModel object = new FeaturableModel(services, setup);
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.setSize(1, 1);
 
         final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(services, setup));

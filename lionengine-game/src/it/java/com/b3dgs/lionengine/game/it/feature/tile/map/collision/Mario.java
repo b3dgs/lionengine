@@ -44,14 +44,14 @@ class Mario extends FeaturableModel
      */
     public Mario(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        addFeature(new TransformableModel());
-        addFeature(new BodyModel());
-        addFeature(new LayerableModel(1));
+        addFeature(new TransformableModel(services, setup));
+        addFeature(new BodyModel(services, setup));
+        addFeatureAndGet(new LayerableModel(1));
         addFeatureAndGet(new CollidableModel(services, setup)).setOrigin(Origin.CENTER_BOTTOM);
         addFeature(new TileCollidableModel(services, setup));
-        addFeature(new MarioUpdater(services));
+        addFeature(new MarioUpdater(services, setup));
         addFeature(new MarioRenderer(services, setup));
     }
 }

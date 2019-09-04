@@ -76,17 +76,17 @@ public final class MapTileCollisionModelComplexTest
      * Prepare test.
      */
     @BeforeAll
-    public static void setUp()
+    public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(MapTileCollisionModelComplexTest.class);
     }
 
     /**
      * Clean up test.
      */
     @AfterAll
-    public static void cleanUp()
+    public static void afterTests()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
@@ -121,7 +121,7 @@ public final class MapTileCollisionModelComplexTest
     private final CollisionCategory category = new CollisionCategory("y", Axis.Y, 0, 0, true, groupsList);
 
     private final Services services = new Services();
-    private final MapTile map = services.create(MapTileGame.class);
+    private final MapTile map = services.add(new MapTileGame());
     private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
     private final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
     private Transformable transformable;
@@ -179,9 +179,9 @@ public final class MapTileCollisionModelComplexTest
     {
         final Setup setup = new Setup(config);
         CollisionCategoryConfig.exports(setup.getRoot(), category);
-        final FeaturableModel object = new FeaturableModel();
+        final FeaturableModel object = new FeaturableModel(services, setup);
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(services, setup));
         transformable.setSize(1, 1);
 
         final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(services, setup));

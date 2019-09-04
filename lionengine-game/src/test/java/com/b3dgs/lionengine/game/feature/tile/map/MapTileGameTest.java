@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
@@ -47,6 +49,26 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  */
 public final class MapTileGameTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+        Graphics.setFactoryGraphic(null);
+    }
+
     private final MapTileGame map = new MapTileGame();
 
     /**
@@ -80,42 +102,32 @@ public final class MapTileGameTest
     @Test
     public void testCreateFromRip() throws IOException
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        try
+        final Path level = Files.createTempFile("level", ".png");
+        try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
         {
-            final Path level = Files.createTempFile("level", ".png");
-            try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
-            {
-                Files.copy(input, level, StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            final Path sheet = Files.createTempFile("sheet", ".png");
-            try (InputStream input = MapTileGameTest.class.getResourceAsStream("sheet.png"))
-            {
-                Files.copy(input, sheet, StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            final Media sheets = Medias.create("sheets.xml");
-            TileSheetsConfig.exports(sheets, 7, 11, Arrays.asList(sheet.toFile().getName()));
-
-            map.create(Medias.create(level.toFile().getName()), sheets);
-
-            assertTrue(map.isCreated());
-            assertEquals(7, map.getTileWidth());
-            assertEquals(11, map.getTileHeight());
-            assertEquals(2 * 7, map.getWidth());
-            assertEquals(2 * 11, map.getHeight());
-
-            assertTrue(sheets.getFile().delete());
-            Files.delete(level);
-            Files.delete(sheet);
+            Files.copy(input, level, StandardCopyOption.REPLACE_EXISTING);
         }
-        finally
+
+        final Path sheet = Files.createTempFile("sheet", ".png");
+        try (InputStream input = MapTileGameTest.class.getResourceAsStream("sheet.png"))
         {
-            Medias.setResourcesDirectory(null);
-            Graphics.setFactoryGraphic(null);
+            Files.copy(input, sheet, StandardCopyOption.REPLACE_EXISTING);
         }
+
+        final Media sheets = Medias.create("sheets.xml");
+        TileSheetsConfig.exports(sheets, 7, 11, Arrays.asList(sheet.toFile().getName()));
+
+        map.create(Medias.create(level.toFile().getName()), sheets);
+
+        assertTrue(map.isCreated());
+        assertEquals(7, map.getTileWidth());
+        assertEquals(11, map.getTileHeight());
+        assertEquals(2 * 7, map.getWidth());
+        assertEquals(2 * 11, map.getHeight());
+
+        assertTrue(sheets.getFile().delete());
+        Files.delete(level);
+        Files.delete(sheet);
     }
 
     /**
@@ -126,38 +138,28 @@ public final class MapTileGameTest
     @Test
     public void testCreateFromRipWithoutSheet() throws IOException
     {
-        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        try
+        final Path level = Files.createTempFile("level", ".png");
+        try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
         {
-            final Path level = Files.createTempFile("level", ".png");
-            try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
-            {
-                Files.copy(input, level, StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            final Path sheet = Files.createTempFile("sheet", ".png");
-            try (InputStream input = MapTileGameTest.class.getResourceAsStream("sheet.png"))
-            {
-                Files.copy(input, sheet, StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            map.create(Medias.create(level.toFile().getName()), 7, 11, 7);
-
-            assertTrue(map.isCreated());
-            assertEquals(7, map.getTileWidth());
-            assertEquals(11, map.getTileHeight());
-            assertEquals(2 * 7, map.getWidth());
-            assertEquals(2 * 11, map.getHeight());
-
-            Files.delete(level);
-            Files.delete(sheet);
+            Files.copy(input, level, StandardCopyOption.REPLACE_EXISTING);
         }
-        finally
+
+        final Path sheet = Files.createTempFile("sheet", ".png");
+        try (InputStream input = MapTileGameTest.class.getResourceAsStream("sheet.png"))
         {
-            Medias.setResourcesDirectory(null);
-            Graphics.setFactoryGraphic(null);
+            Files.copy(input, sheet, StandardCopyOption.REPLACE_EXISTING);
         }
+
+        map.create(Medias.create(level.toFile().getName()), 7, 11, 7);
+
+        assertTrue(map.isCreated());
+        assertEquals(7, map.getTileWidth());
+        assertEquals(11, map.getTileHeight());
+        assertEquals(2 * 7, map.getWidth());
+        assertEquals(2 * 11, map.getHeight());
+
+        Files.delete(level);
+        Files.delete(sheet);
     }
 
     /**

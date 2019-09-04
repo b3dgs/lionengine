@@ -36,14 +36,15 @@ public class ActionerModel extends FeatureModel implements Actioner
      * The {@link Configurer} must provide a valid {@link ActionsConfig}.
      * </p>
      * 
-     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public ActionerModel(Configurer configurer)
+    public ActionerModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        actions = ActionsConfig.imports(configurer, this::getFeature);
+        actions = ActionsConfig.imports(setup, this::getFeature);
     }
 
     /*

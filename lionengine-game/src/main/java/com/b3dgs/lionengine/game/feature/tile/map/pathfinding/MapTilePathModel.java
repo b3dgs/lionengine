@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.geom.Area;
 /**
  * Map tile path model implementation.
  */
-public class MapTilePathModel extends FeatureModel implements MapTilePath
+public class MapTilePathModel extends FeatureAbstract implements MapTilePath
 {
     /** Categories list. */
     private final Map<String, PathCategory> categories = new HashMap<>();

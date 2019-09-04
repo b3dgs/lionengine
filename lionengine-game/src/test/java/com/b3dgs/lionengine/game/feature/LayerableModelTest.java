@@ -47,7 +47,7 @@ public final class LayerableModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilSetup.createConfig();
+        config = UtilSetup.createConfig(LayerableModelTest.class);
     }
 
     /**
@@ -60,13 +60,16 @@ public final class LayerableModelTest
         Medias.setResourcesDirectory(null);
     }
 
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+
     /**
      * Test the layer functionality.
      */
     @Test
     public void testLayer()
     {
-        final LayerableModel layerable = new LayerableModel();
+        final LayerableModel layerable = new LayerableModel(services, setup);
 
         final AtomicReference<FeatureProvider> objectRef = new AtomicReference<>();
         final AtomicInteger oldLayerRef = new AtomicInteger();
@@ -83,14 +86,13 @@ public final class LayerableModelTest
         };
         layerable.addListener(listener);
 
-        final Services services = new Services();
         services.add(new ComponentDisplayable());
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         layerable.prepare(featurable);
 
-        assertEquals(0, layerable.getLayerRefresh().intValue());
-        assertEquals(0, layerable.getLayerDisplay().intValue());
+        assertEquals(1, layerable.getLayerRefresh().intValue());
+        assertEquals(2, layerable.getLayerDisplay().intValue());
 
         layerable.setLayer(Integer.valueOf(1), Integer.valueOf(2));
 
@@ -110,10 +112,9 @@ public final class LayerableModelTest
     @Test
     public void testConstructorSetup()
     {
-        final Services services = new Services();
         services.add(new ComponentDisplayable());
 
-        LayerableModel layerable = new LayerableModel(services, new Setup(config));
+        LayerableModel layerable = new LayerableModel(services, setup);
         assertEquals(0, layerable.getLayerRefresh().intValue());
         assertEquals(0, layerable.getLayerDisplay().intValue());
 

@@ -107,9 +107,7 @@ public class LauncherModel extends FeatureModel implements Launcher
      */
     public LauncherModel(Services services, Setup setup)
     {
-        super();
-
-        Check.notNull(services);
+        super(services, setup);
 
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);

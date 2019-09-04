@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Origin;
@@ -35,6 +34,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableListener;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -59,7 +59,7 @@ public class CollidableModel extends FeatureModel
     /** Bounding box cache for rendering. */
     private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
     /** The viewer reference. */
-    private final Viewer viewer;
+    private final Viewer viewer = services.get(Viewer.class);
 
     /** Associated group Id. */
     private Integer group = Integer.valueOf(0);
@@ -67,37 +67,6 @@ public class CollidableModel extends FeatureModel
     private Transformable transformable;
     /** Origin used. */
     private Origin origin = Origin.TOP_LEFT;
-
-    /**
-     * Create feature.
-     * <p>
-     * The {@link Services} must provide:
-     * </p>
-     * <ul>
-     * <li>{@link Viewer}</li>
-     * </ul>
-     * <p>
-     * The {@link Featurable} must have:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * <p>
-     * If the {@link Featurable} is a {@link CollidableListener}, it will automatically
-     * {@link #addListener(CollidableListener)} on it.
-     * </p>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public CollidableModel(Services services)
-    {
-        super();
-
-        Check.notNull(services);
-
-        viewer = services.get(Viewer.class);
-    }
 
     /**
      * Create feature.
@@ -122,19 +91,15 @@ public class CollidableModel extends FeatureModel
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param configurer The configurer reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public CollidableModel(Services services, Configurer configurer)
+    public CollidableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(services);
-
-        viewer = services.get(Viewer.class);
-
-        group = CollidableConfig.imports(configurer);
-        collisions.addAll(CollisionConfig.imports(configurer).getCollisions());
+        group = CollidableConfig.imports(setup);
+        collisions.addAll(CollisionConfig.imports(setup).getCollisions());
     }
 
     /*

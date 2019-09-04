@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.ListenableModel;
  * Handle a list of unique Id, provide the next free Id, and recycle destroyed Id.
  * </p>
  */
-public class IdentifiableModel extends FeatureModel implements Identifiable, Recyclable
+public class IdentifiableModel extends FeatureAbstract implements Identifiable, Recyclable
 {
     /** Free Id error. */
     static final String ERROR_FREE_ID = "No more free id available !";
@@ -61,7 +61,7 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
     /** Listeners. */
     private final ListenableModel<IdentifiableListener> listenable = new ListenableModel<>();
     /** Unique Id. */
-    private final Integer id;
+    private final Integer id = getFreeId();
     /** Destroy request flag. */
     private boolean destroy;
     /** Destroyed flag. */
@@ -69,14 +69,10 @@ public class IdentifiableModel extends FeatureModel implements Identifiable, Rec
 
     /**
      * Create feature.
-     * 
-     * @throws LionEngineException If no free Id available.
      */
     public IdentifiableModel()
     {
         super();
-
-        id = getFreeId();
     }
 
     /*

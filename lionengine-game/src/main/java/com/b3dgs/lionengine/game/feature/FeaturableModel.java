@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Featurable model implementation.
  */
-public class FeaturableModel implements Featurable
+public class FeaturableModel extends FeaturableAbstract
 {
     /** Class not found error. */
     static final String ERROR_CLASS_PRESENCE = "Class not found: ";
@@ -65,36 +66,27 @@ public class FeaturableModel implements Featurable
         return toInject;
     }
 
-    /** Features provider. */
-    private final Features features = new Features();
+    /** Services reference. */
+    protected final Services services;
     /** Associated media (<code>null</code> if none). */
     private final Media media;
 
     /**
-     * Create model.
-     */
-    public FeaturableModel()
-    {
-        super();
-
-        media = null;
-        addFeature(new Recycler());
-        addFeature(new IdentifiableModel());
-    }
-
-    /**
      * Create model. All features are loaded from setup.
      * 
-     * @param services The services reference.
-     * @param setup The setup reference.
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      */
     public FeaturableModel(Services services, Setup setup)
     {
         super();
 
+        Check.notNull(services);
+        Check.notNull(setup);
+
+        this.services = services;
         media = setup.getMedia();
-        addFeature(new Recycler());
-        addFeature(new IdentifiableModel());
+        addFeature(new Recycler(services, setup));
     }
 
     /**
@@ -158,59 +150,11 @@ public class FeaturableModel implements Featurable
      * Featurable
      */
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Does nothing by default.
-     * </p>
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
     @Override
     public final void addFeature(Feature feature)
     {
         fillServices(feature);
-        if (feature instanceof Recyclable)
-        {
-            ((Recyclable) feature).recycle();
-        }
-        feature.prepare(this);
-        features.add(feature);
-    }
-
-    @Override
-    public final <T extends Feature> T addFeatureAndGet(T feature)
-    {
-        addFeature(feature);
-        return feature;
-    }
-
-    @Override
-    public final <C extends Feature> C getFeature(Class<C> feature)
-    {
-        return features.get(feature);
-    }
-
-    @Override
-    public final Iterable<Feature> getFeatures()
-    {
-        return features.getFeatures();
-    }
-
-    @Override
-    public final Iterable<Class<? extends Feature>> getFeaturesType()
-    {
-        return features.getFeaturesType();
-    }
-
-    @Override
-    public final boolean hasFeature(Class<? extends Feature> feature)
-    {
-        return features.contains(feature);
+        super.addFeature(feature);
     }
 
     @Override

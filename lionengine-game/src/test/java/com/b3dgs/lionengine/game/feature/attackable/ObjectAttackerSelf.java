@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.attackable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
@@ -31,10 +33,13 @@ final class ObjectAttackerSelf extends FeaturableModel implements AttackerListen
 
     /**
      * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public ObjectAttackerSelf()
+    public ObjectAttackerSelf(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     @Override

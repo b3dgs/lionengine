@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.feature.tile.map.transition;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.feature.tile.map.UtilMap.TILE_GROUND;
@@ -34,6 +33,7 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -44,6 +44,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
  */
 public final class MapTileTransitionModelTest
 {
+    /** Object config test. */
+    private static Media media;
     /** Test configuration. */
     private static Media config;
 
@@ -51,9 +53,10 @@ public final class MapTileTransitionModelTest
      * Prepare test.
      */
     @BeforeAll
-    public static void beforeTests()
+    public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        media = UtilTransformable.createMedia(MapTileTransitionModelTest.class);
         config = UtilMapTransition.createTransitions();
     }
 
@@ -61,8 +64,9 @@ public final class MapTileTransitionModelTest
      * Clean up test.
      */
     @AfterAll
-    public static void afterTests()
+    public static void cleanUp()
     {
+        assertTrue(media.getFile().delete());
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
@@ -107,15 +111,6 @@ public final class MapTileTransitionModelTest
         {
             assertEquals(transition, mapGroup.getGroup(neighbor));
         }
-    }
-
-    /**
-     * Test constructor with null services.
-     */
-    @Test
-    public void testConstructorNullServices()
-    {
-        assertThrows(() -> new MapTileTransitionModel(null), "Unexpected null argument !");
     }
 
     /**

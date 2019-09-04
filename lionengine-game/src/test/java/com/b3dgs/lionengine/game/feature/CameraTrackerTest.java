@@ -17,23 +17,45 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 
 /**
  * Test {@link CameraTracker}.
  */
 public final class CameraTrackerTest
 {
+    /** Object config test. */
+    private static Media config;
+
     /**
-     * Test constructor with null services.
+     * Prepare test.
      */
-    @Test
-    public void testConstructorNullServices()
+    @BeforeAll
+    public static void beforeTests()
     {
-        assertThrows(() -> new CameraTracker(null), "Unexpected null argument !");
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(CameraTrackerTest.class);
     }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
 
     /**
      * Test the tracker feature.
@@ -41,7 +63,6 @@ public final class CameraTrackerTest
     @Test
     public void testTracker()
     {
-        final Services services = new Services();
         final Camera camera = services.add(new Camera());
         camera.setView(0, 0, 16, 32, 32);
 
@@ -51,7 +72,7 @@ public final class CameraTrackerTest
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
 
-        final Transformable transformable = new TransformableModel();
+        final Transformable transformable = new TransformableModel(services, setup);
         transformable.teleport(1.0, 2.0);
 
         tracker.track(transformable);
@@ -60,7 +81,7 @@ public final class CameraTrackerTest
         assertEquals(-7.0, camera.getX());
         assertEquals(-14.0, camera.getY());
 
-        final Featurable featurable = new FeaturableModel();
+        final Featurable featurable = new FeaturableModel(services, setup);
         featurable.addFeature(transformable);
 
         transformable.teleport(2.0, 3.0);

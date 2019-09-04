@@ -29,6 +29,6 @@ public final class ObjectNoConstructor extends FeaturableModel
      */
     private ObjectNoConstructor(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 }

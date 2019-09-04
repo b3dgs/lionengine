@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
@@ -36,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -77,22 +77,22 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     private final Collection<Integer> sharedPathIds = new HashSet<>(0);
     /** List of ignored id. */
     private final Collection<Integer> ignoredIds = new HashSet<>(0);
-    /** Object id. */
-    private Integer id;
     /** Viewer reference. */
-    private final Viewer viewer;
+    private final Viewer viewer = services.get(Viewer.class);
     /** Map reference. */
-    private final MapTile map;
+    private final MapTile map = services.get(MapTile.class);
     /** Map path reference. */
-    private final MapTilePath mapPath;
+    private final MapTilePath mapPath = map.getFeature(MapTilePath.class);
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
     /** List of categories. */
     private final Map<String, PathData> categories;
-    /** Transformable model. */
-    private Transformable transformable;
     /** Orientable model. */
     private final OrientableModel orientable;
+    /** Object id. */
+    private Integer id;
+    /** Transformable model. */
+    private Transformable transformable;
     /** Last valid path found. */
     private Path path;
     /** Text debug rendering. */
@@ -153,20 +153,15 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public PathfindableModel(Services services, Configurer configurer)
+    public PathfindableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
-        viewer = services.get(Viewer.class);
-        mapPath = map.getFeature(MapTilePath.class);
-        categories = PathfindableConfig.imports(configurer);
-        orientable = new OrientableModel(services);
+        categories = PathfindableConfig.imports(setup);
+        orientable = new OrientableModel(services, setup);
 
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());

@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Configurer;
@@ -24,6 +23,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
@@ -35,7 +35,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     /** Resources count. */
     private final Alterable resources = new Alterable(Integer.MAX_VALUE);
     /** Map reference. */
-    private final MapTile map;
+    private final MapTile map = services.get(MapTile.class);
     /** Transformable model. */
     private Transformable transformable;
     /** Resource type. */
@@ -60,21 +60,16 @@ public class ExtractableModel extends FeatureModel implements Extractable
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
-     * @param configurer The configurer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public ExtractableModel(Services services, Configurer configurer)
+    public ExtractableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
-        Check.notNull(services);
-        Check.notNull(configurer);
-
-        map = services.get(MapTile.class);
-
-        if (configurer.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
+        if (setup.hasNode(ExtractableConfig.NODE_EXTRACTABLE))
         {
-            final ExtractableConfig config = ExtractableConfig.imports(configurer);
+            final ExtractableConfig config = ExtractableConfig.imports(setup);
             type = config.getType();
             resources.setMax(config.getQuantity());
             resources.fill();
@@ -126,24 +121,40 @@ public class ExtractableModel extends FeatureModel implements Extractable
     @Override
     public int getInTileX()
     {
-        return map.getInTileX(transformable);
+        if (map.isCreated())
+        {
+            return map.getInTileX(transformable);
+        }
+        return 0;
     }
 
     @Override
     public int getInTileY()
     {
-        return map.getInTileY(transformable);
+        if (map.isCreated())
+        {
+            return map.getInTileY(transformable);
+        }
+        return 0;
     }
 
     @Override
     public int getInTileWidth()
     {
-        return (int) Math.floor(transformable.getWidth() / (double) map.getTileWidth());
+        if (map.isCreated())
+        {
+            return (int) Math.floor(transformable.getWidth() / (double) map.getTileWidth());
+        }
+        return 0;
     }
 
     @Override
     public int getInTileHeight()
     {
-        return (int) Math.floor(transformable.getHeight() / (double) map.getInTileHeight());
+        if (map.isCreated())
+        {
+            return (int) Math.floor(transformable.getHeight() / (double) map.getInTileHeight());
+        }
+        return 0;
     }
 }

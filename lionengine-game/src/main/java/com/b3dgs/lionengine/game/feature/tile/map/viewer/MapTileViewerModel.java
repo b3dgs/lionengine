@@ -22,7 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Map tile renderer default implementation.
  */
-public class MapTileViewerModel extends FeatureModel implements MapTileViewer
+public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
 {
     /** Map tiles renderers. */
     private final Collection<MapTileRenderer> renderers = new ArrayList<>();
@@ -63,7 +63,6 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
 
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
-
         renderers.add(new MapTileRendererModel());
     }
 

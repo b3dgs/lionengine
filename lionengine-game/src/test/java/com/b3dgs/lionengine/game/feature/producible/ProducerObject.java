@@ -20,12 +20,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Object producer test.
  */
 final class ProducerObject extends FeaturableModel implements ProducerChecker
 {
+    /**
+     * Constructor.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
+     */
+    public ProducerObject(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     /** Checker. */
     final AtomicBoolean check = new AtomicBoolean(true);
 

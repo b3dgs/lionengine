@@ -17,8 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Feature model implementation.
@@ -27,63 +26,28 @@ import com.b3dgs.lionengine.game.FeatureProvider;
  * it/them.
  * </p>
  */
-public class FeatureModel implements Feature
+public class FeatureModel extends FeatureAbstract
 {
-    /** The provider reference. */
-    private FeatureProvider provider;
+    /** Services reference. */
+    protected final Services services;
+    /** Services reference. */
+    protected final Setup setup;
 
     /**
      * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public FeatureModel()
+    public FeatureModel(Services services, Setup setup)
     {
         super();
-    }
 
-    /*
-     * Feature
-     */
+        Check.notNull(services);
+        Check.notNull(setup);
 
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        Check.notNull(provider);
-
-        this.provider = provider;
-
-        if (this instanceof IdentifiableListener && provider.hasFeature(Identifiable.class))
-        {
-            provider.getFeature(Identifiable.class).addListener((IdentifiableListener) this);
-        }
-    }
-
-    @Override
-    public void checkListener(Object listener)
-    {
-        Check.notNull(listener);
-    }
-
-    @Override
-    public <C extends Feature> C getFeature(Class<C> feature)
-    {
-        return provider.getFeature(feature);
-    }
-
-    @Override
-    public Iterable<Feature> getFeatures()
-    {
-        return provider.getFeatures();
-    }
-
-    @Override
-    public Iterable<Class<? extends Feature>> getFeaturesType()
-    {
-        return provider.getFeaturesType();
-    }
-
-    @Override
-    public boolean hasFeature(Class<? extends Feature> feature)
-    {
-        return provider.hasFeature(feature);
+        this.services = services;
+        this.setup = setup;
     }
 }

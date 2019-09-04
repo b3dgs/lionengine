@@ -35,10 +35,13 @@ public class MirrorableModel extends FeatureModel implements Mirrorable, Recycla
 
     /**
      * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
      */
-    public MirrorableModel()
+    public MirrorableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     /**

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.assignable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Object containing action.
@@ -31,11 +33,13 @@ final class ObjectAssign extends FeaturableModel implements Assign
     /**
      * Constructor.
      * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      * @param assigned The assigned flag.
      */
-    public ObjectAssign(AtomicBoolean assigned)
+    public ObjectAssign(Services services, Setup setup, AtomicBoolean assigned)
     {
-        super();
+        super(services, setup);
 
         this.assigned = assigned;
     }

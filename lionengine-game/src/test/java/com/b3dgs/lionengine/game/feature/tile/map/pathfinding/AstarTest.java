@@ -20,8 +20,11 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -32,6 +35,26 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
  */
 public final class AstarTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+
     /**
      * Test the constructor.
      */
@@ -47,7 +70,6 @@ public final class AstarTest
     @Test
     public void testCreatePathFinder()
     {
-        final Services services = new Services();
         final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTilePathModel(services));

@@ -80,7 +80,7 @@ final class UtilMapTilePersister
     public static MapTile loadMap(Media level) throws IOException
     {
         final Services services = new Services();
-        final MapTile map = services.create(MapTileGame.class);
+        final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTilePersisterModel(services));
         try (FileReading input = new FileReading(level))
         {

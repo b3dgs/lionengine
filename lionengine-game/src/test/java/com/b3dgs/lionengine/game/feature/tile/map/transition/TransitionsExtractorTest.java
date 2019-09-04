@@ -33,6 +33,9 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 
@@ -41,6 +44,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
  */
 public final class TransitionsExtractorTest
 {
+    /** Object config test. */
+    private static Media media;
     /** Test configuration. */
     private static Media config;
 
@@ -51,6 +56,7 @@ public final class TransitionsExtractorTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        media = UtilTransformable.createMedia(TransitionsExtractorTest.class);
         config = UtilMapTransition.createTransitions();
     }
 
@@ -60,6 +66,7 @@ public final class TransitionsExtractorTest
     @AfterAll
     public static void cleanUp()
     {
+        assertTrue(media.getFile().delete());
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
@@ -67,10 +74,12 @@ public final class TransitionsExtractorTest
     /**
      * Create the map and configure it.
      * 
+     * @param services The services reference.
+     * @param setup The setup.
      * @param tileNumber The number to fill.
      * @return The configured map.
      */
-    private static MapTile createMap(int tileNumber)
+    private static MapTile createMap(Services services, Setup setup, int tileNumber)
     {
         final MapTile map = UtilMap.createMap(tileNumber);
         map.getFeature(MapTileTransition.class).loadTransitions(config);
@@ -98,21 +107,24 @@ public final class TransitionsExtractorTest
         assertTrue(transitions.get(transition).contains(Integer.valueOf(number)));
     }
 
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+
     /**
      * Test the transitions extraction.
      */
     @Test
     public void testExtraction()
     {
-        final MapTile map = createMap(7);
+        final MapTile map = createMap(services, setup, 7);
         UtilMap.fill(map, TILE_WATER);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
-        final MapTile map2 = createMap(7);
+        final MapTile map2 = createMap(services, setup, 7);
         UtilMap.fill(map2, TILE_GROUND);
         UtilMap.fill(map2, TILE_WATER, TILE_TRANSITION, 3);
 
-        final MapTile map3 = createMap(3);
+        final MapTile map3 = createMap(services, setup, 3);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
         final Map<Transition, Collection<Integer>> transitions = extractor.getTransitions(Arrays.asList(map,

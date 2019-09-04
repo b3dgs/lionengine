@@ -16,12 +16,15 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 
 /**
@@ -44,10 +47,14 @@ public class LaunchableModel extends FeatureModel implements Launchable
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public LaunchableModel()
+    public LaunchableModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     /*

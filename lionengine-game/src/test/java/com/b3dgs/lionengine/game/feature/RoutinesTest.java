@@ -21,8 +21,12 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -30,7 +34,32 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 public final class RoutinesTest
 {
-    private final FeaturableModel featurable = new FeaturableModel();
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeAll
+    public static void beforeTests()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilTransformable.createMedia(RoutinesTest.class);
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterAll
+    public static void afterTests()
+    {
+        assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(null);
+    }
+
+    private final Services services = new Services();
+    private final Setup setup = new Setup(config);
+    private final FeaturableModel featurable = new FeaturableModel(services, setup);
 
     /**
      * Test the routines.
@@ -38,9 +67,9 @@ public final class RoutinesTest
     @Test
     public void testRoutines()
     {
-        final MyRoutine routine = new MyRoutine();
+        final MyRoutine routine = new MyRoutine(services, setup);
         featurable.addFeature(routine);
-        final Routines routines = featurable.addFeatureAndGet(new Routines());
+        final Routines routines = featurable.addFeatureAndGet(new Routines(services, setup));
 
         assertFalse(routine.update.get());
         assertFalse(routine.render.get());
@@ -62,6 +91,11 @@ public final class RoutinesTest
     @FeatureInterface
     private class MyRoutine extends FeatureModel implements Routine
     {
+        private MyRoutine(Services services, Setup setup)
+        {
+            super(services, setup);
+        }
+
         private final AtomicBoolean update = new AtomicBoolean();
         private final AtomicBoolean render = new AtomicBoolean();
 
