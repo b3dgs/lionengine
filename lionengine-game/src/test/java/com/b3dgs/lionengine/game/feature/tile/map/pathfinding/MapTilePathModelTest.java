@@ -82,7 +82,7 @@ public final class MapTilePathModelTest
     {
         services.add(new Camera());
         map.addFeature(new MapTileGroupModel());
-        map.create(1, 1, 3, 3);
+        map.create(1, 1, 7, 7);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
         mapPath = map.addFeatureAndGet(new MapTilePathModel(services));
@@ -98,16 +98,53 @@ public final class MapTilePathModelTest
     public void testGetFreeTileAround()
     {
         final Pathfindable pathfindable = createObject();
-        final TileArea tile = new TileArea(1, 2, 1, 1);
+        final TileArea tile = new TileArea(3, 3, 1, 1);
         CoordTile coord = mapPath.getFreeTileAround(pathfindable, tile);
 
-        assertEquals(0, coord.getX());
+        assertEquals(2, coord.getX());
+        assertEquals(4, coord.getY());
+
+        mapPath.addObjectId(2, 4, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
+
+        assertEquals(2, coord.getX());
         assertEquals(3, coord.getY());
 
-        coord = mapPath.getFreeTileAround(pathfindable, tile, 4);
+        mapPath.addObjectId(2, 3, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
 
-        assertEquals(0, coord.getX());
+        assertEquals(2, coord.getX());
+        assertEquals(2, coord.getY());
+
+        mapPath.addObjectId(2, 2, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
+
+        assertEquals(3, coord.getX());
+        assertEquals(2, coord.getY());
+
+        mapPath.addObjectId(3, 2, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
+
+        assertEquals(4, coord.getX());
+        assertEquals(2, coord.getY());
+
+        mapPath.addObjectId(4, 2, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
+
+        assertEquals(4, coord.getX());
         assertEquals(3, coord.getY());
+
+        mapPath.addObjectId(4, 3, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
+
+        assertEquals(4, coord.getX());
+        assertEquals(4, coord.getY());
+
+        mapPath.addObjectId(4, 4, Integer.valueOf(10));
+        coord = mapPath.getFreeTileAround(pathfindable, tile);
+
+        assertEquals(1, coord.getX());
+        assertEquals(5, coord.getY());
     }
 
     /**
