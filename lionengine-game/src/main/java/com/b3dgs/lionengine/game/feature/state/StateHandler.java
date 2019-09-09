@@ -55,8 +55,6 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
 
     /** List of available states. */
     private final Map<Class<? extends State>, State> states = new HashMap<>();
-    /** Configurer reference. */
-    private final Setup setup;
     /** Animation name converter. */
     private final Function<Class<? extends State>, String> converter;
     /** Transition listeners. */
@@ -100,7 +98,6 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
 
         Check.notNull(converter);
 
-        this.setup = setup;
         this.converter = converter;
     }
 
