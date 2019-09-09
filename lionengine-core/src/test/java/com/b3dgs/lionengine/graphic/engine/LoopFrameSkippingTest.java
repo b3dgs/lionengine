@@ -119,7 +119,7 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(1000L, thread::join);
+        assertTimeout(10_000L, thread::join);
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
 
@@ -143,7 +143,7 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(1000L, thread::join);
+        assertTimeout(10_000L, thread::join);
         assertTrue(tick.get() >= maxTick.get(), tick.get() + " " + maxTick.get());
 
         final boolean min = rendered.get() >= Math.round(Math.floor(tick.get() / 2.0));
@@ -170,7 +170,7 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(1000L, thread::join);
+        assertTimeout(10_000L, thread::join);
         assertTrue(tick.get() >= maxTick.get(), tick.get() + " " + maxTick.get());
         assertTrue(rendered.get() <= tick.get(), rendered.get() + " " + tick.get());
         assertTrue(rendered.get() > 0, String.valueOf(rendered.get()));
@@ -193,7 +193,7 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(2000L, thread::join);
+        assertTimeout(10_000L, thread::join);
 
         final double frameTimeMilli = 1000.0 / 50L;
         assertEquals(Math.round(Math.floor(maxFrameTime / frameTimeMilli)), tick.get());
@@ -240,7 +240,7 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(1000L, thread::join);
+        assertTimeout(10_000L, thread::join);
 
         assertEquals(maxTick.get(), tick.get());
         assertEquals(tick.get(), rendered.get());
@@ -263,11 +263,11 @@ public final class LoopFrameSkippingTest
         final Thread thread = getTask(screen);
         thread.start();
 
-        assertTimeout(1000L, latch::await);
+        assertTimeout(10_000L, latch::await);
 
         loop.stop();
 
-        assertTimeout(1000L, thread::join);
+        assertTimeout(10_000L, thread::join);
         assertEquals(0, tick.get());
         assertEquals(0, rendered.get());
         assertEquals(-1, computed.get());
