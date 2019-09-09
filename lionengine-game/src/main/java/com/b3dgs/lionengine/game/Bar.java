@@ -103,7 +103,7 @@ public class Bar implements Renderable
             }
             else
             {
-                y1 = y + vBorder + (int) Math.ceil(ry - pHeight / 100.0 * ry);
+                y1 = y + vBorder + (int) Math.floor(ry - pHeight / 100.0 * ry);
                 y2 = (int) Math.ceil(ry * (pHeight / 100.0));
             }
 
