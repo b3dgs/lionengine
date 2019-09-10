@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilTransformable;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 
 /**
@@ -66,6 +67,35 @@ public final class ExtractableModelTest
     private final Setup setup = new Setup(config);
 
     /**
+     * Test the extraction config with node.
+     */
+    @Test
+    public void testConfigWithNode()
+    {
+        final MapTile map = new MapTileGame();
+        map.create(16, 16, 4, 4);
+        services.add(map);
+
+        final Featurable featurable = new FeaturableModel(services, setup);
+        featurable.addFeatureAndGet(new TransformableModel(services, setup)).teleport(16, 32);
+
+        final Media media = UtilExtractable.createMedia();
+        final Extractable extractable = new ExtractableModel(services, new Setup(media));
+        extractable.prepare(featurable);
+
+        assertEquals(10, extractable.getResourceQuantity());
+        assertEquals("gold", extractable.getResourceType());
+        assertEquals(1, extractable.getInTileX());
+        assertEquals(2, extractable.getInTileY());
+        assertEquals(1, extractable.getInTileWidth());
+        assertEquals(2, extractable.getInTileHeight());
+
+        extractable.getFeature(Identifiable.class).notifyDestroyed();
+
+        assertTrue(media.getFile().delete());
+    }
+
+    /**
      * Test the extraction config.
      */
     @Test
@@ -75,7 +105,6 @@ public final class ExtractableModelTest
 
         assertEquals(10, extractable.getResourceQuantity());
         assertEquals("wood", extractable.getResourceType());
-
         assertEquals(0, extractable.getInTileX());
         assertEquals(0, extractable.getInTileY());
         assertEquals(0, extractable.getInTileWidth());

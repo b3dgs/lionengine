@@ -153,7 +153,7 @@ public class ExtractableModel extends FeatureModel implements Extractable
     {
         if (map.isCreated())
         {
-            return (int) Math.floor(transformable.getHeight() / (double) map.getInTileHeight());
+            return (int) Math.floor(transformable.getHeight() / (double) map.getTileHeight());
         }
         return 0;
     }
