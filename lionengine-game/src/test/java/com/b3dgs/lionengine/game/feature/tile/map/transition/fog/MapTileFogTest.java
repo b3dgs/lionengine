@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -92,6 +94,17 @@ public final class MapTileFogTest
         fog.create(map, Medias.create("fog.xml"), null);
         Medias.setLoadFromJar(null);
 
+        final AtomicInteger rtx = new AtomicInteger();
+        final AtomicInteger rty = new AtomicInteger();
+        final AtomicInteger count = new AtomicInteger();
+        final RevealedListener listener = (tx, ty) ->
+        {
+            rtx.set(tx);
+            rty.set(ty);
+            count.incrementAndGet();
+        };
+        fog.addListener(listener);
+
         assertEquals(16, fog.getTile(2, 3).getNumber());
         assertEquals(16, fog.getTile(3, 3).getNumber());
         assertEquals(16, fog.getTile(4, 3).getNumber());
@@ -108,10 +121,20 @@ public final class MapTileFogTest
         assertEquals(0, fog.getTile(3, 4).getNumber());
         assertEquals(9, fog.getTile(4, 4).getNumber());
 
+        assertEquals(1, count.get());
+        assertEquals(3, rtx.get());
+        assertEquals(3, rty.get());
+
         fog.reset(fovable);
+        fog.removeListener(listener);
+        count.set(0);
 
         assertEquals(16, fog.getTile(2, 3).getNumber());
         assertEquals(16, fog.getTile(3, 3).getNumber());
         assertEquals(16, fog.getTile(4, 3).getNumber());
+
+        fog.updateFov(fovable);
+
+        assertEquals(0, count.get());
     }
 }

@@ -16,8 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -113,6 +116,17 @@ public final class FogOfWarTest
         fog.create(map, Medias.create("fog.xml"));
         Medias.setLoadFromJar(null);
 
+        final AtomicInteger rtx = new AtomicInteger();
+        final AtomicInteger rty = new AtomicInteger();
+        final AtomicInteger count = new AtomicInteger();
+        final RevealedListener listener = (tx, ty) ->
+        {
+            rtx.set(tx);
+            rty.set(ty);
+            count.incrementAndGet();
+        };
+        fog.addListener(listener);
+
         assertFalse(fog.isFogged(2, 3));
         assertFalse(fog.isFogged(3, 3));
         assertFalse(fog.isFogged(4, 3));
@@ -138,7 +152,13 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(4, 3));
         assertTrue(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
 
+        assertEquals(1, count.get());
+        assertEquals(3, rtx.get());
+        assertEquals(3, rty.get());
+
         transformable.setLocation(6, 6);
+        fog.removeListener(listener);
+        count.set(0);
         fog.update(fovable);
 
         assertFalse(fog.isFogged(2, 3));
@@ -150,6 +170,20 @@ public final class FogOfWarTest
         assertFalse(fog.isVisited(2, 3));
         assertTrue(fog.isVisited(3, 3));
         assertFalse(fog.isVisited(4, 3));
+        assertTrue(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
+        assertEquals(0, count.get());
+
+        fog.setEnabled(false, false);
+
+        assertFalse(fog.isFogged(2, 3));
+        assertFalse(fog.isFogged(3, 3));
+        assertFalse(fog.isFogged(4, 3));
+        assertTrue(fog.isVisible(map.getTile(2, 3)));
+        assertTrue(fog.isVisible(map.getTile(3, 3)));
+        assertTrue(fog.isVisible(map.getTile(4, 3)));
+        assertTrue(fog.isVisited(2, 3));
+        assertTrue(fog.isVisited(3, 3));
+        assertTrue(fog.isVisited(4, 3));
         assertTrue(fog.isVisited(Geom.createArea(3, 3, 1, 1)));
     }
 
