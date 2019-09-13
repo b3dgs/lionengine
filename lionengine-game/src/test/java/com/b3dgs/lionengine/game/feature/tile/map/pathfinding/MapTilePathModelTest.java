@@ -17,6 +17,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.pathfinding;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -38,6 +40,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator.TileArea;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Test {@link MapTilePathModel}.
@@ -99,7 +102,7 @@ public final class MapTilePathModelTest
     {
         final Pathfindable pathfindable = createObject();
         final TileArea tile = new TileArea(3, 3, 1, 1);
-        CoordTile coord = mapPath.getFreeTileAround(pathfindable, tile);
+        CoordTile coord = mapPath.getFreeTileAround(pathfindable, tile, map.getInTileRadius());
 
         assertEquals(2, coord.getX());
         assertEquals(4, coord.getY());
@@ -148,6 +151,25 @@ public final class MapTilePathModelTest
     }
 
     /**
+     * Test the get free tile around with none found.
+     */
+    @Test
+    public void testGetFreeTileAroundNone()
+    {
+        final Pathfindable pathfindable = createObject();
+        final TileArea tile = new TileArea(0, 0, 10, 10);
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 10; y++)
+            {
+                mapPath.addObjectId(x, y, Integer.valueOf(10));
+            }
+        }
+
+        assertNull(mapPath.getFreeTileAround(pathfindable, tile, map.getInTileRadius()));
+    }
+
+    /**
      * Test the closest tile available.
      */
     @Test
@@ -164,6 +186,57 @@ public final class MapTilePathModelTest
 
         assertEquals(2, coord.getX());
         assertEquals(3, coord.getY());
+    }
+
+    /**
+     * Test the is area available.
+     */
+    @Test
+    public void testIsAreaAvailable()
+    {
+        mapPath.addObjectId(-1, 0, Integer.valueOf(10));
+        mapPath.addObjectId(10, 0, Integer.valueOf(10));
+        mapPath.addObjectId(0, -1, Integer.valueOf(10));
+        mapPath.addObjectId(0, 10, Integer.valueOf(10));
+        mapPath.addObjectId(-1, -1, Integer.valueOf(10));
+        mapPath.addObjectId(10, 10, Integer.valueOf(10));
+
+        assertTrue(mapPath.getObjectsId(-1, 0).isEmpty());
+        assertTrue(mapPath.getObjectsId(10, 0).isEmpty());
+        assertTrue(mapPath.getObjectsId(0, -1).isEmpty());
+        assertTrue(mapPath.getObjectsId(0, 10).isEmpty());
+        assertTrue(mapPath.getObjectsId(-1, -1).isEmpty());
+        assertTrue(mapPath.getObjectsId(10, 10).isEmpty());
+
+        for (int x = 1; x < 4; x++)
+        {
+            for (int y = 1; y < 4; y++)
+            {
+                mapPath.addObjectId(x, y, Integer.valueOf(10));
+            }
+        }
+        final Pathfindable mover = createObject();
+
+        assertTrue(mapPath.isAreaAvailable(Geom.createArea(0, 0, 1, 1), mover));
+        assertFalse(mapPath.isAreaAvailable(Geom.createArea(2, 2, 2, 2), mover));
+        assertTrue(mapPath.isAreaAvailable(Geom.createArea(4, 4, 2, 2), mover));
+
+        for (int x = 1; x < 4; x++)
+        {
+            for (int y = 1; y < 4; y++)
+            {
+                mapPath.removeObjectId(x, y, Integer.valueOf(10));
+            }
+        }
+
+        assertTrue(mapPath.isAreaAvailable(Geom.createArea(2, 2, 2, 2), mover));
+
+        mapPath.removeObjectId(-1, 0, Integer.valueOf(10));
+        mapPath.removeObjectId(10, 0, Integer.valueOf(10));
+        mapPath.removeObjectId(0, -1, Integer.valueOf(10));
+        mapPath.removeObjectId(0, 10, Integer.valueOf(10));
+        mapPath.removeObjectId(-1, -1, Integer.valueOf(10));
+        mapPath.removeObjectId(10, 10, Integer.valueOf(10));
     }
 
     /**

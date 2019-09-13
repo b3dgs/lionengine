@@ -97,13 +97,10 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
         if (tile != null)
         {
             final String category = getCategory(tile);
-            if (mover.isBlocking(category)
-                || !ids.isEmpty() && (ignoreObjectId == null || !ids.contains(ignoreObjectId)))
-            {
-                return true;
-            }
+            return mover.isBlocking(category)
+                   || !ids.isEmpty() && (ignoreObjectId == null || !ids.contains(ignoreObjectId));
         }
-        return false;
+        return true;
     }
 
     /**
