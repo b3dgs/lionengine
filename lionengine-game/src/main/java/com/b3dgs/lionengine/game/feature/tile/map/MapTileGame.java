@@ -311,6 +311,8 @@ public class MapTileGame extends FeaturableAbstract implements MapTile
     @Override
     public void setTile(int tx, int ty, int number)
     {
+        Check.superiorStrict(tx, -1);
+        Check.superiorStrict(ty, -1);
         Check.inferiorStrict(tx, getInTileWidth());
         Check.inferiorStrict(ty, getInTileHeight());
 
