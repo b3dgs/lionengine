@@ -337,6 +337,9 @@ public final class CollidableModelTest
 
         collidable1.setEnabled(false);
         collidable1.render(g);
+
+        collidable1.setEnabled(true);
+        collidable1.render(g);
     }
 
     /**
