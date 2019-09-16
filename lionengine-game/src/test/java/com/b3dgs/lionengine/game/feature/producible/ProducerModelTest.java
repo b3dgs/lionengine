@@ -183,7 +183,7 @@ public final class ProducerModelTest
         assertEquals(featurable, start.get());
         assertNull(current.get());
         assertTrue(producer.isProducing());
-        assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
+        assertEquals(featurable, producer.getProducingElement());
 
         producer.update(1.0);
 
@@ -247,7 +247,7 @@ public final class ProducerModelTest
         assertEquals(featurable, start.get());
         assertNull(current.get());
         assertTrue(producer.isProducing());
-        assertEquals(featurable.getFeature(Producible.class).getMedia(), producer.getProducingElement());
+        assertEquals(featurable, producer.getProducingElement());
 
         producer.update(1.0);
 

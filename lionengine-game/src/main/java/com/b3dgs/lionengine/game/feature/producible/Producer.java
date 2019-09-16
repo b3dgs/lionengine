@@ -20,7 +20,6 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -30,7 +29,7 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * Represents an ability of creating new object.
  */
 @FeatureInterface
-public interface Producer extends Feature, Updatable, Listenable<ProducerListener>
+public interface Producer extends Feature, Updatable, Listenable<ProducerListener>, Iterable<Featurable>
 {
     /**
      * Set the production checker.
@@ -82,17 +81,18 @@ public interface Producer extends Feature, Updatable, Listenable<ProducerListene
     int getProgressPercent();
 
     /**
-     * Get media of current producing element.
+     * Get current producing element.
      * 
-     * @return The media of current producing element.
+     * @return The current producing element, <code>null</code> if none.
      */
-    Media getProducingElement();
+    Featurable getProducingElement();
 
     /**
      * Get production iterator.
      * 
      * @return The list of production.
      */
+    @Override
     Iterator<Featurable> iterator();
 
     /**

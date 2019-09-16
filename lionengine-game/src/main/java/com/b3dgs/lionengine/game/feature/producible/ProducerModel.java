@@ -24,7 +24,6 @@ import java.util.Queue;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -51,8 +50,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     private double stepsPerTick = 1.0;
     /** Current element being under production. */
     private Featurable current;
-    /** Current object being under production. */
-    private Featurable currentObject;
     /** Current production steps. */
     private int steps;
     /** Production progress. */
@@ -113,7 +110,7 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
 
         for (int i = 0; i < listenable.size(); i++)
         {
-            listenable.get(i).notifyProducing(currentObject);
+            listenable.get(i).notifyProducing(current);
         }
         for (final ProducibleListener listener : current.getFeature(Producible.class).getListeners())
         {
@@ -141,9 +138,8 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         }
         for (int i = 0; i < listenable.size(); i++)
         {
-            listenable.get(i).notifyProduced(currentObject);
+            listenable.get(i).notifyProduced(current);
         }
-        currentObject = null;
         progress = -1;
 
         // Next production
@@ -189,7 +185,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
         final Producible producible = featurable.getFeature(Producible.class);
         transformable.teleport(producible.getX(), producible.getY());
         handler.add(featurable);
-        currentObject = featurable;
         steps = current.getFeature(Producible.class).getSteps();
         progress = 0.0;
         for (int i = 0; i < listenable.size(); i++)
@@ -294,8 +289,6 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     {
         if (isProducing())
         {
-            handler.remove(currentObject);
-            currentObject = null;
             current = null;
             progress = -1;
             steps = 0;
@@ -336,13 +329,9 @@ public class ProducerModel extends FeatureModel implements Producer, Recyclable
     }
 
     @Override
-    public Media getProducingElement()
+    public Featurable getProducingElement()
     {
-        if (current == null)
-        {
-            return null;
-        }
-        return current.getFeature(Producible.class).getMedia();
+        return current;
     }
 
     @Override
