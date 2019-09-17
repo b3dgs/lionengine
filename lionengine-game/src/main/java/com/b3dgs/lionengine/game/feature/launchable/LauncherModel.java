@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -45,7 +46,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 /**
  * Launcher model implementation.
  */
-public class LauncherModel extends FeatureModel implements Launcher
+public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 {
     /** Launcher listeners. */
     private final ListenableModel<LauncherListener> listenable = new ListenableModel<>();
@@ -115,7 +116,6 @@ public class LauncherModel extends FeatureModel implements Launcher
         config = LauncherConfig.imports(setup);
         launchables = config.get(0).getLaunchables();
         rate = config.get(0).getRate();
-        fire.start();
     }
 
     /**
@@ -379,5 +379,11 @@ public class LauncherModel extends FeatureModel implements Launcher
     public long getRate()
     {
         return rate;
+    }
+
+    @Override
+    public void recycle()
+    {
+        fire.restart();
     }
 }

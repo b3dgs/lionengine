@@ -111,8 +111,9 @@ final class UtilLaunchable
             featurable.addFeature(new TransformableModel(services, setup));
         }
 
-        final Launcher launcher = new LauncherModel(services, setup);
+        final LauncherModel launcher = new LauncherModel(services, setup);
         launcher.prepare(featurable);
+        launcher.recycle();
         launcher.setOffset(1, 2);
         launcher.setRate(10);
 
