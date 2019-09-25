@@ -163,12 +163,12 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     {
         final int tx = tiled.getInTileX();
         final int ty = tiled.getInTileY();
-        final int tw = tiled.getInTileWidth();
-        final int th = tiled.getInTileHeight();
+        final int itw = tiled.getInTileWidth();
+        final int ith = tiled.getInTileHeight();
 
-        for (int ctx = tx; ctx < tx + tw; ctx++)
+        for (int ctx = tx; ctx < tx + itw; ctx++)
         {
-            for (int cty = ty; cty < ty + th; cty++)
+            for (int cty = ty; cty < ty + ith; cty++)
             {
                 if (isVisited(ctx, cty) && !isFogged(ctx, cty))
                 {
