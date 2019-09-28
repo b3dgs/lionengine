@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Feature;
 
 /**
  * Camera tracking implementation.
@@ -100,6 +101,16 @@ public class CameraTracker extends FeaturableAbstract
     public void track(Featurable featurable)
     {
         tracked = featurable.getFeature(Transformable.class);
+    }
+
+    /*
+     * Featurable
+     */
+
+    @Override
+    public final void addFeature(Feature feature)
+    {
+        super.addFeature(feature);
     }
 
     /**
