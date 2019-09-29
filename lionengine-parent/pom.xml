@@ -41,6 +41,14 @@
     </properties>
     <repositories>
         <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>snapshots</id>
             <name>Snapshot Repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
