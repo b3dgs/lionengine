@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -97,6 +98,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
         super(services, setup);
 
         viewer = services.get(Viewer.class);
+
+        origin = OriginConfig.imports(setup);
 
         final FramesConfig framesData = FramesConfig.imports(setup);
         final int hf = framesData.getHorizontal();
