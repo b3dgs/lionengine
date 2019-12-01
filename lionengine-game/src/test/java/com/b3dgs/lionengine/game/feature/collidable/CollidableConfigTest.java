@@ -16,9 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -71,11 +71,11 @@ public final class CollidableConfigTest
     @Test
     public void testExportsImports()
     {
-        final String group = "1";
+        final int group = 1;
         final Media media = Medias.create("object.xml");
         final Xml root = new Xml("test");
-        final Xml node = root.createChild("lionengine:group");
-        node.setText(group);
+        final Xml node = root.createChild("lionengine:collidable");
+        node.writeInteger(CollidableConfig.ATT_GROUP, group);
         root.save(media);
 
         assertEquals(Integer.valueOf(group), CollidableConfig.imports(new Configurer(media)));
@@ -90,11 +90,11 @@ public final class CollidableConfigTest
     {
         final Media media = Medias.create("object.xml");
         final Xml root = new Xml("test");
-        final Xml node = root.createChild("lionengine:group");
-        node.setText("a");
+        final Xml node = root.createChild("lionengine:collidable");
+        node.writeString(CollidableConfig.ATT_GROUP, "a");
         root.save(media);
 
-        assertThrows(() -> CollidableConfig.imports(new Configurer(media)), CollidableConfig.ERROR_INVALID_GROUP + "a");
+        assertCause(() -> CollidableConfig.imports(new Configurer(media)), NumberFormatException.class);
         assertTrue(media.getFile().delete());
     }
 

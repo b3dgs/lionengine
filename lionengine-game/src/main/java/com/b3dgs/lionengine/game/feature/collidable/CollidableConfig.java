@@ -32,8 +32,10 @@ import com.b3dgs.lionengine.game.Configurer;
  */
 public final class CollidableConfig
 {
-    /** Collidable group node. */
-    public static final String NODE_GROUP = Constant.XML_PREFIX + "group";
+    /** Collidable node. */
+    public static final String NODE_COLLIDABLE = Constant.XML_PREFIX + "collidable";
+    /** Collidable group attribute name. */
+    public static final String ATT_GROUP = "group";
     /** Default group. */
     public static final Integer DEFAULT_GROUP = Integer.valueOf(0);
     /** Error invalid group. */
@@ -50,19 +52,19 @@ public final class CollidableConfig
     {
         Check.notNull(configurer);
 
-        if (configurer.hasNode(NODE_GROUP))
+        if (configurer.hasNode(NODE_COLLIDABLE))
         {
-            final String group = configurer.getText(NODE_GROUP);
             try
             {
-                return Integer.valueOf(group);
+                return Integer.valueOf(configurer.getIntegerDefault(DEFAULT_GROUP.intValue(),
+                                                                    ATT_GROUP,
+                                                                    NODE_COLLIDABLE));
             }
             catch (final NumberFormatException exception)
             {
-                throw new LionEngineException(exception, ERROR_INVALID_GROUP + group);
+                throw new LionEngineException(exception, ERROR_INVALID_GROUP);
             }
         }
-
         return DEFAULT_GROUP;
     }
 
@@ -78,8 +80,8 @@ public final class CollidableConfig
         Check.notNull(root);
         Check.notNull(collidable);
 
-        final Xml node = root.createChild(NODE_GROUP);
-        node.setText(collidable.getGroup().toString());
+        final Xml node = root.createChild(NODE_COLLIDABLE);
+        node.writeInteger(ATT_GROUP, collidable.getGroup().intValue());
     }
 
     /**

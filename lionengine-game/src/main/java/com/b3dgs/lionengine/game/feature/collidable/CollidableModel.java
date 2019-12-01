@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.IdentifiableListener;
@@ -66,7 +67,7 @@ public class CollidableModel extends FeatureModel
     /** Transformable owning this model. */
     private Transformable transformable;
     /** Origin used. */
-    private Origin origin = Origin.TOP_LEFT;
+    private Origin origin;
 
     /**
      * Create feature.
@@ -100,6 +101,7 @@ public class CollidableModel extends FeatureModel
 
         group = CollidableConfig.imports(setup);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
+        origin = OriginConfig.imports(setup);
     }
 
     /*
