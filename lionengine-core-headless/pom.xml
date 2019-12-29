@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>9.0.3-SNAPSHOT</version>
+        <version>9.0.3</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-core-headless</artifactId>
