@@ -16,6 +16,12 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -36,19 +42,25 @@ public final class CollidableConfig
     public static final String NODE_COLLIDABLE = Constant.XML_PREFIX + "collidable";
     /** Collidable group attribute name. */
     public static final String ATT_GROUP = "group";
+    /** Collidable accepted groups attribute name. */
+    public static final String ATT_ACCEPTED = "accepted";
     /** Default group. */
     public static final Integer DEFAULT_GROUP = Integer.valueOf(0);
     /** Error invalid group. */
     static final String ERROR_INVALID_GROUP = "Invalid group: ";
+    /** Accepted separator. */
+    private static final String ACCEPTED_SEPARATOR = Constant.PERCENT;
+    /** Minimum to string length. */
+    private static final int MIN_LENGTH = 38;
 
     /**
      * Create the collidable data from node.
      * 
      * @param configurer The configurer reference (must not be <code>null</code>).
-     * @return The associated group, {@link #DEFAULT_GROUP} if not defined.
+     * @return The config loaded.
      * @throws LionEngineException If unable to read node.
      */
-    public static Integer imports(Configurer configurer)
+    public static CollidableConfig imports(Configurer configurer)
     {
         Check.notNull(configurer);
 
@@ -56,16 +68,32 @@ public final class CollidableConfig
         {
             try
             {
-                return Integer.valueOf(configurer.getIntegerDefault(DEFAULT_GROUP.intValue(),
-                                                                    ATT_GROUP,
-                                                                    NODE_COLLIDABLE));
+                final Integer group = Integer.valueOf(configurer.getIntegerDefault(DEFAULT_GROUP.intValue(),
+                                                                                   ATT_GROUP,
+                                                                                   NODE_COLLIDABLE));
+                final String accepted = configurer.getStringDefault(Constant.EMPTY_STRING,
+                                                                    ATT_ACCEPTED,
+                                                                    NODE_COLLIDABLE);
+                final Collection<Integer> acceptedGroups;
+                if (accepted.isEmpty())
+                {
+                    acceptedGroups = new ArrayList<>();
+                }
+                else
+                {
+                    acceptedGroups = Arrays.asList(accepted.split(ACCEPTED_SEPARATOR))
+                                           .stream()
+                                           .map(Integer::valueOf)
+                                           .collect(Collectors.toSet());
+                }
+                return new CollidableConfig(group, acceptedGroups);
             }
             catch (final NumberFormatException exception)
             {
                 throw new LionEngineException(exception, ERROR_INVALID_GROUP);
             }
         }
-        return DEFAULT_GROUP;
+        return new CollidableConfig(DEFAULT_GROUP, Collections.emptySet());
     }
 
     /**
@@ -82,13 +110,100 @@ public final class CollidableConfig
 
         final Xml node = root.createChild(NODE_COLLIDABLE);
         node.writeInteger(ATT_GROUP, collidable.getGroup().intValue());
+
+        final StringBuilder accepted = new StringBuilder();
+        int count = collidable.getAccepted().size();
+        for (final Integer group : collidable.getAccepted())
+        {
+            accepted.append(group);
+            count--;
+            if (count > 1)
+            {
+                accepted.append(ACCEPTED_SEPARATOR);
+            }
+        }
+        node.writeString(ATT_ACCEPTED, accepted.toString());
     }
+
+    /** The defined group. */
+    private final Integer group;
+    /** The accepted groups. */
+    private final Collection<Integer> accepted;
 
     /**
      * Private constructor.
+     * 
+     * @param group The defined group.
+     * @param accepted The accepted groups.
      */
-    private CollidableConfig()
+    public CollidableConfig(Integer group, Collection<Integer> accepted)
     {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+        super();
+
+        this.group = group;
+        this.accepted = accepted;
+    }
+
+    /**
+     * Get the defined group.
+     * 
+     * @return The defined group.
+     */
+    public Integer getGroup()
+    {
+        return group;
+    }
+
+    /**
+     * Get the accepted groups.
+     * 
+     * @return The accepted groups.
+     */
+    public Collection<Integer> getAccepted()
+    {
+        return accepted;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + group.hashCode();
+        result = prime * result + accepted.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (object == null || object.getClass() != getClass())
+        {
+            return false;
+        }
+        final CollidableConfig other = (CollidableConfig) object;
+        return group.equals(other.getGroup())
+               && accepted.containsAll(other.getAccepted())
+               && other.getAccepted().containsAll(accepted);
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
+                                            .append(" [group=")
+                                            .append(group)
+                                            .append(", accepted=")
+                                            .append(accepted)
+                                            .append("]")
+                                            .toString();
     }
 }

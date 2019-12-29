@@ -18,8 +18,14 @@ package com.b3dgs.lionengine.game.feature.collidable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertHashEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertIterableEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -57,15 +63,6 @@ public final class CollidableConfigTest
     }
 
     /**
-     * Test constructor.
-     */
-    @Test
-    public void testConstructor()
-    {
-        assertPrivateConstructor(CollidableConfig.class);
-    }
-
-    /**
      * Test exports imports.
      */
     @Test
@@ -76,9 +73,12 @@ public final class CollidableConfigTest
         final Xml root = new Xml("test");
         final Xml node = root.createChild("lionengine:collidable");
         node.writeInteger(CollidableConfig.ATT_GROUP, group);
+        node.writeString(CollidableConfig.ATT_ACCEPTED, "1%2");
         root.save(media);
 
-        assertEquals(Integer.valueOf(group), CollidableConfig.imports(new Configurer(media)));
+        final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
+        assertEquals(1, config.getGroup().intValue());
+        assertIterableEquals(Arrays.asList(Integer.valueOf(1), Integer.valueOf(2)), config.getAccepted());
         assertTrue(media.getFile().delete());
     }
 
@@ -108,7 +108,7 @@ public final class CollidableConfigTest
         final Xml root = new Xml("test");
         root.save(media);
 
-        assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)));
+        assertEquals(CollidableConfig.DEFAULT_GROUP, CollidableConfig.imports(new Configurer(media)).getGroup());
         assertTrue(media.getFile().delete());
     }
 
@@ -127,11 +127,60 @@ public final class CollidableConfigTest
 
         final Collidable collidable = new CollidableModel(services, new Setup(media));
         collidable.setGroup(Integer.valueOf(1));
+        collidable.addAccept(Integer.valueOf(2));
         CollidableConfig.exports(root, collidable);
 
         root.save(media);
 
-        assertEquals(Integer.valueOf(1), CollidableConfig.imports(new Configurer(media)));
+        final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
+        assertEquals(Integer.valueOf(1), config.getGroup());
+        assertIterableEquals(Arrays.asList(Integer.valueOf(2)), config.getAccepted());
         assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test equals.
+     */
+    @Test
+    public void testEquals()
+    {
+        final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
+
+        assertEquals(config, config);
+        assertEquals(config, new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2))));
+
+        assertNotEquals(config, null);
+        assertNotEquals(config, new Object());
+        assertNotEquals(config, new CollidableConfig(Integer.valueOf(0), Arrays.asList(Integer.valueOf(2))));
+        assertNotEquals(config, new CollidableConfig(Integer.valueOf(1), Collections.emptyList()));
+        assertNotEquals(config, new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(0))));
+    }
+
+    /**
+     * Test hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
+
+        assertHashEquals(config, config);
+        assertHashEquals(config, new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2))));
+
+        assertHashNotEquals(config, new Object());
+        assertHashNotEquals(config, new CollidableConfig(Integer.valueOf(0), Arrays.asList(Integer.valueOf(2))));
+        assertHashNotEquals(config, new CollidableConfig(Integer.valueOf(1), Collections.emptyList()));
+        assertHashNotEquals(config, new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(0))));
+    }
+
+    /**
+     * Test the to string.
+     */
+    @Test
+    public void testToString()
+    {
+        final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
+
+        assertEquals("CollidableConfig [group=1, accepted=[2]]", config.toString());
     }
 }

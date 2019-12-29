@@ -99,7 +99,9 @@ public class CollidableModel extends FeatureModel
     {
         super(services, setup);
 
-        group = CollidableConfig.imports(setup);
+        final CollidableConfig config = CollidableConfig.imports(setup);
+        group = config.getGroup();
+        accepted.addAll(config.getAccepted());
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
         origin = OriginConfig.imports(setup);
     }
