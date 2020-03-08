@@ -18,6 +18,7 @@ package com.b3dgs.lionengine;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.logging.FileHandler;
@@ -174,10 +175,7 @@ public enum Verbose
         Check.notNull(verboses);
 
         LEVELS.clear();
-        for (final Verbose verbose : verboses)
-        {
-            LEVELS.add(verbose);
-        }
+        Collections.addAll(LEVELS, verboses);
     }
 
     /**

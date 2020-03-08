@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.b3dgs.lionengine.Check;
@@ -50,6 +51,8 @@ public final class CollidableConfig
     static final String ERROR_INVALID_GROUP = "Invalid group: ";
     /** Accepted separator. */
     private static final String ACCEPTED_SEPARATOR = Constant.PERCENT;
+    /** Accepted separator pattern. */
+    private static final Pattern ACCEPTED_SEPARATOR_PATTERN = Pattern.compile(ACCEPTED_SEPARATOR);
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 38;
 
@@ -81,7 +84,7 @@ public final class CollidableConfig
                 }
                 else
                 {
-                    acceptedGroups = Arrays.asList(accepted.split(ACCEPTED_SEPARATOR))
+                    acceptedGroups = Arrays.asList(ACCEPTED_SEPARATOR_PATTERN.split(accepted))
                                            .stream()
                                            .map(Integer::valueOf)
                                            .collect(Collectors.toSet());
