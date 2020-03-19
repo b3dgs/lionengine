@@ -66,6 +66,10 @@ class SpriteImpl implements Sprite
     private int[][] rgb;
     /** First alpha. */
     private boolean firstAlpha;
+    /** Frame offsets x. */
+    private int frameOffsetX;
+    /** Frame offsets y. */
+    private int frameOffsetY;
     /** Current angle in degree. */
     private int angle;
     /** Current angle horizontal anchor. */
@@ -169,8 +173,25 @@ class SpriteImpl implements Sprite
      */
     protected void computeRenderingPoint(int width, int height)
     {
-        rx = (int) Math.floor(origin.getX(x, width));
-        ry = (int) Math.floor(origin.getY(y, height));
+        final int ox;
+        final int oy;
+        if (Mirror.HORIZONTAL == mirror)
+        {
+            ox = frameOffsetX;
+            oy = frameOffsetY;
+        }
+        else if (Mirror.VERTICAL == mirror)
+        {
+            ox = -frameOffsetX;
+            oy = -frameOffsetY;
+        }
+        else
+        {
+            ox = -frameOffsetX;
+            oy = frameOffsetY;
+        }
+        rx = (int) Math.floor(origin.getX(x, width)) + ox;
+        ry = (int) Math.floor(origin.getY(y, height)) + oy;
     }
 
     /**
@@ -282,6 +303,13 @@ class SpriteImpl implements Sprite
 
         this.origin = origin;
         computeRenderingPoint(width, height);
+    }
+
+    @Override
+    public void setFrameOffsets(int offsetX, int offsetY)
+    {
+        frameOffsetX = offsetX;
+        frameOffsetY = offsetY;
     }
 
     @Override

@@ -466,19 +466,6 @@ public final class SpriteAnimatedTest
     }
 
     /**
-     * Test set frame offset.
-     */
-    @Test
-    public void testSetFrameOffset()
-    {
-        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
-        sprite.setFrameOffsets(1, -1);
-
-        assertEquals(1, sprite.getFrameOffsetX());
-        assertEquals(-1, sprite.getFrameOffsetY());
-    }
-
-    /**
      * Test set speed.
      */
     @Test

@@ -186,6 +186,15 @@ public class SpriteDigitImpl implements SpriteDigit
     }
 
     @Override
+    public void setFrameOffsets(int offsetX, int offsetY)
+    {
+        for (int i = 0; i < digitNumber; i++)
+        {
+            digits[i].setFrameOffsets(offsetX, offsetY);
+        }
+    }
+
+    @Override
     public void setLocation(double x, double y)
     {
         sprite.setLocation(x, y);

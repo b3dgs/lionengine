@@ -262,6 +262,12 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
+    public void setFrameOffsets(int offsetX, int offsetY)
+    {
+        surface.setFrameOffsets(offsetX, offsetY);
+    }
+
+    @Override
     public void setLocation(double x, double y)
     {
         this.x = x;

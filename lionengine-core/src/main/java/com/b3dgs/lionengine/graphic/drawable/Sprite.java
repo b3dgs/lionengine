@@ -70,6 +70,14 @@ public interface Sprite extends Image
     void filter(Filter filter);
 
     /**
+     * Set frame offsets (offsets on rendering).
+     * 
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
+     */
+    void setFrameOffsets(int offsetX, int offsetY);
+
+    /**
      * Set transparency color mask.
      * 
      * @param mask The color mask (must not be <code>null</code>).

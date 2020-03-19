@@ -42,10 +42,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     private final int framesVertical;
     /** Total frames number. */
     private final int framesNumber;
-    /** Frame offsets x. */
-    private int frameOffsetX;
-    /** Frame offsets y. */
-    private int frameOffsetY;
 
     /**
      * Internal constructor.
@@ -66,8 +62,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
         this.framesHorizontal = framesHorizontal;
         this.framesVertical = framesVertical;
         framesNumber = framesHorizontal * framesVertical;
-        frameOffsetX = 0;
-        frameOffsetY = 0;
     }
 
     /**
@@ -135,12 +129,10 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     public void render(Graphic g)
     {
         final int frame = animator.getFrame() - 1;
-        final int fx = getRenderX() - frameOffsetX;
-        final int fy = getRenderY() + frameOffsetY;
         final int ox = frame % framesHorizontal;
         final int oy = (int) Math.floor(frame / (double) framesHorizontal);
 
-        render(g, fx, fy, getTileWidth(), getTileHeight(), ox, oy);
+        render(g, getRenderX(), getRenderY(), getTileWidth(), getTileHeight(), ox, oy);
     }
 
     @Override
@@ -176,13 +168,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
-    public void setFrameOffsets(int offsetX, int offsetY)
-    {
-        frameOffsetX = offsetX;
-        frameOffsetY = offsetY;
-    }
-
-    @Override
     public int getFramesHorizontal()
     {
         return framesHorizontal;
@@ -204,18 +189,6 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     public int getTileHeight()
     {
         return getHeight() / framesVertical;
-    }
-
-    @Override
-    public int getFrameOffsetX()
-    {
-        return frameOffsetX;
-    }
-
-    @Override
-    public int getFrameOffsetY()
-    {
-        return frameOffsetY;
     }
 
     @Override

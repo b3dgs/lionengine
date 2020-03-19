@@ -333,6 +333,16 @@ public final class SpriteTest
     }
 
     /**
+     * Test set frame offset.
+     */
+    @Test
+    public void testSetFrameOffset()
+    {
+        final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
+        sprite.setFrameOffsets(1, -1);
+    }
+
+    /**
      * Test filter bilinear.
      */
     @Test

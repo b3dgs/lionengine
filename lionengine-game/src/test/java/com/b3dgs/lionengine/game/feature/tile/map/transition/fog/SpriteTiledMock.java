@@ -50,6 +50,12 @@ final class SpriteTiledMock implements SpriteTiled
     }
 
     @Override
+    public void setFrameOffsets(int offsetX, int offsetY)
+    {
+        // Mock
+    }
+
+    @Override
     public void setTransparency(ColorRgba mask)
     {
         // Mock

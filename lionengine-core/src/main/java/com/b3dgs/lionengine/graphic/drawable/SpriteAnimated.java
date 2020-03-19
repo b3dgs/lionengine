@@ -40,14 +40,6 @@ import com.b3dgs.lionengine.SurfaceTile;
 public interface SpriteAnimated extends Sprite, SurfaceTile, Animator
 {
     /**
-     * Set frame offsets (offsets on rendering).
-     * 
-     * @param offsetX The horizontal offset.
-     * @param offsetY The vertical offset.
-     */
-    void setFrameOffsets(int offsetX, int offsetY);
-
-    /**
      * Get the number of horizontal frames.
      * 
      * @return The number of horizontal frames.
@@ -60,18 +52,4 @@ public interface SpriteAnimated extends Sprite, SurfaceTile, Animator
      * @return The number of vertical frames.
      */
     int getFramesVertical();
-
-    /**
-     * Get the horizontal frame offset.
-     * 
-     * @return The horizontal frame offset.
-     */
-    int getFrameOffsetX();
-
-    /**
-     * Get the vertical frame offset.
-     * 
-     * @return The vertical frame offset.
-     */
-    int getFrameOffsetY();
 }
