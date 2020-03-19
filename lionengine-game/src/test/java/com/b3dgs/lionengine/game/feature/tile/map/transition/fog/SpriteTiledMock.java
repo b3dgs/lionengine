@@ -68,6 +68,12 @@ final class SpriteTiledMock implements SpriteTiled
     }
 
     @Override
+    public void setAngleAnchor(int angleX, int angleY)
+    {
+        // Mock
+    }
+
+    @Override
     public void setMirror(Mirror mirror)
     {
         // Mock

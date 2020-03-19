@@ -293,6 +293,12 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
+    public void setAngleAnchor(int angleX, int angleY)
+    {
+        surface.setAngleAnchor(angleX, angleY);
+    }
+
+    @Override
     public void setMirror(Mirror mirror)
     {
         surface.setMirror(mirror);

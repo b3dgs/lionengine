@@ -90,6 +90,35 @@ public interface Graphic
     void drawImage(ImageSurface image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2);
 
     /**
+     * Draw a part of an image from a source rectangle to a destination rectangle.
+     * 
+     * @param image The image to draw.
+     * @param dx1 The <i>x</i> coordinate of the first corner of the destination rectangle.
+     * @param dy1 The <i>y</i> coordinate of the first corner of the destination rectangle.
+     * @param dx2 The <i>x</i> coordinate of the second corner of the destination rectangle.
+     * @param dy2 The <i>y</i> coordinate of the second corner of the destination rectangle.
+     * @param sx1 The <i>x</i> coordinate of the first corner of the source rectangle.
+     * @param sy1 The <i>y</i> coordinate of the first corner of the source rectangle.
+     * @param sx2 The <i>x</i> coordinate of the second corner of the source rectangle.
+     * @param sy2 The <i>y</i> coordinate of the second corner of the source rectangle.
+     * @param angle The image angle.
+     * @param angleX The horizontal angle anchor.
+     * @param angleY The vertical angle anchor.
+     */
+    void drawImage(ImageSurface image,
+                   int dx1,
+                   int dy1,
+                   int dx2,
+                   int dy2,
+                   int sx1,
+                   int sy1,
+                   int sx2,
+                   int sy2,
+                   int angle,
+                   int angleX,
+                   int angleY);
+
+    /**
      * Draws the specified rectangle. The left and right edges of the rectangle are at <code>x</code> and
      * <code>x&nbsp;+&nbsp;width&nbsp;-&nbsp;1</code>. The top and bottom edges are at <code>y</code> and
      * <code>y&nbsp;+&nbsp;height&nbsp;-&nbsp;1</code>. The resulting rectangle covers an area <code>width</code> pixels

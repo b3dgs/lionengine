@@ -57,7 +57,7 @@ public interface Sprite extends Image
     /**
      * Rotate the sprite with the specified angle in degree.
      * 
-     * @param angle The rotation angle in degree <code>[0 - 359][</code>.
+     * @param angle The rotation angle in degree <code>[0 - 359]</code>.
      */
     void rotate(int angle);
 
@@ -92,6 +92,14 @@ public interface Sprite extends Image
      * @param fade The fade value <code>[0 - 255]</code>.
      */
     void setFade(int alpha, int fade);
+
+    /**
+     * Set angle anchor for rotation referential.
+     * 
+     * @param angleX The horizontal anchor.
+     * @param angleY The vertical anchor.
+     */
+    void setAngleAnchor(int angleX, int angleY);
 
     /**
      * Set the mirror state. The surface will not be modified, as flipping is directly done during rendering process.

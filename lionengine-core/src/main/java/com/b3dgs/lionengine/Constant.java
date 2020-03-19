@@ -74,6 +74,8 @@ public final class Constant
     public static final int HUNDRED = 100;
     /** Decade. */
     public static final int DECADE = 10;
+    /** Max angle. */
+    public static final int ANGLE_MAX = 360;
     /** Unsigned byte max value (excluded). */
     public static final int UNSIGNED_BYTE = 256;
     /** Byte 4. */

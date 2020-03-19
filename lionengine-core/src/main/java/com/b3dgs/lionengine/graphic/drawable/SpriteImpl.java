@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Filter;
@@ -65,6 +66,12 @@ class SpriteImpl implements Sprite
     private int[][] rgb;
     /** First alpha. */
     private boolean firstAlpha;
+    /** Current angle in degree. */
+    private int angle;
+    /** Current angle horizontal anchor. */
+    private int angleX;
+    /** Current angle vertical anchor. */
+    private int angleY;
 
     /**
      * Internal constructor.
@@ -113,21 +120,31 @@ class SpriteImpl implements Sprite
      * @param h The height extract.
      * @param ox The horizontal offset (width count).
      * @param oy The vertical offset (height count).
-     * @throws LionEngineException If mirror error.
      */
     protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy)
     {
         if (Mirror.HORIZONTAL == mirror)
         {
-            g.drawImage(surface, x, y, x + w, y + h, ox * w + w, oy * h, ox * w, oy * h + h);
+            g.drawImage(surface,
+                        x,
+                        y,
+                        x + w,
+                        y + h,
+                        ox * w + w,
+                        oy * h,
+                        ox * w,
+                        oy * h + h,
+                        -angle,
+                        angleX + w,
+                        angleY);
         }
         else if (Mirror.VERTICAL == mirror)
         {
-            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h);
+            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h, angle, angleX, angleY);
         }
         else
         {
-            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h);
+            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h, angle, angleX, angleY);
         }
     }
 
@@ -238,10 +255,7 @@ class SpriteImpl implements Sprite
     @Override
     public final void rotate(int angle)
     {
-        lazySurfaceBackup();
-        surface = Graphics.rotate(surfaceOriginal, angle);
-        width = surface.getWidth();
-        height = surface.getHeight();
+        this.angle = UtilMath.wrapAngle(angle);
     }
 
     @Override
@@ -324,6 +338,13 @@ class SpriteImpl implements Sprite
             }
         }
         firstAlpha = false;
+    }
+
+    @Override
+    public void setAngleAnchor(int angleX, int angleY)
+    {
+        this.angleX = angleX;
+        this.angleY = angleY;
     }
 
     @Override

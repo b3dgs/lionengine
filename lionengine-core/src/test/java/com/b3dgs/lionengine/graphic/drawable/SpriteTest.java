@@ -217,8 +217,8 @@ public final class SpriteTest
         {
             sprite.rotate(angle);
 
-            assertTrue(sprite.getWidth() >= 64, angle + Constant.SPACE + sprite.getWidth());
-            assertTrue(sprite.getHeight() >= 32, angle + Constant.SPACE + sprite.getHeight());
+            assertTrue(sprite.getWidth() == 64, angle + Constant.SPACE + sprite.getWidth());
+            assertTrue(sprite.getHeight() == 32, angle + Constant.SPACE + sprite.getHeight());
         }
     }
 

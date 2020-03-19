@@ -253,8 +253,8 @@ public final class SpriteDigitTest
         {
             sprite.rotate(angle);
 
-            assertTrue(sprite.getWidth() >= 1, angle + Constant.SPACE + sprite.getWidth());
-            assertTrue(sprite.getHeight() >= 1, angle + Constant.SPACE + sprite.getHeight());
+            assertTrue(sprite.getWidth() == 1, angle + Constant.SPACE + sprite.getWidth());
+            assertTrue(sprite.getHeight() == 1, angle + Constant.SPACE + sprite.getHeight());
         }
     }
 

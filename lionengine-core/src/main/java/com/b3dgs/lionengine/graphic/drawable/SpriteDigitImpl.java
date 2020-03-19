@@ -231,6 +231,15 @@ public class SpriteDigitImpl implements SpriteDigit
     }
 
     @Override
+    public void setAngleAnchor(int angleX, int angleY)
+    {
+        for (int i = 0; i < digitNumber; i++)
+        {
+            digits[i].setAngleAnchor(angleX, angleY);
+        }
+    }
+
+    @Override
     public void setMirror(Mirror mirror)
     {
         sprite.setMirror(mirror);

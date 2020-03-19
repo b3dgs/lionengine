@@ -287,6 +287,47 @@ public final class UtilMath
      * @param max The maximum value (excluded).
      * @return The wrapped value.
      */
+    public static int wrap(int value, int min, int max)
+    {
+        int newValue = value;
+        final int step = max - min;
+
+        if (newValue >= max)
+        {
+            while (newValue >= max)
+            {
+                newValue -= step;
+            }
+        }
+        else if (newValue < min)
+        {
+            while (newValue < min)
+            {
+                newValue += step;
+            }
+        }
+        return newValue;
+    }
+
+    /**
+     * Wrap angle between 0 and {@link Constant#ANGLE_MAX}.
+     * 
+     * @param angle The input angle.
+     * @return The wrapped angle.
+     */
+    public static int wrapAngle(int angle)
+    {
+        return wrap(angle, 0, Constant.ANGLE_MAX);
+    }
+
+    /**
+     * Wrap value (keep value between min and max). Useful to keep an angle between 0 and 360 for example.
+     * 
+     * @param value The input value.
+     * @param min The minimum value (included).
+     * @param max The maximum value (excluded).
+     * @return The wrapped value.
+     */
     public static double wrapDouble(double value, double min, double max)
     {
         double newValue = value;

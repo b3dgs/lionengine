@@ -78,6 +78,23 @@ public class GraphicMock implements Graphic
     }
 
     @Override
+    public void drawImage(ImageSurface image,
+                          int dx1,
+                          int dy1,
+                          int dx2,
+                          int dy2,
+                          int sx1,
+                          int sy1,
+                          int sx2,
+                          int sy2,
+                          int angle,
+                          int anchorX,
+                          int anchorY)
+    {
+        // Mock
+    }
+
+    @Override
     public void drawRect(int x, int y, int width, int height, boolean fill)
     {
         // Mock
