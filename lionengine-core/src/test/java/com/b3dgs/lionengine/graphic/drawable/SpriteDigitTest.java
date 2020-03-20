@@ -251,6 +251,7 @@ public final class SpriteDigitTest
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         for (int angle = -720; angle < 720; angle++)
         {
+            sprite.setAngleAnchor(1, 2);
             sprite.rotate(angle);
 
             assertTrue(sprite.getWidth() == 1, angle + Constant.SPACE + sprite.getWidth());
@@ -358,6 +359,16 @@ public final class SpriteDigitTest
 
         assertEquals(1, sprite.getWidth());
         assertEquals(1, sprite.getHeight());
+    }
+
+    /**
+     * Test set frame offset.
+     */
+    @Test
+    public void testSetFrameOffset()
+    {
+        final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
+        sprite.setFrameOffsets(1, -1);
     }
 
     /**

@@ -138,8 +138,8 @@ final class GraphicAwt implements Graphic
         }
         else
         {
-            final double ax = dx2 - sx1 + angleX;
-            final double ay = dy2 - sy1 + angleY;
+            final double ax = dx2 - sx1 + (double) angleX;
+            final double ay = dy2 - sy1 + (double) angleY;
 
             final AffineTransform old = g.getTransform();
             final AffineTransform tx = AffineTransform.getRotateInstance(Math.toRadians(angle), ax, ay);

@@ -85,6 +85,8 @@ public class GraphicTest
         g.drawImage(image, 0, 0, 0, 0, 2, 0, 0, 0);
         g.drawImage(image, 0, 0, 0, 0, 2, 0, 0, 0);
 
+        g.drawImage(image, 0, 0, 0, 0, 2, 0, 0, 0, 10, 20, 30);
+
         g.drawLine(0, 0, 0, 0);
         g.drawOval(0, 0, image.getWidth(), image.getHeight(), true);
         g.drawOval(0, 0, image.getWidth(), image.getHeight(), false);

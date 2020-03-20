@@ -250,6 +250,7 @@ public final class SpriteFontTest
         sprite.load();
         for (int angle = -720; angle < 720; angle++)
         {
+            sprite.setAngleAnchor(1, 2);
             sprite.rotate(angle);
 
             assertTrue(sprite.getWidth() == 64, angle + Constant.SPACE + sprite.getWidth());

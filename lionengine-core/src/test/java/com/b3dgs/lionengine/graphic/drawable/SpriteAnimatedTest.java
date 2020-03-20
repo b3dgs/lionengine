@@ -257,7 +257,9 @@ public final class SpriteAnimatedTest
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         for (int angle = -720; angle < 720; angle++)
         {
+            sprite.setAngleAnchor(1, 2);
             sprite.rotate(angle);
+
             assertTrue(sprite.getWidth() == 64, angle + Constant.SPACE + sprite.getWidth());
             assertTrue(sprite.getHeight() == 32, angle + Constant.SPACE + sprite.getHeight());
         }
@@ -371,6 +373,16 @@ public final class SpriteAnimatedTest
 
         assertEquals(64, sprite.getWidth());
         assertEquals(32, sprite.getHeight());
+    }
+
+    /**
+     * Test set frame offset.
+     */
+    @Test
+    public void testSetFrameOffset()
+    {
+        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.setFrameOffsets(1, -1);
     }
 
     /**
