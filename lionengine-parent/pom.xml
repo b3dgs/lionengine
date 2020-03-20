@@ -38,7 +38,7 @@
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-9.0.4</sonar-branch>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/${report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <build>
         <plugins>
