@@ -1,6 +1,7 @@
-sudo: required
-language: java
+os: linux
+dist: xenial
 
+language: java
 jdk: openjdk8
 
 env:
@@ -24,21 +25,19 @@ addons:
       - libasound2-dev
       - pulseaudio
 
+services:
+  - xvfb
+
 before_install:
- - sudo apt-get install gnome-themes-standard
- - sudo apt-get install metacity
- - sudo apt-get install libwebkit-dev
+ - apt-get install gnome-themes-standard
+ - apt-get install metacity
+ - apt-get install libwebkit-dev
 
 cache:
   apt: true
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
-
-dist: xenial
-
-services:
-  - xvfb
 
 script:
   - export
