@@ -29,9 +29,9 @@ services:
   - xvfb
 
 before_install:
- - apt-get install gnome-themes-standard
- - apt-get install metacity
- - apt-get install libwebkit-dev
+ - sudo apt-get install gnome-themes-standard
+ - sudo apt-get install metacity
+ - sudo apt-get install libwebkit-dev
 
 cache:
   apt: true
