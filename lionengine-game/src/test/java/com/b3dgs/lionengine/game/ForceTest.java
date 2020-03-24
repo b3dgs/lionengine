@@ -250,6 +250,24 @@ public final class ForceTest
     }
 
     /**
+     * Test zeroing force.
+     */
+    @Test
+    public void testZero()
+    {
+        final Force force = new Force();
+        force.setVelocity(1.0);
+        force.setDestination(1.0, 2.0);
+        force.update(1.0);
+
+        assertForce(1.0, 1.0, 1.0, 0.0, force);
+
+        force.zero();
+
+        assertForce(0.0, 0.0, 1.0, 0.0, force);
+    }
+
+    /**
      * Test copy.
      */
     @Test

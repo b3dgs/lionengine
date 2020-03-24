@@ -165,6 +165,21 @@ public class Force implements Direction, Updatable
     }
 
     /**
+     * Set force destination and direction to zero.
+     */
+    public void zero()
+    {
+        fhOld = 0.0;
+        fvOld = 0.0;
+        fhDest = 0.0;
+        fvDest = 0.0;
+        fhLast = 0.0;
+        fvLast = 0.0;
+        fh = 0.0;
+        fv = 0.0;
+    }
+
+    /**
      * Set the movement velocity.
      * 
      * @param velocity The movement velocity.
