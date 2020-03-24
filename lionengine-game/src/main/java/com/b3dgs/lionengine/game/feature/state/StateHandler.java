@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
@@ -89,9 +90,10 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
-     * @param converter The animation name converter.
+     * @param converter The animation name converter (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
+    @SuppressWarnings("unchecked")
     public StateHandler(Services services, Setup setup, Function<Class<? extends State>, String> converter)
     {
         super(services, setup);
@@ -99,12 +101,23 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
         Check.notNull(converter);
 
         this.converter = converter;
+        StateConfig.imports(setup).ifPresent(state ->
+        {
+            try
+            {
+                next = (Class<? extends State>) Class.forName(state);
+            }
+            catch (final ClassNotFoundException exception)
+            {
+                Verbose.exception(exception);
+            }
+        });
     }
 
     /**
      * Change the current state.
      * 
-     * @param next The next state.
+     * @param next The next state (must not be <code>null</code>).
      * @throws LionEngineException If <code>null</code> argument or unable to change state.
      */
     public void changeState(Class<? extends State> next)
@@ -180,13 +193,14 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     /**
      * Create state from its type.
      * 
-     * @param state The state to create.
+     * @param state The state to create (must not be <code>null</code>).
      * @return The created state.
      * @throws LionEngineException If unable to create state.
      */
     @SuppressWarnings("unchecked")
     private State create(Class<? extends State> state)
     {
+        Check.notNull(state);
         try
         {
             if (setup.hasNode(AnimationConfig.NODE_ANIMATIONS))
