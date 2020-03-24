@@ -52,6 +52,10 @@ public class BodyModel extends FeatureModel implements Body
     public BodyModel(Services services, Setup setup)
     {
         super(services, setup);
+
+        final BodyConfig config = BodyConfig.imports(setup);
+        gravity = config.getGravity();
+        gravityMax.setDirection(0.0, -config.getGravityMax());
     }
 
     /*
@@ -94,6 +98,18 @@ public class BodyModel extends FeatureModel implements Body
     public void setMass(double mass)
     {
         this.mass = mass;
+    }
+
+    @Override
+    public double getGravity()
+    {
+        return gravity;
+    }
+
+    @Override
+    public double getGravityMax()
+    {
+        return -gravityMax.getDirectionVertical();
     }
 
     @Override

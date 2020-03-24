@@ -61,6 +61,20 @@ public interface Body extends Feature, Updatable, Direction
     void setMass(double mass);
 
     /**
+     * Get the gravity.
+     * 
+     * @return The gravity.
+     */
+    double getGravity();
+
+    /**
+     * Get the gravity max.
+     * 
+     * @return The gravity max.
+     */
+    double getGravityMax();
+
+    /**
      * Get body mass.
      * 
      * @return The body mass.

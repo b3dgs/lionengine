@@ -89,6 +89,7 @@ public final class BodyTest
         body.prepare(object);
         body.setMass(2.0);
         body.setDesiredFps(50);
+        body.setGravity(Constant.GRAVITY_EARTH);
 
         assertEquals(2.0, body.getMass());
         assertEquals(2.0 * Constant.GRAVITY_EARTH, body.getWeight());
