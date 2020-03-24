@@ -151,6 +151,7 @@
             <xsd:element name="animations" type="lionengine:animations" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="collisions" type="lionengine:collisions" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="categories" type="lionengine:categories" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="action" type="lionengine:action" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="actions" type="lionengine:actions" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:any namespace="##local" processContents="lax" maxOccurs="unbounded" minOccurs="0"></xsd:any>
         </xsd:sequence>
@@ -201,13 +202,24 @@
         <xsd:attribute name="block" type="xsd:boolean" use="required"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="action">
+        <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="description" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="x" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="y" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="actionRef">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="actionRef" type="lionengine:actionRef" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
         <xsd:attribute name="path" type="xsd:string" use="required"></xsd:attribute>
         <xsd:attribute name="cancel" type="xsd:boolean" use="optional"></xsd:attribute>
         <xsd:attribute name="unique" type="xsd:boolean" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="actions">
         <xsd:sequence maxOccurs="1" minOccurs="1">
-            <xsd:element name="action" type="lionengine:action" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+            <xsd:element name="actionRef" type="lionengine:actionRef" maxOccurs="unbounded" minOccurs="0"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
 </xsd:schema>
