@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="collision">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="formula" type="xsd:string" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="group" type="xsd:string" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="collisions">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="collision" type="lionengine:collision" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="collisions" type="lionengine:collisions"></xsd:element>
+</xsd:schema>

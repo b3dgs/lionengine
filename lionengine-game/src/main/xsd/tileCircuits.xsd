@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="tile">
+        <xsd:attribute name="number" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="sheet" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="circuit">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="tile" type="lionengine:tile" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="in" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="out" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="TOP"></xsd:enumeration>
+                    <xsd:enumeration value="BOTTOM"></xsd:enumeration>
+                    <xsd:enumeration value="LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="HORIZONTAL"></xsd:enumeration>
+                    <xsd:enumeration value="VERTICAL"></xsd:enumeration>
+                    <xsd:enumeration value="ANGLE_TOP_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="ANGLE_TOP_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="ANGLE_BOTTOM_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="ANGLE_BOTTOM_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="T3J_TOP"></xsd:enumeration>
+                    <xsd:enumeration value="T3J_BOTTOM"></xsd:enumeration>
+                    <xsd:enumeration value="T3J_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="T3J_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="MIDDLE"></xsd:enumeration>
+                    <xsd:enumeration value="BLOCK"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="circuits">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="circuit" type="lionengine:circuit" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="circuits" type="lionengine:circuits"></xsd:element>
+</xsd:schema>

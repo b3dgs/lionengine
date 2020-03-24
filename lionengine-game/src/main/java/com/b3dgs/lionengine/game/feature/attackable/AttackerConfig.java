@@ -36,13 +36,13 @@ public final class AttackerConfig
     /** Attack delay attribute name. */
     public static final String ATT_DELAY = "delay";
     /** Attack distance minimum attribute name. */
-    public static final String ATT_DISTANCE_MIN = "distance_min";
+    public static final String ATT_DISTANCE_MIN = "distanceMin";
     /** Attack distance maximum attribute name. */
-    public static final String ATT_DISTANCE_MAX = "distance_max";
+    public static final String ATT_DISTANCE_MAX = "distanceMax";
     /** Attack damages minimum attribute name. */
-    public static final String ATT_DAMAGES_MIN = "damages_min";
+    public static final String ATT_DAMAGES_MIN = "damagesMin";
     /** Attack damages maximum attribute name. */
-    public static final String ATT_DAMAGES_MAX = "damages_max";
+    public static final String ATT_DAMAGES_MAX = "damagesMax";
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 73;
 

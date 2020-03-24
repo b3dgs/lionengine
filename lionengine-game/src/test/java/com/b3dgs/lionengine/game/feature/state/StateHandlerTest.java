@@ -157,7 +157,7 @@ public final class StateHandlerTest
         final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
         handler = featurable.addFeatureAndGet(new StateHandler(services,
-                                                               new Setup(Medias.create("object.xml")),
+                                                               new Setup(Medias.create("Object.xml")),
                                                                state -> state.getName()));
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
@@ -190,7 +190,7 @@ public final class StateHandlerTest
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("object.xml"))));
+        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
         handler.postUpdate();
@@ -294,7 +294,7 @@ public final class StateHandlerTest
 
         final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
-        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("object.xml"))));
+        handler = featurable.addFeatureAndGet(new StateHandler(services, new Setup(Medias.create("Object.xml"))));
         handler.prepare(featurable);
         final StateTransitionListener listener = (o, n) ->
         {

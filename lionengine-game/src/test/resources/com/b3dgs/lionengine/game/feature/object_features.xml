@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.game.feature.ObjectWithIdentifiable</lionengine:class>
-    <lionengine:feature>com.b3dgs.lionengine.game.feature.MirrorableModel</lionengine:feature>
-    <lionengine:feature>com.b3dgs.lionengine.game.feature.TransformableModel</lionengine:feature>
-</lionengine:featurable>

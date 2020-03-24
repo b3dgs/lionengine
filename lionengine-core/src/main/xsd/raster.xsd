@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="color">
+        <xsd:attribute name="force" type="xsd:double" use="required"></xsd:attribute>
+        <xsd:attribute name="amplitude" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="offset" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="type" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="raster">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="red" type="lionengine:color" maxOccurs="1" minOccurs="1"></xsd:element>
+            <xsd:element name="green" type="lionengine:color" maxOccurs="1" minOccurs="1"></xsd:element>
+            <xsd:element name="blue" type="lionengine:color" maxOccurs="1" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="raster" type="lionengine:raster"></xsd:element>
+</xsd:schema>

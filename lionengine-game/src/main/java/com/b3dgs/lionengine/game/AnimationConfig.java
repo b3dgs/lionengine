@@ -38,8 +38,10 @@ import com.b3dgs.lionengine.XmlReader;
  */
 public final class AnimationConfig
 {
+    /** Animations node name. */
+    public static final String NODE_ANIMATIONS = Constant.XML_PREFIX + "animations";
     /** Animation node name. */
-    public static final String ANIMATION = Constant.XML_PREFIX + "animation";
+    public static final String NODE_ANIMATION = Constant.XML_PREFIX + "animation";
     /** Animation attribute name. */
     public static final String ANIMATION_NAME = "name";
     /** Animation attribute start. */
@@ -82,7 +84,7 @@ public final class AnimationConfig
 
         final Map<String, Animation> animations = new HashMap<>(0);
 
-        final Collection<Xml> children = root.getChildren(ANIMATION);
+        final Collection<Xml> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
         for (final Xml node : children)
         {
             final String anim = node.readString(ANIMATION_NAME);
@@ -127,7 +129,17 @@ public final class AnimationConfig
         Check.notNull(root);
         Check.notNull(animation);
 
-        final Xml node = root.createChild(ANIMATION);
+        final Xml animations;
+        if (root.hasChild(NODE_ANIMATIONS))
+        {
+            animations = root.getChild(NODE_ANIMATIONS);
+        }
+        else
+        {
+            animations = root.createChild(NODE_ANIMATIONS);
+        }
+
+        final Xml node = animations.createChild(NODE_ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());
         node.writeInteger(ANIMATION_START, animation.getFirst());
         node.writeInteger(ANIMATION_END, animation.getLast());

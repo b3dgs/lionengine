@@ -29,7 +29,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -108,7 +107,7 @@ public final class CollisionCategoryConfigTest
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         final Collection<CollisionCategory> imported = CollisionCategoryConfig.imports(new Configurer(media),
@@ -149,8 +148,8 @@ public final class CollisionCategoryConfigTest
 
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
-        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX
-                                                                                         + "category"),
+        final CollisionCategory imported = CollisionCategoryConfig.imports(root.getChild(CollisionCategoryConfig.NODE_CATEGORIES)
+                                                                               .getChild(CollisionCategoryConfig.NODE_CATEGORY),
                                                                            mapCollision);
 
         assertEquals(category, imported);
@@ -173,8 +172,12 @@ public final class CollisionCategoryConfigTest
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
 
-        root.getChild(Constant.XML_PREFIX + "category").writeString(CollisionCategoryConfig.ATT_AXIS, "void");
-        assertThrows(() -> CollisionCategoryConfig.imports(root.getChild(Constant.XML_PREFIX + "category"),
+        root.getChild(CollisionCategoryConfig.NODE_CATEGORIES)
+            .getChild(CollisionCategoryConfig.NODE_CATEGORY)
+            .writeString(CollisionCategoryConfig.ATT_AXIS, "void");
+
+        assertThrows(() -> CollisionCategoryConfig.imports(root.getChild(CollisionCategoryConfig.NODE_CATEGORIES)
+                                                               .getChild(CollisionCategoryConfig.NODE_CATEGORY),
                                                            mapCollision),
                      "Unknown axis: void");
 

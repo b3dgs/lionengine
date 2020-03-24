@@ -69,9 +69,9 @@ public final class CollidableConfigTest
     public void testExportsImports()
     {
         final int group = 1;
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
-        final Xml node = root.createChild("lionengine:collidable");
+        final Xml node = root.createChild(CollidableConfig.NODE_COLLIDABLE);
         node.writeInteger(CollidableConfig.ATT_GROUP, group);
         node.writeString(CollidableConfig.ATT_ACCEPTED, "1%2");
         root.save(media);
@@ -88,9 +88,9 @@ public final class CollidableConfigTest
     @Test
     public void testInvalidGroup()
     {
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
-        final Xml node = root.createChild("lionengine:collidable");
+        final Xml node = root.createChild(CollidableConfig.NODE_COLLIDABLE);
         node.writeString(CollidableConfig.ATT_GROUP, "a");
         root.save(media);
 
@@ -104,7 +104,7 @@ public final class CollidableConfigTest
     @Test
     public void testDefaultGroup()
     {
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
         root.save(media);
 
@@ -118,7 +118,7 @@ public final class CollidableConfigTest
     @Test
     public void testExport()
     {
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
         root.save(media);
 
@@ -181,6 +181,6 @@ public final class CollidableConfigTest
     {
         final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
 
-        assertEquals("CollidableConfig [group=1, accepted=[2]]", config.toString());
+        assertEquals(CollidableConfig.class.getSimpleName() + " [group=1, accepted=[2]]", config.toString());
     }
 }

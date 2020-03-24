@@ -61,7 +61,7 @@ public final class SetupTest
     @Test
     public void testConfig()
     {
-        final Media config = Medias.create("object.xml");
+        final Media config = Medias.create("Object.xml");
         final Setup setup = new Setup(config);
 
         assertEquals(config, setup.getMedia());
@@ -74,7 +74,7 @@ public final class SetupTest
     @Test
     public void testConfigFolder()
     {
-        final Media config = Medias.create("setup", "object.xml");
+        final Media config = Medias.create("setup", "Object.xml");
         final Setup setup = new Setup(config);
 
         assertEquals(config, setup.getMedia());
@@ -87,7 +87,7 @@ public final class SetupTest
     @Test
     public void testConfigNoIcon()
     {
-        final Media config = Medias.create("object_no_icon.xml");
+        final Media config = Medias.create("ObjectNoIcon.xml");
         final Setup setup = new Setup(config);
 
         assertEquals(config, setup.getMedia());
@@ -101,7 +101,7 @@ public final class SetupTest
     @Test
     public void testClass()
     {
-        final Media config = Medias.create("object.xml");
+        final Media config = Medias.create("Object.xml");
         final Setup setup = new Setup(config);
 
         assertEquals(FeaturableModel.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
@@ -114,7 +114,7 @@ public final class SetupTest
     @Test()
     public void testNoClass()
     {
-        final Setup setup = new Setup(Medias.create("no_class.xml"));
+        final Setup setup = new Setup(Medias.create("ObjectNoClass.xml"));
 
         assertCause(() -> setup.getConfigClass(ClassLoader.getSystemClassLoader()), ClassNotFoundException.class);
     }
@@ -125,7 +125,7 @@ public final class SetupTest
     @Test
     public void testSurface()
     {
-        final Media config = Medias.create("object.xml");
+        final Media config = Medias.create("Object.xml");
         final Setup setup = new Setup(config);
 
         assertEquals(Medias.create("surface.png"), setup.getSurfaceFile());
@@ -142,7 +142,7 @@ public final class SetupTest
     @Test()
     public void testNoSurface()
     {
-        final Setup setup = new Setup(Medias.create("no_constructor.xml"));
+        final Setup setup = new Setup(Medias.create("ObjectNoConstructor.xml"));
 
         assertThrows(() -> setup.getSurfaceFile(), Setup.ERROR_SURFACE_FILE);
         assertThrows(() -> setup.getSurface(), Setup.ERROR_SURFACE);
@@ -154,7 +154,7 @@ public final class SetupTest
     @Test()
     public void testNoIcon()
     {
-        final Setup setup = new Setup(Medias.create("no_constructor.xml"));
+        final Setup setup = new Setup(Medias.create("ObjectNoConstructor.xml"));
 
         assertThrows(() -> setup.getIconFile(), Setup.ERROR_ICON_FILE);
     }

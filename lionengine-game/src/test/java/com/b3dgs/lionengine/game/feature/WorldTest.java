@@ -158,7 +158,7 @@ public final class WorldTest
         assertThrows(() -> world.saveToFile(media), "[test] Error on saving to file !");
         assertTrue(media.getFile().delete());
 
-        assertThrows(() -> world.loadFromFile(Medias.create("type.xml")), "[type.xml] Cannot open the media !");
+        assertThrows(() -> world.loadFromFile(Medias.create("world")), "[world] Cannot open the media !");
         assertThrows(() -> world.loadFromFile(null), "Unexpected null argument !");
     }
 
@@ -169,7 +169,7 @@ public final class WorldTest
     public void testSpawnNoTransformable()
     {
         final WorldGame world = new WorldMock(services);
-        assertThrows(() -> world.spawn(Medias.create("object.xml"), 0, 0),
+        assertThrows(() -> world.spawn(Medias.create("Object.xml"), 0, 0),
                      Features.ERROR_FEATURE_NOT_FOUND + Transformable.class.getName());
     }
 
@@ -180,7 +180,7 @@ public final class WorldTest
     public void testSpawn()
     {
         final WorldGame world = new WorldMock(services);
-        final Featurable featurable = world.spawn(Medias.create("object_features.xml"),
+        final Featurable featurable = world.spawn(Medias.create("ObjectFeatures.xml"),
                                                   Geom.createLocalizable(1.0, 2.0));
 
         assertNotNull(featurable);

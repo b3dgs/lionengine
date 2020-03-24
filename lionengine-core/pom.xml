@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
@@ -14,6 +14,14 @@
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
     </properties>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/xsd</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -21,19 +29,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core</Bundle-SymbolicName>
-                        <Export-Package>
-                            com.b3dgs.lionengine.*
+                        <Export-Package> com.b3dgs.lionengine.* 
                         </Export-Package>
-                        <Import-Package>
-                            javax.xml.namespace,
-                            javax.xml.parsers,
-                            javax.xml.transform,
-                            javax.xml.transform.dom,
-                            javax.xml.transform.stream,
-                            javax.xml.xpath,
-                            org.w3c.dom,
-                            org.xml.sax,
-                            org.junit.jupiter.api;resolution:=optional
+                        <Import-Package> javax.xml.namespace, javax.xml.parsers, javax.xml.transform, javax.xml.transform.dom, javax.xml.transform.stream, javax.xml.xpath, org.w3c.dom, org.xml.sax, org.junit.jupiter.api;resolution:=optional 
                         </Import-Package>
                     </instructions>
                 </configuration>

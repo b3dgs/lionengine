@@ -64,7 +64,7 @@ public final class LayerableConfigTest
         final LayerableConfig config = new LayerableConfig(0, 1);
         root.add(LayerableConfig.exports(config));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(config, LayerableConfig.imports(new Xml(media)));

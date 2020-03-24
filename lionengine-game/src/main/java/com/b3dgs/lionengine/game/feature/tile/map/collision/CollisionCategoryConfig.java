@@ -36,6 +36,8 @@ import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
  */
 public final class CollisionCategoryConfig
 {
+    /** Categories node name. */
+    public static final String NODE_CATEGORIES = Constant.XML_PREFIX + "categories";
     /** Category node name. */
     public static final String NODE_CATEGORY = Constant.XML_PREFIX + "category";
     /** Category attribute name. */
@@ -63,7 +65,7 @@ public final class CollisionCategoryConfig
     {
         Check.notNull(root);
 
-        final Collection<Xml> childrenCategory = root.getChildren(NODE_CATEGORY);
+        final Collection<Xml> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(childrenCategory.size());
 
         for (final Xml node : childrenCategory)
@@ -105,7 +107,7 @@ public final class CollisionCategoryConfig
         Check.notNull(configurer);
         Check.notNull(map);
 
-        final Collection<Xml> children = configurer.getRoot().getChildren(NODE_CATEGORY);
+        final Collection<Xml> children = configurer.getRoot().getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(children.size());
 
         for (final Xml node : children)
@@ -173,7 +175,17 @@ public final class CollisionCategoryConfig
         Check.notNull(root);
         Check.notNull(category);
 
-        final Xml node = root.createChild(NODE_CATEGORY);
+        final Xml categories;
+        if (root.hasChild(NODE_CATEGORIES))
+        {
+            categories = root.getChild(NODE_CATEGORIES);
+        }
+        else
+        {
+            categories = root.createChild(NODE_CATEGORIES);
+        }
+
+        final Xml node = categories.createChild(NODE_CATEGORY);
         node.writeString(ATT_NAME, category.getName());
         node.writeString(ATT_AXIS, category.getAxis().name());
         node.writeInteger(ATT_X, category.getOffsetX());

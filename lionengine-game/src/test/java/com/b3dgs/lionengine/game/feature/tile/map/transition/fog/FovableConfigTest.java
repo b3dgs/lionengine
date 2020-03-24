@@ -71,7 +71,7 @@ public final class FovableConfigTest
 
         root.add(FovableConfig.exports(1));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(1, FovableConfig.imports(new Xml(media)));
@@ -88,7 +88,7 @@ public final class FovableConfigTest
     {
         final Xml root = new Xml("test");
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(0, FovableConfig.imports(new Xml(media)));

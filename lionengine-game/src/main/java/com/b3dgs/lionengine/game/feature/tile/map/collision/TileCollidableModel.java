@@ -44,7 +44,7 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     /** Computed results. */
     private final Map<String, CollisionResult> results = new HashMap<>();
     /** Map tile reference. */
-    private final MapTileCollision map = services.get(MapTile.class).getFeature(MapTileCollision.class);
+    private final MapTileCollision map;
     /** Enabled flags. */
     private final Map<Axis, Boolean> enabledAxis = new EnumMap<>(Axis.class);
     /** The collisions used. */
@@ -84,7 +84,17 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     {
         super(services, setup);
 
-        categories = CollisionCategoryConfig.imports(setup, map);
+        if (setup.hasNode(CollisionCategoryConfig.NODE_CATEGORIES))
+        {
+            map = services.get(MapTile.class).getFeature(MapTileCollision.class);
+            categories = CollisionCategoryConfig.imports(setup, map);
+        }
+        else
+        {
+            map = null;
+            categories = Collections.emptyList();
+            enabled = false;
+        }
     }
 
     /**

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:element name="featurable" type="lionengine:featurable"></xsd:element>
+    <xsd:complexType name="surface">
+        <xsd:attribute name="image" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="icon" type="xsd:string" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="size">
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="raster">
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="smooth" type="xsd:boolean" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="layerable">
+        <xsd:attribute name="layerRefresh" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="layerDisplay" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="frames">
+        <xsd:attribute name="horizontal" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="vertical" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="offsetX" type="xsd:int" use="optional" default="0"></xsd:attribute>
+        <xsd:attribute name="offsetY" type="xsd:int" use="optional" default="0"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="force">
+        <xsd:attribute name="vx" type="xsd:double" use="required"></xsd:attribute>
+        <xsd:attribute name="vy" type="xsd:double" use="required"></xsd:attribute>
+        <xsd:attribute name="velocity" type="xsd:double" default="0.0" use="optional"></xsd:attribute>
+        <xsd:attribute name="sensibility" type="xsd:double" default="0.0" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="collisionFramed">
+        <xsd:attribute name="prefix" type="xsd:string" use="optional"></xsd:attribute>
+        <xsd:attribute name="number" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="x" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="y" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="mirror" type="xsd:boolean" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="collision">
+        <xsd:attribute name="name" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1"></xsd:minLength>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="offsetX" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="offsetY" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="mirror" type="xsd:boolean" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="collidable">
+        <xsd:attribute name="group" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="accepted" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="category">
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+            <xsd:element name="group" type="xsd:string" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="axis" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="X"></xsd:enumeration>
+                    <xsd:enumeration value="Y"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="x" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="y" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="glue" type="xsd:boolean" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="body">
+        <xsd:attribute name="gravity" type="xsd:double" use="required"></xsd:attribute>
+        <xsd:attribute name="gravityMax" type="xsd:double" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="animation">
+        <xsd:sequence>
+            <xsd:element name="collisionFramed" type="lionengine:collisionFramed" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1"></xsd:minLength>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="start" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:int">
+                    <xsd:minInclusive value="1"></xsd:minInclusive>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="end" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:int">
+                    <xsd:minInclusive value="1"></xsd:minInclusive>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="speed" type="xsd:double" use="required"></xsd:attribute>
+        <xsd:attribute name="reversed" type="xsd:boolean" use="required"></xsd:attribute>
+        <xsd:attribute name="repeat" type="xsd:boolean" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="features">
+        <xsd:sequence>
+            <xsd:element name="feature" type="xsd:string" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="animations">
+        <xsd:sequence>
+            <xsd:element name="animation" type="lionengine:animation" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="collisions">
+        <xsd:sequence>
+            <xsd:element name="collision" type="lionengine:collision" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="categories">
+        <xsd:sequence>
+            <xsd:element name="category" type="lionengine:category" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="featurable">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="class" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="setup" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="features" type="lionengine:features" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="surface" type="lionengine:surface" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="raster" type="lionengine:raster" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="frames" type="lionengine:frames" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="size" type="lionengine:size" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="origin" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="state" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="layerable" type="lionengine:layerable" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="body" type="lionengine:body" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="fovable" type="lionengine:fovable" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="attacker" type="lionengine:attacker" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="launchable" type="lionengine:launchable" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="launcher" type="lionengine:launcher" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="producible" type="lionengine:producible" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="extractable" type="lionengine:extractable" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="extractor" type="lionengine:extractor" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="pathfindable" type="lionengine:pathfindable" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="collidable" type="lionengine:collidable" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="animations" type="lionengine:animations" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="collisions" type="lionengine:collisions" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="categories" type="lionengine:categories" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="actions" type="lionengine:actions" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:any namespace="##local" processContents="lax" maxOccurs="unbounded" minOccurs="0"></xsd:any>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="fovable">
+        <xsd:attribute name="fov" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="producible">
+        <xsd:attribute name="steps" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="attacker">
+        <xsd:attribute name="delay" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="distanceMin" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="distanceMax" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="damagesMin" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="damagesMax" type="xsd:int" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="launcher">
+        <xsd:attribute name="level" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="rate" type="xsd:int" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="launchable">
+        <xsd:attribute name="media" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="delay" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="ox" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="oy" type="xsd:int" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="extractable">
+        <xsd:attribute name="type" type="xsd:string" use="optional"></xsd:attribute>
+        <xsd:attribute name="quantity" type="xsd:int" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="extractor">
+        <xsd:attribute name="extract" type="xsd:double" use="optional"></xsd:attribute>
+        <xsd:attribute name="dropoff" type="xsd:double" use="optional"></xsd:attribute>
+        <xsd:attribute name="capacity" type="xsd:int" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="pathfindable">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="path" type="lionengine:path" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="path">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="movement" type="xsd:string" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="category" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="cost" type="xsd:double" use="optional"></xsd:attribute>
+        <xsd:attribute name="block" type="xsd:boolean" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="action">
+        <xsd:attribute name="path" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="cancel" type="xsd:boolean" use="optional"></xsd:attribute>
+        <xsd:attribute name="unique" type="xsd:boolean" use="optional"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="actions">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="action" type="lionengine:action" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -33,8 +34,8 @@ public final class UtilSetup
      */
     public static Media createConfig(Class<?> caller)
     {
-        final Xml root = new Xml("Featurable");
-        final Media media = Medias.create("object_" + caller.getSimpleName() + Factory.FILE_DATA_DOT_EXTENSION);
+        final Xml root = new Xml(Constant.XML_PREFIX + "featurable");
+        final Media media = Medias.create("Object" + caller.getSimpleName() + Factory.FILE_DATA_DOT_EXTENSION);
         root.save(media);
 
         return media;

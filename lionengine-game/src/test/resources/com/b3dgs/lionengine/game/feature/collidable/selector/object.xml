@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:surface image="surface.png"/>
-    <lionengine:frames horizontal="1" vertical="1"/>
-</lionengine:object>

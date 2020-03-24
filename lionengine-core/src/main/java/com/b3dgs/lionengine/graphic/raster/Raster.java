@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.graphic.raster;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
@@ -30,11 +31,11 @@ import com.b3dgs.lionengine.Xml;
 public final class Raster
 {
     /** Red channel. */
-    private static final String CHANNEL_RED = "Red";
+    private static final String ATT_RED = Constant.XML_PREFIX + "red";
     /** Green channel. */
-    private static final String CHANNEL_GREEN = "Green";
+    private static final String ATT_GREEN = Constant.XML_PREFIX + "green";
     /** Blue channel. */
-    private static final String CHANNEL_BLUE = "Blue";
+    private static final String ATT_BLUE = Constant.XML_PREFIX + "blue";
 
     /**
      * Load raster from media.
@@ -48,9 +49,9 @@ public final class Raster
         Check.notNull(media);
 
         final Xml root = new Xml(media);
-        final RasterData dataRed = RasterData.load(root, CHANNEL_RED);
-        final RasterData dataGreen = RasterData.load(root, CHANNEL_GREEN);
-        final RasterData dataBlue = RasterData.load(root, CHANNEL_BLUE);
+        final RasterData dataRed = RasterData.load(root, ATT_RED);
+        final RasterData dataGreen = RasterData.load(root, ATT_GREEN);
+        final RasterData dataBlue = RasterData.load(root, ATT_BLUE);
 
         return new Raster(dataRed, dataGreen, dataBlue);
     }

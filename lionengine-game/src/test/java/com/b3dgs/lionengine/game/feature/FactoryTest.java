@@ -73,8 +73,8 @@ public final class FactoryTest
     {
         factory.setClassLoader(ClassLoader.getSystemClassLoader());
 
-        final Featurable featurable1 = factory.create(Medias.create("object.xml"));
-        final Featurable featurable2 = factory.create(Medias.create("object.xml"), FeaturableModel.class);
+        final Featurable featurable1 = factory.create(Medias.create("Object.xml"));
+        final Featurable featurable2 = factory.create(Medias.create("Object.xml"), FeaturableModel.class);
 
         assertNotNull(featurable1);
         assertNotNull(featurable2);
@@ -86,8 +86,8 @@ public final class FactoryTest
     @Test
     public void testPrepareWithIdentifiable()
     {
-        final Featurable featurable1 = factory.create(Medias.create("object_identifiable.xml"));
-        final Featurable featurable2 = factory.create(Medias.create("object_identifiable.xml"),
+        final Featurable featurable1 = factory.create(Medias.create("ObjectIdentifiable.xml"));
+        final Featurable featurable2 = factory.create(Medias.create("ObjectIdentifiable.xml"),
                                                       ObjectWithIdentifiable.class);
 
         assertNotNull(featurable1);
@@ -102,8 +102,8 @@ public final class FactoryTest
     {
         factory.createCache(Medias.create("state"), 2);
 
-        final Featurable featurable = factory.create(Medias.create("object_features.xml"));
-        assertNotEquals(featurable, factory.create(Medias.create("object_features.xml")));
+        final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
+        assertNotEquals(featurable, factory.create(Medias.create("ObjectFeatures.xml")));
     }
 
     /**
@@ -112,7 +112,7 @@ public final class FactoryTest
     @Test
     public void testCreateFeatures()
     {
-        final Featurable featurable = factory.create(Medias.create("object_features.xml"));
+        final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
 
         assertTrue(featurable.hasFeature(Mirrorable.class));
     }
@@ -123,7 +123,7 @@ public final class FactoryTest
     @Test
     public void testCreateUnknownFeature()
     {
-        final Media media = Medias.create("object_unknown_feature.xml");
+        final Media media = Medias.create("ObjectUnknownFeature.xml");
 
         assertThrows(() -> factory.create(media), FeaturableConfig.ERROR_CLASS_PRESENCE + "Unknown");
     }
@@ -134,7 +134,7 @@ public final class FactoryTest
     @Test
     public void testCreateNoConstructorClass()
     {
-        final Media media = Medias.create("no_constructor.xml");
+        final Media media = Medias.create("ObjectNoConstructor.xml");
 
         assertThrows(() -> factory.create(media, Featurable.class), Factory.ERROR_CONSTRUCTOR_MISSING + media);
     }
@@ -145,7 +145,7 @@ public final class FactoryTest
     @Test
     public void testCreateNoClass()
     {
-        assertCause(() -> factory.create(Medias.create("no_class.xml")), ClassNotFoundException.class);
+        assertCause(() -> factory.create(Medias.create("ObjectNoClass.xml")), ClassNotFoundException.class);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class FactoryTest
     @Test
     public void testCreateNoSetupClass()
     {
-        assertCause(() -> factory.create(Medias.create("no_setup.xml")), ClassNotFoundException.class);
+        assertCause(() -> factory.create(Medias.create("ObjectNoSetup.xml")), ClassNotFoundException.class);
     }
 
     /**
@@ -163,7 +163,7 @@ public final class FactoryTest
     @Test
     public void testCreateNoSetupConstructor()
     {
-        assertCause(() -> factory.create(Medias.create("no_setup_constructor.xml")), NoSuchMethodException.class);
+        assertCause(() -> factory.create(Medias.create("ObjectNoSetupConstructor.xml")), NoSuchMethodException.class);
     }
 
     /**
@@ -172,12 +172,12 @@ public final class FactoryTest
     @Test
     public void testGetSetup()
     {
-        final Setup setup = factory.getSetup(Medias.create("object.xml"));
+        final Setup setup = factory.getSetup(Medias.create("Object.xml"));
 
-        assertEquals(Medias.create("object.xml"), setup.getMedia());
+        assertEquals(Medias.create("Object.xml"), setup.getMedia());
 
-        assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
-        assertEquals(setup, factory.getSetup(Medias.create("object.xml")));
+        assertEquals(setup, factory.getSetup(Medias.create("Object.xml")));
+        assertEquals(setup, factory.getSetup(Medias.create("Object.xml")));
     }
 
     /**
@@ -186,13 +186,13 @@ public final class FactoryTest
     @Test
     public void testRecycle()
     {
-        final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
+        final Featurable featurable = factory.create(Medias.create("Object.xml"), ObjectWithIdentifiable.class);
 
-        assertNotEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+        assertNotEquals(featurable, factory.create(Medias.create("Object.xml"), ObjectWithIdentifiable.class));
 
         factory.notifyHandlableRemoved(featurable);
 
-        assertEquals(featurable, factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class));
+        assertEquals(featurable, factory.create(Medias.create("Object.xml"), ObjectWithIdentifiable.class));
 
         final Media media = UtilSetup.createMedia(ObjectWithIdentifiable.class);
         final Featurable featurable2 = factory.create(media);
@@ -230,7 +230,7 @@ public final class FactoryTest
             }
         };
         handler.addListener(factory);
-        final Featurable featurable = factory.create(Medias.create("object.xml"), ObjectWithIdentifiable.class);
+        final Featurable featurable = factory.create(Medias.create("Object.xml"), ObjectWithIdentifiable.class);
         handler.add(featurable);
 
         assertNull(added.get());

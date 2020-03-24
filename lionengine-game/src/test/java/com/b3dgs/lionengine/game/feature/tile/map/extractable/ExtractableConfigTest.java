@@ -65,7 +65,7 @@ public final class ExtractableConfigTest
         final Xml root = new Xml("test");
         root.add(ExtractableConfig.exports(config));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(config, ExtractableConfig.imports(new Xml(media)));

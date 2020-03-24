@@ -82,6 +82,6 @@ public final class RasterTest
     @Test
     public void testLoadFailure()
     {
-        assertThrows(() -> Raster.load(Medias.create("raster_error.xml")), "Node not found: Red");
+        assertThrows(() -> Raster.load(Medias.create("rasterError.xml")), "Node not found: lionengine:red");
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileGroups.xsd">
     <lionengine:group name="grass" type="PLAIN">
         <lionengine:tile number="0" sheet="0"/>
     </lionengine:group>

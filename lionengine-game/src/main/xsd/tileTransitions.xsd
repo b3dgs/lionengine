@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="tile">
+        <xsd:attribute name="number" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="sheet" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="transition">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="tile" type="lionengine:tile" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="in" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="out" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CENTER"></xsd:enumeration>
+                    <xsd:enumeration value="UP_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="UP_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="UP"></xsd:enumeration>
+                    <xsd:enumeration value="DOWN"></xsd:enumeration>
+                    <xsd:enumeration value="DOWN_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="DOWN_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="UP_LEFT_DOWN_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="UP_RIGHT_DOWN_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="CORNER_UP_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="CORNER_UP_RIGHT"></xsd:enumeration>
+                    <xsd:enumeration value="CORNER_DOWN_LEFT"></xsd:enumeration>
+                    <xsd:enumeration value="CORNER_DOWN_RIGHT"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="transitions">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="transition" type="lionengine:transition" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="transitions" type="lionengine:transitions"></xsd:element>
+</xsd:schema>

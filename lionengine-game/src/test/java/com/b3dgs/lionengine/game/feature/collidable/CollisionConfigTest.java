@@ -27,10 +27,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 
 /**
  * Test {@link CollisionConfig}.
@@ -61,7 +63,7 @@ public final class CollisionConfigTest
     @Test
     public void testExportsImports()
     {
-        final Xml root = new Xml("collision");
+        final Xml root = new Xml(Constant.XML_PREFIX + FeaturableConfig.NODE_FEATURABLE);
         final Collision collision = new Collision("test", 0, 1, 2, 3, true);
         CollisionConfig.exports(root, collision);
 

@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 public final class RasterableModelTest
 {
     /** Object configuration file name. */
-    private static final String OBJECT_XML = "object_raster.xml";
+    private static final String OBJECT_XML = "ObjectRaster.xml";
     /** Raster configuration file name. */
     private static final String RASTER_XML = "raster.xml";
 

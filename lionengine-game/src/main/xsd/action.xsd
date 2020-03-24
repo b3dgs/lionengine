@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="action">
+        <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="description" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="x" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="y" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:element name="action" type="lionengine:action"></xsd:element>
+</xsd:schema>

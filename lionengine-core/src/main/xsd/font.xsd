@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="letter">
+        <xsd:attribute name="char" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="letters">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="letter" type="lionengine:letter" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="letters" type="lionengine:letters"></xsd:element>
+</xsd:schema>

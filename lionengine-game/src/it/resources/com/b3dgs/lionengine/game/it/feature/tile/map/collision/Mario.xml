@@ -1,20 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
     <lionengine:class>com.b3dgs.lionengine.game.it.feature.tile.map.collision.Mario</lionengine:class>
     <lionengine:surface image="Mario.png"/>
     <lionengine:frames horizontal="7" vertical="1"/>
     <lionengine:size width="16" height="16"/>
-    <lionengine:category axis="Y" name="leg_l" x="6" y="0">
-        <lionengine:group>block</lionengine:group>
-    </lionengine:category>
-    <lionengine:category axis="Y" name="leg_r" x="-6" y="0">
-        <lionengine:group>block</lionengine:group>
-    </lionengine:category>
-    <lionengine:category axis="X" name="knee_l" x="7" y="1">
-        <lionengine:group>block</lionengine:group>
-    </lionengine:category>
-    <lionengine:category axis="X" name="knee_r" x="-7" y="1">
-        <lionengine:group>block</lionengine:group>
-    </lionengine:category>
-    <lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="16" mirror="false"/>
-</lionengine:object>
+    <lionengine:collisions>
+        <lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="16" mirror="false"/>
+    </lionengine:collisions>
+    <lionengine:categories>
+        <lionengine:category axis="Y" name="leg_l" x="6" y="0">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+        <lionengine:category axis="Y" name="leg_r" x="-6" y="0">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+        <lionengine:category axis="X" name="knee_l" x="7" y="1">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+        <lionengine:category axis="X" name="knee_r" x="-7" y="1">
+            <lionengine:group>block</lionengine:group>
+        </lionengine:category>
+    </lionengine:categories>
+</lionengine:featurable>

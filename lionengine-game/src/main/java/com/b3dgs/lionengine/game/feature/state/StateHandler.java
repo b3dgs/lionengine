@@ -189,7 +189,7 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     {
         try
         {
-            if (setup.hasNode(AnimationConfig.ANIMATION))
+            if (setup.hasNode(AnimationConfig.NODE_ANIMATIONS))
             {
                 final AnimationConfig configAnimations = AnimationConfig.imports(setup);
                 final String name = converter.apply(state);

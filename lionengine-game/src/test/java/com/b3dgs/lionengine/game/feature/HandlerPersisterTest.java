@@ -70,10 +70,10 @@ public final class HandlerPersisterTest
     @Test
     public void testWithoutMap() throws IOException
     {
-        final Featurable featurable = factory.create(Medias.create("object_features.xml"));
+        final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
         featurable.getFeature(Transformable.class).teleport(1, 2);
         handler.add(featurable);
-        handler.add(factory.create(Medias.create("object_identifiable.xml")));
+        handler.add(factory.create(Medias.create("ObjectIdentifiable.xml")));
         handler.update(1.0);
 
         final HandlerPersister persister = new HandlerPersister(services);
@@ -116,7 +116,7 @@ public final class HandlerPersisterTest
         final MapTile map = services.add(new MapTileGame());
         map.create(16, 16, 5, 5);
 
-        final Featurable featurable = factory.create(Medias.create("object_features.xml"));
+        final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
         featurable.getFeature(Transformable.class).teleport(16, 32);
         handler.add(featurable);
 
@@ -161,7 +161,7 @@ public final class HandlerPersisterTest
         final MapTile map = services.add(new MapTileGame());
         map.create(16, 16, 5, 5);
 
-        final Featurable featurable = factory.create(Medias.create("object_coll.xml"));
+        final Featurable featurable = factory.create(Medias.create("ObjectColl.xml"));
         featurable.getFeature(Transformable.class).teleport(16, 32);
         handler.add(featurable);
 

@@ -66,7 +66,7 @@ public final class SurfaceConfigTest
         final SurfaceConfig config = new SurfaceConfig("image", "icon");
         root.add(SurfaceConfig.exports(config));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(config, SurfaceConfig.imports(new Xml(media)));
@@ -86,7 +86,7 @@ public final class SurfaceConfigTest
         final SurfaceConfig config = new SurfaceConfig("image", null);
         root.add(SurfaceConfig.exports(config));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(config, SurfaceConfig.imports(new Xml(media)));

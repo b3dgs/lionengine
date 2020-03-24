@@ -38,8 +38,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
- * any XML file.
+ * Describe an Xml node, which can be modified (reading and writing). All primitive types are written as string inside
+ * any Xml file.
  */
 public class Xml extends XmlReader
 {

@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,8 @@ public final class FeaturableConfig
     public static final String ATT_CLASS = Constant.XML_PREFIX + "class";
     /** Setup attribute name. */
     public static final String ATT_SETUP = Constant.XML_PREFIX + "setup";
+    /** Features node. */
+    public static final String NODE_FEATURES = Constant.XML_PREFIX + "features";
     /** Feature node. */
     public static final String NODE_FEATURE = Constant.XML_PREFIX + "feature";
     /** Class not found error. */
@@ -159,7 +162,18 @@ public final class FeaturableConfig
      */
     public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup)
     {
-        final Collection<Xml> children = setup.getRoot().getChildren(FeaturableConfig.NODE_FEATURE);
+        final Collection<Xml> children;
+        final Xml root = setup.getRoot();
+        if (root.hasChild(NODE_FEATURES))
+        {
+            children = setup.getRoot()
+                            .getChild(FeaturableConfig.NODE_FEATURES)
+                            .getChildren(FeaturableConfig.NODE_FEATURE);
+        }
+        else
+        {
+            children = Collections.emptyList();
+        }
         final List<Feature> features = new ArrayList<>(children.size());
 
         for (final Xml featureNode : children)

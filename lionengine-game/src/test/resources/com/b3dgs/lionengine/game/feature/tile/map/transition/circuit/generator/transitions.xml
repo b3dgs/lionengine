@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:transitions xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:transitions xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/tileTransitions.xsd">
     <lionengine:transition in="water" out="grass" type="DOWN_LEFT">
         <lionengine:tile number="41" sheet="0"/>
     </lionengine:transition>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:frames horizontal="4" vertical="2"/>
-    <lionengine:surface image="sprite.png"/>
-    <lionengine:size width="16" height="32"/>
-    <lionengine:raster height="16" smooth="false"/>
-</lionengine:object>

@@ -73,7 +73,7 @@ public final class FeaturableConfigTest
         root.add(FeaturableConfig.exportClass(clazz));
         root.add(FeaturableConfig.exportSetup(setup));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(config, FeaturableConfig.imports(new Xml(media)));
@@ -89,7 +89,7 @@ public final class FeaturableConfigTest
     public void testDefaultClass()
     {
         final Xml root = new Xml("test");
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(new FeaturableConfig(FeaturableModel.class.getName(), ""),
@@ -107,7 +107,7 @@ public final class FeaturableConfigTest
         final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass("clazz"));
 
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertEquals(new FeaturableConfig("clazz", ""), FeaturableConfig.imports(new Xml(media)));
@@ -140,8 +140,10 @@ public final class FeaturableConfigTest
     public void testGetFeaturesCache()
     {
         final Xml root = new Xml("test");
-        root.createChild(FeaturableConfig.NODE_FEATURE).setText(FeatureModel.class.getName());
-        final Media media = Medias.create("object.xml");
+        root.createChild(FeaturableConfig.NODE_FEATURES)
+            .createChild(FeaturableConfig.NODE_FEATURE)
+            .setText(FeatureModel.class.getName());
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         final ClassLoader loader = ClassLoader.getSystemClassLoader();
@@ -161,8 +163,10 @@ public final class FeaturableConfigTest
     public void testGetFeaturesUnknown()
     {
         final Xml root = new Xml("test");
-        root.createChild(FeaturableConfig.NODE_FEATURE).setText(Feature.class.getName());
-        final Media media = Medias.create("object.xml");
+        root.createChild(FeaturableConfig.NODE_FEATURES)
+            .createChild(FeaturableConfig.NODE_FEATURE)
+            .setText(Feature.class.getName());
+        final Media media = Medias.create("Object.xml");
         root.save(media);
 
         assertCause(() -> FeaturableConfig.getFeatures(ClassLoader.getSystemClassLoader(),

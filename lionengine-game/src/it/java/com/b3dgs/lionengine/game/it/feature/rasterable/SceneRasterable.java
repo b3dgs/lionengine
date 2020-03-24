@@ -97,9 +97,9 @@ public class SceneRasterable extends Sequence
     @Override
     public void load()
     {
-        add(new SetupSurfaceRastered(Medias.create("object.xml"), Medias.create("raster.xml")), 0);
-        add(new SetupSurfaceRastered(Medias.create("object2.xml")), 64);
-        add(new SetupSurfaceRastered(Medias.create("object3.xml")), 128);
+        add(new SetupSurfaceRastered(Medias.create("Object.xml"), Medias.create("raster.xml")), 0);
+        add(new SetupSurfaceRastered(Medias.create("Object2.xml")), 64);
+        add(new SetupSurfaceRastered(Medias.create("Object3.xml")), 128);
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());
 
         tick.start();

@@ -57,7 +57,7 @@ public final class HudTest
     {
         Medias.setLoadFromJar(HudTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        config = Medias.create("object.xml");
+        config = Medias.create("Object.xml");
     }
 
     /**

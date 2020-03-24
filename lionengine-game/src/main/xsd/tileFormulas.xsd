@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="constraint">
+        <xsd:attribute name="group" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="orientation" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="NORTH"></xsd:enumeration>
+                    <xsd:enumeration value="SOUTH"></xsd:enumeration>
+                    <xsd:enumeration value="EAST"></xsd:enumeration>
+                    <xsd:enumeration value="WEST"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="function">
+        <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="LINEAR"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="a" type="xsd:double" use="required"></xsd:attribute>
+        <xsd:attribute name="b" type="xsd:double" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="range">
+        <xsd:attribute name="output" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="X"></xsd:enumeration>
+                    <xsd:enumeration value="Y"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="minX" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="maxX" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="minY" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="maxY" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="formula">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="range" type="lionengine:range" maxOccurs="1" minOccurs="1"></xsd:element>
+            <xsd:element name="function" type="lionengine:function" maxOccurs="1" minOccurs="1"></xsd:element>
+            <xsd:element name="constraint" type="lionengine:constraint" maxOccurs="1" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="formulas">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="formula" type="lionengine:formula" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="formulas" type="lionengine:formulas"></xsd:element>
+</xsd:schema>

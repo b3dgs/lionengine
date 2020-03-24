@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:simpleType name="sheet">
+        <xsd:restriction base="xsd:string"></xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="tileSize">
+        <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="sheets">
+        <xsd:sequence>
+            <xsd:element name="tileSize" type="lionengine:tileSize"></xsd:element>
+            <xsd:element name="sheet" type="lionengine:sheet" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="sheets" type="lionengine:sheets"></xsd:element>
+</xsd:schema>

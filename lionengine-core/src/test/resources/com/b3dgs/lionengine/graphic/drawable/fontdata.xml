@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<letters>
-  <letter char="a" width="7" height="6" />
-  <letter char="z" width="7" height="6" />
-  <letter char="%" width="7" height="1" />
-</letters>
-
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:letters xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/font.xsd">
+    <lionengine:letter char="a" width="7" height="6"/>
+    <lionengine:letter char="z" width="7" height="6"/>
+    <lionengine:letter char="%" width="7" height="1"/>
+</lionengine:letters>

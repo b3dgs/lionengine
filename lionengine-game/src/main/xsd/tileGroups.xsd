@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://lionengine.b3dgs.com/xsd/9" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9">
+    <xsd:complexType name="tile">
+        <xsd:attribute name="number" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="sheet" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="group">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="tile" type="lionengine:tile" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="PLAIN"></xsd:enumeration>
+                    <xsd:enumeration value="TRANSITION"></xsd:enumeration>
+                    <xsd:enumeration value="CIRCUIT"></xsd:enumeration>
+                    <xsd:enumeration value="NONE"></xsd:enumeration>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="groups">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="group" type="lionengine:group" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="groups" type="lionengine:groups"></xsd:element>
+</xsd:schema>

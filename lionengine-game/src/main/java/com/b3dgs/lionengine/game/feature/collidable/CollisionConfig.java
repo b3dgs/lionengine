@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.game.Configurer;
  */
 public final class CollisionConfig
 {
+    /** Collisions node name. */
+    public static final String NODE_COLLISIONS = Constant.XML_PREFIX + "collisions";
     /** Collision node name. */
     public static final String NODE_COLLISION = Constant.XML_PREFIX + "collision";
     /** Collision attribute name. */
@@ -70,7 +72,16 @@ public final class CollisionConfig
 
         final Map<String, Collision> collisions = new HashMap<>(0);
 
-        final Collection<Xml> children = configurer.getRoot().getChildren(NODE_COLLISION);
+        final Collection<Xml> children;
+        final Xml root = configurer.getRoot();
+        if (root.hasChild(NODE_COLLISIONS))
+        {
+            children = configurer.getRoot().getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);
+        }
+        else
+        {
+            children = Collections.emptyList();
+        }
         for (final Xml node : children)
         {
             final String coll = node.readString(ATT_NAME);
@@ -114,7 +125,17 @@ public final class CollisionConfig
         Check.notNull(root);
         Check.notNull(collision);
 
-        final Xml node = root.createChild(NODE_COLLISION);
+        final Xml collisions;
+        if (root.hasChild(NODE_COLLISIONS))
+        {
+            collisions = root.getChild(NODE_COLLISIONS);
+        }
+        else
+        {
+            collisions = root.createChild(NODE_COLLISIONS);
+        }
+
+        final Xml node = collisions.createChild(NODE_COLLISION);
         node.writeString(ATT_NAME, collision.getName());
         node.writeInteger(ATT_OFFSETX, collision.getOffsetX());
         node.writeInteger(ATT_OFFSETY, collision.getOffsetY());

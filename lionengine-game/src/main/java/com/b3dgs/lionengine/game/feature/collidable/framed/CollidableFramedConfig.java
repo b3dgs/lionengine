@@ -80,7 +80,9 @@ public final class CollidableFramedConfig
 
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>(0);
 
-        final Collection<Xml> children = configurer.getRoot().getChildren(AnimationConfig.ANIMATION);
+        final Collection<Xml> children = configurer.getRoot()
+                                                   .getChild(AnimationConfig.NODE_ANIMATIONS)
+                                                   .getChildren(AnimationConfig.NODE_ANIMATION);
         for (final Xml node : children)
         {
             final int start = node.readInteger(AnimationConfig.ANIMATION_START);
