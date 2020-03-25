@@ -39,8 +39,8 @@ public final class ActionsConfig
 {
     /** Actions root node. */
     public static final String NODE_ACTIONS = Constant.XML_PREFIX + "actions";
-    /** Action node reference. */
-    public static final String NODE_ACTION = Constant.XML_PREFIX + "action";
+    /** Action reference node reference. */
+    public static final String NODE_ACTION_REF = Constant.XML_PREFIX + "actionRef";
     /** Action path attribute name. */
     public static final String ATT_PATH = "path";
     /** Action cancel attribute name. */
@@ -99,7 +99,7 @@ public final class ActionsConfig
 
         for (final ActionRef action : actions)
         {
-            final Xml nodeAction = node.createChild(NODE_ACTION);
+            final Xml nodeAction = node.createChild(NODE_ACTION_REF);
             nodeAction.writeString(ATT_PATH, action.getPath());
             if (action.hasCancel())
             {
@@ -127,7 +127,7 @@ public final class ActionsConfig
      */
     private static List<ActionRef> getRefs(Xml node, Function<Class<? extends Feature>, Feature> id)
     {
-        final Collection<Xml> children = node.getChildren(NODE_ACTION);
+        final Collection<Xml> children = node.getChildren(NODE_ACTION_REF);
         final List<ActionRef> actions = new ArrayList<>(children.size());
 
         for (final Xml action : children)
@@ -151,7 +151,7 @@ public final class ActionsConfig
      */
     private static void exports(Xml node, ActionRef action)
     {
-        final Xml nodeAction = node.createChild(NODE_ACTION);
+        final Xml nodeAction = node.createChild(NODE_ACTION_REF);
         nodeAction.writeString(ATT_PATH, action.getPath());
 
         for (final ActionRef ref : action.getRefs())
