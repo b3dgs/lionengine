@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
     <lionengine:class>com.b3dgs.lionengine.game.it.feature.selector.ActionModel</lionengine:class>
     <lionengine:surface image="BuildFarmOrc.png"/>
     <lionengine:action name="Build Farm" description="Build a Farm" x="4" y="118" width="27" height="19"/>
     <media>FarmOrc.xml</media>
-</lionengine:skill>
+</lionengine:featurable>

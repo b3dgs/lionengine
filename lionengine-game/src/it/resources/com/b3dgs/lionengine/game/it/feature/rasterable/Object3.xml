@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lionengine:object index="1" flag="true" xmlns:lionengine="http://lionengine.b3dgs.com">
-	<lionengine:surface image="Dino.png"/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
+    <lionengine:surface image="Dino.png"/>
     <lionengine:frames horizontal="4" vertical="4"/>
-    <lionengine:raster file="raster2.xml" height="16" smooth="false"/>
-</lionengine:object>
+    <lionengine:rasterable height="16" smooth="false" file="raster2.xml"/>
+</lionengine:featurable>

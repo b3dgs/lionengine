@@ -34,12 +34,14 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
  */
 public class SetupSurfaceRastered extends Setup
 {
-    /** Raster node. */
-    private static final String NODE_RASTER = Constant.XML_PREFIX + "raster";
-    /** Raster height attribute. */
-    private static final String ATTRIBUTE_RASTER_HEIGHT = "height";
-    /** Raster smooth attribute. */
-    private static final String ATTRIBUTE_RASTER_SMOOTH = "smooth";
+    /** Rasterable node. */
+    private static final String NODE_RASTERABLE = Constant.XML_PREFIX + "rasterable";
+    /** Rasterable height attribute. */
+    private static final String ATT_RASTER_HEIGHT = "height";
+    /** Rasterable smooth attribute. */
+    private static final String ATT_RASTER_SMOOTH = "smooth";
+    /** Rasterable file attribute. */
+    private static final String ATT_RASTER_FILE = "file";
 
     /** Raster image. */
     private final RasterImage raster;
@@ -69,10 +71,10 @@ public class SetupSurfaceRastered extends Setup
         final FramesConfig framesData = FramesConfig.imports(getRoot());
         final int vf = framesData.getVertical();
 
-        if (hasNode(NODE_RASTER))
+        if (hasNode(NODE_RASTERABLE))
         {
-            final int rasterHeight = getInteger(ATTRIBUTE_RASTER_HEIGHT, NODE_RASTER);
-            final boolean smooth = getBoolean(ATTRIBUTE_RASTER_SMOOTH, NODE_RASTER);
+            final int rasterHeight = getInteger(ATT_RASTER_HEIGHT, NODE_RASTERABLE);
+            final boolean smooth = getBoolean(ATT_RASTER_SMOOTH, NODE_RASTERABLE);
 
             final Media rasterFile;
             if (rasterMedia != null)
@@ -81,7 +83,7 @@ public class SetupSurfaceRastered extends Setup
             }
             else
             {
-                rasterFile = Medias.create(getString("file", NODE_RASTER));
+                rasterFile = Medias.create(getString(ATT_RASTER_FILE, NODE_RASTERABLE));
             }
 
             raster = new RasterImage(getSurface(), rasterFile, rasterHeight, smooth);

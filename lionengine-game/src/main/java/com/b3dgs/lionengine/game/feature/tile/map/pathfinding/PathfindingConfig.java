@@ -39,11 +39,11 @@ public final class PathfindingConfig
     /** Default filename. */
     public static final String FILENAME = "pathfinding.xml";
     /** Pathfinding root node. */
-    public static final String PATHFINDING = Constant.XML_PREFIX + "pathfinding";
+    public static final String NODE_PATHFINDING = Constant.XML_PREFIX + "pathfinding";
     /** Tile path node. */
-    public static final String TILE_PATH = Constant.XML_PREFIX + "tilepath";
+    public static final String NODE_TILE_PATH = Constant.XML_PREFIX + "tilePath";
     /** Tile path category name attribute. */
-    public static final String CATEGORY = "category";
+    public static final String ATT_CATEGORY = "category";
 
     /**
      * Import the category data from configuration.
@@ -57,12 +57,12 @@ public final class PathfindingConfig
         Check.notNull(configPathfinding);
 
         final Xml nodeCategories = new Xml(configPathfinding);
-        final Collection<Xml> childrenTile = nodeCategories.getChildren(TILE_PATH);
+        final Collection<Xml> childrenTile = nodeCategories.getChildren(NODE_TILE_PATH);
         final Collection<PathCategory> categories = new HashSet<>(childrenTile.size());
 
         for (final Xml node : childrenTile)
         {
-            final String name = node.readString(CATEGORY);
+            final String name = node.readString(ATT_CATEGORY);
             final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
             final Collection<String> groups = new HashSet<>(childrenGroup.size());
 

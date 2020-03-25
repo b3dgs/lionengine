@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:pathfinding xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:tilepath category="ground">
+<lionengine:pathfinding xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/pathfinding.xsd">
+    <lionengine:tilePath category="ground">
         <lionengine:group>grassDark</lionengine:group>
         <lionengine:group>grassDarkBorder</lionengine:group>
         <lionengine:group>grass</lionengine:group>
@@ -11,15 +11,15 @@
         <lionengine:group>road</lionengine:group>
         <lionengine:group>bridge</lionengine:group>
         <lionengine:group>treeCut</lionengine:group>
-    </lionengine:tilepath>
-    <lionengine:tilepath category="border">
+    </lionengine:tilePath>
+    <lionengine:tilePath category="border">
         <lionengine:group>border</lionengine:group>
-    </lionengine:tilepath>
-    <lionengine:tilepath category="tree">
+    </lionengine:tilePath>
+    <lionengine:tilePath category="tree">
         <lionengine:group>tree</lionengine:group>
         <lionengine:group>treeBorder</lionengine:group>
-    </lionengine:tilepath>
-    <lionengine:tilepath category="water">
+    </lionengine:tilePath>
+    <lionengine:tilePath category="water">
         <lionengine:group>water</lionengine:group>
-    </lionengine:tilepath>
+    </lionengine:tilePath>
 </lionengine:pathfinding>
