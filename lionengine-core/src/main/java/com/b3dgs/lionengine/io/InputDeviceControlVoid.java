@@ -103,7 +103,7 @@ public class InputDeviceControlVoid implements InputDeviceControl
     }
 
     @Override
-    public void setFireButton(Integer code)
+    public void setFireButton(Integer index, Integer code)
     {
         // Void
     }
@@ -133,13 +133,13 @@ public class InputDeviceControlVoid implements InputDeviceControl
     }
 
     @Override
-    public boolean isFireButton()
+    public boolean isFireButton(Integer index)
     {
         return false;
     }
 
     @Override
-    public boolean isFireButtonOnce()
+    public boolean isFireButtonOnce(Integer index)
     {
         return false;
     }

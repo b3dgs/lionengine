@@ -34,7 +34,7 @@ public final class InputDeviceControlVoidTest
     public void testDevice()
     {
         final InputDeviceControl device = InputDeviceControlVoid.getInstance();
-        device.setFireButton(Integer.valueOf(2));
+        device.setFireButton(Integer.valueOf(0), Integer.valueOf(2));
         device.setHorizontalControlNegative(Integer.valueOf(2));
         device.setHorizontalControlPositive(Integer.valueOf(2));
         device.setVerticalControlNegative(Integer.valueOf(2));
@@ -48,8 +48,8 @@ public final class InputDeviceControlVoidTest
         assertEquals(0.0, device.getHorizontalDirection());
         assertEquals(0.0, device.getVerticalDirection());
 
-        assertFalse(device.isFireButton());
-        assertFalse(device.isFireButtonOnce());
+        assertFalse(device.isFireButton(Integer.valueOf(0)));
+        assertFalse(device.isFireButtonOnce(Integer.valueOf(0)));
         assertFalse(device.isDownButtonOnce());
         assertFalse(device.isLeftButtonOnce());
         assertFalse(device.isRightButtonOnce());

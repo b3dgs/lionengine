@@ -16,17 +16,21 @@
  */
 package com.b3dgs.lionengine.io;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
- * Represents the input device used to control entity with directional support and fire button.
+ * Represents the input device used to control entity with directional support and fire buttons.
  */
 public interface InputDeviceControl extends InputDeviceDirectional
 {
     /**
      * Set the fire button code.
      * 
-     * @param code The fire button code.
+     * @param index The button index (must not be <code>null</code>, must be positive).
+     * @param code The fire button code (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
-    void setFireButton(Integer code);
+    void setFireButton(Integer index, Integer code);
 
     /**
      * Check if up button is enabled one time.
@@ -59,14 +63,16 @@ public interface InputDeviceControl extends InputDeviceDirectional
     /**
      * Check if fire button is enabled.
      * 
+     * @param index The button index (must not be <code>null</code>, must be positive).
      * @return <code>true</code> if active, <code>false</code> else.
      */
-    boolean isFireButton();
+    boolean isFireButton(Integer index);
 
     /**
      * Check if fire button is enabled one time.
      * 
+     * @param index The button index (must not be <code>null</code>, must be positive).
      * @return <code>true</code> if active, <code>false</code> else.
      */
-    boolean isFireButtonOnce();
+    boolean isFireButtonOnce(Integer index);
 }

@@ -46,7 +46,7 @@ public final class InputDeviceControlDelegateTest
     {
         final InputDeviceControl device = new InputDeviceControlDelegate(this::get);
 
-        device.setFireButton(Integer.valueOf(0));
+        device.setFireButton(Integer.valueOf(0), Integer.valueOf(0));
         device.setHorizontalControlNegative(Integer.valueOf(1));
         device.setHorizontalControlPositive(Integer.valueOf(2));
         device.setVerticalControlNegative(Integer.valueOf(3));
@@ -60,8 +60,8 @@ public final class InputDeviceControlDelegateTest
         assertEquals(-1.0, device.getHorizontalDirection());
         assertEquals(1.0, device.getVerticalDirection());
 
-        assertTrue(device.isFireButton());
-        assertTrue(device.isFireButtonOnce());
+        assertTrue(device.isFireButton(Integer.valueOf(0)));
+        assertTrue(device.isFireButtonOnce(Integer.valueOf(0)));
         assertTrue(device.isDownButtonOnce());
         assertTrue(device.isLeftButtonOnce());
         assertTrue(device.isRightButtonOnce());
@@ -136,7 +136,7 @@ public final class InputDeviceControlDelegateTest
         }
 
         @Override
-        public void setFireButton(Integer code)
+        public void setFireButton(Integer index, Integer code)
         {
             // Nothing to do
         }
@@ -160,13 +160,13 @@ public final class InputDeviceControlDelegateTest
         }
 
         @Override
-        public boolean isFireButtonOnce()
+        public boolean isFireButtonOnce(Integer index)
         {
             return true;
         }
 
         @Override
-        public boolean isFireButton()
+        public boolean isFireButton(Integer index)
         {
             return true;
         }

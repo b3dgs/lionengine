@@ -109,9 +109,9 @@ public final class InputDeviceControlDelegate implements InputDeviceControl
     }
 
     @Override
-    public void setFireButton(Integer code)
+    public void setFireButton(Integer index, Integer code)
     {
-        get().setFireButton(code);
+        get().setFireButton(index, code);
     }
 
     @Override
@@ -139,14 +139,14 @@ public final class InputDeviceControlDelegate implements InputDeviceControl
     }
 
     @Override
-    public boolean isFireButton()
+    public boolean isFireButton(Integer index)
     {
-        return get().isFireButton();
+        return get().isFireButton(index);
     }
 
     @Override
-    public boolean isFireButtonOnce()
+    public boolean isFireButtonOnce(Integer index)
     {
-        return get().isFireButtonOnce();
+        return get().isFireButtonOnce(index);
     }
 }
