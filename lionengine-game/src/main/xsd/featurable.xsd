@@ -32,7 +32,7 @@
     </xsd:complexType>
     <xsd:complexType name="collisionFramed">
         <xsd:attribute name="prefix" type="xsd:string" use="optional"></xsd:attribute>
-        <xsd:attribute name="number" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="number" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="x" type="xsd:int" use="required"></xsd:attribute>
         <xsd:attribute name="y" type="xsd:int" use="required"></xsd:attribute>
         <xsd:attribute name="width" type="xsd:int" use="required"></xsd:attribute>
@@ -55,7 +55,7 @@
     </xsd:complexType>
     <xsd:complexType name="collidable">
         <xsd:attribute name="group" type="xsd:int" use="required"></xsd:attribute>
-        <xsd:attribute name="accepted" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="accepted" type="xsd:int" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="category">
         <xsd:sequence maxOccurs="1" minOccurs="0">
