@@ -173,25 +173,8 @@ class SpriteImpl implements Sprite
      */
     protected void computeRenderingPoint(int width, int height)
     {
-        final int ox;
-        final int oy;
-        if (Mirror.HORIZONTAL == mirror)
-        {
-            ox = frameOffsetX;
-            oy = frameOffsetY;
-        }
-        else if (Mirror.VERTICAL == mirror)
-        {
-            ox = -frameOffsetX;
-            oy = -frameOffsetY;
-        }
-        else
-        {
-            ox = -frameOffsetX;
-            oy = frameOffsetY;
-        }
-        rx = (int) Math.floor(origin.getX(x, width)) + ox;
-        ry = (int) Math.floor(origin.getY(y, height)) + oy;
+        rx = (int) Math.floor(origin.getX(x, width)) - frameOffsetX;
+        ry = (int) Math.floor(origin.getY(y, height)) + frameOffsetY;
     }
 
     /**
