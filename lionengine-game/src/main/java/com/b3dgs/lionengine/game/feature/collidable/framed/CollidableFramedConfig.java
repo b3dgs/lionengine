@@ -80,18 +80,21 @@ public final class CollidableFramedConfig
 
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>(0);
 
-        final Collection<Xml> children = configurer.getRoot()
-                                                   .getChild(AnimationConfig.NODE_ANIMATIONS)
-                                                   .getChildren(AnimationConfig.NODE_ANIMATION);
-        for (final Xml node : children)
+        if (configurer.hasNode(AnimationConfig.NODE_ANIMATIONS))
         {
-            final int start = node.readInteger(AnimationConfig.ANIMATION_START);
-            for (final Xml framed : node.getChildren(NODE_COLLISION_FRAMED))
+            final Collection<Xml> children = configurer.getRoot()
+                                                       .getChild(AnimationConfig.NODE_ANIMATIONS)
+                                                       .getChildren(AnimationConfig.NODE_ANIMATION);
+            for (final Xml node : children)
             {
-                importFrame(node, framed, start, collisions);
+                final int start = node.readInteger(AnimationConfig.ANIMATION_START);
+                for (final Xml framed : node.getChildren(NODE_COLLISION_FRAMED))
+                {
+                    importFrame(node, framed, start, collisions);
+                }
             }
+            children.clear();
         }
-        children.clear();
 
         return new CollidableFramedConfig(collisions);
     }

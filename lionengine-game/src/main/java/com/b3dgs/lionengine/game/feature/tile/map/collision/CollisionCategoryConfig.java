@@ -65,31 +65,33 @@ public final class CollisionCategoryConfig
     {
         Check.notNull(root);
 
-        final Collection<Xml> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
-        final Collection<CollisionCategory> categories = new ArrayList<>(childrenCategory.size());
-
-        for (final Xml node : childrenCategory)
+        final Collection<CollisionCategory> categories = new ArrayList<>();
+        if (root.hasChild(NODE_CATEGORIES))
         {
-            final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
-            final Collection<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
-
-            for (final Xml group : childrenGroup)
+            final Collection<Xml> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
+            for (final Xml node : childrenCategory)
             {
-                final String name = group.getText();
-                groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
+                final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+                final Collection<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
+
+                for (final Xml group : childrenGroup)
+                {
+                    final String name = group.getText();
+                    groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
+                }
+                childrenGroup.clear();
+
+                final String name = node.readString(ATT_NAME);
+                final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
+                final int x = node.readInteger(ATT_X);
+                final int y = node.readInteger(ATT_Y);
+                final boolean glue = node.readBoolean(true, ATT_GLUE);
+
+                final CollisionCategory category = new CollisionCategory(name, axis, x, y, glue, groups);
+                categories.add(category);
             }
-            childrenGroup.clear();
-
-            final String name = node.readString(ATT_NAME);
-            final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
-            final int x = node.readInteger(ATT_X);
-            final int y = node.readInteger(ATT_Y);
-            final boolean glue = node.readBoolean(true, ATT_GLUE);
-
-            final CollisionCategory category = new CollisionCategory(name, axis, x, y, glue, groups);
-            categories.add(category);
+            childrenCategory.clear();
         }
-        childrenCategory.clear();
 
         return categories;
     }

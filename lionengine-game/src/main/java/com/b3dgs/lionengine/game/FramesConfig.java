@@ -67,13 +67,17 @@ public final class FramesConfig
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_FRAMES);
-        final int horizontals = node.readInteger(ATT_HORIZONTAL);
-        final int verticals = node.readInteger(ATT_VERTICAL);
-        final int offsetX = node.readInteger(0, ATT_OFFSET_X);
-        final int offsetY = node.readInteger(0, ATT_OFFSET_Y);
+        if (root.hasChild(NODE_FRAMES))
+        {
+            final Xml node = root.getChild(NODE_FRAMES);
+            final int horizontals = node.readInteger(ATT_HORIZONTAL);
+            final int verticals = node.readInteger(ATT_VERTICAL);
+            final int offsetX = node.readInteger(0, ATT_OFFSET_X);
+            final int offsetY = node.readInteger(0, ATT_OFFSET_Y);
 
-        return new FramesConfig(horizontals, verticals, offsetX, offsetY);
+            return new FramesConfig(horizontals, verticals, offsetX, offsetY);
+        }
+        return new FramesConfig(1, 1, 0, 0);
     }
 
     /**
