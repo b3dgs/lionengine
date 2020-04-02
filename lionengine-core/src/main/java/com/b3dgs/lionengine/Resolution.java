@@ -36,6 +36,8 @@ public final class Resolution
     private static final int FACTOR_2X = 2;
     /** Triple factor. */
     private static final int FACTOR_3X = 3;
+    /** Quad factor. */
+    private static final int FACTOR_4X = 4;
     /** Min to string size. */
     private static final int MIN_LENGHT = 43;
 
@@ -85,6 +87,16 @@ public final class Resolution
     public Resolution get3x()
     {
         return getScaled(FACTOR_3X, FACTOR_3X);
+    }
+
+    /**
+     * Get scaled by 4.
+     * 
+     * @return The scaled by 4 resolution.
+     */
+    public Resolution get4x()
+    {
+        return getScaled(FACTOR_4X, FACTOR_4X);
     }
 
     /**

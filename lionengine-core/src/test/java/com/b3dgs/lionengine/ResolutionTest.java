@@ -92,6 +92,17 @@ public final class ResolutionTest
     }
 
     /**
+     * Test scale 4x function.
+     */
+    @Test
+    public void testScale4x()
+    {
+        final Resolution resolution = new Resolution(320, 180, 60);
+
+        assertEquals(new Resolution(1280, 720, 60), resolution.get4x());
+    }
+
+    /**
      * Test scale function with wrong factor X.
      */
     @Test
