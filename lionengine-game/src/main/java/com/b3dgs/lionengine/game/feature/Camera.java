@@ -132,7 +132,7 @@ public class Camera extends FeaturableAbstract implements Viewer
     {
         final double dx = x - (mover.getX() + offset.getX());
         final double dy = y - (mover.getY() + offset.getY());
-        moveLocation(1, dx, dy);
+        moveLocation(1.0, dx, dy);
     }
 
     /**

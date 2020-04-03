@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.Configurer;
  */
 public final class StateConfig
 {
-    /** Rasterable root node. */
+    /** State root node. */
     public static final String NODE_STATE = Constant.XML_PREFIX + "state";
 
     /**
