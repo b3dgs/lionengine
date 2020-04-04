@@ -60,4 +60,18 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @param origin The origin type
      */
     void setOrigin(Origin origin);
+
+    /**
+     * Set raster enabled flag.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    void setEnabled(boolean enabled);
+
+    /**
+     * Set visibility flag.
+     * 
+     * @param visible <code>true</code> for visible, <code>false</code> else.
+     */
+    void setVisibility(boolean visible);
 }

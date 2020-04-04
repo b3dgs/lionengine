@@ -96,15 +96,15 @@ public final class RasterableModelTest
         rasterable.update(1.0);
         rasterable.render(g);
 
-        assertEquals(0, rasterable.getRasterIndex(0));
-        assertEquals(RasterImage.MAX_RASTERS_M, rasterable.getRasterIndex(240));
+        assertEquals(1, rasterable.getRasterIndex(0));
+        assertEquals(RasterImage.MAX_RASTERS_M + 1, rasterable.getRasterIndex(240));
         assertNotNull(rasterable.getRasterAnim(0));
 
         transformable.teleportY(-100);
         rasterable.update(1.0);
 
-        assertEquals(0, rasterable.getRasterIndex(0));
-        assertEquals(RasterImage.MAX_RASTERS_M, rasterable.getRasterIndex(240));
+        assertEquals(1, rasterable.getRasterIndex(0));
+        assertEquals(RasterImage.MAX_RASTERS_M + 1, rasterable.getRasterIndex(240));
         assertNotNull(rasterable.getRasterAnim(0));
     }
 }

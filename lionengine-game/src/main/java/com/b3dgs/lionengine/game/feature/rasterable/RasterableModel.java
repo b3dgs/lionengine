@@ -71,6 +71,10 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private int frameOffsetX;
     /** Frame offsets y. */
     private int frameOffsetY;
+    /** Enabled flag. */
+    private boolean enabled = true;
+    /** Visibility flag. */
+    private boolean visible = true;
 
     /**
      * Create feature.
@@ -108,14 +112,15 @@ public class RasterableModel extends FeatureModel implements Rasterable
         height = setup.getRasterHeight();
         smooth = setup.hasSmooth();
 
+        rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
+
         for (final ImageBuffer buffer : setup.getRasters())
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
             rastersAnim.add(sprite);
         }
-        if (rastersAnim.isEmpty())
+        if (rastersAnim.size() == 1)
         {
-            rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
             updater = UpdatableVoid.getInstance();
         }
         else
@@ -128,22 +133,22 @@ public class RasterableModel extends FeatureModel implements Rasterable
         raster = rastersAnim.get(0);
     }
 
-    @Override
-    public void setFrameOffsets(int offsetX, int offsetY)
-    {
-        frameOffsetX = offsetX;
-        frameOffsetY = offsetY;
-    }
-
     /**
      * Update raster sprite with current vertical location.
      */
     private void updateRasterAnim()
     {
-        final int index = getRasterIndex(transformable.getY());
-        if (index >= 0)
+        if (enabled)
         {
-            raster = rastersAnim.get(index);
+            final int index = getRasterIndex(transformable.getY());
+            if (index >= 0)
+            {
+                raster = rastersAnim.get(index);
+            }
+        }
+        else
+        {
+            raster = rastersAnim.get(0);
         }
     }
 
@@ -176,7 +181,10 @@ public class RasterableModel extends FeatureModel implements Rasterable
     public void render(Graphic g)
     {
         raster.setLocation(viewer, transformable);
-        raster.render(g);
+        if (visible)
+        {
+            raster.render(g);
+        }
     }
 
     @Override
@@ -187,7 +195,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
         {
             index = RasterImage.MAX_RASTERS_M - (index - RasterImage.MAX_RASTERS);
         }
-        return index;
+        return index + 1;
     }
 
     @Override
@@ -199,10 +207,29 @@ public class RasterableModel extends FeatureModel implements Rasterable
     }
 
     @Override
+    public void setFrameOffsets(int offsetX, int offsetY)
+    {
+        frameOffsetX = offsetX;
+        frameOffsetY = offsetY;
+    }
+
+    @Override
     public void setOrigin(Origin origin)
     {
         Check.notNull(origin);
 
         this.origin = origin;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public void setVisibility(boolean visible)
+    {
+        this.visible = visible;
     }
 }
