@@ -399,13 +399,35 @@ public final class SpriteTest
     public void testRenderingPoint()
     {
         final SpriteImpl sprite = new SpriteImpl(Graphics.createImageBuffer(10, 20));
-        sprite.setLocation(5.0, 10.0);
         sprite.setOrigin(Origin.TOP_LEFT);
+        sprite.setLocation(5.0, 10.0);
 
         assertEquals(5, sprite.getRenderX());
         assertEquals(10, sprite.getRenderY());
 
         sprite.setOrigin(Origin.MIDDLE);
+        sprite.setLocation(5.0, 10.0);
+
+        assertEquals(0, sprite.getRenderX());
+        assertEquals(0, sprite.getRenderY());
+
+        sprite.rotate(1);
+        sprite.setMirror(Mirror.HORIZONTAL);
+        sprite.setLocation(5.0, 10.0);
+
+        assertEquals(0, sprite.getRenderX());
+        assertEquals(0, sprite.getRenderY());
+
+        sprite.rotate(1);
+        sprite.setMirror(Mirror.VERTICAL);
+        sprite.setLocation(5.0, 10.0);
+
+        assertEquals(0, sprite.getRenderX());
+        assertEquals(0, sprite.getRenderY());
+
+        sprite.rotate(1);
+        sprite.setMirror(Mirror.NONE);
+        sprite.setLocation(5.0, 10.0);
 
         assertEquals(0, sprite.getRenderX());
         assertEquals(0, sprite.getRenderY());

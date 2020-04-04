@@ -460,6 +460,7 @@ public final class SpriteFontTest
         sprite.load();
         sprite.prepare();
         sprite.setLocation(5.0, 10.0);
+        sprite.setFrameOffsets(1, 2);
         sprite.setOrigin(Origin.TOP_LEFT);
         sprite.setOrigin(Origin.MIDDLE);
 
