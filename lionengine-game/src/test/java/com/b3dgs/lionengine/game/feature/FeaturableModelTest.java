@@ -189,10 +189,10 @@ public final class FeaturableModelTest
     public void testSetFieldNotAccessible() throws ReflectiveOperationException
     {
         final FeatureItself featurable = new FeatureItself(services, setup);
-        final Method method = FeaturableModel.class.getDeclaredMethod("setField",
-                                                                      Field.class,
-                                                                      Object.class,
-                                                                      Class.class);
+        final Method method = FeaturableAbstract.class.getDeclaredMethod("setField",
+                                                                         Field.class,
+                                                                         Object.class,
+                                                                         Class.class);
         UtilReflection.setAccessible(method, true);
         assertThrows(InvocationTargetException.class,
                      () -> method.invoke(featurable,
