@@ -157,24 +157,39 @@ public class Features
         {
             if (type.isAnnotationPresent(FeatureInterface.class))
             {
-                final Feature old;
-                // CHECKSTYLE IGNORE LINE: InnerAssignment
-                if ((old = typeToFeature.put(type.asSubclass(Feature.class), feature)) != null)
-                {
-                    throw new LionEngineException(ERROR_FEATURE_EXISTS
-                                                  + feature.getClass()
-                                                  + AS
-                                                  + type
-                                                  + WITH
-                                                  + old.getClass());
-                }
+                checkAnnotation(feature, type);
                 checkTypeDepth(feature, type);
             }
         }
         final Class<?> parent = current.getSuperclass();
         if (parent != null)
         {
+            if (parent.isAnnotationPresent(FeatureInterface.class))
+            {
+                checkAnnotation(feature, parent);
+            }
             checkTypeDepth(feature, parent);
+        }
+    }
+
+    /**
+     * Check annotation and update mapping.
+     * 
+     * @param feature The feature to check.
+     * @param type The type to check.
+     */
+    private void checkAnnotation(Feature feature, Class<?> type)
+    {
+        final Feature old;
+        // CHECKSTYLE IGNORE LINE: InnerAssignment
+        if ((old = typeToFeature.put(type.asSubclass(Feature.class), feature)) != null)
+        {
+            throw new LionEngineException(ERROR_FEATURE_EXISTS
+                                          + feature.getClass()
+                                          + AS
+                                          + type
+                                          + WITH
+                                          + old.getClass());
         }
     }
 }
