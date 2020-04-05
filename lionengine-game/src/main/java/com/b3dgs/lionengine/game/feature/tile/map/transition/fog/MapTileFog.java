@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -51,7 +50,7 @@ public class MapTileFog implements Listenable<RevealedListener>
     /** Listener. */
     private final ListenableModel<RevealedListener> listenable = new ListenableModel<>();
     /** Hidden map. */
-    private final MapTile map;
+    private final MapTileGame map;
     /** Map group. */
     private final MapTileGroup mapGroup;
     /** Transitions. */

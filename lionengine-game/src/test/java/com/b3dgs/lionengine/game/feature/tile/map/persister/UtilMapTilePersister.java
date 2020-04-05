@@ -38,7 +38,7 @@ final class UtilMapTilePersister
      */
     public static MapTile createMap()
     {
-        final MapTile map = new MapTileGame();
+        final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTilePersisterModel());
         map.create(16, 32, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
@@ -75,9 +75,9 @@ final class UtilMapTilePersister
      * @return The loaded map.
      * @throws IOException If error.
      */
-    public static MapTile loadMap(Media level) throws IOException
+    public static MapTileGame loadMap(Media level) throws IOException
     {
-        final MapTile map = new MapTileGame();
+        final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTilePersisterModel());
         try (FileReading input = new FileReading(level))
         {

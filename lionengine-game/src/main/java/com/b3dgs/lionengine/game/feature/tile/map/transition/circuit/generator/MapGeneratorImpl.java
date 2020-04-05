@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.generator;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -52,8 +51,7 @@ public class MapGeneratorImpl implements MapGenerator
                                Media sheetsConfig,
                                Media groupsConfig)
     {
-        final Services services = new Services();
-        final MapTile map = services.create(MapTileGame.class);
+        final MapTileGame map = new MapTileGame();
         map.loadSheets(sheetsConfig);
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());

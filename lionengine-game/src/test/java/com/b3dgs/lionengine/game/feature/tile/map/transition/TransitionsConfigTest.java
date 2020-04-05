@@ -84,7 +84,7 @@ public final class TransitionsConfigTest
         UtilMap.fill(map, UtilMap.TILE_WATER);
         UtilMap.fill(map, UtilMap.TILE_GROUND, UtilMap.TILE_TRANSITION, 3);
 
-        final MapTile map3 = new MapTileGame();
+        final MapTileGame map3 = new MapTileGame();
         map3.addFeature(new MapTileGroupModel());
         map3.create(1, 1, 3, 3);
 

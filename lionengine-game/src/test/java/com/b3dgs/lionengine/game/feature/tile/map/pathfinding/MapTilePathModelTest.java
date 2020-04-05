@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
@@ -74,7 +73,7 @@ public final class MapTilePathModelTest
 
     private final Services services = new Services();
     private final Setup setup = new Setup(config);
-    private final MapTile map = services.add(new MapTileGame());
+    private final MapTileGame map = services.add(new MapTileGame());
     private MapTilePath mapPath;
 
     /**

@@ -17,12 +17,14 @@
 package com.b3dgs.lionengine.game.feature.tile.map.persister;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,11 +32,11 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.TileSheetsConfig;
+import com.b3dgs.lionengine.io.FileReading;
 
 /**
  * Test {@link MapTilePersisterModel}.
@@ -58,8 +60,6 @@ public final class MapTilePersisterModelTest
     {
         Medias.setResourcesDirectory(null);
     }
-
-    private final Services services = new Services();
 
     /**
      * Test the save and load map from file.
@@ -117,17 +117,54 @@ public final class MapTilePersisterModelTest
 
         TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
 
-        final MapTile map = services.add(new MapTileGame());
+        final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTilePersisterModel());
         map.create(16, 32, 3, 3);
         map.loadSheets(config);
 
         final Media level = Medias.create("level");
         UtilMapTilePersister.saveMap(map, level);
-        final MapTile mapLoaded = UtilMapTilePersister.loadMap(level);
+        final MapTileGame mapLoaded = UtilMapTilePersister.loadMap(level);
 
         assertEquals(config, mapLoaded.getMedia());
         assertTrue(config.getFile().delete());
+        assertTrue(level.getFile().delete());
+    }
+
+    /**
+     * Test load listener.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testListener() throws IOException
+    {
+        final MapTileGame map = new MapTileGame();
+        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
+        final Media level = Medias.create("level");
+        map.create(16, 32, 3, 3);
+        UtilMapTilePersister.saveMap(map, level);
+
+        final AtomicBoolean load = new AtomicBoolean();
+        final MapTilePersisterListener listener = () -> load.set(true);
+        mapPersister.addListener(listener);
+
+        try (FileReading input = new FileReading(level))
+        {
+            mapPersister.load(input);
+        }
+
+        assertTrue(load.get());
+
+        load.set(false);
+        mapPersister.removeListener(listener);
+
+        try (FileReading input = new FileReading(level))
+        {
+            mapPersister.load(input);
+        }
+
+        assertFalse(load.get());
         assertTrue(level.getFile().delete());
     }
 
@@ -137,7 +174,7 @@ public final class MapTilePersisterModelTest
     @Test
     public void testConstructor()
     {
-        final MapTile map = services.add(new MapTileGame());
+        final MapTile map = new MapTileGame();
         final MapTilePersister mapPersister = new MapTilePersisterModel();
 
         assertNotNull(mapPersister);

@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -48,7 +50,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * Or import a map from a level rip with {@link #create(Media, Media)}.
  * </p>
  */
-public class MapTileGame extends FeaturableAbstract implements MapTile
+public class MapTileGame extends FeaturableAbstract implements MapTile, Listenable<TileSetListener>
 {
     /** Map tile surface. */
     protected final MapTileSurface mapSurface;
@@ -65,17 +67,19 @@ public class MapTileGame extends FeaturableAbstract implements MapTile
         mapSurface = addFeatureAndGet(new MapTileSurfaceModel());
     }
 
-    /*
-     * MapTile
+    /**
+     * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
+     * {@link #create(int, int, int, int)}).
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @param tileWidth The tile width.
+     * @param tileHeight The tile height.
+     * @param horizontalTiles The number of horizontal tiles on sheets.
+     * @throws LionEngineException If error when importing map.
+     * @see TilesExtractor
+     * @see LevelRipConverter
      */
-
-    @Override
-    public void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile)
-    {
-        mapSurface.create(tileWidth, tileHeight, widthInTile, heightInTile);
-    }
-
-    @Override
     public void create(Media levelrip, int tileWidth, int tileHeight, int horizontalTiles)
     {
         final TilesExtractor tilesExtractor = new TilesExtractor();
@@ -90,13 +94,37 @@ public class MapTileGame extends FeaturableAbstract implements MapTile
         LevelRipConverter.start(levelrip, tileWidth, tileHeight, mapSurface);
     }
 
-    @Override
+    /**
+     * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
+     * {@link #create(int, int, int, int)}).
+     * <p>
+     * {@link TileSheetsConfig#FILENAME} and {@link com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig#FILENAME}
+     * will be used as default, by calling {@link #create(Media, Media)}.
+     * </p>
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @throws LionEngineException If error when importing map.
+     * @see TilesExtractor
+     * @see LevelRipConverter
+     */
     public void create(Media levelrip)
     {
         create(levelrip, Medias.create(levelrip.getParentPath(), TileSheetsConfig.FILENAME));
     }
 
-    @Override
+    /**
+     * Create a map from a level rip and the associated tiles configuration file.
+     * A level rip is an image file (*.PNG, *.BMP) that represents the full map.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
+     * {@link #create(int, int, int, int)}).
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @throws LionEngineException If error when importing map.
+     * @see TilesExtractor
+     * @see LevelRipConverter
+     */
     public void create(Media levelrip, Media sheetsConfig)
     {
         clear();
@@ -112,6 +140,16 @@ public class MapTileGame extends FeaturableAbstract implements MapTile
         {
             Verbose.warning(getClass(), "create", "Number of missing tiles: ", String.valueOf(errors));
         }
+    }
+
+    /*
+     * MapTile
+     */
+
+    @Override
+    public void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile)
+    {
+        mapSurface.create(tileWidth, tileHeight, widthInTile, heightInTile);
     }
 
     @Override

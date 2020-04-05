@@ -25,8 +25,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
@@ -53,8 +51,6 @@ public final class AstarTest
         Medias.setResourcesDirectory(null);
     }
 
-    private final Services services = new Services();
-
     /**
      * Test the constructor.
      */
@@ -70,7 +66,7 @@ public final class AstarTest
     @Test
     public void testCreatePathFinder()
     {
-        final MapTile map = services.add(new MapTileGame());
+        final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTilePathModel());
 

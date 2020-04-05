@@ -146,7 +146,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
         final Collection<MapTile> mapsSet = new HashSet<>(levels.size());
         for (final Media level : levels)
         {
-            final MapTile map = new MapTileGame();
+            final MapTileGame map = new MapTileGame();
             map.create(level, sheetsConfig);
 
             final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());

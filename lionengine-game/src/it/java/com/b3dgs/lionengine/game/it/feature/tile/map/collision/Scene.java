@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -79,7 +78,7 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        final MapTile map = services.create(MapTileGame.class);
+        final MapTileGame map = services.create(MapTileGame.class);
         map.create(Medias.create("level.png"));
 
         final Camera camera = services.create(Camera.class);

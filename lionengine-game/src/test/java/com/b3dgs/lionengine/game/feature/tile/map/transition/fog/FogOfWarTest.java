@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
@@ -73,7 +73,7 @@ public final class FogOfWarTest
     }
 
     private final Services services = new Services();
-    private final MapTile map = services.add(UtilMap.createMap(5));
+    private final MapTileGame map = UtilMap.createMap(5);
     private final FogOfWar fog = map.addFeatureAndGet(new FogOfWar());
 
     /**

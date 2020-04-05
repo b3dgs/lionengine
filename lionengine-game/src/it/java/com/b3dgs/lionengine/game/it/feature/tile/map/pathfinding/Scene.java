@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
@@ -60,7 +59,7 @@ class Scene extends Sequence
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
-    private final MapTile map = services.create(MapTileGame.class);
+    private final MapTileGame map = services.create(MapTileGame.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Factory factory = services.create(Factory.class);
     private final Tick tick = new Tick();

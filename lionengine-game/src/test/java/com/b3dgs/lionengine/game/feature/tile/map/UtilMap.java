@@ -69,7 +69,7 @@ public final class UtilMap
      * @param size The map size in tile.
      * @return The created map.
      */
-    public static MapTile createMap(int size)
+    public static MapTileGame createMap(int size)
     {
         final MapTileGame map = new MapTileGame();
         final MapTileGroup mapGroup = new MapTileGroupModel();

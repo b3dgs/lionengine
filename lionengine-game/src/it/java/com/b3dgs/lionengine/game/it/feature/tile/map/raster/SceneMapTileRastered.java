@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.raster.MapTileRastered;
 import com.b3dgs.lionengine.game.feature.tile.map.raster.MapTileRasteredModel;
@@ -39,7 +38,7 @@ public class SceneMapTileRastered extends Sequence
 {
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);
-    private final MapTile map = services.create(MapTileGame.class);
+    private final MapTileGame map = services.create(MapTileGame.class);
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
     private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel());
     private final Tick tickRaster = new Tick();

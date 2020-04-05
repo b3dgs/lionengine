@@ -20,14 +20,12 @@ import java.util.Collection;
 import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.SurfaceTile;
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
@@ -37,12 +35,8 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * A sheet id represents a tilesheet number (surface number containing tiles). A map can have one or more
  * sheets. The map picks its resources from a sheets folder, which must contains the files images.
  * </p>
- * 
- * @see MapTileGame
- * @see Minimap
- * @see Tile
  */
-public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetListener>
+public interface MapTile extends FeatureProvider, SurfaceTile
 {
     /**
      * Create and prepare map memory area. Previous map data (if existing) will be cleared ({@link #clear()}).
@@ -52,55 +46,8 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
      * @param widthInTile The map width in tile (must be strictly positive).
      * @param heightInTile The map height in tile (must be strictly positive).
      * @throws LionEngineException If size is invalid.
-     * @see #create(Media)
-     * @see #create(Media, Media)
      */
     void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile);
-
-    /**
-     * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
-     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
-     * {@link #create(int, int, int, int)}).
-     * 
-     * @param levelrip The file describing the levelrip as a single image.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
-     * @param horizontalTiles The number of horizontal tiles on sheets.
-     * @throws LionEngineException If error when importing map.
-     * @see TilesExtractor
-     * @see LevelRipConverter
-     */
-    void create(Media levelrip, int tileWidth, int tileHeight, int horizontalTiles);
-
-    /**
-     * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
-     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
-     * {@link #create(int, int, int, int)}).
-     * <p>
-     * {@link TileSheetsConfig#FILENAME} and {@link com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig#FILENAME}
-     * will be used as default, by calling {@link #create(Media, Media)}.
-     * </p>
-     * 
-     * @param levelrip The file describing the levelrip as a single image.
-     * @throws LionEngineException If error when importing map.
-     * @see TilesExtractor
-     * @see LevelRipConverter
-     */
-    void create(Media levelrip);
-
-    /**
-     * Create a map from a level rip and the associated tiles configuration file.
-     * A level rip is an image file (*.PNG, *.BMP) that represents the full map.
-     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
-     * {@link #create(int, int, int, int)}).
-     * 
-     * @param levelrip The file describing the levelrip as a single image.
-     * @param sheetsConfig The file that define the sheets configuration.
-     * @throws LionEngineException If error when importing map.
-     * @see TilesExtractor
-     * @see LevelRipConverter
-     */
-    void create(Media levelrip, Media sheetsConfig);
 
     /**
      * Load map sheets (tiles surfaces). Must be called before rendering map.
@@ -121,7 +68,7 @@ public interface MapTile extends SurfaceTile, Featurable, Listenable<TileSetList
     void loadSheets(Media sheetsConfig);
 
     /**
-     * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
+     * Remove all tiles from map and clear internal data.
      */
     void clear();
 

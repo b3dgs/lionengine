@@ -75,7 +75,7 @@ public final class MapGeneratorTest
 
     private final Services services = new Services();
     private final Camera camera = services.add(new Camera());
-    private final MapTile map = services.add(new MapTileGame());
+    private final MapTileGame map = new MapTileGame();
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
     private final MapTileAppender append = map.addFeatureAndGet(new MapTileAppenderModel());
     private final GeneratorParameter parameters = new GeneratorParameter();

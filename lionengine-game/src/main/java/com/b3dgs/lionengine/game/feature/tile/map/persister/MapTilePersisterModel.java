@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
@@ -35,6 +36,9 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
 {
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE;
+
+    /** Listeners. */
+    private final ListenableModel<MapTilePersisterListener> listenable = new ListenableModel<>();
 
     private MapTileSurface map;
 
@@ -148,6 +152,18 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
         map = provider.getFeature(MapTileSurface.class);
     }
 
+    @Override
+    public void addListener(MapTilePersisterListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(MapTilePersisterListener listener)
+    {
+        listenable.removeListener(listener);
+    }
+
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
      * 
@@ -175,17 +191,17 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
         final int widthInTile = map.getInTileWidth();
 
         // Header
-        output.writeInteger(map.getTileWidth());
-        output.writeInteger(map.getTileHeight());
-        output.writeInteger(widthInTile);
-        output.writeInteger(map.getInTileHeight());
-
         final boolean hasConfig = map.getMedia() != null;
         output.writeBoolean(hasConfig);
         if (hasConfig)
         {
             output.writeString(map.getMedia().getPath());
         }
+
+        output.writeInteger(map.getTileWidth());
+        output.writeInteger(map.getTileHeight());
+        output.writeInteger(widthInTile);
+        output.writeInteger(map.getInTileHeight());
 
         final int step = BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
@@ -229,11 +245,11 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
     {
         Check.notNull(input);
 
-        map.create(input.readInteger(), input.readInteger(), input.readInteger(), input.readInteger());
         if (input.readBoolean())
         {
             map.loadSheets(Medias.create(input.readString()));
         }
+        map.create(input.readInteger(), input.readInteger(), input.readInteger(), input.readInteger());
 
         final int t = input.readShort();
         for (int v = 0; v < t; v++)
@@ -243,6 +259,11 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
             {
                 loadTile(input, v);
             }
+        }
+
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyMapLoaded();
         }
     }
 }

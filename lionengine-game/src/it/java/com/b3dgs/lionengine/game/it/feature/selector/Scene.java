@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -67,7 +66,7 @@ class Scene extends Sequence
     private final Services services = new Services();
     private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
-    private final MapTile map = services.create(MapTileGame.class);
+    private final MapTileGame map = services.create(MapTileGame.class);
     private final Cursor cursor = services.create(Cursor.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Tick tick = new Tick();

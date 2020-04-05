@@ -94,7 +94,7 @@ public final class CircuitsConfigTest
         UtilMap.fill(map, UtilMap.TILE_GROUND);
         UtilMap.fill(map, UtilMap.TILE_ROAD, UtilMap.TILE_ROAD, 3);
 
-        final MapTile map3 = new MapTileGame();
+        final MapTileGame map3 = new MapTileGame();
         map3.addFeature(new MapTileGroupModel());
         map3.create(1, 1, 3, 3);
 

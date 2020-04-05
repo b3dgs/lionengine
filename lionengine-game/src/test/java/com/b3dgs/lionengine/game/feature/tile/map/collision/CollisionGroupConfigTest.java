@@ -30,9 +30,6 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
-import com.b3dgs.lionengine.game.feature.Camera;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 
@@ -59,7 +56,6 @@ public final class CollisionGroupConfigTest
         Medias.setResourcesDirectory(null);
     }
 
-    private final Services services = new Services();
     private final CollisionFormula formula = new CollisionFormula("formula",
                                                                   new CollisionRange(Axis.X, 0, 1, 2, 3),
                                                                   new CollisionFunctionLinear(1.0, 2.0),
@@ -73,9 +69,7 @@ public final class CollisionGroupConfigTest
     @BeforeEach
     public void prepare()
     {
-        services.add(new Camera());
-
-        final MapTile map = services.add(new MapTileGame());
+        final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTileGroupModel());
         mapCollision = new MapTileCollisionModel();
         mapCollision.prepare(map);

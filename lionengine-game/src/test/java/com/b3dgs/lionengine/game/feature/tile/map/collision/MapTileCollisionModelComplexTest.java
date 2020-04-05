@@ -35,7 +35,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilAssert;
-import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -44,7 +43,6 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilSetup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -121,7 +119,7 @@ public final class MapTileCollisionModelComplexTest
     private final CollisionCategory category = new CollisionCategory("y", Axis.Y, 0, 0, true, groupsList);
 
     private final Services services = new Services();
-    private final MapTile map = services.add(new MapTileGame());
+    private final MapTileGame map = services.add(new MapTileGame());
     private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
     private final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
     private Transformable transformable;
@@ -132,7 +130,6 @@ public final class MapTileCollisionModelComplexTest
     @BeforeEach
     public void prepare()
     {
-        services.add(new Camera());
         mapGroup.loadGroups(Arrays.asList(createGroup("ground", TILE_GROUND),
                                           createGroup("slope_left_0", TILE_SLOPE_LEFT_0),
                                           createGroup("slope_left_1", TILE_SLOPE_LEFT_1),

@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.game.feature.tile.map.LevelRipConverter;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
@@ -57,7 +56,7 @@ class Scene extends Sequence
     /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final MapTile map = services.create(MapTileGame.class);
+    private final MapTileGame map = services.create(MapTileGame.class);
     /** Map viewer. */
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
     /** Minimap reference. */
