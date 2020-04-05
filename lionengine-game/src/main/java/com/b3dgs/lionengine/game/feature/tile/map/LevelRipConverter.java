@@ -41,7 +41,7 @@ public final class LevelRipConverter
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip, int tileWidth, int tileHeight, MapTileSurface map)
+    public static int start(Media levelrip, int tileWidth, int tileHeight, MapTile map)
     {
         return start(levelrip, tileWidth, tileHeight, map, null, null);
     }
@@ -57,11 +57,7 @@ public final class LevelRipConverter
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip,
-                            int tileWidth,
-                            int tileHeight,
-                            MapTileSurface map,
-                            ProgressListener listener)
+    public static int start(Media levelrip, int tileWidth, int tileHeight, MapTile map, ProgressListener listener)
     {
         return start(levelrip, tileWidth, tileHeight, map, listener, null);
     }
@@ -81,7 +77,7 @@ public final class LevelRipConverter
     public static int start(Media levelrip,
                             int tileWidth,
                             int tileHeight,
-                            MapTileSurface map,
+                            MapTile map,
                             ProgressListener listener,
                             Canceler canceler)
     {
@@ -137,7 +133,7 @@ public final class LevelRipConverter
      * @param progressTileY The progress on vertical tiles.
      * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    private static boolean checkPixel(MapTileSurface map, ImageBuffer tileRef, int progressTileX, int progressTileY)
+    private static boolean checkPixel(MapTile map, ImageBuffer tileRef, int progressTileX, int progressTileY)
     {
         final int x = progressTileX * map.getTileWidth();
         final int y = progressTileY * map.getTileHeight();
@@ -161,7 +157,7 @@ public final class LevelRipConverter
      * @param y The location y.
      * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    private static boolean searchForTile(MapTileSurface map, ImageBuffer tileSprite, int x, int y)
+    private static boolean searchForTile(MapTile map, ImageBuffer tileSprite, int x, int y)
     {
         // Check each tile on each sheet
         final int sheetsCount = map.getSheetsNumber();
@@ -188,7 +184,7 @@ public final class LevelRipConverter
      * @param y The location y.
      * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    private static boolean checkTile(MapTileSurface map, ImageBuffer tileSprite, int sheetId, int x, int y)
+    private static boolean checkTile(MapTile map, ImageBuffer tileSprite, int sheetId, int x, int y)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();

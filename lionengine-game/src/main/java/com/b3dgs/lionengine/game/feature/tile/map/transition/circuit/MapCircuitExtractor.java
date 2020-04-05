@@ -24,7 +24,6 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Map circuit extractor.
@@ -85,7 +84,7 @@ public class MapCircuitExtractor
     }
 
     /** The map reference. */
-    private final MapTileSurface map;
+    private final MapTile map;
     /** The map group reference. */
     private final MapTileGroup mapGroup;
 
@@ -95,19 +94,6 @@ public class MapCircuitExtractor
      * @param map The map reference.
      */
     public MapCircuitExtractor(MapTile map)
-    {
-        super();
-
-        this.map = map.getFeature(MapTileSurface.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-    }
-
-    /**
-     * Create the extractor.
-     * 
-     * @param map The map reference.
-     */
-    public MapCircuitExtractor(MapTileSurface map)
     {
         super();
 

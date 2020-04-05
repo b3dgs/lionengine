@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 
 /**
  * Compute map tile collision.
@@ -46,7 +46,7 @@ final class MapTileCollisionComputer
      * @param y The current vertical location.
      * @return The computed collision result, <code>null</code> if none.
      */
-    private static CollisionResult computeCollision(MapTileSurface map,
+    private static CollisionResult computeCollision(MapTile map,
                                                     Function<Tile, Collection<CollisionFormula>> loader,
                                                     CollisionCategory category,
                                                     double ox,
@@ -294,7 +294,7 @@ final class MapTileCollisionComputer
      * @param category The collisions category to search in.
      * @return The collision result, <code>null</code> if nothing found.
      */
-    public CollisionResult computeCollision(MapTileSurface map,
+    public CollisionResult computeCollision(MapTile map,
                                             Function<Tile, Collection<CollisionFormula>> loader,
                                             Transformable transformable,
                                             CollisionCategory category)
@@ -347,7 +347,7 @@ final class MapTileCollisionComputer
      * @return The collision found, <code>null</code> if none.
      */
     // CHECKSTYLE IGNORE LINE: ExecutableStatementCount|CyclomaticComplexity|NPathComplexity
-    private CollisionResult computeCollision(MapTileSurface map,
+    private CollisionResult computeCollision(MapTile map,
                                              Function<Tile, Collection<CollisionFormula>> loader,
                                              Transformable transformable,
                                              CollisionCategory category,
@@ -455,7 +455,7 @@ final class MapTileCollisionComputer
      * @param y The current vertical collision.
      * @return The collision found, <code>null</code> if none.
      */
-    private CollisionResult getGlued(MapTileSurface map,
+    private CollisionResult getGlued(MapTile map,
                                      Function<Tile, Collection<CollisionFormula>> loader,
                                      Transformable transformable,
                                      CollisionCategory category,

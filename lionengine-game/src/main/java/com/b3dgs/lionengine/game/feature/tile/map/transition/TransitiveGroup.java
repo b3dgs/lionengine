@@ -29,7 +29,6 @@ import java.util.Map;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Handle the transitivity between groups for transitions.
@@ -76,7 +75,7 @@ public class TransitiveGroup
     /** Groups transitive transitions. */
     private final Map<GroupTransition, Collection<GroupTransition>> transitives = new HashMap<>();
     /** Map reference. */
-    private final MapTileSurface map;
+    private final MapTile map;
     /** Map tile group. */
     private final MapTileGroup mapGroup;
     /** Map transition. */
@@ -88,7 +87,6 @@ public class TransitiveGroup
      * The {@link MapTile} must provide the following features:
      * </p>
      * <ul>
-     * <li>{@link MapTileSurface}</li>
      * <li>{@link MapTileGroup}</li>
      * <li>{@link MapTileTransition}</li>
      * </ul>
@@ -96,23 +94,6 @@ public class TransitiveGroup
      * @param map The map reference.
      */
     public TransitiveGroup(MapTile map)
-    {
-        this(map.getFeature(MapTileSurface.class));
-    }
-
-    /**
-     * Create the transitive group handler.
-     * <p>
-     * The {@link MapTile} must provide the following features:
-     * </p>
-     * <ul>
-     * <li>{@link MapTileGroup}</li>
-     * <li>{@link MapTileTransition}</li>
-     * </ul>
-     * 
-     * @param map The map reference.
-     */
-    public TransitiveGroup(MapTileSurface map)
     {
         super();
 

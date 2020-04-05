@@ -40,6 +40,7 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
     /** Listeners. */
     private final ListenableModel<MapTilePersisterListener> listenable = new ListenableModel<>();
 
+    /** Map surface reference. */
     private MapTileSurface map;
 
     /**

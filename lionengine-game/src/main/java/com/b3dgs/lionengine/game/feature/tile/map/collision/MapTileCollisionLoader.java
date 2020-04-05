@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Load the map tile collision.
@@ -75,7 +75,7 @@ final class MapTileCollisionLoader
      * @param collisionGroups The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    public void loadCollisions(MapTileSurface map,
+    public void loadCollisions(MapTile map,
                                MapTileGroup mapGroup,
                                MapTileCollision mapCollision,
                                Media collisionFormulas,
@@ -102,7 +102,7 @@ final class MapTileCollisionLoader
      * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    public void loadCollisions(MapTileSurface map,
+    public void loadCollisions(MapTile map,
                                MapTileGroup mapGroup,
                                CollisionFormulaConfig formulasConfig,
                                CollisionGroupConfig groupsConfig)
@@ -253,7 +253,7 @@ final class MapTileCollisionLoader
      * @param map The map surface reference.
      * @param mapGroup The map group reference.
      */
-    private void loadTilesCollisions(MapTileSurface map, MapTileGroup mapGroup)
+    private void loadTilesCollisions(MapTile map, MapTileGroup mapGroup)
     {
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
@@ -314,7 +314,7 @@ final class MapTileCollisionLoader
      * @param map The map surface reference.
      * @param mapGroup The map group reference.
      */
-    private void applyConstraints(MapTileSurface map, MapTileGroup mapGroup)
+    private void applyConstraints(MapTile map, MapTileGroup mapGroup)
     {
         final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
         for (int v = 0; v < map.getInTileHeight(); v++)
@@ -351,11 +351,7 @@ final class MapTileCollisionLoader
      * @param v The vertical location.
      * @return The formula to remove.
      */
-    private Collection<CollisionFormula> checkConstraints(MapTileSurface map,
-                                                          MapTileGroup mapGroup,
-                                                          Tile tile,
-                                                          int h,
-                                                          int v)
+    private Collection<CollisionFormula> checkConstraints(MapTile map, MapTileGroup mapGroup, Tile tile, int h, int v)
     {
         final Tile top = map.getTile(h, v + 1);
         final Tile bottom = map.getTile(h, v - 1);
