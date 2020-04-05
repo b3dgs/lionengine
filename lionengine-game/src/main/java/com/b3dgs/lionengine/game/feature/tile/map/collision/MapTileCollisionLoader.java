@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Load the map tile collision.
@@ -52,10 +52,6 @@ final class MapTileCollisionLoader
     private final Map<String, CollisionGroup> groups = new HashMap<>();
     /** Formulas per tiles. */
     private final Map<Tile, Collection<CollisionFormula>> tilesFormulas = new HashMap<>();
-    /** Map reference. */
-    private final MapTile map;
-    /** Map tile group. */
-    private final MapTileGroup mapGroup;
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -63,27 +59,27 @@ final class MapTileCollisionLoader
 
     /**
      * Create the map tile collision.
-     * 
-     * @param map The map tile owner.
-     * @param mapGroup The map group owner.
      */
-    MapTileCollisionLoader(MapTile map, MapTileGroup mapGroup)
+    MapTileCollisionLoader()
     {
         super();
-
-        this.map = map;
-        this.mapGroup = mapGroup;
     }
 
     /**
      * Load map collision from an external file.
      * 
+     * @param map The map surface reference.
+     * @param mapGroup The map group reference.
      * @param mapCollision The map tile collision owner.
      * @param collisionFormulas The collision formulas descriptor.
      * @param collisionGroups The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    public void loadCollisions(MapTileCollision mapCollision, Media collisionFormulas, Media collisionGroups)
+    public void loadCollisions(MapTileSurface map,
+                               MapTileGroup mapGroup,
+                               MapTileCollision mapCollision,
+                               Media collisionFormulas,
+                               Media collisionGroups)
     {
         if (collisionFormulas.exists())
         {
@@ -93,23 +89,28 @@ final class MapTileCollisionLoader
         {
             loadCollisionGroups(mapCollision, collisionGroups);
         }
-        loadTilesCollisions();
-        applyConstraints();
+        loadTilesCollisions(map, mapGroup);
+        applyConstraints(map, mapGroup);
     }
 
     /**
      * Load map collision with default files.
      * 
+     * @param map The map surface reference.
+     * @param mapGroup The map group reference.
      * @param formulasConfig The collision formulas descriptor.
      * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    public void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig)
+    public void loadCollisions(MapTileSurface map,
+                               MapTileGroup mapGroup,
+                               CollisionFormulaConfig formulasConfig,
+                               CollisionGroupConfig groupsConfig)
     {
         loadCollisionFormulas(formulasConfig);
         loadCollisionGroups(groupsConfig);
-        loadTilesCollisions();
-        applyConstraints();
+        loadTilesCollisions(map, mapGroup);
+        applyConstraints(map, mapGroup);
     }
 
     /**
@@ -248,8 +249,11 @@ final class MapTileCollisionLoader
 
     /**
      * Load collisions for each tile. Previous collisions will be removed.
+     * 
+     * @param map The map surface reference.
+     * @param mapGroup The map group reference.
      */
-    private void loadTilesCollisions()
+    private void loadTilesCollisions(MapTileSurface map, MapTileGroup mapGroup)
     {
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
@@ -258,7 +262,7 @@ final class MapTileCollisionLoader
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    loadTileCollisions(tile);
+                    loadTileCollisions(mapGroup, tile);
                 }
             }
         }
@@ -267,9 +271,10 @@ final class MapTileCollisionLoader
     /**
      * Load the tile collisions.
      * 
+     * @param mapGroup The map group reference.
      * @param tile The tile reference.
      */
-    private void loadTileCollisions(Tile tile)
+    private void loadTileCollisions(MapTileGroup mapGroup, Tile tile)
     {
         if (tilesFormulas.containsKey(tile))
         {
@@ -279,15 +284,16 @@ final class MapTileCollisionLoader
         {
             tilesFormulas.put(tile, new HashSet<>());
         }
-        addTileCollisions(tile);
+        addTileCollisions(mapGroup, tile);
     }
 
     /**
      * Add the tile collisions from loaded configuration.
      * 
+     * @param mapGroup The map group reference.
      * @param tile The tile reference.
      */
-    private void addTileCollisions(Tile tile)
+    private void addTileCollisions(MapTileGroup mapGroup, Tile tile)
     {
         for (final CollisionGroup collision : getCollisionGroups())
         {
@@ -304,8 +310,11 @@ final class MapTileCollisionLoader
 
     /**
      * Apply tile constraints depending of their adjacent collisions.
+     * 
+     * @param map The map surface reference.
+     * @param mapGroup The map group reference.
      */
-    private void applyConstraints()
+    private void applyConstraints(MapTileSurface map, MapTileGroup mapGroup)
     {
         final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
         for (int v = 0; v < map.getInTileHeight(); v++)
@@ -315,7 +324,7 @@ final class MapTileCollisionLoader
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    toRemove.put(tile, checkConstraints(tile, h, v));
+                    toRemove.put(tile, checkConstraints(map, mapGroup, tile, h, v));
                 }
             }
         }
@@ -335,12 +344,18 @@ final class MapTileCollisionLoader
     /**
      * Check the tile constraints and get the removable formulas.
      * 
+     * @param map The map surface reference.
+     * @param mapGroup The map group reference.
      * @param tile The current tile to check.
      * @param h The horizontal location.
      * @param v The vertical location.
      * @return The formula to remove.
      */
-    private Collection<CollisionFormula> checkConstraints(Tile tile, int h, int v)
+    private Collection<CollisionFormula> checkConstraints(MapTileSurface map,
+                                                          MapTileGroup mapGroup,
+                                                          Tile tile,
+                                                          int h,
+                                                          int v)
     {
         final Tile top = map.getTile(h, v + 1);
         final Tile bottom = map.getTile(h, v - 1);
@@ -351,10 +366,10 @@ final class MapTileCollisionLoader
         for (final CollisionFormula formula : tilesFormulas.computeIfAbsent(tile, t -> Collections.emptyList()))
         {
             final CollisionConstraint constraint = formula.getConstraint();
-            if (checkConstraint(constraint.getConstraints(Orientation.NORTH), top)
-                || checkConstraint(constraint.getConstraints(Orientation.SOUTH), bottom)
-                || checkConstraint(constraint.getConstraints(Orientation.WEST), left)
-                || checkConstraint(constraint.getConstraints(Orientation.EAST), right))
+            if (checkConstraint(mapGroup, constraint.getConstraints(Orientation.NORTH), top)
+                || checkConstraint(mapGroup, constraint.getConstraints(Orientation.SOUTH), bottom)
+                || checkConstraint(mapGroup, constraint.getConstraints(Orientation.WEST), left)
+                || checkConstraint(mapGroup, constraint.getConstraints(Orientation.EAST), right))
             {
                 toRemove.add(formula);
             }
@@ -365,11 +380,12 @@ final class MapTileCollisionLoader
     /**
      * Check the constraint with the specified tile.
      * 
+     * @param mapGroup The map group reference.
      * @param constraints The constraint groups to check.
      * @param tile The tile to check with.
      * @return <code>true</code> if can be ignored, <code>false</code> else.
      */
-    private boolean checkConstraint(Collection<String> constraints, Tile tile)
+    private boolean checkConstraint(MapTileGroup mapGroup, Collection<String> constraints, Tile tile)
     {
         return tile != null && constraints.contains(mapGroup.getGroup(tile)) && !tilesFormulas.get(tile).isEmpty();
     }

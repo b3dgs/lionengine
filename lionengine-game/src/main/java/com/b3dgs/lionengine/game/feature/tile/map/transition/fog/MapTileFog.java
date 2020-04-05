@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
@@ -30,6 +29,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
@@ -64,10 +64,9 @@ public class MapTileFog implements Listenable<RevealedListener>
     {
         super();
 
-        final Services services = new Services();
-        map = services.add(new MapTileGame());
+        map = new MapTileGame();
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        transition = map.addFeatureAndGet(new MapTileTransitionModel(services));
+        transition = map.addFeatureAndGet(new MapTileTransitionModel());
         map.addListener(tile ->
         {
             if (NO_FOG == tile.getNumber())
@@ -88,7 +87,7 @@ public class MapTileFog implements Listenable<RevealedListener>
      * @param config The fog configuration.
      * @param sheet The sheet used (can be <code>null</code>).
      */
-    public void create(MapTile map, Media config, SpriteTiled sheet)
+    public void create(MapTileSurface map, Media config, SpriteTiled sheet)
     {
         this.map.create(map.getTileWidth(), map.getTileHeight(), map.getInTileWidth(), map.getInTileHeight());
         if (sheet != null)

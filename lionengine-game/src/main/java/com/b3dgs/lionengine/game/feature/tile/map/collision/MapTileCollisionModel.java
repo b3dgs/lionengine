@@ -18,54 +18,44 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Map tile collision model implementation.
  */
 public class MapTileCollisionModel extends FeatureAbstract implements MapTileCollision
 {
-    /** Map reference. */
-    private final MapTile map;
-    /** Map tile group. */
-    private final MapTileGroup mapGroup;
     /** Map collision loader. */
-    private final MapTileCollisionLoader loader;
+    private final MapTileCollisionLoader loader = new MapTileCollisionLoader();
     /** Map collision computer. */
-    private final MapTileCollisionComputer computer;
+    private final MapTileCollisionComputer computer = new MapTileCollisionComputer();
+
+    /** Map tile surface. */
+    private MapTileSurface map;
+    /** Map tile group. */
+    private MapTileGroup mapGroup;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
-     * <li>{@link MapTile}</li>
+     * <li>{@link MapTileSurface}</li>
      * <li>{@link MapTileGroup}</li>
      * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
      */
-    public MapTileCollisionModel(Services services)
+    public MapTileCollisionModel()
     {
         super();
-
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-        loader = new MapTileCollisionLoader(map, mapGroup);
-        computer = new MapTileCollisionComputer(map, loader);
     }
 
     /*
@@ -73,15 +63,24 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
      */
 
     @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+        mapGroup = provider.getFeature(MapTileGroup.class);
+    }
+
+    @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups)
     {
-        loader.loadCollisions(this, collisionFormulas, collisionGroups);
+        loader.loadCollisions(map, mapGroup, this, collisionFormulas, collisionGroups);
     }
 
     @Override
     public void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig)
     {
-        loader.loadCollisions(formulasConfig, groupsConfig);
+        loader.loadCollisions(map, mapGroup, formulasConfig, groupsConfig);
     }
 
     @Override
@@ -117,7 +116,7 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
     @Override
     public CollisionResult computeCollision(Transformable transformable, CollisionCategory category)
     {
-        return computer.computeCollision(transformable, category);
+        return computer.computeCollision(map, this::getCollisionFormulas, transformable, category);
     }
 
     @Override

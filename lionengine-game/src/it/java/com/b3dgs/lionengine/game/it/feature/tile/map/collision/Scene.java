@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileRendererModel;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollision;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.MapTileCollisionRenderer;
@@ -90,7 +89,7 @@ class Scene extends Sequence
         handler.add(camera);
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
+        final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
         mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel(services));
 
         handler.add(map);
@@ -100,7 +99,6 @@ class Scene extends Sequence
         mapCollisionRenderer.createCollisionDraw();
 
         final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
-        mapViewer.addRenderer(new MapTileRendererModel());
         mapViewer.addRenderer(mapCollisionRenderer);
         mapViewer.prepare(map);
 

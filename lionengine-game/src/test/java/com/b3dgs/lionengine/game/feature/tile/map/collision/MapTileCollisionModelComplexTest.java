@@ -123,7 +123,7 @@ public final class MapTileCollisionModelComplexTest
     private final Services services = new Services();
     private final MapTile map = services.add(new MapTileGame());
     private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-    private final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
+    private final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
     private Transformable transformable;
 
     /**

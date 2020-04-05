@@ -105,7 +105,7 @@ public final class TileCollidableModelTest
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel(services));
+        mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
         mapCollision.prepare(map);
 
         formulasConfig = UtilConfig.createFormulaConfig(formulaV, formulaH);

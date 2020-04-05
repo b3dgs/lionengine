@@ -60,11 +60,24 @@ final class PathFinderImpl implements PathFinder
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;
         mapPath = map.getFeature(MapTilePath.class);
-        nodes = new Node[map.getInTileHeight()][map.getInTileWidth()];
 
-        for (int ty = 0; ty < map.getInTileHeight(); ty++)
+        final int widthInTile;
+        final int heightInTile;
+        if (mapPath.getCategories().isEmpty())
         {
-            for (int tx = 0; tx < map.getInTileWidth(); tx++)
+            widthInTile = 0;
+            heightInTile = 0;
+        }
+        else
+        {
+            widthInTile = map.getInTileWidth();
+            heightInTile = map.getInTileHeight();
+        }
+        nodes = new Node[heightInTile][widthInTile];
+
+        for (int ty = 0; ty < heightInTile; ty++)
+        {
+            for (int tx = 0; tx < widthInTile; tx++)
             {
                 nodes[ty][tx] = new Node(tx, ty);
             }

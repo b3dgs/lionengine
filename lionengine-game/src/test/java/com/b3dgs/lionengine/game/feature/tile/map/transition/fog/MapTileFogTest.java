@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.UtilTransformable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
 
@@ -91,7 +92,7 @@ public final class MapTileFogTest
 
         final MapTileFog fog = new MapTileFog();
         Medias.setLoadFromJar(MapTileFog.class);
-        fog.create(map, Medias.create("fog.xml"), null);
+        fog.create(map.getFeature(MapTileSurface.class), Medias.create("fog.xml"), null);
         Medias.setLoadFromJar(null);
 
         final AtomicInteger rtx = new AtomicInteger();

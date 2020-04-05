@@ -21,13 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
@@ -41,30 +40,24 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
 {
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
-    /** Map tile reference. */
-    private final MapTile map;
     /** Rasters smooth flag. */
     private boolean smooth;
+
+    /** Map tile surface. */
+    private MapTileSurface map;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
-     * <li>{@link MapTile}</li>
+     * <li>{@link MapTileSurface}</li>
      * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
      */
-    public MapTileRasteredModel(Services services)
+    public MapTileRasteredModel()
     {
         super();
-
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
     }
 
     /**
@@ -88,6 +81,14 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
      */
 
     @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+    }
+
+    @Override
     public void loadSheets(Media rasterConfig, boolean smooth)
     {
         final int th = map.getTileHeight();
@@ -109,7 +110,7 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     }
 
     @Override
-    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
+    public void renderTile(Graphic g, Tile tile, int x, int y)
     {
         final SpriteTiled raster = getRasterSheet(tile.getSheetKey(), getRasterIndex(tile.getInTileY()));
         raster.setLocation(x, y);

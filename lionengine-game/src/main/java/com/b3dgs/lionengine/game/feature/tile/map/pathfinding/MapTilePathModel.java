@@ -25,18 +25,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.geom.Area;
 
 /**
@@ -46,39 +44,27 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
 {
     /** Categories list. */
     private final Map<String, PathCategory> categories = new HashMap<>();
-    /** Map reference. */
-    private final MapTile map;
-    /** Map group reference. */
-    private final MapTileGroup mapGroup;
     /** Path id mapping. */
     private List<List<Set<Integer>>> tiles;
+
+    /** Map tile surface. */
+    private MapTileSurface map;
+    /** Map tile group. */
+    private MapTileGroup group;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
-     * <p>
-     * The {@link MapTile} must provide the following features:
-     * </p>
-     * <ul>
+     * <li>{@link MapTileSurface}</li>
      * <li>{@link MapTileGroup}</li>
      * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
      */
-    public MapTilePathModel(Services services)
+    public MapTilePathModel()
     {
         super();
-
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroupModel.class);
     }
 
     /**
@@ -255,14 +241,14 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
     /**
      * Get the group category.
      * 
-     * @param group The group name.
+     * @param groupName The group name.
      * @return The category name (<code>null</code> if undefined).
      */
-    private String getCategory(String group)
+    private String getCategory(String groupName)
     {
         for (final PathCategory category : categories.values())
         {
-            if (category.getGroups().contains(group))
+            if (category.getGroups().contains(groupName))
             {
                 return category.getName();
             }
@@ -275,6 +261,15 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
      */
 
     @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+        group = provider.getFeature(MapTileGroup.class);
+    }
+
+    @Override
     public void loadPathfinding(Media pathfindingConfig)
     {
         final Collection<PathCategory> config = PathfindingConfig.imports(pathfindingConfig);
@@ -284,8 +279,18 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
             categories.put(category.getName(), category);
         }
 
-        final int widthInTile = map.getInTileWidth();
-        final int heightInTile = map.getInTileHeight();
+        final int widthInTile;
+        final int heightInTile;
+        if (categories.isEmpty())
+        {
+            widthInTile = 0;
+            heightInTile = 0;
+        }
+        else
+        {
+            widthInTile = map.getInTileWidth();
+            heightInTile = map.getInTileHeight();
+        }
         tiles = new ArrayList<>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
@@ -301,7 +306,9 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
     @Override
     public void addObjectId(int tx, int ty, Integer id)
     {
-        if (UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1) && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
+        if (tiles != null
+            && UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1)
+            && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
         {
             tiles.get(ty).get(tx).add(id);
         }
@@ -310,7 +317,9 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
     @Override
     public void removeObjectId(int tx, int ty, Integer id)
     {
-        if (UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1) && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
+        if (tiles != null
+            && UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1)
+            && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
         {
             tiles.get(ty).get(tx).remove(id);
         }
@@ -319,7 +328,9 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
     @Override
     public Set<Integer> getObjectsId(int tx, int ty)
     {
-        if (UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1) && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
+        if (tiles != null
+            && UtilMath.isBetween(tx, 0, map.getInTileWidth() - 1)
+            && UtilMath.isBetween(ty, 0, map.getInTileHeight() - 1))
         {
             return tiles.get(ty).get(tx);
         }
@@ -335,8 +346,8 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
     @Override
     public String getCategory(Tile tile)
     {
-        final String group = mapGroup.getGroup(tile);
-        return getCategory(group);
+        final String groupName = group.getGroup(tile);
+        return getCategory(groupName);
     }
 
     @Override

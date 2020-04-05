@@ -72,7 +72,7 @@ public final class AstarTest
     {
         final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTilePathModel(services));
+        map.addFeature(new MapTilePathModel());
 
         assertNotNull(Astar.createPathFinder(map, 1, new HeuristicClosest()));
     }

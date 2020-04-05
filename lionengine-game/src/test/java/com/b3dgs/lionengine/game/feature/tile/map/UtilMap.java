@@ -26,7 +26,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroup;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
@@ -72,12 +71,11 @@ public final class UtilMap
      */
     public static MapTile createMap(int size)
     {
-        final Services services = new Services();
-        final MapTileGame map = services.add(new MapTileGame());
+        final MapTileGame map = new MapTileGame();
         final MapTileGroup mapGroup = new MapTileGroupModel();
         map.addFeature(mapGroup);
-        map.addFeature(new MapTileTransitionModel(services));
-        map.addFeature(new MapTileCircuitModel(services));
+        map.addFeature(new MapTileTransitionModel());
+        map.addFeature(new MapTileCircuitModel());
         map.create(1, 1, size, size);
 
         setGroups(map);

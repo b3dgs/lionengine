@@ -57,8 +57,8 @@ public class MapGeneratorImpl implements MapGenerator
         map.loadSheets(sheetsConfig);
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel(services));
-        final MapTileCircuit mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel(services));
+        final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
+        final MapTileCircuit mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel());
 
         mapGroup.loadGroups(groupsConfig);
         mapTransition.loadTransitions(levels, sheetsConfig, groupsConfig);

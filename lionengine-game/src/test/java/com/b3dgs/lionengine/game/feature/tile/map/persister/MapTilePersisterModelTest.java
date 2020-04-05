@@ -118,7 +118,7 @@ public final class MapTilePersisterModelTest
         TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
 
         final MapTile map = services.add(new MapTileGame());
-        map.addFeature(new MapTilePersisterModel(services));
+        map.addFeature(new MapTilePersisterModel());
         map.create(16, 32, 3, 3);
         map.loadSheets(config);
 
@@ -138,7 +138,7 @@ public final class MapTilePersisterModelTest
     public void testConstructor()
     {
         final MapTile map = services.add(new MapTileGame());
-        final MapTilePersister mapPersister = new MapTilePersisterModel(services);
+        final MapTilePersister mapPersister = new MapTilePersisterModel();
 
         assertNotNull(mapPersister);
 

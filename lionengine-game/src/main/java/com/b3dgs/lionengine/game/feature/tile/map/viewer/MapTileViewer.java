@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
  * Describe how the map viewing is performed. This will allow to customize map rendering.
  */
 @FeatureInterface
-public interface MapTileViewer extends Displayable
+public interface MapTileViewer extends Displayable, MapTileRenderer
 {
     /**
      * Add a map tile renderer.

@@ -19,16 +19,17 @@ package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Map tile renderer default implementation.
@@ -37,18 +38,24 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
 {
     /** Map tiles renderers. */
     private final Collection<MapTileRenderer> renderers = new ArrayList<>();
-    /** Map reference. */
-    private final MapTile map;
     /** Viewer reference. */
     private final Viewer viewer;
 
+    /** Map tile surface. */
+    private MapTileSurface map;
+
     /**
-     * Create feature. It uses default renderer: {@link MapTileRendererModel}.
+     * Create feature.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileSurface}</li>
+     * </ul>
      * <p>
      * The {@link Services} must provide:
      * </p>
      * <ul>
-     * <li>{@link MapTile}</li>
      * <li>{@link Viewer}</li>
      * </ul>
      * 
@@ -59,11 +66,7 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
     {
         super();
 
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
-        renderers.add(new MapTileRendererModel());
     }
 
     /**
@@ -85,7 +88,7 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
 
             for (final MapTileRenderer renderer : renderers)
             {
-                renderer.renderTile(g, map, tile, x, y);
+                renderer.renderTile(g, tile, x, y);
             }
         }
     }
@@ -116,6 +119,15 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
     /*
      * MapTileViewer
      */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+        renderers.add(this);
+    }
 
     @Override
     public void addRenderer(MapTileRenderer renderer)
@@ -153,5 +165,18 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
                 }
             }
         }
+    }
+
+    /*
+     * MapTileRenderer
+     */
+
+    @Override
+    public void renderTile(Graphic g, Tile tile, int x, int y)
+    {
+        final SpriteTiled sprite = map.getSheet(tile.getSheet());
+        sprite.setLocation(x, y);
+        sprite.setTile(tile.getNumber());
+        sprite.render(g);
     }
 }

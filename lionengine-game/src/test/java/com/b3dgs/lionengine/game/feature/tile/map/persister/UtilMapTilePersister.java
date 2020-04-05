@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
@@ -39,9 +38,8 @@ final class UtilMapTilePersister
      */
     public static MapTile createMap()
     {
-        final Services services = new Services();
-        final MapTile map = services.create(MapTileGame.class);
-        map.addFeature(new MapTilePersisterModel(services));
+        final MapTile map = new MapTileGame();
+        map.addFeature(new MapTilePersisterModel());
         map.create(16, 32, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
 
@@ -79,9 +77,8 @@ final class UtilMapTilePersister
      */
     public static MapTile loadMap(Media level) throws IOException
     {
-        final Services services = new Services();
-        final MapTile map = services.add(new MapTileGame());
-        map.addFeature(new MapTilePersisterModel(services));
+        final MapTile map = new MapTileGame();
+        map.addFeature(new MapTilePersisterModel());
         try (FileReading input = new FileReading(level))
         {
             map.getFeature(MapTilePersister.class).load(input);

@@ -20,47 +20,30 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.FeatureInterface;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 
 /**
  * Handle the map persistence by providing saving and loading functions.
  */
-@FeatureInterface
 public class MapTilePersisterModel extends FeatureAbstract implements MapTilePersister
 {
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE;
 
-    /** The services reference. */
-    protected final MapTile map;
+    private MapTileSurface map;
 
     /**
      * Create feature.
-     * <p>
-     * The {@link Services} must provide:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
      */
-    public MapTilePersisterModel(Services services)
+    public MapTilePersisterModel()
     {
         super();
-
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
     }
 
     /**
@@ -154,8 +137,16 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
     }
 
     /*
-     * Persistable
+     * MapTilePersister
      */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+    }
 
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):

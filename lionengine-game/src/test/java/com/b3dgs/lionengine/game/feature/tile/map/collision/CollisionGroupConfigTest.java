@@ -77,7 +77,7 @@ public final class CollisionGroupConfigTest
 
         final MapTile map = services.add(new MapTileGame());
         map.addFeature(new MapTileGroupModel());
-        mapCollision = new MapTileCollisionModel(services);
+        mapCollision = new MapTileCollisionModel();
         mapCollision.prepare(map);
     }
 

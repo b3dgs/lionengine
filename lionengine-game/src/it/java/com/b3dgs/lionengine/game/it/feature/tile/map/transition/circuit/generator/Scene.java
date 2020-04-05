@@ -56,7 +56,7 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
-    private final MapTileAppender append = map.addFeatureAndGet(new MapTileAppenderModel(services));
+    private final MapTileAppender append = map.addFeatureAndGet(new MapTileAppenderModel());
     private final GeneratorParameter parameters = new GeneratorParameter();
     private final MapGenerator generator = new MapGeneratorImpl();
     private final Tick tickGen = new Tick();
@@ -85,8 +85,8 @@ class Scene extends Sequence
                                   Medias.create("groups.xml"));
 
         map.addFeatureAndGet(new MapTileGroupModel()).loadGroups(Medias.create("groups.xml"));
-        map.addFeatureAndGet(new MapTileTransitionModel(services)).loadTransitions(Medias.create("transitions.xml"));
-        map.addFeatureAndGet(new MapTileCircuitModel(services)).loadCircuits(Medias.create("circuits.xml"));
+        map.addFeatureAndGet(new MapTileTransitionModel()).loadTransitions(Medias.create("transitions.xml"));
+        map.addFeatureAndGet(new MapTileCircuitModel()).loadCircuits(Medias.create("circuits.xml"));
 
         UtilFile.deleteFile(media.getFile());
 

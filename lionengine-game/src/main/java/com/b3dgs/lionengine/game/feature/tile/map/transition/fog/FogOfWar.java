@@ -18,12 +18,13 @@ package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileRenderer;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * <ul>
  * <li>{@link #setTilesheet(SpriteTiled, SpriteTiled)}</li>
  * <li>{@link #setEnabled(boolean, boolean)}</li>
- * <li>{@link #create(MapTile, Media)}</li>
+ * <li>{@link #create(Media)}</li>
  * </ul>
  */
 @FeatureInterface
@@ -59,6 +60,9 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     /** Uses of fog. */
     private boolean fogMap;
 
+    /** Map surface reference. */
+    private MapTileSurface map;
+
     /**
      * Create feature.
      */
@@ -70,10 +74,9 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     /**
      * Create a fog of war from a map.
      * 
-     * @param map The map reference.
      * @param config The fog configuration.
      */
-    public void create(MapTile map, Media config)
+    public void create(Media config)
     {
         tw = map.getTileWidth();
         th = map.getTileHeight();
@@ -206,6 +209,18 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
     }
 
     /*
+     * Feature
+     */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+    }
+
+    /*
      * Listenable
      */
 
@@ -226,7 +241,7 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
      */
 
     @Override
-    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
+    public void renderTile(Graphic g, Tile tile, int x, int y)
     {
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();

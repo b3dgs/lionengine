@@ -22,8 +22,9 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilRandom;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 
 /**
@@ -35,27 +36,22 @@ public class MapTileAppenderModel extends FeatureAbstract implements MapTileAppe
     static final String ERROR_APPEND_MAP_TILE_SIZE = "Appended map does not have the same tile size: ";
 
     /** Map reference. */
-    private final MapTileGame map;
+    private MapTileSurface map;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
-     * <li>{@link MapTileGame}</li>
+     * <li>{@link MapTileSurface}</li>
      * </ul>
      * 
-     * @param services The services reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public MapTileAppenderModel(Services services)
+    public MapTileAppenderModel()
     {
         super();
-
-        Check.notNull(services);
-
-        map = services.get(MapTileGame.class);
     }
 
     /**
@@ -85,6 +81,14 @@ public class MapTileAppenderModel extends FeatureAbstract implements MapTileAppe
     /*
      * MapTileAppender
      */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+    }
 
     @Override
     public void append(MapTile other, int offsetX, int offsetY)

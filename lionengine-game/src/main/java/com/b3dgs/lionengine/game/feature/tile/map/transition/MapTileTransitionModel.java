@@ -25,14 +25,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Map tile transition model implementation.
@@ -134,37 +134,27 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
     private final Map<Transition, Collection<Integer>> transitions = new HashMap<>();
     /** Existing group links. */
     private final Collection<GroupTransition> groupLinks = new HashSet<>();
-    /** Map reference. */
-    private final MapTile map;
-    /** Map tile group. */
-    private final MapTileGroup mapGroup;
     /** Transitive group handler. */
     private TransitiveGroup transitiveGroup;
+
+    /** Map tile surface. */
+    private MapTileSurface map;
+    /** Map tile group. */
+    private MapTileGroup mapGroup;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
-     * <p>
-     * The {@link MapTile} must provide:
-     * </p>
-     * <ul>
+     * <li>{@link MapTileSurface}</li>
      * <li>{@link MapTileGroup}</li>
      * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
      */
-    public MapTileTransitionModel(Services services)
+    public MapTileTransitionModel()
     {
         super();
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
     }
 
     /**
@@ -408,6 +398,15 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
     /*
      * MapTileTransition
      */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+        mapGroup = provider.getFeature(MapTileGroup.class);
+    }
 
     @Override
     public void loadTransitions(Media transitionsConfig)

@@ -301,14 +301,12 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             final int x = (int) viewer.getViewpointX(path.getX(i) * (double) tw);
             final int y = (int) viewer.getViewpointY(path.getY(i) * (double) th);
             g.drawRect(x, y - th, tw, th, true);
-            if (renderDebug)
+
+            final Tile tile = map.getTile(path.getX(i), path.getY(i));
+            if (tile != null)
             {
-                final Tile tile = map.getTile(path.getX(i), path.getY(i));
-                if (tile != null)
-                {
-                    final String category = mapPath.getCategory(tile);
-                    text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(category)));
-                }
+                final String category = mapPath.getCategory(tile);
+                text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(category)));
             }
         }
     }
@@ -352,7 +350,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
         {
             // When object arrived on next step, we place it on step location, in order to avoid bug
             // (to be sure object location is correct)
-            setLocation(path.getX(currentStep), path.getY(currentStep));
+            setLocationInternal(path.getX(currentStep), path.getY(currentStep));
 
             // Go to next step
             final int next = currentStep + 1;
@@ -375,6 +373,19 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
                 listenable.get(i).notifyMoving(this);
             }
         }
+    }
+
+    /**
+     * Set specified location in tile.
+     * 
+     * @param tx The horizontal location in tile.
+     * @param ty The vertical location in tile.
+     */
+    private void setLocationInternal(int tx, int ty)
+    {
+        removeObjectId(getInTileX(), getInTileY());
+        transformable.teleport(tx * (double) map.getTileWidth(), ty * (double) map.getTileHeight());
+        assignObjectId(getInTileX(), getInTileY());
     }
 
     /**
@@ -548,7 +559,10 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
 
         id = provider.getFeature(Identifiable.class).getId();
         transformable = provider.getFeature(Transformable.class);
-        orientable.prepare(provider);
+        if (orientable != null)
+        {
+            orientable.prepare(provider);
+        }
 
         if (provider instanceof PathfindableListener)
         {
@@ -649,7 +663,7 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public void render(Graphic g)
     {
-        if (path != null)
+        if (renderDebug && path != null)
         {
             final ColorRgba oldColor = g.getColor();
             g.setColor(ColorRgba.GREEN);
@@ -734,9 +748,11 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
     @Override
     public void setLocation(int tx, int ty)
     {
-        removeObjectId(getInTileX(), getInTileY());
-        transformable.teleport(tx * (double) map.getTileWidth(), ty * (double) map.getTileHeight());
-        assignObjectId(getInTileX(), getInTileY());
+        setLocationInternal(tx, ty);
+        for (int i = 0; i < listenable.size(); i++)
+        {
+            listenable.get(i).notifyMoving(this);
+        }
     }
 
     @Override

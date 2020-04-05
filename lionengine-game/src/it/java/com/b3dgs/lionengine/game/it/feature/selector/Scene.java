@@ -118,7 +118,7 @@ class Scene extends Sequence
         map.create(Medias.create("forest.png"));
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel(services));
+        final MapTilePath mapPath = map.addFeatureAndGet(new MapTilePathModel());
 
         camera.setView(VIEW_X, VIEW_Y, getWidth() - VIEW_X, getHeight() - VIEW_Y, getHeight());
         camera.setLimits(map);

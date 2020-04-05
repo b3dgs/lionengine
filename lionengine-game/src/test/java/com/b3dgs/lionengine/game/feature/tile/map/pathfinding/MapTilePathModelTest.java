@@ -88,7 +88,7 @@ public final class MapTilePathModelTest
         map.create(1, 1, 7, 7);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
-        mapPath = map.addFeatureAndGet(new MapTilePathModel(services));
+        mapPath = map.addFeatureAndGet(new MapTilePathModel());
         mapPath.prepare(map);
 
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));

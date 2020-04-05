@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -147,12 +146,11 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
         final Collection<MapTile> mapsSet = new HashSet<>(levels.size());
         for (final Media level : levels)
         {
-            final Services services = new Services();
-            final MapTile map = services.create(MapTileGame.class);
+            final MapTile map = new MapTileGame();
             map.create(level, sheetsConfig);
 
             final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-            final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel(services));
+            final MapTileTransition mapTransition = map.addFeatureAndGet(new MapTileTransitionModel());
 
             mapGroup.loadGroups(groupsConfig);
             mapTransition.loadTransitions(levels, sheetsConfig, groupsConfig);

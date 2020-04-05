@@ -87,7 +87,7 @@ public final class MapTileRasteredModelTest
         map = services.add(new MapTileGame());
         mapViewer = new MapTileViewerModel(services);
         mapViewer.prepare(map);
-        mapRastered = new MapTileRasteredModel(services);
+        mapRastered = new MapTileRasteredModel();
         mapRastered.prepare(map);
     }
 

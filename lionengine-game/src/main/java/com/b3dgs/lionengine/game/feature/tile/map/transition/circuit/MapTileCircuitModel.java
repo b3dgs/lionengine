@@ -24,15 +24,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.TileGame;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupType;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.GroupTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.Transition;
@@ -45,42 +45,30 @@ public class MapTileCircuitModel extends FeatureAbstract implements MapTileCircu
 {
     /** Circuits as key. */
     private final Map<Circuit, Collection<Integer>> circuits = new HashMap<>();
-    /** Map reference. */
-    private final MapTile map;
-    /** Map tile group. */
-    private final MapTileGroup mapGroup;
-    /** Map tile transition. */
-    private final MapTileTransition mapTransition;
     /** Map circuit extractor. */
-    private final MapCircuitExtractor extractor;
+    private MapCircuitExtractor extractor;
+
+    /** Map tile surface. */
+    private MapTileSurface map;
+    /** Map tile group. */
+    private MapTileGroup mapGroup;
+    /** Map tile transition. */
+    private MapTileTransition mapTransition;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
-     * <p>
-     * The {@link MapTile} must provide:
-     * </p>
-     * <ul>
+     * <li>{@link MapTileSurface}</li>
      * <li>{@link MapTileGroup}</li>
      * <li>{@link MapTileTransition}</li>
      * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
      */
-    public MapTileCircuitModel(Services services)
+    public MapTileCircuitModel()
     {
         super();
-
-        map = services.get(MapTile.class);
-        mapGroup = map.getFeature(MapTileGroup.class);
-        mapTransition = map.getFeature(MapTileTransition.class);
-        extractor = new MapCircuitExtractor(map);
     }
 
     /**
@@ -270,6 +258,17 @@ public class MapTileCircuitModel extends FeatureAbstract implements MapTileCircu
     /*
      * MapTileCircuit
      */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+        mapGroup = provider.getFeature(MapTileGroup.class);
+        mapTransition = provider.getFeature(MapTileTransition.class);
+        extractor = new MapCircuitExtractor(map);
+    }
 
     @Override
     public void loadCircuits(Media circuitsConfig)

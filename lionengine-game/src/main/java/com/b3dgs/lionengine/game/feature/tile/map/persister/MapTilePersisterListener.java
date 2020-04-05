@@ -14,35 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.tile.map;
-
-import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
+package com.b3dgs.lionengine.game.feature.tile.map.persister;
 
 /**
- * Map tile renderer default implementation.
+ * Map tile persister event listener.
  */
-public class MapTileRendererModel implements MapTileRenderer
+public interface MapTilePersisterListener
 {
     /**
-     * Create feature.
+     * Called on map loaded.
      */
-    public MapTileRendererModel()
-    {
-        super();
-    }
-
-    /*
-     * MapTileRenderer
-     */
-
-    @Override
-    public void renderTile(Graphic g, MapTile map, Tile tile, int x, int y)
-    {
-        final SpriteTiled sprite = map.getSheet(tile.getSheet());
-        sprite.setLocation(x, y);
-        sprite.setTile(tile.getNumber());
-        sprite.render(g);
-    }
+    void notifyMapLoaded();
 }

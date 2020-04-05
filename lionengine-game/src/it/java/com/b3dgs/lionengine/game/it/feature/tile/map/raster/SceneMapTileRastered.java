@@ -41,7 +41,7 @@ public class SceneMapTileRastered extends Sequence
     private final Camera camera = services.create(Camera.class);
     private final MapTile map = services.create(MapTileGame.class);
     private final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
-    private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel(services));
+    private final MapTileRastered raster = map.addFeatureAndGet(new MapTileRasteredModel());
     private final Tick tickRaster = new Tick();
     private final Tick tick = new Tick();
 

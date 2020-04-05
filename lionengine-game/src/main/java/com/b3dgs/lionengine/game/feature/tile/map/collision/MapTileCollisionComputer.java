@@ -19,12 +19,13 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 
 /**
  * Compute map tile collision.
@@ -32,6 +33,55 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 final class MapTileCollisionComputer
 {
     private static final int MAX_GLUED = 5;
+
+    /**
+     * Compute the collision from current location.
+     * 
+     * @param map The map surface reference.
+     * @param loader The loader reference.
+     * @param category The collision category.
+     * @param ox The current horizontal location.
+     * @param oy The current vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The computed collision result, <code>null</code> if none.
+     */
+    private static CollisionResult computeCollision(MapTileSurface map,
+                                                    Function<Tile, Collection<CollisionFormula>> loader,
+                                                    CollisionCategory category,
+                                                    double ox,
+                                                    double oy,
+                                                    double x,
+                                                    double y)
+    {
+        final Tile tile = map.getTileAt(getPositionToSide(ox, x), getPositionToSide(oy, y));
+        if (tile != null)
+        {
+            Double cx = null;
+            Double cy = null;
+            CollisionFormula fx = null;
+            CollisionFormula fy = null;
+            final Collection<CollisionFormula> formulas = loader.apply(tile);
+            for (final CollisionFormula formula : formulas)
+            {
+                if (cx == null)
+                {
+                    cx = getCollisionX(tile, category, formulas, formula, x, y);
+                    fx = formula;
+                }
+                if (cy == null)
+                {
+                    cy = getCollisionY(tile, category, formulas, formula, x, y);
+                    fy = formula;
+                }
+            }
+            if (cx != null || cy != null)
+            {
+                return new CollisionResult(cx, cy, tile, fx, fy);
+            }
+        }
+        return null;
+    }
 
     /**
      * Get the horizontal collision location between the tile and the movement vector.
@@ -225,34 +275,29 @@ final class MapTileCollisionComputer
 
     /** Last result. */
     private final Map<Transformable, CollisionResult> lastFound = new HashMap<>();
-    /** Map reference. */
-    private final MapTile map;
-    /** Map collision loader. */
-    private final MapTileCollisionLoader loader;
 
     /**
      * Create the map tile collision computer.
-     * 
-     * @param map The map tile owner.
-     * @param loader The collisions loader.
      */
-    MapTileCollisionComputer(MapTile map, MapTileCollisionLoader loader)
+    MapTileCollisionComputer()
     {
         super();
-
-        this.map = map;
-        this.loader = loader;
     }
 
     /**
      * Search first tile hit by the transformable that contains collision, applying a ray tracing from its old location
      * to its current. This way, the transformable can not pass through a collidable tile.
      * 
+     * @param map The map surface reference.
+     * @param loader The loader reference.
      * @param transformable The transformable reference.
      * @param category The collisions category to search in.
      * @return The collision result, <code>null</code> if nothing found.
      */
-    public CollisionResult computeCollision(Transformable transformable, CollisionCategory category)
+    public CollisionResult computeCollision(MapTileSurface map,
+                                            Function<Tile, Collection<CollisionFormula>> loader,
+                                            Transformable transformable,
+                                            CollisionCategory category)
     {
         // Distance calculation
         final double sh = transformable.getOldX() + category.getOffsetX();
@@ -284,12 +329,14 @@ final class MapTileCollisionComputer
             lastFound.remove(transformable);
         }
 
-        return computeCollision(transformable, category, sh, sv, sx, sy, max);
+        return computeCollision(map, loader, transformable, category, sh, sv, sx, sy, max);
     }
 
     /**
      * Compute collision step by step moving first horizontal and then vertical.
      * 
+     * @param map The map surface reference.
+     * @param loader The loader reference.
      * @param transformable The transformable reference.
      * @param category The collisions category to search in.
      * @param sh The starting horizontal location.
@@ -300,7 +347,9 @@ final class MapTileCollisionComputer
      * @return The collision found, <code>null</code> if none.
      */
     // CHECKSTYLE IGNORE LINE: ExecutableStatementCount|CyclomaticComplexity|NPathComplexity
-    private CollisionResult computeCollision(Transformable transformable,
+    private CollisionResult computeCollision(MapTileSurface map,
+                                             Function<Tile, Collection<CollisionFormula>> loader,
+                                             Transformable transformable,
                                              CollisionCategory category,
                                              double sh,
                                              double sv,
@@ -319,7 +368,7 @@ final class MapTileCollisionComputer
         CollisionResult last = null;
         for (int cur = 0; cur < max; cur++)
         {
-            CollisionResult current = computeCollision(category, ox, oy, x, y);
+            CollisionResult current = computeCollision(map, loader, category, ox, oy, x, y);
             if (current != null)
             {
                 last = current;
@@ -349,7 +398,7 @@ final class MapTileCollisionComputer
                 x += sx;
             }
 
-            current = computeCollision(category, ox, oy, x, y);
+            current = computeCollision(map, loader, category, ox, oy, x, y);
             if (current != null)
             {
                 last = current;
@@ -387,7 +436,7 @@ final class MapTileCollisionComputer
             }
             else if (lastFound.containsKey(transformable))
             {
-                last = getGlued(transformable, category, ox, oy, x, y);
+                last = getGlued(map, loader, transformable, category, ox, oy, x, y);
             }
         }
         return last;
@@ -396,6 +445,8 @@ final class MapTileCollisionComputer
     /**
      * Get glued collision by searching under if needed.
      * 
+     * @param map The map surface reference.
+     * @param loader The loader reference.
      * @param transformable The transformable reference.
      * @param category The category reference.
      * @param ox The old horizontal collision.
@@ -404,7 +455,9 @@ final class MapTileCollisionComputer
      * @param y The current vertical collision.
      * @return The collision found, <code>null</code> if none.
      */
-    private CollisionResult getGlued(Transformable transformable,
+    private CollisionResult getGlued(MapTileSurface map,
+                                     Function<Tile, Collection<CollisionFormula>> loader,
+                                     Transformable transformable,
                                      CollisionCategory category,
                                      double ox,
                                      double oy,
@@ -413,52 +466,11 @@ final class MapTileCollisionComputer
     {
         for (int i = 1; i < MAX_GLUED; i++)
         {
-            final CollisionResult found = computeCollision(category, ox, oy, x, y - i);
+            final CollisionResult found = computeCollision(map, loader, category, ox, oy, x, y - i);
             if (found != null)
             {
                 lastFound.put(transformable, found);
                 return found;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Compute the collision from current location.
-     * 
-     * @param category The collision category.
-     * @param ox The current horizontal location.
-     * @param oy The current vertical location.
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     * @return The computed collision result, <code>null</code> if none.
-     */
-    private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
-    {
-        final Tile tile = map.getTileAt(getPositionToSide(ox, x), getPositionToSide(oy, y));
-        if (tile != null)
-        {
-            Double cx = null;
-            Double cy = null;
-            CollisionFormula fx = null;
-            CollisionFormula fy = null;
-            final Collection<CollisionFormula> formulas = loader.getCollisionFormulas(tile);
-            for (final CollisionFormula formula : formulas)
-            {
-                if (cx == null)
-                {
-                    cx = getCollisionX(tile, category, formulas, formula, x, y);
-                    fx = formula;
-                }
-                if (cy == null)
-                {
-                    cy = getCollisionY(tile, category, formulas, formula, x, y);
-                    fy = formula;
-                }
-            }
-            if (cx != null || cy != null)
-            {
-                return new CollisionResult(cx, cy, tile, fx, fy);
             }
         }
         return null;
