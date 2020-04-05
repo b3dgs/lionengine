@@ -54,7 +54,7 @@ public class FeaturableModel extends FeaturableAbstract
      */
 
     @Override
-    public void addFeature(Feature feature)
+    public final void addFeature(Feature feature)
     {
         try
         {
