@@ -89,7 +89,7 @@ class Scene extends Sequence
 
         final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         final MapTileCollision mapCollision = map.addFeatureAndGet(new MapTileCollisionModel());
-        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel(services));
+        mapCollisionRenderer = map.addFeatureAndGet(new MapTileCollisionRendererModel());
 
         handler.add(map);
 

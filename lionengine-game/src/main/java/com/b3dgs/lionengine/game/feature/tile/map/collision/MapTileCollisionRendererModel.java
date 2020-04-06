@@ -20,13 +20,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
-import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -136,34 +137,27 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
         }
     }
 
-    /** Map reference. */
-    private final MapTile map;
-    /** Map collision reference. */
-    private final MapTileCollision mapCollision;
     /** Collision draw cache. */
     private Map<CollisionFormula, ImageBuffer> collisionCache;
+
+    /** Map reference. */
+    private MapTileSurface map;
+    /** Map collision reference. */
+    private MapTileCollision mapCollision;
 
     /**
      * Create feature.
      * <p>
-     * The {@link Services} must provide the following services:
+     * The {@link Featurable} must have:
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
      * <li>{@link MapTileCollision}</li>
      * </ul>
-     * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
      */
-    public MapTileCollisionRendererModel(Services services)
+    public MapTileCollisionRendererModel()
     {
         super();
-
-        Check.notNull(services);
-
-        map = services.get(MapTile.class);
-        mapCollision = map.getFeature(MapTileCollision.class);
     }
 
     /**
@@ -189,6 +183,15 @@ public class MapTileCollisionRendererModel extends FeatureAbstract implements Ma
     /*
      * MapTileCollisionRenderer
      */
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        map = provider.getFeature(MapTileSurface.class);
+        mapCollision = provider.getFeature(MapTileCollision.class);
+    }
 
     @Override
     public void createCollisionDraw()
