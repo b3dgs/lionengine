@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Actioner model implementation.
  */
-@FeatureInterface
 public class ActionerModel extends FeatureModel implements Actioner
 {
     /** Allowed actions name. */

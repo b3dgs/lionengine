@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
@@ -45,6 +46,12 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
 
     /**
      * Create feature.
+     * <p>
+     * The {@link Featurable} must have:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileSurface}</li>
+     * </ul>
      */
     public MapTilePersisterModel()
     {

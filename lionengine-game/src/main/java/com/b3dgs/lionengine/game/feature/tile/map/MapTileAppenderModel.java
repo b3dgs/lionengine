@@ -46,8 +46,6 @@ public class MapTileAppenderModel extends FeatureAbstract implements MapTileAppe
      * <ul>
      * <li>{@link MapTileSurface}</li>
      * </ul>
-     * 
-     * @throws LionEngineException If invalid argument.
      */
     public MapTileAppenderModel()
     {

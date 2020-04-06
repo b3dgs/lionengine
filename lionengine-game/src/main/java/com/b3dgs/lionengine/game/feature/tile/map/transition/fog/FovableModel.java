@@ -20,7 +20,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -34,13 +33,14 @@ public class FovableModel extends FeatureModel implements Fovable
 {
     /** Map tile reference. */
     private final MapTile map = services.get(MapTile.class);
+    /** Field of view in tile value. */
+    private int fov = FovableConfig.imports(setup);
+
     /** Transformable model. */
     private Transformable transformable;
-    /** Field of view in tile value. */
-    private int fov;
 
     /**
-     * Create a fovable model.
+     * Create model.
      * <p>
      * The {@link Services} must provide:
      * </p>
@@ -54,7 +54,7 @@ public class FovableModel extends FeatureModel implements Fovable
      * <li>{@link Transformable}</li>
      * </ul>
      * <p>
-     * The {@link Configurer} can provide a valid {@link FeaturableConfig}.
+     * The {@link Configurer} can provide a valid {@link FovableConfig}.
      * </p>
      * 
      * @param services The services reference (must not be <code>null</code>).
@@ -64,8 +64,6 @@ public class FovableModel extends FeatureModel implements Fovable
     public FovableModel(Services services, Setup setup)
     {
         super(services, setup);
-
-        fov = FovableConfig.imports(setup);
     }
 
     /*

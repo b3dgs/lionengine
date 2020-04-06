@@ -31,6 +31,7 @@ public class BodyModel extends FeatureModel implements Body
 {
     /** Default rate. */
     private static final int DEFAULT_FPS = 60;
+
     /** Body force. */
     private final Force force = new Force();
     /** Maximum gravity value. */

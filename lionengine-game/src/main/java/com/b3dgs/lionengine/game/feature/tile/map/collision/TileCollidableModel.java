@@ -49,10 +49,11 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable,
     private final Map<Axis, Boolean> enabledAxis = new EnumMap<>(Axis.class);
     /** The collisions used. */
     private final Collection<CollisionCategory> categories;
-    /** Transformable owning this model. */
-    private Transformable transformable;
     /** Collision enabled. */
     private boolean enabled;
+
+    /** Transformable owning this model. */
+    private Transformable transformable;
 
     /**
      * Create feature.

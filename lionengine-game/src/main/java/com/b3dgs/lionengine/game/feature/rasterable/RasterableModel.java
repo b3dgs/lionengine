@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.OriginConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -44,7 +43,6 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 /**
  * Rasterable model implementation.
  */
-@FeatureInterface
 public class RasterableModel extends FeatureModel implements Rasterable
 {
     /** List of rastered frames. */
@@ -57,12 +55,6 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private final Viewer viewer;
     /** The updater. */
     private final Updatable updater;
-    /** Transformable reference. */
-    private Transformable transformable;
-    /** Mirrorable reference. */
-    private Mirrorable mirrorable;
-    /** Animatable reference. */
-    private Animatable animatable;
     /** Last raster. */
     private SpriteAnimated raster;
     /** Origin value. */
@@ -75,6 +67,13 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private boolean enabled = true;
     /** Visibility flag. */
     private boolean visible = true;
+
+    /** Transformable reference. */
+    private Transformable transformable;
+    /** Mirrorable reference. */
+    private Mirrorable mirrorable;
+    /** Animatable reference. */
+    private Animatable animatable;
 
     /**
      * Create feature.

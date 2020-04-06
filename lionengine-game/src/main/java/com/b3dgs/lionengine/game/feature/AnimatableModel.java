@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Animatable model implementation.
  */
-@FeatureInterface
 public class AnimatableModel extends FeatureModel implements Animatable, Recyclable
 {
     /** Animator reference. */

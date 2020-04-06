@@ -34,10 +34,11 @@ public class LaunchableModel extends FeatureModel implements Launchable
 {
     /** Launcher listeners. */
     private final ListenableModel<LaunchableListener> listenable = new ListenableModel<>();
-    /** Transformable reference. */
-    private Transformable transformable;
     /** Vector reference. */
     private Force vector;
+
+    /** Transformable reference. */
+    private Transformable transformable;
 
     /**
      * Create feature.

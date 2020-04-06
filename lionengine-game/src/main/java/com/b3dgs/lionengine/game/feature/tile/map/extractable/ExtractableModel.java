@@ -36,10 +36,11 @@ public class ExtractableModel extends FeatureModel implements Extractable
     private final Alterable resources = new Alterable(Integer.MAX_VALUE);
     /** Map reference. */
     private final MapTile map = services.get(MapTile.class);
-    /** Transformable model. */
-    private Transformable transformable;
     /** Resource type. */
     private String type;
+
+    /** Transformable model. */
+    private Transformable transformable;
 
     /**
      * Create feature.

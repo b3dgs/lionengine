@@ -35,10 +35,11 @@ public class OrientableModel extends FeatureModel implements Orientable, Recycla
 {
     /** Map reference. */
     private final MapTile map = services.get(MapTile.class);
-    /** Localizable reference. */
-    private Transformable transformable;
     /** Current orientation. */
     private Orientation orientation = Orientation.NORTH;
+
+    /** Localizable reference. */
+    private Transformable transformable;
 
     /**
      * Create feature.

@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.game.Configurer;
 
@@ -69,6 +70,7 @@ public class LayerableModel extends FeatureAbstract implements Layerable
      * 
      * @param services The services reference (must not be <code>null</code>).
      * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
     public LayerableModel(Services services, Setup setup)
     {
