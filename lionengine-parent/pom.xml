@@ -37,25 +37,12 @@
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-9.0.4</sonar-branch>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/${report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>com.b3dgs.radialencapsulation</groupId>
                 <artifactId>radial-encapsulation-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

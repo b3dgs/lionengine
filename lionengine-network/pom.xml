@@ -11,6 +11,7 @@
     <packaging>jar</packaging>
     <name>LionEngine Network</name>
     <properties>
+        <radial.base-package>com.b3dgs.lionengine.network</radial.base-package>
         <sonar.skip>true</sonar.skip>
     </properties>
     <dependencies>

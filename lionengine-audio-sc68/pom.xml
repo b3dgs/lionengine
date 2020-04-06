@@ -11,6 +11,7 @@
     <packaging>jar</packaging>
     <name>LionEngine Audio Sc68</name>
     <properties>
+        <jna.version>4.5.1</jna.version>
         <radial.base-package>com.b3dgs.lionengine.audio</radial.base-package>
     </properties>
     <dependencies>
@@ -30,7 +31,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>4.5.1</version>
+            <version>${jna.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
