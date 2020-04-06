@@ -58,6 +58,17 @@ public final class AnimationConfigTest
     }
 
     /**
+     * Test with no node.
+     */
+    @Test
+    public void testNoNode()
+    {
+        final Xml root = new Xml("test");
+
+        assertTrue(AnimationConfig.imports(root).getAnimations().isEmpty());
+    }
+
+    /**
      * Test exports imports.
      */
     @Test

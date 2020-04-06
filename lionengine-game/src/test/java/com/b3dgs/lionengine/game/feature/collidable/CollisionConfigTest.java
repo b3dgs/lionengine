@@ -58,6 +58,17 @@ public final class CollisionConfigTest
     }
 
     /**
+     * Test no node.
+     */
+    @Test
+    public void testNoNode()
+    {
+        final Xml root = new Xml(Constant.XML_PREFIX + FeaturableConfig.NODE_FEATURABLE);
+
+        assertTrue(CollisionConfig.imports(root).getCollisions().isEmpty());
+    }
+
+    /**
      * Test exports imports.
      */
     @Test

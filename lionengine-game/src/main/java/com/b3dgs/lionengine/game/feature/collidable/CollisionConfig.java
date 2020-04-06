@@ -70,13 +70,26 @@ public final class CollisionConfig
     {
         Check.notNull(configurer);
 
+        return imports(configurer.getRoot());
+    }
+
+    /**
+     * Create the collision data from node.
+     * 
+     * @param root The root reference (must not be <code>null</code>).
+     * @return The collisions data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static CollisionConfig imports(Xml root)
+    {
+        Check.notNull(root);
+
         final Map<String, Collision> collisions = new HashMap<>(0);
 
         final Collection<Xml> children;
-        final Xml root = configurer.getRoot();
         if (root.hasChild(NODE_COLLISIONS))
         {
-            children = configurer.getRoot().getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);
+            children = root.getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);
         }
         else
         {

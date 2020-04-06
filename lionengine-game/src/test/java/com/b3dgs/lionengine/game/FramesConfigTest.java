@@ -55,6 +55,17 @@ public final class FramesConfigTest
     }
 
     /**
+     * Test with no node.
+     */
+    @Test
+    public void testNoNode()
+    {
+        final Xml root = new Xml("test");
+
+        assertEquals(new FramesConfig(1, 1, 0, 0), FramesConfig.imports(root));
+    }
+
+    /**
      * Test exports imports.
      */
     @Test

@@ -78,13 +78,26 @@ public final class CollidableFramedConfig
     {
         Check.notNull(configurer);
 
+        return imports(configurer.getRoot());
+    }
+
+    /**
+     * Create the collision data from node.
+     * 
+     * @param root The node reference (must not be <code>null</code>).
+     * @return The collisions data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static CollidableFramedConfig imports(Xml root)
+    {
+        Check.notNull(root);
+
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>(0);
 
-        if (configurer.hasNode(AnimationConfig.NODE_ANIMATIONS))
+        if (root.hasChild(AnimationConfig.NODE_ANIMATIONS))
         {
-            final Collection<Xml> children = configurer.getRoot()
-                                                       .getChild(AnimationConfig.NODE_ANIMATIONS)
-                                                       .getChildren(AnimationConfig.NODE_ANIMATION);
+            final Collection<Xml> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
+                                                 .getChildren(AnimationConfig.NODE_ANIMATION);
             for (final Xml node : children)
             {
                 final int start = node.readInteger(AnimationConfig.ANIMATION_START);

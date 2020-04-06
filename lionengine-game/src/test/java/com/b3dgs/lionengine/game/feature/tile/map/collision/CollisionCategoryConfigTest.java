@@ -89,6 +89,17 @@ public final class CollisionCategoryConfigTest
     }
 
     /**
+     * Test no node.
+     */
+    @Test
+    public void testNoNode()
+    {
+        final Xml root = new Xml("categories");
+
+        assertTrue(CollisionCategoryConfig.imports(root).isEmpty());
+    }
+
+    /**
      * Test exports imports.
      */
     @Test

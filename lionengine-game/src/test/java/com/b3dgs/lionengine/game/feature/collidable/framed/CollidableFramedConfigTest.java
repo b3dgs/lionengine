@@ -64,6 +64,17 @@ public final class CollidableFramedConfigTest
     }
 
     /**
+     * Test no node.
+     */
+    @Test
+    public void testNoNode()
+    {
+        final Xml root = new Xml("test");
+
+        assertTrue(CollidableFramedConfig.imports(root).getCollisions().isEmpty());
+    }
+
+    /**
      * Test exports imports.
      */
     @Test
