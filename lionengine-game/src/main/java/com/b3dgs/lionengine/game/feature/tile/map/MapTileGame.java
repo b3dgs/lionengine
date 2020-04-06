@@ -91,7 +91,7 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
             tileBuffer.dispose();
         }
 
-        LevelRipConverter.start(levelrip, tileWidth, tileHeight, mapSurface);
+        LevelRipConverter.start(levelrip, mapSurface);
     }
 
     /**
@@ -131,11 +131,7 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
 
         loadSheets(sheetsConfig);
 
-        final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
-        final int tileWidth = config.getTileWidth();
-        final int tileHeight = config.getTileHeight();
-
-        final int errors = LevelRipConverter.start(levelrip, tileWidth, tileHeight, mapSurface);
+        final int errors = LevelRipConverter.start(levelrip, mapSurface);
         if (errors > 0)
         {
             Verbose.warning(getClass(), "create", "Number of missing tiles: ", String.valueOf(errors));

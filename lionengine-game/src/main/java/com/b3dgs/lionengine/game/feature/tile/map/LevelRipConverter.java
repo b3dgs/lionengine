@@ -35,59 +35,48 @@ public final class LevelRipConverter
      * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
      * @param map The destination map reference.
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip, int tileWidth, int tileHeight, MapTile map)
+    public static int start(Media levelrip, MapTile map)
     {
-        return start(levelrip, tileWidth, tileHeight, map, null, null);
+        return start(levelrip, map, null, null);
     }
 
     /**
      * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
      * @param map The destination map reference.
      * @param listener The progress listener.
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip, int tileWidth, int tileHeight, MapTile map, ProgressListener listener)
+    public static int start(Media levelrip, MapTile map, ProgressListener listener)
     {
-        return start(levelrip, tileWidth, tileHeight, map, listener, null);
+        return start(levelrip, map, listener, null);
     }
 
     /**
      * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
      * @param map The destination map reference.
      * @param listener The progress listener.
      * @param canceler The canceler reference.
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip,
-                            int tileWidth,
-                            int tileHeight,
-                            MapTile map,
-                            ProgressListener listener,
-                            Canceler canceler)
+    public static int start(Media levelrip, MapTile map, ProgressListener listener, Canceler canceler)
     {
         final Sprite imageMap = Drawable.loadSprite(levelrip);
         imageMap.load();
         imageMap.prepare();
 
-        final int imageTilesInX = imageMap.getWidth() / tileWidth;
-        final int imageTilesInY = imageMap.getHeight() / tileHeight;
-        map.create(tileWidth, tileHeight, imageTilesInX, imageTilesInY);
+        final int imageTilesInX = imageMap.getWidth() / map.getTileWidth();
+        final int imageTilesInY = imageMap.getHeight() / map.getTileHeight();
+        map.create(map.getTileWidth(), map.getTileHeight(), imageTilesInX, imageTilesInY);
 
         final double progressMax = imageTilesInX * (double) imageTilesInY;
         long progress = 0L;

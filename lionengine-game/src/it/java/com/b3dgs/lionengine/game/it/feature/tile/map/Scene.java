@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.game.feature.tile.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileSurface;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
 import com.b3dgs.lionengine.game.feature.tile.map.SheetsExtractor;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
@@ -106,11 +105,7 @@ class Scene extends Sequence
         assertEquals(100, p.get());
 
         p.set(0);
-        LevelRipConverter.start(levelrip,
-                                16,
-                                16,
-                                map.getFeature(MapTileSurface.class),
-                                (percent, progressTileX, progressTileY) -> p.set(percent));
+        LevelRipConverter.start(levelrip, map, (percent, progressTileX, progressTileY) -> p.set(percent));
 
         assertEquals(100, p.get());
 

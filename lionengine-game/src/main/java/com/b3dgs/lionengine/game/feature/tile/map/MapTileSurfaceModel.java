@@ -97,9 +97,7 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
      */
     private void checkTileSize(SpriteTiled sheet)
     {
-        if ((tileWidth != 0 || tileHeight != 0)
-            && tileWidth != sheet.getTileWidth()
-            && tileHeight != sheet.getTileHeight())
+        if (tileWidth != sheet.getTileWidth() || tileHeight != sheet.getTileHeight())
         {
             throw new LionEngineException(ERROR_TILE_SIZE);
         }
@@ -146,6 +144,11 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
         for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
             final SpriteTiled sheet = sheets.get(sheetId);
+            if (tileWidth == 0)
+            {
+                tileWidth = sheet.getTileWidth();
+                tileHeight = sheet.getTileHeight();
+            }
             checkTilesPerSheet(sheet);
             checkTileSize(sheet);
 
@@ -162,6 +165,8 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
         final List<String> configSheets = config.getSheets();
         final int sheetsCount = configSheets.size();
         sheets = new SpriteTiled[sheetsCount];
+        tileWidth = config.getTileWidth();
+        tileHeight = config.getTileHeight();
 
         for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
