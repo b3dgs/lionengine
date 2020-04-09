@@ -138,6 +138,16 @@ public abstract class SequenceGame extends Sequence
      * Sequence
      */
 
+    /**
+     * {@inheritDoc}
+     * Does nothing by default.
+     */
+    @Override
+    public void load()
+    {
+        // Nothing by default
+    }
+
     @Override
     public void update(double extrp)
     {
