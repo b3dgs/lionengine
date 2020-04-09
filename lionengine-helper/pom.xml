@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.b3dgs.lionengine</groupId>
+        <artifactId>lionengine-parent</artifactId>
+        <version>9.0.4-SNAPSHOT</version>
+        <relativePath>../lionengine-parent</relativePath>
+    </parent>
+    <artifactId>lionengine-helper</artifactId>
+    <packaging>jar</packaging>
+    <name>LionEngine Helper</name>
+    <properties>
+        <radial.base-package>com.b3dgs.lionengine.helper</radial.base-package>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-game</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.groupId}.helper</Bundle-SymbolicName>
+                        <Import-Package>*</Import-Package>
+                        <Export-Package> com.b3dgs.lionengine.helper.* 
+                        </Export-Package>
+                        <Require-Bundle>${project.groupId}.core, org.junit.jupiter.api;resolution:=optional</Require-Bundle>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
