@@ -23,6 +23,7 @@
         <module>../lionengine-audio-adlmidi</module>
         <module>../lionengine-audio-adplug</module>
         <module>../lionengine-audio-sc68</module>
+        <module>../lionengine-helper</module>
     </modules>
     <scm>
         <url>https://github.com/b3dgs/lionengine</url>

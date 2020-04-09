@@ -18,6 +18,16 @@
         <xsd:attribute name="layerRefresh" type="xsd:int" use="required"></xsd:attribute>
         <xsd:attribute name="layerDisplay" type="xsd:int" use="required"></xsd:attribute>
     </xsd:complexType>
+    <xsd:complexType name="code">
+        <xsd:attribute name="index" type="xsd:int" use="required"></xsd:attribute>
+        <xsd:attribute name="value" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="input">
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+            <xsd:element name="code" type="lionengine:code" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="class" type="xsd:string" use="required"></xsd:attribute>
+    </xsd:complexType>
     <xsd:complexType name="frames">
         <xsd:attribute name="horizontal" type="xsd:int" use="required"></xsd:attribute>
         <xsd:attribute name="vertical" type="xsd:int" use="required"></xsd:attribute>
@@ -55,7 +65,7 @@
     </xsd:complexType>
     <xsd:complexType name="collidable">
         <xsd:attribute name="group" type="xsd:int" use="required"></xsd:attribute>
-        <xsd:attribute name="accepted" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="accepted" type="xsd:string" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="category">
         <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -213,6 +223,7 @@
             <xsd:element name="categories" type="lionengine:categories" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="action" type="lionengine:action" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="actions" type="lionengine:actions" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="input" type="lionengine:input" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="state" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="rasterable" type="lionengine:rasterable" maxOccurs="1" minOccurs="0"></xsd:element>
             <xsd:element name="layerable" type="lionengine:layerable" maxOccurs="1" minOccurs="0"></xsd:element>
