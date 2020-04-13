@@ -69,32 +69,23 @@ public final class CollidableConfig
 
         if (configurer.hasNode(NODE_COLLIDABLE))
         {
-            try
+            final Integer group = Integer.valueOf(configurer.getIntegerDefault(DEFAULT_GROUP.intValue(),
+                                                                               ATT_GROUP,
+                                                                               NODE_COLLIDABLE));
+            final String accepted = configurer.getStringDefault(Constant.EMPTY_STRING, ATT_ACCEPTED, NODE_COLLIDABLE);
+            final Collection<Integer> acceptedGroups;
+            if (accepted.isEmpty())
             {
-                final Integer group = Integer.valueOf(configurer.getIntegerDefault(DEFAULT_GROUP.intValue(),
-                                                                                   ATT_GROUP,
-                                                                                   NODE_COLLIDABLE));
-                final String accepted = configurer.getStringDefault(Constant.EMPTY_STRING,
-                                                                    ATT_ACCEPTED,
-                                                                    NODE_COLLIDABLE);
-                final Collection<Integer> acceptedGroups;
-                if (accepted.isEmpty())
-                {
-                    acceptedGroups = new ArrayList<>();
-                }
-                else
-                {
-                    acceptedGroups = Arrays.asList(ACCEPTED_SEPARATOR_PATTERN.split(accepted))
-                                           .stream()
-                                           .map(Integer::valueOf)
-                                           .collect(Collectors.toSet());
-                }
-                return new CollidableConfig(group, acceptedGroups);
+                acceptedGroups = new ArrayList<>();
             }
-            catch (final NumberFormatException exception)
+            else
             {
-                throw new LionEngineException(exception, ERROR_INVALID_GROUP);
+                acceptedGroups = Arrays.asList(ACCEPTED_SEPARATOR_PATTERN.split(accepted))
+                                       .stream()
+                                       .map(Integer::valueOf)
+                                       .collect(Collectors.toSet());
             }
+            return new CollidableConfig(group, acceptedGroups);
         }
         return new CollidableConfig(DEFAULT_GROUP, Collections.emptySet());
     }
@@ -120,7 +111,7 @@ public final class CollidableConfig
         {
             accepted.append(group);
             count--;
-            if (count > 1)
+            if (count > 0)
             {
                 accepted.append(ACCEPTED_SEPARATOR);
             }
