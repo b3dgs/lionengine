@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable.selector;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
@@ -121,6 +122,7 @@ public final class HudTest
         hud.getFeature(Refreshable.class).update(1.0);
 
         assertTrue(canceled.get());
+        assertEquals(0, hud.getActive().size());
 
         hud.removeListener(listener);
     }

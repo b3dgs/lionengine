@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -69,6 +70,7 @@ public final class CameraTrackerTest
         final CameraTracker tracker = new CameraTracker(services);
         tracker.getFeature(Refreshable.class).update(1.0);
 
+        assertNull(tracker.getMedia());
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
 

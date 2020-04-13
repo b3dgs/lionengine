@@ -94,6 +94,13 @@ public final class RasterableModelTest
         rasterable.prepare(featurable);
         rasterable.setOrigin(Origin.TOP_LEFT);
         rasterable.update(1.0);
+
+        rasterable.setEnabled(false);
+        rasterable.update(1.0);
+        rasterable.render(g);
+
+        rasterable.setVisibility(false);
+        rasterable.update(1.0);
         rasterable.render(g);
 
         assertEquals(1, rasterable.getRasterIndex(0));

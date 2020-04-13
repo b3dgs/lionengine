@@ -113,6 +113,31 @@ public final class CollidableConfigTest
     }
 
     /**
+     * Test with empty accepted.
+     */
+    @Test
+    public void testEmptyAccepted()
+    {
+        final Media media = Medias.create("Object.xml");
+        final Xml root = new Xml("test");
+        root.save(media);
+
+        final Services services = new Services();
+        services.add(new ViewerMock());
+
+        final Collidable collidable = new CollidableModel(services, new Setup(media));
+        collidable.setGroup(Integer.valueOf(1));
+        CollidableConfig.exports(root, collidable);
+
+        root.save(media);
+
+        final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
+        assertEquals(Integer.valueOf(1), config.getGroup());
+        assertTrue(config.getAccepted().isEmpty());
+        assertTrue(media.getFile().delete());
+    }
+
+    /**
      * Test export.
      */
     @Test
@@ -128,13 +153,14 @@ public final class CollidableConfigTest
         final Collidable collidable = new CollidableModel(services, new Setup(media));
         collidable.setGroup(Integer.valueOf(1));
         collidable.addAccept(Integer.valueOf(2));
+        collidable.addAccept(Integer.valueOf(3));
         CollidableConfig.exports(root, collidable);
 
         root.save(media);
 
         final CollidableConfig config = CollidableConfig.imports(new Configurer(media));
         assertEquals(Integer.valueOf(1), config.getGroup());
-        assertIterableEquals(Arrays.asList(Integer.valueOf(2)), config.getAccepted());
+        assertIterableEquals(Arrays.asList(Integer.valueOf(2), Integer.valueOf(3)), config.getAccepted());
         assertTrue(media.getFile().delete());
     }
 
