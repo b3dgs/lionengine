@@ -18,12 +18,12 @@
         <module>../lionengine-core-headless</module>
         <module>../lionengine-core-awt</module>
         <module>../lionengine-game</module>
+        <module>../lionengine-helper</module>
         <module>../lionengine-network</module>
         <module>../lionengine-audio-wav</module>
         <module>../lionengine-audio-adlmidi</module>
         <module>../lionengine-audio-adplug</module>
         <module>../lionengine-audio-sc68</module>
-        <module>../lionengine-helper</module>
     </modules>
     <scm>
         <url>https://github.com/b3dgs/lionengine</url>
