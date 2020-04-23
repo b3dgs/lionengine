@@ -103,9 +103,12 @@ public final class AnimatableModelTest
         final Animatable animatable = new AnimatableModel(services, setup);
         testAnimatorState(animatable, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
+        assertEquals(1, animatable.getFrames());
+
         animatable.play(animation);
         testAnimatorState(animatable, first, first, AnimState.PLAYING);
         assertFalse(animatable.is(AnimState.FINISHED));
+        assertEquals(last - first + 1, animatable.getFrames());
 
         animatable.update(1.0);
         testAnimatorState(animatable, first, first + 1, AnimState.PLAYING);

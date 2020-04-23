@@ -253,6 +253,12 @@ public final class AnimatorModel implements Animator
     }
 
     @Override
+    public int getFrames()
+    {
+        return last - first + 1;
+    }
+
+    @Override
     public int getFrame()
     {
         return (int) Math.floor(current);

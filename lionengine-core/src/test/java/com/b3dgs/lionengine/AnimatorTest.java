@@ -51,11 +51,15 @@ public final class AnimatorTest
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
         final Animator animator = new AnimatorModel();
+
+        assertEquals(1, animator.getFrames());
+
         animator.play(animation);
 
         assertEquals(AnimState.PLAYING, animator.getAnimState());
         assertEquals(1, animator.getFrame());
         assertEquals(1, animator.getFrameAnim());
+        assertEquals(2, animator.getFrames());
     }
 
     /**

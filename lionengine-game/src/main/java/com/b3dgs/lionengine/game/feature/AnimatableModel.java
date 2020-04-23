@@ -114,6 +114,12 @@ public class AnimatableModel extends FeatureModel implements Animatable, Recycla
     }
 
     @Override
+    public int getFrames()
+    {
+        return animator.getFrames();
+    }
+
+    @Override
     public int getFrame()
     {
         return animator.getFrame();

@@ -68,6 +68,13 @@ public interface Animator extends Updatable, Listenable<AnimatorListener>
     void setFrame(int frame);
 
     /**
+     * Get the current animation frames to play.
+     * 
+     * @return The number of frames to play.
+     */
+    int getFrames();
+
+    /**
      * Get the current playing frame number.
      * 
      * @return The playing frame number.
