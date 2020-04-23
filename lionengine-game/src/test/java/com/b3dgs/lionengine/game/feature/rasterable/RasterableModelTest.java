@@ -23,10 +23,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.ViewerMock;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -86,7 +88,7 @@ public final class RasterableModelTest
 
         final Featurable featurable = new FeaturableModel(services, setup);
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
-        featurable.addFeature(new AnimatableModel(services, setup));
+        final Animatable animatable = featurable.addFeatureAndGet(new AnimatableModel(services, setup));
         featurable.addFeature(new MirrorableModel(services, setup));
 
         final Rasterable rasterable = new RasterableModel(services, setup);
@@ -113,5 +115,16 @@ public final class RasterableModelTest
         assertEquals(1, rasterable.getRasterIndex(0));
         assertEquals(RasterImage.MAX_RASTERS_M + 1, rasterable.getRasterIndex(240));
         assertNotNull(rasterable.getRasterAnim(0));
+
+        animatable.play(new Animation("default", 1, 5, 1.0, false, false));
+        animatable.update(1.0);
+        rasterable.update(1.0);
+
+        assertEquals(2, rasterable.getRasterAnim(0).getFrame());
+
+        rasterable.setAnimOffset(1);
+        rasterable.update(1.0);
+
+        assertEquals(3, rasterable.getRasterAnim(0).getFrame());
     }
 }

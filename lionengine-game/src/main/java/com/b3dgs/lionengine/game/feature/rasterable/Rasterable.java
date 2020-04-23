@@ -30,6 +30,13 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 public interface Rasterable extends Feature, Updatable, Renderable
 {
     /**
+     * Set the internal animation offset for special animation cases (0 for none).
+     * 
+     * @param offset The offset value.
+     */
+    void setAnimOffset(int offset);
+
+    /**
      * Set frame offsets (offsets on rendering).
      * 
      * @param offsetX The horizontal offset.

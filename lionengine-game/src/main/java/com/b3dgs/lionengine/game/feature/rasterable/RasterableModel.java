@@ -59,6 +59,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private SpriteAnimated raster;
     /** Origin value. */
     private Origin origin;
+    /** Anim offset. */
+    private int animOffset;
     /** Frame offsets x. */
     private int frameOffsetX;
     /** Frame offsets y. */
@@ -170,7 +172,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         updater.update(extrp);
 
-        raster.setFrame(animatable.getFrame());
+        raster.setFrame(animatable.getFrame() + animOffset);
         raster.setMirror(mirrorable.getMirror());
         raster.setOrigin(origin);
         raster.setFrameOffsets(frameOffsetX, frameOffsetY);
@@ -179,9 +181,9 @@ public class RasterableModel extends FeatureModel implements Rasterable
     @Override
     public void render(Graphic g)
     {
-        raster.setLocation(viewer, transformable);
         if (visible)
         {
+            raster.setLocation(viewer, transformable);
             raster.render(g);
         }
     }
@@ -203,6 +205,12 @@ public class RasterableModel extends FeatureModel implements Rasterable
         Check.superiorOrEqual(rasterIndex, 0);
 
         return rastersAnim.get(rasterIndex);
+    }
+
+    @Override
+    public void setAnimOffset(int offset)
+    {
+        animOffset = offset;
     }
 
     @Override
