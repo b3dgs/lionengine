@@ -91,9 +91,12 @@ public class FogOfWar extends FeatureAbstract implements MapTileRenderer, Listen
      */
     public void update(Fovable fovable)
     {
-        mapHidden.updateFov(fovable);
-        mapFogged.reset(fovable);
-        mapFogged.updateFov(fovable);
+        if (fovable.canUpdate())
+        {
+            mapHidden.updateFov(fovable);
+            mapFogged.reset(fovable);
+            mapFogged.updateFov(fovable);
+        }
     }
 
     /**

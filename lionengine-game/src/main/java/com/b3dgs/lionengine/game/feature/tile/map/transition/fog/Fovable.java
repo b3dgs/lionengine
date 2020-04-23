@@ -16,6 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import java.util.function.BooleanSupplier;
+
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -39,4 +42,19 @@ public interface Fovable extends Feature, Tiled
      * @return The field of view in tile.
      */
     int getInTileFov();
+
+    /**
+     * Set the checker rule to update.
+     * 
+     * @param checker The checker reference (must not be <code>null</code>).
+     * @throws LionEngineException If <code>null</code> argument.
+     */
+    void setCanUpdate(BooleanSupplier checker);
+
+    /**
+     * Check if can update field of view.
+     * 
+     * @return <code>true</code> if can update field of view, <code>false</code> else.
+     */
+    boolean canUpdate();
 }

@@ -16,6 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.transition.fog;
 
+import java.util.function.BooleanSupplier;
+
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -35,6 +38,8 @@ public class FovableModel extends FeatureModel implements Fovable
     private final MapTile map = services.get(MapTile.class);
     /** Field of view in tile value. */
     private int fov = FovableConfig.imports(setup);
+    /** Checker update. */
+    private BooleanSupplier checker = () -> true;
 
     /** Transformable model. */
     private Transformable transformable;
@@ -82,6 +87,20 @@ public class FovableModel extends FeatureModel implements Fovable
     public void setFov(int fov)
     {
         this.fov = fov;
+    }
+
+    @Override
+    public void setCanUpdate(BooleanSupplier checker)
+    {
+        Check.notNull(checker);
+
+        this.checker = checker;
+    }
+
+    @Override
+    public boolean canUpdate()
+    {
+        return checker.getAsBoolean();
     }
 
     @Override
