@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -114,8 +115,16 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         handler = services.get(Handler.class);
 
         config = LauncherConfig.imports(setup);
-        launchables = config.get(0).getLaunchables();
-        rate = config.get(0).getRate();
+        if (config.isEmpty())
+        {
+            launchables = Collections.emptyList();
+            rate = 0;
+        }
+        else
+        {
+            launchables = config.get(0).getLaunchables();
+            rate = config.get(0).getRate();
+        }
     }
 
     /**
