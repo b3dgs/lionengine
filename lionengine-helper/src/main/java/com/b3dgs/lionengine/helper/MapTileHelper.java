@@ -210,8 +210,8 @@ public class MapTileHelper extends MapTileGame
             fogOfWar.create(configFog);
             final int tw = getTileWidth();
             final int th = getTileHeight();
-            final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), tw, th);
-            final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), tw, th);
+            final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create(parent, "hide.png"), tw, th);
+            final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create(parent, "fog.png"), tw, th);
             hide.load();
             hide.prepare();
             fog.load();

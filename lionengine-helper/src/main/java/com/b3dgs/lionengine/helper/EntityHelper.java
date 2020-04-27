@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.helper;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
@@ -38,6 +39,10 @@ import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.framed.CollidableFramedModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectableModel;
+import com.b3dgs.lionengine.game.feature.launchable.Launchable;
+import com.b3dgs.lionengine.game.feature.launchable.LaunchableModel;
+import com.b3dgs.lionengine.game.feature.launchable.Launcher;
+import com.b3dgs.lionengine.game.feature.launchable.LauncherModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
@@ -85,6 +90,8 @@ public class EntityHelper extends FeaturableModel
     private final Attacker attacker;
     private final Extractor extractor;
     private final Producer producer;
+    private final Launchable launchable;
+    private final Launcher launcher;
 
     /**
      * Create entity.
@@ -99,6 +106,7 @@ public class EntityHelper extends FeaturableModel
         addFeature(new LayerableModel(services, setup));
         addFeature(new TransformableModel(services, setup));
         addFeature(new FovableModel(services, setup));
+        addFeature(new ActionerModel(services, setup));
         state = addFeatureAndGet(new StateHandler(services, setup, EntityHelper::getAnimationName));
         body = addFeatureAndGet(new BodyModel(services, setup));
         mirrorable = addFeatureAndGet(new MirrorableModel(services, setup));
@@ -110,6 +118,8 @@ public class EntityHelper extends FeaturableModel
         attacker = addFeatureAndGet(new AttackerModel(services, setup));
         extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         producer = addFeatureAndGet(new ProducerModel(services, setup));
+        launchable = addFeatureAndGet(new LaunchableModel(services, setup));
+        launcher = addFeatureAndGet(new LauncherModel(services, setup));
         addFeature(new ProducibleModel(services, setup));
         addFeature(new ExtractableModel(services, setup));
         addFeature(new CollidableFramedModel(services, setup));
@@ -129,6 +139,8 @@ public class EntityHelper extends FeaturableModel
             attacker.update(extrp);
             extractor.update(extrp);
             producer.update(extrp);
+            launchable.update(extrp);
+            launcher.update(extrp);
             pathfindable.update(extrp);
             tileCollidable.update(extrp);
             state.postUpdate();
