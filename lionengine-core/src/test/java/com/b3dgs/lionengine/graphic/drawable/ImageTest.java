@@ -180,8 +180,8 @@ public final class ImageTest
 
         assertEquals(1.5, image.getX());
         assertEquals(2.5, image.getY());
-        assertEquals(1, image.getRenderX());
-        assertEquals(2, image.getRenderY());
+        assertEquals(2, image.getRenderX());
+        assertEquals(3, image.getRenderY());
 
         image.dispose();
     }
@@ -198,16 +198,16 @@ public final class ImageTest
 
         assertEquals(1.5, image.getX());
         assertEquals(237.5, image.getY());
-        assertEquals(1, image.getRenderX());
-        assertEquals(237, image.getRenderY());
+        assertEquals(2, image.getRenderX());
+        assertEquals(238, image.getRenderY());
 
         viewer.set(10, 20);
         image.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
         assertEquals(-8.5, image.getX());
         assertEquals(257.5, image.getY());
-        assertEquals(-9, image.getRenderX());
-        assertEquals(257, image.getRenderY());
+        assertEquals(-8, image.getRenderX());
+        assertEquals(258, image.getRenderY());
 
         image.dispose();
     }

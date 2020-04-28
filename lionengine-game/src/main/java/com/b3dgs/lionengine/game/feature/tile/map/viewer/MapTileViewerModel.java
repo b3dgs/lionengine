@@ -83,8 +83,8 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
         final Tile tile = map.getTile(tx, ty);
         if (tile != null)
         {
-            final int x = (int) Math.floor(tile.getX() - viewX);
-            final int y = (int) Math.floor(-tile.getY() + viewY - tile.getHeight());
+            final int x = (int) Math.round(tile.getX() - viewX);
+            final int y = (int) Math.round(-tile.getY() + viewY - tile.getHeight());
 
             for (final MapTileRenderer renderer : renderers)
             {

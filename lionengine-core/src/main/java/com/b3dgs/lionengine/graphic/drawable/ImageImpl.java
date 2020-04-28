@@ -97,8 +97,8 @@ final class ImageImpl implements Image
      */
     private void computeRenderingPoint(int width, int height)
     {
-        rx = (int) Math.floor(origin.getX(x, width));
-        ry = (int) Math.floor(origin.getY(y, height));
+        rx = (int) Math.round(origin.getX(x, width));
+        ry = (int) Math.round(origin.getY(y, height));
     }
 
     /**

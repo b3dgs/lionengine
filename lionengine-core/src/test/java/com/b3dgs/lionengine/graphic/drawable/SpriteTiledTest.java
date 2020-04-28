@@ -257,8 +257,8 @@ public final class SpriteTiledTest
 
         assertEquals(1.5, sprite.getX());
         assertEquals(2.5, sprite.getY());
-        assertEquals(1, sprite.getRenderX());
-        assertEquals(2, sprite.getRenderY());
+        assertEquals(2, sprite.getRenderX());
+        assertEquals(3, sprite.getRenderY());
     }
 
     /**
@@ -273,16 +273,16 @@ public final class SpriteTiledTest
 
         assertEquals(1.5, sprite.getX());
         assertEquals(237.5, sprite.getY());
-        assertEquals(1, sprite.getRenderX());
-        assertEquals(237, sprite.getRenderY());
+        assertEquals(2, sprite.getRenderX());
+        assertEquals(238, sprite.getRenderY());
 
         viewer.set(10, 20);
         sprite.setLocation(viewer, Geom.createLocalizable(1.5, 2.5));
 
         assertEquals(-8.5, sprite.getX());
         assertEquals(257.5, sprite.getY());
-        assertEquals(-9, sprite.getRenderX());
-        assertEquals(257, sprite.getRenderY());
+        assertEquals(-8, sprite.getRenderX());
+        assertEquals(258, sprite.getRenderY());
     }
 
     /**

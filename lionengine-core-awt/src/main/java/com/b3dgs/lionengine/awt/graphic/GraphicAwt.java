@@ -166,8 +166,8 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
-        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        final int px = (int) Math.round(origin.getX(viewer.getViewpointX(x), width));
+        final int py = (int) Math.round(origin.getY(viewer.getViewpointY(y), height));
         drawRect(px, py, width, height, fill);
     }
 
@@ -182,8 +182,8 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
     {
-        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
-        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        final int px = (int) Math.round(origin.getX(viewer.getViewpointX(x), width));
+        final int py = (int) Math.round(origin.getY(viewer.getViewpointY(y), height));
         drawGradient(px, py, width, height);
     }
 
@@ -196,10 +196,10 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
     {
-        g.drawLine((int) viewer.getViewpointX(x1),
-                   (int) viewer.getViewpointY(y1),
-                   (int) viewer.getViewpointX(x2),
-                   (int) viewer.getViewpointY(y2));
+        g.drawLine((int) Math.round(viewer.getViewpointX(x1)),
+                   (int) Math.round(viewer.getViewpointY(y1)),
+                   (int) Math.round(viewer.getViewpointX(x2)),
+                   (int) Math.round(viewer.getViewpointY(y2)));
     }
 
     @Override
@@ -218,8 +218,8 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
-        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        final int px = (int) Math.round(origin.getX(viewer.getViewpointX(x), width));
+        final int py = (int) Math.round(origin.getY(viewer.getViewpointY(y), height));
         drawOval(px, py, width, height, fill);
     }
 

@@ -126,7 +126,11 @@ public class Parallax implements BackgroundComponent
         final int lineWidth = surface.getLineWidth(numLine);
         for (int j = -amplitude; j < amplitude; j++)
         {
-            final int lx = (int) (-offsetX + offsetX * j - x[numLine] - x2[numLine] + numLine * (2.56 * factH) * j);
+            final int lx = (int) Math.round(-offsetX
+                                            + offsetX * j
+                                            - x[numLine]
+                                            - x2[numLine]
+                                            + numLine * (2.56 * factH) * j);
             if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
             {
                 surface.render(g, numLine, lx + decX, lineY);
