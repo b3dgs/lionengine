@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -45,6 +46,8 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     /** Inconsistent tile count. */
     private static final String ERROR_TILE_COUNT = "Tile count is inconsistent between sheets !";
 
+    /** Tile set listeners. */
+    private final ListenableModel<TileSetListener> listenable = new ListenableModel<>();
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Tile width. */
@@ -106,6 +109,18 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     /*
      * MapTileSurface
      */
+
+    @Override
+    public void addListener(TileSetListener listener)
+    {
+        listenable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(TileSetListener listener)
+    {
+        listenable.removeListener(listener);
+    }
 
     @Override
     public void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile)
@@ -262,6 +277,10 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
             if (tilesPerSheet > 0)
             {
                 tile.setSheet((int) Math.floor(number / (double) tilesPerSheet));
+            }
+            for (int i = 0; i < listenable.size(); i++)
+            {
+                listenable.get(i).onTileSet(tile);
             }
         }
     }

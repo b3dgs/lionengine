@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map;
 
+import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
  * </p>
  */
 @FeatureInterface
-public interface MapTileSurface extends Feature, MapTile
+public interface MapTileSurface extends Feature, MapTile, Listenable<TileSetListener>
 {
     /**
      * Resize map with new size.

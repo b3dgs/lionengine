@@ -22,7 +22,6 @@ import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Listenable;
-import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -54,8 +53,6 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
 {
     /** Map tile surface. */
     protected final MapTileSurface mapSurface;
-    /** Tile set listeners. */
-    private final ListenableModel<TileSetListener> listenable = new ListenableModel<>();
 
     /**
      * Create model.
@@ -169,39 +166,19 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
     @Override
     public void addListener(TileSetListener listener)
     {
-        listenable.addListener(listener);
+        mapSurface.addListener(listener);
     }
 
     @Override
     public void removeListener(TileSetListener listener)
     {
-        listenable.removeListener(listener);
+        mapSurface.removeListener(listener);
     }
 
     @Override
     public void setTile(int tx, int ty, int number)
     {
-        Tile tile = mapSurface.getTile(tx, ty);
-        final int oldNum;
-        if (tile == null)
-        {
-            oldNum = -1;
-        }
-        else
-        {
-            oldNum = tile.getNumber();
-        }
-
         mapSurface.setTile(tx, ty, number);
-        tile = mapSurface.getTile(tx, ty);
-
-        if (number != oldNum)
-        {
-            for (int i = 0; i < listenable.size(); i++)
-            {
-                listenable.get(i).onTileSet(tile);
-            }
-        }
     }
 
     @Override
