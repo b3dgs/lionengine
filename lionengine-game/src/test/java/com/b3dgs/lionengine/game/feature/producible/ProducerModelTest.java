@@ -233,11 +233,13 @@ public final class ProducerModelTest
         assertFalse(producer.isProducing());
 
         final Featurable featurable = UtilProducible.createProducible(services);
+        final Producible producible = featurable.getFeature(Producible.class);
         producer.addToProductionQueue(featurable);
 
         assertEquals(0, producer.getQueueLength());
         assertNull(start.get());
         assertFalse(producer.isProducing());
+        assertFalse(producible.isProduced());
 
         producer.update(1.0);
 
@@ -264,12 +266,14 @@ public final class ProducerModelTest
         assertEquals(featurable, current.get());
         assertNull(done.get());
         assertFalse(producer.isProducing());
+        assertFalse(producible.isProduced());
 
         producer.update(1.0);
 
         assertEquals(featurable, done.get());
         assertNull(cant.get());
         assertFalse(producer.isProducing());
+        assertTrue(producible.isProduced());
     }
 
     /**

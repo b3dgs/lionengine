@@ -58,4 +58,11 @@ public interface Producible extends Feature, Shape, Listenable<ProducibleListene
      * @return The production steps number.
      */
     int getSteps();
+
+    /**
+     * Return <code>true</code> if produced.
+     * 
+     * @return <code>true</code> if produced, <code>false</code> else.
+     */
+    boolean isProduced();
 }

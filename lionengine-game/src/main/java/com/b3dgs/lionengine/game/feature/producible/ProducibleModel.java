@@ -48,6 +48,8 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     private double x;
     /** Production location y. */
     private double y;
+    /** Produced flag. */
+    private boolean produced;
 
     /**
      * Create feature.
@@ -82,6 +84,14 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
             width = 0;
             height = 0;
         }
+        listenable.addListener(new ProducibleListenerVoid()
+        {
+            @Override
+            public void notifyProductionEnded(Producer producer)
+            {
+                produced = true;
+            }
+        });
     }
 
     /*
@@ -171,6 +181,12 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
         return steps;
     }
 
+    @Override
+    public boolean isProduced()
+    {
+        return produced;
+    }
+
     /*
      * Recyclable
      */
@@ -180,5 +196,6 @@ public class ProducibleModel extends FeatureModel implements Producible, Recycla
     {
         x = 0.0;
         y = 0.0;
+        produced = false;
     }
 }
