@@ -370,7 +370,7 @@ public class AttackerModel extends FeatureModel implements Attacker, Recyclable
     @Override
     public boolean isAttacking()
     {
-        return AttackState.ATTACKING == state;
+        return attacking;
     }
 
     @Override

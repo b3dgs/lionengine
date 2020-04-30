@@ -200,6 +200,7 @@ public final class AttackerModelTest
 
         attacker.setAttackDistanceComputer((s, t) -> 1);
         attacker.update(1.0);
+        attacker.update(1.0);
 
         assertTrue(attacker.isAttacking());
     }
@@ -384,9 +385,12 @@ public final class AttackerModelTest
         target.teleport(0, 1);
         attacker.update(1.0);
 
-        assertTrue(attacker.isAttacking());
         assertNotEquals(target, started.get());
         assertNotEquals(target, ended.get());
+
+        attacker.update(1.0);
+
+        assertTrue(attacker.isAttacking());
 
         attacker.update(1.0);
         attacker.getFeature(Animatable.class).update(1.0);
@@ -394,8 +398,6 @@ public final class AttackerModelTest
 
         assertFalse(preparing.get());
 
-        attacker.update(1.0);
-        attacker.update(1.0);
         attacker.update(1.0);
         attacker.update(1.0);
         attacker.update(1.0);
@@ -409,9 +411,12 @@ public final class AttackerModelTest
                 attacker.update(1.0);
             }
         });
-        assertTrue(attacker.isAttacking());
         assertEquals(target, started.get());
         assertEquals(target, ended.get());
+
+        attacker.update(1.0);
+
+        assertTrue(attacker.isAttacking());
 
         object.getFeature(Animatable.class).update(1.0);
         attacker.update(1.0);
