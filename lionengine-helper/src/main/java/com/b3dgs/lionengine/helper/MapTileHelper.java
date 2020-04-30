@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.HandlerPersister;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
@@ -154,6 +155,7 @@ public class MapTileHelper extends MapTileGame
         mapRaster = addFeatureAndGet(new MapTileRasteredModel());
         mapViewer = addFeatureAndGet(new MapTileViewerModel(services));
         fogOfWar = services.add(addFeatureAndGet(new FogOfWar()));
+        addFeature(new MapTileAppenderModel());
         addFeatureAndGet(new MapTilePersisterModel()).addListener(() ->
         {
             load(getMedia());
