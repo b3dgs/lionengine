@@ -77,7 +77,7 @@ public final class CollisionCategoryConfig
                 for (final Xml group : childrenGroup)
                 {
                     final String name = group.getText();
-                    groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
+                    groups.add(new CollisionGroup(name, new ArrayList<>(0)));
                 }
                 childrenGroup.clear();
 

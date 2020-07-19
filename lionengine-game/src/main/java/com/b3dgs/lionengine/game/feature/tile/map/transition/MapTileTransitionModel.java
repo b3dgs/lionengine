@@ -435,7 +435,7 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
             {
                 if (!tiles.containsKey(tileRef))
                 {
-                    tiles.put(tileRef, new HashSet<Transition>());
+                    tiles.put(tileRef, new HashSet<>());
                 }
                 tiles.get(tileRef).add(transition);
             }

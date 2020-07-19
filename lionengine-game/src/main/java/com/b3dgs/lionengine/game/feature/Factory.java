@@ -325,7 +325,7 @@ public class Factory implements HandlerListener
         {
             if (!cache.containsKey(media))
             {
-                cache.put(media, new ArrayDeque<Featurable>());
+                cache.put(media, new ArrayDeque<>());
             }
             cache.get(media).offer(featurable);
         }

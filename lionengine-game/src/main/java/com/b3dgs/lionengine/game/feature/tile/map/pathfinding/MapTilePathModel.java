@@ -295,7 +295,7 @@ public class MapTilePathModel extends FeatureAbstract implements MapTilePath
 
         for (int v = 0; v < heightInTile; v++)
         {
-            tiles.add(v, new ArrayList<Set<Integer>>(widthInTile));
+            tiles.add(v, new ArrayList<>(widthInTile));
             for (int h = 0; h < widthInTile; h++)
             {
                 tiles.get(v).add(h, new HashSet<>(1));

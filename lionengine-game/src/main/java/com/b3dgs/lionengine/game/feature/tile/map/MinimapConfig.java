@@ -147,7 +147,7 @@ public final class MinimapConfig
     {
         if (!colors.containsKey(color))
         {
-            colors.put(color, new HashSet<Integer>());
+            colors.put(color, new HashSet<>());
         }
         return colors.get(color);
     }

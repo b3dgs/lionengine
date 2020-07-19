@@ -240,12 +240,12 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
         final Integer group = collidable.getGroup();
         if (!collidables.containsKey(group))
         {
-            collidables.put(group, new HashMap<Point, Set<Collidable>>());
+            collidables.put(group, new HashMap<>());
         }
         final Map<Point, Set<Collidable>> elements = collidables.get(group);
         if (!elements.containsKey(point))
         {
-            elements.put(point, new HashSet<Collidable>());
+            elements.put(point, new HashSet<>());
         }
         elements.get(point).add(collidable);
     }

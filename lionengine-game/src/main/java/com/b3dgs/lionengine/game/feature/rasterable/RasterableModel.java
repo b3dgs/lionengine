@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.OriginConfig;
+import com.b3dgs.lionengine.game.SurfaceConfig;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -113,14 +114,22 @@ public class RasterableModel extends FeatureModel implements Rasterable
         height = setup.getRasterHeight();
         smooth = setup.hasSmooth();
 
-        rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
+        if (setup.hasNode(SurfaceConfig.NODE_SURFACE))
+        {
+            rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
+        }
+        else
+        {
+            visible = false;
+            enabled = false;
+        }
 
         for (final ImageBuffer buffer : setup.getRasters())
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
             rastersAnim.add(sprite);
         }
-        if (rastersAnim.size() == 1)
+        if (rastersAnim.size() < 2)
         {
             updater = UpdatableVoid.getInstance();
         }
@@ -131,7 +140,10 @@ public class RasterableModel extends FeatureModel implements Rasterable
         frameOffsetX = framesData.getOffsetX();
         frameOffsetY = framesData.getOffsetY();
 
-        raster = rastersAnim.get(0);
+        if (visible)
+        {
+            raster = rastersAnim.get(0);
+        }
     }
 
     /**
@@ -172,10 +184,13 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         updater.update(extrp);
 
-        raster.setFrame(animatable.getFrame() + animOffset);
-        raster.setMirror(mirrorable.getMirror());
-        raster.setOrigin(origin);
-        raster.setFrameOffsets(frameOffsetX, frameOffsetY);
+        if (visible)
+        {
+            raster.setFrame(animatable.getFrame() + animOffset);
+            raster.setMirror(mirrorable.getMirror());
+            raster.setOrigin(origin);
+            raster.setFrameOffsets(frameOffsetX, frameOffsetY);
+        }
     }
 
     @Override

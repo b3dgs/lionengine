@@ -92,7 +92,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
     {
         if (!transitions.containsKey(transition))
         {
-            transitions.put(transition, new HashSet<Integer>());
+            transitions.put(transition, new HashSet<>());
         }
         return transitions.get(transition);
     }

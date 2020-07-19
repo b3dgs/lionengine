@@ -53,7 +53,7 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
     {
         super();
 
-        groupTiles.put(NO_GROUP_NAME, new HashSet<Integer>());
+        groupTiles.put(NO_GROUP_NAME, new HashSet<>());
     }
 
     /*
@@ -99,7 +99,7 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
             tilesGroup.put(number, group);
             if (!groupTiles.containsKey(group))
             {
-                groupTiles.put(group, new HashSet<Integer>());
+                groupTiles.put(group, new HashSet<>());
             }
             groupTiles.get(group).add(number);
         }

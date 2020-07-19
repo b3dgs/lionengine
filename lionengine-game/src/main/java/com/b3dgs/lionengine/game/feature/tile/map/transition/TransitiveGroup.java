@@ -187,7 +187,7 @@ public class TransitiveGroup
         final GroupTransition groupTransition = new GroupTransition(groupIn, groupOut);
         if (!transitives.containsKey(groupTransition))
         {
-            transitives.put(groupTransition, new ArrayList<GroupTransition>());
+            transitives.put(groupTransition, new ArrayList<>());
         }
 
         final Collection<GroupTransition> localChecked = new HashSet<>();

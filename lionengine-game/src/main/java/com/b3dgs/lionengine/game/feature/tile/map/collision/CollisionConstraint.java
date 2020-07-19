@@ -42,7 +42,7 @@ public class CollisionConstraint
 
         for (final Orientation orientation : Orientation.values())
         {
-            constraints.put(orientation, new ArrayList<String>());
+            constraints.put(orientation, new ArrayList<>());
         }
     }
 

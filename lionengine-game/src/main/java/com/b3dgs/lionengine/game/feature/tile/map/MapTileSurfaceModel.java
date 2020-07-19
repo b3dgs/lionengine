@@ -142,7 +142,7 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
 
         for (int v = 0; v < heightInTile; v++)
         {
-            tiles.add(v, new ArrayList<TileGame>(widthInTile));
+            tiles.add(v, new ArrayList<>(widthInTile));
             for (int h = 0; h < widthInTile; h++)
             {
                 tiles.get(v).add(h, null);
@@ -210,7 +210,7 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
         // Adjust height
         for (int v = 0; v < newHeight - oldheight; v++)
         {
-            tiles.add(new ArrayList<TileGame>(newWidth));
+            tiles.add(new ArrayList<>(newWidth));
         }
         // Adjust width
         for (int v = 0; v < newHeight; v++)

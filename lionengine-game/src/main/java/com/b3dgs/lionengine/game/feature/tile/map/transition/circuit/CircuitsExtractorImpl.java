@@ -121,7 +121,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
     {
         if (!circuits.containsKey(circuit))
         {
-            circuits.put(circuit, new HashSet<Integer>());
+            circuits.put(circuit, new HashSet<>());
         }
         return circuits.get(circuit);
     }

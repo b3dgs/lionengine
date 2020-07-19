@@ -188,7 +188,7 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
             if (cancelShortcut.getAsBoolean())
             {
                 clearMenus();
-                createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(last));
+                createMenus(new ArrayList<>(0), getActionsInCommon(last));
 
                 for (int i = 0; i < listenable.size(); i++)
                 {
