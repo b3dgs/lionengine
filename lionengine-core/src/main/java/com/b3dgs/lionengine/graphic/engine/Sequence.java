@@ -46,6 +46,9 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
 public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeControl, SourceResolutionProvider,
                                ScreenListener
 {
+    /** Update fps delay in milli. */
+    private static final int UPDATE_FPS_DELAY_MILLI = 500;
+
     /** Context reference. */
     private final Context context;
     /** Native resolution. */
@@ -188,7 +191,7 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
      */
     private void computeFrameRate(Timing updateFpsTimer, long lastTime, long currentTime)
     {
-        if (updateFpsTimer.elapsed(Constant.ONE_SECOND_IN_MILLI))
+        if (updateFpsTimer.elapsed(UPDATE_FPS_DELAY_MILLI))
         {
             currentFrameRate = (int) Math.round(Constant.ONE_SECOND_IN_NANO / (double) (currentTime - lastTime));
             updateFpsTimer.restart();
