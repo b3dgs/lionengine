@@ -120,11 +120,11 @@ public final class RasterableModelTest
         animatable.update(1.0);
         rasterable.update(1.0);
 
-        assertEquals(2, rasterable.getRasterAnim(0).getFrame());
+        assertEquals(1, rasterable.getRasterAnim(0).getFrame());
 
         rasterable.setAnimOffset(1);
         rasterable.update(1.0);
 
-        assertEquals(3, rasterable.getRasterAnim(0).getFrame());
+        assertEquals(1, rasterable.getRasterAnim(0).getFrame());
     }
 }

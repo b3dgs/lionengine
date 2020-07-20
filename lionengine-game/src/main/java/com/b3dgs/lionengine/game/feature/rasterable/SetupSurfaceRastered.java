@@ -25,7 +25,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.SurfaceConfig;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.raster.RasterImage;
 
@@ -91,9 +93,13 @@ public class SetupSurfaceRastered extends Setup
             final int frameHeight = getSurface().getHeight() / vf;
             raster.loadRasters(frameHeight, false, UtilFile.removeExtension(config.getName()));
         }
-        else
+        else if (hasNode(SurfaceConfig.NODE_SURFACE))
         {
             raster = new RasterImage(getSurface(), config, 1, false);
+        }
+        else
+        {
+            raster = new RasterImage(Graphics.createImageBuffer(1, 1), config, 1, false);
         }
     }
 
