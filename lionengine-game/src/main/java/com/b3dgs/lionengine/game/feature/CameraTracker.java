@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public class CameraTracker extends FeaturableAbstract
 {
+    /** Camera service reference. */
+    private final Camera camera;
     /** Followed element (can be <code>null</code>). */
     private Localizable tracked;
     /** Horizontal offset. */
@@ -52,14 +54,14 @@ public class CameraTracker extends FeaturableAbstract
 
         Check.notNull(services);
 
-        final Camera camera = services.get(Camera.class);
+        camera = services.get(Camera.class);
 
         addFeature(new RefreshableModel(extrp ->
         {
             if (tracked != null)
             {
-                camera.setLocation(Math.floor(tracked.getX()) - camera.getWidth() / 2.0 + h,
-                                   Math.ceil(tracked.getY()) - camera.getHeight() / 2.0 + v);
+                camera.setLocation(tracked.getX() - camera.getWidth() / 2.0 + h,
+                                   tracked.getY() - camera.getHeight() / 2.0 + v);
             }
         }));
     }
@@ -84,6 +86,11 @@ public class CameraTracker extends FeaturableAbstract
     public void track(Localizable localizable)
     {
         tracked = localizable;
+        if (tracked != null)
+        {
+            camera.teleport(tracked.getX() - camera.getWidth() / 2.0 + h,
+                            tracked.getY() - camera.getHeight() / 2.0 + v);
+        }
     }
 
     /**
@@ -100,7 +107,8 @@ public class CameraTracker extends FeaturableAbstract
      */
     public void track(Featurable featurable)
     {
-        tracked = featurable.getFeature(Transformable.class);
+        final Transformable transformable = featurable.getFeature(Transformable.class);
+        track(transformable);
     }
 
     /*
