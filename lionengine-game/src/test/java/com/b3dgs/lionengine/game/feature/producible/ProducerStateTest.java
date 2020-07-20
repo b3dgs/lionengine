@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test the producer state.
  */
-public class ProducerStateTest
+final class ProducerStateTest
 {
     /**
      * Test the enum.

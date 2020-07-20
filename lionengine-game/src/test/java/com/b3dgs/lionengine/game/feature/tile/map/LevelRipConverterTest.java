@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the level rip converter class.
  */
-public class LevelRipConverterTest
+final class LevelRipConverterTest
 {
     /**
      * Test the constructor.

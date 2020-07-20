@@ -223,7 +223,7 @@ final class MapTileCollisionModelComplexTest
      */
     @ParameterizedTest
     @MethodSource("speedX")
-    public void testToLeftFromSlopeLeft0ToSlopeLeft1(double speedX)
+    void testToLeftFromSlopeLeft0ToSlopeLeft1(double speedX)
     {
         final CollisionResult res = test(1, 1, TILE_SLOPE_LEFT_0, 0, 0, TILE_SLOPE_LEFT_1, 16.0, 16.0, -1, speedX);
 
@@ -243,7 +243,7 @@ final class MapTileCollisionModelComplexTest
      */
     @ParameterizedTest
     @MethodSource("speedX")
-    public void testToRightFromSlopeLeft1ToSlopeLeft0(double speedX)
+    void testToRightFromSlopeLeft1ToSlopeLeft0(double speedX)
     {
         final CollisionResult res = test(0, 0, TILE_SLOPE_LEFT_1, 1, 1, TILE_SLOPE_LEFT_0, 15.5, 15.5, 1, speedX);
 
@@ -263,7 +263,7 @@ final class MapTileCollisionModelComplexTest
      */
     @ParameterizedTest
     @MethodSource("speedX")
-    public void testToLeftFromSlopeLeft1ToSlopeLeft0(double speedX)
+    void testToLeftFromSlopeLeft1ToSlopeLeft0(double speedX)
     {
         final CollisionResult res = test(1, 0, TILE_SLOPE_LEFT_1, 0, 0, TILE_SLOPE_LEFT_0, 16.0, 8.0, -1, speedX);
 
@@ -283,7 +283,7 @@ final class MapTileCollisionModelComplexTest
      */
     @ParameterizedTest
     @MethodSource("speedX")
-    public void testToRightFromSlopeLeft0ToSlopeLeft1(double speedX)
+    void testToRightFromSlopeLeft0ToSlopeLeft1(double speedX)
     {
         final CollisionResult res = test(0, 0, TILE_SLOPE_LEFT_0, 1, 0, TILE_SLOPE_LEFT_1, 15.5, 7.9, 1, speedX);
 
@@ -303,7 +303,7 @@ final class MapTileCollisionModelComplexTest
      */
     @ParameterizedTest
     @MethodSource("speedX")
-    public void testToLeftFromSlopeRight0ToSlopeRight1(double speedX)
+    void testToLeftFromSlopeRight0ToSlopeRight1(double speedX)
     {
         final CollisionResult res = test(1, 0, TILE_SLOPE_RIGHT_0, 0, 1, TILE_SLOPE_RIGHT_1, 16.0, 15.9, -1, speedX);
 
@@ -323,7 +323,7 @@ final class MapTileCollisionModelComplexTest
      */
     @ParameterizedTest
     @MethodSource("speedX")
-    public void testToRightFromSlopeRight1ToSlopeRight0(double speedX)
+    void testToRightFromSlopeRight1ToSlopeRight0(double speedX)
     {
         final CollisionResult res = test(0, 1, TILE_SLOPE_RIGHT_1, 1, 0, TILE_SLOPE_RIGHT_0, 15.5, 16.0, 1, speedX);
 

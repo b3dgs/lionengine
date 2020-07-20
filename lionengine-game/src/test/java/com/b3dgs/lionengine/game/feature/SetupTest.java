@@ -111,8 +111,8 @@ final class SetupTest
     /**
      * Test the setup with no class.
      */
-    @Test()
-    public void testNoClass()
+    @Test
+    void testNoClass()
     {
         final Setup setup = new Setup(Medias.create("ObjectNoClass.xml"));
 
@@ -139,8 +139,8 @@ final class SetupTest
     /**
      * Test the setup with no surface.
      */
-    @Test()
-    public void testNoSurface()
+    @Test
+    void testNoSurface()
     {
         final Setup setup = new Setup(Medias.create("ObjectNoConstructor.xml"));
 
@@ -151,8 +151,8 @@ final class SetupTest
     /**
      * Test the setup with no surface.
      */
-    @Test()
-    public void testNoIcon()
+    @Test
+    void testNoIcon()
     {
         final Setup setup = new Setup(Medias.create("ObjectNoConstructor.xml"));
 
