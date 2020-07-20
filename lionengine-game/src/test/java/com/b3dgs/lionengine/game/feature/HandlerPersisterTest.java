@@ -194,4 +194,44 @@ public final class HandlerPersisterTest
 
         assertTrue(media.getFile().delete());
     }
+
+    /**
+     * Test clean on load.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testCleanLoad() throws IOException
+    {
+        final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
+        handler.add(featurable);
+        handler.update(1.0);
+
+        final HandlerPersister persister = new HandlerPersister(services);
+        final Media media = Medias.create("persister.data");
+        try (FileWriting writing = new FileWriting(media))
+        {
+            persister.save(writing);
+        }
+
+        final Services services2 = new Services();
+        services2.add(new Factory(services2));
+        final Handler handler2 = services2.add(new Handler(services2));
+        final HandlerPersister persister2 = new HandlerPersister(services2);
+        try (FileReading reading = new FileReading(media))
+        {
+            persister2.load(reading);
+        }
+        handler2.update(1.0);
+
+        assertEquals(1, handler2.size());
+
+        try (FileReading reading = new FileReading(media))
+        {
+            persister2.load(reading);
+        }
+        handler2.update(1.0);
+
+        assertEquals(1, handler2.size());
+    }
 }
