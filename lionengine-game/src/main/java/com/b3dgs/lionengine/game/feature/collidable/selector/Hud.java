@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.ActionRef;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Actioner;
+import com.b3dgs.lionengine.game.feature.ActionsConfig;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Factory;
@@ -156,27 +157,35 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
         super(services, setup);
 
         selector = services.add(new Selector(services));
-        selector.addListener(new SelectorListener()
-        {
-            @Override
-            public void notifySelectionStarted(Area selection)
-            {
-                clearMenus();
-            }
 
-            @Override
-            public void notifySelectionDone(Area selection)
-            {
-                // Nothing to do
-            }
-        });
-        selector.addListener(selection ->
+        if (setup.hasNode(ActionsConfig.NODE_ACTIONS))
         {
-            last.clear();
-            last.addAll(selection);
-            createMenus(new ArrayList<ActionRef>(0), getActionsInCommon(selection));
-        });
-        handler.add(selector);
+            createMenus(new ArrayList<>(0), ActionsConfig.imports(setup, this::getFeature));
+        }
+        else
+        {
+            selector.addListener(new SelectorListener()
+            {
+                @Override
+                public void notifySelectionStarted(Area selection)
+                {
+                    clearMenus();
+                }
+
+                @Override
+                public void notifySelectionDone(Area selection)
+                {
+                    // Nothing to do
+                }
+            });
+            selector.addListener(selection ->
+            {
+                last.clear();
+                last.addAll(selection);
+                createMenus(new ArrayList<>(0), getActionsInCommon(selection));
+            });
+            handler.add(selector);
+        }
 
         addFeature(new LayerableModel(services, setup));
 
