@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link SizeConfig}.
  */
-public final class SizeConfigTest
+final class SizeConfigTest
 {
     /**
      * Prepare test.
@@ -57,7 +57,7 @@ public final class SizeConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final SizeConfig config = new SizeConfig(16, 32);
 
@@ -77,7 +77,7 @@ public final class SizeConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final SizeConfig config = new SizeConfig(16, 32);
 
@@ -94,7 +94,7 @@ public final class SizeConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final SizeConfig hash = new SizeConfig(16, 32);
 
@@ -108,7 +108,7 @@ public final class SizeConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final SizeConfig config = new SizeConfig(16, 32);
 

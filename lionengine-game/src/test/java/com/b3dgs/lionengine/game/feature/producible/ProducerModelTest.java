@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Test {@link ProducerModel}.
  */
-public final class ProducerModelTest
+final class ProducerModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<ProducerState> HACK = new UtilEnum<>(ProducerState.class, ProducerModel.class);
@@ -148,7 +148,7 @@ public final class ProducerModelTest
      * Test the default production with default checker.
      */
     @Test
-    public void testDefaultProduction()
+    void testDefaultProduction()
     {
         final ProducerModel producer = new ProducerModel(services, setup);
         producer.prepare(new FeaturableModel(services, setup));
@@ -212,7 +212,7 @@ public final class ProducerModelTest
      * Test the production.
      */
     @Test
-    public void testProduction()
+    void testProduction()
     {
         producer.recycle();
         producer.setStepsSpeed(0.5);
@@ -280,7 +280,7 @@ public final class ProducerModelTest
      * Test the production with self listener.
      */
     @Test
-    public void testProductionListenerSelf()
+    void testProductionListenerSelf()
     {
         final ProducerObjectSelf object = new ProducerObjectSelf(services, setup);
         final ProducerModel producer = new ProducerModel(services, setup);
@@ -319,7 +319,7 @@ public final class ProducerModelTest
      * Test the production pending.
      */
     @Test
-    public void testPending()
+    void testPending()
     {
         producer.recycle();
         producer.setStepsSpeed(50.0);
@@ -356,7 +356,7 @@ public final class ProducerModelTest
      * Test the production pending and cannot.
      */
     @Test
-    public void testPendingCannot()
+    void testPendingCannot()
     {
         producer.recycle();
         producer.setStepsSpeed(50.0);
@@ -383,7 +383,7 @@ public final class ProducerModelTest
      * Test the skip production.
      */
     @Test
-    public void testSkip()
+    void testSkip()
     {
         producer.setStepsSpeed(50.0);
 
@@ -410,7 +410,7 @@ public final class ProducerModelTest
      * Test the stop production.
      */
     @Test
-    public void testStop()
+    void testStop()
     {
         producer.setStepsSpeed(50.0);
 
@@ -444,7 +444,7 @@ public final class ProducerModelTest
      * Test the cannot produce.
      */
     @Test
-    public void testCannot()
+    void testCannot()
     {
         object.check.set(false);
         producer.recycle();
@@ -466,7 +466,7 @@ public final class ProducerModelTest
      * Test the production listener.
      */
     @Test
-    public void testProducibleListener()
+    void testProducibleListener()
     {
         producer.recycle();
         producer.setStepsSpeed(50.0);
@@ -504,7 +504,7 @@ public final class ProducerModelTest
      * Test the production listener auto add.
      */
     @Test
-    public void testListenerAutoAdd()
+    void testListenerAutoAdd()
     {
         final ProducerObjectSelf object = new ProducerObjectSelf(services, setup);
         final ProducerModel producer = new ProducerModel(services, setup);
@@ -529,7 +529,7 @@ public final class ProducerModelTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testEnumFail() throws ReflectiveOperationException
+    void testEnumFail() throws ReflectiveOperationException
     {
         final ProducerModel producer = new ProducerModel(services, setup);
         final Field field = producer.getClass().getDeclaredField("state");

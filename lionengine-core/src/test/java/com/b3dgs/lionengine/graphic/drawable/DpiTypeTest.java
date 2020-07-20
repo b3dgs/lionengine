@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.graphic.DpiType;
 /**
  * Test {@link DpiType}.
  */
-public final class DpiTypeTest
+final class DpiTypeTest
 {
     /**
      * Get a factor resolution.
@@ -47,7 +47,7 @@ public final class DpiTypeTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(DpiType.class);
     }
@@ -56,7 +56,7 @@ public final class DpiTypeTest
      * Test the from function.
      */
     @Test
-    public void testFrom()
+    void testFrom()
     {
         final Resolution baseline = new Resolution(640, 480, 60);
 

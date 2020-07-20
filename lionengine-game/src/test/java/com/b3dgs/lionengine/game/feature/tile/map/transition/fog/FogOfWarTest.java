@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link FogOfWar}.
  */
-public final class FogOfWarTest
+final class FogOfWarTest
 {
     /** Test configuration. */
     private static Media config;
@@ -90,7 +90,7 @@ public final class FogOfWarTest
      * Test the fog of war.
      */
     @Test
-    public void testCreateSurface()
+    void testCreateSurface()
     {
         fog.setTilesheet(new SpriteTiledMock(), new SpriteTiledMock());
         Medias.setLoadFromJar(MapTileFog.class);
@@ -102,7 +102,7 @@ public final class FogOfWarTest
      * Test the fog of war.
      */
     @Test
-    public void testFogOfWar()
+    void testFogOfWar()
     {
         final Setup setup = new Setup(config);
         final FeaturableModel object = new FeaturableModel(services, setup);
@@ -191,7 +191,7 @@ public final class FogOfWarTest
      * Test the fog of war render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         Medias.setLoadFromJar(MapTileFog.class);
         fog.create(Medias.create("fog.xml"));

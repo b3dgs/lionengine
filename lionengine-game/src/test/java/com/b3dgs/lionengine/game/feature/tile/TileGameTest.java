@@ -27,13 +27,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link TileGame}.
  */
-public final class TileGameTest
+final class TileGameTest
 {
     /**
      * Test constructor with negative number.
      */
     @Test
-    public void testConstructorNegativeNumber()
+    void testConstructorNegativeNumber()
     {
         assertThrows(() -> new TileGame(-1, 0, 0, 1, 1), "Invalid argument: -1 is not superior or equal to 0");
     }
@@ -42,7 +42,7 @@ public final class TileGameTest
      * Test constructor with invalid width.
      */
     @Test
-    public void testConstructorNegativeWidth()
+    void testConstructorNegativeWidth()
     {
         assertThrows(() -> new TileGame(0, 0, 0, 0, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -51,7 +51,7 @@ public final class TileGameTest
      * Test constructor with invalid height.
      */
     @Test
-    public void testConstructorInvalidHeight()
+    void testConstructorInvalidHeight()
     {
         assertThrows(() -> new TileGame(0, 0, 0, 1, 0), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -60,7 +60,7 @@ public final class TileGameTest
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final TileGame tile = new TileGame(1, 2, 3, 4, 5);
 
@@ -80,7 +80,7 @@ public final class TileGameTest
      * Test the equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final TileGame tile = new TileGame(1, 16, 25, 4, 5);
 
@@ -100,7 +100,7 @@ public final class TileGameTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final TileGame tile = new TileGame(1, 16, 25, 4, 5);
 
@@ -119,7 +119,7 @@ public final class TileGameTest
      * Test the to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("number = 1 | tx = 2 | ty = 3", new TileGame(1, 2, 3, 16, 16).toString());
     }

@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link CircuitsConfig}.
  */
-public final class CircuitsConfigTest
+final class CircuitsConfigTest
 {
     /**
      * Prepare test.
@@ -74,7 +74,7 @@ public final class CircuitsConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(CircuitsConfig.class);
     }
@@ -85,7 +85,7 @@ public final class CircuitsConfigTest
      * @throws IOException If error.
      */
     @Test
-    public void testExportsImports() throws IOException
+    void testExportsImports() throws IOException
     {
         final Media config = UtilMapTransition.createTransitions();
 

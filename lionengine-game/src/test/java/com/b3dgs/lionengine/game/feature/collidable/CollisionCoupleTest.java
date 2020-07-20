@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link CollisionCouple}.
  */
-public final class CollisionCoupleTest
+final class CollisionCoupleTest
 {
     /**
      * Test collision couple data functions.
      */
     @Test
-    public void testCollision()
+    void testCollision()
     {
         final Collision with = new Collision("with", 1, 2, 3, 4, true);
         final Collision by = new Collision("by", 1, 2, 3, 4, true);
@@ -46,7 +46,7 @@ public final class CollisionCoupleTest
      * Test the equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Collision with = new Collision("with", 1, 2, 3, 4, true);
         final Collision by = new Collision("by", 1, 2, 3, 4, true);
@@ -65,7 +65,7 @@ public final class CollisionCoupleTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Collision with = new Collision("with", 1, 2, 3, 4, true);
         final Collision by = new Collision("by", 1, 2, 3, 4, true);

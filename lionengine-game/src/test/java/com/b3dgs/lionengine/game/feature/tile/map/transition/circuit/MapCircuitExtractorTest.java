@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link MapCircuitExtractor}.
  */
-public final class MapCircuitExtractorTest
+final class MapCircuitExtractorTest
 {
     /**
      * Prepare test.
@@ -71,7 +71,7 @@ public final class MapCircuitExtractorTest
      * Check the middle circuit.
      */
     @Test
-    public void testCircuitMiddle()
+    void testCircuitMiddle()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -84,7 +84,7 @@ public final class MapCircuitExtractorTest
      * Check the angles circuits.
      */
     @Test
-    public void testAngles()
+    void testAngles()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -101,7 +101,7 @@ public final class MapCircuitExtractorTest
      * Check the horizontal circuits.
      */
     @Test
-    public void testHorizontals()
+    void testHorizontals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -118,7 +118,7 @@ public final class MapCircuitExtractorTest
      * Check the vertical circuits.
      */
     @Test
-    public void testVerticals()
+    void testVerticals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -135,7 +135,7 @@ public final class MapCircuitExtractorTest
      * Check the three way junction top circuits.
      */
     @Test
-    public void testT3JTop()
+    void testT3JTop()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -151,7 +151,7 @@ public final class MapCircuitExtractorTest
      * Check the three way junction left circuits.
      */
     @Test
-    public void testT3JLeft()
+    void testT3JLeft()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -167,7 +167,7 @@ public final class MapCircuitExtractorTest
      * Check the three way junction right circuits.
      */
     @Test
-    public void testT3JRight()
+    void testT3JRight()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -183,7 +183,7 @@ public final class MapCircuitExtractorTest
      * Check the three way junction bottom circuits.
      */
     @Test
-    public void testT3JBottom()
+    void testT3JBottom()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -199,7 +199,7 @@ public final class MapCircuitExtractorTest
      * Check the block circuits.
      */
     @Test
-    public void testBlock()
+    void testBlock()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -212,7 +212,7 @@ public final class MapCircuitExtractorTest
      * Check the circuit with <code>null</code> neighbors.
      */
     @Test
-    public void testNullNeighbor()
+    void testNullNeighbor()
     {
         final MapTile map = UtilMap.createMap(7);
         map.setTile(4, 2, TILE_ROAD);

@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 /**
  * Test {@link LaunchableModel}.
  */
-public final class LaunchableModelTest
+final class LaunchableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -100,7 +100,7 @@ public final class LaunchableModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLaunch() throws InterruptedException
+    void testLaunch() throws InterruptedException
     {
         launchable.launch();
 
@@ -146,7 +146,7 @@ public final class LaunchableModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLaunchNoVector() throws InterruptedException
+    void testLaunchNoVector() throws InterruptedException
     {
         launchable.setVector(null);
         launchable.launch();
@@ -172,7 +172,7 @@ public final class LaunchableModelTest
      * Test the launch listener.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final LaunchableListener listener = launchable -> fired.set(true);
@@ -196,7 +196,7 @@ public final class LaunchableModelTest
      * Test the check listener.
      */
     @Test
-    public void testCheck()
+    void testCheck()
     {
         final Launchable launchable = new LaunchableModel(services, setup);
         final Self self = new Self(services, setup);

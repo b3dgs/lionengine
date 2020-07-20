@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link HeuristicClosestSquared}.
  */
-public final class HeuristicClosestSquaredTest
+final class HeuristicClosestSquaredTest
 {
     /**
      * Test the heuristic.
      */
     @Test
-    public void testHeuristic()
+    void testHeuristic()
     {
         final Heuristic heuristic = new HeuristicClosestSquared();
 

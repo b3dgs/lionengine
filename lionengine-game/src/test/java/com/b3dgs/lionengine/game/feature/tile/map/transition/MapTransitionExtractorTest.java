@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link MapTransitionExtractor}.
  */
-public final class MapTransitionExtractorTest
+final class MapTransitionExtractorTest
 {
     /**
      * Prepare test.
@@ -73,7 +73,7 @@ public final class MapTransitionExtractorTest
      * Check the center transition.
      */
     @Test
-    public void testTransitionCenter()
+    void testTransitionCenter()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -100,7 +100,7 @@ public final class MapTransitionExtractorTest
      * Check the corners transitions.
      */
     @Test
-    public void testCorners()
+    void testCorners()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -116,7 +116,7 @@ public final class MapTransitionExtractorTest
      * Check the corners inverted transitions.
      */
     @Test
-    public void testCornersInverted()
+    void testCornersInverted()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
@@ -132,7 +132,7 @@ public final class MapTransitionExtractorTest
      * Check the horizontal transitions.
      */
     @Test
-    public void testHorizontals()
+    void testHorizontals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -146,7 +146,7 @@ public final class MapTransitionExtractorTest
      * Check the vertical transitions.
      */
     @Test
-    public void testVerticals()
+    void testVerticals()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -160,7 +160,7 @@ public final class MapTransitionExtractorTest
      * Check the diagonal transitions.
      */
     @Test
-    public void testDiagonal()
+    void testDiagonal()
     {
         final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
@@ -174,7 +174,7 @@ public final class MapTransitionExtractorTest
      * Check the diagonal inverted transitions.
      */
     @Test
-    public void testDiagonalInverted()
+    void testDiagonalInverted()
     {
         final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
@@ -191,7 +191,7 @@ public final class MapTransitionExtractorTest
      * </p>
      */
     @Test
-    public void testSingleGroup()
+    void testSingleGroup()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -207,7 +207,7 @@ public final class MapTransitionExtractorTest
      * </p>
      */
     @Test
-    public void testThreeGroups()
+    void testThreeGroups()
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
@@ -221,7 +221,7 @@ public final class MapTransitionExtractorTest
      * Check the transition with <code>null</code> neighbors.
      */
     @Test
-    public void testNullNeighbor()
+    void testNullNeighbor()
     {
         final MapTile map = UtilMap.createMap(7);
         map.setTile(4, 2, TILE_WATER);

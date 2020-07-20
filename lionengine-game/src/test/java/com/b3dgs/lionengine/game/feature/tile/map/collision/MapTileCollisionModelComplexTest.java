@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 /**
  * Test {@link MapTileCollisionModel} with complex map.
  */
-public final class MapTileCollisionModelComplexTest
+final class MapTileCollisionModelComplexTest
 {
     private static final int TILE_GROUND = 0;
     private static final int TILE_SLOPE_LEFT_0 = 1;

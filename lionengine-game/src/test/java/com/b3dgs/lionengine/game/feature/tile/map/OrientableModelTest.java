@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.feature.UtilTransformable;
 /**
  * Test {@link OrientableModel}.
  */
-public final class OrientableModelTest
+final class OrientableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -99,7 +99,7 @@ public final class OrientableModelTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Orientation.class);
     }
@@ -108,7 +108,7 @@ public final class OrientableModelTest
      * Test the orientations.
      */
     @Test
-    public void testOrientable()
+    void testOrientable()
     {
         assertThrows(() -> orientable.setOrientation(null), "Unexpected null argument !");
 
@@ -154,7 +154,7 @@ public final class OrientableModelTest
      * Test the orientations
      */
     @Test
-    public void testOrientableTiled()
+    void testOrientableTiled()
     {
         assertEquals(Orientation.NORTH, orientable.getOrientation());
 

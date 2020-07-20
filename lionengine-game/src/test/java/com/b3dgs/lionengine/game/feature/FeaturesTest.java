@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Test {@link Features}.
  */
-public final class FeaturesTest
+final class FeaturesTest
 {
     /** Object config test. */
     private static Media config;
@@ -65,7 +65,7 @@ public final class FeaturesTest
      * Test the feature not annotated.
      */
     @Test
-    public void testFeatureNotAnnotated()
+    void testFeatureNotAnnotated()
     {
         assertThrows(() -> features.add(new FeatureModel(services, setup)),
                      Features.ERROR_FEATURE_NOT_ANNOTATED + FeatureModel.class);
@@ -75,7 +75,7 @@ public final class FeaturesTest
      * Test the features.
      */
     @Test
-    public void testFeatures()
+    void testFeatures()
     {
         assertFalse(features.contains(Feature.class));
 
@@ -106,7 +106,7 @@ public final class FeaturesTest
      * Test the feature not found.
      */
     @Test
-    public void testFeatureNotFound()
+    void testFeatureNotFound()
     {
         assertThrows(() -> features.get(Feature.class), "Feature not found: " + Feature.class.getName());
     }
@@ -115,7 +115,7 @@ public final class FeaturesTest
      * Test the feature with inheritance.
      */
     @Test
-    public void testInheritance()
+    void testInheritance()
     {
         features.add(new FeatureLevel2Model(services, setup));
 
@@ -128,7 +128,7 @@ public final class FeaturesTest
      * Test add feature already referenced.
      */
     @Test
-    public void testAddExists()
+    void testAddExists()
     {
         features.add(new FeatureLevel1Model(services, setup));
 
@@ -144,7 +144,7 @@ public final class FeaturesTest
      * Test add feature already referenced in depth.
      */
     @Test
-    public void testAddExistsDepth()
+    void testAddExistsDepth()
     {
         features.add(new RefreshableModel(extrp ->
         {

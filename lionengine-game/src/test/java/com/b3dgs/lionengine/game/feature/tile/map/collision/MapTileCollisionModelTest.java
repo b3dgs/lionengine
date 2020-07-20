@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link MapTileCollisionModel}.
  */
-public final class MapTileCollisionModelTest
+final class MapTileCollisionModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -122,7 +122,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from top.
      */
     @Test
-    public void testFromTop()
+    void testFromTop()
     {
         transformable.teleport(1.0, 3.0);
         transformable.moveLocation(1.0, 0.0, -2.0);
@@ -136,7 +136,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from top wit fast speed.
      */
     @Test
-    public void testFromTopFast()
+    void testFromTopFast()
     {
         transformable.teleport(1.0, 3.0);
         transformable.moveLocation(1.0, 0.0, -20.0);
@@ -150,7 +150,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from bottom.
      */
     @Test
-    public void testFromBottom()
+    void testFromBottom()
     {
         transformable.teleport(1.0, -1.0);
         transformable.moveLocation(1.0, 0.0, 3.0);
@@ -164,7 +164,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from bottom with fast speed.
      */
     @Test
-    public void testFromBottomFast()
+    void testFromBottomFast()
     {
         transformable.teleport(1.0, -1.0);
         transformable.moveLocation(1.0, 0.0, 20.0);
@@ -178,7 +178,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from left.
      */
     @Test
-    public void testFromLeft()
+    void testFromLeft()
     {
         transformable.teleport(-1.0, 0.0);
         transformable.moveLocation(1.0, 2.0, 0.0);
@@ -192,7 +192,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from left with fast speed.
      */
     @Test
-    public void testFromLeftFast()
+    void testFromLeftFast()
     {
         transformable.teleport(-1.0, 0.0);
         transformable.moveLocation(1.0, 20.0, 0.0);
@@ -206,7 +206,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from right.
      */
     @Test
-    public void testFromRight()
+    void testFromRight()
     {
         transformable.teleport(2.0, 0.0);
         transformable.moveLocation(1.0, -1.0, 0.0);
@@ -220,7 +220,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision from right with fast speed.
      */
     @Test
-    public void testFromRightFast()
+    void testFromRightFast()
     {
         transformable.teleport(2.0, 0.0);
         transformable.moveLocation(1.0, -20.0, 0.0);
@@ -234,7 +234,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile no collision.
      */
     @Test
-    public void testNoCollision()
+    void testNoCollision()
     {
         transformable.teleport(6.0, 6.0);
         transformable.moveLocation(1.0, 1.0, 1.0);
@@ -247,7 +247,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile no collision formula defined.
      */
     @Test
-    public void testNoCollisionFormula()
+    void testNoCollisionFormula()
     {
         mapCollision.loadCollisions(new CollisionFormulaConfig(Collections.emptyMap()),
                                     new CollisionGroupConfig(Collections.emptyMap()));
@@ -262,7 +262,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision getters.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         assertEquals(formulaV, mapCollision.getCollisionFormula("y"));
         assertEquals(formulaH, mapCollision.getCollisionFormula("x"));
@@ -279,7 +279,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision saving.
      */
     @Test
-    public void testSaveCollision()
+    void testSaveCollision()
     {
         mapCollision.saveCollisions();
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
@@ -292,7 +292,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision loading without configuration.
      */
     @Test
-    public void testLoadCollisionWithout()
+    void testLoadCollisionWithout()
     {
         final MapTileCollision mapTileCollision = new MapTileCollisionModel();
         mapTileCollision.prepare(map);
@@ -306,7 +306,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision unknown formula.
      */
     @Test
-    public void testUnknownFormula()
+    void testUnknownFormula()
     {
         assertThrows(() -> mapCollision.getCollisionFormula("void"), MapTileCollisionLoader.ERROR_FORMULA + "void");
     }
@@ -315,7 +315,7 @@ public final class MapTileCollisionModelTest
      * Test the map tile collision unknown group.
      */
     @Test
-    public void testUnknownGroup()
+    void testUnknownGroup()
     {
         assertThrows(() -> mapCollision.getCollisionGroup("void"), MapTileCollisionLoader.ERROR_FORMULA + "void");
     }

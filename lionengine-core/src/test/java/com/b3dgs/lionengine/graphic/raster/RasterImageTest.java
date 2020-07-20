@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 /**
  * Test {@link RasterImage}.
  */
-public final class RasterImageTest
+final class RasterImageTest
 {
     /**
      * Prepare tests.
@@ -64,7 +64,7 @@ public final class RasterImageTest
      * Test no smooth default.
      */
     @Test
-    public void testNoSmoothDefault()
+    void testNoSmoothDefault()
     {
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100, false);
@@ -82,7 +82,7 @@ public final class RasterImageTest
      * Test smooth default.
      */
     @Test
-    public void testSmoothDefault()
+    void testSmoothDefault()
     {
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100, true);
@@ -100,7 +100,7 @@ public final class RasterImageTest
      * Test no smooth save.
      */
     @Test
-    public void testNoSmoothSave()
+    void testNoSmoothSave()
     {
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100, false);
@@ -136,7 +136,7 @@ public final class RasterImageTest
      * Test no smooth cache.
      */
     @Test
-    public void testNoSmoothCache()
+    void testNoSmoothCache()
     {
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(Medias.create("image.png"), mediaRaster, 100, false);

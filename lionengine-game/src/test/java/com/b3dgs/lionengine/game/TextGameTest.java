@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.TextStyle;
 /**
  * Test {@link TextGame}.
  */
-public final class TextGameTest
+final class TextGameTest
 {
     /**
      * Prepare test.
@@ -60,7 +60,7 @@ public final class TextGameTest
      * Test location.
      */
     @Test
-    public void testLocation()
+    void testLocation()
     {
         final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
 
@@ -84,7 +84,7 @@ public final class TextGameTest
      * Test size.
      */
     @Test
-    public void testSize()
+    void testSize()
     {
         final Graphic g = new GraphicMock();
         final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);
@@ -104,7 +104,7 @@ public final class TextGameTest
      * Test draw.
      */
     @Test
-    public void testDraw()
+    void testDraw()
     {
         final Graphic g = new GraphicMock();
         final TextGame text = new TextGame(Constant.FONT_DIALOG, 8, TextStyle.NORMAL);

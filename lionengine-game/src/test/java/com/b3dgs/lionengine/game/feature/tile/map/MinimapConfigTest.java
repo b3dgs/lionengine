@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 /**
  * Test {@link MinimapConfig}.
  */
-public final class MinimapConfigTest
+final class MinimapConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public final class MinimapConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(MinimapConfig.class);
     }
@@ -67,7 +67,7 @@ public final class MinimapConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Map<Integer, ColorRgba> tiles = new HashMap<>();
         tiles.put(Integer.valueOf(0), ColorRgba.RED);

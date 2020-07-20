@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.TextStyle;
 /**
  * Test {@link TimedMessage}.
  */
-public final class TimedMessageTest
+final class TimedMessageTest
 {
     /**
      * Prepare test.
@@ -57,7 +57,7 @@ public final class TimedMessageTest
      * Test add message.
      */
     @Test
-    public void testAddMessage()
+    void testAddMessage()
     {
         final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
 
@@ -72,7 +72,7 @@ public final class TimedMessageTest
      * Test update.
      */
     @Test
-    public void testUpdate()
+    void testUpdate()
     {
         final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
         message.update(1.0);
@@ -105,7 +105,7 @@ public final class TimedMessageTest
      * Test render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final TimedMessage message = new TimedMessage(Graphics.createText(Constant.FONT_DIALOG, 8, TextStyle.NORMAL));
         message.addMessage("test", 0, 0, 0L);

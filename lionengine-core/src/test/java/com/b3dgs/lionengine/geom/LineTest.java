@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Line}.
  */
-public final class LineTest
+final class LineTest
 {
     /**
      * Test the default constructor.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         final Line line = new Line();
 
@@ -46,7 +46,7 @@ public final class LineTest
      * Test constructor with parameters.
      */
     @Test
-    public void testConstructorParameters()
+    void testConstructorParameters()
     {
         final Line line = new Line(1.5, 2.5, 3.5, 4.5);
 
@@ -60,7 +60,7 @@ public final class LineTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         final Line line = new Line();
         line.set(1.5, 2.5, 3.5, 4.5);
@@ -75,7 +75,7 @@ public final class LineTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Line coord = new Line();
 
@@ -96,7 +96,7 @@ public final class LineTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(new Line(), new Line());
         assertHashEquals(new Line(1.5, 2.5, 3.5, 4.5), new Line(1.5, 2.5, 3.5, 4.5));
@@ -112,7 +112,7 @@ public final class LineTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Line [x1=1.5, y1=2.5, x2=3.5, y2=4.5]", new Line(1.5, 2.5, 3.5, 4.5).toString());
     }

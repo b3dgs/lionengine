@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Test {@link ComponentRefreshable}.
  */
-public final class ComponentRefreshableTest
+final class ComponentRefreshableTest
 {
     /** Object config test. */
     private static Media config;
@@ -69,7 +69,7 @@ public final class ComponentRefreshableTest
      * Test the component.
      */
     @Test
-    public void testComponentLayer()
+    void testComponentLayer()
     {
         final ComponentRefreshable component = new ComponentRefreshable();
         services.add(component);
@@ -113,7 +113,7 @@ public final class ComponentRefreshableTest
      * Test the component with default value.
      */
     @Test
-    public void testComponentLayerDefault()
+    void testComponentLayerDefault()
     {
         final ComponentRefreshable component = new ComponentRefreshable();
         services.add(component);
@@ -132,7 +132,7 @@ public final class ComponentRefreshableTest
      * Test the component notification.
      */
     @Test
-    public void testNotify()
+    void testNotify()
     {
         final ComponentRefreshable component = new ComponentRefreshable();
 
@@ -174,7 +174,7 @@ public final class ComponentRefreshableTest
      * Test the component with layerable remove.
      */
     @Test
-    public void testRemoveLayerable()
+    void testRemoveLayerable()
     {
         final AtomicBoolean called = new AtomicBoolean();
         final ComponentRefreshable component = new ComponentRefreshable()
@@ -209,7 +209,7 @@ public final class ComponentRefreshableTest
      * Test with handler.
      */
     @Test
-    public void testWithHandler()
+    void testWithHandler()
     {
         final FeaturableModel object = new FeaturableModel(services, setup);
         final Layerable layerable = new LayerableModel(services, setup);

@@ -25,13 +25,13 @@ import com.b3dgs.lionengine.graphic.engine.FilterNone;
 /**
  * Test {@link Filter}.
  */
-public final class FilterTest
+final class FilterTest
 {
     /**
      * Test default filter.
      */
     @Test
-    public void testFilter()
+    void testFilter()
     {
         final Transform transform = FilterNone.INSTANCE.getTransform(1.0, 1.0);
 

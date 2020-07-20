@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Transition}.
  */
-public final class TransitionTest
+final class TransitionTest
 {
     /**
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Transition transition = new Transition(TransitionType.CENTER, "a", "b");
 
@@ -45,7 +45,7 @@ public final class TransitionTest
      * Test the group transition equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final TransitionType type = TransitionType.UP;
         final Transition transition = new Transition(type, "a", "a");
@@ -72,7 +72,7 @@ public final class TransitionTest
      * Test the group transition hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final TransitionType type = TransitionType.UP;
         final Transition transition = new Transition(type, "a", "a");
@@ -99,7 +99,7 @@ public final class TransitionTest
      * Test the group to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals(TransitionType.CENTER.name() + " a -> b",
                      new Transition(TransitionType.CENTER, "a", "b").toString());

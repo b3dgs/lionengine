@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 /**
  * Test {@link Minimap}.
  */
-public final class MinimapTest
+final class MinimapTest
 {
     /**
      * Prepare test.
@@ -70,7 +70,7 @@ public final class MinimapTest
      * Test the minimap.
      */
     @Test
-    public void testMinimap()
+    void testMinimap()
     {
         final MapTileGame map = new MapTileGame();
         map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
@@ -118,7 +118,7 @@ public final class MinimapTest
      * Test the minimap with wrong prepare.
      */
     @Test
-    public void testNullPrepare()
+    void testNullPrepare()
     {
         final Minimap minimap = new Minimap(new MapTileGame());
 

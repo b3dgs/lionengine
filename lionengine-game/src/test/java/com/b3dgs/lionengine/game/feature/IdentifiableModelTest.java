@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.UtilReflection;
 /**
  * Test {@link IdentifiableModel}.
  */
-public final class IdentifiableModelTest
+final class IdentifiableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -77,7 +77,7 @@ public final class IdentifiableModelTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testId() throws ReflectiveOperationException
+    void testId() throws ReflectiveOperationException
     {
         final Collection<Integer> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
         ids.clear();
@@ -132,7 +132,7 @@ public final class IdentifiableModelTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testMaxId() throws ReflectiveOperationException
+    void testMaxId() throws ReflectiveOperationException
     {
         final HashSet<?> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
         final HashMap<?, ?> map = UtilReflection.getField(ids, "map");
@@ -161,7 +161,7 @@ public final class IdentifiableModelTest
      * Test the listener.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         final Identifiable identifiable = new IdentifiableModel();
         final AtomicBoolean destroyed = new AtomicBoolean();
@@ -179,7 +179,7 @@ public final class IdentifiableModelTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final IdentifiableModel model = new IdentifiableModel();
 
@@ -194,7 +194,7 @@ public final class IdentifiableModelTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final IdentifiableModel model = new IdentifiableModel();
 

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilZip}.
  */
-public final class UtilZipTest
+final class UtilZipTest
 {
     /**
      * Prepare tests.
@@ -55,7 +55,7 @@ public final class UtilZipTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilZip.class);
     }
@@ -64,7 +64,7 @@ public final class UtilZipTest
      * Test get entries by extension.
      */
     @Test
-    public void testEntriesByExtension()
+    void testEntriesByExtension()
     {
         final File jar = Medias.create("resources.jar").getFile();
         final String path = UtilZipTest.class.getPackage().getName().replace(Constant.DOT, Medias.getSeparator());
@@ -77,7 +77,7 @@ public final class UtilZipTest
      * Test get entries by extension with wrong JAR.
      */
     @Test
-    public void testEntriesByExtensionWrongJar()
+    void testEntriesByExtensionWrongJar()
     {
         assertThrows(() -> UtilZip.getEntriesByExtension(new File("void"),
                                                          Constant.EMPTY_STRING,

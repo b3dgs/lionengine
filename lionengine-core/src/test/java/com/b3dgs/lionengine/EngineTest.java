@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Engine}.
  */
-public final class EngineTest
+final class EngineTest
 {
     /**
      * Reestablish the engine start state.
@@ -45,7 +45,7 @@ public final class EngineTest
      * Test start.
      */
     @Test
-    public void testStart()
+    void testStart()
     {
         Engine.start(new EngineMock("name", Version.DEFAULT));
 
@@ -57,7 +57,7 @@ public final class EngineTest
      * Test not started on get program name.
      */
     @Test
-    public void testNotStartedGetProgramName()
+    void testNotStartedGetProgramName()
     {
         assertThrows(() -> Engine.getProgramName(), Engine.ERROR_STARTED_NOT);
     }
@@ -66,7 +66,7 @@ public final class EngineTest
      * Test not started on get program version.
      */
     @Test
-    public void testNotStartedGetProgramVersion()
+    void testNotStartedGetProgramVersion()
     {
         assertThrows(() -> Engine.getProgramVersion(), Engine.ERROR_STARTED_NOT);
     }
@@ -75,7 +75,7 @@ public final class EngineTest
      * Test already started.
      */
     @Test
-    public void testAlreadyStarted()
+    void testAlreadyStarted()
     {
         Engine.start(new EngineMock("name", Version.DEFAULT));
 
@@ -86,7 +86,7 @@ public final class EngineTest
      * Test terminate.
      */
     @Test
-    public void testTerminate()
+    void testTerminate()
     {
         Engine.terminate();
         Engine.terminate();
@@ -96,7 +96,7 @@ public final class EngineTest
      * Test started flag.
      */
     @Test
-    public void testStarted()
+    void testStarted()
     {
         assertFalse(Engine.isStarted());
 
@@ -113,7 +113,7 @@ public final class EngineTest
      * Test getter.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         Engine.start(new EngineMock("name", Version.create(1, 2, 3)));
 

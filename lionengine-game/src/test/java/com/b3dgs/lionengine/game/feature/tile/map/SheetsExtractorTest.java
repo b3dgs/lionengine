@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link SheetsExtractor}.
  */
-public final class SheetsExtractorTest
+final class SheetsExtractorTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(SheetsExtractor.class);
     }

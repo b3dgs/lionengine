@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Coord}.
  */
-public final class CoordTest
+final class CoordTest
 {
     /**
      * Test default constructor.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         final Coord coord = new Coord();
 
@@ -44,7 +44,7 @@ public final class CoordTest
      * Test constructor with parameters.
      */
     @Test
-    public void testConstructorParameters()
+    void testConstructorParameters()
     {
         final Coord coord = new Coord(1.5, 2.5);
 
@@ -56,7 +56,7 @@ public final class CoordTest
      * Test translate.
      */
     @Test
-    public void testTranslate()
+    void testTranslate()
     {
         final Coord coord = new Coord(1.5, 2.5);
         coord.translate(10.25, 20.25);
@@ -69,7 +69,7 @@ public final class CoordTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         final Coord coord = new Coord();
         coord.set(10.25, 20.25);
@@ -82,7 +82,7 @@ public final class CoordTest
      * Test set X.
      */
     @Test
-    public void testSetX()
+    void testSetX()
     {
         final Coord coord = new Coord(1.5, 2.5);
         coord.setX(10.25);
@@ -95,7 +95,7 @@ public final class CoordTest
      * Test set Y.
      */
     @Test
-    public void testSetY()
+    void testSetY()
     {
         final Coord coord = new Coord(1.5, 2.5);
         coord.setY(20.25);
@@ -108,7 +108,7 @@ public final class CoordTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Coord coord = new Coord();
 
@@ -128,7 +128,7 @@ public final class CoordTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(new Coord(), new Coord());
         assertHashEquals(new Coord(1.5, 2.5), new Coord(1.5, 2.5));
@@ -143,7 +143,7 @@ public final class CoordTest
      * Test the to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Coord [x=1.5, y=2.5]", new Coord(1.5, 2.5).toString());
     }

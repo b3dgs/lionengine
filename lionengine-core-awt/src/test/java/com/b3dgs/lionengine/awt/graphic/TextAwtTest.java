@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.TextStyle;
 /**
  * Test {@link TextAwt}.
  */
-public final class TextAwtTest
+final class TextAwtTest
 {
     /** Text value. */
     private static final String VALUE = "test";
@@ -70,7 +70,7 @@ public final class TextAwtTest
      * Test normal.
      */
     @Test
-    public void testNormal()
+    void testNormal()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.NORMAL);
         text.draw(g, 0, 0, VALUE);
@@ -99,7 +99,7 @@ public final class TextAwtTest
      * Test bold.
      */
     @Test
-    public void testBold()
+    void testBold()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.BOLD);
         text.draw(g, 0, 0, VALUE);
@@ -109,7 +109,7 @@ public final class TextAwtTest
      * Test italic.
      */
     @Test
-    public void testItalic()
+    void testItalic()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.ITALIC);
         text.draw(g, 0, 0, VALUE);
@@ -119,7 +119,7 @@ public final class TextAwtTest
      * Test style error.
      */
     @Test
-    public void testStyleUnknown()
+    void testStyleUnknown()
     {
         assertThrows(() -> new TextAwt(Constant.EMPTY_STRING, 10, UtilEnum.make(TextStyle.class, "FAIL")),
                      "Unknown enum: FAIL");
@@ -129,7 +129,7 @@ public final class TextAwtTest
      * Test align unknown.
      */
     @Test
-    public void testAlignUnknown()
+    void testAlignUnknown()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.NORMAL);
         final Graphic g = Graphics.createGraphic();

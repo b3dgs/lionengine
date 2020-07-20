@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.feature.tile.TileGame;
 /**
  * Test {@link CollisionResult}.
  */
-public final class CollisionResultTest
+final class CollisionResultTest
 {
     /** Range test. */
     private final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
@@ -45,7 +45,7 @@ public final class CollisionResultTest
      * Test the collision result.
      */
     @Test
-    public void testResult()
+    void testResult()
     {
         final Double x = Double.valueOf(1.0);
         final Double y = Double.valueOf(2.0);
@@ -65,7 +65,7 @@ public final class CollisionResultTest
      * Test the collision no result.
      */
     @Test
-    public void testNoResult()
+    void testNoResult()
     {
         final Tile tile = new TileGame(1, 3, 4, 1, 1);
         CollisionResult result = new CollisionResult(null, null, tile, null, null);
@@ -100,7 +100,7 @@ public final class CollisionResultTest
      * Test the to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionResult [x=1.0, y=2.0, fx=formulaX, fy=formulaY]",
                      new CollisionResult(Double.valueOf(1.0),

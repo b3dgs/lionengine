@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link TextStyle}.
  */
-public final class TextStyleTest
+final class TextStyleTest
 {
     /**
      * Test the enum.
@@ -31,7 +31,7 @@ public final class TextStyleTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(TextStyle.class);
     }

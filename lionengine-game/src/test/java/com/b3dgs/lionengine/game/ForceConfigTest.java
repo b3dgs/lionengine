@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link ForceConfig}.
  */
-public final class ForceConfigTest
+final class ForceConfigTest
 {
     /**
      * Prepare test.
@@ -57,7 +57,7 @@ public final class ForceConfigTest
      * @throws Exception If error.
      */
     @Test
-    public void testConstructor() throws Exception
+    void testConstructor() throws Exception
     {
         assertPrivateConstructor(ForceConfig.class);
     }
@@ -66,7 +66,7 @@ public final class ForceConfigTest
      * Test exports imports
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
@@ -86,7 +86,7 @@ public final class ForceConfigTest
      * Test with optional fields.
      */
     @Test
-    public void testOptional()
+    void testOptional()
     {
         final Xml root = new Xml("test");
         final Xml node = root.createChild(ForceConfig.NODE_FORCE);

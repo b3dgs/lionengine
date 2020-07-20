@@ -29,13 +29,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Range}.
  */
-public final class RangeTest
+final class RangeTest
 {
     /**
      * Test constructor with invalid argument.
      */
     @Test
-    public void testConstructorWrongArguments()
+    void testConstructorWrongArguments()
     {
         assertThrows(() -> new Range(1, 0), Check.ERROR_ARGUMENT + 1 + Check.ERROR_INFERIOR + 0);
     }
@@ -44,7 +44,7 @@ public final class RangeTest
      * Test default constructor.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         final Range range = new Range();
 
@@ -56,7 +56,7 @@ public final class RangeTest
      * Test constructor with parameters.
      */
     @Test
-    public void testConstructorParameters()
+    void testConstructorParameters()
     {
         final Range range = new Range(1, 2);
 
@@ -68,7 +68,7 @@ public final class RangeTest
      * Test inclusion.
      */
     @Test
-    public void testIncludes()
+    void testIncludes()
     {
         final Range range = new Range(-1, 1);
 
@@ -97,7 +97,7 @@ public final class RangeTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Range range = new Range(1, 2);
 
@@ -114,7 +114,7 @@ public final class RangeTest
      * Test equals.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Range range = new Range(1, 2);
 
@@ -129,7 +129,7 @@ public final class RangeTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Range [min=1, max=2]", new Range(1, 2).toString());
     }

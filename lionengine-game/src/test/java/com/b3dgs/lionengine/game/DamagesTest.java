@@ -30,13 +30,13 @@ import com.b3dgs.lionengine.UtilMath;
 /**
  * Test {@link Damages}.
  */
-public final class DamagesTest
+final class DamagesTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final Damages damages = new Damages();
 
@@ -59,7 +59,7 @@ public final class DamagesTest
      * Test constructor with parameters.
      */
     @Test
-    public void testConstructorParam()
+    void testConstructorParam()
     {
         final Damages damages = new Damages(1, 2);
 
@@ -84,7 +84,7 @@ public final class DamagesTest
      * Test constructor with negative values.
      */
     @Test
-    public void testConstructorNegative()
+    void testConstructorNegative()
     {
         final Damages damages = new Damages(-1, -2);
 
@@ -97,7 +97,7 @@ public final class DamagesTest
      * Test set min.
      */
     @Test
-    public void testSetMin()
+    void testSetMin()
     {
         final Damages damages = new Damages(1, 5);
 
@@ -119,7 +119,7 @@ public final class DamagesTest
      * Test set max.
      */
     @Test
-    public void testSetMax()
+    void testSetMax()
     {
         final Damages damages = new Damages(1, 5);
 
@@ -141,7 +141,7 @@ public final class DamagesTest
      * Test set damages.
      */
     @Test
-    public void testSetDamages()
+    void testSetDamages()
     {
         final Damages damages = new Damages();
         damages.setDamages(1, 5);
@@ -154,7 +154,7 @@ public final class DamagesTest
      * Test set damages with range.
      */
     @Test
-    public void testSetDamagesRange()
+    void testSetDamagesRange()
     {
         final Damages damages = new Damages();
         damages.setDamages(new Range(1, 5));
@@ -167,7 +167,7 @@ public final class DamagesTest
      * Test set damages min over max.
      */
     @Test
-    public void testSetDamagesMinOverMax()
+    void testSetDamagesMinOverMax()
     {
         final Damages damages = new Damages();
         damages.setDamages(5, 1);
@@ -180,7 +180,7 @@ public final class DamagesTest
      * Test set damages with negative values.
      */
     @Test
-    public void testSetDamagesNegative()
+    void testSetDamagesNegative()
     {
         final Damages damages = new Damages();
         damages.setDamages(-1, -2);
@@ -193,7 +193,7 @@ public final class DamagesTest
      * Test get last.
      */
     @Test
-    public void testGetLast()
+    void testGetLast()
     {
         final Damages damages = new Damages(1, 1);
 
@@ -205,7 +205,7 @@ public final class DamagesTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Damages damages = new Damages(1, 2);
 
@@ -222,7 +222,7 @@ public final class DamagesTest
      * Test equals.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Damages damages = new Damages(1, 2);
 
@@ -237,7 +237,7 @@ public final class DamagesTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Damages [min=1, max=2]", new Damages(1, 2).toString());
     }

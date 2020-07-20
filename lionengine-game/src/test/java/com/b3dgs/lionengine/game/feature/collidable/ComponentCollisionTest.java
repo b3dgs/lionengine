@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link ComponentCollision}.
  */
-public final class ComponentCollisionTest
+final class ComponentCollisionTest
 {
     /** Test configuration. */
     private static Media config;
@@ -127,7 +127,7 @@ public final class ComponentCollisionTest
      * Test collidable in normal case.
      */
     @Test
-    public void testCollidable()
+    void testCollidable()
     {
         transformable1.teleport(1.0, 2.0);
         transformable2.teleport(1.0, 1.0);
@@ -151,7 +151,7 @@ public final class ComponentCollisionTest
      * Test collidable not collide more than one time if on many points with reduce factor.
      */
     @Test
-    public void testCollidableTwoPoints()
+    void testCollidableTwoPoints()
     {
         transformable1.teleport(ComponentCollision.REDUCE_FACTOR - 3.0, 0.0);
         transformable2.teleport(ComponentCollision.REDUCE_FACTOR - 1.0, 0.0);
@@ -169,7 +169,7 @@ public final class ComponentCollisionTest
      * neighbor map.
      */
     @Test
-    public void testCollidableExtremity()
+    void testCollidableExtremity()
     {
         testExtremity(-1, 1);
         testExtremity(-1, 0);
@@ -207,7 +207,7 @@ public final class ComponentCollisionTest
      * Test collidables changing map position.
      */
     @Test
-    public void testCollidablesRemovePoints()
+    void testCollidablesRemovePoints()
     {
         transformable1.teleport(0.0, 0.0);
         transformable2.teleport(0.0, 0.0);
@@ -239,7 +239,7 @@ public final class ComponentCollisionTest
      * Test collidable with removed object.
      */
     @Test
-    public void testRemoved()
+    void testRemoved()
     {
         transformable1.teleport(1.0, 2.0);
         transformable2.teleport(2.0, 3.0);
@@ -268,7 +268,7 @@ public final class ComponentCollisionTest
      * Test collidable get inside.
      */
     @Test
-    public void testGetInside()
+    void testGetInside()
     {
         transformable1.teleport(20.0, 20.0);
         transformable2.teleport(30.0, 30.0);

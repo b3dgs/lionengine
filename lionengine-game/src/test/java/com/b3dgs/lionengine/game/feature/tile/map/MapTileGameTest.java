@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Test {@link MapTileGame}.
  */
-public final class MapTileGameTest
+final class MapTileGameTest
 {
     /**
      * Prepare test.
@@ -75,7 +75,7 @@ public final class MapTileGameTest
      * Test map creation.
      */
     @Test
-    public void testCreate()
+    void testCreate()
     {
         assertFalse(map.isCreated());
 
@@ -100,7 +100,7 @@ public final class MapTileGameTest
      * @throws IOException If error.
      */
     @Test
-    public void testCreateFromRip() throws IOException
+    void testCreateFromRip() throws IOException
     {
         final Path level = Files.createTempFile("level", ".png");
         try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
@@ -136,7 +136,7 @@ public final class MapTileGameTest
      * @throws IOException If error.
      */
     @Test
-    public void testCreateFromRipWithoutSheet() throws IOException
+    void testCreateFromRipWithoutSheet() throws IOException
     {
         final Path level = Files.createTempFile("level", ".png");
         try (InputStream input = MapTileGameTest.class.getResourceAsStream("level.png"))
@@ -166,7 +166,7 @@ public final class MapTileGameTest
      * Test map creation with a wrong tile width.
      */
     @Test
-    public void testCreateWrongTileWidth()
+    void testCreateWrongTileWidth()
     {
         assertThrows(() -> map.create(0, 1, 1, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -175,7 +175,7 @@ public final class MapTileGameTest
      * Test map creation with a wrong tile height.
      */
     @Test
-    public void testCreateWrongTileHeight()
+    void testCreateWrongTileHeight()
     {
         assertThrows(() -> map.create(1, 0, 1, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -184,7 +184,7 @@ public final class MapTileGameTest
      * Test map creation with a wrong width.
      */
     @Test
-    public void testCreateWrongWidth()
+    void testCreateWrongWidth()
     {
         assertThrows(() -> map.create(1, 1, 0, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -193,7 +193,7 @@ public final class MapTileGameTest
      * Test map creation with a wrong height.
      */
     @Test
-    public void testCreateWrongHeight()
+    void testCreateWrongHeight()
     {
         assertThrows(() -> map.create(1, 1, 1, 0), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -202,7 +202,7 @@ public final class MapTileGameTest
      * Test map set tile error.
      */
     @Test
-    public void testSetTileError()
+    void testSetTileError()
     {
         assertThrows(() -> map.setTile(0, 0, 0), "Invalid argument: 0 is not strictly inferior to 0");
     }
@@ -211,7 +211,7 @@ public final class MapTileGameTest
      * Test the map clearing.
      */
     @Test
-    public void testClear()
+    void testClear()
     {
         map.create(16, 16, 2, 2);
 
@@ -228,7 +228,7 @@ public final class MapTileGameTest
      * Test map set and get tile.
      */
     @Test
-    public void testSetGetTile()
+    void testSetGetTile()
     {
         map.create(16, 16, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
@@ -251,7 +251,7 @@ public final class MapTileGameTest
      * Test map tile set listener.
      */
     @Test
-    public void testTileSetListener()
+    void testTileSetListener()
     {
         map.create(16, 16, 3, 3);
 

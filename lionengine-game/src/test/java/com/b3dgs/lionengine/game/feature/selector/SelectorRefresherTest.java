@@ -51,7 +51,7 @@ import com.b3dgs.lionengine.geom.Geom;
 /**
  * Test {@link SelectorRefresher}.
  */
-public final class SelectorRefresherTest
+final class SelectorRefresherTest
 {
     /** Object config test. */
     private static Media config;
@@ -125,7 +125,7 @@ public final class SelectorRefresherTest
      * Test the selecting flag.
      */
     @Test
-    public void testSelecting()
+    void testSelecting()
     {
         assertFalse(model.isSelecting());
 
@@ -145,7 +145,7 @@ public final class SelectorRefresherTest
      * Test the selection.
      */
     @Test
-    public void testSelection()
+    void testSelection()
     {
         assertNull(started.get());
         assertNull(done.get());
@@ -184,7 +184,7 @@ public final class SelectorRefresherTest
      * Test the listener.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         model.setClickSelection(1);
 

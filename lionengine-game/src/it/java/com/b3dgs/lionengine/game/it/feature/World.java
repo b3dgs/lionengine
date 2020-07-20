@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
 /**
  * World implementation.
  */
-class World extends WorldGame
+final class World extends WorldGame
 {
     private final Text text = Graphics.createText(Constant.FONT_SERIF, 12, TextStyle.NORMAL);
     private final boolean fail;
@@ -53,7 +53,7 @@ class World extends WorldGame
      * @param services The services reference.
      * @param fail <code>true</code> to make fail on loading, <code>false</code> else.
      */
-    public World(Services services, boolean fail)
+    World(Services services, boolean fail)
     {
         super(services);
 

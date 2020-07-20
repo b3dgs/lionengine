@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 /**
  * Test {@link ComponentRenderable}.
  */
-public final class ComponentRenderableTest
+final class ComponentRenderableTest
 {
     /** Object config test. */
     private static Media config;
@@ -69,7 +69,7 @@ public final class ComponentRenderableTest
      * Test the renderable.
      */
     @Test
-    public void testRenderable()
+    void testRenderable()
     {
         final ComponentRenderable renderable = new ComponentRenderable();
         final Handler handler = new Handler(services);

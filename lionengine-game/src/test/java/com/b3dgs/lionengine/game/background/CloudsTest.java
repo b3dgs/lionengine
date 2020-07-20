@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link CloudsAbstract}.
  */
-public final class CloudsTest
+final class CloudsTest
 {
     /**
      * Prepare tests.
@@ -56,7 +56,7 @@ public final class CloudsTest
      * Test clouds.
      */
     @Test
-    public void testClouds()
+    void testClouds()
     {
         final CloudsAbstract clouds = new CloudsAbstract(Medias.create("surface.png"), 7, 1, 10, 0)
         {

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link AnimationConfig}.
  */
-public final class AnimationConfigTest
+final class AnimationConfigTest
 {
     /**
      * Prepare test.
@@ -61,7 +61,7 @@ public final class AnimationConfigTest
      * Test with no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml("test");
 
@@ -72,7 +72,7 @@ public final class AnimationConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("test");
         final Animation animation1 = new Animation("anim1", 1, 2, 3.0, false, true);
@@ -100,7 +100,7 @@ public final class AnimationConfigTest
      * Test get unknown animation.
      */
     @Test
-    public void testGetUnknownAnimation()
+    void testGetUnknownAnimation()
     {
         final AnimationConfig config = new AnimationConfig(new HashMap<>());
 

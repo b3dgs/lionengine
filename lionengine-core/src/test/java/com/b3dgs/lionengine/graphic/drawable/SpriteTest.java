@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
 /**
  * Test {@link Sprite}.
  */
-public final class SpriteTest
+final class SpriteTest
 {
     /**
      * Prepare tests.
@@ -73,7 +73,7 @@ public final class SpriteTest
      * Test constructor with <code>null</code> media.
      */
     @Test
-    public void testConstructorMediaNull()
+    void testConstructorMediaNull()
     {
         assertThrows(() -> new SpriteImpl((Media) null), "Unexpected null argument !");
     }
@@ -82,7 +82,7 @@ public final class SpriteTest
      * Test constructor with <code>null</code> surface.
      */
     @Test
-    public void testConstructorSurfaceNull()
+    void testConstructorSurfaceNull()
     {
         assertThrows(() -> new SpriteImpl((ImageBuffer) null), "Unexpected null argument !");
     }
@@ -91,7 +91,7 @@ public final class SpriteTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorMedia()
+    void testConstructorMedia()
     {
         final Sprite sprite = new SpriteImpl(Medias.create("image.png"));
 
@@ -105,7 +105,7 @@ public final class SpriteTest
      * Test constructor with surface.
      */
     @Test
-    public void testConstructorSurface()
+    void testConstructorSurface()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Sprite sprite = new SpriteImpl(surface);
@@ -120,7 +120,7 @@ public final class SpriteTest
      * Test load with media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final Sprite sprite = new SpriteImpl(Medias.create("image.png"));
         sprite.dispose();
@@ -136,7 +136,7 @@ public final class SpriteTest
      * Test load with media already loaded.
      */
     @Test
-    public void testLoadMediaAlready()
+    void testLoadMediaAlready()
     {
         final Media media = Medias.create("image.png");
         final Sprite sprite = new SpriteImpl(media);
@@ -149,7 +149,7 @@ public final class SpriteTest
      * Test load with surface.
      */
     @Test
-    public void testLoadSurface()
+    void testLoadSurface()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -160,7 +160,7 @@ public final class SpriteTest
      * Test stretch sprite.
      */
     @Test
-    public void testStretch()
+    void testStretch()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.stretch(100.0, 100.0);
@@ -188,7 +188,7 @@ public final class SpriteTest
      * Test stretch sprite with invalid width.
      */
     @Test
-    public void testStretchInvalidWidth()
+    void testStretchInvalidWidth()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -199,7 +199,7 @@ public final class SpriteTest
      * Test stretch sprite with invalid height.
      */
     @Test
-    public void testStretchInvalidHeight()
+    void testStretchInvalidHeight()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -210,7 +210,7 @@ public final class SpriteTest
      * Test rotate sprite.
      */
     @Test
-    public void testRotate()
+    void testRotate()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         for (int angle = -720; angle < 720; angle++)
@@ -226,7 +226,7 @@ public final class SpriteTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final SpriteImpl sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -247,7 +247,7 @@ public final class SpriteTest
      * Test set location with viewer.
      */
     @Test
-    public void testSetLocationViewer()
+    void testSetLocationViewer()
     {
         final SpriteImpl sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         final ViewerMock viewer = new ViewerMock();
@@ -271,7 +271,7 @@ public final class SpriteTest
      * Test set alpha.
      */
     @Test
-    public void testSetAlpha()
+    void testSetAlpha()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         for (int alpha = 0; alpha < 256; alpha++)
@@ -287,7 +287,7 @@ public final class SpriteTest
      * Test set alpha too low.
      */
     @Test
-    public void testSetAlphaLow()
+    void testSetAlphaLow()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -298,7 +298,7 @@ public final class SpriteTest
      * Test set alpha too high.
      */
     @Test
-    public void testSetAlphaHigh()
+    void testSetAlphaHigh()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -309,7 +309,7 @@ public final class SpriteTest
      * Test set transparency.
      */
     @Test
-    public void testSetTransparency()
+    void testSetTransparency()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.setTransparency(ColorRgba.BLACK);
@@ -322,7 +322,7 @@ public final class SpriteTest
      * Test set fade.
      */
     @Test
-    public void testSetFade()
+    void testSetFade()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.setFade(128, 128);
@@ -336,7 +336,7 @@ public final class SpriteTest
      * Test set frame offset.
      */
     @Test
-    public void testSetFrameOffset()
+    void testSetFrameOffset()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.setFrameOffsets(1, -1);
@@ -346,7 +346,7 @@ public final class SpriteTest
      * Test filter bilinear.
      */
     @Test
-    public void testFilterBilinear()
+    void testFilterBilinear()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
         sprite.filter(new FilterBilinear());
@@ -359,7 +359,7 @@ public final class SpriteTest
      * Test filter <code>null</code>.
      */
     @Test
-    public void testFilterNull()
+    void testFilterNull()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -370,7 +370,7 @@ public final class SpriteTest
      * Test the mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -385,7 +385,7 @@ public final class SpriteTest
      * Test mirror <code>null</code>.
      */
     @Test
-    public void testMirrorNull()
+    void testMirrorNull()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -396,7 +396,7 @@ public final class SpriteTest
      * Test rendering point.
      */
     @Test
-    public void testRenderingPoint()
+    void testRenderingPoint()
     {
         final SpriteImpl sprite = new SpriteImpl(Graphics.createImageBuffer(10, 20));
         sprite.setOrigin(Origin.TOP_LEFT);
@@ -437,7 +437,7 @@ public final class SpriteTest
      * Test origin <code>null</code>.
      */
     @Test
-    public void testSetOriginNull()
+    void testSetOriginNull()
     {
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
 
@@ -448,7 +448,7 @@ public final class SpriteTest
      * Test render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         final Sprite sprite = new SpriteImpl(Graphics.createImageBuffer(64, 32));
@@ -467,7 +467,7 @@ public final class SpriteTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Sprite sprite = new SpriteImpl(surface);
@@ -497,7 +497,7 @@ public final class SpriteTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Sprite sprite = new SpriteImpl(surface);

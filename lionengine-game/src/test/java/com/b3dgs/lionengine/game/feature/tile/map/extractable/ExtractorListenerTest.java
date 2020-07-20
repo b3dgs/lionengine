@@ -23,13 +23,13 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link ExtractorListener}.
  */
-public final class ExtractorListenerTest
+final class ExtractorListenerTest
 {
     /**
      * Test the calls
      */
     @Test
-    public void testCall()
+    void testCall()
     {
         UtilTests.testCalls(ExtractorListener.class, new ExtractorListenerVoid());
     }

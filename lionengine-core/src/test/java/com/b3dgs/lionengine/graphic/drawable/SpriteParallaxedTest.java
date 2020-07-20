@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link SpriteParallaxed}.
  */
-public final class SpriteParallaxedTest
+final class SpriteParallaxedTest
 {
     /** Lines number. */
     private static final int LINES = 8;
@@ -73,7 +73,7 @@ public final class SpriteParallaxedTest
      */
     @SuppressWarnings("unlikely-arg-type")
     @Test
-    public void testParallax()
+    void testParallax()
     {
         final ImageHeader info = ImageInfo.get(media);
         final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(media, LINES, 60, 100);
@@ -108,7 +108,7 @@ public final class SpriteParallaxedTest
      * Test parallax sprite failure.
      */
     @Test
-    public void testParallaxFailure()
+    void testParallaxFailure()
     {
         assertThrows(() -> Drawable.loadSpriteParallaxed(media, 0, 60, 100),
                      "Invalid argument: 0 is not strictly superior to 0");

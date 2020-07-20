@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
 /**
  * Test {@link SpriteDigit}.
  */
-public final class SpriteDigitTest
+final class SpriteDigitTest
 {
     /**
      * Prepare tests.
@@ -71,7 +71,7 @@ public final class SpriteDigitTest
      * Test constructor with <code>null</code> media.
      */
     @Test
-    public void testConstructorMediaNull()
+    void testConstructorMediaNull()
     {
         assertThrows(() -> new SpriteDigitImpl((Media) null, 0, 0, 1), "Unexpected null argument !");
     }
@@ -80,7 +80,7 @@ public final class SpriteDigitTest
      * Test constructor with <code>null</code> surface.
      */
     @Test
-    public void testConstructorSurfaceNull()
+    void testConstructorSurfaceNull()
     {
         assertThrows(() -> new SpriteDigitImpl((ImageBuffer) null, 0, 0, 1), "Unexpected null argument !");
     }
@@ -89,7 +89,7 @@ public final class SpriteDigitTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorMedia()
+    void testConstructorMedia()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Medias.create("image.png"), 1, 1, 1);
 
@@ -103,7 +103,7 @@ public final class SpriteDigitTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorInvalidDigit()
+    void testConstructorInvalidDigit()
     {
         assertThrows(() -> new SpriteDigitImpl(Medias.create("image.png"), 1, 1, 0),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -113,7 +113,7 @@ public final class SpriteDigitTest
      * Test constructor with surface.
      */
     @Test
-    public void testConstructorSurface()
+    void testConstructorSurface()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteDigit sprite = new SpriteDigitImpl(surface, 1, 1, 1);
@@ -128,7 +128,7 @@ public final class SpriteDigitTest
      * Test load with media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Medias.create("image.png"), 1, 1, 1);
 
@@ -142,7 +142,7 @@ public final class SpriteDigitTest
      * Test load with media already loaded.
      */
     @Test
-    public void testLoadMediaAlready()
+    void testLoadMediaAlready()
     {
         final Media media = Medias.create("image.png");
         final SpriteDigit sprite = new SpriteDigitImpl(media, 1, 1, 1);
@@ -154,7 +154,7 @@ public final class SpriteDigitTest
      * Test load with surface.
      */
     @Test
-    public void testLoadSurface()
+    void testLoadSurface()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -166,7 +166,7 @@ public final class SpriteDigitTest
      * Test set value.
      */
     @Test
-    public void testSetValueTen()
+    void testSetValueTen()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.setValue(-1);
@@ -181,7 +181,7 @@ public final class SpriteDigitTest
      * Test set value.
      */
     @Test
-    public void testSetValueTenMore()
+    void testSetValueTenMore()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 3);
         sprite.setValue(-1);
@@ -196,7 +196,7 @@ public final class SpriteDigitTest
      * Test stretch sprite.
      */
     @Test
-    public void testStretch()
+    void testStretch()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.stretch(100.0, 100.0);
@@ -224,7 +224,7 @@ public final class SpriteDigitTest
      * Test stretch sprite with invalid width.
      */
     @Test
-    public void testStretchInvalidWidth()
+    void testStretchInvalidWidth()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -235,7 +235,7 @@ public final class SpriteDigitTest
      * Test stretch sprite with invalid height.
      */
     @Test
-    public void testStretchInvalidHeight()
+    void testStretchInvalidHeight()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -246,7 +246,7 @@ public final class SpriteDigitTest
      * Test rotate sprite.
      */
     @Test
-    public void testRotate()
+    void testRotate()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         for (int angle = -720; angle < 720; angle++)
@@ -263,7 +263,7 @@ public final class SpriteDigitTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -280,7 +280,7 @@ public final class SpriteDigitTest
      * Test set location with viewer.
      */
     @Test
-    public void testSetLocationViewer()
+    void testSetLocationViewer()
     {
         final SpriteDigitImpl sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         final ViewerMock viewer = new ViewerMock();
@@ -300,7 +300,7 @@ public final class SpriteDigitTest
      * Test set alpha.
      */
     @Test
-    public void testSetAlpha()
+    void testSetAlpha()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         for (int alpha = 0; alpha < 256; alpha++)
@@ -316,7 +316,7 @@ public final class SpriteDigitTest
      * Test set alpha too low.
      */
     @Test
-    public void testSetAlphaLow()
+    void testSetAlphaLow()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -327,7 +327,7 @@ public final class SpriteDigitTest
      * Test set alpha too high.
      */
     @Test
-    public void testSetAlphaHigh()
+    void testSetAlphaHigh()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -338,7 +338,7 @@ public final class SpriteDigitTest
      * Test set transparency.
      */
     @Test
-    public void testSetTransparency()
+    void testSetTransparency()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.setTransparency(ColorRgba.BLACK);
@@ -351,7 +351,7 @@ public final class SpriteDigitTest
      * Test set fade.
      */
     @Test
-    public void testSetFade()
+    void testSetFade()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.setFade(128, 128);
@@ -365,7 +365,7 @@ public final class SpriteDigitTest
      * Test set frame offset.
      */
     @Test
-    public void testSetFrameOffset()
+    void testSetFrameOffset()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.setFrameOffsets(1, -1);
@@ -375,7 +375,7 @@ public final class SpriteDigitTest
      * Test filter bilinear.
      */
     @Test
-    public void testFilterBilinear()
+    void testFilterBilinear()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
         sprite.filter(new FilterBilinear());
@@ -388,7 +388,7 @@ public final class SpriteDigitTest
      * Test filter <code>null</code>.
      */
     @Test
-    public void testFilterNull()
+    void testFilterNull()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -399,7 +399,7 @@ public final class SpriteDigitTest
      * Test the mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -414,7 +414,7 @@ public final class SpriteDigitTest
      * Test mirror <code>null</code>.
      */
     @Test
-    public void testMirrorNull()
+    void testMirrorNull()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -425,7 +425,7 @@ public final class SpriteDigitTest
      * Test origin <code>null</code>.
      */
     @Test
-    public void testSetOriginNull()
+    void testSetOriginNull()
     {
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
 
@@ -436,7 +436,7 @@ public final class SpriteDigitTest
      * Test render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
@@ -455,7 +455,7 @@ public final class SpriteDigitTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteDigit sprite = new SpriteDigitImpl(surface, 1, 1, 1);
@@ -484,7 +484,7 @@ public final class SpriteDigitTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteDigit sprite = new SpriteDigitImpl(surface, 1, 1, 1);

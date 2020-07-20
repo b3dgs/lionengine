@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link TransitionsConfig}.
  */
-public final class TransitionsConfigTest
+final class TransitionsConfigTest
 {
     /**
      * Prepare test.
@@ -63,7 +63,7 @@ public final class TransitionsConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(TransitionsConfig.class);
     }
@@ -74,7 +74,7 @@ public final class TransitionsConfigTest
      * @throws IOException If error.
      */
     @Test
-    public void testExportsImports() throws IOException
+    void testExportsImports() throws IOException
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, UtilMap.TILE_WATER);

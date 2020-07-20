@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link TransitiveGroup}.
  */
-public final class TransitiveGroupTest
+final class TransitiveGroupTest
 {
     /**
      * Prepare test.
@@ -68,7 +68,7 @@ public final class TransitiveGroupTest
      * Test the transitive groups.
      */
     @Test
-    public void testTransitives()
+    void testTransitives()
     {
         final MapTile map = UtilMap.createMap(30);
         UtilMap.fill(map, TILE_WATER);
@@ -107,7 +107,7 @@ public final class TransitiveGroupTest
      * Test the transitive reduce function.
      */
     @Test
-    public void testReduce()
+    void testReduce()
     {
         final Collection<GroupTransition> transitive = new ArrayList<>();
         transitive.add(new GroupTransition("a", "b"));

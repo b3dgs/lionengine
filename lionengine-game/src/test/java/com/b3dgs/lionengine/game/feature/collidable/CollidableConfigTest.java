@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link CollidableConfig}.
  */
-public final class CollidableConfigTest
+final class CollidableConfigTest
 {
     /**
      * Prepare test.
@@ -66,7 +66,7 @@ public final class CollidableConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final int group = 1;
         final Media media = Medias.create("Object.xml");
@@ -86,7 +86,7 @@ public final class CollidableConfigTest
      * Test with invalid group.
      */
     @Test
-    public void testInvalidGroup()
+    void testInvalidGroup()
     {
         final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
@@ -102,7 +102,7 @@ public final class CollidableConfigTest
      * Test with default group.
      */
     @Test
-    public void testDefaultGroup()
+    void testDefaultGroup()
     {
         final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
@@ -116,7 +116,7 @@ public final class CollidableConfigTest
      * Test with empty accepted.
      */
     @Test
-    public void testEmptyAccepted()
+    void testEmptyAccepted()
     {
         final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
@@ -141,7 +141,7 @@ public final class CollidableConfigTest
      * Test export.
      */
     @Test
-    public void testExport()
+    void testExport()
     {
         final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
@@ -168,7 +168,7 @@ public final class CollidableConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
 
@@ -186,7 +186,7 @@ public final class CollidableConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
 
@@ -203,7 +203,7 @@ public final class CollidableConfigTest
      * Test the to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final CollidableConfig config = new CollidableConfig(Integer.valueOf(1), Arrays.asList(Integer.valueOf(2)));
 

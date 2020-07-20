@@ -23,13 +23,13 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link PathfindableListener}.
  */
-public final class PathfindableListenerTest
+final class PathfindableListenerTest
 {
     /**
      * Test the calls
      */
     @Test
-    public void testCall()
+    void testCall()
     {
         UtilTests.testCalls(PathfindableListener.class, new PathfindableListenerVoid());
     }

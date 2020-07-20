@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Point}.
  */
-public final class PointTest
+final class PointTest
 {
     /**
      * Test default constructor.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         final Point point = new Point();
 
@@ -43,7 +43,7 @@ public final class PointTest
      * Test constructor with parameters.
      */
     @Test
-    public void testConstructorParameters()
+    void testConstructorParameters()
     {
         final Point point = new Point(1, 2);
 
@@ -55,7 +55,7 @@ public final class PointTest
      * Test translate.
      */
     @Test
-    public void testTranslate()
+    void testTranslate()
     {
         final Point point = new Point(1, 2);
         point.translate(10, 20);
@@ -68,7 +68,7 @@ public final class PointTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         final Point point = new Point();
         point.set(10, 20);
@@ -81,7 +81,7 @@ public final class PointTest
      * Test set X.
      */
     @Test
-    public void testSetX()
+    void testSetX()
     {
         final Point point = new Point(1, 2);
         point.setX(10);
@@ -94,7 +94,7 @@ public final class PointTest
      * Test set Y.
      */
     @Test
-    public void testSetY()
+    void testSetY()
     {
         final Point point = new Point(1, 2);
         point.setY(20);
@@ -107,7 +107,7 @@ public final class PointTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Point point = new Point();
 
@@ -127,7 +127,7 @@ public final class PointTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertEquals(new Point(1, 2), new Point(1, 2));
 
@@ -141,7 +141,7 @@ public final class PointTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Point [x=1, y=2]", new Point(1, 2).toString());
     }

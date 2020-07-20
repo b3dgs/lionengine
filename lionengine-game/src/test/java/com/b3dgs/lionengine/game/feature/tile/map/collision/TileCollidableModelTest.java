@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link TileCollidableModel}.
  */
-public final class TileCollidableModelTest
+final class TileCollidableModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -137,7 +137,7 @@ public final class TileCollidableModelTest
      * Test the collidable from top.
      */
     @Test
-    public void testFromTop()
+    void testFromTop()
     {
         final Transformable transformable = createObject(new FeaturableModel(services, setup));
         final AtomicReference<Tile> collided = new AtomicReference<>();
@@ -155,7 +155,7 @@ public final class TileCollidableModelTest
      * Test the collidable from bottom.
      */
     @Test
-    public void testFromBottom()
+    void testFromBottom()
     {
         final Transformable transformable = createObject(new FeaturableModel(services, setup));
         final AtomicReference<Tile> collided = new AtomicReference<>();
@@ -173,7 +173,7 @@ public final class TileCollidableModelTest
      * Test the collidable from left.
      */
     @Test
-    public void testFromLeft()
+    void testFromLeft()
     {
         final Transformable transformable = createObject(new FeaturableModel(services, setup));
         final AtomicReference<Tile> collided = new AtomicReference<>();
@@ -191,7 +191,7 @@ public final class TileCollidableModelTest
      * Test the collidable from right.
      */
     @Test
-    public void testFromRight()
+    void testFromRight()
     {
         final Transformable transformable = createObject(new FeaturableModel(services, setup));
         final AtomicReference<Tile> collided = new AtomicReference<>();
@@ -209,7 +209,7 @@ public final class TileCollidableModelTest
      * Test the collidable disabled.
      */
     @Test
-    public void testDisabled()
+    void testDisabled()
     {
         final Transformable transformable = createObject(new FeaturableModel(services, setup));
         final AtomicReference<Tile> collided = new AtomicReference<>();
@@ -228,7 +228,7 @@ public final class TileCollidableModelTest
      * Test the collidable with remove listener.
      */
     @Test
-    public void testRemoveListener()
+    void testRemoveListener()
     {
         final Transformable transformable = createObject(new FeaturableModel(services, setup));
         final AtomicReference<Tile> collided = new AtomicReference<>();
@@ -253,7 +253,7 @@ public final class TileCollidableModelTest
      * Test the collidable self listener.
      */
     @Test
-    public void testSelfListener()
+    void testSelfListener()
     {
         final ObjectSelf self = new ObjectSelf(services, setup);
         final Transformable transformable = createObject(self);

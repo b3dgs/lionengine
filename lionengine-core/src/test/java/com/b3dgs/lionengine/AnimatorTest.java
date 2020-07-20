@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Animator}.
  */
-public final class AnimatorTest
+final class AnimatorTest
 {
     /**
      * Test constructor default.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final Animator animator = new AnimatorModel();
 
@@ -47,7 +47,7 @@ public final class AnimatorTest
      * Test play.
      */
     @Test
-    public void testPlay()
+    void testPlay()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
         final Animator animator = new AnimatorModel();
@@ -66,7 +66,7 @@ public final class AnimatorTest
      * Test play with <code>null</code> argument.
      */
     @Test
-    public void testPlayNull()
+    void testPlayNull()
     {
         final Animator animator = new AnimatorModel();
 
@@ -77,7 +77,7 @@ public final class AnimatorTest
      * Test stop.
      */
     @Test
-    public void testStop()
+    void testStop()
     {
         final Animator animator = new AnimatorModel();
         animator.stop();
@@ -89,7 +89,7 @@ public final class AnimatorTest
      * Test update without loop nor reverse.
      */
     @Test
-    public void testUpdateNoLoopNoReverse()
+    void testUpdateNoLoopNoReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.0, false, false);
         final Animator animator = new AnimatorModel();
@@ -122,7 +122,7 @@ public final class AnimatorTest
      * Test update with loop but no reverse.
      */
     @Test
-    public void testUpdateLoopNoReverse()
+    void testUpdateLoopNoReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, true);
         final Animator animator = new AnimatorModel();
@@ -161,7 +161,7 @@ public final class AnimatorTest
      * Test update without loop but reverse.
      */
     @Test
-    public void testUpdateNoLoopReverse()
+    void testUpdateNoLoopReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, false);
         final Animator animator = new AnimatorModel();
@@ -200,7 +200,7 @@ public final class AnimatorTest
      * Test update with loop and reverse.
      */
     @Test
-    public void testUpdateLoopReverse()
+    void testUpdateLoopReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, true);
         final Animator animator = new AnimatorModel();
@@ -257,7 +257,7 @@ public final class AnimatorTest
      * Test set speed.
      */
     @Test
-    public void testSetSpeed()
+    void testSetSpeed()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
         final Animator animator = new AnimatorModel();
@@ -274,7 +274,7 @@ public final class AnimatorTest
      * Test invalid speed setter.
      */
     @Test
-    public void testSetSpeedNegative()
+    void testSetSpeedNegative()
     {
         final Animator animator = new AnimatorModel();
 
@@ -285,7 +285,7 @@ public final class AnimatorTest
      * Test set frame.
      */
     @Test
-    public void testSetFrame()
+    void testSetFrame()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
         final Animator animator = new AnimatorModel();
@@ -302,7 +302,7 @@ public final class AnimatorTest
      * Test set frame invalid.
      */
     @Test
-    public void testFrameInvalid()
+    void testFrameInvalid()
     {
         final Animator animator = new AnimatorModel();
 
@@ -313,7 +313,7 @@ public final class AnimatorTest
      * Test reset.
      */
     @Test
-    public void testReset()
+    void testReset()
     {
         final AtomicReference<Animation> played = new AtomicReference<>();
         final AtomicReference<AnimState> stated = new AtomicReference<>();
@@ -363,7 +363,7 @@ public final class AnimatorTest
      * Test with listener.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         final AtomicReference<Animation> played = new AtomicReference<>();
         final AtomicReference<AnimState> stated = new AtomicReference<>();
@@ -449,7 +449,7 @@ public final class AnimatorTest
      * Test with state listener.
      */
     @Test
-    public void testListenerState()
+    void testListenerState()
     {
         final AtomicReference<AnimState> stated = new AtomicReference<>();
         final AnimatorListener listener = (AnimatorStateListener) state -> stated.set(state);
@@ -476,7 +476,7 @@ public final class AnimatorTest
      * Test with frame listener.
      */
     @Test
-    public void testListenerFrame()
+    void testListenerFrame()
     {
         final AtomicReference<Integer> framed = new AtomicReference<>();
         final AnimatorListener listener = (AnimatorFrameListener) frame -> framed.set(Integer.valueOf(frame));
@@ -504,7 +504,7 @@ public final class AnimatorTest
      * Test with void listener.
      */
     @Test
-    public void testListenerVoid()
+    void testListenerVoid()
     {
         final AnimatorListener listener = AnimatorListenerVoid.getInstance();
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 0.25, true, false);
@@ -521,7 +521,7 @@ public final class AnimatorTest
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(AnimatorListenerVoid.class);
     }

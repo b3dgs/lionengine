@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link Orientation}.
  */
-public final class OrientationTest
+final class OrientationTest
 {
     /**
      * Test the enum.
@@ -34,7 +34,7 @@ public final class OrientationTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Orientation.class);
     }
@@ -43,7 +43,7 @@ public final class OrientationTest
      * Test the get.
      */
     @Test
-    public void testGet()
+    void testGet()
     {
         assertNull(Orientation.get(0, 0));
         assertEquals(Orientation.NORTH, Orientation.get(0, 1));
@@ -60,7 +60,7 @@ public final class OrientationTest
      * Test the next.
      */
     @Test
-    public void testNext()
+    void testNext()
     {
         assertEquals(Orientation.NORTH_EAST, Orientation.next(Orientation.NORTH, 1));
         assertEquals(Orientation.NORTH, Orientation.next(Orientation.NORTH, 8));

@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Polygon}.
  */
-public final class PolygonTest
+final class PolygonTest
 {
     /**
      * Test constructor default.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         final Polygon polygon = new Polygon();
 
@@ -43,7 +43,7 @@ public final class PolygonTest
      * Test add point.
      */
     @Test
-    public void testAddPoint()
+    void testAddPoint()
     {
         final Polygon polygon = new Polygon();
 
@@ -73,7 +73,7 @@ public final class PolygonTest
      * Test add point with required an internal array resize.
      */
     @Test
-    public void testAddPointResize()
+    void testAddPointResize()
     {
         final Polygon polygon = new Polygon();
 
@@ -96,7 +96,7 @@ public final class PolygonTest
      * Test update bound when adding point.
      */
     @Test
-    public void testAddPointUpdateBounds()
+    void testAddPointUpdateBounds()
     {
         final Polygon polygon = new Polygon();
         polygon.addPoint(-1.0, -2.0);
@@ -119,7 +119,7 @@ public final class PolygonTest
      * Test reset.
      */
     @Test
-    public void testReset()
+    void testReset()
     {
         final Polygon polygon = new Polygon();
         polygon.addPoint(1.0, 2.0);
@@ -138,7 +138,7 @@ public final class PolygonTest
      * Test intersect.
      */
     @Test
-    public void testIntersect()
+    void testIntersect()
     {
         final Polygon polygon = new Polygon();
 
@@ -159,7 +159,7 @@ public final class PolygonTest
      * Test contains.
      */
     @Test
-    public void testContains()
+    void testContains()
     {
         final Polygon polygon = new Polygon();
 
@@ -180,7 +180,7 @@ public final class PolygonTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final Polygon polygon = new Polygon();
 

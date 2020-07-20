@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link PathfindableConfig}.
  */
-public final class PathfindableConfigTest
+final class PathfindableConfigTest
 {
     /**
      * Prepare test.
@@ -62,7 +62,7 @@ public final class PathfindableConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(PathfindableConfig.class);
     }
@@ -71,7 +71,7 @@ public final class PathfindableConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Map<String, PathData> map = new HashMap<>();
         final PathData data = new PathData("category", 1.0, true, Arrays.asList(MovementTile.UP));
@@ -92,7 +92,7 @@ public final class PathfindableConfigTest
      * Test without node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml("test");
         final Media media = Medias.create("pathfindable.xml");
@@ -107,7 +107,7 @@ public final class PathfindableConfigTest
      * Test without movements.
      */
     @Test
-    public void testNoMovements()
+    void testNoMovements()
     {
         final Map<String, PathData> map = new HashMap<>();
         final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
@@ -131,7 +131,7 @@ public final class PathfindableConfigTest
      * Test with wrong movement.
      */
     @Test
-    public void testWrongMovement()
+    void testWrongMovement()
     {
         final PathData data = new PathData("category", 1.0, true, EnumSet.noneOf(MovementTile.class));
         final Xml path = PathfindableConfig.exportPathData(data);

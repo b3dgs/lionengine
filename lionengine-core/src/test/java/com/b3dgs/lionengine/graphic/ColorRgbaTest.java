@@ -29,13 +29,13 @@ import com.b3dgs.lionengine.Constant;
 /**
  * Test {@link ColorRgba}.
  */
-public final class ColorRgbaTest
+final class ColorRgbaTest
 {
     /**
      * Test negative value.
      */
     @Test
-    public void testNegative()
+    void testNegative()
     {
         assertThrows(() -> new ColorRgba(-1, 0, 0, 0), "Invalid argument: -1 is not superior or equal to 0");
         assertThrows(() -> new ColorRgba(0, -1, 0, 0), "Invalid argument: -1 is not superior or equal to 0");
@@ -47,7 +47,7 @@ public final class ColorRgbaTest
      * Test out of range value.
      */
     @Test
-    public void testOutOfRange()
+    void testOutOfRange()
     {
         assertThrows(() -> new ColorRgba(256, 0, 0, 0), "Invalid argument: 256 is not inferior or equal to 255");
         assertThrows(() -> new ColorRgba(0, 256, 0, 0), "Invalid argument: 256 is not inferior or equal to 255");
@@ -59,7 +59,7 @@ public final class ColorRgbaTest
      * Test constructor with value.
      */
     @Test
-    public void testConstructorValue()
+    void testConstructorValue()
     {
         final int step = 128;
         for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE + 1; i += step)
@@ -78,7 +78,7 @@ public final class ColorRgbaTest
      * Test constructor with rgb.
      */
     @Test
-    public void testConstructorRgb()
+    void testConstructorRgb()
     {
         for (int r = 0; r < Constant.UNSIGNED_BYTE; r++)
         {
@@ -101,7 +101,7 @@ public final class ColorRgbaTest
      * Test constructor with rgb and alpha.
      */
     @Test
-    public void testConstructorRgbAlpha()
+    void testConstructorRgbAlpha()
     {
         final int step = 5;
         for (int r = 0; r < Constant.UNSIGNED_BYTE; r += step)
@@ -128,7 +128,7 @@ public final class ColorRgbaTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final int step = 654_321;
         for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE - step; i += step)
@@ -154,7 +154,7 @@ public final class ColorRgbaTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(ColorRgba.BLACK, ColorRgba.BLACK);
 
@@ -166,7 +166,7 @@ public final class ColorRgbaTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("ColorRgba [r=100, g=150, b=200, a=255]", new ColorRgba(100, 150, 200, 255).toString());
     }

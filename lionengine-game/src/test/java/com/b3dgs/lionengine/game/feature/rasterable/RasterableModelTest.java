@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 /**
  * Test {@link RasterableModel}.
  */
-public final class RasterableModelTest
+final class RasterableModelTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "ObjectRaster.xml";
@@ -79,7 +79,7 @@ public final class RasterableModelTest
      * Test the model.
      */
     @Test
-    public void testModel()
+    void testModel()
     {
         services.add(new ViewerMock());
 

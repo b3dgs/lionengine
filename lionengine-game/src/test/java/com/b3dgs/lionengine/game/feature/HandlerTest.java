@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link Handler}.
  */
-public final class HandlerTest
+final class HandlerTest
 {
     /** Object config test. */
     private static Media config;
@@ -73,7 +73,7 @@ public final class HandlerTest
      * Add a featurable and get it.
      */
     @Test
-    public void testAddGetObject()
+    void testAddGetObject()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
@@ -95,7 +95,7 @@ public final class HandlerTest
      * Add a featurable and remove it without update.
      */
     @Test
-    public void testAddRemoveWithoutUpdate()
+    void testAddRemoveWithoutUpdate()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
@@ -107,7 +107,7 @@ public final class HandlerTest
      * Get not found featurable from id.
      */
     @Test
-    public void testObjectIdNotFound()
+    void testObjectIdNotFound()
     {
         assertThrows(() -> handler.get(Integer.valueOf(0)), Handler.ERROR_FEATURABLE_NOT_FOUND + 0);
     }
@@ -116,7 +116,7 @@ public final class HandlerTest
      * Get not found featurable from type.
      */
     @Test
-    public void testObjectTypeNotFound()
+    void testObjectTypeNotFound()
     {
         assertFalse(handler.get(Featurable.class).iterator().hasNext());
     }
@@ -125,7 +125,7 @@ public final class HandlerTest
      * Add a featurable and get it.
      */
     @Test
-    public void testRemoveObject()
+    void testRemoveObject()
     {
         assertEquals(0, handler.size());
 
@@ -158,7 +158,7 @@ public final class HandlerTest
      * Add a featurable and destroy it.
      */
     @Test
-    public void testDestroyObject()
+    void testDestroyObject()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         handler.add(featurable);
@@ -178,7 +178,7 @@ public final class HandlerTest
      * Add and remove handler listener for featurable added and removed.
      */
     @Test
-    public void testAddRemoveListener()
+    void testAddRemoveListener()
     {
         final AtomicReference<Featurable> added = new AtomicReference<>();
         final AtomicReference<Featurable> removed = new AtomicReference<>();
@@ -235,7 +235,7 @@ public final class HandlerTest
      * Add updatable component.
      */
     @Test
-    public void testUpdatable()
+    void testUpdatable()
     {
         final AtomicReference<Double> extrapolation = new AtomicReference<>();
         final AtomicReference<Featurable> updated = new AtomicReference<>();
@@ -267,7 +267,7 @@ public final class HandlerTest
      * Add renderable component.
      */
     @Test
-    public void testRenderable()
+    void testRenderable()
     {
         final AtomicReference<Featurable> rendered = new AtomicReference<>();
         handler.addComponent((ComponentRenderer) (g,
@@ -291,7 +291,7 @@ public final class HandlerTest
      * Test with features.
      */
     @Test
-    public void testFeatures()
+    void testFeatures()
     {
         services.add((LayerableListener) (provider,
                                           layerRefreshOld,
@@ -319,7 +319,7 @@ public final class HandlerTest
      * Test add component with listener.
      */
     @Test
-    public void testAddComponentWithListener()
+    void testAddComponentWithListener()
     {
         final AtomicBoolean add = new AtomicBoolean();
         final AtomicBoolean remove = new AtomicBoolean();

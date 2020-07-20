@@ -55,7 +55,7 @@ import com.b3dgs.lionengine.game.feature.UtilTransformable;
 /**
  * Test {@link AttackerModel}.
  */
-public final class AttackerModelTest
+final class AttackerModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<AttackState> HACK = new UtilEnum<>(AttackState.class, AttackerModel.class);
@@ -115,7 +115,7 @@ public final class AttackerModelTest
      * Test without config.
      */
     @Test
-    public void testNoConfig()
+    void testNoConfig()
     {
         final Media media = UtilTransformable.createMedia(AttackerModelTest.class);
         final Xml xml = new Xml(media);
@@ -131,7 +131,7 @@ public final class AttackerModelTest
      * Test the config.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         final int damagesMin = 1;
         final int damagesMax = 2;
@@ -157,7 +157,7 @@ public final class AttackerModelTest
      * Test the target.
      */
     @Test
-    public void testTarget()
+    void testTarget()
     {
         attacker.attack(target);
 
@@ -168,7 +168,7 @@ public final class AttackerModelTest
      * Test the reach target with not elapsed time.
      */
     @Test
-    public void testTargetReachTimeNotElapsed()
+    void testTargetReachTimeNotElapsed()
     {
         target.teleport(0, 10);
         attacker.attack(target);
@@ -183,7 +183,7 @@ public final class AttackerModelTest
      * Test the custom distance computer.
      */
     @Test
-    public void testCustomDistandceComputer()
+    void testCustomDistandceComputer()
     {
         assertThrows(() -> attacker.setAttackDistanceComputer(null), "Unexpected null argument !");
 
@@ -209,7 +209,7 @@ public final class AttackerModelTest
      * Test the cannot attack.
      */
     @Test
-    public void testCantAttack()
+    void testCantAttack()
     {
         canAttack.set(false);
         attacker.setAttackChecker(t -> canAttack.get());
@@ -227,7 +227,7 @@ public final class AttackerModelTest
      * Test the attack <code>null</code>.
      */
     @Test
-    public void testAttackNull()
+    void testAttackNull()
     {
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
@@ -258,7 +258,7 @@ public final class AttackerModelTest
      * Test the attack different target.
      */
     @Test
-    public void testAttackDifferent()
+    void testAttackDifferent()
     {
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
@@ -292,7 +292,7 @@ public final class AttackerModelTest
      * Test the stop attack.
      */
     @Test
-    public void testStopAttack()
+    void testStopAttack()
     {
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
@@ -319,7 +319,7 @@ public final class AttackerModelTest
      * Test the self listener.
      */
     @Test
-    public void testSelfListener()
+    void testSelfListener()
     {
         UtilAttackable.createAttacker(object, services, setup); // No listener check
 
@@ -349,7 +349,7 @@ public final class AttackerModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testListener() throws InterruptedException
+    void testListener() throws InterruptedException
     {
         canAttack.set(true);
         attacker.setAttackChecker(t -> canAttack.get());
@@ -454,7 +454,7 @@ public final class AttackerModelTest
      * Test the auto add listener.
      */
     @Test
-    public void testListenerAutoAdd()
+    void testListenerAutoAdd()
     {
         final ObjectAttackerSelf object = new ObjectAttackerSelf(services, setup);
         UtilAttackable.prepare(object, services, setup);
@@ -475,7 +475,7 @@ public final class AttackerModelTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testEnumFail() throws ReflectiveOperationException
+    void testEnumFail() throws ReflectiveOperationException
     {
         final AttackerModel attacker = new AttackerModel(services, setup);
         final Field field = attacker.getClass().getDeclaredField("state");

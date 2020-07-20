@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.graphic.ScreenMock;
 /**
  * Test {@link LoopFrameSkipping}.
  */
-public final class LoopFrameSkippingTest
+final class LoopFrameSkippingTest
 {
     /**
      * Prepare tests.
@@ -110,7 +110,7 @@ public final class LoopFrameSkippingTest
      * Test loop.
      */
     @Test
-    public void testLoop()
+    void testLoop()
     {
         ScreenMock.setScreenWait(false);
 
@@ -133,7 +133,7 @@ public final class LoopFrameSkippingTest
      * Test with slow rendering.
      */
     @Test
-    public void testSlowRender()
+    void testSlowRender()
     {
         ScreenMock.setScreenWait(false);
 
@@ -161,7 +161,7 @@ public final class LoopFrameSkippingTest
      * Test with max rate.
      */
     @Test
-    public void testMaxRate()
+    void testMaxRate()
     {
         ScreenMock.setScreenWait(false);
 
@@ -181,7 +181,7 @@ public final class LoopFrameSkippingTest
      * Test with spike of death.
      */
     @Test
-    public void testSpikeOfDeath()
+    void testSpikeOfDeath()
     {
         ScreenMock.setScreenWait(false);
 
@@ -208,7 +208,7 @@ public final class LoopFrameSkippingTest
      * Test without sync.
      */
     @Test
-    public void testNoSync()
+    void testNoSync()
     {
         ScreenMock.setScreenWait(false);
 
@@ -231,7 +231,7 @@ public final class LoopFrameSkippingTest
      * Test without sync full screen.
      */
     @Test
-    public void testNoSyncFullscreen()
+    void testNoSyncFullscreen()
     {
         ScreenMock.setScreenWait(false);
 
@@ -254,7 +254,7 @@ public final class LoopFrameSkippingTest
      * Test with not ready screen.
      */
     @Test
-    public void testUnready()
+    void testUnready()
     {
         ScreenMock.setScreenWait(true);
 

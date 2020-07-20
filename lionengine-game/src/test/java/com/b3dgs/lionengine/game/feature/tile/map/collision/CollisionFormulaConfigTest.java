@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link CollisionFormulaConfig}.
  */
-public final class CollisionFormulaConfigTest
+final class CollisionFormulaConfigTest
 {
     /**
      * Prepare test.
@@ -64,7 +64,7 @@ public final class CollisionFormulaConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("formula");
         CollisionFormulaConfig.exports(root, formula);
@@ -84,7 +84,7 @@ public final class CollisionFormulaConfigTest
      * Test has and remove functions.
      */
     @Test
-    public void testHasRemove()
+    void testHasRemove()
     {
         final Xml root = new Xml("formula");
         CollisionFormulaConfig.exports(root, formula);

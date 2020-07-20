@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListen
 /**
  * Updating of our controllable entity.
  */
-class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
+final class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
     private static final double GRAVITY = 10.0;
 

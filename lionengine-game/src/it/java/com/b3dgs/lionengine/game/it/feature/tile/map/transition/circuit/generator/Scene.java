@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.graphic.engine.Sequence;
 /**
  * Scene to show map random generation.
  */
-class Scene extends Sequence
+final class Scene extends Sequence
 {
     private final Services services = new Services();
     private final Camera camera = services.create(Camera.class);

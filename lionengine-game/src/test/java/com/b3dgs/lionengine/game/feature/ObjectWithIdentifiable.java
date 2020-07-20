@@ -21,7 +21,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 /**
  * Object without constructor.
  */
-public final class ObjectWithIdentifiable extends FeaturableModel
+final class ObjectWithIdentifiable extends FeaturableModel
 {
     /**
      * Constructor.

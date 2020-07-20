@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link FilterBlur}.
  */
-public final class FilterBlurTest
+final class FilterBlurTest
 {
     /**
      * Prepare tests.
@@ -59,7 +59,7 @@ public final class FilterBlurTest
      * Test blur filter
      */
     @Test
-    public void testBlur()
+    void testBlur()
     {
         final Media media = Medias.create("image.png");
         final ImageBuffer image = Graphics.getImageBuffer(media);
@@ -108,7 +108,7 @@ public final class FilterBlurTest
      * Test without pixel.
      */
     @Test
-    public void testNoPixel()
+    void testNoPixel()
     {
         final FilterBlur blur = new FilterBlur();
         final ImageBuffer image = Graphics.createImageBuffer(1, 1);
@@ -126,7 +126,7 @@ public final class FilterBlurTest
      * Test with single pixel.
      */
     @Test
-    public void testSinglePixel()
+    void testSinglePixel()
     {
         final FilterBlur blur = new FilterBlur();
         final ImageBuffer image = Graphics.createImageBuffer(1, 1);
@@ -142,7 +142,7 @@ public final class FilterBlurTest
      * Test with low width.
      */
     @Test
-    public void testLowWidth()
+    void testLowWidth()
     {
         final FilterBlur blur = new FilterBlur();
         final ImageBuffer image = Graphics.createImageBuffer(1, 3);
@@ -158,7 +158,7 @@ public final class FilterBlurTest
      * Test with low height.
      */
     @Test
-    public void testLowHeight()
+    void testLowHeight()
     {
         final FilterBlur blur = new FilterBlur();
         final ImageBuffer image = Graphics.createImageBuffer(3, 1);

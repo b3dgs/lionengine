@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Test {@link FeaturableModel}.
  */
-public final class FeaturableModelTest
+final class FeaturableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -74,7 +74,7 @@ public final class FeaturableModelTest
      * Test the featurable model with compatible feature.
      */
     @Test
-    public void testFeaturableCompatible()
+    void testFeaturableCompatible()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final MyFeatureInterface feature = new MyFeature(services, setup);
@@ -104,7 +104,7 @@ public final class FeaturableModelTest
      * Test the featurable model with not compatible interface.
      */
     @Test
-    public void testFeaturableNotcompatible()
+    void testFeaturableNotcompatible()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final MyFeatureNotCompatible feature = new MyFeatureNotCompatible(services, setup);
@@ -133,7 +133,7 @@ public final class FeaturableModelTest
      * Test with annotation.
      */
     @Test
-    public void testFeatureAnnotation()
+    void testFeatureAnnotation()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
 
@@ -149,7 +149,7 @@ public final class FeaturableModelTest
      * Test with annotation and feature not found.
      */
     @Test
-    public void testFeatureAnnotationNotFound()
+    void testFeatureAnnotationNotFound()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final AtomicReference<String> unfilledType = new AtomicReference<>();
@@ -172,7 +172,7 @@ public final class FeaturableModelTest
      * Test the feature itself.
      */
     @Test
-    public void testFeatureItself()
+    void testFeatureItself()
     {
         final FeatureItself object = new FeatureItself(services, setup);
         object.prepare(object);
@@ -186,7 +186,7 @@ public final class FeaturableModelTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testSetFieldNotAccessible() throws ReflectiveOperationException
+    void testSetFieldNotAccessible() throws ReflectiveOperationException
     {
         final FeatureItself featurable = new FeatureItself(services, setup);
         final Method method = FeaturableAbstract.class.getDeclaredMethod("setField",
@@ -207,7 +207,7 @@ public final class FeaturableModelTest
      * Test the add features.
      */
     @Test
-    public void testAddFeatures()
+    void testAddFeatures()
     {
         final Media media = Medias.create("Features.xml");
 

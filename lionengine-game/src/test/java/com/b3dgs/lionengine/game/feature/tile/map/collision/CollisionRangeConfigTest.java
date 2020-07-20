@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link CollisionRangeConfig}.
  */
-public final class CollisionRangeConfigTest
+final class CollisionRangeConfigTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testEnum()
+    void testEnum()
     {
         assertPrivateConstructor(CollisionRangeConfig.class);
     }
@@ -42,7 +42,7 @@ public final class CollisionRangeConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("ranges");
         final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
@@ -55,7 +55,7 @@ public final class CollisionRangeConfigTest
      * Test with invalid axis.
      */
     @Test
-    public void testInvalidAxis()
+    void testInvalidAxis()
     {
         final Xml root = new Xml("ranges");
         final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);

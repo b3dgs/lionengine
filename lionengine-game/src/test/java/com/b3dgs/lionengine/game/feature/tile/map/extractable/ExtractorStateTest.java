@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link ExtractorState}.
  */
-public final class ExtractorStateTest
+final class ExtractorStateTest
 {
     /**
      * Test the enum.
@@ -31,7 +31,7 @@ public final class ExtractorStateTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(ExtractorState.class);
     }

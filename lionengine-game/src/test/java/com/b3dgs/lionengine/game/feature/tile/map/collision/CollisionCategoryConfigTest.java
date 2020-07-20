@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 /**
  * Test {@link CollisionCategoryConfig}.
  */
-public final class CollisionCategoryConfigTest
+final class CollisionCategoryConfigTest
 {
     /**
      * Prepare test.
@@ -83,7 +83,7 @@ public final class CollisionCategoryConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(CollisionCategoryConfig.class);
     }
@@ -92,7 +92,7 @@ public final class CollisionCategoryConfigTest
      * Test no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml("categories");
 
@@ -103,7 +103,7 @@ public final class CollisionCategoryConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
         final Media groupsConfig = UtilConfig.createGroupsConfig(group);
@@ -129,7 +129,7 @@ public final class CollisionCategoryConfigTest
      * Test category.
      */
     @Test
-    public void testCategory()
+    void testCategory()
     {
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
@@ -144,7 +144,7 @@ public final class CollisionCategoryConfigTest
      * Test from map.
      */
     @Test
-    public void testMap()
+    void testMap()
     {
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
         final Media groupsConfig = UtilConfig.createGroupsConfig(group);
@@ -167,7 +167,7 @@ public final class CollisionCategoryConfigTest
      * Test with invalid axis.
      */
     @Test
-    public void testMapInvalidAxis()
+    void testMapInvalidAxis()
     {
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
         final Media groupsConfig = UtilConfig.createGroupsConfig(group);

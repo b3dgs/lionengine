@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Align}.
  */
-public final class AlignTest
+final class AlignTest
 {
     /**
      * Test the enum.
@@ -29,7 +29,7 @@ public final class AlignTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Align.class);
     }

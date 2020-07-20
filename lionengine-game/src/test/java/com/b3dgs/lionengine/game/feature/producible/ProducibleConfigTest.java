@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link ProducibleConfig}.
  */
-public final class ProducibleConfigTest
+final class ProducibleConfigTest
 {
     /**
      * Prepare test.
@@ -60,7 +60,7 @@ public final class ProducibleConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
@@ -82,7 +82,7 @@ public final class ProducibleConfigTest
      * Test the producible equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 
@@ -99,7 +99,7 @@ public final class ProducibleConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ProducibleConfig hash = new ProducibleConfig(1, 2, 3);
 
@@ -114,7 +114,7 @@ public final class ProducibleConfigTest
      * Test the to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final ProducibleConfig producible = new ProducibleConfig(1, 2, 3);
 

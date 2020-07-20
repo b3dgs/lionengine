@@ -35,13 +35,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilReflection}.
  */
-public final class UtilReflectionTest
+final class UtilReflectionTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilReflection.class);
     }
@@ -52,7 +52,7 @@ public final class UtilReflectionTest
      * @throws NoSuchMethodException If error.
      */
     @Test
-    public void testCreate() throws NoSuchMethodException
+    void testCreate() throws NoSuchMethodException
     {
         assertEquals("1", UtilReflection.create(String.class, UtilReflection.getParamTypes(String.class), "1"));
     }
@@ -61,7 +61,7 @@ public final class UtilReflectionTest
      * Create create with missing method.
      */
     @Test
-    public void testCreateNoMethod()
+    void testCreateNoMethod()
     {
         final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
                                 + Object.class.getName()
@@ -76,7 +76,7 @@ public final class UtilReflectionTest
      * Create create with invalid arguments.
      */
     @Test
-    public void testCreateIllegalArgument()
+    void testCreateIllegalArgument()
     {
         final String expected = UtilReflection.ERROR_CONSTRUCTOR
                                 + String.class
@@ -92,7 +92,7 @@ public final class UtilReflectionTest
      * Create create with constructor error.
      */
     @Test
-    public void testCreateConstructorError()
+    void testCreateConstructorError()
     {
         assertThrows(() -> UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), (String) null),
                      UtilReflection.ERROR_CONSTRUCTOR + String.class);
@@ -102,7 +102,7 @@ public final class UtilReflectionTest
      * Create create with constructor error.
      */
     @Test
-    public void testCreateConstructorNotAccessible()
+    void testCreateConstructorNotAccessible()
     {
         assertThrows(() -> UtilReflection.create(UtilMath.class, new Class[0]),
                      UtilReflection.ERROR_CONSTRUCTOR + UtilMath.class);
@@ -112,7 +112,7 @@ public final class UtilReflectionTest
      * Create create with abstract class.
      */
     @Test
-    public void testCreateAbstractClass()
+    void testCreateAbstractClass()
     {
         assertThrows(() -> UtilReflection.create(Engine.class,
                                                  UtilReflection.getParamTypes("", Version.DEFAULT),
@@ -127,7 +127,7 @@ public final class UtilReflectionTest
      * @throws NoSuchMethodException If error.
      */
     @Test
-    public void testCreateReduce() throws NoSuchMethodException
+    void testCreateReduce() throws NoSuchMethodException
     {
         assertEquals(ViewerMock.class,
                      UtilReflection.createReduce(ViewerMock.class, Integer.valueOf(1), "void").getClass());
@@ -137,7 +137,7 @@ public final class UtilReflectionTest
      * Create create reduce with no constructor found.
      */
     @Test
-    public void testCreateReduceNoConstructor()
+    void testCreateReduceNoConstructor()
     {
         final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
                                 + Config.class.getName()
@@ -154,7 +154,7 @@ public final class UtilReflectionTest
      * @throws NoSuchMethodException If error.
      */
     @Test
-    public void testCreateReduceMoreParameters() throws NoSuchMethodException
+    void testCreateReduceMoreParameters() throws NoSuchMethodException
     {
         UtilReflection.createReduce(Reduce.class, Integer.valueOf(1), "test", Integer.valueOf(3));
     }
@@ -163,7 +163,7 @@ public final class UtilReflectionTest
      * Test the accessibility setting.
      */
     @Test
-    public void testSetAccessible()
+    void testSetAccessible()
     {
         final AccessibleObject accessible = AccessibleTest.class.getDeclaredFields()[0];
 
@@ -186,7 +186,7 @@ public final class UtilReflectionTest
      * Test get parameters types.
      */
     @Test
-    public void testGetParamTypes()
+    void testGetParamTypes()
     {
         final Collection<Object> params = new ArrayList<>();
         params.add(Integer.valueOf(1));
@@ -205,7 +205,7 @@ public final class UtilReflectionTest
      * Test get method.
      */
     @Test
-    public void testGetMethod()
+    void testGetMethod()
     {
         assertNotNull(UtilReflection.getMethod(new Object(), "toString"));
         assertNull(UtilReflection.getMethod(new Object(), "finalize"));
@@ -215,7 +215,7 @@ public final class UtilReflectionTest
      * Test get method not accessible.
      */
     @Test
-    public void testGetMethodNotAccessible()
+    void testGetMethodNotAccessible()
     {
         assertThrows(() -> UtilReflection.getMethod(Verbose.class, "getMessage", "test"),
                      UtilReflection.ERROR_METHOD + "getMessage");
@@ -225,7 +225,7 @@ public final class UtilReflectionTest
      * Test get not existing method.
      */
     @Test
-    public void testGetMethodNotExists()
+    void testGetMethodNotExists()
     {
         assertThrows(() -> UtilReflection.getMethod(new Object(), "123"), UtilReflection.ERROR_METHOD + "123");
     }
@@ -234,7 +234,7 @@ public final class UtilReflectionTest
      * Test get method with call error.
      */
     @Test
-    public void testGetMethodCallError()
+    void testGetMethodCallError()
     {
         assertThrows(() -> UtilReflection.getMethod(Integer.class, "valueOf", ""),
                      UtilReflection.ERROR_METHOD + "valueOf");
@@ -244,7 +244,7 @@ public final class UtilReflectionTest
      * Test get method with throws {@link LionEngineException}.
      */
     @Test
-    public void testGetMethodThrowsLionEngineException()
+    void testGetMethodThrowsLionEngineException()
     {
         assertThrows(() -> UtilReflection.getMethod(Reduce.class, "throwsLion"), "Lion");
     }
@@ -253,7 +253,7 @@ public final class UtilReflectionTest
      * Test get method with invalid parameter.
      */
     @Test
-    public void testGetMethodInvalidParameter()
+    void testGetMethodInvalidParameter()
     {
         assertThrows(() -> UtilReflection.getMethod(Integer.class, "valueOf", ""),
                      UtilReflection.ERROR_METHOD + "valueOf");
@@ -263,7 +263,7 @@ public final class UtilReflectionTest
      * Test get field.
      */
     @Test
-    public void testGetField()
+    void testGetField()
     {
         assertNotNull(UtilReflection.getField(new Config(new Resolution(320, 240, 32), 16, false), "output"));
     }
@@ -272,7 +272,7 @@ public final class UtilReflectionTest
      * Test get field accessible.
      */
     @Test
-    public void testGetFieldAccessible()
+    void testGetFieldAccessible()
     {
         assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_PRIVATE_CONSTRUCTOR"));
     }
@@ -281,7 +281,7 @@ public final class UtilReflectionTest
      * Test get field not accessible.
      */
     @Test
-    public void testGetFieldNotAccessible()
+    void testGetFieldNotAccessible()
     {
         assertNotNull(UtilReflection.getField(Verbose.class, "LOGGER"));
     }
@@ -290,7 +290,7 @@ public final class UtilReflectionTest
      * Test field accessible from super class.
      */
     @Test
-    public void testGetFieldSuperClass()
+    void testGetFieldSuperClass()
     {
         final String accessible = UtilReflection.getField(FieldTest2.class, "test");
         assertNotNull(accessible);
@@ -300,7 +300,7 @@ public final class UtilReflectionTest
      * Test get field unknown.
      */
     @Test
-    public void testGetFieldUnknown()
+    void testGetFieldUnknown()
     {
         assertThrows(() -> UtilReflection.getField(new Object(), "0"), UtilReflection.ERROR_FIELD + "0");
     }
@@ -309,7 +309,7 @@ public final class UtilReflectionTest
      * Test get compatible constructor not found.
      */
     @Test
-    public void testGetCompatibleConstructorNone()
+    void testGetCompatibleConstructorNone()
     {
         final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
                                 + String.class.getName()
@@ -327,7 +327,7 @@ public final class UtilReflectionTest
      * @throws NoSuchMethodException If error.
      */
     @Test
-    public void testGetCompatibleConstructorParent() throws NoSuchMethodException
+    void testGetCompatibleConstructorParent() throws NoSuchMethodException
     {
         assertNotNull(UtilReflection.getCompatibleConstructorParent(String.class,
                                                                     UtilReflection.getParamTypes(new Object())));
@@ -337,7 +337,7 @@ public final class UtilReflectionTest
      * Test get compatible constructor parent none.
      */
     @Test
-    public void testGetCompatibleConstructorParentNone()
+    void testGetCompatibleConstructorParentNone()
     {
         final String expected = UtilReflection.ERROR_NO_CONSTRUCTOR_COMPATIBLE
                                 + String.class.getName()
@@ -353,7 +353,7 @@ public final class UtilReflectionTest
      * Test get interfaces.
      */
     @Test
-    public void testGetInterfaces()
+    void testGetInterfaces()
     {
         assertEquals(0, UtilReflection.getInterfaces(Interface0.class, Interface0.class).size());
         assertEquals(0, UtilReflection.getInterfaces(Interface1.class, Interface0.class).size());

@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link FilterHq2x}.
  */
-public final class FilterHq2xTest
+final class FilterHq2xTest
 {
     /**
      * Prepare tests.
@@ -59,7 +59,7 @@ public final class FilterHq2xTest
      * Test filter.
      */
     @Test
-    public void testHq2x()
+    void testHq2x()
     {
         final Media media = Medias.create("image.png");
         final ImageBuffer image = Graphics.getImageBuffer(media);

@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link ActionConfig}.
  */
-public final class ActionConfigTest
+final class ActionConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public final class ActionConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final ActionConfig action = new ActionConfig("name", "description", 0, 1, 16, 32);
         final Xml root = new Xml("test");
@@ -77,7 +77,7 @@ public final class ActionConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
@@ -97,7 +97,7 @@ public final class ActionConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 
@@ -115,7 +115,7 @@ public final class ActionConfigTest
      * Test the to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final ActionConfig action = new ActionConfig("a", "b", 0, 1, 2, 3);
 

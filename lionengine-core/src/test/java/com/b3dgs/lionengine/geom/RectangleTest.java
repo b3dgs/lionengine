@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Rectangle}.
  */
-public final class RectangleTest
+final class RectangleTest
 {
     /**
      * Test default constructor.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         final Rectangle rectangle = new Rectangle();
 
@@ -54,7 +54,7 @@ public final class RectangleTest
      * Test constructor with parameters.
      */
     @Test
-    public void testConstructorParameters()
+    void testConstructorParameters()
     {
         final Rectangle rectangle = new Rectangle(1.0, 2.0, 3.6, 4.6);
 
@@ -74,7 +74,7 @@ public final class RectangleTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         final Rectangle rectangle = new Rectangle();
         rectangle.set(1.0, 2.0, 3.6, 4.6);
@@ -95,7 +95,7 @@ public final class RectangleTest
      * Test intersects.
      */
     @Test
-    public void testIntersects()
+    void testIntersects()
     {
         final Rectangle rectangle1 = new Rectangle(0.0, 0.0, 10.0, 10.0);
         final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
@@ -125,7 +125,7 @@ public final class RectangleTest
      * Test contains.
      */
     @Test
-    public void testContains()
+    void testContains()
     {
         final Rectangle rectangle1 = new Rectangle(0.0, 0.0, 10.0, 10.0);
         final Rectangle rectangle2 = new Rectangle(1.0, 1.0, 5.0, 5.0);
@@ -161,7 +161,7 @@ public final class RectangleTest
      * Test rotation 0.
      */
     @Test
-    public void testRotate0()
+    void testRotate0()
     {
         final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
         rectangle.rotate(0);
@@ -173,7 +173,7 @@ public final class RectangleTest
      * Test rotation 90.
      */
     @Test
-    public void testRotate90()
+    void testRotate90()
     {
         final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
         rectangle.rotate(90);
@@ -185,7 +185,7 @@ public final class RectangleTest
      * Test rotation 360.
      */
     @Test
-    public void testRotate360()
+    void testRotate360()
     {
         final Rectangle rectangle = new Rectangle(1.0, 2.0, 5.0, 10.0);
         rectangle.rotate(360);
@@ -197,7 +197,7 @@ public final class RectangleTest
      * Test translate.
      */
     @Test
-    public void testTranslate()
+    void testTranslate()
     {
         final Rectangle rectangle = new Rectangle(1.0, 1.0, 5.0, 5.0);
         rectangle.translate(1.0, 2.0);
@@ -216,7 +216,7 @@ public final class RectangleTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Rectangle rectangle = new Rectangle(0, 1, 2, 3);
 
@@ -246,7 +246,7 @@ public final class RectangleTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Rectangle rectangle = new Rectangle(0, 1, 2, 3);
 
@@ -274,7 +274,7 @@ public final class RectangleTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Rectangle [x=0.0, y=0.0, width=0.0, height=0.0]", new Rectangle().toString());
         assertEquals("Rectangle [x=0.0, y=1.0, width=2.0, height=3.0]", new Rectangle(0, 1, 2, 3).toString());

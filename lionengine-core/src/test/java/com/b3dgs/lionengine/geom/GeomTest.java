@@ -32,13 +32,13 @@ import com.b3dgs.lionengine.Localizable;
 /**
  * Test {@link Geom}.
  */
-public final class GeomTest
+final class GeomTest
 {
     /**
      * Test geom class.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Geom.class);
     }
@@ -47,7 +47,7 @@ public final class GeomTest
      * Test intersection function without contact.
      */
     @Test
-    public void testNoIntersection()
+    void testNoIntersection()
     {
         assertFalse(Geom.intersection(new Line(), new Line()).isPresent());
         assertFalse(Geom.intersection(new Line(0.0, 0.0, 2.0, 2.0), new Line(2.0, 2.0, 4.0, 4.0)).isPresent());
@@ -60,7 +60,7 @@ public final class GeomTest
      * Test intersection function.
      */
     @Test
-    public void testIntersection()
+    void testIntersection()
     {
         assertEquals(new Coord(1.0, 2.0),
                      Geom.intersection(new Line(0.0, 2.0, 2.0, 2.0), new Line(1.0, 0.0, 1.0, 4.0)).get());
@@ -72,7 +72,7 @@ public final class GeomTest
      * Test intersection function with null argument 1.
      */
     @Test
-    public void testIntersectionNullArgument1()
+    void testIntersectionNullArgument1()
     {
         assertThrows(() -> Geom.intersection(null, new Line()).isPresent(), "Unexpected null argument !");
     }
@@ -81,7 +81,7 @@ public final class GeomTest
      * Test intersection function with null argument 2.
      */
     @Test
-    public void testIntersectionNullArgument2()
+    void testIntersectionNullArgument2()
     {
         assertThrows(() -> Geom.intersection(new Line(), null).isPresent(), "Unexpected null argument !");
     }
@@ -90,7 +90,7 @@ public final class GeomTest
      * Test create localizable.
      */
     @Test
-    public void testCreateLocalizable()
+    void testCreateLocalizable()
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
@@ -102,7 +102,7 @@ public final class GeomTest
      * Test if localizable are same.
      */
     @Test
-    public void testSameLocalizable()
+    void testSameLocalizable()
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
@@ -124,7 +124,7 @@ public final class GeomTest
      * Test if localizable are not same.
      */
     @Test
-    public void testNotSameLocalizable()
+    void testNotSameLocalizable()
     {
         final Localizable localizable = Geom.createLocalizable(2.5, 3.5);
 
@@ -145,7 +145,7 @@ public final class GeomTest
      * Test localizable equals.
      */
     @Test
-    public void testEqualsLocalizable()
+    void testEqualsLocalizable()
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
@@ -164,7 +164,7 @@ public final class GeomTest
      * Test localizable hash code.
      */
     @Test
-    public void testHashCodeLocalizable()
+    void testHashCodeLocalizable()
     {
         final Localizable localizable = Geom.createLocalizable(1.5, 2.5);
 
@@ -179,7 +179,7 @@ public final class GeomTest
      * Test localizable to string.
      */
     @Test
-    public void testToStringLocalizable()
+    void testToStringLocalizable()
     {
         assertEquals("LocalizableImpl [x=1.5, y=2.5]", Geom.createLocalizable(1.5, 2.5).toString());
     }
@@ -188,7 +188,7 @@ public final class GeomTest
      * Test create area.
      */
     @Test
-    public void testCreateArea()
+    void testCreateArea()
     {
         final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
@@ -204,7 +204,7 @@ public final class GeomTest
      * Test area intersects.
      */
     @Test
-    public void testAreaIntersects()
+    void testAreaIntersects()
     {
         final Area area1 = Geom.createArea(0.0, 0.0, 10.0, 10.0);
         final Area area2 = Geom.createArea(1.0, 1.0, 5.0, 5.0);
@@ -234,7 +234,7 @@ public final class GeomTest
      * Test area contains.
      */
     @Test
-    public void testAreaContains()
+    void testAreaContains()
     {
         final Area area1 = Geom.createArea(0.0, 0.0, 10.0, 10.0);
         final Area area2 = Geom.createArea(1.0, 1.0, 5.0, 5.0);
@@ -270,7 +270,7 @@ public final class GeomTest
      * Test area equals.
      */
     @Test
-    public void testEqualsArea()
+    void testEqualsArea()
     {
         final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
@@ -292,7 +292,7 @@ public final class GeomTest
      * Test area hash code.
      */
     @Test
-    public void testHashCodeArea()
+    void testHashCodeArea()
     {
         final Area area = Geom.createArea(1.5, 2.5, 3.5, 4.5);
 
@@ -310,7 +310,7 @@ public final class GeomTest
      * Test area to string.
      */
     @Test
-    public void testToStringArea()
+    void testToStringArea()
     {
         assertEquals("AreaImpl [x=1.5, y=2.5, width=3.5, height=4.5]", Geom.createArea(1.5, 2.5, 3.5, 4.5).toString());
     }

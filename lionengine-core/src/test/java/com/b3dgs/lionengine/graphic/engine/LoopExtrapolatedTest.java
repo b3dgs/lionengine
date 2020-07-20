@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.ScreenMock;
 /**
  * Test {@link LoopExtrapolated}.
  */
-public final class LoopExtrapolatedTest
+final class LoopExtrapolatedTest
 {
     /**
      * Prepare tests.
@@ -110,7 +110,7 @@ public final class LoopExtrapolatedTest
      * Test loop.
      */
     @Test
-    public void testLoop()
+    void testLoop()
     {
         ScreenMock.setScreenWait(false);
 
@@ -133,7 +133,7 @@ public final class LoopExtrapolatedTest
      * Test without sync.
      */
     @Test
-    public void testNoSync()
+    void testNoSync()
     {
         ScreenMock.setScreenWait(false);
 
@@ -156,7 +156,7 @@ public final class LoopExtrapolatedTest
      * Test without sync full screen.
      */
     @Test
-    public void testNoSyncFullscreen()
+    void testNoSyncFullscreen()
     {
         ScreenMock.setScreenWait(false);
 
@@ -180,7 +180,7 @@ public final class LoopExtrapolatedTest
      * Test with not ready screen.
      */
     @Test
-    public void testUnready()
+    void testUnready()
     {
         ScreenMock.setScreenWait(true);
 

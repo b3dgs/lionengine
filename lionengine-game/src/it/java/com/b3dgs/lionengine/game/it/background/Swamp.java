@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Swamp background implementation.
  */
-class Swamp extends BackgroundAbstract
+final class Swamp extends BackgroundAbstract
 {
     /** Moon rasters. */
     private static final int MOON_RASTERS = 20;

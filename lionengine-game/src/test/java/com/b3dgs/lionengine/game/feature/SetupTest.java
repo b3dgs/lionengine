@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link Setup}.
  */
-public final class SetupTest
+final class SetupTest
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public final class SetupTest
      * Test the setup config.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         final Media config = Medias.create("Object.xml");
         final Setup setup = new Setup(config);
@@ -72,7 +72,7 @@ public final class SetupTest
      * Test the setup config inside folder.
      */
     @Test
-    public void testConfigFolder()
+    void testConfigFolder()
     {
         final Media config = Medias.create("setup", "Object.xml");
         final Setup setup = new Setup(config);
@@ -85,7 +85,7 @@ public final class SetupTest
      * Test the setup config.
      */
     @Test
-    public void testConfigNoIcon()
+    void testConfigNoIcon()
     {
         final Media config = Medias.create("ObjectNoIcon.xml");
         final Setup setup = new Setup(config);
@@ -99,7 +99,7 @@ public final class SetupTest
      * Test the setup class.
      */
     @Test
-    public void testClass()
+    void testClass()
     {
         final Media config = Medias.create("Object.xml");
         final Setup setup = new Setup(config);
@@ -123,7 +123,7 @@ public final class SetupTest
      * Test the setup surface config.
      */
     @Test
-    public void testSurface()
+    void testSurface()
     {
         final Media config = Medias.create("Object.xml");
         final Setup setup = new Setup(config);

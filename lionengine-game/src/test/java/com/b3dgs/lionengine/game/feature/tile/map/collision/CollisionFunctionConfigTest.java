@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link CollisionFunctionConfig}.
  */
-public final class CollisionFunctionConfigTest
+final class CollisionFunctionConfigTest
 {
     /** Hack enum. */
     private static final UtilEnum<CollisionFunctionType> HACK = new UtilEnum<>(CollisionFunctionType.class,
@@ -60,7 +60,7 @@ public final class CollisionFunctionConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(CollisionFunctionConfig.class);
     }
@@ -69,7 +69,7 @@ public final class CollisionFunctionConfigTest
      * Test exports imports.
      */
     @Test
-    public void testFunction()
+    void testFunction()
     {
         final Xml root = new Xml("function");
         final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);
@@ -84,7 +84,7 @@ public final class CollisionFunctionConfigTest
      * Test exports imports with unknown enum.
      */
     @Test
-    public void testFunctionUnknown()
+    void testFunctionUnknown()
     {
         final Xml root = new Xml("function");
         root.createChild(CollisionFunctionConfig.FUNCTION)
@@ -97,7 +97,7 @@ public final class CollisionFunctionConfigTest
      * Test export with <code>null</code> function.
      */
     @Test
-    public void testExportFunctionNull()
+    void testExportFunctionNull()
     {
         final Xml root = new Xml("null");
         CollisionFunctionConfig.exports(root, new CollisionFunction()
@@ -134,7 +134,7 @@ public final class CollisionFunctionConfigTest
      * Test export with unknown function.
      */
     @Test
-    public void testExportFunctionUnknown()
+    void testExportFunctionUnknown()
     {
         final Xml root = new Xml("FAIL");
         CollisionFunctionConfig.exports(root, new CollisionFunction()
@@ -171,7 +171,7 @@ public final class CollisionFunctionConfigTest
      * Test import with invalid function.
      */
     @Test
-    public void testImportFunctionInvalid()
+    void testImportFunctionInvalid()
     {
         final Xml root = new Xml("function");
         final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);

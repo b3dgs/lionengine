@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link MapTileTransitionModel}.
  */
-public final class MapTileTransitionModelTest
+final class MapTileTransitionModelTest
 {
     /** Object config test. */
     private static Media media;
@@ -117,7 +117,7 @@ public final class MapTileTransitionModelTest
      * Test the map transition resolution.
      */
     @Test
-    public void testResolution()
+    void testResolution()
     {
         testResolution(TILE_WATER, WATER, TILE_GROUND, GROUND, TRANSITION);
         testResolution(TILE_WATER, WATER, TILE_TREE, TREE, TRANSITION2);

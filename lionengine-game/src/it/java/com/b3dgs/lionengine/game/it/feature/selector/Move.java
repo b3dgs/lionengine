@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 /**
  * Move action.
  */
-public class Move extends ActionModel
+class Move extends ActionModel
 {
     /**
      * Create move action.

@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.UtilMath;
 /**
  * Test {@link UtilColor}.
  */
-public final class UtilColorTest
+final class UtilColorTest
 {
     /**
      * Prepare tests.
@@ -59,7 +59,7 @@ public final class UtilColorTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilColor.class);
     }
@@ -68,7 +68,7 @@ public final class UtilColorTest
      * Test delta between two colors.
      */
     @Test
-    public void testDelta()
+    void testDelta()
     {
         assertEquals(Math.sqrt(255 * 255 + 255 * 255 + 255 * 255),
                      UtilColor.getDelta(ColorRgba.BLACK, ColorRgba.WHITE));
@@ -80,7 +80,7 @@ public final class UtilColorTest
      * Test rgb increment.
      */
     @Test
-    public void testRgbInc()
+    void testRgbInc()
     {
         final int step = 5;
         for (int r = 0; r < Constant.UNSIGNED_BYTE; r += step)
@@ -115,7 +115,7 @@ public final class UtilColorTest
      * Test opaque and transparent exclusive.
      */
     @Test
-    public void testOpaqueTransparentExclusive()
+    void testOpaqueTransparentExclusive()
     {
         assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLACK, ColorRgba.WHITE));
         assertFalse(UtilColor.isOpaqueTransparentExclusive(ColorRgba.BLUE.getRgba(), ColorRgba.RED.getRgba()));
@@ -133,7 +133,7 @@ public final class UtilColorTest
      * Test filter rgb.
      */
     @Test
-    public void testFilterRgb()
+    void testFilterRgb()
     {
         assertEquals(ColorRgba.BLACK.getRgba(), UtilColor.multiplyRgb(ColorRgba.WHITE.getRgba(), 0.0, 0.0, 0.0));
         assertEquals(ColorRgba.BLUE.getRgba(), UtilColor.multiplyRgb(ColorRgba.CYAN.getRgba(), 1.0, 0.0, 1.0));
@@ -149,7 +149,7 @@ public final class UtilColorTest
      * Test weighted color of a surface.
      */
     @Test
-    public void testWeighted()
+    void testWeighted()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(2, 2, ColorRgba.TRANSPARENT);
 

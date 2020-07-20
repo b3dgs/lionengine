@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Media}.
  */
-public final class MediaTest
+final class MediaTest
 {
     /** Old resources directory. */
     private String oldDir;
@@ -67,7 +67,7 @@ public final class MediaTest
      * Test path getter.
      */
     @Test
-    public void testPath()
+    void testPath()
     {
         final String path = "path";
 
@@ -78,7 +78,7 @@ public final class MediaTest
      * Test file path getter.
      */
     @Test
-    public void testFile()
+    void testFile()
     {
         Medias.setLoadFromJar(MediaTest.class);
         final String path = "image.png";
@@ -90,7 +90,7 @@ public final class MediaTest
      * Test parent path getter.
      */
     @Test
-    public void testParentPath()
+    void testParentPath()
     {
         final String path = "path";
 
@@ -103,7 +103,7 @@ public final class MediaTest
      * @throws IOException If error.
      */
     @Test
-    public void testInputStream() throws IOException
+    void testInputStream() throws IOException
     {
         Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create("image.png");
@@ -120,7 +120,7 @@ public final class MediaTest
      * Test input stream with no existing file.
      */
     @Test
-    public void testInputStreamNotExists()
+    void testInputStreamNotExists()
     {
         Medias.setResourcesDirectory(null);
         final Media media = Medias.create("void");
@@ -135,7 +135,7 @@ public final class MediaTest
      * @throws IOException If error.
      */
     @Test
-    public void testInputStreamNotExistsInJar() throws IOException
+    void testInputStreamNotExistsInJar() throws IOException
     {
         Medias.setLoadFromJar(MediaTest.class);
         final File file = File.createTempFile("void", "");
@@ -163,7 +163,7 @@ public final class MediaTest
      * @throws IOException If error.
      */
     @Test
-    public void testOutputStream() throws IOException
+    void testOutputStream() throws IOException
     {
         Medias.setLoadFromJar(MediaTest.class);
         final Media media = Medias.create(String.valueOf(System.nanoTime()), "test");
@@ -186,7 +186,7 @@ public final class MediaTest
      * @throws IOException If error.
      */
     @Test
-    public void testExists() throws IOException
+    void testExists() throws IOException
     {
         Medias.setLoadFromJar(MediasTest.class);
 
@@ -211,7 +211,7 @@ public final class MediaTest
      * @throws IOException If error.
      */
     @Test
-    public void testUnableCreateTempDir() throws IOException
+    void testUnableCreateTempDir() throws IOException
     {
         final String tempFolder = UtilReflection.getField(MediaDefault.class, "TEMP");
         final File folder = new File(tempFolder, MediasTest.class.getClass().getSimpleName());
@@ -239,7 +239,7 @@ public final class MediaTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Media media = Medias.create("media");
         final Media media1 = Medias.create("media");
@@ -255,7 +255,7 @@ public final class MediaTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Media media = Medias.create("media");
         final Media media1 = Medias.create("media");
@@ -272,7 +272,7 @@ public final class MediaTest
      * Test get name.
      */
     @Test
-    public void testGetName()
+    void testGetName()
     {
         final Media media = Medias.create("test", "media.ext");
 

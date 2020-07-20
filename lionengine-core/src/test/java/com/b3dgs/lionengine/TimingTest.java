@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Timing}.
  */
-public final class TimingTest
+final class TimingTest
 {
     /** Pause time value. */
     private static final long PAUSE = 30L;
@@ -37,7 +37,7 @@ public final class TimingTest
      * Test start.
      */
     @Test
-    public void testStart()
+    void testStart()
     {
         assertFalse(timing.isStarted());
         assertEquals(0L, timing.elapsed());
@@ -70,7 +70,7 @@ public final class TimingTest
      * Test stop.
      */
     @Test
-    public void testStop()
+    void testStop()
     {
         timing.start();
         UtilTests.pause(PAUSE);
@@ -85,7 +85,7 @@ public final class TimingTest
      * Test pause.
      */
     @Test
-    public void testPause()
+    void testPause()
     {
         timing.start();
         UtilTests.pause(PAUSE);
@@ -104,7 +104,7 @@ public final class TimingTest
      * Test unpause.
      */
     @Test
-    public void testUnpause()
+    void testUnpause()
     {
         timing.start();
         timing.pause();
@@ -124,7 +124,7 @@ public final class TimingTest
      * Test restart.
      */
     @Test
-    public void testRestart()
+    void testRestart()
     {
         timing.start();
 
@@ -143,7 +143,7 @@ public final class TimingTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         timing.set(PAUSE);
 

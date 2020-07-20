@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.graphic.drawable.Image;
 /**
  * Test {@link ResourceLoader}.
  */
-public final class ResourceLoaderTest
+final class ResourceLoaderTest
 {
     /**
      * Prepare tests.
@@ -65,7 +65,7 @@ public final class ResourceLoaderTest
      * Test resource loader.
      */
     @Test
-    public void testResourceLoader()
+    void testResourceLoader()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         final Image resource = Drawable.loadImage(Medias.create("image.png"));
@@ -89,7 +89,7 @@ public final class ResourceLoaderTest
      * Test already started.
      */
     @Test
-    public void testAlreadyStarted()
+    void testAlreadyStarted()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
@@ -101,7 +101,7 @@ public final class ResourceLoaderTest
      * Test not started get.
      */
     @Test
-    public void testNotStartedGet()
+    void testNotStartedGet()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
 
@@ -112,7 +112,7 @@ public final class ResourceLoaderTest
      * Test not started await.
      */
     @Test
-    public void testNotStartedAwait()
+    void testNotStartedAwait()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
 
@@ -123,7 +123,7 @@ public final class ResourceLoaderTest
      * Test add already started.
      */
     @Test
-    public void testAddAlreadyStarted()
+    void testAddAlreadyStarted()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
@@ -135,7 +135,7 @@ public final class ResourceLoaderTest
      * Test add <code>null</code> key.
      */
     @Test
-    public void testAddNullKey()
+    void testAddNullKey()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
@@ -147,7 +147,7 @@ public final class ResourceLoaderTest
      * Test add <code>null</code> resource.
      */
     @Test
-    public void testAddNullResource()
+    void testAddNullResource()
     {
         final ResourceLoader<Type> resourceLoader = new ResourceLoader<>();
         resourceLoader.start();
@@ -161,7 +161,7 @@ public final class ResourceLoaderTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testResourceLoaderSkip() throws InterruptedException
+    void testResourceLoaderSkip() throws InterruptedException
     {
         final CountDownLatch startedLatch = new CountDownLatch(1);
         final Thread thread = new Thread()

@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Node}.
  */
-public final class NodeTest
+final class NodeTest
 {
     /**
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Node node = new Node(0, 1);
         node.setCost(1.2);
@@ -54,7 +54,7 @@ public final class NodeTest
      * Test the equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Node node = new Node(0, 1);
         node.setDepth(1);
@@ -73,7 +73,7 @@ public final class NodeTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Node hash = new Node(0, 1);
 
@@ -89,7 +89,7 @@ public final class NodeTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final Node node = new Node(1, 2);
 

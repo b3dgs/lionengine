@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link StateConfig}.
  */
-public final class StateConfigTest
+final class StateConfigTest
 {
     /**
      * Prepare test.
@@ -57,7 +57,7 @@ public final class StateConfigTest
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(StateConfig.class);
     }
@@ -66,7 +66,7 @@ public final class StateConfigTest
      * Test with no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml("test");
 
@@ -77,7 +77,7 @@ public final class StateConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("test");
         root.add(StateConfig.exports(Class.class));

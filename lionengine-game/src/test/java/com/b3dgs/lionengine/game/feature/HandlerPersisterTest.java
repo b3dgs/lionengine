@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 /**
  * Test {@link HandlerPersister}.
  */
-public final class HandlerPersisterTest
+final class HandlerPersisterTest
 {
     /**
      * Prepare test.
@@ -68,7 +68,7 @@ public final class HandlerPersisterTest
      * @throws IOException If error.
      */
     @Test
-    public void testWithoutMap() throws IOException
+    void testWithoutMap() throws IOException
     {
         final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
         featurable.getFeature(Transformable.class).teleport(1, 2);
@@ -110,7 +110,7 @@ public final class HandlerPersisterTest
      * @throws IOException If error.
      */
     @Test
-    public void testWithMap() throws IOException
+    void testWithMap() throws IOException
     {
         services.add(new Camera());
         final MapTile map = services.add(new MapTileGame());
@@ -155,7 +155,7 @@ public final class HandlerPersisterTest
      * @throws IOException If error.
      */
     @Test
-    public void testWithMapCollidable() throws IOException
+    void testWithMapCollidable() throws IOException
     {
         services.add(new Camera());
         final MapTile map = services.add(new MapTileGame());
@@ -201,7 +201,7 @@ public final class HandlerPersisterTest
      * @throws IOException If error.
      */
     @Test
-    public void testCleanLoad() throws IOException
+    void testCleanLoad() throws IOException
     {
         final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
         handler.add(featurable);

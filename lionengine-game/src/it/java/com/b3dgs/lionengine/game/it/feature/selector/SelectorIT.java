@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Integration test for selector package.
  */
-public class SelectorIT
+final class SelectorIT
 {
     /**
      * Test the selector.
      */
     @Test
-    public void testSelector()
+    void testSelector()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 400, 60);

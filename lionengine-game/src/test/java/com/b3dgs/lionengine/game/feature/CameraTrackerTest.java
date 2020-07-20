@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link CameraTracker}.
  */
-public final class CameraTrackerTest
+final class CameraTrackerTest
 {
     /** Object config test. */
     private static Media config;
@@ -62,7 +62,7 @@ public final class CameraTrackerTest
      * Test the tracker feature.
      */
     @Test
-    public void testTracker()
+    void testTracker()
     {
         final Camera camera = services.add(new Camera());
         camera.setView(0, 0, 16, 32, 32);

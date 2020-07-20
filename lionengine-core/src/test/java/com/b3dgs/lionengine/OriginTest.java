@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Origin}.
  */
-public final class OriginTest
+final class OriginTest
 {
     /**
      * Test the enum.
@@ -32,7 +32,7 @@ public final class OriginTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Origin.class);
     }
@@ -41,7 +41,7 @@ public final class OriginTest
      * Test the origin enum switch.
      */
     @Test
-    public void testEnumSwitch()
+    void testEnumSwitch()
     {
         for (final Origin origin : Origin.values())
         {
@@ -99,7 +99,7 @@ public final class OriginTest
      * Test the origin enum fail.
      */
     @Test
-    public void testEnumFail()
+    void testEnumFail()
     {
         final Origin fail = UtilEnum.make(Origin.class, "FAIL");
 

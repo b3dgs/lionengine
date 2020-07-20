@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Alterable}.
  */
-public final class AlterableTest
+final class AlterableTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final Alterable alterable = new Alterable(-1);
 
@@ -44,7 +44,7 @@ public final class AlterableTest
      * Test increase.
      */
     @Test
-    public void testIncrease()
+    void testIncrease()
     {
         final Alterable alterable = new Alterable(3);
         alterable.increase(1);
@@ -64,7 +64,7 @@ public final class AlterableTest
      * Test decrease.
      */
     @Test
-    public void testDecrease()
+    void testDecrease()
     {
         final Alterable alterable = new Alterable(3);
         alterable.fill();
@@ -85,7 +85,7 @@ public final class AlterableTest
      * Test fill.
      */
     @Test
-    public void testFill()
+    void testFill()
     {
         final Alterable alterable = new Alterable(4);
 
@@ -100,7 +100,7 @@ public final class AlterableTest
      * Test percent.
      */
     @Test
-    public void testPercent()
+    void testPercent()
     {
         final Alterable alterable = new Alterable(1);
         alterable.fill();
@@ -120,7 +120,7 @@ public final class AlterableTest
      * Test reset.
      */
     @Test
-    public void testReset()
+    void testReset()
     {
         final Alterable alterable = new Alterable(4);
         alterable.set(2);
@@ -136,7 +136,7 @@ public final class AlterableTest
      * Test set max.
      */
     @Test
-    public void testSetMax()
+    void testSetMax()
     {
         final Alterable alterable = new Alterable(0);
         alterable.set(1);
@@ -162,7 +162,7 @@ public final class AlterableTest
      * Test set max over.
      */
     @Test
-    public void testSetMaxOver()
+    void testSetMaxOver()
     {
         final Alterable alterable = new Alterable(0, true);
         alterable.set(1);
@@ -174,7 +174,7 @@ public final class AlterableTest
      * Test getter.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         final Alterable alterable = new Alterable(2);
         alterable.set(1);
@@ -191,7 +191,7 @@ public final class AlterableTest
      * Test is.
      */
     @Test
-    public void testIs()
+    void testIs()
     {
         final Alterable alterable = new Alterable(2);
 

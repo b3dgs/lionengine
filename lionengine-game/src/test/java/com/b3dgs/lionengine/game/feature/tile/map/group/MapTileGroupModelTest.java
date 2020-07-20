@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 /**
  * Test {@link MapTileGroupModel}.
  */
-public final class MapTileGroupModelTest
+final class MapTileGroupModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -94,7 +94,7 @@ public final class MapTileGroupModelTest
      * Test the map tile with default group.
      */
     @Test
-    public void testDefault()
+    void testDefault()
     {
         assertTrue(mapGroup.getGroup(Constant.EMPTY_STRING).isEmpty());
         assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
@@ -110,7 +110,7 @@ public final class MapTileGroupModelTest
      * Test the map tile with custom group.
      */
     @Test
-    public void testCustom()
+    void testCustom()
     {
         mapGroup.changeGroup(tile, "water");
 
@@ -137,7 +137,7 @@ public final class MapTileGroupModelTest
      * Test the map tile with loaded media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final Media configGroups = Medias.create("groups.xml");
         final Collection<TileGroup> groups = new ArrayList<>();

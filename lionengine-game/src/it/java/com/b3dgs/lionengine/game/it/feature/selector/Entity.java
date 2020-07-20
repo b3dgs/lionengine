@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Entity representation base.
  */
-public class Entity extends FeaturableModel
+class Entity extends FeaturableModel
 {
     /**
      * Create entity.

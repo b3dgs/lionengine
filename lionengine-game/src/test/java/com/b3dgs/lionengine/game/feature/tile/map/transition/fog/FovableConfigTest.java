@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link FovableConfig}.
  */
-public final class FovableConfigTest
+final class FovableConfigTest
 {
     /**
      * Prepare test.
@@ -56,7 +56,7 @@ public final class FovableConfigTest
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(FovableConfig.class);
     }
@@ -65,7 +65,7 @@ public final class FovableConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("test");
 
@@ -84,7 +84,7 @@ public final class FovableConfigTest
      * Test exports imports without node.
      */
     @Test
-    public void testExportsImportsNoNode()
+    void testExportsImportsNoNode()
     {
         final Xml root = new Xml("test");
 

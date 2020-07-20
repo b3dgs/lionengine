@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.Force;
 /**
  * Test {@link TransformableModel}.
  */
-public final class TransformableModelTest
+final class TransformableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -87,7 +87,7 @@ public final class TransformableModelTest
      * Test the transformable with default size.
      */
     @Test
-    public void testDefaultSize()
+    void testDefaultSize()
     {
         final Media media = UtilSetup.createConfig(TransformableModelTest.class);
         final Transformable transformable = new TransformableModel(services, new Setup(media));
@@ -101,7 +101,7 @@ public final class TransformableModelTest
      * Test the transformable teleport.
      */
     @Test
-    public void testTeleport()
+    void testTeleport()
     {
         assertLocalization(0.0, 0.0, 0.0, 0.0);
 
@@ -122,7 +122,7 @@ public final class TransformableModelTest
      * Test the transformable location setting.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         assertLocalization(0.0, 0.0, 0.0, 0.0);
 
@@ -143,7 +143,7 @@ public final class TransformableModelTest
      * Test the transformable size.
      */
     @Test
-    public void testSetSize()
+    void testSetSize()
     {
         assertEquals(16, transformable.getOldWidth());
         assertEquals(32, transformable.getOldHeight());
@@ -162,7 +162,7 @@ public final class TransformableModelTest
      * Test the transformable moving.
      */
     @Test
-    public void testMoveLocation()
+    void testMoveLocation()
     {
         assertLocalization(0.0, 0.0, 0.0, 0.0);
 
@@ -179,7 +179,7 @@ public final class TransformableModelTest
      * Test the transformable moving on single axis at a time.
      */
     @Test
-    public void testMoveLocationSingleAxis()
+    void testMoveLocationSingleAxis()
     {
         transformable.moveLocationX(1.0, 1.0);
 
@@ -194,7 +194,7 @@ public final class TransformableModelTest
      * Test the transformable transform function.
      */
     @Test
-    public void testTransform()
+    void testTransform()
     {
         transformable.transform(1.0, 2.0, 3, 4);
 
@@ -210,7 +210,7 @@ public final class TransformableModelTest
      * Test transform notification.
      */
     @Test
-    public void testNotify()
+    void testNotify()
     {
         final AtomicBoolean transformed = new AtomicBoolean();
         final TransformableListener listener = t -> transformed.set(true);
@@ -276,7 +276,7 @@ public final class TransformableModelTest
      * Test recycle call.
      */
     @Test
-    public void testRecycle()
+    void testRecycle()
     {
         transformable.teleport(1.0, 1.0);
         transformable.recycle();

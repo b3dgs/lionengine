@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
 /**
  * Test {@link SpriteAnimated}.
  */
-public final class SpriteAnimatedTest
+final class SpriteAnimatedTest
 {
     /**
      * Prepare tests.
@@ -78,7 +78,7 @@ public final class SpriteAnimatedTest
      * Test constructor with <code>null</code> media.
      */
     @Test
-    public void testConstructorMediaNull()
+    void testConstructorMediaNull()
     {
         assertThrows(() -> new SpriteAnimatedImpl((Media) null, 1, 1), "Unexpected null argument !");
     }
@@ -87,7 +87,7 @@ public final class SpriteAnimatedTest
      * Test constructor with invalid horizontal frames.
      */
     @Test
-    public void testConstructorInvalidHorizontalFrames()
+    void testConstructorInvalidHorizontalFrames()
     {
         assertThrows(() -> new SpriteAnimatedImpl(Medias.create("image.png"), 0, 1),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -97,7 +97,7 @@ public final class SpriteAnimatedTest
      * Test constructor with invalid vertical frames.
      */
     @Test
-    public void testConstructorInvalidVerticalFrames()
+    void testConstructorInvalidVerticalFrames()
     {
         assertThrows(() -> new SpriteAnimatedImpl(Medias.create("image.png"), 1, 0),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -107,7 +107,7 @@ public final class SpriteAnimatedTest
      * Test constructor with <code>null</code> surface.
      */
     @Test
-    public void testConstructorSurfaceNull()
+    void testConstructorSurfaceNull()
     {
         assertThrows(() -> new SpriteAnimatedImpl((ImageBuffer) null, 1, 1), "Unexpected null argument !");
     }
@@ -116,7 +116,7 @@ public final class SpriteAnimatedTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorMedia()
+    void testConstructorMedia()
     {
         final Media media = Medias.create("image.png");
         final SpriteAnimated sprite = new SpriteAnimatedImpl(media, 16, 8);
@@ -135,7 +135,7 @@ public final class SpriteAnimatedTest
      * Test constructor with surface.
      */
     @Test
-    public void testConstructorSurface()
+    void testConstructorSurface()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(surface, 16, 8);
@@ -154,7 +154,7 @@ public final class SpriteAnimatedTest
      * Test load with media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final Media media = Medias.create("image.png");
         final SpriteAnimated sprite = new SpriteAnimatedImpl(media, 16, 8);
@@ -170,7 +170,7 @@ public final class SpriteAnimatedTest
      * Test load with media already loaded.
      */
     @Test
-    public void testLoadMediaAlready()
+    void testLoadMediaAlready()
     {
         final Media media = Medias.create("image.png");
         final SpriteAnimated sprite = new SpriteAnimatedImpl(media, 16, 8);
@@ -183,7 +183,7 @@ public final class SpriteAnimatedTest
      * Test load with surface.
      */
     @Test
-    public void testLoadSurface()
+    void testLoadSurface()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -194,7 +194,7 @@ public final class SpriteAnimatedTest
      * Test stretch sprite.
      */
     @Test
-    public void testStretch()
+    void testStretch()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.stretch(100.0, 100.0);
@@ -230,7 +230,7 @@ public final class SpriteAnimatedTest
      * Test stretch sprite with invalid width.
      */
     @Test
-    public void testStretchInvalidWidth()
+    void testStretchInvalidWidth()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -241,7 +241,7 @@ public final class SpriteAnimatedTest
      * Test stretch sprite with invalid height.
      */
     @Test
-    public void testStretchInvalidHeight()
+    void testStretchInvalidHeight()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -252,7 +252,7 @@ public final class SpriteAnimatedTest
      * Test rotate sprite.
      */
     @Test
-    public void testRotate()
+    void testRotate()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         for (int angle = -720; angle < 720; angle++)
@@ -269,7 +269,7 @@ public final class SpriteAnimatedTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final SpriteAnimatedImpl sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -290,7 +290,7 @@ public final class SpriteAnimatedTest
      * Test set location with viewer.
      */
     @Test
-    public void testSetLocationViewer()
+    void testSetLocationViewer()
     {
         final SpriteAnimatedImpl sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         final ViewerMock viewer = new ViewerMock();
@@ -314,7 +314,7 @@ public final class SpriteAnimatedTest
      * Test set alpha.
      */
     @Test
-    public void testSetAlpha()
+    void testSetAlpha()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         for (int alpha = 0; alpha < 256; alpha++)
@@ -330,7 +330,7 @@ public final class SpriteAnimatedTest
      * Test set alpha too low.
      */
     @Test
-    public void testSetAlphaLow()
+    void testSetAlphaLow()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -341,7 +341,7 @@ public final class SpriteAnimatedTest
      * Test set alpha too high.
      */
     @Test
-    public void testSetAlphaHigh()
+    void testSetAlphaHigh()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -352,7 +352,7 @@ public final class SpriteAnimatedTest
      * Test set transparency.
      */
     @Test
-    public void testSetTransparency()
+    void testSetTransparency()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.setTransparency(ColorRgba.BLACK);
@@ -365,7 +365,7 @@ public final class SpriteAnimatedTest
      * Test set fade.
      */
     @Test
-    public void testSetFade()
+    void testSetFade()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.setFade(128, 128);
@@ -379,7 +379,7 @@ public final class SpriteAnimatedTest
      * Test set frame offset.
      */
     @Test
-    public void testSetFrameOffset()
+    void testSetFrameOffset()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.setFrameOffsets(1, -1);
@@ -389,7 +389,7 @@ public final class SpriteAnimatedTest
      * Test filter bilinear.
      */
     @Test
-    public void testFilterBilinear()
+    void testFilterBilinear()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.filter(new FilterBilinear());
@@ -402,7 +402,7 @@ public final class SpriteAnimatedTest
      * Test filter <code>null</code>.
      */
     @Test
-    public void testFilterNull()
+    void testFilterNull()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -413,7 +413,7 @@ public final class SpriteAnimatedTest
      * Test mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -428,7 +428,7 @@ public final class SpriteAnimatedTest
      * Test mirror <code>null</code>.
      */
     @Test
-    public void testMirrorNull()
+    void testMirrorNull()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -439,7 +439,7 @@ public final class SpriteAnimatedTest
      * Test rendering point.
      */
     @Test
-    public void testRenderingPoint()
+    void testRenderingPoint()
     {
         final SpriteAnimatedImpl sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(10, 20), 10, 20);
         sprite.setLocation(5.0, 10.0);
@@ -458,7 +458,7 @@ public final class SpriteAnimatedTest
      * Test origin <code>null</code>.
      */
     @Test
-    public void testSetOriginNull()
+    void testSetOriginNull()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -469,7 +469,7 @@ public final class SpriteAnimatedTest
      * Test set frame with invalid value.
      */
     @Test
-    public void testSetTileInvalid()
+    void testSetTileInvalid()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -481,7 +481,7 @@ public final class SpriteAnimatedTest
      * Test set speed.
      */
     @Test
-    public void testSetSpeed()
+    void testSetSpeed()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -498,7 +498,7 @@ public final class SpriteAnimatedTest
      * Test invalid speed setter.
      */
     @Test
-    public void testSetSpeedNegative()
+    void testSetSpeedNegative()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -509,7 +509,7 @@ public final class SpriteAnimatedTest
      * Test play.
      */
     @Test
-    public void testPlay()
+    void testPlay()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.5, false, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -530,7 +530,7 @@ public final class SpriteAnimatedTest
      * Test stop.
      */
     @Test
-    public void testStop()
+    void testStop()
     {
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.stop();
@@ -542,7 +542,7 @@ public final class SpriteAnimatedTest
      * Test reset.
      */
     @Test
-    public void testReset()
+    void testReset()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 3.0, false, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -559,7 +559,7 @@ public final class SpriteAnimatedTest
      * Test update without loop nor reverse.
      */
     @Test
-    public void testUpdateNoLoopNoReverse()
+    void testUpdateNoLoopNoReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 2, 1.0, false, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -592,7 +592,7 @@ public final class SpriteAnimatedTest
      * Test update with loop but no reverse.
      */
     @Test
-    public void testUpdateLoopNoReverse()
+    void testUpdateLoopNoReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, true);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -631,7 +631,7 @@ public final class SpriteAnimatedTest
      * Test update without loop but reverse.
      */
     @Test
-    public void testUpdateNoLoopReverse()
+    void testUpdateNoLoopReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -670,7 +670,7 @@ public final class SpriteAnimatedTest
      * Test update with loop and reverse.
      */
     @Test
-    public void testUpdateLoopReverse()
+    void testUpdateLoopReverse()
     {
         final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, true, true);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
@@ -727,7 +727,7 @@ public final class SpriteAnimatedTest
      * Test with listener.
      */
     @Test
-    public void testAnimatorListener()
+    void testAnimatorListener()
     {
         final AtomicReference<Animation> played = new AtomicReference<>();
         final AtomicReference<AnimState> stated = new AtomicReference<>();
@@ -783,7 +783,7 @@ public final class SpriteAnimatedTest
      * Test render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         try
@@ -808,7 +808,7 @@ public final class SpriteAnimatedTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(surface, 16, 8);
@@ -844,7 +844,7 @@ public final class SpriteAnimatedTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(surface, 16, 8);

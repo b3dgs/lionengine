@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Path}.
  */
-public final class PathTest
+final class PathTest
 {
     /**
      * Test the path.
      */
     @Test
-    public void testPath()
+    void testPath()
     {
         final Path path = new Path();
 

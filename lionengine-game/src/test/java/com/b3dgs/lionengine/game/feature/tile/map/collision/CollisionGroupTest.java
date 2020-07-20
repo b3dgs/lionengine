@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Constant;
 /**
  * Test {@link CollisionGroup}.
  */
-public final class CollisionGroupTest
+final class CollisionGroupTest
 {
     /** Formula test. */
     private final CollisionFormula formula = new CollisionFormula("formula",
@@ -47,7 +47,7 @@ public final class CollisionGroupTest
      * Test the group same utility function.
      */
     @Test
-    public void testSame()
+    void testSame()
     {
         assertTrue(CollisionGroup.same(null, null));
         assertTrue(CollisionGroup.same("a", "a"));
@@ -61,7 +61,7 @@ public final class CollisionGroupTest
      * Test the group.
      */
     @Test
-    public void testGroup()
+    void testGroup()
     {
         assertEquals("group", group.getName());
         assertEquals(formula, group.getFormulas().iterator().next());
@@ -71,7 +71,7 @@ public final class CollisionGroupTest
      * Test the group hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(group, new CollisionGroup("group", new ArrayList<CollisionFormula>()));
         assertHashEquals(group, new CollisionGroup("group", Arrays.asList(formula)));
@@ -84,7 +84,7 @@ public final class CollisionGroupTest
      * Test the group equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         assertEquals(group, group);
         assertEquals(group, new CollisionGroup("group", new ArrayList<CollisionFormula>()));
@@ -99,7 +99,7 @@ public final class CollisionGroupTest
      * Test the group to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionGroup (name=group)"
                      + System.lineSeparator()

@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link SetupSurfaceRastered}.
  */
-public final class SetupSurfaceRasteredTest
+final class SetupSurfaceRasteredTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "ObjectRaster.xml";
@@ -68,7 +68,7 @@ public final class SetupSurfaceRasteredTest
      * Test the setup surface rastered config.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         final Media raster = Medias.create(RASTER_XML);
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
@@ -89,7 +89,7 @@ public final class SetupSurfaceRasteredTest
      * Test the setup surface rastered config.
      */
     @Test
-    public void testConfigSmooth()
+    void testConfigSmooth()
     {
         final Media raster = Medias.create(RASTER_XML);
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_SMOOTH_XML), raster);
@@ -108,7 +108,7 @@ public final class SetupSurfaceRasteredTest
      * Test the setup surface rastered without raster.
      */
     @Test
-    public void testConfigNoRaster()
+    void testConfigNoRaster()
     {
         assertThrows(() -> new SetupSurfaceRastered(Medias.create(OBJECT_XML), null),
                      "The following attribute does not exist: file");

@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Test {@link LayerableModel}.
  */
-public final class LayerableModelTest
+final class LayerableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -67,7 +67,7 @@ public final class LayerableModelTest
      * Test the layer functionality.
      */
     @Test
-    public void testLayer()
+    void testLayer()
     {
         final LayerableModel layerable = new LayerableModel(services, setup);
 
@@ -110,7 +110,7 @@ public final class LayerableModelTest
      * Test constructor with setup.
      */
     @Test
-    public void testConstructorSetup()
+    void testConstructorSetup()
     {
         services.add(new ComponentDisplayable());
 

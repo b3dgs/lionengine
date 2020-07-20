@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link TileGroupsConfig}.
  */
-public final class TileGroupsConfigTest
+final class TileGroupsConfigTest
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public final class TileGroupsConfigTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(TileGroupsConfig.class);
     }
@@ -68,7 +68,7 @@ public final class TileGroupsConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Collection<TileGroup> groups = new ArrayList<>();
         groups.add(new TileGroup("test", TileGroupType.NONE, new HashSet<>(Arrays.asList(Integer.valueOf(1)))));

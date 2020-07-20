@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link CircuitType}.
  */
-public final class CircuitTypeTest
+final class CircuitTypeTest
 {
     /**
      * Check the bits sequence.
@@ -65,7 +65,7 @@ public final class CircuitTypeTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(CircuitType.class);
     }
@@ -74,7 +74,7 @@ public final class CircuitTypeTest
      * Test the enum creation from string.
      */
     @Test
-    public void testFromString()
+    void testFromString()
     {
         for (final CircuitType type : CircuitType.values())
         {
@@ -86,7 +86,7 @@ public final class CircuitTypeTest
      * Test the enum creation from string.
      */
     @Test
-    public void testFromStringInvalid()
+    void testFromStringInvalid()
     {
         assertThrows(() -> CircuitType.from("null"), "Unknown circuit part name: null");
     }
@@ -95,7 +95,7 @@ public final class CircuitTypeTest
      * Test the enum creation from bits table.
      */
     @Test
-    public void testFromTable()
+    void testFromTable()
     {
         assertTrue(check(CircuitType.BLOCK, false, false, false, false));
         assertTrue(check(CircuitType.MIDDLE, true, true, true, true));

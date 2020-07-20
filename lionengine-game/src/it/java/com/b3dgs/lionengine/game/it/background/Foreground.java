@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Water foreground implementation.
  */
-class Foreground extends BackgroundAbstract
+final class Foreground extends BackgroundAbstract
 {
     /** Screen width. */
     int screenWidth;
@@ -61,7 +61,7 @@ class Foreground extends BackgroundAbstract
      * 
      * @param source The resolution source reference.
      */
-    public Foreground(Resolution source)
+    Foreground(Resolution source)
     {
         super(null, 0, 0);
         nominal = 210;

@@ -31,7 +31,7 @@ public class ProducerStateTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(ProducerState.class);
     }

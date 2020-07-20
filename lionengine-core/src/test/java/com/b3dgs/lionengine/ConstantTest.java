@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Constant}.
  */
-public final class ConstantTest
+final class ConstantTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Constant.class);
     }
@@ -40,7 +40,7 @@ public final class ConstantTest
      * Test all constants.
      */
     @Test
-    public void testConstants()
+    void testConstants()
     {
         assertEquals("LionEngine", Constant.ENGINE_NAME);
         assertEquals("Pierre-Alexandre", Constant.ENGINE_AUTHOR);
@@ -90,7 +90,7 @@ public final class ConstantTest
      * Test system property with default value.
      */
     @Test
-    public void testSystemPropertyDefault()
+    void testSystemPropertyDefault()
     {
         assertEquals("default", Constant.getSystemProperty("null", "default"));
     }
@@ -99,7 +99,7 @@ public final class ConstantTest
      * Test system property with existing value.
      */
     @Test
-    public void testSystemPropertyExists()
+    void testSystemPropertyExists()
     {
         assertNotEquals("default", Constant.getSystemProperty("java.io.tmpdir", "default"));
     }
@@ -108,7 +108,7 @@ public final class ConstantTest
      * Test system property with security not allowing it.
      */
     @Test
-    public void testSystemPropertySecurityException()
+    void testSystemPropertySecurityException()
     {
         final SecurityManager old = System.getSecurityManager();
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");

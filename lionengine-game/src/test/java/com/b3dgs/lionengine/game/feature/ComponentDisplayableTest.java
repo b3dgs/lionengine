@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 /**
  * Test {@link ComponentDisplayable}.
  */
-public final class ComponentDisplayableTest
+final class ComponentDisplayableTest
 {
     /** Object config test. */
     private static Media config;
@@ -69,7 +69,7 @@ public final class ComponentDisplayableTest
      * Test the component.
      */
     @Test
-    public void testComponentLayer()
+    void testComponentLayer()
     {
         final ComponentDisplayable component = new ComponentDisplayable();
         services.add(component);
@@ -113,7 +113,7 @@ public final class ComponentDisplayableTest
      * Test the component with default value.
      */
     @Test
-    public void testComponentLayerDefault()
+    void testComponentLayerDefault()
     {
         final ComponentDisplayable component = new ComponentDisplayable();
         services.add(component);
@@ -132,7 +132,7 @@ public final class ComponentDisplayableTest
      * Test the component notification.
      */
     @Test
-    public void testNotify()
+    void testNotify()
     {
         final ComponentDisplayable component = new ComponentDisplayable();
 
@@ -173,7 +173,7 @@ public final class ComponentDisplayableTest
      * Test the component with layerable remove.
      */
     @Test
-    public void testRemoveLayerable()
+    void testRemoveLayerable()
     {
         final AtomicBoolean called = new AtomicBoolean();
         final ComponentDisplayable component = new ComponentDisplayable()
@@ -208,7 +208,7 @@ public final class ComponentDisplayableTest
      * Test with handler.
      */
     @Test
-    public void testWithHandler()
+    void testWithHandler()
     {
         final FeaturableModel object = new FeaturableModel(services, setup);
         final Layerable layerable = new LayerableModel(services, setup);

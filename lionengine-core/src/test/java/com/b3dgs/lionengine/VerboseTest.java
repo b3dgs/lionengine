@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Verbose}.
  */
-public final class VerboseTest
+final class VerboseTest
 {
     /**
      * Test the verbose level.
@@ -54,7 +54,7 @@ public final class VerboseTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Verbose.class);
     }
@@ -63,7 +63,7 @@ public final class VerboseTest
      * Test verbose.
      */
     @Test
-    public void testVerbose()
+    void testVerbose()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         testVerbose(Verbose.INFORMATION);
@@ -77,7 +77,7 @@ public final class VerboseTest
      * Test <code>null</code> class warning.
      */
     @Test
-    public void testNullClassWarning()
+    void testNullClassWarning()
     {
         assertThrows(() -> Verbose.warning((Class<?>) null, "test", "test"), Check.ERROR_NULL);
     }
@@ -86,7 +86,7 @@ public final class VerboseTest
      * Test <code>null</code> function warning.
      */
     @Test
-    public void testNullFunctionWarning()
+    void testNullFunctionWarning()
     {
         assertThrows(() -> Verbose.warning(Object.class, (String) null, "test"), Check.ERROR_NULL);
     }
@@ -95,7 +95,7 @@ public final class VerboseTest
      * Test <code>null</code> class warning.
      */
     @Test
-    public void testNullClassCritical()
+    void testNullClassCritical()
     {
         assertThrows(() -> Verbose.critical(null, "test", "test"), Check.ERROR_NULL);
     }
@@ -104,7 +104,7 @@ public final class VerboseTest
      * Test <code>null</code> function warning.
      */
     @Test
-    public void testNullFunctionCritical()
+    void testNullFunctionCritical()
     {
         assertThrows(() -> Verbose.critical(Object.class, null, "test"), Check.ERROR_NULL);
     }
@@ -113,7 +113,7 @@ public final class VerboseTest
      * Test <code>null</code> exception.
      */
     @Test
-    public void testNullException()
+    void testNullException()
     {
         assertThrows(() -> Verbose.exception(null, "test"), Check.ERROR_NULL);
     }
@@ -124,7 +124,7 @@ public final class VerboseTest
      * @throws Exception If error.
      */
     @Test
-    public void testAddFileHandler() throws Exception
+    void testAddFileHandler() throws Exception
     {
         final Method method = Verbose.class.getDeclaredMethod("addFileHandler", Logger.class);
         UtilReflection.setAccessible(method, true);
@@ -155,7 +155,7 @@ public final class VerboseTest
      * @throws Exception If error.
      */
     @Test
-    public void testSetFormatter() throws Exception
+    void testSetFormatter() throws Exception
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         final SecurityManager old = System.getSecurityManager();

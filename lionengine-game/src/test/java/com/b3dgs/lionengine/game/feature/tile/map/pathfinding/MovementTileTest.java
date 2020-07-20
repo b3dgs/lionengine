@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link MovementTile}.
  */
-public final class MovementTileTest
+final class MovementTileTest
 {
     /**
      * Test the enum.
@@ -36,7 +36,7 @@ public final class MovementTileTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(MovementTile.class);
     }
@@ -45,7 +45,7 @@ public final class MovementTileTest
      * Test is.
      */
     @Test
-    public void testIs()
+    void testIs()
     {
         assertTrue(MovementTile.UP.is(0, 1));
         assertTrue(MovementTile.DOWN.is(0, -1));
@@ -72,7 +72,7 @@ public final class MovementTileTest
      * Test is.
      */
     @Test
-    public void testFrom()
+    void testFrom()
     {
         assertEquals(MovementTile.UP, MovementTile.from(0, 1));
         assertEquals(MovementTile.DOWN, MovementTile.from(0, -1));
@@ -90,7 +90,7 @@ public final class MovementTileTest
      * Test get name.
      */
     @Test
-    public void testGetName()
+    void testGetName()
     {
         for (final MovementTile movement : MovementTile.values())
         {

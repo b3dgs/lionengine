@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.InputDeviceKeyListener;
 /**
  * Test {@link KeyboardAwtListener}.
  */
-public final class KeyboardAwtListenerTest
+final class KeyboardAwtListenerTest
 {
     /**
      * Test key listener.
      */
     @Test
-    public void testKeyboardListener()
+    void testKeyboardListener()
     {
         final AtomicBoolean reachedPressed = new AtomicBoolean(false);
         final AtomicBoolean reachedReleased = new AtomicBoolean(false);

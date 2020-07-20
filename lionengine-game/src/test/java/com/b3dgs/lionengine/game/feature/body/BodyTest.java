@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.feature.UtilSetup;
 /**
  * Test {@link BodyModel}.
  */
-public final class BodyTest
+final class BodyTest
 {
     /** Object config test. */
     private static Media config;
@@ -82,7 +82,7 @@ public final class BodyTest
      * Test the gravity on body.
      */
     @Test
-    public void testGravity()
+    void testGravity()
     {
         transformable.teleport(0, 6.0);
 
@@ -123,7 +123,7 @@ public final class BodyTest
      * Test the gravity reset.
      */
     @Test
-    public void testResetGravity()
+    void testResetGravity()
     {
         transformable.teleport(0, 6.0);
 
@@ -150,7 +150,7 @@ public final class BodyTest
      * Test the gravity fps.
      */
     @Test
-    public void testFps()
+    void testFps()
     {
         transformable.teleport(0, 6.0);
 

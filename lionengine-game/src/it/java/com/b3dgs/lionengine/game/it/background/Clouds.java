@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.background.CloudsAbstract;
 /**
  * Clouds implementation.
  */
-class Clouds extends CloudsAbstract
+final class Clouds extends CloudsAbstract
 {
     /**
      * Constructor.

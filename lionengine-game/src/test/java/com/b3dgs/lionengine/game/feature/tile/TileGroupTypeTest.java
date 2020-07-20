@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link TileGroupType}.
  */
-public final class TileGroupTypeTest
+final class TileGroupTypeTest
 {
     /**
      * Test the enum.
@@ -34,7 +34,7 @@ public final class TileGroupTypeTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(TileGroupType.class);
     }
@@ -43,7 +43,7 @@ public final class TileGroupTypeTest
      * Test the enum creation from string.
      */
     @Test
-    public void testFromString()
+    void testFromString()
     {
         for (final TileGroupType type : TileGroupType.values())
         {
@@ -55,7 +55,7 @@ public final class TileGroupTypeTest
      * Test the enum creation from string.
      */
     @Test
-    public void testFromStringInvalid()
+    void testFromStringInvalid()
     {
         assertThrows(() -> TileGroupType.from("null"), TileGroupType.ERROR_TYPE_NAME + "null");
     }

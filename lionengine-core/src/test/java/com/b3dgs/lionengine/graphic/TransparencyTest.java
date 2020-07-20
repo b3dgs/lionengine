@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link Transparency}.
  */
-public final class TransparencyTest
+final class TransparencyTest
 {
     /**
      * Test enum.
@@ -31,7 +31,7 @@ public final class TransparencyTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Transparency.class);
     }

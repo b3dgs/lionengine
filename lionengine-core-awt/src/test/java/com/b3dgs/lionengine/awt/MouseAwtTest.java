@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.Verbose;
 /**
  * Test {@link MouseAwt}.
  */
-public final class MouseAwtTest
+final class MouseAwtTest
 {
     /**
      * Create a mouse and configure for test.
@@ -73,7 +73,7 @@ public final class MouseAwtTest
      * Test clicked state.
      */
     @Test
-    public void testClicked()
+    void testClicked()
     {
         final MouseAwt mouse = createMouse();
         final MouseListener clicker = mouse.getClicker();
@@ -105,7 +105,7 @@ public final class MouseAwtTest
      * Test click.
      */
     @Test
-    public void testClick()
+    void testClick()
     {
         final MouseAwt mouse = createMouse();
         final MouseListener clicker = mouse.getClicker();
@@ -123,7 +123,7 @@ public final class MouseAwtTest
      * Test location.
      */
     @Test
-    public void testLocation()
+    void testLocation()
     {
         final MouseAwt mouse = createMouse();
         final MouseMotionListener mover = mouse.getMover();
@@ -142,7 +142,7 @@ public final class MouseAwtTest
      * Test do click robot.
      */
     @Test
-    public void testDoClick()
+    void testDoClick()
     {
         final MouseAwt mouse = createMouse();
         final MouseMotionListener mover = mouse.getMover();
@@ -190,7 +190,7 @@ public final class MouseAwtTest
      * Test do click robot with out range click.
      */
     @Test
-    public void testDoClickOutRange()
+    void testDoClickOutRange()
     {
         final MouseAwt mouse = createMouse();
         mouse.doClick(Integer.MAX_VALUE);
@@ -205,7 +205,7 @@ public final class MouseAwtTest
      * Test move.
      */
     @Test
-    public void testMouse()
+    void testMouse()
     {
         final MouseAwt mouse = createMouse();
         final MouseListener clicker = mouse.getClicker();
@@ -229,7 +229,7 @@ public final class MouseAwtTest
      * Test event.
      */
     @Test
-    public void testEvent()
+    void testEvent()
     {
         final MouseAwt mouse = createMouse();
         final AtomicBoolean left = new AtomicBoolean(false);
@@ -257,7 +257,7 @@ public final class MouseAwtTest
      * @throws Exception If error.
      */
     @Test
-    public void testHeadless() throws Exception
+    void testHeadless() throws Exception
     {
         final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
         final Field field = GraphicsEnvironment.class.getDeclaredField("headless");

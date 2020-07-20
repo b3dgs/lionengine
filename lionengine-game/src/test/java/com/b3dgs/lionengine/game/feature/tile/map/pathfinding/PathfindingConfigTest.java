@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link PathfindingConfig}.
  */
-public final class PathfindingConfigTest
+final class PathfindingConfigTest
 {
     /**
      * Prepare test.
@@ -51,7 +51,7 @@ public final class PathfindingConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(PathfindingConfig.class);
     }

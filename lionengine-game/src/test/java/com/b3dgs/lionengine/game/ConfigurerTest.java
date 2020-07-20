@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link Configurer}.
  */
-public final class ConfigurerTest
+final class ConfigurerTest
 {
     /** Test configuration. */
     private static Media config;
@@ -109,7 +109,7 @@ public final class ConfigurerTest
      * Test the root getter.
      */
     @Test
-    public void testGetRoot()
+    void testGetRoot()
     {
         final Xml root = configurer.getRoot();
 
@@ -121,7 +121,7 @@ public final class ConfigurerTest
      * Test the path getter.
      */
     @Test
-    public void testGetPath()
+    void testGetPath()
     {
         assertEquals(config.getFile().getParent(), configurer.getPath());
     }
@@ -130,7 +130,7 @@ public final class ConfigurerTest
      * Test the media getter.
      */
     @Test
-    public void testGetMedia()
+    void testGetMedia()
     {
         assertEquals(config, configurer.getMedia());
     }
@@ -139,7 +139,7 @@ public final class ConfigurerTest
      * Test the string getter.
      */
     @Test
-    public void testGetString()
+    void testGetString()
     {
         assertEquals("string", configurer.getString("attStr"));
     }
@@ -148,7 +148,7 @@ public final class ConfigurerTest
      * Test the string getter with default value.
      */
     @Test
-    public void testGetStringDefault()
+    void testGetStringDefault()
     {
         assertEquals("string", configurer.getStringDefault("default", "attStr"));
         assertEquals("default", configurer.getStringDefault("default", "void"));
@@ -159,7 +159,7 @@ public final class ConfigurerTest
      * Test the boolean getter.
      */
     @Test
-    public void testGetBoolean()
+    void testGetBoolean()
     {
         assertFalse(configurer.getBoolean("attStr"));
     }
@@ -168,7 +168,7 @@ public final class ConfigurerTest
      * Test the boolean getter with default value.
      */
     @Test
-    public void testGetBooleanDefault()
+    void testGetBooleanDefault()
     {
         assertFalse(configurer.getBooleanDefault(true, "attStr"));
         assertTrue(configurer.getBooleanDefault(true, "void"));
@@ -178,7 +178,7 @@ public final class ConfigurerTest
      * Test the integer getter.
      */
     @Test
-    public void testGetInteger()
+    void testGetInteger()
     {
         assertEquals(1, configurer.getInteger("attInt"));
     }
@@ -187,7 +187,7 @@ public final class ConfigurerTest
      * Test the integer getter with default value.
      */
     @Test
-    public void testGetIntegerDefault()
+    void testGetIntegerDefault()
     {
         assertEquals(1, configurer.getIntegerDefault(2, "attInt"));
         assertEquals(2, configurer.getIntegerDefault(2, "void"));
@@ -197,7 +197,7 @@ public final class ConfigurerTest
      * Test the integer getter invalid value.
      */
     @Test
-    public void testGetIntegerInvalid()
+    void testGetIntegerInvalid()
     {
         assertThrows(() -> configurer.getInteger("attStr"), "[configurer.xml] ");
     }
@@ -206,7 +206,7 @@ public final class ConfigurerTest
      * Test the integer getter invalid value.
      */
     @Test
-    public void testGetIntegerDefaultInvalid()
+    void testGetIntegerDefaultInvalid()
     {
         assertThrows(() -> configurer.getIntegerDefault(1, "attStr"), "[configurer.xml] ");
     }
@@ -215,7 +215,7 @@ public final class ConfigurerTest
      * Test the integer getter.
      */
     @Test
-    public void testGetDouble()
+    void testGetDouble()
     {
         assertEquals(1.0, configurer.getDouble("attInt"));
     }
@@ -224,7 +224,7 @@ public final class ConfigurerTest
      * Test the integer getter with default value.
      */
     @Test
-    public void testGetDoubleDefault()
+    void testGetDoubleDefault()
     {
         assertEquals(1.0, configurer.getDoubleDefault(2.0, "attInt"));
 
@@ -235,7 +235,7 @@ public final class ConfigurerTest
      * Test the double getter invalid value.
      */
     @Test
-    public void testGetDoubleInvalid()
+    void testGetDoubleInvalid()
     {
         assertThrows(() -> configurer.getDouble("attStr"), "[configurer.xml] ");
     }
@@ -244,7 +244,7 @@ public final class ConfigurerTest
      * Test the double getter invalid value.
      */
     @Test
-    public void testGetDoubleDefaultInvalid()
+    void testGetDoubleDefaultInvalid()
     {
         assertThrows(() -> configurer.getDoubleDefault(1.0, "attStr"), "[configurer.xml] ");
     }
@@ -253,7 +253,7 @@ public final class ConfigurerTest
      * Test the text getter.
      */
     @Test
-    public void testGetText()
+    void testGetText()
     {
         assertEquals(Accessible.class.getName(), configurer.getText(Accessible.class.getSimpleName()));
     }
@@ -262,7 +262,7 @@ public final class ConfigurerTest
      * Test the text getter with default value.
      */
     @Test
-    public void testGetTextDefault()
+    void testGetTextDefault()
     {
         assertEquals(Accessible.class.getName(),
                      configurer.getTextDefault("default", Accessible.class.getSimpleName()));
@@ -274,7 +274,7 @@ public final class ConfigurerTest
      * Test get node not found.
      */
     @Test
-    public void testNodeNotFound()
+    void testNodeNotFound()
     {
         assertThrows(() -> configurer.getText("void", "null"), "[configurer.xml] ");
     }
@@ -283,7 +283,7 @@ public final class ConfigurerTest
      * Test the get implementation with default constructor.
      */
     @Test
-    public void testGetImplementationDefault()
+    void testGetImplementationDefault()
     {
         final Accessible impl = configurer.getImplementation(Accessible.class, Accessible.class.getSimpleName());
 
@@ -294,7 +294,7 @@ public final class ConfigurerTest
      * Test the get implementation with not accessible constructor.
      */
     @Test
-    public void testGetImplementationNotAccessible()
+    void testGetImplementationNotAccessible()
     {
         final NotAccessible impl = configurer.getImplementation(NotAccessible.class,
                                                                 NotAccessible.class.getSimpleName());
@@ -305,7 +305,7 @@ public final class ConfigurerTest
      * Test the get implementation with custom constructor.
      */
     @Test
-    public void testGetImplementationCustom()
+    void testGetImplementationCustom()
     {
         final Custom impl = configurer.getImplementation(Custom.class,
                                                          Boolean.class,
@@ -318,7 +318,7 @@ public final class ConfigurerTest
      * Test the get implementation with custom constructor using invalid argument.
      */
     @Test
-    public void testGetImplementationCustomInvalidArgument()
+    void testGetImplementationCustomInvalidArgument()
     {
         assertCause(() -> configurer.getImplementation(Custom.class,
                                                        Boolean.class,
@@ -331,7 +331,7 @@ public final class ConfigurerTest
      * Test the get implementation using abstract class.
      */
     @Test
-    public void testGetImplementationCustomAbstract()
+    void testGetImplementationCustomAbstract()
     {
         assertCause(() -> configurer.getImplementation(Abstract.class,
                                                        UtilReflection.getParamTypes(Boolean.TRUE),
@@ -344,7 +344,7 @@ public final class ConfigurerTest
      * Test the get implementation using unknown class.
      */
     @Test
-    public void testGetImplementationUnknown()
+    void testGetImplementationUnknown()
     {
         assertCause(() -> configurer.getImplementation(Object.class, "unknown"), ClassNotFoundException.class);
     }
@@ -353,7 +353,7 @@ public final class ConfigurerTest
      * Test the get implementation using no compatible constructor.
      */
     @Test
-    public void testGetImplementationNoCompatibleConstructor()
+    void testGetImplementationNoCompatibleConstructor()
     {
         assertCause(() -> configurer.getImplementation(Accessible.class,
                                                        UtilReflection.getParamTypes(Boolean.TRUE),
@@ -366,7 +366,7 @@ public final class ConfigurerTest
      * Test the get implementation using constructor throwing an exception.
      */
     @Test
-    public void testGetImplementationConstructorThrows()
+    void testGetImplementationConstructorThrows()
     {
         assertCause(() -> configurer.getImplementation(Throws.class, Throws.class.getSimpleName()),
                     InvocationTargetException.class);
@@ -376,7 +376,7 @@ public final class ConfigurerTest
      * Test has node.
      */
     @Test
-    public void testHasNode()
+    void testHasNode()
     {
         assertFalse(configurer.hasNode("void"));
         assertTrue(configurer.hasNode("unknown"));
@@ -387,7 +387,7 @@ public final class ConfigurerTest
      * Test the save.
      */
     @Test
-    public void testSave()
+    void testSave()
     {
         final Media media = createConfig("save.xml");
         final Configurer configurer = new Configurer(media);

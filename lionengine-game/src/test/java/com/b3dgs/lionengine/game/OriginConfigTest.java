@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link OriginConfig}.
  */
-public final class OriginConfigTest
+final class OriginConfigTest
 {
     /**
      * Prepare test.
@@ -57,7 +57,7 @@ public final class OriginConfigTest
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(OriginConfig.class);
     }
@@ -66,7 +66,7 @@ public final class OriginConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Origin origin = Origin.MIDDLE;
 

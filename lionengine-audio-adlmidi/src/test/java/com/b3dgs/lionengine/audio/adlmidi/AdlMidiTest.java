@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.audio.AudioVoidFormat;
 /**
  * Test {@link AdlMidiFormat} and {@link AdlMidiPlayer}.
  */
-public final class AdlMidiTest
+final class AdlMidiTest
 {
     /**
      * Create player.
@@ -107,7 +107,7 @@ public final class AdlMidiTest
      * Test with <code>null</code> argument.
      */
     @Test
-    public void testNullArgument()
+    void testNullArgument()
     {
         assertThrows(() -> AudioFactory.loadAudio(null, AdlMidi.class), "Unexpected null argument !");
     }
@@ -118,7 +118,7 @@ public final class AdlMidiTest
      * @throws Exception If error.
      */
     @Test
-    public void testMissingLibrary() throws Exception
+    void testMissingLibrary() throws Exception
     {
         final Field field = AdlMidiFormat.class.getDeclaredField("LIBRARY_NAME");
         final String back = UtilReflection.getField(AdlMidiFormat.class, "LIBRARY_NAME");
@@ -141,7 +141,7 @@ public final class AdlMidiTest
      * Test with negative volume.
      */
     @Test
-    public void testNegativeVolume()
+    void testNegativeVolume()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
@@ -158,7 +158,7 @@ public final class AdlMidiTest
      * Test with out of range volume.
      */
     @Test
-    public void testOutOfRangeVolume()
+    void testOutOfRangeVolume()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
@@ -175,7 +175,7 @@ public final class AdlMidiTest
      * Test create fail safe.
      */
     @Test
-    public void testCreateFailsafe()
+    void testCreateFailsafe()
     {
         assertNotNull(AdlMidiFormat.getFailsafe());
     }
@@ -184,7 +184,7 @@ public final class AdlMidiTest
      * Test play sequence.
      */
     @Test
-    public void testPlay()
+    void testPlay()
     {
         AdlMidiFormat.setDefaultBank(Integer.valueOf(43));
         final AdlMidi adlmidi = createAdlMidi();
@@ -240,7 +240,7 @@ public final class AdlMidiTest
      * Test play sequence.
      */
     @Test
-    public void testPlayTwice()
+    void testPlayTwice()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
@@ -266,7 +266,7 @@ public final class AdlMidiTest
      * Test pause sequence.
      */
     @Test
-    public void testPause()
+    void testPause()
     {
         final AdlMidi adlmidi = createAdlMidi();
         try
@@ -295,7 +295,7 @@ public final class AdlMidiTest
      * Test with missing media.
      */
     @Test
-    public void testMissingMedia()
+    void testMissingMedia()
     {
         final Media media = new Media()
         {
@@ -377,7 +377,7 @@ public final class AdlMidiTest
      * @throws IOException If error.
      */
     @Test
-    public void testOutsideMedia() throws IOException
+    void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.xmi");
         try (InputStream input = music.getInputStream())

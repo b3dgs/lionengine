@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link AttackerConfig}.
  */
-public final class AttackerConfigTest
+final class AttackerConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public final class AttackerConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final AttackerConfig config = new AttackerConfig(1, 2, 3, 4, 5);
 
@@ -78,7 +78,7 @@ public final class AttackerConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final AttackerConfig config = new AttackerConfig(1, 2, 3, 4, 5);
 
@@ -98,7 +98,7 @@ public final class AttackerConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final AttackerConfig hash = new AttackerConfig(1, 2, 3, 4, 5);
 
@@ -115,7 +115,7 @@ public final class AttackerConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final AttackerConfig config = new AttackerConfig(1, 2, 3, 4, 5);
 

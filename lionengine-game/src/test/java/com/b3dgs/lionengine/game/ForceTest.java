@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Force}.
  */
-public final class ForceTest
+final class ForceTest
 {
     /**
      * Assert force equals expected values.
@@ -51,7 +51,7 @@ public final class ForceTest
      * Test from vector.
      */
     @Test
-    public void testFromVector()
+    void testFromVector()
     {
         assertForce(0.0, 0.0, 0.0, 0.0, Force.fromVector(0.0, 0.0, 0.0, 0.0));
         assertForce(0.75, 1.0, 4.0, 0.0, Force.fromVector(0.0, 1.0, 3.0, 5.0));
@@ -62,7 +62,7 @@ public final class ForceTest
      * Test constructor default.
      */
     @Test
-    public void testConstructorDefault()
+    void testConstructorDefault()
     {
         assertForce(0.0, 0.0, 0.0, 0.0, new Force());
     }
@@ -71,7 +71,7 @@ public final class ForceTest
      * Test constructor parameters.
      */
     @Test
-    public void testConstructorParameter()
+    void testConstructorParameter()
     {
         assertForce(1.0, 2.0, 0.0, 0.0, new Force(1.0, 2.0));
         assertForce(1.0, 2.0, 3.0, 4.0, new Force(1.0, 2.0, 3.0, 4.0));
@@ -81,7 +81,7 @@ public final class ForceTest
      * Test getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Force force = new Force(1.0, 2.0);
         force.setVelocity(1.0);
@@ -95,7 +95,7 @@ public final class ForceTest
      * Test add direction.
      */
     @Test
-    public void testAddDirection()
+    void testAddDirection()
     {
         final Force force = new Force(1.0, 2.0);
         force.addDirection(1.0, -1, -2.0);
@@ -108,7 +108,7 @@ public final class ForceTest
      * Test add direction with extrapolation.
      */
     @Test
-    public void testAddDirectionExtrapolation()
+    void testAddDirectionExtrapolation()
     {
         final Force force = new Force(0.0, 0.0);
         force.addDirection(0.5, 1, 2.0);
@@ -120,7 +120,7 @@ public final class ForceTest
      * Test set direction.
      */
     @Test
-    public void testSetDirection()
+    void testSetDirection()
     {
         final Force force = new Force(0.0, 0.0);
         force.setDirection(1.0, 2.0);
@@ -136,7 +136,7 @@ public final class ForceTest
      * Test set destination.
      */
     @Test
-    public void testSetDestination()
+    void testSetDestination()
     {
         final Force force = new Force(1.0, 2.0);
         force.setVelocity(1.0);
@@ -189,7 +189,7 @@ public final class ForceTest
      * Test sensibility.
      */
     @Test
-    public void testSensibility()
+    void testSensibility()
     {
         final Force force = new Force(1.0, 1.0, 0.2, 0.3);
         force.setDestination(2.0, 2.0);
@@ -227,7 +227,7 @@ public final class ForceTest
      * Test set direction minimum.
      */
     @Test
-    public void testSetDirectionMinimum()
+    void testSetDirectionMinimum()
     {
         final Force force = new Force(1.0, 2.0);
         force.setDirectionMinimum(new Force(3.0, 4.0));
@@ -240,7 +240,7 @@ public final class ForceTest
      * Test set direction maximum.
      */
     @Test
-    public void testSetDirectionMaximum()
+    void testSetDirectionMaximum()
     {
         final Force force = new Force(3.0, 4.0);
         force.setDirectionMaximum(new Force(1.0, 2.0));
@@ -253,7 +253,7 @@ public final class ForceTest
      * Test zeroing force.
      */
     @Test
-    public void testZero()
+    void testZero()
     {
         final Force force = new Force();
         force.setVelocity(1.0);
@@ -271,7 +271,7 @@ public final class ForceTest
      * Test copy.
      */
     @Test
-    public void testCopy()
+    void testCopy()
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
@@ -282,7 +282,7 @@ public final class ForceTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 
@@ -310,7 +310,7 @@ public final class ForceTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Force hash = new Force(1.0, 2.0, 3.0, 4.0);
 
@@ -336,7 +336,7 @@ public final class ForceTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final Force force = new Force(1.0, 2.0, 3.0, 4.0);
 

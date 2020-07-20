@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilRandom}.
  */
-public final class UtilRandomTest
+final class UtilRandomTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilRandom.class);
     }
@@ -41,7 +41,7 @@ public final class UtilRandomTest
      * Test random.
      */
     @Test
-    public void testRandom()
+    void testRandom()
     {
         UtilRandom.setSeed(4_894_516L);
 
@@ -57,7 +57,7 @@ public final class UtilRandomTest
      * Test get random integer with <code>null</code> argument.
      */
     @Test
-    public void testGetRandomIntegerNullRange()
+    void testGetRandomIntegerNullRange()
     {
         assertThrows(() -> UtilRandom.getRandomInteger(null), Check.ERROR_NULL);
     }

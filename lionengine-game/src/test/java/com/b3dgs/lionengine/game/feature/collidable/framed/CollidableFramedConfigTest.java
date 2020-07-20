@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.game.feature.collidable.Collision;
 /**
  * Test {@link CollidableFramedConfig}.
  */
-public final class CollidableFramedConfigTest
+final class CollidableFramedConfigTest
 {
     /**
      * Prepare test.
@@ -67,7 +67,7 @@ public final class CollidableFramedConfigTest
      * Test no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml("test");
 
@@ -78,7 +78,7 @@ public final class CollidableFramedConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
@@ -106,7 +106,7 @@ public final class CollidableFramedConfigTest
      * Test exports imports with number.
      */
     @Test
-    public void testExportsImportsNumber()
+    void testExportsImportsNumber()
     {
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("coll%anim%1", 0, 1, 2, 3, true)));
@@ -136,7 +136,7 @@ public final class CollidableFramedConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
@@ -156,7 +156,7 @@ public final class CollidableFramedConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));
@@ -175,7 +175,7 @@ public final class CollidableFramedConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>();
         collisions.put(Integer.valueOf(1), Arrays.asList(new Collision("anim%1", 0, 1, 2, 3, true)));

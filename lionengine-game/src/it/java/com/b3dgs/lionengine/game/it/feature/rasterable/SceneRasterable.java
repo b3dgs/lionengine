@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.graphic.engine.Sequence;
 /**
  * Integration test for rasterable model.
  */
-public class SceneRasterable extends Sequence
+final class SceneRasterable extends Sequence
 {
     private final Tick tick = new Tick();
     private final Services services = new Services();
@@ -61,7 +61,7 @@ public class SceneRasterable extends Sequence
      * 
      * @param context The context reference.
      */
-    public SceneRasterable(Context context)
+    SceneRasterable(Context context)
     {
         super(context, new Resolution(320, 240, 60));
 

@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.feature.UtilTransformable;
 /**
  * Test {@link AssignableModel}.
  */
-public final class AssignableModelTest
+final class AssignableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -84,7 +84,7 @@ public final class AssignableModelTest
      * Test assigning when clicking.
      */
     @Test
-    public void testClick()
+    void testClick()
     {
         assignable.update(1.0);
 
@@ -105,7 +105,7 @@ public final class AssignableModelTest
      * Test assigning when no clicking.
      */
     @Test
-    public void testNoClick()
+    void testNoClick()
     {
         assignable.setAssign(UtilAssignable.createAssign(assigned));
         assigned.set(false);
@@ -120,7 +120,7 @@ public final class AssignableModelTest
      * Test assigning when clicking outside.
      */
     @Test
-    public void testClickOutside()
+    void testClickOutside()
     {
         clicked.set(true);
         services.get(Cursor.class).setLocation(64, 1);
@@ -140,7 +140,7 @@ public final class AssignableModelTest
      * Test execution when object is an assign itself.
      */
     @Test
-    public void testObjectIsAssign()
+    void testObjectIsAssign()
     {
         clicked.set(true);
 

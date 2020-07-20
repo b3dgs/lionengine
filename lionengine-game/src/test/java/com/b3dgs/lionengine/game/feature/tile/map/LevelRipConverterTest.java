@@ -29,7 +29,7 @@ public class LevelRipConverterTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(LevelRipConverter.class);
     }

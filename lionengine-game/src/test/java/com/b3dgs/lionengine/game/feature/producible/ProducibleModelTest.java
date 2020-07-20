@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.UtilSetup;
 /**
  * Test {@link ProducibleModel}.
  */
-public final class ProducibleModelTest
+final class ProducibleModelTest
 {
     /**
      * Prepare test.
@@ -63,7 +63,7 @@ public final class ProducibleModelTest
      * Test the producible with no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Media media = UtilSetup.createMedia(Featurable.class);
         final Setup setup = new Setup(media);
@@ -79,7 +79,7 @@ public final class ProducibleModelTest
      * Test the producible.
      */
     @Test
-    public void testProducible()
+    void testProducible()
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
@@ -107,7 +107,7 @@ public final class ProducibleModelTest
      * Test the producible self listener.
      */
     @Test
-    public void testProducibleSelf()
+    void testProducibleSelf()
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
@@ -126,7 +126,7 @@ public final class ProducibleModelTest
      * Test the producible listener auto add.
      */
     @Test
-    public void testListenerAutoAdd()
+    void testListenerAutoAdd()
     {
         final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);

@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.geom.Geom;
 /**
  * Test {@link ActionableModel}.
  */
-public final class ActionableModelTest
+final class ActionableModelTest
 {
     /**
      * Prepare test.
@@ -84,7 +84,7 @@ public final class ActionableModelTest
      * Test the description configuration.
      */
     @Test
-    public void testDescription()
+    void testDescription()
     {
         assertEquals("description", actionable.getDescription());
     }
@@ -93,7 +93,7 @@ public final class ActionableModelTest
      * Test the button configuration.
      */
     @Test
-    public void testButton()
+    void testButton()
     {
         final Area boutton = actionable.getButton();
 
@@ -107,7 +107,7 @@ public final class ActionableModelTest
      * Test execution when clicking outside button.
      */
     @Test
-    public void testClickOutside()
+    void testClickOutside()
     {
         actionable.setAction(UtilActionnable.createAction(executed));
         services.get(Cursor.class).setLocation(64, 64);
@@ -124,7 +124,7 @@ public final class ActionableModelTest
      * Test execution when clicking inside button.
      */
     @Test
-    public void testClickInside()
+    void testClickInside()
     {
         clicked.set(true);
         actionable.setAction(UtilActionnable.createAction(executed));
@@ -139,7 +139,7 @@ public final class ActionableModelTest
      * Test execution without click.
      */
     @Test
-    public void testNoClick()
+    void testNoClick()
     {
         actionable.update(1.0);
 
@@ -157,7 +157,7 @@ public final class ActionableModelTest
      * Test execution when object is an action itself.
      */
     @Test
-    public void testObjectIsAction()
+    void testObjectIsAction()
     {
         clicked.set(true);
 
@@ -174,7 +174,7 @@ public final class ActionableModelTest
      * Test enabled flag.
      */
     @Test
-    public void testEnabled()
+    void testEnabled()
     {
         assertTrue(actionable.isEnabled());
 

@@ -55,7 +55,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link CollidableFramedModel}.
  */
-public final class CollidableFramedModelTest
+final class CollidableFramedModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -153,7 +153,7 @@ public final class CollidableFramedModelTest
      * Test framed collision with animation.
      */
     @Test
-    public void testFramed()
+    void testFramed()
     {
         assertTrue(collidable1.collide(collidable1).isEmpty());
         assertTrue(collidable2.collide(collidable1).isEmpty());

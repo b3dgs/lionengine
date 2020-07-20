@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link KeyboardAwt}.
  */
-public final class KeyboardAwtTest
+final class KeyboardAwtTest
 {
     /**
      * Create a key event.
@@ -46,7 +46,7 @@ public final class KeyboardAwtTest
      * Test not pressed state.
      */
     @Test
-    public void testNotPressed()
+    void testNotPressed()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
 
@@ -68,7 +68,7 @@ public final class KeyboardAwtTest
      * Test pressed.
      */
     @Test
-    public void testPressed()
+    void testPressed()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
         keyboard.keyTyped(createEvent(KeyboardAwt.ALT));
@@ -91,7 +91,7 @@ public final class KeyboardAwtTest
      * Test pressed twice.
      */
     @Test
-    public void testPressedTwice()
+    void testPressedTwice()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
 
@@ -108,7 +108,7 @@ public final class KeyboardAwtTest
      * Test directions.
      */
     @Test
-    public void testDirections()
+    void testDirections()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
 
@@ -143,7 +143,7 @@ public final class KeyboardAwtTest
      * Test events.
      */
     @Test
-    public void testEvents()
+    void testEvents()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
         final AtomicBoolean left = new AtomicBoolean(false);

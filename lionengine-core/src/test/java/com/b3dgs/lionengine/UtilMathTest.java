@@ -28,13 +28,13 @@ import com.b3dgs.lionengine.geom.Geom;
 /**
  * Test {@link UtilMath}.
  */
-public final class UtilMathTest
+final class UtilMathTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilMath.class);
     }
@@ -43,7 +43,7 @@ public final class UtilMathTest
      * Test the is between function.
      */
     @Test
-    public void testIsBetween()
+    void testIsBetween()
     {
         assertTrue(UtilMath.isBetween(0, 0, 2));
         assertTrue(UtilMath.isBetween(1, 0, 2));
@@ -68,7 +68,7 @@ public final class UtilMathTest
      * Test the clamp function.
      */
     @Test
-    public void testClamp()
+    void testClamp()
     {
         assertEquals(0, UtilMath.clamp(-10, 0, 10));
         assertEquals(10, UtilMath.clamp(50, 0, 10));
@@ -90,7 +90,7 @@ public final class UtilMathTest
      * Test the rounded function.
      */
     @Test
-    public void testRounded()
+    void testRounded()
     {
         assertEquals(100, UtilMath.getRounded(105, 100));
     }
@@ -99,7 +99,7 @@ public final class UtilMathTest
      * Test the rounded ceil function.
      */
     @Test
-    public void testRoundedC()
+    void testRoundedC()
     {
         assertEquals(200, UtilMath.getRoundedC(105, 100));
     }
@@ -108,7 +108,7 @@ public final class UtilMathTest
      * Test the curve value function.
      */
     @Test
-    public void testCurveValue()
+    void testCurveValue()
     {
         assertTrue(UtilMath.curveValue(0.0, 1.0, 0.5) > 0.0);
         assertTrue(UtilMath.curveValue(0.0, -1.0, 0.5) < 0.0);
@@ -118,7 +118,7 @@ public final class UtilMathTest
      * Test the distance function between two localizable.
      */
     @Test
-    public void testDistanceLocalizable()
+    void testDistanceLocalizable()
     {
         assertEquals(0.0, UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(0.0, 0.0)));
         assertEquals(1.0, UtilMath.getDistance(Geom.createLocalizable(0.0, 0.0), Geom.createLocalizable(1.0, 0.0)));
@@ -135,7 +135,7 @@ public final class UtilMathTest
      * Test the distance function between two points.
      */
     @Test
-    public void testDistancePointPoint()
+    void testDistancePointPoint()
     {
         assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0));
         assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 1.0, 0.0));
@@ -151,7 +151,7 @@ public final class UtilMathTest
      * Test the distance function from point to area.
      */
     @Test
-    public void testDistancePointArea()
+    void testDistancePointArea()
     {
         assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0, 0, 0));
         assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 1));
@@ -166,7 +166,7 @@ public final class UtilMathTest
      * Test the distance function from area to area.
      */
     @Test
-    public void testDistanceAreaArea()
+    void testDistanceAreaArea()
     {
         assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0, 0, 0.0, 0.0, 0, 0));
         assertEquals(0.0, UtilMath.getDistance(1.0, 1.0, 0, 0, 2.0, 2.0, 0, 0));
@@ -184,7 +184,7 @@ public final class UtilMathTest
      * Test the wrap function.
      */
     @Test
-    public void testWrap()
+    void testWrap()
     {
         assertEquals(0, UtilMath.wrap(360, 0, 360));
         assertEquals(359, UtilMath.wrap(-1, 0, 360));
@@ -195,7 +195,7 @@ public final class UtilMathTest
      * Test the wrap function.
      */
     @Test
-    public void testWrapAngle()
+    void testWrapAngle()
     {
         assertEquals(0, UtilMath.wrapAngle(360));
         assertEquals(359, UtilMath.wrapAngle(-1));
@@ -206,7 +206,7 @@ public final class UtilMathTest
      * Test the wrap double function.
      */
     @Test
-    public void testWrapDouble()
+    void testWrapDouble()
     {
         assertEquals(0.0, UtilMath.wrapDouble(360.0, 0.0, 360.0));
         assertEquals(359.0, UtilMath.wrapDouble(-1.0, 0.0, 360.0));
@@ -217,7 +217,7 @@ public final class UtilMathTest
      * Test the sin & cos functions.
      */
     @Test
-    public void testSinCos()
+    void testSinCos()
     {
         assertEquals(-1.0, UtilMath.cos(180));
         assertEquals(0.0, UtilMath.sin(180));
@@ -227,7 +227,7 @@ public final class UtilMathTest
      * Test the sign function.
      */
     @Test
-    public void testSign()
+    void testSign()
     {
         assertEquals(-1, UtilMath.getSign(-1.0));
         assertEquals(1, UtilMath.getSign(1.0));
@@ -238,7 +238,7 @@ public final class UtilMathTest
      * Test the get round value.
      */
     @Test
-    public void testGetRound()
+    void testGetRound()
     {
         assertEquals(1.0, UtilMath.getRound(-1.0, 1.5));
         assertEquals(2.0, UtilMath.getRound(1.0, 1.5));

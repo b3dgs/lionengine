@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
 /**
  * Test {@link SpriteTiled}.
  */
-public final class SpriteTiledTest
+final class SpriteTiledTest
 {
     /**
      * Prepare tests.
@@ -73,7 +73,7 @@ public final class SpriteTiledTest
      * Test constructor with invalid tile width.
      */
     @Test
-    public void testConstructorInvalidTileWidth()
+    void testConstructorInvalidTileWidth()
     {
         assertThrows(() -> new SpriteTiledImpl(Medias.create("image.png"), 0, 1),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -83,7 +83,7 @@ public final class SpriteTiledTest
      * Test constructor with invalid tile height.
      */
     @Test
-    public void testConstructorInvalidTileHeight()
+    void testConstructorInvalidTileHeight()
     {
         assertThrows(() -> new SpriteTiledImpl(Medias.create("image.png"), 1, 0),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -93,7 +93,7 @@ public final class SpriteTiledTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorMedia()
+    void testConstructorMedia()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Medias.create("image.png"), 16, 8);
 
@@ -111,7 +111,7 @@ public final class SpriteTiledTest
      * Test constructor with surface.
      */
     @Test
-    public void testConstructorSurface()
+    void testConstructorSurface()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteTiled sprite = new SpriteTiledImpl(surface, 16, 8);
@@ -130,7 +130,7 @@ public final class SpriteTiledTest
      * Test load with media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Medias.create("image.png"), 16, 8);
         sprite.load();
@@ -145,7 +145,7 @@ public final class SpriteTiledTest
      * Test load with media already loaded.
      */
     @Test
-    public void testLoadMediaAlready()
+    void testLoadMediaAlready()
     {
         final Media media = Medias.create("image.png");
         final SpriteTiled sprite = new SpriteTiledImpl(media, 16, 8);
@@ -158,7 +158,7 @@ public final class SpriteTiledTest
      * Test load with surface.
      */
     @Test
-    public void testLoadSurface()
+    void testLoadSurface()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -169,7 +169,7 @@ public final class SpriteTiledTest
      * Test stretch sprite.
      */
     @Test
-    public void testStretch()
+    void testStretch()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.stretch(100.0, 100.0);
@@ -205,7 +205,7 @@ public final class SpriteTiledTest
      * Test stretch sprite with invalid width.
      */
     @Test
-    public void testStretchInvalidWidth()
+    void testStretchInvalidWidth()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -216,7 +216,7 @@ public final class SpriteTiledTest
      * Test stretch sprite with invalid height.
      */
     @Test
-    public void testStretchInvalidHeight()
+    void testStretchInvalidHeight()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -227,7 +227,7 @@ public final class SpriteTiledTest
      * Test rotate sprite.
      */
     @Test
-    public void testRotate()
+    void testRotate()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         for (int angle = -720; angle < 720; angle++)
@@ -244,7 +244,7 @@ public final class SpriteTiledTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final SpriteTiledImpl sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -265,7 +265,7 @@ public final class SpriteTiledTest
      * Test set location with viewer.
      */
     @Test
-    public void testSetLocationViewer()
+    void testSetLocationViewer()
     {
         final SpriteTiledImpl sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         final ViewerMock viewer = new ViewerMock();
@@ -289,7 +289,7 @@ public final class SpriteTiledTest
      * Test set alpha.
      */
     @Test
-    public void testSetAlpha()
+    void testSetAlpha()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         for (int alpha = 0; alpha < 256; alpha++)
@@ -305,7 +305,7 @@ public final class SpriteTiledTest
      * Test set alpha too low.
      */
     @Test
-    public void testSetAlphaLow()
+    void testSetAlphaLow()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -316,7 +316,7 @@ public final class SpriteTiledTest
      * Test set alpha too high.
      */
     @Test
-    public void testSetAlphaHigh()
+    void testSetAlphaHigh()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -327,7 +327,7 @@ public final class SpriteTiledTest
      * Test set transparency.
      */
     @Test
-    public void testSetTransparency()
+    void testSetTransparency()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.setTransparency(ColorRgba.BLACK);
@@ -340,7 +340,7 @@ public final class SpriteTiledTest
      * Test set fade.
      */
     @Test
-    public void testSetFade()
+    void testSetFade()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.setFade(128, 128);
@@ -354,7 +354,7 @@ public final class SpriteTiledTest
      * Test set frame offset.
      */
     @Test
-    public void testSetFrameOffset()
+    void testSetFrameOffset()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 18);
         sprite.setFrameOffsets(1, -1);
@@ -364,7 +364,7 @@ public final class SpriteTiledTest
      * Test filter bilinear.
      */
     @Test
-    public void testFilterBilinear()
+    void testFilterBilinear()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.filter(new FilterBilinear());
@@ -377,7 +377,7 @@ public final class SpriteTiledTest
      * Test filter <code>null</code>.
      */
     @Test
-    public void testFilterNull()
+    void testFilterNull()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -388,7 +388,7 @@ public final class SpriteTiledTest
      * Test mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -403,7 +403,7 @@ public final class SpriteTiledTest
      * Test mirror <code>null</code>.
      */
     @Test
-    public void testMirrorNull()
+    void testMirrorNull()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -414,7 +414,7 @@ public final class SpriteTiledTest
      * Test rendering point.
      */
     @Test
-    public void testRenderingPoint()
+    void testRenderingPoint()
     {
         final SpriteTiledImpl sprite = new SpriteTiledImpl(Graphics.createImageBuffer(10, 20), 10, 20);
         sprite.setLocation(5.0, 10.0);
@@ -433,7 +433,7 @@ public final class SpriteTiledTest
      * Test origin <code>null</code>.
      */
     @Test
-    public void testSetOriginNull()
+    void testSetOriginNull()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -444,7 +444,7 @@ public final class SpriteTiledTest
      * Test set tile with invalid value.
      */
     @Test
-    public void testSetTileInvalid()
+    void testSetTileInvalid()
     {
         final SpriteTiled sprite = new SpriteTiledImpl(Graphics.createImageBuffer(64, 32), 16, 8);
 
@@ -455,7 +455,7 @@ public final class SpriteTiledTest
      * Test render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         try
@@ -480,7 +480,7 @@ public final class SpriteTiledTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteTiled sprite = new SpriteTiledImpl(surface, 16, 8);
@@ -516,7 +516,7 @@ public final class SpriteTiledTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final SpriteTiled sprite = new SpriteTiledImpl(surface, 16, 8);

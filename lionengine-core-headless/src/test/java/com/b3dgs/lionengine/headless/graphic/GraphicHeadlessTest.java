@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link GraphicHeadless}.
  */
-public final class GraphicHeadlessTest extends GraphicTest
+final class GraphicHeadlessTest extends GraphicTest
 {
     /**
      * Prepare tests.
@@ -44,7 +44,7 @@ public final class GraphicHeadlessTest extends GraphicTest
      * Test apply mask.
      */
     @Test
-    public void testApplyMask()
+    void testApplyMask()
     {
         final ImageBuffer image = Graphics.createImageBuffer(10, 20);
 

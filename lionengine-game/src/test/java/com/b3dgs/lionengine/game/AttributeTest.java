@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Attribute}.
  */
-public final class AttributeTest
+final class AttributeTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final Attribute attribute = new Attribute();
 
@@ -40,7 +40,7 @@ public final class AttributeTest
      * Test increase.
      */
     @Test
-    public void testIncrease()
+    void testIncrease()
     {
         final Attribute attribute = new Attribute();
         attribute.increase(2);
@@ -52,7 +52,7 @@ public final class AttributeTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         final Attribute attribute = new Attribute();
         attribute.set(1);

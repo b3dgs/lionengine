@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link CollidableModel}.
  */
-public final class CollidableModelTest
+final class CollidableModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -141,7 +141,7 @@ public final class CollidableModelTest
      * Test collidable class.
      */
     @Test
-    public void testCollidable()
+    void testCollidable()
     {
         assertTrue(collidable1.collide(collidable1).isEmpty());
         assertTrue(collidable2.collide(collidable1).isEmpty());
@@ -182,7 +182,7 @@ public final class CollidableModelTest
      * Test collidable class with different sizes.
      */
     @Test
-    public void testDifferentSizes()
+    void testDifferentSizes()
     {
         final AtomicBoolean auto = new AtomicBoolean();
         collidable1.checkListener((CollidableListener) (collidable, with, by) -> auto.set(true));
@@ -211,7 +211,7 @@ public final class CollidableModelTest
      * Test collidable class with mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final Mirrorable mirror1 = featurable1.addFeatureAndGet(new MirrorableModel(services, setup));
         mirror1.mirror(Mirror.HORIZONTAL);
@@ -243,7 +243,7 @@ public final class CollidableModelTest
      * Test collidable disabled.
      */
     @Test
-    public void testDisabled()
+    void testDisabled()
     {
         collidable1.getAccepted().clear();
         assertTrue(collidable1.getAccepted().isEmpty());
@@ -272,7 +272,7 @@ public final class CollidableModelTest
      * Test set enabled collision.
      */
     @Test
-    public void testSetEnabledCollision()
+    void testSetEnabledCollision()
     {
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable1.addCollision(collision);
@@ -298,7 +298,7 @@ public final class CollidableModelTest
      * Test collidable accept collision.
      */
     @Test
-    public void testAccept()
+    void testAccept()
     {
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable1.addCollision(collision);
@@ -319,7 +319,7 @@ public final class CollidableModelTest
      * Test collidable rendering.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         transformable1.moveLocation(1.0, 1.0, 1.0);
 
@@ -346,7 +346,7 @@ public final class CollidableModelTest
      * Test the group.
      */
     @Test
-    public void testGroup()
+    void testGroup()
     {
         assertEquals(Integer.valueOf(0), collidable1.getGroup());
 
@@ -359,7 +359,7 @@ public final class CollidableModelTest
      * Test listener add and remove.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         final AtomicBoolean called = new AtomicBoolean();
         final CollidableListener listener = (collidable, with, by) -> called.set(true);
@@ -386,7 +386,7 @@ public final class CollidableModelTest
      * Test listener void.
      */
     @Test
-    public void testListenerVoid()
+    void testListenerVoid()
     {
         assertNotNull(CollidableListenerVoid.getInstance());
         CollidableListenerVoid.getInstance().notifyCollided(null, null, null);
@@ -396,7 +396,7 @@ public final class CollidableModelTest
      * Test the constructor listener void.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(CollidableListenerVoid.class);
     }

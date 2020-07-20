@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link InputDeviceControlDelegate}.
  */
-public final class InputDeviceControlDelegateTest
+final class InputDeviceControlDelegateTest
 {
     private final InputDeviceControl delegate = new Delegate();
 
@@ -42,7 +42,7 @@ public final class InputDeviceControlDelegateTest
      * Test the device.
      */
     @Test
-    public void testDevice()
+    void testDevice()
     {
         final InputDeviceControl device = new InputDeviceControlDelegate(this::get);
 

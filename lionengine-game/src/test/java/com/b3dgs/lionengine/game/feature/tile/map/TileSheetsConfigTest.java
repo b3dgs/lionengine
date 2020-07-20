@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link TileSheetsConfig}.
  */
-public final class TileSheetsConfigTest
+final class TileSheetsConfigTest
 {
     /**
      * Prepare test.
@@ -56,7 +56,7 @@ public final class TileSheetsConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImport()
+    void testExportsImport()
     {
         final Media media = Medias.create("sheets.xml");
         TileSheetsConfig.exports(media, 16, 32, Arrays.asList("sheet"));

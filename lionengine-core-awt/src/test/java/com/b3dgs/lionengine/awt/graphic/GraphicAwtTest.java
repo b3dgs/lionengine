@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link GraphicAwt}.
  */
-public final class GraphicAwtTest extends GraphicTest
+final class GraphicAwtTest extends GraphicTest
 {
     /**
      * Prepare tests.
@@ -43,7 +43,7 @@ public final class GraphicAwtTest extends GraphicTest
      * Test set graphic.
      */
     @Test
-    public void testSetGraphic()
+    void testSetGraphic()
     {
         final GraphicAwt g = new GraphicAwt();
         g.setGraphic(g);

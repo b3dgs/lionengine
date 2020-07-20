@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link TileConfig}.
  */
-public final class TileConfigTest
+final class TileConfigTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(TileConfig.class);
     }
@@ -41,7 +41,7 @@ public final class TileConfigTest
      * Test imports.
      */
     @Test
-    public void testImports()
+    void testImports()
     {
         final Xml nodeTile = new Xml(TileConfig.NODE_TILE);
         nodeTile.writeInteger(TileConfig.ATT_TILE_NUMBER, 1);
@@ -53,7 +53,7 @@ public final class TileConfigTest
      * Test exports.
      */
     @Test
-    public void testExports()
+    void testExports()
     {
         final int number = 1;
         final Xml nodeTile = TileConfig.exports(number);

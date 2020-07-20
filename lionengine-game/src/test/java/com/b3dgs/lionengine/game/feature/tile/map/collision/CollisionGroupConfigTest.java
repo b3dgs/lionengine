@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 /**
  * Test {@link CollisionGroupConfig}.
  */
-public final class CollisionGroupConfigTest
+final class CollisionGroupConfigTest
 {
     /**
      * Prepare test.
@@ -79,7 +79,7 @@ public final class CollisionGroupConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("groups");
         CollisionGroupConfig.exports(root, group);
@@ -99,7 +99,7 @@ public final class CollisionGroupConfigTest
      * Test with map.
      */
     @Test
-    public void testExportsImportsMap()
+    void testExportsImportsMap()
     {
         final Xml root = new Xml("groups");
         CollisionGroupConfig.exports(root, group);
@@ -123,7 +123,7 @@ public final class CollisionGroupConfigTest
      * Test has and remove functions.
      */
     @Test
-    public void testHasRemove()
+    void testHasRemove()
     {
         final Xml root = new Xml("groups");
         CollisionGroupConfig.exports(root, group);

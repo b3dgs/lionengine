@@ -30,13 +30,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link PathData}.
  */
-public final class PathDataTest
+final class PathDataTest
 {
     /**
      * Test the getter.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         final PathData data = new PathData("category", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
 
@@ -51,7 +51,7 @@ public final class PathDataTest
      * Test the equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final PathData data = new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
 
@@ -72,7 +72,7 @@ public final class PathDataTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final PathData data = new PathData("c", 1.0, true, EnumSet.of(MovementTile.UP, MovementTile.DOWN));
 

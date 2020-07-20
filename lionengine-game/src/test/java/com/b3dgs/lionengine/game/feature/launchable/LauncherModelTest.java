@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.feature.UtilSetup;
 /**
  * Test {@link LauncherModel}.
  */
-public final class LauncherModelTest
+final class LauncherModelTest
 {
     /**
      * Prepare test.
@@ -91,7 +91,7 @@ public final class LauncherModelTest
      * Test the config.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         assertEquals(0, launcher.getLevel());
         assertEquals(10, launcher.getRate());
@@ -105,7 +105,7 @@ public final class LauncherModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLauncher() throws InterruptedException
+    void testLauncher() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
@@ -175,7 +175,7 @@ public final class LauncherModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLauncherInitial() throws InterruptedException
+    void testLauncherInitial() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
@@ -217,7 +217,7 @@ public final class LauncherModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLauncherDelay() throws InterruptedException
+    void testLauncherDelay() throws InterruptedException
     {
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 10);
         final Setup setup = new Setup(launcherMedia);
@@ -265,7 +265,7 @@ public final class LauncherModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLauncherLevel() throws InterruptedException
+    void testLauncherLevel() throws InterruptedException
     {
         final AtomicBoolean fired = new AtomicBoolean();
         final AtomicReference<Launchable> firedLaunchable = new AtomicReference<>();
@@ -329,7 +329,7 @@ public final class LauncherModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testLauncherSelfListener() throws InterruptedException
+    void testLauncherSelfListener() throws InterruptedException
     {
         final LaunchableObjectSelf object = new LaunchableObjectSelf(services, setup);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
@@ -366,7 +366,7 @@ public final class LauncherModelTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testListenerAutoAdd() throws InterruptedException
+    void testListenerAutoAdd() throws InterruptedException
     {
         final LaunchableObjectSelf object = new LaunchableObjectSelf(services, setup);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);
@@ -408,7 +408,7 @@ public final class LauncherModelTest
      * Test the launcher failure.
      */
     @Test
-    public void testLauncherFailure()
+    void testLauncherFailure()
     {
         final Media launchableMedia = UtilSetup.createMedia(Featurable.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
@@ -441,7 +441,7 @@ public final class LauncherModelTest
      * Test the launcher failure.
      */
     @Test
-    public void testLauncherException()
+    void testLauncherException()
     {
         final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
@@ -474,7 +474,7 @@ public final class LauncherModelTest
      * Test check listener conditions.
      */
     @Test
-    public void testCheckListener()
+    void testCheckListener()
     {
         final Media launchableMedia = UtilSetup.createMedia(LaunchableObjectException.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);

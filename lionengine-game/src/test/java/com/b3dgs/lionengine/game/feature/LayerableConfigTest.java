@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link LayerableConfig}.
  */
-public final class LayerableConfigTest
+final class LayerableConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public final class LayerableConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("test");
         final LayerableConfig config = new LayerableConfig(0, 1);
@@ -77,7 +77,7 @@ public final class LayerableConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final LayerableConfig config = new LayerableConfig(0, 1);
 
@@ -95,7 +95,7 @@ public final class LayerableConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final LayerableConfig hash = new LayerableConfig(0, 1);
 
@@ -110,7 +110,7 @@ public final class LayerableConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final LayerableConfig config = new LayerableConfig(0, 1);
 

@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link FilterBilinear}.
  */
-public final class FilterBilinearTest
+final class FilterBilinearTest
 {
     /**
      * Prepare tests.
@@ -59,7 +59,7 @@ public final class FilterBilinearTest
      * Test bilinear filter
      */
     @Test
-    public void testBilinear()
+    void testBilinear()
     {
         final Media media = Medias.create("image.png");
         final ImageBuffer image = Graphics.getImageBuffer(media);

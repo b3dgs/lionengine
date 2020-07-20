@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.game.Orientation;
 /**
  * Test {@link CollisionConstraintConfig}.
  */
-public final class CollisionConstraintConfigTest
+final class CollisionConstraintConfigTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(CollisionConstraintConfig.class);
     }
@@ -42,7 +42,7 @@ public final class CollisionConstraintConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("constraint");
 
@@ -59,7 +59,7 @@ public final class CollisionConstraintConfigTest
      * Test with empty constraint.
      */
     @Test
-    public void testExportsImportsEmptyConstraints()
+    void testExportsImportsEmptyConstraints()
     {
         final Xml root = new Xml("constraint");
 

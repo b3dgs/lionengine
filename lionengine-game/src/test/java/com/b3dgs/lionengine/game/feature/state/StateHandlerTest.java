@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.game.feature.UtilTransformable;
 /**
  * Test {@link StateHandler}.
  */
-public final class StateHandlerTest
+final class StateHandlerTest
 {
     /** Object config test. */
     private static Media config;
@@ -86,7 +86,7 @@ public final class StateHandlerTest
      * Test the state handling.
      */
     @Test
-    public void testHandler()
+    void testHandler()
     {
         final StateHandler handler = new StateHandler(services, setup);
 
@@ -152,7 +152,7 @@ public final class StateHandlerTest
      * Test the state handling with custom converter.
      */
     @Test
-    public void testHandlerConverter()
+    void testHandlerConverter()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
@@ -169,7 +169,7 @@ public final class StateHandlerTest
      * Test the state clear transition.
      */
     @Test
-    public void testClear()
+    void testClear()
     {
         final StateHandler handler = new StateHandler(services, setup);
         handler.changeState(StateClear.class);
@@ -186,7 +186,7 @@ public final class StateHandlerTest
      * Test state with configuration.
      */
     @Test
-    public void testWithConfig()
+    void testWithConfig()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final StateHandler handler;
@@ -218,7 +218,7 @@ public final class StateHandlerTest
      * Test is state with invalid parameter.
      */
     @Test
-    public void testNullArgument()
+    void testNullArgument()
     {
         final StateHandler handler = new StateHandler(services, setup);
 
@@ -229,7 +229,7 @@ public final class StateHandlerTest
      * Test is state with invalid parameter.
      */
     @Test
-    public void testUnknownState()
+    void testUnknownState()
     {
         final StateHandler handler = new StateHandler(services, setup);
         handler.changeState(State.class);
@@ -241,7 +241,7 @@ public final class StateHandlerTest
      * Test transition with last state.
      */
     @Test
-    public void testLast()
+    void testLast()
     {
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
@@ -276,7 +276,7 @@ public final class StateHandlerTest
      * @throws Exception If error.
      */
     @Test
-    public void testLastInstance() throws Exception
+    void testLastInstance() throws Exception
     {
         final StateLast state = UtilReflection.create(StateLast.class, new Class[] {});
         state.enter();
@@ -287,7 +287,7 @@ public final class StateHandlerTest
      * Test is state with listener.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         final AtomicReference<Class<? extends State>> old = new AtomicReference<>();
         final AtomicReference<Class<? extends State>> next = new AtomicReference<>();
@@ -329,7 +329,7 @@ public final class StateHandlerTest
      * Test state with transition to itself.
      */
     @Test
-    public void testAddTransitionItself()
+    void testAddTransitionItself()
     {
         final StateMock mock = new StateMock();
         assertThrows(() -> mock.addTransition(StateMock.class, () ->

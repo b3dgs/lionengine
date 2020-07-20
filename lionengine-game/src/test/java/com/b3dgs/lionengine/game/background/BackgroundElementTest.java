@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.graphic.drawable.Image;
 /**
  * Test {@link BackgroundElement}.
  */
-public final class BackgroundElementTest
+final class BackgroundElementTest
 {
     /**
      * Prepare tests.
@@ -54,7 +54,7 @@ public final class BackgroundElementTest
      * Test data.
      */
     @Test
-    public void testData()
+    void testData()
     {
         final Image image = Drawable.loadImage(Graphics.createImageBuffer(16, 32));
         final BackgroundElement element = new BackgroundElement(1, 2, image);

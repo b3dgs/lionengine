@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link CollisionFunctionType}.
  */
-public final class CollisionFunctionTypeTest
+final class CollisionFunctionTypeTest
 {
     /**
      * Test the enum.
@@ -31,7 +31,7 @@ public final class CollisionFunctionTypeTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(CollisionFunctionType.class);
     }

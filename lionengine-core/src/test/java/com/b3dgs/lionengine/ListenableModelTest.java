@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link ListenableModel}.
  */
-public final class ListenableModelTest
+final class ListenableModelTest
 {
     private final ListenableModel<Object> model = new ListenableModel<>();
 
@@ -36,7 +36,7 @@ public final class ListenableModelTest
      * Test constructor.
      */
     @Test
-    public void testNull()
+    void testNull()
     {
         assertThrows(() -> model.addListener(null), "Unexpected null argument !");
         assertThrows(() -> model.removeListener(null), "Unexpected null argument !");
@@ -46,7 +46,7 @@ public final class ListenableModelTest
      * Test listenable.
      */
     @Test
-    public void testListenable()
+    void testListenable()
     {
         assertTrue(model.get().isEmpty());
         assertEquals(0, model.size());

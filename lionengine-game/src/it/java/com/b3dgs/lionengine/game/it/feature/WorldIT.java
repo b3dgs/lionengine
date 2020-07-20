@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Integration test for World class.
  */
-public class WorldIT
+final class WorldIT
 {
     /**
      * Test the world.
      */
     @Test
-    public void testWorld()
+    void testWorld()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), System.getProperty("java.io.tmpdir"));
         final Resolution output = new Resolution(640, 480, 60);

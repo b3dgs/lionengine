@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.audio.AudioFactory;
 /**
  * Test {@link WavFormat} and {@link WavImpl}.
  */
-public final class WavTest
+final class WavTest
 {
     /**
      * Prepare the test.
@@ -60,7 +60,7 @@ public final class WavTest
      * Test with <code>null</code> argument.
      */
     @Test
-    public void testNullArgument()
+    void testNullArgument()
     {
         assertThrows(() -> AudioFactory.loadAudio(null), "Unexpected null argument !");
     }
@@ -71,7 +71,7 @@ public final class WavTest
      * @throws InterruptedException If error.
      */
     @Test
-    public void testInvalidAudio() throws InterruptedException
+    void testInvalidAudio() throws InterruptedException
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Audio wav = AudioFactory.loadAudio(Medias.create("invalid.wav"));
@@ -92,7 +92,7 @@ public final class WavTest
      * Test with negative volume.
      */
     @Test
-    public void testNegativeVolume()
+    void testNegativeVolume()
     {
         final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
         try
@@ -109,7 +109,7 @@ public final class WavTest
      * Test with out of range volume.
      */
     @Test
-    public void testOutOfRangeVolume()
+    void testOutOfRangeVolume()
     {
         final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
         try
@@ -126,7 +126,7 @@ public final class WavTest
      * Test functions.
      */
     @Test
-    public void testWav()
+    void testWav()
     {
         final Wav wav = AudioFactory.loadAudio(Medias.create("sound.wav"), Wav.class);
         try

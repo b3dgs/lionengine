@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Mirror;
 /**
  * Test {@link MirrorableModel}.
  */
-public final class MirrorableModelTest
+final class MirrorableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -63,7 +63,7 @@ public final class MirrorableModelTest
      * Test the mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final MirrorableModel mirrorable = new MirrorableModel(services, setup);
 

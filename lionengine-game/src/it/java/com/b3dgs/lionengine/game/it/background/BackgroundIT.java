@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Integration test for background package.
  */
-public class BackgroundIT
+final class BackgroundIT
 {
     /**
      * Test the background.
      */
     @Test
-    public void testBackground()
+    void testBackground()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 480, 60);

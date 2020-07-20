@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
 /**
  * Test {@link MapTileFog}.
  */
-public final class MapTileFogTest
+final class MapTileFogTest
 {
     /** Object config test. */
     private static Media media;
@@ -77,7 +77,7 @@ public final class MapTileFogTest
      * Test the fog.
      */
     @Test
-    public void testFog()
+    void testFog()
     {
         final MapTile map = UtilMap.createMap(5);
         services.add(map);

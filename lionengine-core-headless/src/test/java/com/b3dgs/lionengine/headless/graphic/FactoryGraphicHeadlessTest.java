@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link FactoryGraphicHeadless}.
  */
-public final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
+final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
 {
     /**
      * Prepare tests.
@@ -64,7 +64,7 @@ public final class FactoryGraphicHeadlessTest extends FactoryGraphicTest
      */
     @Test
     @Override
-    public void testRotate()
+    protected void testRotate()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer rotate = Graphics.rotate(image, 90);

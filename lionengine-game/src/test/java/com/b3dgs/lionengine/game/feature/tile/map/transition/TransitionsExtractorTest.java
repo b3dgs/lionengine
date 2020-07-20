@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link TransitionsExtractor}.
  */
-public final class TransitionsExtractorTest
+final class TransitionsExtractorTest
 {
     /** Object config test. */
     private static Media media;
@@ -114,7 +114,7 @@ public final class TransitionsExtractorTest
      * Test the transitions extraction.
      */
     @Test
-    public void testExtraction()
+    void testExtraction()
     {
         final MapTile map = createMap(services, setup, 7);
         UtilMap.fill(map, TILE_WATER);

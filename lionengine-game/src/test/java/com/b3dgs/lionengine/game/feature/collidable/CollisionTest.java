@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Collision}.
  */
-public final class CollisionTest
+final class CollisionTest
 {
     /**
      * Test collision data functions.
      */
     @Test
-    public void testCollision()
+    void testCollision()
     {
         final Collision collision = new Collision("void", 1, 2, 3, 4, true);
 
@@ -50,7 +50,7 @@ public final class CollisionTest
      * Test collision with <code>null</code> name.
      */
     @Test
-    public void testCollisionNullName()
+    void testCollisionNullName()
     {
         assertThrows(() -> new Collision(null, 1, 2, 3, 4, true), "Unexpected null argument !");
     }
@@ -59,7 +59,7 @@ public final class CollisionTest
      * Test the collision equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Collision collision = new Collision("void", 1, 2, 3, 4, true);
 
@@ -80,7 +80,7 @@ public final class CollisionTest
      * Test the collision hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Collision collision = new Collision("void", 1, 2, 3, 4, true);
 
@@ -99,7 +99,7 @@ public final class CollisionTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final Collision collision = new Collision("void", 0, 2, 3, 4, true);
 

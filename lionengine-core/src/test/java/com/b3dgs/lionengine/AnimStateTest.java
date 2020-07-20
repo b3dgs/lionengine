@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link AnimState}.
  */
-public final class AnimStateTest
+final class AnimStateTest
 {
     /**
      * Test the enum.
@@ -29,7 +29,7 @@ public final class AnimStateTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(AnimState.class);
     }

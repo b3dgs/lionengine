@@ -57,7 +57,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Game loop designed to handle our little world.
  */
-class Scene extends Sequence
+final class Scene extends Sequence
 {
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
     private static final int VIEW_X = 72;
@@ -79,7 +79,7 @@ class Scene extends Sequence
      * 
      * @param context The context reference.
      */
-    public Scene(Context context)
+    Scene(Context context)
     {
         super(context, NATIVE);
 

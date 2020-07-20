@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Circuit}.
  */
-public final class CircuitTest
+final class CircuitTest
 {
     /**
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Circuit circuit = new Circuit(CircuitType.MIDDLE, "a", "b");
 
@@ -45,7 +45,7 @@ public final class CircuitTest
      * Test the group circuit equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final CircuitType type = CircuitType.TOP;
         final Circuit circuit = new Circuit(type, "a", "a");
@@ -72,7 +72,7 @@ public final class CircuitTest
      * Test the group circuit hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final CircuitType type = CircuitType.TOP;
         final Circuit circuit = new Circuit(type, "a", "a");
@@ -99,7 +99,7 @@ public final class CircuitTest
      * Test the group to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals(CircuitType.MIDDLE.name() + " a -> b", new Circuit(CircuitType.MIDDLE, "a", "b").toString());
     }

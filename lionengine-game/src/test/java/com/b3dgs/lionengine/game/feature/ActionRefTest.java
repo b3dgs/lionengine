@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link ActionRef}.
  */
-public final class ActionRefTest
+final class ActionRefTest
 {
     /** Object config test. */
     private static Media config;
@@ -77,7 +77,7 @@ public final class ActionRefTest
      * Test constructor with <code>null</code> path.
      */
     @Test
-    public void testConstructorNullPath()
+    void testConstructorNullPath()
     {
         assertThrows(() -> new ActionRef(null, false, Collections.emptyList()), "Unexpected null argument !");
     }
@@ -86,7 +86,7 @@ public final class ActionRefTest
      * Test constructor with <code>null</code> refs.
      */
     @Test
-    public void testConstructorNullRefs()
+    void testConstructorNullRefs()
     {
         assertThrows(() -> assertNull(new ActionRef(Constant.EMPTY_STRING, false, null)), "Unexpected null argument !");
     }
@@ -95,7 +95,7 @@ public final class ActionRefTest
      * Test getter.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         assertEquals("path", actionRef1.getPath());
         assertEquals("path2", actionRef2.getPath());
@@ -114,7 +114,7 @@ public final class ActionRefTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final FeaturableModel featurable = new FeaturableModel(services, setup);
 
@@ -146,7 +146,7 @@ public final class ActionRefTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ActionRef hash = actionRef1;
         final FeaturableModel featurable = new FeaturableModel(services, setup);
@@ -177,7 +177,7 @@ public final class ActionRefTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("ActionRef [path=path2, cancel=true, refs=[ActionRef [path=path, cancel=false, refs=[]]]]",
                      actionRef2.toString());

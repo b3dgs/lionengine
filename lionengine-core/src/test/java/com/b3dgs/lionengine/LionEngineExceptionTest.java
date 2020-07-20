@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link LionEngineException}.
  */
-public final class LionEngineExceptionTest
+final class LionEngineExceptionTest
 {
     /**
      * Test exception with a media as argument with <code>null</code> path.
      */
     @Test
-    public void testLionEngineExceptionWithMediaNullPath()
+    void testLionEngineExceptionWithMediaNullPath()
     {
         final LionEngineException exception = new LionEngineException(new MediaMock(), "message");
 
@@ -46,7 +46,7 @@ public final class LionEngineExceptionTest
      * Test exception with a media as argument.
      */
     @Test
-    public void testLionEngineExceptionWithMedia()
+    void testLionEngineExceptionWithMedia()
     {
         final LionEngineException exception = new LionEngineException(Medias.create("media"));
 
@@ -58,7 +58,7 @@ public final class LionEngineExceptionTest
      * Test exception with a media and message as argument.
      */
     @Test
-    public void testLionEngineExceptionWithMediaMessage()
+    void testLionEngineExceptionWithMediaMessage()
     {
         final LionEngineException exception = new LionEngineException(Medias.create("media"), "message");
 
@@ -70,7 +70,7 @@ public final class LionEngineExceptionTest
      * Test exception with a media as argument.
      */
     @Test
-    public void testLionEngineExceptionWithMediaException()
+    void testLionEngineExceptionWithMediaException()
     {
         final LionEngineException exception = new LionEngineException(new RuntimeException(), Medias.create("media"));
 
@@ -82,7 +82,7 @@ public final class LionEngineExceptionTest
      * Test exception with a media as argument plus exception and message.
      */
     @Test
-    public void testLionEngineExceptionWithMediaExceptionMessage()
+    void testLionEngineExceptionWithMediaExceptionMessage()
     {
         final LionEngineException exception = new LionEngineException(new RuntimeException(),
                                                                       Medias.create("media"),
@@ -96,7 +96,7 @@ public final class LionEngineExceptionTest
      * Test exception with a <code>null</code> enum as argument.
      */
     @Test
-    public void testLionEngineExceptionWithEnumNull()
+    void testLionEngineExceptionWithEnumNull()
     {
         final LionEngineException exception = new LionEngineException((Enum<?>) null);
 
@@ -108,7 +108,7 @@ public final class LionEngineExceptionTest
      * Test exception with an enum as argument.
      */
     @Test
-    public void testLionEngineExceptionWithEnum()
+    void testLionEngineExceptionWithEnum()
     {
         final LionEngineException exception = new LionEngineException(Origin.MIDDLE);
 
@@ -122,7 +122,7 @@ public final class LionEngineExceptionTest
      * @throws FileNotFoundException If error.
      */
     @Test
-    public void testLionEngineExceptionWithException() throws FileNotFoundException
+    void testLionEngineExceptionWithException() throws FileNotFoundException
     {
         final LionEngineException exception = new LionEngineException(new IOException("error"));
 
@@ -136,7 +136,7 @@ public final class LionEngineExceptionTest
      * @throws FileNotFoundException If error.
      */
     @Test
-    public void testLionEngineExceptionWithLionEngineException() throws FileNotFoundException
+    void testLionEngineExceptionWithLionEngineException() throws FileNotFoundException
     {
         final LionEngineException exception = new LionEngineException(new LionEngineException("reason"));
 
@@ -151,7 +151,7 @@ public final class LionEngineExceptionTest
      * @throws FileNotFoundException If error.
      */
     @Test
-    public void testLionEngineExceptionWithRuntimeException() throws FileNotFoundException
+    void testLionEngineExceptionWithRuntimeException() throws FileNotFoundException
     {
         final LionEngineException exception = new LionEngineException(new LionEngineException(new RuntimeException("sub")));
 
@@ -168,7 +168,7 @@ public final class LionEngineExceptionTest
      * @throws FileNotFoundException If error.
      */
     @Test
-    public void testLionEngineExceptionWithNullReason() throws FileNotFoundException
+    void testLionEngineExceptionWithNullReason() throws FileNotFoundException
     {
         final LionEngineException exception = new LionEngineException((Throwable) null);
 
@@ -180,7 +180,7 @@ public final class LionEngineExceptionTest
      * Test exception with an exception as argument without message.
      */
     @Test
-    public void testLionEngineExceptionWithExceptionNoMessage()
+    void testLionEngineExceptionWithExceptionNoMessage()
     {
         final LionEngineException exception = new LionEngineException(new IOException());
 
@@ -192,7 +192,7 @@ public final class LionEngineExceptionTest
      * Test exception with a exception as argument and message.
      */
     @Test
-    public void testLionEngineExceptionWithThrowableMessage()
+    void testLionEngineExceptionWithThrowableMessage()
     {
         final LionEngineException exception = new LionEngineException(new IOException(), "message");
 

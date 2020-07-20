@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Test {@link Routines}.
  */
-public final class RoutinesTest
+final class RoutinesTest
 {
     /** Object config test. */
     private static Media config;
@@ -65,7 +65,7 @@ public final class RoutinesTest
      * Test the routines.
      */
     @Test
-    public void testRoutines()
+    void testRoutines()
     {
         final MyRoutine routine = new MyRoutine(services, setup);
         featurable.addFeature(routine);

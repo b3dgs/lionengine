@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link FramesConfig}.
  */
-public final class FramesConfigTest
+final class FramesConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public final class FramesConfigTest
      * Test with no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml("test");
 
@@ -69,7 +69,7 @@ public final class FramesConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
@@ -90,7 +90,7 @@ public final class FramesConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 
@@ -109,7 +109,7 @@ public final class FramesConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final FramesConfig hash = new FramesConfig(1, 2, 3, 4);
 
@@ -125,7 +125,7 @@ public final class FramesConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final FramesConfig config = new FramesConfig(1, 2, 3, 4);
 

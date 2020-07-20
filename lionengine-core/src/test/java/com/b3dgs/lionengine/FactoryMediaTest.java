@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link FactoryMedia}.
  */
-public final class FactoryMediaTest
+final class FactoryMediaTest
 {
     /**
      * Test create media from resources directory.
      */
     @Test
-    public void testCreateMediaResources()
+    void testCreateMediaResources()
     {
         final FactoryMedia factory = new FactoryMediaDefault();
         final Media media = factory.create(java.io.File.separator, "rsc", "test.txt");
@@ -44,7 +44,7 @@ public final class FactoryMediaTest
      * Test create media from loader.
      */
     @Test
-    public void testCreateMediaLoader()
+    void testCreateMediaLoader()
     {
         final FactoryMedia factory = new FactoryMediaDefault();
         final Media media = factory.create(java.io.File.separator, FactoryMediaTest.class, "test.txt");

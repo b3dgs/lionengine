@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Test {@link ExtractorModel}.
  */
-public final class ExtractorModelTest
+final class ExtractorModelTest
 {
     /** Hack enum. */
     private static final UtilEnum<ExtractorState> HACK = new UtilEnum<>(ExtractorState.class, ExtractorModel.class);
@@ -119,7 +119,7 @@ public final class ExtractorModelTest
      * Test the extractor config.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
         object.addFeature(new TransformableModel(services, setup));
@@ -151,7 +151,7 @@ public final class ExtractorModelTest
      * Test the extractor.
      */
     @Test
-    public void testExtractor()
+    void testExtractor()
     {
         final Featurable object = new FeaturableModel(services, setup);
         object.addFeature(new TransformableModel(services, setup));
@@ -228,7 +228,7 @@ public final class ExtractorModelTest
      * Test the extractor cannot extract.
      */
     @Test
-    public void testCannotExtract()
+    void testCannotExtract()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, false, true);
         object.addFeature(new TransformableModel(services, setup));
@@ -261,7 +261,7 @@ public final class ExtractorModelTest
      * Test the extractor cannot carry.
      */
     @Test
-    public void testCannotCarry()
+    void testCannotCarry()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, false);
         object.addFeature(new TransformableModel(services, setup));
@@ -294,7 +294,7 @@ public final class ExtractorModelTest
      * Test the extractor with extractable.
      */
     @Test
-    public void testExtractorExtractable()
+    void testExtractorExtractable()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
         object.addFeature(new TransformableModel(services, setup));
@@ -368,7 +368,7 @@ public final class ExtractorModelTest
      * Test the extractor with extractable without resource.
      */
     @Test
-    public void testExtractorExtractableNoResource()
+    void testExtractorExtractableNoResource()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
         object.addFeature(new TransformableModel(services, setup));
@@ -412,7 +412,7 @@ public final class ExtractorModelTest
      * Test the stop extraction.
      */
     @Test
-    public void testStopExtraction()
+    void testStopExtraction()
     {
         final ObjectExtractor object = new ObjectExtractor(services, setup, true, true);
         object.addFeature(new TransformableModel(services, setup));
@@ -462,7 +462,7 @@ public final class ExtractorModelTest
      * Test the auto add listener.
      */
     @Test
-    public void testListenerAutoAdd()
+    void testListenerAutoAdd()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
         object.addFeature(new TransformableModel(services, setup));
@@ -484,7 +484,7 @@ public final class ExtractorModelTest
      * Test the check listener.
      */
     @Test
-    public void testCheckListener()
+    void testCheckListener()
     {
         final ObjectExtractorSelf object = new ObjectExtractorSelf(services, setup);
         object.addFeature(new TransformableModel(services, setup));
@@ -511,7 +511,7 @@ public final class ExtractorModelTest
      * Test the remove listener.
      */
     @Test
-    public void testRemoveListener()
+    void testRemoveListener()
     {
         final AtomicBoolean check = new AtomicBoolean();
         final Extractor extractor = new ExtractorModel(services, setup);
@@ -544,7 +544,7 @@ public final class ExtractorModelTest
      * @throws IllegalAccessException If error.
      */
     @Test
-    public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
         final ExtractorModel extractor = new ExtractorModel(services, setup);
         final Field field = extractor.getClass().getDeclaredField("state");

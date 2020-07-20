@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 /**
  * Test {@link MapTileRasteredModel}.
  */
-public final class MapTileRasteredModelTest
+final class MapTileRasteredModelTest
 {
     /**
      * Prepare test.
@@ -95,7 +95,7 @@ public final class MapTileRasteredModelTest
      * Test the viewer functions.
      */
     @Test
-    public void testRastered()
+    void testRastered()
     {
         map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
         map.create(40, 40, 2, 2);

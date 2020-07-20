@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.audio.AudioVoidFormat;
 /**
  * Test {@link Sc68Format} and {@link Sc68Player}.
  */
-public final class Sc68Test
+final class Sc68Test
 {
     /**
      * Create sc68 player.
@@ -106,7 +106,7 @@ public final class Sc68Test
      * Test with <code>null</code> argument.
      */
     @Test
-    public void testNullArgument()
+    void testNullArgument()
     {
         assertThrows(() -> AudioFactory.loadAudio(null, Sc68.class), "Unexpected null argument !");
     }
@@ -117,7 +117,7 @@ public final class Sc68Test
      * @throws Exception If error.
      */
     @Test
-    public void testMissingLibrary() throws Exception
+    void testMissingLibrary() throws Exception
     {
         final Field field = Sc68Format.class.getDeclaredField("LIBRARY_NAME");
         final String back = UtilReflection.getField(Sc68Format.class, "LIBRARY_NAME");
@@ -140,7 +140,7 @@ public final class Sc68Test
      * Test with negative volume.
      */
     @Test
-    public void testNegativeVolume()
+    void testNegativeVolume()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -157,7 +157,7 @@ public final class Sc68Test
      * Test with out of range volume.
      */
     @Test
-    public void testOutOfRangeVolume()
+    void testOutOfRangeVolume()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -174,7 +174,7 @@ public final class Sc68Test
      * Test create fail safe.
      */
     @Test
-    public void testCreateFailsafe()
+    void testCreateFailsafe()
     {
         assertNotNull(Sc68Format.getFailsafe());
     }
@@ -183,7 +183,7 @@ public final class Sc68Test
      * Test play sequence.
      */
     @Test
-    public void testPlay()
+    void testPlay()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -212,7 +212,7 @@ public final class Sc68Test
      * @throws InterruptedException If error.
      */
     @Test
-    public void testPlayTwice() throws InterruptedException
+    void testPlayTwice() throws InterruptedException
     {
         final Sc68 sc68 = createSc68();
         try
@@ -236,7 +236,7 @@ public final class Sc68Test
      * Test start sequence.
      */
     @Test
-    public void testStart()
+    void testStart()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -282,7 +282,7 @@ public final class Sc68Test
      * Test loop sequence.
      */
     @Test
-    public void testLoop()
+    void testLoop()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -306,7 +306,7 @@ public final class Sc68Test
      * Test pause sequence.
      */
     @Test
-    public void testPause()
+    void testPause()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -335,7 +335,7 @@ public final class Sc68Test
      * Test the set configuration.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         final Sc68 sc68 = createSc68();
         try
@@ -370,7 +370,7 @@ public final class Sc68Test
      * @throws IOException If error.
      */
     @Test
-    public void testMissingMedia() throws IOException
+    void testMissingMedia() throws IOException
     {
         final Media media = new Media()
         {
@@ -452,7 +452,7 @@ public final class Sc68Test
      * @throws IOException If error.
      */
     @Test
-    public void testOutsideMedia() throws IOException
+    void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.sc68");
         try (InputStream input = music.getInputStream())

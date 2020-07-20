@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Config}.
  */
-public final class ConfigTest
+final class ConfigTest
 {
     /**
      * Test <code>null</code> resolution.
      */
     @Test
-    public void testResolutionNull()
+    void testResolutionNull()
     {
         assertThrows(() -> new Config(null, 1, true), Check.ERROR_NULL);
     }
@@ -41,7 +41,7 @@ public final class ConfigTest
      * Test failure depth.
      */
     @Test
-    public void testDepthInvalid()
+    void testDepthInvalid()
     {
         assertThrows(() -> new Config(new Resolution(320, 240, 60), 0, true),
                      Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
@@ -51,7 +51,7 @@ public final class ConfigTest
      * Test getter.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 32, true);
@@ -65,7 +65,7 @@ public final class ConfigTest
      * Test icon.
      */
     @Test
-    public void testIcon()
+    void testIcon()
     {
         assertFalse(Config.windowed(new Resolution(320, 240, 60)).getIcon().isPresent());
 
@@ -78,7 +78,7 @@ public final class ConfigTest
      * Test default windowed config.
      */
     @Test
-    public void testDefaultWindowed()
+    void testDefaultWindowed()
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.windowed(output);
@@ -92,7 +92,7 @@ public final class ConfigTest
      * Test default fullscreen config.
      */
     @Test
-    public void testDefaultFullscreen()
+    void testDefaultFullscreen()
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = Config.fullscreen(output);

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link MouseHeadless}.
  */
-public final class MouseHeadlessTest
+final class MouseHeadlessTest
 {
     /**
      * Create a mouse event.
@@ -45,7 +45,7 @@ public final class MouseHeadlessTest
      * Test clicked state.
      */
     @Test
-    public void testClicked()
+    void testClicked()
     {
         final MouseHeadless mouse = new MouseHeadless();
 
@@ -76,7 +76,7 @@ public final class MouseHeadlessTest
      * Test click.
      */
     @Test
-    public void testClick()
+    void testClick()
     {
         final MouseHeadless mouse = new MouseHeadless();
 
@@ -93,7 +93,7 @@ public final class MouseHeadlessTest
      * Test location.
      */
     @Test
-    public void testLocation()
+    void testLocation()
     {
         final MouseHeadless mouse = new MouseHeadless();
         mouse.mouseMoved(createEvent(MouseHeadless.LEFT, 0, 0));
@@ -111,7 +111,7 @@ public final class MouseHeadlessTest
      * Test do click robot.
      */
     @Test
-    public void testDoClick()
+    void testDoClick()
     {
         final MouseHeadless mouse = new MouseHeadless();
 
@@ -156,7 +156,7 @@ public final class MouseHeadlessTest
      * Test do click robot with out range click.
      */
     @Test
-    public void testDoClickOutRange()
+    void testDoClickOutRange()
     {
         final MouseHeadless mouse = new MouseHeadless();
         mouse.doClick(Integer.MAX_VALUE);
@@ -171,7 +171,7 @@ public final class MouseHeadlessTest
      * Test move.
      */
     @Test
-    public void testMouse()
+    void testMouse()
     {
         final MouseHeadless mouse = new MouseHeadless();
         mouse.mouseMoved(createEvent(MouseHeadless.LEFT, 0, 0));

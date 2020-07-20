@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link Graphics}.
  */
-public final class GraphicsTest
+final class GraphicsTest
 {
     /**
      * Prepare tests.
@@ -67,7 +67,7 @@ public final class GraphicsTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Graphics.class);
     }
@@ -76,7 +76,7 @@ public final class GraphicsTest
      * Test invalid image width.
      */
     @Test
-    public void testInvalidImageWidth()
+    void testInvalidImageWidth()
     {
         assertThrows(() -> Graphics.createImageBuffer(0, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -85,7 +85,7 @@ public final class GraphicsTest
      * Test invalid image height.
      */
     @Test
-    public void testInvalidImageHeight()
+    void testInvalidImageHeight()
     {
         assertThrows(() -> Graphics.createImageBuffer(1, 0), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -94,7 +94,7 @@ public final class GraphicsTest
      * Test create screen.
      */
     @Test
-    public void testCreateScreen()
+    void testCreateScreen()
     {
         assertNotNull(Graphics.createScreen(new Config(UtilTests.RESOLUTION_320_240, 32, true)));
     }
@@ -103,7 +103,7 @@ public final class GraphicsTest
      * Test create text.
      */
     @Test
-    public void testCreateText()
+    void testCreateText()
     {
         assertNotNull(Graphics.createText("test", 10, TextStyle.NORMAL));
         assertNotNull(Graphics.createText(10));
@@ -113,7 +113,7 @@ public final class GraphicsTest
      * Test create transform.
      */
     @Test
-    public void testCreateTransform()
+    void testCreateTransform()
     {
         assertNotNull(Graphics.createTransform());
     }
@@ -122,7 +122,7 @@ public final class GraphicsTest
      * Test create image buffer.
      */
     @Test
-    public void testCreateImageBuffer()
+    void testCreateImageBuffer()
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
 
@@ -136,7 +136,7 @@ public final class GraphicsTest
      * Test create image buffer transparent color.
      */
     @Test
-    public void testCreateImageBufferTransparentColor()
+    void testCreateImageBufferTransparentColor()
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, ColorRgba.TRANSPARENT);
 
@@ -151,7 +151,7 @@ public final class GraphicsTest
      * Test get image buffer from image.
      */
     @Test
-    public void testGetImageBufferFromImage()
+    void testGetImageBufferFromImage()
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
         final ImageBuffer copy = Graphics.getImageBuffer(imageBuffer);
@@ -167,7 +167,7 @@ public final class GraphicsTest
      * Test get image buffer from media.
      */
     @Test
-    public void testGetImageBufferFromMedia()
+    void testGetImageBufferFromMedia()
     {
         final Media media = Medias.create("image.png");
 
@@ -186,7 +186,7 @@ public final class GraphicsTest
      * Test get image buffer failure with not existing media.
      */
     @Test
-    public void testGetImageBufferFailureMedia()
+    void testGetImageBufferFailureMedia()
     {
         assertThrows(() -> Graphics.getImageBuffer(Medias.create("null")), "[null] Error on reading image !");
     }
@@ -195,7 +195,7 @@ public final class GraphicsTest
      * Test get image buffer failure with wrong image.
      */
     @Test
-    public void testGetImageBufferFailureWrongImage()
+    void testGetImageBufferFailureWrongImage()
     {
         assertThrows(() -> Graphics.getImageBuffer(Medias.create("wrong_image.png")),
                      "[wrong_image.png] Error on reading image !");
@@ -205,7 +205,7 @@ public final class GraphicsTest
      * Test apply mask.
      */
     @Test
-    public void testApplyMask()
+    void testApplyMask()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer mask = Graphics.applyMask(image, ColorRgba.BLACK);
@@ -222,7 +222,7 @@ public final class GraphicsTest
      * Test rotate.
      */
     @Test
-    public void testRotate()
+    void testRotate()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer rotate = Graphics.rotate(image, 90);
@@ -239,7 +239,7 @@ public final class GraphicsTest
      * Test resize.
      */
     @Test
-    public void testResize()
+    void testResize()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer resized = Graphics.resize(image, 1, 2);
@@ -256,7 +256,7 @@ public final class GraphicsTest
      * Test flip horizontal.
      */
     @Test
-    public void testFlipHorizontal()
+    void testFlipHorizontal()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer horizontal = Graphics.flipHorizontal(image);
@@ -273,7 +273,7 @@ public final class GraphicsTest
      * Test flip vertical.
      */
     @Test
-    public void testFlipVertical()
+    void testFlipVertical()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer vertical = Graphics.flipVertical(image);
@@ -290,7 +290,7 @@ public final class GraphicsTest
      * Test split image.
      */
     @Test
-    public void testSplitImage()
+    void testSplitImage()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer[] split = Graphics.splitImage(image, 2, 2);
@@ -320,7 +320,7 @@ public final class GraphicsTest
      * @throws IOException If error.
      */
     @Test
-    public void testSaveImage() throws IOException
+    void testSaveImage() throws IOException
     {
         final File temp = File.createTempFile("save", ".png");
         UtilFile.deleteFile(temp);
@@ -339,7 +339,7 @@ public final class GraphicsTest
      * Test get raster buffer.
      */
     @Test
-    public void testGetRasterBuffer()
+    void testGetRasterBuffer()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0);

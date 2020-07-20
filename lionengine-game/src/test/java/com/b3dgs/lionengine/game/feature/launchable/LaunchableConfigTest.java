@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.Force;
 /**
  * Test {@link LaunchableConfig}.
  */
-public final class LaunchableConfigTest
+final class LaunchableConfigTest
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public final class LaunchableConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
@@ -78,7 +78,7 @@ public final class LaunchableConfigTest
      * Test <code>null</code> media.
      */
     @Test
-    public void testNullMedia()
+    void testNullMedia()
     {
         assertThrows(() -> new LaunchableConfig(null, 0, 1, 2, new Force()), "Unexpected null argument !");
     }
@@ -87,7 +87,7 @@ public final class LaunchableConfigTest
      * Test <code>null</code> force.
      */
     @Test
-    public void testNullForce()
+    void testNullForce()
     {
         assertThrows(() -> new LaunchableConfig("media", 0, 1, 2, null), "Unexpected null argument !");
     }
@@ -96,7 +96,7 @@ public final class LaunchableConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
@@ -115,7 +115,7 @@ public final class LaunchableConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 
@@ -133,7 +133,7 @@ public final class LaunchableConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
 

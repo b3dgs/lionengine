@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.io.FileReading;
 /**
  * Test {@link MapTilePersisterModel}.
  */
-public final class MapTilePersisterModelTest
+final class MapTilePersisterModelTest
 {
     /**
      * Prepare test.
@@ -67,7 +67,7 @@ public final class MapTilePersisterModelTest
      * @throws IOException If error.
      */
     @Test
-    public void testSaveLoad() throws IOException
+    void testSaveLoad() throws IOException
     {
         final MapTile map = UtilMapTilePersister.createMap();
 
@@ -111,7 +111,7 @@ public final class MapTilePersisterModelTest
      * @throws IOException If error.
      */
     @Test
-    public void testSaveLoadWithConfig() throws IOException
+    void testSaveLoadWithConfig() throws IOException
     {
         final Media config = Medias.create("config.xml");
 
@@ -137,7 +137,7 @@ public final class MapTilePersisterModelTest
      * @throws IOException If error.
      */
     @Test
-    public void testListener() throws IOException
+    void testListener() throws IOException
     {
         final MapTileGame map = new MapTileGame();
         final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
@@ -172,7 +172,7 @@ public final class MapTilePersisterModelTest
      * Test the constructor with services with map.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final MapTile map = new MapTileGame();
         final MapTilePersister mapPersister = new MapTilePersisterModel();

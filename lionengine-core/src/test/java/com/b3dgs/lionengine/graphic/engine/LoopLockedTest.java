@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.ScreenMock;
 /**
  * Test {@link LoopLocked}.
  */
-public final class LoopLockedTest
+final class LoopLockedTest
 {
     /**
      * Prepare tests.
@@ -103,7 +103,7 @@ public final class LoopLockedTest
      * Test loop.
      */
     @Test
-    public void testLoop()
+    void testLoop()
     {
         ScreenMock.setScreenWait(false);
 
@@ -125,7 +125,7 @@ public final class LoopLockedTest
      * Test without sync.
      */
     @Test
-    public void testNoSync()
+    void testNoSync()
     {
         ScreenMock.setScreenWait(false);
 
@@ -147,7 +147,7 @@ public final class LoopLockedTest
      * Test without sync.
      */
     @Test
-    public void testNoSyncFullscreen()
+    void testNoSyncFullscreen()
     {
         ScreenMock.setScreenWait(false);
 
@@ -170,7 +170,7 @@ public final class LoopLockedTest
      * Test with not ready screen.
      */
     @Test
-    public void testUnready()
+    void testUnready()
     {
         ScreenMock.setScreenWait(true);
 

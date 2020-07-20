@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.io.OutputStreamMock;
 /**
  * Test {@link UtilStream}.
  */
-public final class UtilStreamTest
+final class UtilStreamTest
 {
     /**
      * Prepare tests.
@@ -63,7 +63,7 @@ public final class UtilStreamTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilStream.class);
     }
@@ -74,7 +74,7 @@ public final class UtilStreamTest
      * @throws IOException If error.
      */
     @Test
-    public void testCopy() throws IOException
+    void testCopy() throws IOException
     {
         final Path temp1 = Files.createTempFile("temp", ".tmp");
         final Path temp2 = Files.createTempFile("temp", ".tmp");
@@ -99,7 +99,7 @@ public final class UtilStreamTest
      * @throws IOException If error.
      */
     @Test
-    public void testCopyNullInput() throws IOException
+    void testCopyNullInput() throws IOException
     {
         try (OutputStream output = new OutputStreamMock())
         {
@@ -113,7 +113,7 @@ public final class UtilStreamTest
      * @throws IOException If error.
      */
     @Test
-    public void testCopyNullOutput() throws IOException
+    void testCopyNullOutput() throws IOException
     {
         try (InputStream input = new InputStreamMock())
         {
@@ -127,7 +127,7 @@ public final class UtilStreamTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetCopy() throws IOException
+    void testGetCopy() throws IOException
     {
         try (InputStream input = new InputStreamMock())
         {
@@ -143,7 +143,7 @@ public final class UtilStreamTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetCopyNullName() throws IOException
+    void testGetCopyNullName() throws IOException
     {
         try (InputStream input = new InputStreamMock())
         {
@@ -157,7 +157,7 @@ public final class UtilStreamTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetCopyNullStream() throws IOException
+    void testGetCopyNullStream() throws IOException
     {
         assertThrows(() -> UtilStream.getCopy("temp", null), Check.ERROR_NULL);
     }
@@ -166,7 +166,7 @@ public final class UtilStreamTest
      * Test get copy error.
      */
     @Test
-    public void testGetCopyError()
+    void testGetCopyError()
     {
         assertThrows(() -> UtilStream.getCopy("copy", new InputStream()
         {

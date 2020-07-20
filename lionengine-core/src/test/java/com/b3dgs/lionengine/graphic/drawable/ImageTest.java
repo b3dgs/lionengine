@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link Image}.
  */
-public final class ImageTest
+final class ImageTest
 {
     /** Image media. */
     private static Media media;
@@ -74,7 +74,7 @@ public final class ImageTest
      * Test constructor with <code>null</code> media.
      */
     @Test
-    public void testConstructorMediaNull()
+    void testConstructorMediaNull()
     {
         assertThrows(() -> new ImageImpl((Media) null), "Unexpected null argument !");
     }
@@ -83,7 +83,7 @@ public final class ImageTest
      * Test constructor with <code>null</code> surface.
      */
     @Test
-    public void testConstructorSurfaceNull()
+    void testConstructorSurfaceNull()
     {
         assertThrows(() -> new ImageImpl((ImageBuffer) null), "Unexpected null argument !");
     }
@@ -92,7 +92,7 @@ public final class ImageTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorMedia()
+    void testConstructorMedia()
     {
         final Image image = new ImageImpl(media);
 
@@ -108,7 +108,7 @@ public final class ImageTest
      * Test constructor with surface.
      */
     @Test
-    public void testConstructorSurface()
+    void testConstructorSurface()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Image image = new ImageImpl(surface);
@@ -125,7 +125,7 @@ public final class ImageTest
      * Test load with media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final Image image = new ImageImpl(media);
         image.load();
@@ -140,7 +140,7 @@ public final class ImageTest
      * Test load with media already loaded.
      */
     @Test
-    public void testLoadMediaAlready()
+    void testLoadMediaAlready()
     {
         final Image image = new ImageImpl(media);
         image.load();
@@ -154,7 +154,7 @@ public final class ImageTest
      * Test load with surface.
      */
     @Test
-    public void testLoadSurface()
+    void testLoadSurface()
     {
         final Image image = new ImageImpl(Graphics.createImageBuffer(64, 32));
 
@@ -167,7 +167,7 @@ public final class ImageTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final ImageImpl image = new ImageImpl(Graphics.createImageBuffer(64, 32));
 
@@ -190,7 +190,7 @@ public final class ImageTest
      * Test set location with viewer.
      */
     @Test
-    public void testSetLocationViewer()
+    void testSetLocationViewer()
     {
         final ImageImpl image = new ImageImpl(Graphics.createImageBuffer(64, 32));
         final ViewerMock viewer = new ViewerMock();
@@ -216,7 +216,7 @@ public final class ImageTest
      * Test rendering point.
      */
     @Test
-    public void testRenderingPoint()
+    void testRenderingPoint()
     {
         final ImageImpl image = new ImageImpl(Graphics.createImageBuffer(10, 20));
         image.setLocation(5.0, 10.0);
@@ -237,7 +237,7 @@ public final class ImageTest
      * Test origin <code>null</code>.
      */
     @Test
-    public void testSetOriginNull()
+    void testSetOriginNull()
     {
         final Image image = new ImageImpl(Graphics.createImageBuffer(64, 32));
 
@@ -250,7 +250,7 @@ public final class ImageTest
      * Test the render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         final Image image = new ImageImpl(Graphics.createImageBuffer(64, 32));
@@ -263,7 +263,7 @@ public final class ImageTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Image image = new ImageImpl(surface);
@@ -292,7 +292,7 @@ public final class ImageTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ImageBuffer surface = Graphics.createImageBuffer(64, 32);
         final Image image = new ImageImpl(surface);

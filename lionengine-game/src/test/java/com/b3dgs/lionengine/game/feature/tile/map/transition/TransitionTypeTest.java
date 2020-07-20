@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link TransitionType}.
  */
-public final class TransitionTypeTest
+final class TransitionTypeTest
 {
     /**
      * Check the bits sequence.
@@ -67,7 +67,7 @@ public final class TransitionTypeTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(TransitionType.class);
     }
@@ -76,7 +76,7 @@ public final class TransitionTypeTest
      * Test the enum creation from string.
      */
     @Test
-    public void testFromString()
+    void testFromString()
     {
         for (final TransitionType type : TransitionType.values())
         {
@@ -88,7 +88,7 @@ public final class TransitionTypeTest
      * Test the enum creation from string.
      */
     @Test
-    public void testFromStringInvalid()
+    void testFromStringInvalid()
     {
         assertThrows(() -> TransitionType.from("null"), "Unknown transition name: null");
     }
@@ -97,7 +97,7 @@ public final class TransitionTypeTest
      * Test the enum creation from bits table.
      */
     @Test
-    public void testFromTable()
+    void testFromTable()
     {
         assertTrue(check(TransitionType.CENTER, false, false, false, false));
         assertFalse(check(TransitionType.CENTER, true, true, true, true));
@@ -121,7 +121,7 @@ public final class TransitionTypeTest
      * Test the enum symmetric equality.
      */
     @Test
-    public void testSymmetric()
+    void testSymmetric()
     {
         assertEquals(TransitionType.CENTER, TransitionType.CENTER.getSymetric());
         assertEquals(TransitionType.CORNER_UP_LEFT, TransitionType.UP_LEFT.getSymetric());

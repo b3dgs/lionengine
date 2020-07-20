@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link CollisionFunctionLinear}.
  */
-public final class CollisionFunctionLinearTest
+final class CollisionFunctionLinearTest
 {
     /** Function test. */
     private final CollisionFunctionLinear function = new CollisionFunctionLinear(2.0, 3.0);
@@ -35,7 +35,7 @@ public final class CollisionFunctionLinearTest
      * Test the function.
      */
     @Test
-    public void testFunction()
+    void testFunction()
     {
         assertEquals(13.0, function.compute(5.0));
         assertEquals(-7.0, function.compute(-5.0));
@@ -53,7 +53,7 @@ public final class CollisionFunctionLinearTest
      * Test the function hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(function, new CollisionFunctionLinear(2.0, 3.0));
 
@@ -66,7 +66,7 @@ public final class CollisionFunctionLinearTest
      * Test the function equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         assertEquals(function, function);
         assertEquals(function, new CollisionFunctionLinear(2.0, 3.0));
@@ -81,7 +81,7 @@ public final class CollisionFunctionLinearTest
      * Test the function to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionFunctionLinear (a=2.0, b=3.0)", function.toString());
     }

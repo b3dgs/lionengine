@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Test {@link FeatureModel}.
  */
-public final class FeatureModelTest
+final class FeatureModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -64,7 +64,7 @@ public final class FeatureModelTest
      * Test the feature model.
      */
     @Test
-    public void testModel()
+    void testModel()
     {
         final Featurable featurable = new FeaturableModel(services, setup);
         final Transformable transformable = new TransformableModel(services, setup);
@@ -104,7 +104,7 @@ public final class FeatureModelTest
      * Test the feature not prepared.
      */
     @Test
-    public void testNotPrepared()
+    void testNotPrepared()
     {
         assertThrows(NullPointerException.class, () -> feature.getFeatures(), null);
     }

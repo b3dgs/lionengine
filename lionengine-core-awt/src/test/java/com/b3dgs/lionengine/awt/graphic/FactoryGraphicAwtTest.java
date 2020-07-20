@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.ImageBuffer;
 /**
  * Test {@link FactoryGraphicAwt}.
  */
-public final class FactoryGraphicAwtTest extends FactoryGraphicTest
+final class FactoryGraphicAwtTest extends FactoryGraphicTest
 {
     /**
      * Prepare tests.
@@ -61,7 +61,7 @@ public final class FactoryGraphicAwtTest extends FactoryGraphicTest
 
     @Test
     @Override
-    public void testRotate()
+    protected void testRotate()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer rotate = Graphics.rotate(image, 90);

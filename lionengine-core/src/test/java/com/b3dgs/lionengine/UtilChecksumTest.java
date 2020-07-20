@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilChecksum}.
  */
-public final class UtilChecksumTest
+final class UtilChecksumTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilChecksum.class);
     }
@@ -41,7 +41,7 @@ public final class UtilChecksumTest
      * Test encoding string.
      */
     @Test
-    public void testEncodingString()
+    void testEncodingString()
     {
         final String keyToBeEncoded = "keyToBeEncoded";
         final String signature = UtilChecksum.getSha(keyToBeEncoded);
@@ -54,7 +54,7 @@ public final class UtilChecksumTest
      * Test encoding integer.
      */
     @Test
-    public void testEncodingInt()
+    void testEncodingInt()
     {
         final int value = 489_464_795;
         final String signature = UtilChecksum.getSha(value);
@@ -67,7 +67,7 @@ public final class UtilChecksumTest
      * Test encoding <code>null</code> string.
      */
     @Test
-    public void testEncodingEmptyNullString()
+    void testEncodingEmptyNullString()
     {
         assertThrows(() -> UtilChecksum.getSha((String) null), Check.ERROR_NULL);
     }
@@ -76,7 +76,7 @@ public final class UtilChecksumTest
      * Test encoding bytes.
      */
     @Test
-    public void testEncodingEmptyNullBytes()
+    void testEncodingEmptyNullBytes()
     {
         assertThrows(() -> UtilChecksum.getSha((byte[]) null), Check.ERROR_NULL);
     }
@@ -85,7 +85,7 @@ public final class UtilChecksumTest
      * Test unknown algorithm.
      */
     @Test
-    public void testUnknownAlgorithm()
+    void testUnknownAlgorithm()
     {
         assertThrows(() -> UtilReflection.getMethod(UtilChecksum.class, "create", "void"),
                      UtilChecksum.ERROR_ALGORITHM + "void");

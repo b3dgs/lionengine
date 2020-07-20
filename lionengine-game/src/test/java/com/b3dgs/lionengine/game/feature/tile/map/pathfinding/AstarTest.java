@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 /**
  * Test {@link com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Astar}.
  */
-public final class AstarTest
+final class AstarTest
 {
     /**
      * Prepare test.
@@ -55,7 +55,7 @@ public final class AstarTest
      * Test the constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(Astar.class);
     }
@@ -64,7 +64,7 @@ public final class AstarTest
      * Test the create path finder.
      */
     @Test
-    public void testCreatePathFinder()
+    void testCreatePathFinder()
     {
         final MapTileGame map = new MapTileGame();
         map.addFeature(new MapTileGroupModel());
@@ -77,7 +77,7 @@ public final class AstarTest
      * Test the create heuristic closest.
      */
     @Test
-    public void testCreateHeuristicClosest()
+    void testCreateHeuristicClosest()
     {
         assertEquals(HeuristicClosest.class, Astar.createHeuristicClosest().getClass());
     }
@@ -86,7 +86,7 @@ public final class AstarTest
      * Test the create heuristic closest squared.
      */
     @Test
-    public void testCreateHeuristicClosestSquared()
+    void testCreateHeuristicClosestSquared()
     {
         assertEquals(HeuristicClosestSquared.class, Astar.createHeuristicClosestSquared().getClass());
     }
@@ -95,7 +95,7 @@ public final class AstarTest
      * Test the create heuristic Manhattan.
      */
     @Test
-    public void testCreateHeuristicManhattan()
+    void testCreateHeuristicManhattan()
     {
         assertEquals(HeuristicManhattan.class, Astar.createHeuristicManhattan(1).getClass());
     }

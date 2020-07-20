@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Test {@link Parallax}.
  */
-public final class ParallaxTest
+final class ParallaxTest
 {
     /**
      * Prepare tests.
@@ -55,7 +55,7 @@ public final class ParallaxTest
      * Test clouds.
      */
     @Test
-    public void testParallax()
+    void testParallax()
     {
         final Parallax parallax = new Parallax(new SourceResolutionProvider()
         {

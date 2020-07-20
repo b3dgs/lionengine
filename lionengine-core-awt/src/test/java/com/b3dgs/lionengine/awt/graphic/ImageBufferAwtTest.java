@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.graphic.Transparency;
 /**
  * Test {@link ImageBufferAwt}.
  */
-public final class ImageBufferAwtTest
+final class ImageBufferAwtTest
 {
     /**
      * Prepare tests.
@@ -57,7 +57,7 @@ public final class ImageBufferAwtTest
      * Test image.
      */
     @Test
-    public void testImage()
+    void testImage()
     {
         final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         final ImageBuffer image = ToolsAwt.getImageBuffer(buffer);
@@ -86,7 +86,7 @@ public final class ImageBufferAwtTest
      * Test image transparency
      */
     @Test
-    public void testImageTransparency()
+    void testImageTransparency()
     {
         final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
 

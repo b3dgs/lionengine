@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link Factory}.
  */
-public final class FactoryTest
+final class FactoryTest
 {
     /**
      * Prepare test.
@@ -69,7 +69,7 @@ public final class FactoryTest
      * Test the object creation.
      */
     @Test
-    public void testCreate()
+    void testCreate()
     {
         factory.setClassLoader(ClassLoader.getSystemClassLoader());
 
@@ -84,7 +84,7 @@ public final class FactoryTest
      * Test the object creation with existing identifiable.
      */
     @Test
-    public void testPrepareWithIdentifiable()
+    void testPrepareWithIdentifiable()
     {
         final Featurable featurable1 = factory.create(Medias.create("ObjectIdentifiable.xml"));
         final Featurable featurable2 = factory.create(Medias.create("ObjectIdentifiable.xml"),
@@ -98,7 +98,7 @@ public final class FactoryTest
      * Test the object creation with features.
      */
     @Test
-    public void testCache()
+    void testCache()
     {
         factory.createCache(Medias.create("state"), 2);
 
@@ -110,7 +110,7 @@ public final class FactoryTest
      * Test the object creation with features.
      */
     @Test
-    public void testCreateFeatures()
+    void testCreateFeatures()
     {
         final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
 
@@ -121,7 +121,7 @@ public final class FactoryTest
      * Test the object creation with unknown feature.
      */
     @Test
-    public void testCreateUnknownFeature()
+    void testCreateUnknownFeature()
     {
         final Media media = Medias.create("ObjectUnknownFeature.xml");
 
@@ -132,7 +132,7 @@ public final class FactoryTest
      * Test the object creation without constructor.
      */
     @Test
-    public void testCreateNoConstructorClass()
+    void testCreateNoConstructorClass()
     {
         final Media media = Medias.create("ObjectNoConstructor.xml");
 
@@ -143,7 +143,7 @@ public final class FactoryTest
      * Test the object creation without class.
      */
     @Test
-    public void testCreateNoClass()
+    void testCreateNoClass()
     {
         assertCause(() -> factory.create(Medias.create("ObjectNoClass.xml")), ClassNotFoundException.class);
     }
@@ -152,7 +152,7 @@ public final class FactoryTest
      * Test the object creation without class.
      */
     @Test
-    public void testCreateNoSetupClass()
+    void testCreateNoSetupClass()
     {
         assertCause(() -> factory.create(Medias.create("ObjectNoSetup.xml")), ClassNotFoundException.class);
     }
@@ -161,7 +161,7 @@ public final class FactoryTest
      * Test the object creation without setup constructor.
      */
     @Test
-    public void testCreateNoSetupConstructor()
+    void testCreateNoSetupConstructor()
     {
         assertCause(() -> factory.create(Medias.create("ObjectNoSetupConstructor.xml")), NoSuchMethodException.class);
     }
@@ -170,7 +170,7 @@ public final class FactoryTest
      * Test the get setup.
      */
     @Test
-    public void testGetSetup()
+    void testGetSetup()
     {
         final Setup setup = factory.getSetup(Medias.create("Object.xml"));
 
@@ -184,7 +184,7 @@ public final class FactoryTest
      * Test the object recycling.
      */
     @Test
-    public void testRecycle()
+    void testRecycle()
     {
         final Featurable featurable = factory.create(Medias.create("Object.xml"), ObjectWithIdentifiable.class);
 
@@ -208,7 +208,7 @@ public final class FactoryTest
      * Test with handler notification.
      */
     @Test
-    public void testWithHandler()
+    void testWithHandler()
     {
         final Handler handler = new Handler(services);
         final AtomicReference<Featurable> added = new AtomicReference<>();

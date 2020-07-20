@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 /**
  * Test {@link ImageInfo}.
  */
-public final class ImageInfoTest
+final class ImageInfoTest
 {
     /**
      * Prepare tests.
@@ -97,7 +97,7 @@ public final class ImageInfoTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(ImageInfo.class);
     }
@@ -106,7 +106,7 @@ public final class ImageInfoTest
      * Test failure cases.
      */
     @Test
-    public void testImageFailure()
+    void testImageFailure()
     {
         assertThrows(() -> ImageInfo.get(null), "Unexpected null argument !");
         assertThrows(() -> ImageInfo.get(Medias.create(Constant.EMPTY_STRING)), "[] " + ImageInfo.ERROR_READ);
@@ -154,7 +154,7 @@ public final class ImageInfoTest
      * Test info functions.
      */
     @Test
-    public void testImageInfo()
+    void testImageInfo()
     {
         testImageInfo(ImageFormat.PNG, 1);
         testImageInfo(ImageFormat.GIF, 1);
@@ -178,7 +178,7 @@ public final class ImageInfoTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testSkippedError() throws ReflectiveOperationException
+    void testSkippedError() throws ReflectiveOperationException
     {
         final Method method = ImageHeaderReaderAbstract.class.getDeclaredMethod("checkSkippedError",
                                                                                 Long.TYPE,

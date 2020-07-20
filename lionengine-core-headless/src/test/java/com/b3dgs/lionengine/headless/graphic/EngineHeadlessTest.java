@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Version;
 /**
  * Test {@link EngineHeadless}.
  */
-public final class EngineHeadlessTest
+final class EngineHeadlessTest
 {
     /**
      * Clean test.
@@ -44,7 +44,7 @@ public final class EngineHeadlessTest
      * Test start default already.
      */
     @Test
-    public void testDefaultAlready()
+    void testDefaultAlready()
     {
         EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT);
 
@@ -56,7 +56,7 @@ public final class EngineHeadlessTest
      * Test start without resources.
      */
     @Test
-    public void testNullResources()
+    void testNullResources()
     {
         assertThrows(() -> EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, (String) null),
                      "Unexpected null argument !");
@@ -66,7 +66,7 @@ public final class EngineHeadlessTest
      * Test start with resources already started.
      */
     @Test
-    public void testResourcesAlready()
+    void testResourcesAlready()
     {
         EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
 
@@ -81,7 +81,7 @@ public final class EngineHeadlessTest
      * Test start with class already started.
      */
     @Test
-    public void testClass()
+    void testClass()
     {
         EngineHeadless.start(EngineHeadlessTest.class.getName(), Version.DEFAULT, EngineHeadlessTest.class);
 

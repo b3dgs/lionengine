@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilFile}.
  */
-public final class UtilFileTest
+final class UtilFileTest
 {
     /**
      * Prepare tests.
@@ -64,7 +64,7 @@ public final class UtilFileTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilFile.class);
     }
@@ -73,7 +73,7 @@ public final class UtilFileTest
      * Test remove extension.
      */
     @Test
-    public void testRemoveExtension()
+    void testRemoveExtension()
     {
         assertEquals("temp", UtilFile.removeExtension("temp.tmp"));
         assertEquals("temp", UtilFile.removeExtension("temp."));
@@ -84,7 +84,7 @@ public final class UtilFileTest
      * Test remove extension <code>null</code>.
      */
     @Test
-    public void testRemoveExtensionNull()
+    void testRemoveExtensionNull()
     {
         assertThrows(() -> UtilFile.removeExtension(null), Check.ERROR_NULL);
     }
@@ -93,7 +93,7 @@ public final class UtilFileTest
      * Test normalize extension.
      */
     @Test
-    public void testNormalizeExtension()
+    void testNormalizeExtension()
     {
         assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "tmp"));
         assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", ".tmp"));
@@ -106,7 +106,7 @@ public final class UtilFileTest
      * Test normalized extension with <code>null</code> file.
      */
     @Test
-    public void testNormalizeExtensionNullFile()
+    void testNormalizeExtensionNullFile()
     {
         assertThrows(() -> UtilFile.normalizeExtension(null, ""), Check.ERROR_NULL);
     }
@@ -115,7 +115,7 @@ public final class UtilFileTest
      * Test normalized extension with <code>null</code> extension.
      */
     @Test
-    public void testNormalizeExtensionNullExtension()
+    void testNormalizeExtensionNullExtension()
     {
         assertThrows(() -> UtilFile.normalizeExtension("", null), Check.ERROR_NULL);
     }
@@ -124,7 +124,7 @@ public final class UtilFileTest
      * Test get extension.
      */
     @Test
-    public void testGetExtension()
+    void testGetExtension()
     {
         assertEquals("", UtilFile.getExtension("tmp"));
         assertEquals("tmp", UtilFile.getExtension(".tmp"));
@@ -138,7 +138,7 @@ public final class UtilFileTest
      * Test get extension <code>null</code>.
      */
     @Test
-    public void testGetExtensionNull()
+    void testGetExtensionNull()
     {
         assertThrows(() -> UtilFile.getExtension((String) null), Check.ERROR_NULL);
     }
@@ -147,7 +147,7 @@ public final class UtilFileTest
      * Test get extension on file.
      */
     @Test
-    public void testGetExtensionFile()
+    void testGetExtensionFile()
     {
         assertEquals("tmp", UtilFile.getExtension(new File("temp.tmp")));
         assertEquals("t", UtilFile.getExtension(new File("toto", "temp.t")));
@@ -159,7 +159,7 @@ public final class UtilFileTest
      * Test get extension file <code>null</code>.
      */
     @Test
-    public void testGetExtensionFileNull()
+    void testGetExtensionFileNull()
     {
         assertThrows(() -> UtilFile.getExtension((File) null), Check.ERROR_NULL);
     }
@@ -170,7 +170,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetFiles() throws IOException
+    void testGetFiles() throws IOException
     {
         final Path folder = Files.createTempDirectory("temp");
         final Path file1 = Files.createTempFile(folder, "temp", ".tmp");
@@ -195,7 +195,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetFilesError() throws IOException
+    void testGetFilesError() throws IOException
     {
         assertThrows(() -> UtilFile.getFiles(new File("void")), UtilFile.ERROR_DIRECTORY + "void");
     }
@@ -206,7 +206,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetFilesNull() throws IOException
+    void testGetFilesNull() throws IOException
     {
         assertThrows(() -> UtilFile.getFiles(new File("void")
         {
@@ -230,7 +230,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetFilesByExtension() throws IOException
+    void testGetFilesByExtension() throws IOException
     {
         assertTrue(UtilFile.getFilesByExtension(new File("void"), "txt").isEmpty());
 
@@ -261,7 +261,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetFilesByName() throws IOException
+    void testGetFilesByName() throws IOException
     {
         assertTrue(UtilFile.getFilesByName(new File("void"), "name").isEmpty());
 
@@ -288,7 +288,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testDeleteFile() throws IOException
+    void testDeleteFile() throws IOException
     {
         final File file = Files.createTempFile("temp", ".tmp").toFile();
 
@@ -305,7 +305,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testDeleteFileError() throws IOException
+    void testDeleteFileError() throws IOException
     {
         assertThrows(() -> UtilFile.deleteFile(new File("void")),
                      UtilFile.ERROR_DELETE_FILE + new File("void").getAbsolutePath());
@@ -317,7 +317,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testExists() throws IOException
+    void testExists() throws IOException
     {
         assertFalse(UtilFile.exists(null));
 
@@ -340,7 +340,7 @@ public final class UtilFileTest
      * @throws IOException If error.
      */
     @Test
-    public void testIsFile() throws IOException
+    void testIsFile() throws IOException
     {
         assertFalse(UtilFile.isFile(null));
 
@@ -355,7 +355,7 @@ public final class UtilFileTest
      * Test is type.
      */
     @Test
-    public void testIsType()
+    void testIsType()
     {
         assertFalse(UtilFile.isType(null, Constant.EMPTY_STRING));
         assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));

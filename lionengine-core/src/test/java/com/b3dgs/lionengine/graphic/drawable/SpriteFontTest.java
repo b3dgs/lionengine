@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.graphic.filter.FilterBilinear;
 /**
  * Test {@link SpriteFont}.
  */
-public final class SpriteFontTest
+final class SpriteFontTest
 {
     /** Image media. */
     private static Media media;
@@ -82,7 +82,7 @@ public final class SpriteFontTest
      * Test constructor with <code>null</code> media.
      */
     @Test
-    public void testConstructorMediaNull()
+    void testConstructorMediaNull()
     {
         assertThrows(() -> new SpriteFontImpl((Media) null, font, 1, 1), "Unexpected null argument !");
     }
@@ -91,7 +91,7 @@ public final class SpriteFontTest
      * Test constructor with <code>null</code> font.
      */
     @Test
-    public void testConstructorFontNull()
+    void testConstructorFontNull()
     {
         assertThrows(() -> new SpriteFontImpl(media, (Media) null, 1, 1), "Unexpected null argument !");
     }
@@ -100,7 +100,7 @@ public final class SpriteFontTest
      * Test constructor with invalid letter width.
      */
     @Test
-    public void testConstructorInvalidLetterWidth()
+    void testConstructorInvalidLetterWidth()
     {
         assertThrows(() -> new SpriteFontImpl(media, font, 0, 1).load(),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -110,7 +110,7 @@ public final class SpriteFontTest
      * Test constructor with invalid letter height.
      */
     @Test
-    public void testConstructorInvalidLetterHeight()
+    void testConstructorInvalidLetterHeight()
     {
         assertThrows(() -> new SpriteFontImpl(media, font, 1, 0).load(),
                      "Invalid argument: 0 is not strictly superior to 0");
@@ -120,7 +120,7 @@ public final class SpriteFontTest
      * Test constructor with media.
      */
     @Test
-    public void testConstructorMedia()
+    void testConstructorMedia()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
 
@@ -141,7 +141,7 @@ public final class SpriteFontTest
      * Test load with media.
      */
     @Test
-    public void testLoadMedia()
+    void testLoadMedia()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -156,7 +156,7 @@ public final class SpriteFontTest
      * Test load with media already loaded.
      */
     @Test
-    public void testLoadMediaAlready()
+    void testLoadMediaAlready()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -170,7 +170,7 @@ public final class SpriteFontTest
      * Test load with surface.
      */
     @Test
-    public void testLoadSurfaceAlready()
+    void testLoadSurfaceAlready()
     {
         final SpriteFont sprite = new SpriteFontImpl(Graphics.createImageBuffer(32, 16), font, 6, 7);
 
@@ -183,7 +183,7 @@ public final class SpriteFontTest
      * Test stretch sprite.
      */
     @Test
-    public void testStretch()
+    void testStretch()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -214,7 +214,7 @@ public final class SpriteFontTest
      * Test stretch sprite with invalid width.
      */
     @Test
-    public void testStretchInvalidWidth()
+    void testStretchInvalidWidth()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -229,7 +229,7 @@ public final class SpriteFontTest
      * Test stretch sprite with invalid height.
      */
     @Test
-    public void testStretchInvalidHeight()
+    void testStretchInvalidHeight()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -244,7 +244,7 @@ public final class SpriteFontTest
      * Test rotate sprite.
      */
     @Test
-    public void testRotate()
+    void testRotate()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -263,7 +263,7 @@ public final class SpriteFontTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -284,7 +284,7 @@ public final class SpriteFontTest
      * Test set location with viewer.
      */
     @Test
-    public void testSetLocationViewer()
+    void testSetLocationViewer()
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -308,7 +308,7 @@ public final class SpriteFontTest
      * Test set alpha.
      */
     @Test
-    public void testSetAlpha()
+    void testSetAlpha()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -326,7 +326,7 @@ public final class SpriteFontTest
      * Test set alpha too low.
      */
     @Test
-    public void testSetAlphaLow()
+    void testSetAlphaLow()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -341,7 +341,7 @@ public final class SpriteFontTest
      * Test set alpha too high.
      */
     @Test
-    public void testSetAlphaHigh()
+    void testSetAlphaHigh()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -356,7 +356,7 @@ public final class SpriteFontTest
      * Test set transparency.
      */
     @Test
-    public void testSetTransparency()
+    void testSetTransparency()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -372,7 +372,7 @@ public final class SpriteFontTest
      * Test set fade.
      */
     @Test
-    public void testSetFade()
+    void testSetFade()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -389,7 +389,7 @@ public final class SpriteFontTest
      * Test filter bilinear.
      */
     @Test
-    public void testFilterBilinear()
+    void testFilterBilinear()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -405,7 +405,7 @@ public final class SpriteFontTest
      * Test filter <code>null</code>.
      */
     @Test
-    public void testFilterNull()
+    void testFilterNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -420,7 +420,7 @@ public final class SpriteFontTest
      * Test mirror.
      */
     @Test
-    public void testMirror()
+    void testMirror()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -439,7 +439,7 @@ public final class SpriteFontTest
      * Test mirror <code>null</code>.
      */
     @Test
-    public void testMirrorNull()
+    void testMirrorNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -454,7 +454,7 @@ public final class SpriteFontTest
      * Test rendering point.
      */
     @Test
-    public void testRenderingPoint()
+    void testRenderingPoint()
     {
         final SpriteFontImpl sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -471,7 +471,7 @@ public final class SpriteFontTest
      * Test origin <code>null</code>.
      */
     @Test
-    public void testSetOriginNull()
+    void testSetOriginNull()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -486,7 +486,7 @@ public final class SpriteFontTest
      * Test render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
@@ -512,7 +512,7 @@ public final class SpriteFontTest
      * Test draw.
      */
     @Test
-    public void testDraw()
+    void testDraw()
     {
         final Graphic g = Graphics.createImageBuffer(100, 100).createGraphic();
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
@@ -527,7 +527,7 @@ public final class SpriteFontTest
      * Test get text height.
      */
     @Test
-    public void testGetTextHeight()
+    void testGetTextHeight()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -542,7 +542,7 @@ public final class SpriteFontTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();
@@ -563,7 +563,7 @@ public final class SpriteFontTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
         sprite.load();

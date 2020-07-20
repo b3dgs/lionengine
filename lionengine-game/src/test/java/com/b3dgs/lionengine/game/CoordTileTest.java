@@ -28,13 +28,13 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 /**
  * Test {@link CoordTile}.
  */
-public final class CoordTileTest
+final class CoordTileTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final CoordTile coord = new CoordTile(1, 2);
 
@@ -46,7 +46,7 @@ public final class CoordTileTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final CoordTile coord = new CoordTile(1, 2);
 
@@ -63,7 +63,7 @@ public final class CoordTileTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final CoordTile hash = new CoordTile(1, 2);
 
@@ -77,7 +77,7 @@ public final class CoordTileTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final CoordTile config = new CoordTile(1, 2);
 

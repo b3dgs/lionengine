@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.io.InputStreamMock;
 /**
  * Test {@link PlayerAbstract}.
  */
-public final class PlayerTest
+final class PlayerTest
 {
     /**
      * Clean up tests.
@@ -55,7 +55,7 @@ public final class PlayerTest
      * @throws IOException If error.
      */
     @Test
-    public void testPlayerFromJar() throws IOException
+    void testPlayerFromJar() throws IOException
     {
         Medias.setLoadFromJar(PlayerTest.class);
         final Media media = Medias.create("image.png");
@@ -80,7 +80,7 @@ public final class PlayerTest
      * @throws IOException If error.
      */
     @Test
-    public void testPlayerCached() throws IOException
+    void testPlayerCached() throws IOException
     {
         Medias.setLoadFromJar(PlayerTest.class);
         final Media media = Medias.create("image.png");
@@ -106,7 +106,7 @@ public final class PlayerTest
      * @throws IOException If error.
      */
     @Test
-    public void testPlayerNoResourceLoader() throws IOException
+    void testPlayerNoResourceLoader() throws IOException
     {
         final Path file = Files.createTempFile("image", ".png");
         Medias.setResourcesDirectory(file.getParent().toFile().getAbsolutePath());
@@ -137,7 +137,7 @@ public final class PlayerTest
      * @throws IOException If error.
      */
     @Test
-    public void testPlayerInvalidMedia() throws IOException
+    void testPlayerInvalidMedia() throws IOException
     {
         Medias.setLoadFromJar(PlayerTest.class);
         final Media media = new MediaFail();

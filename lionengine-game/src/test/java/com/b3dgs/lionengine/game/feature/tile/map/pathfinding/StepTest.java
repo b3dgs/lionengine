@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Step}.
  */
-public final class StepTest
+final class StepTest
 {
     /**
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Step step = new Step(0, 1);
 
@@ -44,7 +44,7 @@ public final class StepTest
      * Test the equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Step step = new Step(0, 1);
 
@@ -62,7 +62,7 @@ public final class StepTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Step hash = new Step(0, 1);
 

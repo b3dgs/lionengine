@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilConversion}.
  */
-public final class UtilConversionTest
+final class UtilConversionTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilConversion.class);
     }
@@ -41,7 +41,7 @@ public final class UtilConversionTest
      * Test short.
      */
     @Test
-    public void testShort()
+    void testShort()
     {
         final short s = 12_345;
 
@@ -53,7 +53,7 @@ public final class UtilConversionTest
      * Test int.
      */
     @Test
-    public void testInt()
+    void testInt()
     {
         final int i = 123_456_789;
 
@@ -64,7 +64,7 @@ public final class UtilConversionTest
      * Test byte.
      */
     @Test
-    public void testByte()
+    void testByte()
     {
         final byte b = 123;
 
@@ -75,7 +75,7 @@ public final class UtilConversionTest
      * Test mask.
      */
     @Test
-    public void testMask()
+    void testMask()
     {
         assertEquals(255, UtilConversion.mask(255));
         assertEquals(0, UtilConversion.mask(256));
@@ -86,7 +86,7 @@ public final class UtilConversionTest
      * Test to title case.
      */
     @Test
-    public void testToTitleCase()
+    void testToTitleCase()
     {
         final String title = UtilConversion.toTitleCase("title");
 
@@ -97,7 +97,7 @@ public final class UtilConversionTest
      * Test to title case word.
      */
     @Test
-    public void testToTitleCaseWord()
+    void testToTitleCaseWord()
     {
         final String word = UtilConversion.toTitleCaseWord("title toto");
 
@@ -108,7 +108,7 @@ public final class UtilConversionTest
      * Test boolean to int.
      */
     @Test
-    public void testBoolToInt()
+    void testBoolToInt()
     {
         assertEquals(0, UtilConversion.boolToInt(false));
         assertEquals(1, UtilConversion.boolToInt(true));
@@ -118,7 +118,7 @@ public final class UtilConversionTest
      * Test from binary.
      */
     @Test
-    public void testFromBinary()
+    void testFromBinary()
     {
         assertEquals(0, UtilConversion.fromBinary(new boolean[1]));
         assertEquals(1, UtilConversion.fromBinary(new boolean[]
@@ -143,7 +143,7 @@ public final class UtilConversionTest
      * Test to binary.
      */
     @Test
-    public void testToBinary()
+    void testToBinary()
     {
         assertArrayEquals(new boolean[1], UtilConversion.toBinary(0, 1));
         assertArrayEquals(new boolean[4], UtilConversion.toBinary(0, 4));
@@ -161,7 +161,7 @@ public final class UtilConversionTest
      * Test invert binary.
      */
     @Test
-    public void testInvert()
+    void testInvert()
     {
         assertArrayEquals(new boolean[]
         {

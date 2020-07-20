@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link Hud}.
  */
-public final class HudTest
+final class HudTest
 {
     /** Object config test. */
     private static Media config;
@@ -91,7 +91,7 @@ public final class HudTest
      * Test cancel with listener.
      */
     @Test
-    public void testListenerCancel()
+    void testListenerCancel()
     {
         final AtomicBoolean canceled = new AtomicBoolean();
         final HudListener listener = new HudListener()

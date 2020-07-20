@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Peon entity implementation.
  */
-class Peon extends FeaturableModel
+final class Peon extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");

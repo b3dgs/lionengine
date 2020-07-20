@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.graphic.Transparency;
 /**
  * Test {@link ToolsAwt}.
  */
-public final class ToolsAwtTest
+final class ToolsAwtTest
 {
     /**
      * Prepare tests.
@@ -69,7 +69,7 @@ public final class ToolsAwtTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(ToolsAwt.class);
     }
@@ -80,7 +80,7 @@ public final class ToolsAwtTest
      * @throws IOException If error.
      */
     @Test
-    public void testUtility() throws IOException
+    void testUtility() throws IOException
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
 
@@ -113,7 +113,7 @@ public final class ToolsAwtTest
      * Test transparency with unknown enum.
      */
     @Test
-    public void testTransparency()
+    void testTransparency()
     {
         assertThrows(() -> ToolsAwt.getTransparency(UtilEnum.make(Transparency.class, "FAIL")), "Unknown enum: FAIL");
         assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
@@ -125,7 +125,7 @@ public final class ToolsAwtTest
      * Test copy.
      */
     @Test
-    public void testCopy()
+    void testCopy()
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, java.awt.Transparency.TRANSLUCENT);
         final BufferedImage copy = ToolsAwt.copyImage(image);
@@ -139,7 +139,7 @@ public final class ToolsAwtTest
      * @throws IOException If error.
      */
     @Test
-    public void testSave() throws IOException
+    void testSave() throws IOException
     {
         final Media media = Medias.create("image.png");
         try (InputStream input = media.getInputStream())
@@ -164,7 +164,7 @@ public final class ToolsAwtTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetIoFail() throws IOException
+    void testGetIoFail() throws IOException
     {
         final Media media = Medias.create("raster.xml");
         try (InputStream input = media.getInputStream())
@@ -177,7 +177,7 @@ public final class ToolsAwtTest
      * Test buffer strategy creation.
      */
     @Test
-    public void testCreateBufferStrategyCanvas()
+    void testCreateBufferStrategyCanvas()
     {
         final AtomicReference<Integer> result = new AtomicReference<>();
 
@@ -197,7 +197,7 @@ public final class ToolsAwtTest
      * Test buffer strategy creation failure.
      */
     @Test
-    public void testCreateBufferStrategyFailCanvas()
+    void testCreateBufferStrategyFailCanvas()
     {
         final AtomicReference<Integer> result = new AtomicReference<>();
 
@@ -223,7 +223,7 @@ public final class ToolsAwtTest
      * Test buffer strategy creation.
      */
     @Test
-    public void testCreateBufferStrategyWindow()
+    void testCreateBufferStrategyWindow()
     {
         final AtomicReference<Integer> result = new AtomicReference<>();
 
@@ -243,7 +243,7 @@ public final class ToolsAwtTest
      * Test buffer strategy creation failure.
      */
     @Test
-    public void testCreateBufferStrategyFailWindow()
+    void testCreateBufferStrategyFailWindow()
     {
         final AtomicReference<Integer> result = new AtomicReference<>();
 

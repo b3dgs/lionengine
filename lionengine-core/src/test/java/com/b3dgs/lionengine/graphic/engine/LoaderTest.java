@@ -57,7 +57,7 @@ import com.b3dgs.lionengine.graphic.filter.FilterHq3x;
 /**
  * Test {@link Loader}.
  */
-public final class LoaderTest
+final class LoaderTest
 {
     /** Output. */
     static final Resolution OUTPUT = new Resolution(640, 480, 60);
@@ -109,7 +109,7 @@ public final class LoaderTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Loader.class);
     }
@@ -118,7 +118,7 @@ public final class LoaderTest
      * Test with no config.
      */
     @Test
-    public void testNullConfig()
+    void testNullConfig()
     {
         assertThrows(() -> Loader.start(null, SequenceSingleMock.class).await(), "Unexpected null argument !");
     }
@@ -127,7 +127,7 @@ public final class LoaderTest
      * Test with a single sequence.
      */
     @Test
-    public void testSequenceSingle()
+    void testSequenceSingle()
     {
         Loader.start(CONFIG, SequenceSingleMock.class).await();
     }
@@ -136,7 +136,7 @@ public final class LoaderTest
      * Test with a sequence that have arguments.
      */
     @Test
-    public void testSequenceArgument()
+    void testSequenceArgument()
     {
         Loader.start(CONFIG, SequenceArgumentsMock.class, new Object()).await();
     }
@@ -145,7 +145,7 @@ public final class LoaderTest
      * Test with timed out screen.
      */
     @Test
-    public void testSequenceTimeout()
+    void testSequenceTimeout()
     {
         ScreenMock.setScreenWait(true);
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
@@ -165,7 +165,7 @@ public final class LoaderTest
      * Test with screen not ready on rendering.
      */
     @Test
-    public void testSequenceRenderScreenUnready()
+    void testSequenceRenderScreenUnready()
     {
         final CountDownLatch waitUpdate = new CountDownLatch(1);
         final CountDownLatch waitScreenUnready = new CountDownLatch(1);
@@ -195,7 +195,7 @@ public final class LoaderTest
      * Test with no sequence.
      */
     @Test
-    public void testSequenceNull()
+    void testSequenceNull()
     {
         assertThrows(() -> Loader.start(CONFIG, null).await(), "Unexpected null argument !");
     }
@@ -204,7 +204,7 @@ public final class LoaderTest
      * Test with fail sequence.
      */
     @Test
-    public void testSequenceFail()
+    void testSequenceFail()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
@@ -217,7 +217,7 @@ public final class LoaderTest
      * Test with fail next sequence.
      */
     @Test
-    public void testSequenceFailNext()
+    void testSequenceFailNext()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
@@ -230,7 +230,7 @@ public final class LoaderTest
      * Test with malformed sequence.
      */
     @Test
-    public void testSequenceMalformed()
+    void testSequenceMalformed()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 
@@ -248,7 +248,7 @@ public final class LoaderTest
      * Test interrupted.
      */
     @Test
-    public void testInterrupted()
+    void testInterrupted()
     {
         final AtomicReference<Throwable> exception = new AtomicReference<>();
         final Semaphore semaphore = new Semaphore(0);
@@ -279,7 +279,7 @@ public final class LoaderTest
      * Test interrupted unchecked exception.
      */
     @Test
-    public void testInterruptedUnchecked()
+    void testInterruptedUnchecked()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock()
         {
@@ -320,7 +320,7 @@ public final class LoaderTest
      * Test already started.
      */
     @Test
-    public void testStarted()
+    void testStarted()
     {
         final TaskFuture future = Loader.start(CONFIG, SequenceSingleMock.class);
         try
@@ -337,7 +337,7 @@ public final class LoaderTest
      * Test engine started.
      */
     @Test
-    public void testEngineStarted()
+    void testEngineStarted()
     {
         Loader.start(CONFIG, SequenceSingleMock.class).await();
 
@@ -348,7 +348,7 @@ public final class LoaderTest
      * Test with no icon in windowed mode.
      */
     @Test
-    public void testNoIconWindowed()
+    void testNoIconWindowed()
     {
         final Config config = new Config(OUTPUT, 16, true, Medias.create("void"));
         Loader.start(config, SequenceSingleMock.class).await();
@@ -358,7 +358,7 @@ public final class LoaderTest
      * Test with an icon in windowed mode.
      */
     @Test
-    public void testIconWindowed()
+    void testIconWindowed()
     {
         final Config config = new Config(OUTPUT, 16, true, icon);
         Loader.start(config, SequenceSingleMock.class).await();
@@ -368,7 +368,7 @@ public final class LoaderTest
      * Test with an icon in full screen mode.
      */
     @Test
-    public void testIconFullScreen()
+    void testIconFullScreen()
     {
         final Config config = new Config(OUTPUT, 16, false, icon);
         Loader.start(config, SequenceSingleMock.class).await();
@@ -378,7 +378,7 @@ public final class LoaderTest
      * Test with slow sequence.
      */
     @Test
-    public void testSlowSequence()
+    void testSlowSequence()
     {
         Loader.start(CONFIG, SequenceSlowMock.class).await();
     }
@@ -387,7 +387,7 @@ public final class LoaderTest
      * Test interrupted.
      */
     @Test
-    public void testScreenInterrupted()
+    void testScreenInterrupted()
     {
         ScreenMock.setScreenWait(true);
         final AtomicReference<Throwable> exception = new AtomicReference<>();
@@ -427,7 +427,7 @@ public final class LoaderTest
      * Test with screen direct.
      */
     @Test
-    public void testDirect()
+    void testDirect()
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 16, true);
@@ -438,7 +438,7 @@ public final class LoaderTest
      * Test with sequence terminate engine.
      */
     @Test
-    public void testEngineTerminate()
+    void testEngineTerminate()
     {
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 16, true);
@@ -459,7 +459,7 @@ public final class LoaderTest
      * Test with screen scaled.
      */
     @Test
-    public void testScaled()
+    void testScaled()
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, true);
@@ -470,7 +470,7 @@ public final class LoaderTest
      * Test with bilinear filter.
      */
     @Test
-    public void testBilinear()
+    void testBilinear()
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, true);
@@ -481,7 +481,7 @@ public final class LoaderTest
      * Test with blur filter.
      */
     @Test
-    public void testBlur()
+    void testBlur()
     {
         final Resolution output = new Resolution(640, 480, 0);
         final FilterBlur blur = new FilterBlur();
@@ -506,7 +506,7 @@ public final class LoaderTest
      * Test with a hq2x filter.
      */
     @Test
-    public void testFilterHq2x()
+    void testFilterHq2x()
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, false);
@@ -517,7 +517,7 @@ public final class LoaderTest
      * Test with a hq3x filter.
      */
     @Test
-    public void testFilterHq3x()
+    void testFilterHq3x()
     {
         final Resolution output = new Resolution(960, 720, 60);
         final Config config = new Config(output, 16, false);

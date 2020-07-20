@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Medias}.
  */
-public final class MediasTest
+final class MediasTest
 {
     /** Old resources directory. */
     private String oldDir;
@@ -68,7 +68,7 @@ public final class MediasTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Medias.class);
     }
@@ -77,7 +77,7 @@ public final class MediasTest
      * Test create media with <code>null</code> argument.
      */
     @Test
-    public void testCreateMediaNull()
+    void testCreateMediaNull()
     {
         Medias.setResourcesDirectory("rsc");
 
@@ -88,7 +88,7 @@ public final class MediasTest
      * Test create media from resources directory.
      */
     @Test
-    public void testCreateMediaResources()
+    void testCreateMediaResources()
     {
         Medias.setResourcesDirectory("rsc");
 
@@ -111,7 +111,7 @@ public final class MediasTest
      * Test create media from loader.
      */
     @Test
-    public void testCreateMediaLoader()
+    void testCreateMediaLoader()
     {
         Medias.setLoadFromJar(MediasTest.class);
 
@@ -134,7 +134,7 @@ public final class MediasTest
      * Test get with suffix.
      */
     @Test
-    public void testGetWithSuffix()
+    void testGetWithSuffix()
     {
         Medias.setResourcesDirectory(oldDir);
         final Media folder = Medias.create("folder", "foo");
@@ -148,7 +148,7 @@ public final class MediasTest
      * Test get file.
      */
     @Test
-    public void testGetFile()
+    void testGetFile()
     {
         Medias.setResourcesDirectory("rsc");
         final File file = new File("rsc" + File.separator + "test.txt");
@@ -162,7 +162,7 @@ public final class MediasTest
      * Test get JAR resources file.
      */
     @Test
-    public void testGetJarResources()
+    void testGetJarResources()
     {
         Medias.setLoadFromJar(MediasTest.class);
 
@@ -183,7 +183,7 @@ public final class MediasTest
      * Test get JAR resources file without loader enabled.
      */
     @Test
-    public void testGetJarResourcesNoLoader()
+    void testGetJarResourcesNoLoader()
     {
         Medias.setLoadFromJar(null);
 
@@ -194,7 +194,7 @@ public final class MediasTest
      * Test get JAR resources prefix.
      */
     @Test
-    public void testGetJarResourcesPrefix()
+    void testGetJarResourcesPrefix()
     {
         Medias.setLoadFromJar(MediasTest.class);
 
@@ -215,7 +215,7 @@ public final class MediasTest
      * Test get JAR resources prefix file without loader enabled.
      */
     @Test
-    public void testGetJarResourcesPrefixNoLoader()
+    void testGetJarResourcesPrefixNoLoader()
     {
         Medias.setLoadFromJar(null);
 
@@ -226,7 +226,7 @@ public final class MediasTest
      * Test get medias by extension.
      */
     @Test
-    public void testGetByExtension()
+    void testGetByExtension()
     {
         Medias.setLoadFromJar(MediasTest.class);
         final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
@@ -240,7 +240,7 @@ public final class MediasTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetByExtensionFolder() throws IOException
+    void testGetByExtensionFolder() throws IOException
     {
         final Path temp = Files.createTempDirectory(MediasTest.class.getSimpleName());
         final Path file = Files.createTempFile(temp, "temp", ".png");
@@ -257,7 +257,7 @@ public final class MediasTest
      * Test get medias by extension in JAR.
      */
     @Test
-    public void testGetByExtensionJar()
+    void testGetByExtensionJar()
     {
         Medias.setLoadFromJar(MediasTest.class);
         final Collection<Media> medias = Medias.getByExtension(Medias.create("resources.jar").getFile(),
@@ -272,7 +272,7 @@ public final class MediasTest
      * Test get medias from JAR.
      */
     @Test
-    public void testGetMediasJar()
+    void testGetMediasJar()
     {
         Medias.setLoadFromJar(MediasTest.class);
 
@@ -283,7 +283,7 @@ public final class MediasTest
      * Test get medias.
      */
     @Test
-    public void testGetMedias()
+    void testGetMedias()
     {
         Medias.setResourcesDirectory(null);
 
@@ -294,7 +294,7 @@ public final class MediasTest
      * Test get medias on file
      */
     @Test
-    public void testGetMediasOnFile()
+    void testGetMediasOnFile()
     {
         assertThrows(() -> Medias.create("image.png").getMedias(), "[image.png] " + MediaDefault.ERROR_PATH_DIR);
     }
@@ -303,7 +303,7 @@ public final class MediasTest
      * Test separator.
      */
     @Test
-    public void testSeparator()
+    void testSeparator()
     {
         assertEquals(Constant.SLASH, Medias.getSeparator());
     }
@@ -312,7 +312,7 @@ public final class MediasTest
      * Test media to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         Medias.setResourcesDirectory("prefix");
         final Media media = Medias.create("path", "file.ext");

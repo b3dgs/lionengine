@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.GraphicMock;
 /**
  * Test {@link Bar}.
  */
-public final class BarTest
+final class BarTest
 {
     /**
      * Test the bar class.
      */
     @Test
-    public void testBar()
+    void testBar()
     {
         final Graphic g = new GraphicMock();
         final Bar bar = new Bar(10, 20);

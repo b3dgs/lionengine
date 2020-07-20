@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link Raster}.
  */
-public final class RasterTest
+final class RasterTest
 {
     /**
      * Prepare tests.
@@ -55,7 +55,7 @@ public final class RasterTest
      * Test field.
      */
     @Test
-    public void testField()
+    void testField()
     {
         final RasterData red = new RasterData(0, 0, 0, 0);
         final RasterData green = new RasterData(0, 0, 0, 0);
@@ -71,7 +71,7 @@ public final class RasterTest
      * Test load.
      */
     @Test
-    public void testLoad()
+    void testLoad()
     {
         assertNotNull(Raster.load(Medias.create("raster.xml")));
     }
@@ -80,7 +80,7 @@ public final class RasterTest
      * Test load failure.
      */
     @Test
-    public void testLoadFailure()
+    void testLoadFailure()
     {
         assertThrows(() -> Raster.load(Medias.create("rasterError.xml")), "Node not found: lionengine:red");
     }

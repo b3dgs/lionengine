@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.Orientation;
 /**
  * Test {@link CollisionFormula}.
  */
-public final class CollisionFormulaTest
+final class CollisionFormulaTest
 {
     /** Range test. */
     private final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
@@ -42,7 +42,7 @@ public final class CollisionFormulaTest
      * Test the collision formula construction
      */
     @Test
-    public void testFormula()
+    void testFormula()
     {
         assertEquals("formula", formula.getName());
         assertEquals(range, formula.getRange());
@@ -54,7 +54,7 @@ public final class CollisionFormulaTest
      * Test the collision formula equality
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         assertEquals(formula, formula);
         assertEquals(formula,
@@ -75,7 +75,7 @@ public final class CollisionFormulaTest
      * Test the collision formula hash code
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertEquals(formula,
                      new CollisionFormula("formula", new CollisionRange(Axis.Y, 0, 1, 2, 3), function, constaint));
@@ -94,7 +94,7 @@ public final class CollisionFormulaTest
      * Test the formula to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionFormula (name=formula)"
                      + System.lineSeparator()

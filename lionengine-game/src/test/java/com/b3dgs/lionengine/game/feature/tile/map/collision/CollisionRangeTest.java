@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link CollisionRange}.
  */
-public final class CollisionRangeTest
+final class CollisionRangeTest
 {
     /** Range test. */
     private final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
@@ -35,7 +35,7 @@ public final class CollisionRangeTest
      * Test the range class.
      */
     @Test
-    public void testRange()
+    void testRange()
     {
         assertEquals(Axis.X, range.getOutput());
         assertEquals(0, range.getMinX());
@@ -48,7 +48,7 @@ public final class CollisionRangeTest
      * Test the range equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         assertEquals(range, range);
         assertEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 3));
@@ -66,7 +66,7 @@ public final class CollisionRangeTest
      * Test the range hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(range, new CollisionRange(Axis.X, 0, 1, 2, 3));
 
@@ -82,7 +82,7 @@ public final class CollisionRangeTest
      * Test the range to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionRange (output=X, minX=0, maxX=1, minY=2, maxY=3)", range.toString());
     }

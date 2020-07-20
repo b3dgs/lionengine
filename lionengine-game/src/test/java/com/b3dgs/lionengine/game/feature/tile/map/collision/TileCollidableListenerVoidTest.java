@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link TileCollidableListenerVoid}.
  */
-public final class TileCollidableListenerVoidTest
+final class TileCollidableListenerVoidTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(TileCollidableListenerVoid.class);
     }
@@ -39,7 +39,7 @@ public final class TileCollidableListenerVoidTest
      * Test the get instance.
      */
     @Test
-    public void testGetInstance()
+    void testGetInstance()
     {
         assertNotNull(TileCollidableListenerVoid.getInstance());
     }
@@ -48,7 +48,7 @@ public final class TileCollidableListenerVoidTest
      * Test the notify.
      */
     @Test
-    public void testNotify()
+    void testNotify()
     {
         TileCollidableListenerVoid.getInstance().notifyTileCollided(null, null);
     }

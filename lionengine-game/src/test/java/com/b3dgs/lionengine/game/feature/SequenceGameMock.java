@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 /**
  * Sequence game mock.
  */
-public final class SequenceGameMock extends SequenceGame
+final class SequenceGameMock extends SequenceGame
 {
     /**
      * Mock.

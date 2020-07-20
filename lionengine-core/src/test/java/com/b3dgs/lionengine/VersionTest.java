@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Version}.
  */
-public final class VersionTest
+final class VersionTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final Version version = Version.create(3, 2, 1);
 
@@ -45,7 +45,7 @@ public final class VersionTest
      * Test equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Version version = Version.create(3, 2, 1);
 
@@ -66,7 +66,7 @@ public final class VersionTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Version version = Version.create(3, 2, 1);
 
@@ -85,7 +85,7 @@ public final class VersionTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("3.2.1", Version.create(3, 2, 1).toString());
     }

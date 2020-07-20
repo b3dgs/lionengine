@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Orientation;
 /**
  * Test {@link CollisionConstraint}.
  */
-public final class CollisionConstraintTest
+final class CollisionConstraintTest
 {
     /** Constraint test. */
     private final CollisionConstraint constraint = new CollisionConstraint();
@@ -50,7 +50,7 @@ public final class CollisionConstraintTest
      * Test the constraint.
      */
     @Test
-    public void testConstraint()
+    void testConstraint()
     {
         final CollisionConstraint empty = new CollisionConstraint();
 
@@ -63,7 +63,7 @@ public final class CollisionConstraintTest
      * Test the constraint equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         assertEquals(constraint, constraint);
 
@@ -90,7 +90,7 @@ public final class CollisionConstraintTest
      * Test the constraint hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final CollisionConstraint same = new CollisionConstraint();
         same.add(Orientation.EAST, "group");
@@ -113,7 +113,7 @@ public final class CollisionConstraintTest
      * Test the constraint to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionConstraint{NORTH=[], NORTH_EAST=[], EAST=[group], SOUTH_EAST=[], "
                      + "SOUTH=[], SOUTH_WEST=[], WEST=[], NORTH_WEST=[]}",

@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link MapGenerator}.
  */
-public final class MapGeneratorTest
+final class MapGeneratorTest
 {
     /**
      * Prepare test.
@@ -121,7 +121,7 @@ public final class MapGeneratorTest
      * Test the map generator.
      */
     @Test
-    public void testGenerator()
+    void testGenerator()
     {
         final MapTile generated = generator.generateMap(parameters,
                                                         Arrays.asList(Medias.create("forest.png")),

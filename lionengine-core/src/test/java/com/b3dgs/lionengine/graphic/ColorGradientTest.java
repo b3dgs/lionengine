@@ -27,13 +27,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link ColorGradient}.
  */
-public final class ColorGradientTest
+final class ColorGradientTest
 {
     /**
      * Test <code>null</code> first color.
      */
     @Test
-    public void testNullFirstColor()
+    void testNullFirstColor()
     {
         assertThrows(() -> new ColorGradient(0, 0, null, 0, 0, ColorRgba.BLACK), "Unexpected null argument !");
     }
@@ -42,7 +42,7 @@ public final class ColorGradientTest
      * Test <code>null</code> last color.
      */
     @Test
-    public void testNullLastColor()
+    void testNullLastColor()
     {
         assertThrows(() -> new ColorGradient(0, 0, ColorRgba.BLACK, 0, 0, null), "Unexpected null argument !");
     }
@@ -51,7 +51,7 @@ public final class ColorGradientTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final ColorGradient color = new ColorGradient(1, 2, ColorRgba.BLACK, 3, 4, ColorRgba.WHITE);
 
@@ -68,7 +68,7 @@ public final class ColorGradientTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ColorGradient color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE);
 
@@ -89,7 +89,7 @@ public final class ColorGradientTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ColorGradient color = new ColorGradient(0, 1, ColorRgba.BLACK, 2, 3, ColorRgba.WHITE);
 

@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Test {@link WorldGame}.
  */
-public final class WorldTest
+final class WorldTest
 {
     /**
      * Prepare test.
@@ -125,7 +125,7 @@ public final class WorldTest
      * Test the world.
      */
     @Test
-    public void testWorld()
+    void testWorld()
     {
         final WorldMock world = new WorldMock(services);
 
@@ -147,7 +147,7 @@ public final class WorldTest
      * Test the world.
      */
     @Test
-    public void testWorldFail()
+    void testWorldFail()
     {
         final WorldFail world = new WorldFail(services);
 
@@ -166,7 +166,7 @@ public final class WorldTest
      * Test spawn with no transformable.
      */
     @Test
-    public void testSpawnNoTransformable()
+    void testSpawnNoTransformable()
     {
         final WorldGame world = new WorldMock(services);
         assertThrows(() -> world.spawn(Medias.create("Object.xml"), 0, 0),
@@ -177,7 +177,7 @@ public final class WorldTest
      * Test spawn.
      */
     @Test
-    public void testSpawn()
+    void testSpawn()
     {
         final WorldGame world = new WorldMock(services);
         final Featurable featurable = world.spawn(Medias.create("ObjectFeatures.xml"),

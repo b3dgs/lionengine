@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link TileGroup}.
  */
-public final class TileGroupTest
+final class TileGroupTest
 {
     /**
      * Get tile from number.
@@ -50,7 +50,7 @@ public final class TileGroupTest
      * Test the contains.
      */
     @Test
-    public void testContains()
+    void testContains()
     {
         final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, getTile(1));
 
@@ -64,7 +64,7 @@ public final class TileGroupTest
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Set<Integer> tiles = getTile(1);
         final TileGroup tileGroup = new TileGroup("test", TileGroupType.PLAIN, tiles);
@@ -78,7 +78,7 @@ public final class TileGroupTest
      * Test the equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, getTile(1));
 
@@ -97,7 +97,7 @@ public final class TileGroupTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, getTile(1));
 

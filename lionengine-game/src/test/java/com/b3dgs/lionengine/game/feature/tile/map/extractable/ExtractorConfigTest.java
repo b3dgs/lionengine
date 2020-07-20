@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link ExtractorConfig}.
  */
-public final class ExtractorConfigTest
+final class ExtractorConfigTest
 {
     /**
      * Prepare test.
@@ -58,7 +58,7 @@ public final class ExtractorConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final ExtractorConfig config = new ExtractorConfig(1.0, 2.0, 3);
 
@@ -78,7 +78,7 @@ public final class ExtractorConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final ExtractorConfig config = new ExtractorConfig(1.0, 2.0, 3);
 
@@ -96,7 +96,7 @@ public final class ExtractorConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final ExtractorConfig hash = new ExtractorConfig(1.0, 2.0, 3);
 
@@ -111,7 +111,7 @@ public final class ExtractorConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final ExtractorConfig config = new ExtractorConfig(1.0, 2.0, 3);
 

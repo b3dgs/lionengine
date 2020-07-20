@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link RenderableVoid}.
  */
-public final class RenderableVoidTest
+final class RenderableVoidTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(RenderableVoid.class);
     }
@@ -39,7 +39,7 @@ public final class RenderableVoidTest
      * Test the get instance.
      */
     @Test
-    public void testGetInstance()
+    void testGetInstance()
     {
         assertNotNull(RenderableVoid.getInstance());
     }
@@ -48,7 +48,7 @@ public final class RenderableVoidTest
      * Test the render.
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         RenderableVoid.getInstance().render(null);
     }

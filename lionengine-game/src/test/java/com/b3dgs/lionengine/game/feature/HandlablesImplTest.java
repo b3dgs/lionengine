@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.Updatable;
 /**
  * Test {@link HandlablesImpl}.
  */
-public final class HandlablesImplTest
+final class HandlablesImplTest
 {
     /** Test configuration. */
     private static Media config;
@@ -77,7 +77,7 @@ public final class HandlablesImplTest
      * Test ID manipulation.
      */
     @Test
-    public void testId()
+    void testId()
     {
         featurables.add(object);
 
@@ -98,7 +98,7 @@ public final class HandlablesImplTest
      * Test feature manipulation.
      */
     @Test
-    public void testFeature()
+    void testFeature()
     {
         final Mirrorable mirrorable = new MirrorableModel(services, setup);
         object.addFeatureAndGet(mirrorable);
@@ -125,7 +125,7 @@ public final class HandlablesImplTest
      * Test type with complex object manipulation.
      */
     @Test
-    public void testFeatureComplex()
+    void testFeatureComplex()
     {
         final Featurable complex = new ObjectComplex(services, setup);
         complex.addFeature(new MirrorableModel(services, setup));
@@ -145,7 +145,7 @@ public final class HandlablesImplTest
      * Test type with multiple feature inheritance.
      */
     @Test
-    public void testFeatureInheritance()
+    void testFeatureInheritance()
     {
         final Featurable inheritance = new ObjectComplex(services, setup);
         inheritance.addFeature(new FeatureLevel2(services, setup));

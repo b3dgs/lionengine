@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.Configurer;
 /**
  * Test {@link ActionsConfig}.
  */
-public final class ActionsConfigTest
+final class ActionsConfigTest
 {
     /**
      * Prepare test.
@@ -61,7 +61,7 @@ public final class ActionsConfigTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         assertPrivateConstructor(ActionsConfig.class);
     }
@@ -70,7 +70,7 @@ public final class ActionsConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final ActionRef ref = new ActionRef("ref", false, new ArrayList<ActionRef>());
         final ActionRef ref2 = new ActionRef("ref", false, Arrays.asList(ref));
@@ -92,7 +92,7 @@ public final class ActionsConfigTest
      * Test cancel flag is not used on child reference.
      */
     @Test
-    public void testCancelOnRef()
+    void testCancelOnRef()
     {
         final ActionRef ref = new ActionRef("ref", true, new ArrayList<ActionRef>());
         final Collection<ActionRef> refs = Arrays.asList(new ActionRef("test", false, Arrays.asList(ref)));
@@ -113,7 +113,7 @@ public final class ActionsConfigTest
      * Test import without node.
      */
     @Test
-    public void testImportNoNode()
+    void testImportNoNode()
     {
         final Media media = Medias.create("producer.xml");
         final Xml root = new Xml("test");

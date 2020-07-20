@@ -29,13 +29,13 @@ import com.b3dgs.lionengine.Verbose;
 /**
  * Test {@link ImageHeaderGif}.
  */
-public final class ImageInfoGifTest
+final class ImageInfoGifTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testGif()
+    void testGif()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
 

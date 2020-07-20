@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Xml}.
  */
-public final class XmlTest
+final class XmlTest
 {
     /** Boolean value. */
     private static final boolean BOOL_VALUE = true;
@@ -87,7 +87,7 @@ public final class XmlTest
      * Test create node.
      */
     @Test
-    public void testCreate()
+    void testCreate()
     {
         assertNotNull(new Xml("test"));
     }
@@ -96,7 +96,7 @@ public final class XmlTest
      * Test create node with <code>null</code> parameter.
      */
     @Test
-    public void testCreateNull()
+    void testCreateNull()
     {
         assertThrows(() -> new Xml((Media) null), Check.ERROR_NULL);
     }
@@ -107,7 +107,7 @@ public final class XmlTest
      * @throws IOException If error.
      */
     @Test
-    public void testSaveNormalized() throws IOException
+    void testSaveNormalized() throws IOException
     {
         final Media output = Medias.create("out.xml");
         new Xml(Medias.create("normalize.xml")).save(output);
@@ -121,7 +121,7 @@ public final class XmlTest
      * @throws IOException If error.
      */
     @Test
-    public void testWriteRead() throws IOException
+    void testWriteRead() throws IOException
     {
         Medias.setLoadFromJar(null);
 
@@ -151,7 +151,7 @@ public final class XmlTest
      * @throws NoSuchFieldException If error.
      */
     @Test
-    public void testTransformerError() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException
+    void testTransformerError() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException
     {
         final Field field = DocumentFactory.class.getDeclaredField("transformerFactory");
         UtilReflection.setAccessible(field, true);
@@ -246,7 +246,7 @@ public final class XmlTest
      * Test children in xml node.
      */
     @Test
-    public void testNode()
+    void testNode()
     {
         final Xml root = new Xml("root");
         final Xml child1 = root.createChild("child1");
@@ -284,7 +284,7 @@ public final class XmlTest
      * Test remove element function on node.
      */
     @Test
-    public void testNodeRemove()
+    void testNodeRemove()
     {
         final Xml root = new Xml("root");
         final Xml child1 = root.createChild("child1");
@@ -304,7 +304,7 @@ public final class XmlTest
      * Test write read to xml node.
      */
     @Test
-    public void testNodeWriteRead()
+    void testNodeWriteRead()
     {
         final Xml node = new Xml("node");
         node.add(new Xml("test"));
@@ -336,7 +336,7 @@ public final class XmlTest
      * Test node name error.
      */
     @Test
-    public void testNodeNameError()
+    void testNodeNameError()
     {
         assertCause(() -> new Xml("%éàç-èyrd"), org.w3c.dom.DOMException.class);
     }
@@ -345,7 +345,7 @@ public final class XmlTest
      * Test node write error.
      */
     @Test
-    public void testNodeWriteError()
+    void testNodeWriteError()
     {
         final Xml node = new Xml("test");
 
@@ -357,7 +357,7 @@ public final class XmlTest
      * Test node read error.
      */
     @Test
-    public void testNodeReadError()
+    void testNodeReadError()
     {
         final Xml node = new Xml("test");
 
@@ -368,7 +368,7 @@ public final class XmlTest
      * Test node read with default value.
      */
     @Test
-    public void testNodeReadDefault()
+    void testNodeReadDefault()
     {
         final Xml node = new Xml("test");
 
@@ -407,7 +407,7 @@ public final class XmlTest
      * Test node has element.
      */
     @Test
-    public void testNodeHas()
+    void testNodeHas()
     {
         final Xml node = new Xml("test");
         final Xml child = new Xml("child");
@@ -425,7 +425,7 @@ public final class XmlTest
      * Test wrong normalization.
      */
     @Test
-    public void testBadNormalize()
+    void testBadNormalize()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         final Xml node = new Xml("test");

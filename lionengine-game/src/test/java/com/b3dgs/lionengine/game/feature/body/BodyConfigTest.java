@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 /**
  * Test {@link BodyConfig}.
  */
-public final class BodyConfigTest
+final class BodyConfigTest
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public final class BodyConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Media media = Medias.create("Object.xml");
         final Xml root = new Xml("test");
@@ -82,7 +82,7 @@ public final class BodyConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final BodyConfig config = new BodyConfig(1.0, 2.0);
 
@@ -99,7 +99,7 @@ public final class BodyConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final BodyConfig config = new BodyConfig(1.0, 2.0);
 
@@ -115,7 +115,7 @@ public final class BodyConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final BodyConfig config = new BodyConfig(1.0, 2.0);
 

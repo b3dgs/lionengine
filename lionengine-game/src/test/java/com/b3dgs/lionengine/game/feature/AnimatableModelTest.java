@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link AnimatableModel}.
  */
-public final class AnimatableModelTest
+final class AnimatableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -86,7 +86,7 @@ public final class AnimatableModelTest
      * Test constructor with null animator.
      */
     @Test
-    public void testConstructorNullAnimator()
+    void testConstructorNullAnimator()
     {
         assertThrows(() -> new AnimatableModel(services, setup, null), "Unexpected null argument !");
     }
@@ -95,7 +95,7 @@ public final class AnimatableModelTest
      * Test the play case.
      */
     @Test
-    public void testPlay()
+    void testPlay()
     {
         final int first = 2;
         final int last = 4;
@@ -127,7 +127,7 @@ public final class AnimatableModelTest
      * Test the reset case.
      */
     @Test
-    public void testReset()
+    void testReset()
     {
         final int first = 2;
         final int last = 4;
@@ -147,7 +147,7 @@ public final class AnimatableModelTest
      * Test the manipulations.
      */
     @Test
-    public void testManipulation()
+    void testManipulation()
     {
         final int first = 2;
         final int last = 5;
@@ -176,7 +176,7 @@ public final class AnimatableModelTest
      * Test with listener.
      */
     @Test
-    public void testListener()
+    void testListener()
     {
         final AtomicReference<Animation> played = new AtomicReference<>();
         final AtomicReference<AnimState> stated = new AtomicReference<>();

@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 /**
  * Rendering of our controllable entity.
  */
-class MarioRenderer extends FeatureModel implements Displayable
+final class MarioRenderer extends FeatureModel implements Displayable
 {
     private final TextGame text = new TextGame(Constant.FONT_SERIF, 12, TextStyle.NORMAL);
     private final SpriteAnimated surface;

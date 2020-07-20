@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 /**
  * Move action.
  */
-public class ActionModel extends FeaturableModel
+class ActionModel extends FeaturableModel
 {
     /** Actionnable reference. */
     protected final Actionable actionable;

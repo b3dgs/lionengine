@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link UtilSequence}.
  */
-public final class UtilSequenceTest
+final class UtilSequenceTest
 {
     private static final Context CONTEXT = new Context()
     {
@@ -88,7 +88,7 @@ public final class UtilSequenceTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilSequence.class);
     }
@@ -97,7 +97,7 @@ public final class UtilSequenceTest
      * Test sequence creation.
      */
     @Test
-    public void testCreateSequence()
+    void testCreateSequence()
     {
         assertNotNull(UtilSequence.create(SequenceSingleMock.class, CONTEXT));
     }
@@ -106,7 +106,7 @@ public final class UtilSequenceTest
      * Test sequence creation with argument.
      */
     @Test
-    public void testCreateSequenceArgument()
+    void testCreateSequenceArgument()
     {
         assertNotNull(UtilSequence.create(SequenceArgumentsMock.class, CONTEXT, new Object()));
     }
@@ -115,7 +115,7 @@ public final class UtilSequenceTest
      * Test sequence creation with invalid argument.
      */
     @Test
-    public void testCreateSequenceArgumentFail()
+    void testCreateSequenceArgumentFail()
     {
         final String message = NoSuchMethodException.class.getName()
                                + ": No compatible constructor found for "
@@ -129,7 +129,7 @@ public final class UtilSequenceTest
      * Test pause.
      */
     @Test
-    public void testPause()
+    void testPause()
     {
         final Timing timing = new Timing();
 
@@ -146,7 +146,7 @@ public final class UtilSequenceTest
      * Test pause interrupted.
      */
     @Test
-    public void testPauseInterrupted()
+    void testPauseInterrupted()
     {
         final Timing timing = new Timing();
         timing.start();

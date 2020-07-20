@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.graphic.TransformTest;
 /**
  * Test {@link TransformHeadless}.
  */
-public final class TransfortHeadlessTest extends TransformTest
+final class TransfortHeadlessTest extends TransformTest
 {
     /**
      * Prepare tests.

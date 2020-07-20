@@ -65,7 +65,7 @@ public class FactoryGraphicTest
      * Test invalid image width.
      */
     @Test
-    public void testInvalidImageWidth()
+    void testInvalidImageWidth()
     {
         assertThrows(() -> Graphics.createImageBuffer(0, 1), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -74,7 +74,7 @@ public class FactoryGraphicTest
      * Test invalid image height.
      */
     @Test
-    public void testInvalidImageHeight()
+    void testInvalidImageHeight()
     {
         assertThrows(() -> Graphics.createImageBuffer(1, 0), "Invalid argument: 0 is not strictly superior to 0");
     }
@@ -83,7 +83,7 @@ public class FactoryGraphicTest
      * Test create screen windowed.
      */
     @Test
-    public void testCreateScreenWindowed()
+    void testCreateScreenWindowed()
     {
         assertNotNull(Graphics.createScreen(new Config(UtilTests.RESOLUTION_320_240, 32, true)));
     }
@@ -92,7 +92,7 @@ public class FactoryGraphicTest
      * Test create screen full.
      */
     @Test
-    public void testCreateScreenFull()
+    void testCreateScreenFull()
     {
         assertNotNull(Graphics.createScreen(new Config(UtilTests.RESOLUTION_320_240, 32, false)));
     }
@@ -101,7 +101,7 @@ public class FactoryGraphicTest
      * Test create screen with <code>null</code> argument.
      */
     @Test
-    public void testCreateScreenNullConfig()
+    void testCreateScreenNullConfig()
     {
         assertThrows(() -> Graphics.createScreen(null), "Unexpected null argument !");
     }
@@ -110,7 +110,7 @@ public class FactoryGraphicTest
      * Test create text.
      */
     @Test
-    public void testCreateText()
+    void testCreateText()
     {
         assertNotNull(Graphics.createText("test", 10, TextStyle.NORMAL));
     }
@@ -119,7 +119,7 @@ public class FactoryGraphicTest
      * Test create transform.
      */
     @Test
-    public void testCreateTransform()
+    void testCreateTransform()
     {
         assertNotNull(Graphics.createTransform());
     }
@@ -128,7 +128,7 @@ public class FactoryGraphicTest
      * Test create image buffer.
      */
     @Test
-    public void testCreateImageBuffer()
+    void testCreateImageBuffer()
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
 
@@ -142,7 +142,7 @@ public class FactoryGraphicTest
      * Test create image buffer.
      */
     @Test
-    public void testCreateImageBufferTransparentColor()
+    void testCreateImageBufferTransparentColor()
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32, ColorRgba.TRANSPARENT);
 
@@ -166,7 +166,7 @@ public class FactoryGraphicTest
      * Test get image buffer from image.
      */
     @Test
-    public void testGetImageBufferFromImage()
+    void testGetImageBufferFromImage()
     {
         final ImageBuffer imageBuffer = Graphics.createImageBuffer(16, 32);
         final ImageBuffer copy = Graphics.getImageBuffer(imageBuffer);
@@ -182,7 +182,7 @@ public class FactoryGraphicTest
      * Test get image buffer from media.
      */
     @Test
-    public void testGetImageBufferFromMedia()
+    void testGetImageBufferFromMedia()
     {
         final Media media = Medias.create("image.png");
 
@@ -201,7 +201,7 @@ public class FactoryGraphicTest
      * Test get image buffer failure with not existing media.
      */
     @Test
-    public void testGetImageBufferFailureMedia()
+    void testGetImageBufferFailureMedia()
     {
         assertThrows(() -> Graphics.getImageBuffer(Medias.create("null")), "[null] Error on reading image !");
     }
@@ -210,7 +210,7 @@ public class FactoryGraphicTest
      * Test get image with error.
      */
     @Test
-    public void testGetImageError()
+    void testGetImageError()
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         assertThrows(() -> Graphics.getImageBuffer(new MediaMock()), "[null] Error on reading image !");
@@ -221,7 +221,7 @@ public class FactoryGraphicTest
      * Test get image buffer failure with wrong image.
      */
     @Test
-    public void testGetImageBufferFailureWrongImage()
+    void testGetImageBufferFailureWrongImage()
     {
         assertThrows(() -> Graphics.getImageBuffer(Medias.create("wrong_image.png")),
                      "[wrong_image.png] Error on reading image !");
@@ -231,7 +231,7 @@ public class FactoryGraphicTest
      * Test apply mask.
      */
     @Test
-    public void testApplyMask()
+    void testApplyMask()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
@@ -249,7 +249,7 @@ public class FactoryGraphicTest
      * Test rotate.
      */
     @Test
-    public void testRotate()
+    protected void testRotate()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         final ImageBuffer rotate = Graphics.rotate(image, 90);
@@ -266,7 +266,7 @@ public class FactoryGraphicTest
      * Test resize.
      */
     @Test
-    public void testResize()
+    void testResize()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
@@ -284,7 +284,7 @@ public class FactoryGraphicTest
      * Test flip horizontal.
      */
     @Test
-    public void testFlipHorizontal()
+    void testFlipHorizontal()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
@@ -302,7 +302,7 @@ public class FactoryGraphicTest
      * Test flip vertical.
      */
     @Test
-    public void testFlipVertical()
+    void testFlipVertical()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
@@ -320,7 +320,7 @@ public class FactoryGraphicTest
      * Test split image.
      */
     @Test
-    public void testSplitImage()
+    void testSplitImage()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
@@ -349,7 +349,7 @@ public class FactoryGraphicTest
      * Test save image.
      */
     @Test
-    public void testSaveImage()
+    void testSaveImage()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();
@@ -367,7 +367,7 @@ public class FactoryGraphicTest
      * Test save image with error.
      */
     @Test
-    public void testSaveImageError()
+    void testSaveImageError()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
 
@@ -380,7 +380,7 @@ public class FactoryGraphicTest
      * Test get raster buffer.
      */
     @Test
-    public void testGetRasterBuffer()
+    void testGetRasterBuffer()
     {
         final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
         image.prepare();

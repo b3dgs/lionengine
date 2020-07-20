@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Check}.
  */
-public final class CheckTest
+final class CheckTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Check.class);
     }
@@ -39,7 +39,7 @@ public final class CheckTest
      * Test with non <code>null</code> object.
      */
     @Test
-    public void testNotNull()
+    void testNotNull()
     {
         Check.notNull(new Object());
     }
@@ -48,7 +48,7 @@ public final class CheckTest
      * Test with a <code>null</code> object.
      */
     @Test
-    public void testNotNullFail()
+    void testNotNullFail()
     {
         assertThrows(() -> Check.notNull(null), Check.ERROR_NULL);
     }
@@ -57,7 +57,7 @@ public final class CheckTest
      * Test superior or equal valid cases.
      */
     @Test
-    public void testSuperiorOrEqual()
+    void testSuperiorOrEqual()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -73,7 +73,7 @@ public final class CheckTest
      * Test superior invalid cases.
      */
     @Test
-    public void testSuperiorOrEqualFail()
+    void testSuperiorOrEqualFail()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -89,7 +89,7 @@ public final class CheckTest
      * Test superior or equal with double valid cases.
      */
     @Test
-    public void testSuperiorOrEqualDouble()
+    void testSuperiorOrEqualDouble()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -108,7 +108,7 @@ public final class CheckTest
      * Test superior invalid cases.
      */
     @Test
-    public void testSuperiorOrEqualDoubleFail()
+    void testSuperiorOrEqualDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -125,7 +125,7 @@ public final class CheckTest
      * Test superior strict valid cases.
      */
     @Test
-    public void testSuperiorStrict()
+    void testSuperiorStrict()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -138,7 +138,7 @@ public final class CheckTest
      * Test superior strict invalid cases.
      */
     @Test
-    public void testSuperiorStrictFail()
+    void testSuperiorStrictFail()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -154,7 +154,7 @@ public final class CheckTest
      * Test superior strict with double valid cases.
      */
     @Test
-    public void testSuperiorStrictDouble()
+    void testSuperiorStrictDouble()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -170,7 +170,7 @@ public final class CheckTest
      * Test superior strict invalid cases.
      */
     @Test
-    public void testSuperiorStrictDoubleFail()
+    void testSuperiorStrictDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -187,7 +187,7 @@ public final class CheckTest
      * Test inferior or equal valid cases.
      */
     @Test
-    public void testInferiorOrEqual()
+    void testInferiorOrEqual()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -203,7 +203,7 @@ public final class CheckTest
      * Test inferior invalid cases.
      */
     @Test
-    public void testInferiorOrEqualFail()
+    void testInferiorOrEqualFail()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -219,7 +219,7 @@ public final class CheckTest
      * Test inferior or equal with double valid cases.
      */
     @Test
-    public void testInferiorOrEqualDouble()
+    void testInferiorOrEqualDouble()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -238,7 +238,7 @@ public final class CheckTest
      * Test inferior invalid cases.
      */
     @Test
-    public void testInferiorOrEqualDoubleFail()
+    void testInferiorOrEqualDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -255,7 +255,7 @@ public final class CheckTest
      * Test inferior strict valid cases.
      */
     @Test
-    public void testInferiorStrict()
+    void testInferiorStrict()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -268,7 +268,7 @@ public final class CheckTest
      * Test inferior strict invalid cases.
      */
     @Test
-    public void testInferiorStrictFail()
+    void testInferiorStrictFail()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -284,7 +284,7 @@ public final class CheckTest
      * Test inferior strict with double valid cases.
      */
     @Test
-    public void testInferiorStrictDouble()
+    void testInferiorStrictDouble()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -300,7 +300,7 @@ public final class CheckTest
      * Test inferior strict invalid cases.
      */
     @Test
-    public void testInferiorStrictDoubleFail()
+    void testInferiorStrictDoubleFail()
     {
         final double factor = Double.MIN_VALUE;
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
@@ -317,7 +317,7 @@ public final class CheckTest
      * Test different valid cases.
      */
     @Test
-    public void testDifferent()
+    void testDifferent()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -335,7 +335,7 @@ public final class CheckTest
      * Test different valid cases.
      */
     @Test
-    public void testDifferentDouble()
+    void testDifferentDouble()
     {
         for (double i = -Constant.HUNDRED; Double.compare(i, Constant.HUNDRED) < 0; i += 0.9)
         {
@@ -353,7 +353,7 @@ public final class CheckTest
      * Test different invalid cases.
      */
     @Test
-    public void testDifferentFail()
+    void testDifferentFail()
     {
         for (int i = -Constant.HUNDRED; i < Constant.HUNDRED; i++)
         {
@@ -368,7 +368,7 @@ public final class CheckTest
      * Test different invalid cases.
      */
     @Test
-    public void testDifferentDoubleFail()
+    void testDifferentDoubleFail()
     {
         for (double i = -Constant.HUNDRED; Double.compare(i, Constant.HUNDRED) < 0; i += 0.9)
         {
@@ -383,7 +383,7 @@ public final class CheckTest
      * Test equality.
      */
     @Test
-    public void testEquality()
+    void testEquality()
     {
         Check.equality(Integer.MIN_VALUE, Integer.MIN_VALUE);
         Check.equality(0, 0);
@@ -394,7 +394,7 @@ public final class CheckTest
      * Test equality fail.
      */
     @Test
-    public void testEqualityFail()
+    void testEqualityFail()
     {
         assertThrows(() -> Check.equality(Integer.MIN_VALUE, Integer.MAX_VALUE),
                      Check.ERROR_ARGUMENT + Integer.MIN_VALUE + Check.ERROR_EQUALS + Integer.MAX_VALUE);

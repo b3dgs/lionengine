@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Test {@link SequenceGame}.
  */
-public final class SequenceGameTest
+final class SequenceGameTest
 {
     /** Output. */
     private static final Resolution OUTPUT = new Resolution(640, 480, 60);
@@ -61,7 +61,7 @@ public final class SequenceGameTest
      * Test the loader with game sequence.
      */
     @Test
-    public void testSequenceGame()
+    void testSequenceGame()
     {
         assertTimeout(1000L, () -> Loader.start(CONFIG, SequenceGameMock.class).await());
     }

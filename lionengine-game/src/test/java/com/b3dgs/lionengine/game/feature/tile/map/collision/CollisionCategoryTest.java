@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Constant;
 /**
  * Test {@link CollisionCategory}.
  */
-public final class CollisionCategoryTest
+final class CollisionCategoryTest
 {
     /** Formula test. */
     private final CollisionFormula formula = new CollisionFormula("formula",
@@ -47,7 +47,7 @@ public final class CollisionCategoryTest
      * Test the category construction.
      */
     @Test
-    public void testCategory()
+    void testCategory()
     {
         assertEquals("name", category.getName());
         assertEquals(Axis.X, category.getAxis());
@@ -61,7 +61,7 @@ public final class CollisionCategoryTest
      * Test the category equality.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         assertEquals(category, category);
         assertEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group)));
@@ -80,7 +80,7 @@ public final class CollisionCategoryTest
      * Test the category hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         assertHashEquals(category, new CollisionCategory("name", Axis.X, 1, 2, true, Arrays.asList(group)));
         assertHashEquals(category, new CollisionCategory("name", Axis.Y, 1, 2, true, Arrays.asList(group)));
@@ -97,7 +97,7 @@ public final class CollisionCategoryTest
      * Test the category to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("CollisionCategory (name=name, axis=X, x=1, y=2, glue=true)"
                      + System.lineSeparator()

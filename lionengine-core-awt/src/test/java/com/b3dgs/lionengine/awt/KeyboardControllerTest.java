@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.io.InputDeviceControl;
 /**
  * Test {@link KeyboardController}.
  */
-public final class KeyboardControllerTest
+final class KeyboardControllerTest
 {
     /**
      * Test the device.
      */
     @Test
-    public void testDevice()
+    void testDevice()
     {
         final KeyboardAwt keyboard = new KeyboardAwt();
         final InputDeviceControl device = new KeyboardController(keyboard);

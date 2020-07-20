@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link AudioFactory}.
  */
-public final class AudioFactoryTest
+final class AudioFactoryTest
 {
     /**
      * Prepare tests.
@@ -66,7 +66,7 @@ public final class AudioFactoryTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(AudioFactory.class);
     }
@@ -75,7 +75,7 @@ public final class AudioFactoryTest
      * Test add format <code>null</code>.
      */
     @Test
-    public void testAddFormatNull()
+    void testAddFormatNull()
     {
         assertThrows(() -> AudioFactory.addFormat(null), "Unexpected null argument !");
     }
@@ -84,7 +84,7 @@ public final class AudioFactoryTest
      * Test load audio <code>null</code>.
      */
     @Test
-    public void testLoadAudioNull()
+    void testLoadAudioNull()
     {
         assertThrows(() -> AudioFactory.loadAudio(null), "Unexpected null argument !");
     }
@@ -93,7 +93,7 @@ public final class AudioFactoryTest
      * Test load audio <code>null</code>.
      */
     @Test
-    public void testLoadAudioNullFormat()
+    void testLoadAudioNullFormat()
     {
         assertThrows(() -> AudioFactory.loadAudio(new MediaMock(), null), "Unexpected null argument !");
     }
@@ -102,7 +102,7 @@ public final class AudioFactoryTest
      * Test load audio.
      */
     @Test
-    public void testLoadAudio()
+    void testLoadAudio()
     {
         AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
 
@@ -115,7 +115,7 @@ public final class AudioFactoryTest
      * Test load audio invalid cast.
      */
     @Test
-    public void testLoadAudioInvalidCast()
+    void testLoadAudioInvalidCast()
     {
         AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
 
@@ -127,7 +127,7 @@ public final class AudioFactoryTest
      * Test load audio invalid type.
      */
     @Test
-    public void testLoadAudioInvalidType()
+    void testLoadAudioInvalidType()
     {
         assertThrows(() -> AudioFactory.loadAudio(Medias.create("image.wav"), MyAudio.class),
                      "[image.wav] " + AudioFactory.ERROR_FORMAT);
@@ -137,7 +137,7 @@ public final class AudioFactoryTest
      * Test add format already exists.
      */
     @Test
-    public void testAddFormatExists()
+    void testAddFormatExists()
     {
         AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
 
@@ -149,7 +149,7 @@ public final class AudioFactoryTest
      * Test clear formats.
      */
     @Test
-    public void testClearFormats()
+    void testClearFormats()
     {
         AudioFactory.addFormat(new AudioVoidFormat(Arrays.asList("png")));
 
@@ -165,7 +165,7 @@ public final class AudioFactoryTest
      * Test void format.
      */
     @Test
-    public void testVoid()
+    void testVoid()
     {
         assertThrows(() -> AudioFactory.loadAudio(Medias.create("image.png")),
                      "[image.png] " + AudioFactory.ERROR_FORMAT);

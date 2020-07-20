@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Integration test of map tile collision model class.
  */
-public class MapTileCollisionModelIT
+final class MapTileCollisionModelIT
 {
     /**
      * Test the map tile collision.
      */
     @Test
-    public void testModel()
+    void testModel()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 480, 60);

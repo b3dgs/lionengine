@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.feature.FeaturableConfig;
 /**
  * Test {@link CollisionConfig}.
  */
-public final class CollisionConfigTest
+final class CollisionConfigTest
 {
     /**
      * Prepare test.
@@ -61,7 +61,7 @@ public final class CollisionConfigTest
      * Test no node.
      */
     @Test
-    public void testNoNode()
+    void testNoNode()
     {
         final Xml root = new Xml(Constant.XML_PREFIX + FeaturableConfig.NODE_FEATURABLE);
 
@@ -72,7 +72,7 @@ public final class CollisionConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml(Constant.XML_PREFIX + FeaturableConfig.NODE_FEATURABLE);
         final Collision collision = new Collision("test", 0, 1, 2, 3, true);
@@ -101,7 +101,7 @@ public final class CollisionConfigTest
      * Test get unknown collision.
      */
     @Test
-    public void testGetUnknownCollision()
+    void testGetUnknownCollision()
     {
         final CollisionConfig config = new CollisionConfig(new HashMap<>());
 

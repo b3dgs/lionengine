@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UtilFolder}.
  */
-public final class UtilFolderTest
+final class UtilFolderTest
 {
     /**
      * Prepare tests.
@@ -61,7 +61,7 @@ public final class UtilFolderTest
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UtilFolder.class);
     }
@@ -70,7 +70,7 @@ public final class UtilFolderTest
      * Test the get path.
      */
     @Test
-    public void testGetPath()
+    void testGetPath()
     {
         assertEquals("a" + Constant.SLASH + "b" + Constant.SLASH + "c", UtilFolder.getPath("a", "b", "c"));
     }
@@ -79,7 +79,7 @@ public final class UtilFolderTest
      * Test the get path separator.
      */
     @Test
-    public void testGetPathSeparator()
+    void testGetPathSeparator()
     {
         assertEquals("this%path%next", UtilFolder.getPathSeparator("%", "this", "path", "next"));
         assertEquals("this%path%next", UtilFolder.getPathSeparator("%", "this%", "path%", "next"));
@@ -92,7 +92,7 @@ public final class UtilFolderTest
      * @throws IOException If error.
      */
     @Test
-    public void testGetDirectories() throws IOException
+    void testGetDirectories() throws IOException
     {
         final Path dir = Files.createTempDirectory("temp");
         final Path file = Files.createTempFile(dir, "temp", ".tmp");
@@ -122,7 +122,7 @@ public final class UtilFolderTest
      * Test the get directories from wrong path.
      */
     @Test
-    public void testGetDirectoriesError()
+    void testGetDirectoriesError()
     {
         assertTrue(UtilFolder.getDirectories(new File("null")).isEmpty());
     }
@@ -133,7 +133,7 @@ public final class UtilFolderTest
      * @throws IOException If error.
      */
     @Test
-    public void testDeleteDirectory() throws IOException
+    void testDeleteDirectory() throws IOException
     {
         final Path directory = Files.createTempDirectory("temp");
         final Path file = Files.createTempFile(directory, "temp", ".tmp");
@@ -156,7 +156,7 @@ public final class UtilFolderTest
      * @throws IOException If error.
      */
     @Test
-    public void testDeleteDirectoryWarning() throws IOException
+    void testDeleteDirectoryWarning() throws IOException
     {
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         UtilFolder.deleteDirectory(new File("void"));
@@ -225,7 +225,7 @@ public final class UtilFolderTest
      * @throws IOException If error.
      */
     @Test
-    public void testIsDirectory() throws IOException
+    void testIsDirectory() throws IOException
     {
         assertFalse(UtilFolder.isDirectory(null));
 

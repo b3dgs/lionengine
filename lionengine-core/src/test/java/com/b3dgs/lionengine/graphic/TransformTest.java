@@ -49,7 +49,7 @@ public class TransformTest
      * Test transformations.
      */
     @Test
-    public void testTransform()
+    void testTransform()
     {
         final Transform transform = Graphics.createTransform();
         transform.scale(2.0, 3.0);

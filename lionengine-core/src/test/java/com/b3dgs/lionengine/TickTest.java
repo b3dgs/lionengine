@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Tick}.
  */
-public final class TickTest
+final class TickTest
 {
     /** Tick instance. */
     private final Tick tick = new Tick();
@@ -37,7 +37,7 @@ public final class TickTest
      * Test delayed action.
      */
     @Test
-    public void testAddAction()
+    void testAddAction()
     {
         final AtomicBoolean action = new AtomicBoolean();
         tick.addAction(() -> action.set(true), 2L);
@@ -61,7 +61,7 @@ public final class TickTest
      * Test add <code>null</code> action.
      */
     @Test
-    public void testAddActionNull()
+    void testAddActionNull()
     {
         assertThrows(() -> tick.addAction(null, 0L), Check.ERROR_NULL);
     }
@@ -70,7 +70,7 @@ public final class TickTest
      * Test start.
      */
     @Test
-    public void testStart()
+    void testStart()
     {
         assertFalse(tick.isStarted());
         assertFalse(tick.elapsed(0L));
@@ -99,7 +99,7 @@ public final class TickTest
      * Test stop.
      */
     @Test
-    public void testStop()
+    void testStop()
     {
         assertFalse(tick.isStarted());
 
@@ -119,7 +119,7 @@ public final class TickTest
      * Test pause.
      */
     @Test
-    public void testPause()
+    void testPause()
     {
         assertEquals(0L, tick.elapsed());
         assertFalse(tick.elapsed(1L));
@@ -154,7 +154,7 @@ public final class TickTest
      * Test resume.
      */
     @Test
-    public void testResume()
+    void testResume()
     {
         tick.start();
         tick.pause();
@@ -181,7 +181,7 @@ public final class TickTest
      * Test restart.
      */
     @Test
-    public void testRestart()
+    void testRestart()
     {
         assertFalse(tick.isStarted());
 
@@ -204,7 +204,7 @@ public final class TickTest
      * Test set.
      */
     @Test
-    public void testSet()
+    void testSet()
     {
         assertFalse(tick.isStarted());
         assertEquals(0L, tick.elapsed());

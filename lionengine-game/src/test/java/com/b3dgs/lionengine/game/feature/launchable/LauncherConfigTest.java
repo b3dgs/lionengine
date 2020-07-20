@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.Force;
 /**
  * Test {@link LauncherConfig}.
  */
-public final class LauncherConfigTest
+final class LauncherConfigTest
 {
     /**
      * Prepare test.
@@ -63,7 +63,7 @@ public final class LauncherConfigTest
      * Test data.
      */
     @Test
-    public void testData()
+    void testData()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(1, 2, Arrays.asList(launchable));
@@ -82,7 +82,7 @@ public final class LauncherConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(10, 10, Arrays.asList(launchable));
@@ -103,7 +103,7 @@ public final class LauncherConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
@@ -121,7 +121,7 @@ public final class LauncherConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
@@ -138,7 +138,7 @@ public final class LauncherConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable, launchable));

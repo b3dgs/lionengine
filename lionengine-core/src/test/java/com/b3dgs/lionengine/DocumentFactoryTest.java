@@ -36,13 +36,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link DocumentFactory}.
  */
-public final class DocumentFactoryTest
+final class DocumentFactoryTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(DocumentFactory.class);
     }
@@ -53,7 +53,7 @@ public final class DocumentFactoryTest
      * @throws IOException If error.
      */
     @Test
-    public void testCreateDocument() throws IOException
+    void testCreateDocument() throws IOException
     {
         assertNotNull(DocumentFactory.createDocument());
 
@@ -69,7 +69,7 @@ public final class DocumentFactoryTest
      * @throws IOException If error.
      */
     @Test
-    public void testCreateDocumentMalformed() throws IOException
+    void testCreateDocumentMalformed() throws IOException
     {
         try (InputStream input = DocumentFactoryTest.class.getResourceAsStream("malformed.xml"))
         {
@@ -84,7 +84,7 @@ public final class DocumentFactoryTest
      * @throws IOException If error.
      */
     @Test
-    public void testCreateDocumentNullStream() throws IOException
+    void testCreateDocumentNullStream() throws IOException
     {
         assertThrows(() -> DocumentFactory.createDocument(null), Check.ERROR_NULL);
     }
@@ -95,7 +95,7 @@ public final class DocumentFactoryTest
      * @throws TransformerConfigurationException If error.
      */
     @Test
-    public void testCreateTransformer() throws TransformerConfigurationException
+    void testCreateTransformer() throws TransformerConfigurationException
     {
         assertNotNull(DocumentFactory.createTransformer());
         assertNotNull(DocumentFactory.createTransformer()); // Get cached instance
@@ -107,7 +107,7 @@ public final class DocumentFactoryTest
      * @throws Exception If error.
      */
     @Test
-    public void testMissingFeature() throws Exception
+    void testMissingFeature() throws Exception
     {
         final Object old = UtilReflection.getField(DocumentFactory.class, "documentBuilder");
         final Field field = DocumentFactory.class.getDeclaredField("documentBuilder");

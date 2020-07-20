@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link AttackState}.
  */
-public final class AttackStateTest
+final class AttackStateTest
 {
     /**
      * Test the enum.
@@ -31,7 +31,7 @@ public final class AttackStateTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(AttackState.class);
     }

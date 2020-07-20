@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link FileWriting} and {@link FileReading}.
  */
-public final class FileWritingReadingTest
+final class FileWritingReadingTest
 {
     private static final boolean BOOL_VALUE = true;
     private static final byte BYTE_VALUE = 1;
@@ -51,7 +51,7 @@ public final class FileWritingReadingTest
      * @throws IOException If error.
      */
     @Test
-    public void testReaderWriter() throws IOException
+    void testReaderWriter() throws IOException
     {
         final Path file = Files.createTempFile("test", "dat");
         Medias.setResourcesDirectory(file.getParent().toFile().getAbsolutePath());

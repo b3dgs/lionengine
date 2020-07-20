@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Integration test for map tile class.
  */
-public class MapTileIT
+final class MapTileIT
 {
     /**
      * Test the map tile.
      */
     @Test
-    public void testMap()
+    void testMap()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 480, 60);

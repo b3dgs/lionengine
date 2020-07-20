@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Mirror}.
  */
-public final class MirrorTest
+final class MirrorTest
 {
     /**
      * Test the enum.
@@ -29,7 +29,7 @@ public final class MirrorTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(Mirror.class);
     }

@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link Cursor}.
  */
-public final class CursorTest
+final class CursorTest
 {
     /**
      * Prepare test.
@@ -61,7 +61,7 @@ public final class CursorTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final Cursor cursor = new Cursor();
 
@@ -80,7 +80,7 @@ public final class CursorTest
      * Test set grid.
      */
     @Test
-    public void testSetGrid()
+    void testSetGrid()
     {
         final Cursor cursor = new Cursor();
         cursor.setGrid(10, 20);
@@ -93,7 +93,7 @@ public final class CursorTest
      * Test no input.
      */
     @Test
-    public void testNoInput()
+    void testNoInput()
     {
         final Cursor cursor = new Cursor();
 
@@ -104,7 +104,7 @@ public final class CursorTest
      * Test add existing ID.
      */
     @Test
-    public void testAddExistingId()
+    void testAddExistingId()
     {
         final Cursor cursor = new Cursor();
         cursor.addImage(1, Medias.create("cursor.png"));
@@ -115,7 +115,7 @@ public final class CursorTest
      * Test set surface ID.
      */
     @Test
-    public void testSetSurfaceId()
+    void testSetSurfaceId()
     {
         final Cursor cursor = new Cursor();
         cursor.addImage(1, Medias.create("cursor.png"));
@@ -138,7 +138,7 @@ public final class CursorTest
      * Test set surface unknown ID.
      */
     @Test
-    public void testSetSurfaceIdUnknown()
+    void testSetSurfaceIdUnknown()
     {
         final Cursor cursor = new Cursor();
 
@@ -149,7 +149,7 @@ public final class CursorTest
      * Test load surface.
      */
     @Test
-    public void testLoadSurface()
+    void testLoadSurface()
     {
         final Cursor cursor = new Cursor();
         cursor.addImage(1, Medias.create("cursor.png"));
@@ -170,7 +170,7 @@ public final class CursorTest
      * Test sensibility.
      */
     @Test
-    public void testSensibility()
+    void testSensibility()
     {
         final Cursor cursor = new Cursor();
         cursor.setSensibility(1.0, 2.0);
@@ -183,7 +183,7 @@ public final class CursorTest
      * Test set location.
      */
     @Test
-    public void testSetLocation()
+    void testSetLocation()
     {
         final Cursor cursor = new Cursor();
         cursor.setLocation(1, 2);
@@ -205,7 +205,7 @@ public final class CursorTest
      * Test input device.
      */
     @Test
-    public void testInput()
+    void testInput()
     {
         final Cursor cursor = new Cursor();
         cursor.update(1.0);
@@ -238,7 +238,7 @@ public final class CursorTest
      * Test sync mode disabled.
      */
     @Test
-    public void testSyncModeDisabled()
+    void testSyncModeDisabled()
     {
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
@@ -265,7 +265,7 @@ public final class CursorTest
      * Test set area.
      */
     @Test
-    public void testSetArea()
+    void testSetArea()
     {
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
@@ -291,7 +291,7 @@ public final class CursorTest
      * Test set offset.
      */
     @Test
-    public void testSetOffset()
+    void testSetOffset()
     {
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
@@ -311,7 +311,7 @@ public final class CursorTest
      * Test set viewer.
      */
     @Test
-    public void testSetViewer()
+    void testSetViewer()
     {
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
@@ -334,7 +334,7 @@ public final class CursorTest
      * Test render no surface
      */
     @Test
-    public void testRenderNoSurface()
+    void testRenderNoSurface()
     {
         final Graphic g = Graphics.createGraphic();
         final Cursor cursor = new Cursor();
@@ -350,7 +350,7 @@ public final class CursorTest
      * Test render
      */
     @Test
-    public void testRender()
+    void testRender()
     {
         final Cursor cursor = new Cursor();
         cursor.addImage(0, Medias.create("cursor.png"));

@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
 /**
  * Test {@link ScreenAwtAbstract}, {@link ScreenWindowedAwt} and {@link ScreenFullAwt}.
  */
-public final class ScreenAwtTest
+final class ScreenAwtTest
 {
     /**
      * Prepare tests.
@@ -74,7 +74,7 @@ public final class ScreenAwtTest
      * Test with engine
      */
     @Test
-    public void testEngineWindowed()
+    void testEngineWindowed()
     {
         final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
         EngineAwt.start(ScreenAwtTest.class.getSimpleName(), Version.DEFAULT);
@@ -85,7 +85,7 @@ public final class ScreenAwtTest
      * Test windowed screen.
      */
     @Test
-    public void testWindowed()
+    void testWindowed()
     {
         final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
         testScreen(config);
@@ -95,7 +95,7 @@ public final class ScreenAwtTest
      * Test full screen.
      */
     @Test
-    public void testFullscreen()
+    void testFullscreen()
     {
         final Config config = new Config(new Resolution(1024, 768, 60), 32, false, Medias.create("image.png"));
         try
@@ -118,7 +118,7 @@ public final class ScreenAwtTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testFullscreenFail() throws ReflectiveOperationException
+    void testFullscreenFail() throws ReflectiveOperationException
     {
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
@@ -132,7 +132,7 @@ public final class ScreenAwtTest
      * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testHeadless() throws ReflectiveOperationException
+    void testHeadless() throws ReflectiveOperationException
     {
         final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
         final Field field = GraphicsEnvironment.class.getDeclaredField("headless");

@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 /**
  * Test {@link MapTileAppenderModel}.
  */
-public final class MapTileAppenderTest
+final class MapTileAppenderTest
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public final class MapTileAppenderTest
      * Test the map append when map is not created.
      */
     @Test
-    public void testAppendNotCreated()
+    void testAppendNotCreated()
     {
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
@@ -80,7 +80,7 @@ public final class MapTileAppenderTest
      * Test the map append when map is created with same tile size.
      */
     @Test
-    public void testAppendCreatedSameTileSize()
+    void testAppendCreatedSameTileSize()
     {
         map.create(1, 1, 1, 1);
 
@@ -103,7 +103,7 @@ public final class MapTileAppenderTest
      * Test the map append when map is created with different tile width.
      */
     @Test
-    public void testAppendCreatedDifferentTileWidth()
+    void testAppendCreatedDifferentTileWidth()
     {
         map.create(2, 1, 1, 1);
 
@@ -118,7 +118,7 @@ public final class MapTileAppenderTest
      * Test the map append when map is created with different tile height.
      */
     @Test
-    public void testAppendCreatedDifferentTileHeight()
+    void testAppendCreatedDifferentTileHeight()
     {
         map.create(1, 2, 1, 1);
 
@@ -133,7 +133,7 @@ public final class MapTileAppenderTest
      * Test the map collection append when map is not created.
      */
     @Test
-    public void testAppendCollectionNotCreated()
+    void testAppendCollectionNotCreated()
     {
         final MapTile map1 = new MapTileGame();
         map1.create(1, 1, 1, 1);
@@ -154,7 +154,7 @@ public final class MapTileAppenderTest
      * Test the map collection append when map is created.
      */
     @Test
-    public void testAppendCollectionCreated()
+    void testAppendCollectionCreated()
     {
         map.create(1, 1, 1, 1);
 
@@ -177,7 +177,7 @@ public final class MapTileAppenderTest
      * Test the map collection append when map is created with different tile width.
      */
     @Test
-    public void testAppendCollectionCreatedDifferentTileWidth()
+    void testAppendCollectionCreatedDifferentTileWidth()
     {
         map.create(1, 1, 1, 1);
 
@@ -196,7 +196,7 @@ public final class MapTileAppenderTest
      * Test the map collection append when map is created with different tile height.
      */
     @Test
-    public void testAppendCollectionCreatedDifferentTileHeight()
+    void testAppendCollectionCreatedDifferentTileHeight()
     {
         map.create(1, 1, 1, 1);
 

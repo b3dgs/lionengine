@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Constant;
 /**
  * Test {@link Text}.
  */
-public final class TextTest
+final class TextTest
 {
     /** Text value. */
     private static final String VALUE = "test";
@@ -70,7 +70,7 @@ public final class TextTest
      * Test normal.
      */
     @Test
-    public void testNormal()
+    void testNormal()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.NORMAL);
         text.draw(g, 0, 0, VALUE);
@@ -99,7 +99,7 @@ public final class TextTest
      * Test bold.
      */
     @Test
-    public void testBold()
+    void testBold()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.BOLD);
         text.draw(g, 0, 0, VALUE);
@@ -109,7 +109,7 @@ public final class TextTest
      * Test italic.
      */
     @Test
-    public void testItalic()
+    void testItalic()
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.ITALIC);
         text.draw(g, 0, 0, VALUE);

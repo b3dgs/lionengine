@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Frame}.
  */
-public final class FrameTest
+final class FrameTest
 {
     /**
      * Test default function.
      */
     @Test
-    public void testFrame()
+    void testFrame()
     {
         final AtomicBoolean result = new AtomicBoolean();
         final Frame frame = new Frame()

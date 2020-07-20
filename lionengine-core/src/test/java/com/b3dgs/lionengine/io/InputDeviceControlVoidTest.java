@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link InputDeviceControlVoid}.
  */
-public final class InputDeviceControlVoidTest
+final class InputDeviceControlVoidTest
 {
     /**
      * Test the device.
      */
     @Test
-    public void testDevice()
+    void testDevice()
     {
         final InputDeviceControl device = InputDeviceControlVoid.getInstance();
         device.setFireButton(Integer.valueOf(0), Integer.valueOf(2));

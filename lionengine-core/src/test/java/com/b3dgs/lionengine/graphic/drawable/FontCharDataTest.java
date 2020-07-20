@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link FontCharData}.
  */
-public final class FontCharDataTest
+final class FontCharDataTest
 {
     /**
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final FontCharData data = new FontCharData(0, 1, 2);
 
@@ -43,7 +43,7 @@ public final class FontCharDataTest
      * Test constructor with invalid id.
      */
     @Test
-    public void testConstructorInvalidId()
+    void testConstructorInvalidId()
     {
         assertThrows(() -> new FontCharData(-1, 1, 2), "Invalid argument: -1 is not superior or equal to 0");
     }
@@ -52,7 +52,7 @@ public final class FontCharDataTest
      * Test constructor with invalid with.
      */
     @Test
-    public void testConstructorInvalidWidth()
+    void testConstructorInvalidWidth()
     {
         assertThrows(() -> new FontCharData(0, -1, 2), "Invalid argument: -1 is not superior or equal to 0");
     }
@@ -61,7 +61,7 @@ public final class FontCharDataTest
      * Test constructor with invalid height.
      */
     @Test
-    public void testConstructorInvalidheight()
+    void testConstructorInvalidheight()
     {
         assertThrows(() -> new FontCharData(0, 1, -1), "Invalid argument: -1 is not superior or equal to 0");
     }

@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.graphic.Transparency;
 /**
  * Test {@link ImageBufferHeadless}.
  */
-public final class ImageBufferHeadlessTest
+final class ImageBufferHeadlessTest
 {
     /**
      * Prepare tests.
@@ -58,7 +58,7 @@ public final class ImageBufferHeadlessTest
      * Test image.
      */
     @Test
-    public void testImage()
+    void testImage()
     {
         final ImageBuffer image = new ImageBufferHeadless(100, 100, Transparency.OPAQUE);
 
@@ -86,7 +86,7 @@ public final class ImageBufferHeadlessTest
      * Test constructor.
      */
     @Test
-    public void testConstructor()
+    void testConstructor()
     {
         final ImageBufferHeadless image = new ImageBufferHeadless(100, 200, new int[100 * 200]);
 
@@ -98,7 +98,7 @@ public final class ImageBufferHeadlessTest
      * Test set rgb.
      */
     @Test
-    public void testSetRgb()
+    void testSetRgb()
     {
         final ImageBufferHeadless image = new ImageBufferHeadless(100, 200, Transparency.BITMASK);
         final int[] array = new int[3 * 3];
@@ -127,7 +127,7 @@ public final class ImageBufferHeadlessTest
      * Test image transparency
      */
     @Test
-    public void testImageTransparency()
+    void testImageTransparency()
     {
         final ImageBuffer image = Graphics.createImageBuffer(100, 100, ColorRgba.RED);
 

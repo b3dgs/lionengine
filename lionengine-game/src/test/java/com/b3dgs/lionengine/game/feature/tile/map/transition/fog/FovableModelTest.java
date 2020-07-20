@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.UtilMap;
 /**
  * Test {@link FovableModel}.
  */
-public final class FovableModelTest
+final class FovableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -70,7 +70,7 @@ public final class FovableModelTest
      * Test the fovable model.
      */
     @Test
-    public void testFovable()
+    void testFovable()
     {
         final MapTile map = UtilMap.createMap(7);
         services.add(map);

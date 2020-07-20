@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.graphic.engine.Loader;
 /**
  * Integration test for map tile rastered model.
  */
-public class MapTileRasteredModelIT
+final class MapTileRasteredModelIT
 {
     /**
      * Test the raster.
      */
     @Test
-    public void testRaster()
+    void testRaster()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 480, 60);

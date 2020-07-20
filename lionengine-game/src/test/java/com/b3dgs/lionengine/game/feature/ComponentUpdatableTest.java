@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Medias;
 /**
  * Test {@link ComponentUpdatable}.
  */
-public final class ComponentUpdatableTest
+final class ComponentUpdatableTest
 {
     /** Object config test. */
     private static Media config;
@@ -63,7 +63,7 @@ public final class ComponentUpdatableTest
      * Test the updater.
      */
     @Test
-    public void testUpdater()
+    void testUpdater()
     {
         final ComponentUpdatable updatable = new ComponentUpdatable();
         final Handler handler = new Handler(new Services());

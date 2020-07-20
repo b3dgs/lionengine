@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.graphic.ScreenListener;
 /**
  * Test {@link ScreenHeadless}.
  */
-public final class ScreenHeadlessTest
+final class ScreenHeadlessTest
 {
     /** Image media. */
     private static final String IMAGE = "image.png";
@@ -71,7 +71,7 @@ public final class ScreenHeadlessTest
      * @throws Exception If error.
      */
     @Test
-    public void testWindowed() throws Exception
+    void testWindowed() throws Exception
     {
         final Config config = new Config(com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240,
                                          32,
@@ -87,7 +87,7 @@ public final class ScreenHeadlessTest
      * @throws Exception If error.
      */
     @Test
-    public void testFullscreen() throws Exception
+    void testFullscreen() throws Exception
     {
         final Resolution resolution = com.b3dgs.lionengine.UtilTests.RESOLUTION_320_240;
         final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));

@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Animation}.
  */
-public final class AnimationTest
+final class AnimationTest
 {
     /** Minimum frame value. */
     private static final int MIN = Animation.MINIMUM_FRAME;
@@ -38,7 +38,7 @@ public final class AnimationTest
      * Test <code>null</code> name argument.
      */
     @Test
-    public void testNameNull()
+    void testNameNull()
     {
         assertThrows(() -> new Animation(null, 1, 1, 0.0, false, false), Check.ERROR_NULL);
     }
@@ -47,7 +47,7 @@ public final class AnimationTest
      * Test the failure minimum frame under minimum.
      */
     @Test
-    public void testFailureMinimumFrame()
+    void testFailureMinimumFrame()
     {
         final int underMin = MIN - 1;
         assertThrows(() -> new Animation(Animation.DEFAULT_NAME, underMin, 0, 0.0, false, false),
@@ -58,7 +58,7 @@ public final class AnimationTest
      * Test the failure maximum frame under minimum frame.
      */
     @Test
-    public void testFailureMaximumFrame()
+    void testFailureMaximumFrame()
     {
         final int underMin = MIN - 1;
         assertThrows(() -> new Animation(Animation.DEFAULT_NAME, MIN, underMin, 0.0, false, false),
@@ -69,7 +69,7 @@ public final class AnimationTest
      * Test the failure speed negative.
      */
     @Test
-    public void testFailureSpeed()
+    void testFailureSpeed()
     {
         final double speed = -1.0;
         assertThrows(() -> new Animation(Animation.DEFAULT_NAME, MIN, MIN + 1, -1.0, false, false),
@@ -80,7 +80,7 @@ public final class AnimationTest
      * Test the getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Animation animation = new Animation("name", 1, 2, 3.5, true, false);
 
@@ -97,7 +97,7 @@ public final class AnimationTest
      * Test the equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Animation animation = new Animation("test", 1, 2, 3, false, true);
 
@@ -118,7 +118,7 @@ public final class AnimationTest
      * Test the hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Animation animation = new Animation("test", 1, 2, 3, false, true);
 

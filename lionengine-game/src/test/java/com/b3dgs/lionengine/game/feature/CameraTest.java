@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 /**
  * Test {@link Camera}.
  */
-public final class CameraTest
+final class CameraTest
 {
     /** Object config test. */
     private static Media config;
@@ -85,7 +85,7 @@ public final class CameraTest
      * Test the camera default values.
      */
     @Test
-    public void testCameraDefault()
+    void testCameraDefault()
     {
         assertEquals(0, camera.getViewX());
         assertEquals(0, camera.getViewY());
@@ -102,7 +102,7 @@ public final class CameraTest
      * Test the camera center.
      */
     @Test
-    public void testCameraCenter()
+    void testCameraCenter()
     {
         final Shape shape = Geom.createArea(60, 50, 20, 10);
         camera.setView(0, 0, 120, 100, 100);
@@ -116,7 +116,7 @@ public final class CameraTest
      * Test the camera round.
      */
     @Test
-    public void testCameraRound()
+    void testCameraRound()
     {
         camera.teleport(11.1, 12.2);
         camera.round(new SurfaceTile()
@@ -154,7 +154,7 @@ public final class CameraTest
      * Test the camera teleport.
      */
     @Test
-    public void testCameraTeleport()
+    void testCameraTeleport()
     {
         camera.setLimits(surface);
         camera.teleport(1.0, 2.0);
@@ -169,7 +169,7 @@ public final class CameraTest
      * Test the camera movement.
      */
     @Test
-    public void testCameraMovement()
+    void testCameraMovement()
     {
         camera.moveLocation(1.0, 2.0, 3.0);
 
@@ -183,7 +183,7 @@ public final class CameraTest
      * Test the camera viewpoint.
      */
     @Test
-    public void testCameraViewpoint()
+    void testCameraViewpoint()
     {
         camera.setView(0, 0, 16, 32, 32);
 
@@ -200,7 +200,7 @@ public final class CameraTest
      * Test the camera view.
      */
     @Test
-    public void testCameraView()
+    void testCameraView()
     {
         camera.setView(1, 2, 3, 4, 4);
 
@@ -244,7 +244,7 @@ public final class CameraTest
      * Test the camera viewable.
      */
     @Test
-    public void testIsViewable()
+    void testIsViewable()
     {
         camera.setView(0, 0, 2, 2, 2);
 
@@ -322,7 +322,7 @@ public final class CameraTest
      * Test the camera interval.
      */
     @Test
-    public void testInterval()
+    void testInterval()
     {
         final Transformable transformable = new TransformableModel(new Services(), new Setup(config));
         transformable.teleport(1.0, 2.0);
@@ -358,7 +358,7 @@ public final class CameraTest
      * Test the camera interval.
      */
     @Test
-    public void testIntervalLimit()
+    void testIntervalLimit()
     {
         camera.setView(0, 0, 0, 0, 0);
         camera.setLimits(surface);
@@ -463,7 +463,7 @@ public final class CameraTest
      * Test the camera interval.
      */
     @Test
-    public void testIntervalNoLimit()
+    void testIntervalNoLimit()
     {
         // Limit right
         camera.moveLocation(1.0, Integer.MAX_VALUE + 1.0, 0.0);

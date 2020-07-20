@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Services}.
  */
-public final class ServicesTest
+final class ServicesTest
 {
     /**
      * Test the service creation.
      */
     @Test
-    public void testCreateGet()
+    void testCreateGet()
     {
         final Services services = new Services();
         final Factory factory = services.create(Factory.class);
@@ -45,7 +45,7 @@ public final class ServicesTest
      * Test the service add.
      */
     @Test
-    public void testAddGet()
+    void testAddGet()
     {
         final Services services = new Services();
         final Factory factory = services.add(new Factory(services));
@@ -57,7 +57,7 @@ public final class ServicesTest
      * Test the service without constructor.
      */
     @Test
-    public void testServiceNoConstructor()
+    void testServiceNoConstructor()
     {
         final Services services = new Services();
 
@@ -68,7 +68,7 @@ public final class ServicesTest
      * Test the service with invalid constructor.
      */
     @Test
-    public void testServiceInvalidConstructor()
+    void testServiceInvalidConstructor()
     {
         final Services services = new Services();
 
@@ -79,7 +79,7 @@ public final class ServicesTest
      * Test the service not found.
      */
     @Test
-    public void testNotFound()
+    void testNotFound()
     {
         final Services services = new Services();
 
@@ -90,7 +90,7 @@ public final class ServicesTest
      * Test the service <code>null</code>.
      */
     @Test
-    public void testNull()
+    void testNull()
     {
         final Services services = new Services();
 
@@ -101,7 +101,7 @@ public final class ServicesTest
      * Test the service as optional.
      */
     @Test
-    public void testOptional()
+    void testOptional()
     {
         final Services services = new Services();
         final Factory factory = services.add(new Factory(services));

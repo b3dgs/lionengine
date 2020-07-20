@@ -55,7 +55,7 @@ public class GraphicTest
      * Test empty graphic.
      */
     @Test
-    public void testEmptyGraphic()
+    void testEmptyGraphic()
     {
         final Graphic g = Graphics.createGraphic();
 
@@ -66,7 +66,7 @@ public class GraphicTest
      * Test graphic.
      */
     @Test
-    public void testGraphic()
+    protected void testGraphic()
     {
         final ImageBuffer image = Graphics.createImageBuffer(320, 240);
         final Graphic g = image.createGraphic();

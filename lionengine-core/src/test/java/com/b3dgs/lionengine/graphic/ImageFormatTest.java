@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.UtilTests;
 /**
  * Test {@link ImageFormat}.
  */
-public final class ImageFormatTest
+final class ImageFormatTest
 {
     /**
      * Test enum.
@@ -35,7 +35,7 @@ public final class ImageFormatTest
      * @throws Exception If error.
      */
     @Test
-    public void testEnum() throws Exception
+    void testEnum() throws Exception
     {
         UtilTests.testEnum(ImageFormat.class);
     }
@@ -44,7 +44,7 @@ public final class ImageFormatTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         for (final ImageFormat format : ImageFormat.values())
         {

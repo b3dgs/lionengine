@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.UtilMapTransition;
 /**
  * Test {@link MapTileCircuitModel}.
  */
-public final class MapTileCircuitModelTest
+final class MapTileCircuitModelTest
 {
     /** Test configuration transitions. */
     private static Media configTransitions;
@@ -90,7 +90,7 @@ public final class MapTileCircuitModelTest
      * Test the map circuit resolution.
      */
     @Test
-    public void testResolution()
+    void testResolution()
     {
         final MapTile map = createMap(TILE_GROUND);
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
@@ -111,7 +111,7 @@ public final class MapTileCircuitModelTest
      * Test the map circuit resolution with transitive.
      */
     @Test
-    public void testTransitive()
+    void testTransitive()
     {
         final MapTile map = createMap(TILE_WATER);
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);

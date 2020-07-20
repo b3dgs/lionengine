@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link KeyboardHeadless}.
  */
-public final class KeyboardHeadlessTest
+final class KeyboardHeadlessTest
 {
     /**
      * Create a key event.
@@ -42,7 +42,7 @@ public final class KeyboardHeadlessTest
      * Test not pressed state.
      */
     @Test
-    public void testNotPressed()
+    void testNotPressed()
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
 
@@ -58,7 +58,7 @@ public final class KeyboardHeadlessTest
      * Test pressed.
      */
     @Test
-    public void testPressed()
+    void testPressed()
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
         keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
@@ -80,7 +80,7 @@ public final class KeyboardHeadlessTest
      * Test pressed twice.
      */
     @Test
-    public void testPressedTwice()
+    void testPressedTwice()
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
         keyboard.keyPressed(createEvent(KeyboardHeadless.DOWN));
@@ -96,7 +96,7 @@ public final class KeyboardHeadlessTest
      * Test directions.
      */
     @Test
-    public void testDirections()
+    void testDirections()
     {
         final KeyboardHeadless keyboard = new KeyboardHeadless();
 

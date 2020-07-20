@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.Feature;
 /**
  * Test {@link FeaturableConfig}.
  */
-public final class FeaturableConfigTest
+final class FeaturableConfigTest
 {
     /**
      * Prepare test.
@@ -63,7 +63,7 @@ public final class FeaturableConfigTest
      * Test exports imports.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final String clazz = "class";
         final String setup = "setup";
@@ -86,7 +86,7 @@ public final class FeaturableConfigTest
      * Test with default class.
      */
     @Test
-    public void testDefaultClass()
+    void testDefaultClass()
     {
         final Xml root = new Xml("test");
         final Media media = Medias.create("Object.xml");
@@ -102,7 +102,7 @@ public final class FeaturableConfigTest
      * Test with default setup.
      */
     @Test
-    public void testDefaultSetup()
+    void testDefaultSetup()
     {
         final Xml root = new Xml("test");
         root.add(FeaturableConfig.exportClass("clazz"));
@@ -119,7 +119,7 @@ public final class FeaturableConfigTest
      * Test with <code>null</code> class.
      */
     @Test
-    public void testNullClass()
+    void testNullClass()
     {
         assertThrows(() -> new FeaturableConfig(null, "setup"), "Unexpected null argument !");
     }
@@ -128,7 +128,7 @@ public final class FeaturableConfigTest
      * Test with <code>null</code> setup.
      */
     @Test
-    public void testNullSetup()
+    void testNullSetup()
     {
         assertThrows(() -> new FeaturableConfig("class", null), "Unexpected null argument !");
     }
@@ -137,7 +137,7 @@ public final class FeaturableConfigTest
      * Test with cached feature class.
      */
     @Test
-    public void testGetFeaturesCache()
+    void testGetFeaturesCache()
     {
         final Xml root = new Xml("test");
         root.createChild(FeaturableConfig.NODE_FEATURES)
@@ -160,7 +160,7 @@ public final class FeaturableConfigTest
      * Test with unknown feature class.
      */
     @Test
-    public void testGetFeaturesUnknown()
+    void testGetFeaturesUnknown()
     {
         final Xml root = new Xml("test");
         root.createChild(FeaturableConfig.NODE_FEATURES)
@@ -179,7 +179,7 @@ public final class FeaturableConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final FeaturableConfig config = new FeaturableConfig("class", "setup");
 
@@ -196,7 +196,7 @@ public final class FeaturableConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final FeaturableConfig hash = new FeaturableConfig("class", "setup");
 
@@ -210,7 +210,7 @@ public final class FeaturableConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final FeaturableConfig config = new FeaturableConfig("clazz", "setup");
 

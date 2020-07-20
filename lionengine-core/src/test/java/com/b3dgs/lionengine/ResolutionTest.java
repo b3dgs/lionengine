@@ -27,13 +27,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link Resolution}.
  */
-public final class ResolutionTest
+final class ResolutionTest
 {
     /**
      * Test getters.
      */
     @Test
-    public void testGetters()
+    void testGetters()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
@@ -46,7 +46,7 @@ public final class ResolutionTest
      * Test non strict positive width.
      */
     @Test
-    public void testNonStrictPositiveWidth()
+    void testNonStrictPositiveWidth()
     {
         assertThrows(() -> new Resolution(0, 240, 0), Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
     }
@@ -55,7 +55,7 @@ public final class ResolutionTest
      * Test non strict positive height.
      */
     @Test
-    public void testNonStrictPositiveHeight()
+    void testNonStrictPositiveHeight()
     {
         assertThrows(() -> new Resolution(320, 0, 0), Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
     }
@@ -64,7 +64,7 @@ public final class ResolutionTest
      * Test negative rate.
      */
     @Test
-    public void testNegativeRate()
+    void testNegativeRate()
     {
         assertThrows(() -> new Resolution(320, 240, -1), Check.ERROR_ARGUMENT + -1 + Check.ERROR_SUPERIOR + 0);
     }
@@ -73,7 +73,7 @@ public final class ResolutionTest
      * Test scale 2x function.
      */
     @Test
-    public void testScale2x()
+    void testScale2x()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
@@ -84,7 +84,7 @@ public final class ResolutionTest
      * Test scale 3x function.
      */
     @Test
-    public void testScale3x()
+    void testScale3x()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
@@ -95,7 +95,7 @@ public final class ResolutionTest
      * Test scale 4x function.
      */
     @Test
-    public void testScale4x()
+    void testScale4x()
     {
         final Resolution resolution = new Resolution(320, 180, 60);
 
@@ -106,7 +106,7 @@ public final class ResolutionTest
      * Test scale function with wrong factor X.
      */
     @Test
-    public void testScaleWrongFactorX()
+    void testScaleWrongFactorX()
     {
         assertThrows(() -> new Resolution(320, 240, 60).getScaled(0, 1),
                      Check.ERROR_ARGUMENT + 0.0 + Check.ERROR_SUPERIOR_STRICT + 0.0);
@@ -116,7 +116,7 @@ public final class ResolutionTest
      * Test scale function with wrong factor Y.
      */
     @Test
-    public void testScaleWrongFactorY()
+    void testScaleWrongFactorY()
     {
         assertThrows(() -> new Resolution(320, 240, 60).getScaled(1, 0),
                      Check.ERROR_ARGUMENT + 0.0 + Check.ERROR_SUPERIOR_STRICT + 0.0);
@@ -126,7 +126,7 @@ public final class ResolutionTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
@@ -144,7 +144,7 @@ public final class ResolutionTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
 
@@ -160,7 +160,7 @@ public final class ResolutionTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         assertEquals("Resolution [width=320, height=240, rate=60]", new Resolution(320, 240, 60).toString());
     }

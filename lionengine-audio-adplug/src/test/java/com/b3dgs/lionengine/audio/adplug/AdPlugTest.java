@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.audio.AudioVoidFormat;
 /**
  * Test {@link AdPlugFormat} and {@link AdPlugPlayer}.
  */
-public final class AdPlugTest
+final class AdPlugTest
 {
     /**
      * Create player.
@@ -106,7 +106,7 @@ public final class AdPlugTest
      * Test with <code>null</code> argument.
      */
     @Test
-    public void testNullArgument()
+    void testNullArgument()
     {
         assertThrows(() -> AudioFactory.loadAudio(null, AdPlug.class), "Unexpected null argument !");
     }
@@ -117,7 +117,7 @@ public final class AdPlugTest
      * @throws Exception If error.
      */
     @Test
-    public void testMissingLibrary() throws Exception
+    void testMissingLibrary() throws Exception
     {
         final Field field = AdPlugFormat.class.getDeclaredField("LIBRARY_NAME");
         final String back = UtilReflection.getField(AdPlugFormat.class, "LIBRARY_NAME");
@@ -140,7 +140,7 @@ public final class AdPlugTest
      * Test with negative volume.
      */
     @Test
-    public void testNegativeVolume()
+    void testNegativeVolume()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -157,7 +157,7 @@ public final class AdPlugTest
      * Test with out of range volume.
      */
     @Test
-    public void testOutOfRangeVolume()
+    void testOutOfRangeVolume()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -174,7 +174,7 @@ public final class AdPlugTest
      * Test create fail safe.
      */
     @Test
-    public void testCreateFailsafe()
+    void testCreateFailsafe()
     {
         assertNotNull(AdPlugFormat.getFailsafe());
     }
@@ -183,7 +183,7 @@ public final class AdPlugTest
      * Test play sequence.
      */
     @Test
-    public void testPlay()
+    void testPlay()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -234,7 +234,7 @@ public final class AdPlugTest
      * Test play sequence.
      */
     @Test
-    public void testPlayTwice()
+    void testPlayTwice()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -258,7 +258,7 @@ public final class AdPlugTest
      * Test pause sequence.
      */
     @Test
-    public void testPause()
+    void testPause()
     {
         final AdPlug adplug = createAdPlug();
         try
@@ -289,7 +289,7 @@ public final class AdPlugTest
      * @throws IOException If error.
      */
     @Test
-    public void testMissingMedia() throws IOException
+    void testMissingMedia() throws IOException
     {
         final Media media = new Media()
         {
@@ -371,7 +371,7 @@ public final class AdPlugTest
      * @throws IOException If error.
      */
     @Test
-    public void testOutsideMedia() throws IOException
+    void testOutsideMedia() throws IOException
     {
         final Media music = Medias.create("music.lds");
         try (InputStream input = music.getInputStream())

@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test {@link UpdatableVoid}.
  */
-public final class UpdatableVoidTest
+final class UpdatableVoidTest
 {
     /**
      * Test the constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(UpdatableVoid.class);
     }
@@ -39,7 +39,7 @@ public final class UpdatableVoidTest
      * Test the get instance.
      */
     @Test
-    public void testGetInstance()
+    void testGetInstance()
     {
         assertNotNull(UpdatableVoid.getInstance());
     }
@@ -48,7 +48,7 @@ public final class UpdatableVoidTest
      * Test the update.
      */
     @Test
-    public void testUpdate()
+    void testUpdate()
     {
         UpdatableVoid.getInstance().update(1.0);
     }

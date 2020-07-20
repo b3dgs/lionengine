@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.Graphics;
 /**
  * Test {@link Drawable}.
  */
-public final class DrawableTest
+final class DrawableTest
 {
     /** Surface. */
     private static Media media;
@@ -71,7 +71,7 @@ public final class DrawableTest
      * Test constructor.
      */
     @Test
-    public void testConstructorPrivate()
+    void testConstructorPrivate()
     {
         assertPrivateConstructor(Drawable.class);
     }
@@ -80,7 +80,7 @@ public final class DrawableTest
      * Test load sprites.
      */
     @Test
-    public void testLoad()
+    void testLoad()
     {
         assertNotNull(Drawable.loadImage(Graphics.createImageBuffer(16, 32)));
         assertNotNull(Drawable.loadImage(media));
@@ -107,7 +107,7 @@ public final class DrawableTest
      * Test success cases with custom DPI.
      */
     @Test
-    public void testSuccessDpi()
+    void testSuccessDpi()
     {
         for (final DpiType dpi : DpiType.values())
         {
@@ -139,7 +139,7 @@ public final class DrawableTest
      * Test success cases with missing DPI.
      */
     @Test
-    public void testMissingDpi()
+    void testMissingDpi()
     {
         Drawable.setDpi(new Resolution(320, 240, 60), new Config(new Resolution(1920, 1200, 16), 60, false));
 
@@ -169,7 +169,7 @@ public final class DrawableTest
      * Test DPI with 0 ordinal.
      */
     @Test
-    public void testDpiOrdinal()
+    void testDpiOrdinal()
     {
         Drawable.setDpi(DpiType.values()[0]);
 

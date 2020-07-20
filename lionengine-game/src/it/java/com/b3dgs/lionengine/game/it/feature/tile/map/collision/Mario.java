@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableModel;
 /**
  * Implementation of our controllable entity.
  */
-class Mario extends FeaturableModel
+final class Mario extends FeaturableModel
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");

@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 /**
  * Test {@link MapTileViewerModel}.
  */
-public final class MapTileViewerModelTest
+final class MapTileViewerModelTest
 {
     /**
      * Prepare test.
@@ -86,7 +86,7 @@ public final class MapTileViewerModelTest
      * Test the viewer functions.
      */
     @Test
-    public void testViewer()
+    void testViewer()
     {
         map.loadSheets(Arrays.asList(Drawable.loadSpriteTiled(new ImageBufferMock(80, 80), 40, 40)));
 

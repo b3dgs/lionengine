@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.geom.Geom;
 /**
  * Test {@link MapTilePathModel}.
  */
-public final class MapTilePathModelTest
+final class MapTilePathModelTest
 {
     /** Test configuration. */
     private static Media config;
@@ -97,7 +97,7 @@ public final class MapTilePathModelTest
      * Test the get free tile around.
      */
     @Test
-    public void testGetFreeTileAround()
+    void testGetFreeTileAround()
     {
         final Pathfindable pathfindable = createObject();
         final TileArea tile = new TileArea(3, 3, 1, 1);
@@ -153,7 +153,7 @@ public final class MapTilePathModelTest
      * Test the get free tile around with none found.
      */
     @Test
-    public void testGetFreeTileAroundNone()
+    void testGetFreeTileAroundNone()
     {
         final Pathfindable pathfindable = createObject();
         final TileArea tile = new TileArea(0, 0, 10, 10);
@@ -172,7 +172,7 @@ public final class MapTilePathModelTest
      * Test the closest tile available.
      */
     @Test
-    public void testGetClosestTileAvailable()
+    void testGetClosestTileAvailable()
     {
         final Pathfindable pathfindable = createObject();
         final TileArea tile = new TileArea(1, 2, 1, 1);
@@ -191,7 +191,7 @@ public final class MapTilePathModelTest
      * Test the is area available.
      */
     @Test
-    public void testIsAreaAvailable()
+    void testIsAreaAvailable()
     {
         mapPath.addObjectId(-1, 0, Integer.valueOf(10));
         mapPath.addObjectId(10, 0, Integer.valueOf(10));

@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 /**
  * Test {@link ExtractableModel}.
  */
-public final class ExtractableModelTest
+final class ExtractableModelTest
 {
     /** Object config test. */
     private static Media config;
@@ -70,7 +70,7 @@ public final class ExtractableModelTest
      * Test the extraction config with node.
      */
     @Test
-    public void testConfigWithNode()
+    void testConfigWithNode()
     {
         final MapTile map = new MapTileGame();
         map.create(16, 16, 4, 4);
@@ -99,7 +99,7 @@ public final class ExtractableModelTest
      * Test the extraction config.
      */
     @Test
-    public void testConfig()
+    void testConfig()
     {
         final Extractable extractable = UtilExtractable.createExtractable(services, setup);
 
@@ -117,7 +117,7 @@ public final class ExtractableModelTest
      * Test the extraction.
      */
     @Test
-    public void testExtract()
+    void testExtract()
     {
         services.add(new MapTileGame());
 

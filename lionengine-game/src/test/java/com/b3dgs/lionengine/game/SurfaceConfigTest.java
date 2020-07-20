@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Xml;
 /**
  * Test {@link SurfaceConfig}.
  */
-public final class SurfaceConfigTest
+final class SurfaceConfigTest
 {
     /**
      * Prepare test.
@@ -59,7 +59,7 @@ public final class SurfaceConfigTest
      * Test exports imports with image and icon.
      */
     @Test
-    public void testExportsImports()
+    void testExportsImports()
     {
         final Xml root = new Xml("test");
 
@@ -79,7 +79,7 @@ public final class SurfaceConfigTest
      * Test exports imports with image without icon.
      */
     @Test
-    public void testExportsImportsNoIcon()
+    void testExportsImportsNoIcon()
     {
         final Xml root = new Xml("test");
 
@@ -99,7 +99,7 @@ public final class SurfaceConfigTest
      * Test <code>null</code> image.
      */
     @Test
-    public void testNullImage()
+    void testNullImage()
     {
         assertThrows(() -> new SurfaceConfig(null, "icon"), "Unexpected null argument !");
     }
@@ -108,7 +108,7 @@ public final class SurfaceConfigTest
      * Test with <code>null</code> icon.
      */
     @Test
-    public void testConfigNullIcon()
+    void testConfigNullIcon()
     {
         final SurfaceConfig config = new SurfaceConfig("image", null);
 
@@ -120,7 +120,7 @@ public final class SurfaceConfigTest
      * Test equals.
      */
     @Test
-    public void testEquals()
+    void testEquals()
     {
         final SurfaceConfig config = new SurfaceConfig("image", "icon");
 
@@ -140,7 +140,7 @@ public final class SurfaceConfigTest
      * Test hash code.
      */
     @Test
-    public void testHashCode()
+    void testHashCode()
     {
         final SurfaceConfig hash = new SurfaceConfig("image", "icon");
 
@@ -158,7 +158,7 @@ public final class SurfaceConfigTest
      * Test to string.
      */
     @Test
-    public void testToString()
+    void testToString()
     {
         final SurfaceConfig config = new SurfaceConfig("image", "icon");
 
