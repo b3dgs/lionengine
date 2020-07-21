@@ -44,6 +44,8 @@ class SpriteImpl implements Sprite
     private final Media media;
     /** Sprite current surface (<code>null</code> if not loaded from existing media). */
     private ImageBuffer surface;
+    /** Sprite current surface stretched (<code>null</code> if not loaded from existing media). */
+    private ImageBuffer surfaceStretched;
     /** Sprite original surface (<code>null</code> if surface unmodified). */
     private ImageBuffer surfaceOriginal;
     /** Origin point. */
@@ -109,6 +111,7 @@ class SpriteImpl implements Sprite
         Check.notNull(surface);
 
         this.surface = surface;
+        surfaceStretched = surface;
         width = surface.getWidth();
         height = surface.getHeight();
         media = null;
@@ -162,7 +165,8 @@ class SpriteImpl implements Sprite
     {
         width = newWidth;
         height = newHeight;
-        surface = Graphics.resize(surfaceOriginal, newWidth, newHeight);
+        surfaceStretched = Graphics.resize(surfaceOriginal, newWidth, newHeight);
+        surface = surfaceStretched;
     }
 
     /**
@@ -222,6 +226,7 @@ class SpriteImpl implements Sprite
         if (surfaceOriginal == null)
         {
             surfaceOriginal = Graphics.getImageBuffer(surface);
+            surfaceStretched = surfaceOriginal;
         }
     }
 
@@ -285,7 +290,7 @@ class SpriteImpl implements Sprite
         Check.notNull(filter);
 
         lazySurfaceBackup();
-        surface = filter.filter(surfaceOriginal);
+        surface = filter.filter(surfaceStretched);
         width = surface.getWidth();
         height = surface.getHeight();
     }
@@ -330,7 +335,7 @@ class SpriteImpl implements Sprite
     public final void setTransparency(ColorRgba mask)
     {
         lazySurfaceBackup();
-        surface = Graphics.applyMask(surfaceOriginal, mask);
+        surface = Graphics.applyMask(surfaceStretched, mask);
     }
 
     @Override
@@ -357,7 +362,7 @@ class SpriteImpl implements Sprite
                 if (firstAlpha)
                 {
                     lazySurfaceBackup();
-                    rgb[cx][cy] = surfaceOriginal.getRgb(cx, cy);
+                    rgb[cx][cy] = surfaceStretched.getRgb(cx, cy);
                 }
                 final int alphaKey = 0x00_FF_FF_FF;
                 final int mc = Math.abs(alpha) << Constant.BYTE_4 | alphaKey;
