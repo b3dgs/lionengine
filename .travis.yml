@@ -17,7 +17,6 @@ addons:
       secure: "TlhTTVsLiudrWdvXYpZ1wrl8PwTkkqh8WBpAnKE3eepekRTvqgYEMeHmDn+C5K0CaPqjy6Pc7aw4hUj/Vdp89nX6fZRnt+pI/PMTkTH2ujZY245TinhgeydV9WLVqt7OQRrQhL69bcBpFRrL8u9UxKVAindL0Ara+Z5UM3ho7SQ9WdEjE9I6IfNy0TC0po0zDc4cI+Hbz1lzLIlu1UQUV+JGbDPSOqYY2L6U7gYbGjJl2Vryi0W20kgqMHZKeaSYvGY/TmTWNN6Y41obMhytRQsAm21CBDETwtxOMWi9Wmo6loeoNKEhuo6wUZp2tTU5vSqHbOPf90Lx5XtJs3lu+wuRCiL0WHbUoR4ztXmoNvN5l71s4ccqrnub1zYEDrLdb62Y3LcbZcF7k148/gT2L/R9/4a/zOd8S5Qm1BjKdA2sgbAsk00LgciURDGTrL2FU4vrD4khXpD/PFn9PLz47jGInrHrXT3cWGIqwpV0k9f+Gd/pa/W6VUu+2b5vxmA5WJXwZJoAv+fFk8W5pCT3/tVcRAoAvUczjw10L6fJspEGOjWI1JshRcSXcdB1CAhwmW6Wg25JIuF2J6W6m9VOpF4v72HfqyTaxhsjBeHccX1hgNo2dOB7wKs6BKyQHiytorBWnTT09H8EuhaK4A+mt9gREcZ0aUtCZGWnTJkmDh8="
   apt:
     packages:
-      - libstdc++6
       - portaudio19-dev
       - libasound2-dev
       - pulseaudio
@@ -28,8 +27,8 @@ services:
 cache:
   apt: true
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
+    - '$HOME/.m2'
+    - '$HOME/.sonar'
 
 script:
   - export
