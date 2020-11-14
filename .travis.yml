@@ -1,6 +1,5 @@
 os: linux
 dist: focal
-
 language: java
 jdk: openjdk11
 
