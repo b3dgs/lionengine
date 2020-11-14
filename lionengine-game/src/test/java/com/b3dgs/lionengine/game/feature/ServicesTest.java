@@ -61,7 +61,7 @@ final class ServicesTest
     {
         final Services services = new Services();
 
-        assertCause(() -> services.create(NoConstructorService.class), IllegalAccessException.class);
+        assertCause(() -> services.create(NoConstructorService.class), NoSuchMethodException.class);
     }
 
     /**

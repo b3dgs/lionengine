@@ -25,7 +25,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,8 +38,6 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Range;
-import com.b3dgs.lionengine.UtilEnum;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -57,9 +54,6 @@ import com.b3dgs.lionengine.game.feature.UtilTransformable;
  */
 final class AttackerModelTest
 {
-    /** Hack enum. */
-    private static final UtilEnum<AttackState> HACK = new UtilEnum<>(AttackState.class, AttackerModel.class);
-
     /** Object config test. */
     private static Media config;
 
@@ -69,7 +63,6 @@ final class AttackerModelTest
     @BeforeAll
     public static void beforeTests()
     {
-        HACK.addByValue(HACK.make("FAIL"));
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         config = UtilSetup.createMedia(AttackerModelTest.class);
     }
@@ -80,7 +73,6 @@ final class AttackerModelTest
     @AfterAll
     public static void afterTests()
     {
-        HACK.restore();
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
     }
@@ -467,21 +459,5 @@ final class AttackerModelTest
         attacker.update(1.0); // 2 ticks for attack interval
 
         assertTrue(object.flag.get());
-    }
-
-    /**
-     * Test with enum fail.
-     * 
-     * @throws ReflectiveOperationException If error.
-     */
-    @Test
-    void testEnumFail() throws ReflectiveOperationException
-    {
-        final AttackerModel attacker = new AttackerModel(services, setup);
-        final Field field = attacker.getClass().getDeclaredField("state");
-        UtilReflection.setAccessible(field, true);
-        field.set(attacker, AttackState.values()[3]);
-
-        assertThrows(() -> attacker.update(1.0), "Unknown enum: FAIL");
     }
 }

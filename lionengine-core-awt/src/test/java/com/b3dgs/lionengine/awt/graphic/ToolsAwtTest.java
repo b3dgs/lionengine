@@ -37,7 +37,6 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Transparency;
@@ -115,7 +114,6 @@ final class ToolsAwtTest
     @Test
     void testTransparency()
     {
-        assertThrows(() -> ToolsAwt.getTransparency(UtilEnum.make(Transparency.class, "FAIL")), "Unknown enum: FAIL");
         assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
         assertEquals(java.awt.Transparency.BITMASK, ToolsAwt.getTransparency(Transparency.BITMASK));
         assertEquals(java.awt.Transparency.TRANSLUCENT, ToolsAwt.getTransparency(Transparency.TRANSLUCENT));

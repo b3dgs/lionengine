@@ -67,8 +67,12 @@ final class CloudsTest
         clouds.setSpeed(0, 2);
         clouds.update(1.0, 1, 2, 3.0);
 
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> clouds.setY(11, 0), "11");
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> clouds.setSpeed(11, 0), "11");
+        assertThrows(ArrayIndexOutOfBoundsException.class,
+                     () -> clouds.setY(11, 0),
+                     "Index 11 out of bounds for length 11");
+        assertThrows(ArrayIndexOutOfBoundsException.class,
+                     () -> clouds.setSpeed(11, 0),
+                     "Index 11 out of bounds for length 11");
 
         final Graphic g = Graphics.createGraphic();
         clouds.render(g);

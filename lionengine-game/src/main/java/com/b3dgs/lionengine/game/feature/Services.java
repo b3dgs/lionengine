@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -124,14 +125,14 @@ public class Services
         {
             try
             {
-                final S instance = service.newInstance();
+                final S instance = service.getConstructor().newInstance();
                 return add(instance);
             }
-            catch (final IllegalAccessException exception2)
+            catch (final IllegalAccessException | NoSuchMethodException exception2)
             {
                 throw new LionEngineException(exception2, ERROR_SERVICE_NO_CONSTRUCTOR + service);
             }
-            catch (final InstantiationException exception2)
+            catch (final InstantiationException | InvocationTargetException exception2)
             {
                 throw new LionEngineException(exception2, ERROR_SERVICE_CREATE + service);
             }

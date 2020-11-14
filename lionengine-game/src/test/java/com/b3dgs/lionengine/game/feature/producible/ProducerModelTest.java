@@ -20,10 +20,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,8 +34,6 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilEnum;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.feature.ActionsConfig;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -55,8 +51,6 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
  */
 final class ProducerModelTest
 {
-    /** Hack enum. */
-    private static final UtilEnum<ProducerState> HACK = new UtilEnum<>(ProducerState.class, ProducerModel.class);
     /** Object config test. */
     private static Media config;
 
@@ -67,7 +61,6 @@ final class ProducerModelTest
     public static void beforeTests()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        HACK.addByValue(HACK.make("FAIL"));
         config = UtilTransformable.createMedia(ProducerModelTest.class);
     }
 
@@ -79,7 +72,6 @@ final class ProducerModelTest
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
-        HACK.restore();
     }
 
     /**
@@ -521,21 +513,5 @@ final class ProducerModelTest
         producer.update(1.0);
 
         assertEquals(1, object.flag.get());
-    }
-
-    /**
-     * Test with enum fail.
-     * 
-     * @throws ReflectiveOperationException If error.
-     */
-    @Test
-    void testEnumFail() throws ReflectiveOperationException
-    {
-        final ProducerModel producer = new ProducerModel(services, setup);
-        final Field field = producer.getClass().getDeclaredField("state");
-        UtilReflection.setAccessible(field, true);
-        field.set(producer, ProducerState.values()[5]);
-
-        assertThrows(() -> producer.update(1.0), "Unknown enum: FAIL");
     }
 }

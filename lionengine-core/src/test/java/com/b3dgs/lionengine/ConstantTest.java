@@ -45,7 +45,7 @@ final class ConstantTest
         assertEquals("LionEngine", Constant.ENGINE_NAME);
         assertEquals("Pierre-Alexandre", Constant.ENGINE_AUTHOR);
         assertEquals("http://lionengine.b3dgs.com", Constant.ENGINE_WEBSITE);
-        assertEquals(Version.create(9, 0, 4), Constant.ENGINE_VERSION);
+        assertEquals(Version.create(9, 0, 5), Constant.ENGINE_VERSION);
         assertEquals("xmlns:lionengine", Constant.XML_HEADER);
         assertEquals("lionengine:", Constant.XML_PREFIX);
         assertEquals("", Constant.EMPTY_STRING);

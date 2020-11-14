@@ -21,11 +21,9 @@ import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.Xml;
 
 /**
@@ -33,19 +31,6 @@ import com.b3dgs.lionengine.Xml;
  */
 final class CollisionFunctionConfigTest
 {
-    /** Hack enum. */
-    private static final UtilEnum<CollisionFunctionType> HACK = new UtilEnum<>(CollisionFunctionType.class,
-                                                                               CollisionFunctionConfig.class);
-
-    /**
-     * Prepare test.
-     */
-    @BeforeAll
-    public static void beforeTests()
-    {
-        HACK.addByValue(HACK.make("FAIL"));
-    }
-
     /**
      * Clean up test.
      */
@@ -53,7 +38,6 @@ final class CollisionFunctionConfigTest
     public static void afterTests()
     {
         Medias.setResourcesDirectory(null);
-        HACK.restore();
     }
 
     /**
@@ -78,19 +62,6 @@ final class CollisionFunctionConfigTest
         final CollisionFunction imported = CollisionFunctionConfig.imports(root);
 
         assertEquals(function, imported);
-    }
-
-    /**
-     * Test exports imports with unknown enum.
-     */
-    @Test
-    void testFunctionUnknown()
-    {
-        final Xml root = new Xml("function");
-        root.createChild(CollisionFunctionConfig.FUNCTION)
-            .writeString(CollisionFunctionConfig.TYPE, CollisionFunctionType.values()[1].name());
-
-        assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown type: FAIL");
     }
 
     /**
@@ -128,43 +99,6 @@ final class CollisionFunctionConfigTest
         });
 
         assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "null");
-    }
-
-    /**
-     * Test export with unknown function.
-     */
-    @Test
-    void testExportFunctionUnknown()
-    {
-        final Xml root = new Xml("FAIL");
-        CollisionFunctionConfig.exports(root, new CollisionFunction()
-        {
-            @Override
-            public CollisionFunctionType getType()
-            {
-                return CollisionFunctionType.values()[1];
-            }
-
-            @Override
-            public double compute(double input)
-            {
-                return 0;
-            }
-
-            @Override
-            public int getRenderX(double input)
-            {
-                return 0;
-            }
-
-            @Override
-            public int getRenderY(double input)
-            {
-                return 0;
-            }
-        });
-
-        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "FAIL");
     }
 
     /**

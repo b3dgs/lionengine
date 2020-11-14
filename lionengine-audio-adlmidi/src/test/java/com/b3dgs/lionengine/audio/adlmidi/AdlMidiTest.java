@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.audio.adlmidi;
 
 import static com.b3dgs.lionengine.UtilAssert.assertCause;
-import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
@@ -27,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.util.Collection;
 
 import org.junit.jupiter.api.AfterEach;
@@ -39,15 +37,11 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilEnum;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.UtilTests;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
-import com.b3dgs.lionengine.audio.AudioVoidFormat;
 
 /**
  * Test {@link AdlMidiFormat} and {@link AdlMidiPlayer}.
@@ -110,31 +104,6 @@ final class AdlMidiTest
     void testNullArgument()
     {
         assertThrows(() -> AudioFactory.loadAudio(null, AdlMidi.class), "Unexpected null argument !");
-    }
-
-    /**
-     * Test with missing library.
-     * 
-     * @throws Exception If error.
-     */
-    @Test
-    void testMissingLibrary() throws Exception
-    {
-        final Field field = AdlMidiFormat.class.getDeclaredField("LIBRARY_NAME");
-        final String back = UtilReflection.getField(AdlMidiFormat.class, "LIBRARY_NAME");
-        try
-        {
-            UtilEnum.setStaticFinal(field, "void");
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-
-            assertEquals(AudioVoidFormat.class, AdlMidiFormat.getFailsafe().getClass());
-
-            Verbose.info("****************************************************************************************");
-        }
-        finally
-        {
-            UtilEnum.setStaticFinal(field, back);
-        }
     }
 
     /**

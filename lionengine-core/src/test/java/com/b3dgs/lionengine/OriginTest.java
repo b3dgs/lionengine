@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,17 +25,6 @@ import org.junit.jupiter.api.Test;
  */
 final class OriginTest
 {
-    /**
-     * Test the enum.
-     * 
-     * @throws Exception If error.
-     */
-    @Test
-    void testEnum() throws Exception
-    {
-        UtilTests.testEnum(Origin.class);
-    }
-
     /**
      * Test the origin enum switch.
      */
@@ -93,17 +81,5 @@ final class OriginTest
                     throw new LionEngineException(origin);
             }
         }
-    }
-
-    /**
-     * Test the origin enum fail.
-     */
-    @Test
-    void testEnumFail()
-    {
-        final Origin fail = UtilEnum.make(Origin.class, "FAIL");
-
-        assertThrows(() -> assertEquals(-1.0, fail.getX(0.0, 0.0)), LionEngineException.ERROR_UNKNOWN_ENUM + fail);
-        assertThrows(() -> assertEquals(-1.0, fail.getY(0.0, 0.0)), LionEngineException.ERROR_UNKNOWN_ENUM + fail);
     }
 }

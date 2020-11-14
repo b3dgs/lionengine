@@ -175,7 +175,7 @@ final class VerboseTest
             final Method method = Verbose.class.getDeclaredMethod("setFormatter", Logger.class, Formatter.class);
             UtilReflection.setAccessible(method, true);
             final Logger logger = Logger.getAnonymousLogger();
-            logger.addHandler(new ConsoleHandler());
+            UtilAssert.assertThrows(SecurityException.class, () -> logger.addHandler(new ConsoleHandler()), null);
             method.invoke(Verbose.class, logger, new Mock());
             UtilReflection.setAccessible(method, false);
         }
