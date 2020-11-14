@@ -103,7 +103,7 @@ public final class AdlMidiFormat implements AudioFormat
         try
         {
             Verbose.info("Load library: ", LIBRARY_NAME);
-            final AdlMidiBinding binding = Native.loadLibrary(LIBRARY_NAME, AdlMidiBinding.class);
+            final AdlMidiBinding binding = Native.load(LIBRARY_NAME, AdlMidiBinding.class);
             Verbose.info("Library ", LIBRARY_NAME, " loaded");
             return binding;
         }

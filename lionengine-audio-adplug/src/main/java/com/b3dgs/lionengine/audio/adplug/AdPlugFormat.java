@@ -76,7 +76,7 @@ public final class AdPlugFormat implements AudioFormat
         Verbose.info("Load library: ", LIBRARY_NAME);
         try
         {
-            final AdPlugBinding binding = Native.loadLibrary(LIBRARY_NAME, AdPlugBinding.class);
+            final AdPlugBinding binding = Native.load(LIBRARY_NAME, AdPlugBinding.class);
             Verbose.info("Library ", LIBRARY_NAME, " loaded");
             return binding;
         }
