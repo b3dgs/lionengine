@@ -4,11 +4,11 @@
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.1.6</version>
+        <version>1.1.7-SNAPSHOT</version>
     </parent>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
-    <version>9.0.4</version>
+    <version>9.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
@@ -37,7 +37,7 @@
     </ciManagement>
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
-        <sonar-branch>lionengine-9.0.4</sonar-branch>
+        <sonar-branch>lionengine-9.0.5</sonar-branch>
     </properties>
     <build>
         <plugins>
