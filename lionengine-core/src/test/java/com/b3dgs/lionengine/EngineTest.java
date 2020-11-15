@@ -59,7 +59,7 @@ final class EngineTest
     @Test
     void testNotStartedGetProgramName()
     {
-        assertThrows(() -> Engine.getProgramName(), Engine.ERROR_STARTED_NOT);
+        assertThrows(Engine::getProgramName, Engine.ERROR_STARTED_NOT);
     }
 
     /**
@@ -68,7 +68,7 @@ final class EngineTest
     @Test
     void testNotStartedGetProgramVersion()
     {
-        assertThrows(() -> Engine.getProgramVersion(), Engine.ERROR_STARTED_NOT);
+        assertThrows(Engine::getProgramVersion, Engine.ERROR_STARTED_NOT);
     }
 
     /**

@@ -147,7 +147,7 @@ final class IdentifiableModelTest
 
         try
         {
-            assertThrows(() -> new IdentifiableModel(), IdentifiableModel.ERROR_FREE_ID);
+            assertThrows(IdentifiableModel::new, IdentifiableModel.ERROR_FREE_ID);
         }
         finally
         {

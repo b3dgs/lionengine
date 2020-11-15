@@ -158,7 +158,7 @@ final class StateHandlerTest
         final StateHandler handler;
         handler = featurable.addFeatureAndGet(new StateHandler(services,
                                                                new Setup(Medias.create("Object.xml")),
-                                                               state -> state.getName()));
+                                                               Class::getName));
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
 
@@ -332,10 +332,7 @@ final class StateHandlerTest
     void testAddTransitionItself()
     {
         final StateMock mock = new StateMock();
-        assertThrows(() -> mock.addTransition(StateMock.class, () ->
-        {
-            return true;
-        }), StateAbstract.ERROR_ADD_ITSELF);
+        assertThrows(() -> mock.addTransition(StateMock.class, () -> true), StateAbstract.ERROR_ADD_ITSELF);
     }
 
     private static class StateMock extends StateAbstract

@@ -120,7 +120,7 @@ final class DocumentFactoryTest
         try
         {
             Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            assertCause(() -> DocumentFactory.createDocument(), ParserConfigurationException.class);
+            assertCause(DocumentFactory::createDocument, ParserConfigurationException.class);
             Verbose.info("****************************************************************************************");
         }
         finally

@@ -250,7 +250,7 @@ final class FeaturableModelTest
      * Mock feature.
      */
     @FeatureInterface
-    private static interface MyFeatureInterface extends Feature
+    private interface MyFeatureInterface extends Feature
     {
         // Mock
     }

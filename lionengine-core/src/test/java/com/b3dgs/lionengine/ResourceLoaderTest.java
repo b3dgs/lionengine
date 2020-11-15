@@ -200,7 +200,7 @@ final class ResourceLoaderTest
     /**
      * Test type.
      */
-    private static enum Type
+    private enum Type
     {
         /** Test type. */
         TEST;

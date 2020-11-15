@@ -184,7 +184,7 @@ final class AudioFactoryTest
     /**
      * Mock audio
      */
-    private static interface MyAudio extends Audio
+    private interface MyAudio extends Audio
     {
         // Mock
     }

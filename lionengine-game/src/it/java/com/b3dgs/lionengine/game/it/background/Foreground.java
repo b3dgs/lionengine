@@ -101,7 +101,7 @@ final class Foreground extends BackgroundAbstract
      * @param width The new width.
      * @param height The new height.
      */
-    public final void setScreenSize(int width, int height)
+    public void setScreenSize(int width, int height)
     {
         screenWidth = width;
         screenHeight = height;

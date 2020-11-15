@@ -274,16 +274,9 @@ public class PathfindableModel extends FeatureModel implements Pathfindable, Rec
             pathStoppedRequested = true;
         }
         final Collection<Integer> cid = mapPath.getObjectsId(path.getX(nextStep), path.getY(nextStep));
-        if (sharedPathIds.containsAll(cid))
+        if (sharedPathIds.containsAll(cid) || !ignoredIds.containsAll(cid))
         {
             setDestination(destX, destY);
-        }
-        else
-        {
-            if (!ignoredIds.containsAll(cid))
-            {
-                setDestination(destX, destY);
-            }
         }
     }
 

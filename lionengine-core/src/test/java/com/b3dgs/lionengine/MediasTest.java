@@ -187,7 +187,7 @@ final class MediasTest
     {
         Medias.setLoadFromJar(null);
 
-        assertThrows(() -> Medias.getJarResources(), Medias.JAR_LOADER_ERROR);
+        assertThrows(Medias::getJarResources, Medias.JAR_LOADER_ERROR);
     }
 
     /**
@@ -219,7 +219,7 @@ final class MediasTest
     {
         Medias.setLoadFromJar(null);
 
-        assertThrows(() -> Medias.getJarResourcesPrefix(), Medias.JAR_LOADER_ERROR);
+        assertThrows(Medias::getJarResourcesPrefix, Medias.JAR_LOADER_ERROR);
     }
 
     /**

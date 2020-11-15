@@ -165,7 +165,7 @@ final class FeaturesTest
      * Mock feature.
      */
     @FeatureInterface
-    private static interface FeatureLevel1 extends Refreshable
+    private interface FeatureLevel1 extends Refreshable
     {
         // Mock
     }
@@ -174,7 +174,7 @@ final class FeaturesTest
      * Mock feature.
      */
     @FeatureInterface
-    private static interface FeatureLevel2 extends Feature
+    private interface FeatureLevel2 extends Feature
     {
         // Mock
     }
