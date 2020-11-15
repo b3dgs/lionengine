@@ -55,7 +55,7 @@ public abstract class CloudsAbstract implements BackgroundComponent
      * @param decY The vertical offset.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    public CloudsAbstract(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
+    protected CloudsAbstract(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
     {
         super();
 

@@ -70,7 +70,7 @@ public abstract class FeaturableAbstract implements Featurable
     /**
      * Create featurable.
      */
-    public FeaturableAbstract()
+    protected FeaturableAbstract()
     {
         super();
 

@@ -84,7 +84,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
      * 
      * @param services The services reference.
      */
-    public WorldGame(Services services)
+    protected WorldGame(Services services)
     {
         super();
 

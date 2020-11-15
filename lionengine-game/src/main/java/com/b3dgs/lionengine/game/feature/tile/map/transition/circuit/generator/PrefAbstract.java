@@ -31,7 +31,7 @@ public abstract class PrefAbstract implements Preference
      * 
      * @param priority The priority value (must be superior or equal to 0).
      */
-    public PrefAbstract(int priority)
+    protected PrefAbstract(int priority)
     {
         super();
 

@@ -33,7 +33,7 @@ public abstract class NameableAbstract implements Nameable
      * @param name The object name (must not be <code>null</code>).
      * @throws LionEngineException If name is <code>null</code>.
      */
-    public NameableAbstract(String name)
+    protected NameableAbstract(String name)
     {
         super();
 

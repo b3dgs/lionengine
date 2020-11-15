@@ -96,7 +96,7 @@ public abstract class BackgroundAbstract implements Background
      * @param min The minimal y value for background.
      * @param max The maximal y value for background.
      */
-    public BackgroundAbstract(String theme, int min, int max)
+    protected BackgroundAbstract(String theme, int min, int max)
     {
         super();
 
