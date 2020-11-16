@@ -157,7 +157,6 @@ public class HandlerPersister implements Persistable
     public void load(FileReading reading) throws IOException
     {
         handler.removeAll();
-        handler.update(1.0);
 
         final int count = reading.readInteger();
         for (int i = 0; i < count; i++)
