@@ -84,11 +84,11 @@ final class UtilLaunchable
                                                                        1,
                                                                        2,
                                                                        new Force(1.0, 2.0));
-        final LauncherConfig launcherConfig = new LauncherConfig(0, 10, Arrays.asList(launchableConfig));
+        final LauncherConfig launcherConfig = new LauncherConfig(0, 10, false, Arrays.asList(launchableConfig));
 
         final Xml root = new Xml("test");
         root.add(LauncherConfig.exports(launcherConfig));
-        root.add(LauncherConfig.exports(new LauncherConfig(1, 50, Arrays.asList(launchableConfig))));
+        root.add(LauncherConfig.exports(new LauncherConfig(1, 50, false, Arrays.asList(launchableConfig))));
         root.save(media);
 
         return media;

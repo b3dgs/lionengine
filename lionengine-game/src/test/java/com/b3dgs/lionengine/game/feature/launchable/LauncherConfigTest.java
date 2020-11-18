@@ -66,7 +66,7 @@ final class LauncherConfigTest
     void testData()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(1, 2, Arrays.asList(launchable));
+        final LauncherConfig launcher = new LauncherConfig(1, 2, true, Arrays.asList(launchable));
 
         assertEquals("media", launchable.getMedia());
         assertEquals(10, launchable.getDelay());
@@ -76,6 +76,7 @@ final class LauncherConfigTest
 
         assertEquals(1, launcher.getLevel());
         assertEquals(2, launcher.getRate());
+        assertTrue(launcher.getMirrorable());
     }
 
     /**
@@ -85,7 +86,7 @@ final class LauncherConfigTest
     void testExportsImports()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(10, 10, Arrays.asList(launchable));
+        final LauncherConfig launcher = new LauncherConfig(10, 10, true, Arrays.asList(launchable));
 
         final Xml root = new Xml("test");
         root.add(LauncherConfig.exports(launcher));
@@ -106,15 +107,18 @@ final class LauncherConfigTest
     void testEquals()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
+        final LauncherConfig launcher = new LauncherConfig(0, 1, false, Arrays.asList(launchable));
 
         assertEquals(launcher, launcher);
 
         assertNotEquals(launcher, null);
         assertNotEquals(launcher, new Object());
-        assertNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
-        assertNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
-        assertNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
+        assertNotEquals(launcher, new LauncherConfig(0, 0, false, Arrays.asList(launchable)));
+        assertNotEquals(launcher, new LauncherConfig(0, 1, false, new ArrayList<LaunchableConfig>()));
+        assertNotEquals(launcher, new LauncherConfig(1, 0, false, Arrays.asList(launchable)));
+        assertNotEquals(launcher, new LauncherConfig(0, 0, true, Arrays.asList(launchable)));
+        assertNotEquals(launcher, new LauncherConfig(0, 1, true, new ArrayList<LaunchableConfig>()));
+        assertNotEquals(launcher, new LauncherConfig(1, 0, true, Arrays.asList(launchable)));
     }
 
     /**
@@ -124,14 +128,18 @@ final class LauncherConfigTest
     void testHashCode()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable));
+        final LauncherConfig launcher = new LauncherConfig(0, 1, false, Arrays.asList(launchable));
 
         assertHashEquals(launcher, launcher);
-        assertHashEquals(launcher, new LauncherConfig(0, 1, Arrays.asList(launchable)));
+        assertHashEquals(launcher, new LauncherConfig(0, 1, false, Arrays.asList(launchable)));
 
-        assertHashNotEquals(launcher, new LauncherConfig(0, 0, Arrays.asList(launchable)));
-        assertHashNotEquals(launcher, new LauncherConfig(0, 1, new ArrayList<LaunchableConfig>()));
-        assertHashNotEquals(launcher, new LauncherConfig(1, 0, Arrays.asList(launchable)));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 0, false, Arrays.asList(launchable)));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, false, new ArrayList<LaunchableConfig>()));
+        assertHashNotEquals(launcher, new LauncherConfig(1, 0, false, Arrays.asList(launchable)));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, true, Arrays.asList(launchable)));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 0, true, Arrays.asList(launchable)));
+        assertHashNotEquals(launcher, new LauncherConfig(0, 1, true, new ArrayList<LaunchableConfig>()));
+        assertHashNotEquals(launcher, new LauncherConfig(1, 0, true, Arrays.asList(launchable)));
     }
 
     /**
@@ -141,9 +149,9 @@ final class LauncherConfigTest
     void testToString()
     {
         final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
-        final LauncherConfig launcher = new LauncherConfig(0, 1, Arrays.asList(launchable, launchable));
+        final LauncherConfig launcher = new LauncherConfig(0, 1, true, Arrays.asList(launchable, launchable));
 
-        assertEquals("LauncherConfig [level=0, rate=1, launchables="
+        assertEquals("LauncherConfig [level=0, rate=1, mirrorable=true, launchables="
                      + System.lineSeparator()
                      + Constant.TAB
                      + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="

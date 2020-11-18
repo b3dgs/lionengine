@@ -165,6 +165,7 @@
         </xsd:sequence>
         <xsd:attribute name="level" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="rate" type="xsd:int" use="optional"></xsd:attribute>
+        <xsd:attribute name="mirrorable" type="xsd:boolean" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="extractable">
         <xsd:attribute name="type" type="xsd:string" use="optional"></xsd:attribute>

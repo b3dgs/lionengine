@@ -42,8 +42,10 @@ public final class LauncherConfig
     public static final String ATT_LEVEL = "level";
     /** Rate attribute name. */
     public static final String ATT_RATE = "rate";
+    /** Mirrorable attribute name. */
+    public static final String ATT_MIRRORABLE = "mirrorable";
     /** Minimum to string length. */
-    private static final int MIN_LENGTH = 48;
+    private static final int MIN_LENGTH = 66;
 
     /**
      * Import the launcher data from configurer.
@@ -90,8 +92,9 @@ public final class LauncherConfig
 
         final int level = node.readInteger(0, ATT_LEVEL);
         final int rate = node.readInteger(0, ATT_RATE);
+        final boolean mirrorable = node.readBoolean(false, ATT_MIRRORABLE);
 
-        return new LauncherConfig(level, rate, launchables);
+        return new LauncherConfig(level, rate, mirrorable, launchables);
     }
 
     /**
@@ -108,6 +111,7 @@ public final class LauncherConfig
         final Xml node = new Xml(NODE_LAUNCHER);
         node.writeInteger(ATT_LEVEL, config.getLevel());
         node.writeInteger(ATT_RATE, config.getRate());
+        node.writeBoolean(ATT_MIRRORABLE, config.getMirrorable());
 
         for (final LaunchableConfig launchable : config.getLaunchables())
         {
@@ -121,6 +125,8 @@ public final class LauncherConfig
     private final int level;
     /** The rate value. */
     private final int rate;
+    /** The mirrorable flag. */
+    private final boolean mirrorable;
     /** The launchable configurations. */
     private final Collection<LaunchableConfig> launchables;
 
@@ -129,15 +135,17 @@ public final class LauncherConfig
      * 
      * @param level The associated level.
      * @param rate The rate value.
+     * @param mirrorable The mirrorable flag.
      * @param launchables The launchables reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid argument.
      */
-    public LauncherConfig(int level, int rate, Collection<LaunchableConfig> launchables)
+    public LauncherConfig(int level, int rate, boolean mirrorable, Collection<LaunchableConfig> launchables)
     {
         super();
 
         this.level = level;
         this.rate = rate;
+        this.mirrorable = mirrorable;
         this.launchables = new ArrayList<>(launchables);
     }
 
@@ -162,6 +170,16 @@ public final class LauncherConfig
     }
 
     /**
+     * Get the mirrorable flag.
+     * 
+     * @return <code>true</code> if apply mirror on fire if present, <code>false</code> else.
+     */
+    public boolean getMirrorable()
+    {
+        return mirrorable;
+    }
+
+    /**
      * Get the launchables configuration as read only.
      * 
      * @return The launchables configuration.
@@ -182,6 +200,7 @@ public final class LauncherConfig
         int result = 1;
         result = prime * result + level;
         result = prime * result + rate;
+        result = prime * result + (mirrorable ? 1 : 0);
         result = prime * result + launchables.hashCode();
         return result;
     }
@@ -200,6 +219,7 @@ public final class LauncherConfig
         final LauncherConfig other = (LauncherConfig) object;
         return level == other.level
                && rate == other.rate
+               && mirrorable == other.mirrorable
                && Arrays.equals(launchables.toArray(), other.launchables.toArray());
     }
 
@@ -223,6 +243,8 @@ public final class LauncherConfig
                                             .append(level)
                                             .append(", rate=")
                                             .append(rate)
+                                            .append(", mirrorable=")
+                                            .append(mirrorable)
                                             .append(", launchables=")
                                             .append(System.lineSeparator())
                                             .append(Constant.TAB)

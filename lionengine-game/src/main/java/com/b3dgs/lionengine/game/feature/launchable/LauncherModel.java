@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.ListenableModel;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Direction;
@@ -39,6 +40,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -71,10 +73,14 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private Localizable localizable;
     /** Target reference. */
     private Localizable target;
+    /** Mirrorable reference. */
+    private Mirrorable mirrorable;
     /** Current level. */
     private int level;
     /** Fire rate in tick. */
     private long rate;
+    /** Mirrorable flag. */
+    private boolean mirror;
     /** Horizontal offset. */
     private int offsetX;
     /** Vertical offset. */
@@ -124,6 +130,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         {
             launchables = config.get(0).getLaunchables();
             rate = config.get(0).getRate();
+            mirror = config.get(0).getMirrorable();
         }
     }
 
@@ -201,7 +208,20 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         {
             return computeVector(vector, target);
         }
-        vector.setDestination(vector.getDirectionHorizontal(), vector.getDirectionVertical());
+        int sideX = 1;
+        int sideY = 1;
+        if (mirror && mirrorable != null)
+        {
+            if (mirrorable.is(Mirror.HORIZONTAL))
+            {
+                sideX = -1;
+            }
+            else if (mirrorable.is(Mirror.VERTICAL))
+            {
+                sideY = -1;
+            }
+        }
+        vector.setDestination(vector.getDirectionHorizontal() * sideX, vector.getDirectionVertical() * sideY);
         return vector;
     }
 
@@ -252,6 +272,10 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         super.prepare(provider);
 
         localizable = provider.getFeature(Transformable.class);
+        if (mirror && provider.hasFeature(Mirrorable.class))
+        {
+            mirrorable = provider.getFeature(Mirrorable.class);
+        }
 
         if (provider instanceof LauncherListener)
         {
