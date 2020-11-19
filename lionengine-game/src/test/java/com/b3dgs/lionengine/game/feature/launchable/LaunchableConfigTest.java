@@ -61,7 +61,7 @@ final class LaunchableConfigTest
     @Test
     void testExportsImports()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
 
         final Xml root = new Xml("test");
         root.add(LaunchableConfig.exports(launchable));
@@ -80,7 +80,7 @@ final class LaunchableConfigTest
     @Test
     void testNullMedia()
     {
-        assertThrows(() -> new LaunchableConfig(null, 0, 1, 2, new Force()), "Unexpected null argument !");
+        assertThrows(() -> new LaunchableConfig(null, null, 0, 1, 2, new Force()), "Unexpected null argument !");
     }
 
     /**
@@ -89,7 +89,7 @@ final class LaunchableConfigTest
     @Test
     void testNullForce()
     {
-        assertThrows(() -> new LaunchableConfig("media", 0, 1, 2, null), "Unexpected null argument !");
+        assertThrows(() -> new LaunchableConfig("media", null, 0, 1, 2, null), "Unexpected null argument !");
     }
 
     /**
@@ -98,17 +98,18 @@ final class LaunchableConfigTest
     @Test
     void testEquals()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
 
         assertEquals(launchable, launchable);
 
         assertNotEquals(launchable, null);
         assertNotEquals(launchable, new Object());
-        assertNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)));
-        assertNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)));
-        assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)));
-        assertNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)));
-        assertNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("", "sfx", 10, 1, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", "", 10, 1, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", "sfx", 0, 1, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(2.0, 1.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", "sfx", 10, 0, 2, new Force(1.0, 2.0)));
+        assertNotEquals(launchable, new LaunchableConfig("media", "sfx", 10, 1, 0, new Force(1.0, 2.0)));
     }
 
     /**
@@ -117,16 +118,17 @@ final class LaunchableConfigTest
     @Test
     void testHashCode()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
 
         assertHashEquals(launchable, launchable);
-        assertHashEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0)));
+        assertHashEquals(launchable, new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0)));
 
-        assertHashNotEquals(launchable, new LaunchableConfig("", 10, 1, 2, new Force(1.0, 2.0)));
-        assertHashNotEquals(launchable, new LaunchableConfig("media", 0, 1, 2, new Force(1.0, 2.0)));
-        assertHashNotEquals(launchable, new LaunchableConfig("media", 10, 1, 2, new Force(2.0, 1.0)));
-        assertHashNotEquals(launchable, new LaunchableConfig("media", 10, 0, 2, new Force(1.0, 2.0)));
-        assertHashNotEquals(launchable, new LaunchableConfig("media", 10, 1, 0, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("", "sfx", 10, 1, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", "", 10, 1, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", "sfx", 0, 1, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(2.0, 1.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", "sfx", 10, 0, 2, new Force(1.0, 2.0)));
+        assertHashNotEquals(launchable, new LaunchableConfig("media", "sfx", 10, 1, 0, new Force(1.0, 2.0)));
     }
 
     /**
@@ -135,9 +137,9 @@ final class LaunchableConfigTest
     @Test
     void testToString()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
 
-        assertEquals("LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
+        assertEquals("LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="
                      + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]",
                      launchable.toString());
     }

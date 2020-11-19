@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.game.feature.launchable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -31,6 +33,8 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.audio.Audio;
+import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -59,6 +63,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     private final Collection<DelayedLaunch> delayed = new ArrayList<>();
     /** Delayed launches launched. */
     private final Collection<DelayedLaunch> launched = new ArrayList<>();
+    /** Cached audio. */
+    private final Map<String, Audio> audio = new HashMap<>();
     /** Fire tick. */
     private final Tick fire = new Tick();
     /** Levels configuration. */
@@ -189,6 +195,8 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         launchable.setVector(computeVector(vector));
         launchable.launch();
 
+        config.getSfx().ifPresent(this::audioCacheAndPlay);
+
         for (final LaunchableListener listener : listenersLaunchable)
         {
             listener.notifyFired(launchable);
@@ -260,6 +268,22 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         force.setDestination(vecX, vecY);
 
         return force;
+    }
+
+    /**
+     * Cache audio if new and play it.
+     * 
+     * @param sfx The audio to play.
+     */
+    private void audioCacheAndPlay(String sfx)
+    {
+        Audio sound = audio.get(sfx);
+        if (sound == null)
+        {
+            sound = AudioFactory.loadAudio(Medias.create(sfx));
+            audio.put(sfx, sound);
+        }
+        sound.play();
     }
 
     /*

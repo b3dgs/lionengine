@@ -80,6 +80,7 @@ final class UtilLaunchable
     {
         final Media media = Medias.create("launcher.xml");
         final LaunchableConfig launchableConfig = new LaunchableConfig(launchableMedia.getPath(),
+                                                                       null,
                                                                        delay,
                                                                        1,
                                                                        2,

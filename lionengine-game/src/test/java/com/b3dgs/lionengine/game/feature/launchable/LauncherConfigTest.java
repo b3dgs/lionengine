@@ -65,10 +65,11 @@ final class LauncherConfigTest
     @Test
     void testData()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(1, 2, true, Arrays.asList(launchable));
 
         assertEquals("media", launchable.getMedia());
+        assertEquals("sfx", launchable.getSfx().get());
         assertEquals(10, launchable.getDelay());
         assertEquals(1, launchable.getOffsetX());
         assertEquals(2, launchable.getOffsetY());
@@ -85,7 +86,7 @@ final class LauncherConfigTest
     @Test
     void testExportsImports()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(10, 10, true, Arrays.asList(launchable));
 
         final Xml root = new Xml("test");
@@ -106,7 +107,7 @@ final class LauncherConfigTest
     @Test
     void testEquals()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, false, Arrays.asList(launchable));
 
         assertEquals(launcher, launcher);
@@ -127,7 +128,7 @@ final class LauncherConfigTest
     @Test
     void testHashCode()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, false, Arrays.asList(launchable));
 
         assertHashEquals(launcher, launcher);
@@ -148,17 +149,17 @@ final class LauncherConfigTest
     @Test
     void testToString()
     {
-        final LaunchableConfig launchable = new LaunchableConfig("media", 10, 1, 2, new Force(1.0, 2.0));
+        final LaunchableConfig launchable = new LaunchableConfig("media", "sfx", 10, 1, 2, new Force(1.0, 2.0));
         final LauncherConfig launcher = new LauncherConfig(0, 1, true, Arrays.asList(launchable, launchable));
 
         assertEquals("LauncherConfig [level=0, rate=1, mirrorable=true, launchables="
                      + System.lineSeparator()
                      + Constant.TAB
-                     + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
+                     + "LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="
                      + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]"
                      + System.lineSeparator()
                      + Constant.TAB
-                     + "LaunchableConfig [media=media, delay=10, ox=1, oy=2, vector="
+                     + "LaunchableConfig [media=media, sfx=sfx, delay=10, ox=1, oy=2, vector="
                      + "Force [fh=1.0, fv=2.0, velocity=0.0, sensibility=0.0]]]",
                      launcher.toString());
     }

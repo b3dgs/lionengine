@@ -155,6 +155,7 @@
             <xsd:element name="force" type="lionengine:force" maxOccurs="1" minOccurs="1"></xsd:element>
         </xsd:sequence>
         <xsd:attribute name="media" type="xsd:string" use="required"></xsd:attribute>
+        <xsd:attribute name="sfx" type="xsd:string" use="optional"></xsd:attribute>
         <xsd:attribute name="delay" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="ox" type="xsd:int" use="optional"></xsd:attribute>
         <xsd:attribute name="oy" type="xsd:int" use="optional"></xsd:attribute>

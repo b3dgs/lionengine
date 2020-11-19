@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
+import java.util.Optional;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -35,6 +37,8 @@ public final class LaunchableConfig
     public static final String NODE_LAUNCHABLE = Constant.XML_PREFIX + "launchable";
     /** Media attribute. */
     public static final String ATT_MEDIA = "media";
+    /** Sfx attribute. */
+    public static final String ATT_SFX = "sfx";
     /** Rate attribute. */
     public static final String ATT_DELAY = "delay";
     /** Horizontal offset attribute. */
@@ -42,7 +46,7 @@ public final class LaunchableConfig
     /** Vertical offset attribute. */
     public static final String ATT_OFFSET_Y = "oy";
     /** Minimum to string length. */
-    private static final int MIN_LENGTH = 57;
+    private static final int MIN_LENGTH = 65;
 
     /**
      * Import the launchable data from node.
@@ -56,11 +60,12 @@ public final class LaunchableConfig
         Check.notNull(node);
 
         final String media = node.readString(ATT_MEDIA);
+        final String sfx = node.readString(null, ATT_SFX);
         final int delay = node.readInteger(0, ATT_DELAY);
         final int ox = node.readInteger(0, ATT_OFFSET_X);
         final int oy = node.readInteger(0, ATT_OFFSET_Y);
 
-        return new LaunchableConfig(media, delay, ox, oy, ForceConfig.imports(node));
+        return new LaunchableConfig(media, sfx, delay, ox, oy, ForceConfig.imports(node));
     }
 
     /**
@@ -76,6 +81,7 @@ public final class LaunchableConfig
 
         final Xml node = new Xml(NODE_LAUNCHABLE);
         node.writeString(ATT_MEDIA, config.getMedia());
+        config.getSfx().ifPresent(sfx -> node.writeString(ATT_SFX, sfx));
         node.writeInteger(ATT_DELAY, config.getDelay());
         node.writeInteger(ATT_OFFSET_X, config.getOffsetX());
         node.writeInteger(ATT_OFFSET_Y, config.getOffsetY());
@@ -86,6 +92,8 @@ public final class LaunchableConfig
 
     /** The media value. */
     private final String media;
+    /** The sfx value. */
+    private final Optional<String> sfx;
     /** The delay value. */
     private final int delay;
     /** The horizontal offset. */
@@ -99,13 +107,14 @@ public final class LaunchableConfig
      * Constructor.
      * 
      * @param media The media value (must not be <code>null</code>).
+     * @param sfx The sfx value (can be <code>null</code>).
      * @param delay The delay value.
      * @param ox The horizontal offset.
      * @param oy The vertical offset.
      * @param vector The vector force (must not be <code>null</code>).
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public LaunchableConfig(String media, int delay, int ox, int oy, Force vector)
+    public LaunchableConfig(String media, String sfx, int delay, int ox, int oy, Force vector)
     {
         super();
 
@@ -113,6 +122,7 @@ public final class LaunchableConfig
         Check.notNull(vector);
 
         this.media = media;
+        this.sfx = Optional.ofNullable(sfx);
         this.delay = delay;
         this.ox = ox;
         this.oy = oy;
@@ -127,6 +137,16 @@ public final class LaunchableConfig
     public String getMedia()
     {
         return media;
+    }
+
+    /**
+     * Get the sfx.
+     * 
+     * @return The launchable sfx.
+     */
+    public Optional<String> getSfx()
+    {
+        return sfx;
     }
 
     /**
@@ -179,6 +199,7 @@ public final class LaunchableConfig
         final int prime = 31;
         int result = 1;
         result = prime * result + media.hashCode();
+        result = prime * result + sfx.hashCode();
         result = prime * result + delay;
         result = prime * result + ox;
         result = prime * result + oy;
@@ -202,6 +223,7 @@ public final class LaunchableConfig
                && oy == other.oy
                && delay == other.delay
                && media.equals(other.media)
+               && sfx.equals(other.sfx)
                && vector.equals(other.vector);
     }
 
@@ -211,6 +233,8 @@ public final class LaunchableConfig
         return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
                                             .append(" [media=")
                                             .append(media)
+                                            .append(", sfx=")
+                                            .append(sfx.orElse(null))
                                             .append(", delay=")
                                             .append(delay)
                                             .append(", ox=")
