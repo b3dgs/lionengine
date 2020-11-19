@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.awt.graphic;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -111,5 +112,26 @@ final class TextAwtTest
     {
         final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.ITALIC);
         text.draw(g, 0, 0, VALUE);
+    }
+
+    /**
+     * Test style error.
+     */
+    @Test
+    void testStyleUnknown()
+    {
+        assertThrows(() -> new TextAwt(Constant.EMPTY_STRING, 10, TextStyle.values()[3]), "Unknown enum: FAIL");
+    }
+
+    /**
+     * Test align unknown.
+     */
+    @Test
+    void testAlignUnknown()
+    {
+        final Text text = Graphics.createText(Constant.FONT_DIALOG, 12, TextStyle.NORMAL);
+        final Graphic g = Graphics.createGraphic();
+        g.setGraphic(ToolsAwt.createImage(1, 1, java.awt.Transparency.OPAQUE).createGraphics());
+        assertThrows(() -> text.draw(g, 0, 0, Align.values()[3], Constant.EMPTY_STRING), "Unknown enum: FAIL");
     }
 }

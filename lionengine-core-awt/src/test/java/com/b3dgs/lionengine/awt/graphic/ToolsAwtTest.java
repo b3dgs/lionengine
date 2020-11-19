@@ -114,6 +114,7 @@ final class ToolsAwtTest
     @Test
     void testTransparency()
     {
+        assertThrows(() -> ToolsAwt.getTransparency(Transparency.values()[3]), "Unknown enum: FAIL");
         assertEquals(java.awt.Transparency.OPAQUE, ToolsAwt.getTransparency(Transparency.OPAQUE));
         assertEquals(java.awt.Transparency.BITMASK, ToolsAwt.getTransparency(Transparency.BITMASK));
         assertEquals(java.awt.Transparency.TRANSLUCENT, ToolsAwt.getTransparency(Transparency.TRANSLUCENT));

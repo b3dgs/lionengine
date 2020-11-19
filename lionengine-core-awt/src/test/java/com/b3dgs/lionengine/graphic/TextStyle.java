@@ -14,16 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.tile.map.collision;
+package com.b3dgs.lionengine.graphic;
 
 /**
- * List of supported collision function types.
- * 
- * @see CollisionFunction
+ * List of text style types.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
-// lionengine-game/src/test/java/com/b3dgs/lionengine/game/feature/tile/map/collision/CollisionFunctionType.java
-public enum CollisionFunctionType
+public enum TextStyle
 {
-    /** Linear computation. */
-    LINEAR;
+    /** Normal text. */
+    NORMAL,
+    /** Italic text. */
+    ITALIC,
+    /** Bold text. */
+    BOLD,
+    /** Fail mock (for tests only). */
+    FAIL;
 }

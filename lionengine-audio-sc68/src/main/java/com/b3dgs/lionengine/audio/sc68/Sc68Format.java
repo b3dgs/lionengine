@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
@@ -37,23 +38,16 @@ public final class Sc68Format implements AudioFormat
     /** Sc68 format. */
     private static final String SC68 = "sc68";
     /** Standard library name. */
-    private static final String LIBRARY_NAME;
+    private static final String LIBRARY_NAME = SC68;
     /** Audio extensions as read only. */
     private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList(SC68));
-
-    /**
-     * Specific case to not inline for test purpose.
-     */
-    static
-    {
-        LIBRARY_NAME = SC68;
-    }
 
     /**
      * Get the library, or void format if not found.
      * 
      * @return The audio format.
      */
+    @Generated
     public static AudioFormat getFailsafe()
     {
         try
@@ -73,19 +67,30 @@ public final class Sc68Format implements AudioFormat
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
+    @Generated
     private static Sc68Binding loadLibrary()
     {
         try
         {
-            Verbose.info("Load library: ", LIBRARY_NAME);
-            final Sc68Binding binding = Native.load(LIBRARY_NAME, Sc68Binding.class);
-            Verbose.info("Library ", LIBRARY_NAME, " loaded");
-            return binding;
+            return getLibrary();
         }
         catch (final LinkageError exception)
         {
             throw new LionEngineException(exception, ERROR_LOAD_LIBRARY + LIBRARY_NAME);
         }
+    }
+
+    /**
+     * Load the library.
+     * 
+     * @return The library binding.
+     */
+    private static Sc68Binding getLibrary()
+    {
+        Verbose.info("Load library: ", LIBRARY_NAME);
+        final Sc68Binding binding = Native.load(LIBRARY_NAME, Sc68Binding.class);
+        Verbose.info("Library ", LIBRARY_NAME, " loaded");
+        return binding;
     }
 
     /** Sc68 binding. */

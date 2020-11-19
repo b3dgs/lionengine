@@ -14,16 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.tile.map.collision;
+package com.b3dgs.lionengine;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * List of supported collision function types.
- * 
- * @see CollisionFunction
+ * Used to ignore test coverage on method.
  */
-// lionengine-game/src/test/java/com/b3dgs/lionengine/game/feature/tile/map/collision/CollisionFunctionType.java
-public enum CollisionFunctionType
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Generated
 {
-    /** Linear computation. */
-    LINEAR;
+    // Nothing
 }

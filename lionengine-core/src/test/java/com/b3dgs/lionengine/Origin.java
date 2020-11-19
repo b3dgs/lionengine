@@ -36,7 +36,9 @@ public enum Origin
     /** Center bottom origin point. */
     CENTER_TOP,
     /** Center bottom origin point. */
-    CENTER_BOTTOM;
+    CENTER_BOTTOM,
+    /** Fail mock (for tests only). */
+    FAIL;
 
     /**
      * Get the x relative to origin.

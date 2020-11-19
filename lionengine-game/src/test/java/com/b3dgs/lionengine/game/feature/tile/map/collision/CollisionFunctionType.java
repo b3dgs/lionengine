@@ -25,5 +25,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 public enum CollisionFunctionType
 {
     /** Linear computation. */
-    LINEAR;
+    LINEAR,
+    /** Fail mock (for tests only). */
+    FAIL;
 }

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
@@ -35,7 +36,7 @@ public final class AdlMidiFormat implements AudioFormat
     /** Load library error. */
     public static final String ERROR_LOAD_LIBRARY = "Error on loading Library: ";
     /** Standard library name. */
-    private static final String LIBRARY_NAME;
+    private static final String LIBRARY_NAME = "adlmidi";
     /** Audio extensions as read only. */
     private static final Collection<String> FORMATS = Collections.unmodifiableCollection(Arrays.asList("xmi",
                                                                                                        "midi",
@@ -47,18 +48,11 @@ public final class AdlMidiFormat implements AudioFormat
     private static Integer bank;
 
     /**
-     * Specific case to not inline for test purpose.
-     */
-    static
-    {
-        LIBRARY_NAME = "adlmidi";
-    }
-
-    /**
      * Get the library, or void format if not found.
      * 
      * @return The audio format.
      */
+    @Generated
     public static AudioFormat getFailsafe()
     {
         try
@@ -98,19 +92,30 @@ public final class AdlMidiFormat implements AudioFormat
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
+    @Generated
     private static AdlMidiBinding loadLibrary()
     {
         try
         {
-            Verbose.info("Load library: ", LIBRARY_NAME);
-            final AdlMidiBinding binding = Native.load(LIBRARY_NAME, AdlMidiBinding.class);
-            Verbose.info("Library ", LIBRARY_NAME, " loaded");
-            return binding;
+            return getLibrary();
         }
         catch (final LinkageError exception)
         {
             throw new LionEngineException(exception, ERROR_LOAD_LIBRARY + LIBRARY_NAME);
         }
+    }
+
+    /**
+     * Load the library.
+     * 
+     * @return The library binding.
+     */
+    private static AdlMidiBinding getLibrary()
+    {
+        Verbose.info("Load library: ", LIBRARY_NAME);
+        final AdlMidiBinding binding = Native.load(LIBRARY_NAME, AdlMidiBinding.class);
+        Verbose.info("Library ", LIBRARY_NAME, " loaded");
+        return binding;
     }
 
     /** Midi binding. */

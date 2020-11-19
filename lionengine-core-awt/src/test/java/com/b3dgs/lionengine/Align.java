@@ -14,16 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.tile.map.collision;
+package com.b3dgs.lionengine;
 
 /**
- * List of supported collision function types.
- * 
- * @see CollisionFunction
+ * List of available alignments.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
-// lionengine-game/src/test/java/com/b3dgs/lionengine/game/feature/tile/map/collision/CollisionFunctionType.java
-public enum CollisionFunctionType
+public enum Align
 {
-    /** Linear computation. */
-    LINEAR;
+    /** Left align. */
+    LEFT,
+    /** Right align. */
+    RIGHT,
+    /** Center align. */
+    CENTER,
+    /** Fail mock (for tests only). */
+    FAIL;
 }

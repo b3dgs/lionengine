@@ -114,4 +114,54 @@ final class CollisionFunctionConfigTest
 
         assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "void");
     }
+
+    /**
+     * Test exports imports with unknown enum.
+     */
+    @Test
+    void testFunctionUnknown()
+    {
+        final Xml root = new Xml("function");
+        root.createChild(CollisionFunctionConfig.FUNCTION)
+            .writeString(CollisionFunctionConfig.TYPE, CollisionFunctionType.values()[1].name());
+
+        assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown type: FAIL");
+    }
+
+    /**
+     * Test export with unknown function.
+     */
+    @Test
+    void testExportFunctionUnknown()
+    {
+        final Xml root = new Xml("FAIL");
+        CollisionFunctionConfig.exports(root, new CollisionFunction()
+        {
+            @Override
+            public CollisionFunctionType getType()
+            {
+                return CollisionFunctionType.values()[1];
+            }
+
+            @Override
+            public double compute(double input)
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRenderX(double input)
+            {
+                return 0;
+            }
+
+            @Override
+            public int getRenderY(double input)
+            {
+                return 0;
+            }
+        });
+
+        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "FAIL");
+    }
 }
