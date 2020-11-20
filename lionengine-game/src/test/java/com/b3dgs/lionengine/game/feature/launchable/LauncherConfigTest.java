@@ -77,7 +77,7 @@ final class LauncherConfigTest
 
         assertEquals(1, launcher.getLevel());
         assertEquals(2, launcher.getRate());
-        assertTrue(launcher.getMirrorable());
+        assertTrue(launcher.hasMirrorable());
     }
 
     /**

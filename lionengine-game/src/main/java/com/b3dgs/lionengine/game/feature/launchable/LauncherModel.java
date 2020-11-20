@@ -136,7 +136,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         {
             launchables = config.get(0).getLaunchables();
             rate = config.get(0).getRate();
-            mirror = config.get(0).getMirrorable();
+            mirror = config.get(0).hasMirrorable();
         }
     }
 
@@ -186,8 +186,22 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      */
     private void launch(LaunchableConfig config, Direction initial, Featurable featurable, Launchable launchable)
     {
-        final double x = localizable.getX() + config.getOffsetX() + offsetX;
-        final double y = localizable.getY() + config.getOffsetY() + offsetY;
+        int sideX = 1;
+        int sideY = 1;
+        if (mirror && mirrorable != null)
+        {
+            if (mirrorable.is(Mirror.HORIZONTAL))
+            {
+                sideX = -1;
+            }
+            if (mirrorable.is(Mirror.VERTICAL))
+            {
+                sideY = -1;
+            }
+            launchable.getFeature(Mirrorable.class).mirror(mirrorable.getMirror());
+        }
+        final double x = localizable.getX() + (config.getOffsetX() + offsetX) * sideX;
+        final double y = localizable.getY() + (config.getOffsetY() + offsetY) * sideY;
         launchable.setLocation(x, y);
 
         final Force vector = new Force(config.getVector());

@@ -111,7 +111,7 @@ public final class LauncherConfig
         final Xml node = new Xml(NODE_LAUNCHER);
         node.writeInteger(ATT_LEVEL, config.getLevel());
         node.writeInteger(ATT_RATE, config.getRate());
-        node.writeBoolean(ATT_MIRRORABLE, config.getMirrorable());
+        node.writeBoolean(ATT_MIRRORABLE, config.hasMirrorable());
 
         for (final LaunchableConfig launchable : config.getLaunchables())
         {
@@ -174,7 +174,7 @@ public final class LauncherConfig
      * 
      * @return <code>true</code> if apply mirror on fire if present, <code>false</code> else.
      */
-    public boolean getMirrorable()
+    public boolean hasMirrorable()
     {
         return mirrorable;
     }
