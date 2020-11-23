@@ -22,7 +22,6 @@ package com.b3dgs.lionengine;
  * This class is Thread-Safe.
  * </p>
  */
-// lionengine-core/src/test/java/com/b3dgs/lionengine/Origin.java
 public enum Origin
 {
     /** Top left origin point. */
@@ -36,7 +35,10 @@ public enum Origin
     /** Center bottom origin point. */
     CENTER_TOP,
     /** Center bottom origin point. */
-    CENTER_BOTTOM;
+    CENTER_BOTTOM,
+    /** @deprecated Fail mock (for tests only). */
+    @Deprecated
+    FAIL;
 
     /**
      * Get the x relative to origin.

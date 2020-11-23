@@ -16,9 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.attackable;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link AttackState}.
@@ -33,6 +32,10 @@ final class AttackStateTest
     @Test
     void testEnum() throws Exception
     {
-        UtilTests.testEnum(AttackState.class);
+        for (final AttackState value : AttackState.values())
+        {
+            Assertions.assertNotNull(value);
+            Assertions.assertEquals(value, AttackState.valueOf(value.name()));
+        }
     }
 }

@@ -21,9 +21,11 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
  * 
  * @see CollisionFunction
  */
-// lionengine-game/src/test/java/com/b3dgs/lionengine/game/feature/tile/map/collision/CollisionFunctionType.java
 public enum CollisionFunctionType
 {
     /** Linear computation. */
-    LINEAR;
+    LINEAR,
+    /** @deprecated Fail mock (for tests only). */
+    @Deprecated
+    FAIL;
 }

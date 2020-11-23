@@ -16,9 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.extractable;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test {@link ExtractorState}.
@@ -33,6 +32,10 @@ final class ExtractorStateTest
     @Test
     void testEnum() throws Exception
     {
-        UtilTests.testEnum(ExtractorState.class);
+        for (final ExtractorState value : ExtractorState.values())
+        {
+            Assertions.assertNotNull(value);
+            Assertions.assertEquals(value, ExtractorState.valueOf(value.name()));
+        }
     }
 }

@@ -16,12 +16,11 @@
  */
 package com.b3dgs.lionengine.game.feature.producible;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.UtilTests;
-
 /**
- * Test the producer state.
+ * Test {@link ProducerState}.
  */
 final class ProducerStateTest
 {
@@ -33,6 +32,10 @@ final class ProducerStateTest
     @Test
     void testEnum() throws Exception
     {
-        UtilTests.testEnum(ProducerState.class);
+        for (final ProducerState value : ProducerState.values())
+        {
+            Assertions.assertNotNull(value);
+            Assertions.assertEquals(value, ProducerState.valueOf(value.name()));
+        }
     }
 }

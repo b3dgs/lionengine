@@ -136,8 +136,7 @@ public final class UtilTests
      */
     public static <T extends Enum<T>> void testEnum(Class<T> type) throws Exception
     {
-        final Method method = type.getDeclaredMethod(ENUM_VALUEOF, String.class);
-        UtilReflection.setAccessible(method, true);
+        final Method method = type.getMethod(ENUM_VALUEOF, String.class);
         for (final T value : type.getEnumConstants())
         {
             Assertions.assertNotNull(value);

@@ -62,6 +62,7 @@ public final class CollisionFunctionConfig
             {
                 case LINEAR:
                     return new CollisionFunctionLinear(node.readDouble(A), node.readDouble(B));
+                // $CASES-OMITTED$
                 default:
                     throw new LionEngineException(ERROR_TYPE + name);
             }
