@@ -253,6 +253,17 @@ public final class UtilAssert
     /**
      * Asserts that {@code expected} and {@code actual} are equal. If both are {@code null}, they are considered equal.
      * 
+     * @param expected The excepted array.
+     * @param actual The actual array.
+     */
+    public static void assertEquals(int[] expected, int[] actual)
+    {
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} are equal. If both are {@code null}, they are considered equal.
+     * 
      * @param expected The excepted iterable.
      * @param actual The actual iterable.
      */

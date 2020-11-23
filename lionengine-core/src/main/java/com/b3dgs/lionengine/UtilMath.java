@@ -427,6 +427,47 @@ public final class UtilMath
     }
 
     /**
+     * Get the closest multiplier.
+     * 
+     * @param value The value to find with multiplier (AxB).
+     * @param distance The maximum multiplier distance (between A and B).
+     * @return The multiplier found (index 0 is A, and 1 is B, with A inferior or equal to B).
+     */
+    public static int[] getClosestSquareMult(int value, int distance)
+    {
+        final double sqrt = Math.sqrt(value);
+        int a = (int) Math.ceil(sqrt);
+        int b = a;
+        final int[] closest = new int[]
+        {
+            a, b
+        };
+        int mult = a * b;
+        int index = 0;
+
+        while (mult != value && Math.abs(a - b) < distance)
+        {
+            if (index == 0 && a > 1 && mult > value)
+            {
+                a--;
+                index = 1;
+            }
+            else
+            {
+                b++;
+                index = 0;
+            }
+            mult = a * b;
+            if (mult >= value)
+            {
+                closest[0] = a;
+                closest[1] = b;
+            }
+        }
+        return closest;
+    }
+
+    /**
      * Get minimum value.
      * 
      * @param a The first value.

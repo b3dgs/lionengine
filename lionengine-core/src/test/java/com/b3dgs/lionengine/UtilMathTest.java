@@ -31,6 +31,21 @@ import com.b3dgs.lionengine.geom.Geom;
 final class UtilMathTest
 {
     /**
+     * Get pair in array.
+     * 
+     * @param a The a value.
+     * @param b The b value.
+     * @return The pair in array.
+     */
+    private static int[] pair(int a, int b)
+    {
+        return new int[]
+        {
+            a, b
+        };
+    }
+
+    /**
      * Test the constructor.
      */
     @Test
@@ -242,5 +257,27 @@ final class UtilMathTest
     {
         assertEquals(1.0, UtilMath.getRound(-1.0, 1.5));
         assertEquals(2.0, UtilMath.getRound(1.0, 1.5));
+    }
+
+    /**
+     * Test the get closest square multiplier.
+     */
+    @Test
+    public void testGetClosestSquareMult()
+    {
+        assertEquals(pair(0, 0), UtilMath.getClosestSquareMult(0, 0));
+        assertEquals(pair(1, 1), UtilMath.getClosestSquareMult(1, 1));
+        assertEquals(pair(9, 9), UtilMath.getClosestSquareMult(81, 1));
+
+        assertEquals(pair(2, 49), UtilMath.getClosestSquareMult(97, 95));
+        assertEquals(pair(1, 97), UtilMath.getClosestSquareMult(97, 100));
+
+        assertEquals(pair(10, 10), UtilMath.getClosestSquareMult(85, 0));
+        assertEquals(pair(9, 10), UtilMath.getClosestSquareMult(85, 1));
+        assertEquals(pair(8, 12), UtilMath.getClosestSquareMult(85, 5));
+        assertEquals(pair(7, 13), UtilMath.getClosestSquareMult(85, 6));
+        assertEquals(pair(6, 15), UtilMath.getClosestSquareMult(85, 9));
+        assertEquals(pair(5, 17), UtilMath.getClosestSquareMult(85, 12));
+        assertEquals(pair(5, 17), UtilMath.getClosestSquareMult(85, 100));
     }
 }
