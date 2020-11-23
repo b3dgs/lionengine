@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
@@ -39,6 +40,8 @@ public final class AudioFactory
     static final String ERROR_EXISTS = "Format already exists: ";
     /** Factories by audio format. */
     private static final Map<String, AudioFormat> FACTORIES = new HashMap<>();
+    /** General volume. */
+    private static int volume = Constant.HUNDRED;
 
     /**
      * Load an audio file and prepare it to be played.
@@ -110,6 +113,29 @@ public final class AudioFactory
     {
         FACTORIES.forEach((extension, format) -> format.close());
         FACTORIES.clear();
+    }
+
+    /**
+     * Set general volume.
+     * 
+     * @param volume The general volume [0-100].
+     */
+    public static synchronized void setVolume(int volume)
+    {
+        Check.superiorOrEqual(volume, 0);
+        Check.inferiorOrEqual(volume, Constant.HUNDRED);
+
+        AudioFactory.volume = volume;
+    }
+
+    /**
+     * Get general volume.
+     * 
+     * @return The general volume.
+     */
+    public static synchronized int getVolume()
+    {
+        return volume;
     }
 
     /**

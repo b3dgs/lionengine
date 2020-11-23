@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
@@ -179,6 +180,45 @@ final class AudioFactoryTest
         audio.stop();
 
         format.close();
+    }
+
+    /**
+     * Test get general volume.
+     */
+    @Test
+    void testGetGeneralVolume()
+    {
+        final int volume = AudioFactory.getVolume();
+        assertEquals(100, volume);
+    }
+
+    /**
+     * Test set general volume.
+     */
+    @Test
+    void testSetGeneralVolume()
+    {
+        final int volume = AudioFactory.getVolume();
+        try
+        {
+            AudioFactory.setVolume(50);
+
+            assertEquals(50, AudioFactory.getVolume());
+        }
+        finally
+        {
+            AudioFactory.setVolume(volume);
+        }
+    }
+
+    /**
+     * Test general volume invalid.
+     */
+    @Test
+    void testGeneralVolumeInvalid()
+    {
+        assertThrows(() -> AudioFactory.setVolume(-1), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> AudioFactory.setVolume(101), "Invalid argument: 101 is not inferior or equal to 100");
     }
 
     /**

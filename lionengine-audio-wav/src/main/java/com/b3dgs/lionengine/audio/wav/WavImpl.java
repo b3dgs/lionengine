@@ -33,10 +33,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.PlayerAbstract;
 
 /**
@@ -264,7 +266,7 @@ final class WavImpl implements Wav
             final SourceDataLine dataLine = playback.getDataLine();
             openLine(dataLine, input);
             updateAlignment(dataLine, alignment);
-            updateVolume(dataLine, volume);
+            updateVolume(dataLine, AudioFactory.getVolume() * volume / Constant.HUNDRED);
             dataLine.start();
 
             readSound(input, dataLine);
