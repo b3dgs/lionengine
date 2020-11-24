@@ -11,7 +11,6 @@
     </xsd:complexType>
     <xsd:complexType name="rasterable">
         <xsd:attribute name="height" type="xsd:int" use="required"></xsd:attribute>
-        <xsd:attribute name="smooth" type="xsd:boolean" use="required"></xsd:attribute>
         <xsd:attribute name="file" type="xsd:string" use="optional"></xsd:attribute>
     </xsd:complexType>
     <xsd:complexType name="layerable">

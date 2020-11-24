@@ -16,26 +16,32 @@
  */
 package com.b3dgs.lionengine.game.background;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.ImageHeader;
 import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
-import com.b3dgs.lionengine.graphic.drawable.Sprite;
-import com.b3dgs.lionengine.graphic.raster.RasterImage;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 
 /**
  * Specific background element, supporting raster effects.
  */
-public class BackgroundElementRastered extends BackgroundElement
+public class BackgroundElementRastered extends BackgroundElement implements Renderable
 {
+    /** Raster suffix. */
+    private static final String SUFFIX = "_raster";
+
     /** Rasters list. */
-    private final List<Sprite> rasters;
+    private final SpriteTiled rasters;
+    /** Tiles. */
+    private final int count;
 
     /**
      * Create a rastered background element.
@@ -43,32 +49,59 @@ public class BackgroundElementRastered extends BackgroundElement
      * @param mainX The main location x.
      * @param mainY The main location y.
      * @param media The image media.
-     * @param rasterFile The raster media.
-     * @param rastersNumber The number of rasters.
+     * @param palette The image palette.
+     * @param raster The raster colors.
      */
-    public BackgroundElementRastered(int mainX, int mainY, Media media, Media rasterFile, int rastersNumber)
+    public BackgroundElementRastered(int mainX, int mainY, Media media, Media palette, Media raster)
     {
         super(mainX, mainY, null);
 
-        final RasterImage raster = new RasterImage(media, rasterFile, rastersNumber, false);
-        raster.loadRasters(ImageInfo.get(media).getHeight(), false, UtilFile.removeExtension(media.getName()));
-
-        final Collection<ImageBuffer> surfaces = raster.getRasters();
-        rasters = new ArrayList<>(surfaces.size());
-        for (final ImageBuffer surface : surfaces)
+        final Media rasterTile = Medias.create(media.getParentPath(),
+                                               UtilFile.removeExtension(media.getName())
+                                                                      + SUFFIX
+                                                                      + Constant.DOT
+                                                                      + UtilFile.getExtension(media.getName()));
+        if (!rasterTile.exists())
         {
-            rasters.add(Drawable.loadSprite(surface));
+            final ImageBuffer[] rasters = Graphics.getRasterBufferOffset(media, palette, raster, 1);
+            Graphics.generateTileset(rasters, rasterTile);
         }
+
+        final ImageHeader info = ImageInfo.get(media);
+        rasters = Drawable.loadSpriteTiled(rasterTile, info.getWidth(), info.getHeight());
+        rasters.load();
+        rasters.prepare();
+        count = rasters.getTilesHorizontal() * rasters.getTilesVertical();
     }
 
     /**
-     * Get raster surface from its id.
+     * Set raster surface from its id.
      * 
      * @param id The raster id.
-     * @return The raster surface.
      */
-    public Sprite getRaster(int id)
+    public void setRaster(int id)
     {
-        return rasters.get(UtilMath.clamp(id, 0, rasters.size() - 1));
+        rasters.setTile(UtilMath.clamp(id, 0, count - 1));
+    }
+
+    /**
+     * Set the location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    public void setLocation(double x, double y)
+    {
+        rasters.setLocation(x, y);
+    }
+
+    /*
+     * Renderable
+     */
+
+    @Override
+    public void render(Graphic g)
+    {
+        rasters.render(g);
     }
 }

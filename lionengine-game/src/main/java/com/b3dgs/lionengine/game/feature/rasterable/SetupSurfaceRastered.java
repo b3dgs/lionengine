@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.SurfaceConfig;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -40,8 +39,6 @@ public class SetupSurfaceRastered extends Setup
     private static final String NODE_RASTERABLE = Constant.XML_PREFIX + "rasterable";
     /** Rasterable height attribute. */
     private static final String ATT_RASTER_HEIGHT = "height";
-    /** Rasterable smooth attribute. */
-    private static final String ATT_RASTER_SMOOTH = "smooth";
     /** Rasterable file attribute. */
     private static final String ATT_RASTER_FILE = "file";
 
@@ -70,13 +67,9 @@ public class SetupSurfaceRastered extends Setup
     {
         super(config);
 
-        final FramesConfig framesData = FramesConfig.imports(getRoot());
-        final int vf = framesData.getVertical();
-
         if (hasNode(NODE_RASTERABLE))
         {
             final int rasterHeight = getInteger(ATT_RASTER_HEIGHT, NODE_RASTERABLE);
-            final boolean smooth = getBoolean(ATT_RASTER_SMOOTH, NODE_RASTERABLE);
 
             final Media rasterFile;
             if (rasterMedia != null)
@@ -88,18 +81,16 @@ public class SetupSurfaceRastered extends Setup
                 rasterFile = Medias.create(getString(ATT_RASTER_FILE, NODE_RASTERABLE));
             }
 
-            raster = new RasterImage(getSurface(), rasterFile, rasterHeight, smooth);
-
-            final int frameHeight = getSurface().getHeight() / vf;
-            raster.loadRasters(frameHeight, false, UtilFile.removeExtension(config.getName()));
+            raster = new RasterImage(getSurface(), rasterFile, rasterHeight);
+            raster.loadRasters(false, UtilFile.removeExtension(config.getName()));
         }
         else if (hasNode(SurfaceConfig.NODE_SURFACE))
         {
-            raster = new RasterImage(getSurface(), config, 1, false);
+            raster = new RasterImage(getSurface(), config, 1);
         }
         else
         {
-            raster = new RasterImage(Graphics.createImageBuffer(1, 1), config, 1, false);
+            raster = new RasterImage(Graphics.createImageBuffer(1, 1), config, 1);
         }
     }
 
@@ -131,15 +122,5 @@ public class SetupSurfaceRastered extends Setup
     public int getRasterHeight()
     {
         return raster.getHeight();
-    }
-
-    /**
-     * Get smooth raster flag.
-     * 
-     * @return <code>true</code> if smooth enabled, <code>false</code> else.
-     */
-    public boolean hasSmooth()
-    {
-        return raster.hasSmooth();
     }
 }

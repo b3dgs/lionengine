@@ -106,14 +106,14 @@ final class RasterableModelTest
         rasterable.render(g);
 
         assertEquals(1, rasterable.getRasterIndex(0));
-        assertEquals(RasterImage.MAX_RASTERS_M + 1, rasterable.getRasterIndex(240));
+        assertEquals(RasterImage.MAX_RASTERS, rasterable.getRasterIndex(240));
         assertNotNull(rasterable.getRasterAnim(0));
 
         transformable.teleportY(-100);
         rasterable.update(1.0);
 
         assertEquals(1, rasterable.getRasterIndex(0));
-        assertEquals(RasterImage.MAX_RASTERS_M + 1, rasterable.getRasterIndex(240));
+        assertEquals(RasterImage.MAX_RASTERS, rasterable.getRasterIndex(240));
         assertNotNull(rasterable.getRasterAnim(0));
 
         animatable.play(new Animation("default", 1, 5, 1.0, false, false));

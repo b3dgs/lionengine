@@ -351,4 +351,50 @@ final class GraphicsTest
         raster.dispose();
         image.dispose();
     }
+
+    /**
+     * Test get raster buffer from palette.
+     */
+    @Test
+    void testGetRasterBufferPalette()
+    {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
+
+        final ImageBuffer raster = Graphics.getImageBuffer(Medias.create("raster.png"));
+        image.prepare();
+
+        final ImageBuffer[] rasters = Graphics.getRasterBuffer(image, raster);
+
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertNotEquals(image, raster);
+            assertEquals(image.getWidth(), buffer.getWidth());
+            assertEquals(image.getHeight(), buffer.getHeight());
+
+            buffer.dispose();
+        }
+
+        raster.dispose();
+        image.dispose();
+    }
+
+    /**
+     * Test get raster buffer offset.
+     */
+    @Test
+    void testGetRasterBufferOffset()
+    {
+        final ImageBuffer[] rasters = Graphics.getRasterBufferOffset(Medias.create("image.png"),
+                                                                     Medias.create("palette.png"),
+                                                                     Medias.create("raster.png"),
+                                                                     1);
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertEquals(64, buffer.getWidth());
+            assertEquals(32, buffer.getHeight());
+
+            buffer.dispose();
+        }
+    }
 }

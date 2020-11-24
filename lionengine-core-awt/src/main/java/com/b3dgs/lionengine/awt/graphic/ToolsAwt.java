@@ -37,6 +37,7 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
@@ -354,6 +355,222 @@ public final class ToolsAwt
             }
         }
         return raster;
+    }
+
+    /**
+     * Get raster buffers from palette.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static BufferedImage[] getRasterBuffer(BufferedImage image, BufferedImage palette)
+    {
+        final int rastersCount = palette.getHeight() - 1;
+        final BufferedImage[] rasters = new BufferedImage[rastersCount];
+        for (int rasterIndex = 0; rasterIndex < rastersCount; rasterIndex++)
+        {
+            rasters[rasterIndex] = getRasterBuffer(image, palette, rasterIndex);
+        }
+        return rasters;
+    }
+
+    /**
+     * Get raster buffer from palette at specified index.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param rasterIndex The raster index on palette.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    private static BufferedImage getRasterBuffer(BufferedImage image, BufferedImage palette, int rasterIndex)
+    {
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final int paletteColors = palette.getWidth();
+
+        final BufferedImage raster = createImage(width, height, image.getTransparency());
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                final int originalRgb = image.getRGB(x, y);
+                raster.setRGB(x, y, findRaster(paletteColors, palette, originalRgb, rasterIndex));
+            }
+        }
+        return raster;
+    }
+
+    /**
+     * Get raster buffer from first palette, fill for each height until tile size.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param tileHeight The tile height.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static BufferedImage[] getRasterBufferSmooth(BufferedImage image, BufferedImage palette, int tileHeight)
+    {
+        final int height = image.getHeight();
+        final BufferedImage[] rasters = new BufferedImage[tileHeight];
+
+        for (int maxHeight = 0; maxHeight < tileHeight; maxHeight++)
+        {
+            final BufferedImage raster = createImage(image.getWidth(), height, image.getTransparency());
+            for (int ty = 0; ty < height / tileHeight; ty++)
+            {
+                fillBuffer(image, palette, raster, tileHeight, maxHeight, ty);
+            }
+            rasters[maxHeight] = raster;
+        }
+        return rasters;
+    }
+
+    /**
+     * Fill raster buffer from palette.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param raster The raster to fill (must not be <code>null</code>).
+     * @param tileHeight The tile height.
+     * @param maxHeight The max height for palette fill on raster tile.
+     * @param ty The vertical tile to fill.
+     * @throws LionEngineException If invalid arguments.
+     */
+    private static void fillBuffer(BufferedImage image,
+                                   BufferedImage palette,
+                                   BufferedImage raster,
+                                   int tileHeight,
+                                   int maxHeight,
+                                   int ty)
+    {
+        final int paletteColors = palette.getWidth();
+        for (int y = 0; y < tileHeight; y++)
+        {
+            for (int x = 0; x < image.getWidth(); x++)
+            {
+                final int ry = tileHeight - 1 - y + ty * tileHeight;
+                final int originalRgb = image.getRGB(x, ry);
+                if (y <= maxHeight)
+                {
+                    final int rasterRgb = findRaster(paletteColors, palette, originalRgb, 0);
+                    raster.setRGB(x, ry, rasterRgb);
+                }
+                else
+                {
+                    raster.setRGB(x, ry, originalRgb);
+                }
+            }
+        }
+    }
+
+    /**
+     * Find corresponding raster color from original one.
+     * 
+     * @param paletteColors The number of rasters in palette.
+     * @param palette The palette data.
+     * @param originalRgb The original color.
+     * @param rasterIndex The raster index to use.
+     * @return The associated raster color.
+     */
+    private static int findRaster(int paletteColors, BufferedImage palette, int originalRgb, int rasterIndex)
+    {
+        for (int p = 0; p < paletteColors; p++)
+        {
+            if (palette.getRGB(p, 0) == originalRgb)
+            {
+                return palette.getRGB(p, rasterIndex + 1);
+            }
+        }
+        return originalRgb;
+    }
+
+    /**
+     * Get raster buffer with offsets applied.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The palette offset (must not be <code>null</code>).
+     * @param raster The raster color (must not be <code>null</code>).
+     * @param offsets The offsets number (rasters inside).
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static BufferedImage[] getRasterBufferOffset(BufferedImage image,
+                                                        BufferedImage palette,
+                                                        BufferedImage raster,
+                                                        int offsets)
+    {
+        final int rasterHeight = raster.getHeight();
+        final BufferedImage[] rasters = new BufferedImage[rasterHeight];
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+
+        for (int rasterNumber = 0; rasterNumber < rasters.length; rasterNumber++)
+        {
+            final BufferedImage buffer = createImage(width, height, image.getTransparency());
+            fillBufferOffset(image, palette, raster, buffer, offsets, rasterNumber);
+            rasters[rasterNumber] = buffer;
+        }
+        return rasters;
+    }
+
+    /**
+     * Fill buffer offset.
+     * 
+     * @param image The image source reference.
+     * @param palette The palette reference.
+     * @param raster The raster colors.
+     * @param buffer The created buffer to fill.
+     * @param offsets The offsets value.
+     * @param rasterNumber The current raster number.
+     */
+    private static void fillBufferOffset(BufferedImage image,
+                                         BufferedImage palette,
+                                         BufferedImage raster,
+                                         BufferedImage buffer,
+                                         int offsets,
+                                         int rasterNumber)
+    {
+        final int rasterHeight = raster.getHeight();
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                final int color = image.getRGB(x, y);
+                if ((color >> Constant.BYTE_4 & 0xFF) != 0)
+                {
+                    final int currentOffset = (height - 1 - y) / offsets;
+                    final int paletteOffset = findPaletteOffset(palette, color);
+                    final int py = rasterHeight - 1 - rasterNumber - currentOffset * offsets - paletteOffset * 3;
+                    buffer.setRGB(x, y, raster.getRGB(0, UtilMath.clamp(py, 0, rasterHeight - 1)));
+                }
+            }
+        }
+    }
+
+    /**
+     * Find palette offset.
+     * 
+     * @param palette The palette reference.
+     * @param color The color to find.
+     * @return The palette offset.
+     */
+    private static int findPaletteOffset(BufferedImage palette, int color)
+    {
+        for (int y = 0; y < palette.getHeight(); y++)
+        {
+            if (palette.getRGB(0, y) == color)
+            {
+                return y;
+            }
+        }
+        return 0;
     }
 
     /**

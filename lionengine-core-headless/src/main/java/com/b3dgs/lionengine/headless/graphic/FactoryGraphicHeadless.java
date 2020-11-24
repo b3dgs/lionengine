@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.FactoryGraphic;
@@ -249,10 +250,66 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     }
 
     @Override
+    public void generateTileset(ImageBuffer[] images, Media media)
+    {
+        Check.notNull(images);
+        Check.notNull(media);
+
+        final int tiles = images.length;
+        if (images.length == 0)
+        {
+            throw new LionEngineException("No images found !");
+        }
+
+        final int width = images[0].getWidth();
+        final int height = images[0].getHeight();
+
+        final int multDistance = (int) Math.ceil(width * tiles / (double) height) / 4;
+        final int[] mult = UtilMath.getClosestSquareMult(tiles, multDistance);
+
+        try (OutputStream output = media.getOutputStream())
+        {
+            output.write(UtilConversion.intToByteArray(width * mult[1]));
+            output.write(UtilConversion.intToByteArray(height * mult[0]));
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, media, ERROR_IMAGE_SAVE);
+        }
+    }
+
+    @Override
     public ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb)
     {
         Check.notNull(image);
 
         return new ImageBufferHeadless((ImageBufferHeadless) image);
+    }
+
+    @Override
+    public ImageBuffer[] getRasterBuffer(ImageBuffer image, ImageBuffer palette)
+    {
+        return new ImageBuffer[]
+        {
+            new ImageBufferHeadless((ImageBufferHeadless) image)
+        };
+    }
+
+    @Override
+    public ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight)
+    {
+        return new ImageBuffer[]
+        {
+            new ImageBufferHeadless((ImageBufferHeadless) image)
+        };
+    }
+
+    @Override
+    public ImageBuffer[] getRasterBufferOffset(Media image, Media palette, Media raster, int offsets)
+    {
+        return new ImageBuffer[]
+        {
+            new ImageBufferHeadless((ImageBufferHeadless) getImageBuffer(image))
+        };
     }
 }

@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -38,11 +37,9 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 public class RasterImage
 {
     /** Maximum rasters. */
-    public static final int MAX_RASTERS = 15;
-    /** Maximum rasters R. */
-    public static final int MAX_RASTERS_R = MAX_RASTERS * 2 - 1;
-    /** Maximum rasters M. */
-    public static final int MAX_RASTERS_M = MAX_RASTERS - 1;
+    public static final int MAX_RASTERS = 27;
+    /** Number of line used by a raster. */
+    public static final int LINES_PER_RASTER = 2;
 
     /**
      * Get raster color.
@@ -73,8 +70,6 @@ public class RasterImage
     private final ImageBuffer surface;
     /** Raster filename. */
     private final Media rasterFile;
-    /** Raster smooth flag. */
-    private final boolean rasterSmooth;
     /** Raster height. */
     private final int rasterHeight;
 
@@ -84,12 +79,11 @@ public class RasterImage
      * @param media The image media (must not be <code>null</code>).
      * @param rasterFile The raster media (must not be <code>null</code>).
      * @param rasterHeight The height used by the raster (must be strictly superior to 0).
-     * @param smooth <code>true</code> for smoothed raster, <code>false</code> else.
      * @throws LionEngineException If invalid media or raster file or height.
      */
-    public RasterImage(Media media, Media rasterFile, int rasterHeight, boolean smooth)
+    public RasterImage(Media media, Media rasterFile, int rasterHeight)
     {
-        this(Graphics.getImageBuffer(media), rasterFile, rasterHeight, smooth);
+        this(Graphics.getImageBuffer(media), rasterFile, rasterHeight);
     }
 
     /**
@@ -98,10 +92,9 @@ public class RasterImage
      * @param surface The surface reference (must not be <code>null</code>).
      * @param rasterFile The raster media (must not be <code>null</code>).
      * @param rasterHeight The height used by the raster (must be strictly superior to 0).
-     * @param smooth <code>true</code> for smoothed raster, <code>false</code> else.
      * @throws LionEngineException If invalid media or raster file or height.
      */
-    public RasterImage(ImageBuffer surface, Media rasterFile, int rasterHeight, boolean smooth)
+    public RasterImage(ImageBuffer surface, Media rasterFile, int rasterHeight)
     {
         super();
 
@@ -112,46 +105,36 @@ public class RasterImage
         this.surface = surface;
         this.rasterFile = rasterFile;
         this.rasterHeight = rasterHeight;
-        rasterSmooth = smooth;
     }
 
     /**
      * Load rasters.
      * 
-     * @param imageHeight The local image height.
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    public void loadRasters(int imageHeight)
+    public void loadRasters()
     {
-        loadRasters(imageHeight, false, Constant.EMPTY_STRING);
+        loadRasters(false, Constant.EMPTY_STRING);
     }
 
     /**
      * Load rasters.
      * 
-     * @param imageHeight The local image height.
      * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
      * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    public void loadRasters(int imageHeight, boolean save, String prefix)
+    public void loadRasters(boolean save, String prefix)
     {
         Check.notNull(prefix);
 
-        final Raster raster = Raster.load(rasterFile);
-        final int max = UtilConversion.boolToInt(rasterSmooth) + 1;
-
-        for (int m = 0; m < max; m++)
+        if (rasterFile.getName().endsWith(".xml"))
         {
-            for (int i = 0; i < MAX_RASTERS; i++)
-            {
-                final String folder = prefix + Constant.UNDERSCORE + UtilFile.removeExtension(rasterFile.getName());
-                final String file = String.valueOf(i + m * MAX_RASTERS) + Constant.DOT + ImageFormat.PNG;
-                final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
-
-                final ImageBuffer rasterBuffer = createRaster(rasterMedia, raster, i, save);
-                rasters.add(rasterBuffer);
-            }
+            loadFromXml(save, prefix);
+        }
+        else
+        {
+            loadFromPalette(save, prefix);
         }
     }
 
@@ -197,13 +180,24 @@ public class RasterImage
     }
 
     /**
-     * Check if smooth raster.
+     * Load raster from XML.
      * 
-     * @return <code>true</code> if smooth enabled, <code>false</code> else.
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
      */
-    public boolean hasSmooth()
+    private void loadFromXml(boolean save, String prefix)
     {
-        return rasterSmooth;
+        final Raster raster = Raster.load(rasterFile);
+
+        for (int i = 0; i < MAX_RASTERS; i++)
+        {
+            final String folder = prefix + Constant.UNDERSCORE + UtilFile.removeExtension(rasterFile.getName());
+            final String file = i + Constant.DOT + ImageFormat.PNG;
+            final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
+
+            final ImageBuffer rasterBuffer = createRaster(rasterMedia, raster, i, save);
+            rasters.add(rasterBuffer);
+        }
     }
 
     /**
@@ -238,5 +232,48 @@ public class RasterImage
             }
         }
         return rasterBuffer;
+    }
+
+    /**
+     * Load raster from palette image.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
+     */
+    private void loadFromPalette(boolean save, String prefix)
+    {
+        final ImageBuffer raster = Graphics.getImageBuffer(rasterFile);
+
+        ImageBuffer[] rastersBuffer = null;
+        for (int i = 0; i < MAX_RASTERS; i++)
+        {
+            final String folder = prefix + Constant.UNDERSCORE + UtilFile.removeExtension(rasterFile.getName());
+            final String file = i + Constant.DOT + ImageFormat.PNG;
+            final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
+            if (rasterMedia.exists())
+            {
+                final ImageBuffer rasterBuffer = Graphics.getImageBuffer(rasterMedia);
+                rasterBuffer.prepare();
+                rasters.add(rasterBuffer);
+            }
+            else
+            {
+                if (rastersBuffer == null)
+                {
+                    surface.prepare();
+                    rastersBuffer = Graphics.getRasterBuffer(surface, raster);
+                }
+                if (i == rastersBuffer.length)
+                {
+                    break;
+                }
+                final ImageBuffer rasterBuffer = rastersBuffer[i];
+                if (save)
+                {
+                    Graphics.saveImage(rasterBuffer, rasterMedia);
+                }
+                rasters.add(rasterBuffer);
+            }
+        }
     }
 }

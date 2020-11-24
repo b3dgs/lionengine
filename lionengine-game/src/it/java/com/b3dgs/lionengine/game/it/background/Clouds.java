@@ -24,6 +24,17 @@ import com.b3dgs.lionengine.game.background.CloudsAbstract;
  */
 final class Clouds extends CloudsAbstract
 {
+    private static final int LINE_WIDTH = 160;
+    private static final int LINE_HEIGHT = 26;
+    private static final int[] LINES_OFFSET =
+    {
+        0, 30, 54, 75, 90, 101
+    };
+    private static final double[] LINES_SPEED =
+    {
+        -1.12, -0.95, -0.72, -0.5, -0.36, -0.28
+    };
+
     /**
      * Constructor.
      * 
@@ -31,22 +42,18 @@ final class Clouds extends CloudsAbstract
      * @param screenWidth The screen width.
      * @param decY The vertical offset.
      */
-    public Clouds(Media path, int screenWidth, int decY)
+    Clouds(Media path, int screenWidth, int decY)
     {
-        super(path, 160, 26, screenWidth, decY);
+        super(path, LINE_WIDTH, LINE_HEIGHT, screenWidth, decY);
 
-        setY(0, 0);
-        setY(1, 30);
-        setY(2, 54);
-        setY(3, 73);
-        setY(4, 89);
-        setY(5, 100);
+        for (int i = 0; i < LINES_OFFSET.length; i++)
+        {
+            setY(i, LINES_OFFSET[i]);
+        }
 
-        setSpeed(0, -1.12);
-        setSpeed(1, -0.95);
-        setSpeed(2, -0.72);
-        setSpeed(3, -0.5);
-        setSpeed(4, -0.36);
-        setSpeed(5, -0.28);
+        for (int i = 0; i < LINES_SPEED.length; i++)
+        {
+            setSpeed(i, LINES_SPEED[i]);
+        }
     }
 }

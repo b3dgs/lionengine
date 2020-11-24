@@ -168,6 +168,14 @@ public interface FactoryGraphic
     void saveImage(ImageBuffer image, Media media);
 
     /**
+     * Generate tile set from images.
+     * 
+     * @param images The images to assemble.
+     * @param media The tile set output.
+     */
+    void generateTileset(ImageBuffer[] images, Media media);
+
+    /**
      * Get raster buffer from data.
      * 
      * @param image The image buffer (must not be <code>null</code>).
@@ -178,4 +186,37 @@ public interface FactoryGraphic
      * @throws LionEngineException If invalid arguments.
      */
     ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb);
+
+    /**
+     * Get raster buffers from palette.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    ImageBuffer[] getRasterBuffer(ImageBuffer image, ImageBuffer palette);
+
+    /**
+     * Get raster buffer from first palette, fill for each height until tile size.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param tileHeight The tile height.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight);
+
+    /**
+     * Get raster buffer with offsets applied.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The palette offset (must not be <code>null</code>).
+     * @param raster The raster color (must not be <code>null</code>).
+     * @param offsets The offsets number (rasters inside).
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    ImageBuffer[] getRasterBufferOffset(Media image, Media palette, Media raster, int offsets);
 }

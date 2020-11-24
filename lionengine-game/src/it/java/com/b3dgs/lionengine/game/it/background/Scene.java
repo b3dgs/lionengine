@@ -72,7 +72,7 @@ final class Scene extends Sequence
             {
                 return NATIVE.getRate();
             }
-        }, 1.0, 1.0);
+        });
     }
 
     /*

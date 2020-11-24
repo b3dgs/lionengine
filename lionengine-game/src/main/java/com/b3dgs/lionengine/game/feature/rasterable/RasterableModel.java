@@ -48,14 +48,12 @@ public class RasterableModel extends FeatureModel implements Rasterable
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
-    /** Smooth raster flag. */
-    private final boolean smooth;
-    /** Raster height. */
-    private final int height;
     /** The viewer reference. */
     private final Viewer viewer;
     /** The updater. */
     private final Updatable updater;
+    /** Raster height. */
+    private final int rasterHeight;
     /** Last raster. */
     private SpriteAnimated raster;
     /** Origin value. */
@@ -111,9 +109,6 @@ public class RasterableModel extends FeatureModel implements Rasterable
         final int hf = framesData.getHorizontal();
         final int vf = framesData.getVertical();
 
-        height = setup.getRasterHeight();
-        smooth = setup.hasSmooth();
-
         if (setup.hasNode(SurfaceConfig.NODE_SURFACE))
         {
             rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
@@ -123,6 +118,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
             visible = false;
             enabled = false;
         }
+        rasterHeight = setup.getRasterHeight();
 
         for (final ImageBuffer buffer : setup.getRasters())
         {
@@ -153,7 +149,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         if (enabled)
         {
-            final int index = getRasterIndex(transformable.getY());
+            final int index = getRasterIndex((transformable.getY() + transformable.getHeight() / 2) / rasterHeight);
             if (index > 0)
             {
                 raster = rastersAnim.get(index);
@@ -206,10 +202,10 @@ public class RasterableModel extends FeatureModel implements Rasterable
     @Override
     public int getRasterIndex(double y)
     {
-        int index = (int) y / height % RasterImage.MAX_RASTERS_R;
-        if (!smooth && index > RasterImage.MAX_RASTERS_M)
+        int index = (int) y / RasterImage.LINES_PER_RASTER;
+        if (index > RasterImage.MAX_RASTERS - 1)
         {
-            index = RasterImage.MAX_RASTERS_M - (index - RasterImage.MAX_RASTERS);
+            index = RasterImage.MAX_RASTERS - 1;
         }
         return index + 1;
     }

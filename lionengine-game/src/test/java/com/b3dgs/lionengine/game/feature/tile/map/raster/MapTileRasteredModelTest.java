@@ -102,16 +102,16 @@ final class MapTileRasteredModelTest
         map.setTile(0, 0, 0);
         map.setTile(1, 1, 1);
 
-        mapRastered.loadSheets(Medias.create("raster.xml"), false);
+        mapRastered.loadSheets(Medias.create("raster.xml"));
         mapViewer.addRenderer(mapRastered);
         mapViewer.render(g);
 
-        assertEquals(RasterImage.MAX_RASTERS_M - (RasterImage.MAX_RASTERS_R - RasterImage.MAX_RASTERS) + 1,
-                     mapRastered.getRasterIndex(RasterImage.MAX_RASTERS_R - 1));
+        assertEquals(RasterImage.MAX_RASTERS - 1, mapRastered.getRasterIndex(RasterImage.MAX_RASTERS * 2));
 
-        mapRastered.loadSheets(Medias.create("raster.xml"), true);
+        mapRastered.loadSheets(Medias.create("raster.xml"));
         mapViewer.render(g);
 
-        assertEquals(RasterImage.MAX_RASTERS_M, mapRastered.getRasterIndex(RasterImage.MAX_RASTERS_M));
+        assertEquals(RasterImage.MAX_RASTERS / RasterImage.LINES_PER_RASTER,
+                     mapRastered.getRasterIndex(RasterImage.MAX_RASTERS));
     }
 }

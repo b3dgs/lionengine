@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.FactoryGraphic;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -33,6 +34,7 @@ import com.b3dgs.lionengine.graphic.Screen;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Graphic factory implementation.
@@ -216,11 +218,103 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
+    public void generateTileset(ImageBuffer[] images, Media media)
+    {
+        Check.notNull(images);
+        Check.notNull(media);
+
+        final int tiles = images.length;
+        if (images.length == 0)
+        {
+            throw new LionEngineException("No images found !");
+        }
+
+        final int width = images[0].getWidth();
+        final int height = images[0].getHeight();
+        final Transparency transparency = images[0].getTransparency();
+
+        final int multDistance = (int) Math.ceil(width * tiles / (double) height) / 4;
+        final int[] mult = UtilMath.getClosestSquareMult(tiles, multDistance);
+
+        final ImageBuffer tile = new ImageBufferAwt(ToolsAwt.createImage(width * mult[1],
+                                                                         height * mult[0],
+                                                                         ToolsAwt.getTransparency(transparency)));
+        int x = 0;
+        int y = 0;
+        int line = 0;
+
+        final Graphic g = tile.createGraphic();
+        for (final ImageBuffer b : images)
+        {
+            g.drawImage(b, x, y);
+
+            x += b.getWidth();
+            line++;
+            if (line == mult[1])
+            {
+                x = 0;
+                y += b.getHeight();
+                line = 0;
+            }
+        }
+        g.dispose();
+
+        saveImage(tile, media);
+    }
+
+    @Override
     public ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb)
     {
         Check.notNull(image);
 
         final BufferedImage surface = image.getSurface();
         return new ImageBufferAwt(ToolsAwt.getRasterBuffer(surface, fr, fg, fb));
+    }
+
+    @Override
+    public ImageBuffer[] getRasterBuffer(ImageBuffer image, ImageBuffer palette)
+    {
+        Check.notNull(image);
+        Check.notNull(palette);
+
+        final BufferedImage[] rasters = ToolsAwt.getRasterBuffer(image.getSurface(), palette.getSurface());
+        final ImageBuffer[] buffers = new ImageBuffer[rasters.length];
+        for (int i = 0; i < buffers.length; i++)
+        {
+            buffers[i] = new ImageBufferAwt(rasters[i]);
+        }
+        return buffers;
+    }
+
+    @Override
+    public ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight)
+    {
+        Check.notNull(image);
+        Check.notNull(palette);
+
+        final BufferedImage[] rasters = ToolsAwt.getRasterBufferSmooth(image.getSurface(),
+                                                                       palette.getSurface(),
+                                                                       tileHeight);
+        final ImageBuffer[] buffers = new ImageBuffer[rasters.length];
+        for (int i = 0; i < buffers.length; i++)
+        {
+            buffers[i] = new ImageBufferAwt(rasters[i]);
+        }
+        return buffers;
+    }
+
+    @Override
+    public ImageBuffer[] getRasterBufferOffset(Media image, Media palette, Media raster, int offsets)
+    {
+        final BufferedImage[] rasters = ToolsAwt.getRasterBufferOffset(getImageBuffer(image).getSurface(),
+                                                                       getImageBuffer(palette).getSurface(),
+                                                                       getImageBuffer(raster).getSurface(),
+                                                                       offsets);
+        final ImageBuffer[] buffers = new ImageBuffer[rasters.length];
+        for (int i = 0; i < buffers.length; i++)
+        {
+            buffers[i] = new ImageBufferAwt(rasters[i]);
+        }
+        return buffers;
     }
 }

@@ -377,6 +377,41 @@ public class FactoryGraphicTest
     }
 
     /**
+     * Test generate tile set with invalid arguments.
+     */
+    @Test
+    void testGenerateTilesetInvalidArgument()
+    {
+        assertThrows(() -> Graphics.generateTileset(null, Medias.create("")), "Unexpected null argument !");
+        assertThrows(() -> Graphics.generateTileset(new ImageBuffer[0], null), "Unexpected null argument !");
+        assertThrows(() -> Graphics.generateTileset(new ImageBuffer[0], Medias.create("")), "No images found !");
+
+        final ImageBuffer[] images = new ImageBuffer[]
+        {
+            Graphics.getImageBuffer(Medias.create("image.png")), Graphics.getImageBuffer(Medias.create("image.png"))
+        };
+        assertThrows(() -> Graphics.generateTileset(images, new MediaMock()), "[null] Unable to save image: ");
+    }
+
+    /**
+     * Test generate tile set.
+     */
+    @Test
+    void testGenerateTileset()
+    {
+        final ImageBuffer[] images = new ImageBuffer[]
+        {
+            Graphics.getImageBuffer(Medias.create("image.png")), Graphics.getImageBuffer(Medias.create("image.png"))
+        };
+        final Media tileset = Medias.create("tileset.png");
+        Graphics.generateTileset(images, tileset);
+
+        assertTrue(tileset.exists());
+
+        UtilFile.deleteFile(tileset.getFile());
+    }
+
+    /**
      * Test get raster buffer.
      */
     @Test
@@ -392,5 +427,78 @@ public class FactoryGraphicTest
 
         raster.dispose();
         image.dispose();
+    }
+
+    /**
+     * Test get raster buffer.
+     */
+    @Test
+    void testGetRasterBufferSmooth()
+    {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
+
+        final ImageBuffer palette = Graphics.getImageBuffer(Medias.create("palette.png"));
+        palette.prepare();
+
+        final ImageBuffer[] rasters = Graphics.getRasterBufferSmooth(image, palette, 16);
+
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertNotEquals(image, buffer);
+            assertEquals(image.getWidth(), buffer.getWidth());
+            assertEquals(image.getHeight(), buffer.getHeight());
+
+            buffer.dispose();
+        }
+
+        image.dispose();
+        palette.dispose();
+    }
+
+    /**
+     * Test get raster buffer from palette.
+     */
+    @Test
+    void testGetRasterBufferPalette()
+    {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
+
+        final ImageBuffer raster = Graphics.getImageBuffer(Medias.create("raster.png"));
+        image.prepare();
+
+        final ImageBuffer[] rasters = Graphics.getRasterBuffer(image, raster);
+
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertNotEquals(image, buffer);
+            assertEquals(image.getWidth(), buffer.getWidth());
+            assertEquals(image.getHeight(), buffer.getHeight());
+
+            buffer.dispose();
+        }
+
+        raster.dispose();
+        image.dispose();
+    }
+
+    /**
+     * Test get raster buffer offset.
+     */
+    @Test
+    void testGetRasterBufferOffset()
+    {
+        final ImageBuffer[] rasters = Graphics.getRasterBufferOffset(Medias.create("image.png"),
+                                                                     Medias.create("palette.png"),
+                                                                     Medias.create("raster.png"),
+                                                                     1);
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertEquals(64, buffer.getWidth());
+            assertEquals(32, buffer.getHeight());
+
+            buffer.dispose();
+        }
     }
 }

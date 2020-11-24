@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
@@ -40,8 +41,6 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
 {
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
-    /** Rasters smooth flag. */
-    private boolean smooth;
 
     /** Map tile surface. */
     private MapTileSurface map;
@@ -89,7 +88,7 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     }
 
     @Override
-    public void loadSheets(Media rasterConfig, boolean smooth)
+    public void loadSheets(Media rasterConfig)
     {
         final int th = map.getTileHeight();
         final int sheetsCount = map.getSheetsNumber();
@@ -97,8 +96,8 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
         for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
             final Integer sheet = Integer.valueOf(sheetId);
-            final RasterImage raster = new RasterImage(map.getSheet(sheetId).getSurface(), rasterConfig, th, smooth);
-            raster.loadRasters(map.getTileHeight(), false, sheet.toString());
+            final RasterImage raster = new RasterImage(map.getSheet(sheetId).getSurface(), rasterConfig, th);
+            raster.loadRasters(true, sheet.toString());
 
             final List<SpriteTiled> rastersSheet = getRasters(sheet);
             for (final ImageBuffer bufferRaster : raster.getRasters())
@@ -121,12 +120,7 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     @Override
     public int getRasterIndex(int ty)
     {
-        int index = ty % RasterImage.MAX_RASTERS_R;
-        if (!smooth && index > RasterImage.MAX_RASTERS_M)
-        {
-            index = RasterImage.MAX_RASTERS_M - (index - RasterImage.MAX_RASTERS);
-        }
-        return index;
+        return UtilMath.clamp((ty - 1) / RasterImage.LINES_PER_RASTER, 0, RasterImage.MAX_RASTERS - 1);
     }
 
     @Override

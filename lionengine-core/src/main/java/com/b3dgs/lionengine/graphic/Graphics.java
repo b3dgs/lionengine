@@ -242,6 +242,17 @@ public final class Graphics
     }
 
     /**
+     * Generate tile set from images.
+     * 
+     * @param images The images to assemble.
+     * @param media The tile set output.
+     */
+    public static void generateTileset(ImageBuffer[] images, Media media)
+    {
+        factoryGraphic.generateTileset(images, media);
+    }
+
+    /**
      * Get raster buffer from data.
      * 
      * @param img The image buffer (must not be <code>null</code>).
@@ -254,6 +265,48 @@ public final class Graphics
     public static ImageBuffer getRasterBuffer(ImageBuffer img, double fr, double fg, double fb)
     {
         return factoryGraphic.getRasterBuffer(img, fr, fg, fb);
+    }
+
+    /**
+     * Get raster buffers from palette.
+     * 
+     * @param img The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static ImageBuffer[] getRasterBuffer(ImageBuffer img, ImageBuffer palette)
+    {
+        return factoryGraphic.getRasterBuffer(img, palette);
+    }
+
+    /**
+     * Get raster buffer from first palette, fill for each height until tile size.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param tileHeight The tile height.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight)
+    {
+        return factoryGraphic.getRasterBufferSmooth(image, palette, tileHeight);
+    }
+
+    /**
+     * Get raster buffer with offsets applied.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The palette offset (must not be <code>null</code>).
+     * @param raster The raster color (must not be <code>null</code>).
+     * @param offsets The offsets number (rasters inside).
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static ImageBuffer[] getRasterBufferOffset(Media image, Media palette, Media raster, int offsets)
+    {
+        return factoryGraphic.getRasterBufferOffset(image, palette, raster, offsets);
     }
 
     /**

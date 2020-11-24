@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * </p>
  * 
  * <pre>
- * {@link #loadSheets(Media, boolean)}
+ * {@link #loadSheets(Media)}
  * </pre>
  */
 @FeatureInterface
@@ -41,10 +41,9 @@ public interface MapTileRastered extends Feature, MapTileRenderer
      * Load tile sheets as rastered.
      * 
      * @param rasterConfig The raster file that define the colors.
-     * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
      * @throws LionEngineException If error when reading sheets.
      */
-    void loadSheets(Media rasterConfig, boolean smooth);
+    void loadSheets(Media rasterConfig);
 
     /**
      * Get raster index from input tile (depending of its height).

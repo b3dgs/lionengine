@@ -17,9 +17,7 @@
 package com.b3dgs.lionengine.game.feature.rasterable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
-import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,8 +37,6 @@ final class SetupSurfaceRasteredTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "ObjectRaster.xml";
-    /** Object configuration file name. */
-    private static final String OBJECT_SMOOTH_XML = "ObjectRasterSmooth.xml";
     /** Raster configuration file name. */
     private static final String RASTER_XML = "raster.xml";
 
@@ -74,7 +70,6 @@ final class SetupSurfaceRasteredTest
         final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
 
         assertEquals(raster, setup.getFile());
-        assertFalse(setup.hasSmooth());
 
         for (final ImageBuffer buffer : setup.getRasters())
         {
@@ -82,25 +77,6 @@ final class SetupSurfaceRasteredTest
             assertEquals(setup.getSurface().getHeight(), buffer.getHeight());
         }
 
-        UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
-    }
-
-    /**
-     * Test the setup surface rastered config.
-     */
-    @Test
-    void testConfigSmooth()
-    {
-        final Media raster = Medias.create(RASTER_XML);
-        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_SMOOTH_XML), raster);
-
-        assertEquals(raster, setup.getFile());
-        assertTrue(setup.hasSmooth());
-        for (final ImageBuffer buffer : setup.getRasters())
-        {
-            assertEquals(setup.getSurface().getWidth(), buffer.getWidth());
-            assertEquals(setup.getSurface().getHeight(), buffer.getHeight());
-        }
         UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
     }
 
