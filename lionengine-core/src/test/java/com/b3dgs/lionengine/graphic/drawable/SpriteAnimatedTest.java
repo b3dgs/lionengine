@@ -516,12 +516,14 @@ final class SpriteAnimatedTest
         sprite.play(animation);
 
         assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        assertEquals(2, sprite.getFrames());
         assertEquals(1, sprite.getFrame());
         assertEquals(1, sprite.getFrameAnim());
 
         sprite.update(1.0);
 
         assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        assertEquals(2, sprite.getFrames());
         assertEquals(2, sprite.getFrame());
         assertEquals(2, sprite.getFrameAnim());
     }

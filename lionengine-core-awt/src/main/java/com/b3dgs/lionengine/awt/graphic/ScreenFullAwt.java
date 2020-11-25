@@ -23,6 +23,7 @@ import java.awt.DisplayMode;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Generated;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.awt.Keyboard;
@@ -102,10 +103,8 @@ final class ScreenFullAwt extends ScreenBaseAwt
                                           + formatResolution(output, depth)
                                           + getSupportedResolutions());
         }
-        if (!dev.isDisplayChangeSupported())
-        {
-            throw new LionEngineException(ScreenFullAwt.ERROR_SWITCH);
-        }
+        checkDisplayChangeSupport();
+
         dev.setDisplayMode(disp);
         window.validate();
 
@@ -117,6 +116,18 @@ final class ScreenFullAwt extends ScreenBaseAwt
         componentForMouse = window;
         componentForCursor = window;
         frame.validate();
+    }
+
+    /**
+     * Check support of display change.
+     */
+    @Generated
+    private void checkDisplayChangeSupport()
+    {
+        if (!dev.isDisplayChangeSupported())
+        {
+            throw new LionEngineException(ScreenFullAwt.ERROR_SWITCH);
+        }
     }
 
     /**
@@ -186,11 +197,7 @@ final class ScreenFullAwt extends ScreenBaseAwt
         final DisplayMode[] supported = dev.getDisplayModes();
         for (final DisplayMode current : supported)
         {
-            final boolean multiDepth = current.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI && display.equals(current);
-            if (multiDepth
-                || current.getBitDepth() == DisplayMode.BIT_DEPTH_MULTI
-                   && display.getWidth() == current.getWidth()
-                   && display.getHeight() == current.getHeight())
+            if (ToolsAwt.sameDisplay(display, current))
             {
                 return current;
             }

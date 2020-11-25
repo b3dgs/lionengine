@@ -21,6 +21,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -60,6 +61,22 @@ public final class ToolsAwt
     private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
     private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
+
+    /**
+     * Check if same display.
+     * 
+     * @param a The first display.
+     * @param b The second display.
+     * @return <code>true</code> if same, <code>false</code> else.
+     */
+    public static boolean sameDisplay(DisplayMode a, DisplayMode b)
+    {
+        final boolean multiDepth = b.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI && a.equals(b);
+        return multiDepth
+               || b.getBitDepth() == DisplayMode.BIT_DEPTH_MULTI
+                  && a.getWidth() == b.getWidth()
+                  && a.getHeight() == b.getHeight();
+    }
 
     /**
      * Get the image transparency equivalence.
