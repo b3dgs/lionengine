@@ -107,7 +107,25 @@ final class UtilMathTest
     @Test
     void testRounded()
     {
-        assertEquals(100, UtilMath.getRounded(105, 100));
+        assertEquals(0, UtilMath.getRounded(99, 100));
+        assertEquals(100, UtilMath.getRounded(149, 100));
+        assertEquals(100, UtilMath.getRounded(150, 100));
+        assertEquals(100, UtilMath.getRounded(151, 100));
+        assertEquals(100, UtilMath.getRounded(199, 100));
+    }
+
+    /**
+     * Test the rounded round function.
+     */
+    @Test
+    void testRoundedR()
+    {
+        assertEquals(0, UtilMath.getRoundedR(49, 100));
+        assertEquals(100, UtilMath.getRoundedR(99, 100));
+        assertEquals(100, UtilMath.getRoundedR(149, 100));
+        assertEquals(200, UtilMath.getRoundedR(150, 100));
+        assertEquals(200, UtilMath.getRoundedR(151, 100));
+        assertEquals(200, UtilMath.getRoundedR(199, 100));
     }
 
     /**
@@ -116,7 +134,12 @@ final class UtilMathTest
     @Test
     void testRoundedC()
     {
-        assertEquals(200, UtilMath.getRoundedC(105, 100));
+        assertEquals(100, UtilMath.getRoundedC(49, 100));
+        assertEquals(100, UtilMath.getRoundedC(99, 100));
+        assertEquals(200, UtilMath.getRoundedC(149, 100));
+        assertEquals(200, UtilMath.getRoundedC(150, 100));
+        assertEquals(200, UtilMath.getRoundedC(151, 100));
+        assertEquals(200, UtilMath.getRoundedC(199, 100));
     }
 
     /**

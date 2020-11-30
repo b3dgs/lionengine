@@ -366,6 +366,21 @@ public final class UtilMath
     }
 
     /**
+     * Get the rounded value with round.
+     * 
+     * @param value The value.
+     * @param round The round factor (must not be equal to 0).
+     * @return The rounded value.
+     * @throws LionEngineException If invalid argument.
+     */
+    public static int getRoundedR(double value, int round)
+    {
+        Check.different(round, 0);
+
+        return (int) Math.round(value / round) * round;
+    }
+
+    /**
      * Get the rounded value with ceil.
      * 
      * @param value The value.
