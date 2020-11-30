@@ -45,8 +45,6 @@ public class Xml extends XmlReader
 {
     /** Error when writing into file. */
     static final String ERROR_WRITING = "An error occured while writing";
-    /** Node error. */
-    static final String ERROR_NODE = "Node not found: ";
     /** Attribute error. */
     static final String ERROR_WRITE_ATTRIBUTE = "Error when setting the attribute:";
     /** Attribute error. */
@@ -362,13 +360,11 @@ public class Xml extends XmlReader
         all.clear();
     }
 
-    /**
-     * Get a child node from its name.
-     * 
-     * @param name The child name (must not be <code>null</code>).
-     * @return The child node reference.
-     * @throws LionEngineException If no node is found at this child name.
+    /*
+     * XmlReader
      */
+
+    @Override
     public Xml getChild(String name)
     {
         Check.notNull(name);
@@ -385,13 +381,7 @@ public class Xml extends XmlReader
         throw new LionEngineException(ERROR_NODE + name);
     }
 
-    /**
-     * Get the list of all children with this name.
-     * 
-     * @param name The children name (must not be <code>null</code>).
-     * @return The children list.
-     * @throws LionEngineException If invalid argument.
-     */
+    @Override
     public Collection<Xml> getChildren(String name)
     {
         Check.notNull(name);
@@ -409,11 +399,7 @@ public class Xml extends XmlReader
         return nodes;
     }
 
-    /**
-     * Get list of all children.
-     * 
-     * @return The children list.
-     */
+    @Override
     public Collection<Xml> getChildren()
     {
         final Collection<Xml> nodes = new ArrayList<>(1);

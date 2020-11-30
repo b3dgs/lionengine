@@ -18,6 +18,8 @@ package com.b3dgs.lionengine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,8 @@ public class XmlReader
 {
     /** Null string (represents a string stored as <code>null</code>). */
     public static final String NULL = "null";
+    /** Node error. */
+    static final String ERROR_NODE = "Node not found: ";
     /** Error when reading the file. */
     static final String ERROR_READING = "An error occured while reading";
     /** Attribute error. */
@@ -392,6 +396,73 @@ public class XmlReader
             }
         }
         return false;
+    }
+
+    /**
+     * Get a child node from its name.
+     * 
+     * @param name The child name (must not be <code>null</code>).
+     * @return The child node reference.
+     * @throws LionEngineException If no node is found at this child name.
+     */
+    public XmlReader getChild(String name)
+    {
+        Check.notNull(name);
+
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (node instanceof Element && node.getNodeName().equals(name))
+            {
+                return new XmlReader(document, (Element) node);
+            }
+        }
+        throw new LionEngineException(ERROR_NODE + name);
+    }
+
+    /**
+     * Get the list of all children with this name.
+     * 
+     * @param name The children name (must not be <code>null</code>).
+     * @return The children list.
+     * @throws LionEngineException If invalid argument.
+     */
+    public Collection<? extends XmlReader> getChildren(String name)
+    {
+        Check.notNull(name);
+
+        final Collection<XmlReader> nodes = new ArrayList<>(1);
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (name.equals(node.getNodeName()))
+            {
+                nodes.add(new XmlReader(document, (Element) node));
+            }
+        }
+        return nodes;
+    }
+
+    /**
+     * Get list of all children.
+     * 
+     * @return The children list.
+     */
+    public Collection<? extends XmlReader> getChildren()
+    {
+        final Collection<XmlReader> nodes = new ArrayList<>(1);
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (node instanceof Element)
+            {
+                nodes.add(new XmlReader(document, (Element) node));
+            }
+        }
+        return nodes;
     }
 
     /**

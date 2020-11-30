@@ -42,7 +42,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test {@link Xml}.
+ * Test {@link Xml and XmlReader}.
  */
 final class XmlTest
 {
@@ -132,6 +132,13 @@ final class XmlTest
 
         testWriteXml(media);
         testReadXml(media);
+
+        final XmlReader reader = new XmlReader(media);
+
+        assertEquals(reader.getChild("child").getNodeName(),
+                     reader.getChildren("child").iterator().next().getNodeName());
+        assertEquals(reader.getChild("child").getNodeName(), reader.getChildren().iterator().next().getNodeName());
+        assertEquals(1, reader.getChildren().size());
 
         Medias.setLoadFromJar(XmlTest.class);
         testWrongReadXml(media);
@@ -309,7 +316,7 @@ final class XmlTest
         final Xml node = new Xml("node");
         node.add(new Xml("test"));
 
-        assertThrows(() -> node.getChild("void"), Xml.ERROR_NODE + "void");
+        assertThrows(() -> node.getChild("void"), XmlReader.ERROR_NODE + "void");
 
         node.writeBoolean("boolean", BOOL_VALUE);
         node.writeByte("byte", BYTE_VALUE);
@@ -507,8 +514,10 @@ final class XmlTest
     private void testWrongReadXml(Media media)
     {
         final Xml root = new Xml(media);
+        final XmlReader rootReader = new XmlReader(media);
 
-        assertThrows(() -> root.getChild("none"), Xml.ERROR_NODE + "none");
+        assertThrows(() -> rootReader.getChild("none"), XmlReader.ERROR_NODE + "none");
+        assertThrows(() -> root.getChild("none"), XmlReader.ERROR_NODE + "none");
         assertThrows(() -> root.readInteger("wrong"), XmlReader.ERROR_ATTRIBUTE + "wrong");
         assertThrows(() -> new Xml(Medias.create("malformed.xml")), "[malformed.xml] " + XmlReader.ERROR_READING);
     }
