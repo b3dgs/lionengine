@@ -17,6 +17,8 @@
 package com.b3dgs.lionengine.game.feature.tile.map.raster;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
 
@@ -102,13 +104,18 @@ final class MapTileRasteredModelTest
         map.setTile(0, 0, 0);
         map.setTile(1, 1, 1);
 
-        mapRastered.loadSheets(Medias.create("raster.xml"));
+        assertFalse(mapRastered.loadSheets());
+
+        mapRastered.setRaster(Medias.create("raster.xml"));
+
+        assertTrue(mapRastered.loadSheets());
+
         mapViewer.addRenderer(mapRastered);
         mapViewer.render(g);
 
         assertEquals(RasterImage.MAX_RASTERS - 1, mapRastered.getRasterIndex(RasterImage.MAX_RASTERS * 2));
+        assertTrue(mapRastered.loadSheets());
 
-        mapRastered.loadSheets(Medias.create("raster.xml"));
         mapViewer.render(g);
 
         assertEquals(RasterImage.MAX_RASTERS / RasterImage.LINES_PER_RASTER,

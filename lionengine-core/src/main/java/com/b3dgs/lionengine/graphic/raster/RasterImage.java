@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.ImageFormat;
+import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
 
 /**
  * Represents a rastered image.
@@ -37,9 +38,11 @@ import com.b3dgs.lionengine.graphic.ImageFormat;
 public class RasterImage
 {
     /** Maximum rasters. */
-    public static final int MAX_RASTERS = 27;
+    public static final int MAX_RASTERS = 47;
     /** Number of line used by a raster. */
     public static final int LINES_PER_RASTER = 2;
+    /** Xml file. */
+    private static final String EXTENSION_XML = ".xml";
 
     /**
      * Get raster color.
@@ -69,9 +72,9 @@ public class RasterImage
     /** Original image. */
     private final ImageBuffer surface;
     /** Raster filename. */
-    private final Media rasterFile;
+    private Media rasterFile;
     /** Raster height. */
-    private final int rasterHeight;
+    private int rasterHeight;
 
     /**
      * Create a rastered image.
@@ -110,31 +113,58 @@ public class RasterImage
     /**
      * Load rasters.
      * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param suffix The folder suffix, if save is <code>true</code> (must not be <code>null</code>).
+     * @param rasterHeight The height used by the raster (must be strictly superior to 0).
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    public void loadRasters()
+    public void loadRasters(boolean save, String suffix, int rasterHeight)
     {
-        loadRasters(false, Constant.EMPTY_STRING);
+        this.rasterHeight = rasterHeight;
+        loadRasters(save, suffix);
     }
 
     /**
      * Load rasters.
      * 
      * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
-     * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
+     * @param suffix The folder suffix, if save is <code>true</code> (must not be <code>null</code>).
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    public void loadRasters(boolean save, String prefix)
+    public void loadRasters(boolean save, String suffix)
     {
-        Check.notNull(prefix);
+        Check.notNull(suffix);
 
-        if (rasterFile.getName().endsWith(".xml"))
+        if (rasterFile.getName().endsWith(EXTENSION_XML))
         {
-            loadFromXml(save, prefix);
+            loadFromXml(save, suffix);
         }
         else
         {
-            loadFromPalette(save, prefix);
+            loadFromPalette(save, suffix);
+        }
+    }
+
+    /**
+     * Load rasters.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param media The raster media (must not be <code>null</code>).
+     * @param suffix The folder suffix, if save is <code>true</code> (must not be <code>null</code>).
+     * @throws LionEngineException If the raster data from the media are invalid.
+     */
+    public void loadRasters(boolean save, Media media, String suffix)
+    {
+        Check.notNull(suffix);
+
+        rasterFile = media;
+        if (media.getName().endsWith(EXTENSION_XML))
+        {
+            loadFromXml(save, suffix);
+        }
+        else
+        {
+            loadFromPalette(save, suffix);
         }
     }
 
@@ -183,18 +213,17 @@ public class RasterImage
      * Load raster from XML.
      * 
      * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
-     * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
+     * @param suffix The folder suffix, if save is <code>true</code> (must not be <code>null</code>).
      */
-    private void loadFromXml(boolean save, String prefix)
+    private void loadFromXml(boolean save, String suffix)
     {
         final Raster raster = Raster.load(rasterFile);
 
         for (int i = 0; i < MAX_RASTERS; i++)
         {
-            final String folder = prefix + Constant.UNDERSCORE + UtilFile.removeExtension(rasterFile.getName());
+            final String folder = UtilFile.removeExtension(rasterFile.getName()) + Constant.UNDERSCORE + suffix;
             final String file = i + Constant.DOT + ImageFormat.PNG;
             final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
-
             final ImageBuffer rasterBuffer = createRaster(rasterMedia, raster, i, save);
             rasters.add(rasterBuffer);
         }
@@ -238,42 +267,41 @@ public class RasterImage
      * Load raster from palette image.
      * 
      * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
-     * @param prefix The folder prefix, if save is <code>true</code> (must not be <code>null</code>).
+     * @param suffix The folder suffix, if save is <code>true</code> (must not be <code>null</code>).
      */
-    private void loadFromPalette(boolean save, String prefix)
+    private void loadFromPalette(boolean save, String suffix)
     {
-        final ImageBuffer raster = Graphics.getImageBuffer(rasterFile);
+        final String folder = UtilFile.removeExtension(rasterFile.getName()) + Constant.UNDERSCORE + suffix;
+        int rastersNumber = ImageInfo.get(rasterFile).getHeight() - 1;
 
+        ImageBuffer rasterPalette = null;
         ImageBuffer[] rastersBuffer = null;
-        for (int i = 0; i < MAX_RASTERS; i++)
+        for (int i = 0; i < rastersNumber; i++)
         {
-            final String folder = prefix + Constant.UNDERSCORE + UtilFile.removeExtension(rasterFile.getName());
             final String file = i + Constant.DOT + ImageFormat.PNG;
             final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
+            final ImageBuffer rasterBuffer;
             if (rasterMedia.exists())
             {
-                final ImageBuffer rasterBuffer = Graphics.getImageBuffer(rasterMedia);
+                rasterBuffer = Graphics.getImageBuffer(rasterMedia);
                 rasterBuffer.prepare();
-                rasters.add(rasterBuffer);
             }
             else
             {
                 if (rastersBuffer == null)
                 {
                     surface.prepare();
-                    rastersBuffer = Graphics.getRasterBuffer(surface, raster);
+                    rasterPalette = Graphics.getImageBuffer(rasterFile);
+                    rastersBuffer = Graphics.getRasterBuffer(surface, rasterPalette);
+                    rastersNumber = rasterPalette.getHeight() - 1;
                 }
-                if (i == rastersBuffer.length)
-                {
-                    break;
-                }
-                final ImageBuffer rasterBuffer = rastersBuffer[i];
+                rasterBuffer = rastersBuffer[i];
                 if (save)
                 {
                     Graphics.saveImage(rasterBuffer, rasterMedia);
                 }
-                rasters.add(rasterBuffer);
             }
+            rasters.add(rasterBuffer);
         }
     }
 }

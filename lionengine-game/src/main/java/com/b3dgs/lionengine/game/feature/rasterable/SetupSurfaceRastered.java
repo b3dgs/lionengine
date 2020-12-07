@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.rasterable;
 import java.util.Collections;
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -41,9 +42,15 @@ public class SetupSurfaceRastered extends Setup
     private static final String ATT_RASTER_HEIGHT = "height";
     /** Rasterable file attribute. */
     private static final String ATT_RASTER_FILE = "file";
+    /** Rasterable external attribute. */
+    private static final String ATT_RASTER_EXTERN = "extern";
 
     /** Raster image. */
     private final RasterImage raster;
+    /** External load enabled. */
+    private final boolean externEnabled;
+    /** Externally loaded. */
+    private boolean externLoaded;
 
     /**
      * Create a setup.
@@ -67,7 +74,9 @@ public class SetupSurfaceRastered extends Setup
     {
         super(config);
 
-        if (hasNode(NODE_RASTERABLE))
+        externEnabled = getBooleanDefault(false, ATT_RASTER_EXTERN, NODE_RASTERABLE);
+
+        if (hasNode(NODE_RASTERABLE) && !externEnabled)
         {
             final int rasterHeight = getInteger(ATT_RASTER_HEIGHT, NODE_RASTERABLE);
 
@@ -91,6 +100,23 @@ public class SetupSurfaceRastered extends Setup
         else
         {
             raster = new RasterImage(Graphics.createImageBuffer(1, 1), config, 1);
+        }
+    }
+
+    /**
+     * Load raster with media externally.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param media The raster media (must not be <code>null</code>).
+     */
+    public void load(boolean save, Media media)
+    {
+        Check.notNull(media);
+
+        if (externEnabled && !externLoaded)
+        {
+            raster.loadRasters(save, media, UtilFile.removeExtension(getMedia().getName()));
+            externLoaded = true;
         }
     }
 
@@ -122,5 +148,15 @@ public class SetupSurfaceRastered extends Setup
     public int getRasterHeight()
     {
         return raster.getHeight();
+    }
+
+    /**
+     * Check if external loading is enabled.
+     * 
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    public boolean isExtern()
+    {
+        return externEnabled;
     }
 }

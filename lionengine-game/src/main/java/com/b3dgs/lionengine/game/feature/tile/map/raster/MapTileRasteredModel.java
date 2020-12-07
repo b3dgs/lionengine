@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -44,6 +45,10 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
 
     /** Map tile surface. */
     private MapTileSurface map;
+    /** Raster media. */
+    private Media raster;
+    /** Rasters count. */
+    private int count;
 
     /**
      * Create feature.
@@ -88,24 +93,31 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     }
 
     @Override
-    public void loadSheets(Media rasterConfig)
+    public boolean loadSheets()
     {
+        if (raster == null || !raster.exists())
+        {
+            return false;
+        }
         final int th = map.getTileHeight();
         final int sheetsCount = map.getSheetsNumber();
 
         for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
             final Integer sheet = Integer.valueOf(sheetId);
-            final RasterImage raster = new RasterImage(map.getSheet(sheetId).getSurface(), rasterConfig, th);
-            raster.loadRasters(true, sheet.toString());
+            final RasterImage rasterImage = new RasterImage(map.getSheet(sheetId).getSurface(), raster, th);
+            rasterImage.loadRasters(true, sheet.toString());
 
+            count = -1;
             final List<SpriteTiled> rastersSheet = getRasters(sheet);
-            for (final ImageBuffer bufferRaster : raster.getRasters())
+            for (final ImageBuffer bufferRaster : rasterImage.getRasters())
             {
                 final SpriteTiled sheetRaster = Drawable.loadSpriteTiled(bufferRaster, map.getTileWidth(), th);
                 rastersSheet.add(sheetRaster);
+                count++;
             }
         }
+        return true;
     }
 
     @Override
@@ -126,6 +138,14 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     @Override
     public SpriteTiled getRasterSheet(Integer sheet, int rasterIndex)
     {
-        return rasterSheets.get(sheet).get(rasterIndex);
+        return rasterSheets.get(sheet).get(UtilMath.clamp(rasterIndex, 0, count));
+    }
+
+    @Override
+    public void setRaster(Media raster)
+    {
+        Check.notNull(raster);
+
+        this.raster = raster;
     }
 }

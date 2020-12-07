@@ -21,9 +21,11 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
@@ -50,12 +52,16 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
     /** The viewer reference. */
     private final Viewer viewer;
+    /** Setup raster. */
+    private final SetupSurfaceRastered setup;
     /** The updater. */
-    private final Updatable updater;
+    private Updatable updater;
     /** Raster height. */
-    private final int rasterHeight;
+    private int rasterHeight;
     /** Last raster. */
     private SpriteAnimated raster;
+    /** Raster count. */
+    private int count;
     /** Origin value. */
     private Origin origin;
     /** Anim offset. */
@@ -101,6 +107,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         super(services, setup);
 
+        this.setup = setup;
         viewer = services.get(Viewer.class);
 
         origin = OriginConfig.imports(setup);
@@ -120,10 +127,12 @@ public class RasterableModel extends FeatureModel implements Rasterable
         }
         rasterHeight = setup.getRasterHeight();
 
+        count = -1;
         for (final ImageBuffer buffer : setup.getRasters())
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
             rastersAnim.add(sprite);
+            count++;
         }
         if (rastersAnim.size() < 2)
         {
@@ -149,11 +158,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
     {
         if (enabled)
         {
-            final int index = getRasterIndex((transformable.getY() + transformable.getHeight() / 2) / rasterHeight);
-            if (index > 0)
-            {
-                raster = rastersAnim.get(index);
-            }
+            final int index = getRasterIndex((transformable.getY() - transformable.getHeight()) / rasterHeight);
+            raster = rastersAnim.get(UtilMath.clamp(index, 0, count));
         }
         else
         {
@@ -216,6 +222,39 @@ public class RasterableModel extends FeatureModel implements Rasterable
         Check.superiorOrEqual(rasterIndex, 0);
 
         return rastersAnim.get(rasterIndex);
+    }
+
+    @Override
+    public void setRaster(boolean save, Media media, int rasterHeight)
+    {
+        if (setup.isExtern())
+        {
+            Check.notNull(media);
+            Check.superiorStrict(rasterHeight, 0);
+
+            this.rasterHeight = rasterHeight;
+
+            setup.load(save, media);
+            rastersAnim.clear();
+
+            count = -1;
+            for (final ImageBuffer buffer : setup.getRasters())
+            {
+                final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer,
+                                                                          raster.getFramesHorizontal(),
+                                                                          raster.getFramesVertical());
+                rastersAnim.add(sprite);
+                count++;
+            }
+            if (rastersAnim.size() < 2)
+            {
+                updater = UpdatableVoid.getInstance();
+            }
+            else
+            {
+                updater = extrp -> updateRasterAnim();
+            }
+        }
     }
 
     @Override

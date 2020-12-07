@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game.feature.rasterable;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Feature;
@@ -59,6 +61,16 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @return The raster animated sprite.
      */
     SpriteAnimated getRasterAnim(int rasterIndex);
+
+    /**
+     * Set the raster media.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param media The raster media (must not be <code>null</code>).
+     * @param rasterHeight The raster height (must be strictly positive).
+     * @throws LionEngineException If invalid argument.
+     */
+    void setRaster(boolean save, Media media, int rasterHeight);
 
     /**
      * Set the origin location type, related to surface area. The type will affect the defined location and the

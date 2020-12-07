@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
 import com.b3dgs.lionengine.graphic.ImageFormat;
+import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
 
 /**
  * Test {@link RasterImage}.
@@ -67,9 +68,9 @@ final class RasterImageTest
     {
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
-        raster.loadRasters();
+        raster.loadRasters(false, Constant.EMPTY_STRING);
 
-        assertEquals(27, raster.getRasters().size());
+        assertEquals(47, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
         assertEquals(100, raster.getHeight());
         assertEquals(100, raster.getRaster(0).getWidth());
@@ -84,23 +85,23 @@ final class RasterImageTest
     {
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
-        raster.loadRasters(true, "prefix");
+        raster.loadRasters(true, "suffix");
 
-        assertEquals(27, raster.getRasters().size());
+        assertEquals(47, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
         assertEquals(100, raster.getHeight());
         assertEquals(100, raster.getRaster(0).getWidth());
         assertEquals(200, raster.getRaster(0).getHeight());
 
-        final Media folder = Medias.create("prefix_raster");
+        final Media folder = Medias.create("raster_suffix");
 
         assertTrue(folder.exists(), folder.getFile().getAbsolutePath());
 
         try
         {
-            for (int i = 0; i < 27; i++)
+            for (int i = 0; i < 47; i++)
             {
-                final Media file = Medias.create("prefix_raster", i + Constant.DOT + ImageFormat.PNG);
+                final Media file = Medias.create("raster_suffix", i + Constant.DOT + ImageFormat.PNG);
 
                 assertTrue(file.exists(), file.getFile().getAbsolutePath());
             }
@@ -121,21 +122,21 @@ final class RasterImageTest
         final RasterImage raster = new RasterImage(Medias.create("image.png"), mediaRaster, 100);
         raster.loadRasters(true, "cache");
 
-        assertEquals(27, raster.getRasters().size());
+        assertEquals(47, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
         assertEquals(100, raster.getHeight());
         assertEquals(64, raster.getRaster(0).getWidth());
         assertEquals(32, raster.getRaster(0).getHeight());
 
-        final Media folder = Medias.create("cache_raster");
+        final Media folder = Medias.create("raster_cache");
 
         assertTrue(folder.exists(), folder.getFile().getAbsolutePath());
 
         try
         {
-            for (int i = 0; i < 27; i++)
+            for (int i = 0; i < 47; i++)
             {
-                final Media file = Medias.create("cache_raster", i + Constant.DOT + ImageFormat.PNG);
+                final Media file = Medias.create("raster_cache", i + Constant.DOT + ImageFormat.PNG);
 
                 assertTrue(file.exists(), file.getFile().getAbsolutePath());
             }
@@ -143,7 +144,7 @@ final class RasterImageTest
             final RasterImage cache = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
             cache.loadRasters(false, "cache");
 
-            assertEquals(27, cache.getRasters().size());
+            assertEquals(47, cache.getRasters().size());
             assertEquals(mediaRaster, cache.getFile());
             assertEquals(100, cache.getHeight());
             assertEquals(64, cache.getRaster(0).getWidth());
@@ -162,14 +163,15 @@ final class RasterImageTest
     void testDefaultPalette()
     {
         final Media mediaRaster = Medias.create("raster.png");
-        final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
-        raster.loadRasters();
+        final int rastersNumber = ImageInfo.get(mediaRaster).getHeight() - 1;
+        final RasterImage raster = new RasterImage(new ImageBufferMock(128, 64), mediaRaster, 16);
+        raster.loadRasters(false, Constant.EMPTY_STRING);
 
-        assertEquals(1, raster.getRasters().size());
+        assertEquals(rastersNumber, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
-        assertEquals(100, raster.getHeight());
-        assertEquals(100, raster.getRaster(0).getWidth());
-        assertEquals(200, raster.getRaster(0).getHeight());
+        assertEquals(16, raster.getHeight());
+        assertEquals(128, raster.getRaster(0).getWidth());
+        assertEquals(64, raster.getRaster(0).getHeight());
     }
 
     /**
@@ -179,24 +181,25 @@ final class RasterImageTest
     void testSavePalette()
     {
         final Media mediaRaster = Medias.create("raster.png");
-        final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
-        raster.loadRasters(true, "prefix");
+        final int rastersNumber = ImageInfo.get(mediaRaster).getHeight() - 1;
+        final RasterImage raster = new RasterImage(new ImageBufferMock(128, 64), mediaRaster, 16);
+        raster.loadRasters(true, "save");
 
-        assertEquals(1, raster.getRasters().size());
+        assertEquals(rastersNumber, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
-        assertEquals(100, raster.getHeight());
-        assertEquals(100, raster.getRaster(0).getWidth());
-        assertEquals(200, raster.getRaster(0).getHeight());
+        assertEquals(16, raster.getHeight());
+        assertEquals(128, raster.getRaster(0).getWidth());
+        assertEquals(64, raster.getRaster(0).getHeight());
 
-        final Media folder = Medias.create("prefix_raster");
+        final Media folder = Medias.create("raster_save");
 
         assertTrue(folder.exists(), folder.getFile().getAbsolutePath());
 
         try
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < rastersNumber; i++)
             {
-                final Media file = Medias.create("prefix_raster", i + Constant.DOT + ImageFormat.PNG);
+                final Media file = Medias.create("raster_save", i + Constant.DOT + ImageFormat.PNG);
 
                 assertTrue(file.exists(), file.getFile().getAbsolutePath());
             }
@@ -214,24 +217,25 @@ final class RasterImageTest
     void testCachePalette()
     {
         final Media mediaRaster = Medias.create("raster.png");
-        final RasterImage raster = new RasterImage(Medias.create("image.png"), mediaRaster, 100);
+        final int rastersNumber = ImageInfo.get(mediaRaster).getHeight() - 1;
+        final RasterImage raster = new RasterImage(Medias.create("image.png"), mediaRaster, 16);
         raster.loadRasters(true, "cache");
 
-        assertEquals(1, raster.getRasters().size());
+        assertEquals(rastersNumber, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
-        assertEquals(100, raster.getHeight());
+        assertEquals(16, raster.getHeight());
         assertEquals(64, raster.getRaster(0).getWidth());
         assertEquals(32, raster.getRaster(0).getHeight());
 
-        final Media folder = Medias.create("cache_raster");
+        final Media folder = Medias.create("raster_cache");
 
         assertTrue(folder.exists(), folder.getFile().getAbsolutePath());
 
         try
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < rastersNumber; i++)
             {
-                final Media file = Medias.create("cache_raster", i + Constant.DOT + ImageFormat.PNG);
+                final Media file = Medias.create("raster_cache", i + Constant.DOT + ImageFormat.PNG);
 
                 assertTrue(file.exists(), file.getFile().getAbsolutePath());
             }
@@ -239,7 +243,7 @@ final class RasterImageTest
             final RasterImage cache = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
             cache.loadRasters(false, "cache");
 
-            assertEquals(1, cache.getRasters().size());
+            assertEquals(rastersNumber, cache.getRasters().size());
             assertEquals(mediaRaster, cache.getFile());
             assertEquals(100, cache.getHeight());
             assertEquals(64, cache.getRaster(0).getWidth());
