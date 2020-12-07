@@ -44,6 +44,9 @@
             <plugin>
                 <groupId>com.b3dgs.radialencapsulation</groupId>
                 <artifactId>radial-encapsulation-maven-plugin</artifactId>
+                <configuration>
+                    <maxViolations>2</maxViolations> <!-- TODO To be removed -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
