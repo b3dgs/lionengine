@@ -198,10 +198,8 @@ public class MapTileHelper extends MapTileGame
         load(media, mapTransition::loadTransitions, TransitionsConfig.FILENAME);
         load(media, mapCircuit::loadCircuits, CircuitsConfig.FILENAME);
 
-        final Media configRaster = Medias.create(parent, "raster.png");
-        if (configRaster.exists())
+        if (mapRaster.loadSheets())
         {
-            mapRaster.loadSheets(configRaster);
             mapViewer.clear();
             mapViewer.addRenderer(mapRaster);
         }
