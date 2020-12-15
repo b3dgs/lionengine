@@ -52,8 +52,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         Check.superiorStrict(tileHeight, 0);
 
         this.media = media;
-        tilesHorizontal = getWidth() / tileWidth;
-        tilesVertical = getHeight() / tileHeight;
+        tilesHorizontal = Math.max(getWidth() / tileWidth, 1);
+        tilesVertical = Math.max(getHeight() / tileHeight, 1);
     }
 
     /**
@@ -72,8 +72,8 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
         Check.superiorStrict(tileHeight, 0);
 
         media = null;
-        tilesHorizontal = getWidth() / tileWidth;
-        tilesVertical = getHeight() / tileHeight;
+        tilesHorizontal = Math.max(getWidth() / tileWidth, 1);
+        tilesVertical = Math.max(getHeight() / tileHeight, 1);
     }
 
     /*
