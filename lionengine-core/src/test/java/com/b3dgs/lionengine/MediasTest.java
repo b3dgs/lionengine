@@ -296,7 +296,7 @@ final class MediasTest
     @Test
     void testGetMediasOnFile()
     {
-        assertThrows(() -> Medias.create("image.png").getMedias(), "[image.png] " + MediaDefault.ERROR_PATH_DIR);
+        assertTrue(Medias.create("image.png").getMedias().isEmpty());
     }
 
     /**
