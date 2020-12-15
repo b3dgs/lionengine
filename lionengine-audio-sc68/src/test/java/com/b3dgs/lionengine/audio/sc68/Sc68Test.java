@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -370,7 +371,7 @@ final class Sc68Test
             @Override
             public Collection<Media> getMedias()
             {
-                return null;
+                return Collections.emptyList();
             }
 
             @Override
