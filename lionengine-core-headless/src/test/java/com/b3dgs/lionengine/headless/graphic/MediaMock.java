@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.b3dgs.lionengine.Media;
 
@@ -56,7 +57,7 @@ final class MediaMock implements Media
     @Override
     public Collection<Media> getMedias()
     {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

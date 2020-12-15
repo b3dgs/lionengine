@@ -206,6 +206,15 @@ final class MediaTest
     }
 
     /**
+     * Test get medias.
+     */
+    @Test
+    void testGetMedias()
+    {
+        assertTrue(Medias.create("null", "void").getMedias().isEmpty());
+    }
+
+    /**
      * Test temp path creation unable.
      * 
      * @throws IOException If error.

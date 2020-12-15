@@ -52,8 +52,7 @@ public interface Media extends Nameable
     /**
      * Get the medias in the media path.
      * 
-     * @return The media content.
-     * @throws LionEngineException If not a valid directory.
+     * @return The media content (empty if nothing or invalid directory).
      */
     Collection<Media> getMedias();
 

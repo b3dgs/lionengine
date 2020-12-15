@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -281,7 +282,7 @@ final class MediaDefault implements Media
             }
             return medias;
         }
-        throw new LionEngineException(this, ERROR_PATH_DIR);
+        return Collections.emptyList();
     }
 
     @Override
