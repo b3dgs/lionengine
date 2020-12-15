@@ -50,6 +50,18 @@ public final class UtilAssert
     }
 
     /**
+     * Asserts that {@code executable} throws a {@link LionEngineException} with a specific <code>cause</code>.
+     * 
+     * @param executable The executable to test.
+     * @param expected The expected exception message.
+     */
+    public static void assertCause(Executable executable, String expected)
+    {
+        Assertions.assertEquals(expected,
+                                Assertions.assertThrows(LionEngineException.class, executable).getCause().getMessage());
+    }
+
+    /**
      * Asserts that {@code executable} throws a {@link LionEngineException}.
      * 
      * @param executable The executable to test.

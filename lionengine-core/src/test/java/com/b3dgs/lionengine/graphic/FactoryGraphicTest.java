@@ -484,6 +484,33 @@ public class FactoryGraphicTest
     }
 
     /**
+     * Test get raster buffer from smooth frames palette.
+     */
+    @Test
+    void testGetRasterBufferSmoothFrames()
+    {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
+
+        final ImageBuffer raster = Graphics.getImageBuffer(Medias.create("raster.png"));
+        image.prepare();
+
+        final ImageBuffer[] rasters = Graphics.getRasterBufferSmooth(image, raster, 1, 1);
+
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertNotEquals(image, buffer);
+            assertEquals(image.getWidth(), buffer.getWidth());
+            assertEquals(image.getHeight(), buffer.getHeight());
+
+            buffer.dispose();
+        }
+
+        raster.dispose();
+        image.dispose();
+    }
+
+    /**
      * Test get raster buffer offset.
      */
     @Test

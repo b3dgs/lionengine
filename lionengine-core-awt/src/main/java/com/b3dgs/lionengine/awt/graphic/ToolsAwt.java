@@ -447,6 +447,31 @@ public final class ToolsAwt
     }
 
     /**
+     * Get raster buffer from first palette, fill for each height until tile size.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param fh The horizontal frames.
+     * @param fv The vertical frames.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static BufferedImage[] getRasterBufferSmooth(BufferedImage image, BufferedImage palette, int fh, int fv)
+    {
+        final int height = image.getHeight();
+        final int frameHeight = height / fh;
+        final BufferedImage[] rasters = new BufferedImage[frameHeight];
+
+        for (int maxHeight = 0; maxHeight < frameHeight; maxHeight++)
+        {
+            final BufferedImage raster = createImage(image.getWidth(), height, image.getTransparency());
+            fillBuffer(image, palette, raster, frameHeight, maxHeight, 0);
+            rasters[maxHeight] = raster;
+        }
+        return rasters;
+    }
+
+    /**
      * Fill raster buffer from palette.
      * 
      * @param image The image buffer (must not be <code>null</code>).

@@ -17,7 +17,10 @@
 package com.b3dgs.lionengine.game.feature.rasterable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -54,6 +57,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private final Viewer viewer;
     /** Setup raster. */
     private final SetupSurfaceRastered setup;
+    /** Raster media. */
+    private Optional<Media> media = Optional.empty();
     /** The updater. */
     private Updatable updater;
     /** Raster height. */
@@ -227,14 +232,21 @@ public class RasterableModel extends FeatureModel implements Rasterable
     @Override
     public void setRaster(boolean save, Media media, int rasterHeight)
     {
+        setRaster(save, media, rasterHeight, Collections.emptyList());
+    }
+
+    @Override
+    public void setRaster(boolean save, Media media, int rasterHeight, Collection<Integer> allowed)
+    {
         if (setup.isExtern())
         {
             Check.notNull(media);
             Check.superiorStrict(rasterHeight, 0);
 
+            this.media = Optional.of(media);
             this.rasterHeight = rasterHeight;
 
-            setup.load(save, media);
+            setup.load(save, media, allowed);
             rastersAnim.clear();
 
             count = -1;
@@ -255,6 +267,12 @@ public class RasterableModel extends FeatureModel implements Rasterable
                 updater = extrp -> updateRasterAnim();
             }
         }
+    }
+
+    @Override
+    public Optional<Media> getMedia()
+    {
+        return media;
     }
 
     @Override

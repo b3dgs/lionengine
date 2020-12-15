@@ -16,6 +16,9 @@
  */
 package com.b3dgs.lionengine.game.feature.rasterable;
 
+import java.util.Collection;
+import java.util.Optional;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
@@ -71,6 +74,24 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @throws LionEngineException If invalid argument.
      */
     void setRaster(boolean save, Media media, int rasterHeight);
+
+    /**
+     * Set the raster media.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param media The raster media (must not be <code>null</code>).
+     * @param rasterHeight The raster height (must be strictly positive).
+     * @param ignored The ignored raster indexes.
+     * @throws LionEngineException If invalid argument.
+     */
+    void setRaster(boolean save, Media media, int rasterHeight, Collection<Integer> ignored);
+
+    /**
+     * Get the raster media.
+     * 
+     * @return The raster media.
+     */
+    Optional<Media> getMedia();
 
     /**
      * Set the origin location type, related to surface area. The type will affect the defined location and the

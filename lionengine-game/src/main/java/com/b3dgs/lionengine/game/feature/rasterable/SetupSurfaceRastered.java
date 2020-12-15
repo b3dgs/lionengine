@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.rasterable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -111,11 +112,23 @@ public class SetupSurfaceRastered extends Setup
      */
     public void load(boolean save, Media media)
     {
+        load(save, media, Collections.emptyList());
+    }
+
+    /**
+     * Load raster with media externally.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param media The raster media (must not be <code>null</code>).
+     * @param allowed The allowed raster indexes.
+     */
+    public void load(boolean save, Media media, Collection<Integer> allowed)
+    {
         Check.notNull(media);
 
         if (externEnabled && !externLoaded)
         {
-            raster.loadRasters(save, media, UtilFile.removeExtension(getMedia().getName()));
+            raster.loadRasters(save, media, UtilFile.removeExtension(getMedia().getName()), allowed);
             externLoaded = true;
         }
     }

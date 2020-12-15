@@ -295,6 +295,21 @@ public final class Graphics
     }
 
     /**
+     * Get raster buffer from first palette, fill for each height until tile size.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param fh The horizontal frames.
+     * @param fv The vertical frames.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int fh, int fv)
+    {
+        return factoryGraphic.getRasterBufferSmooth(image, palette, fh, fv);
+    }
+
+    /**
      * Get raster buffer with offsets applied.
      * 
      * @param image The image buffer (must not be <code>null</code>).
