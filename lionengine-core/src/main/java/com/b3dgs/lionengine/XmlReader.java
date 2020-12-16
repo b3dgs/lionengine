@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -142,6 +145,22 @@ public class XmlReader
     }
 
     /**
+     * Read a boolean.
+     * 
+     * @param attribute The boolean name (must not be <code>null</code>).
+     * @return The boolean value.
+     * @throws LionEngineException If error when reading.
+     */
+    public Optional<Boolean> readBooleanOptional(String attribute)
+    {
+        if (hasAttribute(attribute))
+        {
+            return Optional.of(Boolean.valueOf(readBoolean(attribute)));
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Read a byte.
      * 
      * @param attribute The integer name (must not be <code>null</code>).
@@ -213,6 +232,22 @@ public class XmlReader
     public int readInteger(int defaultValue, String attribute)
     {
         return Integer.parseInt(getValue(String.valueOf(defaultValue), attribute));
+    }
+
+    /**
+     * Read an integer.
+     * 
+     * @param attribute The integer name (must not be <code>null</code>).
+     * @return The integer value.
+     * @throws LionEngineException If error when reading.
+     */
+    public OptionalInt readIntegerOptional(String attribute)
+    {
+        if (hasAttribute(attribute))
+        {
+            return OptionalInt.of(readInteger(attribute));
+        }
+        return OptionalInt.empty();
     }
 
     /**
@@ -291,6 +326,22 @@ public class XmlReader
     }
 
     /**
+     * Read a double.
+     * 
+     * @param attribute The double name (must not be <code>null</code>).
+     * @return The double value.
+     * @throws LionEngineException If error when reading.
+     */
+    public OptionalDouble readDoubleOptional(String attribute)
+    {
+        if (hasAttribute(attribute))
+        {
+            return OptionalDouble.of(readDouble(attribute));
+        }
+        return OptionalDouble.empty();
+    }
+
+    /**
      * Read a string. If the read string is equal to {@link #NULL}, <code>null</code> will be returned instead.
      * 
      * @param attribute The string name (must not be <code>null</code>).
@@ -323,6 +374,22 @@ public class XmlReader
             return null;
         }
         return value;
+    }
+
+    /**
+     * Read a string.
+     * 
+     * @param attribute The string name (must not be <code>null</code>).
+     * @return The string value.
+     * @throws LionEngineException If error when reading.
+     */
+    public Optional<String> readStringOptional(String attribute)
+    {
+        if (hasAttribute(attribute))
+        {
+            return Optional.ofNullable(readString(attribute));
+        }
+        return Optional.empty();
     }
 
     /**
@@ -419,6 +486,26 @@ public class XmlReader
             }
         }
         throw new LionEngineException(ERROR_NODE + name);
+    }
+
+    /**
+     * Get a child node from its name.
+     * 
+     * @param name The child name.
+     * @return The child node reference.
+     */
+    public Optional<XmlReader> getChildOptional(String name)
+    {
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (node instanceof Element && node.getNodeName().equals(name))
+            {
+                return Optional.of(new XmlReader(document, (Element) node));
+            }
+        }
+        return Optional.empty();
     }
 
     /**

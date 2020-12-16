@@ -267,6 +267,8 @@ final class XmlTest
         assertEquals("root", root.getNodeName());
         assertNotNull(root.getChild("child1"));
         assertNotNull(root.getChild("child2"));
+        assertFalse(root.getChildOptional("void").isPresent());
+        assertTrue(root.getChildOptional("child1").isPresent());
 
         assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
 
@@ -329,14 +331,18 @@ final class XmlTest
         node.writeString("null", null);
 
         assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(node.readBoolean("boolean")));
+        assertEquals(Boolean.valueOf(BOOL_VALUE), node.readBooleanOptional("boolean").get());
         assertEquals(BYTE_VALUE, node.readByte("byte"));
         assertEquals(SHORT_VALUE, node.readShort("short"));
         assertEquals(INT_VALUE, node.readInteger("integer"));
+        assertEquals(INT_VALUE, node.readIntegerOptional("integer").getAsInt());
         assertEquals(FLOAT_VALUE, node.readFloat("float"));
         assertEquals(LONG_VALUE, node.readLong("long"));
         assertEquals(DOUBLE_VALUE, node.readDouble("double"));
+        assertEquals(DOUBLE_VALUE, node.readDoubleOptional("double").getAsDouble());
         assertEquals(STRING_VALUE, node.readString("string"));
-        assertEquals(null, node.readString("null"));
+        assertNull(node.readString("null"));
+        assertEquals(STRING_VALUE, node.readStringOptional("string").get());
     }
 
     /**
@@ -380,14 +386,18 @@ final class XmlTest
         final Xml node = new Xml("test");
 
         assertTrue(node.readBoolean(true, "void"));
+        assertFalse(node.readBooleanOptional("void").isPresent());
         assertEquals((byte) 1, node.readByte((byte) 1, "void"));
         assertEquals((short) 1, node.readShort((short) 1, "void"));
         assertEquals(1, node.readInteger(1, "void"));
+        assertFalse(node.readIntegerOptional("void").isPresent());
         assertEquals(1L, node.readLong(1L, "void"));
         assertEquals(1.0f, node.readFloat(1.0f, "void"));
         assertEquals(1.0, node.readDouble(1.0, "void"));
+        assertFalse(node.readDoubleOptional("void").isPresent());
         assertEquals("default", node.readString("default", "void"));
         assertNull(node.readString("null", "void"));
+        assertFalse(node.readStringOptional("void").isPresent());
 
         node.writeBoolean("boolean", BOOL_VALUE);
         node.writeByte("byte", BYTE_VALUE);
@@ -400,14 +410,18 @@ final class XmlTest
         node.writeString("null", null);
 
         assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(node.readBoolean("boolean")));
+        assertTrue(node.readBooleanOptional("boolean").isPresent());
         assertEquals(BYTE_VALUE, node.readByte((byte) 1, "byte"));
         assertEquals(SHORT_VALUE, node.readShort((short) 1, "short"));
         assertEquals(INT_VALUE, node.readInteger(1, "integer"));
+        assertTrue(node.readIntegerOptional("integer").isPresent());
         assertEquals(FLOAT_VALUE, node.readFloat(1.0f, "float"));
         assertEquals(LONG_VALUE, node.readLong(1L, "long"));
         assertEquals(DOUBLE_VALUE, node.readDouble(1.0, "double"));
+        assertTrue(node.readDoubleOptional("double").isPresent());
         assertEquals(STRING_VALUE, node.readString("default", "string"));
-        assertEquals(null, node.readString("default", "null"));
+        assertNull(node.readString("default", "null"));
+        assertFalse(node.readStringOptional("null").isPresent());
     }
 
     /**
@@ -496,14 +510,18 @@ final class XmlTest
         final Xml child = root.getChild("child");
 
         assertEquals(Boolean.valueOf(BOOL_VALUE), Boolean.valueOf(child.readBoolean("boolean")));
+        assertEquals(Boolean.valueOf(BOOL_VALUE), child.readBooleanOptional("boolean").get());
         assertEquals(BYTE_VALUE, child.readByte("byte"));
         assertEquals(SHORT_VALUE, child.readShort("short"));
         assertEquals(INT_VALUE, child.readInteger("integer"));
+        assertEquals(INT_VALUE, child.readIntegerOptional("integer").getAsInt());
         assertEquals(FLOAT_VALUE, child.readFloat("float"));
         assertEquals(LONG_VALUE, child.readLong("long"));
         assertEquals(DOUBLE_VALUE, child.readDouble("double"));
+        assertEquals(DOUBLE_VALUE, child.readDoubleOptional("double").getAsDouble());
         assertEquals(STRING_VALUE, child.readString("string"));
-        assertEquals(null, child.readString("null"));
+        assertNull(child.readString("null"));
+        assertFalse(child.readStringOptional("null").isPresent());
     }
 
     /**
