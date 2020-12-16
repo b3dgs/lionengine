@@ -254,7 +254,7 @@ public class Factory implements HandlerListener
         }
         catch (final ClassNotFoundException exception)
         {
-            throw new LionEngineException(exception, ERROR_SETUP_CLASS);
+            throw new LionEngineException(exception, media, ERROR_SETUP_CLASS);
         }
         catch (final NoSuchMethodException exception)
         {

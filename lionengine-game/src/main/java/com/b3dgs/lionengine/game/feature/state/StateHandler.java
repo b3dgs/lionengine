@@ -223,6 +223,10 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
             }
             return UtilReflection.createReduce(state);
         }
+        catch (final LionEngineException exception)
+        {
+            throw new LionEngineException(exception, setup.getMedia());
+        }
         catch (final NoSuchMethodException exception)
         {
             throw new LionEngineException(exception);

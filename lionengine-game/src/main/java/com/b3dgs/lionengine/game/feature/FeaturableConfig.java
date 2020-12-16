@@ -185,9 +185,13 @@ public final class FeaturableConfig
                 final Class<? extends Feature> clazz = getClass(loader, className);
                 feature = UtilReflection.createReduce(clazz, services, setup);
             }
+            catch (final LionEngineException exception)
+            {
+                throw new LionEngineException(exception, setup.getMedia());
+            }
             catch (final NoSuchMethodException exception)
             {
-                throw new LionEngineException(exception);
+                throw new LionEngineException(exception, setup.getMedia());
             }
             features.add(feature);
         }

@@ -162,7 +162,7 @@ final class StateHandlerTest
         handler.prepare(featurable);
         handler.changeState(StateIdle.class);
 
-        assertThrows(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
+        assertCause(() -> handler.postUpdate(), "Animation not found: " + StateIdle.class.getName());
     }
 
     /**

@@ -123,7 +123,7 @@ final class FactoryTest
     {
         final Media media = Medias.create("ObjectUnknownFeature.xml");
 
-        assertThrows(() -> factory.create(media), FeaturableConfig.ERROR_CLASS_PRESENCE + "Unknown");
+        assertCause(() -> factory.create(media), FeaturableConfig.ERROR_CLASS_PRESENCE + "Unknown");
     }
 
     /**
