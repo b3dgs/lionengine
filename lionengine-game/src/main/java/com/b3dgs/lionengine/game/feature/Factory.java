@@ -42,10 +42,6 @@ import com.b3dgs.lionengine.game.Feature;
  * (or sub type) of {@link Setup}.
  * </p>
  * <p>
- * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
- * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
- * </p>
- * <p>
  * Destroyed {@link Featurable} can be cached to avoid {@link Featurable} creation if has {@link Recycler} and
  * {@link Recyclable} {@link Feature}s.
  * </p>
@@ -70,7 +66,7 @@ public class Factory implements HandlerListener
     /** Services reference. */
     private final Services services;
     /** Class loader. */
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     /**
      * Create a factory.
@@ -82,7 +78,7 @@ public class Factory implements HandlerListener
         super();
 
         this.services = services;
-        classLoader = getClass().getClassLoader();
+        classLoader = services.getOptional(ClassLoader.class).orElse(getClass().getClassLoader());
     }
 
     /**
@@ -150,7 +146,7 @@ public class Factory implements HandlerListener
             featurable.getFeature(Recycler.class).recycle();
             return (O) featurable;
         }
-        final Setup setup = getSetup(media);
+        final Setup setup = getSetup(media, true);
         try
         {
             return createFeaturable(type, setup);
@@ -189,16 +185,6 @@ public class Factory implements HandlerListener
     }
 
     /**
-     * Set an external class loader.
-     * 
-     * @param classLoader The external class loader.
-     */
-    public void setClassLoader(ClassLoader classLoader)
-    {
-        this.classLoader = classLoader;
-    }
-
-    /**
      * Get a setup reference from its media.
      * 
      * @param media The setup media.
@@ -207,10 +193,23 @@ public class Factory implements HandlerListener
      */
     public Setup getSetup(Media media)
     {
+        return getSetup(media, false);
+    }
+
+    /**
+     * Get a setup reference from its media.
+     * 
+     * @param media The setup media.
+     * @param standard <code>true</code> for standard setup, <code>false</code> else.
+     * @return The setup reference.
+     * @throws LionEngineException If no setup found for the media.
+     */
+    private Setup getSetup(Media media, boolean standard)
+    {
         Check.notNull(media);
         if (!setups.containsKey(media))
         {
-            setups.put(media, createSetup(media));
+            setups.put(media, createSetup(media, standard));
         }
         return setups.get(media);
     }
@@ -219,10 +218,11 @@ public class Factory implements HandlerListener
      * Create a setup from its media.
      * 
      * @param media The media reference.
+     * @param standard <code>true</code> for standard setup, <code>false</code> else.
      * @return The setup instance.
      */
     @SuppressWarnings("unchecked")
-    private Setup createSetup(Media media)
+    private Setup createSetup(Media media, boolean standard)
     {
         final Configurer configurer = new Configurer(media);
         try
@@ -230,7 +230,11 @@ public class Factory implements HandlerListener
             final FeaturableConfig config = FeaturableConfig.imports(configurer);
             final String setup = config.getSetupName();
             final Class<? extends Setup> setupClass;
-            if (setup.isEmpty())
+            if (standard)
+            {
+                setupClass = Setup.class;
+            }
+            else if (setup.isEmpty())
             {
                 final Class<?> clazz = classLoader.loadClass(config.getClassName());
                 final Constructor<?> constructor = UtilReflection.getCompatibleConstructorParent(clazz, new Class<?>[]

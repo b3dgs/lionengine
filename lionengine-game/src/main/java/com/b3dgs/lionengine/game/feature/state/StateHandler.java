@@ -60,6 +60,8 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     private final Function<Class<? extends State>, String> converter;
     /** Transition listeners. */
     private final ListenableModel<StateTransitionListener> listenable = new ListenableModel<>();
+    /** Class loader. */
+    private final ClassLoader classLoader;
     /** Last state (<code>null</code> if none). */
     private Class<? extends State> last;
     /** Current state pointer (<code>null</code> if none). */
@@ -101,11 +103,12 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
         Check.notNull(converter);
 
         this.converter = converter;
+        classLoader = services.getOptional(ClassLoader.class).orElse(getClass().getClassLoader());
         StateConfig.imports(setup).ifPresent(state ->
         {
             try
             {
-                next = (Class<? extends State>) Class.forName(state);
+                next = (Class<? extends State>) classLoader.loadClass(state);
             }
             catch (final ClassNotFoundException exception)
             {

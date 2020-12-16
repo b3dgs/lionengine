@@ -71,8 +71,6 @@ final class FactoryTest
     @Test
     void testCreate()
     {
-        factory.setClassLoader(ClassLoader.getSystemClassLoader());
-
         final Featurable featurable1 = factory.create(Medias.create("Object.xml"));
         final Featurable featurable2 = factory.create(Medias.create("Object.xml"), FeaturableModel.class);
 
