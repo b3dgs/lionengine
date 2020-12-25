@@ -40,6 +40,8 @@ public final class AnimatorModel implements Animator
     private double current = first;
     /** Animation state. */
     private AnimState state = AnimState.STOPPED;
+    /** Current animation (<code>null</code> if none). */
+    private Animation anim;
 
     /**
      * Create animator.
@@ -178,6 +180,7 @@ public final class AnimatorModel implements Animator
         final boolean animReverse = anim.hasReverse();
         final boolean animRepeat = anim.hasRepeat();
 
+        this.anim = anim;
         first = firstFrame;
         last = lastFrame;
         speed = animSpeed;
@@ -209,6 +212,7 @@ public final class AnimatorModel implements Animator
     @Override
     public void reset()
     {
+        anim = null;
         first = Animation.MINIMUM_FRAME;
         current = Animation.MINIMUM_FRAME;
         last = Animation.MINIMUM_FRAME;
@@ -250,6 +254,12 @@ public final class AnimatorModel implements Animator
         {
             listenable.get(i).notifyAnimFrame(frame);
         }
+    }
+
+    @Override
+    public Animation getAnim()
+    {
+        return anim;
     }
 
     @Override

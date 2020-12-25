@@ -56,6 +56,7 @@ final class AnimatorTest
 
         animator.play(animation);
 
+        assertEquals(animation, animator.getAnim());
         assertEquals(AnimState.PLAYING, animator.getAnimState());
         assertEquals(1, animator.getFrame());
         assertEquals(1, animator.getFrameAnim());

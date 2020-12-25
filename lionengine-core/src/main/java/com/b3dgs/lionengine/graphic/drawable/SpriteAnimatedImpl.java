@@ -156,6 +156,12 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
+    public Animation getAnim()
+    {
+        return animator.getAnim();
+    }
+
+    @Override
     public int getFrames()
     {
         return animator.getFrames();

@@ -106,6 +106,8 @@ final class AnimatableModelTest
         assertEquals(1, animatable.getFrames());
 
         animatable.play(animation);
+
+        assertEquals(animation, animatable.getAnim());
         testAnimatorState(animatable, first, first, AnimState.PLAYING);
         assertFalse(animatable.is(AnimState.FINISHED));
         assertEquals(last - first + 1, animatable.getFrames());

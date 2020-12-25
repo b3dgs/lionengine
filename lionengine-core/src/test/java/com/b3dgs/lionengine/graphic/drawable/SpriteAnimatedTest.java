@@ -515,6 +515,7 @@ final class SpriteAnimatedTest
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
         sprite.play(animation);
 
+        assertEquals(animation, sprite.getAnim());
         assertEquals(AnimState.PLAYING, sprite.getAnimState());
         assertEquals(2, sprite.getFrames());
         assertEquals(1, sprite.getFrame());
