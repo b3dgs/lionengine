@@ -75,7 +75,7 @@ public interface MapTileGroup extends Feature
     /**
      * Get the group name of the tile.
      * 
-     * @param tile The tile reference.
+     * @param tile The tile reference (can be <code>null</code>).
      * @return The associated group name.
      */
     String getGroup(Tile tile);

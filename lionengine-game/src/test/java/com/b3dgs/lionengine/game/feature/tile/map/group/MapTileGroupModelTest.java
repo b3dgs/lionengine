@@ -24,6 +24,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterAll;
@@ -97,6 +98,9 @@ final class MapTileGroupModelTest
     void testDefault()
     {
         assertTrue(mapGroup.getGroup(Constant.EMPTY_STRING).isEmpty());
+        assertEquals(Collections.emptySet(), mapGroup.getGroup((String) null));
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup((Integer) null));
+        assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup((Tile) null));
         assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
         assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0)));
         assertTrue(mapGroup.getGroups().containsAll(Arrays.asList(MapTileGroupModel.NO_GROUP_NAME)));
