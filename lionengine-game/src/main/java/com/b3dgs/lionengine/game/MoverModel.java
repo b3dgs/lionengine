@@ -106,14 +106,14 @@ public class MoverModel implements Mover
     public void setLocationX(double x)
     {
         oldX = this.x;
-        this.x = x;
+        this.x = x + 0.0;
     }
 
     @Override
     public void setLocationY(double y)
     {
         oldY = this.y;
-        this.y = y;
+        this.y = y + 0.0;
     }
 
     @Override

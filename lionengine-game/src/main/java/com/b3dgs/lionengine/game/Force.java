@@ -424,8 +424,8 @@ public class Force implements Direction, Updatable
             maxH = directionMax.getDirectionHorizontal();
             maxV = directionMax.getDirectionVertical();
         }
-        fh = UtilMath.clamp(fh, minH, maxH);
-        fv = UtilMath.clamp(fv, minV, maxV);
+        fh = UtilMath.clamp(fh, minH, maxH) + 0.0;
+        fv = UtilMath.clamp(fv, minV, maxV) + 0.0;
     }
 
     /*

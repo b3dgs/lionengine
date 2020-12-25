@@ -279,6 +279,18 @@ final class ForceTest
     }
 
     /**
+     * Test ensures no negative zero.
+     */
+    @Test
+    void testNoNegativeZero()
+    {
+        final Force force = new Force(-0.0, -0.0, 1.0, 0.0);
+
+        assertEquals(0.0, force.getDirectionHorizontal());
+        assertEquals(0.0, force.getDirectionVertical());
+    }
+
+    /**
      * Test equals.
      */
     @Test
