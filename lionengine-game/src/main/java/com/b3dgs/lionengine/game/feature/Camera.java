@@ -318,6 +318,46 @@ public class Camera extends FeaturableAbstract implements Viewer
     }
 
     /**
+     * Set the left limit.
+     * 
+     * @param limitLeft The left limit.
+     */
+    public void setLimitLeft(int limitLeft)
+    {
+        this.limitLeft = limitLeft;
+    }
+
+    /**
+     * Set the right limit.
+     * 
+     * @param limitRight The right limit.
+     */
+    public void setLimitRight(int limitRight)
+    {
+        this.limitRight = limitRight;
+    }
+
+    /**
+     * Set the top limit.
+     * 
+     * @param limitTop The top limit.
+     */
+    public void setLimitTop(int limitTop)
+    {
+        this.limitTop = limitTop;
+    }
+
+    /**
+     * Set the bottom limit.
+     * 
+     * @param limitBottom The bottom limit.
+     */
+    public void setLimitBottom(int limitBottom)
+    {
+        this.limitBottom = limitBottom;
+    }
+
+    /**
      * Define the maximum view limit.
      * 
      * @param surface The surface reference.

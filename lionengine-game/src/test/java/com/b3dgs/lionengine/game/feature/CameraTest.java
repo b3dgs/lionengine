@@ -435,7 +435,7 @@ final class CameraTest
         });
 
         // Limit right
-        camera.moveLocation(1.0, 50.0, 0.0);
+        camera.moveLocation(1.0, -50.0, 0.0);
 
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
@@ -457,6 +457,36 @@ final class CameraTest
 
         assertEquals(0.0, camera.getX());
         assertEquals(0.0, camera.getY());
+
+        camera.setLimitLeft(-10);
+        camera.setLimitRight(15);
+        camera.setLimitTop(20);
+        camera.setLimitBottom(-25);
+        camera.teleport(0.0, 0.0);
+
+        // Limit right
+        camera.moveLocation(1.0, -50.0, 0.0);
+
+        assertEquals(-10.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+
+        // Limit left
+        camera.moveLocation(1.0, 50.0, 0.0);
+
+        assertEquals(15.0, camera.getX());
+        assertEquals(0.0, camera.getY());
+
+        // Limit top
+        camera.moveLocation(1.0, 0.0, 50.0);
+
+        assertEquals(15.0, camera.getX());
+        assertEquals(20.0, camera.getY());
+
+        // Limit bottom
+        camera.moveLocation(1.0, 0.0, -50.0);
+
+        assertEquals(15.0, camera.getX());
+        assertEquals(-25.0, camera.getY());
     }
 
     /**
