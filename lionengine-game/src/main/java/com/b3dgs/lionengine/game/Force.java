@@ -180,6 +180,19 @@ public class Force implements Direction, Updatable
     }
 
     /**
+     * Check if force is zero (will never move).
+     * 
+     * @return <code>true</code> if zero, <code>false</code> else.
+     */
+    public boolean isZero()
+    {
+        return Double.compare(fhDest, 0.0) == 0
+               && Double.compare(fvDest, 0.0) == 0
+               && Double.compare(fh, 0.0) == 0
+               && Double.compare(fv, 0.0) == 0;
+    }
+
+    /**
      * Set the movement velocity.
      * 
      * @param velocity The movement velocity.

@@ -261,10 +261,12 @@ final class ForceTest
         force.update(1.0);
 
         assertForce(1.0, 1.0, 1.0, 0.0, force);
+        assertFalse(force.isZero());
 
         force.zero();
 
         assertForce(0.0, 0.0, 1.0, 0.0, force);
+        assertTrue(force.isZero());
     }
 
     /**
