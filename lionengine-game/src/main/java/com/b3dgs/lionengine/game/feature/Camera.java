@@ -73,6 +73,10 @@ public class Camera extends FeaturableAbstract implements Viewer
     private int limitBottom = Integer.MIN_VALUE;
     /** Screen height. */
     private int screenHeight;
+    /** Shake x. */
+    private int shakeX;
+    /** Shake y. */
+    private int shakeY;
 
     /**
      * Create a camera.
@@ -269,6 +273,18 @@ public class Camera extends FeaturableAbstract implements Viewer
                 sourceWidth - offsetX,
                 sourceHeight - offsetY,
                 sourceHeight);
+    }
+
+    /**
+     * Set the shake effect.
+     * 
+     * @param shakeX The horizontal shake.
+     * @param shakeY The vertical shake.
+     */
+    public void setShake(int shakeX, int shakeY)
+    {
+        this.shakeX = shakeX;
+        this.shakeY = shakeY;
     }
 
     /**
@@ -472,13 +488,13 @@ public class Camera extends FeaturableAbstract implements Viewer
     @Override
     public double getX()
     {
-        return mover.getX() - getViewX();
+        return mover.getX() - getViewX() + shakeX;
     }
 
     @Override
     public double getY()
     {
-        return mover.getY() + getViewY();
+        return mover.getY() + getViewY() + shakeY;
     }
 
     @Override

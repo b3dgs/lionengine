@@ -489,4 +489,21 @@ final class CameraTest
         assertEquals(Integer.MIN_VALUE - 1.0, camera.getX());
         assertEquals(Integer.MIN_VALUE - 1.0, camera.getY());
     }
+
+    /**
+     * Test the shake effect.
+     */
+    @Test
+    void testShake()
+    {
+        camera.setLocation(5.0, 10.0);
+
+        assertEquals(5.0, camera.getX());
+        assertEquals(10.0, camera.getY());
+
+        camera.setShake(1, 2);
+
+        assertEquals(6.0, camera.getX());
+        assertEquals(12.0, camera.getY());
+    }
 }
