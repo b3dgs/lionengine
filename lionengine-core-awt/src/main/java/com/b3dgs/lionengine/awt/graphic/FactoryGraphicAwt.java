@@ -223,7 +223,6 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         Check.notNull(images);
         Check.notNull(media);
 
-        final int tiles = images.length;
         if (images.length == 0)
         {
             throw new LionEngineException("No images found !");
@@ -233,8 +232,8 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         final int height = images[0].getHeight();
         final Transparency transparency = images[0].getTransparency();
 
-        final int multDistance = (int) Math.ceil(width * tiles / (double) height) / 4;
-        final int[] mult = UtilMath.getClosestSquareMult(tiles, multDistance);
+        final int multDistance = (int) Math.ceil(width * images.length / (double) height) / 4;
+        final int[] mult = UtilMath.getClosestSquareMult(images.length, multDistance);
 
         final ImageBuffer tile = new ImageBufferAwt(ToolsAwt.createImage(width * mult[1],
                                                                          height * mult[0],

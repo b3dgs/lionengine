@@ -31,7 +31,7 @@ public final class UtilConversion
     /** Split with space. */
     private static final Pattern SPACE = Pattern.compile(Constant.SPACE);
     /** Matcher replace. */
-    private static final Pattern REPLACER = Pattern.compile("\\W|_");
+    private static final Pattern REPLACER = Pattern.compile("[\\W-_]");
 
     /**
      * Convert an integer to an array of byte.

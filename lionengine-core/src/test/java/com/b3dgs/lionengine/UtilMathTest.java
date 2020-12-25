@@ -286,7 +286,7 @@ final class UtilMathTest
      * Test the get closest square multiplier.
      */
     @Test
-    public void testGetClosestSquareMult()
+    void testGetClosestSquareMult()
     {
         assertEquals(pair(0, 0), UtilMath.getClosestSquareMult(0, 0));
         assertEquals(pair(1, 1), UtilMath.getClosestSquareMult(1, 1));

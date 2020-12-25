@@ -99,9 +99,10 @@ final class UtilConversionTest
     @Test
     void testToTitleCaseWord()
     {
-        final String word = UtilConversion.toTitleCaseWord("title toto");
-
-        assertEquals("Title Toto", word);
+        assertEquals("Title Toto", UtilConversion.toTitleCaseWord("title toto"));
+        assertEquals("Title Toto", UtilConversion.toTitleCaseWord("title_toto"));
+        assertEquals("Titletoto", UtilConversion.toTitleCaseWord("titletoto"));
+        assertEquals("Title To To", UtilConversion.toTitleCaseWord("title to to"));
     }
 
     /**

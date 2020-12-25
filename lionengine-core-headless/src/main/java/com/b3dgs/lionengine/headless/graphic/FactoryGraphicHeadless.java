@@ -255,7 +255,6 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
         Check.notNull(images);
         Check.notNull(media);
 
-        final int tiles = images.length;
         if (images.length == 0)
         {
             throw new LionEngineException("No images found !");
@@ -264,8 +263,8 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
         final int width = images[0].getWidth();
         final int height = images[0].getHeight();
 
-        final int multDistance = (int) Math.ceil(width * tiles / (double) height) / 4;
-        final int[] mult = UtilMath.getClosestSquareMult(tiles, multDistance);
+        final int multDistance = (int) Math.ceil(width * images.length / (double) height) / 4;
+        final int[] mult = UtilMath.getClosestSquareMult(images.length, multDistance);
 
         try (OutputStream output = media.getOutputStream())
         {
