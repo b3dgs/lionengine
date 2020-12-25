@@ -18,6 +18,9 @@ package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
 
@@ -51,5 +54,17 @@ final class UpdatableVoidTest
     void testUpdate()
     {
         UpdatableVoid.getInstance().update(1.0);
+    }
+
+    /**
+     * Test the wrap.
+     */
+    @Test
+    void testWrap()
+    {
+        final AtomicBoolean called = new AtomicBoolean();
+        UpdatableVoid.wrap(extrp -> called.set(true)).update(1.0);
+
+        assertTrue(called.get());
     }
 }

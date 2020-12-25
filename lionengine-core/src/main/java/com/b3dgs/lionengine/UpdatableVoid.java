@@ -38,6 +38,17 @@ public final class UpdatableVoid
     }
 
     /**
+     * Wrap updatable.
+     * 
+     * @param updatable The updatable to wrap.
+     * @return The same updatable.
+     */
+    public static Updatable wrap(Updatable updatable)
+    {
+        return updatable;
+    }
+
+    /**
      * Private.
      */
     private UpdatableVoid()
