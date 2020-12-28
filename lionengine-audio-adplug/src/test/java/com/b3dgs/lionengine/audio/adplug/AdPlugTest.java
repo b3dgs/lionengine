@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Collection;
-import java.util.Collections;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -37,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.MediaMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilStream;
@@ -261,7 +260,7 @@ final class AdPlugTest
     @Test
     void testMissingMedia() throws IOException
     {
-        final Media media = new Media()
+        final Media media = new MediaMock()
         {
             @Override
             public String getPath()
@@ -270,58 +269,9 @@ final class AdPlugTest
             }
 
             @Override
-            public String getParentPath()
-            {
-                return null;
-            }
-
-            @Override
-            public OutputStream getOutputStream()
-            {
-                return null;
-            }
-
-            @Override
-            public String getName()
-            {
-                return null;
-            }
-
-            @Override
-            public Collection<Media> getMedias()
-            {
-                return Collections.emptyList();
-            }
-
-            @Override
-            public InputStream getInputStream()
-            {
-                return new InputStream()
-                {
-                    @Override
-                    public int read() throws IOException
-                    {
-                        return -1;
-                    }
-
-                    @Override
-                    public void close() throws IOException
-                    {
-                        throw new IOException();
-                    }
-                };
-            }
-
-            @Override
             public File getFile()
             {
                 return new File(getPath());
-            }
-
-            @Override
-            public boolean exists()
-            {
-                return false;
             }
         };
         final Audio sc68 = AudioFactory.loadAudio(media);
