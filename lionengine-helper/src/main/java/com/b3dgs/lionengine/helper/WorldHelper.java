@@ -17,14 +17,20 @@
 package com.b3dgs.lionengine.helper;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.feature.CameraTracker;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.HandlerPersister;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Spawner;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
+import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.io.FileReading;
@@ -63,6 +69,31 @@ public class WorldHelper extends WorldGame
         handler.addComponent(new ComponentCollision());
         handler.add(map);
         handler.add(tracker);
+    }
+
+    @Override
+    protected Spawner createSpawner()
+    {
+        return new Spawner()
+        {
+            private Optional<Media> raster = Optional.empty();
+
+            @Override
+            public void setRaster(Media raster)
+            {
+                this.raster = Optional.ofNullable(raster);
+            }
+
+            @Override
+            public Featurable spawn(Media media, double x, double y)
+            {
+                final Featurable f = factory.create(media);
+                f.getFeature(Transformable.class).teleport(x, y);
+                f.ifIs(Rasterable.class, r -> raster.ifPresent(m -> r.setRaster(true, m, map.getTileHeight())));
+                handler.add(f);
+                return f;
+            }
+        };
     }
 
     /**

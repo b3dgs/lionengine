@@ -76,7 +76,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
     /** Source provider. */
     protected final SourceResolutionProvider source;
     /** Spawner. */
-    private final Spawner spawner;
+    protected final Spawner spawner;
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
@@ -100,16 +100,26 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
         camera = services.create(Camera.class);
         camera.setView(0, 0, source.getWidth(), source.getHeight(), source.getHeight());
 
-        spawner = services.add((media, x, y) ->
+        spawner = services.add(createSpawner());
+
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayable());
+    }
+
+    /**
+     * Create default spawner.
+     * 
+     * @return The spawner instance.
+     */
+    protected Spawner createSpawner()
+    {
+        return (media, x, y) ->
         {
             final Featurable featurable = factory.create(media);
             featurable.getFeature(Transformable.class).teleport(x, y);
             handler.add(featurable);
             return featurable;
-        });
-
-        handler.addComponent(new ComponentRefreshable());
-        handler.addComponent(new ComponentDisplayable());
+        };
     }
 
     /**

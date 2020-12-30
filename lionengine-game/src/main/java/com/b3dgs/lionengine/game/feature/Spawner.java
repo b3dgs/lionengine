@@ -26,6 +26,16 @@ import com.b3dgs.lionengine.Media;
 public interface Spawner
 {
     /**
+     * Set raster media.
+     * 
+     * @param raster The raster media.
+     */
+    default void setRaster(Media raster)
+    {
+        // Nothing by default
+    }
+
+    /**
      * Spawn a {@link Featurable} at specified {@link Localizable}. Must have {@link Transformable} feature.
      * 
      * @param media The featurable media.
