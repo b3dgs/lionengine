@@ -53,6 +53,13 @@ public interface MapTileCollision extends Feature
     void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig);
 
     /**
+     * Update tile collision.
+     * 
+     * @param tile The tile to update.
+     */
+    void updateCollisions(Tile tile);
+
+    /**
      * Save the current collisions to the collision file.
      * 
      * @throws LionEngineException If error when saving collisions.

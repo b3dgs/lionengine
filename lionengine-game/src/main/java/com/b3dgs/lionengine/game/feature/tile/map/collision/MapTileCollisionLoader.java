@@ -114,6 +114,30 @@ final class MapTileCollisionLoader
     }
 
     /**
+     * Update tile collision.
+     * 
+     * @param map The map reference.
+     * @param mapGroup The map group reference.
+     * @param tile The tile to update.
+     */
+    public void update(MapTile map, MapTileGroup mapGroup, Tile tile)
+    {
+        loadTileCollisions(mapGroup, tile);
+
+        for (final CollisionFormula formula : checkConstraints(map,
+                                                               mapGroup,
+                                                               tile,
+                                                               tile.getInTileX(),
+                                                               tile.getInTileY()))
+        {
+            if (tilesFormulas.containsKey(tile))
+            {
+                tilesFormulas.get(tile).remove(formula);
+            }
+        }
+    }
+
+    /**
      * Get the collision formula from its name.
      * 
      * @param name The collision formula name.

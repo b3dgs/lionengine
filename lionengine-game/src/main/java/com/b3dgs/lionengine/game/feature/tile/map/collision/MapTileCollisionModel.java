@@ -84,6 +84,12 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
     }
 
     @Override
+    public void updateCollisions(Tile tile)
+    {
+        loader.update(map, mapGroup, tile);
+    }
+
+    @Override
     public void saveCollisions()
     {
         final Media formulasConfig = loader.getFormulasConfig();
