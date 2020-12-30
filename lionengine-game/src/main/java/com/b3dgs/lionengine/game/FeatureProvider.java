@@ -16,6 +16,8 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.util.function.Consumer;
+
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -32,6 +34,22 @@ public interface FeatureProvider
      * @throws LionEngineException If feature not found.
      */
     <C extends Feature> C getFeature(Class<C> feature);
+
+    /**
+     * Execute function with feature found if present. Does nothing else.
+     * 
+     * @param <C> The custom feature type.
+     * @param feature The feature type.
+     * @param function The function to execute.
+     */
+    default <C extends Feature> void ifIs(Class<C> feature, Consumer<C> function)
+    {
+        if (hasFeature(feature))
+        {
+            final C object = getFeature(feature);
+            function.accept(object);
+        }
+    }
 
     /**
      * Get the supported features.
