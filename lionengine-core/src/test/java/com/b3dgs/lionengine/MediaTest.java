@@ -87,6 +87,19 @@ final class MediaTest
     }
 
     /**
+     * Test URL getter.
+     */
+    @Test
+    void testUrl()
+    {
+        Medias.setLoadFromJar(MediaTest.class);
+        final String path = "image.png";
+
+        assertEquals(MediaTest.class.getResource(path), Medias.create(path).getUrl());
+        assertThrows(() -> Medias.create("void").getUrl(), "[void] " + MediaDefault.ERROR_OPEN_MEDIA);
+    }
+
+    /**
      * Test parent path getter.
      */
     @Test

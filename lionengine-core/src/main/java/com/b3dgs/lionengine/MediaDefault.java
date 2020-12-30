@@ -263,6 +263,20 @@ final class MediaDefault implements Media
     }
 
     @Override
+    public URL getUrl()
+    {
+        if (loader.isPresent())
+        {
+            final URL url = loader.get().getResource(path);
+            if (url != null)
+            {
+                return url;
+            }
+        }
+        throw new LionEngineException(this, ERROR_OPEN_MEDIA);
+    }
+
+    @Override
     public Collection<Media> getMedias()
     {
         final File file = getFile();

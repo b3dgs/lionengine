@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -48,6 +49,12 @@ public class MediaMock implements Media
 
     @Override
     public File getFile()
+    {
+        return null;
+    }
+
+    @Override
+    public URL getUrl()
     {
         return null;
     }

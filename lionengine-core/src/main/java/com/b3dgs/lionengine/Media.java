@@ -19,6 +19,7 @@ package com.b3dgs.lionengine;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Collection;
 
 /**
@@ -48,6 +49,14 @@ public interface Media extends Nameable
      * @throws LionEngineException If descriptor is not accessible.
      */
     File getFile();
+
+    /**
+     * Get the URL descriptor.
+     * 
+     * @return The URL descriptor.
+     * @throws LionEngineException If descriptor is not accessible.
+     */
+    URL getUrl();
 
     /**
      * Get the medias in the media path.
