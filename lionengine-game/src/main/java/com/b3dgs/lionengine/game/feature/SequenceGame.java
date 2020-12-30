@@ -45,13 +45,15 @@ import com.b3dgs.lionengine.graphic.engine.Zooming;
  * called.</li>
  * <li>{@link #setSystemCursorVisible(boolean)}: set to <code>false</code>.</li>
  * </ul>
+ * 
+ * @param <W> The world type.
  */
-public abstract class SequenceGame extends Sequence
+public abstract class SequenceGame<W extends WorldGame> extends Sequence
 {
     /** Services instance. */
     protected final Services services = new Services();
     /** Handled world. */
-    protected final WorldGame world;
+    protected final W world;
 
     /**
      * Create sequence. Resolution will be based on {@link Config#getOutput()}.
@@ -60,7 +62,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceGame(Context context, Function<Services, WorldGame> creator)
+    protected SequenceGame(Context context, Function<Services, W> creator)
     {
         this(context, context.getConfig().getOutput(), creator);
     }
@@ -73,7 +75,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceGame(Context context, Resolution resolution, Function<Services, WorldGame> creator)
+    protected SequenceGame(Context context, Resolution resolution, Function<Services, W> creator)
     {
         this(context, resolution, new LoopFrameSkipping(), creator);
     }
@@ -87,7 +89,7 @@ public abstract class SequenceGame extends Sequence
      * @param creator The world creator reference.
      * @throws LionEngineException If invalid arguments.
      */
-    protected SequenceGame(Context context, Resolution resolution, Loop loop, Function<Services, WorldGame> creator)
+    protected SequenceGame(Context context, Resolution resolution, Loop loop, Function<Services, W> creator)
     {
         super(context, resolution, loop);
 
