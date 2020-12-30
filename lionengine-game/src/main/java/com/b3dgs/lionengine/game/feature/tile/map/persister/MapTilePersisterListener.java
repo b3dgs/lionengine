@@ -22,6 +22,11 @@ package com.b3dgs.lionengine.game.feature.tile.map.persister;
 public interface MapTilePersisterListener
 {
     /**
+     * Called on map start loading.
+     */
+    void notifyMapLoadStart();
+
+    /**
      * Called on map loaded.
      */
     void notifyMapLoaded();

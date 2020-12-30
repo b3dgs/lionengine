@@ -259,6 +259,12 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
         }
         map.create(input.readInteger(), input.readInteger(), input.readInteger(), input.readInteger());
 
+        final int count = listenable.size();
+        for (int i = 0; i < count; i++)
+        {
+            listenable.get(i).notifyMapLoadStart();
+        }
+
         final int t = input.readShort();
         for (int v = 0; v < t; v++)
         {
@@ -269,7 +275,7 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
             }
         }
 
-        for (int i = 0; i < listenable.size(); i++)
+        for (int i = 0; i < count; i++)
         {
             listenable.get(i).notifyMapLoaded();
         }

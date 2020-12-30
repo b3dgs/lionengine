@@ -146,7 +146,20 @@ final class MapTilePersisterModelTest
         UtilMapTilePersister.saveMap(map, level);
 
         final AtomicBoolean load = new AtomicBoolean();
-        final MapTilePersisterListener listener = () -> load.set(true);
+        final MapTilePersisterListener listener = new MapTilePersisterListener()
+        {
+            @Override
+            public void notifyMapLoadStart()
+            {
+                load.set(false);
+            }
+
+            @Override
+            public void notifyMapLoaded()
+            {
+                load.set(true);
+            }
+        };
         mapPersister.addListener(listener);
 
         try (FileReading input = new FileReading(level))
