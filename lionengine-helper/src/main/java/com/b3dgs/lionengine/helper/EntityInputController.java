@@ -53,7 +53,7 @@ public final class EntityInputController extends FeatureModel
         final InputDeviceDirectional device = services.get(InputDeviceDirectional.class);
         try
         {
-            final InputControllerConfig config = InputControllerConfig.imports(setup);
+            final InputControllerConfig config = InputControllerConfig.imports(services, setup);
             controller = UtilReflection.createReduce(config.getControl(), device);
 
             for (final Entry<Integer, Integer> entry : config.getCodes().entrySet())

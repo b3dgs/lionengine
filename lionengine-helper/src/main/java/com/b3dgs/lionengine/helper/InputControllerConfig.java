@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.io.InputDeviceControl;
 
 /**
@@ -45,25 +46,27 @@ public final class InputControllerConfig
     /**
      * Import the data from configurer.
      * 
+     * @param services The services reference (must not be <code>null</code>).
      * @param configurer The configurer reference (must not be <code>null</code>).
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
-    public static InputControllerConfig imports(Configurer configurer)
+    public static InputControllerConfig imports(Services services, Configurer configurer)
     {
         Check.notNull(configurer);
 
-        return imports(configurer.getRoot());
+        return imports(services, configurer.getRoot());
     }
 
     /**
      * Import the data from configurer.
      * 
+     * @param services The services reference (must not be <code>null</code>).
      * @param root The root reference (must not be <code>null</code>).
      * @return The data.
      * @throws LionEngineException If unable to read node.
      */
-    public static InputControllerConfig imports(Xml root)
+    public static InputControllerConfig imports(Services services, Xml root)
     {
         Check.notNull(root);
 
@@ -78,8 +81,10 @@ public final class InputControllerConfig
 
         try
         {
+            final ClassLoader classLoader = services.getOptional(ClassLoader.class)
+                                                    .orElse(InputControllerConfig.class.getClassLoader());
             @SuppressWarnings("unchecked")
-            final Class<InputDeviceControl> control = (Class<InputDeviceControl>) Class.forName(clazz);
+            final Class<InputDeviceControl> control = (Class<InputDeviceControl>) classLoader.loadClass(clazz);
 
             return new InputControllerConfig(control, codes);
         }
