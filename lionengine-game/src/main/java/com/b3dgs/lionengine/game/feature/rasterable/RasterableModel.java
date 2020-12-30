@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -49,7 +50,7 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 /**
  * Rasterable model implementation.
  */
-public class RasterableModel extends FeatureModel implements Rasterable
+public class RasterableModel extends FeatureModel implements Rasterable, Recyclable
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
@@ -71,6 +72,8 @@ public class RasterableModel extends FeatureModel implements Rasterable
     private Origin origin;
     /** Anim offset. */
     private int animOffset;
+    /** Anim offset 2. */
+    private int animOffset2;
     /** Frame offsets x. */
     private int frameOffsetX;
     /** Frame offsets y. */
@@ -193,7 +196,7 @@ public class RasterableModel extends FeatureModel implements Rasterable
 
         if (visible)
         {
-            raster.setFrame(animatable.getFrame() + animOffset);
+            raster.setFrame(animatable.getFrame() + animOffset + animOffset2);
             raster.setMirror(mirrorable.getMirror());
             raster.setOrigin(origin);
             raster.setFrameOffsets(frameOffsetX, frameOffsetY);
@@ -282,6 +285,12 @@ public class RasterableModel extends FeatureModel implements Rasterable
     }
 
     @Override
+    public void setAnimOffset2(int offset)
+    {
+        animOffset2 = offset;
+    }
+
+    @Override
     public void setFrameOffsets(int offsetX, int offsetY)
     {
         frameOffsetX = offsetX;
@@ -306,5 +315,16 @@ public class RasterableModel extends FeatureModel implements Rasterable
     public void setVisibility(boolean visible)
     {
         this.visible = visible;
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        animOffset = 0;
+        animOffset2 = 0;
     }
 }

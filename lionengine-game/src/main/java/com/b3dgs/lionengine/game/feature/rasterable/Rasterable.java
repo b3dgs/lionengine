@@ -42,6 +42,13 @@ public interface Rasterable extends Feature, Updatable, Renderable
     void setAnimOffset(int offset);
 
     /**
+     * Set the internal animation offset for second special animation cases (0 for none).
+     * 
+     * @param offset The offset value.
+     */
+    void setAnimOffset2(int offset);
+
+    /**
      * Set frame offsets (offsets on rendering).
      * 
      * @param offsetX The horizontal offset.
