@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListen
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
+import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterListener;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.game.feature.tile.map.raster.MapTileRastered;
 import com.b3dgs.lionengine.game.feature.tile.map.raster.MapTileRasteredModel;
@@ -156,10 +157,20 @@ public class MapTileHelper extends MapTileGame
         mapViewer = addFeatureAndGet(new MapTileViewerModel(services));
         fogOfWar = services.add(addFeatureAndGet(new FogOfWar()));
         addFeature(new MapTileAppenderModel());
-        addFeatureAndGet(new MapTilePersisterModel()).addListener(() ->
+        addFeatureAndGet(new MapTilePersisterModel()).addListener(new MapTilePersisterListener()
         {
-            load(getMedia());
-            services.get(Camera.class).setLimits(mapSurface);
+            @Override
+            public void notifyMapLoadStart()
+            {
+                loadBefore(getMedia());
+            }
+
+            @Override
+            public void notifyMapLoaded()
+            {
+                loadAfter(getMedia());
+                services.get(Camera.class).setLimits(mapSurface);
+            }
         });
 
         final Handler handler = services.get(Handler.class);
@@ -184,11 +195,20 @@ public class MapTileHelper extends MapTileGame
      * 
      * @param media The parent media.
      */
-    public void load(Media media)
+    public void loadBefore(Media media)
+    {
+        load(media, mapGroup::loadGroups, TileGroupsConfig.FILENAME);
+    }
+
+    /**
+     * Load features.
+     * 
+     * @param media The parent media.
+     */
+    public void loadAfter(Media media)
     {
         final String parent = media.getParentPath();
 
-        load(media, mapGroup::loadGroups, TileGroupsConfig.FILENAME);
         final Media configFormulas = Medias.create(parent, CollisionFormulaConfig.FILENAME);
         if (configFormulas.exists())
         {
@@ -259,7 +279,8 @@ public class MapTileHelper extends MapTileGame
     {
         super.create(tileWidth, tileHeight, widthInTile, heightInTile);
 
-        load(getMedia());
+        loadBefore(getMedia());
+        loadAfter(getMedia());
     }
 
     @Override
@@ -267,7 +288,8 @@ public class MapTileHelper extends MapTileGame
     {
         super.create(levelrip, tileWidth, tileHeight, horizontalTiles);
 
-        load(levelrip);
+        loadBefore(getMedia());
+        loadAfter(levelrip);
     }
 
     @Override
@@ -275,6 +297,7 @@ public class MapTileHelper extends MapTileGame
     {
         super.create(levelrip);
 
-        load(getMedia());
+        loadBefore(getMedia());
+        loadAfter(getMedia());
     }
 }
