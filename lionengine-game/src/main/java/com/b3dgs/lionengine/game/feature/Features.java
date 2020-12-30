@@ -16,10 +16,10 @@
  */
 package com.b3dgs.lionengine.game.feature;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Feature;
@@ -62,7 +62,7 @@ public class Features
     /** Features handled. */
     private final Map<Class<? extends Feature>, Feature> typeToFeature = new HashMap<>();
     /** Unique features. */
-    private final Set<Feature> features = new HashSet<>();
+    private final Collection<Feature> features = new ArrayList<>();
 
     /**
      * Create features handler.
