@@ -97,8 +97,22 @@ final class DocumentFactory
         if (documentBuilder == null)
         {
             final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            documentBuilderFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            try
+            {
+                documentBuilderFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            }
+            catch (final IllegalArgumentException exception)
+            {
+                Verbose.exception(exception);
+            }
+            try
+            {
+                documentBuilderFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            }
+            catch (final IllegalArgumentException exception)
+            {
+                Verbose.exception(exception);
+            }
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             try
             {
