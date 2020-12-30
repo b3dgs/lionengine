@@ -36,6 +36,8 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.engine.Sequencable;
+import com.b3dgs.lionengine.graphic.engine.Sequencer;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 
 /**
@@ -117,6 +119,20 @@ final class WorldTest
             public int getRate()
             {
                 return output.getRate();
+            }
+        });
+        services.add(new Sequencer()
+        {
+            @Override
+            public void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
+            {
+                // Mock
+            }
+
+            @Override
+            public void end()
+            {
+                // Mock
             }
         });
     }

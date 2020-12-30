@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.engine.Sequencer;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
@@ -75,6 +76,8 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
     protected final Context context;
     /** Source provider. */
     protected final SourceResolutionProvider source;
+    /** Sequencer control. */
+    protected final Sequencer sequencer;
     /** Spawner. */
     protected final Spawner spawner;
 
@@ -94,6 +97,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
         output = config.getOutput();
 
         source = services.get(SourceResolutionProvider.class);
+        sequencer = services.get(Sequencer.class);
         factory = services.create(Factory.class);
         handler = services.create(Handler.class);
         handler.addListener(factory);
