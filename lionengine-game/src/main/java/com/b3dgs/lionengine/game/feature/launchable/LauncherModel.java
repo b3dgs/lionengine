@@ -206,7 +206,12 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
 
         final Force vector = new Force(config.getVector());
         vector.addDirection(1.0, initial);
-        launchable.setVector(computeVector(vector));
+
+        final Force v = computeVector(vector);
+        if (!v.isZero())
+        {
+            launchable.setVector(v);
+        }
         launchable.launch();
 
         config.getSfx().ifPresent(this::audioCacheAndPlay);
