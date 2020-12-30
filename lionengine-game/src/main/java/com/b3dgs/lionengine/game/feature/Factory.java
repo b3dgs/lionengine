@@ -160,10 +160,11 @@ public class Factory implements HandlerListener
     /**
      * Create cached medias from folder.
      * 
+     * @param spawner The spawner reference.
      * @param folder The root folder.
      * @param count The caches number.
      */
-    public void createCache(Media folder, int count)
+    public void createCache(Spawner spawner, Media folder, int count)
     {
         for (final Media media : folder.getMedias())
         {
@@ -172,7 +173,7 @@ public class Factory implements HandlerListener
                 final Collection<Featurable> cached = new ArrayList<>();
                 for (int i = 0; i < count; i++)
                 {
-                    cached.add(create(media));
+                    cached.add(spawner.spawn(media, 0, 0));
                 }
                 for (final Featurable featurable : cached)
                 {
