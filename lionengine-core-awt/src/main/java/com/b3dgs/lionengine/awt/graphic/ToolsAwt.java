@@ -459,7 +459,7 @@ public final class ToolsAwt
     public static BufferedImage[] getRasterBufferSmooth(BufferedImage image, BufferedImage palette, int fh, int fv)
     {
         final int height = image.getHeight();
-        final int frameHeight = height / fh;
+        final int frameHeight = height / fv;
         final BufferedImage[] rasters = new BufferedImage[frameHeight];
 
         for (int maxHeight = 0; maxHeight < frameHeight; maxHeight++)
