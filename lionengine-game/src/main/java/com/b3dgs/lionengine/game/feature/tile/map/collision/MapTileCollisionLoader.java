@@ -153,7 +153,12 @@ final class MapTileCollisionLoader
      */
     public Collection<CollisionFormula> getCollisionFormulas(Tile tile)
     {
-        return tilesFormulas.get(tile);
+        final Collection<CollisionFormula> formulas = tilesFormulas.get(tile);
+        if (formulas != null)
+        {
+            return formulas;
+        }
+        return Collections.emptySet();
     }
 
     /**
