@@ -51,6 +51,12 @@ public class PlayerMock extends PlayerAbstract
     }
 
     @Override
+    public void await()
+    {
+        // Mock
+    }
+
+    @Override
     public void stop()
     {
         // Mock

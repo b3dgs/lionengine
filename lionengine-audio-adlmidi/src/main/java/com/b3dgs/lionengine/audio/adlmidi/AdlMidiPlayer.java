@@ -89,6 +89,12 @@ final class AdlMidiPlayer extends PlayerAbstract implements AdlMidi
     }
 
     @Override
+    public void await()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void stop()
     {
         binding.adlStop();

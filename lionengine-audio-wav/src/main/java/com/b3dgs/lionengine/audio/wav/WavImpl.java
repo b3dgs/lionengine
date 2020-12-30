@@ -19,7 +19,10 @@ package com.b3dgs.lionengine.audio.wav;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -220,6 +223,8 @@ final class WavImpl implements Wav
     private volatile int volume = PlayerAbstract.VOLUME_MAX;
     /** Exception flag. */
     private Exception last;
+    /** Alive count. */
+    private volatile int count;
 
     /**
      * Internal constructor.
@@ -258,6 +263,8 @@ final class WavImpl implements Wav
             }
         }
 
+        count++;
+
         try (Playback playback = createPlayback(media))
         {
             opened.put(media, playback);
@@ -279,6 +286,10 @@ final class WavImpl implements Wav
                 Verbose.exception(exception, media.toString());
                 last = exception;
             }
+        }
+        finally
+        {
+            count--;
         }
     }
 
@@ -314,6 +325,33 @@ final class WavImpl implements Wav
             }
         }
         opened.clear();
+    }
+
+    @Override
+    public void await()
+    {
+        try
+        {
+            executor.submit(() ->
+            {
+                while (count > 0)
+                {
+                    try
+                    {
+                        Thread.sleep(Constant.HUNDRED);
+                    }
+                    catch (final InterruptedException exception)
+                    {
+                        Thread.currentThread().interrupt();
+                        Verbose.exception(exception);
+                    }
+                }
+            }).get(Constant.DECADE, TimeUnit.SECONDS);
+        }
+        catch (final InterruptedException | ExecutionException | TimeoutException exception)
+        {
+            Verbose.exception(exception);
+        }
     }
 
     @Override

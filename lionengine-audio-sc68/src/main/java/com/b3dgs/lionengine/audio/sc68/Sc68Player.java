@@ -96,6 +96,12 @@ final class Sc68Player extends PlayerAbstract implements Sc68
     }
 
     @Override
+    public void await()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void stop()
     {
         binding.sc68Stop();

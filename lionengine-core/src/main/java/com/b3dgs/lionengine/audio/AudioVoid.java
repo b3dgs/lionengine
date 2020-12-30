@@ -52,6 +52,12 @@ public final class AudioVoid implements Audio
     }
 
     @Override
+    public void await()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void stop()
     {
         // Nothing to do

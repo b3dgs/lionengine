@@ -77,6 +77,12 @@ final class AdPlugPlayer extends PlayerAbstract implements AdPlug
     }
 
     @Override
+    public void await()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void stop()
     {
         binding.adplugStop();

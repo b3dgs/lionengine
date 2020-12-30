@@ -42,6 +42,11 @@ public interface Audio
     void setVolume(int volume);
 
     /**
+     * Await current execution.
+     */
+    void await();
+
+    /**
      * Stop the audio.
      */
     void stop();
