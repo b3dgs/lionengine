@@ -23,12 +23,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Allows to retrieve informations from an external XML configuration file.
@@ -41,6 +45,10 @@ public class Configurer
     private static final String ERROR_CLASS_CONSTRUCTOR = "Class constructor error: ";
     /** Class not found error. */
     private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
+    /** Enum error. */
+    private static final String ERROR_ENUM = "No corresponding enum: ";
+    /** Enum error. */
+    private static final String ERROR_NODE = "Node not found: ";
     /** Class cache. */
     private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
 
@@ -117,6 +125,41 @@ public class Configurer
     }
 
     /**
+     * Get the node child.
+     * 
+     * @param node The node name.
+     * @param path The node path.
+     * @return The node child.
+     * @throws LionEngineException If node not found.
+     */
+    public final XmlReader getChild(String node, String... path)
+    {
+        final XmlReader child = getNodeDefault(path);
+        if (child != null && child.hasChild(node))
+        {
+            return child.getChild(node);
+        }
+        throw new LionEngineException(ERROR_NODE + node);
+    }
+
+    /**
+     * Get the node children.
+     * 
+     * @param node The node name.
+     * @param path The node path.
+     * @return The node children.
+     */
+    public final Collection<? extends XmlReader> getChildren(String node, String... path)
+    {
+        final XmlReader reader = getNodeDefault(path);
+        if (reader != null)
+        {
+            return reader.getChildren(node);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
      * Get the node text value.
      * 
      * @param path The node path.
@@ -132,7 +175,7 @@ public class Configurer
     /**
      * Get the node text value.
      * 
-     * @param defaultValue Value used if node does not exist.
+     * @param defaultValue The value used if node does not exist.
      * @param path The node path.
      * @return The node text value.
      */
@@ -150,7 +193,7 @@ public class Configurer
      * Get a string in the xml tree.
      * 
      * @param attribute The attribute to get as string.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The string value.
      * @throws LionEngineException If unable to read node.
      */
@@ -162,9 +205,9 @@ public class Configurer
     /**
      * Get a string in the xml tree.
      * 
-     * @param defaultValue Value used if node does not exist.
+     * @param defaultValue The value used if node does not exist.
      * @param attribute The attribute to get as string.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The string value.
      * @throws LionEngineException If unable to read node.
      */
@@ -174,10 +217,45 @@ public class Configurer
     }
 
     /**
+     * Get a media in the xml tree.
+     * 
+     * @param attribute The attribute to get as media.
+     * @param path The node path (child list).
+     * @return The string value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public final Media getMedia(String attribute, String... path)
+    {
+        return Medias.create(getNodeString(attribute, path));
+    }
+
+    /**
+     * Get an enum in the xml tree.
+     * 
+     * @param <E> The enum type.
+     * @param type The enum class.
+     * @param attribute The attribute to get as enum.
+     * @param path The node path (child list).
+     * @return The enum instance.
+     * @throws LionEngineException If unable to read node.
+     */
+    public final <E extends Enum<E>> E getEnum(Class<E> type, String attribute, String... path)
+    {
+        try
+        {
+            return Enum.valueOf(type, getNodeString(attribute, path));
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ENUM + attribute);
+        }
+    }
+
+    /**
      * Get a boolean in the xml tree.
      * 
      * @param attribute The attribute to get as boolean.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The boolean value.
      * @throws LionEngineException If unable to read node.
      */
@@ -189,9 +267,9 @@ public class Configurer
     /**
      * Get a boolean in the xml tree.
      * 
-     * @param defaultValue Value used if node does not exist.
+     * @param defaultValue The value used if node does not exist.
      * @param attribute The attribute to get as boolean.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The boolean value.
      * @throws LionEngineException If unable to read node.
      */
@@ -204,7 +282,7 @@ public class Configurer
      * Get an integer in the xml tree.
      * 
      * @param attribute The attribute to get as integer.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The integer value.
      * @throws LionEngineException If unable to read node or not a valid integer read.
      */
@@ -223,9 +301,9 @@ public class Configurer
     /**
      * Get an integer in the xml tree.
      * 
-     * @param defaultValue Value used if node does not exist.
+     * @param defaultValue The value used if node does not exist.
      * @param attribute The attribute to get as integer.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The integer value.
      * @throws LionEngineException If not a valid integer read.
      */
@@ -242,10 +320,27 @@ public class Configurer
     }
 
     /**
+     * Get an integer in the xml tree.
+     * 
+     * @param attribute The attribute to get as integer.
+     * @param path The node path (child list).
+     * @return The integer value.
+     * @throws LionEngineException If unable to read node or not a valid integer read.
+     */
+    public final OptionalInt getIntegerOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return OptionalInt.of(getInteger(attribute, path));
+        }
+        return OptionalInt.empty();
+    }
+
+    /**
      * Get a double in the xml tree.
      * 
      * @param attribute The attribute to get as double.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The double value.
      * @throws LionEngineException If unable to read node.
      */
@@ -264,9 +359,9 @@ public class Configurer
     /**
      * Get a double in the xml tree.
      * 
-     * @param defaultValue Value used if node does not exist.
+     * @param defaultValue The value used if node does not exist.
      * @param attribute The attribute to get as double.
-     * @param path The node path (child list)
+     * @param path The node path (child list).
      * @return The double value.
      * @throws LionEngineException If unable to read node.
      */
@@ -280,6 +375,23 @@ public class Configurer
         {
             throw new LionEngineException(exception, media);
         }
+    }
+
+    /**
+     * Get a double in the xml tree.
+     * 
+     * @param attribute The attribute to get as double.
+     * @param path The node path (child list).
+     * @return The double value.
+     * @throws LionEngineException If unable to read node or not a valid double read.
+     */
+    public final OptionalDouble getDoubleOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return OptionalDouble.of(getDouble(attribute, path));
+        }
+        return OptionalDouble.empty();
     }
 
     /**
@@ -434,6 +546,27 @@ public class Configurer
             node = node.getChild(element);
         }
         return true;
+    }
+
+    /**
+     * Check if attribute exists.
+     * 
+     * @param attribute The attribute path.
+     * @param path The node path.
+     * @return <code>true</code> if attribute exists, <code>false</code> else.
+     */
+    public final boolean hasAttribute(String attribute, String... path)
+    {
+        Xml node = root;
+        for (final String element : path)
+        {
+            if (!node.hasChild(element))
+            {
+                return false;
+            }
+            node = node.getChild(element);
+        }
+        return node.hasAttribute(attribute);
     }
 
     /**
