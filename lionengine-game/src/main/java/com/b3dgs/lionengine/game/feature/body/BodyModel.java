@@ -57,6 +57,8 @@ public class BodyModel extends FeatureModel implements Body
         final BodyConfig config = BodyConfig.imports(setup);
         gravity = config.getGravity();
         gravityMax.setDirection(0.0, -config.getGravityMax());
+        force.setDirectionMaximum(DirectionNone.INSTANCE);
+        force.setDirectionMinimum(gravityMax);
     }
 
     /*

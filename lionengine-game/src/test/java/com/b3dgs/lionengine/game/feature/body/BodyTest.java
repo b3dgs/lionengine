@@ -157,6 +157,7 @@ final class BodyTest
         body.prepare(object);
         body.setMass(1.0);
         body.setGravity(1.0);
+        body.setGravityMax(1.0);
         body.setDesiredFps(50);
         body.update(1.0);
         transformable.moveLocation(1.0, body);
