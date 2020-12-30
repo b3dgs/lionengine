@@ -18,6 +18,8 @@ package com.b3dgs.lionengine.helper;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
@@ -59,6 +61,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FovableModel;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.RenderableVoid;
 
 /**
  * Entity helper base.
@@ -79,6 +83,7 @@ public class EntityHelper extends FeaturableModel
         return state.getSimpleName().substring(PREFIX).toLowerCase(Locale.ENGLISH);
     }
 
+    private final EntityChecker checker;
     private final Body body;
     private final StateHandler state;
     private final Mirrorable mirrorable;
@@ -92,6 +97,12 @@ public class EntityHelper extends FeaturableModel
     private final Producer producer;
     private final Launchable launchable;
     private final Launcher launcher;
+
+    private Updatable updating;
+    private Renderable rendering;
+
+    private Updatable updatingCurrent;
+    private Renderable renderingCurrent;
 
     /**
      * Create entity.
@@ -107,6 +118,7 @@ public class EntityHelper extends FeaturableModel
         addFeature(new TransformableModel(services, setup));
         addFeature(new FovableModel(services, setup));
         addFeature(new ActionerModel(services, setup));
+
         state = addFeatureAndGet(new StateHandler(services, setup, EntityHelper::getAnimationName));
         body = addFeatureAndGet(new BodyModel(services, setup));
         mirrorable = addFeatureAndGet(new MirrorableModel(services, setup));
@@ -120,18 +132,73 @@ public class EntityHelper extends FeaturableModel
         producer = addFeatureAndGet(new ProducerModel(services, setup));
         launchable = addFeatureAndGet(new LaunchableModel(services, setup));
         launcher = addFeatureAndGet(new LauncherModel(services, setup));
+
         addFeature(new ProducibleModel(services, setup));
         addFeature(new ExtractableModel(services, setup));
         addFeature(new CollidableFramedModel(services, setup));
         addFeature(new SelectableModel(services, setup));
+
+        checker = addFeatureAndGet(new EntityChecker());
+        checker.addListener(new EntityCheckerListener()
+        {
+            @Override
+            public void notifyCheckedUpdate(boolean checked)
+            {
+                onCheckedUpdate(checked);
+            }
+
+            @Override
+            public void notifyCheckedRender(boolean checked)
+            {
+                onCheckedRender(checked);
+            }
+        });
     }
+
+    /**
+     * Called on checked update.
+     * 
+     * @param checked The flag.
+     */
+    private void onCheckedUpdate(boolean checked)
+    {
+        if (checked)
+        {
+            updatingCurrent = updating;
+        }
+        else
+        {
+            updatingCurrent = UpdatableVoid.getInstance();
+        }
+    }
+
+    /**
+     * Called on checked render.
+     * 
+     * @param checked The flag.
+     */
+    private void onCheckedRender(boolean checked)
+    {
+        if (checked)
+        {
+            renderingCurrent = rendering;
+        }
+        else
+        {
+            renderingCurrent = RenderableVoid.getInstance();
+        }
+    }
+
+    /*
+     * Featurable
+     */
 
     @Override
     public void addAfter(Services services, Setup setup)
     {
         final Routines routines = addFeatureAndGet(new Routines(services, setup));
 
-        addFeature(new RefreshableModel(extrp ->
+        updating = extrp ->
         {
             state.update(extrp);
             routines.update(extrp);
@@ -147,14 +214,27 @@ public class EntityHelper extends FeaturableModel
             mirrorable.update(extrp);
             animatable.update(extrp);
             rasterable.update(extrp);
-        }));
+        };
 
-        addFeature(new DisplayableModel(g ->
+        rendering = g ->
         {
             pathfindable.render(g);
             rasterable.render(g);
             collidable.render(g);
             routines.render(g);
+        };
+
+        updatingCurrent = updating;
+        renderingCurrent = rendering;
+
+        addFeature(new RefreshableModel(extrp ->
+        {
+            checker.update(extrp);
+            updatingCurrent.update(extrp);
+        }));
+        addFeature(new DisplayableModel(g ->
+        {
+            renderingCurrent.render(g);
         }));
     }
 }
