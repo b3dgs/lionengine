@@ -22,6 +22,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
@@ -165,8 +166,8 @@ final class ScreenHeadlessTest
         {
             continue;
         }
-        screen.setIcon("void");
-        screen.setIcon("image.png");
+        screen.setIcons(Arrays.asList(Medias.create("void")));
+        screen.setIcons(Arrays.asList(Medias.create("image.png")));
         screen.dispose();
 
         assertEquals(0, screen.getX());

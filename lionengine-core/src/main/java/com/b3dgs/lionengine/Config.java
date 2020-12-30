@@ -16,7 +16,8 @@
  */
 package com.b3dgs.lionengine;
 
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Describe the engine screen configuration. It allows to define different parameters:
@@ -44,6 +45,19 @@ public final class Config
     }
 
     /**
+     * Create a 32 bits color depth and windowed configuration using output resolution.
+     * 
+     * @param output The output resolution used on rendering (must not be <code>null</code>).
+     * @param icons The windows icons (must not be <code>null</code>).
+     * @return The created windowed configuration.
+     * @throws LionEngineException If invalid argument.
+     */
+    public static Config windowed(Resolution output, Media... icons)
+    {
+        return new Config(output, DEPTH_DEFAULT, true, icons);
+    }
+
+    /**
      * Create a 32 bits color depth and fullscreen configuration using output resolution.
      * 
      * @param output The output resolution used on rendering (must not be <code>null</code>).
@@ -62,7 +76,7 @@ public final class Config
     /** Windowed mode. */
     private final boolean windowed;
     /** Icon media. */
-    private final Optional<Media> icon;
+    private final Collection<Media> icons;
 
     /**
      * Create a configuration without icon.
@@ -74,7 +88,7 @@ public final class Config
      */
     public Config(Resolution output, int depth, boolean windowed)
     {
-        this(output, depth, windowed, null);
+        this(output, depth, windowed, new Media[0]);
     }
 
     /**
@@ -83,10 +97,10 @@ public final class Config
      * @param output The output resolution used on rendering (must not be <code>null</code>).
      * @param depth The screen color depth in bits, usually 16 or 32 (strictly positive).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
-     * @param icon The icon media (can be <code>null</code>).
+     * @param icons The icons media (can be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public Config(Resolution output, int depth, boolean windowed, Media icon)
+    public Config(Resolution output, int depth, boolean windowed, Media... icons)
     {
         super();
 
@@ -96,7 +110,7 @@ public final class Config
         this.output = output;
         this.depth = depth;
         this.windowed = windowed;
-        this.icon = Optional.ofNullable(icon);
+        this.icons = Arrays.asList(icons);
     }
 
     /**
@@ -110,13 +124,13 @@ public final class Config
     }
 
     /**
-     * Get the application icon.
+     * Get the application icons.
      * 
-     * @return The application icon.
+     * @return The application icons.
      */
-    public Optional<Media> getIcon()
+    public Collection<Media> getIcons()
     {
-        return icon;
+        return icons;
     }
 
     /**

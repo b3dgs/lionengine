@@ -16,9 +16,12 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -92,9 +95,9 @@ public interface Screen extends Context
     /**
      * Set icon from file.
      * 
-     * @param filename The icon file name.
+     * @param icons The icons file name.
      */
-    void setIcon(String filename);
+    void setIcons(Collection<Media> icons);
 
     /**
      * Get current graphic.

@@ -65,13 +65,13 @@ final class ConfigTest
      * Test icon.
      */
     @Test
-    void testIcon()
+    void testIcons()
     {
-        assertFalse(Config.windowed(new Resolution(320, 240, 60)).getIcon().isPresent());
+        assertTrue(Config.windowed(new Resolution(320, 240, 60)).getIcons().isEmpty());
 
         final Media icon = Medias.create("image.png");
 
-        assertEquals(icon, new Config(new Resolution(320, 240, 60), 32, true, icon).getIcon().get());
+        assertEquals(icon, new Config(new Resolution(320, 240, 60), 32, true, icon).getIcons().iterator().next());
     }
 
     /**

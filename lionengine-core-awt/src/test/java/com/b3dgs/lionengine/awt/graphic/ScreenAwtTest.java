@@ -26,6 +26,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.awt.GraphicsEnvironment;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
@@ -67,6 +68,7 @@ final class ScreenAwtTest
     public static void afterTests()
     {
         Graphics.setFactoryGraphic(null);
+        Medias.setLoadFromJar(null);
         Engine.terminate();
     }
 
@@ -76,8 +78,10 @@ final class ScreenAwtTest
     @Test
     void testEngineWindowed()
     {
+        Medias.setLoadFromJar(ScreenAwtTest.class);
+
         final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
-        EngineAwt.start(ScreenAwtTest.class.getSimpleName(), Version.DEFAULT);
+        EngineAwt.start(ScreenAwtTest.class.getSimpleName(), Version.DEFAULT, ScreenAwtTest.class);
         testScreen(config);
     }
 
@@ -87,6 +91,8 @@ final class ScreenAwtTest
     @Test
     void testWindowed()
     {
+        Medias.setLoadFromJar(ScreenAwtTest.class);
+
         final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true, Medias.create("image.png"));
         testScreen(config);
     }
@@ -97,6 +103,8 @@ final class ScreenAwtTest
     @Test
     void testFullscreen()
     {
+        Medias.setLoadFromJar(ScreenAwtTest.class);
+
         final Config config = new Config(new Resolution(1024, 768, 60), 32, false, Medias.create("image.png"));
         try
         {
@@ -222,8 +230,8 @@ final class ScreenAwtTest
                 continue;
             }
         });
-        screen.setIcon("void");
-        screen.setIcon("image.png");
+        assertThrows(() -> screen.setIcons(Arrays.asList(Medias.create("void"))), "[void] Cannot open the media !");
+        screen.setIcons(Arrays.asList(Medias.create("image.png")));
 
         final javax.swing.JFrame frame = (javax.swing.JFrame) UtilReflection.getField(screen, "frame");
         frame.dispatchEvent(new java.awt.event.WindowEvent(frame, java.awt.event.WindowEvent.WINDOW_CLOSING));

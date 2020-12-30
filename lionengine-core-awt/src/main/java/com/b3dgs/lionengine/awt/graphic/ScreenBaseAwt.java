@@ -21,6 +21,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,6 +32,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.awt.Keyboard;
 import com.b3dgs.lionengine.awt.Mouse;
 import com.b3dgs.lionengine.graphic.ScreenListener;
@@ -139,9 +142,8 @@ class ScreenBaseAwt extends ScreenAwtAbstract
     }
 
     @Override
-    public void setIcon(String filename)
+    public void setIcons(Collection<Media> icons)
     {
-        final ImageIcon icon = new ImageIcon(filename);
-        frame.setIconImage(icon.getImage());
+        frame.setIconImages(icons.stream().map(i -> new ImageIcon(i.getUrl()).getImage()).collect(Collectors.toList()));
     }
 }

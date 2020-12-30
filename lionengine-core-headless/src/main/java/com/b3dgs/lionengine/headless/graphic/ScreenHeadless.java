@@ -16,10 +16,13 @@
  */
 package com.b3dgs.lionengine.headless.graphic;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.ScreenAbstract;
 import com.b3dgs.lionengine.graphic.ScreenListener;
@@ -177,7 +180,7 @@ final class ScreenHeadless extends ScreenAbstract
     }
 
     @Override
-    public void setIcon(String filename)
+    public void setIcons(Collection<Media> icons)
     {
         // Nothing to do
     }

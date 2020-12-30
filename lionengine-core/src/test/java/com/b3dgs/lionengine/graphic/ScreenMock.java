@@ -16,10 +16,12 @@
  */
 package com.b3dgs.lionengine.graphic;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.InputDeviceKeyListener;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -103,7 +105,7 @@ public final class ScreenMock extends ScreenAbstract
     }
 
     @Override
-    public void setIcon(String filename)
+    public void setIcons(Collection<Media> icons)
     {
         // Mock
     }
