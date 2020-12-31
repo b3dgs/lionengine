@@ -390,6 +390,9 @@ public class FactoryGraphicTest
         {
             Graphics.getImageBuffer(Medias.create("image.png")), Graphics.getImageBuffer(Medias.create("image.png"))
         };
+        images[0].prepare();
+        images[1].prepare();
+
         assertThrows(() -> Graphics.generateTileset(images, new MediaMock()), "[null] Unable to save image: ");
     }
 
@@ -403,6 +406,9 @@ public class FactoryGraphicTest
         {
             Graphics.getImageBuffer(Medias.create("image.png")), Graphics.getImageBuffer(Medias.create("image.png"))
         };
+        images[0].prepare();
+        images[1].prepare();
+
         final Media tileset = Medias.create("tileset.png");
         Graphics.generateTileset(images, tileset);
 
