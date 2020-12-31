@@ -340,10 +340,10 @@ final class WavImpl implements Wav
                     {
                         Thread.sleep(Constant.HUNDRED);
                     }
-                    catch (final InterruptedException exception)
+                    catch (@SuppressWarnings("unused") final InterruptedException exception)
                     {
                         Thread.currentThread().interrupt();
-                        Verbose.exception(exception);
+                        count = 0;
                     }
                 }
             }).get(Constant.DECADE, TimeUnit.SECONDS);
