@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.launchable;
 
 import com.b3dgs.lionengine.Listenable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Feature;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -57,5 +56,5 @@ public interface Launchable extends Feature, Updatable, Listenable<LaunchableLis
      * 
      * @return The current direction, <code>null</code> if undefined.
      */
-    Direction getDirection();
+    Force getDirection();
 }
