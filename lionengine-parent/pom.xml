@@ -4,11 +4,11 @@
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.1.7-SNAPSHOT</version>
+        <version>1.1.7</version>
     </parent>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
-    <version>9.0.5-SNAPSHOT</version>
+    <version>9.0.5</version>
     <packaging>pom</packaging>
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
