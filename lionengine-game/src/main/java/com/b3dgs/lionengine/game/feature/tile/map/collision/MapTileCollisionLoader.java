@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -311,7 +310,7 @@ final class MapTileCollisionLoader
         }
         else
         {
-            tilesFormulas.put(tile, new HashSet<>());
+            tilesFormulas.put(tile, new ArrayList<>());
         }
         addTileCollisions(mapGroup, tile);
     }
@@ -329,9 +328,10 @@ final class MapTileCollisionLoader
             final Set<Integer> group = mapGroup.getGroup(collision.getName());
             if (group.contains(tile.getKey()))
             {
+                final Collection<CollisionFormula> current = tilesFormulas.get(tile);
                 for (final CollisionFormula formula : collision.getFormulas())
                 {
-                    tilesFormulas.get(tile).add(formula);
+                    current.add(formula);
                 }
             }
         }
@@ -412,6 +412,6 @@ final class MapTileCollisionLoader
      */
     private boolean checkConstraint(MapTileGroup mapGroup, Collection<String> constraints, Tile tile)
     {
-        return tile != null && constraints.contains(mapGroup.getGroup(tile)) && !tilesFormulas.get(tile).isEmpty();
+        return tile != null && constraints.contains(mapGroup.getGroup(tile));
     }
 }

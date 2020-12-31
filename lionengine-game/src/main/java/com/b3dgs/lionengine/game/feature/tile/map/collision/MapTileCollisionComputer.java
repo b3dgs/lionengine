@@ -74,6 +74,10 @@ final class MapTileCollisionComputer
                     cy = getCollisionY(tile, category, formulas, formula, x, y);
                     fy = formula;
                 }
+                if (cx != null && cy != null)
+                {
+                    break;
+                }
             }
             if (cx != null || cy != null)
             {

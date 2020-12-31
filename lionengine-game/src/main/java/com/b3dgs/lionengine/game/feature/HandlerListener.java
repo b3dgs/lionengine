@@ -33,5 +33,8 @@ public interface HandlerListener
      * 
      * @param featurable The removed featurable.
      */
-    void notifyHandlableRemoved(Featurable featurable);
+    default void notifyHandlableRemoved(Featurable featurable)
+    {
+        // Nothing by default
+    }
 }

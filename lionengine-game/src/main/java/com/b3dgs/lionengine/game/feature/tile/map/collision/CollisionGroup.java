@@ -16,9 +16,7 @@
  */
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
@@ -87,7 +85,7 @@ public class CollisionGroup extends NameableAbstract
     {
         super(name);
 
-        this.formulas = new ArrayList<>(formulas);
+        this.formulas = formulas;
     }
 
     /**
@@ -97,7 +95,7 @@ public class CollisionGroup extends NameableAbstract
      */
     public Collection<CollisionFormula> getFormulas()
     {
-        return Collections.unmodifiableCollection(formulas);
+        return formulas;
     }
 
     /*
