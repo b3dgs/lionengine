@@ -31,7 +31,7 @@ public final class Constant
     /** Engine website. */
     public static final String ENGINE_WEBSITE = "http://lionengine.b3dgs.com";
     /** Engine version. */
-    public static final Version ENGINE_VERSION = Version.create(9, 0, 5);
+    public static final Version ENGINE_VERSION = Version.create(10, 0, 0);
     /** Header XML. */
     public static final String XML_HEADER = "xmlns:lionengine";
     /** Prefix XML node. */

@@ -23,7 +23,7 @@ package com.b3dgs.lionengine;
  * This class is Thread-Safe.
  * </p>
  * 
- * @version 9.0.5
+ * @version 10.0.0
  * @since 13 June 2010
  */
 public abstract class Engine
