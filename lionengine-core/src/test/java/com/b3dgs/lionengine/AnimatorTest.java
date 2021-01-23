@@ -277,9 +277,16 @@ final class AnimatorTest
     @Test
     void testSetSpeedNegative()
     {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
         final Animator animator = new AnimatorModel();
+        animator.play(animation);
+        animator.setAnimSpeed(-1.0);
+        animator.setFrame(3);
+        animator.update(1.0);
 
-        assertThrows(() -> animator.setAnimSpeed(-1.0), "Invalid argument: -1.0 is not superior or equal to 0.0");
+        assertEquals(AnimState.PLAYING, animator.getAnimState());
+        assertEquals(2, animator.getFrame());
+        assertEquals(2, animator.getFrameAnim());
     }
 
     /**

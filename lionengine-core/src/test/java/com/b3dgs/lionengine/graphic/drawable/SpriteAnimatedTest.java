@@ -500,9 +500,16 @@ final class SpriteAnimatedTest
     @Test
     void testSetSpeedNegative()
     {
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.0, false, false);
         final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
+        sprite.play(animation);
+        sprite.setAnimSpeed(-1.0);
+        sprite.setFrame(3);
+        sprite.update(1.0);
 
-        assertThrows(() -> sprite.setAnimSpeed(-1.0), "Invalid argument: -1.0 is not superior or equal to 0.0");
+        assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        assertEquals(2, sprite.getFrame());
+        assertEquals(2, sprite.getFrameAnim());
     }
 
     /**

@@ -53,7 +53,7 @@ public interface Animator extends Updatable, Listenable<AnimatorListener>
      * Can be used to synchronize the movement speed to the walking animation speed for example.
      * </p>
      * 
-     * @param speed The new animation speed (superior or equal to {@link Animation#MINIMUM_SPEED}).
+     * @param speed The new animation speed.
      * @throws LionEngineException If speed is negative.
      */
     void setAnimSpeed(double speed);
@@ -73,6 +73,13 @@ public interface Animator extends Updatable, Listenable<AnimatorListener>
      * @return The current animation (<code>null</code> if none).
      */
     Animation getAnim();
+
+    /**
+     * Get the current animation speed.
+     * 
+     * @return The current animation speed.
+     */
+    double getAnimSpeed();
 
     /**
      * Get the current animation frames to play.

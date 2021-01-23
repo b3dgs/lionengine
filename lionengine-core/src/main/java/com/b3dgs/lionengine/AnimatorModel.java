@@ -63,11 +63,26 @@ public final class AnimatorModel implements Animator
         current += speed * extrp;
 
         // Last frame reached
-        if (Double.compare(current, last + FRAME) >= 0)
+        if (Double.compare(current, last + FRAME) >= 0 || Double.compare(current, first) < 0)
         {
             // If not reversed, done, else, reverse
-            current = last;
-            checkStatePlaying();
+            if (speed < 0)
+            {
+                current = first;
+            }
+            else
+            {
+                current = last;
+            }
+
+            if (!reverse)
+            {
+                checkStatePlaying();
+            }
+            else
+            {
+                state = AnimState.REVERSING;
+            }
 
             for (int i = 0; i < listenable.size(); i++)
             {
@@ -92,21 +107,21 @@ public final class AnimatorModel implements Animator
      */
     private void checkStatePlaying()
     {
-        if (!reverse)
+        if (repeat)
         {
-            if (repeat)
+            state = AnimState.PLAYING;
+            if (speed < 0)
             {
-                state = AnimState.PLAYING;
-                current = first;
+                current = last;
             }
             else
             {
-                state = AnimState.FINISHED;
+                current = first;
             }
         }
         else
         {
-            state = AnimState.REVERSING;
+            state = AnimState.FINISHED;
         }
     }
 
@@ -238,8 +253,6 @@ public final class AnimatorModel implements Animator
     @Override
     public void setAnimSpeed(double speed)
     {
-        Check.superiorOrEqual(speed, 0.0);
-
         this.speed = speed;
     }
 
@@ -260,6 +273,12 @@ public final class AnimatorModel implements Animator
     public Animation getAnim()
     {
         return anim;
+    }
+
+    @Override
+    public double getAnimSpeed()
+    {
+        return speed;
     }
 
     @Override
