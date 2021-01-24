@@ -21,13 +21,14 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.DirectionNone;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Body model implementation.
  */
-public class BodyModel extends FeatureModel implements Body
+public class BodyModel extends FeatureModel implements Body, Recyclable
 {
     /** Default rate. */
     private static final int DEFAULT_FPS = 60;
@@ -137,5 +138,15 @@ public class BodyModel extends FeatureModel implements Body
     public double getDirectionVertical()
     {
         return force.getDirectionVertical();
+    }
+
+    /*
+     * Recyclable
+     */
+
+    @Override
+    public void recycle()
+    {
+        resetGravity();
     }
 }
