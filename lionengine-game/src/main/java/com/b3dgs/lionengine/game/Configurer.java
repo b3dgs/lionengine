@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
@@ -214,6 +215,23 @@ public class Configurer
     public final String getStringDefault(String defaultValue, String attribute, String... path)
     {
         return getNodeStringDefault(defaultValue, attribute, path);
+    }
+
+    /**
+     * Get a string in the xml tree.
+     * 
+     * @param attribute The attribute to get as string.
+     * @param path The node path (child list).
+     * @return The string value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public final Optional<String> getStringOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return Optional.of(getString(attribute, path));
+        }
+        return Optional.empty();
     }
 
     /**

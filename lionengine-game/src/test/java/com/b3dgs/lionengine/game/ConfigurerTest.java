@@ -25,6 +25,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -153,6 +154,17 @@ final class ConfigurerTest
         assertEquals("string", configurer.getStringDefault("default", "attStr"));
         assertEquals("default", configurer.getStringDefault("default", "void"));
         assertEquals("default", configurer.getStringDefault("default", "void", "none"));
+    }
+
+    /**
+     * Test the string optional getter.
+     */
+    @Test
+    void testGetStringOptional()
+    {
+        assertEquals(Optional.of("string"), configurer.getStringOptional("attStr"));
+        assertEquals(Optional.empty(), configurer.getStringOptional("void"));
+        assertEquals(Optional.empty(), configurer.getStringOptional("void", "none"));
     }
 
     /**
