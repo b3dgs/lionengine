@@ -34,6 +34,11 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
                             Listenable<CollidableListener>
 {
     /**
+     * Remove all listeners.
+     */
+    void clearListeners();
+
+    /**
      * Add a collision to use.
      * 
      * @param collision The collision to add.

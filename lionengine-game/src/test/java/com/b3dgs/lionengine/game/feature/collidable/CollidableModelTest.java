@@ -356,27 +356,35 @@ final class CollidableModelTest
     }
 
     /**
-     * Test listener add and remove.
+     * Test listener add remove and clear.
      */
     @Test
     void testListener()
     {
         final AtomicBoolean called = new AtomicBoolean();
         final CollidableListener listener = (collidable, with, by) -> called.set(true);
-
         collidable1.notifyCollided(null, null, null);
 
         assertFalse(called.get());
 
         collidable1.addListener(listener);
-
         collidable1.notifyCollided(null, null, null);
 
         assertTrue(called.get());
 
         collidable1.removeListener(listener);
         called.set(false);
+        collidable1.notifyCollided(null, null, null);
 
+        assertFalse(called.get());
+
+        collidable1.addListener(listener);
+        collidable1.notifyCollided(null, null, null);
+
+        assertTrue(called.get());
+
+        collidable1.clearListeners();
+        called.set(false);
         collidable1.notifyCollided(null, null, null);
 
         assertFalse(called.get());

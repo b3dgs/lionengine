@@ -148,6 +148,12 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
+    public void clearListeners()
+    {
+        listenable.clear();
+    }
+
+    @Override
     public void addCollision(Collision collision)
     {
         collisions.add(collision);
