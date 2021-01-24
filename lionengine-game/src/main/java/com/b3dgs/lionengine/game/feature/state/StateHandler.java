@@ -62,12 +62,15 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     private final ListenableModel<StateTransitionListener> listenable = new ListenableModel<>();
     /** Class loader. */
     private final ClassLoader classLoader;
+
+    /** Initial state. */
+    private Class<? extends State> init;
     /** Last state (<code>null</code> if none). */
     private Class<? extends State> last;
-    /** Current state pointer (<code>null</code> if none). */
-    private State current;
     /** Next state pointer (<code>null</code> if no change). */
     private Class<? extends State> next;
+    /** Current state pointer (<code>null</code> if none). */
+    private State current;
 
     /**
      * Create feature.
@@ -108,7 +111,8 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
         {
             try
             {
-                next = (Class<? extends State>) classLoader.loadClass(state);
+                init = (Class<? extends State>) classLoader.loadClass(state);
+                next = init;
             }
             catch (final ClassNotFoundException exception)
             {
@@ -271,5 +275,6 @@ public class StateHandler extends FeatureModel implements Updatable, Recyclable,
     {
         last = null;
         current = null;
+        next = init;
     }
 }
