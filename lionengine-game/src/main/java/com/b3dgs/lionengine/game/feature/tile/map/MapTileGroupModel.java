@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -52,8 +53,6 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
     public MapTileGroupModel()
     {
         super();
-
-        groupTiles.put(NO_GROUP_NAME, new HashSet<>());
     }
 
     /*
@@ -63,9 +62,12 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
     @Override
     public void loadGroups(Collection<TileGroup> groups)
     {
+        groupTiles.values().forEach(Collection::clear);
         groupTiles.clear();
         tilesGroup.clear();
         groupTypes.clear();
+
+        groupTiles.put(NO_GROUP_NAME, new HashSet<>());
 
         for (final TileGroup group : groups)
         {
@@ -121,11 +123,20 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
     @Override
     public Set<Integer> getGroup(String name)
     {
+        final Set<Integer> group;
         if (groupTiles.containsKey(name))
         {
-            return groupTiles.get(name);
+            group = groupTiles.get(name);
         }
-        return groupTiles.get(NO_GROUP_NAME);
+        else if (groupTiles.containsKey(NO_GROUP_NAME))
+        {
+            group = groupTiles.get(NO_GROUP_NAME);
+        }
+        else
+        {
+            group = Collections.emptySet();
+        }
+        return group;
     }
 
     @Override
