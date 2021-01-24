@@ -70,6 +70,15 @@ public class ListenableModel<T> implements Listenable<T>
         return listeners;
     }
 
+    /**
+     * Remove all listeners.
+     */
+    public void clear()
+    {
+        listeners.clear();
+        size = 0;
+    }
+
     /*
      * Listenable
      */

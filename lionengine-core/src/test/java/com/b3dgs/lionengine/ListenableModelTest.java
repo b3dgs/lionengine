@@ -64,4 +64,20 @@ final class ListenableModelTest
         assertEquals(0, model.size());
         assertEquals(Collections.emptyList(), model.get());
     }
+
+    /**
+     * Test clear.
+     */
+    @Test
+    void testClear()
+    {
+        final Object object = new Object();
+        model.addListener(object);
+
+        assertEquals(1, model.size());
+
+        model.clear();
+
+        assertEquals(0, model.size());
+    }
 }
