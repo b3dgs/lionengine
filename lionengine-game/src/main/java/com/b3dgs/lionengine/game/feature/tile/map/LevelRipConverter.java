@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.feature.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
@@ -90,6 +91,7 @@ public final class LevelRipConverter
             {
                 if (!checkPixel(map, tileRef, progressTileX, progressTileY))
                 {
+                    Verbose.warning("Tile missing at: " + progressTileX + " " + progressTileY);
                     errors++;
                 }
 
