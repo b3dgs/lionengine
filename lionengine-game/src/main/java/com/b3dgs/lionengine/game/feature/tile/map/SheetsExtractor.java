@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Surface;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -103,8 +104,9 @@ public final class SheetsExtractor
         }
         else
         {
-            horizontals = (int) Math.ceil(Math.sqrt(tilesNumber));
-            verticals = horizontals;
+            final int[] mult = UtilMath.getClosestSquareMult(tilesNumber, tilesNumber);
+            horizontals = mult[0];
+            verticals = mult[1];
         }
         return new Surface()
         {
