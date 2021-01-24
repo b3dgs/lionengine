@@ -321,6 +321,17 @@ public final class UtilMath
     }
 
     /**
+     * Wrap angle between 0 and {@link Constant#ANGLE_MAX}.
+     * 
+     * @param angle The input angle.
+     * @return The wrapped angle.
+     */
+    public static double wrapAngleDouble(double angle)
+    {
+        return wrapDouble(angle, 0.0, Constant.ANGLE_MAX);
+    }
+
+    /**
      * Wrap value (keep value between min and max). Useful to keep an angle between 0 and 360 for example.
      * 
      * @param value The input value.

@@ -241,6 +241,18 @@ final class UtilMathTest
     }
 
     /**
+     * Test the wrap function.
+     */
+    @Test
+    void testWrapAngleDouble()
+    {
+        assertEquals(359.999, UtilMath.wrapAngleDouble(359.999));
+        assertEquals(0.0, UtilMath.wrapAngleDouble(360.0));
+        assertEquals(359.999, UtilMath.wrapAngleDouble(-0.001));
+        assertEquals(180.0, UtilMath.wrapAngleDouble(180.0));
+    }
+
+    /**
      * Test the wrap double function.
      */
     @Test
