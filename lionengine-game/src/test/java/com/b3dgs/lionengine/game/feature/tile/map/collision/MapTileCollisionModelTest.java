@@ -17,12 +17,14 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -266,7 +268,7 @@ final class MapTileCollisionModelTest
     {
         assertEquals(formulaV, mapCollision.getCollisionFormula("y"));
         assertEquals(formulaH, mapCollision.getCollisionFormula("x"));
-        assertEquals(group, mapCollision.getCollisionGroup(UtilMap.GROUND));
+        assertEquals(Optional.of(group), mapCollision.getCollisionGroup(UtilMap.GROUND));
 
         assertTrue(mapCollision.getCollisionFormulas().containsAll(Arrays.asList(formulaV, formulaH)));
         assertTrue(mapCollision.getCollisionGroups().containsAll(Arrays.asList(group)));
@@ -317,7 +319,7 @@ final class MapTileCollisionModelTest
     @Test
     void testUnknownGroup()
     {
-        assertThrows(() -> mapCollision.getCollisionGroup("void"), MapTileCollisionLoader.ERROR_FORMULA + "void");
+        assertFalse(mapCollision.getCollisionGroup("void").isPresent());
     }
 
     /**

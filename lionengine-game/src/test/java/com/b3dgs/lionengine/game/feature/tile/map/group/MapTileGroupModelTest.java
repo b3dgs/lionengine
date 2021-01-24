@@ -103,7 +103,6 @@ final class MapTileGroupModelTest
         assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup((Tile) null));
         assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(tile));
         assertEquals(MapTileGroupModel.NO_GROUP_NAME, mapGroup.getGroup(Integer.valueOf(0)));
-        assertTrue(mapGroup.getGroups().containsAll(Arrays.asList(MapTileGroupModel.NO_GROUP_NAME)));
         assertNull(mapGroup.getGroupsConfig());
 
         assertEquals(TileGroupType.NONE, mapGroup.getType(Constant.EMPTY_STRING));

@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -90,9 +91,8 @@ public interface MapTileCollision extends Feature
      * 
      * @param name The collision group name.
      * @return The supported collision group reference.
-     * @throws LionEngineException If group not found.
      */
-    CollisionGroup getCollisionGroup(String name);
+    Optional<CollisionGroup> getCollisionGroup(String name);
 
     /**
      * Get tile formulas.

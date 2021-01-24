@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -157,15 +158,14 @@ final class MapTileCollisionLoader
      * 
      * @param name The collision group name.
      * @return The supported collision group reference.
-     * @throws LionEngineException If group not found.
      */
-    public CollisionGroup getCollisionGroup(String name)
+    public Optional<CollisionGroup> getCollisionGroup(String name)
     {
         if (groups.containsKey(name))
         {
-            return groups.get(name);
+            return Optional.of(groups.get(name));
         }
-        throw new LionEngineException(ERROR_FORMULA + name);
+        return Optional.empty();
     }
 
     /**

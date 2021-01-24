@@ -141,8 +141,7 @@ public final class CollisionCategoryConfig
         for (final Xml groupNode : children)
         {
             final String groupName = groupNode.getText();
-            final CollisionGroup group = map.getCollisionGroup(groupName);
-            groups.add(group);
+            map.getCollisionGroup(groupName).ifPresent(groups::add);
         }
         children.clear();
 

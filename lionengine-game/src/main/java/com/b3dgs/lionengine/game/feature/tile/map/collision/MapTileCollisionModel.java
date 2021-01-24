@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
@@ -132,7 +133,7 @@ public class MapTileCollisionModel extends FeatureAbstract implements MapTileCol
     }
 
     @Override
-    public CollisionGroup getCollisionGroup(String name)
+    public Optional<CollisionGroup> getCollisionGroup(String name)
     {
         return loader.getCollisionGroup(name);
     }
