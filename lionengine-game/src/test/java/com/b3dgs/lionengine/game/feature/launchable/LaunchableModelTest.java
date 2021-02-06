@@ -111,6 +111,7 @@ final class LaunchableModelTest
         assertEquals(0.0, launchable.getDirection().getDirectionHorizontal());
         assertEquals(1.0, launchable.getDirection().getDirectionVertical());
 
+        transformable.backup();
         launchable.update(1.0);
 
         assertEquals(0.0, transformable.getOldX());
@@ -121,6 +122,7 @@ final class LaunchableModelTest
         assertEquals(1.0, launchable.getDirection().getDirectionVertical());
 
         UtilTests.pause(11);
+        transformable.backup();
         launchable.update(1.0);
 
         assertEquals(0.0, transformable.getOldX());
@@ -130,6 +132,7 @@ final class LaunchableModelTest
         assertEquals(0.0, launchable.getDirection().getDirectionHorizontal());
         assertEquals(1.0, launchable.getDirection().getDirectionVertical());
 
+        transformable.backup();
         launchable.update(1.0);
 
         assertEquals(0.0, transformable.getOldX());

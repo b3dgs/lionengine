@@ -95,24 +95,28 @@ final class BodyTest
         assertEquals(2.0 * Constant.GRAVITY_EARTH, body.getWeight());
 
         body.setGravity(3.0);
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(2.0, body.getMass());
         assertEquals(6.0, body.getWeight());
 
         body.setGravityMax(8.0);
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(6.0, transformable.getOldY());
         assertEquals(6.0, transformable.getY());
 
         body.update(1.0);
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(6.0, transformable.getOldY());
         assertEquals(5.85, transformable.getY());
 
         body.update(1.0);
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(5.85, transformable.getOldY());
@@ -133,6 +137,8 @@ final class BodyTest
         body.setGravityMax(8.0);
         body.setDesiredFps(50);
         body.update(1.0);
+
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(6.0, transformable.getOldY());
@@ -140,6 +146,8 @@ final class BodyTest
 
         body.resetGravity();
         body.update(1.0);
+
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(5.85, transformable.getOldY());
@@ -160,12 +168,15 @@ final class BodyTest
         body.setGravityMax(1.0);
         body.setDesiredFps(50);
         body.update(1.0);
+
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(6.0, transformable.getOldY());
         assertEquals(5.95, transformable.getY());
 
         body.update(0.5);
+        transformable.backup();
         transformable.moveLocation(1.0, body);
 
         assertEquals(5.95, transformable.getOldY());

@@ -24,8 +24,12 @@ import com.b3dgs.lionengine.Localizable;
 public interface Mover extends Localizable
 {
     /**
-     * Move location using different directions. Old location is stored before moving and the movement is updated after
-     * calculation.
+     * Backup current location.
+     */
+    void backup();
+
+    /**
+     * Move location using different directions.
      * 
      * @param extrp The extrapolation value.
      * @param direction The primary direction.
@@ -34,8 +38,7 @@ public interface Mover extends Localizable
     void moveLocation(double extrp, Direction direction, Direction... directions);
 
     /**
-     * Move location using a simple force. Old location is stored before moving and the movement is updated after
-     * calculation.
+     * Move location using a simple force.
      * 
      * @param extrp The extrapolation value.
      * @param vx The horizontal force.
@@ -43,8 +46,7 @@ public interface Mover extends Localizable
     void moveLocationX(double extrp, double vx);
 
     /**
-     * Move location using a simple force. Old location is stored before moving and the movement is updated after
-     * calculation.
+     * Move location using a simple force.
      * 
      * @param extrp The extrapolation value.
      * @param vy The vertical force.
@@ -52,8 +54,7 @@ public interface Mover extends Localizable
     void moveLocationY(double extrp, double vy);
 
     /**
-     * Move location using a simple force. Old location is stored before moving and the movement is updated after
-     * calculation.
+     * Move location using a simple force.
      * 
      * @param extrp The extrapolation value.
      * @param vx The horizontal force.
@@ -62,7 +63,7 @@ public interface Mover extends Localizable
     void moveLocation(double extrp, double vx, double vy);
 
     /**
-     * Teleport to a new location. Old location is not stored.
+     * Teleport to a new location without movement.
      * 
      * @param x The new horizontal location.
      * @param y The new vertical location.
@@ -70,21 +71,21 @@ public interface Mover extends Localizable
     void teleport(double x, double y);
 
     /**
-     * Teleport to a new horizontal location. Old location is not stored.
+     * Teleport to a new horizontal location without movement.
      * 
      * @param x The new horizontal location.
      */
     void teleportX(double x);
 
     /**
-     * Teleport to a new vertical location. Old location is not stored.
+     * Teleport to a new vertical location without movement.
      * 
      * @param y The new vertical location.
      */
     void teleportY(double y);
 
     /**
-     * Set new location. Old location is stored.
+     * Set new location.
      * 
      * @param x The new horizontal location.
      * @param y The new vertical location.
@@ -92,14 +93,14 @@ public interface Mover extends Localizable
     void setLocation(double x, double y);
 
     /**
-     * Set new x location. Old x location is stored.
+     * Set new x location.
      * 
      * @param x The new horizontal location.
      */
     void setLocationX(double x);
 
     /**
-     * Set new y location. Old y location is stored.
+     * Set new y location.
      * 
      * @param y The new vertical location.
      */

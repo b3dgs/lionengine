@@ -253,6 +253,7 @@ public abstract class WorldGame implements Updatable, Renderable, Spawner
     @Override
     public void render(Graphic g)
     {
+        camera.backup();
         handler.render(g);
     }
 

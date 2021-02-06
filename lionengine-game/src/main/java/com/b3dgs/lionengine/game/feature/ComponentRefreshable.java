@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,10 +57,14 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     private final Set<Integer> indexs = new TreeSet<>();
     /** Layers to render. */
     private final Map<Integer, Collection<Refreshable>> layers = new HashMap<>();
+    /** Layer to backup. */
+    private final List<Transformable> toBackup = new ArrayList<>();
     /** Layer to update. */
     private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
     /** Update flag. */
     private boolean updateRequested;
+    /** To backup size. */
+    private int backupCount;
 
     /**
      * Create component.
@@ -113,6 +118,11 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
     @Override
     public void update(double extrp, Handlables featurables)
     {
+        for (int i = 0; i < backupCount; i++)
+        {
+            toBackup.get(i).backup();
+        }
+
         for (final Integer layer : indexs)
         {
             for (final Refreshable refreshable : layers.get(layer))
@@ -152,6 +162,11 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         {
             featurable.getFeature(Layerable.class).addListener(this);
         }
+        featurable.ifIs(Transformable.class, t ->
+        {
+            toBackup.add(t);
+            backupCount++;
+        });
     }
 
     @Override
@@ -167,6 +182,11 @@ public class ComponentRefreshable implements ComponentUpdater, HandlerListener, 
         {
             featurable.getFeature(Layerable.class).removeListener(this);
         }
+        featurable.ifIs(Transformable.class, t ->
+        {
+            toBackup.remove(t);
+            backupCount--;
+        });
     }
 
     /*

@@ -87,6 +87,14 @@ public class Camera extends FeaturableAbstract implements Viewer
     }
 
     /**
+     * Backup current location.
+     */
+    public void backup()
+    {
+        mover.backup();
+    }
+
+    /**
      * Reset the camera interval to 0 by adapting its position. This will ensure camera centers its view to the
      * localizable.
      * 
@@ -111,6 +119,7 @@ public class Camera extends FeaturableAbstract implements Viewer
 
         setIntervals(intervalHorizontalOld, intervalVerticalOld);
         offset.setLocation(0.0, 0.0);
+        mover.backup();
     }
 
     /**

@@ -104,6 +104,12 @@ public class TransformableModel extends FeatureModel implements Transformable, R
     }
 
     @Override
+    public void backup()
+    {
+        mover.backup();
+    }
+
+    @Override
     public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
         mover.moveLocation(extrp, direction, directions);

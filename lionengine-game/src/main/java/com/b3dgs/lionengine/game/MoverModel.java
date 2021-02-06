@@ -31,7 +31,7 @@ public class MoverModel implements Mover
     private double oldY;
 
     /**
-     * Create a mover model.
+     * Create model.
      */
     public MoverModel()
     {
@@ -41,6 +41,13 @@ public class MoverModel implements Mover
     /*
      * Mover
      */
+
+    @Override
+    public void backup()
+    {
+        oldX = x;
+        oldY = y;
+    }
 
     @Override
     public void moveLocation(double extrp, Direction direction, Direction... directions)
@@ -84,15 +91,15 @@ public class MoverModel implements Mover
     @Override
     public void teleportX(double x)
     {
-        oldX = x;
-        this.x = x;
+        this.x = x + 0.0;
+        oldX = this.x;
     }
 
     @Override
     public void teleportY(double y)
     {
-        oldY = y;
-        this.y = y;
+        this.y = y + 0.0;
+        oldY = this.y;
     }
 
     @Override
@@ -105,14 +112,12 @@ public class MoverModel implements Mover
     @Override
     public void setLocationX(double x)
     {
-        oldX = this.x;
         this.x = x + 0.0;
     }
 
     @Override
     public void setLocationY(double y)
     {
-        oldY = this.y;
         this.y = y + 0.0;
     }
 

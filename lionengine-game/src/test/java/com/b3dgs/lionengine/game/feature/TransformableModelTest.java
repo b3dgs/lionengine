@@ -126,13 +126,15 @@ final class TransformableModelTest
     {
         assertLocalization(0.0, 0.0, 0.0, 0.0);
 
+        transformable.backup();
         transformable.setLocation(1.0, 1.0);
 
         assertLocalization(0.0, 0.0, 1.0, 1.0);
 
+        transformable.backup();
         transformable.setLocationX(2.0);
 
-        assertLocalization(1.0, 0.0, 2.0, 1.0);
+        assertLocalization(1.0, 1.0, 2.0, 1.0);
 
         transformable.setLocationY(3.0);
 
@@ -166,10 +168,12 @@ final class TransformableModelTest
     {
         assertLocalization(0.0, 0.0, 0.0, 0.0);
 
+        transformable.backup();
         transformable.moveLocation(1.0, 1.0, 2.0);
 
         assertLocalization(0.0, 0.0, 1.0, 2.0);
 
+        transformable.backup();
         transformable.moveLocation(1.0, new Force(-2.0, -3.0), new Force(-1.0, -2.0));
 
         assertLocalization(1.0, 2.0, -2.0, -3.0);
