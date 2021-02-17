@@ -81,7 +81,7 @@ public class CameraTracker extends FeaturableAbstract
     /**
      * Track the specified localizable.
      * 
-     * @param localizable The localizable to track, <code>null</code> to stop follow.
+     * @param localizable The localizable to track.
      */
     public void track(Localizable localizable)
     {
@@ -102,13 +102,21 @@ public class CameraTracker extends FeaturableAbstract
      * <li>{@link Transformable}</li>
      * </ul>
      * 
-     * @param featurable The featurable to follow, <code>null</code> to stop follow.
+     * @param featurable The featurable to follow.
      * @throws LionEngineException If missing feature.
      */
     public void track(Featurable featurable)
     {
         final Transformable transformable = featurable.getFeature(Transformable.class);
         track(transformable);
+    }
+
+    /**
+     * Stop tracking.
+     */
+    public void stop()
+    {
+        tracked = null;
     }
 
     /*
