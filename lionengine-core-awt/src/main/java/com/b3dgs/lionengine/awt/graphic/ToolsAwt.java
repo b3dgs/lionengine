@@ -394,6 +394,26 @@ public final class ToolsAwt
     }
 
     /**
+     * Get raster buffers from palette with raster inside each line.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param th The tile height.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static BufferedImage[] getRasterBufferInside(BufferedImage image, BufferedImage palette, int th)
+    {
+        final int rastersCount = (int) Math.ceil((palette.getHeight() - 1.0) / th);
+        final BufferedImage[] rasters = new BufferedImage[rastersCount];
+        for (int rasterIndex = 0; rasterIndex < rastersCount; rasterIndex++)
+        {
+            rasters[rasterIndex] = getRasterBuffer(image, palette, th, rasterIndex);
+        }
+        return rasters;
+    }
+
+    /**
      * Get raster buffer from palette at specified index.
      * 
      * @param image The image buffer (must not be <code>null</code>).
@@ -415,6 +435,39 @@ public final class ToolsAwt
             {
                 final int originalRgb = image.getRGB(x, y);
                 raster.setRGB(x, y, findRaster(paletteColors, palette, originalRgb, rasterIndex));
+            }
+        }
+        return raster;
+    }
+
+    /**
+     * Get raster buffer from palette at specified index.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param th The tile height.
+     * @param rasterIndex The raster index on palette.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    private static BufferedImage getRasterBuffer(BufferedImage image, BufferedImage palette, int th, int rasterIndex)
+    {
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final int paletteColors = palette.getWidth();
+
+        final BufferedImage raster = createImage(width, height, image.getTransparency());
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                final int originalRgb = image.getRGB(x, y);
+                raster.setRGB(x,
+                              y,
+                              findRaster(paletteColors,
+                                         palette,
+                                         originalRgb,
+                                         (height - y - 1) % th + rasterIndex * th));
             }
         }
         return raster;
@@ -522,7 +575,7 @@ public final class ToolsAwt
     {
         for (int p = 0; p < paletteColors; p++)
         {
-            if (palette.getRGB(p, 0) == originalRgb)
+            if (palette.getRGB(p, 0) == originalRgb && rasterIndex + 1 < palette.getHeight())
             {
                 return palette.getRGB(p, rasterIndex + 1);
             }

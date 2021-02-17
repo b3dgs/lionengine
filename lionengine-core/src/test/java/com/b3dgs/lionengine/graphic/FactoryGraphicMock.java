@@ -209,6 +209,17 @@ public class FactoryGraphicMock implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer[] getRasterBufferInside(ImageBuffer image, ImageBuffer palette, int th)
+    {
+        final ImageBuffer[] buffers = new ImageBuffer[palette.getHeight()];
+        for (int i = 0; i < buffers.length; i++)
+        {
+            buffers[i] = new ImageBufferMock(image.getWidth(), image.getHeight());
+        }
+        return buffers;
+    }
+
+    @Override
     public ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight)
     {
         final ImageBuffer[] buffers = new ImageBuffer[palette.getHeight()];

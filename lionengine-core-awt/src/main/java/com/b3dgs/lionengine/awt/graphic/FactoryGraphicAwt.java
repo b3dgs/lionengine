@@ -286,6 +286,21 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer[] getRasterBufferInside(ImageBuffer image, ImageBuffer palette, int th)
+    {
+        Check.notNull(image);
+        Check.notNull(palette);
+
+        final BufferedImage[] rasters = ToolsAwt.getRasterBufferInside(image.getSurface(), palette.getSurface(), th);
+        final ImageBuffer[] buffers = new ImageBuffer[rasters.length];
+        for (int i = 0; i < buffers.length; i++)
+        {
+            buffers[i] = new ImageBufferAwt(rasters[i]);
+        }
+        return buffers;
+    }
+
+    @Override
     public ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight)
     {
         Check.notNull(image);

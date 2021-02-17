@@ -281,6 +281,20 @@ public final class Graphics
     }
 
     /**
+     * Get raster buffers from palette with raster inside each line.
+     * 
+     * @param img The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param th The tile height.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public static ImageBuffer[] getRasterBufferInside(ImageBuffer img, ImageBuffer palette, int th)
+    {
+        return factoryGraphic.getRasterBufferInside(img, palette, th);
+    }
+
+    /**
      * Get raster buffer from first palette, fill for each height until tile size.
      * 
      * @param image The image buffer (must not be <code>null</code>).

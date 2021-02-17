@@ -198,6 +198,17 @@ public interface FactoryGraphic
     ImageBuffer[] getRasterBuffer(ImageBuffer image, ImageBuffer palette);
 
     /**
+     * Get raster buffers from palette.
+     * 
+     * @param image The image buffer (must not be <code>null</code>).
+     * @param palette The raster palette (must not be <code>null</code>).
+     * @param th The tile height.
+     * @return The rastered images.
+     * @throws LionEngineException If invalid arguments.
+     */
+    ImageBuffer[] getRasterBufferInside(ImageBuffer image, ImageBuffer palette, int th);
+
+    /**
      * Get raster buffer from first palette, fill for each height until tile size.
      * 
      * @param image The image buffer (must not be <code>null</code>).

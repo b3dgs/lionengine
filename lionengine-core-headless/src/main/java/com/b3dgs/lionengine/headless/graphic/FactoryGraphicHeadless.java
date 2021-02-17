@@ -297,6 +297,12 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer[] getRasterBufferInside(ImageBuffer image, ImageBuffer palette, int th)
+    {
+        return getRasterBuffer(image, palette);
+    }
+
+    @Override
     public ImageBuffer[] getRasterBufferSmooth(ImageBuffer image, ImageBuffer palette, int tileHeight)
     {
         return getRasterBuffer(image, palette);
