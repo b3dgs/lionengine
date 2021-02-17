@@ -176,6 +176,12 @@ public class MapTileGame extends FeaturableAbstract implements MapTile, Listenab
     }
 
     @Override
+    public void removeTile(int tx, int ty)
+    {
+        mapSurface.removeTile(tx, ty);
+    }
+
+    @Override
     public void setTile(int tx, int ty, int number)
     {
         mapSurface.setTile(tx, ty, number);

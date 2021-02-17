@@ -73,6 +73,18 @@ public interface MapTile extends FeatureProvider, SurfaceTile
     void clear();
 
     /**
+     * Remove a tile at specified map location.
+     * <p>
+     * The tile location must be between 0 and map size ({@link #getInTileWidth()}, {@link #getInTileHeight()}).
+     * </p>
+     * 
+     * @param tx The horizontal tile location.
+     * @param ty The vertical tile location.
+     * @throws LionEngineException If outside map range.
+     */
+    void removeTile(int tx, int ty);
+
+    /**
      * Set a tile at specified map location.
      * <p>
      * The tile location must be between 0 and map size ({@link #getInTileWidth()}, {@link #getInTileHeight()}).

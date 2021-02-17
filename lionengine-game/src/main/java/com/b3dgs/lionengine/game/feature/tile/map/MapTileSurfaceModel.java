@@ -251,6 +251,17 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     }
 
     @Override
+    public void removeTile(int tx, int ty)
+    {
+        Check.superiorStrict(tx, -1);
+        Check.superiorStrict(ty, -1);
+        Check.inferiorStrict(tx, getInTileWidth());
+        Check.inferiorStrict(ty, getInTileHeight());
+
+        tiles.get(ty).set(tx, null);
+    }
+
+    @Override
     public void setTile(int tx, int ty, int number)
     {
         Check.superiorStrict(tx, -1);
