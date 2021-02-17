@@ -169,13 +169,29 @@ public class Force implements Direction, Updatable
      */
     public void zero()
     {
+        zeroHorizontal();
+        zeroVertical();
+    }
+
+    /**
+     * Set horizontal force destination and direction to zero.
+     */
+    public void zeroHorizontal()
+    {
         fhOld = 0.0;
-        fvOld = 0.0;
         fhDest = 0.0;
-        fvDest = 0.0;
         fhLast = 0.0;
-        fvLast = 0.0;
         fh = 0.0;
+    }
+
+    /**
+     * Set vertical force destination and direction to zero.
+     */
+    public void zeroVertical()
+    {
+        fvOld = 0.0;
+        fvDest = 0.0;
+        fvLast = 0.0;
         fv = 0.0;
     }
 
