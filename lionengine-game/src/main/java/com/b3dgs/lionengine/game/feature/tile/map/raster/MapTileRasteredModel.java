@@ -43,6 +43,10 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
 
+    /** Lines per raster. */
+    private int linesPerRaster = RasterImage.LINES_PER_RASTER;
+    /** Raster line offset. */
+    private int rasterLineOffset = 1;
     /** Map tile surface. */
     private MapTileSurface map;
     /** Raster media. */
@@ -132,7 +136,7 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     @Override
     public int getRasterIndex(int ty)
     {
-        return UtilMath.clamp((ty - 1) / RasterImage.LINES_PER_RASTER, 0, RasterImage.MAX_RASTERS - 1);
+        return UtilMath.clamp((ty - rasterLineOffset) / linesPerRaster, 0, RasterImage.MAX_RASTERS - 1);
     }
 
     @Override
@@ -142,10 +146,12 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     }
 
     @Override
-    public void setRaster(Media raster)
+    public void setRaster(Media raster, int linesPerRaster, int rasterLineOffset)
     {
         Check.notNull(raster);
 
         this.raster = raster;
+        this.linesPerRaster = linesPerRaster;
+        this.rasterLineOffset = rasterLineOffset;
     }
 }

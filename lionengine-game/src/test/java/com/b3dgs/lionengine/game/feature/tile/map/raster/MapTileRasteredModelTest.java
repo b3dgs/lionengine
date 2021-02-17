@@ -106,7 +106,7 @@ final class MapTileRasteredModelTest
 
         assertFalse(mapRastered.loadSheets());
 
-        mapRastered.setRaster(Medias.create("raster.xml"));
+        mapRastered.setRaster(Medias.create("raster.xml"), 2, 0);
 
         assertTrue(mapRastered.loadSheets());
 

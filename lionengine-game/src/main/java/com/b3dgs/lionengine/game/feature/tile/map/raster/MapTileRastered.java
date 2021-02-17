@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
  * </p>
  * 
  * <pre>
- * {@link #setRaster(Media)}
+ * {@link #setRaster(Media, int, int)}
  * {@link #loadSheets()}
  * </pre>
  */
@@ -67,7 +67,9 @@ public interface MapTileRastered extends Feature, MapTileRenderer
      * Set the raster media.
      * 
      * @param raster The raster media (must not be <code>null</code>).
+     * @param linesPerRaster The lines number per raster.
+     * @param rasterLineOffset The raster line offset.
      * @throws LionEngineException If invalid argument.
      */
-    void setRaster(Media raster);
+    void setRaster(Media raster, int linesPerRaster, int rasterLineOffset);
 }
