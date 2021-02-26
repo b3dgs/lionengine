@@ -271,9 +271,9 @@ class SpriteImpl implements Sprite
 
         if (Double.compare(widthPercent, 100) != 0 || Double.compare(heightPercent, 100) != 0)
         {
-            final int newWidth = (int) Math.floor(width * widthPercent / 100.0);
-            final int newHeight = (int) Math.floor(height * heightPercent / 100.0);
             lazySurfaceBackup();
+            final int newWidth = (int) Math.floor(surfaceOriginal.getWidth() * widthPercent / 100.0);
+            final int newHeight = (int) Math.floor(surfaceOriginal.getHeight() * heightPercent / 100.0);
             stretch(newWidth, newHeight);
         }
     }

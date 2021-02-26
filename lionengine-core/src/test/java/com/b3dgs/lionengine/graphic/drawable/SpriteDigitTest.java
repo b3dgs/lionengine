@@ -211,13 +211,13 @@ final class SpriteDigitTest
 
         sprite.stretch(100.0, 200.0);
 
-        assertEquals(2, sprite.getWidth());
+        assertEquals(1, sprite.getWidth());
         assertEquals(2, sprite.getHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        assertEquals(4, sprite.getWidth());
-        assertEquals(4, sprite.getHeight());
+        assertEquals(2, sprite.getWidth());
+        assertEquals(2, sprite.getHeight());
     }
 
     /**

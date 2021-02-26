@@ -175,13 +175,13 @@ final class SpriteTest
 
         sprite.stretch(100.0, 200.0);
 
-        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getWidth());
         assertEquals(64, sprite.getHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        assertEquals(256, sprite.getWidth());
-        assertEquals(128, sprite.getHeight());
+        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getHeight());
     }
 
     /**

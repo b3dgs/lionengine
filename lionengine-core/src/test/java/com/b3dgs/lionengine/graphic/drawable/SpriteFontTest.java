@@ -199,13 +199,13 @@ final class SpriteFontTest
 
         sprite.stretch(100.0, 200.0);
 
-        assertEquals(130, sprite.getWidth());
+        assertEquals(60, sprite.getWidth());
         assertEquals(64, sprite.getHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        assertEquals(260, sprite.getWidth());
-        assertEquals(128, sprite.getHeight());
+        assertEquals(130, sprite.getWidth());
+        assertEquals(64, sprite.getHeight());
 
         sprite.dispose();
     }

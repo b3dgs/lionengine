@@ -213,17 +213,17 @@ final class SpriteAnimatedTest
 
         sprite.stretch(100.0, 200.0);
 
-        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getWidth());
         assertEquals(64, sprite.getHeight());
-        assertEquals(8, sprite.getTileWidth());
+        assertEquals(4, sprite.getTileWidth());
         assertEquals(8, sprite.getTileHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        assertEquals(256, sprite.getWidth());
-        assertEquals(128, sprite.getHeight());
-        assertEquals(16, sprite.getTileWidth());
-        assertEquals(16, sprite.getTileHeight());
+        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getHeight());
+        assertEquals(8, sprite.getTileWidth());
+        assertEquals(8, sprite.getTileHeight());
     }
 
     /**
@@ -507,7 +507,7 @@ final class SpriteAnimatedTest
         sprite.setFrame(3);
         sprite.update(1.0);
 
-        assertEquals(AnimState.PLAYING, sprite.getAnimState());
+        assertEquals(AnimState.REVERSING, sprite.getAnimState());
         assertEquals(2, sprite.getFrame());
         assertEquals(2, sprite.getFrameAnim());
     }

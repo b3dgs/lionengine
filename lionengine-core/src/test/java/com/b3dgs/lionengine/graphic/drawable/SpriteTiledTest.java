@@ -188,17 +188,17 @@ final class SpriteTiledTest
 
         sprite.stretch(100.0, 200.0);
 
-        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getWidth());
         assertEquals(64, sprite.getHeight());
-        assertEquals(32, sprite.getTileWidth());
+        assertEquals(16, sprite.getTileWidth());
         assertEquals(16, sprite.getTileHeight());
 
         sprite.stretch(200.0, 200.0);
 
-        assertEquals(256, sprite.getWidth());
-        assertEquals(128, sprite.getHeight());
-        assertEquals(64, sprite.getTileWidth());
-        assertEquals(32, sprite.getTileHeight());
+        assertEquals(128, sprite.getWidth());
+        assertEquals(64, sprite.getHeight());
+        assertEquals(32, sprite.getTileWidth());
+        assertEquals(16, sprite.getTileHeight());
     }
 
     /**
