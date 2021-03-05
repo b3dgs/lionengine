@@ -153,8 +153,8 @@ final class SpriteFontImpl implements SpriteFont
 
         for (final Xml node : children)
         {
-            final int width = node.readInteger("width");
-            final int height = node.readInteger("height");
+            final double width = node.readDouble("width");
+            final double height = node.readDouble("height");
             final FontCharData data = new FontCharData(id, width, height);
             final String c = node.readString("char");
             fontData.put(Character.valueOf(c.charAt(0)), data);
@@ -211,25 +211,14 @@ final class SpriteFontImpl implements SpriteFont
     @Override
     public void render(Graphic g)
     {
-        final int length = text.length();
-        int lx = 0;
-        final int ly = 0;
-        final int width = getCharWidth(text, align);
-        for (int j = 0; j < length; j++)
-        {
-            final FontCharData d = fontData.get(Character.valueOf(text.charAt(j)));
-            surface.setLocation(x + lx - width, y + ly + d.getHeight());
-            surface.setTile(d.getId());
-            surface.render(g);
-            lx += d.getWidth() + 1;
-        }
+        draw(g, (int) x, (int) y, align, text);
     }
 
     @Override
     public void draw(Graphic g, int x, int y, Align align, String text)
     {
-        int lx = 0;
-        int ly = 0;
+        double lx = 0.0;
+        double ly = 0.0;
 
         for (final String word : NL.split(text))
         {
@@ -238,7 +227,7 @@ final class SpriteFontImpl implements SpriteFont
             for (int j = 0; j < length; j++)
             {
                 final FontCharData d = fontData.get(Character.valueOf(word.charAt(j)));
-                surface.setLocation(x + lx - (double) width, y + ly + (double) d.getHeight());
+                surface.setLocation(x + lx - width, y + ly + d.getHeight());
                 surface.setTile(d.getId());
                 surface.render(g);
                 lx += d.getWidth() + 1;
@@ -331,7 +320,10 @@ final class SpriteFontImpl implements SpriteFont
         for (int i = 0; i < length; i++)
         {
             final FontCharData d = fontData.get(Character.valueOf(text.charAt(i)));
-            lx += d.getWidth() + 1;
+            if (d != null)
+            {
+                lx += d.getWidth() + 1;
+            }
         }
 
         return lx;

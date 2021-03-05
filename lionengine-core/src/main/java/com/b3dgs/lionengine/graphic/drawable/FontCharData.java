@@ -30,9 +30,9 @@ final class FontCharData
     /** Character id. */
     private final int id;
     /** Character width. */
-    private final int width;
+    private final double width;
     /** Character height. */
-    private final int height;
+    private final double height;
 
     /**
      * Internal constructor.
@@ -42,7 +42,7 @@ final class FontCharData
      * @param height The character height (must be superior or equal to 0).
      * @throws LionEngineException If invalid arguments.
      */
-    FontCharData(int id, int width, int height)
+    FontCharData(int id, double width, double height)
     {
         super();
 
@@ -70,7 +70,7 @@ final class FontCharData
      * 
      * @return The character width.
      */
-    public int getWidth()
+    public double getWidth()
     {
         return width;
     }
@@ -80,7 +80,7 @@ final class FontCharData
      * 
      * @return The character height.
      */
-    public int getHeight()
+    public double getHeight()
     {
         return height;
     }
