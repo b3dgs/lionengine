@@ -362,4 +362,10 @@ final class WavImpl implements Wav
 
         this.volume = volume;
     }
+
+    @Override
+    public long getTicks()
+    {
+        return 0L;
+    }
 }

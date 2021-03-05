@@ -50,13 +50,6 @@ public interface Sc68 extends Audio
     void setLoop(long first, long last);
 
     /**
-     * Get the total number of ticks.
-     * 
-     * @return The total number of ticks.
-     */
-    long getTicks();
-
-    /**
      * Pause the audio (can be resumed).
      */
     void pause();

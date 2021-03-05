@@ -108,13 +108,6 @@ public interface AdlMidi extends Audio
     void setBank(int bank);
 
     /**
-     * Get the total number of ticks.
-     * 
-     * @return The total number of ticks.
-     */
-    long getTicks();
-
-    /**
      * Pause the audio (can be resumed).
      */
     void pause();

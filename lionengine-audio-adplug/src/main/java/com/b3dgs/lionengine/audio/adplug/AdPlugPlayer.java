@@ -87,4 +87,10 @@ final class AdPlugPlayer extends PlayerAbstract implements AdPlug
     {
         binding.adplugStop();
     }
+
+    @Override
+    public long getTicks()
+    {
+        return 0L;
+    }
 }

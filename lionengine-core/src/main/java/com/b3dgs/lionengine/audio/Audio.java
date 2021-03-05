@@ -50,4 +50,11 @@ public interface Audio
      * Stop the audio.
      */
     void stop();
+
+    /**
+     * Get the total number of ticks.
+     * 
+     * @return The total number of ticks.
+     */
+    long getTicks();
 }

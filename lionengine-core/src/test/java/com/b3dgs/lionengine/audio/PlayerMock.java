@@ -61,4 +61,10 @@ public class PlayerMock extends PlayerAbstract
     {
         // Mock
     }
+
+    @Override
+    public long getTicks()
+    {
+        return 0L;
+    }
 }

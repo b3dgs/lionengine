@@ -62,4 +62,10 @@ public final class AudioVoid implements Audio
     {
         // Nothing to do
     }
+
+    @Override
+    public long getTicks()
+    {
+        return 0L;
+    }
 }
