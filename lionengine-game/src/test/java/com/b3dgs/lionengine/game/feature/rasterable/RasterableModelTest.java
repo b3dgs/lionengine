@@ -17,7 +17,9 @@
 package com.b3dgs.lionengine.game.feature.rasterable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
+import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -101,10 +103,13 @@ final class RasterableModelTest
         rasterable.update(1.0);
         rasterable.render(g);
 
+        assertTrue(rasterable.isVisible());
+
         rasterable.setVisibility(false);
         rasterable.update(1.0);
         rasterable.render(g);
 
+        assertFalse(rasterable.isVisible());
         assertEquals(1, rasterable.getRasterIndex(0));
         assertEquals(RasterImage.MAX_RASTERS, rasterable.getRasterIndex(240));
         assertNotNull(rasterable.getRasterAnim(0));

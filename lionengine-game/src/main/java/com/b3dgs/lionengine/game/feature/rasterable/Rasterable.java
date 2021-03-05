@@ -121,4 +121,11 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @param visible <code>true</code> for visible, <code>false</code> else.
      */
     void setVisibility(boolean visible);
+
+    /**
+     * Get visibility flag.
+     * 
+     * @return <code>true</code> if visible, <code>false</code> else.
+     */
+    boolean isVisible();
 }

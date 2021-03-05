@@ -317,6 +317,12 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         this.visible = visible;
     }
 
+    @Override
+    public boolean isVisible()
+    {
+        return visible;
+    }
+
     /*
      * Recyclable
      */
