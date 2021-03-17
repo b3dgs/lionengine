@@ -38,6 +38,11 @@ public interface Sequencable extends Updatable, Renderable
     void start(Screen screen);
 
     /**
+     * Loading sequence data.
+     */
+    void preload();
+
+    /**
      * Add a key listener.
      * 
      * @param listener The listener to add (must not be <code>null</code>).

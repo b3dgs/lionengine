@@ -36,4 +36,13 @@ public interface Sequencer
      * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
     void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
+
+    /**
+     * Set next sequence and load it now. Call {@link #end()} to trigger transition.
+     * 
+     * @param nextSequenceClass The next sequence class reference.
+     * @param arguments The sequence arguments list if needed by its constructor.
+     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
+     */
+    void load(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
 }

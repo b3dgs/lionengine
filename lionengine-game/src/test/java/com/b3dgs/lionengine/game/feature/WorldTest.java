@@ -134,6 +134,12 @@ final class WorldTest
             {
                 // Mock
             }
+
+            @Override
+            public void load(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
+            {
+                // Mock
+            }
         });
     }
 

@@ -67,6 +67,8 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     private int currentFrameRate;
     /** Current screen used (<code>null</code> if not started). */
     private Screen screen;
+    /** Loaded flag. */
+    private boolean loaded;
 
     /**
      * Constructor base. Resolution will be based on {@link Config#getOutput()}.
@@ -215,7 +217,10 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
         currentFrameRate = config.getOutput().getRate();
         screen.requestFocus();
 
-        load();
+        if (!loaded)
+        {
+            load();
+        }
         onLoaded(Constant.EXTRP, screen.getGraphic());
 
         // Main loop
@@ -246,6 +251,13 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     }
 
     @Override
+    public void preload()
+    {
+        load();
+        loaded = true;
+    }
+
+    @Override
     public final void end()
     {
         loop.stop();
@@ -256,8 +268,25 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     {
         Check.notNull(nextSequenceClass);
 
-        nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
-        loop.stop();
+        if (nextSequence == null)
+        {
+            nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
+            loop.stop();
+        }
+        else
+        {
+            loop.stop();
+        }
+    }
+
+    @Override
+    public void load(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
+    {
+        if (nextSequence == null)
+        {
+            nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
+            nextSequence.preload();
+        }
     }
 
     @Override

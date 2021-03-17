@@ -107,6 +107,12 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
             {
                 SequenceGame.this.end(nextSequenceClass, arguments);
             }
+
+            @Override
+            public void load(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
+            {
+                SequenceGame.this.load(nextSequenceClass, arguments);
+            }
         });
         services.add((Zooming) this::setZoom);
         services.add((TimeControl) this::setTime);
