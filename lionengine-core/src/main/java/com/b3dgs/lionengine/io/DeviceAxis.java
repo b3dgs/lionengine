@@ -14,41 +14,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.collidable.selector;
-
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.geom.Area;
+package com.b3dgs.lionengine.io;
 
 /**
- * Allows to configure the selector.
+ * Axis data.
  */
-public interface SelectorConfigurer
+public class DeviceAxis
 {
-    /**
-     * Set the mouse click selection value.
-     * 
-     * @param click The click number.
-     */
-    void setClickSelection(Integer click);
+    /** Positive. */
+    private final Integer positive;
+    /** Negative. */
+    private final Integer negative;
 
     /**
-     * Set clickable area (where selection can be performed on screen).
+     * Create axis.
      * 
-     * @param area The representation of the clickable area.
+     * @param positive The positive.
+     * @param negative The negative.
      */
-    void setClickableArea(Area area);
+    public DeviceAxis(Integer positive, Integer negative)
+    {
+        super();
+
+        this.positive = positive;
+        this.negative = negative;
+    }
 
     /**
-     * Set clickable area (where selection can be performed on screen).
+     * Get the positive.
      * 
-     * @param viewer The viewer reference.
+     * @return The positive.
      */
-    void setClickableArea(Viewer viewer);
+    public Integer getPositive()
+    {
+        return positive;
+    }
 
     /**
-     * Set the enabled flag.
+     * Get the negative.
      * 
-     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     * @return The negative.
      */
-    void setEnabled(boolean enabled);
+    public Integer getNegative()
+    {
+        return negative;
+    }
 }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine;
 /**
  * Represents an input device, such as mouse, keyboard, joypad...
  */
-public interface InputDevice
+public interface InputDevice extends Nameable
 {
     // Marker interface
 }

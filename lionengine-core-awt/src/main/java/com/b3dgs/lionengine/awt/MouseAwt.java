@@ -33,11 +33,11 @@ import com.b3dgs.lionengine.Verbose;
 public final class MouseAwt implements Mouse
 {
     /** Left click. */
-    public static final int LEFT = MouseEvent.BUTTON1;
+    public static final Integer LEFT = Integer.valueOf(MouseEvent.BUTTON1);
     /** Middle click. */
-    public static final int MIDDLE = MouseEvent.BUTTON2;
+    public static final Integer MIDDLE = Integer.valueOf(MouseEvent.BUTTON2);
     /** Right click. */
-    public static final int RIGHT = MouseEvent.BUTTON3;
+    public static final Integer RIGHT = Integer.valueOf(MouseEvent.BUTTON3);
     /** Robot error. */
     private static final String ERROR_ROBOT = "No mouse robot available !";
 
@@ -70,7 +70,7 @@ public final class MouseAwt implements Mouse
     /** Screen vertical ratio. */
     private double yRatio;
     /** Perform robot release. */
-    private int release = -1;
+    private Integer release = MouseClickAwt.NO_CLICK_CODE;
     /** Do robot release. */
     private boolean doRelease;
 
@@ -123,13 +123,13 @@ public final class MouseAwt implements Mouse
      */
 
     @Override
-    public void addActionPressed(int click, EventAction action)
+    public void addActionPressed(Integer click, EventAction action)
     {
         clicker.addActionPressed(click, action);
     }
 
     @Override
-    public void addActionReleased(int click, EventAction action)
+    public void addActionReleased(Integer click, EventAction action)
     {
         clicker.addActionReleased(click, action);
     }
@@ -155,7 +155,7 @@ public final class MouseAwt implements Mouse
     }
 
     @Override
-    public void doClick(int click)
+    public void doClick(Integer click)
     {
         clicker.robotPress(click);
         release = click;
@@ -174,7 +174,7 @@ public final class MouseAwt implements Mouse
     }
 
     @Override
-    public void doClickAt(int click, int x, int y)
+    public void doClickAt(Integer click, int x, int y)
     {
         mover.robotTeleport(x, y);
         clicker.robotPress(click);
@@ -185,6 +185,12 @@ public final class MouseAwt implements Mouse
     public void setCenter(int x, int y)
     {
         mover.setCenter(x, y);
+    }
+
+    @Override
+    public Integer getPushed()
+    {
+        return clicker.getClick();
     }
 
     @Override
@@ -199,20 +205,16 @@ public final class MouseAwt implements Mouse
         return mover.getY();
     }
 
-    /*
-     * InputDevicePointer
-     */
-
     @Override
-    public int getX()
+    public double getX()
     {
-        return (int) (mover.getWx() / xRatio);
+        return mover.getWx() / xRatio;
     }
 
     @Override
-    public int getY()
+    public double getY()
     {
-        return (int) (mover.getWy() / yRatio);
+        return mover.getWy() / yRatio;
     }
 
     @Override
@@ -228,27 +230,15 @@ public final class MouseAwt implements Mouse
     }
 
     @Override
-    public int getClick()
+    public boolean isPushed(Integer index)
     {
-        return clicker.getClick();
+        return clicker.hasClicked(index);
     }
 
     @Override
-    public boolean hasClicked(int click)
+    public boolean isPushedOnce(Integer index)
     {
-        return clicker.hasClicked(click);
-    }
-
-    @Override
-    public boolean hasClickedOnce(int click)
-    {
-        return clicker.hasClickedOnce(click);
-    }
-
-    @Override
-    public boolean hasMoved()
-    {
-        return mover.hasMoved();
+        return clicker.hasClickedOnce(index);
     }
 
     /*
@@ -259,14 +249,14 @@ public final class MouseAwt implements Mouse
     public void update(double extrp)
     {
         mover.update();
-        if (release > -1 && !doRelease)
+        if (release.compareTo(MouseClickAwt.NO_CLICK_CODE) > 0 && !doRelease)
         {
             doRelease = true;
         }
         else if (doRelease)
         {
             clicker.robotRelease(release);
-            release = -1;
+            release = MouseClickAwt.NO_CLICK_CODE;
             doRelease = false;
         }
     }

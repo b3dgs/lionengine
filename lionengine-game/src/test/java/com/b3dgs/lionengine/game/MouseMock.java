@@ -16,15 +16,15 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.lionengine.io.DevicePointer;
 
 /**
  * Mouse pointer mock.
  */
-public class MouseMock implements InputDevicePointer
+public class MouseMock implements DevicePointer
 {
-    private int click;
-    private int clicked;
+    private Integer click = Integer.valueOf(0);
+    private Integer clicked = click;
     private int x;
     private int y;
     private int mx;
@@ -35,7 +35,7 @@ public class MouseMock implements InputDevicePointer
      * 
      * @param click The current click.
      */
-    public void setClick(int click)
+    public void setClick(Integer click)
     {
         this.click = click;
         clicked = click;
@@ -62,13 +62,13 @@ public class MouseMock implements InputDevicePointer
     }
 
     @Override
-    public int getX()
+    public double getX()
     {
         return x;
     }
 
     @Override
-    public int getY()
+    public double getY()
     {
         return y;
     }
@@ -86,28 +86,28 @@ public class MouseMock implements InputDevicePointer
     }
 
     @Override
-    public int getClick()
+    public Integer getPushed()
     {
         return click;
     }
 
     @Override
-    public boolean hasClicked(int click)
+    public boolean isPushed(Integer click)
     {
         return this.click == click;
     }
 
     @Override
-    public boolean hasClickedOnce(int click)
+    public boolean isPushedOnce(Integer click)
     {
-        final boolean once = clicked == click;
-        clicked = -1;
+        final boolean once = clicked.equals(click);
+        clicked = Integer.valueOf(0);
         return once;
     }
 
     @Override
-    public boolean hasMoved()
+    public String getName()
     {
-        return mx != 0 || my != 0;
+        return MouseMock.class.getSimpleName();
     }
 }

@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.io.InputDeviceControl;
-import com.b3dgs.lionengine.io.InputDeviceControlVoid;
+import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.lionengine.io.DeviceControllerVoid;
 
 /**
  * Entity model implementation.
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.io.InputDeviceControlVoid;
 public class EntityModelHelper extends FeatureModel
 {
     /** Input reference. */
-    protected InputDeviceControl input = InputDeviceControlVoid.getInstance();
+    protected DeviceController input = DeviceControllerVoid.getInstance();
 
     /**
      * Create model.
@@ -50,7 +50,7 @@ public class EntityModelHelper extends FeatureModel
      * 
      * @param input The input reference.
      */
-    public void setInput(InputDeviceControl input)
+    public void setInput(DeviceController input)
     {
         this.input = input;
     }
@@ -60,7 +60,7 @@ public class EntityModelHelper extends FeatureModel
      * 
      * @return The input reference.
      */
-    public InputDeviceControl getInput()
+    public DeviceController getInput()
     {
         return input;
     }

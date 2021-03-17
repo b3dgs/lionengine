@@ -33,7 +33,7 @@ public class SelectorModel extends FeatureAbstract implements SelectorConfigurer
     /** Clickable area. */
     private final Rectangle clickableArea = new Rectangle(0.0, 0.0, Integer.MAX_VALUE, Integer.MAX_VALUE);
     /** Mouse click number to start a selection. */
-    private int selectionClick;
+    private Integer selectionClick;
     /** Currently selecting flag. */
     private boolean selecting;
     /** Raw selection y (used on rendering side). */
@@ -66,7 +66,7 @@ public class SelectorModel extends FeatureAbstract implements SelectorConfigurer
      * 
      * @return The selection click.
      */
-    public int getSelectionClick()
+    public Integer getSelectionClick()
     {
         return selectionClick;
     }
@@ -156,7 +156,7 @@ public class SelectorModel extends FeatureAbstract implements SelectorConfigurer
      */
 
     @Override
-    public void setClickSelection(int click)
+    public void setClickSelection(Integer click)
     {
         selectionClick = click;
     }

@@ -16,28 +16,14 @@
  */
 package com.b3dgs.lionengine.io;
 
-import com.b3dgs.lionengine.InputDevice;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Updatable;
 
 /**
- * Represents a pointer device, supporting location and click number.
+ * Represents a pointer device.
  */
-public interface InputDevicePointer extends InputDevice, Updatable
+public interface DevicePointer extends DevicePush, Localizable, Updatable
 {
-    /**
-     * Get the horizontal location.
-     * 
-     * @return The horizontal location.
-     */
-    int getX();
-
-    /**
-     * Get the vertical location.
-     * 
-     * @return The vertical location.
-     */
-    int getY();
-
     /**
      * Get the horizontal movement.
      * 
@@ -51,34 +37,4 @@ public interface InputDevicePointer extends InputDevice, Updatable
      * @return The vertical movement.
      */
     int getMoveY();
-
-    /**
-     * Get the click number.
-     * 
-     * @return The click number.
-     */
-    int getClick();
-
-    /**
-     * Check if click is pressed.
-     * 
-     * @param click The click to check.
-     * @return The pressed state.
-     */
-    boolean hasClicked(int click);
-
-    /**
-     * Check if click is pressed once only (ignore 'still clicked').
-     * 
-     * @param click The click to check.
-     * @return The pressed state.
-     */
-    boolean hasClickedOnce(int click);
-
-    /**
-     * Check if pointer moved.
-     * 
-     * @return <code>true</code> if moved, <code>false</code> else.
-     */
-    boolean hasMoved();
 }

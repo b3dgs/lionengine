@@ -14,8 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+package com.b3dgs.lionengine.io;
 
 /**
- * Java2D IO base package.
+ * Represents device action.
  */
-package com.b3dgs.lionengine.headless;
+public interface DeviceAction
+{
+    /**
+     * Get the action depending on the index.
+     * 
+     * @return The action value (between -1.0 and 1.0 included).
+     */
+    double getAction();
+}

@@ -16,36 +16,28 @@
  */
 package com.b3dgs.lionengine.awt;
 
-import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.lionengine.io.DevicePointer;
 
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.
  */
-public interface Mouse extends InputDevicePointer
+public interface Mouse extends DevicePointer
 {
     /**
      * Add an action that will be triggered on pressed state.
-     * <p>
-     * Alternative usage with classic programming style can be achieved with {@link #hasClicked(int)} or
-     * {@link #hasClickedOnce(int)}.
-     * </p>
      * 
      * @param click The action key.
      * @param action The action reference.
      */
-    void addActionPressed(int click, EventAction action);
+    void addActionPressed(Integer click, EventAction action);
 
     /**
      * Add an action that will be triggered on released state.
-     * <p>
-     * Alternative usage with classic programming style can be achieved with {@link #hasClicked(int)} or
-     * {@link #hasClickedOnce(int)}.
-     * </p>
      * 
      * @param click The action key.
      * @param action The action reference.
      */
-    void addActionReleased(int click, EventAction action);
+    void addActionReleased(Integer click, EventAction action);
 
     /**
      * Lock mouse at its center.
@@ -65,7 +57,7 @@ public interface Mouse extends InputDevicePointer
      * 
      * @param click The click to perform.
      */
-    void doClick(int click);
+    void doClick(Integer click);
 
     /**
      * Teleport mouse without move.
@@ -90,7 +82,7 @@ public interface Mouse extends InputDevicePointer
      * @param x The location x.
      * @param y The location y.
      */
-    void doClickAt(int click, int x, int y);
+    void doClickAt(Integer click, int x, int y);
 
     /**
      * Set mouse center for lock operation.
@@ -113,4 +105,10 @@ public interface Mouse extends InputDevicePointer
      * @return The location on screen y.
      */
     int getOnScreenY();
+
+    @Override
+    default String getName()
+    {
+        return Mouse.class.getSimpleName();
+    }
 }

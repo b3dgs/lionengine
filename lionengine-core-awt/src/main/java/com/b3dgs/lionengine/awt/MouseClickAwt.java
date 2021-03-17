@@ -16,53 +16,33 @@
  */
 package com.b3dgs.lionengine.awt;
 
-import java.awt.HeadlessException;
-import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Mouse implementation.
  */
 final class MouseClickAwt implements MouseListener
 {
-    /** Default button number. */
-    private static final int DEFAULT_BUTTONS = 3;
-
-    /**
-     * Get the buttons number.
-     * 
-     * @return The buttons number.
-     */
-    private static int getButtonsNumber()
-    {
-        try
-        {
-            return Math.max(0, MouseInfo.getNumberOfButtons()) + 1;
-        }
-        catch (final HeadlessException exception)
-        {
-            Verbose.exception(exception);
-            return DEFAULT_BUTTONS;
-        }
-    }
+    /** No click value. */
+    public static final Integer NO_CLICK_CODE = Integer.valueOf(0);
 
     /** Actions pressed listeners. */
     private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
     /** Actions released listeners. */
     private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** Clicks flags. */
-    private final boolean[] clicks;
+    private final Collection<Integer> clicks = new HashSet<>();
     /** Clicked flags. */
-    private final boolean[] clicked;
+    private final Collection<Integer> clicked = new HashSet<>();
     /** Last click number. */
-    private int lastClick;
+    private Integer lastClick = NO_CLICK_CODE;
 
     /**
      * Internal constructor.
@@ -70,10 +50,6 @@ final class MouseClickAwt implements MouseListener
     MouseClickAwt()
     {
         super();
-
-        final int mouseButtons = getButtonsNumber();
-        clicks = new boolean[mouseButtons];
-        clicked = new boolean[mouseButtons];
     }
 
     /**
@@ -81,13 +57,10 @@ final class MouseClickAwt implements MouseListener
      * 
      * @param click The click number.
      */
-    void robotPress(int click)
+    void robotPress(Integer click)
     {
         lastClick = click;
-        if (lastClick < clicks.length)
-        {
-            clicks[lastClick] = true;
-        }
+        clicks.add(click);
     }
 
     /**
@@ -95,16 +68,11 @@ final class MouseClickAwt implements MouseListener
      * 
      * @param click The click number.
      */
-    void robotRelease(int click)
+    void robotRelease(Integer click)
     {
-        lastClick = 0;
-
-        final int button = click;
-        if (button < clicks.length)
-        {
-            clicks[button] = false;
-            clicked[button] = false;
-        }
+        lastClick = NO_CLICK_CODE;
+        clicks.remove(click);
+        clicked.remove(click);
     }
 
     /**
@@ -113,18 +81,17 @@ final class MouseClickAwt implements MouseListener
      * @param click The action click.
      * @param action The associated action.
      */
-    void addActionPressed(int click, EventAction action)
+    void addActionPressed(Integer click, EventAction action)
     {
         final List<EventAction> list;
-        final Integer key = Integer.valueOf(click);
-        if (actionsPressed.get(key) == null)
+        if (actionsPressed.get(click) == null)
         {
             list = new ArrayList<>();
-            actionsPressed.put(key, list);
+            actionsPressed.put(click, list);
         }
         else
         {
-            list = actionsPressed.get(key);
+            list = actionsPressed.get(click);
         }
         list.add(action);
     }
@@ -135,18 +102,17 @@ final class MouseClickAwt implements MouseListener
      * @param click The action click.
      * @param action The associated action.
      */
-    void addActionReleased(int click, EventAction action)
+    void addActionReleased(Integer click, EventAction action)
     {
-        final Integer key = Integer.valueOf(click);
         final List<EventAction> list;
-        if (actionsReleased.get(key) == null)
+        if (!actionsReleased.containsKey(click))
         {
             list = new ArrayList<>();
-            actionsReleased.put(key, list);
+            actionsReleased.put(click, list);
         }
         else
         {
-            list = actionsReleased.get(key);
+            list = actionsReleased.get(click);
         }
         list.add(action);
     }
@@ -156,7 +122,7 @@ final class MouseClickAwt implements MouseListener
      * 
      * @return The last click.
      */
-    int getClick()
+    Integer getClick()
     {
         return lastClick;
     }
@@ -167,13 +133,9 @@ final class MouseClickAwt implements MouseListener
      * @param click The click to check.
      * @return <code>true</code> if clicked, <code>false</code> else.
      */
-    boolean hasClicked(int click)
+    boolean hasClicked(Integer click)
     {
-        if (click < clicks.length)
-        {
-            return clicks[click];
-        }
-        return false;
+        return clicks.contains(click);
     }
 
     /**
@@ -182,11 +144,11 @@ final class MouseClickAwt implements MouseListener
      * @param click The click to check.
      * @return <code>true</code> if clicked once, <code>false</code> else.
      */
-    boolean hasClickedOnce(int click)
+    boolean hasClickedOnce(Integer click)
     {
-        if (click < clicks.length && clicks[click] && !clicked[click])
+        if (clicks.contains(click) && !clicked.contains(click))
         {
-            clicked[click] = true;
+            clicked.add(click);
             return true;
         }
         return false;
@@ -199,13 +161,12 @@ final class MouseClickAwt implements MouseListener
     @Override
     public void mousePressed(MouseEvent event)
     {
-        lastClick = event.getButton();
-        clicks[lastClick] = true;
+        lastClick = Integer.valueOf(event.getButton());
+        clicks.add(lastClick);
 
-        final Integer key = Integer.valueOf(lastClick);
-        if (actionsPressed.containsKey(key))
+        if (actionsPressed.containsKey(lastClick))
         {
-            final List<EventAction> actions = actionsPressed.get(key);
+            final List<EventAction> actions = actionsPressed.get(lastClick);
             for (final EventAction current : actions)
             {
                 current.action();
@@ -216,16 +177,15 @@ final class MouseClickAwt implements MouseListener
     @Override
     public void mouseReleased(MouseEvent event)
     {
-        final Integer key = Integer.valueOf(lastClick);
-        lastClick = 0;
+        lastClick = NO_CLICK_CODE;
 
-        final int button = event.getButton();
-        clicks[button] = false;
-        clicked[button] = false;
+        final Integer click = Integer.valueOf(event.getButton());
+        clicks.remove(click);
+        clicked.remove(click);
 
-        if (actionsReleased.containsKey(key))
+        if (actionsReleased.containsKey(click))
         {
-            final List<EventAction> actions = actionsReleased.get(key);
+            final List<EventAction> actions = actionsReleased.get(click);
             for (final EventAction current : actions)
             {
                 current.action();

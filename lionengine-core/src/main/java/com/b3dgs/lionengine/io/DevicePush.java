@@ -14,41 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.collidable.selector;
+package com.b3dgs.lionengine.io;
 
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.InputDevice;
 
 /**
- * Allows to configure the selector.
+ * Represents a directional device, supporting multiple axis.
  */
-public interface SelectorConfigurer
+public interface DevicePush extends InputDevice
 {
     /**
-     * Set the mouse click selection value.
+     * Get current pushed index.
      * 
-     * @param click The click number.
+     * @return The pushed index.
      */
-    void setClickSelection(Integer click);
+    Integer getPushed();
 
     /**
-     * Set clickable area (where selection can be performed on screen).
+     * Check if index is currently pushed.
      * 
-     * @param area The representation of the clickable area.
+     * @param index The index to check.
+     * @return <code>true</code> if pushed, <code>false</code> else.
      */
-    void setClickableArea(Area area);
+    boolean isPushed(Integer index);
 
     /**
-     * Set clickable area (where selection can be performed on screen).
+     * Check if index is pushed only one time (will ignore continuous push).
      * 
-     * @param viewer The viewer reference.
+     * @param index The index to check.
+     * @return <code>true</code> if pushed, <code>false</code> else.
      */
-    void setClickableArea(Viewer viewer);
-
-    /**
-     * Set the enabled flag.
-     * 
-     * @param enabled <code>true</code> if enabled, <code>false</code> else.
-     */
-    void setEnabled(boolean enabled);
+    boolean isPushedOnce(Integer index);
 }

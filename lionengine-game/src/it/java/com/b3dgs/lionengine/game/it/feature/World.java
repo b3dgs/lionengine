@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.game.it.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,7 +33,6 @@ import com.b3dgs.lionengine.graphic.engine.TimeControl;
 import com.b3dgs.lionengine.graphic.engine.Zooming;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
  * World implementation.
@@ -100,8 +98,6 @@ final class World extends WorldGame
             throw new IOException("Fail load");
         }
         str = file.readString();
-
-        assertNotNull(getInputDevice(InputDevicePointer.class));
     }
 
     @Override

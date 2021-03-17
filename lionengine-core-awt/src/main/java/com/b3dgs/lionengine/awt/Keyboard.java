@@ -16,19 +16,15 @@
  */
 package com.b3dgs.lionengine.awt;
 
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
+import com.b3dgs.lionengine.io.DevicePush;
 
 /**
  * Represents the keyboard input. Gives informations such as pressed key and code.
  */
-public interface Keyboard extends InputDeviceDirectional
+public interface Keyboard extends DevicePush
 {
     /**
      * Add an action that will be triggered on pressed state.
-     * <p>
-     * Alternative usage with classic programming style can be achieved with {@link #isPressed(Integer)} or
-     * {@link #isPressedOnce(Integer)}.
-     * </p>
      * 
      * @param key The action key.
      * @param action The action reference.
@@ -37,10 +33,6 @@ public interface Keyboard extends InputDeviceDirectional
 
     /**
      * Add an action that will be triggered on released state.
-     * <p>
-     * Alternative usage with classic programming style can be achieved with {@link #isPressed(Integer)} or
-     * {@link #isPressedOnce(Integer)}.
-     * </p>
      * 
      * @param key The action key.
      * @param action The action reference.
@@ -58,37 +50,6 @@ public interface Keyboard extends InputDeviceDirectional
     void removeActionsReleased();
 
     /**
-     * Check if the key is currently pressed.
-     * <p>
-     * Alternative usage with event programming style can be achieved with
-     * {@link #addActionPressed(Integer, EventAction)} and {@link #addActionReleased(Integer, EventAction)}.
-     * </p>
-     * 
-     * @param key The key to check.
-     * @return <code>true</code> if pressed, <code>false</code> else.
-     */
-    boolean isPressed(Integer key);
-
-    /**
-     * Check if the key is currently pressed (not continuously).
-     * <p>
-     * Alternative usage with event programming style can be achieved with
-     * {@link #addActionPressed(Integer, EventAction)} and {@link #addActionReleased(Integer, EventAction)}.
-     * </p>
-     * 
-     * @param key The key to check.
-     * @return <code>true</code> if pressed, <code>false</code> else.
-     */
-    boolean isPressedOnce(Integer key);
-
-    /**
-     * Get the current pressed key code.
-     * 
-     * @return The pressed key code (-1 if key never pressed).
-     */
-    Integer getKeyCode();
-
-    /**
      * Get the current pressed key name.
      * 
      * @return The pressed key name.
@@ -101,4 +62,10 @@ public interface Keyboard extends InputDeviceDirectional
      * @return <code>true</code> if has at least on pressed key, <code>false</code> else (no pressed key).
      */
     boolean used();
+
+    @Override
+    default String getName()
+    {
+        return Keyboard.class.getSimpleName();
+    }
 }

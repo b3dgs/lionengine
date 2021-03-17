@@ -32,8 +32,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.CollisionResult;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidable;
 import com.b3dgs.lionengine.game.feature.tile.map.collision.TileCollidableListener;
-import com.b3dgs.lionengine.io.InputDeviceControl;
-import com.b3dgs.lionengine.io.InputDeviceControlDelegate;
+import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.lionengine.io.DeviceControllerDelegate;
+import com.b3dgs.lionengine.io.DeviceMapper;
 
 /**
  * State base implementation.
@@ -62,8 +63,8 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
     protected final M model;
     /** State animation data. */
     protected final Animation animation;
-    /** Input control reference. */
-    protected final InputDeviceControl input;
+    /** Device reference. */
+    protected final DeviceController device;
     /** Transformable reference. */
     protected final Transformable transformable;
     /** Mirrorable reference. */
@@ -95,7 +96,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
 
         this.model = model;
         this.animation = animation;
-        input = new InputDeviceControlDelegate(model::getInput);
+        device = new DeviceControllerDelegate(model::getInput);
         transformable = model.getFeature(Transformable.class);
         mirrorable = model.getFeature(Mirrorable.class);
         body = model.getFeature(Body.class);
@@ -183,8 +184,8 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGo()
     {
-        return Double.compare(input.getHorizontalDirection(), 0.0) != 0
-               || Double.compare(input.getVerticalDirection(), 0.0) != 0;
+        return Double.compare(device.getHorizontalDirection(), 0.0) != 0
+               || Double.compare(device.getVerticalDirection(), 0.0) != 0;
     }
 
     /**
@@ -194,8 +195,8 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoNone()
     {
-        return Double.compare(input.getHorizontalDirection(), 0.0) == 0
-               && Double.compare(input.getVerticalDirection(), 0.0) == 0;
+        return Double.compare(device.getHorizontalDirection(), 0.0) == 0
+               && Double.compare(device.getVerticalDirection(), 0.0) == 0;
     }
 
     /**
@@ -205,7 +206,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoHorizontal()
     {
-        return Double.compare(input.getHorizontalDirection(), 0.0) != 0;
+        return Double.compare(device.getHorizontalDirection(), 0.0) != 0;
     }
 
     /**
@@ -215,7 +216,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoLeft()
     {
-        return Double.compare(input.getHorizontalDirection(), 0.0) < 0;
+        return Double.compare(device.getHorizontalDirection(), 0.0) < 0;
     }
 
     /**
@@ -225,7 +226,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoRight()
     {
-        return Double.compare(input.getHorizontalDirection(), 0.0) > 0;
+        return Double.compare(device.getHorizontalDirection(), 0.0) > 0;
     }
 
     /**
@@ -235,7 +236,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoVertical()
     {
-        return Double.compare(input.getVerticalDirection(), 0.0) != 0;
+        return Double.compare(device.getVerticalDirection(), 0.0) != 0;
     }
 
     /**
@@ -245,7 +246,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoUp()
     {
-        return Double.compare(input.getVerticalDirection(), 0.0) > 0;
+        return Double.compare(device.getVerticalDirection(), 0.0) > 0;
     }
 
     /**
@@ -255,7 +256,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoDown()
     {
-        return Double.compare(input.getVerticalDirection(), 0.0) < 0;
+        return Double.compare(device.getVerticalDirection(), 0.0) < 0;
     }
 
     /**
@@ -265,7 +266,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoUpOnce()
     {
-        return input.isUpButtonOnce();
+        return isGoUp();
     }
 
     /**
@@ -275,7 +276,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoDownOnce()
     {
-        return input.isDownButtonOnce();
+        return isGoDown();
     }
 
     /**
@@ -285,7 +286,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoLeftOnce()
     {
-        return input.isLeftButtonOnce();
+        return isGoLeft();
     }
 
     /**
@@ -295,7 +296,7 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isGoRightOnce()
     {
-        return input.isRightButtonOnce();
+        return isGoRight();
     }
 
     /**
@@ -306,7 +307,18 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isFire(Integer index)
     {
-        return input.isFireButton(index);
+        return device.isFired(index);
+    }
+
+    /**
+     * Check if fire button is enabled.
+     * 
+     * @param mapper The button mapper (must not be <code>null</code>).
+     * @return <code>true</code> if active, <code>false</code> else.
+     */
+    protected final boolean isFire(DeviceMapper mapper)
+    {
+        return device.isFired(mapper);
     }
 
     /**
@@ -317,7 +329,18 @@ public class StateHelper<M extends EntityModelHelper> extends StateAbstract impl
      */
     protected final boolean isFireOnce(Integer index)
     {
-        return input.isFireButtonOnce(index);
+        return device.isFiredOnce(index);
+    }
+
+    /**
+     * Check if fire button is enabled once.
+     * 
+     * @param mapper The button mapper (must not be <code>null</code>).
+     * @return <code>true</code> if active, <code>false</code> else.
+     */
+    protected final boolean isFireOnce(DeviceMapper mapper)
+    {
+        return device.isFiredOnce(mapper);
     }
 
     /**

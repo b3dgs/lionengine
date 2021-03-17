@@ -36,7 +36,7 @@ public class AssignableModel extends FeatureModel implements Assignable
     /** Viewer reference. */
     private final Viewer viewer = services.get(Viewer.class);
     /** Mouse click number to assign action. */
-    private int clickAssign;
+    private Integer clickAssign;
     /** Assign used. */
     private Assign assign;
 
@@ -87,7 +87,7 @@ public class AssignableModel extends FeatureModel implements Assignable
             && UtilMath.isBetween(cursor.getScreenY(),
                                   viewer.getViewY(),
                                   viewer.getViewY() + (double) viewer.getHeight())
-            && cursor.hasClickedOnce(clickAssign))
+            && cursor.isPushedOnce(clickAssign))
         {
             assign.assign();
         }
@@ -100,7 +100,7 @@ public class AssignableModel extends FeatureModel implements Assignable
     }
 
     @Override
-    public void setClickAssign(int click)
+    public void setClickAssign(Integer click)
     {
         clickAssign = click;
     }

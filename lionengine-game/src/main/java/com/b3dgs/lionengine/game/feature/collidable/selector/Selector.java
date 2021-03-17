@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
  * selection. Usage example:
  * <ul>
  * <li>{@link #setClickableArea(Viewer)} - Required to define the area where selection is allowed</li>
- * <li>{@link #setClickSelection(int)} - Recommended to set which mouse click should be used to start selection</li>
+ * <li>{@link #setClickSelection(Integer)} - Recommended to set which mouse click should be used to start selection</li>
  * <li>{@link #setSelectionColor(ColorRgba)} - Optional for a custom color selection</li>
  * </ul>
  * Result can be retrieved by using {@link #addListener(SelectorListener)} to notify them the computed selection.
@@ -228,7 +228,7 @@ public class Selector extends FeaturableAbstract implements SelectorConfigurer, 
      */
 
     @Override
-    public void setClickSelection(int click)
+    public void setClickSelection(Integer click)
     {
         model.setClickSelection(click);
     }

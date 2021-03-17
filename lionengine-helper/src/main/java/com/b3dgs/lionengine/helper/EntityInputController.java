@@ -16,26 +16,27 @@
  */
 package com.b3dgs.lionengine.helper;
 
-import java.util.Map.Entry;
-
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.io.InputDeviceControl;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
+import com.b3dgs.lionengine.io.DeviceController;
 
 /**
  * Entity input control implementation.
  */
 @FeatureInterface
-public final class EntityInputController extends FeatureModel
+public final class EntityInputController extends FeatureModel implements Routine
 {
-    private final InputDeviceControl controller;
+    /** Config attribute. */
+    public static final String ATT_CONFIG = "config";
+
+    private final DeviceController controller;
 
     @FeatureGet private EntityModelHelper model;
 
@@ -50,77 +51,8 @@ public final class EntityInputController extends FeatureModel
     {
         super(services, setup);
 
-        final InputDeviceDirectional device = services.get(InputDeviceDirectional.class);
-        try
-        {
-            final InputControllerConfig config = InputControllerConfig.imports(services, setup);
-            controller = UtilReflection.createReduce(config.getControl(), device);
-
-            for (final Entry<Integer, Integer> entry : config.getCodes().entrySet())
-            {
-                controller.setFireButton(entry.getKey(), entry.getValue());
-            }
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Set the fire button code.
-     * 
-     * @param index The button index (must not be <code>null</code>, must be positive).
-     * @param code The fire button code (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void setFireButton(Integer index, Integer code)
-    {
-        controller.setFireButton(index, code);
-    }
-
-    /**
-     * Set the horizontal positive control code.
-     * 
-     * @param code The horizontal positive control code (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void setHorizontalControlPositive(Integer code)
-    {
-        controller.setHorizontalControlPositive(code);
-    }
-
-    /**
-     * Set the horizontal negative control code.
-     * 
-     * @param code The horizontal negative control code (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void setHorizontalControlNegative(Integer code)
-    {
-        controller.setHorizontalControlNegative(code);
-    }
-
-    /**
-     * Set the vertical positive control code.
-     * 
-     * @param code The vertical positive control code (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void setVerticalControlPositive(Integer code)
-    {
-        controller.setVerticalControlPositive(code);
-    }
-
-    /**
-     * Set the vertical negative control code.
-     * 
-     * @param code The vertical negative control code (must not be <code>null</code>).
-     * @throws LionEngineException If invalid argument.
-     */
-    public void setVerticalControlNegative(Integer code)
-    {
-        controller.setVerticalControlNegative(code);
+        final Media media = setup.getMedia(ATT_CONFIG, DeviceControllerConfig.NODE_INPUT);
+        controller = DeviceControllerConfig.create(services, media);
     }
 
     @Override
@@ -129,5 +61,11 @@ public final class EntityInputController extends FeatureModel
         super.prepare(provider);
 
         model.setInput(controller);
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        controller.update(extrp);
     }
 }

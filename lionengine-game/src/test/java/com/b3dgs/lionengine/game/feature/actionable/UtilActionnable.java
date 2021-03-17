@@ -17,7 +17,7 @@
 package com.b3dgs.lionengine.game.feature.actionable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -68,13 +68,13 @@ final class UtilActionnable
      * @param clickNumber The click number recorded.
      * @return The services.
      */
-    public static Services createServices(AtomicBoolean clicked, AtomicInteger clickNumber)
+    public static Services createServices(AtomicBoolean clicked, AtomicReference<Integer> clickNumber)
     {
         final Services services = new Services();
         final Cursor cursor = new Cursor()
         {
             @Override
-            public boolean hasClickedOnce(int click)
+            public boolean isPushedOnce(Integer click)
             {
                 clickNumber.set(click);
                 return clicked.get();

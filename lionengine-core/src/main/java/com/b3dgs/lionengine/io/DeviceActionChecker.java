@@ -14,49 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.headless;
+package com.b3dgs.lionengine.io;
 
 /**
- * Represents a key event with name and code.
+ * Represents device action checker.
  */
-public final class KeyEvent
+public interface DeviceActionChecker
 {
-    /** Key code. */
-    private final int code;
-    /** Key name. */
-    private final char name;
-
     /**
-     * Create event.
+     * Check for index action.
      * 
-     * @param code The key code.
-     * @param name The key name.
+     * @param index The index value.
+     * @return The action value.
      */
-    public KeyEvent(int code, char name)
-    {
-        super();
-
-        this.code = code;
-        this.name = name;
-    }
-
-    /**
-     * Get the code.
-     * 
-     * @return The code
-     */
-    public int getCode()
-    {
-        return code;
-    }
-
-    /**
-     * Get the name.
-     * 
-     * @return The name
-     */
-    public char getName()
-    {
-        return name;
-    }
+    double check(Integer index);
 }

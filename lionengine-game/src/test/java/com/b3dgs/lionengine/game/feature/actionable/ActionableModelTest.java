@@ -18,10 +18,11 @@ package com.b3dgs.lionengine.game.feature.actionable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -64,7 +65,7 @@ final class ActionableModelTest
     private final Area area = Geom.createArea(0, 1, 16, 32);
     private final Media media = UtilActionnable.createAction("description", area);
     private final AtomicBoolean clicked = new AtomicBoolean();
-    private final AtomicInteger clickNumber = new AtomicInteger();
+    private final AtomicReference<Integer> clickNumber = new AtomicReference<>();
     private final AtomicBoolean executed = new AtomicBoolean();
     private final Services services = UtilActionnable.createServices(clicked, clickNumber);
     private final ActionableModel actionable = UtilActionnable.createActionable(media, services);
@@ -113,11 +114,11 @@ final class ActionableModelTest
         services.get(Cursor.class).setLocation(64, 64);
 
         executed.set(false);
-        clickNumber.set(0);
+        clickNumber.set(Integer.valueOf(0));
         actionable.update(1.0);
 
         assertFalse(executed.get());
-        assertEquals(0, clickNumber.get());
+        assertEquals(Integer.valueOf(0), clickNumber.get());
     }
 
     /**
@@ -128,11 +129,11 @@ final class ActionableModelTest
     {
         clicked.set(true);
         actionable.setAction(UtilActionnable.createAction(executed));
-        actionable.setClickAction(2);
+        actionable.setClickAction(Integer.valueOf(2));
         actionable.update(1.0);
 
         assertTrue(executed.get());
-        assertEquals(2, clickNumber.get());
+        assertEquals(Integer.valueOf(2), clickNumber.get());
     }
 
     /**
@@ -143,14 +144,14 @@ final class ActionableModelTest
     {
         actionable.update(1.0);
 
-        assertEquals(0, clickNumber.get());
+        assertNull(clickNumber.get());
 
         actionable.setAction(UtilActionnable.createAction(executed));
-        actionable.setClickAction(1);
+        actionable.setClickAction(Integer.valueOf(1));
         actionable.update(1.0);
 
         assertFalse(executed.get());
-        assertEquals(1, clickNumber.get());
+        assertEquals(Integer.valueOf(1), clickNumber.get());
     }
 
     /**

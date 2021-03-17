@@ -49,7 +49,7 @@ public class SelectorRefresher extends FeatureAbstract implements Refreshable, L
     {
         return (extrp, current) ->
         {
-            if (model.isEnabled() && cursor.getClick() == 0)
+            if (model.isEnabled() && cursor.getPushed().intValue() == 0)
             {
                 return start.get();
             }
@@ -116,7 +116,7 @@ public class SelectorRefresher extends FeatureAbstract implements Refreshable, L
             {
                 next = check;
             }
-            else if (model.getSelectionClick() == cursor.getClick())
+            else if (cursor.getPushed().equals(model.getSelectionClick()))
             {
                 checkBeginSelection(cursor, model);
                 if (model.isSelecting())
@@ -165,7 +165,7 @@ public class SelectorRefresher extends FeatureAbstract implements Refreshable, L
         {
             computeSelection(viewer, cursor, model);
 
-            if (model.getSelectionClick() != cursor.getClick())
+            if (!cursor.getPushed().equals(model.getSelectionClick()))
             {
                 final Rectangle sel = model.getSelectionArea();
                 final Area done = Geom.createArea(sel.getX(), sel.getY(), sel.getWidthReal(), sel.getHeightReal());

@@ -14,29 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.lionengine.game.feature.assignable;
-
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Feature;
-import com.b3dgs.lionengine.game.feature.FeatureInterface;
+package com.b3dgs.lionengine.io;
 
 /**
- * Represents an assignable action, allows to assign an action by click.
+ * Device mapper.
  */
-@FeatureInterface
-public interface Assignable extends Feature, Updatable
+public interface DeviceMapper
 {
     /**
-     * Set the executable assign.
+     * Get the associated index.
      * 
-     * @param assign The assign to execute.
+     * @return The associated index.
      */
-    void setAssign(Assign assign);
-
-    /**
-     * Set the mouse click selection value to {@link Assign#assign()} the assign.
-     * 
-     * @param click The click number.
-     */
-    void setClickAssign(Integer click);
+    Integer getIndex();
 }

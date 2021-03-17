@@ -97,7 +97,7 @@ final class CursorTest
     {
         final Cursor cursor = new Cursor();
 
-        assertThrows(NullPointerException.class, () -> cursor.getClick(), null);
+        assertThrows(NullPointerException.class, () -> cursor.getPushed(), null);
     }
 
     /**
@@ -217,11 +217,11 @@ final class CursorTest
         assertEquals(0.0, cursor.getY());
         assertEquals(0.0, cursor.getScreenX());
         assertEquals(0.0, cursor.getScreenY());
-        assertEquals(0, cursor.getClick());
-        assertFalse(cursor.hasClicked(1));
-        assertFalse(cursor.hasClickedOnce(1));
+        assertEquals(Integer.valueOf(0), cursor.getPushed());
+        assertFalse(cursor.isPushed(Integer.valueOf(1)));
+        assertFalse(cursor.isPushedOnce(Integer.valueOf(1)));
 
-        mouse.setClick(1);
+        mouse.setClick(Integer.valueOf(1));
         mouse.move(2, 3);
         cursor.update(1.0);
 
@@ -229,9 +229,9 @@ final class CursorTest
         assertEquals(3.0, cursor.getY());
         assertEquals(2.0, cursor.getScreenX());
         assertEquals(3.0, cursor.getScreenY());
-        assertEquals(1, cursor.getClick());
-        assertTrue(cursor.hasClicked(1));
-        assertTrue(cursor.hasClickedOnce(1));
+        assertEquals(Integer.valueOf(1), cursor.getPushed());
+        assertTrue(cursor.isPushed(Integer.valueOf(1)));
+        assertTrue(cursor.isPushedOnce(Integer.valueOf(1)));
     }
 
     /**

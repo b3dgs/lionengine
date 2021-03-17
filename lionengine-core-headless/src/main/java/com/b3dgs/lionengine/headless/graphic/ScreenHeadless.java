@@ -27,18 +27,9 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.graphic.ScreenAbstract;
 import com.b3dgs.lionengine.graphic.ScreenListener;
 import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.headless.Keyboard;
-import com.b3dgs.lionengine.headless.KeyboardHeadless;
-import com.b3dgs.lionengine.headless.Mouse;
-import com.b3dgs.lionengine.headless.MouseHeadless;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
-import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
  * Screen base implementation.
- * 
- * @see Keyboard
- * @see Mouse
  */
 final class ScreenHeadless extends ScreenAbstract
 {
@@ -77,26 +68,6 @@ final class ScreenHeadless extends ScreenAbstract
         height = output.getHeight();
     }
 
-    /**
-     * Add a keyboard device.
-     */
-    private void addDeviceKeyboard()
-    {
-        final KeyboardHeadless keyboard = new KeyboardHeadless();
-        devices.put(Keyboard.class, keyboard);
-        devices.put(InputDeviceDirectional.class, keyboard);
-    }
-
-    /**
-     * Add a keyboard device.
-     */
-    private void addDeviceMouse()
-    {
-        final MouseHeadless mouse = new MouseHeadless();
-        devices.put(Mouse.class, mouse);
-        devices.put(InputDevicePointer.class, mouse);
-    }
-
     /*
      * Screen
      */
@@ -106,8 +77,6 @@ final class ScreenHeadless extends ScreenAbstract
     {
         super.start();
         setResolution(config.getOutput());
-        addDeviceKeyboard();
-        addDeviceMouse();
         graphics.setGraphic(new ImageBufferHeadless(width, height, Transparency.BITMASK));
         ready = true;
     }

@@ -19,9 +19,7 @@ package com.b3dgs.lionengine.helper;
 import java.io.IOException;
 import java.util.Optional;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.feature.CameraTracker;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.HandlerPersister;
@@ -35,17 +33,12 @@ import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.InputDeviceControlVoid;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
 
 /**
  * World helper implementation.
  */
 public class WorldHelper extends WorldGame
 {
-    /** Void device error. */
-    private static final String ERROR_INPUT_DEVICE = "Void input device used !";
-
     /** Map reference. */
     protected final MapTileHelper map = services.create(MapTileHelper.class);
     /** Camera tracker. */
@@ -63,8 +56,6 @@ public class WorldHelper extends WorldGame
     public WorldHelper(Services services)
     {
         super(services);
-
-        addInputDevice();
 
         handler.addComponent(new ComponentCollision());
         handler.add(map);
@@ -94,22 +85,6 @@ public class WorldHelper extends WorldGame
                 return f;
             }
         };
-    }
-
-    /**
-     * Add input device or void if none.
-     */
-    private void addInputDevice()
-    {
-        try
-        {
-            services.add(getInputDevice(InputDeviceDirectional.class));
-        }
-        catch (final LionEngineException exception)
-        {
-            Verbose.exception(exception, ERROR_INPUT_DEVICE);
-            services.add(InputDeviceControlVoid.getInstance());
-        }
     }
 
     /*

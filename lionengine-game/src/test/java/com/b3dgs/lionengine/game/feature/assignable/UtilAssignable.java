@@ -17,7 +17,7 @@
 package com.b3dgs.lionengine.game.feature.assignable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Camera;
@@ -38,7 +38,7 @@ final class UtilAssignable
      * @param clickNumber The click number recorded.
      * @return The services.
      */
-    public static Services createServices(AtomicBoolean clicked, AtomicInteger clickNumber)
+    public static Services createServices(AtomicBoolean clicked, AtomicReference<Integer> clickNumber)
     {
         final Services services = new Services();
         final Camera camera = services.create(Camera.class);
@@ -47,7 +47,7 @@ final class UtilAssignable
         final Cursor cursor = services.add(new Cursor()
         {
             @Override
-            public boolean hasClickedOnce(int click)
+            public boolean isPushedOnce(Integer click)
             {
                 clickNumber.set(click);
                 return clicked.get();

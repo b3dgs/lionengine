@@ -36,7 +36,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     /** Action description. */
     private final String description;
     /** Mouse click number to execute action. */
-    private int clickAction;
+    private Integer clickAction;
     /** Action used. */
     private Action action;
     /** Enabled flag. */
@@ -88,7 +88,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     @Override
     public void update(double extrp)
     {
-        if (enabled && action != null && isOver() && cursor.hasClickedOnce(clickAction))
+        if (enabled && action != null && isOver() && cursor.isPushedOnce(clickAction))
         {
             action.execute();
         }
@@ -101,7 +101,7 @@ public class ActionableModel extends FeatureModel implements Actionable
     }
 
     @Override
-    public void setClickAction(int click)
+    public void setClickAction(Integer click)
     {
         clickAction = click;
     }

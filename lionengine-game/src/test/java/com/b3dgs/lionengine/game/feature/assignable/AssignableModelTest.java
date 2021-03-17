@@ -18,10 +18,11 @@ package com.b3dgs.lionengine.game.feature.assignable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -66,7 +67,7 @@ final class AssignableModelTest
 
     private final Setup setup = new Setup(config);
     private final AtomicBoolean clicked = new AtomicBoolean();
-    private final AtomicInteger clickNumber = new AtomicInteger();
+    private final AtomicReference<Integer> clickNumber = new AtomicReference<>();
     private final AtomicBoolean assigned = new AtomicBoolean();
     private final Services services = UtilAssignable.createServices(clicked, clickNumber);
     private final AssignableModel assignable = UtilAssignable.createAssignable(services, setup);
@@ -91,13 +92,13 @@ final class AssignableModelTest
         assertFalse(assigned.get());
 
         assignable.setAssign(UtilAssignable.createAssign(assigned));
-        assignable.setClickAssign(1);
+        assignable.setClickAssign(Integer.valueOf(1));
         assigned.set(false);
         clicked.set(true);
-        clickNumber.set(1);
+        clickNumber.set(Integer.valueOf(1));
         assignable.update(1.0);
 
-        assertEquals(1, clickNumber.get());
+        assertEquals(Integer.valueOf(1), clickNumber.get());
         assertTrue(assigned.get());
     }
 
@@ -109,10 +110,10 @@ final class AssignableModelTest
     {
         assignable.setAssign(UtilAssignable.createAssign(assigned));
         assigned.set(false);
-        clickNumber.set(0);
+        clickNumber.set(Integer.valueOf(0));
         assignable.update(1.0);
 
-        assertEquals(0, clickNumber.get());
+        assertNull(clickNumber.get());
         assertFalse(assigned.get());
     }
 

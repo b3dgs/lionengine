@@ -38,9 +38,8 @@ public interface Actionable extends Feature, Updatable
      * Set the mouse click selection value to {@link Action#execute()} the action.
      * 
      * @param click The click number.
-     * @see com.b3dgs.lionengine.io.InputDevicePointer
      */
-    void setClickAction(int click);
+    void setClickAction(Integer click);
 
     /**
      * Set the enabled flag.

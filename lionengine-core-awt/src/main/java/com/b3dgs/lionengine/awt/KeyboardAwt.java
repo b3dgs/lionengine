@@ -69,14 +69,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     private Integer lastCode = NO_KEY_CODE;
     /** Last key name. */
     private char lastKeyName = EMPTY_KEY_NAME;
-    /** Left key. */
-    private Integer leftKey = LEFT;
-    /** Right key. */
-    private Integer rightKey = RIGHT;
-    /** Up key. */
-    private Integer upKey = UP;
-    /** Down key. */
-    private Integer downKey = DOWN;
 
     /**
      * Constructor.
@@ -135,24 +127,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     }
 
     @Override
-    public boolean isPressed(Integer key)
-    {
-        return keys.contains(key);
-    }
-
-    @Override
-    public boolean isPressedOnce(Integer key)
-    {
-        if (keys.contains(key) && !pressed.contains(key))
-        {
-            pressed.add(key);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Integer getKeyCode()
+    public Integer getPushed()
     {
         return lastCode;
     }
@@ -169,94 +144,21 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         return !keys.isEmpty();
     }
 
-    /*
-     * InputDeviceDirectional
-     */
-
     @Override
-    public void setHorizontalControlPositive(Integer code)
+    public boolean isPushed(Integer index)
     {
-        rightKey = code;
+        return keys.contains(index);
     }
 
     @Override
-    public void setHorizontalControlNegative(Integer code)
+    public boolean isPushedOnce(Integer index)
     {
-        leftKey = code;
-    }
-
-    @Override
-    public void setVerticalControlPositive(Integer code)
-    {
-        upKey = code;
-    }
-
-    @Override
-    public void setVerticalControlNegative(Integer code)
-    {
-        downKey = code;
-    }
-
-    @Override
-    public Integer getHorizontalControlPositive()
-    {
-        return rightKey;
-    }
-
-    @Override
-    public Integer getHorizontalControlNegative()
-    {
-        return leftKey;
-    }
-
-    @Override
-    public Integer getVerticalControlPositive()
-    {
-        return upKey;
-    }
-
-    @Override
-    public Integer getVerticalControlNegative()
-    {
-        return downKey;
-    }
-
-    @Override
-    public double getHorizontalDirection()
-    {
-        final double direction;
-        if (isPressed(leftKey))
+        if (keys.contains(index) && !pressed.contains(index))
         {
-            direction = -1;
+            pressed.add(index);
+            return true;
         }
-        else if (isPressed(rightKey))
-        {
-            direction = 1;
-        }
-        else
-        {
-            direction = 0;
-        }
-        return direction;
-    }
-
-    @Override
-    public double getVerticalDirection()
-    {
-        final int direction;
-        if (isPressed(downKey))
-        {
-            direction = -1;
-        }
-        else if (isPressed(upKey))
-        {
-            direction = 1;
-        }
-        else
-        {
-            direction = 0;
-        }
-        return direction;
+        return false;
     }
 
     /*
@@ -268,10 +170,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     {
         lastKeyName = event.getKeyChar();
         lastCode = Integer.valueOf(event.getKeyCode());
-        if (!keys.contains(lastCode))
-        {
-            keys.add(lastCode);
-        }
+        keys.add(lastCode);
 
         if (actionsPressed.containsKey(lastCode))
         {

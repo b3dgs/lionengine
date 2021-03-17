@@ -21,13 +21,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resource;
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
-import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.lionengine.io.DevicePointer;
 
 /**
  * Used to represent a pointer cursor, desynchronized from the system pointer or not. This way, it is possible to
@@ -53,20 +52,19 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
  * <li>Create the cursor with {@link #Cursor()}.</li>
  * <li>Add images with {@link #addImage(int, Media)}.</li>
  * <li>Load added images {@link #load()}.</li>
- * <li>Set the input to use {@link #setInputDevice(InputDevicePointer)}.</li>
+ * <li>Set the input to use {@link #setInputDevice(DevicePointer)}.</li>
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
  * <li>Define the screen area {@link #setArea(int, int, int, int)}.</li>
  * </ul>
  * 
- * @see InputDevicePointer
  * @see Image
  */
-public class Cursor implements Resource, Shape, Updatable, Renderable
+public class Cursor implements DevicePointer, Resource, Shape, Renderable
 {
     /** Cursor renderer. */
     private final CursorRenderer renderer = new CursorRenderer();
     /** Pointer reference. */
-    private InputDevicePointer pointer;
+    private DevicePointer pointer;
     /** Viewer reference. */
     private Viewer viewer;
     /** Cursor screen location x. */
@@ -126,7 +124,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid pointer.
      */
-    public void setInputDevice(InputDevicePointer pointer)
+    public void setInputDevice(DevicePointer pointer)
     {
         Check.notNull(pointer);
 
@@ -134,7 +132,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     }
 
     /**
-     * Set the viewer reference. Input device must be set with {@link #setInputDevice(InputDevicePointer)}.
+     * Set the viewer reference. Input device must be set with {@link #setInputDevice(DevicePointer)}.
      * 
      * @param viewer The viewer reference.
      * @throws LionEngineException If invalid viewer.
@@ -244,38 +242,6 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     }
 
     /**
-     * Get the click number.
-     * 
-     * @return The click number.
-     */
-    public int getClick()
-    {
-        return pointer.getClick();
-    }
-
-    /**
-     * Check if click is pressed.
-     * 
-     * @param click The click to check.
-     * @return The pressed state.
-     */
-    public boolean hasClicked(int click)
-    {
-        return pointer.hasClicked(click);
-    }
-
-    /**
-     * Check if click is pressed once only (ignore 'still clicked').
-     * 
-     * @param click The click to check.
-     * @return The pressed state.
-     */
-    public boolean hasClickedOnce(int click)
-    {
-        return pointer.hasClickedOnce(click);
-    }
-
-    /**
      * Get the current surface id used for rendering.
      * 
      * @return The current surface id.
@@ -357,6 +323,24 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
         renderer.dispose();
     }
 
+    @Override
+    public Integer getPushed()
+    {
+        return pointer.getPushed();
+    }
+
+    @Override
+    public boolean isPushed(Integer click)
+    {
+        return pointer.isPushed(click);
+    }
+
+    @Override
+    public boolean isPushedOnce(Integer click)
+    {
+        return pointer.isPushedOnce(click);
+    }
+
     /*
      * Updatable
      */
@@ -424,6 +408,18 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     }
 
     @Override
+    public int getMoveX()
+    {
+        return pointer.getMoveX();
+    }
+
+    @Override
+    public int getMoveY()
+    {
+        return pointer.getMoveY();
+    }
+
+    @Override
     public int getWidth()
     {
         return gridWidth;
@@ -433,5 +429,11 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     public int getHeight()
     {
         return gridHeight;
+    }
+
+    @Override
+    public String getName()
+    {
+        return Cursor.class.getSimpleName();
     }
 }

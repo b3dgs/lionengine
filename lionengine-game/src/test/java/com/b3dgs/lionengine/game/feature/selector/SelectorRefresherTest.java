@@ -130,12 +130,12 @@ final class SelectorRefresherTest
         assertFalse(model.isSelecting());
 
         refresher.update(1.0);
-        mouse.setClick(1);
+        mouse.setClick(Integer.valueOf(1));
         refresher.update(1.0);
 
         assertFalse(model.isSelecting());
 
-        model.setClickSelection(1);
+        model.setClickSelection(Integer.valueOf(1));
         refresher.update(1.0);
 
         assertTrue(model.isSelecting());
@@ -150,7 +150,7 @@ final class SelectorRefresherTest
         assertNull(started.get());
         assertNull(done.get());
 
-        model.setClickSelection(1);
+        model.setClickSelection(Integer.valueOf(1));
 
         mouse.move(1, 1);
         cursor.update(1.0);
@@ -158,7 +158,7 @@ final class SelectorRefresherTest
 
         assertNull(started.get());
 
-        mouse.setClick(1);
+        mouse.setClick(Integer.valueOf(1));
         cursor.update(1.0);
         refresher.update(1.0);
 
@@ -172,7 +172,7 @@ final class SelectorRefresherTest
         assertEquals(Geom.createArea(1.0, 1.0, 0.0, 0.0), started.get());
         assertNull(done.get());
 
-        mouse.setClick(0);
+        mouse.setClick(Integer.valueOf(0));
         cursor.update(1.0);
         refresher.update(1.0);
 
@@ -186,7 +186,7 @@ final class SelectorRefresherTest
     @Test
     void testListener()
     {
-        model.setClickSelection(1);
+        model.setClickSelection(Integer.valueOf(1));
 
         mouse.move(1, 1);
         cursor.update(1.0);
@@ -194,7 +194,7 @@ final class SelectorRefresherTest
 
         assertNull(started.get());
 
-        mouse.setClick(1);
+        mouse.setClick(Integer.valueOf(1));
         cursor.update(1.0);
         refresher.update(1.0);
 
@@ -203,7 +203,7 @@ final class SelectorRefresherTest
         refresher.removeListener(listener);
         started.set(null);
 
-        mouse.setClick(0);
+        mouse.setClick(Integer.valueOf(0));
         mouse.move(-1, -1);
         cursor.update(1.0);
         refresher.update(1.0);
@@ -214,7 +214,7 @@ final class SelectorRefresherTest
 
         assertNull(started.get());
 
-        mouse.setClick(1);
+        mouse.setClick(Integer.valueOf(1));
         cursor.update(1.0);
         refresher.update(1.0);
 
