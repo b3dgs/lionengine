@@ -53,6 +53,8 @@ public class Parallax implements BackgroundComponent
     private int screenHeight;
     /** Amplitude. */
     private int amplitude;
+    /** Inverted. */
+    private boolean inverted;
 
     /**
      * Create a parallax.
@@ -100,6 +102,16 @@ public class Parallax implements BackgroundComponent
     }
 
     /**
+     * Set the inverted flag.
+     * 
+     * @param inverted The inverted flag.
+     */
+    public void setInverted(boolean inverted)
+    {
+        this.inverted = inverted;
+    }
+
+    /**
      * Set the screen size. Used to know the parallax amplitude, and the overall surface to render in order to fill the
      * screen.
      * 
@@ -126,11 +138,7 @@ public class Parallax implements BackgroundComponent
         final int lineWidth = surface.getLineWidth(numLine);
         for (int j = -amplitude; j < amplitude; j++)
         {
-            final int lx = (int) Math.round(-offsetX
-                                            + offsetX * j
-                                            - x[numLine]
-                                            - x2[numLine]
-                                            + numLine * (2.56 * factH) * j);
+            final int lx = (int) Math.round(offsetX * j - x[numLine] - x2[numLine] + numLine * (2.56 * factH) * j);
             if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
             {
                 surface.render(g, numLine, lx + decX, lineY);
@@ -177,7 +185,7 @@ public class Parallax implements BackgroundComponent
     {
         for (int numLine = 0; numLine < parallaxsNumber; numLine++)
         {
-            final int lineY = (int) y[numLine];
+            final int lineY = (int) y[inverted ? parallaxsNumber - 1 - numLine : numLine];
             if (lineY >= 0 && lineY < screenHeight)
             {
                 renderLine(g, numLine, lineY);
