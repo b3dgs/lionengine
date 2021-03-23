@@ -268,15 +268,8 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     {
         Check.notNull(nextSequenceClass);
 
-        if (nextSequence == null)
-        {
-            nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
-            loop.stop();
-        }
-        else
-        {
-            loop.stop();
-        }
+        nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
+        loop.stop();
     }
 
     @Override
