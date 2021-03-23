@@ -16,11 +16,14 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
@@ -64,6 +67,10 @@ final class TextAwt implements Text
         return value;
     }
 
+    /** Color cache. */
+    private final Map<ColorRgba, Color> colorCache = new HashMap<>();
+    /** Glyph vector cache. */
+    private final Map<String, GlyphVector> textCache = new HashMap<>();
     /** Text java font. */
     private final Font font;
     /** Text size. */
@@ -143,12 +150,16 @@ final class TextAwt implements Text
             throw new LionEngineException(alignment);
         }
 
-        final ColorRgba colorOld = g.getColor();
-        g.setColor(color);
+        final Color colorOld = g2d.getColor();
+        g2d.setColor(colorCache.get(color));
 
-        final GlyphVector glyphVector = font.createGlyphVector(context, text);
+        if (!textCache.containsKey(text))
+        {
+            textCache.put(text, font.createGlyphVector(context, text));
+        }
+        final GlyphVector glyphVector = textCache.get(text);
         g2d.drawGlyphVector(glyphVector, tx, ty - size / 2.0F);
-        g.setColor(colorOld);
+        g2d.setColor(colorOld);
     }
 
     @Override
@@ -186,6 +197,10 @@ final class TextAwt implements Text
     @Override
     public void setColor(ColorRgba color)
     {
+        if (!colorCache.containsKey(color))
+        {
+            colorCache.put(color, new Color(color.getRgba(), true));
+        }
         this.color = color;
     }
 

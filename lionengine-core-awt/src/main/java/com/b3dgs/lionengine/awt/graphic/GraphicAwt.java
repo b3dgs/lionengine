@@ -22,6 +22,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
@@ -37,6 +39,10 @@ import com.b3dgs.lionengine.graphic.Transform;
  */
 final class GraphicAwt implements Graphic
 {
+    /** Color cache. */
+    private final Map<ColorRgba, Color> colorCache = new HashMap<>();
+    /** Color cache awt. */
+    private final Map<Color, ColorRgba> colorCacheAwt = new HashMap<>();
     /** The graphic output. */
     private Graphics2D g;
     /** Gradient paint. */
@@ -226,7 +232,11 @@ final class GraphicAwt implements Graphic
     @Override
     public void setColor(ColorRgba color)
     {
-        g.setColor(new Color(color.getRgba(), true));
+        if (!colorCache.containsKey(color))
+        {
+            colorCache.put(color, new Color(color.getRgba(), true));
+        }
+        g.setColor(colorCache.get(color));
     }
 
     @Override
@@ -263,6 +273,13 @@ final class GraphicAwt implements Graphic
     @Override
     public ColorRgba getColor()
     {
-        return new ColorRgba(g.getColor().getRGB());
+        final Color color = g.getColor();
+        if (colorCacheAwt.containsKey(color))
+        {
+            return colorCacheAwt.get(color);
+        }
+        final ColorRgba colorRgba = new ColorRgba(color.getRGB());
+        colorCacheAwt.put(color, colorRgba);
+        return colorRgba;
     }
 }
