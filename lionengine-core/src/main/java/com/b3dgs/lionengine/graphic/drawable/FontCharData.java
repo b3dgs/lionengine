@@ -47,8 +47,8 @@ final class FontCharData
         super();
 
         Check.superiorOrEqual(id, 0);
-        Check.superiorOrEqual(width, 0);
-        Check.superiorOrEqual(height, 0);
+        Check.superiorOrEqual(width, 0.0);
+        Check.superiorOrEqual(height, 0.0);
 
         this.id = id;
         this.width = width;

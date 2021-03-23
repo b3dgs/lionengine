@@ -45,7 +45,7 @@ final class FontCharDataTest
     @Test
     void testConstructorInvalidId()
     {
-        assertThrows(() -> new FontCharData(-1, 1, 2), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new FontCharData(-1, 1.0, 2.0), "Invalid argument: -1 is not superior or equal to 0");
     }
 
     /**
@@ -54,7 +54,7 @@ final class FontCharDataTest
     @Test
     void testConstructorInvalidWidth()
     {
-        assertThrows(() -> new FontCharData(0, -1, 2), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new FontCharData(0, -1.0, 2.0), "Invalid argument: -1.0 is not superior or equal to 0.0");
     }
 
     /**
@@ -63,6 +63,6 @@ final class FontCharDataTest
     @Test
     void testConstructorInvalidheight()
     {
-        assertThrows(() -> new FontCharData(0, 1, -1), "Invalid argument: -1 is not superior or equal to 0");
+        assertThrows(() -> new FontCharData(0, 1.0, -1.0), "Invalid argument: -1.0 is not superior or equal to 0.0");
     }
 }
