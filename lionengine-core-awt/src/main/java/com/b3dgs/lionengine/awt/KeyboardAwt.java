@@ -30,6 +30,8 @@ import java.util.Map;
  */
 public final class KeyboardAwt implements Keyboard, KeyListener
 {
+    /** Left location modifier. */
+    public static final int LOCATION_LEFT = 0xFF0000;
     /** Enter key. */
     public static final Integer ENTER = Integer.valueOf(KeyEvent.VK_ENTER);
     /** Tab key. */
@@ -43,7 +45,9 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     /** ALT key. */
     public static final Integer ALT = Integer.valueOf(KeyEvent.VK_ALT);
     /** CTRL key. */
-    public static final Integer CONTROL = Integer.valueOf(KeyEvent.VK_CONTROL);
+    public static final Integer CONTROL_LEFT = Integer.valueOf(KeyEvent.VK_CONTROL + LOCATION_LEFT);
+    /** CTRL key. */
+    public static final Integer CONTROL_RIGHT = Integer.valueOf(KeyEvent.VK_CONTROL);
     /** Arrow left key. */
     public static final Integer LEFT = Integer.valueOf(KeyEvent.VK_LEFT);
     /** Arrow right key. */
@@ -169,7 +173,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public void keyPressed(KeyEvent event)
     {
         lastKeyName = event.getKeyChar();
-        lastCode = Integer.valueOf(event.getKeyCode());
+        lastCode = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
         keys.add(lastCode);
 
         if (actionsPressed.containsKey(lastCode))
@@ -188,7 +192,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
         lastKeyName = EMPTY_KEY_NAME;
         lastCode = NO_KEY_CODE;
 
-        final Integer key = Integer.valueOf(event.getKeyCode());
+        final Integer key = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
         keys.remove(key);
         pressed.remove(key);
 

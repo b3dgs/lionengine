@@ -52,7 +52,8 @@ final class KeyboardAwtTest
 
         assertFalse(keyboard.isPushed(KeyboardAwt.ALT));
         assertFalse(keyboard.isPushed(KeyboardAwt.BACK_SPACE));
-        assertFalse(keyboard.isPushed(KeyboardAwt.CONTROL));
+        assertFalse(keyboard.isPushed(KeyboardAwt.CONTROL_LEFT));
+        assertFalse(keyboard.isPushed(KeyboardAwt.CONTROL_RIGHT));
         assertFalse(keyboard.isPushed(KeyboardAwt.DOWN));
         assertFalse(keyboard.isPushed(KeyboardAwt.ENTER));
         assertFalse(keyboard.isPushed(KeyboardAwt.ESCAPE));
