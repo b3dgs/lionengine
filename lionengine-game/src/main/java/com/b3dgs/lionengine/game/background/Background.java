@@ -28,9 +28,10 @@ public interface Background
      * 
      * @param extrp The extrapolation value.
      * @param speed The scrolling speed.
+     * @param x The background x.
      * @param y The background y.
      */
-    void update(double extrp, double speed, double y);
+    void update(double extrp, double speed, double x, double y);
 
     /**
      * Background renderings.

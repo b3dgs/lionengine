@@ -58,19 +58,19 @@ final class Scene extends Sequence
             @Override
             public int getWidth()
             {
-                return NATIVE.getWidth();
+                return Scene.this.getWidth();
             }
 
             @Override
             public int getHeight()
             {
-                return NATIVE.getHeight();
+                return Scene.this.getHeight();
             }
 
             @Override
             public int getRate()
             {
-                return NATIVE.getRate();
+                return Scene.this.getRate();
             }
         });
     }
@@ -91,8 +91,8 @@ final class Scene extends Sequence
     {
         y = UtilMath.wrapDouble(y + 20, 0.0, 360.0);
         final double dy = UtilMath.sin(y) * 100 + 100;
-        background.update(extrp, 10.0, dy);
-        foreground.update(extrp, 10.0, dy);
+        background.update(extrp, 10.0, 0.0, dy);
+        foreground.update(extrp, 10.0, 0.0, dy);
         tick.update(extrp);
         if (tick.elapsed(20L))
         {

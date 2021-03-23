@@ -171,7 +171,7 @@ public abstract class BackgroundAbstract implements Background
      */
 
     @Override
-    public final void update(double extrp, double speed, double y)
+    public final void update(double extrp, double speed, double x, double y)
     {
         final int lowest = totalHeight;
         int py;
@@ -191,7 +191,7 @@ public abstract class BackgroundAbstract implements Background
 
         for (final BackgroundComponent component : components)
         {
-            component.update(extrp, 0, py, speed);
+            component.update(extrp, (int) x, py, speed);
         }
     }
 
