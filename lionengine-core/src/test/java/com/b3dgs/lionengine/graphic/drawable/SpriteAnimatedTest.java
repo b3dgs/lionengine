@@ -495,7 +495,7 @@ final class SpriteAnimatedTest
     }
 
     /**
-     * Test invalid speed setter.
+     * Test negative speed.
      */
     @Test
     void testSetSpeedNegative()
@@ -507,7 +507,7 @@ final class SpriteAnimatedTest
         sprite.setFrame(3);
         sprite.update(1.0);
 
-        assertEquals(AnimState.REVERSING, sprite.getAnimState());
+        assertEquals(AnimState.PLAYING, sprite.getAnimState());
         assertEquals(2, sprite.getFrame());
         assertEquals(2, sprite.getFrameAnim());
     }
