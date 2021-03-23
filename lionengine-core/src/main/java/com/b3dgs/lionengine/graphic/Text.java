@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.Align;
  * <ul>
  * <li>Setting part (one time is enough)
  * <ul>
- * <li>{@link Text#setLocation(int, int)}</li>
+ * <li>{@link Text#setLocation(double, double)}</li>
  * <li>{@link Text#setAlign(Align)}</li>
  * <li>{@link Text#setColor(ColorRgba)}</li>
  * <li>{@link Text#setText(String)}</li>
@@ -85,7 +85,7 @@ public interface Text extends Renderable
      * @param x The text x.
      * @param y The text y.
      */
-    void setLocation(int x, int y);
+    void setLocation(double x, double y);
 
     /**
      * Set text to render.
@@ -120,14 +120,14 @@ public interface Text extends Renderable
      * 
      * @return The horizontal location.
      */
-    int getLocationX();
+    double getLocationX();
 
     /**
      * Get the vertical location.
      * 
      * @return The vertical location.
      */
-    int getLocationY();
+    double getLocationY();
 
     /**
      * Get the text width.

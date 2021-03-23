@@ -26,9 +26,9 @@ final class TextMock implements Text
     /** Text size. */
     private final int size;
     /** Text location x. */
-    private int x;
+    private double x;
     /** Text location y. */
-    private int y;
+    private double y;
     /** Width. */
     private int width;
     /** Height. */
@@ -72,7 +72,7 @@ final class TextMock implements Text
     }
 
     @Override
-    public void setLocation(int x, int y)
+    public void setLocation(double x, double y)
     {
         this.x = x;
         this.y = y;
@@ -103,13 +103,13 @@ final class TextMock implements Text
     }
 
     @Override
-    public int getLocationX()
+    public double getLocationX()
     {
         return x;
     }
 
     @Override
-    public int getLocationY()
+    public double getLocationY()
     {
         return y;
     }

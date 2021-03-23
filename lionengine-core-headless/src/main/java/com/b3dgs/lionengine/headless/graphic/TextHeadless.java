@@ -32,9 +32,9 @@ final class TextHeadless implements Text
     /** Text size. */
     private final int size;
     /** Text location x. */
-    private int x;
+    private double x;
     /** Text location y. */
-    private int y;
+    private double y;
     /** Text width. */
     private int w;
     /** Text height. */
@@ -85,7 +85,7 @@ final class TextHeadless implements Text
     @Override
     public void render(Graphic g)
     {
-        draw(g, x, y, align, txt);
+        draw(g, (int) x, (int) y, align, txt);
         if (txtChanged)
         {
             w = getStringWidth(g, txt);
@@ -95,7 +95,7 @@ final class TextHeadless implements Text
     }
 
     @Override
-    public void setLocation(int x, int y)
+    public void setLocation(double x, double y)
     {
         this.x = x;
         this.y = y;
@@ -127,13 +127,13 @@ final class TextHeadless implements Text
     }
 
     @Override
-    public int getLocationX()
+    public double getLocationX()
     {
         return x;
     }
 
     @Override
-    public int getLocationY()
+    public double getLocationY()
     {
         return y;
     }

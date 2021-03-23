@@ -125,7 +125,7 @@ public class TextGame implements Text
     }
 
     @Override
-    public void setLocation(int x, int y)
+    public void setLocation(double x, double y)
     {
         text.setLocation(x, y);
     }
@@ -155,13 +155,13 @@ public class TextGame implements Text
     }
 
     @Override
-    public int getLocationX()
+    public double getLocationX()
     {
         return text.getLocationX();
     }
 
     @Override
-    public int getLocationY()
+    public double getLocationY()
     {
         return text.getLocationY();
     }

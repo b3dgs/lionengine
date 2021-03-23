@@ -78,7 +78,7 @@ final class TextAwtTest
         text.draw(g, 0, 0, Align.RIGHT, VALUE);
         text.setAlign(Align.CENTER);
         text.setColor(ColorRgba.BLACK);
-        text.setLocation(1, 5);
+        text.setLocation(1.0, 5.0);
         text.setText(VALUE);
 
         assertEquals(12, text.getSize());
