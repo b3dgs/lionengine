@@ -201,6 +201,19 @@ final class LoaderTest
     }
 
     /**
+     * Test with preload next sequence.
+     */
+    @Test
+    void testSequencePreload()
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+
+        assertThrows(() -> Loader.start(CONFIG, SequenceNextPreloadMock.class).await(), "expected failure");
+
+        Verbose.info("****************************************************************************************");
+    }
+
+    /**
      * Test with fail sequence.
      */
     @Test
