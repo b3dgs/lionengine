@@ -16,54 +16,42 @@
  */
 package com.b3dgs.lionengine.io;
 
-import com.b3dgs.lionengine.Check;
+import static com.b3dgs.lionengine.UtilAssert.assertEquals;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Axis data.
+ * Test {@link DeviceAxis}.
  */
-public class DeviceAxis
+final class DeviceAxisTest
 {
-    /** Positive. */
-    private final Integer positive;
-    /** Negative. */
-    private final Integer negative;
-
     /**
-     * Create axis.
-     * 
-     * @param positive The positive (must not be <code>null</code>).
-     * @param negative The negative (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
+     * Test invalid arguments.
      */
-    public DeviceAxis(Integer positive, Integer negative)
+    @Test
+    public void testConstructorInvalid()
     {
-        super();
+        assertThrows(LionEngineException.class,
+                     () -> new DeviceAxis(null, Integer.valueOf(0)),
+                     "Unexpected null argument !");
 
-        Check.notNull(positive);
-        Check.notNull(negative);
-
-        this.positive = positive;
-        this.negative = negative;
+        assertThrows(LionEngineException.class,
+                     () -> new DeviceAxis(Integer.valueOf(0), null),
+                     "Unexpected null argument !");
     }
 
     /**
-     * Get the positive.
-     * 
-     * @return The positive.
+     * Test getter.
      */
-    public Integer getPositive()
+    @Test
+    public void testGetter()
     {
-        return positive;
-    }
+        final DeviceAxis axis = new DeviceAxis(Integer.valueOf(1), Integer.valueOf(-1));
 
-    /**
-     * Get the negative.
-     * 
-     * @return The negative.
-     */
-    public Integer getNegative()
-    {
-        return negative;
+        assertEquals(Integer.valueOf(1), axis.getPositive());
+        assertEquals(Integer.valueOf(-1), axis.getNegative());
     }
 }

@@ -72,11 +72,7 @@ public class DeviceControllerModel implements DeviceController
     {
         actionToDevice.put(action, device.getName());
 
-        if (!fire.containsKey(index))
-        {
-            fire.put(index, new ArrayList<>());
-        }
-        fire.get(index).add(action);
+        fire.computeIfAbsent(index, ArrayList::new).add(action);
         fired.put(action, Boolean.FALSE);
     }
 
@@ -103,13 +99,16 @@ public class DeviceControllerModel implements DeviceController
     public boolean isFired(Integer index)
     {
         final List<DeviceAction> actions = fire.get(index);
-        final int n = actions.size();
-        for (int i = 0; i < n; i++)
+        if (actions != null)
         {
-            final DeviceAction action = actions.get(i);
-            if (action.getAction() > 0)
+            final int n = actions.size();
+            for (int i = 0; i < n; i++)
             {
-                return true;
+                final DeviceAction action = actions.get(i);
+                if (action.getAction() > 0)
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -119,14 +118,17 @@ public class DeviceControllerModel implements DeviceController
     public boolean isFiredOnce(Integer index)
     {
         final List<DeviceAction> actions = fire.get(index);
-        final int n = actions.size();
-        for (int i = 0; i < n; i++)
+        if (actions != null)
         {
-            final DeviceAction action = actions.get(i);
-            if (!fired.get(action).booleanValue() && action.getAction() > 0)
+            final int n = actions.size();
+            for (int i = 0; i < n; i++)
             {
-                fired.put(action, Boolean.TRUE);
-                return true;
+                final DeviceAction action = actions.get(i);
+                if (!fired.get(action).booleanValue() && action.getAction() > 0)
+                {
+                    fired.put(action, Boolean.TRUE);
+                    return true;
+                }
             }
         }
         return false;

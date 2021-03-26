@@ -223,6 +223,17 @@ public final class UtilAssert
      * @param expected The excepted float.
      * @param actual The actual float.
      */
+    public static void assertEquals(long expected, long actual)
+    {
+        Assertions.assertEquals(expected, actual);
+    }
+
+    /**
+     * Asserts that {@code expected} and {@code actual} are equal.
+     * 
+     * @param expected The excepted float.
+     * @param actual The actual float.
+     */
     public static void assertEquals(float expected, float actual)
     {
         Assertions.assertEquals(expected, actual);

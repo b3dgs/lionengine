@@ -16,54 +16,52 @@
  */
 package com.b3dgs.lionengine.io;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
- * Axis data.
+ * Mock.
  */
-public class DeviceAxis
+public class DevicePushMock implements DevicePush
 {
-    /** Positive. */
-    private final Integer positive;
-    /** Negative. */
-    private final Integer negative;
+    private Integer pushed = Integer.valueOf(0);
 
     /**
-     * Create axis.
-     * 
-     * @param positive The positive (must not be <code>null</code>).
-     * @param negative The negative (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
+     * Create mock.
      */
-    public DeviceAxis(Integer positive, Integer negative)
+    DevicePushMock()
     {
         super();
-
-        Check.notNull(positive);
-        Check.notNull(negative);
-
-        this.positive = positive;
-        this.negative = negative;
     }
 
     /**
-     * Get the positive.
+     * Set pushed index.
      * 
-     * @return The positive.
+     * @param pushed The pushed index.
      */
-    public Integer getPositive()
+    public void setPushed(Integer pushed)
     {
-        return positive;
+        this.pushed = pushed;
     }
 
-    /**
-     * Get the negative.
-     * 
-     * @return The negative.
-     */
-    public Integer getNegative()
+    @Override
+    public Integer getPushed()
     {
-        return negative;
+        return pushed;
+    }
+
+    @Override
+    public boolean isPushed(Integer index)
+    {
+        return pushed.equals(index);
+    }
+
+    @Override
+    public boolean isPushedOnce(Integer index)
+    {
+        return pushed.equals(index);
+    }
+
+    @Override
+    public String getName()
+    {
+        return "mock";
     }
 }
