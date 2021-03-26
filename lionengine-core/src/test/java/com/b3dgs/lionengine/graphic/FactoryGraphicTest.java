@@ -436,6 +436,33 @@ public class FactoryGraphicTest
     }
 
     /**
+     * Test get raster inside.
+     */
+    @Test
+    void testGetRasterBufferInside()
+    {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
+
+        final ImageBuffer palette = Graphics.getImageBuffer(Medias.create("palette.png"));
+        palette.prepare();
+
+        final ImageBuffer[] rasters = Graphics.getRasterBufferInside(image, palette, 16);
+
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertNotEquals(image, buffer);
+            assertEquals(image.getWidth(), buffer.getWidth());
+            assertEquals(image.getHeight(), buffer.getHeight());
+
+            buffer.dispose();
+        }
+
+        image.dispose();
+        palette.dispose();
+    }
+
+    /**
      * Test get raster buffer.
      */
     @Test

@@ -407,6 +407,33 @@ final class GraphicsTest
     }
 
     /**
+     * Test get raster buffer inside.
+     */
+    @Test
+    void testGetRasterBufferInside()
+    {
+        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
+        image.prepare();
+
+        final ImageBuffer raster = Graphics.getImageBuffer(Medias.create("raster.png"));
+        image.prepare();
+
+        final ImageBuffer[] rasters = Graphics.getRasterBufferInside(image, raster, 1);
+
+        for (final ImageBuffer buffer : rasters)
+        {
+            assertNotEquals(image, raster);
+            assertEquals(image.getWidth(), buffer.getWidth());
+            assertEquals(image.getHeight(), buffer.getHeight());
+
+            buffer.dispose();
+        }
+
+        raster.dispose();
+        image.dispose();
+    }
+
+    /**
      * Test get raster buffer smooth from palette.
      */
     @Test
