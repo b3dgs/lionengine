@@ -178,6 +178,9 @@ final class AudioFactoryTest
         audio.setVolume(100);
         audio.play();
         audio.stop();
+        audio.await();
+
+        assertEquals(0L, audio.getTicks());
 
         format.close();
     }
