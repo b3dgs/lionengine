@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.graphic.raster;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,6 +71,23 @@ final class RasterImageTest
         final Media mediaRaster = Medias.create("raster.xml");
         final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
         raster.loadRasters(false, Constant.EMPTY_STRING);
+
+        assertEquals(47, raster.getRasters().size());
+        assertEquals(mediaRaster, raster.getFile());
+        assertEquals(100, raster.getHeight());
+        assertEquals(100, raster.getRaster(0).getWidth());
+        assertEquals(200, raster.getRaster(0).getHeight());
+    }
+
+    /**
+     * Test default.
+     */
+    @Test
+    void testSpecificXml()
+    {
+        final Media mediaRaster = Medias.create("raster.xml");
+        final RasterImage raster = new RasterImage(new ImageBufferMock(100, 200), mediaRaster, 100);
+        raster.loadRasters(false, mediaRaster, Constant.EMPTY_STRING, Collections.emptyList());
 
         assertEquals(47, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
@@ -166,6 +185,24 @@ final class RasterImageTest
         final int rastersNumber = ImageInfo.get(mediaRaster).getHeight() - 1;
         final RasterImage raster = new RasterImage(new ImageBufferMock(128, 64), mediaRaster, 16);
         raster.loadRasters(false, Constant.EMPTY_STRING);
+
+        assertEquals(rastersNumber, raster.getRasters().size());
+        assertEquals(mediaRaster, raster.getFile());
+        assertEquals(16, raster.getHeight());
+        assertEquals(128, raster.getRaster(0).getWidth());
+        assertEquals(64, raster.getRaster(0).getHeight());
+    }
+
+    /**
+     * Test specific with palette.
+     */
+    @Test
+    void testSpecificPalette()
+    {
+        final Media mediaRaster = Medias.create("raster.png");
+        final int rastersNumber = ImageInfo.get(mediaRaster).getHeight() - 1;
+        final RasterImage raster = new RasterImage(new ImageBufferMock(128, 64), mediaRaster, 16);
+        raster.loadRasters(false, mediaRaster, Constant.EMPTY_STRING, Collections.emptyList());
 
         assertEquals(rastersNumber, raster.getRasters().size());
         assertEquals(mediaRaster, raster.getFile());
