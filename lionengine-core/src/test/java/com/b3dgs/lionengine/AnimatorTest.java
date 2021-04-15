@@ -61,6 +61,7 @@ final class AnimatorTest
         assertEquals(1, animator.getFrame());
         assertEquals(1, animator.getFrameAnim());
         assertEquals(2, animator.getFrames());
+        assertEquals(3.0, animator.getAnimSpeed());
     }
 
     /**
@@ -506,6 +507,34 @@ final class AnimatorTest
         animator.update(1.0);
 
         assertNull(framed.get());
+    }
+
+    /**
+     * Test with anim listener.
+     */
+    @Test
+    void testListenerAnim()
+    {
+        final AtomicReference<Animation> anim = new AtomicReference<>();
+        final AnimatorListener listener = (AnimatorAnimListener) a -> anim.set(a);
+        final Animation animation = new Animation(Animation.DEFAULT_NAME, 1, 3, 1.25, true, false);
+        final Animator animator = new AnimatorModel();
+        animator.addListener(listener);
+
+        assertNull(anim.get());
+
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertEquals(animation, anim.get());
+
+        anim.set(null);
+        animator.removeListener(listener);
+
+        animator.play(animation);
+        animator.update(1.0);
+
+        assertNull(anim.get());
     }
 
     /**

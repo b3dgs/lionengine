@@ -527,6 +527,7 @@ final class SpriteAnimatedTest
         assertEquals(2, sprite.getFrames());
         assertEquals(1, sprite.getFrame());
         assertEquals(1, sprite.getFrameAnim());
+        assertEquals(1.5, sprite.getAnimSpeed());
 
         sprite.update(1.0);
 
@@ -534,6 +535,7 @@ final class SpriteAnimatedTest
         assertEquals(2, sprite.getFrames());
         assertEquals(2, sprite.getFrame());
         assertEquals(2, sprite.getFrameAnim());
+        assertEquals(1.5, sprite.getAnimSpeed());
     }
 
     /**
