@@ -23,6 +23,8 @@ import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -124,44 +126,19 @@ final class FilterBlurTest
 
     /**
      * Test with single pixel.
+     * 
+     * @param width The width.
+     * @param height The height.
      */
-    @Test
-    void testSinglePixel()
+    @ParameterizedTest
+    @CsvSource(
+    {
+        "1,1", "1,3", "3,1"
+    })
+    void testParam(int width, int height)
     {
         final FilterBlur blur = new FilterBlur();
-        final ImageBuffer image = Graphics.createImageBuffer(1, 1);
-        final ImageBuffer filtered = blur.filter(image);
-
-        assertEquals(image, filtered);
-
-        image.dispose();
-        filtered.dispose();
-    }
-
-    /**
-     * Test with low width.
-     */
-    @Test
-    void testLowWidth()
-    {
-        final FilterBlur blur = new FilterBlur();
-        final ImageBuffer image = Graphics.createImageBuffer(1, 3);
-        final ImageBuffer filtered = blur.filter(image);
-
-        assertEquals(image, filtered);
-
-        image.dispose();
-        filtered.dispose();
-    }
-
-    /**
-     * Test with low height.
-     */
-    @Test
-    void testLowHeight()
-    {
-        final FilterBlur blur = new FilterBlur();
-        final ImageBuffer image = Graphics.createImageBuffer(3, 1);
+        final ImageBuffer image = Graphics.createImageBuffer(width, height);
         final ImageBuffer filtered = blur.filter(image);
 
         assertEquals(image, filtered);

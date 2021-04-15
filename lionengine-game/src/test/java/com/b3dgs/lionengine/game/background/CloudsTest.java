@@ -16,8 +16,6 @@
  */
 package com.b3dgs.lionengine.game.background;
 
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -66,13 +64,6 @@ final class CloudsTest
         clouds.setScreenWidth(20);
         clouds.setSpeed(0, 2);
         clouds.update(1.0, 1, 2, 3.0);
-
-        assertThrows(ArrayIndexOutOfBoundsException.class,
-                     () -> clouds.setY(11, 0),
-                     "Index 11 out of bounds for length 11");
-        assertThrows(ArrayIndexOutOfBoundsException.class,
-                     () -> clouds.setSpeed(11, 0),
-                     "Index 11 out of bounds for length 11");
 
         final Graphic g = Graphics.createGraphic();
         clouds.render(g);

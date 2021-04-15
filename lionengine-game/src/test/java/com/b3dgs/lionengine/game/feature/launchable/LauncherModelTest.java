@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Test;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -219,7 +218,7 @@ final class LauncherModelTest
     @Test
     void testLauncherDelay() throws InterruptedException
     {
-        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 10);
+        final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia, 2);
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, featurable);
 
@@ -233,7 +232,6 @@ final class LauncherModelTest
             while (!launcher.fire())
             {
                 launcher.update(1.0);
-                continue;
             }
         });
 
@@ -245,7 +243,7 @@ final class LauncherModelTest
         assertTrue(fired.get());
         assertNull(firedLaunchable.get());
 
-        UtilTests.pause(50L);
+        launcher.update(1.0);
         launcher.update(1.0);
         handler.update(1.0);
 

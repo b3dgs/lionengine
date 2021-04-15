@@ -98,14 +98,7 @@ final class FactoryTest
     @Test
     void testCache()
     {
-        factory.createCache(new Spawner()
-        {
-            @Override
-            public Featurable spawn(Media media, double x, double y)
-            {
-                return factory.create(media);
-            }
-        }, Medias.create("state"), 2);
+        factory.createCache((media, x, y) -> factory.create(media), Medias.create("state"), 2);
 
         final Featurable featurable = factory.create(Medias.create("ObjectFeatures.xml"));
         assertNotEquals(featurable, factory.create(Medias.create("ObjectFeatures.xml")));

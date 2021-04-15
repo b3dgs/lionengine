@@ -89,6 +89,20 @@ final class ConfigTest
     }
 
     /**
+     * Test default windowed config with icons.
+     */
+    @Test
+    void testDefaultWindowedIcons()
+    {
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = Config.windowed(output, new Media[0]);
+
+        assertTrue(config.isWindowed());
+        assertEquals(output, config.getOutput());
+        assertEquals(32, config.getDepth());
+    }
+
+    /**
      * Test default fullscreen config.
      */
     @Test
