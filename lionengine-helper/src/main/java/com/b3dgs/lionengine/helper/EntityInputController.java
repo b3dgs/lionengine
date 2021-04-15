@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.helper;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -33,9 +32,6 @@ import com.b3dgs.lionengine.io.DeviceController;
 @FeatureInterface
 public final class EntityInputController extends FeatureModel implements Routine
 {
-    /** Config attribute. */
-    public static final String ATT_CONFIG = "config";
-
     private final DeviceController controller;
 
     @FeatureGet private EntityModelHelper model;
@@ -51,8 +47,7 @@ public final class EntityInputController extends FeatureModel implements Routine
     {
         super(services, setup);
 
-        final Media media = setup.getMedia(ATT_CONFIG, DeviceControllerConfig.NODE_INPUT);
-        controller = DeviceControllerConfig.create(services, media);
+        controller = services.get(DeviceController.class);
     }
 
     @Override
