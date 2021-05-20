@@ -18,6 +18,7 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -47,7 +48,7 @@ final class MapTileCollisionComputer
      * @return The computed collision result, <code>null</code> if none.
      */
     private static CollisionResult computeCollision(MapTile map,
-                                                    Function<Tile, Collection<CollisionFormula>> loader,
+                                                    Function<Tile, List<CollisionFormula>> loader,
                                                     CollisionCategory category,
                                                     double ox,
                                                     double oy,
@@ -61,9 +62,11 @@ final class MapTileCollisionComputer
             Double cy = null;
             CollisionFormula fx = null;
             CollisionFormula fy = null;
-            final Collection<CollisionFormula> formulas = loader.apply(tile);
-            for (final CollisionFormula formula : formulas)
+            final List<CollisionFormula> formulas = loader.apply(tile);
+            for (int i = 0; i < formulas.size(); i++)
             {
+                final CollisionFormula formula = formulas.get(i);
+
                 if (cx == null)
                 {
                     cx = getCollisionX(tile, category, formulas, formula, x, y);
@@ -299,7 +302,7 @@ final class MapTileCollisionComputer
      * @return The collision result, <code>null</code> if nothing found.
      */
     public CollisionResult computeCollision(MapTile map,
-                                            Function<Tile, Collection<CollisionFormula>> loader,
+                                            Function<Tile, List<CollisionFormula>> loader,
                                             Transformable transformable,
                                             CollisionCategory category)
     {
@@ -352,7 +355,7 @@ final class MapTileCollisionComputer
      */
     // CHECKSTYLE IGNORE LINE: ExecutableStatementCount|CyclomaticComplexity|NPathComplexity
     private CollisionResult computeCollision(MapTile map,
-                                             Function<Tile, Collection<CollisionFormula>> loader,
+                                             Function<Tile, List<CollisionFormula>> loader,
                                              Transformable transformable,
                                              CollisionCategory category,
                                              double sh,
@@ -460,7 +463,7 @@ final class MapTileCollisionComputer
      * @return The collision found, <code>null</code> if none.
      */
     private CollisionResult getGlued(MapTile map,
-                                     Function<Tile, Collection<CollisionFormula>> loader,
+                                     Function<Tile, List<CollisionFormula>> loader,
                                      Transformable transformable,
                                      CollisionCategory category,
                                      double ox,

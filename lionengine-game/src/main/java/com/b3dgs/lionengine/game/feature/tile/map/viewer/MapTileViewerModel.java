@@ -17,7 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.viewer;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
 {
     /** Map tiles renderers. */
-    private final Collection<MapTileRenderer> renderers = new ArrayList<>();
+    private final List<MapTileRenderer> renderers = new ArrayList<>();
     /** Viewer reference. */
     private final Viewer viewer;
 
@@ -86,9 +86,9 @@ public class MapTileViewerModel extends FeatureAbstract implements MapTileViewer
             final int x = (int) Math.round(tile.getX() - viewX);
             final int y = (int) Math.round(-tile.getY() + viewY - tile.getHeight());
 
-            for (final MapTileRenderer renderer : renderers)
+            for (int i = 0; i < renderers.size(); i++)
             {
-                renderer.renderTile(g, tile, x, y);
+                renderers.get(i).renderTile(g, tile, x, y);
             }
         }
     }

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -27,7 +28,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
@@ -41,17 +41,13 @@ final class MapTileCollisionLoader
 {
     /** Error formula not found. */
     static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
-    /** Info loading formulas. */
-    private static final String INFO_LOAD_FORMULAS = "Loading collision formulas from: ";
-    /** Info loading groups. */
-    private static final String INFO_LOAD_GROUPS = "Loading collision groups from: ";
 
     /** Collision formulas list. */
     private final Map<String, CollisionFormula> formulas = new HashMap<>();
     /** Collisions groups list. */
     private final Map<String, CollisionGroup> groups = new HashMap<>();
     /** Formulas per tiles. */
-    private final Map<Tile, Collection<CollisionFormula>> tilesFormulas = new HashMap<>();
+    private final Map<Tile, List<CollisionFormula>> tilesFormulas = new HashMap<>();
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -174,14 +170,14 @@ final class MapTileCollisionLoader
      * @param tile The tile reference.
      * @return The associated formulas.
      */
-    public Collection<CollisionFormula> getCollisionFormulas(Tile tile)
+    public List<CollisionFormula> getCollisionFormulas(Tile tile)
     {
-        final Collection<CollisionFormula> formulas = tilesFormulas.get(tile);
+        final List<CollisionFormula> formulas = tilesFormulas.get(tile);
         if (formulas != null)
         {
             return formulas;
         }
-        return Collections.emptySet();
+        return Collections.emptyList();
     }
 
     /**
@@ -231,7 +227,6 @@ final class MapTileCollisionLoader
      */
     private void loadCollisionFormulas(Media formulasConfig)
     {
-        Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
         this.formulasConfig = formulasConfig;
         final CollisionFormulaConfig config = CollisionFormulaConfig.imports(formulasConfig);
         loadCollisionFormulas(config);
@@ -256,8 +251,6 @@ final class MapTileCollisionLoader
      */
     private void loadCollisionGroups(MapTileCollision mapCollision, Media groupsConfig)
     {
-        Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
-
         this.groupsConfig = groupsConfig;
         final Xml nodeGroups = new Xml(groupsConfig);
         final CollisionGroupConfig config = CollisionGroupConfig.imports(nodeGroups, mapCollision);
@@ -328,7 +321,7 @@ final class MapTileCollisionLoader
             final Set<Integer> group = mapGroup.getGroup(collision.getName());
             if (group.contains(tile.getKey()))
             {
-                final Collection<CollisionFormula> current = tilesFormulas.get(tile);
+                final List<CollisionFormula> current = tilesFormulas.get(tile);
                 for (final CollisionFormula formula : collision.getFormulas())
                 {
                     current.add(formula);
@@ -387,7 +380,7 @@ final class MapTileCollisionLoader
         final Tile left = map.getTile(h - 1, v);
         final Tile right = map.getTile(h + 1, v);
 
-        final Collection<CollisionFormula> toRemove = new ArrayList<>();
+        final List<CollisionFormula> toRemove = new ArrayList<>();
         for (final CollisionFormula formula : tilesFormulas.computeIfAbsent(tile, t -> Collections.emptyList()))
         {
             final CollisionConstraint constraint = formula.getConstraint();

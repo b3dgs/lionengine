@@ -17,6 +17,7 @@
 package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -100,7 +101,7 @@ public interface MapTileCollision extends Feature
      * @param tile The tile reference.
      * @return The associated formulas.
      */
-    Collection<CollisionFormula> getCollisionFormulas(Tile tile);
+    List<CollisionFormula> getCollisionFormulas(Tile tile);
 
     /**
      * Get the collision formulas list.
