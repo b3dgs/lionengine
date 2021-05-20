@@ -18,8 +18,10 @@ package com.b3dgs.lionengine.io;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.InputDevice;
 
@@ -28,6 +30,7 @@ import com.b3dgs.lionengine.InputDevice;
  */
 public class DeviceControllerModel implements DeviceController
 {
+    private final Set<InputDevice> devices = new HashSet<>();
     private final Map<DeviceAction, String> actionToDevice = new HashMap<>();
     private final List<DeviceAction> horizontal = new ArrayList<>();
     private final List<DeviceAction> vertical = new ArrayList<>();
@@ -52,6 +55,7 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void addHorizontal(InputDevice device, DeviceAction action)
     {
+        devices.add(device);
         actionToDevice.put(action, device.getName());
 
         horizontal.add(action);
@@ -61,6 +65,7 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void addVertical(InputDevice device, DeviceAction action)
     {
+        devices.add(device);
         actionToDevice.put(action, device.getName());
 
         vertical.add(action);
@@ -70,10 +75,20 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void addFire(InputDevice device, Integer index, DeviceAction action)
     {
+        devices.add(device);
         actionToDevice.put(action, device.getName());
 
         fire.computeIfAbsent(index, ArrayList::new).add(action);
         fired.put(action, Boolean.FALSE);
+    }
+
+    @Override
+    public void setVisible(boolean visible)
+    {
+        for (final InputDevice device : devices)
+        {
+            device.setVisible(visible);
+        }
     }
 
     @Override

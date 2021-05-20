@@ -62,6 +62,12 @@ public class DeviceControllerVoid implements DeviceController
     }
 
     @Override
+    public void setVisible(boolean visible)
+    {
+        // Mock
+    }
+
+    @Override
     public void setDisabled(String device, boolean horizontal, boolean vertical)
     {
         // Mock

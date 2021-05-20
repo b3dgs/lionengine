@@ -21,5 +21,13 @@ package com.b3dgs.lionengine;
  */
 public interface InputDevice extends Nameable
 {
-    // Marker interface
+    /**
+     * Set visibility.
+     * 
+     * @param visible <code>true</code> if visible, <code>false</code> else.
+     */
+    default void setVisible(boolean visible)
+    {
+        // Void
+    }
 }

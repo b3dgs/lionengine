@@ -50,6 +50,13 @@ public interface DeviceController extends Updatable
     void addFire(InputDevice device, Integer index, DeviceAction action);
 
     /**
+     * Set visibility.
+     * 
+     * @param visible <code>true</code> if visible, <code>false</code> else.
+     */
+    void setVisible(boolean visible);
+
+    /**
      * Set axis disabled flag.
      * 
      * @param device The device reference.

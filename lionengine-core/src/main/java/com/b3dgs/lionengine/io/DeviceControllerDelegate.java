@@ -69,6 +69,12 @@ public class DeviceControllerDelegate implements DeviceController
     }
 
     @Override
+    public void setVisible(boolean visible)
+    {
+        get().setVisible(visible);
+    }
+
+    @Override
     public void setDisabled(String device, boolean horizontal, boolean vertical)
     {
         get().setDisabled(device, horizontal, vertical);
