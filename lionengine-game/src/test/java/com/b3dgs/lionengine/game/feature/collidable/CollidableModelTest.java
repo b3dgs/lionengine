@@ -184,6 +184,9 @@ final class CollidableModelTest
     @Test
     void testDifferentSizes()
     {
+        featurable1.addFeature(new MirrorableModel(services, setup));
+        featurable2.addFeature(new MirrorableModel(services, setup));
+
         final AtomicBoolean auto = new AtomicBoolean();
         collidable1.checkListener((CollidableListener) (collidable, with, by) -> auto.set(true));
 

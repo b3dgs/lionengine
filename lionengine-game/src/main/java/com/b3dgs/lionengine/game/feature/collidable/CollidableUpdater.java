@@ -137,7 +137,7 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
      */
     private static Mirror getMirror(FeatureProvider provider, Collision collision)
     {
-        if (collision.hasMirror() && provider.hasFeature(Mirrorable.class))
+        if (collision.hasMirror())
         {
             return provider.getFeature(Mirrorable.class).getMirror();
         }
@@ -358,40 +358,37 @@ final class CollidableUpdater implements IdentifiableListener, CollisionChecker
                                   List<Collision> collisions,
                                   Map<Collision, Rectangle> cacheRectRender)
     {
-        if (enabled)
+        final int length = collisions.size();
+        for (int i = 0; i < length; i++)
         {
-            final int length = collisions.size();
-            for (int i = 0; i < length; i++)
-            {
-                final Collision collision = collisions.get(i);
+            final Collision collision = collisions.get(i);
 
-                final Mirror mirror = getMirror(provider, collision);
-                final int offsetX = getOffsetX(collision, mirror);
-                final int offsetY = getOffsetY(collision, mirror);
-                final int width;
-                final int height;
-                if (Collision.AUTOMATIC == collision)
-                {
-                    width = transformable.getWidth();
-                    height = transformable.getHeight();
-                }
-                else
-                {
-                    width = collision.getWidth();
-                    height = collision.getHeight();
-                }
-                if (width > maxWidth)
-                {
-                    maxWidth = width;
-                }
-                if (height > maxHeight)
-                {
-                    maxHeight = height;
-                }
-                final double x = origin.getX(transformable.getX() + offsetX, width);
-                final double y = origin.getY(transformable.getY() + offsetY, height) + height;
-                update(collision, x, y, width, height, cacheRectRender);
+            final Mirror mirror = getMirror(provider, collision);
+            final int offsetX = getOffsetX(collision, mirror);
+            final int offsetY = getOffsetY(collision, mirror);
+            final int width;
+            final int height;
+            if (Collision.AUTOMATIC == collision)
+            {
+                width = transformable.getWidth();
+                height = transformable.getHeight();
             }
+            else
+            {
+                width = collision.getWidth();
+                height = collision.getHeight();
+            }
+            if (width > maxWidth)
+            {
+                maxWidth = width;
+            }
+            if (height > maxHeight)
+            {
+                maxHeight = height;
+            }
+            final double x = origin.getX(transformable.getX() + offsetX, width);
+            final double y = origin.getY(transformable.getY() + offsetY, height) + height;
+            update(collision, x, y, width, height, cacheRectRender);
         }
     }
 

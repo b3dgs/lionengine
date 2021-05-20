@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -110,6 +111,9 @@ final class ComponentCollisionTest
         collidable2 = featurable2.getFeature(Collidable.class);
         collidable2.addAccept(Integer.valueOf(1));
         collidable2.setGroup(Integer.valueOf(0));
+
+        featurable1.addFeature(new MirrorableModel(services, setup));
+        featurable2.addFeature(new MirrorableModel(services, setup));
 
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);

@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.game.feature.collidable;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.b3dgs.lionengine.Listenable;
@@ -141,7 +140,7 @@ public interface Collidable extends Feature, Renderable, CollidableListener, Col
      * 
      * @return The accepted groups.
      */
-    Collection<Integer> getAccepted();
+    List<Integer> getAccepted();
 
     /**
      * Get the current max width.

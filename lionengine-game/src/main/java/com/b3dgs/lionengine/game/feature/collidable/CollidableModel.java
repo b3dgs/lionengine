@@ -17,11 +17,11 @@
 package com.b3dgs.lionengine.game.feature.collidable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.ListenableModel;
@@ -56,7 +56,9 @@ public class CollidableModel extends FeatureModel
     /** The collisions used. */
     private final List<Collision> collisions = new ArrayList<>();
     /** The accepted groups. */
-    private final Collection<Integer> accepted = new HashSet<>();
+    private final Set<Integer> accepted = new HashSet<>();
+    /** The accepted groups. */
+    private final List<Integer> acceptedList = new ArrayList<>();
     /** Bounding box cache for rendering. */
     private final Map<Collision, Rectangle> cacheRectRender = new HashMap<>();
     /** The viewer reference. */
@@ -102,6 +104,7 @@ public class CollidableModel extends FeatureModel
         final CollidableConfig config = CollidableConfig.imports(setup);
         group = config.getGroup();
         accepted.addAll(config.getAccepted());
+        acceptedList.addAll(accepted);
         collisions.addAll(CollisionConfig.imports(setup).getCollisions());
         origin = OriginConfig.imports(setup);
     }
@@ -163,12 +166,17 @@ public class CollidableModel extends FeatureModel
     public void addAccept(Integer group)
     {
         accepted.add(group);
+        if (!acceptedList.contains(group))
+        {
+            acceptedList.add(group);
+        }
     }
 
     @Override
     public void removeAccept(Integer group)
     {
         accepted.remove(group);
+        acceptedList.remove(group);
     }
 
     @Override
@@ -256,9 +264,9 @@ public class CollidableModel extends FeatureModel
     }
 
     @Override
-    public Collection<Integer> getAccepted()
+    public List<Integer> getAccepted()
     {
-        return accepted;
+        return acceptedList;
     }
 
     @Override
