@@ -39,4 +39,15 @@ public interface Background
      * @param g The graphic output.
      */
     void render(Graphic g);
+
+    /**
+     * Called when the resolution changed.
+     * 
+     * @param width The new width.
+     * @param height The new height.
+     */
+    default void setScreenSize(int width, int height)
+    {
+        // Nothing by default
+    }
 }
