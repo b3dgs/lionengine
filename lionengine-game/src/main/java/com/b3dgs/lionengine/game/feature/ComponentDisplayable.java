@@ -18,11 +18,12 @@ package com.b3dgs.lionengine.game.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -54,11 +55,13 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     }
 
     /** Sorted layers index. */
-    private final Set<Integer> indexs = new TreeSet<>();
+    private final List<Integer> indexs = new ArrayList<>();
+    /** Sorted layers index. */
+    private final Set<Integer> indexsSet = new HashSet<>();
     /** Layers to render. */
-    private final Map<Integer, Collection<Displayable>> layers = new HashMap<>();
+    private final Map<Integer, List<Displayable>> layers = new HashMap<>();
     /** Layer to update. */
-    private final Collection<LayerUpdate> toUpdate = new ArrayList<>();
+    private final List<LayerUpdate> toUpdate = new ArrayList<>();
     /** Update flag. */
     private boolean updateRequested;
 
@@ -76,12 +79,12 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
      * @param layer The layer index.
      * @return The layer set reference.
      */
-    private Collection<Displayable> getLayer(Integer layer)
+    private List<Displayable> getLayer(Integer layer)
     {
-        final Collection<Displayable> displayables;
+        final List<Displayable> displayables;
         if (!layers.containsKey(layer))
         {
-            displayables = new HashSet<>();
+            displayables = new ArrayList<>();
             layers.put(layer, displayables);
         }
         else
@@ -104,6 +107,8 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
         if (displayables.isEmpty())
         {
             indexs.remove(layer);
+            indexsSet.remove(layer);
+            Collections.sort(indexs);
         }
     }
 
@@ -114,21 +119,28 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
     @Override
     public void render(Graphic g, Handlables featurables)
     {
-        for (final Integer layer : indexs)
+        for (int l = 0; l < indexs.size(); l++)
         {
-            for (final Displayable displayable : layers.get(layer))
+            final List<Displayable> displayables = layers.get(indexs.get(l));
+            final int count = displayables.size();
+            for (int i = 0; i < count; i++)
             {
-                displayable.render(g);
+                displayables.get(i).render(g);
             }
         }
         if (updateRequested)
         {
-            for (final LayerUpdate update : toUpdate)
+            final int count = toUpdate.size();
+            for (int i = 0; i < count; i++)
             {
+                final LayerUpdate update = toUpdate.get(i);
+
                 getLayer(update.layerOld).remove(update.displayable);
                 getLayer(update.layerNew).add(update.displayable);
                 indexs.add(update.layerNew);
+                indexsSet.add(update.layerNew);
             }
+            Collections.sort(indexs);
             toUpdate.clear();
             updateRequested = false;
         }
@@ -147,7 +159,12 @@ public class ComponentDisplayable implements ComponentRenderer, HandlerListener,
             final Integer layer = getLayer(featurable);
             final Collection<Displayable> displayables = getLayer(layer);
             displayables.add(displayable);
-            indexs.add(layer);
+            if (!indexsSet.contains(layer))
+            {
+                indexs.add(layer);
+                indexsSet.add(layer);
+                Collections.sort(indexs);
+            }
         }
         if (featurable.hasFeature(Layerable.class))
         {

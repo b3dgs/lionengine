@@ -20,8 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -143,7 +142,7 @@ final class ComponentDisplayableTest
         component.notifyLayerChanged(featurable, null, null, null, null);
         component.notifyLayerChanged(featurable2, null, null, null, null);
 
-        assertTrue(((TreeSet<?>) UtilReflection.getField(component, "indexs")).isEmpty());
+        assertTrue(((List<?>) UtilReflection.getField(component, "indexs")).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
@@ -158,15 +157,15 @@ final class ComponentDisplayableTest
         component.notifyHandlableAdded(featurable);
         component.notifyHandlableAdded(featurable2);
 
-        assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertFalse(((List<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable);
 
-        assertFalse(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertFalse(((List<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
 
         component.notifyHandlableRemoved(featurable2);
 
-        assertTrue(((HashSet<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
+        assertTrue(((List<?>) UtilReflection.getMethod(component, "getLayer", Integer.valueOf(0))).isEmpty());
     }
 
     /**
