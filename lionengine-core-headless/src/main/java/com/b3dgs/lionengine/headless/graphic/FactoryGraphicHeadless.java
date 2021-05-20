@@ -140,6 +140,14 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer getImageBufferDraw(ImageBuffer image)
+    {
+        Check.notNull(image);
+
+        return new ImageBufferHeadless((ImageBufferHeadless) image);
+    }
+
+    @Override
     public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
         Check.notNull(image);

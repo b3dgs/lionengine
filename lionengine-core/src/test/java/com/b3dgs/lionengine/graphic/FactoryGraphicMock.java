@@ -108,6 +108,12 @@ public class FactoryGraphicMock implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer getImageBufferDraw(ImageBuffer imageBuffer)
+    {
+        return new ImageBufferMock(imageBuffer.getWidth(), imageBuffer.getHeight());
+    }
+
+    @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
         return new ImageBufferMock(imageBuffer.getWidth(), imageBuffer.getHeight());

@@ -99,6 +99,15 @@ public interface FactoryGraphic
     ImageBuffer getImageBuffer(ImageBuffer imageBuffer);
 
     /**
+     * Get an image buffer from an image buffer.
+     * 
+     * @param imageBuffer The image buffer (must not be <code>null</code>).
+     * @return The created image buffer from file.
+     * @throws LionEngineException If invalid argument.
+     */
+    ImageBuffer getImageBufferDraw(ImageBuffer imageBuffer);
+
+    /**
      * Apply color mask to the image.
      * 
      * @param imageBuffer The image reference (must not be <code>null</code>).

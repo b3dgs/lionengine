@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.awt.graphic;
 
 import java.awt.AWTException;
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -31,9 +30,12 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.awt.image.IndexColorModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -173,15 +175,76 @@ public final class ToolsAwt
      * @param image The image reference.
      * @return The image copy.
      */
-    public static BufferedImage copyImage(BufferedImage image)
+    public static BufferedImage copyImageDraw(BufferedImage image)
     {
-        final BufferedImage copy = createImage(image.getWidth(),
-                                               image.getHeight(),
-                                               image.getColorModel().getTransparency());
+        final BufferedImage copy = createImage(image.getWidth(), image.getHeight(), java.awt.Transparency.TRANSLUCENT);
         final Graphics2D g = copy.createGraphics();
-        g.setComposite(AlphaComposite.Src);
+        g.setComposite(java.awt.AlphaComposite.Src);
         g.drawImage(image, 0, 0, null);
         g.dispose();
+        return copy;
+    }
+
+    /**
+     * Create an image.
+     * 
+     * @param image The image reference.
+     * @return The image copy.
+     */
+    public static BufferedImage copyImage(BufferedImage image)
+    {
+        final int size = Constant.UNSIGNED_BYTE;
+        final byte[] reds = new byte[size];
+        final byte[] greens = new byte[size];
+        final byte[] blues = new byte[size];
+
+        final Set<Integer> ok = new HashSet<>();
+        int transparent = -1;
+        int i = 0;
+        for (int x = 0; x < image.getWidth(); x++)
+        {
+            for (int y = 0; y < image.getHeight(); y++)
+            {
+                final int value = image.getRGB(x, y);
+                if (ok.add(Integer.valueOf(value)))
+                {
+                    if (transparent == -1 && value >> Constant.BYTE_4 == 0)
+                    {
+                        transparent = i;
+                    }
+                    reds[i] = (byte) (value >> Constant.BYTE_3 & 0xFF);
+                    greens[i] = (byte) (value >> Constant.BYTE_2 & 0xFF);
+                    blues[i] = (byte) (value >> Constant.BYTE_1 & 0xFF);
+
+                    i++;
+                    if (i > size - 1)
+                    {
+                        return copyImageDraw(image);
+                    }
+                }
+            }
+        }
+
+        ok.clear();
+
+        final IndexColorModel model;
+        if (transparent == -1)
+        {
+            model = new IndexColorModel(Constant.BYTE_2, size, reds, greens, blues);
+        }
+        else
+        {
+            model = new IndexColorModel(Constant.BYTE_2, size, reds, greens, blues, transparent);
+        }
+
+        final BufferedImage copy = new BufferedImage(image.getWidth(),
+                                                     image.getHeight(),
+                                                     BufferedImage.TYPE_BYTE_INDEXED,
+                                                     model);
+
+        final int[] data = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+        copy.setRGB(0, 0, image.getWidth(), image.getHeight(), data, 0, image.getWidth());
+
         return copy;
     }
 

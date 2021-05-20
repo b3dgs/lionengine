@@ -149,6 +149,15 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
+    public ImageBuffer getImageBufferDraw(ImageBuffer image)
+    {
+        Check.notNull(image);
+
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.copyImageDraw(surface));
+    }
+
+    @Override
     public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
         Check.notNull(image);

@@ -354,6 +354,7 @@ class SpriteImpl implements Sprite
         {
             rgb = new int[width][height];
             firstAlpha = true;
+            surface = Graphics.getImageBufferDraw(surface);
         }
         for (int cx = 0; cx < width; cx++)
         {
