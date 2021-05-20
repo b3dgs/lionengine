@@ -42,31 +42,6 @@ public class RasterImage
     public static final int MAX_RASTERS = 47;
     /** Number of line used by a raster. */
     public static final int LINES_PER_RASTER = 2;
-    /** Xml file. */
-    private static final String EXTENSION_XML = ".xml";
-
-    /**
-     * Get raster color.
-     * 
-     * @param i The color offset.
-     * @param data The raster data (must not be <code>null</code>).
-     * @return The rastered color.
-     * @throws LionEngineException If invalid arguments.
-     */
-    private static double getRasterFactor(int i, RasterData data)
-    {
-        Check.notNull(data);
-
-        final double force = data.getForce();
-        final double amplitude = data.getAmplitude();
-        final int offset = data.getOffset();
-
-        if (0 == data.getType())
-        {
-            return force * UtilMath.sin(i * amplitude + offset);
-        }
-        return force * UtilMath.cos(i * amplitude + offset);
-    }
 
     /** List of rasters. */
     private final List<ImageBuffer> rasters = new ArrayList<>(MAX_RASTERS);
@@ -122,14 +97,7 @@ public class RasterImage
     {
         Check.notNull(suffix);
 
-        if (rasterFile.getName().endsWith(EXTENSION_XML))
-        {
-            loadFromXml(save, suffix);
-        }
-        else
-        {
-            loadFromPalette(save, suffix, Collections.emptyList());
-        }
+        loadFromPalette(save, suffix, Collections.emptyList());
     }
 
     /**
@@ -146,14 +114,7 @@ public class RasterImage
         Check.notNull(suffix);
 
         rasterFile = media;
-        if (media.getName().endsWith(EXTENSION_XML))
-        {
-            loadFromXml(save, suffix);
-        }
-        else
-        {
-            loadFromPalette(save, suffix, allowed);
-        }
+        loadFromPalette(save, suffix, allowed);
     }
 
     /**
@@ -195,60 +156,6 @@ public class RasterImage
     public int getHeight()
     {
         return rasterHeight;
-    }
-
-    /**
-     * Load raster from XML.
-     * 
-     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
-     * @param suffix The folder suffix, if save is <code>true</code> (must not be <code>null</code>).
-     */
-    private void loadFromXml(boolean save, String suffix)
-    {
-        final Raster raster = Raster.load(rasterFile);
-
-        for (int i = 0; i < MAX_RASTERS; i++)
-        {
-            final String folder = UtilFile.removeExtension(rasterFile.getName()) + Constant.UNDERSCORE + suffix;
-            final String file = i + Constant.DOT + ImageFormat.PNG;
-            final Media rasterMedia = Medias.create(rasterFile.getParentPath(), folder, file);
-            final ImageBuffer rasterBuffer = createRaster(rasterMedia, raster, i, save);
-            rasters.add(rasterBuffer);
-        }
-    }
-
-    /**
-     * Create raster from data or load from cache.
-     * 
-     * @param rasterMedia The raster media.
-     * @param raster The raster data.
-     * @param i The raster index.
-     * @param save <code>true</code> to save generated raster, <code>false</code> else.
-     * @return The created raster.
-     */
-    private ImageBuffer createRaster(Media rasterMedia, Raster raster, int i, boolean save)
-    {
-        final ImageBuffer rasterBuffer;
-        if (rasterMedia.exists())
-        {
-            rasterBuffer = Graphics.getImageBuffer(rasterMedia);
-            rasterBuffer.prepare();
-        }
-        else
-        {
-            final double fr = getRasterFactor(i, raster.getRed());
-            final double fg = getRasterFactor(i, raster.getGreen());
-            final double fb = getRasterFactor(i, raster.getBlue());
-
-            surface.prepare();
-            rasterBuffer = Graphics.getRasterBuffer(surface, fr, fg, fb);
-
-            if (save)
-            {
-                Graphics.saveImage(rasterBuffer, rasterMedia);
-            }
-        }
-        return rasterBuffer;
     }
 
     /**
