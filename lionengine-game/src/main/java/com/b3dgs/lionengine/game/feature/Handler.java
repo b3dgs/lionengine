@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -45,9 +46,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     /** Handler listeners. */
     private final ListenableModel<HandlerListener> listenable = new ListenableModel<>();
     /** List of components updater. */
-    private final Collection<ComponentUpdater> updaters = new ArrayList<>();
+    private final List<ComponentUpdater> updaters = new ArrayList<>();
     /** List of components renderer. */
-    private final Collection<ComponentRenderer> renderers = new ArrayList<>();
+    private final List<ComponentRenderer> renderers = new ArrayList<>();
     /** List of featurables. */
     private final HandlablesImpl featurables = new HandlablesImpl();
     /** To add list. */
@@ -263,9 +264,10 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         {
             updateAdd();
         }
-        for (final ComponentUpdater component : updaters)
+        final int count = updaters.size();
+        for (int i = 0; i < count; i++)
         {
-            component.update(extrp, featurables);
+            updaters.get(i).update(extrp, featurables);
         }
     }
 
@@ -276,9 +278,10 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     @Override
     public void render(Graphic g)
     {
-        for (final ComponentRenderer component : renderers)
+        final int count = renderers.size();
+        for (int i = 0; i < count; i++)
         {
-            component.render(g, featurables);
+            renderers.get(i).render(g, featurables);
         }
     }
 
