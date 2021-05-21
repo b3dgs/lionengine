@@ -33,8 +33,10 @@ public final class UtilStream
 {
     /** Error temporary file. */
     static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
-    /** Temporary file prefix. */
-    private static final String PREFIX_TEMP = "temp";
+    /** Temporary directory. */
+    static final String TEMP_DIR = "java.io.tmpdir";
+    /** Temp file created. */
+    private static final String TEMP_FILE_CREATED = "Temp file created: ";
     /** Copy buffer. */
     private static final int BUFFER_COPY = 65_535;
 
@@ -93,13 +95,14 @@ public final class UtilStream
             }
             else
             {
-                prefix = PREFIX_TEMP;
+                prefix = "temp";
             }
             suffix = null;
         }
         try
         {
             final File temp = File.createTempFile(prefix, suffix);
+            Verbose.info(TEMP_FILE_CREATED + temp.getAbsolutePath());
             try (OutputStream output = new BufferedOutputStream(new FileOutputStream(temp)))
             {
                 copy(input, output);

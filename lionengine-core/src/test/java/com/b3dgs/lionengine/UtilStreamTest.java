@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -168,13 +169,22 @@ final class UtilStreamTest
     @Test
     void testGetCopyError()
     {
-        assertThrows(() -> UtilStream.getCopy("copy", new InputStream()
+        try
         {
-            @Override
-            public int read() throws IOException
+            assertThrows(() -> UtilStream.getCopy("copy", new InputStream()
             {
-                throw new IOException();
-            }
-        }), UtilStream.ERROR_TEMP_FILE + "copy");
+                @Override
+                public int read() throws IOException
+                {
+                    throw new IOException();
+                }
+            }), UtilStream.ERROR_TEMP_FILE + "copy");
+        }
+        finally
+        {
+            UtilFile.deleteFile(new File(new File(System.getProperty(UtilStream.TEMP_DIR),
+                                                  Medias.getResourcesLoader().get().getSimpleName()),
+                                         "copy"));
+        }
     }
 }

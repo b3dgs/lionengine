@@ -23,7 +23,6 @@ import java.io.InputStream;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
 
@@ -105,17 +104,10 @@ public abstract class PlayerAbstract implements Audio
     public void play()
     {
         final String name = media.getPath();
-        if (Medias.getResourcesLoader().isPresent())
+        if (cache == null)
         {
-            if (cache == null)
-            {
-                cache = extractFromJar(media);
-            }
-            play(cache, name);
+            cache = extractFromJar(media);
         }
-        else
-        {
-            play(media.getFile().getAbsolutePath(), name);
-        }
+        play(cache, name);
     }
 }
