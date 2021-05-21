@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -58,6 +59,8 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     private final Viewer viewer;
     /** Setup raster. */
     private final SetupSurfaceRastered setup;
+    /** Frame transform. */
+    private FrameTransform transform;
     /** Raster media. */
     private Optional<Media> media = Optional.empty();
     /** The updater. */
@@ -175,6 +178,30 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         }
     }
 
+    /**
+     * Update raster.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateRaster(double extrp)
+    {
+        if (transform != null)
+        {
+            final Animation anim = animatable.getAnim();
+            if (anim != null)
+            {
+                raster.setFrame(transform.transform(anim.getName(), animatable.getFrameAnim()));
+            }
+        }
+        else
+        {
+            raster.setFrame(animatable.getFrame() + animOffset + animOffset2);
+        }
+        raster.setMirror(mirrorable.getMirror());
+        raster.setOrigin(origin);
+        raster.setFrameOffsets(frameOffsetX, frameOffsetY);
+    }
+
     /*
      * Rasterable
      */
@@ -196,10 +223,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
         if (visible)
         {
-            raster.setFrame(animatable.getFrame() + animOffset + animOffset2);
-            raster.setMirror(mirrorable.getMirror());
-            raster.setOrigin(origin);
-            raster.setFrameOffsets(frameOffsetX, frameOffsetY);
+            updateRaster(extrp);
         }
     }
 
@@ -211,6 +235,12 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
             raster.setLocation(viewer, transformable);
             raster.render(g);
         }
+    }
+
+    @Override
+    public void setAnimTransform(FrameTransform transform)
+    {
+        this.transform = transform;
     }
 
     @Override
@@ -230,6 +260,18 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         Check.superiorOrEqual(rasterIndex, 0);
 
         return rastersAnim.get(rasterIndex);
+    }
+
+    @Override
+    public int getAnimOffset()
+    {
+        return animOffset;
+    }
+
+    @Override
+    public int getAnimOffset2()
+    {
+        return animOffset2;
     }
 
     @Override

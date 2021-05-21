@@ -35,6 +35,13 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 public interface Rasterable extends Feature, Updatable, Renderable
 {
     /**
+     * Transform frame.
+     * 
+     * @param transform The frame transformer.
+     */
+    void setAnimTransform(FrameTransform transform);
+
+    /**
      * Set the internal animation offset for special animation cases (0 for none).
      * 
      * @param offset The offset value.
@@ -71,6 +78,20 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @return The raster animated sprite.
      */
     SpriteAnimated getRasterAnim(int rasterIndex);
+
+    /**
+     * Get the anim offset.
+     * 
+     * @return The anim offset.
+     */
+    int getAnimOffset();
+
+    /**
+     * Get the anim offset 2.
+     * 
+     * @return The anim offset 2.
+     */
+    int getAnimOffset2();
 
     /**
      * Set the raster media.
