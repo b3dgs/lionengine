@@ -22,10 +22,11 @@ import java.util.Collections;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -34,12 +35,15 @@ import com.b3dgs.lionengine.game.feature.collidable.Collision;
 /**
  * Collidable framed model implementation.
  */
-public class CollidableFramedModel extends FeatureModel implements CollidableFramed
+public class CollidableFramedModel extends FeatureModel implements CollidableFramed, Recyclable
 {
     /** Loaded collisions framed. */
     private final CollidableFramedConfig config;
     /** Last collision found. */
     private Collection<Collision> last = Collections.emptyList();
+
+    @FeatureGet private Collidable collidable;
+    @FeatureGet private Animatable animatable;
 
     /**
      * Create feature.
@@ -70,13 +74,8 @@ public class CollidableFramedModel extends FeatureModel implements CollidableFra
      */
 
     @Override
-    public void prepare(FeatureProvider provider)
+    public void recycle()
     {
-        super.prepare(provider);
-
-        final Collidable collidable = provider.getFeature(Collidable.class);
-        final Animatable animatable = provider.getFeature(Animatable.class);
-
         for (final Collision collision : config.getCollisions())
         {
             collidable.addCollision(collision);
