@@ -266,9 +266,14 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public final void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
     {
-        Check.notNull(nextSequenceClass);
-
-        nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
+        if (nextSequenceClass != null)
+        {
+            nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
+        }
+        else
+        {
+            nextSequence = null;
+        }
         loop.stop();
     }
 
@@ -401,6 +406,6 @@ public abstract class Sequence implements Sequencable, Sequencer, Zooming, TimeC
     @Override
     public void notifyClosed()
     {
-        end();
+        end(null);
     }
 }

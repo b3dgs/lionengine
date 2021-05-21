@@ -31,16 +31,16 @@ public interface Sequencer
     /**
      * Terminate sequence, and set the next sequence.
      * 
-     * @param nextSequenceClass The next sequence class reference.
+     * @param nextSequenceClass The next sequence class reference, <code>null</code> for none.
      * @param arguments The sequence arguments list if needed by its constructor.
-     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
+     * @throws LionEngineException If sequence cannot be created.
      */
     void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
 
     /**
      * Set next sequence and load it now. Call {@link #end()} to trigger transition.
      * 
-     * @param nextSequenceClass The next sequence class reference.
+     * @param nextSequenceClass The next sequence class reference, <code>null</code> for none.
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
