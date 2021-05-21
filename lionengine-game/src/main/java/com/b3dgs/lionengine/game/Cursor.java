@@ -232,16 +232,6 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     }
 
     /**
-     * Set the visibility.
-     * 
-     * @param visible <code>true</code> to show, <code>false</code> to hide.
-     */
-    public void setVisible(boolean visible)
-    {
-        renderer.setVisible(visible);
-    }
-
-    /**
      * Get the current surface id used for rendering.
      * 
      * @return The current surface id.
@@ -339,6 +329,12 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     public boolean isPushedOnce(Integer click)
     {
         return pointer.isPushedOnce(click);
+    }
+
+    @Override
+    public void setVisible(boolean visible)
+    {
+        renderer.setVisible(visible);
     }
 
     /*
