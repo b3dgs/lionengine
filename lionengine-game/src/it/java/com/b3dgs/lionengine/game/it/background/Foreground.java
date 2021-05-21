@@ -97,18 +97,6 @@ final class Foreground extends BackgroundAbstract
     }
 
     /**
-     * Called when the resolution changed.
-     * 
-     * @param width The new width.
-     * @param height The new height.
-     */
-    public void setScreenSize(int width, int height)
-    {
-        screenWidth = width;
-        screenHeight = height;
-    }
-
-    /**
      * Set the height.
      * 
      * @param height The height to set.
@@ -166,6 +154,13 @@ final class Foreground extends BackgroundAbstract
     public double getSpeed()
     {
         return speed;
+    }
+
+    @Override
+    public void setScreenSize(int width, int height)
+    {
+        screenWidth = width;
+        screenHeight = height;
     }
 
     /**
