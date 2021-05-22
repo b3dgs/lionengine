@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:raster xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/raster.xsd">
-    <lionengine:red force="88" amplitude="20" offset="2" type="0"/>
-    <lionengine:green force="28" amplitude="240" offset="220" type="0"/>
-    <lionengine:blue force="76" amplitude="45" offset="290" type="1"/>
-</lionengine:raster>

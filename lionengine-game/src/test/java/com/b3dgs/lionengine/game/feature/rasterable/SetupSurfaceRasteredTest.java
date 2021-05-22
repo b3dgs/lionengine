@@ -17,15 +17,16 @@
 package com.b3dgs.lionengine.game.feature.rasterable;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFolder;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -37,27 +38,29 @@ final class SetupSurfaceRasteredTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "ObjectRaster.xml";
-    /** Raster configuration file name. */
-    private static final String RASTER_XML = "raster.xml";
 
     /**
-     * Prepare test.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(SetupSurfaceRasteredTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setLoadFromJar(SetupSurfaceRasteredTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up test.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
     }
 
     /**
@@ -66,10 +69,9 @@ final class SetupSurfaceRasteredTest
     @Test
     void testConfig()
     {
-        final Media raster = Medias.create(RASTER_XML);
-        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
+        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML));
 
-        assertEquals(raster, setup.getFile());
+        assertEquals(Medias.create("tiles.png"), setup.getFile());
 
         for (final ImageBuffer buffer : setup.getRasters())
         {
@@ -78,15 +80,5 @@ final class SetupSurfaceRasteredTest
         }
 
         UtilFolder.deleteDirectory(Medias.create("void").getFile().getParentFile());
-    }
-
-    /**
-     * Test the setup surface rastered without raster.
-     */
-    @Test
-    void testConfigNoRaster()
-    {
-        assertThrows(() -> new SetupSurfaceRastered(Medias.create(OBJECT_XML), null),
-                     "The following attribute does not exist: file");
     }
 }

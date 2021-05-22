@@ -3,5 +3,5 @@
     <lionengine:surface image="sprite.png"/>
     <lionengine:frames horizontal="4" vertical="2"/>
     <lionengine:size width="16" height="32"/>
-    <lionengine:rasterable height="16" smooth="false"/>
+    <lionengine:rasterable height="16" file="tiles.png"/>
 </lionengine:featurable>

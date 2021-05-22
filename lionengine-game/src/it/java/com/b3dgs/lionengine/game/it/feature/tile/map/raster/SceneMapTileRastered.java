@@ -60,7 +60,7 @@ final class SceneMapTileRastered extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
-        raster.setRaster(Medias.create("raster.xml"), 2, 0);
+        raster.setRaster(Medias.create("tiles.png"), 2, 0);
         raster.loadSheets();
 
         camera.setView(0, 0, getWidth(), getHeight(), getHeight());

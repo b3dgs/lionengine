@@ -27,7 +27,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -48,25 +51,29 @@ import com.b3dgs.lionengine.graphic.raster.RasterImage;
 final class MapTileRasteredModelTest
 {
     /**
-     * Prepare test.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(MapTileRasteredModelTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setLoadFromJar(MapTileRasteredModelTest.class);
     }
 
     /**
-     * Clean up test.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         Medias.setResourcesDirectory(null);
         Graphics.setFactoryGraphic(null);
         Medias.setLoadFromJar(null);
+
+        Engine.terminate();
     }
 
     private final Services services = new Services();
@@ -106,7 +113,7 @@ final class MapTileRasteredModelTest
 
         assertFalse(mapRastered.loadSheets());
 
-        mapRastered.setRaster(Medias.create("raster.xml"), 2, 0);
+        mapRastered.setRaster(Medias.create("tiles.png"), 2, 0);
 
         assertTrue(mapRastered.loadSheets());
 

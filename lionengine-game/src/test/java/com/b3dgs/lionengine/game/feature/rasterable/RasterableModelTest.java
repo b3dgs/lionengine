@@ -26,9 +26,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.ViewerMock;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
@@ -51,31 +53,33 @@ final class RasterableModelTest
 {
     /** Object configuration file name. */
     private static final String OBJECT_XML = "ObjectRaster.xml";
-    /** Raster configuration file name. */
-    private static final String RASTER_XML = "raster.xml";
-
-    private final Services services = new Services();
-    private final Graphic g = new GraphicMock();
 
     /**
-     * Prepare test.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(RasterableModelTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setLoadFromJar(RasterableModelTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up test.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
     }
+
+    private final Services services = new Services();
+    private final Graphic g = new GraphicMock();
 
     /**
      * Test the model.
@@ -85,8 +89,7 @@ final class RasterableModelTest
     {
         services.add(new ViewerMock());
 
-        final Media raster = Medias.create(RASTER_XML);
-        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML), raster);
+        final SetupSurfaceRastered setup = new SetupSurfaceRastered(Medias.create(OBJECT_XML));
 
         final Featurable featurable = new FeaturableModel(services, setup);
         final Transformable transformable = featurable.addFeatureAndGet(new TransformableModel(services, setup));
