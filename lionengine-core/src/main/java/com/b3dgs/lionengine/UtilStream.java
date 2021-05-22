@@ -35,6 +35,8 @@ public final class UtilStream
     static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
     /** Temporary directory. */
     static final String TEMP_DIR = "java.io.tmpdir";
+    /** Temp folder. */
+    private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
     /** Temp file created. */
     private static final String TEMP_FILE_CREATED = "Temp file created: ";
     /** Copy buffer. */
@@ -68,50 +70,33 @@ public final class UtilStream
     /**
      * Get of full copy of the input stream stored in a temporary file.
      * 
-     * @param name The file name reference, to have a similar temporary file name (must not be <code>null</code>).
-     * @param input The input stream reference (must not be <code>null</code>).
+     * @param media The media reference.
      * @return The temporary file created with copied content from stream.
      * @throws LionEngineException If invalid arguments or invalid stream.
      */
-    public static File getCopy(String name, InputStream input)
+    public static File getCopy(Media media)
     {
-        Check.notNull(name);
-        Check.notNull(input);
+        Check.notNull(media);
 
-        final String prefix;
-        final String suffix;
-        final int minimumPrefix = 3;
-        final int i = name.lastIndexOf(Constant.DOT);
-        if (i > minimumPrefix)
-        {
-            prefix = name.substring(0, i);
-            suffix = name.substring(i);
-        }
-        else
-        {
-            if (name.length() > minimumPrefix)
-            {
-                prefix = name;
-            }
-            else
-            {
-                prefix = "temp";
-            }
-            suffix = null;
-        }
         try
         {
-            final File temp = File.createTempFile(prefix, suffix);
-            Verbose.info(TEMP_FILE_CREATED + temp.getAbsolutePath());
-            try (OutputStream output = new BufferedOutputStream(new FileOutputStream(temp)))
+            final File temp = new File(TEMP, UtilFolder.getPath(Engine.getProgramName(), media.getPath()));
+            if (temp.exists())
+            {
+                return temp;
+            }
+            temp.getParentFile().mkdirs();
+            try (InputStream input = media.getInputStream();
+                 OutputStream output = new BufferedOutputStream(new FileOutputStream(temp)))
             {
                 copy(input, output);
+                Verbose.info(TEMP_FILE_CREATED + temp);
             }
             return temp;
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_TEMP_FILE + name);
+            throw new LionEngineException(exception, ERROR_TEMP_FILE + media);
         }
     }
 

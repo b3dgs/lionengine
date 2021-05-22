@@ -37,7 +37,9 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,6 +64,24 @@ final class XmlTest
     private static final double DOUBLE_VALUE = 7.1;
     /** String value. */
     private static final String STRING_VALUE = "string";
+
+    /**
+     * Start engine.
+     */
+    @BeforeAll
+    static void beforeAll()
+    {
+        Engine.start(new EngineMock(XmlTest.class.getSimpleName(), Version.DEFAULT));
+    }
+
+    /**
+     * Terminate engine.
+     */
+    @AfterAll
+    static void afterAll()
+    {
+        Engine.terminate();
+    }
 
     /**
      * Prepare test.

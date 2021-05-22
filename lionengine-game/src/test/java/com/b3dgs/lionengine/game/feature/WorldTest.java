@@ -29,10 +29,13 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -46,23 +49,27 @@ import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 final class WorldTest
 {
     /**
-     * Prepare test.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(WorldTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setLoadFromJar(WorldTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up test.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
     }
 
     private final Resolution output = new Resolution(640, 480, 60);

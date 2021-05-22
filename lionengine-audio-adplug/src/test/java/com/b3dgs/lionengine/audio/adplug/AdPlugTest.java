@@ -27,12 +27,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.MediaMock;
@@ -40,6 +44,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 
@@ -48,6 +53,24 @@ import com.b3dgs.lionengine.audio.AudioFactory;
  */
 final class AdPlugTest
 {
+    /**
+     * Start engine.
+     */
+    @BeforeAll
+    static void beforeAll()
+    {
+        Engine.start(new EngineMock(AdPlugTest.class.getSimpleName(), Version.DEFAULT));
+    }
+
+    /**
+     * Terminate engine.
+     */
+    @AfterAll
+    static void afterAll()
+    {
+        Engine.terminate();
+    }
+
     /**
      * Create player.
      * 

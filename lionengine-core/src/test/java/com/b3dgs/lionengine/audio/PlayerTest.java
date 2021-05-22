@@ -25,14 +25,19 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.MediaMock;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.io.InputStreamMock;
 
 /**
@@ -40,6 +45,24 @@ import com.b3dgs.lionengine.io.InputStreamMock;
  */
 final class PlayerTest
 {
+    /**
+     * Start engine.
+     */
+    @BeforeAll
+    static void beforeAll()
+    {
+        Engine.start(new EngineMock(PlayerTest.class.getSimpleName(), Version.DEFAULT));
+    }
+
+    /**
+     * Terminate engine.
+     */
+    @AfterAll
+    static void afterAll()
+    {
+        Engine.terminate();
+    }
+
     /**
      * Clean up tests.
      */
@@ -143,7 +166,7 @@ final class PlayerTest
         final Media media = new MediaFail();
         final PlayerMock player = new PlayerMock(media);
 
-        assertThrows(() -> player.play(), IOException.class.getName());
+        assertThrows(NullPointerException.class, () -> player.play(), null);
     }
 
     /**

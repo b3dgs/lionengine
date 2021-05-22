@@ -18,9 +18,7 @@ package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
-import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -123,68 +121,13 @@ final class UtilStreamTest
     }
 
     /**
-     * Test input stream copy.
+     * Test input stream copy with <code>null</code> media.
      * 
      * @throws IOException If error.
      */
     @Test
-    void testGetCopy() throws IOException
+    void testGetCopyNullMedia() throws IOException
     {
-        try (InputStream input = new InputStreamMock())
-        {
-            assertTrue(UtilStream.getCopy("te", input).delete());
-            assertTrue(UtilStream.getCopy("temp", input).delete());
-            assertTrue(UtilStream.getCopy("temp.tmp", input).delete());
-        }
-    }
-
-    /**
-     * Test input stream copy with <code>null</code> name.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    void testGetCopyNullName() throws IOException
-    {
-        try (InputStream input = new InputStreamMock())
-        {
-            assertThrows(() -> UtilStream.getCopy(null, input), Check.ERROR_NULL);
-        }
-    }
-
-    /**
-     * Test input stream copy with <code>null</code> name.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    void testGetCopyNullStream() throws IOException
-    {
-        assertThrows(() -> UtilStream.getCopy("temp", null), Check.ERROR_NULL);
-    }
-
-    /**
-     * Test get copy error.
-     */
-    @Test
-    void testGetCopyError()
-    {
-        try
-        {
-            assertThrows(() -> UtilStream.getCopy("copy", new InputStream()
-            {
-                @Override
-                public int read() throws IOException
-                {
-                    throw new IOException();
-                }
-            }), UtilStream.ERROR_TEMP_FILE + "copy");
-        }
-        finally
-        {
-            UtilFile.deleteFile(new File(new File(System.getProperty(UtilStream.TEMP_DIR),
-                                                  Medias.getResourcesLoader().get().getSimpleName()),
-                                         "copy"));
-        }
+        assertThrows(() -> UtilStream.getCopy(null), Check.ERROR_NULL);
     }
 }

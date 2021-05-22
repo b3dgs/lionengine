@@ -26,10 +26,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFolder;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBufferMock;
@@ -42,24 +45,28 @@ import com.b3dgs.lionengine.graphic.drawable.ImageInfo;
 final class RasterImageTest
 {
     /**
-     * Prepare tests.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(RasterImageTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(RasterImageTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up tests.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
     }
 
     /**

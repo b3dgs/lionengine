@@ -31,11 +31,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilTests;
+import com.b3dgs.lionengine.Version;
 
 /**
  * Test {@link Graphics}.
@@ -43,24 +46,28 @@ import com.b3dgs.lionengine.UtilTests;
 final class GraphicsTest
 {
     /**
-     * Prepare tests.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(GraphicsTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setFactoryMedia(new FactoryMediaDefault());
         Medias.setLoadFromJar(GraphicsTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
-     * Clean up tests.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
+
+        Engine.terminate();
     }
 
     /**

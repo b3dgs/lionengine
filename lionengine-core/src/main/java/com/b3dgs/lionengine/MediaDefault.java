@@ -25,9 +25,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
 
 /**
  * Media implementation.
@@ -43,29 +43,12 @@ final class MediaDefault implements Media
     private static final String TEMP_DIR = "java.io.tmpdir";
     /** No parent. */
     private static final String NO_PARENT = Constant.EMPTY_STRING;
-    /** Unable to create temp directory. */
-    private static final String ERROR_CREATE_TEMP_DIR = "Unable to create temp dir ";
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
     /** Split regex. */
     private static final Pattern SLASH = Pattern.compile(Constant.SLASH);
-
-    /**
-     * Create the temp directory relative to loader class name.
-     * 
-     * @param loader The class loader.
-     * @return The temp directory absolute path.
-     */
-    private static String getTempDir(Class<?> loader)
-    {
-        final File temp = new File(TEMP, loader.getSimpleName());
-        final String path = temp.getAbsolutePath();
-        if (!temp.isDirectory() && !temp.mkdir())
-        {
-            Verbose.warning(ERROR_CREATE_TEMP_DIR, path);
-        }
-        return path;
-    }
+    /** Jar file. */
+    private static final String JAR_FILE = ".jar!";
 
     /** Separator. */
     private final String separator;
@@ -167,7 +150,7 @@ final class MediaDefault implements Media
      */
     private Media create(String prefix, int prefixLength, File file)
     {
-        final String currentPath = file.getPath().replace(File.separator, separator);
+        final String currentPath = file.getPath();
         final String[] systemPath = SLASH.split(currentPath.substring(currentPath.indexOf(prefix) + prefixLength));
         final Media media;
         if (loader.isPresent())
@@ -179,6 +162,68 @@ final class MediaDefault implements Media
             media = new MediaDefault(separator, resourcesDir, UtilFolder.getPathSeparator(separator, systemPath));
         }
         return media;
+    }
+
+    /**
+     * Find medias in jar.
+     * 
+     * @param medias The medias found.
+     */
+    private void fillMediasFromJar(Collection<Media> medias)
+    {
+        final String fullpath = getFile().getPath().replace("file:", Constant.EMPTY_STRING);
+        final int length = fullpath.indexOf(JAR_FILE) + JAR_FILE.length() - 1;
+        final File zip = new File(fullpath.substring(0, length));
+        final String root = loader.get()
+                                  .getName()
+                                  .replace(loader.get().getSimpleName(), Constant.EMPTY_STRING)
+                                  .replace(Constant.DOT, Constant.SLASH);
+        final String folder = fullpath.substring(length
+                                                 + 2
+                                                 + loader.get().getName().length()
+                                                 - loader.get().getSimpleName().length())
+                                      .replace(File.separator, Constant.SLASH)
+                              + Constant.SLASH;
+
+        for (final ZipEntry entry : UtilZip.getEntries(zip, root + folder))
+        {
+            final Media media = Medias.create(entry.getName().replace(root, Constant.EMPTY_STRING));
+            medias.add(media);
+        }
+    }
+
+    /**
+     * Find medias in folder.
+     * 
+     * @param folder The folder to search in.
+     * @param medias The medias found.
+     */
+    private void fillMediasFromFolder(File folder, Collection<Media> medias)
+    {
+        final File[] files = folder.listFiles();
+        if (files != null)
+        {
+            final String prefix;
+            final int prefixLength;
+            if (folder.getPath().startsWith(TEMP))
+            {
+                prefix = folder.getPath() + File.separator;
+                prefixLength = prefix.length();
+            }
+            else
+            {
+                final String path = folder.getPath();
+                final String suffix = getPrefix().replace(separator, File.separator);
+                prefix = path.substring(0, path.indexOf(suffix) + suffix.length()) + File.separator;
+                prefixLength = prefix.length();
+            }
+
+            for (final File current : files)
+            {
+                final Media media = create(prefix, prefixLength, current);
+                medias.add(media);
+            }
+        }
     }
 
     /**
@@ -214,7 +259,7 @@ final class MediaDefault implements Media
      */
     private String getPathTemp()
     {
-        return UtilFolder.getPathSeparator(separator, getTempDir(loader.get()), path);
+        return UtilFolder.getPathSeparator(separator, TEMP, UtilFolder.getPath(Engine.getProgramName(), path));
     }
 
     /*
@@ -279,22 +324,18 @@ final class MediaDefault implements Media
     @Override
     public Collection<Media> getMedias()
     {
+        final Collection<Media> medias = new ArrayList<>();
         final File file = getFile();
-        final File[] files = file.listFiles();
-        if (files != null)
+        final String path = file.getPath();
+        if (path.contains(JAR_FILE))
         {
-            final Collection<Media> medias = new ArrayList<>(files.length);
-            final String prefix = getPrefix();
-            final int prefixLength = prefix.length();
-
-            for (final File current : files)
-            {
-                final Media media = create(prefix, prefixLength, current);
-                medias.add(media);
-            }
-            return medias;
+            fillMediasFromJar(medias);
         }
-        return Collections.emptyList();
+        else
+        {
+            fillMediasFromFolder(file, medias);
+        }
+        return medias;
     }
 
     @Override

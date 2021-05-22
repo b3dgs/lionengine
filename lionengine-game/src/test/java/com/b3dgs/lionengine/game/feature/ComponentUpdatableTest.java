@@ -23,8 +23,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Version;
 
 /**
  * Test {@link ComponentUpdatable}.
@@ -35,25 +38,29 @@ final class ComponentUpdatableTest
     private static Media config;
 
     /**
-     * Prepare test.
+     * Start engine.
      */
     @BeforeAll
-    public static void beforeTests()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(ComponentUpdatableTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         Medias.setLoadFromJar(ComponentUpdatableTest.class);
         config = UtilTransformable.createMedia(ComponentUpdatableTest.class);
     }
 
     /**
-     * Clean up test.
+     * Terminate engine.
      */
     @AfterAll
-    public static void afterTests()
+    static void afterAll()
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
         Medias.setLoadFromJar(null);
+
+        Engine.terminate();
     }
 
     private final Services services = new Services();

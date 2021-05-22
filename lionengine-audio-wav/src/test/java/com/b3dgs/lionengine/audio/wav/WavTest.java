@@ -24,9 +24,12 @@ import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.EngineMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 
@@ -36,24 +39,28 @@ import com.b3dgs.lionengine.audio.AudioFactory;
 final class WavTest
 {
     /**
-     * Prepare the test.
+     * Start engine.
      */
     @BeforeAll
-    public static void prepareTest()
+    static void beforeAll()
     {
+        Engine.start(new EngineMock(WavTest.class.getSimpleName(), Version.DEFAULT));
+
         Medias.setLoadFromJar(WavTest.class);
         WavFormat.setMixer(null);
         AudioFactory.addFormat(new WavFormat());
     }
 
     /**
-     * Clean up tests.
+     * Terminate engine.
      */
     @AfterAll
-    public static void cleanUp()
+    static void afterAll()
     {
         Medias.setLoadFromJar(null);
         AudioFactory.clearFormats();
+
+        Engine.terminate();
     }
 
     /**

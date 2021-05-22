@@ -33,12 +33,9 @@ final class EngineTest
      * Reestablish the engine start state.
      */
     @AfterEach
-    public void afterTest()
+    void afterTest()
     {
-        if (Engine.isStarted())
-        {
-            Engine.terminate();
-        }
+        Engine.terminate();
     }
 
     /**

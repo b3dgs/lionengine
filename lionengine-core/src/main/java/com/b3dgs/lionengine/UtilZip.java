@@ -36,11 +36,24 @@ public final class UtilZip
     static final String ERROR_OPEN_ZIP = "Unable to open ZIP : ";
 
     /**
+     * Get all entries existing in the path.
+     * 
+     * @param jar The JAR to check (must not be <code>null</code>).
+     * @param path The path to check (must not be <code>null</code>).
+     * @return The entries list.
+     * @throws LionEngineException If invalid arguments or unable to open ZIP.
+     */
+    public static Collection<ZipEntry> getEntries(File jar, String path)
+    {
+        return getEntriesByExtension(jar, path, null);
+    }
+
+    /**
      * Get all entries existing in the path considering the extension.
      * 
      * @param jar The JAR to check (must not be <code>null</code>).
      * @param path The path to check (must not be <code>null</code>).
-     * @param extension The extension without dot; eg: xml (must not be <code>null</code>).
+     * @param extension The extension without dot; eg: xml (can be <code>null</code> to ignore).
      * @return The entries list.
      * @throws LionEngineException If invalid arguments or unable to open ZIP.
      */
@@ -48,7 +61,6 @@ public final class UtilZip
     {
         Check.notNull(jar);
         Check.notNull(path);
-        Check.notNull(extension);
 
         try (ZipFile zip = new ZipFile(jar))
         {
@@ -76,7 +88,9 @@ public final class UtilZip
         {
             final ZipEntry entry = zipEntries.nextElement();
             final String name = entry.getName();
-            if (name.startsWith(path) && UtilFile.getExtension(name).equals(extension))
+            if (name.startsWith(path)
+                && !name.endsWith(Constant.SLASH)
+                && (extension == null || UtilFile.getExtension(name).equals(extension)))
             {
                 entries.add(entry);
             }

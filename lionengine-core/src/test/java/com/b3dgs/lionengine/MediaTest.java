@@ -29,7 +29,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +40,24 @@ import org.junit.jupiter.api.Test;
  */
 final class MediaTest
 {
+    /**
+     * Start engine.
+     */
+    @BeforeAll
+    static void beforeAll()
+    {
+        Engine.start(new EngineMock(MediaTest.class.getSimpleName(), Version.DEFAULT));
+    }
+
+    /**
+     * Terminate engine.
+     */
+    @AfterAll
+    static void afterAll()
+    {
+        Engine.terminate();
+    }
+
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
@@ -225,36 +245,6 @@ final class MediaTest
     void testGetMedias()
     {
         assertTrue(Medias.create("null", "void").getMedias().isEmpty());
-    }
-
-    /**
-     * Test temp path creation unable.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    void testUnableCreateTempDir() throws IOException
-    {
-        final String tempFolder = UtilReflection.getField(MediaDefault.class, "TEMP");
-        final File folder = new File(tempFolder, MediasTest.class.getClass().getSimpleName());
-        folder.mkdirs();
-
-        assertTrue(folder.delete());
-        assertTrue(folder.createNewFile());
-
-        try
-        {
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            final String path = UtilReflection.getMethod(MediaDefault.class, "getTempDir", MediasTest.class.getClass());
-
-            assertEquals(folder.getPath(), path);
-
-            Verbose.info("****************************************************************************************");
-        }
-        finally
-        {
-            assertTrue(folder.delete());
-        }
     }
 
     /**

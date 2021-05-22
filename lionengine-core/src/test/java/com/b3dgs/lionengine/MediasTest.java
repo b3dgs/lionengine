@@ -30,7 +30,9 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,6 +41,24 @@ import org.junit.jupiter.api.Test;
  */
 final class MediasTest
 {
+    /**
+     * Start engine.
+     */
+    @BeforeAll
+    static void beforeAll()
+    {
+        Engine.start(new EngineMock(MediasTest.class.getSimpleName(), Version.DEFAULT));
+    }
+
+    /**
+     * Terminate engine.
+     */
+    @AfterAll
+    static void afterAll()
+    {
+        Engine.terminate();
+    }
+
     /** Old resources directory. */
     private String oldDir;
     /** Old loader. */
@@ -82,7 +102,9 @@ final class MediasTest
     {
         Medias.setResourcesDirectory("rsc");
 
-        assertEquals("null", Medias.create((String) null).getPath());
+        assertThrows(NullPointerException.class,
+                     () -> assertEquals("null", Medias.create((String) null).getPath()),
+                     null);
     }
 
     /**

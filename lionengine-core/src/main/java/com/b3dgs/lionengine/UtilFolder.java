@@ -87,11 +87,11 @@ public final class UtilFolder
         {
             if (i == path.length - 1)
             {
-                fullPath.append(path[i]);
+                fullPath.append(path[i].replace(File.separator, separator));
             }
             else if (path[i] != null && path[i].length() > 0)
             {
-                fullPath.append(path[i]);
+                fullPath.append(path[i].replace(File.separator, separator));
                 if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))
                 {
                     fullPath.append(separator);
