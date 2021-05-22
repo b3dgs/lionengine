@@ -47,6 +47,16 @@ final class Playback implements Closeable
     }
 
     /**
+     * Get input.
+     * 
+     * @return The input.
+     */
+    public AudioInputStream getInput()
+    {
+        return input;
+    }
+
+    /**
      * Get the audio data.
      * 
      * @return The audio data.

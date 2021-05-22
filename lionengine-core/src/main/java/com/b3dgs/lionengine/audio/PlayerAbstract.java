@@ -17,8 +17,6 @@
 package com.b3dgs.lionengine.audio;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -46,15 +44,8 @@ public abstract class PlayerAbstract implements Audio
      */
     private static String extractFromJar(Media media)
     {
-        try (InputStream input = media.getInputStream())
-        {
-            final File file = UtilStream.getCopy(media.getFile().getName(), input);
-            return file.getAbsolutePath();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        final File file = UtilStream.getCopy(media);
+        return file.getAbsolutePath();
     }
 
     /** Media reference. */
