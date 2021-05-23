@@ -75,14 +75,7 @@ final class DeviceControllerModelTest
     public void testFire()
     {
         final Integer index = Integer.valueOf(1);
-        final DeviceMapper mapper = new DeviceMapper()
-        {
-            @Override
-            public Integer getIndex()
-            {
-                return index;
-            }
-        };
+        final DeviceMapper mapper = () -> index;
         final AtomicReference<Double> val = new AtomicReference<>(Double.valueOf(1.0));
 
         assertFalse(device.isFired(index));
