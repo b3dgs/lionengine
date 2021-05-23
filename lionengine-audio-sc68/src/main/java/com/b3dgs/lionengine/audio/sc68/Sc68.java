@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.audio.Audio;
 
 /**
@@ -24,31 +23,6 @@ import com.b3dgs.lionengine.audio.Audio;
  */
 public interface Sc68 extends Audio
 {
-    /**
-     * Configure the audio output.
-     * 
-     * @param interpolation <code>true</code> to use interpolation, <code>false</code> else.
-     * @param joinStereo <code>true</code> to join stereo, <code>false</code> else.
-     */
-    void setConfig(boolean interpolation, boolean joinStereo);
-
-    /**
-     * Set starting tick (starting audio position).
-     * 
-     * @param tick The starting tick <code>[0 - {@link #getTicks()}]</code>.
-     * @throws LionEngineException If argument is invalid.
-     */
-    void setStart(long tick);
-
-    /**
-     * Set loop area in tick.
-     * 
-     * @param first The first tick <code>[0 - last}]</code>.
-     * @param last The last tick <code>[first - {@link #getTicks()}}]</code>.
-     * @throws LionEngineException If arguments are invalid.
-     */
-    void setLoop(long first, long last);
-
     /**
      * Pause the audio (can be resumed).
      */

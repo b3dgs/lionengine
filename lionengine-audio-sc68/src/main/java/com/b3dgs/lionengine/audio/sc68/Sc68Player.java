@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.audio.sc68;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.audio.PlayerAbstract;
 
 /**
@@ -57,30 +56,12 @@ final class Sc68Player extends PlayerAbstract implements Sc68
     }
 
     @Override
-    public void setStart(long tick)
-    {
-        binding.sc68SetStart((int) tick);
-    }
-
-    @Override
-    public void setLoop(long first, long last)
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void setVolume(int volume)
     {
         Check.superiorOrEqual(volume, 0);
         Check.inferiorOrEqual(volume, VOLUME_MAX);
 
         binding.sc68SetVolume(volume);
-    }
-
-    @Override
-    public void setConfig(boolean interpolation, boolean joinStereo)
-    {
-        binding.sc68Config(UtilConversion.boolToInt(interpolation), UtilConversion.boolToInt(joinStereo));
     }
 
     @Override
@@ -96,12 +77,6 @@ final class Sc68Player extends PlayerAbstract implements Sc68
     }
 
     @Override
-    public void await()
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void stop()
     {
         binding.sc68Stop();
@@ -111,5 +86,11 @@ final class Sc68Player extends PlayerAbstract implements Sc68
     public long getTicks()
     {
         return binding.sc68Seek();
+    }
+
+    @Override
+    public void await()
+    {
+        // Nothing to do
     }
 }

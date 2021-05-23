@@ -223,76 +223,6 @@ final class Sc68Test
     }
 
     /**
-     * Test start sequence.
-     */
-    @Test
-    void testStart()
-    {
-        final Sc68 sc68 = createSc68();
-        try
-        {
-            sc68.setVolume(30);
-            sc68.setStart(0);
-
-            assertTimeout(5000L, () ->
-            {
-                sc68.play();
-                UtilTests.pause(Constant.HUNDRED);
-            });
-        }
-        finally
-        {
-            sc68.stop();
-        }
-
-        final Sc68 sc682 = createSc68();
-        try
-        {
-            sc682.setVolume(30);
-
-            assertTimeout(5000L, () ->
-            {
-                sc682.play();
-                UtilTests.pause(Constant.HUNDRED);
-
-                sc682.pause();
-
-                UtilTests.pause(Constant.BYTE_4);
-                sc682.resume();
-                UtilTests.pause(Constant.BYTE_4);
-            });
-        }
-        finally
-        {
-            sc682.stop();
-        }
-    }
-
-    /**
-     * Test loop sequence.
-     */
-    @Test
-    void testLoop()
-    {
-        final Sc68 sc68 = createSc68();
-        try
-        {
-            sc68.setVolume(30);
-            sc68.setLoop(0, 100);
-
-            assertTimeout(5000L, () ->
-            {
-                sc68.play();
-                UtilTests.pause(Constant.HUNDRED);
-            });
-        }
-        finally
-        {
-            sc68.stop();
-        }
-    }
-
-    /**
      * Test pause sequence.
      */
     @Test
@@ -312,39 +242,6 @@ final class Sc68Test
                 UtilTests.pause(Constant.BYTE_4);
                 sc68.resume();
 
-                UtilTests.pause(Constant.BYTE_4);
-            });
-        }
-        finally
-        {
-            sc68.stop();
-        }
-    }
-
-    /**
-     * Test the set configuration.
-     */
-    @Test
-    void testConfig()
-    {
-        final Sc68 sc68 = createSc68();
-        try
-        {
-            sc68.setVolume(30);
-            sc68.setConfig(false, false);
-
-            assertTimeout(5000L, () ->
-            {
-                sc68.play();
-                UtilTests.pause(Constant.BYTE_4);
-
-                sc68.setConfig(false, true);
-                UtilTests.pause(Constant.BYTE_4);
-
-                sc68.setConfig(true, false);
-                UtilTests.pause(Constant.BYTE_4);
-
-                sc68.setConfig(true, true);
                 UtilTests.pause(Constant.BYTE_4);
             });
         }

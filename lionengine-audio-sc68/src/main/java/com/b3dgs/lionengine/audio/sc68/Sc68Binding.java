@@ -38,14 +38,6 @@ interface Sc68Binding extends Library
     void sc68SetVolume(int volume);
 
     /**
-     * Configure the audio output.
-     * 
-     * @param interpolation <code>1</code> to use interpolation, <code>0</code> else.
-     * @param stereoJoin <code>1</code> to join stereo, <code>0</code> else.
-     */
-    void sc68Config(int interpolation, int stereoJoin);
-
-    /**
      * Pause track.
      */
     void sc68Pause();
@@ -59,13 +51,6 @@ interface Sc68Binding extends Library
      * Stop track.
      */
     void sc68Stop();
-
-    /**
-     * Set track time start.
-     * 
-     * @param timeMilli The start time in millisecond.
-     */
-    void sc68SetStart(int timeMilli);
 
     /**
      * Get play index.

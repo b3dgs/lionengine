@@ -87,7 +87,6 @@ public final class Sc68Format implements AudioFormat
      */
     private static Sc68Binding getLibrary()
     {
-        Verbose.info("Load library: ", LIBRARY_NAME);
         final Sc68Binding binding = Native.load(LIBRARY_NAME, Sc68Binding.class);
         Verbose.info("Library ", LIBRARY_NAME, " loaded");
         return binding;
