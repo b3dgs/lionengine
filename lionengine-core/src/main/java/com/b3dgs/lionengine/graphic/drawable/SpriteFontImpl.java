@@ -220,10 +220,13 @@ final class SpriteFontImpl implements SpriteFont
         double lx = 0.0;
         double ly = 0.0;
 
-        for (final String word : NL.split(text))
+        final String[] split = NL.split(text);
+        for (int i = 0; i < split.length; i++)
         {
+            final String word = split[i];
             final int width = getCharWidth(word, align);
             final int length = word.length();
+
             for (int j = 0; j < length; j++)
             {
                 final FontCharData d = fontData.get(Character.valueOf(word.charAt(j)));
