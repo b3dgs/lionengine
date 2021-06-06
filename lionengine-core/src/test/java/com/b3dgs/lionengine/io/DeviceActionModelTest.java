@@ -34,7 +34,7 @@ final class DeviceActionModelTest
      * Test invalid arguments.
      */
     @Test
-    public void testConstructorInvalid()
+    void testConstructorInvalid()
     {
         assertThrows(LionEngineException.class,
                      () -> new DeviceActionModel((DeviceAxis) null, mock),
@@ -57,7 +57,7 @@ final class DeviceActionModelTest
      * Test constructor 1.
      */
     @Test
-    public void testConstructor1()
+    void testConstructor1()
     {
         final DeviceAxis axis = new DeviceAxis(Integer.valueOf(1), Integer.valueOf(2));
         final DeviceAction action = new DeviceActionModel(axis, mock);
@@ -77,7 +77,7 @@ final class DeviceActionModelTest
      * Test constructor 2.
      */
     @Test
-    public void testConstructor2()
+    void testConstructor2()
     {
         final DeviceAction action = new DeviceActionModel(Integer.valueOf(1), mock);
 

@@ -38,7 +38,7 @@ final class DeviceControllerModelTest
      * Test horizontal axis.
      */
     @Test
-    public void testHorizontal()
+    void testHorizontal()
     {
         assertEquals(0.0, device.getHorizontalDirection());
 
@@ -55,7 +55,7 @@ final class DeviceControllerModelTest
      * Test vertical axis.
      */
     @Test
-    public void testVertical()
+    void testVertical()
     {
         assertEquals(0.0, device.getVerticalDirection());
 
@@ -72,7 +72,7 @@ final class DeviceControllerModelTest
      * Test fire.
      */
     @Test
-    public void testFire()
+    void testFire()
     {
         final Integer index = Integer.valueOf(1);
         final DeviceMapper mapper = () -> index;
@@ -106,7 +106,7 @@ final class DeviceControllerModelTest
      * Test set disabled function.
      */
     @Test
-    public void setDisabled()
+    void testSetDisabled()
     {
         final Integer index = Integer.valueOf(1);
         device.setDisabled(Constant.EMPTY_STRING, true, true);

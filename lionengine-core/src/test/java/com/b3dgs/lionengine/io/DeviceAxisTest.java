@@ -32,7 +32,7 @@ final class DeviceAxisTest
      * Test invalid arguments.
      */
     @Test
-    public void testConstructorInvalid()
+    void testConstructorInvalid()
     {
         assertThrows(LionEngineException.class,
                      () -> new DeviceAxis(null, Integer.valueOf(0)),
@@ -47,7 +47,7 @@ final class DeviceAxisTest
      * Test getter.
      */
     @Test
-    public void testGetter()
+    void testGetter()
     {
         final DeviceAxis axis = new DeviceAxis(Integer.valueOf(1), Integer.valueOf(-1));
 
