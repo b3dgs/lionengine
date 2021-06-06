@@ -232,11 +232,7 @@ final class GraphicAwt implements Graphic
     @Override
     public void setColor(ColorRgba color)
     {
-        if (!colorCache.containsKey(color))
-        {
-            colorCache.put(color, new Color(color.getRgba(), true));
-        }
-        g.setColor(colorCache.get(color));
+        g.setColor(colorCache.computeIfAbsent(color, c -> new Color(c.getRgba(), true)));
     }
 
     @Override

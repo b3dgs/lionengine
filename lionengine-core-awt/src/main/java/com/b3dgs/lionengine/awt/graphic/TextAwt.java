@@ -153,11 +153,7 @@ final class TextAwt implements Text
         final Color colorOld = g2d.getColor();
         g2d.setColor(colorCache.get(color));
 
-        if (!textCache.containsKey(text))
-        {
-            textCache.put(text, font.createGlyphVector(context, text));
-        }
-        final GlyphVector glyphVector = textCache.get(text);
+        final GlyphVector glyphVector = textCache.computeIfAbsent(text, t -> font.createGlyphVector(context, t));
         g2d.drawGlyphVector(glyphVector, tx, ty - size / 2.0F);
         g2d.setColor(colorOld);
     }
@@ -197,10 +193,7 @@ final class TextAwt implements Text
     @Override
     public void setColor(ColorRgba color)
     {
-        if (!colorCache.containsKey(color))
-        {
-            colorCache.put(color, new Color(color.getRgba(), true));
-        }
+        colorCache.computeIfAbsent(color, c -> new Color(c.getRgba(), true));
         this.color = color;
     }
 
