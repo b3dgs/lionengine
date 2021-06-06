@@ -176,7 +176,7 @@ final class WavImpl implements Wav
             {
                 dataLine.open(input.getFormat());
             }
-            catch (final IllegalStateException exception)
+            catch (final IllegalStateException | LineUnavailableException exception)
             {
                 Verbose.exception(exception);
             }
@@ -293,7 +293,7 @@ final class WavImpl implements Wav
         }
         catch (final IOException | LineUnavailableException exception)
         {
-            if (last == null || !exception.getMessage().equals(last.getMessage()))
+            if (last == null || exception.getMessage() != null && !exception.getMessage().equals(last.getMessage()))
             {
                 Verbose.exception(exception, media.toString());
                 last = exception;
