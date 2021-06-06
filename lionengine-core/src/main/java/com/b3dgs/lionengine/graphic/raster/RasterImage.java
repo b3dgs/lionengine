@@ -168,18 +168,10 @@ public class RasterImage
     private void loadFromPalette(boolean save, String suffix, Collection<Integer> allowed)
     {
         final String folder = UtilFile.removeExtension(rasterFile.getName()) + Constant.UNDERSCORE + suffix;
-        final Collection<Media> files = Medias.create(rasterFile.getParentPath(), folder).getMedias();
-        int rastersNumber;
-        if (files.isEmpty())
-        {
-            rastersNumber = ImageInfo.get(rasterFile).getHeight() - 1;
-        }
-        else
-        {
-            rastersNumber = files.size();
-        }
+        int rastersNumber = getRasterNumber(folder);
         ImageBuffer rasterPalette = null;
         ImageBuffer[] rastersBuffer = null;
+
         for (int i = 0; i < rastersNumber; i++)
         {
             if (allowed == null || allowed.isEmpty() || allowed.contains(Integer.valueOf(i)))
@@ -216,5 +208,21 @@ public class RasterImage
                 rasters.add(surface);
             }
         }
+    }
+
+    /**
+     * Get raster number in folder.
+     * 
+     * @param folder The folder reference.
+     * @return The raster number found.
+     */
+    private int getRasterNumber(String folder)
+    {
+        final Collection<Media> files = Medias.create(rasterFile.getParentPath(), folder).getMedias();
+        if (files.isEmpty())
+        {
+            return ImageInfo.get(rasterFile).getHeight() - 1;
+        }
+        return files.size();
     }
 }
