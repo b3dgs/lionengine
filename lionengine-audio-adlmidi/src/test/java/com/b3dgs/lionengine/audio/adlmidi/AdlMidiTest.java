@@ -311,6 +311,8 @@ final class AdlMidiTest
         finally
         {
             adlmidi.stop();
+            UtilFile.deleteFile(new File(new File(System.getProperty("java.io.tmpdir"), getClass().getSimpleName()),
+                                         media.getPath()));
         }
     }
 

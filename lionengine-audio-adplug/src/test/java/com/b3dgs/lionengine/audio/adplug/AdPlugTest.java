@@ -305,6 +305,8 @@ final class AdPlugTest
         finally
         {
             sc68.stop();
+            UtilFile.deleteFile(new File(new File(System.getProperty("java.io.tmpdir"), getClass().getSimpleName()),
+                                         media.getPath()));
         }
     }
 
