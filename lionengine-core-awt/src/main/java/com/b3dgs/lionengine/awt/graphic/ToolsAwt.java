@@ -224,9 +224,29 @@ public final class ToolsAwt
                 }
             }
         }
-
         ok.clear();
 
+        return toImageWithIndexColor(image, transparent, size, reds, greens, blues);
+    }
+
+    /**
+     * Get index color model image version.
+     * 
+     * @param image The original image.
+     * @param transparent The transparent pixel (-1 if none).
+     * @param size The color size.
+     * @param reds The reds color.
+     * @param greens The green color.
+     * @param blues The blues color.
+     * @return The created image.
+     */
+    private static BufferedImage toImageWithIndexColor(BufferedImage image,
+                                                       int transparent,
+                                                       int size,
+                                                       byte[] reds,
+                                                       byte[] greens,
+                                                       byte[] blues)
+    {
         final IndexColorModel model;
         if (transparent == -1)
         {

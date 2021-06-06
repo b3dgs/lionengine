@@ -142,9 +142,7 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     @Override
     public ImageBuffer getImageBufferDraw(ImageBuffer image)
     {
-        Check.notNull(image);
-
-        return new ImageBufferHeadless((ImageBufferHeadless) image);
+        return getImageBuffer(image);
     }
 
     @Override
