@@ -42,6 +42,19 @@ final class MapTileCollisionLoader
     /** Error formula not found. */
     static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
 
+    /**
+     * Check the constraint with the specified tile.
+     * 
+     * @param mapGroup The map group reference.
+     * @param constraints The constraint groups to check.
+     * @param tile The tile to check with.
+     * @return <code>true</code> if can be ignored, <code>false</code> else.
+     */
+    private static boolean checkConstraint(MapTileGroup mapGroup, Collection<String> constraints, Tile tile)
+    {
+        return tile != null && constraints.contains(mapGroup.getGroup(tile));
+    }
+
     /** Collision formulas list. */
     private final Map<String, CollisionFormula> formulas = new HashMap<>();
     /** Collisions groups list. */
@@ -172,10 +185,10 @@ final class MapTileCollisionLoader
      */
     public List<CollisionFormula> getCollisionFormulas(Tile tile)
     {
-        final List<CollisionFormula> formulas = tilesFormulas.get(tile);
-        if (formulas != null)
+        final List<CollisionFormula> collisionFormulas = tilesFormulas.get(tile);
+        if (collisionFormulas != null)
         {
-            return formulas;
+            return collisionFormulas;
         }
         return Collections.emptyList();
     }
@@ -393,18 +406,5 @@ final class MapTileCollisionLoader
             }
         }
         return toRemove;
-    }
-
-    /**
-     * Check the constraint with the specified tile.
-     * 
-     * @param mapGroup The map group reference.
-     * @param constraints The constraint groups to check.
-     * @param tile The tile to check with.
-     * @return <code>true</code> if can be ignored, <code>false</code> else.
-     */
-    private boolean checkConstraint(MapTileGroup mapGroup, Collection<String> constraints, Tile tile)
-    {
-        return tile != null && constraints.contains(mapGroup.getGroup(tile));
     }
 }
