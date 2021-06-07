@@ -127,10 +127,10 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
     @Override
     public void renderTile(Graphic g, Tile tile, int x, int y)
     {
-        final SpriteTiled raster = getRasterSheet(tile.getSheetKey(), getRasterIndex(tile.getInTileY()));
-        raster.setLocation(x, y);
-        raster.setTile(tile.getNumber());
-        raster.render(g);
+        final SpriteTiled tileRaster = getRasterSheet(tile.getSheetKey(), getRasterIndex(tile.getInTileY()));
+        tileRaster.setLocation(x, y);
+        tileRaster.setTile(tile.getNumber());
+        tileRaster.render(g);
     }
 
     @Override

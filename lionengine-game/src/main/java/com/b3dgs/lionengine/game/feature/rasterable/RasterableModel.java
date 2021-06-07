@@ -58,7 +58,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     /** The viewer reference. */
     private final Viewer viewer;
     /** Setup raster. */
-    private final SetupSurfaceRastered setup;
+    private final SetupSurfaceRastered setupRastered;
     /** Frame transform. */
     private FrameTransform transform;
     /** Raster media. */
@@ -118,7 +118,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     {
         super(services, setup);
 
-        this.setup = setup;
+        setupRastered = setup;
         viewer = services.get(Viewer.class);
 
         origin = OriginConfig.imports(setup);
@@ -180,10 +180,8 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
     /**
      * Update raster.
-     * 
-     * @param extrp The extrapolation value.
      */
-    private void updateRaster(double extrp)
+    private void updateRaster()
     {
         if (transform != null)
         {
@@ -223,7 +221,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
         if (visible)
         {
-            updateRaster(extrp);
+            updateRaster();
         }
     }
 
@@ -283,7 +281,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     @Override
     public void setRaster(boolean save, Media media, int rasterHeight, Collection<Integer> allowed)
     {
-        if (setup.isExtern())
+        if (setupRastered.isExtern())
         {
             Check.notNull(media);
             Check.superiorStrict(rasterHeight, 0);
@@ -291,11 +289,11 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
             this.media = Optional.of(media);
             this.rasterHeight = rasterHeight;
 
-            setup.load(save, media, allowed);
+            setupRastered.load(save, media, allowed);
             rastersAnim.clear();
 
             count = -1;
-            for (final ImageBuffer buffer : setup.getRasters())
+            for (final ImageBuffer buffer : setupRastered.getRasters())
             {
                 final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer,
                                                                           raster.getFramesHorizontal(),
