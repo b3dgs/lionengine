@@ -289,9 +289,14 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     private void checkGroup(Entry<Point, List<Collidable>> current)
     {
         final List<Collidable> elements = current.getValue();
-        for (final Collidable element : elements)
+        final int count = elements.size();
+        for (int i = 0; i < count; i++)
         {
-            checkOthers(element, current);
+            final Collidable collidable = elements.get(i);
+            if (collidable.isEnabled())
+            {
+                checkOthers(elements.get(i), current);
+            }
         }
     }
 
@@ -349,7 +354,7 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
             final Collidable objectB = others.get(o);
 
             // Ensures not already collided with object with other point (because of subdivision mapping)
-            if (objectA != objectB && done.get(objectA) != objectB)
+            if (objectB.isEnabled() && objectA != objectB && done.get(objectA) != objectB)
             {
                 final List<CollisionCouple> collisions = objectA.collide(objectB);
                 final int count = collisions.size();
