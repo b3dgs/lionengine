@@ -248,6 +248,22 @@ public class Configurer
     }
 
     /**
+     * Get a media in the xml tree.
+     * 
+     * @param attribute The attribute to get as media.
+     * @param path The node path (child list).
+     * @return The string value.
+     */
+    public final Optional<Media> getMediaOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return Optional.of(Medias.create(getNodeString(attribute, path)));
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Get an enum in the xml tree.
      * 
      * @param <E> The enum type.
