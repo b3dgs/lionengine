@@ -27,6 +27,9 @@ import com.b3dgs.lionengine.game.Feature;
  */
 public class CameraTracker extends FeaturableAbstract
 {
+    /** Smooth speed value. */
+    private static final int SMOOTH_SPEED = 2;
+
     /** Camera service reference. */
     private final Camera camera;
     /** Followed element (can be <code>null</code>). */
@@ -35,6 +38,10 @@ public class CameraTracker extends FeaturableAbstract
     private int h;
     /** Vertical offset. */
     private int v;
+    /** Smooth horizontal flag. */
+    private boolean smoothX;
+    /** Smooth vertical flag. */
+    private boolean smoothY;
 
     /**
      * Create tracker.
@@ -60,10 +67,84 @@ public class CameraTracker extends FeaturableAbstract
         {
             if (tracked != null)
             {
-                camera.setLocation(tracked.getX() - camera.getWidth() / 2.0 + h,
-                                   tracked.getY() - camera.getHeight() / 2.0 + v);
+                final double dx = tracked.getX() - camera.getWidth() / 2.0 + h;
+                final double dy = tracked.getY() - camera.getHeight() / 2.0 + v;
+
+                final int sideX = updateSmoothX(dx);
+                final int sideY = updateSmoothY(dy);
+
+                camera.moveLocation(extrp, sideX, sideY);
+
+                if (smoothX && !smoothY)
+                {
+                    camera.setLocationY(dy);
+                }
+                else if (!smoothX && smoothY)
+                {
+                    camera.setLocationX(dx);
+                }
+                else if (!smoothX && !smoothY)
+                {
+                    camera.setLocation(dx, dy);
+                }
             }
         }));
+    }
+
+    /**
+     * Update horizontal smooth.
+     * 
+     * @param dx The destination.
+     * @return The side.
+     */
+    private int updateSmoothX(double dx)
+    {
+        int sideX = 0;
+        if (smoothX)
+        {
+            if (camera.getX() < dx - SMOOTH_SPEED)
+            {
+                sideX = SMOOTH_SPEED;
+            }
+            else if (camera.getX() > dx + SMOOTH_SPEED)
+            {
+                sideX = -SMOOTH_SPEED;
+            }
+            else
+            {
+                sideX = 0;
+                smoothX = false;
+            }
+        }
+        return sideX;
+    }
+
+    /**
+     * Update vertical smooth.
+     * 
+     * @param dy The destination.
+     * @return The side.
+     */
+    private int updateSmoothY(double dy)
+    {
+        int sideY = 0;
+        if (smoothY)
+        {
+            if (camera.getY() < dy - SMOOTH_SPEED)
+            {
+                sideY = SMOOTH_SPEED;
+            }
+            else if (camera.getY() > dy + SMOOTH_SPEED)
+            {
+                sideY = -SMOOTH_SPEED;
+            }
+            else
+            {
+                sideY = 0;
+                smoothY = false;
+            }
+        }
+        return sideY;
     }
 
     /**
@@ -85,8 +166,22 @@ public class CameraTracker extends FeaturableAbstract
      */
     public void track(Localizable localizable)
     {
+        track(localizable, false);
+    }
+
+    /**
+     * Track the specified localizable.
+     * 
+     * @param localizable The localizable to track.
+     * @param smooth <code>true</code> to enable smooth, <code>false</code> else.
+     */
+    public void track(Localizable localizable, boolean smooth)
+    {
         tracked = localizable;
-        if (tracked != null)
+        smoothX = smooth;
+        smoothY = smooth;
+
+        if (!smooth && tracked != null)
         {
             camera.teleport(tracked.getX() - camera.getWidth() / 2.0 + h,
                             tracked.getY() - camera.getHeight() / 2.0 + v);
