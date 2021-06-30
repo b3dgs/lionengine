@@ -77,6 +77,10 @@ public class Camera extends FeaturableAbstract implements Viewer
     private int shakeX;
     /** Shake y. */
     private int shakeY;
+    /** Shake 2 x. */
+    private int shake2X;
+    /** Shake 2 y. */
+    private int shake2Y;
 
     /**
      * Create a camera.
@@ -146,6 +150,28 @@ public class Camera extends FeaturableAbstract implements Viewer
         final double dx = x - (mover.getX() + offset.getX());
         final double dy = y - (mover.getY() + offset.getY());
         moveLocation(1.0, dx, dy);
+    }
+
+    /**
+     * Set the camera location horizontal.
+     * 
+     * @param x The horizontal location.
+     */
+    public void setLocationX(double x)
+    {
+        final double dx = x - (mover.getX() + offset.getX());
+        checkHorizontalLimit(1.0, dx);
+    }
+
+    /**
+     * Set the camera location vertical.
+     * 
+     * @param y The vertical location.
+     */
+    public void setLocationY(double y)
+    {
+        final double dy = y - (mover.getY() + offset.getY());
+        checkVerticalLimit(1.0, dy);
     }
 
     /**
@@ -294,6 +320,18 @@ public class Camera extends FeaturableAbstract implements Viewer
     {
         this.shakeX = shakeX;
         this.shakeY = shakeY;
+    }
+
+    /**
+     * Set the shake 2 effect.
+     * 
+     * @param shake2X The horizontal shake.
+     * @param shake2Y The vertical shake.
+     */
+    public void setShake2(int shake2X, int shake2Y)
+    {
+        this.shake2X = shake2X;
+        this.shake2Y = shake2Y;
     }
 
     /**
@@ -537,13 +575,13 @@ public class Camera extends FeaturableAbstract implements Viewer
     @Override
     public double getX()
     {
-        return mover.getX() - getViewX() + shakeX;
+        return mover.getX() - getViewX() + shakeX + shake2X;
     }
 
     @Override
     public double getY()
     {
-        return mover.getY() + getViewY() + shakeY;
+        return mover.getY() + getViewY() + shakeY + shake2Y;
     }
 
     @Override
