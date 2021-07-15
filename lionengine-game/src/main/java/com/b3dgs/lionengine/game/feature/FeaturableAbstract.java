@@ -74,22 +74,23 @@ public abstract class FeaturableAbstract implements Featurable
     {
         super();
 
-        addFeatureInternal(new IdentifiableModel());
+        addFeatureInternal(new IdentifiableModel(), false);
     }
 
     /**
      * Add feature and prepare it.
      * 
      * @param feature The feature to add.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
      */
-    private void addFeatureInternal(Feature feature)
+    private void addFeatureInternal(Feature feature, boolean overwrite)
     {
         if (feature instanceof Recyclable)
         {
             ((Recyclable) feature).recycle();
         }
         feature.prepare(this);
-        features.add(feature);
+        features.add(feature, overwrite);
     }
 
     /**
@@ -164,8 +165,14 @@ public abstract class FeaturableAbstract implements Featurable
     @Override
     public void addFeature(Feature feature)
     {
+        addFeature(feature, false);
+    }
+
+    @Override
+    public void addFeature(Feature feature, boolean overwrite)
+    {
         fillServices(feature);
-        addFeatureInternal(feature);
+        addFeatureInternal(feature, overwrite);
     }
 
     @Override

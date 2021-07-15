@@ -81,6 +81,19 @@ public class Features
      */
     public void add(Feature feature)
     {
+        add(feature, false);
+    }
+
+    /**
+     * Add a feature. Stores its interface, and all sub interfaces which describe also a {@link Feature} annotated by
+     * {@link FeatureInterface}.
+     * 
+     * @param feature The feature to add.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
+     * @throws LionEngineException If feature is not annotated by {@link FeatureInterface} or already referenced.
+     */
+    public void add(Feature feature, boolean overwrite)
+    {
         if (!isAnnotated(feature))
         {
             throw new LionEngineException(ERROR_FEATURE_NOT_ANNOTATED + feature.getClass());
@@ -91,7 +104,7 @@ public class Features
         {
             throw new LionEngineException(ERROR_FEATURE_EXISTS + feature.getClass() + WITH + old.getClass());
         }
-        checkTypeDepth(feature, feature.getClass());
+        checkTypeDepth(feature, feature.getClass(), overwrite);
         features.add(feature);
     }
 
@@ -150,15 +163,16 @@ public class Features
      * 
      * @param feature The main feature.
      * @param current The current parent.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
      */
-    private void checkTypeDepth(Feature feature, Class<?> current)
+    private void checkTypeDepth(Feature feature, Class<?> current, boolean overwrite)
     {
         for (final Class<?> type : current.getInterfaces())
         {
             if (type.isAnnotationPresent(FeatureInterface.class))
             {
-                checkAnnotation(feature, type);
-                checkTypeDepth(feature, type);
+                checkAnnotation(feature, type, overwrite);
+                checkTypeDepth(feature, type, overwrite);
             }
         }
         final Class<?> parent = current.getSuperclass();
@@ -166,9 +180,9 @@ public class Features
         {
             if (parent.isAnnotationPresent(FeatureInterface.class))
             {
-                checkAnnotation(feature, parent);
+                checkAnnotation(feature, parent, overwrite);
             }
-            checkTypeDepth(feature, parent);
+            checkTypeDepth(feature, parent, overwrite);
         }
     }
 
@@ -177,12 +191,13 @@ public class Features
      * 
      * @param feature The feature to check.
      * @param type The type to check.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
      */
-    private void checkAnnotation(Feature feature, Class<?> type)
+    private void checkAnnotation(Feature feature, Class<?> type, boolean overwrite)
     {
         final Feature old;
         // CHECKSTYLE IGNORE LINE: InnerAssignment
-        if ((old = typeToFeature.put(type.asSubclass(Feature.class), feature)) != null)
+        if ((old = typeToFeature.put(type.asSubclass(Feature.class), feature)) != null && !overwrite)
         {
             throw new LionEngineException(ERROR_FEATURE_EXISTS
                                           + feature.getClass()

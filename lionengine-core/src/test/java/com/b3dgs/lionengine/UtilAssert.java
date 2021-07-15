@@ -16,6 +16,7 @@
  */
 package com.b3dgs.lionengine;
 
+import java.io.IOException;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Assertions;
@@ -35,6 +36,18 @@ public final class UtilAssert
     public static void assertPrivateConstructor(Class<?> clazz)
     {
         Assertions.assertThrows(LionEngineException.class, () -> UtilTests.testPrivateConstructor(clazz));
+    }
+
+    /**
+     * Asserts that {@code executable} throws a {@link LionEngineException} with a specific <code>cause</code>.
+     * 
+     * @param from The exception type source.
+     * @param executable The executable to test.
+     * @param cause The expected exception cause.
+     */
+    public static void assertCause(Class<? extends Throwable> from, Executable executable, Class<?> cause)
+    {
+        Assertions.assertEquals(cause, Assertions.assertThrows(from, executable).getCause().getClass());
     }
 
     /**
@@ -98,15 +111,25 @@ public final class UtilAssert
     }
 
     /**
-     * Asserts that {@code executable} throws a {@link java.io.IOException}.
+     * Asserts that {@code executable} throws a {@link NullPointerException}.
+     * 
+     * @param executable The executable to test.
+     */
+    public static void assertThrowsNpe(Executable executable)
+    {
+        Assertions.assertThrows(NullPointerException.class, executable);
+    }
+
+    /**
+     * Asserts that {@code executable} throws a {@link IOException}.
      * 
      * @param executable The executable to test.
      * @param startWith The start exception message.
      */
     public static void assertThrowsIo(Executable executable, String startWith)
     {
-        final String message = Assertions.assertThrows(java.io.IOException.class, executable).getMessage();
-        Assertions.assertTrue(message.startsWith(message));
+        final String message = Assertions.assertThrows(IOException.class, executable).getMessage();
+        Assertions.assertTrue(message.startsWith(startWith));
     }
 
     /**

@@ -17,7 +17,7 @@
 package com.b3dgs.lionengine.game.feature;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsNpe;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -106,7 +106,7 @@ final class FeatureModelTest
     @Test
     void testNotPrepared()
     {
-        assertThrows(NullPointerException.class, () -> feature.getFeatures(), null);
+        assertThrowsNpe(feature::getFeatures);
     }
 
     private class FeatureTest extends FeatureModel implements IdentifiableListener

@@ -99,6 +99,14 @@ public interface Featurable extends FeatureProvider
     void addFeature(Feature feature);
 
     /**
+     * Add a feature.
+     * 
+     * @param feature The feature to add.
+     * @param overwrite <code>true</code> to overwrite existing feature, <code>false</code> else.
+     */
+    void addFeature(Feature feature, boolean overwrite);
+
+    /**
      * Add a feature and retrieve it. Read all {@link FeaturableConfig#NODE_FEATURE} nodes.
      * 
      * @param <T> The feature type.
