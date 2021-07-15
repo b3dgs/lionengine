@@ -86,6 +86,18 @@ public class DeviceControllerVoid implements DeviceController
     }
 
     @Override
+    public boolean isFired()
+    {
+        return false;
+    }
+
+    @Override
+    public Integer getFired()
+    {
+        return null;
+    }
+
+    @Override
     public boolean isFired(Integer index)
     {
         return false;

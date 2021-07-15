@@ -24,9 +24,16 @@ import com.b3dgs.lionengine.InputDevice;
 public interface DevicePush extends InputDevice
 {
     /**
+     * Check if pushed.
+     * 
+     * @return <code>true</code> if pushed, <code>false</code> else.
+     */
+    boolean isPushed();
+
+    /**
      * Get current pushed index.
      * 
-     * @return The pushed index.
+     * @return The pushed index, <code>null</code> if none.
      */
     Integer getPushed();
 

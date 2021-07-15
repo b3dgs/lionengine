@@ -42,6 +42,12 @@ public class DevicePushMock implements DevicePush
     }
 
     @Override
+    public boolean isPushed()
+    {
+        return pushed != null;
+    }
+
+    @Override
     public Integer getPushed()
     {
         return pushed;

@@ -59,13 +59,13 @@ final class MouseMoveAwt implements MouseMotionListener
     /** On local window location y. */
     private int wy;
     /** Move value x. */
-    private int mx;
+    private double mx;
     /** Move value y. */
-    private int my;
+    private double my;
     /** Old location x. */
-    private int oldX;
+    private double oldX;
     /** Old location y. */
-    private int oldY;
+    private double oldY;
     /** Screen center x. */
     private int centerX;
     /** Screen center y. */
@@ -206,7 +206,7 @@ final class MouseMoveAwt implements MouseMotionListener
      * 
      * @return The horizontal movement.
      */
-    int getMx()
+    double getMx()
     {
         return mx;
     }
@@ -216,7 +216,7 @@ final class MouseMoveAwt implements MouseMotionListener
      * 
      * @return The vertical movement.
      */
-    int getMy()
+    double getMy()
     {
         return my;
     }

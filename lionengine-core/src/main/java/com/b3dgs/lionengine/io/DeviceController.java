@@ -80,6 +80,20 @@ public interface DeviceController extends Updatable
     double getVerticalDirection();
 
     /**
+     * Check if at least one index is fired.
+     * 
+     * @return <code>true</code> if any fired, <code>false</code> if none.
+     */
+    boolean isFired();
+
+    /**
+     * Get last fired index.
+     * 
+     * @return The last fired index, <code>null</code> if none.
+     */
+    Integer getFired();
+
+    /**
      * Check if index is fired.
      * 
      * @param index The index value.

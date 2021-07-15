@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.InputDevice;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -108,6 +109,7 @@ public final class Loader
         finally
         {
             screen.dispose();
+            config.getDevices().forEach(InputDevice::close);
         }
     }
 

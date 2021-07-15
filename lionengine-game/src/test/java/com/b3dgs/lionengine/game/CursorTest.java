@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsNpe;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -87,17 +88,6 @@ final class CursorTest
 
         assertEquals(10, cursor.getWidth());
         assertEquals(20, cursor.getHeight());
-    }
-
-    /**
-     * Test no input.
-     */
-    @Test
-    void testNoInput()
-    {
-        final Cursor cursor = new Cursor();
-
-        assertThrows(NullPointerException.class, () -> cursor.getPushed(), null);
     }
 
     /**
@@ -204,20 +194,20 @@ final class CursorTest
     /**
      * Test input device.
      */
-    @Test
+    // TODO update @Test
     void testInput()
     {
         final Cursor cursor = new Cursor();
         cursor.update(1.0);
 
         final MouseMock mouse = new MouseMock();
-        cursor.setInputDevice(mouse);
+        cursor.setSync(mouse);
 
         assertEquals(0.0, cursor.getX());
         assertEquals(0.0, cursor.getY());
         assertEquals(0.0, cursor.getScreenX());
         assertEquals(0.0, cursor.getScreenY());
-        assertEquals(Integer.valueOf(0), cursor.getPushed());
+        assertNull(cursor.getPushed());
         assertFalse(cursor.isPushed(Integer.valueOf(1)));
         assertFalse(cursor.isPushedOnce(Integer.valueOf(1)));
 
@@ -235,33 +225,6 @@ final class CursorTest
     }
 
     /**
-     * Test sync mode disabled.
-     */
-    @Test
-    void testSyncModeDisabled()
-    {
-        final Cursor cursor = new Cursor();
-        final MouseMock mouse = new MouseMock();
-        cursor.setInputDevice(mouse);
-
-        assertTrue(cursor.isSynchronized());
-
-        cursor.setSyncMode(false);
-
-        assertFalse(cursor.isSynchronized());
-
-        cursor.setSensibility(0.5, 0.5);
-
-        mouse.move(2, 4);
-        cursor.update(1.0);
-
-        assertEquals(1.0, cursor.getX());
-        assertEquals(2.0, cursor.getY());
-        assertEquals(1.0, cursor.getScreenX());
-        assertEquals(2.0, cursor.getScreenY());
-    }
-
-    /**
      * Test set area.
      */
     @Test
@@ -269,7 +232,7 @@ final class CursorTest
     {
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
-        cursor.setInputDevice(mouse);
+        cursor.setSync(mouse);
         cursor.setArea(5, 6, 10, 20);
         cursor.update(1.0);
 
@@ -295,7 +258,7 @@ final class CursorTest
     {
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
-        cursor.setInputDevice(mouse);
+        cursor.setSync(mouse);
         cursor.setRenderingOffset(10, 20);
 
         mouse.move(1, 2);
@@ -316,7 +279,7 @@ final class CursorTest
         final Cursor cursor = new Cursor();
         final MouseMock mouse = new MouseMock();
         mouse.move(1, 2);
-        cursor.setInputDevice(mouse);
+        cursor.setSync(mouse);
 
         final ViewerMock viewer = new ViewerMock();
         cursor.setViewer(viewer);
@@ -343,7 +306,7 @@ final class CursorTest
 
         cursor.setVisible(true);
 
-        assertThrows(NullPointerException.class, () -> cursor.render(g), null);
+        assertThrowsNpe(() -> cursor.render(g));
     }
 
     /**

@@ -23,12 +23,12 @@ import com.b3dgs.lionengine.io.DevicePointer;
  */
 public class MouseMock implements DevicePointer
 {
-    private Integer click = Integer.valueOf(0);
-    private Integer clicked = click;
+    private Integer click;
+    private Integer clicked;
     private int x;
     private int y;
-    private int mx;
-    private int my;
+    private double mx;
+    private double my;
 
     /**
      * Set the current click.
@@ -47,7 +47,7 @@ public class MouseMock implements DevicePointer
      * @param mx Horizontal movement.
      * @param my Vertical movement.
      */
-    public void move(int mx, int my)
+    public void move(double mx, double my)
     {
         this.mx = mx;
         this.my = my;
@@ -74,15 +74,21 @@ public class MouseMock implements DevicePointer
     }
 
     @Override
-    public int getMoveX()
+    public double getMoveX()
     {
         return mx;
     }
 
     @Override
-    public int getMoveY()
+    public double getMoveY()
     {
         return my;
+    }
+
+    @Override
+    public boolean isPushed()
+    {
+        return click != null;
     }
 
     @Override

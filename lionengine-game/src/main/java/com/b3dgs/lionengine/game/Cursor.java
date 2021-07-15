@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.lionengine.io.DeviceController;
 import com.b3dgs.lionengine.io.DevicePointer;
 
 /**
@@ -37,7 +38,7 @@ import com.b3dgs.lionengine.io.DevicePointer;
  * <li><code>area</code>: Represents the area where the cursor can move on. Its location can not exit this area (
  * {@link #setArea(int, int, int, int)}).</li>
  * <li><code>sync</code>: <code>true</code> if cursor is synchronized on the system pointer, <code>false</code> not (
- * {@link #setSyncMode(boolean)}).</li>
+ * {@link #setSync(DevicePointer)}).</li>
  * <li><code>sensibility</code>: If the cursor is not synchronized on the system pointer, it can be defined (
  * {@link #setSensibility(double, double)}).</li>
  * <li><code>grid</code>: Represents the map grid.</li>
@@ -52,19 +53,19 @@ import com.b3dgs.lionengine.io.DevicePointer;
  * <li>Create the cursor with {@link #Cursor()}.</li>
  * <li>Add images with {@link #addImage(int, Media)}.</li>
  * <li>Load added images {@link #load()}.</li>
- * <li>Set the input to use {@link #setInputDevice(DevicePointer)}.</li>
+ * <li>Set the input to use {@link #setInputDevice(DeviceController)}.</li>
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
  * <li>Define the screen area {@link #setArea(int, int, int, int)}.</li>
  * </ul>
  * 
  * @see Image
  */
-public class Cursor implements DevicePointer, Resource, Shape, Renderable
+public class Cursor implements Resource, Shape, DevicePointer, Renderable
 {
     /** Cursor renderer. */
     private final CursorRenderer renderer = new CursorRenderer();
     /** Pointer reference. */
-    private DevicePointer pointer;
+    private DeviceController device;
     /** Viewer reference. */
     private Viewer viewer;
     /** Cursor screen location x. */
@@ -76,7 +77,7 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     /** Cursor viewer relative location y. */
     private double y;
     /** Synchronization mode. */
-    private boolean sync = true;
+    private DevicePointer sync;
     /** Horizontal sensibility. */
     private double sensibilityHorizontal = 1.0;
     /** Vertical sensibility. */
@@ -119,27 +120,27 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     }
 
     /**
-     * Set the input device pointer to use.
+     * Set the device to use.
      * 
-     * @param pointer The pointer reference (must not be <code>null</code>).
+     * @param device The device reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid pointer.
      */
-    public void setInputDevice(DevicePointer pointer)
+    public void setInputDevice(DeviceController device)
     {
-        Check.notNull(pointer);
+        Check.notNull(device);
 
-        this.pointer = pointer;
+        this.device = device;
     }
 
     /**
-     * Set the viewer reference. Input device must be set with {@link #setInputDevice(DevicePointer)}.
+     * Set the viewer reference. Input device must be set with {@link #setInputDevice(DeviceController)}.
      * 
      * @param viewer The viewer reference.
      * @throws LionEngineException If invalid viewer.
      */
     public void setViewer(Viewer viewer)
     {
-        Check.notNull(pointer);
+        Check.notNull(viewer);
 
         this.viewer = viewer;
     }
@@ -149,7 +150,7 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
      * 
      * @param sync The sync mode (<code>true</code> = sync to system pointer; <code>false</code> = internal movement).
      */
-    public void setSyncMode(boolean sync)
+    public void setSync(DevicePointer sync)
     {
         this.sync = sync;
     }
@@ -281,16 +282,6 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
         return screenY;
     }
 
-    /**
-     * Check if the cursor is synchronized to the system pointer or not.
-     * 
-     * @return <code>true</code> = sync to the system pointer; <code>false</code> = internal movement.
-     */
-    public boolean isSynchronized()
-    {
-        return sync;
-    }
-
     /*
      * Resource
      */
@@ -316,19 +307,77 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     @Override
     public Integer getPushed()
     {
-        return pointer.getPushed();
+        final Integer pushed;
+        if (sync != null)
+        {
+            pushed = sync.getPushed();
+        }
+        else if (device != null)
+        {
+            pushed = device.getFired();
+        }
+        else
+        {
+            pushed = null;
+        }
+        return pushed;
+    }
+
+    @Override
+    public boolean isPushed()
+    {
+        final boolean pushed;
+        if (sync != null)
+        {
+            pushed = sync.isPushed();
+        }
+        else if (device != null)
+        {
+            pushed = device.isFired();
+        }
+        else
+        {
+            pushed = false;
+        }
+        return pushed;
     }
 
     @Override
     public boolean isPushed(Integer click)
     {
-        return pointer.isPushed(click);
+        final boolean pushed;
+        if (sync != null)
+        {
+            pushed = sync.isPushed(click);
+        }
+        else if (device != null)
+        {
+            pushed = device.isFired(click);
+        }
+        else
+        {
+            pushed = false;
+        }
+        return pushed;
     }
 
     @Override
     public boolean isPushedOnce(Integer click)
     {
-        return pointer.isPushedOnce(click);
+        final boolean pushed;
+        if (sync != null)
+        {
+            pushed = sync.isPushedOnce(click);
+        }
+        else if (device != null)
+        {
+            pushed = device.isFiredOnce(click);
+        }
+        else
+        {
+            pushed = false;
+        }
+        return pushed;
     }
 
     @Override
@@ -344,18 +393,15 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     @Override
     public void update(double extrp)
     {
-        if (pointer != null)
+        if (sync != null)
         {
-            if (sync)
-            {
-                screenX = pointer.getX();
-                screenY = pointer.getY();
-            }
-            else
-            {
-                screenX += pointer.getMoveX() * sensibilityHorizontal * extrp;
-                screenY += pointer.getMoveY() * sensibilityVertical * extrp;
-            }
+            screenX = sync.getX();
+            screenY = sync.getY();
+        }
+        else if (device != null)
+        {
+            screenX += device.getHorizontalDirection() * sensibilityHorizontal * extrp;
+            screenY += device.getVerticalDirection() * sensibilityVertical * extrp;
         }
         if (viewer != null)
         {
@@ -404,15 +450,41 @@ public class Cursor implements DevicePointer, Resource, Shape, Renderable
     }
 
     @Override
-    public int getMoveX()
+    public double getMoveX()
     {
-        return pointer.getMoveX();
+        final double mx;
+        if (sync != null)
+        {
+            mx = sync.getMoveX();
+        }
+        else if (device != null)
+        {
+            mx = device.getHorizontalDirection();
+        }
+        else
+        {
+            mx = 0.0;
+        }
+        return mx;
     }
 
     @Override
-    public int getMoveY()
+    public double getMoveY()
     {
-        return pointer.getMoveY();
+        final double my;
+        if (sync != null)
+        {
+            my = sync.getMoveY();
+        }
+        else if (device != null)
+        {
+            my = device.getVerticalDirection();
+        }
+        else
+        {
+            my = 0.0;
+        }
+        return my;
     }
 
     @Override

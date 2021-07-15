@@ -17,24 +17,23 @@
 package com.b3dgs.lionengine.io;
 
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.Updatable;
 
 /**
  * Represents a pointer device.
  */
-public interface DevicePointer extends DevicePush, Localizable, Updatable
+public interface DevicePointer extends DevicePush, Localizable
 {
     /**
      * Get the horizontal movement.
      * 
      * @return The horizontal movement.
      */
-    int getMoveX();
+    double getMoveX();
 
     /**
      * Get the vertical movement.
      * 
      * @return The vertical movement.
      */
-    int getMoveY();
+    double getMoveY();
 }

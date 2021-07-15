@@ -34,6 +34,7 @@ public class DeviceControllerModel implements DeviceController
     private final Map<DeviceAction, String> actionToDevice = new HashMap<>();
     private final List<DeviceAction> horizontal = new ArrayList<>();
     private final List<DeviceAction> vertical = new ArrayList<>();
+    private final List<Integer> indexes = new ArrayList<>();
     private final Map<Integer, List<DeviceAction>> fire = new HashMap<>();
     private final Map<DeviceAction, Boolean> fired = new HashMap<>();
     private final Map<String, Boolean> disabledHorizontal = new HashMap<>();
@@ -75,6 +76,7 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void addFire(InputDevice device, Integer index, DeviceAction action)
     {
+        indexes.add(index);
         devices.add(device);
         actionToDevice.put(action, device.getName());
 
@@ -108,6 +110,35 @@ public class DeviceControllerModel implements DeviceController
     public double getVerticalDirection()
     {
         return axisVertical;
+    }
+
+    @Override
+    public boolean isFired()
+    {
+        final int n = indexes.size();
+        for (int i = 0; i < n; i++)
+        {
+            if (isFired(indexes.get(i)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Integer getFired()
+    {
+        final int n = indexes.size();
+        for (int i = 0; i < n; i++)
+        {
+            final Integer index = indexes.get(i);
+            if (isFired(index))
+            {
+                return index;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -152,6 +183,11 @@ public class DeviceControllerModel implements DeviceController
     @Override
     public void update(double extrp)
     {
+        for (final InputDevice device : devices)
+        {
+            device.update(extrp);
+        }
+
         axisHorizontal = 0.0;
         for (int i = 0; i < horizontalCount; i++)
         {

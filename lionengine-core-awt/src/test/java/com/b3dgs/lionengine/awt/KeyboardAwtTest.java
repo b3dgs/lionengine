@@ -77,12 +77,12 @@ final class KeyboardAwtTest
         assertTrue(keyboard.isPushed(KeyboardAwt.ALT));
         assertEquals(KeyboardAwt.ALT, keyboard.getPushed());
         assertEquals(' ', keyboard.getKeyName());
-        assertTrue(keyboard.used());
+        assertTrue(keyboard.isPushed());
 
         keyboard.keyReleased(createEvent(KeyboardAwt.ALT));
 
         assertFalse(keyboard.isPushed(KeyboardAwt.ALT));
-        assertFalse(keyboard.used());
+        assertFalse(keyboard.isPushed());
     }
 
     /**

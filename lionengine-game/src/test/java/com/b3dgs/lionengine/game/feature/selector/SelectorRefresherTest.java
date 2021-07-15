@@ -105,8 +105,7 @@ final class SelectorRefresherTest
     @BeforeEach
     public void prepare()
     {
-        cursor.setInputDevice(mouse);
-        cursor.setSyncMode(true);
+        cursor.setSync(mouse);
 
         services.add(new Camera());
         services.add(new ViewerMock());

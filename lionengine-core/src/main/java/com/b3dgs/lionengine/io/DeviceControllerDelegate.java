@@ -93,6 +93,18 @@ public class DeviceControllerDelegate implements DeviceController
     }
 
     @Override
+    public boolean isFired()
+    {
+        return get().isFired();
+    }
+
+    @Override
+    public Integer getFired()
+    {
+        return get().getFired();
+    }
+
+    @Override
     public boolean isFired(Integer index)
     {
         return get().isFired(index);

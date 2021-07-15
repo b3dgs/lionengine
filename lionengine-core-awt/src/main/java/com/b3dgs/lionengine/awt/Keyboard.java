@@ -56,13 +56,6 @@ public interface Keyboard extends DevicePush
      */
     char getKeyName();
 
-    /**
-     * Check if the keyboard is currently used (at least one pressed key).
-     * 
-     * @return <code>true</code> if has at least on pressed key, <code>false</code> else (no pressed key).
-     */
-    boolean used();
-
     @Override
     default String getName()
     {

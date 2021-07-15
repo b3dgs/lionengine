@@ -60,6 +60,10 @@ public abstract class ScreenAbstract implements Screen
 
         this.config = config;
         this.readyTimeoutMilli = readyTimeoutMilli;
+        for (final InputDevice device : config.getDevices())
+        {
+            devices.put(device.getClass(), device);
+        }
     }
 
     /*

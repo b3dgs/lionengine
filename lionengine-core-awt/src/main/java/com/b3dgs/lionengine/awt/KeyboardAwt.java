@@ -56,8 +56,6 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public static final Integer DOWN = Integer.valueOf(KeyEvent.VK_DOWN);
     /** Arrow up key. */
     public static final Integer UP = Integer.valueOf(KeyEvent.VK_UP);
-    /** No key code value. */
-    public static final Integer NO_KEY_CODE = Integer.valueOf(-1);
     /** Empty key name. */
     private static final char EMPTY_KEY_NAME = ' ';
 
@@ -70,7 +68,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     /** Pressed states. */
     private final Collection<Integer> pressed = new HashSet<>();
     /** Last key code. */
-    private Integer lastCode = NO_KEY_CODE;
+    private Integer lastCode;
     /** Last key name. */
     private char lastKeyName = EMPTY_KEY_NAME;
 
@@ -143,7 +141,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     }
 
     @Override
-    public boolean used()
+    public boolean isPushed()
     {
         return !keys.isEmpty();
     }
@@ -190,7 +188,7 @@ public final class KeyboardAwt implements Keyboard, KeyListener
     public void keyReleased(KeyEvent event)
     {
         lastKeyName = EMPTY_KEY_NAME;
-        lastCode = NO_KEY_CODE;
+        lastCode = null;
 
         final Integer key = Integer.valueOf(event.getKeyCode() + (event.getKeyLocation() == 2 ? LOCATION_LEFT : 0));
         keys.remove(key);

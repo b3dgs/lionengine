@@ -19,7 +19,7 @@ package com.b3dgs.lionengine;
 /**
  * Represents an input device, such as mouse, keyboard, joypad...
  */
-public interface InputDevice extends Nameable
+public interface InputDevice extends Updatable, Nameable
 {
     /**
      * Set visibility.
@@ -27,6 +27,20 @@ public interface InputDevice extends Nameable
      * @param visible <code>true</code> if visible, <code>false</code> else.
      */
     default void setVisible(boolean visible)
+    {
+        // Void
+    }
+
+    /**
+     * Close device resources.
+     */
+    default void close()
+    {
+        // Void
+    }
+
+    @Override
+    default void update(double extrp)
     {
         // Void
     }

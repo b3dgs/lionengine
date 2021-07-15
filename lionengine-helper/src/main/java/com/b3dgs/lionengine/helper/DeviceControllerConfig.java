@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.helper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -92,7 +94,10 @@ public final class DeviceControllerConfig
 
                 config.getFire()
                       .entrySet()
-                      .forEach(e -> controller.addFire(device, e.getKey(), new DeviceActionModel(e.getValue(), push)));
+                      .forEach(e -> e.getValue()
+                                     .forEach(c -> controller.addFire(device,
+                                                                      e.getKey(),
+                                                                      new DeviceActionModel(c, push))));
             }
             if (device instanceof DevicePointer)
             {
@@ -138,7 +143,7 @@ public final class DeviceControllerConfig
                 final boolean disabled = deviceNode.readBoolean(false, ATT_DISABLED);
                 final Optional<DeviceAxis> horizontal = readAxis(deviceNode, NODE_HORIZONTAL);
                 final Optional<DeviceAxis> vertical = readAxis(deviceNode, NODE_VERTICAL);
-                final Map<Integer, Integer> fire = readFire(mapping, deviceNode);
+                final Map<Integer, Set<Integer>> fire = readFire(mapping, deviceNode);
 
                 configs.add(new DeviceControllerConfig(device, disabled, horizontal, vertical, fire));
             }
@@ -157,15 +162,21 @@ public final class DeviceControllerConfig
      * @param node The node parent.
      * @return The fire data.
      */
-    private static Map<Integer, Integer> readFire(Class<Enum<? extends DeviceMapper>> mapping, XmlReader node)
+    private static Map<Integer, Set<Integer>> readFire(Class<Enum<? extends DeviceMapper>> mapping, XmlReader node)
     {
-        final Map<Integer, Integer> fire = new HashMap<>();
+        final Map<Integer, Set<Integer>> fire = new HashMap<>();
         for (final XmlReader nodeFire : node.getChildren(NODE_FIRE))
         {
             final DeviceMapper mapper = findEnum(mapping, nodeFire.readString(ATT_INDEX));
             final Integer index = mapper.getIndex();
             final Integer positive = Integer.valueOf(nodeFire.readInteger(ATT_POSITIVE));
-            fire.put(index, positive);
+            Set<Integer> codes = fire.get(index);
+            if (codes == null)
+            {
+                codes = new HashSet<>();
+                fire.put(index, codes);
+            }
+            codes.add(positive);
         }
         return fire;
     }
@@ -218,7 +229,7 @@ public final class DeviceControllerConfig
     /** Vertical axis. */
     private final Optional<DeviceAxis> vertical;
     /** Fire index mapping. */
-    private final Map<Integer, Integer> fire;
+    private final Map<Integer, Set<Integer>> fire;
 
     /**
      * Create a size configuration.
@@ -233,7 +244,7 @@ public final class DeviceControllerConfig
                                    boolean disabled,
                                    Optional<DeviceAxis> horizontal,
                                    Optional<DeviceAxis> vertical,
-                                   Map<Integer, Integer> fire)
+                                   Map<Integer, Set<Integer>> fire)
     {
         super();
 
@@ -289,7 +300,7 @@ public final class DeviceControllerConfig
      * 
      * @return The fire.
      */
-    public Map<Integer, Integer> getFire()
+    public Map<Integer, Set<Integer>> getFire()
     {
         return fire;
     }

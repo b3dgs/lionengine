@@ -30,9 +30,6 @@ import java.util.Map;
  */
 final class MouseClickAwt implements MouseListener
 {
-    /** No click value. */
-    public static final Integer NO_CLICK_CODE = Integer.valueOf(0);
-
     /** Actions pressed listeners. */
     private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
     /** Actions released listeners. */
@@ -42,7 +39,7 @@ final class MouseClickAwt implements MouseListener
     /** Clicked flags. */
     private final Collection<Integer> clicked = new HashSet<>();
     /** Last click number. */
-    private Integer lastClick = NO_CLICK_CODE;
+    private Integer lastClick;
 
     /**
      * Internal constructor.
@@ -70,7 +67,7 @@ final class MouseClickAwt implements MouseListener
      */
     void robotRelease(Integer click)
     {
-        lastClick = NO_CLICK_CODE;
+        lastClick = null;
         clicks.remove(click);
         clicked.remove(click);
     }
@@ -120,11 +117,21 @@ final class MouseClickAwt implements MouseListener
     /**
      * Get the last click.
      * 
-     * @return The last click.
+     * @return The last click, <code>null</code> if none.
      */
     Integer getClick()
     {
         return lastClick;
+    }
+
+    /**
+     * Check if clicked.
+     * 
+     * @return <code>true</code> if clicked, <code>false</code> else.
+     */
+    boolean isClicked()
+    {
+        return !clicks.isEmpty();
     }
 
     /**
@@ -177,7 +184,7 @@ final class MouseClickAwt implements MouseListener
     @Override
     public void mouseReleased(MouseEvent event)
     {
-        lastClick = NO_CLICK_CODE;
+        lastClick = null;
 
         final Integer click = Integer.valueOf(event.getButton());
         clicks.remove(click);

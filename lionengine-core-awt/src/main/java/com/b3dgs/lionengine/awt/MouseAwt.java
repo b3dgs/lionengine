@@ -70,7 +70,7 @@ public final class MouseAwt implements Mouse
     /** Screen vertical ratio. */
     private double yRatio;
     /** Perform robot release. */
-    private Integer release = MouseClickAwt.NO_CLICK_CODE;
+    private Integer release;
     /** Do robot release. */
     private boolean doRelease;
 
@@ -218,15 +218,21 @@ public final class MouseAwt implements Mouse
     }
 
     @Override
-    public int getMoveX()
+    public double getMoveX()
     {
         return mover.getMx();
     }
 
     @Override
-    public int getMoveY()
+    public double getMoveY()
     {
         return mover.getMy();
+    }
+
+    @Override
+    public boolean isPushed()
+    {
+        return clicker.isClicked();
     }
 
     @Override
@@ -249,14 +255,14 @@ public final class MouseAwt implements Mouse
     public void update(double extrp)
     {
         mover.update();
-        if (release.compareTo(MouseClickAwt.NO_CLICK_CODE) > 0 && !doRelease)
+        if (release != null && !doRelease)
         {
             doRelease = true;
         }
         else if (doRelease)
         {
             clicker.robotRelease(release);
-            release = MouseClickAwt.NO_CLICK_CODE;
+            release = null;
             doRelease = false;
         }
     }
