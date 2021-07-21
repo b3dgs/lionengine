@@ -233,7 +233,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
     {
         if (target != null)
         {
-            return computeVector(vector, target);
+            return computeVector(vector, target, false);
         }
         int sideX = 1;
         int sideY = 1;
@@ -257,9 +257,10 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
      * 
      * @param vector The initial vector used for launch.
      * @param target The target reference.
+     * @param extrapolate <code>true</code> to extrapolate future location, <code>false</code> else.
      * @return The computed force to reach target.
      */
-    private Force computeVector(Force vector, Localizable target)
+    private Force computeVector(Force vector, Localizable target, boolean extrapolate)
     {
         final double sx = localizable.getX();
         final double sy = localizable.getY();
@@ -267,7 +268,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         double dx = target.getX();
         double dy = target.getY();
 
-        if (target instanceof Transformable)
+        if (extrapolate && target instanceof Transformable)
         {
             final Transformable transformable = (Transformable) target;
             final double ray = UtilMath.getDistance(localizable.getX(),
