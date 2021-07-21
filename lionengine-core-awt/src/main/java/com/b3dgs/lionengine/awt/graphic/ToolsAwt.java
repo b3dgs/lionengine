@@ -63,6 +63,18 @@ public final class ToolsAwt
     private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
     private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
+    /** Image loading strategy. */
+    private static volatile ImageLoadStrategy imageLoadStragegy = ImageLoadStrategy.FAST_RENDERING;
+
+    /**
+     * Set image load strategy.
+     * 
+     * @param strategy The strategy used.
+     */
+    public static void setLoadStrategy(ImageLoadStrategy strategy)
+    {
+        imageLoadStragegy = strategy;
+    }
 
     /**
      * Check if same display.
@@ -134,6 +146,7 @@ public final class ToolsAwt
      * @param input The image input stream.
      * @return The loaded image.
      * @throws IOException If error when reading image.
+     * @see #setLoadStrategy(ImageLoadStrategy)
      */
     public static BufferedImage getImage(InputStream input) throws IOException
     {
@@ -142,8 +155,22 @@ public final class ToolsAwt
         {
             throw new IOException("Invalid image !");
         }
-        // This provides better performance on rendering
-        return copyImage(buffer);
+        final BufferedImage copy;
+        switch (imageLoadStragegy)
+        {
+            case FAST_LOADING:
+                copy = buffer;
+                break;
+            case FAST_RENDERING:
+                copy = copyImageDraw(buffer);
+                break;
+            case LOW_MEMORY:
+                copy = copyImage(buffer);
+                break;
+            default:
+                throw new LionEngineException(imageLoadStragegy);
+        }
+        return copy;
     }
 
     /**
