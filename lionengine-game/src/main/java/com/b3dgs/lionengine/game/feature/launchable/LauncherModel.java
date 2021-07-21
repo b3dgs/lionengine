@@ -403,6 +403,7 @@ public class LauncherModel extends FeatureModel implements Launcher, Recyclable
         {
             if (launch.isReady())
             {
+                launch.update(extrp);
                 launch(launch.getConfig(), launch.getInitial(), launch.getFeaturable(), launch.getLaunchable());
                 launched.add(launch);
             }

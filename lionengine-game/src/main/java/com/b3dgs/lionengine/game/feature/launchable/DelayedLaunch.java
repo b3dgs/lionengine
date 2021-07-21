@@ -16,17 +16,18 @@
  */
 package com.b3dgs.lionengine.game.feature.launchable;
 
-import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Tick;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * Represents a delayed launch.
  */
-final class DelayedLaunch
+final class DelayedLaunch implements Updatable
 {
-    /** Delay timing. */
-    private final Timing timing = new Timing();
+    /** Delay tick. */
+    private final Tick tick = new Tick();
     /** Launchable configuration reference. */
     private final LaunchableConfig config;
     /** Initial direction for launch. */
@@ -52,7 +53,7 @@ final class DelayedLaunch
         this.initial = initial;
         this.featurable = featurable;
         this.launchable = launchable;
-        timing.start();
+        tick.start();
     }
 
     /**
@@ -62,7 +63,7 @@ final class DelayedLaunch
      */
     public boolean isReady()
     {
-        return timing.elapsed(config.getDelay());
+        return tick.elapsed(config.getDelay());
     }
 
     /**
@@ -103,5 +104,15 @@ final class DelayedLaunch
     public Launchable getLaunchable()
     {
         return launchable;
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        tick.update(extrp);
     }
 }
