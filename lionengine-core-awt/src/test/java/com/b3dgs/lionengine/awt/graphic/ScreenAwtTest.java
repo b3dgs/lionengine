@@ -107,7 +107,7 @@ final class ScreenAwtTest
 
         final DisplayMode res = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                    .getDefaultScreenDevice()
-                                                   .getDisplayMode();
+                                                   .getDisplayModes()[0];
         final Config config = new Config(new Resolution(res.getWidth(), res.getHeight(), res.getRefreshRate()),
                                          res.getBitDepth(),
                                          false,
