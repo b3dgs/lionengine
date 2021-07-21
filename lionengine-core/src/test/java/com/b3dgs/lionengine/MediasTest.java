@@ -20,6 +20,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsNpe;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.File;
@@ -102,9 +103,7 @@ final class MediasTest
     {
         Medias.setResourcesDirectory("rsc");
 
-        assertThrows(NullPointerException.class,
-                     () -> assertEquals("null", Medias.create((String) null).getPath()),
-                     null);
+        assertThrowsNpe(() -> Medias.create((String) null).getPath());
     }
 
     /**
@@ -266,9 +265,10 @@ final class MediasTest
     void testGetByExtension()
     {
         Medias.setLoadFromJar(MediasTest.class);
-        final Collection<Media> medias = Medias.getByExtension("png", Medias.create(""));
+        final Collection<Media> medias = Medias.getByExtension("png", Medias.create("graphic", "engine"));
 
-        assertEquals("image.png", medias.iterator().next().getPath());
+        assertEquals(1, medias.size());
+        assertEquals(Medias.create("graphic", "engine", "image.png"), medias.iterator().next());
     }
 
     /**

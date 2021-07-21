@@ -159,7 +159,9 @@ public final class Medias
         {
             return UtilFile.getFilesByExtension(new File(jar, fullPath), extension)
                            .stream()
-                           .map(file -> Medias.create(file.getName()))
+                           .map(file -> Medias.create(file.getPath()
+                                                          .substring(jar.getPath().length() + prefixLength)
+                                                          .split("\\" + File.separator)))
                            .collect(Collectors.toList());
         }
         final Collection<ZipEntry> entries = UtilZip.getEntriesByExtension(jar, fullPath, extension);
