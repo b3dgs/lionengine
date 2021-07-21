@@ -19,7 +19,6 @@ package com.b3dgs.lionengine;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
-import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
@@ -208,7 +207,6 @@ final class UtilReflectionTest
     void testGetMethod()
     {
         assertNotNull(UtilReflection.getMethod(new Object(), "toString"));
-        assertNull(UtilReflection.getMethod(new Object(), "finalize"));
     }
 
     /**

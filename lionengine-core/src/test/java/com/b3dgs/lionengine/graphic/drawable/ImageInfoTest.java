@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.FactoryMediaDefault;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.graphic.ImageFormat;
 
@@ -183,8 +182,6 @@ final class ImageInfoTest
         final Method method = ImageHeaderReaderAbstract.class.getDeclaredMethod("checkSkippedError",
                                                                                 Long.TYPE,
                                                                                 Integer.TYPE);
-        final boolean back = method.isAccessible();
-        UtilReflection.setAccessible(method, true);
 
         assertThrowsIo(() ->
         {
@@ -199,8 +196,6 @@ final class ImageInfoTest
                     throw exception.getCause();
                 }
             }
-        }, null);
-
-        UtilReflection.setAccessible(method, back);
+        }, "Skipped 1 bytes instead of 0");
     }
 }

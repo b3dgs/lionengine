@@ -24,8 +24,6 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrowsPrefix;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.awt.GraphicsEnvironment;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -132,29 +130,6 @@ final class ScreenAwtTest
         final Config config = new Config(resolution, 32, false);
 
         assertThrowsPrefix(() -> testScreen(config), ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN);
-    }
-
-    /**
-     * Test headless screen.
-     * 
-     * @throws ReflectiveOperationException If error.
-     */
-    @Test
-    void testHeadless() throws ReflectiveOperationException
-    {
-        final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
-        final Field field = GraphicsEnvironment.class.getDeclaredField("headless");
-        UtilReflection.setAccessible(field, true);
-        field.set(GraphicsEnvironment.class, Boolean.TRUE);
-        try
-        {
-            final Config config = new Config(UtilTests.RESOLUTION_320_240, 32, true);
-            assertThrows(() -> Graphics.createScreen(config), "No available display !");
-        }
-        finally
-        {
-            field.set(GraphicsEnvironment.class, old);
-        }
     }
 
     /**

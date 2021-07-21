@@ -21,19 +21,15 @@ import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
-import java.awt.GraphicsEnvironment;
 import java.awt.Label;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Test {@link MouseAwt}.
@@ -236,33 +232,5 @@ final class MouseAwtTest
         clicker.mouseReleased(createEvent(MouseAwt.LEFT, 0, 0));
 
         assertFalse(left.get());
-    }
-
-    /**
-     * Test headless case.
-     * 
-     * @throws Exception If error.
-     */
-    @Test
-    void testHeadless() throws Exception
-    {
-        final Object old = UtilReflection.getField(GraphicsEnvironment.class, "headless");
-        final Field field = GraphicsEnvironment.class.getDeclaredField("headless");
-        UtilReflection.setAccessible(field, true);
-        field.set(GraphicsEnvironment.class, Boolean.TRUE);
-        try
-        {
-            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-            final MouseAwt mouse = MouseAwtTest.createMouse();
-            Verbose.info("****************************************************************************************");
-            mouse.lock(1, 2);
-
-            assertEquals(1, mouse.getX());
-            assertEquals(2, mouse.getY());
-        }
-        finally
-        {
-            field.set(GraphicsEnvironment.class, old);
-        }
     }
 }

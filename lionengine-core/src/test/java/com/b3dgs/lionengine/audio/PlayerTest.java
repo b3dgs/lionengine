@@ -16,7 +16,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsNpe;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.io.File;
@@ -166,7 +166,7 @@ final class PlayerTest
         final Media media = new MediaFail();
         final PlayerMock player = new PlayerMock(media);
 
-        assertThrows(NullPointerException.class, () -> player.play(), null);
+        assertThrowsNpe(player::play);
     }
 
     /**

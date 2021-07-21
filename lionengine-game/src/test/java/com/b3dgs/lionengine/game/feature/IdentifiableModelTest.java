@@ -22,14 +22,11 @@ import static com.b3dgs.lionengine.UtilAssert.assertHashNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
-import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterAll;
@@ -124,37 +121,6 @@ final class IdentifiableModelTest
         identifiable.recycle();
 
         assertNotNull(identifiable.getId());
-    }
-
-    /**
-     * Test the maximum id.
-     * 
-     * @throws ReflectiveOperationException If error.
-     */
-    @Test
-    void testMaxId() throws ReflectiveOperationException
-    {
-        final HashSet<?> ids = UtilReflection.getField(IdentifiableModel.class, "IDS");
-        final HashMap<?, ?> map = UtilReflection.getField(ids, "map");
-        final Field size = map.getClass().getDeclaredField("size");
-        UtilReflection.setAccessible(size, true);
-        ids.clear();
-        size.setInt(map, Integer.MAX_VALUE);
-
-        final Field lastId = IdentifiableModel.class.getDeclaredField("lastId");
-        UtilReflection.setAccessible(lastId, true);
-        lastId.setInt(lastId, 0);
-
-        try
-        {
-            assertThrows(IdentifiableModel::new, IdentifiableModel.ERROR_FREE_ID);
-        }
-        finally
-        {
-            lastId.setInt(lastId, 0);
-            size.setInt(map, 0);
-            ids.clear();
-        }
     }
 
     /**
