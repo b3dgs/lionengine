@@ -43,7 +43,7 @@ final class ConfigTest
     @Test
     void testDepthInvalid()
     {
-        assertThrows(() -> new Config(new Resolution(320, 240, 60), 0, true),
+        assertThrows(() -> new Config(new Resolution(320, 240, 60), -2, true),
                      Check.ERROR_ARGUMENT + 0 + Check.ERROR_SUPERIOR_STRICT + 0);
     }
 
