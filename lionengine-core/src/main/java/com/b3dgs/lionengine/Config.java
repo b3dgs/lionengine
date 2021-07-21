@@ -136,7 +136,7 @@ public final class Config
     public Config(Resolution output, int depth, boolean windowed, List<InputDevice> devices, Media... icons)
     {
         Check.notNull(output);
-        Check.superiorStrict(depth, 0);
+        Check.superiorOrEqual(depth, -1);
 
         this.output = output;
         this.depth = depth;
