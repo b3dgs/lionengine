@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 /**
  * Launchable model implementation.
  */
-public class LaunchableModel extends FeatureModel implements Launchable
+public class LaunchableModel extends FeatureModel implements Launchable, Recyclable
 {
     /** Launcher listeners. */
     private final ListenableModel<LaunchableListener> listenable = new ListenableModel<>();
@@ -127,5 +128,11 @@ public class LaunchableModel extends FeatureModel implements Launchable
     public Force getDirection()
     {
         return vector;
+    }
+
+    @Override
+    public void recycle()
+    {
+        vector = null;
     }
 }
