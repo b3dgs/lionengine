@@ -61,12 +61,12 @@ final class ResolutionTest
     }
 
     /**
-     * Test negative rate.
+     * Test invalid rate.
      */
     @Test
-    void testNegativeRate()
+    void testInvalidRate()
     {
-        assertThrows(() -> new Resolution(320, 240, -1), Check.ERROR_ARGUMENT + -1 + Check.ERROR_SUPERIOR + 0);
+        assertThrows(() -> new Resolution(320, 240, -2), Check.ERROR_ARGUMENT + -2 + Check.ERROR_SUPERIOR + -1);
     }
 
     /**

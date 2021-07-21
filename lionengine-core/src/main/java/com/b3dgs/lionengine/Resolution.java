@@ -53,7 +53,7 @@ public final class Resolution
      * 
      * @param width The resolution width in pixel (strictly superior to 0).
      * @param height The resolution height in pixel (strictly superior to 0).
-     * @param rate The refresh rate, usually 50 or 60 (superior or equal to 0).
+     * @param rate The refresh rate, usually 50 or 60 (superior or equal to -1).
      * @throws LionEngineException If invalid arguments.
      */
     public Resolution(int width, int height, int rate)
@@ -62,7 +62,7 @@ public final class Resolution
 
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
-        Check.superiorOrEqual(rate, 0);
+        Check.superiorOrEqual(rate, -1);
 
         this.width = width;
         this.height = height;
