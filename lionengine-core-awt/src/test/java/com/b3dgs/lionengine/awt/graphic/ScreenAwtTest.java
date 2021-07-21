@@ -24,6 +24,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrowsPrefix;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
+import java.awt.DisplayMode;
 import java.awt.GraphicsEnvironment;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -104,13 +105,11 @@ final class ScreenAwtTest
     {
         Medias.setLoadFromJar(ScreenAwtTest.class);
 
-        final java.awt.DisplayMode desktop = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                .getDefaultScreenDevice()
-                                                                .getDisplayMode();
-        final Config config = new Config(new Resolution(desktop.getWidth(),
-                                                        desktop.getHeight(),
-                                                        desktop.getRefreshRate()),
-                                         desktop.getBitDepth(),
+        final DisplayMode res = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                   .getDefaultScreenDevice()
+                                                   .getDisplayMode();
+        final Config config = new Config(new Resolution(res.getWidth(), res.getHeight(), res.getRefreshRate()),
+                                         res.getBitDepth(),
                                          false,
                                          Medias.create("image.png"));
         try
