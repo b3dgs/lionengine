@@ -88,12 +88,6 @@ final class TimedMessageTest
 
         assertTrue(message.hasMessage());
 
-        UtilTests.pause(25L);
-
-        message.update(1.0); // Message time still not elapsed
-
-        assertTrue(message.hasMessage());
-
         UtilTests.pause(100L); // Message time elapsed
 
         message.update(1.0);
