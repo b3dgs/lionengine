@@ -78,10 +78,20 @@ final class AdPlugTest
      */
     private static AdPlug createAdPlug()
     {
+        return createAdPlug(Medias.create("music.lds"));
+    }
+
+    /**
+     * Create player.
+     * 
+     * @param media The media reference.
+     * @return The created player.
+     */
+    private static AdPlug createAdPlug(Media media)
+    {
         try
         {
-            final Media music = Medias.create("music.lds");
-            return AudioFactory.loadAudio(music, AdPlug.class);
+            return AudioFactory.loadAudio(media, AdPlug.class);
         }
         catch (final LionEngineException exception)
         {
@@ -297,7 +307,7 @@ final class AdPlugTest
                 return new File(getPath());
             }
         };
-        final Audio sc68 = AudioFactory.loadAudio(media);
+        final Audio sc68 = createAdPlug(media);
         try
         {
             assertCause(() -> sc68.play(), IOException.class);
@@ -334,7 +344,7 @@ final class AdPlugTest
                 UtilStream.copy(input, output);
             }
 
-            final Audio adplug = AudioFactory.loadAudio(media);
+            final Audio adplug = createAdPlug(media);
             try
             {
                 adplug.setVolume(50);
@@ -350,7 +360,10 @@ final class AdPlugTest
                 adplug.stop();
             }
 
-            UtilFile.deleteFile(media.getFile());
+            if (media.getFile().exists())
+            {
+                UtilFile.deleteFile(media.getFile());
+            }
         }
         finally
         {

@@ -78,10 +78,20 @@ final class Sc68Test
      */
     private static Sc68 createSc68()
     {
+        return createSc68(Medias.create("music.sc68"));
+    }
+
+    /**
+     * Create sc68 player.
+     * 
+     * @param media The media reference.
+     * @return The created player.
+     */
+    private static Sc68 createSc68(Media media)
+    {
         try
         {
-            final Media music = Medias.create("music.sc68");
-            return AudioFactory.loadAudio(music, Sc68.class);
+            return AudioFactory.loadAudio(media, Sc68.class);
         }
         catch (final LionEngineException exception)
         {
@@ -273,7 +283,7 @@ final class Sc68Test
                 return new File(getPath());
             }
         };
-        final Audio sc68 = AudioFactory.loadAudio(media);
+        final Audio sc68 = createSc68(media);
         try
         {
             assertCause(() -> sc68.play(), IOException.class);
@@ -310,7 +320,7 @@ final class Sc68Test
                 UtilStream.copy(input, output);
             }
 
-            final Audio sc68 = AudioFactory.loadAudio(media);
+            final Audio sc68 = createSc68(media);
             try
             {
                 sc68.setVolume(50);
@@ -326,7 +336,10 @@ final class Sc68Test
                 sc68.stop();
             }
 
-            UtilFile.deleteFile(media.getFile());
+            if (media.getFile().exists())
+            {
+                UtilFile.deleteFile(media.getFile());
+            }
         }
         finally
         {

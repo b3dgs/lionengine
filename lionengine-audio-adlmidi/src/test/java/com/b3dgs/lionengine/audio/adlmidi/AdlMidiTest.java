@@ -78,10 +78,20 @@ final class AdlMidiTest
      */
     private static AdlMidi createAdlMidi()
     {
+        return createAdlMidi(Medias.create("music.xmi"));
+    }
+
+    /**
+     * Create player.
+     * 
+     * @param media The media reference.
+     * @return The created player.
+     */
+    private static AdlMidi createAdlMidi(Media media)
+    {
         try
         {
-            final Media music = Medias.create("music.xmi");
-            return AudioFactory.loadAudio(music, AdlMidi.class);
+            return AudioFactory.loadAudio(media, AdlMidi.class);
         }
         catch (final LionEngineException exception)
         {
@@ -303,7 +313,7 @@ final class AdlMidiTest
                 return new File(getPath());
             }
         };
-        final Audio adlmidi = AudioFactory.loadAudio(media);
+        final Audio adlmidi = createAdlMidi(media);
         try
         {
             assertCause(() -> adlmidi.play(), IOException.class);
@@ -339,8 +349,7 @@ final class AdlMidiTest
             {
                 UtilStream.copy(input, output);
             }
-
-            final Audio adlmidi = AudioFactory.loadAudio(media);
+            final Audio adlmidi = createAdlMidi(media);
             try
             {
                 adlmidi.setVolume(50);
@@ -355,8 +364,10 @@ final class AdlMidiTest
             {
                 adlmidi.stop();
             }
-
-            UtilFile.deleteFile(media.getFile());
+            if (media.getFile().exists())
+            {
+                UtilFile.deleteFile(media.getFile());
+            }
         }
         finally
         {
