@@ -92,7 +92,7 @@ public final class LauncherConfig
 
         final int level = node.readInteger(0, ATT_LEVEL);
         final int rate = node.readInteger(0, ATT_RATE);
-        final boolean mirrorable = node.readBoolean(false, ATT_MIRRORABLE);
+        final boolean mirrorable = node.readBoolean(true, ATT_MIRRORABLE);
 
         return new LauncherConfig(level, rate, mirrorable, launchables);
     }
