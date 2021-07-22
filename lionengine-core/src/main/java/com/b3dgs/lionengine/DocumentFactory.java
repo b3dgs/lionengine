@@ -61,7 +61,7 @@ final class DocumentFactory
      * @throws IOException If malformed document.
      * @throws LionEngineException If invalid argument or unable to create document.
      */
-    public static Document createDocument(InputStream input) throws IOException
+    public static synchronized Document createDocument(InputStream input) throws IOException
     {
         Check.notNull(input);
 

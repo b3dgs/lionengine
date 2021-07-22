@@ -140,7 +140,7 @@ public class SetupSurfaceRastered extends Setup
      */
     public List<ImageBuffer> getRasters()
     {
-        return Collections.unmodifiableList(raster.getRasters());
+        return raster.getRasters();
     }
 
     /**

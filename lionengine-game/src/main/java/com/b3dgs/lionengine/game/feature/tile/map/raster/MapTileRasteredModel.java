@@ -76,12 +76,13 @@ public class MapTileRasteredModel extends FeatureAbstract implements MapTileRast
      */
     private List<SpriteTiled> getRasters(Integer sheet)
     {
-        return rasterSheets.computeIfAbsent(sheet, s ->
+        List<SpriteTiled> rasters = rasterSheets.get(sheet);
+        if (rasters == null)
         {
-            final List<SpriteTiled> rasters = new ArrayList<>(RasterImage.MAX_RASTERS);
-            rasterSheets.put(s, rasters);
-            return rasters;
-        });
+            rasters = new ArrayList<>(RasterImage.MAX_RASTERS);
+            rasterSheets.put(sheet, rasters);
+        }
+        return rasters;
     }
 
     /*

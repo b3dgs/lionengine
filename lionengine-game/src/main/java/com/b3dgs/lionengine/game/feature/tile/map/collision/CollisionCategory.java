@@ -18,7 +18,6 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
@@ -108,7 +107,7 @@ public class CollisionCategory extends NameableAbstract
      */
     public Collection<CollisionGroup> getGroups()
     {
-        return Collections.unmodifiableCollection(groups);
+        return groups;
     }
 
     /**
@@ -118,7 +117,7 @@ public class CollisionCategory extends NameableAbstract
      */
     public Collection<CollisionFormula> getFormulas()
     {
-        return Collections.unmodifiableCollection(formulas);
+        return formulas;
     }
 
     /**
