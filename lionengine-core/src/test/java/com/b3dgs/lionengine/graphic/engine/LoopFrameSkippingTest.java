@@ -121,7 +121,7 @@ final class LoopFrameSkippingTest
 
         assertTimeout(10_000L, thread::join);
         assertEquals(maxTick.get(), tick.get());
-        assertEquals(tick.get(), rendered.get());
+        assertTrue(tick.get() >= maxTick.get(), tick.get() + " " + maxTick.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
 
