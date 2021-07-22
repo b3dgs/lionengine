@@ -116,7 +116,6 @@ final class AdlMidiTest
     @BeforeEach
     public void beforeTest()
     {
-        AudioFactory.addFormat(AdlMidiFormat.getFailsafe());
         Medias.setLoadFromJar(AdlMidiTest.class);
     }
 

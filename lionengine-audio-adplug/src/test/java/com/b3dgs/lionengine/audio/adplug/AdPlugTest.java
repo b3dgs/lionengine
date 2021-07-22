@@ -115,7 +115,6 @@ final class AdPlugTest
     @BeforeEach
     public void beforeTest()
     {
-        AudioFactory.addFormat(AdPlugFormat.getFailsafe());
         Medias.setLoadFromJar(AdPlugTest.class);
     }
 

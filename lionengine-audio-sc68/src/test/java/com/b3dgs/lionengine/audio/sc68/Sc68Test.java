@@ -115,7 +115,6 @@ final class Sc68Test
     @BeforeEach
     public void beforeTest()
     {
-        AudioFactory.addFormat(new Sc68Format());
         Medias.setLoadFromJar(Sc68Test.class);
     }
 
