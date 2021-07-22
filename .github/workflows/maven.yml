@@ -49,3 +49,6 @@ jobs:
        if: ${{ contains(matrix.os, 'ubuntu-latest') && matrix.jdk == '8' }}
        with:
          run: mvn clean verify --file lionengine-parent/pom.xml -Ptravis -U -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82
+       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
