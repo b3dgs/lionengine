@@ -31,10 +31,6 @@
         <developerConnection>scm:git:git@github.com:b3dgs/lionengine.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    <ciManagement>
-        <system>TravisCI</system>
-        <url>https://travis-ci.org/b3dgs/lionengine</url>
-    </ciManagement>
     <properties>
         <radial.base-package>com.b3dgs.lionengine</radial.base-package>
         <sonar-branch>lionengine-10.0.0</sonar-branch>
@@ -91,7 +87,7 @@
     </build>
     <profiles>
         <profile>
-            <id>travis</id>
+            <id>sonar</id>
             <build>
                 <plugins>
                     <plugin>
