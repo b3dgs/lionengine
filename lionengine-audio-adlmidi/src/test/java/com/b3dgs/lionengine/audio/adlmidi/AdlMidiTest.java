@@ -89,9 +89,18 @@ final class AdlMidiTest
      */
     private static AdlMidi createAdlMidi(Media media)
     {
+        return AudioFactory.loadAudio(media, AdlMidi.class);
+    }
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    public void beforeTest()
+    {
         try
         {
-            return AudioFactory.loadAudio(media, AdlMidi.class);
+            AudioFactory.addFormat(new AdlMidiFormat());
         }
         catch (final LionEngineException exception)
         {
@@ -105,17 +114,7 @@ final class AdlMidiTest
                                  || message.contains(AudioFactory.ERROR_FORMAT);
 
             Assumptions.assumeFalse(skip, "AdlMidi not supported on test machine - Test skipped");
-
-            return null;
         }
-    }
-
-    /**
-     * Prepare test.
-     */
-    @BeforeEach
-    public void beforeTest()
-    {
         Medias.setLoadFromJar(AdlMidiTest.class);
     }
 

@@ -89,9 +89,18 @@ final class Sc68Test
      */
     private static Sc68 createSc68(Media media)
     {
+        return AudioFactory.loadAudio(media, Sc68.class);
+    }
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    public void beforeTest()
+    {
         try
         {
-            return AudioFactory.loadAudio(media, Sc68.class);
+            AudioFactory.addFormat(new Sc68Format());
         }
         catch (final LionEngineException exception)
         {
@@ -104,17 +113,7 @@ final class Sc68Test
                                  || message.contains(AudioFactory.ERROR_FORMAT);
 
             Assumptions.assumeFalse(skip, "Sc68 not supported on test machine - Test skipped");
-
-            return null;
         }
-    }
-
-    /**
-     * Prepare test.
-     */
-    @BeforeEach
-    public void beforeTest()
-    {
         Medias.setLoadFromJar(Sc68Test.class);
     }
 

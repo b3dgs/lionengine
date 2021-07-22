@@ -89,9 +89,18 @@ final class AdPlugTest
      */
     private static AdPlug createAdPlug(Media media)
     {
+        return AudioFactory.loadAudio(media, AdPlug.class);
+    }
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    public void beforeTest()
+    {
         try
         {
-            return AudioFactory.loadAudio(media, AdPlug.class);
+            AudioFactory.addFormat(new AdPlugFormat());
         }
         catch (final LionEngineException exception)
         {
@@ -104,17 +113,7 @@ final class AdPlugTest
                                  || message.contains(AudioFactory.ERROR_FORMAT);
 
             Assumptions.assumeFalse(skip, "AdPlug not supported on test machine - Test skipped");
-
-            return null;
         }
-    }
-
-    /**
-     * Prepare test.
-     */
-    @BeforeEach
-    public void beforeTest()
-    {
         Medias.setLoadFromJar(AdPlugTest.class);
     }
 
