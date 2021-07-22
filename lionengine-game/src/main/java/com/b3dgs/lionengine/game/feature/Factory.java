@@ -328,11 +328,13 @@ public class Factory implements HandlerListener
         final Media media = featurable.getMedia();
         if (media != null && featurable.hasFeature(Recycler.class))
         {
-            if (!cache.containsKey(media))
+            Deque<Featurable> deque = cache.get(media);
+            if (deque == null)
             {
-                cache.put(media, new ArrayDeque<>());
+                deque = new ArrayDeque<>();
+                cache.put(media, deque);
             }
-            cache.get(media).offer(featurable);
+            deque.offer(featurable);
         }
     }
 }

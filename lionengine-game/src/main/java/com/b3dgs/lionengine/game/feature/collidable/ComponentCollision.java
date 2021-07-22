@@ -266,18 +266,23 @@ public class ComponentCollision implements ComponentUpdater, HandlerListener, Tr
     private void addPoint(Point point, Collidable collidable)
     {
         final Integer group = collidable.getGroup();
-        if (!collidables.containsKey(group))
+        Map<Point, List<Collidable>> elements = collidables.get(group);
+        if (elements == null)
         {
-            collidables.put(group, new HashMap<>());
+            elements = new HashMap<>();
+            collidables.put(group, elements);
         }
-        final Map<Point, List<Collidable>> elements = collidables.get(group);
-        if (!elements.containsKey(point))
+
+        List<Collidable> list = elements.get(point);
+        if (list == null)
         {
-            elements.put(point, new ArrayList<>());
+            list = new ArrayList<>();
+            elements.put(point, list);
         }
-        if (!elements.get(point).contains(collidable))
+
+        if (!list.contains(collidable))
         {
-            elements.get(point).add(collidable);
+            list.add(collidable);
         }
     }
 

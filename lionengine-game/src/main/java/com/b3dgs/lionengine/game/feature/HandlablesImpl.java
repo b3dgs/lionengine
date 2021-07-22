@@ -118,11 +118,13 @@ final class HandlablesImpl implements Handlables
      */
     private void addType(Class<?> type, Object object)
     {
-        if (!items.containsKey(type))
+        Set<Object> set = items.get(type);
+        if (set == null)
         {
-            items.put(type, new HashSet<>());
+            set = new HashSet<>();
+            items.put(type, set);
         }
-        items.get(type).add(object);
+        set.add(object);
     }
 
     /**

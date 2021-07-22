@@ -145,11 +145,13 @@ public final class MinimapConfig
      */
     private static Collection<Integer> getTiles(Map<ColorRgba, Collection<Integer>> colors, ColorRgba color)
     {
-        if (!colors.containsKey(color))
+        Collection<Integer> set = colors.get(color);
+        if (set == null)
         {
-            colors.put(color, new HashSet<>());
+            set = new HashSet<>();
+            colors.put(color, set);
         }
-        return colors.get(color);
+        return set;
     }
 
     /**

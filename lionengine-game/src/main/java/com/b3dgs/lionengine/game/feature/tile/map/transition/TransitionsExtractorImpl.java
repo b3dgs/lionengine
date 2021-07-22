@@ -90,11 +90,13 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      */
     private static Collection<Integer> getTiles(Map<Transition, Collection<Integer>> transitions, Transition transition)
     {
-        if (!transitions.containsKey(transition))
+        Collection<Integer> set = transitions.get(transition);
+        if (set == null)
         {
-            transitions.put(transition, new HashSet<>());
+            set = new HashSet<>();
+            transitions.put(transition, set);
         }
-        return transitions.get(transition);
+        return set;
     }
 
     /**

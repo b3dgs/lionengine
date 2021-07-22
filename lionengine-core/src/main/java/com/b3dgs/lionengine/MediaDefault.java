@@ -363,10 +363,10 @@ final class MediaDefault implements Media
             if (loader.isPresent())
             {
                 final String outputPath = getPathTemp();
-                final File parent = new File(outputPath).getParentFile();
-                if (parent.mkdirs())
+                final File folder = new File(outputPath).getParentFile();
+                if (folder.mkdirs())
                 {
-                    Verbose.info("Temp path created: ", parent.getPath());
+                    Verbose.info("Temp path created: ", folder.getPath());
                 }
                 return new FileOutputStream(outputPath);
             }

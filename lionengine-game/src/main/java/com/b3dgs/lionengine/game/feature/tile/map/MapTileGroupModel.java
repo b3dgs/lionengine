@@ -95,18 +95,23 @@ public class MapTileGroupModel extends FeatureAbstract implements MapTileGroup
         final Integer number = tile.getKey();
         final String oldGroup = getGroup(tile);
 
-        if (groupTiles.containsKey(oldGroup))
+        final Set<Integer> old = groupTiles.get(oldGroup);
+        if (old != null)
         {
-            groupTiles.get(oldGroup).remove(number);
+            old.remove(number);
         }
+
         if (group != null)
         {
             tilesGroup.put(number, group);
-            if (!groupTiles.containsKey(group))
+
+            Set<Integer> set = groupTiles.get(group);
+            if (set == null)
             {
-                groupTiles.put(group, new HashSet<>());
+                set = new HashSet<>();
+                groupTiles.put(group, set);
             }
-            groupTiles.get(group).add(number);
+            set.add(number);
         }
         else
         {

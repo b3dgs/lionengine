@@ -285,13 +285,14 @@ public class Hud extends FeaturableModel implements Listenable<HudListener>
      */
     private Actionable createMenu(ActionRef action)
     {
-        if (!menus.containsKey(action))
+        Actionable menu = menus.get(action);
+        if (menu == null)
         {
             final Featurable featurable = factory.create(Medias.create(PATH.split(action.getPath())));
-            menus.put(action, featurable.getFeature(Actionable.class));
             handler.add(featurable);
+            menu = featurable.getFeature(Actionable.class);
+            menus.put(action, menu);
         }
-        final Actionable menu = menus.get(action);
         menu.setEnabled(true);
         active.add(menu);
         return menu;

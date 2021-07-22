@@ -433,11 +433,13 @@ public class MapTileTransitionModel extends FeatureAbstract implements MapTileTr
             final Transition transition = entry.getKey();
             for (final Integer tileRef : entry.getValue())
             {
-                if (!tiles.containsKey(tileRef))
+                Collection<Transition> set = tiles.get(tileRef);
+                if (set == null)
                 {
-                    tiles.put(tileRef, new HashSet<>());
+                    set = new HashSet<>();
+                    tiles.put(tileRef, set);
                 }
-                tiles.get(tileRef).add(transition);
+                set.add(transition);
             }
             groupLinks.add(new GroupTransition(transition.getIn(), transition.getOut()));
             groupLinks.add(new GroupTransition(transition.getOut(), transition.getIn()));
