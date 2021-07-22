@@ -21,7 +21,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.ListenableModel;
-import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureAbstract;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 public class MapTilePersisterModel extends FeatureAbstract implements MapTilePersister
 {
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
-    protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE;
+    protected static final int BLOC_SIZE = Constant.UNSIGNED_BYTE - 1;
 
     /** Listeners. */
     private final ListenableModel<MapTilePersisterListener> listenable = new ListenableModel<>();
@@ -63,8 +63,8 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
      * 
      * <pre>
      * (integer) index number
-     * (integer) tile location x % MapTile.BLOC_SIZE
-     * (integer tile location y
+     * (byte) tile location x % MapTile.BLOC_SIZE
+     * (byte tile location y % MapTile.BLOC_SIZE
      * </pre>
      * 
      * @param file The file writer reference.
@@ -74,8 +74,8 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
     protected void saveTile(FileWriting file, Tile tile) throws IOException
     {
         file.writeInteger(tile.getNumber());
-        file.writeInteger(tile.getInTileX() % BLOC_SIZE);
-        file.writeInteger(tile.getInTileY());
+        file.writeByte(UtilConversion.fromUnsignedByte((short) (tile.getInTileX() % BLOC_SIZE)));
+        file.writeByte(UtilConversion.fromUnsignedByte((short) (tile.getInTileY() % BLOC_SIZE)));
     }
 
     /**
@@ -83,19 +83,20 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
      * 
      * <pre>
      * (integer) index number
-     * (integer) tile location x
-     * (integer tile location y
+     * (byte) tile location x
+     * (byte tile location y
      * </pre>
      * 
      * @param file The file reader reference.
-     * @param i The last loaded tile number.
+     * @param sx The last loaded tile number x.
+     * @param sy The last loaded tile number y.
      * @throws IOException If error on reading.
      */
-    protected void loadTile(FileReading file, int i) throws IOException
+    protected void loadTile(FileReading file, int sx, int sy) throws IOException
     {
         final int number = file.readInteger();
-        final int tx = file.readInteger() + i * BLOC_SIZE;
-        final int ty = file.readInteger();
+        final int tx = UtilConversion.toUnsignedByte(file.readByte()) + sx * BLOC_SIZE;
+        final int ty = UtilConversion.toUnsignedByte(file.readByte()) + sy * BLOC_SIZE;
 
         map.setTile(tx, ty, number);
     }
@@ -104,18 +105,20 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
      * Count the active tiles.
      * 
      * @param widthInTile The horizontal tiles.
+     * @param heightInTile The vertical tiles.
      * @param step The step number.
-     * @param s The s value.
+     * @param sx The sx value.
+     * @param sy The sy value.
      * @return The active tiles.
      */
-    private int countTiles(int widthInTile, int step, int s)
+    private int countTiles(int widthInTile, int heightInTile, int step, int sx, int sy)
     {
         int count = 0;
         for (int tx = 0; tx < widthInTile; tx++)
         {
-            for (int ty = 0; ty < map.getInTileHeight(); ty++)
+            for (int ty = 0; ty < heightInTile; ty++)
             {
-                if (map.getTile(tx + s * step, ty) != null)
+                if (map.getTile(tx + sx * step, ty + sy * step) != null)
                 {
                     count++;
                 }
@@ -129,22 +132,42 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
      * 
      * @param file The output file.
      * @param widthInTile The horizontal tiles.
+     * @param heightInTile The vertical tiles.
      * @param step The step number.
-     * @param s The s value.
+     * @param sx The sx value.
+     * @param sy The sy value.
      * @throws IOException If error on saving.
      */
-    private void saveTiles(FileWriting file, int widthInTile, int step, int s) throws IOException
+    private void saveTiles(FileWriting file, int widthInTile, int heightInTile, int step, int sx, int sy)
+            throws IOException
     {
         for (int tx = 0; tx < widthInTile; tx++)
         {
-            for (int ty = 0; ty < map.getInTileHeight(); ty++)
+            for (int ty = 0; ty < heightInTile; ty++)
             {
-                final Tile tile = map.getTile(tx + s * step, ty);
+                final Tile tile = map.getTile(tx + sx * step, ty + sy * step);
                 if (tile != null)
                 {
                     saveTile(file, tile);
                 }
             }
+        }
+    }
+
+    /**
+     * Load tiles in bloc.
+     * 
+     * @param input The input level file.
+     * @param sx The horizontal bloc.
+     * @param sy The vertical bloc.
+     * @throws IOException If error.
+     */
+    private void loadTiles(FileReading input, int sx, int sy) throws IOException
+    {
+        final char tiles = input.readChar();
+        for (int t = 0; t < tiles; t++)
+        {
+            loadTile(input, sx, sy);
         }
     }
 
@@ -176,14 +199,15 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
      * 
      * <pre>
-     * <code>(String)</code> sheets configuration file
-     * <code>(short)</code> width in tiles
-     * <code>(short)</code> height in tiles
-     * <code>(byte)</code> tile width (use of byte because tile width &lt; 255)
-     * <code>(byte)</code> tile height (use of byte because tile height &lt; 255)
-     * <code>(short)</code> number of {@value #BLOC_SIZE} horizontal blocs (widthInTile / {@value #BLOC_SIZE})
+     * <code>(char)</code> tile width
+     * <code>(char)</code> tile height
+     * <code>(int)</code> width in tiles
+     * <code>(int)</code> height in tiles
+     * <code>(char)</code> number of {@value #BLOC_SIZE} horizontal blocs (widthInTile / {@value #BLOC_SIZE})
      * for each blocs tile
-     *   <code>(short)</code> number of tiles in this bloc
+     * <code>(char)</code> number of {@value #BLOC_SIZE} vertical blocs (heightInTile / {@value #BLOC_SIZE})
+     * for each blocs tile
+     *   <code>(char)</code> number of tiles in this bloc
      *   for each tile in this bloc
      *     call tile.save(file)
      * </pre>
@@ -197,30 +221,30 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
         Check.notNull(output);
 
         final int widthInTile = map.getInTileWidth();
+        final int heightInTile = map.getInTileHeight();
 
-        // Header
-        final boolean hasConfig = map.getMedia() != null;
-        output.writeBoolean(hasConfig);
-        if (hasConfig)
-        {
-            output.writeString(map.getMedia().getPath());
-        }
-
-        output.writeInteger(map.getTileWidth());
-        output.writeInteger(map.getTileHeight());
+        output.writeChar((char) map.getTileWidth());
+        output.writeChar((char) map.getTileHeight());
         output.writeInteger(widthInTile);
-        output.writeInteger(map.getInTileHeight());
+        output.writeInteger(heightInTile);
 
         final int step = BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
-        final int t = (int) Math.ceil(widthInTile / (double) step);
+        final int y = Math.min(step, heightInTile);
+        final int tx = (int) Math.ceil(widthInTile / (double) step);
+        final int ty = (int) Math.ceil(heightInTile / (double) step);
 
-        output.writeShort((short) t);
-        for (int s = 0; s < t; s++)
+        output.writeChar((char) tx);
+        output.writeChar((char) ty);
+
+        for (int sx = 0; sx < tx; sx++)
         {
-            final int count = countTiles(x, step, s);
-            output.writeShort((short) count);
-            saveTiles(output, Math.min(widthInTile, BLOC_SIZE), step, s);
+            for (int sy = 0; sy < ty; sy++)
+            {
+                final int tiles = countTiles(x, y, step, sx, sy);
+                output.writeChar((char) tiles);
+                saveTiles(output, Math.min(widthInTile, BLOC_SIZE), Math.min(heightInTile, BLOC_SIZE), step, sx, sy);
+            }
         }
     }
 
@@ -231,14 +255,15 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
      * </p>
      * 
      * <pre>
-     * <code>(String)</code> sheets file configuration
-     * <code>(short)</code> width in tiles
-     * <code>(short)</code> height in tiles
-     * <code>(byte)</code> tile width
-     * <code>(byte)</code> tile height
-     * <code>(short)</code> number of {@value #BLOC_SIZE} horizontal blocs (widthInTile / {@value #BLOC_SIZE})
+     * <code>(char)</code> tile width
+     * <code>(char)</code> tile height
+     * <code>(int)</code> width in tiles
+     * <code>(int)</code> height in tiles
+     * <code>(char)</code> number of {@value #BLOC_SIZE} horizontal blocs (widthInTile / {@value #BLOC_SIZE})
      * for each blocs tile
-     *   <code>(short)</code> number of tiles in this bloc
+     * <code>(char)</code> number of {@value #BLOC_SIZE} vertical blocs (heightInTile / {@value #BLOC_SIZE})
+     * for each blocs tile
+     *   <code>(char)</code> number of tiles in this bloc
      *   for each tile in this bloc
      *     create blank tile
      *     call load(file)
@@ -253,29 +278,26 @@ public class MapTilePersisterModel extends FeatureAbstract implements MapTilePer
     {
         Check.notNull(input);
 
-        if (input.readBoolean())
-        {
-            map.loadSheets(Medias.create(input.readString()));
-        }
-        map.create(input.readInteger(), input.readInteger(), input.readInteger(), input.readInteger());
+        map.create(input.readChar(), input.readChar(), input.readInteger(), input.readInteger());
 
-        final int count = listenable.size();
-        for (int i = 0; i < count; i++)
+        final int n = listenable.size();
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i).notifyMapLoadStart();
         }
 
-        final int t = input.readShort();
-        for (int v = 0; v < t; v++)
+        final int tx = input.readChar();
+        final int ty = input.readChar();
+
+        for (int sx = 0; sx < tx; sx++)
         {
-            final int n = input.readShort();
-            for (int h = 0; h < n; h++)
+            for (int sy = 0; sy < ty; sy++)
             {
-                loadTile(input, v);
+                loadTiles(input, sx, sy);
             }
         }
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < n; i++)
         {
             listenable.get(i).notifyMapLoaded();
         }

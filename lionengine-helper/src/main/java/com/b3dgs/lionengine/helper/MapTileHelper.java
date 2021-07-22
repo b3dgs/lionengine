@@ -78,11 +78,22 @@ public class MapTileHelper extends MapTileGame
      */
     public static void importAndSave(Media levelrip, Media out)
     {
+        importAndSave(levelrip, out, new MapTilePersisterModel());
+    }
+
+    /**
+     * Import and save the level.
+     * 
+     * @param levelrip The level rip.
+     * @param out The output media.
+     * @param mapPersister The persister reference.
+     */
+    public static void importAndSave(Media levelrip, Media out, MapTilePersister mapPersister)
+    {
         final Services services = new Services();
         final MapTileGame map = services.create(MapTileGame.class);
         map.create(levelrip);
-
-        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
+        map.addFeature(mapPersister);
 
         services.add(new Factory(services));
         services.add(new Handler(services));
@@ -197,7 +208,10 @@ public class MapTileHelper extends MapTileGame
      */
     public void loadBefore(Media media)
     {
-        load(media, mapGroup::loadGroups, TileGroupsConfig.FILENAME);
+        if (media != null)
+        {
+            load(media, mapGroup::loadGroups, TileGroupsConfig.FILENAME);
+        }
     }
 
     /**
@@ -207,38 +221,41 @@ public class MapTileHelper extends MapTileGame
      */
     public void loadAfter(Media media)
     {
-        final String parent = media.getParentPath();
-
-        final Media configFormulas = Medias.create(parent, CollisionFormulaConfig.FILENAME);
-        if (configFormulas.exists())
+        if (media != null)
         {
-            mapCollision.loadCollisions(configFormulas, Medias.create(parent, CollisionGroupConfig.FILENAME));
-        }
-        load(media, mapPath::loadPathfinding, PathfindingConfig.FILENAME);
-        load(media, mapTransition::loadTransitions, TransitionsConfig.FILENAME);
-        load(media, mapCircuit::loadCircuits, CircuitsConfig.FILENAME);
+            final String parent = media.getParentPath();
 
-        if (mapRaster.loadSheets())
-        {
-            mapViewer.clear();
-            mapViewer.addRenderer(mapRaster);
-        }
+            final Media configFormulas = Medias.create(parent, CollisionFormulaConfig.FILENAME);
+            if (configFormulas.exists())
+            {
+                mapCollision.loadCollisions(configFormulas, Medias.create(parent, CollisionGroupConfig.FILENAME));
+            }
+            load(media, mapPath::loadPathfinding, PathfindingConfig.FILENAME);
+            load(media, mapTransition::loadTransitions, TransitionsConfig.FILENAME);
+            load(media, mapCircuit::loadCircuits, CircuitsConfig.FILENAME);
 
-        final Media configFog = Medias.create(parent, "fog.xml");
-        if (configFog.exists())
-        {
-            fogOfWar.create(configFog);
-            final int tw = getTileWidth();
-            final int th = getTileHeight();
-            final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create(parent, "hide.png"), tw, th);
-            final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create(parent, "fog.png"), tw, th);
-            hide.load();
-            hide.prepare();
-            fog.load();
-            fog.prepare();
-            fogOfWar.setTilesheet(hide, fog);
-            fogOfWar.setEnabled(true, true);
-            mapViewer.addRenderer(fogOfWar);
+            if (mapRaster.loadSheets())
+            {
+                mapViewer.clear();
+                mapViewer.addRenderer(mapRaster);
+            }
+
+            final Media configFog = Medias.create(parent, "fog.xml");
+            if (configFog.exists())
+            {
+                fogOfWar.create(configFog);
+                final int tw = getTileWidth();
+                final int th = getTileHeight();
+                final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create(parent, "hide.png"), tw, th);
+                final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create(parent, "fog.png"), tw, th);
+                hide.load();
+                hide.prepare();
+                fog.load();
+                fog.prepare();
+                fogOfWar.setTilesheet(hide, fog);
+                fogOfWar.setEnabled(true, true);
+                mapViewer.addRenderer(fogOfWar);
+            }
         }
     }
 

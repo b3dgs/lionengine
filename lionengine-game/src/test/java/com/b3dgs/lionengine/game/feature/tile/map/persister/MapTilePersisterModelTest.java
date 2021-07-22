@@ -125,6 +125,7 @@ final class MapTilePersisterModelTest
         final Media level = Medias.create("level");
         UtilMapTilePersister.saveMap(map, level);
         final MapTileGame mapLoaded = UtilMapTilePersister.loadMap(level);
+        mapLoaded.loadSheets(config);
 
         assertEquals(config, mapLoaded.getMedia());
         assertTrue(config.getFile().delete());
