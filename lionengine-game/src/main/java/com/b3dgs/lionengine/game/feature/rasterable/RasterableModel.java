@@ -139,9 +139,11 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         rasterHeight = setup.getRasterHeight();
 
         count = -1;
-        for (final ImageBuffer buffer : setup.getRasters())
+        final List<ImageBuffer> buffers = setup.getRasters();
+        final int n = buffers.size();
+        for (int i = 0; i < n; i++)
         {
-            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffers.get(i), hf, vf);
             rastersAnim.add(sprite);
             count++;
         }
@@ -293,9 +295,11 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
             rastersAnim.clear();
 
             count = -1;
-            for (final ImageBuffer buffer : setupRastered.getRasters())
+            final List<ImageBuffer> buffers = setupRastered.getRasters();
+            final int n = buffers.size();
+            for (int i = 0; i < n; i++)
             {
-                final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer,
+                final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffers.get(i),
                                                                           raster.getFramesHorizontal(),
                                                                           raster.getFramesVertical());
                 rastersAnim.add(sprite);

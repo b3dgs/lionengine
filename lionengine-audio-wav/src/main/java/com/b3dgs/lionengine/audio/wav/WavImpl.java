@@ -350,7 +350,7 @@ final class WavImpl implements Wav
                 {
                     try
                     {
-                        Thread.sleep(Constant.HUNDRED);
+                        Thread.sleep(Constant.DECADE);
                     }
                     catch (@SuppressWarnings("unused") final InterruptedException exception)
                     {

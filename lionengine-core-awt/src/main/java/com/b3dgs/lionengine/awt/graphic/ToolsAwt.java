@@ -228,9 +228,11 @@ public final class ToolsAwt
         final Set<Integer> ok = new HashSet<>();
         int transparent = -1;
         int i = 0;
-        for (int x = 0; x < image.getWidth(); x++)
+        final int w = image.getWidth();
+        final int h = image.getHeight();
+        for (int x = 0; x < w; x++)
         {
-            for (int y = 0; y < image.getHeight(); y++)
+            for (int y = 0; y < h; y++)
             {
                 final int value = image.getRGB(x, y);
                 if (ok.add(Integer.valueOf(value)))

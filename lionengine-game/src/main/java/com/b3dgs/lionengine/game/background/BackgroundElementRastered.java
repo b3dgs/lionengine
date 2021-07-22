@@ -63,8 +63,8 @@ public class BackgroundElementRastered extends BackgroundElement implements Rend
                                                                       + UtilFile.getExtension(media.getName()));
         if (!rasterTile.exists())
         {
-            final ImageBuffer[] rasters = Graphics.getRasterBufferOffset(media, palette, raster, 1);
-            Graphics.generateTileset(rasters, rasterTile);
+            final ImageBuffer[] buffers = Graphics.getRasterBufferOffset(media, palette, raster, 1);
+            Graphics.generateTileset(buffers, rasterTile);
         }
 
         final ImageHeader info = ImageInfo.get(media);

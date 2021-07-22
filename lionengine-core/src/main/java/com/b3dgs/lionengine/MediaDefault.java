@@ -212,9 +212,9 @@ final class MediaDefault implements Media
             }
             else
             {
-                final String path = folder.getPath();
+                final String folderPath = folder.getPath();
                 final String suffix = getPrefix().replace(separator, File.separator);
-                prefix = path.substring(0, path.indexOf(suffix) + suffix.length()) + File.separator;
+                prefix = folderPath.substring(0, folderPath.indexOf(suffix) + suffix.length()) + File.separator;
                 prefixLength = prefix.length();
             }
 
@@ -326,8 +326,8 @@ final class MediaDefault implements Media
     {
         final Collection<Media> medias = new ArrayList<>();
         final File file = getFile();
-        final String path = file.getPath();
-        if (path.contains(JAR_FILE))
+        final String filePath = file.getPath();
+        if (filePath.contains(JAR_FILE))
         {
             fillMediasFromJar(medias);
         }
@@ -363,9 +363,10 @@ final class MediaDefault implements Media
             if (loader.isPresent())
             {
                 final String outputPath = getPathTemp();
-                if (new File(outputPath).getParentFile().mkdirs())
+                final File parent = new File(outputPath).getParentFile();
+                if (parent.mkdirs())
                 {
-                    Verbose.info("Temp path created: ", outputPath);
+                    Verbose.info("Temp path created: ", parent.getPath());
                 }
                 return new FileOutputStream(outputPath);
             }

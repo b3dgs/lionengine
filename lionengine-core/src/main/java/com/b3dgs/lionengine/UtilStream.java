@@ -34,7 +34,7 @@ public final class UtilStream
     /** Error temporary file. */
     static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
     /** Temporary directory. */
-    static final String TEMP_DIR = "java.io.tmpdir";
+    private static final String TEMP_DIR = "java.io.tmpdir";
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
     /** Temp file created. */
