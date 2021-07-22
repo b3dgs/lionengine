@@ -40,13 +40,13 @@ jobs:
          
      - name: Run build
        uses: GabrielBB/xvfb-action@v1
-       if: ${{ !contains(matrix.os, 'ubuntu-latest') || matrix.jdk != '8' }}
+       if: ${{ !contains(matrix.os, 'ubuntu-latest') || matrix.jdk != '16' }}
        with:
          run: mvn clean install --file lionengine-parent/pom.xml
          
      - name: Run sonar
        uses: GabrielBB/xvfb-action@v1
-       if: ${{ contains(matrix.os, 'ubuntu-latest') && matrix.jdk == '8' }}
+       if: ${{ contains(matrix.os, 'ubuntu-latest') && matrix.jdk == '16' }}
        with:
          run: mvn clean verify --file lionengine-parent/pom.xml -Ptravis -U -Dsonar.organization=b3dgs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5524bf449ca45fcdb334698371466398321f3a82
        env:
