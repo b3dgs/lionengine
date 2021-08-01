@@ -19,12 +19,15 @@ package com.b3dgs.lionengine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -35,15 +38,9 @@ import org.w3c.dom.NodeList;
 
 /**
  * Describe an XML node, which can be read.
- * <p>
- * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link #NULL}. When
- * read, the {@link #NULL} string is return if the stored string was <code>null</code>.
- * </p>
  */
-public class XmlReader
+public class XmlReader implements AttributesReader
 {
-    /** Null string (represents a string stored as <code>null</code>). */
-    public static final String NULL = "null";
     /** Node error. */
     static final String ERROR_NODE = "Node not found: ";
     /** Error when reading the file. */
@@ -121,275 +118,340 @@ public class XmlReader
     }
 
     /**
-     * Read a boolean.
+     * Get the node text value.
      * 
-     * @param attribute The boolean name (must not be <code>null</code>).
-     * @return The boolean value.
-     * @throws LionEngineException If error when reading.
+     * @param path The node path.
+     * @return The node text value.
+     * @throws LionEngineException If unable to read node.
      */
-    public boolean readBoolean(String attribute)
+    public String getText(String... path)
     {
-        return Boolean.parseBoolean(getValue(attribute));
+        final XmlReader node = getNode(path);
+        return node.getText();
     }
 
     /**
-     * Read a boolean.
+     * Get the node text value.
      * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The boolean name (must not be <code>null</code>).
-     * @return The boolean value.
+     * @param defaultValue The value used if node does not exist.
+     * @param path The node path.
+     * @return The node text value.
      */
-    public boolean readBoolean(boolean defaultValue, String attribute)
+    public String getTextDefault(String defaultValue, String... path)
     {
-        return Boolean.parseBoolean(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a boolean.
-     * 
-     * @param attribute The boolean name (must not be <code>null</code>).
-     * @return The boolean value.
-     * @throws LionEngineException If error when reading.
-     */
-    public Optional<Boolean> readBooleanOptional(String attribute)
-    {
-        if (hasAttribute(attribute))
+        final XmlReader node = getNodeDefault(path);
+        if (node != null)
         {
-            return Optional.of(Boolean.valueOf(readBoolean(attribute)));
+            return node.getText();
+        }
+        return defaultValue;
+    }
+
+    @Override
+    public boolean readBoolean(String attribute, String... path)
+    {
+        return Boolean.parseBoolean(getNodeString(attribute, path));
+    }
+
+    @Override
+    public boolean readBoolean(boolean defaultValue, String attribute, String... path)
+    {
+        return Boolean.parseBoolean(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+    }
+
+    @Override
+    public Optional<Boolean> readBooleanOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return Optional.of(Boolean.valueOf(readBoolean(attribute, path)));
         }
         return Optional.empty();
     }
 
-    /**
-     * Read a byte.
-     * 
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The byte value.
-     * @throws LionEngineException If error when reading.
-     */
-    public byte readByte(String attribute)
+    @Override
+    public byte readByte(String attribute, String... path)
     {
-        return Byte.parseByte(getValue(attribute));
+        return Byte.parseByte(getNodeString(attribute, path));
     }
 
-    /**
-     * Read a byte.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The byte value.
-     */
-    public byte readByte(byte defaultValue, String attribute)
+    @Override
+    public byte readByte(byte defaultValue, String attribute, String... path)
     {
-        return Byte.parseByte(getValue(String.valueOf(defaultValue), attribute));
+        return Byte.parseByte(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
-    /**
-     * Read a short.
-     * 
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The short value.
-     * @throws LionEngineException If error when reading.
-     */
-    public short readShort(String attribute)
+    @Override
+    public char readChar(String attribute, String... path)
     {
-        return Short.parseShort(getValue(attribute));
+        return getNodeString(attribute, path).charAt(0);
     }
 
-    /**
-     * Read a short.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The short value.
-     * @throws LionEngineException If invalid argument.
-     */
-    public short readShort(short defaultValue, String attribute)
+    @Override
+    public char readChar(byte defaultValue, String attribute, String... path)
     {
-        return Short.parseShort(getValue(String.valueOf(defaultValue), attribute));
+        return getNodeStringDefault(String.valueOf(defaultValue), attribute, path).charAt(0);
     }
 
-    /**
-     * Read an integer.
-     * 
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The integer value.
-     * @throws LionEngineException If error when reading.
-     */
-    public int readInteger(String attribute)
+    @Override
+    public short readShort(String attribute, String... path)
     {
-        return Integer.parseInt(getValue(attribute));
+        return Short.parseShort(getNodeString(attribute, path));
     }
 
-    /**
-     * Read an integer.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The integer value.
-     * @throws LionEngineException If invalid argument.
-     */
-    public int readInteger(int defaultValue, String attribute)
+    @Override
+    public short readShort(short defaultValue, String attribute, String... path)
     {
-        return Integer.parseInt(getValue(String.valueOf(defaultValue), attribute));
+        return Short.parseShort(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
-    /**
-     * Read an integer.
-     * 
-     * @param attribute The integer name (must not be <code>null</code>).
-     * @return The integer value.
-     * @throws LionEngineException If error when reading.
-     */
-    public OptionalInt readIntegerOptional(String attribute)
+    @Override
+    public int readInteger(String attribute, String... path)
     {
-        if (hasAttribute(attribute))
+        try
         {
-            return OptionalInt.of(readInteger(attribute));
+            return Integer.parseInt(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
+    }
+
+    @Override
+    public int readInteger(int defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return Integer.parseInt(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
+    }
+
+    @Override
+    public OptionalInt readIntegerOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return OptionalInt.of(readInteger(attribute, path));
         }
         return OptionalInt.empty();
     }
 
-    /**
-     * Read a long.
-     * 
-     * @param attribute The float name (must not be <code>null</code>).
-     * @return The long value.
-     * @throws LionEngineException If error when reading.
-     */
-    public long readLong(String attribute)
+    @Override
+    public long readLong(String attribute, String... path)
     {
-        return Long.parseLong(getValue(attribute));
-    }
-
-    /**
-     * Read a long.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The float name (must not be <code>null</code>).
-     * @return The long value.
-     * @throws LionEngineException If invalid argument.
-     */
-    public long readLong(long defaultValue, String attribute)
-    {
-        return Long.parseLong(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a float.
-     * 
-     * @param attribute The float name (must not be <code>null</code>).
-     * @return The float value.
-     * @throws LionEngineException If error when reading.
-     */
-    public float readFloat(String attribute)
-    {
-        return Float.parseFloat(getValue(attribute));
-    }
-
-    /**
-     * Read a float.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The float name (must not be <code>null</code>).
-     * @return The float value.
-     * @throws LionEngineException If invalid argument.
-     */
-    public float readFloat(float defaultValue, String attribute)
-    {
-        return Float.parseFloat(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a double.
-     * 
-     * @param attribute The double name (must not be <code>null</code>).
-     * @return The double value.
-     * @throws LionEngineException If error when reading.
-     */
-    public double readDouble(String attribute)
-    {
-        return Double.parseDouble(getValue(attribute));
-    }
-
-    /**
-     * Read a double.
-     * 
-     * @param defaultValue The value returned if attribute not found.
-     * @param attribute The double name (must not be <code>null</code>).
-     * @return The double value.
-     * @throws LionEngineException If invalid argument.
-     */
-    public double readDouble(double defaultValue, String attribute)
-    {
-        return Double.parseDouble(getValue(String.valueOf(defaultValue), attribute));
-    }
-
-    /**
-     * Read a double.
-     * 
-     * @param attribute The double name (must not be <code>null</code>).
-     * @return The double value.
-     * @throws LionEngineException If error when reading.
-     */
-    public OptionalDouble readDoubleOptional(String attribute)
-    {
-        if (hasAttribute(attribute))
+        try
         {
-            return OptionalDouble.of(readDouble(attribute));
+            return Long.parseLong(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
+    }
+
+    @Override
+    public long readLong(long defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return Long.parseLong(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
+    }
+
+    @Override
+    public OptionalLong readLongOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return OptionalLong.of(readLong(attribute, path));
+        }
+        return OptionalLong.empty();
+    }
+
+    @Override
+    public float readFloat(String attribute, String... path)
+    {
+        return Float.parseFloat(getNodeString(attribute, path));
+    }
+
+    @Override
+    public float readFloat(float defaultValue, String attribute, String... path)
+    {
+        return Float.parseFloat(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+    }
+
+    @Override
+    public double readDouble(String attribute, String... path)
+    {
+        try
+        {
+            return Double.parseDouble(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
+    }
+
+    @Override
+    public double readDouble(double defaultValue, String attribute, String... path)
+    {
+        try
+        {
+            return Double.parseDouble(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ATTRIBUTE + attribute);
+        }
+    }
+
+    @Override
+    public OptionalDouble readDoubleOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return OptionalDouble.of(readDouble(attribute, path));
         }
         return OptionalDouble.empty();
     }
 
-    /**
-     * Read a string. If the read string is equal to {@link #NULL}, <code>null</code> will be returned instead.
-     * 
-     * @param attribute The string name (must not be <code>null</code>).
-     * @return The string value.
-     * @throws LionEngineException If error when reading.
-     */
-    public String readString(String attribute)
+    @Override
+    public String readString(String attribute, String... path)
     {
-        final String value = getValue(attribute);
-        if (NULL.equals(value))
-        {
-            return null;
-        }
-        return value;
+        return getNodeString(attribute, path);
     }
 
-    /**
-     * Read a string. If the read string is equal to {@link #NULL}, <code>null</code> will be returned instead.
-     * 
-     * @param defaultValue The value returned if attribute not found (can be <code>null</code>).
-     * @param attribute The string name (must not be <code>null</code>).
-     * @return The string value.
-     * @throws LionEngineException If invalid arguments.
-     */
-    public String readString(String defaultValue, String attribute)
+    @Override
+    public String readStringDefault(String defaultValue, String attribute, String... path)
     {
-        final String value = getValue(defaultValue, attribute);
-        if (NULL.equals(value))
-        {
-            return null;
-        }
-        return value;
+        return getNodeStringDefault(defaultValue, attribute, path);
     }
 
-    /**
-     * Read a string.
-     * 
-     * @param attribute The string name (must not be <code>null</code>).
-     * @return The string value.
-     * @throws LionEngineException If error when reading.
-     */
-    public Optional<String> readStringOptional(String attribute)
+    @Override
+    public Optional<String> readStringOptional(String attribute, String... path)
     {
-        if (hasAttribute(attribute))
+        if (hasAttribute(attribute, path))
         {
-            return Optional.ofNullable(readString(attribute));
+            return Optional.ofNullable(readString(attribute, path));
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Media readMedia(String attribute, String... path)
+    {
+        return Medias.create(getNodeString(attribute, path));
+    }
+
+    @Override
+    public Optional<Media> readMediaOptional(String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return Optional.of(Medias.create(getNodeString(attribute, path)));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public <E extends Enum<E>> E readEnum(Class<E> type, String attribute, String... path)
+    {
+        try
+        {
+            return Enum.valueOf(type, getNodeString(attribute, path));
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, attribute);
+        }
+    }
+
+    @Override
+    public <E extends Enum<E>> Optional<E> readEnumOptional(Class<E> type, String attribute, String... path)
+    {
+        if (hasAttribute(attribute, path))
+        {
+            return Optional.of(readEnum(type, attribute, path));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public <T> T readImplementation(Class<T> type, String... path)
+    {
+        return readImplementation(getClass().getClassLoader(), type, path);
+    }
+
+    @Override
+    public <T> T readImplementation(ClassLoader loader, Class<T> type, String... path)
+    {
+        return readImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
+    }
+
+    @Override
+    public <T> T readImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    {
+        return readImplementation(type, new Class<?>[]
+        {
+            paramType
+        }, Arrays.asList(paramValue), path);
+    }
+
+    @Override
+    public <T> T readImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
+    {
+        return readImplementation(getClass().getClassLoader(), type, paramsType, paramsValue, path);
+    }
+
+    @Override
+    public <T> T readImplementation(ClassLoader loader,
+                                    Class<T> type,
+                                    Class<?>[] paramsType,
+                                    Collection<?> paramsValue,
+                                    String... path)
+    {
+        final String className = getText(path).trim();
+        return readImplementation(loader, type, paramsType, paramsValue, className);
+    }
+
+    @Override
+    public boolean hasAttribute(String attribute, String... path)
+    {
+        XmlReader node = this;
+        for (final String element : path)
+        {
+            if (!node.hasChild(element))
+            {
+                return false;
+            }
+            node = node.getChild(element);
+        }
+        return node.existsAttribute(attribute);
+    }
+
+    /**
+     * Check if node has the following attribute.
+     * 
+     * @param attribute The attribute name (can be <code>null</code>).
+     * @return <code>true</code> if attribute exists, <code>false</code> else.
+     */
+    private boolean existsAttribute(String attribute)
+    {
+        if (attribute == null)
+        {
+            return false;
+        }
+        return root.hasAttribute(attribute);
     }
 
     /**
@@ -428,21 +490,6 @@ public class XmlReader
             attributes.put(node.getNodeName(), node.getNodeValue());
         }
         return attributes;
-    }
-
-    /**
-     * Check if node has the following attribute.
-     * 
-     * @param attribute The attribute name (can be <code>null</code>).
-     * @return <code>true</code> if attribute exists, <code>false</code> else.
-     */
-    public boolean hasAttribute(String attribute)
-    {
-        if (attribute == null)
-        {
-            return false;
-        }
-        return root.hasAttribute(attribute);
     }
 
     /**
@@ -491,7 +538,7 @@ public class XmlReader
     /**
      * Get a child node from its name.
      * 
-     * @param name The child name.
+     * @param name The child name (can be <code>null</code>).
      * @return The child node reference.
      */
     public Optional<XmlReader> getChildOptional(String name)
@@ -515,7 +562,7 @@ public class XmlReader
      * @return The children list.
      * @throws LionEngineException If invalid argument.
      */
-    public Collection<? extends XmlReader> getChildren(String name)
+    public Collection<XmlReader> getChildren(String name)
     {
         Check.notNull(name);
 
@@ -537,7 +584,7 @@ public class XmlReader
      * 
      * @return The children list.
      */
-    public Collection<? extends XmlReader> getChildren()
+    public Collection<XmlReader> getChildren()
     {
         final Collection<XmlReader> nodes = new ArrayList<>(1);
         final NodeList list = root.getChildNodes();
@@ -563,39 +610,97 @@ public class XmlReader
     }
 
     /**
-     * Get the attribute value.
+     * Get the node at the following path.
      * 
-     * @param attribute The attribute name (must not be <code>null</code>).
-     * @return The attribute value.
-     * @throws LionEngineException If attribute is not valid or does not exist.
+     * @param path The node path.
+     * @return The node found.
+     * @throws LionEngineException If node not found.
      */
-    private String getValue(String attribute)
+    private XmlReader getNode(String... path)
     {
-        Check.notNull(attribute);
-
-        if (root.hasAttribute(attribute))
+        XmlReader node = this;
+        for (final String element : path)
         {
-            return root.getAttribute(attribute);
+            try
+            {
+                node = node.getChild(element);
+            }
+            catch (final LionEngineException exception)
+            {
+                throw new LionEngineException(exception, Arrays.toString(path));
+            }
         }
-        throw new LionEngineException(ERROR_ATTRIBUTE + attribute);
+        return node;
     }
 
     /**
-     * Get the attribute value.
+     * Get the node at the following path.
      * 
-     * @param defaultValue The value returned if attribute does not exist (can be <code>null</code>).
-     * @param attribute The attribute name (must not be <code>null</code>).
-     * @return The attribute value.
-     * @throws LionEngineException If attribute is not valid or does not exist.
+     * @param path The node path.
+     * @return The node found, <code>null</code> if none.
      */
-    private String getValue(String defaultValue, String attribute)
+    private XmlReader getNodeDefault(String... path)
     {
-        Check.notNull(attribute);
-
-        if (root.hasAttribute(attribute))
+        XmlReader node = this;
+        for (final String element : path)
         {
-            return root.getAttribute(attribute);
+            if (!node.hasChild(element))
+            {
+                return null;
+            }
+            node = node.getChild(element);
         }
-        return defaultValue;
+        return node;
+    }
+
+    /**
+     * Get the string from a node.
+     * 
+     * @param attribute The attribute to get.
+     * @param path The attribute node path.
+     * @return The string found.
+     * @throws LionEngineException If node not found.
+     */
+    private String getNodeString(String attribute, String... path)
+    {
+        final XmlReader node = getNode(path);
+        if (!node.root.hasAttribute(attribute))
+        {
+            throw new LionEngineException(ERROR_ATTRIBUTE + attribute);
+        }
+        final String value = node.root.getAttribute(attribute);
+        if (Constant.NULL.equals(value))
+        {
+            return null;
+        }
+        return value;
+    }
+
+    /**
+     * Get the string from a node.
+     * 
+     * @param defaultValue The default value returned if path not found.
+     * @param attribute The attribute to get.
+     * @param path The attribute node path.
+     * @return The string found.
+     * @throws LionEngineException If node not found.
+     */
+    private String getNodeStringDefault(String defaultValue, String attribute, String... path)
+    {
+        final XmlReader node = getNodeDefault(path);
+        final String value;
+        if (node != null && node.hasAttribute(attribute))
+        {
+            value = node.readString(attribute);
+        }
+        else if (Constant.NULL.equals(defaultValue))
+        {
+            value = null;
+        }
+        else
+        {
+            value = defaultValue;
+        }
+        return value;
     }
 }

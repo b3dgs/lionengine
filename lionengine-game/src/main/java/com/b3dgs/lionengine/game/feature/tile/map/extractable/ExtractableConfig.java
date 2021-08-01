@@ -63,7 +63,7 @@ public final class ExtractableConfig
         Check.notNull(root);
 
         final XmlReader node = root.getChild(NODE_EXTRACTABLE);
-        final String type = node.readString(Constant.EMPTY_STRING, ATT_TYPE);
+        final String type = node.readStringDefault(Constant.EMPTY_STRING, ATT_TYPE);
         final int quantity = node.readInteger(0, ATT_QUANTITY);
 
         return new ExtractableConfig(type, quantity);

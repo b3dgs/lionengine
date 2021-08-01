@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -147,11 +147,11 @@ final class SpriteFontImpl implements SpriteFont
      */
     private void loadData(Media mediaData)
     {
-        final Xml letters = new Xml(mediaData);
-        final Collection<Xml> children = letters.getChildren();
+        final XmlReader letters = new XmlReader(mediaData);
+        final Collection<XmlReader> children = letters.getChildren();
         int id = 0;
 
-        for (final Xml node : children)
+        for (final XmlReader node : children)
         {
             final double width = node.readDouble("width");
             final double height = node.readDouble("height");

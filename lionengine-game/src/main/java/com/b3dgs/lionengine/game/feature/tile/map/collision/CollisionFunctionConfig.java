@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the collision function.
@@ -49,11 +50,11 @@ public final class CollisionFunctionConfig
      * @return The collision function data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionFunction imports(Xml parent)
+    public static CollisionFunction imports(XmlReader parent)
     {
         Check.notNull(parent);
 
-        final Xml node = parent.getChild(FUNCTION);
+        final XmlReader node = parent.getChild(FUNCTION);
         final String name = node.readString(TYPE);
         try
         {

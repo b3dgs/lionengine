@@ -38,6 +38,8 @@ public final class Constant
     public static final String XML_PREFIX = "lionengine:";
     /** Empty string. */
     public static final String EMPTY_STRING = "";
+    /** Null string (represents a string stored as <code>null</code>). */
+    public static final String NULL = "null";
     /** Tabulation. */
     public static final String TAB = "\t";
     /** Quote. */

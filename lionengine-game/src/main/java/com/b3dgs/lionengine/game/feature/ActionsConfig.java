@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 
@@ -71,7 +72,7 @@ public final class ActionsConfig
      * @return The allowed actions.
      * @throws LionEngineException If unable to read node.
      */
-    public static List<ActionRef> imports(Xml root, Function<Class<? extends Feature>, Feature> id)
+    public static List<ActionRef> imports(XmlReader root, Function<Class<? extends Feature>, Feature> id)
     {
         Check.notNull(root);
 
@@ -79,7 +80,7 @@ public final class ActionsConfig
         {
             return Collections.emptyList();
         }
-        final Xml node = root.getChild(NODE_ACTIONS);
+        final XmlReader node = root.getChild(NODE_ACTIONS);
 
         return getRefs(node, id);
     }
@@ -125,12 +126,12 @@ public final class ActionsConfig
      * @param id The id supplier to handle unique instance if needed (must not be <code>null</code>).
      * @return The actions found.
      */
-    private static List<ActionRef> getRefs(Xml node, Function<Class<? extends Feature>, Feature> id)
+    private static List<ActionRef> getRefs(XmlReader node, Function<Class<? extends Feature>, Feature> id)
     {
-        final Collection<Xml> children = node.getChildren(NODE_ACTION_REF);
+        final Collection<XmlReader> children = node.getChildren(NODE_ACTION_REF);
         final List<ActionRef> actions = new ArrayList<>(children.size());
 
-        for (final Xml action : children)
+        for (final XmlReader action : children)
         {
             final String path = action.readString(ATT_PATH);
             final boolean cancel = action.readBoolean(false, ATT_CANCEL);

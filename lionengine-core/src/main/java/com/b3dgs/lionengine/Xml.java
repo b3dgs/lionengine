@@ -291,7 +291,7 @@ public class Xml extends XmlReader
     }
 
     /**
-     * Write a string. If the content is equal to <code>null</code>, {@link #NULL} is wrote instead.
+     * Write a string. If the content is equal to <code>null</code>, {@link Constant#NULL} is wrote instead.
      * 
      * @param attribute The attribute name (must not be <code>null</code>).
      * @param content The string value (can be <code>null</code>).
@@ -301,7 +301,7 @@ public class Xml extends XmlReader
     {
         if (content == null)
         {
-            write(attribute, NULL);
+            write(attribute, Constant.NULL);
         }
         else
         {
@@ -355,9 +355,53 @@ public class Xml extends XmlReader
      */
     public void removeChildren(String children)
     {
-        final Collection<Xml> all = getChildren(children);
-        all.stream().map(Xml::getElement).forEach(root::removeChild);
+        final Collection<XmlReader> all = getChildren(children);
+        all.stream().map(XmlReader::getElement).forEach(root::removeChild);
         all.clear();
+    }
+
+    /**
+     * Get the list of all children with this name.
+     * 
+     * @param name The children name (must not be <code>null</code>).
+     * @return The children list.
+     * @throws LionEngineException If invalid argument.
+     */
+    public Collection<Xml> getChildrenXml(String name)
+    {
+        Check.notNull(name);
+
+        final Collection<Xml> nodes = new ArrayList<>(1);
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (name.equals(node.getNodeName()))
+            {
+                nodes.add(new Xml(document, (Element) node));
+            }
+        }
+        return nodes;
+    }
+
+    /**
+     * Get list of all children.
+     * 
+     * @return The children list.
+     */
+    public Collection<Xml> getChildrenXml()
+    {
+        final Collection<Xml> nodes = new ArrayList<>(1);
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (node instanceof Element)
+            {
+                nodes.add(new Xml(document, (Element) node));
+            }
+        }
+        return nodes;
     }
 
     /*
@@ -379,39 +423,5 @@ public class Xml extends XmlReader
             }
         }
         throw new LionEngineException(ERROR_NODE + name);
-    }
-
-    @Override
-    public Collection<Xml> getChildren(String name)
-    {
-        Check.notNull(name);
-
-        final Collection<Xml> nodes = new ArrayList<>(1);
-        final NodeList list = root.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            final Node node = list.item(i);
-            if (name.equals(node.getNodeName()))
-            {
-                nodes.add(new Xml(document, (Element) node));
-            }
-        }
-        return nodes;
-    }
-
-    @Override
-    public Collection<Xml> getChildren()
-    {
-        final Collection<Xml> nodes = new ArrayList<>(1);
-        final NodeList list = root.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            final Node node = list.item(i);
-            if (node instanceof Element)
-            {
-                nodes.add(new Xml(document, (Element) node));
-            }
-        }
-        return nodes;
     }
 }

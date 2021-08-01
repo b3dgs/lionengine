@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 
 /**
@@ -61,11 +62,11 @@ public final class TransitionsConfig
      */
     public static Map<Transition, Collection<Integer>> imports(Media config)
     {
-        final Xml root = new Xml(config);
-        final Collection<Xml> nodesTransition = root.getChildren(NODE_TRANSITION);
+        final XmlReader root = new XmlReader(config);
+        final Collection<XmlReader> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<Transition, Collection<Integer>> transitions = new HashMap<>(nodesTransition.size());
 
-        for (final Xml nodeTransition : nodesTransition)
+        for (final XmlReader nodeTransition : nodesTransition)
         {
             final String groupIn = nodeTransition.readString(ATTRIBUTE_GROUP_IN);
             final String groupOut = nodeTransition.readString(ATTRIBUTE_GROUP_OUT);
@@ -73,7 +74,7 @@ public final class TransitionsConfig
             final TransitionType type = TransitionType.from(transitionType);
             final Transition transition = new Transition(type, groupIn, groupOut);
 
-            final Collection<Xml> nodesTile = nodeTransition.getChildren(TileConfig.NODE_TILE);
+            final Collection<XmlReader> nodesTile = nodeTransition.getChildren(TileConfig.NODE_TILE);
             final Collection<Integer> tiles = importTiles(nodesTile);
             nodesTile.clear();
 
@@ -142,11 +143,11 @@ public final class TransitionsConfig
      * @param nodesTile The tiles nodes (must not be <code>null</code>).
      * @return The imported tiles.
      */
-    private static Collection<Integer> importTiles(Collection<Xml> nodesTile)
+    private static Collection<Integer> importTiles(Collection<XmlReader> nodesTile)
     {
         final Collection<Integer> tiles = new HashSet<>(nodesTile.size());
 
-        for (final Xml nodeTile : nodesTile)
+        for (final XmlReader nodeTile : nodesTile)
         {
             final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
             tiles.add(tile);

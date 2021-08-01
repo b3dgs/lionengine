@@ -68,7 +68,7 @@ public final class SurfaceConfig
 
         final XmlReader node = root.getChild(NODE_SURFACE);
         final String surface = node.readString(ATT_IMAGE);
-        final String icon = node.readString(null, ATT_ICON);
+        final String icon = node.readStringDefault(null, ATT_ICON);
 
         return new SurfaceConfig(surface, icon);
     }

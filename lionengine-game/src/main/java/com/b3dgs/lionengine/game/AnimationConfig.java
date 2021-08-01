@@ -86,7 +86,7 @@ public final class AnimationConfig
 
         if (root.hasChild(NODE_ANIMATIONS))
         {
-            final Collection<? extends XmlReader> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
+            final Collection<XmlReader> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
             for (final XmlReader node : children)
             {
                 final String anim = node.readString(ANIMATION_NAME);

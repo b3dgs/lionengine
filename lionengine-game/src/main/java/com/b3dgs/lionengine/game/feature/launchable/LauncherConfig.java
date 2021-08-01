@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -58,10 +59,10 @@ public final class LauncherConfig
     {
         Check.notNull(configurer);
 
-        final Collection<Xml> children = configurer.getRoot().getChildren(NODE_LAUNCHER);
+        final Collection<XmlReader> children = configurer.getRoot().getChildren(NODE_LAUNCHER);
         final List<LauncherConfig> launchers = new ArrayList<>(children.size());
 
-        for (final Xml launcher : children)
+        for (final XmlReader launcher : children)
         {
             launchers.add(imports(launcher));
         }
@@ -77,14 +78,14 @@ public final class LauncherConfig
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LauncherConfig imports(Xml node)
+    public static LauncherConfig imports(XmlReader node)
     {
         Check.notNull(node);
 
-        final Collection<Xml> children = node.getChildren(LaunchableConfig.NODE_LAUNCHABLE);
+        final Collection<XmlReader> children = node.getChildren(LaunchableConfig.NODE_LAUNCHABLE);
         final Collection<LaunchableConfig> launchables = new ArrayList<>(children.size());
 
-        for (final Xml launchable : children)
+        for (final XmlReader launchable : children)
         {
             launchables.add(LaunchableConfig.imports(launchable));
         }

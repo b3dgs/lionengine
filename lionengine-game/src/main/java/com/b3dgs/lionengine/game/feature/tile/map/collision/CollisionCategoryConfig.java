@@ -69,11 +69,10 @@ public final class CollisionCategoryConfig
         final Collection<CollisionCategory> categories = new ArrayList<>();
         if (root.hasChild(NODE_CATEGORIES))
         {
-            final Collection<? extends XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES)
-                                                                         .getChildren(NODE_CATEGORY);
+            final Collection<XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
             for (final XmlReader node : childrenCategory)
             {
-                final Collection<? extends XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+                final Collection<XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
                 final Collection<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
 
                 for (final XmlReader group : childrenGroup)
@@ -111,10 +110,12 @@ public final class CollisionCategoryConfig
         Check.notNull(configurer);
         Check.notNull(map);
 
-        final Collection<Xml> children = configurer.getRoot().getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
+        final Collection<XmlReader> children = configurer.getRoot()
+                                                         .getChild(NODE_CATEGORIES)
+                                                         .getChildren(NODE_CATEGORY);
         final Collection<CollisionCategory> categories = new ArrayList<>(children.size());
 
-        for (final Xml node : children)
+        for (final XmlReader node : children)
         {
             final CollisionCategory category = imports(node, map);
             categories.add(category);
@@ -132,15 +133,15 @@ public final class CollisionCategoryConfig
      * @return The category node instance.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionCategory imports(Xml root, MapTileCollision map)
+    public static CollisionCategory imports(XmlReader root, MapTileCollision map)
     {
         Check.notNull(root);
         Check.notNull(map);
 
-        final Collection<Xml> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
+        final Collection<XmlReader> children = root.getChildren(TileGroupsConfig.NODE_GROUP);
         final Collection<CollisionGroup> groups = new ArrayList<>(children.size());
 
-        for (final Xml groupNode : children)
+        for (final XmlReader groupNode : children)
         {
             final String groupName = groupNode.getText();
             map.getCollisionGroup(groupName).ifPresent(groups::add);

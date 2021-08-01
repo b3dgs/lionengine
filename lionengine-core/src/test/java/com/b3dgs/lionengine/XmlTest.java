@@ -292,11 +292,11 @@ final class XmlTest
 
         assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
 
-        for (final Xml child : root.getChildren())
+        for (final XmlReader child : root.getChildren())
         {
             assertNotNull(child);
         }
-        for (final Xml child : root.getChildren("child1"))
+        for (final XmlReader child : root.getChildren("child1"))
         {
             assertNotNull(child);
         }
@@ -415,8 +415,8 @@ final class XmlTest
         assertEquals(1.0f, node.readFloat(1.0f, "void"));
         assertEquals(1.0, node.readDouble(1.0, "void"));
         assertFalse(node.readDoubleOptional("void").isPresent());
-        assertEquals("default", node.readString("default", "void"));
-        assertNull(node.readString("null", "void"));
+        assertEquals("default", node.readStringDefault("default", "void"));
+        assertNull(node.readStringDefault("null", "void"));
         assertFalse(node.readStringOptional("void").isPresent());
 
         node.writeBoolean("boolean", BOOL_VALUE);
@@ -439,8 +439,7 @@ final class XmlTest
         assertEquals(LONG_VALUE, node.readLong(1L, "long"));
         assertEquals(DOUBLE_VALUE, node.readDouble(1.0, "double"));
         assertTrue(node.readDoubleOptional("double").isPresent());
-        assertEquals(STRING_VALUE, node.readString("default", "string"));
-        assertNull(node.readString("default", "null"));
+        assertEquals(STRING_VALUE, node.readStringDefault("default", "string"));
         assertFalse(node.readStringOptional("null").isPresent());
     }
 

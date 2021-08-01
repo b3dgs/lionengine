@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the collision group data.
@@ -58,15 +59,15 @@ public final class CollisionGroupConfig
     public static CollisionGroupConfig imports(Media config)
     {
         final Xml root = new Xml(config);
-        final Collection<Xml> childrenCollision = root.getChildren(NODE_COLLISION);
+        final Collection<XmlReader> childrenCollision = root.getChildren(NODE_COLLISION);
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
 
-        for (final Xml node : childrenCollision)
+        for (final XmlReader node : childrenCollision)
         {
-            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
+            final Collection<XmlReader> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
             final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
 
-            for (final Xml formula : childrenFormula)
+            for (final XmlReader formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
                 formulas.add(new CollisionFormula(formulaName, null, null, null));
@@ -90,20 +91,20 @@ public final class CollisionGroupConfig
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionGroupConfig imports(Xml root, MapTileCollision map)
+    public static CollisionGroupConfig imports(XmlReader root, MapTileCollision map)
     {
         Check.notNull(root);
         Check.notNull(map);
 
-        final Collection<Xml> childrenCollision = root.getChildren(NODE_COLLISION);
+        final Collection<XmlReader> childrenCollision = root.getChildren(NODE_COLLISION);
         final Map<String, CollisionGroup> groups = new HashMap<>(childrenCollision.size());
 
-        for (final Xml node : childrenCollision)
+        for (final XmlReader node : childrenCollision)
         {
-            final Collection<Xml> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
+            final Collection<XmlReader> childrenFormula = node.getChildren(CollisionFormulaConfig.NODE_FORMULA);
             final Collection<CollisionFormula> formulas = new ArrayList<>(childrenFormula.size());
 
-            for (final Xml formula : childrenFormula)
+            for (final XmlReader formula : childrenFormula)
             {
                 final String formulaName = formula.getText();
                 formulas.add(map.getCollisionFormula(formulaName));
@@ -153,7 +154,7 @@ public final class CollisionGroupConfig
         Check.notNull(root);
         Check.notNull(group);
 
-        final Collection<Xml> children = root.getChildren(NODE_COLLISION);
+        final Collection<Xml> children = root.getChildrenXml(NODE_COLLISION);
         for (final Xml node : children)
         {
             if (node.readString(ATT_GROUP).equals(group))
@@ -172,14 +173,14 @@ public final class CollisionGroupConfig
      * @return <code>true</code> if has group, <code>false</code> else.
      * @throws LionEngineException If invalid argument.
      */
-    public static boolean has(Xml root, String group)
+    public static boolean has(XmlReader root, String group)
     {
         Check.notNull(root);
         Check.notNull(group);
 
-        final Collection<Xml> children = root.getChildren(NODE_COLLISION);
+        final Collection<XmlReader> children = root.getChildren(NODE_COLLISION);
         boolean has = false;
-        for (final Xml node : children)
+        for (final XmlReader node : children)
         {
             if (node.readString(ATT_GROUP).equals(group))
             {

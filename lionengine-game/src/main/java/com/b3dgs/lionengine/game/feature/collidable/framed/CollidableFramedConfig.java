@@ -96,7 +96,7 @@ public final class CollidableFramedConfig
 
         if (root.hasChild(AnimationConfig.NODE_ANIMATIONS))
         {
-            final Collection<? extends XmlReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
+            final Collection<XmlReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
                                                                  .getChildren(AnimationConfig.NODE_ANIMATION);
             for (final XmlReader node : children)
             {
@@ -181,7 +181,7 @@ public final class CollidableFramedConfig
     private static String getFrameName(XmlReader node, XmlReader framed)
     {
         final String anim = node.readString(AnimationConfig.ANIMATION_NAME);
-        final String prefix = framed.readString(Constant.EMPTY_STRING, ATT_PREFIX);
+        final String prefix = framed.readStringDefault(Constant.EMPTY_STRING, ATT_PREFIX);
         if (prefix.isEmpty())
         {
             return anim;

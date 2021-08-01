@@ -163,8 +163,8 @@ public final class FeaturableConfig
      */
     public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup)
     {
-        final Collection<Xml> children;
-        final Xml root = setup.getRoot();
+        final Collection<XmlReader> children;
+        final XmlReader root = setup.getRoot();
         if (root.hasChild(NODE_FEATURES))
         {
             children = setup.getRoot()
@@ -177,7 +177,7 @@ public final class FeaturableConfig
         }
         final List<Feature> features = new ArrayList<>(children.size());
 
-        for (final Xml featureNode : children)
+        for (final XmlReader featureNode : children)
         {
             final String className = featureNode.getText();
             final Feature feature;

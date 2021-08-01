@@ -150,7 +150,7 @@ public class Configurer
      * @param path The node path.
      * @return The node children.
      */
-    public final Collection<? extends XmlReader> getChildren(String node, String... path)
+    public final Collection<XmlReader> getChildren(String node, String... path)
     {
         final XmlReader reader = getNodeDefault(path);
         if (reader != null)

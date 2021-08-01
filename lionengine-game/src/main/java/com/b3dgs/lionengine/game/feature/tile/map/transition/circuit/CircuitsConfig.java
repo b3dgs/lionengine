@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 
 /**
@@ -65,11 +66,11 @@ public final class CircuitsConfig
     {
         Check.notNull(circuitsConfig);
 
-        final Xml root = new Xml(circuitsConfig);
-        final Collection<Xml> nodesCircuit = root.getChildren(NODE_CIRCUIT);
+        final XmlReader root = new XmlReader(circuitsConfig);
+        final Collection<XmlReader> nodesCircuit = root.getChildren(NODE_CIRCUIT);
         final Map<Circuit, Collection<Integer>> circuits = new HashMap<>(nodesCircuit.size());
 
-        for (final Xml nodeCircuit : nodesCircuit)
+        for (final XmlReader nodeCircuit : nodesCircuit)
         {
             final String groupIn = nodeCircuit.readString(ATT_GROUP_IN);
             final String groupOut = nodeCircuit.readString(ATT_GROUP_OUT);
@@ -77,7 +78,7 @@ public final class CircuitsConfig
             final CircuitType type = CircuitType.from(circuitType);
             final Circuit circuit = new Circuit(type, groupIn, groupOut);
 
-            final Collection<Xml> nodesTile = nodeCircuit.getChildren(TileConfig.NODE_TILE);
+            final Collection<XmlReader> nodesTile = nodeCircuit.getChildren(TileConfig.NODE_TILE);
             final Collection<Integer> tiles = importTiles(nodesTile);
             nodesTile.clear();
 
@@ -143,10 +144,10 @@ public final class CircuitsConfig
      * @param nodesTile The tiles nodes (must not be <code>null</code>).
      * @return The imported tiles.
      */
-    private static Collection<Integer> importTiles(Collection<Xml> nodesTile)
+    private static Collection<Integer> importTiles(Collection<XmlReader> nodesTile)
     {
         final Collection<Integer> tiles = new HashSet<>(nodesTile.size());
-        for (final Xml nodeTile : nodesTile)
+        for (final XmlReader nodeTile : nodesTile)
         {
             final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
             tiles.add(tile);

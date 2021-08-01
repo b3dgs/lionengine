@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the collisions formula.
@@ -55,11 +56,11 @@ public final class CollisionFormulaConfig
      */
     public static CollisionFormulaConfig imports(Media config)
     {
-        final Xml root = new Xml(config);
+        final XmlReader root = new XmlReader(config);
         final Map<String, CollisionFormula> collisions = new HashMap<>(0);
 
-        final Collection<Xml> children = root.getChildren(NODE_FORMULA);
-        for (final Xml node : children)
+        final Collection<XmlReader> children = root.getChildren(NODE_FORMULA);
+        for (final XmlReader node : children)
         {
             final String name = node.readString(ATT_NAME);
             final CollisionFormula collision = createCollision(node);
@@ -97,7 +98,7 @@ public final class CollisionFormulaConfig
      * @return The tile collision formula instance.
      * @throws LionEngineException If error when reading data.
      */
-    public static CollisionFormula createCollision(Xml node)
+    public static CollisionFormula createCollision(XmlReader node)
     {
         Check.notNull(node);
 
@@ -121,7 +122,7 @@ public final class CollisionFormulaConfig
         Check.notNull(root);
         Check.notNull(formula);
 
-        final Collection<Xml> children = root.getChildren(NODE_FORMULA);
+        final Collection<Xml> children = root.getChildrenXml(NODE_FORMULA);
         for (final Xml node : children)
         {
             if (node.readString(ATT_NAME).equals(formula))
@@ -140,14 +141,14 @@ public final class CollisionFormulaConfig
      * @return <code>true</code> if has formula, <code>false</code> else.
      * @throws LionEngineException If invalid argument.
      */
-    public static boolean has(Xml root, String formula)
+    public static boolean has(XmlReader root, String formula)
     {
         Check.notNull(root);
         Check.notNull(formula);
 
-        final Collection<Xml> children = root.getChildren(NODE_FORMULA);
+        final Collection<XmlReader> children = root.getChildren(NODE_FORMULA);
         boolean has = false;
-        for (final Xml node : children)
+        for (final XmlReader node : children)
         {
             if (node.readString(ATT_NAME).equals(formula))
             {

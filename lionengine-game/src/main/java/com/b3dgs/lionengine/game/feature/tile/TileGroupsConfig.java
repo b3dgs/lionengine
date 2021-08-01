@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the tile groups data.
@@ -61,12 +62,12 @@ public final class TileGroupsConfig
     {
         Check.notNull(groupsConfig);
 
-        final Xml nodeGroups = new Xml(groupsConfig);
+        final XmlReader nodeGroups = new XmlReader(groupsConfig);
 
-        final Collection<Xml> children = nodeGroups.getChildren(NODE_GROUP);
+        final Collection<XmlReader> children = nodeGroups.getChildren(NODE_GROUP);
         final Collection<TileGroup> groups = new ArrayList<>(children.size());
 
-        for (final Xml nodeGroup : children)
+        for (final XmlReader nodeGroup : children)
         {
             final TileGroup group = importGroup(nodeGroup);
             groups.add(group);
@@ -105,12 +106,12 @@ public final class TileGroupsConfig
      * @param nodeGroup The group node (must not be <code>null</code>).
      * @return The imported group.
      */
-    private static TileGroup importGroup(Xml nodeGroup)
+    private static TileGroup importGroup(XmlReader nodeGroup)
     {
-        final Collection<Xml> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
+        final Collection<XmlReader> children = nodeGroup.getChildren(TileConfig.NODE_TILE);
         final Set<Integer> tiles = new HashSet<>(children.size());
 
-        for (final Xml nodeTile : children)
+        for (final XmlReader nodeTile : children)
         {
             final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
             tiles.add(tile);
@@ -118,8 +119,8 @@ public final class TileGroupsConfig
         children.clear();
 
         final String groupName = nodeGroup.readString(ATT_GROUP_NAME);
-        final TileGroupType groupType = TileGroupType.from(nodeGroup.readString(TileGroupType.NONE.name(),
-                                                                                ATT_GROUP_TYPE));
+        final TileGroupType groupType = TileGroupType.from(nodeGroup.readStringDefault(TileGroupType.NONE.name(),
+                                                                                       ATT_GROUP_TYPE));
         return new TileGroup(groupName, groupType, tiles);
     }
 

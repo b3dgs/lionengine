@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Orientation;
 
 /**
@@ -49,7 +50,7 @@ public final class CollisionConstraintConfig
      * @return The collision constraint data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionConstraint imports(Xml node)
+    public static CollisionConstraint imports(XmlReader node)
     {
         Check.notNull(node);
 
@@ -57,8 +58,8 @@ public final class CollisionConstraintConfig
 
         if (node.hasChild(NODE_CONSTRAINT))
         {
-            final Collection<Xml> children = node.getChildren(NODE_CONSTRAINT);
-            for (final Xml current : children)
+            final Collection<XmlReader> children = node.getChildren(NODE_CONSTRAINT);
+            for (final XmlReader current : children)
             {
                 final Orientation orientation = Orientation.valueOf(current.readString(ATT_ORIENTATION));
                 final String group = current.readString(ATT_GROUP);

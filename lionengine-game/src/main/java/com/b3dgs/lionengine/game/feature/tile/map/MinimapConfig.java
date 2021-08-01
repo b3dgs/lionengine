@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.feature.tile.TileConfig;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 
@@ -64,16 +65,16 @@ public final class MinimapConfig
         Check.notNull(configMinimap);
 
         final Map<Integer, ColorRgba> colors = new HashMap<>();
-        final Xml nodeMinimap = new Xml(configMinimap);
+        final XmlReader nodeMinimap = new XmlReader(configMinimap);
 
-        final Collection<Xml> children = nodeMinimap.getChildren(NODE_COLOR);
-        for (final Xml nodeColor : children)
+        final Collection<XmlReader> children = nodeMinimap.getChildren(NODE_COLOR);
+        for (final XmlReader nodeColor : children)
         {
             final ColorRgba color = new ColorRgba(nodeColor.readInteger(ATT_COLOR_RED),
                                                   nodeColor.readInteger(ATT_COLOR_GREEN),
                                                   nodeColor.readInteger(ATT_COLOR_BLUE));
 
-            for (final Xml nodeTile : nodeColor.getChildren(TileConfig.NODE_TILE))
+            for (final XmlReader nodeTile : nodeColor.getChildren(TileConfig.NODE_TILE))
             {
                 final Integer tile = Integer.valueOf(TileConfig.imports(nodeTile));
                 colors.put(tile, color);

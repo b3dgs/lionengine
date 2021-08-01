@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ForceConfig;
 
@@ -55,12 +56,12 @@ public final class LaunchableConfig
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LaunchableConfig imports(Xml node)
+    public static LaunchableConfig imports(XmlReader node)
     {
         Check.notNull(node);
 
         final String media = node.readString(ATT_MEDIA);
-        final String sfx = node.readString(null, ATT_SFX);
+        final String sfx = node.readStringDefault(null, ATT_SFX);
         final int delay = node.readInteger(0, ATT_DELAY);
         final int ox = node.readInteger(0, ATT_OFFSET_X);
         final int oy = node.readInteger(0, ATT_OFFSET_Y);

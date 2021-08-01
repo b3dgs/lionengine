@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -60,17 +61,17 @@ public final class PathfindableConfig
     {
         Check.notNull(configurer);
 
-        final Xml root = configurer.getRoot();
+        final XmlReader root = configurer.getRoot();
         if (!root.hasChild(NODE_PATHFINDABLE))
         {
             return Collections.emptyMap();
         }
 
         final Map<String, PathData> categories = new HashMap<>(0);
-        final Xml nodePathfindable = root.getChild(NODE_PATHFINDABLE);
+        final XmlReader nodePathfindable = root.getChild(NODE_PATHFINDABLE);
 
-        final Collection<Xml> children = nodePathfindable.getChildren(NODE_PATH);
-        for (final Xml nodePath : children)
+        final Collection<XmlReader> children = nodePathfindable.getChildren(NODE_PATH);
+        for (final XmlReader nodePath : children)
         {
             final PathData data = importPathData(nodePath);
             categories.put(data.getName(), data);
@@ -107,7 +108,7 @@ public final class PathfindableConfig
      * @return The path data instance.
      * @throws LionEngineException If error when reading path data.
      */
-    public static PathData importPathData(Xml node)
+    public static PathData importPathData(XmlReader node)
     {
         Check.notNull(node);
 
@@ -145,7 +146,7 @@ public final class PathfindableConfig
      * @return The allowed movements.
      * @throws LionEngineException If malformed movement name.
      */
-    private static Collection<MovementTile> importAllowedMovements(Xml node)
+    private static Collection<MovementTile> importAllowedMovements(XmlReader node)
     {
         if (!node.hasChild(NODE_MOVEMENT))
         {
@@ -154,8 +155,8 @@ public final class PathfindableConfig
 
         final Collection<MovementTile> movements = EnumSet.noneOf(MovementTile.class);
 
-        final Collection<Xml> children = node.getChildren(NODE_MOVEMENT);
-        for (final Xml movementNode : children)
+        final Collection<XmlReader> children = node.getChildren(NODE_MOVEMENT);
+        for (final XmlReader movementNode : children)
         {
             try
             {

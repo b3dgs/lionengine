@@ -86,7 +86,7 @@ public final class CollisionConfig
 
         final Map<String, Collision> collisions = new HashMap<>(0);
 
-        final Collection<? extends XmlReader> children;
+        final Collection<XmlReader> children;
         if (root.hasChild(NODE_COLLISIONS))
         {
             children = root.getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);

@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the tile sheets data.
@@ -53,9 +54,9 @@ public final class TileSheetsConfig
      */
     public static TileSheetsConfig imports(Media configSheets)
     {
-        final Xml nodeSheets = new Xml(configSheets);
+        final XmlReader nodeSheets = new XmlReader(configSheets);
 
-        final Xml nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
+        final XmlReader nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
         final int tileWidth = nodeTileSize.readInteger(ATT_TILE_WIDTH);
         final int tileHeight = nodeTileSize.readInteger(ATT_TILE_HEIGHT);
 
@@ -96,12 +97,12 @@ public final class TileSheetsConfig
      * @param nodeSheets The sheets node (must not be <code>null</code>).
      * @return The sheets filename.
      */
-    private static List<String> importSheets(Xml nodeSheets)
+    private static List<String> importSheets(XmlReader nodeSheets)
     {
-        final Collection<Xml> children = nodeSheets.getChildren(NODE_TILE_SHEET);
+        final Collection<XmlReader> children = nodeSheets.getChildren(NODE_TILE_SHEET);
         final List<String> sheets = new ArrayList<>(children.size());
 
-        for (final Xml nodeSheet : children)
+        for (final XmlReader nodeSheet : children)
         {
             final String sheetFilename = nodeSheet.getText();
             sheets.add(sheetFilename);
