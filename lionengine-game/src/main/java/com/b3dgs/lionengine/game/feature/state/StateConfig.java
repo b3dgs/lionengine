@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -53,13 +54,13 @@ public final class StateConfig
      * @return The state value.
      * @throws LionEngineException If unable to read node.
      */
-    public static Optional<String> imports(Xml root)
+    public static Optional<String> imports(XmlReader root)
     {
         Check.notNull(root);
 
         if (root.hasChild(NODE_STATE))
         {
-            final Xml node = root.getChild(NODE_STATE);
+            final XmlReader node = root.getChild(NODE_STATE);
             return Optional.of(node.getText());
         }
         return Optional.empty();

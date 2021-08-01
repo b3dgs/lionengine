@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the size data.
@@ -59,11 +60,11 @@ public final class SizeConfig
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
-    public static SizeConfig imports(Xml root)
+    public static SizeConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_SIZE);
+        final XmlReader node = root.getChild(NODE_SIZE);
         final int width = node.readInteger(ATT_WIDTH);
         final int height = node.readInteger(ATT_HEIGHT);
 

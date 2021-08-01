@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -58,13 +59,13 @@ public final class FovableConfig
      * @return The data.
      * @throws LionEngineException If unable to read node.
      */
-    public static int imports(Xml root)
+    public static int imports(XmlReader root)
     {
         Check.notNull(root);
 
         if (root.hasChild(NODE_FOVABLE))
         {
-            final Xml node = root.getChild(NODE_FOVABLE);
+            final XmlReader node = root.getChild(NODE_FOVABLE);
             return node.readInteger(DEFAULT_FOV, ATT_FOV);
         }
         return DEFAULT_FOV;

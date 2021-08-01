@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -67,11 +68,11 @@ public final class AttackerConfig
      * @return The attacker data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
-    public static AttackerConfig imports(Xml root)
+    public static AttackerConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_ATTACKER);
+        final XmlReader node = root.getChild(NODE_ATTACKER);
         final int delay = node.readInteger(0, ATT_DELAY);
         final int distanceMin = node.readInteger(0, ATT_DISTANCE_MIN);
         final int distanceMax = node.readInteger(0, ATT_DISTANCE_MAX);

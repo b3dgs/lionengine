@@ -88,7 +88,7 @@ public final class CollidableFramedConfig
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollidableFramedConfig imports(Xml root)
+    public static CollidableFramedConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
@@ -96,12 +96,12 @@ public final class CollidableFramedConfig
 
         if (root.hasChild(AnimationConfig.NODE_ANIMATIONS))
         {
-            final Collection<Xml> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
-                                                 .getChildren(AnimationConfig.NODE_ANIMATION);
-            for (final Xml node : children)
+            final Collection<? extends XmlReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
+                                                                 .getChildren(AnimationConfig.NODE_ANIMATION);
+            for (final XmlReader node : children)
             {
                 final int start = node.readInteger(AnimationConfig.ANIMATION_START);
-                for (final Xml framed : node.getChildren(NODE_COLLISION_FRAMED))
+                for (final XmlReader framed : node.getChildren(NODE_COLLISION_FRAMED))
                 {
                     importFrame(node, framed, start, collisions);
                 }
@@ -146,7 +146,10 @@ public final class CollidableFramedConfig
      * @param start The collision start number.
      * @param collisions The imported collisions.
      */
-    private static void importFrame(Xml node, Xml framed, int start, Map<Integer, Collection<Collision>> collisions)
+    private static void importFrame(XmlReader node,
+                                    XmlReader framed,
+                                    int start,
+                                    Map<Integer, Collection<Collision>> collisions)
     {
         final String name = getFrameName(node, framed);
         if (framed.hasAttribute(ATT_NUMBER))
@@ -175,7 +178,7 @@ public final class CollidableFramedConfig
      * @param framed The framed node reference.
      * @return The frame name.
      */
-    private static String getFrameName(Xml node, Xml framed)
+    private static String getFrameName(XmlReader node, XmlReader framed)
     {
         final String anim = node.readString(AnimationConfig.ANIMATION_NAME);
         final String prefix = framed.readString(Constant.EMPTY_STRING, ATT_PREFIX);

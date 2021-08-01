@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the origin data from a configurer.
@@ -54,13 +55,13 @@ public final class OriginConfig
      * @return The origin value.
      * @throws LionEngineException If unable to read node.
      */
-    public static Origin imports(Xml root)
+    public static Origin imports(XmlReader root)
     {
         Check.notNull(root);
 
         if (root.hasChild(NODE_ORIGIN))
         {
-            final Xml node = root.getChild(NODE_ORIGIN);
+            final XmlReader node = root.getChild(NODE_ORIGIN);
             return Origin.valueOf(Optional.ofNullable(node.getText()).orElse(DEFAULT_ORIGIN.name()));
         }
         return DEFAULT_ORIGIN;

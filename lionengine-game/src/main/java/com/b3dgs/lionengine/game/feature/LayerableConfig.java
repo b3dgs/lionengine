@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -60,11 +61,11 @@ public final class LayerableConfig
      * @return The layerable data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
-    public static LayerableConfig imports(Xml root)
+    public static LayerableConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_LAYERABLE);
+        final XmlReader node = root.getChild(NODE_LAYERABLE);
         final int layerRefresh = node.readInteger(ATT_REFRESH);
         final int layerDisplay = node.readInteger(ATT_DISPLAY);
 

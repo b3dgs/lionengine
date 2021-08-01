@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -68,11 +69,11 @@ public final class ActionConfig
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ActionConfig imports(Xml root)
+    public static ActionConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml nodeAction = root.getChild(NODE_ACTION);
+        final XmlReader nodeAction = root.getChild(NODE_ACTION);
         final String name = nodeAction.readString(ATT_NAME);
         final String description = nodeAction.readString(ATT_DESCRIPTION);
         final int x = nodeAction.readInteger(ATT_X);

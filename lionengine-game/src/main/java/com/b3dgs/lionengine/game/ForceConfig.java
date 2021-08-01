@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the force data.
@@ -63,11 +64,11 @@ public final class ForceConfig
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Force imports(Xml root)
+    public static Force imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_FORCE);
+        final XmlReader node = root.getChild(NODE_FORCE);
 
         final Force force = new Force(node.readDouble(ATT_VX), node.readDouble(ATT_VY));
         force.setVelocity(node.readDouble(0.0, ATT_VELOCITY));

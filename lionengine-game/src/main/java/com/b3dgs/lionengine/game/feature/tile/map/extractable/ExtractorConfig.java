@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -59,11 +60,11 @@ public final class ExtractorConfig
      * @return The extractor data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ExtractorConfig imports(Xml root)
+    public static ExtractorConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_EXTRACTOR);
+        final XmlReader node = root.getChild(NODE_EXTRACTOR);
         final double extract = node.readDouble(0.0, ATT_EXTRACT);
         final double dropoff = node.readDouble(0.0, ATT_DROPOFF);
         final int capacity = node.readInteger(0, ATT_CAPACITY);

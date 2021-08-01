@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 
@@ -61,20 +62,21 @@ public final class CollisionCategoryConfig
      * @return The collisions category data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> imports(Xml root)
+    public static Collection<CollisionCategory> imports(XmlReader root)
     {
         Check.notNull(root);
 
         final Collection<CollisionCategory> categories = new ArrayList<>();
         if (root.hasChild(NODE_CATEGORIES))
         {
-            final Collection<Xml> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
-            for (final Xml node : childrenCategory)
+            final Collection<? extends XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES)
+                                                                         .getChildren(NODE_CATEGORY);
+            for (final XmlReader node : childrenCategory)
             {
-                final Collection<Xml> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
+                final Collection<? extends XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
                 final Collection<CollisionGroup> groups = new ArrayList<>(childrenGroup.size());
 
-                for (final Xml group : childrenGroup)
+                for (final XmlReader group : childrenGroup)
                 {
                     final String name = group.getText();
                     groups.add(new CollisionGroup(name, new ArrayList<>(0)));

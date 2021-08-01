@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Feature;
 
@@ -89,7 +90,7 @@ public final class FeaturableConfig
      * @return The featurable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static FeaturableConfig imports(Xml root)
+    public static FeaturableConfig imports(XmlReader root)
     {
         Check.notNull(root);
 

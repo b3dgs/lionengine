@@ -80,13 +80,13 @@ public final class CollisionConfig
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionConfig imports(Xml root)
+    public static CollisionConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
         final Map<String, Collision> collisions = new HashMap<>(0);
 
-        final Collection<Xml> children;
+        final Collection<? extends XmlReader> children;
         if (root.hasChild(NODE_COLLISIONS))
         {
             children = root.getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);
@@ -95,7 +95,7 @@ public final class CollisionConfig
         {
             children = Collections.emptyList();
         }
-        for (final Xml node : children)
+        for (final XmlReader node : children)
         {
             final String coll = node.readString(ATT_NAME);
             final Collision collision = createCollision(node);

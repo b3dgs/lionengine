@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Represents the frames data.
@@ -63,13 +64,13 @@ public final class FramesConfig
      * @return The frames data.
      * @throws LionEngineException If unable to read node or invalid integer.
      */
-    public static FramesConfig imports(Xml root)
+    public static FramesConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
         if (root.hasChild(NODE_FRAMES))
         {
-            final Xml node = root.getChild(NODE_FRAMES);
+            final XmlReader node = root.getChild(NODE_FRAMES);
             final int horizontals = node.readInteger(ATT_HORIZONTAL);
             final int verticals = node.readInteger(ATT_VERTICAL);
             final int offsetX = node.readInteger(0, ATT_OFFSET_X);

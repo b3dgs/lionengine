@@ -78,7 +78,7 @@ public final class AnimationConfig
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig imports(Xml root)
+    public static AnimationConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
@@ -86,8 +86,8 @@ public final class AnimationConfig
 
         if (root.hasChild(NODE_ANIMATIONS))
         {
-            final Collection<Xml> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
-            for (final Xml node : children)
+            final Collection<? extends XmlReader> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
+            for (final XmlReader node : children)
             {
                 final String anim = node.readString(ANIMATION_NAME);
                 final Animation animation = createAnimation(node);
