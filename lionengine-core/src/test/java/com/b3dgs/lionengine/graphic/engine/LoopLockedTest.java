@@ -173,19 +173,25 @@ final class LoopLockedTest
     void testUnready()
     {
         ScreenMock.setScreenWait(true);
+        try
+        {
+            final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
 
-        final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
+            final Thread thread = getTask(screen);
+            thread.start();
 
-        final Thread thread = getTask(screen);
-        thread.start();
+            assertTimeout(1000L, latch::await);
 
-        assertTimeout(1000L, latch::await);
+            loop.stop();
 
-        loop.stop();
-
-        assertTimeout(1000L, thread::join);
-        assertEquals(0, tick.get());
-        assertEquals(0, rendered.get());
-        assertEquals(-1, computed.get());
+            assertTimeout(1000L, thread::join);
+            assertEquals(0, tick.get());
+            assertEquals(0, rendered.get());
+            assertEquals(-1, computed.get());
+        }
+        finally
+        {
+            ScreenMock.setScreenWait(false);
+        }
     }
 }

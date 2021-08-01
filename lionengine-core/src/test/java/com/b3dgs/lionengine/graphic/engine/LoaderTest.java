@@ -17,12 +17,12 @@
 package com.b3dgs.lionengine.graphic.engine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
-import static com.b3dgs.lionengine.UtilAssert.assertFalse;
 import static com.b3dgs.lionengine.UtilAssert.assertNull;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
@@ -148,16 +148,16 @@ final class LoaderTest
     void testSequenceTimeout()
     {
         ScreenMock.setScreenWait(true);
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-
         try
         {
+            Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+
             assertThrows(() -> Loader.start(CONFIG, SequenceSingleMock.class).await(), "Unable to get screen ready !");
         }
         finally
         {
-            Verbose.info("****************************************************************************************");
             ScreenMock.setScreenWait(false);
+            Verbose.info("****************************************************************************************");
         }
     }
 
@@ -167,21 +167,21 @@ final class LoaderTest
     @Test
     void testSequenceRenderScreenUnready()
     {
-        final CountDownLatch waitUpdate = new CountDownLatch(1);
-        final CountDownLatch waitScreenUnready = new CountDownLatch(1);
-        final TaskFuture task = Loader.start(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
-
-        assertTimeout(1000L, waitUpdate::await);
-        ScreenMock.setScreenWait(true);
-        waitScreenUnready.countDown();
-
-        final AtomicReference<Throwable> throwable = new AtomicReference<>();
-        final Thread thread = new Thread(() -> task.await());
-        thread.setUncaughtExceptionHandler((e, t) -> throwable.set(t));
-        thread.start();
-
         try
         {
+            final CountDownLatch waitUpdate = new CountDownLatch(1);
+            final CountDownLatch waitScreenUnready = new CountDownLatch(1);
+            final TaskFuture task = Loader.start(CONFIG, SequenceScreenNotReady.class, waitUpdate, waitScreenUnready);
+
+            assertTimeout(1000L, waitUpdate::await);
+            ScreenMock.setScreenWait(true);
+            waitScreenUnready.countDown();
+
+            final AtomicReference<Throwable> throwable = new AtomicReference<>();
+            final Thread thread = new Thread(() -> task.await());
+            thread.setUncaughtExceptionHandler((e, t) -> throwable.set(t));
+            thread.start();
+
             assertTimeout(1000L, () -> thread.join(250L));
             assertNull(throwable.get());
         }
@@ -403,29 +403,29 @@ final class LoaderTest
     void testScreenInterrupted()
     {
         ScreenMock.setScreenWait(true);
-        final AtomicReference<Throwable> exception = new AtomicReference<>();
-        final Semaphore semaphore = new Semaphore(0);
-        final Thread thread = new Thread()
-        {
-            @Override
-            public void run()
-            {
-                final Screen screen = Graphics.createScreen(CONFIG);
-                screen.start();
-                screen.awaitReady();
-            }
-        };
-        thread.setUncaughtExceptionHandler((t, throwable) ->
-        {
-            exception.set(throwable);
-            semaphore.release();
-        });
-        thread.start();
-        UtilTests.pause(ScreenMock.READY_TIMEOUT / 2);
-        thread.interrupt();
-
         try
         {
+            final AtomicReference<Throwable> exception = new AtomicReference<>();
+            final Semaphore semaphore = new Semaphore(0);
+            final Thread thread = new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    final Screen screen = Graphics.createScreen(CONFIG);
+                    screen.start();
+                    screen.awaitReady();
+                }
+            };
+            thread.setUncaughtExceptionHandler((t, throwable) ->
+            {
+                exception.set(throwable);
+                semaphore.release();
+            });
+            thread.start();
+            UtilTests.pause(ScreenMock.READY_TIMEOUT / 2);
+            thread.interrupt();
+
             assertTimeout(ScreenMock.READY_TIMEOUT * 2, semaphore::acquire);
             assertEquals(LionEngineException.class.getName() + ": Unable to get screen ready !",
                          exception.get().toString());
@@ -459,13 +459,13 @@ final class LoaderTest
         final Thread thread = new Thread(() -> Loader.start(config, SequenceEngineTerminateMock.class).await());
         thread.start();
 
-        assertTimeout(1000L, () -> thread.join(50L));
-        assertTrue(thread.isAlive());
+        assertTimeout(10_000L, () -> thread.join(50L));
+        assertTimeout(10_000L, () -> assertTrue(thread.isAlive()));
 
         SequenceEngineTerminateMock.CLOSE.set(true);
 
-        assertTimeout(1000L, () -> thread.join(50L));
-        assertFalse(thread.isAlive());
+        assertTimeout(10_000L, () -> thread.join(50L));
+        assertTimeout(10_000L, () -> assertFalse(thread.isAlive()));
     }
 
     /**

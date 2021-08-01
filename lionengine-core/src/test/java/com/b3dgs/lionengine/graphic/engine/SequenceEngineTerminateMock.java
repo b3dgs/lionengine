@@ -43,7 +43,7 @@ final class SequenceEngineTerminateMock extends Sequence
     @Override
     public void load()
     {
-        Engine.terminate();
+        // Mock
     }
 
     @Override
@@ -59,5 +59,11 @@ final class SequenceEngineTerminateMock extends Sequence
     public void render(Graphic g)
     {
         // Mock
+    }
+
+    @Override
+    public void onTerminated(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

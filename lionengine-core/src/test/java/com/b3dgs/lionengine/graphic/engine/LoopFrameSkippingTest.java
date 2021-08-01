@@ -120,7 +120,6 @@ final class LoopFrameSkippingTest
         thread.start();
 
         assertTimeout(10_000L, thread::join);
-        assertEquals(maxTick.get(), tick.get());
         assertTrue(tick.get() >= maxTick.get(), tick.get() + " " + maxTick.get());
 
         final int expectedRate = screen.getConfig().getOutput().getRate();
@@ -257,19 +256,25 @@ final class LoopFrameSkippingTest
     void testUnready()
     {
         ScreenMock.setScreenWait(true);
+        try
+        {
+            final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
 
-        final Screen screen = new ScreenMock(new Config(new Resolution(320, 240, 50), 16, true));
+            final Thread thread = getTask(screen);
+            thread.start();
 
-        final Thread thread = getTask(screen);
-        thread.start();
+            assertTimeout(10_000L, latch::await);
 
-        assertTimeout(10_000L, latch::await);
+            loop.stop();
 
-        loop.stop();
-
-        assertTimeout(10_000L, thread::join);
-        assertEquals(0, tick.get());
-        assertEquals(0, rendered.get());
-        assertEquals(-1, computed.get());
+            assertTimeout(10_000L, thread::join);
+            assertEquals(0, tick.get());
+            assertEquals(0, rendered.get());
+            assertEquals(-1, computed.get());
+        }
+        finally
+        {
+            ScreenMock.setScreenWait(false);
+        }
     }
 }
