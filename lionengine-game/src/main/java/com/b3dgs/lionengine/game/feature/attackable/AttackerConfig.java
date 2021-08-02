@@ -73,11 +73,11 @@ public final class AttackerConfig
         Check.notNull(root);
 
         final XmlReader node = root.getChild(NODE_ATTACKER);
-        final int delay = node.readInteger(0, ATT_DELAY);
-        final int distanceMin = node.readInteger(0, ATT_DISTANCE_MIN);
-        final int distanceMax = node.readInteger(0, ATT_DISTANCE_MAX);
-        final int damagesMin = node.readInteger(0, ATT_DAMAGES_MIN);
-        final int damagesMax = node.readInteger(0, ATT_DAMAGES_MAX);
+        final int delay = node.getInteger(0, ATT_DELAY);
+        final int distanceMin = node.getInteger(0, ATT_DISTANCE_MIN);
+        final int distanceMax = node.getInteger(0, ATT_DISTANCE_MAX);
+        final int damagesMin = node.getInteger(0, ATT_DAMAGES_MIN);
+        final int damagesMax = node.getInteger(0, ATT_DAMAGES_MAX);
 
         return new AttackerConfig(delay, distanceMin, distanceMax, damagesMin, damagesMax);
     }

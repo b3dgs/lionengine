@@ -62,7 +62,7 @@ public final class PathfindingConfig
 
         for (final XmlReader node : childrenTile)
         {
-            final String name = node.readString(ATT_CATEGORY);
+            final String name = node.getString(ATT_CATEGORY);
             final Collection<XmlReader> childrenGroup = node.getChildren(TileGroupsConfig.NODE_GROUP);
             final Collection<String> groups = new HashSet<>(childrenGroup.size());
 

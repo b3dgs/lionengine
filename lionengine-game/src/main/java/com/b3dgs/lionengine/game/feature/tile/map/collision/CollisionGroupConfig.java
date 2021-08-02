@@ -74,7 +74,7 @@ public final class CollisionGroupConfig
             }
             childrenFormula.clear();
 
-            final String groupName = node.readString(ATT_GROUP);
+            final String groupName = node.getString(ATT_GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
@@ -111,7 +111,7 @@ public final class CollisionGroupConfig
             }
             childrenFormula.clear();
 
-            final String groupName = node.readString(ATT_GROUP);
+            final String groupName = node.getString(ATT_GROUP);
             final CollisionGroup collision = new CollisionGroup(groupName, formulas);
             groups.put(groupName, collision);
         }
@@ -157,7 +157,7 @@ public final class CollisionGroupConfig
         final Collection<Xml> children = root.getChildrenXml(NODE_COLLISION);
         for (final Xml node : children)
         {
-            if (node.readString(ATT_GROUP).equals(group))
+            if (node.getString(ATT_GROUP).equals(group))
             {
                 root.removeChild(node);
             }
@@ -182,7 +182,7 @@ public final class CollisionGroupConfig
         boolean has = false;
         for (final XmlReader node : children)
         {
-            if (node.readString(ATT_GROUP).equals(group))
+            if (node.getString(ATT_GROUP).equals(group))
             {
                 has = true;
                 break;

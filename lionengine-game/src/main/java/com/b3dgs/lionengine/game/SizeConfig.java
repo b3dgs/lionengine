@@ -65,8 +65,8 @@ public final class SizeConfig
         Check.notNull(root);
 
         final XmlReader node = root.getChild(NODE_SIZE);
-        final int width = node.readInteger(ATT_WIDTH);
-        final int height = node.readInteger(ATT_HEIGHT);
+        final int width = node.getInteger(ATT_WIDTH);
+        final int height = node.getInteger(ATT_HEIGHT);
 
         return new SizeConfig(width, height);
     }

@@ -72,9 +72,9 @@ public final class CircuitsConfig
 
         for (final XmlReader nodeCircuit : nodesCircuit)
         {
-            final String groupIn = nodeCircuit.readString(ATT_GROUP_IN);
-            final String groupOut = nodeCircuit.readString(ATT_GROUP_OUT);
-            final String circuitType = nodeCircuit.readString(ATT_CIRCUIT_TYPE);
+            final String groupIn = nodeCircuit.getString(ATT_GROUP_IN);
+            final String groupOut = nodeCircuit.getString(ATT_GROUP_OUT);
+            final String circuitType = nodeCircuit.getString(ATT_CIRCUIT_TYPE);
             final CircuitType type = CircuitType.from(circuitType);
             final Circuit circuit = new Circuit(type, groupIn, groupOut);
 
@@ -128,7 +128,7 @@ public final class CircuitsConfig
         {
             final Circuit circuit = entry.getKey();
             final Xml nodeCircuit = nodeCircuits.createChild(NODE_CIRCUIT);
-            nodeCircuit.writeString(ATT_CIRCUIT_TYPE, circuit.getType().name());
+            nodeCircuit.writeEnum(ATT_CIRCUIT_TYPE, circuit.getType());
             nodeCircuit.writeString(ATT_GROUP_IN, circuit.getIn());
             nodeCircuit.writeString(ATT_GROUP_OUT, circuit.getOut());
 

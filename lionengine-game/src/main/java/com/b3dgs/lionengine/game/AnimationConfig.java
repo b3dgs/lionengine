@@ -84,12 +84,12 @@ public final class AnimationConfig
 
         final Map<String, Animation> animations = new HashMap<>(0);
 
-        if (root.hasChild(NODE_ANIMATIONS))
+        if (root.hasNode(NODE_ANIMATIONS))
         {
             final Collection<XmlReader> children = root.getChild(NODE_ANIMATIONS).getChildren(NODE_ANIMATION);
             for (final XmlReader node : children)
             {
-                final String anim = node.readString(ANIMATION_NAME);
+                final String anim = node.getString(ANIMATION_NAME);
                 final Animation animation = createAnimation(node);
                 animations.put(anim, animation);
             }
@@ -110,12 +110,12 @@ public final class AnimationConfig
     {
         Check.notNull(node);
 
-        final String name = node.readString(ANIMATION_NAME);
-        final int start = node.readInteger(ANIMATION_START);
-        final int end = node.readInteger(ANIMATION_END);
-        final double speed = node.readDouble(ANIMATION_SPEED);
-        final boolean reversed = node.readBoolean(ANIMATION_REVERSED);
-        final boolean repeat = node.readBoolean(ANIMATION_REPEAT);
+        final String name = node.getString(ANIMATION_NAME);
+        final int start = node.getInteger(ANIMATION_START);
+        final int end = node.getInteger(ANIMATION_END);
+        final double speed = node.getDouble(ANIMATION_SPEED);
+        final boolean reversed = node.getBoolean(ANIMATION_REVERSED);
+        final boolean repeat = node.getBoolean(ANIMATION_REPEAT);
 
         return new Animation(name, start, end, speed, reversed, repeat);
     }
@@ -133,9 +133,9 @@ public final class AnimationConfig
         Check.notNull(animation);
 
         final Xml animations;
-        if (root.hasChild(NODE_ANIMATIONS))
+        if (root.hasNode(NODE_ANIMATIONS))
         {
-            animations = root.getChild(NODE_ANIMATIONS);
+            animations = root.getChildXml(NODE_ANIMATIONS);
         }
         else
         {

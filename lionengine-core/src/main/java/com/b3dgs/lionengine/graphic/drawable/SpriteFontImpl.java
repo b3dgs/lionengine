@@ -153,10 +153,10 @@ final class SpriteFontImpl implements SpriteFont
 
         for (final XmlReader node : children)
         {
-            final double width = node.readDouble("width");
-            final double height = node.readDouble("height");
+            final double width = node.getDouble("width");
+            final double height = node.getDouble("height");
             final FontCharData data = new FontCharData(id, width, height);
-            final String c = node.readString("char");
+            final String c = node.getString("char");
             fontData.put(Character.valueOf(c.charAt(0)), data);
             id++;
         }

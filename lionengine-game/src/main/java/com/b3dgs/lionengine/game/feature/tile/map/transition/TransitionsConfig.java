@@ -68,9 +68,9 @@ public final class TransitionsConfig
 
         for (final XmlReader nodeTransition : nodesTransition)
         {
-            final String groupIn = nodeTransition.readString(ATTRIBUTE_GROUP_IN);
-            final String groupOut = nodeTransition.readString(ATTRIBUTE_GROUP_OUT);
-            final String transitionType = nodeTransition.readString(ATTRIBUTE_TRANSITION_TYPE);
+            final String groupIn = nodeTransition.getString(ATTRIBUTE_GROUP_IN);
+            final String groupOut = nodeTransition.getString(ATTRIBUTE_GROUP_OUT);
+            final String transitionType = nodeTransition.getString(ATTRIBUTE_TRANSITION_TYPE);
             final TransitionType type = TransitionType.from(transitionType);
             final Transition transition = new Transition(type, groupIn, groupOut);
 
@@ -127,7 +127,7 @@ public final class TransitionsConfig
             final Transition transition = entry.getKey();
 
             final Xml nodeTransition = nodeTransitions.createChild(NODE_TRANSITION);
-            nodeTransition.writeString(ATTRIBUTE_TRANSITION_TYPE, transition.getType().name());
+            nodeTransition.writeEnum(ATTRIBUTE_TRANSITION_TYPE, transition.getType());
             nodeTransition.writeString(ATTRIBUTE_GROUP_IN, transition.getIn());
             nodeTransition.writeString(ATTRIBUTE_GROUP_OUT, transition.getOut());
 

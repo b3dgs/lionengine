@@ -70,9 +70,9 @@ public final class MinimapConfig
         final Collection<XmlReader> children = nodeMinimap.getChildren(NODE_COLOR);
         for (final XmlReader nodeColor : children)
         {
-            final ColorRgba color = new ColorRgba(nodeColor.readInteger(ATT_COLOR_RED),
-                                                  nodeColor.readInteger(ATT_COLOR_GREEN),
-                                                  nodeColor.readInteger(ATT_COLOR_BLUE));
+            final ColorRgba color = new ColorRgba(nodeColor.getInteger(ATT_COLOR_RED),
+                                                  nodeColor.getInteger(ATT_COLOR_GREEN),
+                                                  nodeColor.getInteger(ATT_COLOR_BLUE));
 
             for (final XmlReader nodeTile : nodeColor.getChildren(TileConfig.NODE_TILE))
             {

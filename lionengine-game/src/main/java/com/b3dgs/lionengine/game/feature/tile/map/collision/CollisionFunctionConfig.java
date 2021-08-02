@@ -55,22 +55,21 @@ public final class CollisionFunctionConfig
         Check.notNull(parent);
 
         final XmlReader node = parent.getChild(FUNCTION);
-        final String name = node.readString(TYPE);
+        final CollisionFunctionType type = node.getEnum(CollisionFunctionType.class, TYPE);
         try
         {
-            final CollisionFunctionType type = CollisionFunctionType.valueOf(name);
             switch (type)
             {
                 case LINEAR:
-                    return new CollisionFunctionLinear(node.readDouble(A), node.readDouble(B));
+                    return new CollisionFunctionLinear(node.getDouble(A), node.getDouble(B));
                 // $CASES-OMITTED$
                 default:
-                    throw new LionEngineException(ERROR_TYPE + name);
+                    throw new LionEngineException(type);
             }
         }
         catch (final IllegalArgumentException | NullPointerException exception)
         {
-            throw new LionEngineException(exception, ERROR_TYPE + name);
+            throw new LionEngineException(exception, ERROR_TYPE + type);
         }
     }
 
@@ -90,13 +89,13 @@ public final class CollisionFunctionConfig
         if (function instanceof CollisionFunctionLinear)
         {
             final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
-            node.writeString(TYPE, CollisionFunctionType.LINEAR.name());
+            node.writeEnum(TYPE, CollisionFunctionType.LINEAR);
             node.writeDouble(A, linear.getA());
             node.writeDouble(B, linear.getB());
         }
         else
         {
-            node.writeString(TYPE, String.valueOf(function.getType()));
+            node.writeEnum(TYPE, function.getType());
         }
     }
 

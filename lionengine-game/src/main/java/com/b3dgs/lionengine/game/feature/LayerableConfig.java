@@ -66,8 +66,8 @@ public final class LayerableConfig
         Check.notNull(root);
 
         final XmlReader node = root.getChild(NODE_LAYERABLE);
-        final int layerRefresh = node.readInteger(ATT_REFRESH);
-        final int layerDisplay = node.readInteger(ATT_DISPLAY);
+        final int layerRefresh = node.getInteger(ATT_REFRESH);
+        final int layerDisplay = node.getInteger(ATT_DISPLAY);
 
         return new LayerableConfig(layerRefresh, layerDisplay);
     }

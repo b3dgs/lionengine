@@ -76,7 +76,7 @@ public final class ActionsConfig
     {
         Check.notNull(root);
 
-        if (!root.hasChild(NODE_ACTIONS))
+        if (!root.hasNode(NODE_ACTIONS))
         {
             return Collections.emptyList();
         }
@@ -133,9 +133,9 @@ public final class ActionsConfig
 
         for (final XmlReader action : children)
         {
-            final String path = action.readString(ATT_PATH);
-            final boolean cancel = action.readBoolean(false, ATT_CANCEL);
-            final boolean unique = action.readBoolean(false, ATT_UNIQUE);
+            final String path = action.getString(ATT_PATH);
+            final boolean cancel = action.getBoolean(false, ATT_CANCEL);
+            final boolean unique = action.getBoolean(false, ATT_UNIQUE);
             actions.add(new ActionRef(path, cancel, getRefs(action, id), unique ? id : null));
         }
         children.clear();

@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Test {@link Configurer}.
@@ -63,7 +64,7 @@ final class ConfigurerTest
     {
         assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(null);
-        Configurer.clearCache();
+        XmlReader.clearCache();
     }
 
     /**
@@ -182,8 +183,8 @@ final class ConfigurerTest
     @Test
     void testGetBooleanDefault()
     {
-        assertFalse(configurer.getBooleanDefault(true, "attStr"));
-        assertTrue(configurer.getBooleanDefault(true, "void"));
+        assertFalse(configurer.getBoolean(true, "attStr"));
+        assertTrue(configurer.getBoolean(true, "void"));
     }
 
     /**
@@ -201,8 +202,8 @@ final class ConfigurerTest
     @Test
     void testGetIntegerDefault()
     {
-        assertEquals(1, configurer.getIntegerDefault(2, "attInt"));
-        assertEquals(2, configurer.getIntegerDefault(2, "void"));
+        assertEquals(1, configurer.getInteger(2, "attInt"));
+        assertEquals(2, configurer.getInteger(2, "void"));
     }
 
     /**
@@ -211,7 +212,7 @@ final class ConfigurerTest
     @Test
     void testGetIntegerInvalid()
     {
-        assertThrows(() -> configurer.getInteger("attStr"), "[configurer.xml] ");
+        assertThrows(() -> configurer.getInteger("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
     }
 
     /**
@@ -220,7 +221,7 @@ final class ConfigurerTest
     @Test
     void testGetIntegerDefaultInvalid()
     {
-        assertThrows(() -> configurer.getIntegerDefault(1, "attStr"), "[configurer.xml] ");
+        assertThrows(() -> configurer.getInteger(1, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
     }
 
     /**
@@ -238,9 +239,9 @@ final class ConfigurerTest
     @Test
     void testGetDoubleDefault()
     {
-        assertEquals(1.0, configurer.getDoubleDefault(2.0, "attInt"));
+        assertEquals(1.0, configurer.getDouble(2.0, "attInt"));
 
-        assertEquals(2.0, configurer.getDoubleDefault(2.0, "void"));
+        assertEquals(2.0, configurer.getDouble(2.0, "void"));
     }
 
     /**
@@ -249,7 +250,7 @@ final class ConfigurerTest
     @Test
     void testGetDoubleInvalid()
     {
-        assertThrows(() -> configurer.getDouble("attStr"), "[configurer.xml] ");
+        assertThrows(() -> configurer.getDouble("attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
     }
 
     /**
@@ -258,7 +259,7 @@ final class ConfigurerTest
     @Test
     void testGetDoubleDefaultInvalid()
     {
-        assertThrows(() -> configurer.getDoubleDefault(1.0, "attStr"), "[configurer.xml] ");
+        assertThrows(() -> configurer.getDouble(1.0, "attStr"), XmlReader.ERROR_ATTRIBUTE + "attStr");
     }
 
     /**
@@ -288,7 +289,7 @@ final class ConfigurerTest
     @Test
     void testNodeNotFound()
     {
-        assertThrows(() -> configurer.getText("void", "null"), "[configurer.xml] ");
+        assertThrows(() -> configurer.getText("void", "null"), XmlReader.ERROR_NODE + "[void, null]");
     }
 
     /**

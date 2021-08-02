@@ -69,9 +69,9 @@ public final class CollidableConfig
 
         if (configurer.hasNode(NODE_COLLIDABLE))
         {
-            final Integer group = Integer.valueOf(configurer.getIntegerDefault(DEFAULT_GROUP.intValue(),
-                                                                               ATT_GROUP,
-                                                                               NODE_COLLIDABLE));
+            final Integer group = Integer.valueOf(configurer.getInteger(DEFAULT_GROUP.intValue(),
+                                                                        ATT_GROUP,
+                                                                        NODE_COLLIDABLE));
             final String accepted = configurer.getStringDefault(Constant.EMPTY_STRING, ATT_ACCEPTED, NODE_COLLIDABLE);
             final Collection<Integer> acceptedGroups;
             if (accepted.isEmpty())

@@ -62,7 +62,7 @@ public final class CollisionFormulaConfig
         final Collection<XmlReader> children = root.getChildren(NODE_FORMULA);
         for (final XmlReader node : children)
         {
-            final String name = node.readString(ATT_NAME);
+            final String name = node.getString(ATT_NAME);
             final CollisionFormula collision = createCollision(node);
             collisions.put(name, collision);
         }
@@ -102,7 +102,7 @@ public final class CollisionFormulaConfig
     {
         Check.notNull(node);
 
-        final String name = node.readString(ATT_NAME);
+        final String name = node.getString(ATT_NAME);
         final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.NODE_RANGE));
         final CollisionFunction function = CollisionFunctionConfig.imports(node);
         final CollisionConstraint constraint = CollisionConstraintConfig.imports(node);
@@ -125,7 +125,7 @@ public final class CollisionFormulaConfig
         final Collection<Xml> children = root.getChildrenXml(NODE_FORMULA);
         for (final Xml node : children)
         {
-            if (node.readString(ATT_NAME).equals(formula))
+            if (node.getString(ATT_NAME).equals(formula))
             {
                 root.removeChild(node);
             }
@@ -150,7 +150,7 @@ public final class CollisionFormulaConfig
         boolean has = false;
         for (final XmlReader node : children)
         {
-            if (node.readString(ATT_NAME).equals(formula))
+            if (node.getString(ATT_NAME).equals(formula))
             {
                 has = true;
                 break;

@@ -60,11 +60,11 @@ public final class LaunchableConfig
     {
         Check.notNull(node);
 
-        final String media = node.readString(ATT_MEDIA);
-        final String sfx = node.readStringDefault(null, ATT_SFX);
-        final int delay = node.readInteger(0, ATT_DELAY);
-        final int ox = node.readInteger(0, ATT_OFFSET_X);
-        final int oy = node.readInteger(0, ATT_OFFSET_Y);
+        final String media = node.getString(ATT_MEDIA);
+        final String sfx = node.getStringDefault(null, ATT_SFX);
+        final int delay = node.getInteger(0, ATT_DELAY);
+        final int ox = node.getInteger(0, ATT_OFFSET_X);
+        final int oy = node.getInteger(0, ATT_OFFSET_Y);
 
         return new LaunchableConfig(media, sfx, delay, ox, oy, ForceConfig.imports(node));
     }

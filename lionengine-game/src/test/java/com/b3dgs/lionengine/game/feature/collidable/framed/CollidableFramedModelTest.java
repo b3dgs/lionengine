@@ -76,7 +76,8 @@ final class CollidableFramedModelTest
         final Xml root = new Xml(config);
         AnimationConfig.exports(root, new Animation("anim", 1, 2, 1.0, false, false));
 
-        final Xml framed = root.getChild(AnimationConfig.NODE_ANIMATIONS).getChild(AnimationConfig.NODE_ANIMATION);
+        final Xml framed = root.getChildXml(AnimationConfig.NODE_ANIMATIONS)
+                               .getChildXml(AnimationConfig.NODE_ANIMATION);
         CollidableFramedConfig.exports(framed, collisions);
 
         root.save(config);

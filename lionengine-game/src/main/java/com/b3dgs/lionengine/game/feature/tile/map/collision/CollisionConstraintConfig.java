@@ -56,13 +56,13 @@ public final class CollisionConstraintConfig
 
         final CollisionConstraint constraint = new CollisionConstraint();
 
-        if (node.hasChild(NODE_CONSTRAINT))
+        if (node.hasNode(NODE_CONSTRAINT))
         {
             final Collection<XmlReader> children = node.getChildren(NODE_CONSTRAINT);
             for (final XmlReader current : children)
             {
-                final Orientation orientation = Orientation.valueOf(current.readString(ATT_ORIENTATION));
-                final String group = current.readString(ATT_GROUP);
+                final Orientation orientation = current.getEnum(Orientation.class, ATT_ORIENTATION);
+                final String group = current.getString(ATT_GROUP);
                 constraint.add(orientation, group);
             }
             children.clear();
@@ -90,7 +90,7 @@ public final class CollisionConstraintConfig
             for (final String group : entry.getValue())
             {
                 final Xml current = root.createChild(NODE_CONSTRAINT);
-                current.writeString(ATT_ORIENTATION, orientation.name());
+                current.writeEnum(ATT_ORIENTATION, orientation);
                 current.writeString(ATT_GROUP, group);
             }
         }

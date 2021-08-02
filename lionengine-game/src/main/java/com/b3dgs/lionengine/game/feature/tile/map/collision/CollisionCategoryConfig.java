@@ -67,7 +67,7 @@ public final class CollisionCategoryConfig
         Check.notNull(root);
 
         final Collection<CollisionCategory> categories = new ArrayList<>();
-        if (root.hasChild(NODE_CATEGORIES))
+        if (root.hasNode(NODE_CATEGORIES))
         {
             final Collection<XmlReader> childrenCategory = root.getChild(NODE_CATEGORIES).getChildren(NODE_CATEGORY);
             for (final XmlReader node : childrenCategory)
@@ -82,11 +82,11 @@ public final class CollisionCategoryConfig
                 }
                 childrenGroup.clear();
 
-                final String name = node.readString(ATT_NAME);
-                final Axis axis = Axis.valueOf(node.readString(ATT_AXIS));
-                final int x = node.readInteger(ATT_X);
-                final int y = node.readInteger(ATT_Y);
-                final boolean glue = node.readBoolean(true, ATT_GLUE);
+                final String name = node.getString(ATT_NAME);
+                final Axis axis = node.getEnum(Axis.class, ATT_AXIS);
+                final int x = node.getInteger(ATT_X);
+                final int y = node.getInteger(ATT_Y);
+                final boolean glue = node.getBoolean(true, ATT_GLUE);
 
                 final CollisionCategory category = new CollisionCategory(name, axis, x, y, glue, groups);
                 categories.add(category);
@@ -148,7 +148,7 @@ public final class CollisionCategoryConfig
         }
         children.clear();
 
-        final String axisName = root.readString(ATT_AXIS);
+        final String axisName = root.getString(ATT_AXIS);
         final Axis axis;
         try
         {
@@ -159,10 +159,10 @@ public final class CollisionCategoryConfig
             throw new LionEngineException(exception, ERROR_AXIS + axisName);
         }
 
-        final int x = root.readInteger(ATT_X);
-        final int y = root.readInteger(ATT_Y);
-        final boolean glue = root.readBoolean(true, ATT_GLUE);
-        final String name = root.readString(ATT_NAME);
+        final int x = root.getInteger(ATT_X);
+        final int y = root.getInteger(ATT_Y);
+        final boolean glue = root.getBoolean(true, ATT_GLUE);
+        final String name = root.getString(ATT_NAME);
 
         return new CollisionCategory(name, axis, x, y, glue, groups);
     }
@@ -180,9 +180,9 @@ public final class CollisionCategoryConfig
         Check.notNull(category);
 
         final Xml categories;
-        if (root.hasChild(NODE_CATEGORIES))
+        if (root.hasNode(NODE_CATEGORIES))
         {
-            categories = root.getChild(NODE_CATEGORIES);
+            categories = root.getChildXml(NODE_CATEGORIES);
         }
         else
         {
@@ -191,7 +191,7 @@ public final class CollisionCategoryConfig
 
         final Xml node = categories.createChild(NODE_CATEGORY);
         node.writeString(ATT_NAME, category.getName());
-        node.writeString(ATT_AXIS, category.getAxis().name());
+        node.writeEnum(ATT_AXIS, category.getAxis());
         node.writeInteger(ATT_X, category.getOffsetX());
         node.writeInteger(ATT_Y, category.getOffsetY());
         node.writeBoolean(ATT_GLUE, category.isGlue());

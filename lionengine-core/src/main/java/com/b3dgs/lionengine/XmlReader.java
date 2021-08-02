@@ -18,6 +18,8 @@ package com.b3dgs.lionengine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,12 +43,30 @@ import org.w3c.dom.NodeList;
  */
 public class XmlReader implements AttributesReader
 {
+    /** Attribute error. */
+    public static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
     /** Node error. */
-    static final String ERROR_NODE = "Node not found: ";
+    public static final String ERROR_NODE = "Node not found: ";
+    /** Enum error. */
+    public static final String ERROR_ENUM = "No corresponding enum: ";
     /** Error when reading the file. */
     static final String ERROR_READING = "An error occured while reading";
-    /** Attribute error. */
-    static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
+    /** Class instance error. */
+    private static final String ERROR_CLASS_INSTANCE = "Class instantiation error: ";
+    /** Class constructor error. */
+    private static final String ERROR_CLASS_CONSTRUCTOR = "Class constructor error: ";
+    /** Class not found error. */
+    private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
+    /** Class cache. */
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
+
+    /**
+     * Clear classes cache.
+     */
+    public static void clearCache()
+    {
+        CLASS_CACHE.clear();
+    }
 
     /** Document. */
     protected final Document document;
@@ -117,26 +137,14 @@ public class XmlReader implements AttributesReader
         this.root = root;
     }
 
-    /**
-     * Get the node text value.
-     * 
-     * @param path The node path.
-     * @return The node text value.
-     * @throws LionEngineException If unable to read node.
-     */
+    @Override
     public String getText(String... path)
     {
         final XmlReader node = getNode(path);
         return node.getText();
     }
 
-    /**
-     * Get the node text value.
-     * 
-     * @param defaultValue The value used if node does not exist.
-     * @param path The node path.
-     * @return The node text value.
-     */
+    @Override
     public String getTextDefault(String defaultValue, String... path)
     {
         final XmlReader node = getNodeDefault(path);
@@ -148,65 +156,65 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public boolean readBoolean(String attribute, String... path)
+    public boolean getBoolean(String attribute, String... path)
     {
         return Boolean.parseBoolean(getNodeString(attribute, path));
     }
 
     @Override
-    public boolean readBoolean(boolean defaultValue, String attribute, String... path)
+    public boolean getBoolean(boolean defaultValue, String attribute, String... path)
     {
         return Boolean.parseBoolean(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
     @Override
-    public Optional<Boolean> readBooleanOptional(String attribute, String... path)
+    public Optional<Boolean> getBooleanOptional(String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
-            return Optional.of(Boolean.valueOf(readBoolean(attribute, path)));
+            return Optional.of(Boolean.valueOf(getBoolean(attribute, path)));
         }
         return Optional.empty();
     }
 
     @Override
-    public byte readByte(String attribute, String... path)
+    public byte getByte(String attribute, String... path)
     {
         return Byte.parseByte(getNodeString(attribute, path));
     }
 
     @Override
-    public byte readByte(byte defaultValue, String attribute, String... path)
+    public byte getByte(byte defaultValue, String attribute, String... path)
     {
         return Byte.parseByte(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
     @Override
-    public char readChar(String attribute, String... path)
+    public char getChar(String attribute, String... path)
     {
         return getNodeString(attribute, path).charAt(0);
     }
 
     @Override
-    public char readChar(byte defaultValue, String attribute, String... path)
+    public char getChar(byte defaultValue, String attribute, String... path)
     {
         return getNodeStringDefault(String.valueOf(defaultValue), attribute, path).charAt(0);
     }
 
     @Override
-    public short readShort(String attribute, String... path)
+    public short getShort(String attribute, String... path)
     {
         return Short.parseShort(getNodeString(attribute, path));
     }
 
     @Override
-    public short readShort(short defaultValue, String attribute, String... path)
+    public short getShort(short defaultValue, String attribute, String... path)
     {
         return Short.parseShort(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
     @Override
-    public int readInteger(String attribute, String... path)
+    public int getInteger(String attribute, String... path)
     {
         try
         {
@@ -219,7 +227,7 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public int readInteger(int defaultValue, String attribute, String... path)
+    public int getInteger(int defaultValue, String attribute, String... path)
     {
         try
         {
@@ -232,17 +240,17 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public OptionalInt readIntegerOptional(String attribute, String... path)
+    public OptionalInt getIntegerOptional(String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
-            return OptionalInt.of(readInteger(attribute, path));
+            return OptionalInt.of(getInteger(attribute, path));
         }
         return OptionalInt.empty();
     }
 
     @Override
-    public long readLong(String attribute, String... path)
+    public long getLong(String attribute, String... path)
     {
         try
         {
@@ -255,7 +263,7 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public long readLong(long defaultValue, String attribute, String... path)
+    public long getLong(long defaultValue, String attribute, String... path)
     {
         try
         {
@@ -268,29 +276,29 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public OptionalLong readLongOptional(String attribute, String... path)
+    public OptionalLong getLongOptional(String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
-            return OptionalLong.of(readLong(attribute, path));
+            return OptionalLong.of(getLong(attribute, path));
         }
         return OptionalLong.empty();
     }
 
     @Override
-    public float readFloat(String attribute, String... path)
+    public float getFloat(String attribute, String... path)
     {
         return Float.parseFloat(getNodeString(attribute, path));
     }
 
     @Override
-    public float readFloat(float defaultValue, String attribute, String... path)
+    public float getFloat(float defaultValue, String attribute, String... path)
     {
         return Float.parseFloat(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
     }
 
     @Override
-    public double readDouble(String attribute, String... path)
+    public double getDouble(String attribute, String... path)
     {
         try
         {
@@ -303,7 +311,7 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public double readDouble(double defaultValue, String attribute, String... path)
+    public double getDouble(double defaultValue, String attribute, String... path)
     {
         try
         {
@@ -316,45 +324,45 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public OptionalDouble readDoubleOptional(String attribute, String... path)
+    public OptionalDouble getDoubleOptional(String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
-            return OptionalDouble.of(readDouble(attribute, path));
+            return OptionalDouble.of(getDouble(attribute, path));
         }
         return OptionalDouble.empty();
     }
 
     @Override
-    public String readString(String attribute, String... path)
+    public String getString(String attribute, String... path)
     {
         return getNodeString(attribute, path);
     }
 
     @Override
-    public String readStringDefault(String defaultValue, String attribute, String... path)
+    public String getStringDefault(String defaultValue, String attribute, String... path)
     {
         return getNodeStringDefault(defaultValue, attribute, path);
     }
 
     @Override
-    public Optional<String> readStringOptional(String attribute, String... path)
+    public Optional<String> getStringOptional(String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
-            return Optional.ofNullable(readString(attribute, path));
+            return Optional.ofNullable(getString(attribute, path));
         }
         return Optional.empty();
     }
 
     @Override
-    public Media readMedia(String attribute, String... path)
+    public Media getMedia(String attribute, String... path)
     {
         return Medias.create(getNodeString(attribute, path));
     }
 
     @Override
-    public Optional<Media> readMediaOptional(String attribute, String... path)
+    public Optional<Media> getMediaOptional(String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
@@ -364,64 +372,124 @@ public class XmlReader implements AttributesReader
     }
 
     @Override
-    public <E extends Enum<E>> E readEnum(Class<E> type, String attribute, String... path)
+    public <E extends Enum<E>> E getEnum(Class<E> type, String attribute, String... path)
     {
+        final String value = getNodeString(attribute, path);
         try
         {
-            return Enum.valueOf(type, getNodeString(attribute, path));
+            return Enum.valueOf(type, value);
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, attribute);
+            throw new LionEngineException(exception, ERROR_ENUM + value);
         }
     }
 
     @Override
-    public <E extends Enum<E>> Optional<E> readEnumOptional(Class<E> type, String attribute, String... path)
+    public <E extends Enum<E>> E getEnum(Class<E> type, E defaultValue, String attribute, String... path)
+    {
+        final String value = getNodeStringDefault(defaultValue.name(), attribute, path);
+        try
+        {
+            return Enum.valueOf(type, value);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_ENUM + value);
+        }
+    }
+
+    @Override
+    public <E extends Enum<E>> Optional<E> getEnumOptional(Class<E> type, String attribute, String... path)
     {
         if (hasAttribute(attribute, path))
         {
-            return Optional.of(readEnum(type, attribute, path));
+            return Optional.of(getEnum(type, attribute, path));
         }
         return Optional.empty();
     }
 
     @Override
-    public <T> T readImplementation(Class<T> type, String... path)
+    public <T> T getImplementation(Class<T> type, String... path)
     {
-        return readImplementation(getClass().getClassLoader(), type, path);
+        return getImplementation(getClass().getClassLoader(), type, path);
     }
 
     @Override
-    public <T> T readImplementation(ClassLoader loader, Class<T> type, String... path)
+    public <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
     {
-        return readImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
+        return getImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
     }
 
     @Override
-    public <T> T readImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    public <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
     {
-        return readImplementation(type, new Class<?>[]
+        return getImplementation(type, new Class<?>[]
         {
             paramType
         }, Arrays.asList(paramValue), path);
     }
 
     @Override
-    public <T> T readImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
+    public <T> T getImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
     {
-        return readImplementation(getClass().getClassLoader(), type, paramsType, paramsValue, path);
+        return getImplementation(getClass().getClassLoader(), type, paramsType, paramsValue, path);
     }
 
     @Override
-    public <T> T readImplementation(ClassLoader loader,
-                                    Class<T> type,
-                                    Class<?>[] paramsType,
-                                    Collection<?> paramsValue,
-                                    String... path)
+    public <T> T getImplementation(ClassLoader loader,
+                                   Class<T> type,
+                                   Class<?>[] paramsType,
+                                   Collection<?> paramsValue,
+                                   String... path)
     {
         final String className = getText(path).trim();
-        return readImplementation(loader, type, paramsType, paramsValue, className);
+        return getImplementation(loader, type, paramsType, paramsValue, className);
+    }
+
+    /**
+     * Get the class implementation from its name by using a custom constructor.
+     * 
+     * @param <T> The instance type.
+     * @param loader The class loader to use.
+     * @param type The class type.
+     * @param paramsType The parameters type.
+     * @param paramsValue The parameters value.
+     * @param className The class name.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    private static <T> T getImplementation(ClassLoader loader,
+                                           Class<T> type,
+                                           Class<?>[] paramsType,
+                                           Collection<?> paramsValue,
+                                           String className)
+    {
+        try
+        {
+            if (!CLASS_CACHE.containsKey(className))
+            {
+                final Class<?> clazz = loader.loadClass(className);
+                CLASS_CACHE.put(className, clazz);
+            }
+
+            final Class<?> clazz = CLASS_CACHE.get(className);
+            final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
+            UtilReflection.setAccessible(constructor, true);
+            return type.cast(constructor.newInstance(paramsValue.toArray()));
+        }
+        catch (final InstantiationException | IllegalArgumentException | InvocationTargetException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
+        }
+        catch (final NoSuchMethodException | IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR + className);
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
+        }
     }
 
     @Override
@@ -430,7 +498,7 @@ public class XmlReader implements AttributesReader
         XmlReader node = this;
         for (final String element : path)
         {
-            if (!node.hasChild(element))
+            if (!node.hasNode(element))
             {
                 return false;
             }
@@ -454,6 +522,25 @@ public class XmlReader implements AttributesReader
         return root.hasAttribute(attribute);
     }
 
+    @Override
+    public boolean hasNode(String child, String... path)
+    {
+        final XmlReader node = getNodeDefault(path);
+        if (node != null)
+        {
+            final NodeList list = root.getChildNodes();
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                final Node current = list.item(i);
+                if (current.getNodeName().equals(child))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Get the name of the current node.
      * 
@@ -469,7 +556,7 @@ public class XmlReader implements AttributesReader
      * 
      * @return The text.
      */
-    public String getText()
+    private String getText()
     {
         return root.getTextContent();
     }
@@ -492,38 +579,14 @@ public class XmlReader implements AttributesReader
         return attributes;
     }
 
-    /**
-     * Check if node has the following child.
-     * 
-     * @param child The child name (can be <code>null</code>).
-     * @return <code>true</code> if child exists, <code>false</code> else.
-     */
-    public boolean hasChild(String child)
-    {
-        final NodeList list = root.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            final Node node = list.item(i);
-            if (node.getNodeName().equals(child))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Get a child node from its name.
-     * 
-     * @param name The child name (must not be <code>null</code>).
-     * @return The child node reference.
-     * @throws LionEngineException If no node is found at this child name.
-     */
-    public XmlReader getChild(String name)
+    @Override
+    public XmlReader getChild(String name, String... path)
     {
         Check.notNull(name);
 
-        final NodeList list = root.getChildNodes();
+        final XmlReader xml = getNode(path);
+
+        final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
@@ -535,15 +598,12 @@ public class XmlReader implements AttributesReader
         throw new LionEngineException(ERROR_NODE + name);
     }
 
-    /**
-     * Get a child node from its name.
-     * 
-     * @param name The child name (can be <code>null</code>).
-     * @return The child node reference.
-     */
-    public Optional<XmlReader> getChildOptional(String name)
+    @Override
+    public Optional<XmlReader> getChildOptional(String name, String... path)
     {
-        final NodeList list = root.getChildNodes();
+        final XmlReader xml = getNode(path);
+
+        final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
@@ -555,19 +615,15 @@ public class XmlReader implements AttributesReader
         return Optional.empty();
     }
 
-    /**
-     * Get the list of all children with this name.
-     * 
-     * @param name The children name (must not be <code>null</code>).
-     * @return The children list.
-     * @throws LionEngineException If invalid argument.
-     */
-    public Collection<XmlReader> getChildren(String name)
+    @Override
+    public Collection<XmlReader> getChildren(String name, String... path)
     {
         Check.notNull(name);
 
         final Collection<XmlReader> nodes = new ArrayList<>(1);
-        final NodeList list = root.getChildNodes();
+        final XmlReader xml = getNode(path);
+
+        final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
@@ -627,7 +683,7 @@ public class XmlReader implements AttributesReader
             }
             catch (final LionEngineException exception)
             {
-                throw new LionEngineException(exception, Arrays.toString(path));
+                throw new LionEngineException(exception, ERROR_NODE + Arrays.toString(path));
             }
         }
         return node;
@@ -644,7 +700,7 @@ public class XmlReader implements AttributesReader
         XmlReader node = this;
         for (final String element : path)
         {
-            if (!node.hasChild(element))
+            if (!node.hasNode(element))
             {
                 return null;
             }
@@ -691,7 +747,7 @@ public class XmlReader implements AttributesReader
         final String value;
         if (node != null && node.hasAttribute(attribute))
         {
-            value = node.readString(attribute);
+            value = node.getString(attribute);
         }
         else if (Constant.NULL.equals(defaultValue))
         {

@@ -89,7 +89,8 @@ final class CollidableFramedConfigTest
         final Animation animation = new Animation("anim", 1, 2, 3.0, false, true);
         AnimationConfig.exports(root, animation);
 
-        final Xml framed = root.getChild(AnimationConfig.NODE_ANIMATIONS).getChild(AnimationConfig.NODE_ANIMATION);
+        final Xml framed = root.getChildXml(AnimationConfig.NODE_ANIMATIONS)
+                               .getChildXml(AnimationConfig.NODE_ANIMATION);
         CollidableFramedConfig.exports(framed, collisions);
 
         final Media media = Medias.create("Object.xml");
@@ -115,11 +116,12 @@ final class CollidableFramedConfigTest
         final Animation animation = new Animation("anim", 1, 2, 3.0, false, true);
         AnimationConfig.exports(root, animation);
 
-        final Xml framed = root.getChild(AnimationConfig.NODE_ANIMATIONS).getChild(AnimationConfig.NODE_ANIMATION);
+        final Xml framed = root.getChildXml(AnimationConfig.NODE_ANIMATIONS)
+                               .getChildXml(AnimationConfig.NODE_ANIMATION);
         CollidableFramedConfig.exports(framed, collisions);
-        framed.getChild(CollidableFramedConfig.NODE_COLLISION_FRAMED)
+        framed.getChildXml(CollidableFramedConfig.NODE_COLLISION_FRAMED)
               .removeAttribute(CollidableFramedConfig.ATT_NUMBER);
-        framed.getChild(CollidableFramedConfig.NODE_COLLISION_FRAMED)
+        framed.getChildXml(CollidableFramedConfig.NODE_COLLISION_FRAMED)
               .writeString(CollidableFramedConfig.ATT_PREFIX, "coll");
 
         final Media media = Medias.create("Object.xml");

@@ -70,9 +70,9 @@ public final class ForceConfig
 
         final XmlReader node = root.getChild(NODE_FORCE);
 
-        final Force force = new Force(node.readDouble(ATT_VX), node.readDouble(ATT_VY));
-        force.setVelocity(node.readDouble(0.0, ATT_VELOCITY));
-        force.setSensibility(node.readDouble(0.0, ATT_SENSIBILITY));
+        final Force force = new Force(node.getDouble(ATT_VX), node.getDouble(ATT_VY));
+        force.setVelocity(node.getDouble(0.0, ATT_VELOCITY));
+        force.setSensibility(node.getDouble(0.0, ATT_SENSIBILITY));
 
         return force;
     }

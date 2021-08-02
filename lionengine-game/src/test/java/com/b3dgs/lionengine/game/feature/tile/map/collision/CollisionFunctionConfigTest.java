@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.game.feature.tile.map.collision;
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertPrivateConstructor;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
+import static com.b3dgs.lionengine.UtilAssert.assertThrowsNpe;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Test {@link CollisionFunctionConfig}.
@@ -71,7 +73,7 @@ final class CollisionFunctionConfigTest
     void testExportFunctionNull()
     {
         final Xml root = new Xml("null");
-        CollisionFunctionConfig.exports(root, new CollisionFunction()
+        assertThrowsNpe(() -> CollisionFunctionConfig.exports(root, new CollisionFunction()
         {
             @Override
             public CollisionFunctionType getType()
@@ -96,9 +98,7 @@ final class CollisionFunctionConfigTest
             {
                 return 0;
             }
-        });
-
-        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "null");
+        }));
     }
 
     /**
@@ -110,9 +110,9 @@ final class CollisionFunctionConfigTest
         final Xml root = new Xml("function");
         final CollisionFunction function = new CollisionFunctionLinear(2.0, 3.0);
         CollisionFunctionConfig.exports(root, function);
-        root.getChild(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE, "void");
+        root.getChildXml(CollisionFunctionConfig.FUNCTION).writeString(CollisionFunctionConfig.TYPE, "void");
 
-        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "void");
+        assertThrows(() -> CollisionFunctionConfig.imports(root), XmlReader.ERROR_ENUM + "void");
     }
 
     /**
@@ -125,7 +125,7 @@ final class CollisionFunctionConfigTest
         root.createChild(CollisionFunctionConfig.FUNCTION)
             .writeString(CollisionFunctionConfig.TYPE, CollisionFunctionType.values()[1].name());
 
-        assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown type: FAIL");
+        assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown enum: FAIL");
     }
 
     /**
@@ -162,6 +162,6 @@ final class CollisionFunctionConfigTest
             }
         });
 
-        assertThrows(() -> CollisionFunctionConfig.imports(root), CollisionFunctionConfig.ERROR_TYPE + "FAIL");
+        assertThrows(() -> CollisionFunctionConfig.imports(root), "Unknown enum: FAIL");
     }
 }

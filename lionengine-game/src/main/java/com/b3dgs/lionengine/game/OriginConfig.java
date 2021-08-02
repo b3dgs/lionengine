@@ -59,7 +59,7 @@ public final class OriginConfig
     {
         Check.notNull(root);
 
-        if (root.hasChild(NODE_ORIGIN))
+        if (root.hasNode(NODE_ORIGIN))
         {
             final XmlReader node = root.getChild(NODE_ORIGIN);
             return Origin.valueOf(Optional.ofNullable(node.getText()).orElse(DEFAULT_ORIGIN.name()));

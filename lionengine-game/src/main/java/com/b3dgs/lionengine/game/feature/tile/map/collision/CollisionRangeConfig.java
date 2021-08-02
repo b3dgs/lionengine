@@ -58,20 +58,19 @@ public final class CollisionRangeConfig
     {
         Check.notNull(node);
 
-        final String axisName = node.readString(ATT_AXIS);
+        final Axis axis = node.getEnum(Axis.class, ATT_AXIS);
         try
         {
-            final Axis axis = Axis.valueOf(axisName);
-            final int minX = node.readInteger(ATT_MIN_X);
-            final int maxX = node.readInteger(ATT_MAX_X);
-            final int minY = node.readInteger(ATT_MIN_Y);
-            final int maxY = node.readInteger(ATT_MAX_Y);
+            final int minX = node.getInteger(ATT_MIN_X);
+            final int maxX = node.getInteger(ATT_MAX_X);
+            final int minY = node.getInteger(ATT_MIN_Y);
+            final int maxY = node.getInteger(ATT_MAX_Y);
 
             return new CollisionRange(axis, minX, maxX, minY, maxY);
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(exception, ERROR_TYPE + axisName);
+            throw new LionEngineException(exception, ERROR_TYPE + axis);
         }
     }
 
@@ -88,7 +87,7 @@ public final class CollisionRangeConfig
         Check.notNull(range);
 
         final Xml node = root.createChild(NODE_RANGE);
-        node.writeString(ATT_AXIS, range.getOutput().name());
+        node.writeEnum(ATT_AXIS, range.getOutput());
         node.writeInteger(ATT_MIN_X, range.getMinX());
         node.writeInteger(ATT_MIN_Y, range.getMinY());
         node.writeInteger(ATT_MAX_X, range.getMaxX());

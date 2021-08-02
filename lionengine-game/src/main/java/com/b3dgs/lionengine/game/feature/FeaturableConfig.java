@@ -95,7 +95,7 @@ public final class FeaturableConfig
         Check.notNull(root);
 
         final String clazz;
-        if (root.hasChild(ATT_CLASS))
+        if (root.hasNode(ATT_CLASS))
         {
             clazz = root.getChild(ATT_CLASS).getText();
         }
@@ -105,7 +105,7 @@ public final class FeaturableConfig
         }
 
         final String setup;
-        if (root.hasChild(ATT_SETUP))
+        if (root.hasNode(ATT_SETUP))
         {
             setup = root.getChild(ATT_SETUP).getText();
         }
@@ -165,7 +165,7 @@ public final class FeaturableConfig
     {
         final Collection<XmlReader> children;
         final XmlReader root = setup.getRoot();
-        if (root.hasChild(NODE_FEATURES))
+        if (root.hasNode(NODE_FEATURES))
         {
             children = setup.getRoot()
                             .getChild(FeaturableConfig.NODE_FEATURES)

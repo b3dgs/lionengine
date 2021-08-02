@@ -177,8 +177,8 @@ final class CollisionCategoryConfigTest
         final Xml root = new Xml("categories");
         CollisionCategoryConfig.exports(root, category);
 
-        root.getChild(CollisionCategoryConfig.NODE_CATEGORIES)
-            .getChild(CollisionCategoryConfig.NODE_CATEGORY)
+        root.getChildXml(CollisionCategoryConfig.NODE_CATEGORIES)
+            .getChildXml(CollisionCategoryConfig.NODE_CATEGORY)
             .writeString(CollisionCategoryConfig.ATT_AXIS, "void");
 
         assertThrows(() -> CollisionCategoryConfig.imports(root.getChild(CollisionCategoryConfig.NODE_CATEGORIES)

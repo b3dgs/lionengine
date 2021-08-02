@@ -58,7 +58,7 @@ public final class StateConfig
     {
         Check.notNull(root);
 
-        if (root.hasChild(NODE_STATE))
+        if (root.hasNode(NODE_STATE))
         {
             final XmlReader node = root.getChild(NODE_STATE);
             return Optional.of(node.getText());

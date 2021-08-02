@@ -57,8 +57,8 @@ public final class TileSheetsConfig
         final XmlReader nodeSheets = new XmlReader(configSheets);
 
         final XmlReader nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
-        final int tileWidth = nodeTileSize.readInteger(ATT_TILE_WIDTH);
-        final int tileHeight = nodeTileSize.readInteger(ATT_TILE_HEIGHT);
+        final int tileWidth = nodeTileSize.getInteger(ATT_TILE_WIDTH);
+        final int tileHeight = nodeTileSize.getInteger(ATT_TILE_HEIGHT);
 
         final List<String> sheets = importSheets(nodeSheets);
 

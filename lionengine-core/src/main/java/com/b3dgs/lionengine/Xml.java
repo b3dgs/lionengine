@@ -19,6 +19,7 @@ package com.b3dgs.lionengine;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.xml.transform.OutputKeys;
@@ -310,6 +311,18 @@ public class Xml extends XmlReader
     }
 
     /**
+     * Write an enum.
+     * 
+     * @param attribute The attribute name (must not be <code>null</code>).
+     * @param content The enum value.
+     * @throws LionEngineException If error when writing.
+     */
+    public void writeEnum(String attribute, Enum<?> content)
+    {
+        write(attribute, content.name());
+    }
+
+    /**
      * Remove attribute.
      * 
      * @param attribute The attribute to remove (must not be <code>null</code>).
@@ -330,7 +343,7 @@ public class Xml extends XmlReader
      */
     public void removeChild(String child)
     {
-        final Xml node = getChild(child);
+        final Xml node = getChildXml(child);
         root.removeChild(node.getElement());
     }
 
@@ -404,16 +417,45 @@ public class Xml extends XmlReader
         return nodes;
     }
 
-    /*
-     * XmlReader
+    /**
+     * Get the node at the following path.
+     * 
+     * @param path The node path.
+     * @return The node found.
+     * @throws LionEngineException If node not found.
      */
+    private Xml getNode(String... path)
+    {
+        Xml node = this;
+        for (final String element : path)
+        {
+            try
+            {
+                node = node.getChildXml(element);
+            }
+            catch (final LionEngineException exception)
+            {
+                throw new LionEngineException(exception, Arrays.toString(path));
+            }
+        }
+        return node;
+    }
 
-    @Override
-    public Xml getChild(String name)
+    /**
+     * Get a child node from its name.
+     * 
+     * @param name The child name (must not be <code>null</code>).
+     * @param path The node path (child list).
+     * @return The child node reference.
+     * @throws LionEngineException If no node is found at this child name.
+     */
+    public Xml getChildXml(String name, String... path)
     {
         Check.notNull(name);
 
-        final NodeList list = root.getChildNodes();
+        final XmlReader xml = getNode(path);
+
+        final NodeList list = xml.root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);

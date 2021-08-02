@@ -87,7 +87,7 @@ public final class CollisionConfig
         final Map<String, Collision> collisions = new HashMap<>(0);
 
         final Collection<XmlReader> children;
-        if (root.hasChild(NODE_COLLISIONS))
+        if (root.hasNode(NODE_COLLISIONS))
         {
             children = root.getChild(NODE_COLLISIONS).getChildren(NODE_COLLISION);
         }
@@ -97,7 +97,7 @@ public final class CollisionConfig
         }
         for (final XmlReader node : children)
         {
-            final String coll = node.readString(ATT_NAME);
+            final String coll = node.getString(ATT_NAME);
             final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
@@ -117,12 +117,12 @@ public final class CollisionConfig
     {
         Check.notNull(node);
 
-        final String name = node.readString(ATT_NAME);
-        final int offsetX = node.readInteger(ATT_OFFSETX);
-        final int offsetY = node.readInteger(ATT_OFFSETY);
-        final int width = node.readInteger(ATT_WIDTH);
-        final int height = node.readInteger(ATT_HEIGHT);
-        final boolean mirror = node.readBoolean(DEFAULT_MIRROR, ATT_MIRROR);
+        final String name = node.getString(ATT_NAME);
+        final int offsetX = node.getInteger(ATT_OFFSETX);
+        final int offsetY = node.getInteger(ATT_OFFSETY);
+        final int width = node.getInteger(ATT_WIDTH);
+        final int height = node.getInteger(ATT_HEIGHT);
+        final boolean mirror = node.getBoolean(DEFAULT_MIRROR, ATT_MIRROR);
 
         return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
@@ -139,9 +139,9 @@ public final class CollisionConfig
         Check.notNull(collision);
 
         final Xml collisions;
-        if (root.hasChild(NODE_COLLISIONS))
+        if (root.hasNode(NODE_COLLISIONS))
         {
-            collisions = root.getChild(NODE_COLLISIONS);
+            collisions = root.getChildXml(NODE_COLLISIONS);
         }
         else
         {

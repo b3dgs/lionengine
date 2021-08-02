@@ -74,12 +74,12 @@ public final class ActionConfig
         Check.notNull(root);
 
         final XmlReader nodeAction = root.getChild(NODE_ACTION);
-        final String name = nodeAction.readString(ATT_NAME);
-        final String description = nodeAction.readString(ATT_DESCRIPTION);
-        final int x = nodeAction.readInteger(ATT_X);
-        final int y = nodeAction.readInteger(ATT_Y);
-        final int width = nodeAction.readInteger(ATT_WIDTH);
-        final int height = nodeAction.readInteger(ATT_HEIGHT);
+        final String name = nodeAction.getString(ATT_NAME);
+        final String description = nodeAction.getString(ATT_DESCRIPTION);
+        final int x = nodeAction.getInteger(ATT_X);
+        final int y = nodeAction.getInteger(ATT_Y);
+        final int width = nodeAction.getInteger(ATT_WIDTH);
+        final int height = nodeAction.getInteger(ATT_HEIGHT);
 
         return new ActionConfig(name, description, x, y, width, height);
     }

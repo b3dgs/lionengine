@@ -94,13 +94,13 @@ public final class CollidableFramedConfig
 
         final Map<Integer, Collection<Collision>> collisions = new HashMap<>(0);
 
-        if (root.hasChild(AnimationConfig.NODE_ANIMATIONS))
+        if (root.hasNode(AnimationConfig.NODE_ANIMATIONS))
         {
             final Collection<XmlReader> children = root.getChild(AnimationConfig.NODE_ANIMATIONS)
-                                                                 .getChildren(AnimationConfig.NODE_ANIMATION);
+                                                       .getChildren(AnimationConfig.NODE_ANIMATION);
             for (final XmlReader node : children)
             {
-                final int start = node.readInteger(AnimationConfig.ANIMATION_START);
+                final int start = node.getInteger(AnimationConfig.ANIMATION_START);
                 for (final XmlReader framed : node.getChildren(NODE_COLLISION_FRAMED))
                 {
                     importFrame(node, framed, start, collisions);
@@ -154,14 +154,14 @@ public final class CollidableFramedConfig
         final String name = getFrameName(node, framed);
         if (framed.hasAttribute(ATT_NUMBER))
         {
-            final int number = start + framed.readInteger(ATT_NUMBER);
+            final int number = start + framed.getInteger(ATT_NUMBER);
             final Collision collision = createCollision(name, framed, number - start);
             final Integer key = Integer.valueOf(number - 1);
             collisions.computeIfAbsent(key, k -> new ArrayList<>()).add(collision);
         }
         else
         {
-            final int end = node.readInteger(AnimationConfig.ANIMATION_END);
+            final int end = node.getInteger(AnimationConfig.ANIMATION_END);
             for (int number = start; number <= end; number++)
             {
                 final Collision collision = createCollision(name, framed, number - start + 1);
@@ -180,8 +180,8 @@ public final class CollidableFramedConfig
      */
     private static String getFrameName(XmlReader node, XmlReader framed)
     {
-        final String anim = node.readString(AnimationConfig.ANIMATION_NAME);
-        final String prefix = framed.readStringDefault(Constant.EMPTY_STRING, ATT_PREFIX);
+        final String anim = node.getString(AnimationConfig.ANIMATION_NAME);
+        final String prefix = framed.getStringDefault(Constant.EMPTY_STRING, ATT_PREFIX);
         if (prefix.isEmpty())
         {
             return anim;
@@ -202,11 +202,11 @@ public final class CollidableFramedConfig
     {
         Check.notNull(node);
 
-        final int offsetX = node.readInteger(ATT_OFFSETX);
-        final int offsetY = node.readInteger(ATT_OFFSETY);
-        final int width = node.readInteger(ATT_WIDTH);
-        final int height = node.readInteger(ATT_HEIGHT);
-        final boolean mirror = node.readBoolean(DEFAULT_MIRROR, ATT_MIRROR);
+        final int offsetX = node.getInteger(ATT_OFFSETX);
+        final int offsetY = node.getInteger(ATT_OFFSETY);
+        final int width = node.getInteger(ATT_WIDTH);
+        final int height = node.getInteger(ATT_HEIGHT);
+        final boolean mirror = node.getBoolean(DEFAULT_MIRROR, ATT_MIRROR);
 
         return new Collision(name + FRAME_SEPARATOR + number, offsetX, offsetY, width, height, mirror);
     }

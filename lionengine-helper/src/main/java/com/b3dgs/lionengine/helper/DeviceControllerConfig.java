@@ -139,8 +139,8 @@ public final class DeviceControllerConfig
 
             for (final XmlReader deviceNode : configurer.getChildren(NODE_DEVICE))
             {
-                final Class<DevicePush> device = (Class<DevicePush>) loader.loadClass(deviceNode.readString(ATT_CLASS));
-                final boolean disabled = deviceNode.readBoolean(false, ATT_DISABLED);
+                final Class<DevicePush> device = (Class<DevicePush>) loader.loadClass(deviceNode.getString(ATT_CLASS));
+                final boolean disabled = deviceNode.getBoolean(false, ATT_DISABLED);
                 final Optional<DeviceAxis> horizontal = readAxis(deviceNode, NODE_HORIZONTAL);
                 final Optional<DeviceAxis> vertical = readAxis(deviceNode, NODE_VERTICAL);
                 final Map<Integer, Set<Integer>> fire = readFire(mapping, deviceNode);
@@ -167,9 +167,9 @@ public final class DeviceControllerConfig
         final Map<Integer, Set<Integer>> fire = new HashMap<>();
         for (final XmlReader nodeFire : node.getChildren(NODE_FIRE))
         {
-            final DeviceMapper mapper = findEnum(mapping, nodeFire.readString(ATT_INDEX));
+            final DeviceMapper mapper = findEnum(mapping, nodeFire.getString(ATT_INDEX));
             final Integer index = mapper.getIndex();
-            final Integer positive = Integer.valueOf(nodeFire.readInteger(ATT_POSITIVE));
+            final Integer positive = Integer.valueOf(nodeFire.getInteger(ATT_POSITIVE));
             Set<Integer> codes = fire.get(index);
             if (codes == null)
             {
@@ -210,11 +210,11 @@ public final class DeviceControllerConfig
      */
     private static Optional<DeviceAxis> readAxis(XmlReader node, String nodeAxis)
     {
-        if (node.hasChild(nodeAxis))
+        if (node.hasNode(nodeAxis))
         {
             final XmlReader horizontal = node.getChild(nodeAxis);
-            final Integer positive = Integer.valueOf(horizontal.readInteger(ATT_POSITIVE));
-            final Integer negative = Integer.valueOf(horizontal.readInteger(ATT_NEGATIVE));
+            final Integer positive = Integer.valueOf(horizontal.getInteger(ATT_POSITIVE));
+            final Integer negative = Integer.valueOf(horizontal.getInteger(ATT_NEGATIVE));
             return Optional.of(new DeviceAxis(positive, negative));
         }
         return Optional.empty();

@@ -23,6 +23,7 @@ import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Test {@link CollisionRangeConfig}.
@@ -61,9 +62,9 @@ final class CollisionRangeConfigTest
         final CollisionRange range = new CollisionRange(Axis.X, 0, 1, 2, 3);
         CollisionRangeConfig.exports(root, range);
 
-        root.getChild(CollisionRangeConfig.NODE_RANGE).writeString(CollisionRangeConfig.ATT_AXIS, "void");
+        root.getChildXml(CollisionRangeConfig.NODE_RANGE).writeString(CollisionRangeConfig.ATT_AXIS, "void");
 
         assertThrows(() -> CollisionRangeConfig.imports(root.getChild(CollisionRangeConfig.NODE_RANGE)),
-                     CollisionRangeConfig.ERROR_TYPE + "void");
+                     XmlReader.ERROR_ENUM + "void");
     }
 }

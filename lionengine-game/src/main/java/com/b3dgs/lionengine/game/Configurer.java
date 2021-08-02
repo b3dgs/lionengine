@@ -16,51 +16,24 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 
+import com.b3dgs.lionengine.AttributesReader;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.XmlReader;
 
 /**
  * Allows to retrieve informations from an external XML configuration file.
  */
-public class Configurer
+public class Configurer implements AttributesReader
 {
-    /** Class instance error. */
-    private static final String ERROR_CLASS_INSTANCE = "Class instantiation error: ";
-    /** Class constructor error. */
-    private static final String ERROR_CLASS_CONSTRUCTOR = "Class constructor error: ";
-    /** Class not found error. */
-    private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
-    /** Enum error. */
-    private static final String ERROR_ENUM = "No corresponding enum: ";
-    /** Enum error. */
-    private static final String ERROR_NODE = "Node not found: ";
-    /** Class cache. */
-    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
-
-    /**
-     * Clear classes cache.
-     */
-    public static void clearCache()
-    {
-        CLASS_CACHE.clear();
-    }
-
     /** Media reference. */
     private final Media media;
     /** Root path. */
@@ -125,558 +98,247 @@ public class Configurer
         return media;
     }
 
-    /**
-     * Get the node child.
-     * 
-     * @param node The node name.
-     * @param path The node path.
-     * @return The node child.
-     * @throws LionEngineException If node not found.
-     */
-    public final XmlReader getChild(String node, String... path)
+    @Override
+    public String getText(String... path)
     {
-        final XmlReader child = getNodeDefault(path);
-        if (child != null && child.hasChild(node))
-        {
-            return child.getChild(node);
-        }
-        throw new LionEngineException(ERROR_NODE + node);
+        return root.getText(path);
     }
 
-    /**
-     * Get the node children.
-     * 
-     * @param node The node name.
-     * @param path The node path.
-     * @return The node children.
-     */
-    public final Collection<XmlReader> getChildren(String node, String... path)
+    @Override
+    public String getTextDefault(String defaultValue, String... path)
     {
-        final XmlReader reader = getNodeDefault(path);
-        if (reader != null)
-        {
-            return reader.getChildren(node);
-        }
-        return Collections.emptyList();
+        return root.getTextDefault(defaultValue, path);
     }
 
-    /**
-     * Get the node text value.
-     * 
-     * @param path The node path.
-     * @return The node text value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final String getText(String... path)
+    @Override
+    public boolean getBoolean(String attribute, String... path)
     {
-        final Xml node = getNode(path);
-        return node.getText();
+        return root.getBoolean(attribute, path);
     }
 
-    /**
-     * Get the node text value.
-     * 
-     * @param defaultValue The value used if node does not exist.
-     * @param path The node path.
-     * @return The node text value.
-     */
-    public final String getTextDefault(String defaultValue, String... path)
+    @Override
+    public boolean getBoolean(boolean defaultValue, String attribute, String... path)
     {
-        final Xml node = getNodeDefault(path);
-        if (node != null)
-        {
-            return node.getText();
-        }
-        return defaultValue;
+        return root.getBoolean(defaultValue, attribute, path);
     }
 
-    /**
-     * Get a string in the xml tree.
-     * 
-     * @param attribute The attribute to get as string.
-     * @param path The node path (child list).
-     * @return The string value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final String getString(String attribute, String... path)
+    @Override
+    public Optional<Boolean> getBooleanOptional(String attribute, String... path)
     {
-        return getNodeString(attribute, path);
+        return root.getBooleanOptional(attribute, path);
     }
 
-    /**
-     * Get a string in the xml tree.
-     * 
-     * @param defaultValue The value used if node does not exist.
-     * @param attribute The attribute to get as string.
-     * @param path The node path (child list).
-     * @return The string value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final String getStringDefault(String defaultValue, String attribute, String... path)
+    @Override
+    public byte getByte(String attribute, String... path)
     {
-        return getNodeStringDefault(defaultValue, attribute, path);
+        return root.getByte(attribute, path);
     }
 
-    /**
-     * Get a string in the xml tree.
-     * 
-     * @param attribute The attribute to get as string.
-     * @param path The node path (child list).
-     * @return The string value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final Optional<String> getStringOptional(String attribute, String... path)
+    @Override
+    public byte getByte(byte defaultValue, String attribute, String... path)
     {
-        if (hasAttribute(attribute, path))
-        {
-            return Optional.of(getString(attribute, path));
-        }
-        return Optional.empty();
+        return root.getByte(defaultValue, attribute, path);
     }
 
-    /**
-     * Get a media in the xml tree.
-     * 
-     * @param attribute The attribute to get as media.
-     * @param path The node path (child list).
-     * @return The string value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final Media getMedia(String attribute, String... path)
+    @Override
+    public char getChar(String attribute, String... path)
     {
-        return Medias.create(getNodeString(attribute, path));
+        return root.getChar(attribute, path);
     }
 
-    /**
-     * Get a media in the xml tree.
-     * 
-     * @param attribute The attribute to get as media.
-     * @param path The node path (child list).
-     * @return The string value.
-     */
-    public final Optional<Media> getMediaOptional(String attribute, String... path)
+    @Override
+    public char getChar(byte defaultValue, String attribute, String... path)
     {
-        if (hasAttribute(attribute, path))
-        {
-            return Optional.of(Medias.create(getNodeString(attribute, path)));
-        }
-        return Optional.empty();
+        return root.getChar(defaultValue, attribute, path);
     }
 
-    /**
-     * Get an enum in the xml tree.
-     * 
-     * @param <E> The enum type.
-     * @param type The enum class.
-     * @param attribute The attribute to get as enum.
-     * @param path The node path (child list).
-     * @return The enum instance.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final <E extends Enum<E>> E getEnum(Class<E> type, String attribute, String... path)
+    @Override
+    public short getShort(String attribute, String... path)
     {
-        try
-        {
-            return Enum.valueOf(type, getNodeString(attribute, path));
-        }
-        catch (final IllegalArgumentException exception)
-        {
-            throw new LionEngineException(exception, ERROR_ENUM + attribute);
-        }
+        return root.getShort(attribute, path);
     }
 
-    /**
-     * Get a boolean in the xml tree.
-     * 
-     * @param attribute The attribute to get as boolean.
-     * @param path The node path (child list).
-     * @return The boolean value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final boolean getBoolean(String attribute, String... path)
+    @Override
+    public short getShort(short defaultValue, String attribute, String... path)
     {
-        return Boolean.parseBoolean(getNodeString(attribute, path));
+        return root.getShort(defaultValue, attribute, path);
     }
 
-    /**
-     * Get a boolean in the xml tree.
-     * 
-     * @param defaultValue The value used if node does not exist.
-     * @param attribute The attribute to get as boolean.
-     * @param path The node path (child list).
-     * @return The boolean value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final boolean getBooleanDefault(boolean defaultValue, String attribute, String... path)
+    @Override
+    public int getInteger(String attribute, String... path)
     {
-        return Boolean.parseBoolean(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
+        return root.getInteger(attribute, path);
     }
 
-    /**
-     * Get an integer in the xml tree.
-     * 
-     * @param attribute The attribute to get as integer.
-     * @param path The node path (child list).
-     * @return The integer value.
-     * @throws LionEngineException If unable to read node or not a valid integer read.
-     */
-    public final int getInteger(String attribute, String... path)
+    @Override
+    public int getInteger(int defaultValue, String attribute, String... path)
     {
-        try
-        {
-            return Integer.parseInt(getNodeString(attribute, path));
-        }
-        catch (final NumberFormatException exception)
-        {
-            throw new LionEngineException(exception, media);
-        }
+        return root.getInteger(defaultValue, attribute, path);
     }
 
-    /**
-     * Get an integer in the xml tree.
-     * 
-     * @param defaultValue The value used if node does not exist.
-     * @param attribute The attribute to get as integer.
-     * @param path The node path (child list).
-     * @return The integer value.
-     * @throws LionEngineException If not a valid integer read.
-     */
-    public final int getIntegerDefault(int defaultValue, String attribute, String... path)
+    @Override
+    public OptionalInt getIntegerOptional(String attribute, String... path)
     {
-        try
-        {
-            return Integer.parseInt(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
-        }
-        catch (final NumberFormatException exception)
-        {
-            throw new LionEngineException(exception, media);
-        }
+        return root.getIntegerOptional(attribute, path);
     }
 
-    /**
-     * Get an integer in the xml tree.
-     * 
-     * @param attribute The attribute to get as integer.
-     * @param path The node path (child list).
-     * @return The integer value.
-     * @throws LionEngineException If unable to read node or not a valid integer read.
-     */
-    public final OptionalInt getIntegerOptional(String attribute, String... path)
+    @Override
+    public long getLong(String attribute, String... path)
     {
-        if (hasAttribute(attribute, path))
-        {
-            return OptionalInt.of(getInteger(attribute, path));
-        }
-        return OptionalInt.empty();
+        return root.getLong(attribute, path);
     }
 
-    /**
-     * Get a double in the xml tree.
-     * 
-     * @param attribute The attribute to get as double.
-     * @param path The node path (child list).
-     * @return The double value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final double getDouble(String attribute, String... path)
+    @Override
+    public long getLong(long defaultValue, String attribute, String... path)
     {
-        try
-        {
-            return Double.parseDouble(getNodeString(attribute, path));
-        }
-        catch (final NumberFormatException exception)
-        {
-            throw new LionEngineException(exception, media);
-        }
+        return root.getLong(defaultValue, attribute, path);
     }
 
-    /**
-     * Get a double in the xml tree.
-     * 
-     * @param defaultValue The value used if node does not exist.
-     * @param attribute The attribute to get as double.
-     * @param path The node path (child list).
-     * @return The double value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public final double getDoubleDefault(double defaultValue, String attribute, String... path)
+    @Override
+    public OptionalLong getLongOptional(String attribute, String... path)
     {
-        try
-        {
-            return Double.parseDouble(getNodeStringDefault(String.valueOf(defaultValue), attribute, path));
-        }
-        catch (final NumberFormatException exception)
-        {
-            throw new LionEngineException(exception, media);
-        }
+        return root.getLongOptional(attribute, path);
     }
 
-    /**
-     * Get a double in the xml tree.
-     * 
-     * @param attribute The attribute to get as double.
-     * @param path The node path (child list).
-     * @return The double value.
-     * @throws LionEngineException If unable to read node or not a valid double read.
-     */
-    public final OptionalDouble getDoubleOptional(String attribute, String... path)
+    @Override
+    public float getFloat(String attribute, String... path)
     {
-        if (hasAttribute(attribute, path))
-        {
-            return OptionalDouble.of(getDouble(attribute, path));
-        }
-        return OptionalDouble.empty();
+        return root.getFloat(attribute, path);
     }
 
-    /**
-     * Get the class implementation from its name. Default constructor must be available.
-     * 
-     * @param <T> The instance type.
-     * @param type The class type.
-     * @param path The node path.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    public final <T> T getImplementation(Class<T> type, String... path)
+    @Override
+    public float getFloat(float defaultValue, String attribute, String... path)
     {
-        return getImplementation(getClass().getClassLoader(), type, path);
+        return root.getFloat(defaultValue, attribute, path);
     }
 
-    /**
-     * Get the class implementation from its name. Default constructor must be available.
-     * 
-     * @param <T> The instance type.
-     * @param loader The class loader to use.
-     * @param type The class type.
-     * @param path The node path.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    public final <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
+    @Override
+    public double getDouble(String attribute, String... path)
     {
-        return getImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
+        return root.getDouble(attribute, path);
     }
 
-    /**
-     * Get the class implementation from its name by using a custom constructor.
-     * 
-     * @param <T> The instance type.
-     * @param type The class type.
-     * @param paramType The parameter type.
-     * @param paramValue The parameter value.
-     * @param path The node path.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    public final <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    @Override
+    public double getDouble(double defaultValue, String attribute, String... path)
     {
-        return getImplementation(type, new Class<?>[]
-        {
-            paramType
-        }, Arrays.asList(paramValue), path);
+        return root.getDouble(defaultValue, attribute, path);
     }
 
-    /**
-     * Get the class implementation from its name by using a custom constructor.
-     * 
-     * @param <T> The instance type.
-     * @param type The class type.
-     * @param paramsType The parameters type.
-     * @param paramsValue The parameters value.
-     * @param path The node path.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    public final <T> T getImplementation(Class<T> type,
-                                         Class<?>[] paramsType,
-                                         Collection<?> paramsValue,
-                                         String... path)
+    @Override
+    public OptionalDouble getDoubleOptional(String attribute, String... path)
     {
-        return getImplementation(getClass().getClassLoader(), type, paramsType, paramsValue, path);
+        return root.getDoubleOptional(attribute, path);
     }
 
-    /**
-     * Get the class implementation from its name by using a custom constructor.
-     * 
-     * @param <T> The instance type.
-     * @param loader The class loader to use.
-     * @param type The class type.
-     * @param paramsType The parameters type.
-     * @param paramsValue The parameters value.
-     * @param path The node path.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    public final <T> T getImplementation(ClassLoader loader,
-                                         Class<T> type,
-                                         Class<?>[] paramsType,
-                                         Collection<?> paramsValue,
-                                         String... path)
+    @Override
+    public String getString(String attribute, String... path)
     {
-        final String className = getText(path).trim();
-        return getImplementation(loader, type, paramsType, paramsValue, className);
+        return root.getString(attribute, path);
     }
 
-    /**
-     * Get the class implementation from its name by using a custom constructor.
-     * 
-     * @param <T> The instance type.
-     * @param loader The class loader to use.
-     * @param type The class type.
-     * @param paramsType The parameters type.
-     * @param paramsValue The parameters value.
-     * @param className The class name.
-     * @return The typed class instance.
-     * @throws LionEngineException If invalid class.
-     */
-    public static final <T> T getImplementation(ClassLoader loader,
-                                                Class<T> type,
-                                                Class<?>[] paramsType,
-                                                Collection<?> paramsValue,
-                                                String className)
+    @Override
+    public String getStringDefault(String defaultValue, String attribute, String... path)
     {
-        try
-        {
-            if (!CLASS_CACHE.containsKey(className))
-            {
-                final Class<?> clazz = loader.loadClass(className);
-                CLASS_CACHE.put(className, clazz);
-            }
-
-            final Class<?> clazz = CLASS_CACHE.get(className);
-            final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
-            UtilReflection.setAccessible(constructor, true);
-            return type.cast(constructor.newInstance(paramsValue.toArray()));
-        }
-        catch (final InstantiationException | IllegalArgumentException | InvocationTargetException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE + className);
-        }
-        catch (final NoSuchMethodException | IllegalAccessException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR + className);
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE + className);
-        }
+        return root.getStringDefault(defaultValue, attribute, path);
     }
 
-    /**
-     * Check if node exists.
-     * 
-     * @param path The node path.
-     * @return <code>true</code> if node exists, <code>false</code> else.
-     */
-    public final boolean hasNode(String... path)
+    @Override
+    public Optional<String> getStringOptional(String attribute, String... path)
     {
-        Xml node = root;
-        for (final String element : path)
-        {
-            if (!node.hasChild(element))
-            {
-                return false;
-            }
-            node = node.getChild(element);
-        }
-        return true;
+        return root.getStringOptional(attribute, path);
     }
 
-    /**
-     * Check if attribute exists.
-     * 
-     * @param attribute The attribute path.
-     * @param path The node path.
-     * @return <code>true</code> if attribute exists, <code>false</code> else.
-     */
-    public final boolean hasAttribute(String attribute, String... path)
+    @Override
+    public Media getMedia(String attribute, String... path)
     {
-        Xml node = root;
-        for (final String element : path)
-        {
-            if (!node.hasChild(element))
-            {
-                return false;
-            }
-            node = node.getChild(element);
-        }
-        return node.hasAttribute(attribute);
+        return root.getMedia(attribute, path);
     }
 
-    /**
-     * Get the node at the following path.
-     * 
-     * @param path The node path.
-     * @return The node found.
-     * @throws LionEngineException If node not found.
-     */
-    private Xml getNode(String... path)
+    @Override
+    public Optional<Media> getMediaOptional(String attribute, String... path)
     {
-        Xml node = root;
-        for (final String element : path)
-        {
-            try
-            {
-                node = node.getChild(element);
-            }
-            catch (final LionEngineException exception)
-            {
-                throw new LionEngineException(exception, media);
-            }
-        }
-        return node;
+        return root.getMediaOptional(attribute, path);
     }
 
-    /**
-     * Get the node at the following path.
-     * 
-     * @param path The node path.
-     * @return The node found, <code>null</code> if none.
-     */
-    private Xml getNodeDefault(String... path)
+    @Override
+    public <E extends Enum<E>> E getEnum(Class<E> type, String attribute, String... path)
     {
-        Xml node = root;
-        for (final String element : path)
-        {
-            if (!node.hasChild(element))
-            {
-                return null;
-            }
-            node = node.getChild(element);
-        }
-        return node;
+        return root.getEnum(type, attribute, path);
     }
 
-    /**
-     * Get the string from a node.
-     * 
-     * @param attribute The attribute to get.
-     * @param path The attribute node path.
-     * @return The string found.
-     * @throws LionEngineException If node not found.
-     */
-    private String getNodeString(String attribute, String... path)
+    @Override
+    public <E extends Enum<E>> E getEnum(Class<E> type, E defaultValue, String attribute, String... path)
     {
-        final Xml node = getNode(path);
-        return node.readString(attribute);
+        return root.getEnum(type, defaultValue, attribute, path);
     }
 
-    /**
-     * Get the string from a node.
-     * 
-     * @param defaultValue The default value returned if path not found.
-     * @param attribute The attribute to get.
-     * @param path The attribute node path.
-     * @return The string found.
-     * @throws LionEngineException If node not found.
-     */
-    private String getNodeStringDefault(String defaultValue, String attribute, String... path)
+    @Override
+    public <E extends Enum<E>> Optional<E> getEnumOptional(Class<E> type, String attribute, String... path)
     {
-        final Xml node = getNodeDefault(path);
-        if (node != null && node.hasAttribute(attribute))
-        {
-            return node.readString(attribute);
-        }
-        return defaultValue;
+        return root.getEnumOptional(type, attribute, path);
+    }
+
+    @Override
+    public <T> T getImplementation(Class<T> type, String... path)
+    {
+        return root.getImplementation(type, path);
+    }
+
+    @Override
+    public <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
+    {
+        return root.getImplementation(loader, type, path);
+    }
+
+    @Override
+    public <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    {
+        return root.getImplementation(type, paramType, paramValue, path);
+    }
+
+    @Override
+    public <T> T getImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
+    {
+        return root.getImplementation(type, paramsType, paramsValue, path);
+    }
+
+    @Override
+    public <T> T getImplementation(ClassLoader loader,
+                                   Class<T> type,
+                                   Class<?>[] paramsType,
+                                   Collection<?> paramsValue,
+                                   String... path)
+    {
+        return root.getImplementation(loader, type, paramsType, paramsValue, path);
+    }
+
+    @Override
+    public XmlReader getChild(String name, String... path)
+    {
+        return root.getChild(name, path);
+    }
+
+    @Override
+    public Optional<XmlReader> getChildOptional(String name, String... path)
+    {
+        return root.getChildOptional(name, path);
+    }
+
+    @Override
+    public Collection<XmlReader> getChildren(String name, String... path)
+    {
+        return root.getChildren(name, path);
+    }
+
+    @Override
+    public boolean hasAttribute(String attribute, String... path)
+    {
+        return root.hasAttribute(attribute, path);
+    }
+
+    @Override
+    public boolean hasNode(String child, String... path)
+    {
+        return root.hasNode(child, path);
     }
 }

@@ -65,9 +65,9 @@ public final class ExtractorConfig
         Check.notNull(root);
 
         final XmlReader node = root.getChild(NODE_EXTRACTOR);
-        final double extract = node.readDouble(0.0, ATT_EXTRACT);
-        final double dropoff = node.readDouble(0.0, ATT_DROPOFF);
-        final int capacity = node.readInteger(0, ATT_CAPACITY);
+        final double extract = node.getDouble(0.0, ATT_EXTRACT);
+        final double dropoff = node.getDouble(0.0, ATT_DROPOFF);
+        final int capacity = node.getInteger(0, ATT_CAPACITY);
 
         return new ExtractorConfig(extract, dropoff, capacity);
     }

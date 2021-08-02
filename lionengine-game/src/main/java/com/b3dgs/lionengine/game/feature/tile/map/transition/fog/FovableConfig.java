@@ -63,10 +63,10 @@ public final class FovableConfig
     {
         Check.notNull(root);
 
-        if (root.hasChild(NODE_FOVABLE))
+        if (root.hasNode(NODE_FOVABLE))
         {
             final XmlReader node = root.getChild(NODE_FOVABLE);
-            return node.readInteger(DEFAULT_FOV, ATT_FOV);
+            return node.getInteger(DEFAULT_FOV, ATT_FOV);
         }
         return DEFAULT_FOV;
     }

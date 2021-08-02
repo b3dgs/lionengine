@@ -75,7 +75,7 @@ public class SetupSurfaceRastered extends Setup
     {
         super(config);
 
-        externEnabled = getBooleanDefault(false, ATT_RASTER_EXTERN, NODE_RASTERABLE);
+        externEnabled = getBoolean(false, ATT_RASTER_EXTERN, NODE_RASTERABLE);
 
         if (hasNode(NODE_RASTERABLE) && !externEnabled)
         {

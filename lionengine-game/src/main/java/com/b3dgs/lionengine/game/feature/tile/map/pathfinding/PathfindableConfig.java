@@ -62,7 +62,7 @@ public final class PathfindableConfig
         Check.notNull(configurer);
 
         final XmlReader root = configurer.getRoot();
-        if (!root.hasChild(NODE_PATHFINDABLE))
+        if (!root.hasNode(NODE_PATHFINDABLE))
         {
             return Collections.emptyMap();
         }
@@ -112,9 +112,9 @@ public final class PathfindableConfig
     {
         Check.notNull(node);
 
-        final String category = node.readString(ATT_CATEGORY);
-        final double cost = node.readDouble(0.0, ATT_COST);
-        final boolean blocking = node.readBoolean(ATT_BLOCK);
+        final String category = node.getString(ATT_CATEGORY);
+        final double cost = node.getDouble(0.0, ATT_COST);
+        final boolean blocking = node.getBoolean(ATT_BLOCK);
         final Collection<MovementTile> movements = importAllowedMovements(node);
 
         return new PathData(category, cost, blocking, movements);
@@ -148,7 +148,7 @@ public final class PathfindableConfig
      */
     private static Collection<MovementTile> importAllowedMovements(XmlReader node)
     {
-        if (!node.hasChild(NODE_MOVEMENT))
+        if (!node.hasNode(NODE_MOVEMENT))
         {
             return Collections.emptySet();
         }

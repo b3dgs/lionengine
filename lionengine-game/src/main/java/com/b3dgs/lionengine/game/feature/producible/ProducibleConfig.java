@@ -66,7 +66,7 @@ public final class ProducibleConfig
 
         final XmlReader node = root.getChild(NODE_PRODUCIBLE);
         final SizeConfig size = SizeConfig.imports(root);
-        final int time = node.readInteger(ATT_STEPS);
+        final int time = node.getInteger(ATT_STEPS);
 
         return new ProducibleConfig(time, size.getWidth(), size.getHeight());
     }

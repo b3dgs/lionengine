@@ -118,9 +118,8 @@ public final class TileGroupsConfig
         }
         children.clear();
 
-        final String groupName = nodeGroup.readString(ATT_GROUP_NAME);
-        final TileGroupType groupType = TileGroupType.from(nodeGroup.readStringDefault(TileGroupType.NONE.name(),
-                                                                                       ATT_GROUP_TYPE));
+        final String groupName = nodeGroup.getString(ATT_GROUP_NAME);
+        final TileGroupType groupType = nodeGroup.getEnum(TileGroupType.class, TileGroupType.NONE, ATT_GROUP_TYPE);
         return new TileGroup(groupName, groupType, tiles);
     }
 
@@ -134,7 +133,7 @@ public final class TileGroupsConfig
     {
         final Xml nodeGroup = nodeGroups.createChild(NODE_GROUP);
         nodeGroup.writeString(ATT_GROUP_NAME, group.getName());
-        nodeGroup.writeString(ATT_GROUP_TYPE, group.getType().name());
+        nodeGroup.writeEnum(ATT_GROUP_TYPE, group.getType());
 
         for (final Integer tile : group.getTiles())
         {

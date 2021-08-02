@@ -58,6 +58,6 @@ final class TileConfigTest
         final int number = 1;
         final Xml nodeTile = TileConfig.exports(number);
 
-        assertEquals(number, nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER));
+        assertEquals(number, nodeTile.getInteger(TileConfig.ATT_TILE_NUMBER));
     }
 }
