@@ -173,6 +173,17 @@ public class Services
     }
 
     /**
+     * Remove a service.
+     * 
+     * @param <S> The service type.
+     * @param service The service to remove.
+     */
+    public <S> void remove(S service)
+    {
+        servicesSet.remove(service);
+    }
+
+    /**
      * Get a service from its class.
      * <p>
      * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
