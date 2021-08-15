@@ -54,6 +54,22 @@ final class ServicesTest
     }
 
     /**
+     * Test the service remove.
+     */
+    @Test
+    void testRemove()
+    {
+        final Services services = new Services();
+        final Factory factory = services.add(new Factory(services));
+
+        assertEquals(factory, services.get(Factory.class));
+
+        services.remove(factory);
+
+        assertThrows(() -> services.get(Factory.class), Services.ERROR_SERVICE_GET + Factory.class.getName());
+    }
+
+    /**
      * Test the service without constructor.
      */
     @Test
