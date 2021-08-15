@@ -155,6 +155,7 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     {
         final int sheetsCount = sheets.size();
         this.sheets = new SpriteTiled[sheetsCount];
+        tilesPerSheet = -1;
 
         for (int sheetId = 0; sheetId < sheetsCount; sheetId++)
         {
@@ -175,6 +176,7 @@ public class MapTileSurfaceModel extends FeatureAbstract implements MapTileSurfa
     public void loadSheets(Media sheetsConfig)
     {
         this.sheetsConfig = sheetsConfig;
+        tilesPerSheet = -1;
 
         final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
         final List<String> configSheets = config.getSheets();
