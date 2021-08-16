@@ -129,7 +129,9 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 
         if (setup.hasNode(SurfaceConfig.NODE_SURFACE))
         {
-            rastersAnim.add(Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf));
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(setup.getSurface(), hf, vf);
+            sprite.prepare();
+            rastersAnim.add(sprite);
         }
         else
         {
@@ -144,6 +146,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
         for (int i = 0; i < n; i++)
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffers.get(i), hf, vf);
+            sprite.prepare();
             rastersAnim.add(sprite);
             count++;
         }
