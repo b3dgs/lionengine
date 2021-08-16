@@ -18,6 +18,8 @@ package com.b3dgs.lionengine.graphic.engine;
 
 import java.util.function.IntSupplier;
 
+import com.b3dgs.lionengine.Resolution;
+
 /**
  * Provide resolution from source.
  */
@@ -26,6 +28,16 @@ public final class SourceResolutionDelegate implements SourceResolutionProvider
     private final IntSupplier width;
     private final IntSupplier height;
     private final IntSupplier rate;
+
+    /**
+     * Create delegate.
+     * 
+     * @param resolution The resolution reference.
+     */
+    public SourceResolutionDelegate(Resolution resolution)
+    {
+        this(resolution::getWidth, resolution::getHeight, resolution::getRate);
+    }
 
     /**
      * Create delegate.
