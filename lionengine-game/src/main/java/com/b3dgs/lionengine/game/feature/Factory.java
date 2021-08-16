@@ -66,7 +66,7 @@ public class Factory implements HandlerListener
     /** Services reference. */
     private final Services services;
     /** Class loader. */
-    private final ClassLoader classLoader;
+    private ClassLoader classLoader;
 
     /**
      * Create a factory.
@@ -79,6 +79,16 @@ public class Factory implements HandlerListener
 
         this.services = services;
         classLoader = services.getOptional(ClassLoader.class).orElse(getClass().getClassLoader());
+    }
+
+    /**
+     * Set class loader.
+     * 
+     * @param classLoader The class loader.
+     */
+    public void setClassLoader(ClassLoader classLoader)
+    {
+        this.classLoader = classLoader;
     }
 
     /**
