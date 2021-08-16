@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.lionengine.io.DeviceControllerVoid;
 
 /**
  * Entity input control implementation.
@@ -47,7 +48,7 @@ public final class EntityInputController extends FeatureModel implements Routine
     {
         super(services, setup);
 
-        controller = services.get(DeviceController.class);
+        controller = services.getOptional(DeviceController.class).orElse(DeviceControllerVoid.getInstance());
     }
 
     @Override
