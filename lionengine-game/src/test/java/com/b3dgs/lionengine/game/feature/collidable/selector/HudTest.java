@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.ViewerMock;
@@ -80,10 +81,11 @@ final class HudTest
     @BeforeEach
     public void before()
     {
+        services.add(new ContextMock());
         services.add(new Handler(services));
         services.add(new Factory(services));
         services.add(new ViewerMock());
-        services.add(new Cursor());
+        services.add(new Cursor(services));
         services.add(new ComponentCollision());
     }
 

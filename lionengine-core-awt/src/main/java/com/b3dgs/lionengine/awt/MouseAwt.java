@@ -143,6 +143,7 @@ public final class MouseAwt implements Mouse
     @Override
     public void lock(int x, int y)
     {
+        mover.setCenter(x, y);
         if (robot != null)
         {
             robot.mouseMove(x, y);

@@ -24,6 +24,14 @@ import com.b3dgs.lionengine.Localizable;
 public interface DevicePointer extends DevicePush, Localizable
 {
     /**
+     * Lock pointer at specified location.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
+    void lock(int x, int y);
+
+    /**
      * Get the horizontal movement.
      * 
      * @return The horizontal movement.

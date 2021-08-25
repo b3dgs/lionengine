@@ -25,6 +25,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -248,7 +249,9 @@ final class CameraTest
     {
         camera.setView(0, 0, 2, 2, 2);
 
-        final Cursor cursor = new Cursor();
+        final Services services = new Services();
+        services.add(new ContextMock());
+        final Cursor cursor = new Cursor(services);
         cursor.setArea(-2, -2, 4, 4);
         cursor.setLocation(0, 0);
         cursor.update(1.0);

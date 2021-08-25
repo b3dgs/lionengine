@@ -17,12 +17,14 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resource;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
@@ -50,7 +52,7 @@ import com.b3dgs.lionengine.io.DevicePointer;
  * Usage example:
  * </p>
  * <ul>
- * <li>Create the cursor with {@link #Cursor()}.</li>
+ * <li>Create the cursor with {@link #Cursor(Services)}.</li>
  * <li>Add images with {@link #addImage(int, Media)}.</li>
  * <li>Load added images {@link #load()}.</li>
  * <li>Set the input to use {@link #setInputDevice(DeviceController)}.</li>
@@ -64,6 +66,8 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
 {
     /** Cursor renderer. */
     private final CursorRenderer renderer = new CursorRenderer();
+    /** Context reference. */
+    private final Context context;
     /** Pointer reference. */
     private DeviceController device;
     /** Viewer reference. */
@@ -101,10 +105,14 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
 
     /**
      * Create a cursor.
+     * 
+     * @param services The services reference.
      */
-    public Cursor()
+    public Cursor(Services services)
     {
         super();
+
+        context = services.get(Context.class);
     }
 
     /**
@@ -152,6 +160,10 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
      */
     public void setSync(DevicePointer sync)
     {
+        if (sync != null && viewer != null)
+        {
+            sync.lock(context.getX() + viewer.getWidth() / 2, context.getY() + viewer.getHeight() / 2);
+        }
         this.sync = sync;
     }
 
@@ -308,13 +320,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public Integer getPushed()
     {
         final Integer pushed;
-        if (sync != null)
-        {
-            pushed = sync.getPushed();
-        }
-        else if (device != null)
+        if (device != null)
         {
             pushed = device.getFired();
+        }
+        else if (sync != null)
+        {
+            pushed = sync.getPushed();
         }
         else
         {
@@ -327,13 +339,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public boolean isPushed()
     {
         final boolean pushed;
-        if (sync != null)
-        {
-            pushed = sync.isPushed();
-        }
-        else if (device != null)
+        if (device != null)
         {
             pushed = device.isFired();
+        }
+        else if (sync != null)
+        {
+            pushed = sync.isPushed();
         }
         else
         {
@@ -346,13 +358,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public boolean isPushed(Integer click)
     {
         final boolean pushed;
-        if (sync != null)
-        {
-            pushed = sync.isPushed(click);
-        }
-        else if (device != null)
+        if (device != null)
         {
             pushed = device.isFired(click);
+        }
+        else if (sync != null)
+        {
+            pushed = sync.isPushed(click);
         }
         else
         {
@@ -365,19 +377,28 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public boolean isPushedOnce(Integer click)
     {
         final boolean pushed;
-        if (sync != null)
-        {
-            pushed = sync.isPushedOnce(click);
-        }
-        else if (device != null)
+        if (device != null)
         {
             pushed = device.isFiredOnce(click);
+        }
+        else if (sync != null)
+        {
+            pushed = sync.isPushedOnce(click);
         }
         else
         {
             pushed = false;
         }
         return pushed;
+    }
+
+    @Override
+    public void lock(int x, int y)
+    {
+        if (sync != null)
+        {
+            sync.lock(x, y);
+        }
     }
 
     @Override
@@ -393,15 +414,16 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     @Override
     public void update(double extrp)
     {
-        if (sync != null)
+        if (device != null)
+        {
+            screenX += device.getHorizontalDirection() * sensibilityHorizontal * extrp;
+            screenY -= device.getVerticalDirection() * sensibilityVertical * extrp;
+            lock(context.getX() + viewer.getWidth() / 2, context.getY() + viewer.getHeight() / 2);
+        }
+        else if (sync != null)
         {
             screenX = sync.getX();
             screenY = sync.getY();
-        }
-        else if (device != null)
-        {
-            screenX += device.getHorizontalDirection() * sensibilityHorizontal * extrp;
-            screenY += device.getVerticalDirection() * sensibilityVertical * extrp;
         }
         if (viewer != null)
         {
@@ -453,13 +475,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public double getMoveX()
     {
         final double mx;
-        if (sync != null)
-        {
-            mx = sync.getMoveX();
-        }
-        else if (device != null)
+        if (device != null)
         {
             mx = device.getHorizontalDirection();
+        }
+        else if (sync != null)
+        {
+            mx = sync.getMoveX();
         }
         else
         {
@@ -472,13 +494,13 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     public double getMoveY()
     {
         final double my;
-        if (sync != null)
-        {
-            my = sync.getMoveY();
-        }
-        else if (device != null)
+        if (device != null)
         {
             my = device.getVerticalDirection();
+        }
+        else if (sync != null)
+        {
+            my = sync.getMoveY();
         }
         else
         {

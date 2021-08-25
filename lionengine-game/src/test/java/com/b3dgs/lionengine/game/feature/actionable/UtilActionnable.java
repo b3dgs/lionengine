@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.actionable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Xml;
@@ -71,7 +72,8 @@ final class UtilActionnable
     public static Services createServices(AtomicBoolean clicked, AtomicReference<Integer> clickNumber)
     {
         final Services services = new Services();
-        final Cursor cursor = new Cursor()
+        services.add(new ContextMock());
+        final Cursor cursor = new Cursor(services)
         {
             @Override
             public boolean isPushedOnce(Integer click)

@@ -67,7 +67,7 @@ final class Scene extends Sequence
     private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
     private final MapTileGame map = services.create(MapTileGame.class);
-    private final Cursor cursor = services.create(Cursor.class);
+    private final Cursor cursor;
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Tick tick = new Tick();
     private Transformable transformable;
@@ -82,6 +82,9 @@ final class Scene extends Sequence
     Scene(Context context)
     {
         super(context, NATIVE);
+
+        services.add(context);
+        cursor = services.create(Cursor.class);
 
         handler.addComponent(new ComponentRefreshable());
         handler.addComponent(new ComponentDisplayable());

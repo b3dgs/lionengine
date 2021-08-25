@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.feature.assignable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Camera;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -44,7 +45,8 @@ final class UtilAssignable
         final Camera camera = services.create(Camera.class);
         camera.setView(0, 0, 32, 32, 32);
 
-        final Cursor cursor = services.add(new Cursor()
+        services.add(new ContextMock());
+        final Cursor cursor = services.add(new Cursor(services)
         {
             @Override
             public boolean isPushedOnce(Integer click)

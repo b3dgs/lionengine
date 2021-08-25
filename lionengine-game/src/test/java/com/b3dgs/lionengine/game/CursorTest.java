@@ -25,10 +25,13 @@ import static com.b3dgs.lionengine.UtilAssert.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.ViewerMock;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -58,13 +61,24 @@ final class CursorTest
         Medias.setLoadFromJar(null);
     }
 
+    private final Services services = new Services();
+
+    /**
+     * Prepare test.
+     */
+    @BeforeEach
+    public void before()
+    {
+        services.add(new ContextMock());
+    }
+
     /**
      * Test constructor.
      */
     @Test
     void testConstructor()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
 
         assertNull(cursor.getSurfaceId());
         assertEquals(0.0, cursor.getX());
@@ -83,7 +97,7 @@ final class CursorTest
     @Test
     void testSetGrid()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.setGrid(10, 20);
 
         assertEquals(10, cursor.getWidth());
@@ -96,7 +110,7 @@ final class CursorTest
     @Test
     void testAddExistingId()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.addImage(1, Medias.create("cursor.png"));
         cursor.addImage(1, Medias.create("cursor.png"));
     }
@@ -107,7 +121,7 @@ final class CursorTest
     @Test
     void testSetSurfaceId()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.addImage(1, Medias.create("cursor.png"));
         cursor.setSurfaceId(1);
         cursor.update(1.0);
@@ -130,7 +144,7 @@ final class CursorTest
     @Test
     void testSetSurfaceIdUnknown()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
 
         assertThrows(() -> cursor.setSurfaceId(1), CursorRenderer.ERROR_SURFACE_ID + 1);
     }
@@ -141,7 +155,7 @@ final class CursorTest
     @Test
     void testLoadSurface()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.addImage(1, Medias.create("cursor.png"));
         cursor.update(1.0);
 
@@ -162,7 +176,7 @@ final class CursorTest
     @Test
     void testSensibility()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.setSensibility(1.0, 2.0);
 
         assertEquals(1.0, cursor.getSensibilityHorizontal());
@@ -175,7 +189,7 @@ final class CursorTest
     @Test
     void testSetLocation()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.setLocation(1, 2);
 
         assertEquals(0.0, cursor.getX());
@@ -197,7 +211,7 @@ final class CursorTest
     // TODO update @Test
     void testInput()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.update(1.0);
 
         final MouseMock mouse = new MouseMock();
@@ -230,7 +244,7 @@ final class CursorTest
     @Test
     void testSetArea()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         final MouseMock mouse = new MouseMock();
         cursor.setSync(mouse);
         cursor.setArea(5, 6, 10, 20);
@@ -256,7 +270,7 @@ final class CursorTest
     @Test
     void testSetOffset()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         final MouseMock mouse = new MouseMock();
         cursor.setSync(mouse);
         cursor.setRenderingOffset(10, 20);
@@ -276,7 +290,7 @@ final class CursorTest
     @Test
     void testSetViewer()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         final MouseMock mouse = new MouseMock();
         mouse.move(1, 2);
         cursor.setSync(mouse);
@@ -300,7 +314,7 @@ final class CursorTest
     void testRenderNoSurface()
     {
         final Graphic g = Graphics.createGraphic();
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.setVisible(false);
         cursor.render(g);
 
@@ -315,7 +329,7 @@ final class CursorTest
     @Test
     void testRender()
     {
-        final Cursor cursor = new Cursor();
+        final Cursor cursor = new Cursor(services);
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();
 

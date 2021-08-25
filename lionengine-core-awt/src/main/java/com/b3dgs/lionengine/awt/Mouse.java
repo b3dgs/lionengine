@@ -40,17 +40,9 @@ public interface Mouse extends DevicePointer
     void addActionReleased(Integer click, EventAction action);
 
     /**
-     * Lock mouse at its center.
+     * Lock mouse.
      */
     void lock();
-
-    /**
-     * Lock mouse at specified location.
-     * 
-     * @param x The location x.
-     * @param y The location y.
-     */
-    void lock(int x, int y);
 
     /**
      * Perform a click.

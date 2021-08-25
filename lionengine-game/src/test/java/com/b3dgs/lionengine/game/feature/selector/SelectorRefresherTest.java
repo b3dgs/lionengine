@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.ViewerMock;
@@ -78,7 +79,6 @@ final class SelectorRefresherTest
 
     private final Services services = new Services();
     private final Setup setup = new Setup(config);
-    private final Cursor cursor = services.create(Cursor.class);
     private final SelectorModel model = new SelectorModel();
     private final MouseMock mouse = new MouseMock();
     private final AtomicReference<Area> started = new AtomicReference<>();
@@ -97,6 +97,7 @@ final class SelectorRefresherTest
             done.set(selection);
         }
     };
+    private Cursor cursor;
     private SelectorRefresher refresher;
 
     /**
@@ -105,10 +106,13 @@ final class SelectorRefresherTest
     @BeforeEach
     public void prepare()
     {
-        cursor.setSync(mouse);
 
+        services.add(new ContextMock());
         services.add(new Camera());
         services.add(new ViewerMock());
+
+        cursor = services.create(Cursor.class);
+        cursor.setSync(mouse);
 
         final Featurable featurable = new FeaturableModel(services, setup);
         featurable.addFeature(new LayerableModel(services, setup));

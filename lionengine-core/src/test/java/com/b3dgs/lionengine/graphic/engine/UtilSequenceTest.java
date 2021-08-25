@@ -25,11 +25,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.InputDevice;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.ContextMock;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.graphic.FactoryGraphicMock;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -39,33 +36,6 @@ import com.b3dgs.lionengine.graphic.Graphics;
  */
 final class UtilSequenceTest
 {
-    private static final Context CONTEXT = new Context()
-    {
-        @Override
-        public int getX()
-        {
-            return 0;
-        }
-
-        @Override
-        public int getY()
-        {
-            return 0;
-        }
-
-        @Override
-        public <T extends InputDevice> T getInputDevice(Class<T> type)
-        {
-            return null;
-        }
-
-        @Override
-        public Config getConfig()
-        {
-            return new Config(new Resolution(320, 240, 60), 32, true);
-        }
-    };
-
     /**
      * Prepare tests.
      */
@@ -99,7 +69,7 @@ final class UtilSequenceTest
     @Test
     void testCreateSequence()
     {
-        assertNotNull(UtilSequence.create(SequenceSingleMock.class, CONTEXT));
+        assertNotNull(UtilSequence.create(SequenceSingleMock.class, new ContextMock()));
     }
 
     /**
@@ -108,7 +78,7 @@ final class UtilSequenceTest
     @Test
     void testCreateSequenceArgument()
     {
-        assertNotNull(UtilSequence.create(SequenceArgumentsMock.class, CONTEXT, new Object()));
+        assertNotNull(UtilSequence.create(SequenceArgumentsMock.class, new ContextMock(), new Object()));
     }
 
     /**
@@ -120,9 +90,11 @@ final class UtilSequenceTest
         final String message = NoSuchMethodException.class.getName()
                                + ": No compatible constructor found for "
                                + SequenceSingleMock.class.getName()
-                               + " with: [class com.b3dgs.lionengine.graphic.engine.UtilSequenceTest$1, "
+                               + " with: [class "
+                               + ContextMock.class.getName()
+                               + ", "
                                + "class java.lang.Object]";
-        assertThrows(() -> UtilSequence.create(SequenceSingleMock.class, CONTEXT, new Object()), message);
+        assertThrows(() -> UtilSequence.create(SequenceSingleMock.class, new ContextMock(), new Object()), message);
     }
 
     /**

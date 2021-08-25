@@ -112,6 +112,13 @@ public class MouseMock implements DevicePointer
     }
 
     @Override
+    public void lock(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
     public String getName()
     {
         return MouseMock.class.getSimpleName();
