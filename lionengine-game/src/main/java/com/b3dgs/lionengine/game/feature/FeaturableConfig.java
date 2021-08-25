@@ -163,6 +163,22 @@ public final class FeaturableConfig
      */
     public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup)
     {
+        return getFeatures(loader, services, setup, null);
+    }
+
+    /**
+     * Get all available features.
+     * Default constructor of each feature must be available or with {@link Setup} as single parameter.
+     * 
+     * @param loader The class loader reference.
+     * @param services The services reference.
+     * @param setup The setup reference.
+     * @param filter The type filter (can be <code>null</code> if none).
+     * @return The available features.
+     * @throws LionEngineException If invalid class.
+     */
+    public static List<Feature> getFeatures(ClassLoader loader, Services services, Setup setup, Class<?> filter)
+    {
         final Collection<XmlReader> children;
         final XmlReader root = setup.getRoot();
         if (root.hasNode(NODE_FEATURES))
@@ -180,17 +196,19 @@ public final class FeaturableConfig
         for (final XmlReader featureNode : children)
         {
             final String className = featureNode.getText();
-            final Feature feature;
             try
             {
                 final Class<? extends Feature> clazz = getClass(loader, className);
-                feature = UtilReflection.createReduce(clazz, services, setup);
+                if (filter == null || filter.isAssignableFrom(clazz))
+                {
+                    final Feature feature = UtilReflection.createReduce(clazz, services, setup);
+                    features.add(feature);
+                }
             }
             catch (final NoSuchMethodException | LionEngineException exception)
             {
                 throw new LionEngineException(exception, setup.getMedia());
             }
-            features.add(feature);
         }
         children.clear();
 
