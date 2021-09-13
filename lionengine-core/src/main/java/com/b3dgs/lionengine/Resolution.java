@@ -102,6 +102,24 @@ public final class Resolution
     /**
      * Get scaled resolution.
      * 
+     * @param factor The scale factor (strictly superior to 0).
+     * @return The scaled resolution.
+     * @throws LionEngineException If invalid arguments.
+     */
+    public Resolution getScaled(double factor)
+    {
+        Check.superiorStrict(factor, 0);
+
+        final double ratio = width / (double) height;
+        final double h = Math.ceil(height * factor);
+        final double w = Math.ceil(h * ratio);
+
+        return new Resolution((int) w, (int) h, rate);
+    }
+
+    /**
+     * Get scaled resolution.
+     * 
      * @param factorX The horizontal scale factor (strictly superior to 0).
      * @param factorY The vertical scale factor (strictly superior to 0).
      * @return The scaled resolution.
