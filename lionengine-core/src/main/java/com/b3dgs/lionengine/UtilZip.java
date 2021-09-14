@@ -18,6 +18,8 @@ package com.b3dgs.lionengine;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -62,7 +64,9 @@ public final class UtilZip
         Check.notNull(jar);
         Check.notNull(path);
 
-        try (ZipFile zip = new ZipFile(jar))
+        try (ZipFile zip = new ZipFile(URLDecoder.decode(jar.getAbsolutePath(), "UTF-8")
+                                                 .replaceAll("\\s", Constant.SPACE),
+                                       StandardCharsets.UTF_8))
         {
             return checkEntries(zip, path, extension);
         }
