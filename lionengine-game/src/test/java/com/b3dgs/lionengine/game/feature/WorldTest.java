@@ -97,6 +97,18 @@ final class WorldTest
             }
 
             @Override
+            public int getWidth()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 0;
+            }
+
+            @Override
             public <T extends InputDevice> T getInputDevice(Class<T> type)
             {
                 return null;
