@@ -239,6 +239,18 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
     }
 
     @Override
+    public int getWidth()
+    {
+        return componentForMouse.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return componentForMouse.getHeight();
+    }
+
+    @Override
     public boolean isReady()
     {
         return buf != null;

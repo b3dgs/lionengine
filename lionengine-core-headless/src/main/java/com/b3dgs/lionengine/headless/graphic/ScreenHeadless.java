@@ -137,6 +137,18 @@ final class ScreenHeadless extends ScreenAbstract
     }
 
     @Override
+    public int getWidth()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return 0;
+    }
+
+    @Override
     public boolean isReady()
     {
         return ready;

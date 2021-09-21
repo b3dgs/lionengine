@@ -63,6 +63,18 @@ final class ContextWrapper implements Context
     }
 
     @Override
+    public int getWidth()
+    {
+        return screen.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return screen.getHeight();
+    }
+
+    @Override
     public Config getConfig()
     {
         return screen.getConfig();

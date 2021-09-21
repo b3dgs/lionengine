@@ -36,6 +36,20 @@ public interface Context
     int getY();
 
     /**
+     * Get main frame width.
+     * 
+     * @return The main frame width.
+     */
+    int getWidth();
+
+    /**
+     * Get main frame height.
+     * 
+     * @return The main frame height.
+     */
+    int getHeight();
+
+    /**
      * Get the config.
      * 
      * @return The config.
