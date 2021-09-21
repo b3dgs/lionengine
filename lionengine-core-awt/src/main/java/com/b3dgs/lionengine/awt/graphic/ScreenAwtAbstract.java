@@ -160,8 +160,8 @@ abstract class ScreenAwtAbstract extends ScreenAbstract implements FocusListener
         super.start();
         setResolution(config.getOutput());
         prepareFocusListener();
-        addDeviceKeyboard();
         addDeviceMouse();
+        addDeviceKeyboard();
         buf.show();
         graphics.setGraphic(buf.getDrawGraphics());
     }
