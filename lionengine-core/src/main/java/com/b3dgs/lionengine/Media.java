@@ -88,6 +88,13 @@ public interface Media extends Nameable
      */
     boolean exists();
 
+    /**
+     * Check if media is in jar.
+     * 
+     * @return <code>true</code> if in jar, <code>false</code> else.
+     */
+    boolean isJar();
+
     /*
      * Nameable
      */

@@ -248,11 +248,18 @@ final class WavImpl implements Wav
 
         this.executor = executor;
         this.media = media;
-        if (!originalToCache.containsKey(media))
+        if (media.isJar())
         {
-            originalToCache.put(media, UtilStream.getCopy(media));
+            if (!originalToCache.containsKey(media))
+            {
+                originalToCache.put(media, UtilStream.getCopy(media));
+            }
+            cache = originalToCache.get(media);
         }
-        cache = originalToCache.get(media);
+        else
+        {
+            cache = media.getFile();
+        }
     }
 
     /**

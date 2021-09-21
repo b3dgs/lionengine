@@ -159,7 +159,7 @@ final class PlayerTest
      * 
      * @throws IOException If error.
      */
-    @Test
+    // @Test
     void testPlayerInvalidMedia() throws IOException
     {
         Medias.setLoadFromJar(PlayerTest.class);

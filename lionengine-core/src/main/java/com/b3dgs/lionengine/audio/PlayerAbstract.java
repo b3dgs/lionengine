@@ -44,8 +44,12 @@ public abstract class PlayerAbstract implements Audio
      */
     private static String extractFromJar(Media media)
     {
-        final File file = UtilStream.getCopy(media);
-        return file.getAbsolutePath();
+        if (media.isJar())
+        {
+            final File file = UtilStream.getCopy(media);
+            return file.getAbsolutePath();
+        }
+        return media.getFile().getAbsolutePath();
     }
 
     /** Media reference. */

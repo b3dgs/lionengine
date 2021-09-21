@@ -96,4 +96,10 @@ public class MediaMock implements Media
     {
         return false;
     }
+
+    @Override
+    public boolean isJar()
+    {
+        return false;
+    }
 }

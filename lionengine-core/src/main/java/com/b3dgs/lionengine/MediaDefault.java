@@ -40,15 +40,21 @@ final class MediaDefault implements Media
     /** Error open media. */
     static final String ERROR_OPEN_MEDIA = "Cannot open the media !";
     /** Temp folder property. */
+    private static final String USER_DIR = "user.dir";
+    /** Temp folder property. */
     private static final String TEMP_DIR = "java.io.tmpdir";
     /** No parent. */
     private static final String NO_PARENT = Constant.EMPTY_STRING;
     /** Temp folder. */
     private static final String TEMP = Constant.getSystemProperty(TEMP_DIR, Constant.EMPTY_STRING);
+    /** User folder. */
+    private static final String USER = Constant.getSystemProperty(USER_DIR, Constant.EMPTY_STRING);
     /** Split regex. */
     private static final Pattern SLASH = Pattern.compile(Constant.SLASH);
-    /** Jar file. */
-    private static final String JAR_FILE = ".jar!";
+    /** Jar file prefix. */
+    private static final String JAR_FILE_PREFIX = "file:";
+    /** Jar file suffix. */
+    private static final String JAR_FILE_SUFFIX = ".jar!";
 
     /** Separator. */
     private final String separator;
@@ -171,8 +177,8 @@ final class MediaDefault implements Media
      */
     private void fillMediasFromJar(Collection<Media> medias)
     {
-        final String fullpath = getFile().getPath().replace("file:", Constant.EMPTY_STRING);
-        final int length = fullpath.indexOf(JAR_FILE) + JAR_FILE.length() - 1;
+        final String fullpath = getFile().getPath().replace(JAR_FILE_PREFIX, Constant.EMPTY_STRING);
+        final int length = fullpath.indexOf(JAR_FILE_SUFFIX) + JAR_FILE_SUFFIX.length() - 1;
         final File zip = new File(fullpath.substring(0, length));
         final String root = loader.get()
                                   .getName()
@@ -232,11 +238,16 @@ final class MediaDefault implements Media
      * @return The input stream found.
      * @throws FileNotFoundException If no stream found.
      */
+    // CHECKSTYLE IGNORE LINE: ReturnCount
     private InputStream getInputFromJarOrTemp() throws FileNotFoundException
     {
         final InputStream input = loader.get().getResourceAsStream(UtilFolder.getPathSeparator(separator, getPath()));
         if (input == null)
         {
+            if (new File(getPathUser()).exists())
+            {
+                return new FileInputStream(getPathUser());
+            }
             return new FileInputStream(getPathTemp());
         }
         return input;
@@ -260,6 +271,16 @@ final class MediaDefault implements Media
     private String getPathTemp()
     {
         return UtilFolder.getPathSeparator(separator, TEMP, UtilFolder.getPath(Engine.getProgramName(), path));
+    }
+
+    /**
+     * Get the user path equivalent.
+     * 
+     * @return The user path.
+     */
+    private String getPathUser()
+    {
+        return UtilFolder.getPathSeparator(separator, USER, path);
     }
 
     /*
@@ -293,7 +314,16 @@ final class MediaDefault implements Media
             final URL url = loader.get().getResource(path);
             if (url == null)
             {
-                file = new File(getPathTemp());
+                final File fileUser = new File(getPathUser());
+                // CHECKSTYLE IGNORE LINE: If
+                if (fileUser.exists())
+                {
+                    file = fileUser;
+                }
+                else
+                {
+                    file = new File(getPathTemp());
+                }
             }
             else
             {
@@ -327,7 +357,7 @@ final class MediaDefault implements Media
         final Collection<Media> medias = new ArrayList<>();
         final File file = getFile();
         final String filePath = file.getPath();
-        if (filePath.contains(JAR_FILE))
+        if (filePath.contains(JAR_FILE_SUFFIX))
         {
             fillMediasFromJar(medias);
         }
@@ -384,9 +414,18 @@ final class MediaDefault implements Media
         if (loader.isPresent())
         {
             final String jarPath = UtilFolder.getPathSeparator(separator, getPath());
-            return loader.get().getResource(jarPath) != null || UtilFile.exists(getPathTemp());
+            return loader.get().getResource(jarPath) != null
+                   || UtilFile.exists(getPathTemp())
+                   || UtilFile.exists(getPathUser());
         }
         return getFile().exists();
+    }
+
+    @Override
+    public boolean isJar()
+    {
+        return loader.isPresent()
+               && loader.get().getResource(UtilFolder.getPathSeparator(separator, getPath())) != null;
     }
 
     /*
