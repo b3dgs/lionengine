@@ -45,11 +45,15 @@ public class SetupSurfaceRastered extends Setup
     private static final String ATT_RASTER_FILE = "file";
     /** Rasterable external attribute. */
     private static final String ATT_RASTER_EXTERN = "extern";
+    /** Rasterable offset attribute. */
+    private static final String ATT_RASTER_OFFSET = "offset";
 
     /** Raster image. */
     private final RasterImage raster;
     /** External load enabled. */
     private final boolean externEnabled;
+    /** Raster offset. */
+    private final int offset;
     /** Externally loaded. */
     private boolean externLoaded;
 
@@ -76,6 +80,7 @@ public class SetupSurfaceRastered extends Setup
         super(config);
 
         externEnabled = getBoolean(false, ATT_RASTER_EXTERN, NODE_RASTERABLE);
+        offset = getInteger(1, ATT_RASTER_OFFSET, NODE_RASTERABLE);
 
         if (hasNode(NODE_RASTERABLE) && !externEnabled)
         {
@@ -122,14 +127,20 @@ public class SetupSurfaceRastered extends Setup
      * @param media The raster media (must not be <code>null</code>).
      * @param allowed The allowed raster indexes.
      */
-    public void load(boolean save, Media media, Collection<Integer> allowed)
+    public synchronized void load(boolean save, Media media, Collection<Integer> allowed)
     {
         Check.notNull(media);
 
-        if (externEnabled && !externLoaded)
+        if (!externLoaded)
         {
-            raster.loadRasters(save, media, UtilFile.removeExtension(getMedia().getName()), allowed);
-            externLoaded = true;
+            synchronized (this)
+            {
+                if (externEnabled && !externLoaded)
+                {
+                    raster.loadRasters(save, media, UtilFile.removeExtension(getMedia().getName()), allowed);
+                    externLoaded = true;
+                }
+            }
         }
     }
 
@@ -161,6 +172,16 @@ public class SetupSurfaceRastered extends Setup
     public int getRasterHeight()
     {
         return raster.getHeight();
+    }
+
+    /**
+     * Get the raster offset.
+     * 
+     * @return The raster offset.
+     */
+    public int getRasterOffset()
+    {
+        return offset;
     }
 
     /**

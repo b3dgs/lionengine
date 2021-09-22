@@ -109,6 +109,18 @@ public interface Rasterable extends Feature, Updatable, Renderable
      * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
      * @param media The raster media (must not be <code>null</code>).
      * @param rasterHeight The raster height (must be strictly positive).
+     * @param linesPerRaster The lines number per raster.
+     * @param rasterLineOffset The raster line offset.
+     * @throws LionEngineException If invalid argument.
+     */
+    void setRaster(boolean save, Media media, int rasterHeight, int linesPerRaster, int rasterLineOffset);
+
+    /**
+     * Set the raster media.
+     * 
+     * @param save <code>true</code> to save generated (if) rasters, <code>false</code> else.
+     * @param media The raster media (must not be <code>null</code>).
+     * @param rasterHeight The raster height (must be strictly positive).
      * @param ignored The ignored raster indexes.
      * @throws LionEngineException If invalid argument.
      */

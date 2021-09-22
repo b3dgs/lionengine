@@ -55,6 +55,10 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim = new ArrayList<>(RasterImage.MAX_RASTERS);
+    /** Lines per raster. */
+    private int linesPerRaster = RasterImage.LINES_PER_RASTER;
+    /** Raster line offset. */
+    private final int rasterLineOffset;
     /** The viewer reference. */
     private final Viewer viewer;
     /** Setup raster. */
@@ -139,6 +143,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
             enabled = false;
         }
         rasterHeight = setup.getRasterHeight();
+        rasterLineOffset = setup.getRasterOffset();
 
         count = -1;
         final List<ImageBuffer> buffers = setup.getRasters();
@@ -249,7 +254,7 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     @Override
     public int getRasterIndex(double y)
     {
-        int index = (int) y / RasterImage.LINES_PER_RASTER;
+        int index = (int) (y - rasterLineOffset) / linesPerRaster;
         if (index > RasterImage.MAX_RASTERS - 1)
         {
             index = RasterImage.MAX_RASTERS - 1;
@@ -280,6 +285,14 @@ public class RasterableModel extends FeatureModel implements Rasterable, Recycla
     @Override
     public void setRaster(boolean save, Media media, int rasterHeight)
     {
+        setRaster(save, media, rasterHeight, Collections.emptyList());
+    }
+
+    @Override
+    public void setRaster(boolean save, Media media, int rasterHeight, int linesPerRaster, int rasterLineOffset)
+    {
+        this.linesPerRaster = linesPerRaster;
+        // this.rasterLineOffset = rasterLineOffset;
         setRaster(save, media, rasterHeight, Collections.emptyList());
     }
 
