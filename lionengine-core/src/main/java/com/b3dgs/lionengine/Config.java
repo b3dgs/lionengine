@@ -85,6 +85,20 @@ public final class Config
         return new Config(output, DEPTH_DEFAULT, false);
     }
 
+    /**
+     * Create a 32 bits color depth and fullscreen configuration using output resolution.
+     * 
+     * @param output The output resolution used on rendering (must not be <code>null</code>).
+     * @param devices The devices reference.
+     * @param icons The icons (must not be <code>null</code>).
+     * @return The created fullscreen configuration.
+     * @throws LionEngineException If invalid argument.
+     */
+    public static Config fullscreen(Resolution output, List<InputDevice> devices, Media... icons)
+    {
+        return new Config(output, DEPTH_DEFAULT, false, devices, icons);
+    }
+
     /** Output resolution reference. */
     private final Resolution output;
     /** Display depth. */
