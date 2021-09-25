@@ -16,7 +16,6 @@
  */
 package com.b3dgs.lionengine.audio.adlmidi;
 
-import static com.b3dgs.lionengine.UtilAssert.assertCause;
 import static com.b3dgs.lionengine.UtilAssert.assertNotNull;
 import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTimeout;
@@ -311,14 +310,14 @@ final class AdlMidiTest
                 return new File(getPath());
             }
         };
-        final Audio adlmidi = createAdlMidi(media);
+        final Audio audio = createAdlMidi(media);
         try
         {
-            assertCause(() -> adlmidi.play(), IOException.class);
+            audio.play();
         }
         finally
         {
-            adlmidi.stop();
+            audio.stop();
             final File file = new File(new File(System.getProperty("java.io.tmpdir"), getClass().getSimpleName()),
                                        media.getPath());
             if (file.exists())
