@@ -106,7 +106,7 @@ public class MouseMock implements DevicePointer
     @Override
     public boolean isPushedOnce(Integer click)
     {
-        final boolean once = clicked.equals(click);
+        final boolean once = click.equals(clicked);
         clicked = Integer.valueOf(0);
         return once;
     }

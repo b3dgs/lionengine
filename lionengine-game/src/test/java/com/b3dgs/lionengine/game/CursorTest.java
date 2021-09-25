@@ -208,7 +208,7 @@ final class CursorTest
     /**
      * Test input device.
      */
-    // TODO update @Test
+    @Test
     void testInput()
     {
         final Cursor cursor = new Cursor(services);

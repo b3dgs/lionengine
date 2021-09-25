@@ -130,13 +130,10 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     /**
      * Set the device to use.
      * 
-     * @param device The device reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid pointer.
+     * @param device The device reference (can be <code>null</code>).
      */
     public void setInputDevice(DeviceController device)
     {
-        Check.notNull(device);
-
         this.device = device;
     }
 
@@ -160,10 +157,6 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
      */
     public void setSync(DevicePointer sync)
     {
-        if (sync != null && viewer != null)
-        {
-            sync.lock(context.getX() + viewer.getWidth() / 2, context.getY() + viewer.getHeight() / 2);
-        }
         this.sync = sync;
     }
 
@@ -418,7 +411,7 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
         {
             screenX += device.getHorizontalDirection() * sensibilityHorizontal * extrp;
             screenY -= device.getVerticalDirection() * sensibilityVertical * extrp;
-            lock(context.getX() + viewer.getWidth() / 2, context.getY() + viewer.getHeight() / 2);
+            lock(context.getX() + context.getWidth() / 2, context.getY() + context.getHeight() / 2);
         }
         else if (sync != null)
         {
