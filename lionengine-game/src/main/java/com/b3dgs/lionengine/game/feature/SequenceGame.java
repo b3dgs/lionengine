@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.graphic.engine.LoopFrameSkipping;
 import com.b3dgs.lionengine.graphic.engine.Sequencable;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 import com.b3dgs.lionengine.graphic.engine.Sequencer;
+import com.b3dgs.lionengine.graphic.engine.SourceResolutionDelegate;
 import com.b3dgs.lionengine.graphic.engine.SourceResolutionProvider;
 import com.b3dgs.lionengine.graphic.engine.TimeControl;
 import com.b3dgs.lionengine.graphic.engine.Zooming;
@@ -123,26 +124,9 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
         });
         services.add((Zooming) this::setZoom);
         services.add((TimeControl) this::setTime);
-        services.add(new SourceResolutionProvider()
-        {
-            @Override
-            public int getWidth()
-            {
-                return SequenceGame.this.getWidth();
-            }
-
-            @Override
-            public int getHeight()
-            {
-                return SequenceGame.this.getHeight();
-            }
-
-            @Override
-            public int getRate()
-            {
-                return SequenceGame.this.getRate();
-            }
-        });
+        services.add((SourceResolutionProvider) new SourceResolutionDelegate(this::getWidth,
+                                                                             this::getHeight,
+                                                                             this::getRate));
 
         world = services.add(creator.apply(services));
 
