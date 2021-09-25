@@ -51,13 +51,6 @@ public interface Sequencable extends Updatable, Renderable
     void addKeyListener(InputDeviceKeyListener listener);
 
     /**
-     * Set the system cursor visibility.
-     * 
-     * @param visible <code>true</code> if visible, <code>false</code> else.
-     */
-    void setSystemCursorVisible(boolean visible);
-
-    /**
      * Get the configuration.
      * 
      * @return The configuration.

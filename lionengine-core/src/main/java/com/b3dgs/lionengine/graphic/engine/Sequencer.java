@@ -45,4 +45,11 @@ public interface Sequencer
      * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
     void load(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
+
+    /**
+     * Set the system cursor visibility.
+     * 
+     * @param visible <code>true</code> if visible, <code>false</code> else.
+     */
+    void setSystemCursorVisible(boolean visible);
 }

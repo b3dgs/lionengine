@@ -94,6 +94,7 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
         super(context, resolution, loop);
 
         services.add(context);
+        // CHECKSTYLE IGNORE LINE: AnonInnerLength
         services.add(new Sequencer()
         {
             @Override
@@ -112,6 +113,12 @@ public abstract class SequenceGame<W extends WorldGame> extends Sequence
             public void load(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
             {
                 SequenceGame.this.load(nextSequenceClass, arguments);
+            }
+
+            @Override
+            public void setSystemCursorVisible(boolean visible)
+            {
+                SequenceGame.this.setSystemCursorVisible(visible);
             }
         });
         services.add((Zooming) this::setZoom);
