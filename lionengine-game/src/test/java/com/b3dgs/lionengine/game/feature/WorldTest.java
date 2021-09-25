@@ -159,6 +159,12 @@ final class WorldTest
             {
                 // Mock
             }
+
+            @Override
+            public void setSystemCursorVisible(boolean visible)
+            {
+                // Mock
+            }
         });
     }
 
