@@ -32,6 +32,11 @@ public interface DevicePointer extends DevicePush, Localizable
     void lock(int x, int y);
 
     /**
+     * Unlock pointer.
+     */
+    void unlock();
+
+    /**
      * Get the horizontal movement.
      * 
      * @return The horizontal movement.

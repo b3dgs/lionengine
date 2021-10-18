@@ -395,6 +395,15 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
     }
 
     @Override
+    public void unlock()
+    {
+        if (sync != null)
+        {
+            sync.unlock();
+        }
+    }
+
+    @Override
     public void setVisible(boolean visible)
     {
         renderer.setVisible(visible);
@@ -417,6 +426,7 @@ public class Cursor implements Resource, Shape, DevicePointer, Renderable
         {
             screenX = sync.getX();
             screenY = sync.getY();
+            unlock();
         }
         if (viewer != null)
         {
