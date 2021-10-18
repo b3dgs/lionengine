@@ -16,8 +16,6 @@
  */
 package com.b3dgs.lionengine.awt;
 
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -25,7 +23,6 @@ import java.awt.event.MouseMotionListener;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Mouse implementation.
@@ -38,33 +35,11 @@ public final class MouseAwt implements Mouse
     public static final Integer MIDDLE = Integer.valueOf(MouseEvent.BUTTON2);
     /** Right click. */
     public static final Integer RIGHT = Integer.valueOf(MouseEvent.BUTTON3);
-    /** Robot error. */
-    private static final String ERROR_ROBOT = "No mouse robot available !";
-
-    /**
-     * Create a mouse robot.
-     * 
-     * @return The created robot, <code>null</code> if not available.
-     */
-    private static Robot createRobot()
-    {
-        try
-        {
-            return new Robot();
-        }
-        catch (final AWTException exception)
-        {
-            Verbose.exception(exception, ERROR_ROBOT);
-            return null;
-        }
-    }
 
     /** Move click. */
     private final MouseClickAwt clicker = new MouseClickAwt();
     /** Mouse move. */
     private final MouseMoveAwt mover = new MouseMoveAwt();
-    /** Robot instance reference (can be <code>null</code>). */
-    private final Robot robot = createRobot();
     /** Screen horizontal ratio. */
     private double xRatio;
     /** Screen vertical ratio. */
@@ -144,15 +119,13 @@ public final class MouseAwt implements Mouse
     public void lock(int x, int y)
     {
         mover.setCenter(x, y);
-        if (robot != null)
-        {
-            robot.mouseMove(x, y);
-        }
-        else
-        {
-            mover.robotMove(x, y);
-        }
         mover.lock();
+    }
+
+    @Override
+    public void unlock()
+    {
+        mover.unlock();
     }
 
     @Override

@@ -16,9 +16,11 @@
  */
 package com.b3dgs.lionengine.awt;
 
+import java.awt.AWTException;
 import java.awt.HeadlessException;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
+import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
@@ -30,6 +32,29 @@ import com.b3dgs.lionengine.geom.Point;
  */
 final class MouseMoveAwt implements MouseMotionListener
 {
+    /** Robot margin size. */
+    private static final int ROBOT_MARGIN = 64;
+    /** Robot error. */
+    private static final String ERROR_ROBOT = "No mouse robot available !";
+
+    /**
+     * Create a mouse robot.
+     * 
+     * @return The created robot, <code>null</code> if not available.
+     */
+    private static Robot createRobot()
+    {
+        try
+        {
+            return new Robot();
+        }
+        catch (final AWTException exception)
+        {
+            Verbose.exception(exception, ERROR_ROBOT);
+            return null;
+        }
+    }
+
     /**
      * Get the buttons number.
      * 
@@ -50,6 +75,8 @@ final class MouseMoveAwt implements MouseMotionListener
         }
     }
 
+    /** Robot instance reference (can be <code>null</code>). */
+    private final Robot robot = createRobot();
     /** On screen monitor location x. */
     private int x;
     /** On screen monitor location y. */
@@ -72,6 +99,8 @@ final class MouseMoveAwt implements MouseMotionListener
     private int centerY;
     /** Moved flag. */
     private boolean moved;
+    /** Lock flag. */
+    private boolean lock;
 
     /**
      * Internal constructor.
@@ -144,10 +173,15 @@ final class MouseMoveAwt implements MouseMotionListener
      */
     void lock()
     {
-        x = centerX;
-        y = centerY;
-        oldX = centerX;
-        oldY = centerY;
+        lock = true;
+    }
+
+    /**
+     * Disable locking.
+     */
+    void unlock()
+    {
+        lock = false;
     }
 
     /**
@@ -273,6 +307,19 @@ final class MouseMoveAwt implements MouseMotionListener
         my = y - oldY;
     }
 
+    /**
+     * Check if cursor is outside margin.
+     * 
+     * @return <code>true</code> if outside, <code>false</code> else.
+     */
+    private boolean isOutsideMargin()
+    {
+        return x < centerX - ROBOT_MARGIN
+               || x > centerX + ROBOT_MARGIN
+               || y < centerY - ROBOT_MARGIN
+               || y > centerY + ROBOT_MARGIN;
+    }
+
     /*
      * MouseListener
      */
@@ -282,6 +329,19 @@ final class MouseMoveAwt implements MouseMotionListener
     {
         moved = true;
         updateCoord(event);
+
+        if (lock && isOutsideMargin())
+        {
+            if (robot != null)
+            {
+                robot.mouseMove(centerX, centerY);
+                robotTeleport(centerX, centerY);
+            }
+            else
+            {
+                robotMove(centerX, centerY);
+            }
+        }
     }
 
     @Override
