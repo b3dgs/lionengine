@@ -129,8 +129,8 @@ class ScreenBaseAwt extends ScreenAwtAbstract
     {
         frame.validate();
         frame.setEnabled(true);
-        frame.setVisible(true);
         super.start();
+        frame.setVisible(true);
     }
 
     @Override

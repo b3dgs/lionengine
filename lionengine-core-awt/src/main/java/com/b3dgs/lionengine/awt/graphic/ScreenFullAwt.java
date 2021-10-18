@@ -217,4 +217,12 @@ final class ScreenFullAwt extends ScreenBaseAwt
         initFullscreen(output, config.getDepth());
         super.setResolution(output);
     }
+
+    @Override
+    public void start()
+    {
+        frame.setVisible(true);
+
+        super.start();
+    }
 }
