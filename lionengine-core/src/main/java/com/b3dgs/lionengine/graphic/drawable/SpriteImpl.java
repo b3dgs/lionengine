@@ -17,7 +17,6 @@
 package com.b3dgs.lionengine.graphic.drawable;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -30,7 +29,6 @@ import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * Sprite implementation.
@@ -64,10 +62,6 @@ class SpriteImpl implements Sprite
     private int rx;
     /** Render vertical position. */
     private int ry;
-    /** Sprite raw data (used for alpha, can be <code>null</code>). */
-    private int[][] rgb;
-    /** First alpha. */
-    private boolean firstAlpha;
     /** Frame offsets x. */
     private int frameOffsetX;
     /** Frame offsets y. */
@@ -78,6 +72,8 @@ class SpriteImpl implements Sprite
     private int angleX;
     /** Current angle vertical anchor. */
     private int angleY;
+    /** Alpha. */
+    private int alpha = 255;
 
     /**
      * Internal constructor.
@@ -130,6 +126,7 @@ class SpriteImpl implements Sprite
      */
     protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy)
     {
+        g.setAlpha(alpha);
         if (Mirror.HORIZONTAL == mirror)
         {
             g.drawImage(surface,
@@ -153,6 +150,7 @@ class SpriteImpl implements Sprite
         {
             g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h, angle, angleX, angleY);
         }
+        g.setAlpha(255);
     }
 
     /**
@@ -344,34 +342,7 @@ class SpriteImpl implements Sprite
         Check.superiorOrEqual(alpha, 0);
         Check.inferiorOrEqual(alpha, 255);
 
-        setFade(alpha, -255);
-    }
-
-    @Override
-    public final void setFade(int alpha, int fade)
-    {
-        if (rgb == null)
-        {
-            rgb = new int[width][height];
-            firstAlpha = true;
-            surface = Graphics.getImageBufferDraw(surface);
-        }
-        for (int cx = 0; cx < width; cx++)
-        {
-            for (int cy = 0; cy < height; cy++)
-            {
-                if (firstAlpha)
-                {
-                    lazySurfaceBackup();
-                    rgb[cx][cy] = surfaceStretched.getRgb(cx, cy);
-                }
-                final int alphaKey = 0x00_FF_FF_FF;
-                final int mc = Math.abs(alpha) << Constant.BYTE_4 | alphaKey;
-                final int color = fade + alpha;
-                surface.setRgb(cx, cy, UtilColor.inc(rgb[cx][cy], color, color, color) & mc);
-            }
-        }
-        firstAlpha = false;
+        this.alpha = alpha;
     }
 
     @Override

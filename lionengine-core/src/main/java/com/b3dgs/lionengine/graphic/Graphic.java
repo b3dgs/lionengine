@@ -261,6 +261,13 @@ public interface Graphic
     void setColorGradient(ColorGradient gradientColor);
 
     /**
+     * Set alpha value.
+     * 
+     * @param alpha The alpha value (between 0 and 255 included).
+     */
+    void setAlpha(int alpha);
+
+    /**
      * Set the graphic context.
      * 
      * @param graphic The graphic context.

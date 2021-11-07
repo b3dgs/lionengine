@@ -266,6 +266,12 @@ final class GraphicHeadless implements Graphic
     }
 
     @Override
+    public void setAlpha(int alpha)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public Object getGraphic()
     {
         return g;

@@ -155,6 +155,12 @@ public class GraphicMock implements Graphic
     }
 
     @Override
+    public void setAlpha(int alpha)
+    {
+        // Mock
+    }
+
+    @Override
     public void setGraphic(Object graphic)
     {
         g = graphic;

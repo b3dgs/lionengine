@@ -93,15 +93,6 @@ public interface Sprite extends Image
     void setAlpha(int alpha);
 
     /**
-     * Set fade value. The lower is the value, the blacker will be the fade effect. The higher is the value, the whiter
-     * will be the fade effect.
-     * 
-     * @param alpha The alpha value <code>[0 - 255]</code>.
-     * @param fade The fade value <code>[0 - 255]</code>.
-     */
-    void setFade(int alpha, int fade);
-
-    /**
      * Set angle anchor for rotation referential.
      * 
      * @param angleX The horizontal anchor.

@@ -348,20 +348,6 @@ final class SpriteDigitTest
     }
 
     /**
-     * Test set fade.
-     */
-    @Test
-    void testSetFade()
-    {
-        final SpriteDigit sprite = new SpriteDigitImpl(Graphics.createImageBuffer(64, 32), 1, 1, 1);
-        sprite.setFade(128, 128);
-        sprite.setFade(128, 128);
-
-        assertEquals(1, sprite.getWidth());
-        assertEquals(1, sprite.getHeight());
-    }
-
-    /**
      * Test set frame offset.
      */
     @Test

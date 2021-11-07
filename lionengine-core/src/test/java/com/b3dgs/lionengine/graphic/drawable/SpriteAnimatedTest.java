@@ -362,20 +362,6 @@ final class SpriteAnimatedTest
     }
 
     /**
-     * Test set fade.
-     */
-    @Test
-    void testSetFade()
-    {
-        final SpriteAnimated sprite = new SpriteAnimatedImpl(Graphics.createImageBuffer(64, 32), 16, 8);
-        sprite.setFade(128, 128);
-        sprite.setFade(128, 128);
-
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
-    }
-
-    /**
      * Test set frame offset.
      */
     @Test

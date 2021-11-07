@@ -68,12 +68,6 @@ final class SpriteTiledMock implements SpriteTiled
     }
 
     @Override
-    public void setFade(int alpha, int fade)
-    {
-        // Mock
-    }
-
-    @Override
     public void setAngleAnchor(int angleX, int angleY)
     {
         // Mock

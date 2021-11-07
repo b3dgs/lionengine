@@ -16,7 +16,9 @@
  */
 package com.b3dgs.lionengine.awt.graphic;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -51,6 +53,8 @@ final class GraphicAwt implements Graphic
     private Transform lastTransform;
     /** Affine transform. */
     private AffineTransformOp op;
+    /** First composite. */
+    private Composite composite;
 
     /**
      * Internal constructor.
@@ -241,6 +245,23 @@ final class GraphicAwt implements Graphic
         final Color color1 = new Color(gc.getColor1().getRgba());
         final Color color2 = new Color(gc.getColor2().getRgba());
         gradientPaint = new GradientPaint(gc.getX1(), gc.getY1(), color1, gc.getX2(), gc.getY2(), color2);
+    }
+
+    @Override
+    public void setAlpha(int alpha)
+    {
+        if (composite == null)
+        {
+            composite = g.getComposite();
+        }
+        if (alpha < 255)
+        {
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER).derive(alpha / 255.0f));
+        }
+        else
+        {
+            g.setComposite(composite);
+        }
     }
 
     @Override

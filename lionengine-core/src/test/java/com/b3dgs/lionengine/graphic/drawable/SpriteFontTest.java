@@ -369,23 +369,6 @@ final class SpriteFontTest
     }
 
     /**
-     * Test set fade.
-     */
-    @Test
-    void testSetFade()
-    {
-        final SpriteFont sprite = new SpriteFontImpl(media, font, 6, 7);
-        sprite.load();
-        sprite.setFade(128, 128);
-        sprite.setFade(128, 128);
-
-        assertEquals(64, sprite.getWidth());
-        assertEquals(32, sprite.getHeight());
-
-        sprite.dispose();
-    }
-
-    /**
      * Test filter bilinear.
      */
     @Test

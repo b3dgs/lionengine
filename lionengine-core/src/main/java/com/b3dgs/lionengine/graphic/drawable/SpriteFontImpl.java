@@ -285,12 +285,6 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void setFade(int alpha, int fade)
-    {
-        surface.setFade(alpha, fade);
-    }
-
-    @Override
     public void setAngleAnchor(int angleX, int angleY)
     {
         surface.setAngleAnchor(angleX, angleY);

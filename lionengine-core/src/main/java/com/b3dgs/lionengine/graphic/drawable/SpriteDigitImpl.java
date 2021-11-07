@@ -231,15 +231,6 @@ public class SpriteDigitImpl implements SpriteDigit
     }
 
     @Override
-    public void setFade(int alpha, int fade)
-    {
-        for (int i = 0; i < digitNumber; i++)
-        {
-            digits[i].setFade(alpha, fade);
-        }
-    }
-
-    @Override
     public void setAngleAnchor(int angleX, int angleY)
     {
         for (int i = 0; i < digitNumber; i++)
