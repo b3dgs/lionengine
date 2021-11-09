@@ -284,14 +284,6 @@ public final class FactoryGraphicHeadless implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb)
-    {
-        Check.notNull(image);
-
-        return new ImageBufferHeadless((ImageBufferHeadless) image);
-    }
-
-    @Override
     public ImageBuffer[] getRasterBuffer(ImageBuffer image, ImageBuffer palette)
     {
         final ImageBuffer[] buffers = new ImageBuffer[palette.getHeight()];

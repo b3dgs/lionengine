@@ -425,24 +425,6 @@ public class FactoryGraphicTest
     }
 
     /**
-     * Test get raster buffer.
-     */
-    @Test
-    void testGetRasterBuffer()
-    {
-        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
-        image.prepare();
-        final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0);
-
-        assertNotEquals(image, raster);
-        assertEquals(image.getWidth(), raster.getWidth());
-        assertEquals(image.getHeight(), raster.getHeight());
-
-        raster.dispose();
-        image.dispose();
-    }
-
-    /**
      * Test get raster inside.
      */
     @Test

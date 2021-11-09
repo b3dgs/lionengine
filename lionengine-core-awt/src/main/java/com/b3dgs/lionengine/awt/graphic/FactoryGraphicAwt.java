@@ -271,15 +271,6 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb)
-    {
-        Check.notNull(image);
-
-        final BufferedImage surface = image.getSurface();
-        return new ImageBufferAwt(ToolsAwt.getRasterBuffer(surface, fr, fg, fb));
-    }
-
-    @Override
     public ImageBuffer[] getRasterBuffer(ImageBuffer image, ImageBuffer palette)
     {
         Check.notNull(image);

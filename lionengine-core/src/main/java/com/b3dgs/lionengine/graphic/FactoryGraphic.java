@@ -185,18 +185,6 @@ public interface FactoryGraphic
     void generateTileset(ImageBuffer[] images, Media media);
 
     /**
-     * Get raster buffer from data.
-     * 
-     * @param image The image buffer (must not be <code>null</code>).
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @return The rastered image.
-     * @throws LionEngineException If invalid arguments.
-     */
-    ImageBuffer getRasterBuffer(ImageBuffer image, double fr, double fg, double fb);
-
-    /**
      * Get raster buffers from palette.
      * 
      * @param image The image buffer (must not be <code>null</code>).

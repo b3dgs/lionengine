@@ -343,23 +343,6 @@ final class GraphicsTest
     }
 
     /**
-     * Test get raster buffer.
-     */
-    @Test
-    void testGetRasterBuffer()
-    {
-        final ImageBuffer image = Graphics.getImageBuffer(Medias.create("image.png"));
-        final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0);
-
-        assertNotEquals(image, raster);
-        assertEquals(image.getWidth(), raster.getWidth());
-        assertEquals(image.getHeight(), raster.getHeight());
-
-        raster.dispose();
-        image.dispose();
-    }
-
-    /**
      * Test get raster buffer from palette.
      */
     @Test

@@ -265,21 +265,6 @@ public final class Graphics
     }
 
     /**
-     * Get raster buffer from data.
-     * 
-     * @param img The image buffer (must not be <code>null</code>).
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @return The rastered image.
-     * @throws LionEngineException If invalid arguments.
-     */
-    public static ImageBuffer getRasterBuffer(ImageBuffer img, double fr, double fg, double fb)
-    {
-        return factoryGraphic.getRasterBuffer(img, fr, fg, fb);
-    }
-
-    /**
      * Get raster buffers from palette.
      * 
      * @param img The image buffer (must not be <code>null</code>).

@@ -47,7 +47,6 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * Misc tools for AWT.
@@ -462,28 +461,6 @@ public final class ToolsAwt
         }
 
         return images;
-    }
-
-    /**
-     * Get raster buffer from data.
-     * 
-     * @param image The image buffer.
-     * @param fr The factor red.
-     * @param fg The factor green.
-     * @param fb The factor blue.
-     * @return The rastered image.
-     */
-    public static BufferedImage getRasterBuffer(BufferedImage image, double fr, double fg, double fb)
-    {
-        final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
-        for (int i = 0; i < raster.getWidth(); i++)
-        {
-            for (int j = 0; j < raster.getHeight(); j++)
-            {
-                raster.setRGB(i, j, UtilColor.multiplyRgb(image.getRGB(i, j), fr, fg, fb));
-            }
-        }
-        return raster;
     }
 
     /**
