@@ -54,6 +54,8 @@ final class WavImpl implements Wav
 {
     /** Sound buffer size. */
     private static final int BUFFER = 128_000;
+    /** Minimum delay between same. */
+    private static final long MIN_DELAY_NANO = 10_000_000L;
     /** Play sound error. */
     private static final String ERROR_PLAY_SOUND = "Error on playing sound: ";
 
@@ -232,6 +234,8 @@ final class WavImpl implements Wav
     private Exception last;
     /** Alive count. */
     private volatile int count;
+    /** Last time. */
+    private long time;
 
     /**
      * Internal constructor.
@@ -325,7 +329,11 @@ final class WavImpl implements Wav
     @Override
     public void play(Align alignment)
     {
-        executor.execute(() -> play(media, alignment));
+        if (System.nanoTime() - time > MIN_DELAY_NANO)
+        {
+            executor.execute(() -> play(media, alignment));
+            time = System.nanoTime();
+        }
     }
 
     @SuppressWarnings("resource")
