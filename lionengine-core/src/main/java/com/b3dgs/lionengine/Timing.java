@@ -16,10 +16,13 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Handle timer operation, in milliseconds, system clock independent.
  */
-public final class Timing
+public final class Timing implements Updatable
 {
     /** Nano millisecond. */
     private static final long NANO_TO_MILLI = 1_000_000L;
@@ -34,6 +37,12 @@ public final class Timing
         return System.nanoTime() / NANO_TO_MILLI;
     }
 
+    /** Actions to add. */
+    private final Collection<ActionDelayed> toAdd = new ArrayList<>();
+    /** Actions. */
+    private final Collection<ActionDelayed> actions = new ArrayList<>();
+    /** Actions executed. */
+    private final Collection<ActionDelayed> toRemove = new ArrayList<>();
     /** Current time. */
     private long cur;
     /** Time when pause. */
@@ -50,6 +59,18 @@ public final class Timing
     }
 
     /**
+     * Add an action to execute once delay elapsed.
+     * 
+     * @param action The action to execute (must not be <code>null</code>).
+     * @param delayMs The delay used as trigger.
+     * @throws LionEngineException If invalid argument.
+     */
+    public void addAction(TickAction action, long delayMs)
+    {
+        toAdd.add(new ActionDelayed(action, delayMs));
+    }
+
+    /**
      * Start timer. Can be started only if not already started.
      */
     public void start()
@@ -57,6 +78,20 @@ public final class Timing
         if (!started)
         {
             cur = systemTime();
+            started = true;
+        }
+    }
+
+    /**
+     * Start timer with initial timing value in milli seconds. Can be started only if not already started.
+     * 
+     * @param value The value to set milli seconds.
+     */
+    public void start(long value)
+    {
+        if (!started)
+        {
+            cur = systemTime() - value;
             started = true;
         }
     }
@@ -168,5 +203,80 @@ public final class Timing
             return back;
         }
         return systemTime();
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        if (!toAdd.isEmpty())
+        {
+            actions.addAll(toAdd);
+            toAdd.clear();
+        }
+
+        for (final ActionDelayed action : actions)
+        {
+            if (elapsed(action.getDelayMs()))
+            {
+                action.getAction().execute();
+                toRemove.add(action);
+            }
+        }
+
+        if (!toRemove.isEmpty())
+        {
+            actions.removeAll(toRemove);
+            toRemove.clear();
+        }
+    }
+
+    /**
+     * Delayed action data.
+     */
+    private static final class ActionDelayed
+    {
+        /** Action reference. */
+        private final TickAction action;
+        /** Delay trigger. */
+        private final long delayMs;
+
+        /**
+         * Create delayed action data.
+         * 
+         * @param action The action reference (must not be <code>null</code>).
+         * @param delayMs The delay.
+         * @throws LionEngineException If invalid argument.
+         */
+        private ActionDelayed(TickAction action, long delayMs)
+        {
+            Check.notNull(action);
+
+            this.action = action;
+            this.delayMs = delayMs;
+        }
+
+        /**
+         * Get action reference.
+         * 
+         * @return The action reference.
+         */
+        public TickAction getAction()
+        {
+            return action;
+        }
+
+        /**
+         * Get the delay.
+         * 
+         * @return The delay.
+         */
+        public long getDelayMs()
+        {
+            return delayMs;
+        }
     }
 }

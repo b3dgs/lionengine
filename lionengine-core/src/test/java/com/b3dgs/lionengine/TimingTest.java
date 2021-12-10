@@ -18,7 +18,10 @@ package com.b3dgs.lionengine;
 
 import static com.b3dgs.lionengine.UtilAssert.assertEquals;
 import static com.b3dgs.lionengine.UtilAssert.assertFalse;
+import static com.b3dgs.lionengine.UtilAssert.assertThrows;
 import static com.b3dgs.lionengine.UtilAssert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +35,36 @@ final class TimingTest
 
     /** Timing instance. */
     private final Timing timing = new Timing();
+
+    /**
+     * Test delayed action.
+     */
+    @Test
+    void testAddAction()
+    {
+        final AtomicBoolean action = new AtomicBoolean();
+        timing.addAction(() -> action.set(true), 2L);
+
+        assertFalse(action.get());
+
+        timing.start();
+
+        assertFalse(action.get());
+
+        UtilTests.pause(PAUSE);
+        timing.update(1.0);
+
+        assertTrue(action.get());
+    }
+
+    /**
+     * Test add <code>null</code> action.
+     */
+    @Test
+    void testAddActionNull()
+    {
+        assertThrows(() -> timing.addAction(null, 0L), Check.ERROR_NULL);
+    }
 
     /**
      * Test start.
